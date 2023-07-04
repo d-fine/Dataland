@@ -13,26 +13,71 @@
   </div>
   <div v-show="dataPointIsAvailable">
     <div class="form-field" v-if="dataPointIsAvailable">
-      <UploadFormHeader
-        :label="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]}`"
-        :description="kpiInfoMappings[name] ?? ''"
-      />
-      <FormKit
-        :disabled="!dataPointIsAvailable"
-        type="number"
-        name="value"
-        validation-label=""
-        v-model="currentMainValue"
-        :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
-        step="any"
-        min="0"
-        :validation="valueType === 'percent' ? 'number|between:0,100' : 'number'"
-        :inner-class="{
-          short: true,
-        }"
-      />
+      <div v-if="valueType === 'percent' && showSecondInput" class="p-0">
+        <div class="next-to-each-other">
+          <div class="p-0">
+            <UploadFormHeader
+              :label="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]}`"
+              :description="kpiInfoMappings[name] ?? ''"
+            />
+            <FormKit
+              :disabled="!dataPointIsAvailable"
+              type="number"
+              name="valueAsPercentage"
+              validation-label=""
+              v-model="currentPercentageValue"
+              :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
+              step="any"
+              min="0"
+              :validation="valueType === 'percent' ? 'number|between:0,100' : 'number'"
+              :inner-class="{
+                short: false,
+              }"
+            />
+          </div>
+          <div>
+            <UploadFormHeader
+              :label="`${kpiNameMappings[name]}`"
+              :description="kpiInfoMappings[`${name}Amount`] ?? ''"
+            />
+            <FormKit
+              :disabled="!dataPointIsAvailable"
+              type="number"
+              name="valueAsAbsolute"
+              validation-label=""
+              v-model="currentAmountValue"
+              :placeholder="'Value'"
+              step="any"
+              min="0"
+              :validation="'number'"
+              :inner-class="{
+                short: false,
+              }"
+            />
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <UploadFormHeader
+          :label="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]}`"
+          :description="kpiInfoMappings[name] ?? ''"
+        />
+        <FormKit
+          :disabled="!dataPointIsAvailable"
+          type="number"
+          name="value"
+          validation-label=""
+          v-model="currentAmountValue"
+          :placeholder="'Value'"
+          step="any"
+          min="0"
+          :validation="'number'"
+          :inner-class="{
+            short: true,
+          }"
+        />
+      </div>
     </div>
-
     <div class="form-field">
       <FormKit type="group" v-if="dataPointIsAvailable" name="dataSource">
         <h4 class="mt-0">Data source</h4>
@@ -117,7 +162,8 @@ export default defineComponent({
       label: qualityOption,
       value: qualityOption,
     })),
-    currentMainValue: "",
+    currentAmountValue: "",
+    currentPercentageValue: "",
     currentReportValue: "",
     currentPageValue: "",
     currentQualityValue: "",
@@ -152,6 +198,10 @@ export default defineComponent({
     reportsName: {
       type: Array,
       default: () => [],
+    },
+    showSecondInput: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {

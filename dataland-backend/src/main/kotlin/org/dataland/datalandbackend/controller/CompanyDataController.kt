@@ -1,16 +1,22 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyApi
+import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
+import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyManager
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -21,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class CompanyDataController(
     @Autowired var companyManager: CompanyManager,
+    @Autowired var companyIdentifierRepository: CompanyIdentifierRepository,
 ) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -47,17 +54,39 @@ class CompanyDataController(
         )
         return ResponseEntity.ok(
             companyManager.searchCompaniesAndGetApiModel(
-                CompanySearchFilter(
-                    searchString ?: "",
-                    onlyCompanyNames,
-                    dataTypes ?: setOf(),
-                    countryCodes ?: setOf(),
-                    sectors ?: setOf(),
-                    onlyCurrentUserAsUploader,
+                StoredCompanySearchFilter(
+                    searchString = searchString ?: "",
+                    nameOnlyFilter = onlyCompanyNames,
+                    dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
+                    countryCodeFilter = countryCodes?.toList() ?: listOf(),
+                    sectorFilter = sectors?.toList() ?: listOf(),
+                    uploaderId = if (onlyCurrentUserAsUploader) DatalandAuthentication.fromContext().userId else "",
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
         )
+    }
+
+    override fun getCompaniesBySearchString(
+        searchString: String,
+    ): ResponseEntity<List<CompanyIdAndName>> {
+        return ResponseEntity.ok(
+            companyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+                searchString,
+            ),
+        )
+    }
+
+    override fun existsIdentifier(identifierType: IdentifierType, identifier: String) {
+        try {
+            companyIdentifierRepository.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
+        } catch (e: JpaObjectRetrievalFailureException) {
+            throw ResourceNotFoundApiException(
+                "Company identifier does not exist",
+                "Company identifier $identifier of type $identifierType does not exist",
+                e,
+            )
+        }
     }
 
     override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> {

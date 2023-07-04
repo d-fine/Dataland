@@ -3,8 +3,6 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.model.CompanyIdentifier
-import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -47,10 +45,12 @@ class CompanyManagerTest(
 
     @Test
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
-        val allCompaniesInStore = testCompanyManager.searchCompaniesAndGetApiModel(CompanySearchFilter())
+        val allCompaniesInStore = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            "",
+        )
         assertTrue(
             allCompaniesInStore.all {
-                testCompanyList.any { testCompany -> testCompany.companyName == it.companyInformation.companyName }
+                testCompanyList.any { testCompany -> testCompany.companyName == it.companyName }
             },
             "Not all the companyInformation of the posted companies could be found in the stored companies.",
         )
@@ -59,49 +59,13 @@ class CompanyManagerTest(
     @Test
     fun `search for them one by one by using their names`() {
         for (company in testCompanyList) {
-            val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-                CompanySearchFilter(
-                    searchString = company.companyName,
-                    onlyCompanyNames = true,
-                ),
+            val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+                searchString = company.companyName,
             )
             assertTrue(
-                searchResponse.any { it.companyInformation.companyName == company.companyName },
+                searchResponse.any { it.companyName == company.companyName },
                 "The posted company could not be retrieved by searching for its name.",
             )
-        }
-    }
-
-    private fun testThatSearchForCompanyIdentifierWorks(identifier: CompanyIdentifier) {
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(
-                searchString = identifier.identifierValue,
-                onlyCompanyNames = false,
-            ),
-        )
-            .toMutableList()
-        // The response list is filtered to exclude results that match in account of another identifier having
-        // the required value but the looked for identifier type does not exist (This happens due to the test
-        // data having non-unique identifier values for different identifier types)
-        searchResponse.retainAll {
-            it.companyInformation.identifiers.any {
-                    identifierInResponse ->
-                identifierInResponse.identifierType == identifier.identifierType
-            }
-        }
-        assertTrue(
-            searchResponse.all { results -> results.companyInformation.identifiers.any { it == identifier } },
-            "The search by identifier returns at least one company that does not contain the looked" +
-                "for value $identifier.",
-        )
-    }
-
-    @Test
-    fun `search for all identifier values and check if all results contain the looked for value`() {
-        for (company in testCompanyList) {
-            for (identifier in company.identifiers) {
-                testThatSearchForCompanyIdentifierWorks(identifier)
-            }
         }
     }
 
@@ -118,7 +82,9 @@ class CompanyManagerTest(
                 if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
             }
         }
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(CompanySearchFilter(searchString))
+        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            searchString,
+        )
         assertEquals(
             occurencesOfSearchString,
             searchResponse.size,
@@ -135,8 +101,8 @@ class CompanyManagerTest(
                 occurencesOfSearchString += 1
             }
         }
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(searchString = searchString, onlyCompanyNames = true),
+        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            searchString = searchString,
         )
         assertEquals(
             occurencesOfSearchString,
@@ -148,14 +114,14 @@ class CompanyManagerTest(
     @Test
     fun `search for name substring to check the ordering of results`() {
         val searchString = testCompanyList.first().companyName.take(1)
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(searchString = searchString, onlyCompanyNames = true),
+        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            searchString = searchString,
         )
         val responsesStartingWith =
-            searchResponse.takeWhile { it.companyInformation.companyName.startsWith(searchString) }
-        val otherResponses = searchResponse.dropWhile { it.companyInformation.companyName.startsWith(searchString) }
+            searchResponse.takeWhile { it.companyName.startsWith(searchString) }
+        val otherResponses = searchResponse.dropWhile { it.companyName.startsWith(searchString) }
         assertTrue(
-            otherResponses.none { it.companyInformation.companyName.startsWith(searchString) },
+            otherResponses.none { it.companyName.startsWith(searchString) },
             "Expected to have matches ordered by starting with search string followed by all other results." +
                 "However, at least one of the matches in the other results starts with the search string " +
                 "($searchString).",

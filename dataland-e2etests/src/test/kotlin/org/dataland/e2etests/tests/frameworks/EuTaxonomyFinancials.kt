@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.QaApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -22,7 +23,7 @@ class EuTaxonomyFinancials {
             listOfOneCompanyInformation, listOfOneEuTaxonomyFinancialsDataSet,
             apiAccessor::euTaxonomyFinancialsUploaderFunction,
         )
-        apiAccessor.ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo)
+        QaApiAccessor().ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo, apiAccessor.metaDataControllerApi)
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForEuTaxonomyFinancials
             .getCompanyAssociatedEuTaxonomyDataForFinancials(receivedDataMetaInformation!!.dataId)

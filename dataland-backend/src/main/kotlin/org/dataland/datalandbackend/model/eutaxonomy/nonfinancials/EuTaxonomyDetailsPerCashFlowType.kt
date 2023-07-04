@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
 import org.dataland.datalandbackend.model.DataPoint
+import org.dataland.datalandbackend.model.DataPointAbsoluteAndPercentage
 import java.math.BigDecimal
 
 /**
@@ -10,7 +11,7 @@ import java.math.BigDecimal
 data class EuTaxonomyDetailsPerCashFlowType(
     val totalAmount: DataPoint<BigDecimal>? = null,
 
-    val alignedPercentage: DataPoint<BigDecimal>? = null,
+    val alignedData: DataPointAbsoluteAndPercentage<BigDecimal>? = null,
 
-    val eligiblePercentage: DataPoint<BigDecimal>? = null,
+    val eligibleData: DataPointAbsoluteAndPercentage<BigDecimal>? = null,
 )
