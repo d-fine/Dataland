@@ -2,349 +2,295 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Worms",
-			"headquartersPostalCode": "21617",
-			"sector": "systems",
+			"headquarters": "Björnland",
+			"headquartersPostalCode": "68869",
+			"sector": "bandwidth",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "vA6f5XMMqvScA14"
+					"identifierValue": "6C2vcoPIP9mWOMj"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "5UzwUZbJO"
+					"identifierValue": "6mijIXLZ1"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "E7DciQjkvVkG"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "l6bwuSJglLxPH2aIiRzk"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "3NQhfQTwKn"
+					"identifierValue": "rwL0dWLSnFn9"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "NOeN4g6"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "p827YYxIH"
+					"identifierValue": "DkaRthS"
 				}
 			],
-			"countryCode": "TH",
+			"countryCode": "GQ",
 			"companyAlternativeNames": [
-				"Hetzler GmbH & Co. KG",
-				"Lakomy, Grams und Simon",
-				"Szendrei-Schwarzkopf"
+				"Förster, Scc und Fitschen",
+				"Fried-Jacob",
+				"Tuschmo-Buchholz"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://einnehmend-proton.name",
+			"website": "https://fundamental-schlange.com",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearEnd": "2023-05-23",
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-09-02",
-					"currency": "MZN"
-				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-11-05",
-					"currency": "PLN"
+					"currency": "GMD"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-06-09",
+					"currency": "SCR"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
+			"scopeOfEntities": "No",
 			"opex": {
-				"eligiblePercentage": {
-					"value": 0.8223,
-					"quality": "Incomplete"
+				"eligibleData": {
+					"valueAsPercentage": 0.3498,
+					"quality": "NA"
 				}
 			},
 			"capex": {
-				"eligiblePercentage": {
-					"value": 0.6532,
-					"dataSource": {
-						"page": 759,
-						"report": "SustainabilityReport",
-						"tagName": "web services"
-					},
-					"quality": "Reported",
-					"comment": "back up virtual bus"
+				"eligibleData": {
+					"valueAsPercentage": 0.5955,
+					"quality": "NA"
 				}
 			},
 			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.0951,
-					"dataSource": {
-						"page": 318,
-						"report": "SustainabilityReport",
-						"tagName": "schemas"
-					},
-					"quality": "Reported",
-					"comment": "copy optical feed"
+				"eligibleData": {
+					"valueAsPercentage": 0.4391,
+					"quality": "NA"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Benningerstadt",
-			"sector": "convergence",
+			"headquarters": "West Karl",
+			"headquartersPostalCode": "45978",
+			"sector": "platforms",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "Qj1DJRVgzGWR2Id"
+					"identifierValue": "kaRvemM4rHzLZyY"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "CQCk4QyVx"
+					"identifierValue": "xwVBtyaHh"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "kyE4chkk6ln42Lnq3ZxO"
+					"identifierValue": "kF11DkM5Cj3lRILxsegS"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "UEpJN82CQM"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "p9gnwCg"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "qvidLCrr1"
 				}
 			],
-			"countryCode": "GW",
+			"countryCode": "CW",
 			"companyAlternativeNames": [
-				"Dilla, Balck und Herberger",
-				"Sielemann KG",
-				"Spiegelburg, Fenske und Linnenbaum"
+				"Jakubczyk AG",
+				"Proske, Weidner und Drews"
 			],
-			"website": "https://prachtvoll-leben.name",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"numberOfEmployees": 15367,
+			"fiscalYearEnd": "2023-05-04",
 			"referencedReports": {
-				"IntegratedReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-09-24",
-					"currency": "ALL"
+					"currency": "DJF"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "PGK"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "NIO"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "HUF"
+					"isGroupLevel": "No",
+					"reportDate": "2023-01-05",
+					"currency": "RWF"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Savoia Gruppe"
+				"assurance": "None"
 			},
 			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
+			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 972180.7001740672,
+					"value": 343301.54170747846,
 					"dataSource": {
-						"page": 212,
-						"report": "SustainabilityReport",
-						"tagName": "communities"
+						"page": 185,
+						"report": "AnnualReport",
+						"tagName": "e-markets"
 					},
-					"quality": "Incomplete",
-					"comment": "bypass virtual bus"
+					"quality": "Reported",
+					"comment": "override virtual panel"
 				},
-				"eligiblePercentage": {
-					"value": 0.2518,
+				"eligibleData": {
+					"valueAsPercentage": 0.3739,
 					"dataSource": {
-						"page": 812,
-						"report": "IntegratedReport",
-						"tagName": "mindshare"
+						"page": 823,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
 					},
 					"quality": "Audited",
-					"comment": "calculate online interface"
+					"comment": "override wireless bandwidth",
+					"valueAsAbsolute": 455956.6491981968
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 508102.3485166952,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.535,
+					"value": 410822.3715447821,
 					"dataSource": {
-						"page": 443,
-						"report": "ESEFReport",
-						"tagName": "architectures"
+						"page": 1115,
+						"report": "AnnualReport",
+						"tagName": "portals"
 					},
-					"quality": "Audited",
-					"comment": "bypass bluetooth interface"
+					"quality": "Reported",
+					"comment": "back up virtual feed"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.4877,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 958511.6806789301
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 854803.9782093838,
+					"value": 991226.1406192556,
 					"dataSource": {
-						"page": 505,
-						"report": "SustainabilityReport",
-						"tagName": "niches"
-					},
-					"quality": "Reported",
-					"comment": "navigate open-source interface"
-				},
-				"eligiblePercentage": {
-					"value": 0.4138,
-					"dataSource": {
-						"page": 67,
+						"page": 521,
 						"report": "AnnualReport",
-						"tagName": "interfaces"
+						"tagName": "e-markets"
+					},
+					"quality": "Incomplete",
+					"comment": "transmit 1080p feed"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.1993,
+					"dataSource": {
+						"page": 377,
+						"report": "AnnualReport",
+						"tagName": "channels"
 					},
 					"quality": "Audited",
-					"comment": "transmit virtual system"
+					"comment": "quantify multi-byte panel",
+					"valueAsAbsolute": 631118.9557542093
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Konstanz",
-			"headquartersPostalCode": "54419",
-			"sector": "architectures",
+			"headquarters": "Chemnitz",
+			"headquartersPostalCode": "07876",
+			"sector": "web services",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "yaghiiqM3w92pTA"
+					"identifierValue": "5CQhEDrf1kNqzFD"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "1Z2TkNtCq"
+					"identifierValue": "C0O0S87oe"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "sLTWhEAHSg6E"
+					"identifierValue": "2XlvmRQdeVaD"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "teIaTFa5Q3aUh2dKLvlW"
+					"identifierValue": "dXL0uz1sZhsJEJHLeICX"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "5vEsj986C7"
+					"identifierValue": "CrAnZWHq6C"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "SAg8iId"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "c6BvphiwY"
+					"identifierValue": "XjqlU3P"
 				}
 			],
-			"countryCode": "DJ",
+			"countryCode": "NG",
 			"companyAlternativeNames": [
-				"Deerberg Gruppe"
+				"Lorenz-Thränhardt",
+				"Pajonk AG",
+				"Tegethof-Schedler",
+				"Wiese, Knoblich und Zaituc"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://simpel-haus.com",
+			"companyLegalForm": "GmbH & Co. KG",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2023-06-01",
-			"numberOfEmployees": 69931,
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
 				"assurance": "LimitedAssurance",
+				"provider": "Schönfeld KG",
 				"dataSource": {
-					"page": 1113,
+					"page": 728,
 					"report": "ESEFReport",
-					"tagName": "relationships"
+					"tagName": "systems"
 				}
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
 			"opex": {
-				"totalAmount": {
-					"quality": "NA"
-				},
-				"alignedPercentage": {
-					"value": 0.0556,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.3727,
+				"alignedData": {
 					"dataSource": {
 						"page": 76,
-						"report": "SustainabilityReport",
-						"tagName": "initiatives"
+						"report": "ESEFReport",
+						"tagName": "communities"
 					},
 					"quality": "Reported",
-					"comment": "reboot redundant transmitter"
+					"comment": "reboot redundant protocol",
+					"valueAsAbsolute": 796514.3253095448
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.2169,
+					"dataSource": {
+						"page": 869,
+						"report": "ESEFReport",
+						"tagName": "communities"
+					},
+					"quality": "Audited",
+					"comment": "index bluetooth pixel"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 307356.105837971,
+					"value": 148392.20982976258,
 					"quality": "Incomplete"
 				},
-				"alignedPercentage": {
-					"value": 0.6602,
-					"dataSource": {
-						"page": 1067,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
-					},
-					"quality": "Audited",
-					"comment": "hack primary hard drive"
+				"alignedData": {
+					"valueAsPercentage": 0.4091,
+					"quality": "Estimated"
 				},
-				"eligiblePercentage": {
-					"value": 0.9122,
+				"eligibleData": {
+					"valueAsPercentage": 0.5632,
 					"dataSource": {
-						"page": 1169,
-						"report": "AnnualReport",
-						"tagName": "content"
+						"page": 748,
+						"report": "ESEFReport",
+						"tagName": "schemas"
 					},
-					"quality": "Audited",
-					"comment": "override cross-platform circuit"
+					"quality": "Estimated",
+					"comment": "index virtual driver"
 				}
 			},
-			"revenue": {
-				"totalAmount": {
-					"value": 817929.6210641041,
-					"quality": "Incomplete"
-				},
-				"alignedPercentage": {
-					"value": 0.848,
-					"dataSource": {
-						"page": 176,
-						"report": "ESEFReport",
-						"tagName": "mindshare"
-					},
-					"quality": "Incomplete",
-					"comment": "parse open-source circuit"
-				},
-				"eligiblePercentage": {
-					"value": 0.9297,
-					"dataSource": {
-						"page": 368,
-						"report": "ESEFReport",
-						"tagName": "architectures"
-					},
-					"quality": "Incomplete",
-					"comment": "compress multi-byte sensor"
-				}
-			}
+			"revenue": {}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021"
 	}
 ]

@@ -214,7 +214,10 @@ describeIf(
       cy.get('button[data-test="editDatasetButton"]').click();
       cy.wait("@getDataToPrefillForm");
       cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
-      cy.get(`div[data-test=revenueSection] div[data-test=eligible] input[name="value"]`)
+      cy.get(`div[data-test=revenueSection] div[data-test=eligible] input[name="valueAsAbsolute"]`)
+        .clear()
+        .type(newValueForEligibleRevenueAfterEdit);
+      cy.get(`div[data-test=revenueSection] div[data-test=eligible] input[name="valueAsPercentage"]`)
         .clear()
         .type(newValueForEligibleRevenueAfterEdit);
       cy.get('button[data-test="submitButton"]').click();

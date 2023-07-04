@@ -75,7 +75,11 @@ export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
   cy.get('[data-test="dataPointToggleTitle"]').should("exist");
   for (const argument of ["capexSection", "opexSection", "revenueSection"]) {
     if (!valueFieldNotFilled) {
-      cy.get(`div[data-test=${argument}] input[name="value"]`).each(($element, index) => {
+      cy.get(`div[data-test=${argument}] input[name="valueAsAbsolute"]`).each(($element, index) => {
+        const inputNumber = 10 * index + 7;
+        cy.wrap($element).type(inputNumber.toString());
+      });
+      cy.get(`div[data-test=${argument}] input[name="valueAsPercentage"]`).each(($element, index) => {
         const inputNumber = 10 * index + 7;
         cy.wrap($element).type(inputNumber.toString());
       });
