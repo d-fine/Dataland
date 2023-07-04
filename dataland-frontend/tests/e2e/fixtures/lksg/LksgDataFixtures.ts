@@ -19,6 +19,7 @@ import { generateIso2CountryCode, generateListOfIso2CountryCodes } from "@e2e/fi
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataPointFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
+import { valueOrNull } from "@e2e/fixtures/common/DataPointFixtures";
 
 /**
  * Generates a set number of LKSG fixtures
@@ -85,7 +86,7 @@ function generateProduct(): LksgProduct {
  */
 function generateProcurementCategory(): LksgProcurementCategory {
   const numberOfSuppliersPerCountryAsMap = new Map<string, number>(
-    generateArray(() => [generateIso2CountryCode(), valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!])
+    generateArray(() => [generateIso2CountryCode(), valueOrNull(faker.number.int({ min: 0, max: 50 }))!])
   );
   return {
     definitionProductTypeService: generateArray(() => faker.commerce.productName()),

@@ -199,14 +199,15 @@ export default defineComponent({
     ) {
       if (numberOfSuppliersPerCountry != undefined) {
         const readableListOfSuppliersAndCountries = Array.from(numberOfSuppliersPerCountry.entries()).map(
-            ([countryCode, numberOfSuppliers]) => {
-          const countryName = getCountryNameFromCountryCode(countryCode) ?? countryCode;
-          if (numberOfSuppliers != undefined) {
-            return String(numberOfSuppliers) + " suppliers from " + countryName;
-          } else {
-            return "There are suppliers from " + countryName;
+          ([countryCode, numberOfSuppliers]) => {
+            const countryName = getCountryNameFromCountryCode(countryCode) ?? countryCode;
+            if (numberOfSuppliers != undefined) {
+              return String(numberOfSuppliers) + " suppliers from " + countryName;
+            } else {
+              return "There are suppliers from " + countryName;
+            }
           }
-        });
+        );
         if (readableListOfSuppliersAndCountries.length > 1) {
           return readableListOfSuppliersAndCountries;
         } else {
