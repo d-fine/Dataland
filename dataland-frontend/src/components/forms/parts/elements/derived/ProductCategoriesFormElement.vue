@@ -40,7 +40,7 @@
               label="Select the countries"
               placeholder="Countries"
               description="..."
-              name="suppliersPerCountry"
+              name="suppliersPerCountryCode"
               :options="allCountry"
               optionLabel="label"
               optionValue="value"
