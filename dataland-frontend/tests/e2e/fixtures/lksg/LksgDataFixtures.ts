@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker/locale/de";
 import {
   LksgAddress,
-  LksgData, LksgProcurementCategory,
+  LksgData,
+  LksgProcurementCategory,
   LksgProduct,
   LksgProductionSite,
   NationalOrInternationalMarket,
@@ -83,9 +84,9 @@ function generateProduct(): LksgProduct {
  * @returns random procurement category
  */
 function generateProcurementCategory(): LksgProcurementCategory {
-  const numberOfSuppliersPerCountryAsMap = new Map<string, number>(generateArray(() =>
-      [generateIso2CountryCode(), valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!]
-  ));
+  const numberOfSuppliersPerCountryAsMap = new Map<string, number>(
+    generateArray(() => [generateIso2CountryCode(), valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!])
+  );
   return {
     definitionProductTypeService: generateArray(() => faker.commerce.productName()),
     numberOfSuppliersPerCountry: valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryAsMap)),

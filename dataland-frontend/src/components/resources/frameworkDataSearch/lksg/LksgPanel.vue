@@ -23,13 +23,10 @@ import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns 
 import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {
-    DataAndMetaInformationLksgData,
-    LksgProcurementCategory,
-} from "@clients/backend";
+import { DataAndMetaInformationLksgData, LksgProcurementCategory } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import {ProcurementCategoryType} from "@/api-models/ProcurementCategoryType";
+import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -138,8 +135,9 @@ export default defineComponent({
           for (const [categoryKey, categoryObject] of Object.entries(oneLksgDataset.data)) {
             for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
               string,
-              object
+              object | null
             ][]) {
+              if(subCategoryObject == null) continue;
               for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
                 const subcategory = assertDefined(
                   lksgDataModel
@@ -192,22 +190,23 @@ export default defineComponent({
 
     /**
      * Generates a list of readible strings (or just a single one) combining suppliers and their associated countries
-     * @param countryAssociatedSuppliers the list of suppliers and associated companies from which strings are written
+     * @param numberOfSuppliersPerCountry the map of number of suppliers and associated companies
+     * from which strings are written
      * @returns the constructed collection of readable strings
      */
-    generateReadableCombinationOfSuppliersAndCountries(numberOfSuppliersPerCountry?: Map<string, number | undefined | null>) {
+    generateReadableCombinationOfNumberOfSuppliersAndCountries(
+      numberOfSuppliersPerCountry?: Map<string, number | undefined | null>
+    ) {
       if (numberOfSuppliersPerCountry != undefined) {
-        let readableListOfSuppliersAndCountries = [] as string[];
-        numberOfSuppliersPerCountry?.forEach(
-          (numberOfSuppliers, countryCode) => {
-            const printedCountry = getCountryNameFromCountryCode(countryCode) ?? countryCode;
-            if (numberOfSuppliers != undefined) {
-              readableListOfSuppliersAndCountries.push(String(numberOfSuppliers) + " suppliers from " + printedCountry);
-            } else {
-              readableListOfSuppliersAndCountries.push("There are suppliers from " + printedCountry);
-            }
+        const readableListOfSuppliersAndCountries = Array.from(numberOfSuppliersPerCountry.entries()).map(
+            ([countryCode, numberOfSuppliers]) => {
+          const countryName = getCountryNameFromCountryCode(countryCode) ?? countryCode;
+          if (numberOfSuppliers != undefined) {
+            return String(numberOfSuppliers) + " suppliers from " + countryName;
+          } else {
+            return "There are suppliers from " + countryName;
           }
-        );
+        });
         if (readableListOfSuppliersAndCountries.length > 1) {
           return readableListOfSuppliersAndCountries;
         } else {
@@ -239,8 +238,8 @@ export default defineComponent({
         listOfProductCategories.push({
           procurementCategory: procurementCategory as ProcurementCategoryType,
           definitionsOfProductTypeOrService: definitionsOfProductTypeOrService(),
-          suppliersAndCountries: this.generateReadableCombinationOfSuppliersAndCountries(
-            new Map(Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountry))
+          suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
+            new Map(Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountry ?? {}))
           ),
           orderVolume:
             (lksgProductCategory as LksgProcurementCategory).orderVolume != null
