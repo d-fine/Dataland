@@ -31,7 +31,7 @@ export default defineComponent({
       default: "",
     },
     options: {
-      type: Array as () => Array<typeof Option>,
+      type: Object,
       required: true,
     },
     validation: {

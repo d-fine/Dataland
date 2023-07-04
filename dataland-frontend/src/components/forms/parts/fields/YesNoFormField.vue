@@ -6,16 +6,7 @@
         name="value"
         :validation="validation"
         :validation-label="validationLabel ?? label"
-        :options="[
-          {
-            label: 'Yes',
-            value: 'Yes',
-          },
-          {
-            label: 'No',
-            value: 'No',
-          },
-        ]"
+        :options="yesNoOptions"
         :data-test="dataTest"
       />
       <UploadDocumentsForm
@@ -37,16 +28,7 @@
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
-      :options="[
-        {
-          label: 'Yes',
-          value: 'Yes',
-        },
-        {
-          label: 'No',
-          value: 'No',
-        },
-      ]"
+      :options="yesNoOptions"
     />
   </div>
 </template>
@@ -72,6 +54,10 @@ export default defineComponent({
       documentName: "",
       documentReference: "",
       fileNamesForPrefill: [] as string[],
+      yesNoOptions: {
+        "Yes": "Yes",
+        "No": "No",
+      }
     };
   },
 
