@@ -1,17 +1,15 @@
 <template>
-  <div class="form-field">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <MultiSelectFormElement
-      :name="name"
-      :validation="validation"
-      :validation-label="validationLabel ?? label"
-      :placeholder="placeholder"
-      :options="options"
-      :inner-class="innerClass"
-      :optionLabel="optionLabel"
-      @selectedValuesChanged="selectedValuesChanged"
-    />
-  </div>
+  <UploadFormHeader :label="label" :description="description" :is-required="required" />
+  <MultiSelectFormElement
+    :name="name"
+    :validation="validation"
+    :validation-label="validationLabel ?? label"
+    :placeholder="placeholder"
+    :options="options"
+    :inner-class="innerClass"
+    :optionLabel="optionLabel"
+    @selectedValuesChanged="selectedValuesChanged"
+  />
 </template>
 
 <script lang="ts">
