@@ -9,8 +9,8 @@ cd "$workdir"
 
 for file in ./pdfs/*.pdf; do
   id=$(sha256sum "$file" 2>/dev/null | awk '{print $1}') || true
-  response=$(curl -X GET "https://$url/documents/$id/exists" -H 'accept: application/json' -H "Authorization: Bearer $token")
-  if [[ $response == '{"documentExists":true}' ]]; then
+  response_status=$(curl -o /dev/null -s -w "%{http_code}\n" --HEAD "https://$url/documents/$id" -H 'accept: application/json' -H "Authorization: Bearer $token")
+  if [[ $response_status == '200' ]]; then
     echo "File $file already uploaded. Skipping."
     continue
   fi

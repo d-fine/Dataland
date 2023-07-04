@@ -163,6 +163,14 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    shm_size: 6gb
+    command:
+      -c work_mem=256MB
+      -c maintenance_work_mem=2GB
+      -c max_wal_size=1GB
+      -c effective_cache_size=4GB
+      -c shared_buffers=1GB
+      -c temp_buffers=512MB
   e2etests:
     profiles: ["testing"]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
@@ -304,6 +312,7 @@ services:
       KEYCLOAK_UPLOADER_SALT: ${KEYCLOAK_UPLOADER_SALT}
       KEYCLOAK_DATALAND_ADMIN_VALUE: ${KEYCLOAK_DATALAND_ADMIN_VALUE}
       KEYCLOAK_DATALAND_ADMIN_SALT: ${KEYCLOAK_DATALAND_ADMIN_SALT}
+      DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
       KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}
@@ -390,6 +399,20 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+  batch-manager:
+    restart: always
+    profiles: ["production", "testing", "development"]
+    networks:
+      - internal
+    image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
+    environment:
+      GET_ALL_GLEIF_COMPANIES_FLAG_FILE: /config/perform_full_golden_copy_download_flag
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
+    volumes:
+      - ./dataland-batch-manager/config:/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 networks:
   internal:
   external:

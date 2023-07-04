@@ -8,21 +8,18 @@
         v-model="searchBarInput"
         :suggestions="autocompleteArray"
         :minLength="3"
-        optionLabel="companyInformation.companyName"
+        optionLabel="companyName"
         :autoOptionFocus="false"
-        placeholder="Search company by name or PermID"
+        placeholder="Search company by name or identifier"
         inputClass="h-3rem d-framework-searchbar-input"
         panelClass="d-framework-searchbar-panel"
         style="z-index: 10"
-        @complete="searchCompanyName"
-        @item-select="pushToChooseFrameworkForDataUploadPageForItem"
+        @complete="searchCompanyName($event)"
+        @item-select="pushToChooseFrameworkForDataUploadPageForItem($event)"
       >
         <template #option="slotProps">
           <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-          <SearchResultHighlighter
-            :text="slotProps.option.companyInformation.companyName"
-            :searchString="latestValidSearchString"
-          />
+          <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
         </template>
       </AutoComplete>
     </span>
@@ -30,8 +27,8 @@
 </template>
 
 <script lang="ts">
-import AutoComplete from "primevue/autocomplete";
-import { StoredCompany } from "@clients/backend";
+import AutoComplete, { AutoCompleteCompleteEvent, AutoCompleteItemSelectEvent } from "primevue/autocomplete";
+import { CompanyIdAndName } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
@@ -58,7 +55,7 @@ export default defineComponent({
     return {
       searchBarInput: "",
       latestValidSearchString: "",
-      autocompleteArray: [] as Array<object>,
+      autocompleteArray: [] as Array<CompanyIdAndName>,
     };
   },
 
@@ -83,20 +80,19 @@ export default defineComponent({
      * @param event object containing the stored company
      * @param event.value the stored company object
      */
-    pushToChooseFrameworkForDataUploadPageForItem(event: { value: StoredCompany }) {
-      void this.$router.push(`/companies/${event.value.companyId}/frameworks/upload`);
+    async pushToChooseFrameworkForDataUploadPageForItem(event: AutoCompleteItemSelectEvent) {
+      await this.$router.push(`/companies/${(event.value as CompanyIdAndName).companyId}/frameworks/upload`);
     },
     /**
      * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray
-     * @param companyName object containing the search query for the getCompanies endpoint
-     * @param companyName.query the query for the getCompany endpoint
+     * @param autoCompleteCompleteEvent object containing the search query for the getCompanies endpoint
      */
-    async searchCompanyName(companyName: { query: string }) {
+    async searchCompanyName(autoCompleteCompleteEvent: AutoCompleteCompleteEvent) {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getCompanyDataControllerApi();
-        const response = await companyDataControllerApi.getCompanies(companyName.query);
+        const response = await companyDataControllerApi.getCompaniesBySearchString(autoCompleteCompleteEvent.query);
         this.autocompleteArray = response.data;
       } catch (error) {
         console.error(error);

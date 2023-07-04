@@ -307,13 +307,13 @@ describeIf(
       cy.get(`div[data-test=capexSection] div[data-test=total] select[name="report"]`).select(
         differentFileNameForSameFile
       );
-      cy.intercept(`**/documents/*/exists`).as("documentExists");
+      cy.intercept({ url: `**/documents/*`, method: "HEAD" }).as("documentExists");
       cy.intercept(`**/documents/`, cy.spy().as("postDocument"));
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
       cy.get('button[data-test="submitButton"]').click();
       cy.wait("@documentExists", { timeout: Cypress.env("short_timeout_in_ms") as number })
-        .its("response.body")
-        .should("deep.equal", { documentExists: true });
+        .its("response.statusCode")
+        .should("equal", 200);
       cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((req) => {
         cy.log(assertDefined(req.response).body as string);
       });

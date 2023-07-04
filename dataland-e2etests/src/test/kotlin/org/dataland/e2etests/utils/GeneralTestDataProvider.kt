@@ -14,17 +14,17 @@ class GeneralTestDataProvider {
             .joinToString("")
     }
 
-    fun generateCompanyInformation(companyName: String, sector: String): CompanyInformation {
+    fun generateCompanyInformation(companyName: String, sector: String?): CompanyInformation {
         return CompanyInformation(
             companyName,
             "DummyCity",
-            sector,
             (
                 listOf(
                     CompanyIdentifier(CompanyIdentifier.IdentifierType.permId, getRandomAlphaNumericString()),
                 )
                 ),
             "DE",
+            sector = sector,
         )
     }
 

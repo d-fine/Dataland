@@ -221,12 +221,7 @@ import { FormKit } from "@formkit/vue";
 import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import {
-  CompanyInformation,
-  CompanyIdentifier,
-  CompanyIdentifierIdentifierTypeEnum,
-  StoredCompany,
-} from "@clients/backend";
+import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
 import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
@@ -303,16 +298,17 @@ export default defineComponent({
       node: FormKitNode,
       identifierType: CompanyIdentifierIdentifierTypeEnum
     ): Promise<boolean> {
-      const fetchedCompanies = (
+      try {
         await (
           await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
-        ).getCompanies(node.value as string)
-      ).data;
-      return !fetchedCompanies.some((it: StoredCompany) =>
-        it.companyInformation.identifiers.some(
-          (id) => id.identifierType == identifierType && id.identifierValue == (node.value as string)
-        )
-      );
+        ).existsIdentifier(identifierType, node.value as string);
+        return false;
+      } catch (error: AxiosError) {
+        if ((error as AxiosError).response.status == 404) {
+          return true;
+        }
+        throw error;
+      }
     },
     /**
      * Adds a CompanyIdentifier to the array of identifiers

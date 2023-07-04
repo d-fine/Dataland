@@ -124,26 +124,26 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
  * it links to the first framework that is included in the data in the company object.
  * Otherwise, it links to the first framework that is included in the currently stored framework filters.
  * @param companyData the company to generate a link for
+ * @param selectedFiltersForFrameworks applied framework filters
  * @returns a vue router link to the view page for a specific framework
  */
-export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
-  const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
-  let routeToVisit = `/companies/${companyData.companyId}/frameworks/${dataRegisteredByDataland[0].dataType}`;
-  const selectedFiltersForFrameworks = useFrameworkFiltersStore().selectedFiltersForFrameworks;
-  if (
-    selectedFiltersForFrameworks.length > 0 &&
-    selectedFiltersForFrameworks.length < ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.length
-  ) {
-    const frameworkToRouteTo = dataRegisteredByDataland.find((dataMetaInfo) => {
-      return selectedFiltersForFrameworks.includes(dataMetaInfo.dataType);
-    })?.dataType;
-    if (frameworkToRouteTo) {
-      routeToVisit = `/companies/${companyData.companyId}/frameworks/${frameworkToRouteTo}`;
-    } else {
-      throw new Error(
-        "No data meta info for the frameworks set in the filters could be found in the data of the server response."
-      );
-    }
+export function getRouterLinkTargetFramework(
+  companyData: DataSearchStoredCompany,
+  selectedFiltersForFrameworks: DataTypeEnum[] = useFrameworkFiltersStore().selectedFiltersForFrameworks
+): string {
+  const activeDataRegisteredByDataland = companyData.dataRegisteredByDataland.filter(
+    (dataMetaInfo: DataMetaInformation) => dataMetaInfo.currentlyActive
+  );
+  const actuallySelectedFiltersForFrameworks =
+    selectedFiltersForFrameworks.length == 0 ? ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE : selectedFiltersForFrameworks;
+  const frameworkToRouteTo = activeDataRegisteredByDataland.find((dataMetaInfo) =>
+    actuallySelectedFiltersForFrameworks.includes(dataMetaInfo.dataType)
+  )?.dataType;
+  if (frameworkToRouteTo) {
+    return `/companies/${companyData.companyId}/frameworks/${frameworkToRouteTo}`;
+  } else {
+    throw new Error(
+      "No data meta info for the frameworks set in the filters could be found in the data of the server response."
+    );
   }
-  return routeToVisit;
 }

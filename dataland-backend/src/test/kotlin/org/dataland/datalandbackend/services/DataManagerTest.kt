@@ -67,14 +67,13 @@ class DataManagerTest(
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt(): StorableDataSet {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
         val companyId = companyManager.addCompany(companyInformation).companyId
-        val euTaxonomyDataForNonFinancialsAsString = "someEuTaxonomyDataForNonFinancials123"
         return StorableDataSet(
             companyId,
             DataType("eutaxonomy-non-financials"),
             "USER_ID_OF_AN_UPLOADING_USER",
             Instant.now().toEpochMilli(),
             "",
-            euTaxonomyDataForNonFinancialsAsString,
+            "someEuTaxonomyDataForNonFinancials123",
         )
     }
 

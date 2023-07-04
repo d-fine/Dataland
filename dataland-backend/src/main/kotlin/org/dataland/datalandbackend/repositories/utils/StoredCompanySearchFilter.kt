@@ -5,12 +5,12 @@ package org.dataland.datalandbackend.repositories.utils
  * convenient usage of SEPL instructions in the query
  */
 data class StoredCompanySearchFilter(
-    val dataTypeFilter: List<String>,
+    var dataTypeFilter: List<String>,
     val countryCodeFilter: List<String>,
     val sectorFilter: List<String>,
     val searchString: String,
     val nameOnlyFilter: Boolean,
-    val uploaderIdFilter: List<String>,
+    val uploaderId: String,
 ) {
     val dataTypeFilterSize: Int
         get() = dataTypeFilter.size
@@ -27,6 +27,6 @@ data class StoredCompanySearchFilter(
     val searchStringLower: String
         get() = searchString.lowercase()
 
-    val uploaderIdFilterSize: Int
-        get() = uploaderIdFilter.size
+    val uploaderIdLength: Int
+        get() = uploaderId.length
 }
