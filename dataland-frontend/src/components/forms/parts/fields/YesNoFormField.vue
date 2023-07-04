@@ -50,7 +50,7 @@ export default defineComponent({
   data() {
     return {
       baseDataPointYesNo: {} as BaseDataPointYesNo,
-      referencedDocument: {} as DocumentToUpload,
+      referencedDocument: undefined as DocumentToUpload | undefined,
       documentName: "",
       documentReference: "",
       fileNamesForPrefill: [] as string[],
@@ -94,9 +94,9 @@ export default defineComponent({
      */
     updateFileUploadFiles() {
       console.log("updateFileUploadFiles"); // TODO
-      if (this.documentName !== "" && Object.keys(this.referencedDocument).length == 0) {
+      if (this.documentName !== "" && this.referencedDocument === undefined) {
         console.log("if is valid"); // TODO
-        this.fileNamesForPrefill.push(this.documentName);
+        this.fileNamesForPrefill = [this.documentName];
       }
     },
   },

@@ -9,8 +9,6 @@
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
       @select="handleFilesSelected"
-      :file-names-for-prefill="fileNamesForPrefill"
-      :index-of-report-to-remove="indexOfReportToRemove"
     >
       <template #header="{ files, chooseCallback }">
         <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
