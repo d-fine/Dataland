@@ -256,6 +256,28 @@ export default defineComponent({
           } catch (error) {
             console.error(error);
           }
+        } else if (filteredData === DataTypeEnum.P2p) {
+          try {
+            const p2pDataControllerApi = await new ApiClientProvider(
+              assertDefined(this.getKeycloakPromise)()
+            ).getP2pDataControllerApi();
+
+            const singleP2pData = await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId);
+            this.dataSet = assertDefined(singleP2pData.data.data);
+          } catch (error) {
+            console.error(error);
+          }
+        } else if (filteredData === DataTypeEnum.Sme) {
+          try {
+            const smeDataControllerApi = await new ApiClientProvider(
+              assertDefined(this.getKeycloakPromise)()
+            ).getSmeDataControllerApi();
+
+            const singleSmeData = await smeDataControllerApi.getCompanyAssociatedSmeData(dataId);
+            this.dataSet = assertDefined(singleSmeData.data.data);
+          } catch (error) {
+            console.error(error);
+          }
         }
       } catch (error) {
         console.error(error);
