@@ -89,11 +89,9 @@ export default defineComponent({
     },
     fileNamesForPrefill: {
       type: Array,
-      default: undefined,
     },
     indexOfReportToRemove: {
       type: Array,
-      default: undefined,
     },
   },
   watch: {
