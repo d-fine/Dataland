@@ -1,19 +1,8 @@
-import {
-  DataPointBigDecimal,
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDetailsPerCashFlowType,
-} from "@clients/backend";
+import { EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
 import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
-import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
-import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
-import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
-import {
-  generateEuTaxonomyWithBaseFields,
-  getCsvSharedEuTaxonomyValuesMapping,
-} from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
+import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { parse } from "json2csv";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
@@ -45,67 +34,4 @@ export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFi
   returnBase.revenue = generateEuTaxonomyPerCashflowType(assertDefined(returnBase.referencedReports));
 
   return returnBase;
-}
-
-/**
- * Exports the eutaxonomy-non-financials data to CSV
- * @param companyInformationWithEuTaxonomyDataForNonFinancials the data to export
- * @returns the generated CSV as a string
- */
-export function generateCSVDataForNonFinancials(
-  companyInformationWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>
-): string {
-  const options = {
-    fields: [
-      ...getCsvCompanyMapping<EuTaxonomyDataForNonFinancials>(),
-      ...getCsvSharedEuTaxonomyValuesMapping(1),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Total Revenue`,
-        (row): DataPointBigDecimal | undefined => row.t.revenue?.totalAmount,
-        decimalSeparatorConverter(1000000)
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Total CapEx`,
-        (row): DataPointBigDecimal | undefined => row.t.capex?.totalAmount,
-        decimalSeparatorConverter(1000000)
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Total OpEx`,
-        (row): DataPointBigDecimal | undefined => row.t.opex?.totalAmount,
-        decimalSeparatorConverter(1000000)
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Eligible Revenue`,
-        (row): DataPointBigDecimal | undefined => row.t.revenue?.eligiblePercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Eligible CapEx`,
-        (row): DataPointBigDecimal | undefined => row.t.capex?.eligiblePercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Eligible OpEx`,
-        (row): DataPointBigDecimal | undefined => row.t.opex?.eligiblePercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Aligned Revenue`,
-        (row): DataPointBigDecimal | undefined => row.t.revenue?.alignedPercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Aligned CapEx`,
-        (row): DataPointBigDecimal | undefined => row.t.capex?.alignedPercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Aligned OpEx`,
-        (row): DataPointBigDecimal | undefined => row.t.opex?.alignedPercentage,
-        convertToPercentageString
-      ),
-    ],
-    delimiter: ";",
-  };
-  return parse(companyInformationWithEuTaxonomyDataForNonFinancials, options);
 }

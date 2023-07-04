@@ -57,7 +57,6 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-backend/DockerfileBase`
 - [ ] `./dataland-backend/DockerfileTest`
-- [ ] `./dataland-csvconverter/Dockerfile`
 - [ ] `./dataland-document-manager/Dockerfile`
 - [ ] `./dataland-document-manager/DockerfileBase`
 - [ ] `./dataland-document-manager/DockerfileTest`
@@ -158,17 +157,14 @@ check that all ssh-keys are set and erased from people that have left
 - [ ] The PR actually implements what is described above
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
-- [ ] The new version is deployed with fake data to the dev server "dev1" using this branch
-  - [ ] Run with setting `Use real data` turned off and `Reset non-user related Docker Volumes & Re-populate` turned on
+- [ ] The new version is deployed to the dev server "dev1" using this branch
+  - [ ] Run with setting `Reset non-user related Docker Volumes & Re-populate` turned on
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
   - [ ] It's verified that everything seems to be working fine by manually using the website
   - [ ] All implemented Social Logins have been tested manually in the UI
   - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
     authorization has worked by assuring that you get a 200 response
-- [ ] The new version is deployed with real data to a dev server using this branch
-  - [ ] Run with both settings `Reset non-user related Docker Volumes & Re-populate` and `Use real data` turned on
-  - [ ] It's verified that the CD run is green
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and execute `npm run testpipeline`
   and `npm run testcomponent` in dataland-frontend

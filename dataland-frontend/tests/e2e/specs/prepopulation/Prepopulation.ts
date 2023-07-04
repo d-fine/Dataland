@@ -137,7 +137,6 @@ describe(
       "Upload and validate Lksg data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
-        dataEnvironments: ["fakeFixtures"],
       },
       () => {
         let companiesWithLksgData: Array<FixtureData<LksgData>>;
@@ -162,7 +161,6 @@ describe(
       "Upload and validate P2p data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
-        dataEnvironments: ["fakeFixtures"],
       },
       () => {
         let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
@@ -187,7 +185,6 @@ describe(
       "Upload and validate Sfdr data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
-        dataEnvironments: ["fakeFixtures"],
       },
       () => {
         let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
@@ -212,7 +209,6 @@ describe(
       "Upload and validate Sme data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
-        dataEnvironments: ["fakeFixtures"],
       },
       () => {
         let companiesWithSmeData: Array<FixtureData<SmeData>>;

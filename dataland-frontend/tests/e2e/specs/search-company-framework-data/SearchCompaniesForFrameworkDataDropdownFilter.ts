@@ -172,7 +172,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     "As a user, I expect the search results to adjust according to the framework filter",
     {
       executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-      dataEnvironments: ["fakeFixtures"],
     },
     function () {
       beforeEach(function () {

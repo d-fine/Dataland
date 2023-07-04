@@ -9,7 +9,6 @@ describeIf(
   "Validation for correct display of 'Rejected' badge",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    dataEnvironments: ["fakeFixtures"],
   },
   () => {
     it("Verifies that the badge is shown as expected when an uploaded Lksg dataset gets rejected", () => {

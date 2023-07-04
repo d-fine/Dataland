@@ -10,7 +10,6 @@ describeIf(
   "As a user, I expect to be able to add and remove Eligible KPIs and send the form successfully",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    dataEnvironments: ["fakeFixtures"],
   },
   function () {
     beforeEach(() => {
