@@ -55,9 +55,9 @@ export default defineComponent({
       documentReference: "",
       fileNamesForPrefill: [] as string[],
       yesNoOptions: {
-        "Yes": "Yes",
-        "No": "No",
-      }
+        Yes: "Yes",
+        No: "No",
+      },
     };
   },
 
@@ -66,9 +66,14 @@ export default defineComponent({
     console.log("mounted"); // TODO
     this.updateFileUploadFiles();
   },
+  computed: {
+    currentYesNoValue() {
+      return this.baseDataPointYesNo.value;
+    },
+  },
   watch: {
-    baseDataPointYesNo(newValue: BaseDataPointYesNo) {
-      if (newValue.value && newValue.value === "No") {
+    currentYesNoValue(newValue: string) {
+      if (newValue && newValue === "No") {
         (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
       }
     },
