@@ -9,6 +9,8 @@ package org.dataland.datalandbackend.model
  * @param countryCodeFilter set of strings with ISO country codes to return companies whose headquarters are in
  * the country of one of those ISO country codes
  * @param sectorFilter set of strings with sector names to return companies which operate in one of those sectors
+ * @param onlyWithDataFromCurrentUser boolean determining if only companies with data from the current user should be
+ * searched
  */
 data class CompanySearchFilter(
     val searchString: String = "",
@@ -16,5 +18,5 @@ data class CompanySearchFilter(
     val dataTypeFilter: Set<DataType> = setOf(),
     val countryCodeFilter: Set<String> = setOf(),
     val sectorFilter: Set<String> = setOf(),
-    val onlyCurrentUserAsUploader: Boolean = false,
+    val onlyWithDataFromCurrentUser: Boolean = false,
 )

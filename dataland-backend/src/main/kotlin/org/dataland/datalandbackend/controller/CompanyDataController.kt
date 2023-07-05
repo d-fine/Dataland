@@ -43,7 +43,7 @@ class CompanyDataController(
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
                 "='$onlyCompanyNames', dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors', " +
-                "onlyCurrentUserAsUploader='$onlyWithDataFromCurrentUser'",
+                "onlyWithDataFromCurrentUser='$onlyWithDataFromCurrentUser'",
         )
         return ResponseEntity.ok(
             companyManager.searchCompaniesAndGetApiModel(
