@@ -141,9 +141,8 @@ check that all ssh-keys are set and erased from people that have left
 ## Conclusion
 
 - [ ] After updating all components check if everything still works
-- [ ] The new version is deployed to a dev server using this branch and real data
+- [ ] The new version is deployed to a dev server using this branch
     - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
-    - [ ] It's verified that real data has been used
     - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] This template has been updated to reflect the latest state of tasks required and known issues with upgrades
 - [ ] The Merge Request commit message needs to contain 'manual maintenance' to satisfy the CI maintenance check in
