@@ -14,8 +14,7 @@ import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import ProcurementCategoryFormElement
-    from "@/components/forms/parts/elements/derived/ProcurementCategoryFormElement.vue";
+import ProcurementCategoryFormElement from "@/components/forms/parts/elements/derived/ProcurementCategoryFormElement.vue";
 
 export default defineComponent({
   name: "ProcurementCategoriesFormField",

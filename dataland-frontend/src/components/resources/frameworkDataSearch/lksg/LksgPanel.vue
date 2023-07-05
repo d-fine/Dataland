@@ -240,7 +240,9 @@ export default defineComponent({
           procurementCategory: procurementCategory as ProcurementCategoryType,
           definitionsOfProductTypeOrService: definitionsOfProductTypeOrService(),
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
-            new Map(Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountryCode ?? {}))
+            new Map(
+              Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountryCode ?? {})
+            )
           ),
           orderVolume:
             (lksgProductCategory as LksgProcurementCategory).orderVolume != null

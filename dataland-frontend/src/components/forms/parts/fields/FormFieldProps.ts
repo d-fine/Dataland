@@ -58,7 +58,7 @@ export const DropdownOptionFormFieldProps = Object.assign(deepCopyObject(FormFie
 }) as Readonly<ComponentPropsOptions>;
 export const OptionsFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
   options: {
-    type: Object as () => Object | undefined,
+    type: Object,
     required: true,
   },
 }) as Readonly<ComponentPropsOptions>;
