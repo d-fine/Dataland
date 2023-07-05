@@ -12,6 +12,7 @@ include(
     "dataland-qa-service",
     "dataland-message-queue-utils",
     "dataland-document-manager",
+    "dataland-batch-manager",
 )
 
 dependencyResolutionManagement {
@@ -62,6 +63,8 @@ dependencyResolutionManagement {
             library("mockito-inline", "org.mockito:mockito-inline:5.2.0")
 
             library("json", "org.json:json:20230618")
+
+            library("commons-io", "commons-io:commons-io:2.12.0")
         }
     }
 }

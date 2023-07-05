@@ -152,8 +152,8 @@ export default defineComponent({
     /**
      * Redirects the user to the QA Services page
      */
-    goToQualityAssurance() {
-      void this.$router.push("/qualityassurance");
+    async goToQualityAssurance() {
+      await this.$router.push("/qualityassurance");
     },
     /**
      * Called when the profile picture could not load. Propagates the event and sets the profile picture

@@ -33,15 +33,17 @@
       <div class="col-6">
         <TaxoCard
           title="Eligible Revenue"
-          :percent="dataSet.revenue?.eligiblePercentage?.value"
+          :percent="dataSet.revenue?.eligibleData?.valueAsPercentage"
           :total="dataSet.revenue?.totalAmount?.value"
+          :amount="dataSet.revenue?.eligibleData?.valueAsAbsolute"
         ></TaxoCard>
       </div>
       <div class="col-6">
         <TaxoCard
           title="Aligned Revenue"
-          :percent="dataSet.revenue?.alignedPercentage?.value"
+          :percent="dataSet.revenue?.alignedData?.valueAsPercentage"
           :total="dataSet.revenue?.totalAmount?.value"
+          :amount="dataSet.revenue?.alignedData?.valueAsAbsolute"
         ></TaxoCard>
       </div>
     </div>
@@ -52,15 +54,17 @@
       <div class="col-6">
         <TaxoCard
           title="Eligible CapEx"
-          :percent="dataSet.capex?.eligiblePercentage?.value"
-          :total="dataSet.capex?.totalAmount?.value"
+          :percent="dataSet?.capex?.eligibleData?.valueAsPercentage"
+          :total="dataSet?.capex?.totalAmount?.value"
+          :amount="dataSet?.capex?.eligibleData?.valueAsAbsolute"
         />
       </div>
       <div class="col-6">
         <TaxoCard
           title="Aligned CapEx"
-          :percent="dataSet.capex?.alignedPercentage?.value"
-          :total="dataSet.capex?.totalAmount?.value"
+          :percent="dataSet?.capex?.alignedData?.valueAsPercentage"
+          :total="dataSet?.capex?.totalAmount?.value"
+          :amount="dataSet?.capex?.alignedData?.valueAsAbsolute"
         />
       </div>
     </div>
@@ -71,15 +75,17 @@
       <div class="col-6">
         <TaxoCard
           title="Eligible OpEx"
-          :percent="dataSet.opex?.eligiblePercentage?.value"
-          :total="dataSet.opex?.totalAmount?.value"
+          :percent="dataSet?.opex?.eligibleData?.valueAsPercentage"
+          :total="dataSet?.opex?.totalAmount?.value"
+          :amount="dataSet?.opex?.eligibleData?.valueAsAbsolute"
         />
       </div>
       <div class="col-6">
         <TaxoCard
           title="Aligned OpEx"
-          :percent="dataSet.opex?.alignedPercentage?.value"
-          :total="dataSet.opex?.totalAmount?.value"
+          :percent="dataSet?.opex?.alignedData?.valueAsPercentage"
+          :total="dataSet?.opex?.totalAmount?.value"
+          :amount="dataSet?.opex?.alignedData?.valueAsAbsolute"
         />
       </div>
     </div>

@@ -1,9 +1,10 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
@@ -112,20 +113,15 @@ class CompanyManager(
      */
     @Transactional
     fun searchCompaniesAndGetApiModel(
-        filter: CompanySearchFilter,
+        filter: StoredCompanySearchFilter,
         viewingUser: DatalandAuthentication? = null,
     ): List<StoredCompany> {
-        val searchFilterForJPA = StoredCompanySearchFilter(
-            searchString = filter.searchString,
-            nameOnlyFilter = filter.onlyCompanyNames,
-            dataTypeFilter = filter.dataTypeFilter.map { it.name },
-            sectorFilter = filter.sectorFilter.toList(),
-            countryCodeFilter = filter.countryCodeFilter.toList(),
-            uploaderIdFilter = getUploaderIdFilter(filter.onlyWithDataFromCurrentUser),
-        )
-        val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA)
-        val sortingMap = filteredAndSortedResults.mapIndexed {
-                index, storedCompanyEntity ->
+        if (filter.dataTypeFilter.isEmpty()) {
+            filter.dataTypeFilter = DataTypesExtractor().getAllDataTypes()
+        }
+
+        val filteredAndSortedResults = companyRepository.searchCompanies(filter)
+        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
             storedCompanyEntity.companyId to index
         }.toMap()
 
@@ -136,12 +132,18 @@ class CompanyManager(
         return results.map { it.toApiModel(viewingUser) }
     }
 
-    private fun getUploaderIdFilter(onlyWithDataFromCurrentUser: Boolean): List<String> {
-        return if (onlyWithDataFromCurrentUser) {
-            listOf(DatalandAuthentication.fromContext().userId)
-        } else {
-            listOf()
-        }
+    /**
+     * Method to search for companies matching the company name or identifier
+     * @param searchString the string to search for in the names or identifiers of a company
+     * @return list of the first 100 matching companies in Dataland
+     */
+    @Transactional
+    fun searchCompaniesByNameOrIdentifierAndGetApiModel(
+        searchString: String,
+    ): List<CompanyIdAndName> {
+        return companyRepository.searchCompaniesByNameOrIdentifier(
+            searchString,
+        )
     }
 
     private fun fetchAllStoredCompanyFields(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {

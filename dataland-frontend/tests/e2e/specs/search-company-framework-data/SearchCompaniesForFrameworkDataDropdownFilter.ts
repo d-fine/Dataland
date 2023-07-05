@@ -12,6 +12,7 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -103,39 +104,43 @@ describe("As a user, I expect the search functionality on the /companies page to
     "Checks that the sector filter synchronises between the search bar and the drop down and works",
     { scrollBehavior: false },
     () => {
-      const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
-      const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
-        (it) => it.companyInformation.sector !== demoCompanyToTestFor.sector
-      )!.companyInformation;
+      const demoCompanyToTestFor = assertDefined(
+        companiesWithEuTaxonomyDataForNonFinancials.find((it) => it.companyInformation?.sector !== undefined)
+          ?.companyInformation
+      );
+      expect(demoCompanyToTestFor?.sector).to.not.be.undefined;
+
+      const demoCompanyWithDifferentSector = assertDefined(
+        companiesWithEuTaxonomyDataForNonFinancials.find(
+          (it) =>
+            it.companyInformation?.sector !== demoCompanyToTestFor.sector && it.companyInformation?.sector !== undefined
+        )?.companyInformation
+      );
+      expect(demoCompanyWithDifferentSector?.sector).to.not.be.undefined;
 
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
-      cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
+      cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`)
         .wait("@companies-meta-information")
         .get("div[class='col-12 text-left']")
         .should("contain.text", failureMessageOnAvailableDatasetsPage)
         .get("#sector-filter")
         .click()
         .get('input[placeholder="Search sectors"]')
-        .type(`${demoCompanyToTestFor.sector}`)
+        .type(`${demoCompanyToTestFor.sector!}`)
         .get("li")
-        .contains(RegExp(`^${demoCompanyToTestFor.sector}$`))
+        .contains(RegExp(`^${demoCompanyToTestFor.sector!}$`))
         .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
-        .should("exist")
-        .url()
-        .should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector)}`);
+        .should("exist");
+      cy.url().should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector!)}`);
     }
   );
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
-    const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
     cy.ensureLoggedIn();
-    cy.visit(
-      `/companies?sector=${demoCompanyToTestFor.sector}&countryCode=${demoCompanyToTestFor.countryCode}&framework=${DataTypeEnum.EutaxonomyNonFinancials}`
-    )
-      .get("span:contains('RESET')")
-      .eq(0)
+    cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyNonFinancials}`);
+    cy.get("span:contains('RESET')")
       .click()
       .url()
       .should("eq", getBaseUrl() + "/companies");

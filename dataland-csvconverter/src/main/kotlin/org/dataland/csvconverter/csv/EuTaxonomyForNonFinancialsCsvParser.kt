@@ -1,5 +1,5 @@
 package org.dataland.csvconverter.csv
-
+/*
 import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
 import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
 import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
@@ -21,7 +21,7 @@ class EuTaxonomyForNonFinancialsCsvParser(
     private val fiscalYearParser: FiscalYearParser,
     private val companyReportParser: CompanyReportParser,
 
-) : CsvFrameworkParser<EuTaxonomyDataForNonFinancials> {
+    ) : CsvFrameworkParser<EuTaxonomyDataForNonFinancials> {
 
     private val columnMappingEuTaxonomyForNonFinancials = mapOf(
         "totalRevenue" to "Total Revenue",
@@ -33,6 +33,12 @@ class EuTaxonomyForNonFinancialsCsvParser(
         "alignedRevenue" to "Aligned Revenue",
         "alignedCapex" to "Aligned CapEx",
         "alignedOpex" to "Aligned OpEx",
+        "eligibleRevenuePercentage" to "Eligible Revenue (%)",
+        "eligibleCapexPercentage" to "Eligible CapEx (%)",
+        "eligibleOpexPercentage" to "Eligible OpEx (%)",
+        "alignedRevenuePercentage" to "Aligned Revenue (%)",
+        "alignedCapexPercentage" to "Aligned CapEx (%)",
+        "alignedOpexPercentage" to "Aligned OpEx (%)",
     )
 
     override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
@@ -41,7 +47,7 @@ class EuTaxonomyForNonFinancialsCsvParser(
 
     @Suppress("kotlin:S138")
     private fun buildEuTaxonomyDetailsPerCashFlowType(type: String, csvLineData: Map<String, String>):
-        EuTaxonomyDetailsPerCashFlowType {
+            EuTaxonomyDetailsPerCashFlowType {
         return EuTaxonomyDetailsPerCashFlowType(
             totalAmount =
             dataPointParser.buildDecimalDataPoint(
@@ -54,19 +60,33 @@ class EuTaxonomyForNonFinancialsCsvParser(
             dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForNonFinancials,
                 csvLineData,
+                "aligned${type}Percentage",
+            ),
+            alignedAmount =
+            dataPointParser.buildDecimalDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
                 "aligned$type",
+                CsvUtils.SCALE_FACTOR_ONE_MILLION,
             ),
             eligiblePercentage =
             dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForNonFinancials,
                 csvLineData,
+                "eligible${type}Percentage",
+            ),
+            eligibleAmount =
+            dataPointParser.buildDecimalDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
                 "eligible$type",
+                CsvUtils.SCALE_FACTOR_ONE_MILLION,
             ),
         )
     }
 
     /**
-     Assembles all partial information into one EuTaxonomyDataForNonFinancials object
+    Assembles all partial information into one EuTaxonomyDataForNonFinancials object
      */
     override fun buildData(row: Map<String, String>): EuTaxonomyDataForNonFinancials {
         return EuTaxonomyDataForNonFinancials(
@@ -84,3 +104,4 @@ class EuTaxonomyForNonFinancialsCsvParser(
         )
     }
 }
+*/

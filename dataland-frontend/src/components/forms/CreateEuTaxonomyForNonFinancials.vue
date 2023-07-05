@@ -176,6 +176,7 @@
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
+                              :showSecondInput="true"
                             />
                           </div>
                         </FormKit>
@@ -209,6 +210,7 @@
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
+                              :showSecondInput="true"
                             />
                           </div>
                         </FormKit>
@@ -242,6 +244,7 @@
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
+                              :showSecondInput="true"
                             />
                           </div>
                         </FormKit>

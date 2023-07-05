@@ -6,9 +6,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
@@ -52,23 +55,25 @@ interface CompanyApi {
         ResponseEntity<StoredCompany>
 
     /**
-     * A method to retrieve specific companies identified by different filters
+     * A method to retrieve specific companies with framework data identified by different filters
      * If the filters are not set, all companies in the data store are returned.
      * @param searchString string used for substring matching
-     * @param dataTypes If set & non-empty,
-     * this function only returns companies that have data for the specified dataTypes
+     * @param dataTypes this function only returns companies that have data for the specified dataTypes.
+     * if none is specified, it is filtered all data types are allowed
      * @param countryCodes If set & non-empty,
      * this function only returns companies that have a country code contained in the set
      * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @param onlyWithDataFromCurrentUser boolean determining if the search should only find companies with datasets
      * uploaded by the current user
-     * @return information about all companies matching the search criteria
+     * @return information about all companies with framework data matching the search criteria
      */
     @Operation(
-        summary = "Retrieve specific companies by different filters or just all companies from the data store.",
-        description = "Companies identified via the provided company name/identifier are retrieved and filtered by" +
-            "countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        summary = "Retrieve specific companies with framework data by different filters" +
+            " or just all companies from the data store.",
+        description = "Companies with associated framework data identified via the provided company name/identifier" +
+            " are retrieved and filtered by countryCode, sector and available framework data." +
+            " Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [
@@ -88,6 +93,55 @@ interface CompanyApi {
         @RequestParam onlyWithDataFromCurrentUser: Boolean = false,
     ):
         ResponseEntity<List<StoredCompany>>
+
+    /**
+     * A method to retrieve companies with names or identifiers matching a search string
+     * @param searchString string used for substring matching in the name and the identifiers of a company
+     * @return names of the first 100 companies matching the search criteria
+     */
+    @Operation(
+        summary = "Retrieve specific companies by searching their names and identifiers",
+        description = "Companies identified via the provided company name/identifier are retrieved",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company names."),
+        ],
+    )
+    @GetMapping(
+        value = ["/names"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getCompaniesBySearchString(
+        @RequestParam searchString: String,
+    ):
+        ResponseEntity<List<CompanyIdAndName>>
+
+    /**
+     * A method to check if an identifier of a given type exists
+     * @param identifierType the type of the identifier
+     * @param identifier the identifier
+     */
+    @Operation(
+        summary = "Checks that an identifier of specified type exists.",
+        description = "Checks that an identifier of specified type exists.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully checked that identifier exists."),
+            ApiResponse(responseCode = "404", description = "Successfully checked that identifier does not exist."),
+        ],
+    )
+    @RequestMapping(
+        method = [RequestMethod.HEAD],
+        value = ["/identifiers/{identifierType}/{identifier}"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun existsIdentifier(
+        @PathVariable("identifierType") identifierType: IdentifierType,
+        @PathVariable("identifier") identifier: String,
+    )
 
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector

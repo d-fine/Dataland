@@ -29,7 +29,7 @@ export function updateObject(baseObject: ObjectType, objectWithNewData: ObjectTy
 export function convertValuesFromDecimalsToPercentages(obj: ObjectType): ObjectType {
   const objectModified = obj;
   for (const key in objectModified) {
-    if (key === "value" && objectModified[key]) {
+    if ((key === "value" || key === "valueAsPercentage") && objectModified[key]) {
       objectModified[key] = (Math.round(+objectModified[key] * 100 * 100) / 100).toString();
     } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
       convertValuesFromDecimalsToPercentages(objectModified[key] as unknown as ObjectType);
@@ -47,7 +47,7 @@ export function convertValuesFromDecimalsToPercentages(obj: ObjectType): ObjectT
 export function convertValuesFromPercentagesToDecimals(obj: ObjectType): ObjectType {
   const objectModified = obj;
   for (const key in objectModified) {
-    if (key === "value" && objectModified[key]) {
+    if ((key === "value" || key === "valueAsPercentage") && objectModified[key]) {
       objectModified[key] = (Math.round(+objectModified[key] * 100) / 100 / 100).toString();
     } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
       convertValuesFromPercentagesToDecimals(objectModified[key] as unknown as ObjectType);
