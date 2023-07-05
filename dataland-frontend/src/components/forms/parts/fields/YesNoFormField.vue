@@ -63,7 +63,9 @@ export default defineComponent({
 
   emits: ["documentUpdated"],
   mounted() {
-    console.log("mounted"); // TODO
+    if (this.name === "sa8000Certification") {
+      console.log("mounted sa8000Certification"); // TODO
+    }
     this.updateFileUploadFiles();
   },
   computed: {
@@ -87,6 +89,9 @@ export default defineComponent({
      * @param updatedDocuments the updated documents that are currently selected (only one in this case)
      */
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
+      if (this.name === "sa8000Certification") {
+        console.log("handleDocumentUpdatedEvent for sa8000Certification"); // TODO
+      }
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
       this.documentReference = this.referencedDocument?.reference ?? "";
@@ -98,9 +103,13 @@ export default defineComponent({
      * of the given dataset (in the case of editing a dataset)
      */
     updateFileUploadFiles() {
-      console.log("updateFileUploadFiles"); // TODO
+      if (this.name === "sa8000Certification") {
+        console.log("updateFileUploadFiles for sa8000Certification"); // TODO
+      }
       if (this.documentName !== "" && this.referencedDocument === undefined) {
-        console.log("if is valid"); // TODO
+        if (this.name === "sa8000Certification") {
+          console.log("if is valid for sa8000Certification"); // TODO
+        }
         this.fileNamesForPrefill = [this.documentName];
       }
     },
