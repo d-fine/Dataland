@@ -30,6 +30,11 @@
               :companyId="companyId"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
             />
+            <P2pPanel
+                v-if="dataType === DataTypeEnum.P2p"
+                :company-id="companyId"
+                :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
+            />
           </div>
         </div>
       </div>
@@ -71,10 +76,11 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
 import Keycloak from "keycloak-js";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
+import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
+  components: {P2pPanel, DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
   props: {
     companyId: {
       type: String,

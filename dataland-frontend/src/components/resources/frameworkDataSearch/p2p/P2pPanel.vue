@@ -1,6 +1,6 @@
 <template>
   <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading LkSG Data...</p>
+    <p class="font-medium text-xl">Loading P2P Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
@@ -126,10 +126,10 @@ export default defineComponent({
       if (this.p2pDataAndMetaInfo.length) {
         this.p2pDataAndMetaInfo.forEach((oneP2pDataset: DataAndMetaInformationPathwaysToParisData) => {
           const dataIdOfP2pDataset = oneP2pDataset.metaInfo?.dataId ?? "";
-          const reportingPeriodOfLksgDataset = oneP2pDataset.metaInfo?.reportingPeriod ?? "";
+          const reportingPeriodOfP2pDataset = oneP2pDataset.metaInfo?.reportingPeriod ?? "";
           this.listOfDataSetReportingPeriods.push({
             dataId: dataIdOfP2pDataset,
-            reportingPeriod: reportingPeriodOfLksgDataset,
+            reportingPeriod: reportingPeriodOfP2pDataset,
           });
           for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data)) {
             for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
@@ -138,11 +138,17 @@ export default defineComponent({
             ][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
                 const subcategory = assertDefined(
-                  p2pDataModel
-                    .find((category) => category.name === categoryKey)
-                    ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
+                    p2pDataModel
+                        .find((category) => category.name === categoryKey)
+                        ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
                 );
-                this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataIdOfP2pDataset);
+                const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
+                if (
+                    this.p2pDataAndMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.data)
+                        .some((singleP2pData) => field.showIf(singleP2pData))
+                ) {
+                  this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataIdOfP2pDataset);
+                }
               }
             }
           }
