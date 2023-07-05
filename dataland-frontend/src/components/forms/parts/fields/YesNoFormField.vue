@@ -58,12 +58,14 @@ export default defineComponent({
         Yes: "Yes",
         No: "No",
       },
+      isMounted: false,
     };
   },
 
   emits: ["documentUpdated"],
   mounted() {
     this.updateFileUploadFiles();
+    this.isMounted = true;
   },
   watch: {
     baseDataPointYesNo(newValue: BaseDataPointYesNo, oldValue: BaseDataPointYesNo) {
@@ -75,7 +77,9 @@ export default defineComponent({
         }
     },
     documentName() {
-      this.updateFileUploadFiles();
+      if (this.isMounted) {
+        this.updateFileUploadFiles();
+      }
     },
   },
   methods: {
