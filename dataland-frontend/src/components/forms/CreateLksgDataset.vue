@@ -6,7 +6,7 @@
         <p class="font-medium text-xl">Loading LkSG data...</p>
         <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
-      <div class="grid uploadFormWrapper">
+      <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedLksgData"
@@ -169,7 +169,7 @@ export default defineComponent({
   data() {
     return {
       formId: "createLkSGForm",
-      waitingForData: false,
+      waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedLksgData: {} as CompanyAssociatedDataLksgData,
       lksgDataModel,
@@ -220,6 +220,8 @@ export default defineComponent({
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
       void this.loadLKSGData(dataId);
+    } else {
+        this.waitingForData = false;
     }
   },
   methods: {

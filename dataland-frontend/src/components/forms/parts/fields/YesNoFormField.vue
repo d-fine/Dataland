@@ -65,16 +65,14 @@ export default defineComponent({
   mounted() {
     this.updateFileUploadFiles();
   },
-  computed: {
-    currentYesNoValue() {
-      return this.baseDataPointYesNo.value;
-    },
-  },
   watch: {
-    currentYesNoValue(newValue: string) {
-      if (newValue === "No") {
-        (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
-      }
+    baseDataPointYesNo(newValue: BaseDataPointYesNo, oldValue: BaseDataPointYesNo) {
+        if(newValue.value != oldValue.value &&
+            newValue.value === "No" &&
+            oldValue.value === "Yes" &&
+            this.certificateRequiredIfYes) {
+            (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
+        }
     },
     documentName() {
       this.updateFileUploadFiles();
