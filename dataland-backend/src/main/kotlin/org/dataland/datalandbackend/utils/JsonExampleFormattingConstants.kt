@@ -32,12 +32,10 @@ object JsonExampleFormattingConstants {
 
     private const val procurementCategory = "{" +
         "\"definitionProductTypeService\": [\"string\"]," +
-        "\"suppliersPerCountry\": [" +
-        "{" +
-        "\"country\": \"string\"," +
-        "\"numberOfSuppliers\": 0" +
-        "}" +
-        "]," +
+        "\"numberOfSuppliersPerCountryCode\": {" +
+        "\"DE\": null," +
+        "\"GB\": 2" +
+        "}," +
         "\"orderVolume\": 0" +
         "}"
 

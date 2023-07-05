@@ -4277,36 +4277,27 @@
             "definitionProductTypeService": [
               "string"
             ],
-            "suppliersPerCountry": [
-              {
-                "country": "string",
-                "numberOfSuppliers": 0
-              }
-            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
             "orderVolume": 0
           },
           "Services": {
             "definitionProductTypeService": [
               "string"
             ],
-            "suppliersPerCountry": [
-              {
-                "country": "string",
-                "numberOfSuppliers": 0
-              }
-            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
             "orderVolume": 0
           },
           "RawMaterials": {
             "definitionProductTypeService": [
               "string"
             ],
-            "suppliersPerCountry": [
-              {
-                "country": "string",
-                "numberOfSuppliers": 0
-              }
-            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
             "orderVolume": 0
           }
         }
@@ -4431,36 +4422,27 @@
                 "definitionProductTypeService": [
                   "string"
                 ],
-                "suppliersPerCountry": [
-                  {
-                    "country": "string",
-                    "numberOfSuppliers": 0
-                  }
-                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
                 "orderVolume": 0
               },
               "Services": {
                 "definitionProductTypeService": [
                   "string"
                 ],
-                "suppliersPerCountry": [
-                  {
-                    "country": "string",
-                    "numberOfSuppliers": 0
-                  }
-                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
                 "orderVolume": 0
               },
               "RawMaterials": {
                 "definitionProductTypeService": [
                   "string"
                 ],
-                "suppliersPerCountry": [
-                  {
-                    "country": "string",
-                    "numberOfSuppliers": 0
-                  }
-                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
                 "orderVolume": 0
               }
             }
