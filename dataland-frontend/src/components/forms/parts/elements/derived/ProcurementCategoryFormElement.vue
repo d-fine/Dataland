@@ -48,7 +48,12 @@
           </div>
           <div class="form-field border-none">
             <div class="flex justify-content-between">
-              <UploadFormHeader label="Number of Direct Supliers" description="..." :is-required="false" />
+              <UploadFormHeader
+                v-if="selectedCountrys.length > 0"
+                label="Number of Direct Supliers"
+                description="..."
+                :is-required="false"
+              />
             </div>
             <FormKit type="list" name="suppliersPerCountry" label="Suppliers Per Country" v-model="existingSuppliers">
               <FormKit type="group" v-for="el in selectedCountrys" :key="el.label">
@@ -86,7 +91,7 @@ import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDa
 import PrimeButton from "primevue/button";
 
 export default defineComponent({
-  name: "ProductCategoriesFormElement",
+  name: "ProcurementCategoryFormElement",
   components: {
     FormKit,
     UploadFormHeader,
