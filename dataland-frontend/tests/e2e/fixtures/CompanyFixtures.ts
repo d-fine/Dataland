@@ -1,9 +1,5 @@
 import { faker } from "@faker-js/faker/locale/de";
 import { CompanyIdentifierIdentifierTypeEnum, CompanyInformation } from "@clients/backend";
-import { DataPoint } from "./FixtureUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
-import { humanizeString } from "@/utils/StringHumanizer";
-import { getIdentifierValueForCsv } from "./CsvUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 const legalForms = [
@@ -77,57 +73,4 @@ export function generateCompanyInformation(): CompanyInformation {
     website: valueOrUndefined(faker.internet.url()),
     isTeaserCompany: false,
   };
-}
-
-/**
- * Returns the CSV mapping for the columns showing basic company information
- * @returns the static CSV mapping
- */
-export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, string>> {
-  return [
-    {
-      label: "Unternehmensname",
-      value: (row: FixtureData<T>): string => row.companyInformation.companyName,
-    },
-    {
-      label: "Alternative Names",
-      value: (row: FixtureData<T>): string | undefined =>
-        row.companyInformation.companyAlternativeNames?.map((name) => `"${name}"`).join(", "),
-    },
-    {
-      label: "Company Legal Form",
-      value: (row: FixtureData<T>): string | undefined => row.companyInformation.companyLegalForm,
-    },
-    {
-      label: "Headquarter",
-      value: (row: FixtureData<T>): string => row.companyInformation.headquarters,
-    },
-    {
-      label: "Headquarter Postal Code",
-      value: (row: FixtureData<T>): string | undefined => row.companyInformation.headquartersPostalCode,
-    },
-    {
-      label: "Sector",
-      value: (row: FixtureData<T>): string | undefined => row.companyInformation.sector,
-    },
-    {
-      label: "Countrycode",
-      value: (row: FixtureData<T>): string => row.companyInformation.countryCode,
-    },
-    {
-      label: "Teaser Company",
-      value: (row: FixtureData<T>): string => (row.companyInformation.isTeaserCompany ? "Yes" : "No"),
-    },
-    {
-      label: "Website",
-      value: (row: FixtureData<T>): string | undefined => row.companyInformation.website,
-    },
-    ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((identifiyerTypeAsString) => {
-      return {
-        label: humanizeString(identifiyerTypeAsString),
-        value: (row: FixtureData<T>): string =>
-          getIdentifierValueForCsv(row.companyInformation.identifiers, identifiyerTypeAsString),
-      };
-    }),
-  ];
 }

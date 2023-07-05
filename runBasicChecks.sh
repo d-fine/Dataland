@@ -45,7 +45,7 @@ if [[ $mode == full ]]; then
     exit 1
   fi
   setup="clean client_frontend client_e2e"
-  tests+=" backend_unit_tests csv_converter_test frontend_component_tests"
+  tests+=" backend_unit_tests frontend_component_tests"
   echo "Preparing a clean state for running the tests."
 else
   setup=""
