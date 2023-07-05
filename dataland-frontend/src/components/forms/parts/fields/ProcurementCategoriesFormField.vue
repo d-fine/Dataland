@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts">
+import { FormKit } from "@formkit/vue";
 import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
@@ -27,6 +28,7 @@ export default defineComponent({
   components: {
     UploadFormHeader,
     ProcurementCategoryFormElement,
+    FormKit,
   },
 });
 </script>

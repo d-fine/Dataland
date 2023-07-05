@@ -1,6 +1,7 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3">
     <template #title>New Dataset - LkSG</template>
+    {{ companyAssociatedLksgData }}
     <template #content>
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading LkSG data...</p>
