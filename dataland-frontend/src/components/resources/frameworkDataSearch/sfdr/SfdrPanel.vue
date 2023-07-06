@@ -136,8 +136,17 @@ export default defineComponent({
             dataId: dataIdOfSfdrDataset,
             reportingPeriod: reportingPeriodOfSfdrDataset,
           });
-          for (const areaObject of Object.values(oneSfdrDataset.data)) {
-            for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
+          for (const areaObject of Object.values(oneSfdrDataset.data) as object | null[]) {
+            if (areaObject == null) {
+              continue;
+            }
+            for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [
+              string,
+              object | null
+            ][]) {
+              if (subAreaObject == null) {
+                continue;
+              }
               for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
                 this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataIdOfSfdrDataset);
               }
