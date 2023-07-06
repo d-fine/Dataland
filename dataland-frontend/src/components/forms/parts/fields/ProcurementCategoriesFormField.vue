@@ -1,8 +1,6 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <p>tutu</p>
-    {{ WhichFieldsAreFilled.hasOwnProperty(ProcurementCategoryType.Products) }}
     <FormKit type="group" name="procurementCategories">
       <ProcurementCategoryFormElement
         :existingFieldValuesCategory="WhichFieldsAreFilled[ProcurementCategoryType.Products] ?? undefined"
