@@ -228,17 +228,28 @@ function fillInMostImportantProducts(): void {
  *
  */
 function fillInProcurementCategories(): void {
-  cy.pause();
   cy.get('[data-test="dataPointToggleButton"]').first().click();
   cy.get('[data-test="suppliers-per-country-code"] .p-multiselect').should("exist").click();
+
+  const selectedCountries = [];
+
   cy.get(".p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item")
     .should("exist")
     .each(($item, index) => {
       if (index < 3) {
+        const coutryName = $item[0].innerText;
         cy.wrap($item).click();
-        console.log($item, index);
+        console.log(coutryName);
+        selectedCountries.push(coutryName);
       }
     });
+
+  cy.get('[data-test="supplier-country"]')
+    .should("have.length", 2)
+    .each(($el) => {
+      console.log({ $el });
+    });
+  cy.pause();
 }
 
 /**
