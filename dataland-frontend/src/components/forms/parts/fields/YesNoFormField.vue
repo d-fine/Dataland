@@ -69,11 +69,7 @@ export default defineComponent({
   },
   watch: {
     baseDataPointYesNo(newValue: BaseDataPointYesNo, oldValue: BaseDataPointYesNo) {
-      if (
-        newValue.value === "No" &&
-        oldValue.value === "Yes" &&
-        this.certificateRequiredIfYes
-      ) {
+      if (newValue.value === "No" && oldValue.value === "Yes" && this.certificateRequiredIfYes) {
         (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
       }
     },

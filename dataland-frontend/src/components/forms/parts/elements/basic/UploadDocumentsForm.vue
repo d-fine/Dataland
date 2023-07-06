@@ -60,7 +60,6 @@ import {
   isThereActuallyANewFileSelected,
   removeFileTypeExtension,
 } from "@/utils/FileUploadUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "UploadDocumentsForm",
@@ -88,22 +87,11 @@ export default defineComponent({
     fileNamesForPrefill: {
       type: Array,
     },
-    indexOfReportToRemove: {
-      type: Array,
-    },
   },
   watch: {
     fileNamesForPrefill: {
       handler() {
         this.prefillFileUpload();
-      },
-      deep: true,
-    },
-    indexOfReportToRemove: {
-      handler() {
-        if (this.indexOfReportToRemove) {
-          this.removeDocumentFromDocumentsToUpload(assertDefined(this.indexOfReportToRemove)[0] as number);
-        }
       },
       deep: true,
     },
@@ -138,11 +126,10 @@ export default defineComponent({
     /**
      * Remove document from files uploaded
      * @param indexOfFileToRemove index number of the file to remove
-     * @param deleteCount the number of files to delete
      */
-    removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number, deleteCount = 1) {
+    removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number) {
       ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
-      this.documentsToUpload.splice(indexOfFileToRemove, deleteCount);
+      this.documentsToUpload.splice(indexOfFileToRemove, 1);
       this.emitDocumentsChangedEvent();
     },
 
