@@ -564,7 +564,7 @@
             }
           },
           {
-            "name": "onlyCurrentUserAsUploader",
+            "name": "onlyWithDataFromCurrentUser",
             "in": "query",
             "required": false,
             "schema": {
