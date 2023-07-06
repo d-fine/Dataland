@@ -195,15 +195,7 @@
             :description="companyDataExplanations.sector"
             :is-required="true"
           />
-          <FormKit
-            name="sector"
-            v-model="sector"
-            type="select"
-            placeholder="Please choose"
-            validation="required"
-            validation-label="Sector"
-            :options="gicsSectors"
-          />
+          <FormKit name="sector" v-model="sector" type="select" placeholder="Please choose" :options="gicsSectors" />
 
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>

@@ -26,7 +26,7 @@ describeIf(
       });
     });
 
-    it("Check wether it is possible to add and delete KPIs and send the form successfully", () => {
+    it("Check whether it is possible to add and delete KPIs and send the form successfully", () => {
       uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
         DataTypeEnum.EutaxonomyFinancials,
         testCompany,
