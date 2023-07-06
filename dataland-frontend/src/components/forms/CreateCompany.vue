@@ -190,10 +190,7 @@
 
           <h4>GICS classification</h4>
 
-          <UploadFormHeader
-            :label="companyDataNames.sector"
-            :description="companyDataExplanations.sector"
-          />
+          <UploadFormHeader :label="companyDataNames.sector" :description="companyDataExplanations.sector" />
           <FormKit name="sector" v-model="sector" type="select" placeholder="Please choose" :options="gicsSectors" />
 
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />

@@ -89,26 +89,32 @@ describe(
       });
     });
 
-    describe("Upload and validate EuTaxonomy for financials data", () => {
-      let fixtureDataForEuTaxonomyFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+    describeIf(
+      "Upload and validate EuTaxonomy for financials data",
+      {
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+      },
+      () => {
+        let fixtureDataForEuTaxonomyFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
-      before(function () {
-        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
-          fixtureDataForEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+        before(function () {
+          cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
+            fixtureDataForEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+          });
         });
-      });
 
-      it("Upload eutaxonomy-financials fake-fixtures", () => {
-        prepopulate(fixtureDataForEuTaxonomyFinancials, uploadOneEuTaxonomyFinancialsDatasetViaApi);
-      });
+        it("Upload eutaxonomy-financials fake-fixtures", () => {
+          prepopulate(fixtureDataForEuTaxonomyFinancials, uploadOneEuTaxonomyFinancialsDatasetViaApi);
+        });
 
-      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
-          DataTypeEnum.EutaxonomyFinancials,
-          fixtureDataForEuTaxonomyFinancials.length
-        );
-      });
-    });
+        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+            DataTypeEnum.EutaxonomyFinancials,
+            fixtureDataForEuTaxonomyFinancials.length
+          );
+        });
+      }
+    );
 
     describeIf(
       "Upload and validate EuTaxonomy for non-financials data",
