@@ -40,9 +40,10 @@ export default defineComponent({
      */
     reportingPeriodDataTableContents(): void {
       if (this.mapOfReportingPeriodToActiveDataset) {
-        let key: string;
-        let value: DataMetaInformation;
-        for ([key, value] of this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>) {
+        const sortedReportingPeriodMetaInfoPairs = Array.from(
+          (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries()
+        ).sort((firstEl, secondEl) => parseInt(firstEl[0]) - parseInt(secondEl[0]));
+        for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
           this.dataTableContents.unshift({
             reportingPeriod: key,
             editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,

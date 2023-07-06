@@ -9,7 +9,7 @@ export const detailsCompanyDataTableColumnHeaders = {
     productionSteps: "Production Steps",
     relatedCorporateSupplyChain: "Related Corporate Supply Chain",
   },
-  productCategories: {
+  procurementCategories: {
     procurementCategory: "Procurement Category",
     definitionsOfProductTypeOrService: "Definitions of Product Type or Service",
     suppliersAndCountries: "Number of Direct Suppliers and Countries",

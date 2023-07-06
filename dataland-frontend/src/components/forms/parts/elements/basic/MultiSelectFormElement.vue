@@ -5,6 +5,7 @@
     :placeholder="placeholder"
     :show-toggle-all="false"
     :class="innerClass"
+    :optionValue="optionValue"
     :optionLabel="optionLabel"
     :maxSelectedLabels="3"
   />
@@ -22,6 +23,7 @@
       :name="name"
       v-model="selections"
       outer-class="hidden-input"
+      :ignore="ignore"
     >
       <FormKitMessages />
     </FormKit>
@@ -52,6 +54,9 @@ export default defineComponent({
     selections(newVal) {
       this.$emit("selectedValuesChanged", newVal);
     },
+    modelValue(newVal: []) {
+      this.selections = newVal;
+    },
   },
   props: {
     name: {
@@ -78,8 +83,21 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    optionValue: {
+      type: String,
+      default: "value",
+    },
     optionLabel: {
       type: String,
+      default: "label",
+    },
+    modelValue: {
+      type: Array,
+      default: () => [],
+    },
+    ignore: {
+      type: Boolean,
+      default: false,
     },
   },
 });

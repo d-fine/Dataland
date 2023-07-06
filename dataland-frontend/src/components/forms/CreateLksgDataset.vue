@@ -54,6 +54,11 @@
                           :data-test="field.name"
                           @documentUpdated="updateDocumentList"
                           :ref="field.name"
+                          :existingFieldValues="
+                            field.existingFieldValues
+                              ? field.existingFieldValues(companyAssociatedLksgData.data)
+                              : undefined
+                          "
                         />
                       </FormKit>
                     </div>
