@@ -113,7 +113,7 @@ describe(
     describeIf(
       "Upload and validate EuTaxonomy for non-financials data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
       },
       () => {
         let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
@@ -142,7 +142,7 @@ describe(
     describeIf(
       "Upload and validate Lksg data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
       },
       () => {
         let companiesWithLksgData: Array<FixtureData<LksgData>>;
@@ -166,7 +166,7 @@ describe(
     describeIf(
       "Upload and validate P2p data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
       },
       () => {
         let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
@@ -190,7 +190,7 @@ describe(
     describeIf(
       "Upload and validate Sfdr data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
       },
       () => {
         let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
@@ -214,7 +214,7 @@ describe(
     describeIf(
       "Upload and validate Sme data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
       },
       () => {
         let companiesWithSmeData: Array<FixtureData<SmeData>>;
