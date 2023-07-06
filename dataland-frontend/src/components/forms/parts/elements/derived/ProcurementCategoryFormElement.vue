@@ -18,7 +18,7 @@
             <NaceCodeFormField
               label="Definition Product Type/Service"
               description="..."
-              name="definitionProductTypeService"
+              name="procuredProductTypesAndServicesNaceCodes"
             ></NaceCodeFormField>
           </div>
 
@@ -26,7 +26,7 @@
             <UploadFormHeader label="Order Volume per Procurement %" description="..." :is-required="false" />
             <FormKit
               type="text"
-              name="orderVolume"
+              name="percentageOfTotalProcurement"
               :validation-label="validationLabel ?? label"
               validation="number"
               inner-class="long"

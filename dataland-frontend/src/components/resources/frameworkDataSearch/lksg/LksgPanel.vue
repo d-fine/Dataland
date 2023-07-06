@@ -237,10 +237,10 @@ export default defineComponent({
       const listOfProductCategories = [];
       for (const [procurementCategory, lksgProductCategory] of Object.entries(inputObject)) {
         const definitionsOfProductTypeOrService = function (): string[] | string {
-          if ((lksgProductCategory as LksgProcurementCategory).definitionProductTypeService?.length > 1) {
-            return (lksgProductCategory as LksgProcurementCategory).definitionProductTypeService;
+          if ((lksgProductCategory as LksgProcurementCategory).procuredProductTypesAndServicesNaceCodes?.length > 1) {
+            return (lksgProductCategory as LksgProcurementCategory).procuredProductTypesAndServicesNaceCodes;
           } else {
-            return (lksgProductCategory as LksgProcurementCategory).definitionProductTypeService[0];
+            return (lksgProductCategory as LksgProcurementCategory).procuredProductTypesAndServicesNaceCodes[0];
           }
         };
 
@@ -252,9 +252,9 @@ export default defineComponent({
               Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountryCode ?? {})
             )
           ),
-          orderVolume:
-            (lksgProductCategory as LksgProcurementCategory).orderVolume != null
-              ? String((lksgProductCategory as LksgProcurementCategory).orderVolume)
+            percentageOfTotalProcurement:
+            (lksgProductCategory as LksgProcurementCategory).percentageOfTotalProcurement != null
+              ? String((lksgProductCategory as LksgProcurementCategory).percentageOfTotalProcurement)
               : null,
         });
       }
