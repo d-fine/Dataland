@@ -100,7 +100,7 @@ export default defineComponent({
       kpiKey: string,
       kpiValue: KpiValue,
       subcategory: Subcategory,
-      dataIdOfLksgDataset: string
+      dataIdOfP2pDataset: string
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
 
@@ -111,7 +111,7 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfLksgDataset]: this.reformatValueForDisplay(kpiField, kpiValue) },
+        content: { [dataIdOfP2pDataset]: this.reformatValueForDisplay(kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);

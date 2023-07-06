@@ -1,4 +1,4 @@
-import { PathwaysToParisData } from "@clients/backend";
+import { PathwaysToParisData, P2pSector } from "@clients/backend";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { Category } from "@/utils/GenericFrameworkTypes";
 
@@ -215,7 +215,7 @@ export const p2pDataModel = [ {
   name : "ammonia",
   label : "Ammonia",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.includes(dataModel.ammonia!!),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.Ammonia),
   subcategories : [ {
     name : "decarbonisation",
     label : "Decarbonisation",
@@ -257,7 +257,7 @@ export const p2pDataModel = [ {
   name : "automotive",
   label : "Automotive",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.includes(dataModel.automotive),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.Automotive),
   subcategories : [ {
     name : "energy",
     label : "Energy",
@@ -325,7 +325,7 @@ export const p2pDataModel = [ {
   name : "hvcPlastics",
   label : "HVC Plastics",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => data.general.general.sector.includes(dataModel?.hvcPlastics),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.HvcPlastics),
   subcategories : [ {
     name : "decarbonisation",
     label : "Decarbonisation",
@@ -407,7 +407,7 @@ export const p2pDataModel = [ {
   name : "commercialRealEstate",
   label : "Commercial Real Estate",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => data.general.general.sector.includes(dataModel?.commercialRealEstate),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.CommercialRealEstate),
   subcategories : [ {
     name : "buildingEfficiency",
     label : "Building efficiency",
@@ -469,7 +469,7 @@ export const p2pDataModel = [ {
   name : "residentialRealEstate",
   label : "Residential Real Estate",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => data.general.general.sector.includes(dataModel?.residentialRealEstate),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.ResidentialRealEstate),
   subcategories : [ {
     name : "buildingEfficiency",
     label : "Building efficiency",
@@ -531,7 +531,7 @@ export const p2pDataModel = [ {
   name : "steel",
   label : "Steel",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => data.general.general.sector.includes(dataModel?.steel),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.Steel),
   subcategories : [ {
     name : "energy",
     label : "Energy",
@@ -574,7 +574,7 @@ export const p2pDataModel = [ {
   name : "freightTransportByRoad",
   label : "Freight transport by road",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => data.general.general.sector.includes(dataModel?.freightTransportByRoad),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.FreightTransportByRoad),
   subcategories : [ {
     name : "technology",
     label : "Technology",
@@ -609,7 +609,7 @@ export const p2pDataModel = [ {
   name : "electricityGeneration",
   label : "Electricity generation",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => data.general.general.sector.includes(dataModel?.electricityGeneration),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.ElectricityGeneration),
   subcategories : [ {
     name : "technology",
     label : "Technology",
@@ -654,7 +654,7 @@ export const p2pDataModel = [ {
   name : "livestockFarming",
   label : "Livestock farming",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => data.general.general.sector.includes(dataModel?.livestockFarming),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.LivestockFarming),
   subcategories : [ {
     name : "emissionsFromManureAndFertiliserAndLivestock",
     label : "Emissions from manure and fertiliser and livestock",
@@ -768,7 +768,7 @@ export const p2pDataModel = [ {
   name : "cement",
   label : "Cement",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => data.general.general.sector.includes(dataModel?.cement),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector => p2pSector === P2pSector.Cement),
   subcategories : [ {
     name : "energy",
     label : "Energy",
