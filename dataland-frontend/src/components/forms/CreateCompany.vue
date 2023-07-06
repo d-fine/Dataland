@@ -193,7 +193,6 @@
           <UploadFormHeader
             :label="companyDataNames.sector"
             :description="companyDataExplanations.sector"
-            :is-required="true"
           />
           <FormKit name="sector" v-model="sector" type="select" placeholder="Please choose" :options="gicsSectors" />
 
