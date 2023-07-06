@@ -252,7 +252,7 @@ export default defineComponent({
               Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountryCode ?? {})
             )
           ),
-            percentageOfTotalProcurement:
+          percentageOfTotalProcurement:
             (lksgProductCategory as LksgProcurementCategory).percentageOfTotalProcurement != null
               ? String((lksgProductCategory as LksgProcurementCategory).percentageOfTotalProcurement)
               : null,
