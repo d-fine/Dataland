@@ -89,9 +89,9 @@ function generateProcurementCategory(): LksgProcurementCategory {
     generateArray(() => [generateIso2CountryCode(), valueOrNull(faker.number.int({ min: 0, max: 50 }))!])
   );
   return {
-    definitionProductTypeService: generateArray(() => faker.commerce.productName()),
+    procuredProductTypesAndServicesNaceCodes: generateArray(() => faker.commerce.productName()),
     numberOfSuppliersPerCountryCode: valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
-    orderVolume: valueOrUndefined(randomPercentageValue()),
+    percentageOfTotalProcurement: valueOrUndefined(randomPercentageValue()),
   };
 }
 

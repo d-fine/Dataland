@@ -4251,11 +4251,11 @@
       },
       "LksgProcurementCategory": {
         "required": [
-          "definitionProductTypeService"
+          "procuredProductTypesAndServicesNaceCodes"
         ],
         "type": "object",
         "properties": {
-          "definitionProductTypeService": {
+          "procuredProductTypesAndServicesNaceCodes": {
             "type": "array",
             "items": {
               "type": "string"
@@ -4268,37 +4268,37 @@
               "format": "int32"
             }
           },
-          "orderVolume": {
+          "percentageOfTotalProcurement": {
             "type": "number"
           }
         },
         "example": {
           "Products": {
-            "definitionProductTypeService": [
+            "procuredProductTypesAndServicesNaceCodes": [
               "string"
             ],
             "numberOfSuppliersPerCountryCode": {
               "GB": 2
             },
-            "orderVolume": 0
+            "percentageOfTotalProcurement": 0
           },
           "Services": {
-            "definitionProductTypeService": [
+            "procuredProductTypesAndServicesNaceCodes": [
               "string"
             ],
             "numberOfSuppliersPerCountryCode": {
               "GB": 2
             },
-            "orderVolume": 0
+            "percentageOfTotalProcurement": 0
           },
           "RawMaterials": {
-            "definitionProductTypeService": [
+            "procuredProductTypesAndServicesNaceCodes": [
               "string"
             ],
             "numberOfSuppliersPerCountryCode": {
               "GB": 2
             },
-            "orderVolume": 0
+            "percentageOfTotalProcurement": 0
           }
         }
       },
@@ -4419,31 +4419,31 @@
             },
             "example": {
               "Products": {
-                "definitionProductTypeService": [
+                "procuredProductTypesAndServicesNaceCodes": [
                   "string"
                 ],
                 "numberOfSuppliersPerCountryCode": {
                   "GB": 2
                 },
-                "orderVolume": 0
+                "percentageOfTotalProcurement": 0
               },
               "Services": {
-                "definitionProductTypeService": [
+                "procuredProductTypesAndServicesNaceCodes": [
                   "string"
                 ],
                 "numberOfSuppliersPerCountryCode": {
                   "GB": 2
                 },
-                "orderVolume": 0
+                "percentageOfTotalProcurement": 0
               },
               "RawMaterials": {
-                "definitionProductTypeService": [
+                "procuredProductTypesAndServicesNaceCodes": [
                   "string"
                 ],
                 "numberOfSuppliersPerCountryCode": {
                   "GB": 2
                 },
-                "orderVolume": 0
+                "percentageOfTotalProcurement": 0
               }
             }
           }
