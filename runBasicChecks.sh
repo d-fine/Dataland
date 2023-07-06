@@ -29,7 +29,6 @@ commands[client_e2e]=dataland-e2etests:generateClients
 commands[ktlint]="./gradlew ktlintFormat"
 commands[detekt]="./gradlew detekt"
 commands[backend_unit_tests]="./gradlew dataland-backend:test"
-commands[csv_converter_test]="./gradlew dataland-csvconverter:test"
 commands[e2e_compilation]="./gradlew dataland-e2etests:compileTestKotlin"
 commands[eslint]="npm --prefix ./dataland-frontend run lint"
 commands[cypress_compilation]="npm --prefix ./dataland-frontend run checkcypresscompilation"
@@ -46,7 +45,7 @@ if [[ $mode == full ]]; then
     exit 1
   fi
   setup="clean client_frontend client_e2e"
-  tests+=" backend_unit_tests csv_converter_test frontend_component_tests"
+  tests+=" backend_unit_tests frontend_component_tests"
   echo "Preparing a clean state for running the tests."
 else
   setup=""

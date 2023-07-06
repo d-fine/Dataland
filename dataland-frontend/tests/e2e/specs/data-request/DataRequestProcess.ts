@@ -8,7 +8,6 @@ describe("As a user I expect a data request page where I can download an excel t
     "Do not execute these tests in the CD pipeline to prevent sending emails",
     {
       executionEnvironments: ["developmentLocal", "ci"],
-      dataEnvironments: ["fakeFixtures"],
     },
     (): void => {
       const uploadBoxSelector = "div.p-fileupload-content";

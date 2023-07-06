@@ -22,7 +22,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       "to make it possible to switch between framework views",
     {
       executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-      dataEnvironments: ["fakeFixtures"],
     },
     function (): void {
       const nameOfCompanyAlpha = "company-alpha-with-four-different-framework-types";

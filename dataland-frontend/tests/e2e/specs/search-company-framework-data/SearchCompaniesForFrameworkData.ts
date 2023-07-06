@@ -97,51 +97,82 @@ describe("As a user, I expect the search functionality on the /companies page to
     verifySearchResultTable();
   }
 
-  it(
-    "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
-    { scrollBehavior: false },
+  describeIf(
+    "",
+    {
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    },
     () => {
-      /**
-       * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
-       * @param permIdTextInt the text expected in the tooltip
-       */
-      function checkPermIdToolTip(permIdTextInt: string): void {
-        cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
-        cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
-        cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
-        cy.get(".p-tooltip").should("not.exist");
-      }
+      it(
+        "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
+        { scrollBehavior: false },
+        () => {
+          /**
+           * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
+           * @param permIdTextInt the text expected in the tooltip
+           */
+          function checkPermIdToolTip(permIdTextInt: string): void {
+            cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
+            cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
+            cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
+            cy.get(".p-tooltip").should("not.exist");
+          }
+
+          /**
+           * Verifies that the view button redirects to the view framework data page
+           */
+          function checkViewButtonWorks(): void {
+            cy.get("table.p-datatable-table").contains("td", "VIEW").click().url().should("include", "/frameworks");
+          }
+
+          cy.visitAndCheckAppMount("/companies");
+          verifySearchResultTable();
+          const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
+          const permIdText = "Permanent Identifier (PermID)";
+          checkPermIdToolTip(permIdText);
+          executeCompanySearchWithStandardSearchBar(inputValue);
+          verifySearchResultTable();
+          checkViewButtonWorks();
+          cy.get("h1").contains(inputValue);
+          cy.get("[title=back_button").should("be.visible").click({ force: true });
+          cy.get("input[id=search_bar_top]").should("contain.value", inputValue);
+          checkViewButtonWorks();
+          cy.get("h1").contains(inputValue);
+        }
+      );
+
+      it("Execute a company Search by identifier and assure that the company is found", () => {
+        cy.visitAndCheckAppMount("/companies");
+        const inputValue =
+          companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.identifiers[0].identifierValue;
+        const expectedCompanyName = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
+        executeCompanySearchWithStandardSearchBar(inputValue);
+        cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
+      });
 
       /**
-       * Verifies that the view button redirects to the view framework data page
+       * Returns the first company from the fake fixture that has at least one alternative name
+       * @returns the matching company from the fake fixtures
        */
-      function checkViewButtonWorks(): void {
-        cy.get("table.p-datatable-table").contains("td", "VIEW").click().url().should("include", "/frameworks");
+      function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForNonFinancials> {
+        return assertDefined(
+          companiesWithEuTaxonomyDataForNonFinancials.find((it) => {
+            return (
+              it.companyInformation.companyAlternativeNames !== undefined &&
+              it.companyInformation.companyAlternativeNames.length > 0
+            );
+          })
+        );
       }
 
-      cy.visitAndCheckAppMount("/companies");
-      verifySearchResultTable();
-      const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
-      const permIdText = "Permanent Identifier (PermID)";
-      checkPermIdToolTip(permIdText);
-      executeCompanySearchWithStandardSearchBar(inputValue);
-      verifySearchResultTable();
-      checkViewButtonWorks();
-      cy.get("h1").contains(inputValue);
-      cy.get("[title=back_button").should("be.visible").click({ force: true });
-      cy.get("input[id=search_bar_top]").should("contain.value", inputValue);
-      checkViewButtonWorks();
-      cy.get("h1").contains(inputValue);
+      it("Search for company by its alternative name", () => {
+        const testCompany = getCompanyWithAlternativeName();
+        const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
+        cy.visitAndCheckAppMount("/companies");
+        executeCompanySearchWithStandardSearchBar(searchValue);
+      });
     }
   );
-
-  it("Execute a company Search by identifier and assure that the company is found", () => {
-    cy.visitAndCheckAppMount("/companies");
-    const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.identifiers[0].identifierValue;
-    const expectedCompanyName = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
-    executeCompanySearchWithStandardSearchBar(inputValue);
-    cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
-  });
 
   it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
     const placeholder = "Search company by name or PermID";
@@ -211,33 +242,10 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
-  /**
-   * Returns the first company from the fake fixture that has at least one alternative name
-   * @returns the matching company from the fake fixtures
-   */
-  function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForNonFinancials> {
-    return assertDefined(
-      companiesWithEuTaxonomyDataForNonFinancials.find((it) => {
-        return (
-          it.companyInformation.companyAlternativeNames !== undefined &&
-          it.companyInformation.companyAlternativeNames.length > 0
-        );
-      })
-    );
-  }
-
-  it("Search for company by its alternative name", () => {
-    const testCompany = getCompanyWithAlternativeName();
-    const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
-    cy.visitAndCheckAppMount("/companies");
-    executeCompanySearchWithStandardSearchBar(searchValue);
-  });
-
   describeIf(
     "As a user, I expect substrings of the autocomplete suggestions to be highlighted if they match my search string",
     {
       executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-      dataEnvironments: ["fakeFixtures"],
     },
     () => {
       it("Check if substrings of autocomplete entries are highlighted", { scrollBehavior: false }, () => {
