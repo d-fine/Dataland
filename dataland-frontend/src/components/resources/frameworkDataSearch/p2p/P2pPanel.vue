@@ -94,7 +94,7 @@ export default defineComponent({
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
      * @param subcategory The sub category to which the kpi belongs
-     * @param dataIdOfLksgDataset The value of the date kpi of an LkSG dataset
+     * @param dataIdOfP2pDataset The value of the date kpi of an LkSG dataset
      */
     createKpiDataObjects(
       kpiKey: string,
@@ -138,14 +138,15 @@ export default defineComponent({
             ][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
                 const subcategory = assertDefined(
-                    p2pDataModel
-                        .find((category) => category.name === categoryKey)
-                        ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
+                  p2pDataModel
+                    .find((category) => category.name === categoryKey)
+                    ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
                 );
                 const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
                 if (
-                    this.p2pDataAndMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.data)
-                        .some((singleP2pData) => field.showIf(singleP2pData))
+                  this.p2pDataAndMetaInfo
+                    .map((dataAndMetaInfo) => dataAndMetaInfo.data)
+                    .some((singleP2pData) => field.showIf(singleP2pData))
                 ) {
                   this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataIdOfP2pDataset);
                 }

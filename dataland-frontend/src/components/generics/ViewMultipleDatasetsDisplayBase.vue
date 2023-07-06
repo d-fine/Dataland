@@ -31,9 +31,9 @@
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
             />
             <P2pPanel
-                v-if="dataType === DataTypeEnum.P2p"
-                :company-id="companyId"
-                :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
+              v-if="dataType === DataTypeEnum.P2p"
+              :company-id="companyId"
+              :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
             />
           </div>
         </div>
@@ -80,7 +80,7 @@ import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vu
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: {P2pPanel, DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
+  components: { P2pPanel, DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
   props: {
     companyId: {
       type: String,

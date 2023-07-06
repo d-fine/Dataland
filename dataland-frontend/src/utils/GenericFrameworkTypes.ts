@@ -1,5 +1,5 @@
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import {LksgData, PathwaysToParisData} from "@clients/backend";
+import { LksgData, PathwaysToParisData } from "@clients/backend";
 export interface Category {
   name: string;
   label: string;
