@@ -23,6 +23,7 @@
       :name="name"
       v-model="selections"
       outer-class="hidden-input"
+      :ignore="ignore"
     >
       <FormKitMessages />
     </FormKit>
@@ -52,6 +53,9 @@ export default defineComponent({
   watch: {
     selections(newVal) {
       this.$emit("selectedValuesChanged", newVal);
+    },
+    modelValue(newVal: []) {
+      this.selections = newVal;
     },
   },
   props: {
@@ -85,6 +89,14 @@ export default defineComponent({
     },
     optionLabel: {
       type: String,
+    },
+    modelValue: {
+      type: Array,
+      default: () => [],
+    },
+    ignore: {
+      type: Boolean,
+      default: false,
     },
   },
 });

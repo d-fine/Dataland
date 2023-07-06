@@ -257,6 +257,8 @@ export const lksgDataModel = [
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
+            existingFieldValues: (dataModel: LksgData): object =>
+              dataModel?.general?.productionSpecificOwnOperations?.procurementCategories,
           },
         ],
       },

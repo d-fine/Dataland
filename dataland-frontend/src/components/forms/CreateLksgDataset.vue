@@ -39,6 +39,7 @@
 
                     <div class="col-9 formFields">
                       <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                        <hr />
                         <component
                           v-if="field.showIf(companyAssociatedLksgData.data)"
                           :is="field.component"
@@ -54,6 +55,11 @@
                           :data-test="field.name"
                           @documentUpdated="updateDocumentList"
                           :ref="field.name"
+                          :existingFieldValues="
+                            field.existingFieldValues
+                              ? field.existingFieldValues(companyAssociatedLksgData.data)
+                              : undefined
+                          "
                         />
                       </FormKit>
                     </div>

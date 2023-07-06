@@ -3,13 +3,14 @@
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <MultiSelectFormElement
       :name="name"
+      v-model="internalSelections"
       :validation="validation"
-      :validation-value="validationValue"
-      :validation-label="validationLabel"
+      :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
       :options="options"
       :inner-class="innerClass"
       :optionLabel="optionLabel"
+      :ignore="ignore"
       @selectedValuesChanged="selectedValuesChanged"
     />
   </div>
@@ -26,6 +27,11 @@ export default defineComponent({
   name: "MultiSelectFormField",
   emits: ["selectedValuesChanged"],
   components: { MultiSelectFormElement, UploadFormHeader },
+  data() {
+    return {
+      internalSelections: this.modelValue,
+    };
+  },
   props: {
     ...DropdownOptionFormFieldProps,
     optionLabel: {
@@ -36,11 +42,19 @@ export default defineComponent({
       type: String,
       default: "value",
     },
+    modelValue: {
+      type: Array,
+      default: () => [],
+    },
+    ignore: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     /**
-     * handle changes in selected Countrys
-     * @param newVal - selected countrys new Value
+     * handle changes in selected Countries
+     * @param newVal - selected Countries new Value
      */
     selectedValuesChanged(newVal) {
       this.$emit("selectedValuesChanged", newVal);
