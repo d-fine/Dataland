@@ -1,9 +1,8 @@
 import { faker } from "@faker-js/faker/locale/de";
 import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
-import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
-import { DataPoint, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { generateDataSource } from "./DataSourceFixtures";
+import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNo, randomYesNoNa } from "./YesNoFixtures";
-import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { randomPastDateOrUndefined } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
@@ -129,35 +128,6 @@ function createQualityAndDataSourceAndComment(
     comment = faker.git.commitMessage();
   }
   return { dataSource, comment };
-}
-
-/**
- * Generates the CSV mapping for a single (decimal) datapoint
- * @param dataPointName the name of the datapoint
- * @param dataPointGetter a function that can be used to access the datapoint given the current fixture element
- * @param valueConverter a conversion function for formatting the number (i.e. that converts the decimal number to a percentage string)
- * @returns the CSV mapping for the datapoint
- */
-export function getCsvDataPointMapping<T>(
-  dataPointName: string,
-  dataPointGetter: (row: T) => DataPointBigDecimal | undefined,
-  valueConverter: (input: number | undefined) => string = (x): string => x?.toString() ?? ""
-): Array<DataPoint<T, string | number>> {
-  return [
-    {
-      label: dataPointName,
-      value: (row: T): string | undefined => valueConverter(dataPointGetter(row)?.value),
-    },
-    {
-      label: `${dataPointName} Quality`,
-      value: (row: T): string | undefined => humanizeOrUndefined(dataPointGetter(row)?.quality),
-    },
-    {
-      label: `${dataPointName} Comment`,
-      value: (row: T): string | undefined => dataPointGetter(row)?.comment,
-    },
-    ...getCsvDataSourceMapping<T>(dataPointName, (row: T) => dataPointGetter(row)?.dataSource),
-  ];
 }
 
 /**

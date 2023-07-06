@@ -7,18 +7,10 @@ import {
   InsuranceKpis,
   InvestmentFirmKpis,
 } from "@clients/backend";
-
-import { convertToPercentageString, getCompanyTypeCsvValue, getCompanyTypeHeader } from "@e2e/fixtures/CsvUtils";
-import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
-import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
-import {
-  generateEuTaxonomyWithBaseFields,
-  getCsvSharedEuTaxonomyValuesMapping,
-} from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { DataPoint, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
+import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { parse } from "json2csv";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
@@ -137,98 +129,4 @@ export function generateEligibilityKpis(reports: ReferencedDocuments): Eligibili
     taxonomyEligibleActivity: generateDatapointOrNotReportedAtRandom(taxonomyEligibleEconomicActivity, reports),
     taxonomyNonEligibleActivity: generateDatapointOrNotReportedAtRandom(taxonomyNonEligibleEconomicActivity, reports),
   };
-}
-
-/**
- * Creates a CSV mapping helper for the elgibility kpis of a single company type
- * @param type the company type to generate the CSV mapping for
- * @returns the CSV mapping
- */
-export function getCsvEligibilityKpiMapping(
-  type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
-): Array<DataPoint<FixtureData<EuTaxonomyDataForFinancials>, string | number>> {
-  return [
-    ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-      `Exposures to taxonomy-eligible economic activities ${getCompanyTypeHeader(type)}`,
-      (row) => assertDefined(row.t.eligibilityKpis)[type]?.taxonomyEligibleActivity,
-      convertToPercentageString
-    ),
-    ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-      `Exposures to taxonomy non-eligible economic activities ${getCompanyTypeHeader(type)}`,
-      (row) => assertDefined(row.t.eligibilityKpis)[type]?.taxonomyNonEligibleActivity,
-      convertToPercentageString
-    ),
-    ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-      `Exposures to central governments, central banks, supranational issuers ${getCompanyTypeHeader(type)}`,
-      (row) => assertDefined(row.t.eligibilityKpis)[type]?.banksAndIssuers,
-      convertToPercentageString
-    ),
-    ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-      `Exposures to derivatives ${getCompanyTypeHeader(type)}`,
-      (row) => assertDefined(row.t.eligibilityKpis)[type]?.derivatives,
-      convertToPercentageString
-    ),
-    ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-      `Exposures to non-NFRD entities ${getCompanyTypeHeader(type)}`,
-      (row) => assertDefined(row.t.eligibilityKpis)[type]?.investmentNonNfrd,
-      convertToPercentageString
-    ),
-  ];
-}
-
-/**
- * Exports the eutaxonomy-financials data to CSV
- * @param companyInformationWithEuTaxonomyDataForFinancials the data to export
- * @returns the generated CSV as a string
- */
-export function generateCSVDataForFinancials(
-  companyInformationWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>
-): string {
-  const options = {
-    fields: [
-      ...getCsvCompanyMapping<EuTaxonomyDataForFinancials>(),
-      ...getCsvSharedEuTaxonomyValuesMapping(2),
-      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance),
-      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),
-      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
-      ...getCsvEligibilityKpiMapping(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-        `Trading portfolio & on-demand interbank loans`,
-        (row) => row.t.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-        `Trading portfolio`,
-        (row) => row.t.creditInstitutionKpis?.tradingPortfolio,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-        `On-demand interbank loans`,
-        (row) => row.t.creditInstitutionKpis?.interbankLoans,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-        `Taxonomy-eligible non-life insurance economic activities`,
-        (row) => row.t.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-        `Green Asset Ratio Credit Institution`,
-        (row) => row.t.creditInstitutionKpis?.greenAssetRatio,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
-        `Green Asset Ratio Investment Firm`,
-        (row) => row.t.investmentFirmKpis?.greenAssetRatio,
-        convertToPercentageString
-      ),
-      {
-        label: "FS - company type",
-        value: (row: FixtureData<EuTaxonomyDataForFinancials>) =>
-          row.t.financialServicesTypes?.map((it) => getCompanyTypeCsvValue(it)).join(", "),
-      },
-    ],
-    delimiter: ";",
-  };
-  return parse(companyInformationWithEuTaxonomyDataForFinancials, options);
 }
