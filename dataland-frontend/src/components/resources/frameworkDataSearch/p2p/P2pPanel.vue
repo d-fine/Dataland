@@ -4,7 +4,7 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
-    <LksgCompanyDataTable
+    <P2pCompanyDataTable
       :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
       :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
     />
@@ -106,9 +106,9 @@ export default defineComponent({
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
       const kpiData = {
-        categoryKey: category.name == "masterData" ? `_${category.name}` : category.name,
+        categoryKey: category.name == "general" ? `_${category.name}` : category.name,
         categoryLabel: category.label ? category.label : category.name,
-        subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
+        subcategoryKey: subcategory.name == "general" ? `_${subcategory.name}` : subcategory.name,
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
@@ -119,6 +119,7 @@ export default defineComponent({
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
       }
+      console.log(kpiData)
       this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
     },
 

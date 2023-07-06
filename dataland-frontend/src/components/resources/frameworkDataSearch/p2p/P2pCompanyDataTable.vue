@@ -3,9 +3,9 @@
     <DataTable
       :value="arrayOfKpiDataObjects"
       rowGroupMode="subheader"
-      groupRowsBy="subcategoryKey"
-      dataKey="subcategoryKey"
-      sortField="subcategoryKey"
+      groupRowsBy="categoryKey"
+      dataKey="categoryKey"
+      sortField="categoryKey"
       :sortOrder="1"
       sortMode="single"
       :expandableRowGroups="true"
@@ -106,10 +106,14 @@
         </template>
       </Column>
 
-      <Column field="subcategoryKey"></Column>
+      <Column field="subcategoryKey">
+          <DataTable>
+              <Column>Test</Column>
+          </DataTable>
+      </Column>
       <template #groupheader="slotProps">
-        <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
-          {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
+        <span :data-test="slotProps.data.categoryKey" :id="slotProps.data.categoryKey" style="cursor: pointer">
+          {{ slotProps.data.categoryLabel ? slotProps.data.categoryLabel : slotProps.data.categoryKey }}
         </span>
       </template>
     </DataTable>
