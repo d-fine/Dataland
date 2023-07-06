@@ -32,7 +32,7 @@
               inner-class="long"
             />
           </div>
-          <div class="form-field border-none">
+          <div class="form-field border-none" data-test="suppliers-per-country-code">
             <MultiSelectFormField
               label="Select the countries"
               placeholder="Countries"

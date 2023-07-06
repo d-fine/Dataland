@@ -225,6 +225,23 @@ function fillInMostImportantProducts(): void {
 }
 
 /**
+ *
+ */
+function fillInProcurementCategories(): void {
+  cy.pause();
+  cy.get('[data-test="dataPointToggleButton"]').first().click();
+  cy.get('[data-test="suppliers-per-country-code"] .p-multiselect').should("exist").click();
+  cy.get(".p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item")
+    .should("exist")
+    .each(($item, index) => {
+      if (index < 3) {
+        cy.wrap($item).click();
+        console.log($item, index);
+      }
+    });
+}
+
+/**
  * Uploads a single LKSG data entry for a company via form
  */
 export function uploadLksgDataViaForm(): void {
@@ -238,6 +255,7 @@ export function uploadLksgDataViaForm(): void {
 
   recursivelySelectYesOnAllFields(15);
   fillInMostImportantProducts();
+  fillInProcurementCategories();
 
   uploadDocuments.selectDocumentAtEachFileSelector("test-report");
 
