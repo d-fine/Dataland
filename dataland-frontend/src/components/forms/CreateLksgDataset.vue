@@ -221,7 +221,7 @@ export default defineComponent({
     if (dataId && typeof dataId === "string") {
       void this.loadLKSGData(dataId);
     } else {
-        this.waitingForData = false;
+      this.waitingForData = false;
     }
   },
   methods: {

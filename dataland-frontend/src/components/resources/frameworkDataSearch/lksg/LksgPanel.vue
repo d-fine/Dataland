@@ -23,7 +23,7 @@ import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns 
 import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationLksgData, LksgProcurementCategory } from "@clients/backend";
+import { DataAndMetaInformationLksgData, LksgData, LksgProcurementCategory } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
@@ -132,27 +132,35 @@ export default defineComponent({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(oneLksgDataset.data)) {
-            for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
-              string,
-              object | null
-            ][]) {
-              if (subCategoryObject == null) continue;
-              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
-                const subcategory = assertDefined(
-                  lksgDataModel
-                    .find((category) => category.name === categoryKey)
-                    ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
-                );
-                this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataIdOfLksgDataset);
-              }
-            }
-          }
+          this.addKpisOfOneDatasetToTableModel(oneLksgDataset.data, dataIdOfLksgDataset);
         });
       }
       this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
         this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
       );
+    },
+    /**
+     * Adds the kpis of an LkSG dataset to the model passed to the data table
+     * @param lksgData the LkSG dataset to iterate over
+     * @param dataId the datasets ID
+     */
+    addKpisOfOneDatasetToTableModel(lksgData: LksgData, dataId: string) {
+      for (const [categoryKey, categoryObject] of Object.entries(lksgData)) {
+        for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
+          string,
+          object | null
+        ][]) {
+          if (subCategoryObject == null) continue;
+          for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
+            const subcategory = assertDefined(
+              lksgDataModel
+                .find((category) => category.name === categoryKey)
+                ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
+            );
+            this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataId);
+          }
+        }
+      }
     },
 
     /**
