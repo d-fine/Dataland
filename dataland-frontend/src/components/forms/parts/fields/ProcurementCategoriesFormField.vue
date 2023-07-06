@@ -1,10 +1,24 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <p>tutu</p>
+    {{ WhichFieldsAreFilled.hasOwnProperty(ProcurementCategoryType.Products) }}
     <FormKit type="group" name="procurementCategories">
-      <ProcurementCategoryFormElement :name="ProcurementCategoryType.Products" label="Products" />
-      <ProcurementCategoryFormElement :name="ProcurementCategoryType.RawMaterials" label="Raw Materials" />
-      <ProcurementCategoryFormElement :name="ProcurementCategoryType.Services" label="Services" />
+      <ProcurementCategoryFormElement
+        :existingFieldValuesCategory="WhichFieldsAreFilled[ProcurementCategoryType.Products] ?? undefined"
+        :name="ProcurementCategoryType.Products"
+        label="Products"
+      />
+      <ProcurementCategoryFormElement
+        :existingFieldValuesCategory="WhichFieldsAreFilled[ProcurementCategoryType.RawMaterials] ?? undefined"
+        :name="ProcurementCategoryType.RawMaterials"
+        label="Raw Materials"
+      />
+      <ProcurementCategoryFormElement
+        :existingFieldValuesCategory="WhichFieldsAreFilled[ProcurementCategoryType.Services] ?? undefined"
+        :name="ProcurementCategoryType.Services"
+        label="Services"
+      />
     </FormKit>
   </div>
 </template>
@@ -22,9 +36,15 @@ export default defineComponent({
   data() {
     return {
       ProcurementCategoryType,
+      WhichFieldsAreFilled: this.existingFieldValues ?? {},
     };
   },
-  props: FormFieldProps,
+  props: {
+    ...FormFieldProps,
+    existingFieldValues: {
+      type: Object,
+    },
+  },
   components: {
     UploadFormHeader,
     ProcurementCategoryFormElement,

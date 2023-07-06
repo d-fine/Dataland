@@ -1,7 +1,6 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3">
     <template #title>New Dataset - LkSG</template>
-    {{ companyAssociatedLksgData }}
     <template #content>
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading LkSG data...</p>
@@ -40,6 +39,7 @@
 
                     <div class="col-9 formFields">
                       <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                        <hr />
                         <component
                           v-if="field.showIf(companyAssociatedLksgData.data)"
                           :is="field.component"
@@ -55,6 +55,11 @@
                           :data-test="field.name"
                           @documentUpdated="updateDocumentList"
                           :ref="field.name"
+                          :existingFieldValues="
+                            field.existingFieldValues
+                              ? field.existingFieldValues(companyAssociatedLksgData.data)
+                              : undefined
+                          "
                         />
                       </FormKit>
                     </div>
