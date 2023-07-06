@@ -5,7 +5,7 @@
         <NaceCodeFormField
           label="Definition Product Type/Service"
           description="Define the procured product types/services per category (own operations)"
-          name="definitionProductTypeService"
+          name="procuredProductTypesAndServicesNaceCodes"
         ></NaceCodeFormField>
       </div>
 
@@ -15,7 +15,7 @@
           description="State your order volume per procurement category in the last fiscal year (percentage of total volume) (own operations)"
           :is-required="false"
         />
-        <FormKit type="text" name="orderVolume" validation="number" inner-class="long" />
+        <FormKit type="text" name="percentageOfTotalProcurement" validation="number" inner-class="long" />
       </div>
       <div class="form-field border-none">
         <MultiSelectFormField
