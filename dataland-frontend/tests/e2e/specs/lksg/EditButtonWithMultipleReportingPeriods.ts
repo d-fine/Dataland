@@ -14,7 +14,6 @@ describeIf(
   },
   function () {
     let testData: FixtureData<LksgData>;
-    const testCompany = generateDummyCompanyInformation(`company-for-testing-edit-button-${new Date().getTime()}`);
 
     before(function () {
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
@@ -25,9 +24,9 @@ describeIf(
 
     it("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        const testCompany = generateDummyCompanyInformation(`company-for-testing-edit-button-${new Date().getTime()}`);
         return uploadCompanyViaApi(token, testCompany).then(async (storedCompany) => {
           cy.ensureLoggedIn(admin_name, admin_pw);
-
           await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", testData.t);
           const lksgDatasetFor2021 = await uploadOneLksgDatasetViaApi(
             token,
@@ -51,7 +50,7 @@ describeIf(
 function testEditDataButton(storedCompany: StoredCompany, uploadedDataset: DataMetaInformation): void {
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
 
-  cy.get('[data-test="editDatasetButton"').should("exist").click();
+  cy.get('[data-test="editDatasetButton"').find(".material-icons-outlined").should("exist").click();
   cy.get('[data-test="select-reporting-period-dialog"')
     .should("exist")
     .get('[data-test="reporting-periods"')
