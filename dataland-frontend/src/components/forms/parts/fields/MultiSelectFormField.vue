@@ -1,17 +1,19 @@
 <template>
-  <UploadFormHeader :label="label" :description="description" :is-required="required" />
-  <MultiSelectFormElement
-    :name="name"
-    v-model="internalSelections"
-    :validation="validation"
-    :validation-label="validationLabel ?? label"
-    :placeholder="placeholder"
-    :options="options"
-    :inner-class="innerClass"
-    :optionLabel="optionLabel"
-    :ignore="ignore"
-    @selectedValuesChanged="selectedValuesChanged"
-  />
+  <div class="form-field" :data-test="name">
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <MultiSelectFormElement
+      :name="name"
+      v-model="internalSelections"
+      :validation="validation"
+      :validation-label="validationLabel ?? label"
+      :placeholder="placeholder"
+      :options="options"
+      :inner-class="innerClass"
+      :optionLabel="optionLabel"
+      :ignore="ignore"
+      @selectedValuesChanged="selectedValuesChanged"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -34,6 +36,11 @@ export default defineComponent({
     ...DropdownOptionFormFieldProps,
     optionLabel: {
       type: String,
+      default: "label",
+    },
+    optionValue: {
+      type: String,
+      default: "value",
     },
     modelValue: {
       type: Array,

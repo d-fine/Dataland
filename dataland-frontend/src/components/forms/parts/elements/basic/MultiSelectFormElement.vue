@@ -5,6 +5,7 @@
     :placeholder="placeholder"
     :show-toggle-all="false"
     :class="innerClass"
+    :optionValue="optionValue"
     :optionLabel="optionLabel"
     :maxSelectedLabels="3"
   />
@@ -66,9 +67,13 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    validationValue: {
+      type: String,
+      default: "value",
+    },
     validationLabel: {
       type: String,
-      default: "",
+      default: "label",
     },
     placeholder: {
       type: String,
