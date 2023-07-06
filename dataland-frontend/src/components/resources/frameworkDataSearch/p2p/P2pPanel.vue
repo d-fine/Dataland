@@ -15,12 +15,12 @@
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
+import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/p2p/P2pCompanyDataTable.vue";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
+import {Category, Field, Subcategory} from "@/utils/GenericFrameworkTypes";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataAndMetaInformationPathwaysToParisData } from "@clients/backend";
@@ -29,7 +29,7 @@ import { defineComponent, inject } from "vue";
 
 export default defineComponent({
   name: "P2pPanel",
-  components: { LksgCompanyDataTable },
+  components: { P2pCompanyDataTable },
   data() {
     return {
       firstRender: true,
@@ -100,11 +100,13 @@ export default defineComponent({
       kpiKey: string,
       kpiValue: KpiValue,
       subcategory: Subcategory,
+      category: Category,
       dataIdOfP2pDataset: string
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
-
       const kpiData = {
+          categoryKey: category.name == "masterData" ? `_${category.name}` : category.name,
+          categoryLabel: category.label ? category.label : category.name,
         subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
@@ -142,13 +144,17 @@ export default defineComponent({
                     .find((category) => category.name === categoryKey)
                     ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
                 );
+                  const categoryResult = assertDefined(
+                      p2pDataModel
+                          .find((category) => category.name === categoryKey)
+                  );
                 const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
                 if (
                   this.p2pDataAndMetaInfo
                     .map((dataAndMetaInfo) => dataAndMetaInfo.data)
                     .some((singleP2pData) => field.showIf(singleP2pData))
                 ) {
-                  this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataIdOfP2pDataset);
+                  this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, categoryResult, dataIdOfP2pDataset);
                 }
               }
             }
