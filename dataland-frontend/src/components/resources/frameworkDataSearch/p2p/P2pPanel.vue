@@ -20,7 +20,7 @@ import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2p
 import { ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import {Category, Field, Subcategory} from "@/utils/GenericFrameworkTypes";
+import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataAndMetaInformationPathwaysToParisData } from "@clients/backend";
@@ -94,6 +94,7 @@ export default defineComponent({
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
      * @param subcategory The sub category to which the kpi belongs
+     * @param category category to which the kpi belongs to
      * @param dataIdOfP2pDataset The value of the date kpi of an LkSG dataset
      */
     createKpiDataObjects(
@@ -105,8 +106,8 @@ export default defineComponent({
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
       const kpiData = {
-          categoryKey: category.name == "masterData" ? `_${category.name}` : category.name,
-          categoryLabel: category.label ? category.label : category.name,
+        categoryKey: category.name == "masterData" ? `_${category.name}` : category.name,
+        categoryLabel: category.label ? category.label : category.name,
         subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
@@ -133,28 +134,34 @@ export default defineComponent({
             dataId: dataIdOfP2pDataset,
             reportingPeriod: reportingPeriodOfP2pDataset,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data)) {
+          for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
+            if (categoryObject == null) continue;
             for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
               string,
-              object
+              object | null
             ][]) {
-              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
+              if (subCategoryObject == null) continue;
+              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
+                if (kpiValue == null) continue;
                 const subcategory = assertDefined(
                   p2pDataModel
                     .find((category) => category.name === categoryKey)
                     ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
                 );
-                  const categoryResult = assertDefined(
-                      p2pDataModel
-                          .find((category) => category.name === categoryKey)
-                  );
+                const categoryResult = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
                 const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
                 if (
                   this.p2pDataAndMetaInfo
                     .map((dataAndMetaInfo) => dataAndMetaInfo.data)
                     .some((singleP2pData) => field.showIf(singleP2pData))
                 ) {
-                  this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, categoryResult, dataIdOfP2pDataset);
+                  this.createKpiDataObjects(
+                    kpiKey,
+                    kpiValue as KpiValue,
+                    subcategory,
+                    categoryResult,
+                    dataIdOfP2pDataset
+                  );
                 }
               }
             }
