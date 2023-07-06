@@ -1,4 +1,4 @@
-import { PathwaysToParisData } from "@clients/backend";
+import {P2pSector, PathwaysToParisData} from "@clients/backend";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { Category } from "@/utils/GenericFrameworkTypes";
 
@@ -215,7 +215,7 @@ export const p2pDataModel = [ {
   name : "ammonia",
   label : "Ammonia",
   color : "green",
-  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.includes(dataModel.ammonia!!),
+  showIf : (dataModel: PathwaysToParisData): boolean => dataModel.general.general.sector.some(p2pSector=> p2pSector.Ammonia),
   subcategories : [ {
     name : "decarbonisation",
     label : "Decarbonisation",
