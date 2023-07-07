@@ -2,21 +2,9 @@
   <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit type="group" name="procurementCategories">
-      <ProcurementCategoryFormElement
-        :existingFieldValuesCategory="WhichFieldsAreFilled[ProcurementCategoryType.Products] ?? undefined"
-        :name="ProcurementCategoryType.Products"
-        label="Products"
-      />
-      <ProcurementCategoryFormElement
-        :existingFieldValuesCategory="WhichFieldsAreFilled[ProcurementCategoryType.RawMaterials] ?? undefined"
-        :name="ProcurementCategoryType.RawMaterials"
-        label="Raw Materials"
-      />
-      <ProcurementCategoryFormElement
-        :existingFieldValuesCategory="WhichFieldsAreFilled[ProcurementCategoryType.Services] ?? undefined"
-        :name="ProcurementCategoryType.Services"
-        label="Services"
-      />
+      <ProcurementCategoryFormElement :name="ProcurementCategoryType.Products" label="Products" />
+      <ProcurementCategoryFormElement :name="ProcurementCategoryType.RawMaterials" label="Raw Materials" />
+      <ProcurementCategoryFormElement :name="ProcurementCategoryType.Services" label="Services" />
     </FormKit>
   </div>
 </template>
@@ -26,7 +14,7 @@ import { FormKit } from "@formkit/vue";
 import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
-import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import ProcurementCategoryFormElement from "@/components/forms/parts/elements/derived/ProcurementCategoryFormElement.vue";
 
 export default defineComponent({
@@ -34,15 +22,9 @@ export default defineComponent({
   data() {
     return {
       ProcurementCategoryType,
-      WhichFieldsAreFilled: this.existingFieldValues ?? {},
     };
   },
-  props: {
-    ...FormFieldProps,
-    existingFieldValues: {
-      type: Object,
-    },
-  },
+  props: BaseFormFieldProps,
   components: {
     UploadFormHeader,
     ProcurementCategoryFormElement,

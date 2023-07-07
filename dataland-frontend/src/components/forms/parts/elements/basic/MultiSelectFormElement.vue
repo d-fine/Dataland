@@ -35,29 +35,34 @@ import { ComponentPropsOptions, defineComponent, ref } from "vue";
 import { FormKit, FormKitMessages } from "@formkit/vue";
 import MultiSelect from "primevue/multiselect";
 import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "MultiSelectFormElement",
-  emits: ["selectedValuesChanged"],
   components: { FormKit, MultiSelect, FormKitMessages },
   setup() {
     return {
       formkitMultiSelectFormElement: ref(),
     };
   },
-  data() {
-    return {
-      selections: [] as string[],
-    };
-  },
-  watch: {
-    selections(newVal) {
-      this.$emit("selectedValuesChanged", newVal);
+  emits: ["update:selectedItemsBind"],
+  computed: {
+    selections: {
+      get(): Array<DropdownOption> {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return this.selectedItemsBind;
+      },
+      set(newValue: Array<DropdownOption>) {
+        this.$emit("update:selectedItemsBind", newValue);
+      },
     },
-    modelValue(newVal: []) {
-      this.selections = newVal;
-    },
   },
-  props: { ...MultiSelectFormProps } as Readonly<ComponentPropsOptions>,
+  props: {
+    ...MultiSelectFormProps,
+    selectedItemsBind: {
+      type: Array,
+      default: () => [],
+    },
+  } as Readonly<ComponentPropsOptions>,
 });
 </script>

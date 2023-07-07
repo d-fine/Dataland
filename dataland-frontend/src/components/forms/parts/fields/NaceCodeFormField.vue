@@ -28,7 +28,7 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { defineComponent, ref } from "vue";
 import { FormKit, FormKitMessages } from "@formkit/vue";
 import NaceCodeSelector from "@/components/forms/parts/elements/derived/NaceCodeSelector.vue";
-import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "NaceCodeFormField",
@@ -38,11 +38,24 @@ export default defineComponent({
       formKitNaceCodeInput: ref(),
     };
   },
-  data() {
-    return {
-      selectedNaceCodes: [] as Array<string>,
-    };
+
+  computed: {
+    selectedNaceCodes: {
+      get(): [] {
+        return this.selectedNaceCodesBind;
+      },
+      set(newValue: []) {
+        this.$emit("update:selectedNaceCodesBind", newValue);
+      },
+    },
   },
-  props: FormFieldProps,
+
+  props: {
+    ...BaseFormFieldProps,
+    selectedNaceCodesBind: {
+      type: Array,
+      default: () => [],
+    },
+  },
 });
 </script>

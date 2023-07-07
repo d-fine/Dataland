@@ -54,11 +54,6 @@
                           :data-test="field.name"
                           @documentUpdated="updateDocumentList"
                           :ref="field.name"
-                          :existingFieldValues="
-                            field.existingFieldValues
-                              ? field.existingFieldValues(companyAssociatedLksgData.data)
-                              : undefined
-                          "
                         />
                       </FormKit>
                     </div>
@@ -98,7 +93,7 @@
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, computed } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
@@ -293,6 +288,13 @@ export default defineComponent({
         this.documents.delete(fieldName);
       }
     },
+  },
+  provide() {
+    return {
+      procurementCategories: computed(() => {
+        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations?.procurementCategories;
+      }),
+    };
   },
 });
 </script>

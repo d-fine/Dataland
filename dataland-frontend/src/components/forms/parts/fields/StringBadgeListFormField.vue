@@ -45,7 +45,7 @@
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import PrimeButton from "primevue/button";
 
 export default defineComponent({
@@ -58,7 +58,7 @@ export default defineComponent({
     };
   },
   props: {
-    ...FormFieldProps,
+    ...BaseFormFieldProps,
     dataTestAddButton: {
       type: String,
       default: "addButton",
