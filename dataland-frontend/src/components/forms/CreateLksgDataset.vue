@@ -29,7 +29,7 @@
                 :name="category.name"
               >
                 <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
-                  <template v-if="isSubcategoryVisible.get(subcategory) ?? true">
+                  <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
                       <div :class="`p-badge badge-${category.color}`">
@@ -81,7 +81,7 @@
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
                   <a
-                    v-if="isSubcategoryVisible.get(subcategory) ?? true"
+                    v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
                     >{{ subcategory.label }}</a
                   >
@@ -202,7 +202,7 @@ export default defineComponent({
         // IGNORED
       },
     },
-    isSubcategoryVisible(): Map<Subcategory, boolean> {
+    subcategoryVisibility(): Map<Subcategory, boolean> {
       const map = new Map<Subcategory, boolean>();
       for (const category of this.lksgDataModel) {
         for (const subcategory of category.subcategories) {
