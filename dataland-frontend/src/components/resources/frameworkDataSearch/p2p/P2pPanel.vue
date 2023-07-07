@@ -4,41 +4,16 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
-    <P2pCompanyDataTable
-      :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
-      :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
-    />
-  </div>
-  <div>
-      <p>Collapsible Set:</p>
-      <button type="button" class="collapsible">Open Section 1</button>
-      <div class="content">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index">
+      <a @click="toggleExpansion(index)">{{ arrayOfKpiDataObject[0] }}</a>
+      <div v-show="isExpanded(index)">
+        <P2pCompanyDataTable
+          :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
+          :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+        />
       </div>
-      <button type="button" class="collapsible">Open Section 2</button>
-      <div class="content">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      </div>
-      <button type="button" class="collapsible">Open Section 3</button>
-      <div class="content">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      </div>
-  </div>
-  <div>
-      <div >
-          <span>Test Test Test</span>
-          <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index">
-
-              <a @click="toggleExpansion(index)" >{{arrayOfKpiDataObject[0] }}</a>
-              <div v-show="isExpanded(index)">
-                  <P2pCompanyDataTable
-                      :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
-                      :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
-                  />
-          </div>
-              <hr>
-          </div>
-      </div>
+      <hr />
+    </div>
   </div>
 </template>
 
@@ -54,7 +29,7 @@ import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns 
 import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {DataAndMetaInformationPathwaysToParisData, PathwaysToParisData} from "@clients/backend";
+import { DataAndMetaInformationPathwaysToParisData, PathwaysToParisData } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 
@@ -65,17 +40,17 @@ export default defineComponent({
     return {
       firstRender: true,
       waitingForData: true,
-        testData: null as PathwaysToParisData | null | undefined,
-        resultKpiData: null as KpiDataObject,
-        categoryName: String(),
+      testData: null as PathwaysToParisData | null | undefined,
+      resultKpiData: null as KpiDataObject,
+      categoryName: String(),
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
       listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
-        listOfDataObjects: [] as Array<KpiDataObject>,
-        mapOfKpiKeysToDataObjectsArrays: new Map() as Map<string,Array<KpiDataObject>>,
-        heading: "Plan Communications",
-        // isExpanded: false,
-        expandedGroup: []
+      listOfDataObjects: [] as Array<KpiDataObject>,
+      mapOfKpiKeysToDataObjectsArrays: new Map() as Map<string, Array<KpiDataObject>>,
+      heading: "Plan Communications",
+      // isExpanded: false,
+      expandedGroup: [],
     };
   },
   props: PanelProps,
@@ -114,7 +89,7 @@ export default defineComponent({
           const singleP2pData = (
             await p2pDataControllerApi.getCompanyAssociatedP2pData(this.singleDataMetaInfoToDisplay.dataId)
           ).data.data;
-            this.testData = singleP2pData
+          this.testData = singleP2pData;
           this.p2pDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleP2pData }];
         } else {
           this.p2pDataAndMetaInfo = (
@@ -123,7 +98,6 @@ export default defineComponent({
         }
         this.convertP2pDataToFrontendFormat();
         this.waitingForData = false;
-
       } catch (error) {
         console.error(error);
       }
@@ -160,7 +134,7 @@ export default defineComponent({
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
       }
       this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
-      this.resultKpiData = kpiData
+      this.resultKpiData = kpiData;
       //methode die distinkte category aus der map raus zieht
       //mit categories die subcategories rausziehen (einfiltern der Map nach Kategorien)
     },
@@ -189,7 +163,7 @@ export default defineComponent({
           });
           for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
-              this.listOfDataObjects = []
+            this.listOfDataObjects = [];
             //categories einsammeln
             for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
               string,
@@ -204,7 +178,7 @@ export default defineComponent({
                     ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
                 );
                 const categoryResult = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
-                this.categoryName = categoryResult.label.toString()
+                this.categoryName = categoryResult.label.toString();
                 const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
                 if (
                   this.p2pDataAndMetaInfo
@@ -218,20 +192,19 @@ export default defineComponent({
                     categoryResult,
                     dataIdOfP2pDataset
                   );
-                    this.listOfDataObjects.push(this.resultKpiData)
+                  this.listOfDataObjects.push(this.resultKpiData);
                 }
               }
             }
 
-            this.mapOfKpiKeysToDataObjectsArrays.set(this.categoryName, this.listOfDataObjects)
-
+            this.mapOfKpiKeysToDataObjectsArrays.set(this.categoryName, this.listOfDataObjects);
           }
-            console.log(this.mapOfKpiKeysToDataObjectsArrays)
-            const test = this.mapOfKpiKeysToDataObjectsArrays.get(this.categoryName)
-            console.log(test)
+          console.log(this.mapOfKpiKeysToDataObjectsArrays);
+          const test = this.mapOfKpiKeysToDataObjectsArrays.get(this.categoryName);
+          console.log(test);
         });
       }
-        //TODO check if the old map mapOfKpiKeysToDataObjects is still necessary
+      //TODO check if the old map mapOfKpiKeysToDataObjects is still necessary
       this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
         this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
       );
@@ -296,53 +269,52 @@ export default defineComponent({
 
       return returnValue ?? kpiValue;
     },
-      isExpanded(key) {
-          return this.expandedGroup.indexOf(key) !== -1
-      },
-      toggleExpansion(key) {
-          if (this.isExpanded(key))
-              this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
-          else
-              this.expandedGroup.push(key);
-
+    isExpanded(key) {
+      return this.expandedGroup.indexOf(key) !== -1;
+    },
+    toggleExpansion(key) {
+      if (this.isExpanded(key)) this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
+      else this.expandedGroup.push(key);
+    },
   },
-},});
-let coll = document.getElementsByClassName("collapsible");
+});
+const coll = document.getElementsByClassName("collapsible");
 let i;
 
 for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        let content = this.nextElementSibling;
-        if (content.style.display === "block") {
-            content.style.display = "none";
-        } else {
-            content.style.display = "block";
-        }
-    });
+  coll[i].addEventListener("click", function () {
+    this.classList.toggle("active");
+    const content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
 }
 </script>
 <style scoped>
 .collapsible {
-    background-color: #777;
-    color: white;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
 }
 
-.active, .collapsible:hover {
-    background-color: #555;
+.active,
+.collapsible:hover {
+  background-color: #555;
 }
 
 .content {
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    background-color: #f1f1f1;
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
 }
 </style>

@@ -107,9 +107,9 @@
       </Column>
 
       <Column field="subcategoryKey">
-          <DataTable>
-              <Column>Test</Column>
-          </DataTable>
+        <DataTable>
+          <Column>Test</Column>
+        </DataTable>
       </Column>
       <template #groupheader="slotProps">
         <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
