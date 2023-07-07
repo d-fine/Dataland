@@ -14,7 +14,7 @@
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
-import { OptionsFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { OptionsFormFieldProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
 
 export default defineComponent({
   name: "RadioButtonsFormField",

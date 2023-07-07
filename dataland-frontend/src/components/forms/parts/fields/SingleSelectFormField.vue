@@ -16,7 +16,7 @@
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
 
 export default defineComponent({
   name: "SingleSelectFormField",

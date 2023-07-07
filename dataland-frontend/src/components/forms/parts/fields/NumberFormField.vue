@@ -16,7 +16,7 @@
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
+import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/BaseFormFieldProps";
 
 export default defineComponent({
   name: "NumberFormField",

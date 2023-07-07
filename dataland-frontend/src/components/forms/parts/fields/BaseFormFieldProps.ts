@@ -38,27 +38,61 @@ export const YesNoFormFieldProps = Object.assign(deepCopyObject(BaseFormFieldPro
     default: false,
   },
 }) as Readonly<ComponentPropsOptions>;
+
 export const FormFieldPropsWithPlaceholder = Object.assign(deepCopyObject(BaseFormFieldProps), {
   placeholder: {
     type: String,
     default: "",
   },
 }) as Readonly<ComponentPropsOptions>;
+
 export const DateFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
   todayAsMax: {
     type: Boolean,
     default: false,
   },
 }) as Readonly<ComponentPropsOptions>;
+
 export const DropdownOptionFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
   options: {
     type: Array as () => Array<DropdownOption> | undefined,
     required: true,
   },
 }) as Readonly<ComponentPropsOptions>;
+
 export const OptionsFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
   options: {
     type: Object,
     required: true,
+  },
+}) as Readonly<ComponentPropsOptions>;
+
+export const SingleSelectFormElementProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
+  options: {
+    type: Array as () => Array<DropdownOption>,
+    required: true,
+  },
+}) as Readonly<ComponentPropsOptions>;
+
+export const MultiSelectFormElementProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
+  options: {
+    type: Array as () => Array<DropdownOption>,
+    required: true,
+  },
+  optionValue: {
+    type: String,
+    default: "value",
+  },
+  optionLabel: {
+    type: String,
+    default: "label",
+  },
+  modelValue: {
+    type: Array,
+    default: () => [],
+  },
+  ignore: {
+    type: Boolean,
+    default: false,
   },
 }) as Readonly<ComponentPropsOptions>;

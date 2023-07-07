@@ -24,7 +24,7 @@
 import ProcurementCategoryFormElementFields from "@/components/forms/parts/elements/derived/ProcurementCategoryFormElementFields.vue";
 import { defineComponent, KeepAlive } from "vue";
 import InputSwitch from "primevue/inputswitch";
-import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { FormFieldProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
 
 export default defineComponent({
   name: "ProcurementCategoryFormElement",
