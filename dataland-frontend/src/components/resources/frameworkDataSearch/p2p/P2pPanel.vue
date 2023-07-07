@@ -62,9 +62,13 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
         testData: null as PathwaysToParisData | null | undefined,
+        resultKpiData: null as KpiDataObject,
+        categoryName: String(),
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
       listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
+        listOfDataObjects: [] as Array<KpiDataObject>,
+        mapOfKpiKeysToDataObjectsArrays: new Map() as Map<string,Array<KpiDataObject>>,
         heading: "Plan Communications",
         // isExpanded: false,
         expandedGroup: []
@@ -152,15 +156,21 @@ export default defineComponent({
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
       }
       this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
+      this.resultKpiData = kpiData
       //methode die distinkte category aus der map raus zieht
       //mit categories die subcategories rausziehen (einfiltern der Map nach Kategorien)
     },
-    convertToCategoryMap(mapOfKpiKeysToDataObjects: Map<string, KpiDataObject>): void{
+    /*convertToCategoryMap(mapOfKpiKeysToDataObjects: Map<string, KpiDataObject>): void{
+        console.log(this.mapOfKpiKeysToDataObjects)
          for (const kpiKey in mapOfKpiKeysToDataObjects) {
+          const categoryName = mapOfKpiKeysToDataObjects.get(kpiKey).categoryLabel
+             this.mapOfKpiKeysToDataObjectsArrays.set(categoryName, mapOfKpiKeysToDataObjects.get(kpiKey))
 
 
          }
+         console.log(this.mapOfKpiKeysToDataObjectsArrays)
     },
+    */
     /**
      * Retrieves and converts the stored array of LkSG datasets in order to make it displayable in the frontend.
      */
@@ -175,6 +185,7 @@ export default defineComponent({
           });
           for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
+              this.listOfDataObjects = []
             //categories einsammeln
             for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
               string,
@@ -189,6 +200,7 @@ export default defineComponent({
                     ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
                 );
                 const categoryResult = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
+                this.categoryName = categoryResult.label.toString()
                 const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
                 if (
                   this.p2pDataAndMetaInfo
@@ -202,12 +214,17 @@ export default defineComponent({
                     categoryResult,
                     dataIdOfP2pDataset
                   );
+                    this.listOfDataObjects.push(this.resultKpiData)
                 }
               }
             }
+
+            this.mapOfKpiKeysToDataObjectsArrays.set(this.categoryName, this.listOfDataObjects)
+              console.log(this.mapOfKpiKeysToDataObjectsArrays)
           }
         });
       }
+        //this.convertToCategoryMap(this.mapOfKpiKeysToDataObjects)
       this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
         this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
       );
