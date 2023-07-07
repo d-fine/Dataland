@@ -22,7 +22,7 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { defineComponent } from "vue";
 
 import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
+import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "MultiSelectFormField",

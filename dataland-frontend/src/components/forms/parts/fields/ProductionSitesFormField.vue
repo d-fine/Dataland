@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { FormFieldProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
+import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import FormListFormField from "@/components/forms/parts/fields/FormListFormField.vue";
 
 export default defineComponent({

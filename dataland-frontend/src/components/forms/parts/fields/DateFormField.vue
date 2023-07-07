@@ -15,7 +15,7 @@
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import DateFormElement from "@/components/forms/parts/elements/basic/DateFormElement.vue";
-import { DateFormFieldProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
+import { DateFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "DateFormField",

@@ -13,7 +13,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { SingleSelectFormElementProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
+import { SingleSelectFormElementProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "SingleSelectFormElement",

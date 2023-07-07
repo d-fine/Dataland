@@ -28,7 +28,7 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { defineComponent, ref } from "vue";
 import { FormKit, FormKitMessages } from "@formkit/vue";
 import NaceCodeSelector from "@/components/forms/parts/elements/derived/NaceCodeSelector.vue";
-import { FormFieldProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
+import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "NaceCodeFormField",

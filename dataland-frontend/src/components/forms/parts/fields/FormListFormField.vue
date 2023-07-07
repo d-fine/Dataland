@@ -33,7 +33,7 @@ import { defineComponent } from "vue";
 import ProductFormElement from "@/components/forms/parts/elements/derived/ProductFormElement.vue";
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormFieldProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
+import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "FormListFormField",

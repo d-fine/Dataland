@@ -34,7 +34,7 @@
 import { defineComponent, ref } from "vue";
 import { FormKit, FormKitMessages } from "@formkit/vue";
 import MultiSelect from "primevue/multiselect";
-import { MultiSelectFormElementProps } from "@/components/forms/parts/fields/BaseFormFieldProps";
+import { MultiSelectFormElementProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "MultiSelectFormElement",
