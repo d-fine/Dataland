@@ -2,7 +2,7 @@ import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { deepCopyObject, ObjectType } from "@/utils/UpdateObjectUtils";
 import { ComponentPropsOptions } from "vue";
 
-export const FormFieldProps = {
+export const BaseFormFieldProps = {
   name: {
     type: String,
     required: true,
@@ -32,13 +32,13 @@ export const FormFieldProps = {
   },
 };
 
-export const YesNoFormFieldProps = Object.assign(deepCopyObject(FormFieldProps), {
+export const YesNoFormFieldProps = Object.assign(deepCopyObject(BaseFormFieldProps), {
   certificateRequiredIfYes: {
     type: Boolean,
     default: false,
   },
 }) as Readonly<ComponentPropsOptions>;
-export const FormFieldPropsWithPlaceholder = Object.assign(deepCopyObject(FormFieldProps), {
+export const FormFieldPropsWithPlaceholder = Object.assign(deepCopyObject(BaseFormFieldProps), {
   placeholder: {
     type: String,
     default: "",
