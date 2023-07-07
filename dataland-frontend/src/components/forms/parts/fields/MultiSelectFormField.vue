@@ -9,6 +9,7 @@
       :placeholder="placeholder"
       :options="options"
       :inner-class="innerClass"
+      :optionValue="optionValue"
       :optionLabel="optionLabel"
       :ignore="ignore"
       @selectedValuesChanged="selectedValuesChanged"

@@ -67,13 +67,9 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    validationValue: {
-      type: String,
-      default: "value",
-    },
     validationLabel: {
       type: String,
-      default: "label",
+      default: "",
     },
     placeholder: {
       type: String,
@@ -87,8 +83,13 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    optionValue: {
+      type: String,
+      default: "value",
+    },
     optionLabel: {
       type: String,
+      default: "label",
     },
     modelValue: {
       type: Array,

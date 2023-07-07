@@ -145,13 +145,15 @@ export default defineComponent({
      * @param dataId the datasets ID
      */
     addKpisOfOneDatasetToTableModel(lksgData: LksgData, dataId: string) {
-      for (const [categoryKey, categoryObject] of Object.entries(lksgData)) {
+      for (const [categoryKey, categoryObject] of Object.entries(lksgData) as [string, object | null]) {
+        if (categoryObject == null) continue;
         for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
           string,
           object | null
         ][]) {
           if (subCategoryObject == null) continue;
           for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
+            if (kpiValue == null) continue;
             const subcategory = assertDefined(
               lksgDataModel
                 .find((category) => category.name === categoryKey)
@@ -252,7 +254,7 @@ export default defineComponent({
               Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountryCode ?? {})
             )
           ),
-            percentageOfTotalProcurement:
+          percentageOfTotalProcurement:
             (lksgProductCategory as LksgProcurementCategory).percentageOfTotalProcurement != null
               ? String((lksgProductCategory as LksgProcurementCategory).percentageOfTotalProcurement)
               : null,
