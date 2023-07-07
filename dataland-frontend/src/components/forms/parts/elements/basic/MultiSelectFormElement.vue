@@ -31,10 +31,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { ComponentPropsOptions, defineComponent, ref } from "vue";
 import { FormKit, FormKitMessages } from "@formkit/vue";
 import MultiSelect from "primevue/multiselect";
-import { MultiSelectFormElementProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "MultiSelectFormElement",
@@ -58,6 +58,6 @@ export default defineComponent({
       this.selections = newVal;
     },
   },
-  props: { ...MultiSelectFormElementProps },
+  props: { ...MultiSelectFormProps } as Readonly<ComponentPropsOptions>,
 });
 </script>

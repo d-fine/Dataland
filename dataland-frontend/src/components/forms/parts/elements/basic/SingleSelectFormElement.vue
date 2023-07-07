@@ -11,13 +11,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { ComponentPropsOptions, defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { SingleSelectFormElementProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "SingleSelectFormElement",
   components: { FormKit },
-  props: { ...SingleSelectFormElementProps },
+  props: { ...DropdownOptionFormFieldProps } as Readonly<ComponentPropsOptions>,
 });
 </script>

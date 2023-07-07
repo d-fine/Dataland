@@ -67,14 +67,7 @@ export const OptionsFormFieldProps = Object.assign(deepCopyObject(FormFieldProps
   },
 }) as Readonly<ComponentPropsOptions>;
 
-export const SingleSelectFormElementProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
-  options: {
-    type: Array as () => Array<DropdownOption>,
-    required: true,
-  },
-}) as Readonly<ComponentPropsOptions>;
-
-export const MultiSelectFormElementProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
+export const MultiSelectFormProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
   options: {
     type: Array as () => Array<DropdownOption>,
     required: true,
@@ -94,5 +87,9 @@ export const MultiSelectFormElementProps = Object.assign(deepCopyObject(FormFiel
   ignore: {
     type: Boolean,
     default: false,
+  },
+  innerClass: {
+    type: String,
+    default: "",
   },
 }) as Readonly<ComponentPropsOptions>;

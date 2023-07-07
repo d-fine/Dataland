@@ -19,10 +19,10 @@
 
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent } from "vue";
+import { ComponentPropsOptions, defineComponent } from "vue";
 
 import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "MultiSelectFormField",
@@ -33,25 +33,7 @@ export default defineComponent({
       internalSelections: this.modelValue,
     };
   },
-  props: {
-    ...DropdownOptionFormFieldProps,
-    optionLabel: {
-      type: String,
-      default: "label",
-    },
-    optionValue: {
-      type: String,
-      default: "value",
-    },
-    modelValue: {
-      type: Array,
-      default: () => [],
-    },
-    ignore: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: { ...MultiSelectFormProps } as Readonly<ComponentPropsOptions>,
   methods: {
     /**
      * handle changes in selected Countries
