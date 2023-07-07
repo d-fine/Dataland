@@ -9,6 +9,33 @@
       :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
     />
   </div>
+  <div>
+      <p>Collapsible Set:</p>
+      <button type="button" class="collapsible">Open Section 1</button>
+      <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      </div>
+      <button type="button" class="collapsible">Open Section 2</button>
+      <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      </div>
+      <button type="button" class="collapsible">Open Section 3</button>
+      <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      </div>
+  </div>
+  <div>
+      <div >
+          <span>Test Test Test</span>
+          <div v-for="(category, key) in testData">
+              <a @click="toggleExpansion(key)" >{{category}}</a>
+              <ul v-show="isExpanded(key)">
+              <li>{{category}}</li>
+          </ul>
+              <hr>
+          </div>
+      </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,7 +50,7 @@ import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns 
 import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationPathwaysToParisData } from "@clients/backend";
+import {DataAndMetaInformationPathwaysToParisData, PathwaysToParisData} from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 
@@ -34,9 +61,13 @@ export default defineComponent({
     return {
       firstRender: true,
       waitingForData: true,
+        testData: null as PathwaysToParisData | null | undefined,
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
       listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
+        heading: "Plan Communications",
+        // isExpanded: false,
+        expandedGroup: []
     };
   },
   props: PanelProps,
@@ -75,7 +106,7 @@ export default defineComponent({
           const singleP2pData = (
             await p2pDataControllerApi.getCompanyAssociatedP2pData(this.singleDataMetaInfoToDisplay.dataId)
           ).data.data;
-
+            this.testData = singleP2pData
           this.p2pDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleP2pData }];
         } else {
           this.p2pDataAndMetaInfo = (
@@ -84,6 +115,7 @@ export default defineComponent({
         }
         this.convertP2pDataToFrontendFormat();
         this.waitingForData = false;
+
       } catch (error) {
         console.error(error);
       }
@@ -119,10 +151,16 @@ export default defineComponent({
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
       }
-      console.log(kpiData)
       this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
+      //methode die distinkte category aus der map raus zieht
+      //mit categories die subcategories rausziehen (einfiltern der Map nach Kategorien)
     },
+    convertToCategoryMap(mapOfKpiKeysToDataObjects: Map<string, KpiDataObject>): void{
+         for (const kpiKey in mapOfKpiKeysToDataObjects) {
 
+
+         }
+    },
     /**
      * Retrieves and converts the stored array of LkSG datasets in order to make it displayable in the frontend.
      */
@@ -137,6 +175,7 @@ export default defineComponent({
           });
           for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
+            //categories einsammeln
             for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
               string,
               object | null
@@ -233,6 +272,53 @@ export default defineComponent({
 
       return returnValue ?? kpiValue;
     },
+      isExpanded(key) {
+          return this.expandedGroup.indexOf(key) !== -1
+      },
+      toggleExpansion(key) {
+          if (this.isExpanded(key))
+              this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
+          else
+              this.expandedGroup.push(key);
+
   },
-});
+},});
+let coll = document.getElementsByClassName("collapsible");
+let i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        let content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+}
 </script>
+<style scoped>
+.collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.active, .collapsible:hover {
+    background-color: #555;
+}
+
+.content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+</style>
