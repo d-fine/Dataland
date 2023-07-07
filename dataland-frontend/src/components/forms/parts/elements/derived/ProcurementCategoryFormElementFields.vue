@@ -17,7 +17,7 @@
         />
         <FormKit type="text" name="orderVolume" validation="number" inner-class="long" />
       </div>
-      <div class="form-field border-none">
+      <div class="form-field border-none" data-test="suppliersPerCountryCode">
         <MultiSelectFormField
           label="Sourcing Country per Category"
           placeholder="Countries"
@@ -37,30 +37,34 @@
             v-if="selectedCountries.length > 0"
             label="Number of Direct Supliers"
             description="State the number of direct suppliers per procurement category and country (own operations)"
+            data-test="directSuppliersHeader"
             :is-required="false"
           />
         </div>
         <FormKit type="group" name="numberOfSuppliersPerCountryCode" label="Suppliers Per Country">
-          <div v-for="el in selectedCountries" :key="el.label">
-            <div class="justify-content-between flex align-items-center">
-              <h5>{{ removeWordFromPhrase(`(${el.value})`, el.label) }}</h5>
-              <!--            <FormKit type="text" :name="el.value" :modelValue="el.value" data-test="country" />-->
-              <div class="justify-content-end flex align-items-center">
-                <FormKit
-                  type="number"
-                  :name="el.value"
-                  min="0"
-                  step="1"
-                  validation="required"
-                  validation-label="Number of suppliers per country"
-                  outer-class="my-0 mx-3"
-                />
-                <PrimeButton
-                  icon="pi pi-times"
-                  rounded
-                  class="p-button-icon"
-                  @click="removeItemFromListOfSelectedCountries(el.value)"
-                />
+          <div data-test="supplierCountries">
+            <div v-for="el in selectedCountries" :key="el.label">
+              <div class="justify-content-between flex align-items-center" data-test="supplierCountry">
+                <h5>{{ removeWordFromPhrase(`(${el.value})`, el.label) }}</h5>
+                <!--            <FormKit type="text" :name="el.value" :modelValue="el.value" data-test="country" />-->
+                <div class="justify-content-end flex align-items-center">
+                  <FormKit
+                    type="number"
+                    :name="el.value"
+                    min="0"
+                    step="1"
+                    validation="required"
+                    validation-label="Number of suppliers per country"
+                    outer-class="my-0 mx-3"
+                    data-test="supplierCountryValue"
+                  />
+                  <PrimeButton
+                    icon="pi pi-times"
+                    rounded
+                    class="p-button-icon"
+                    @click="removeItemFromListOfSelectedCountries(el.value)"
+                  />
+                </div>
               </div>
             </div>
           </div>
