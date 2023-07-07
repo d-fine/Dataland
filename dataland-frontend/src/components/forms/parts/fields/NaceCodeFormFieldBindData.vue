@@ -31,18 +31,31 @@ import NaceCodeSelector from "@/components/forms/parts/elements/derived/NaceCode
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
-  name: "NaceCodeFormField",
+  name: "NaceCodeFormFieldBindData",
   components: { NaceCodeSelector, FormKit, FormKitMessages, UploadFormHeader },
   setup() {
     return {
       formKitNaceCodeInput: ref(),
     };
   },
-  data() {
-    return {
-      selectedNaceCodes: [] as Array<string>,
-    };
+
+  computed: {
+    selectedNaceCodes: {
+      get(): [] {
+        return this.selectedNaceCodesBind;
+      },
+      set(newValue: []) {
+        this.$emit("update:selectedNaceCodesBind", newValue);
+      },
+    },
   },
-  props: BaseFormFieldProps,
+
+  props: {
+    ...BaseFormFieldProps,
+    selectedNaceCodesBind: {
+      type: Array,
+      default: () => [],
+    },
+  },
 });
 </script>

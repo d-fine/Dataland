@@ -1,49 +1,27 @@
 <template>
-  <div class="form-field" :data-test="name">
+  <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <MultiSelectFormElement
       :name="name"
-      v-model:selectedItemsBind="internalSelections"
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
       :options="options"
-      :inner-class="innerClass"
-      :optionLabel="optionLabel"
-      :optionValue="optionValue"
-      :ignore="ignore"
+      inner-class="short"
     />
   </div>
 </template>
 
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { ComponentPropsOptions, defineComponent } from "vue";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { defineComponent } from "vue";
+
 import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
-import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "MultiSelectFormField",
   components: { MultiSelectFormElement, UploadFormHeader },
-  emits: ["update:selectedItemsBindInternal"],
-  computed: {
-    internalSelections: {
-      get(): Array<DropdownOption> {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return this.selectedItemsBindInternal;
-      },
-      set(newValue: Array<DropdownOption>) {
-        this.$emit("update:selectedItemsBindInternal", newValue);
-      },
-    },
-  },
-  props: {
-    ...MultiSelectFormProps,
-    selectedItemsBindInternal: {
-      type: Array,
-      default: () => [],
-    },
-  } as Readonly<ComponentPropsOptions>,
+  props: DropdownOptionFormFieldProps,
 });
 </script>

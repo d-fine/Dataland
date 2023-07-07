@@ -15,12 +15,12 @@
     <FormKit type="group" :name="name" v-if="isItActive">
       <div>
         <div class="form-field border-none">
-          <NaceCodeFormField
+          <NaceCodeFormFieldBindData
             label="Definition Product Type/Service"
             description="Define the procured product types/services per category (own operations)"
             name="procuredProductTypesAndServicesNaceCodes"
             v-model:selectedNaceCodesBind="procuredProductTypesAndServicesNaceCodesValue"
-          ></NaceCodeFormField>
+          ></NaceCodeFormFieldBindData>
         </div>
 
         <div class="form-field border-none">
@@ -38,7 +38,7 @@
           />
         </div>
         <div class="form-field border-none">
-          <MultiSelectFormField
+          <MultiSelectFormFieldBindData
             label="Sourcing Country per Category"
             placeholder="Countries"
             description="Name the sourcing countries per category (own operations)"
@@ -101,9 +101,9 @@ import InputSwitch from "primevue/inputswitch";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { FormKit } from "@formkit/vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
+import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
 import PrimeButton from "primevue/button";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
+import NaceCodeFormFieldBindData from "@/components/forms/parts/fields/NaceCodeFormFieldBindData.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { LksgProcurementCategory } from "@clients/backend";
 
@@ -119,9 +119,9 @@ export default defineComponent({
     InputSwitch,
     FormKit,
     UploadFormHeader,
-    MultiSelectFormField,
+    MultiSelectFormFieldBindData,
     PrimeButton,
-    NaceCodeFormField,
+    NaceCodeFormFieldBindData,
   },
   props: BaseFormFieldProps,
   data() {

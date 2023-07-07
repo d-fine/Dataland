@@ -1,6 +1,6 @@
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { deepCopyObject, ObjectType } from "@/utils/UpdateObjectUtils";
-import { ComponentPropsOptions } from "vue";
+import { ComponentPropsOptions, PropType } from "vue";
 
 export const BaseFormFieldProps = {
   name: {
@@ -73,11 +73,11 @@ export const MultiSelectFormProps = Object.assign(deepCopyObject(FormFieldPropsW
     required: true,
   },
   optionValue: {
-    type: String,
+    type: [String, Boolean] as PropType<string | boolean>,
     default: "value",
   },
   optionLabel: {
-    type: String,
+    type: [String, Boolean] as PropType<string | boolean>,
     default: "label",
   },
   modelValue: {

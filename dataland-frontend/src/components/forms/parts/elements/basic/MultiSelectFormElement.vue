@@ -3,11 +3,10 @@
     v-model="selections"
     :options="options"
     :placeholder="placeholder"
+    option-label="label"
+    option-value="value"
     :show-toggle-all="false"
     :class="innerClass"
-    :optionValue="optionValue"
-    :optionLabel="optionLabel"
-    :maxSelectedLabels="3"
   />
   <!--
     Note: It is required to set the id of this div to the FormKit node Id to allow the checkCustomInputs methods
@@ -23,7 +22,6 @@
       :name="name"
       v-model="selections"
       outer-class="hidden-input"
-      :ignore="ignore"
     >
       <FormKitMessages />
     </FormKit>
@@ -31,11 +29,10 @@
 </template>
 
 <script lang="ts">
-import { ComponentPropsOptions, defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { FormKit, FormKitMessages } from "@formkit/vue";
 import MultiSelect from "primevue/multiselect";
-import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "MultiSelectFormElement",
@@ -45,24 +42,11 @@ export default defineComponent({
       formkitMultiSelectFormElement: ref(),
     };
   },
-  emits: ["update:selectedItemsBind"],
-  computed: {
-    selections: {
-      get(): Array<DropdownOption> {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return this.selectedItemsBind;
-      },
-      set(newValue: Array<DropdownOption>) {
-        this.$emit("update:selectedItemsBind", newValue);
-      },
-    },
+  data() {
+    return {
+      selections: [] as string[],
+    };
   },
-  props: {
-    ...MultiSelectFormProps,
-    selectedItemsBind: {
-      type: Array,
-      default: () => [],
-    },
-  } as Readonly<ComponentPropsOptions>,
+  props: DropdownOptionFormFieldProps,
 });
 </script>
