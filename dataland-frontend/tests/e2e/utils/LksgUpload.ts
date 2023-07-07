@@ -253,7 +253,6 @@ function fillInProcurementCategories(): void {
       wrapped.get("h5").should("contain.text", selectedCountries[index]);
       wrapped.get('[data-test="supplierCountryValue"]').should("exist").type("2");
     });
-  cy.pause();
 }
 
 /**
