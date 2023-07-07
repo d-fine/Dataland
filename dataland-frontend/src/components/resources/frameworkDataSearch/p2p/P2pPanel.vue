@@ -27,11 +27,15 @@
   <div>
       <div >
           <span>Test Test Test</span>
-          <div v-for="(category, key) in testData">
-              <a @click="toggleExpansion(key)" >{{category}}</a>
-              <ul v-show="isExpanded(key)">
-              <li>{{category}}</li>
-          </ul>
+          <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index">
+
+              <a @click="toggleExpansion(index)" >{{arrayOfKpiDataObject[0] }}</a>
+              <div v-show="isExpanded(index)">
+                  <P2pCompanyDataTable
+                      :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
+                      :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+                  />
+          </div>
               <hr>
           </div>
       </div>
@@ -220,11 +224,14 @@ export default defineComponent({
             }
 
             this.mapOfKpiKeysToDataObjectsArrays.set(this.categoryName, this.listOfDataObjects)
-              console.log(this.mapOfKpiKeysToDataObjectsArrays)
+
           }
+            console.log(this.mapOfKpiKeysToDataObjectsArrays)
+            const test = this.mapOfKpiKeysToDataObjectsArrays.get(this.categoryName)
+            console.log(test)
         });
       }
-        //this.convertToCategoryMap(this.mapOfKpiKeysToDataObjects)
+        //TODO check if the old map mapOfKpiKeysToDataObjects is still necessary
       this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
         this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
       );
