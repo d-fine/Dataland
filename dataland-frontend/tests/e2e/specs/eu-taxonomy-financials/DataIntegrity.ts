@@ -16,7 +16,6 @@ describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    dataEnvironments: ["fakeFixtures"],
   },
   function () {
     beforeEach(() => {

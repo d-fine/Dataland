@@ -1,9 +1,6 @@
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import {
-  generateCSVDataForNonFinancials,
-  generateEuTaxonomyDataForNonFinancials,
-} from "./EuTaxonomyDataForNonFinancialsFixtures";
+import { generateEuTaxonomyDataForNonFinancials } from "./EuTaxonomyDataForNonFinancialsFixtures";
 import fs from "fs";
 import { generateEuTaxonomyForNonFinancialsPreparedFixtures } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsPreparedFixtures";
 
@@ -19,10 +16,6 @@ export function exportFixturesEuTaxonomyNonFinancial(): void {
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json",
     JSON.stringify(companyInformationWithEuTaxonomyDataForNonFinancials, null, "\t")
-  );
-  fs.writeFileSync(
-    "../testing/data/csvTestEuTaxonomyDataForNonFinancials.csv",
-    generateCSVDataForNonFinancials(companyInformationWithEuTaxonomyDataForNonFinancials)
   );
   const preparedFixtureEuTaxonomyDataForNonFinancials = generateEuTaxonomyForNonFinancialsPreparedFixtures();
   fs.writeFileSync(

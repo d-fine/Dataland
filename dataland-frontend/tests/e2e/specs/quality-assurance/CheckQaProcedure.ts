@@ -11,7 +11,6 @@ describeIf(
   "As a user, I expect to be able to add a new dataset and see it as pending",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    dataEnvironments: ["fakeFixtures"],
   },
   function () {
     let storedCompany: StoredCompany;

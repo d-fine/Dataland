@@ -6,15 +6,6 @@ let returnEmail: string;
 let returnPassword: string;
 let returnTotpKey: string;
 
-function getDataEnvironmentBasedOnOperatingSystemEnv() {
-    if (process.env.REALDATA === "true") {
-        return "realData"
-    } else {
-        return "fakeFixtures"
-    }
-}
-
-
 export default defineConfig({
     env: {
         commit_id: require("git-commit-id")({cwd: "../"}),
@@ -24,7 +15,6 @@ export default defineConfig({
         long_timeout_in_ms: 120000,
         AWAIT_PREPOPULATION_RETRIES: 250,
         EXECUTION_ENVIRONMENT: "developmentLocal",
-        DATA_ENVIRONMENT: getDataEnvironmentBasedOnOperatingSystemEnv(),
         KEYCLOAK_DATALAND_ADMIN_PASSWORD: process.env.KEYCLOAK_DATALAND_ADMIN_PASSWORD,
         KEYCLOAK_REVIEWER_PASSWORD: process.env.KEYCLOAK_REVIEWER_PASSWORD,
         KEYCLOAK_UPLOADER_PASSWORD: process.env.KEYCLOAK_UPLOADER_PASSWORD,
@@ -57,9 +47,8 @@ export default defineConfig({
         baseUrl: "https://local-dev.dataland.com",
         setupNodeEvents(on, config) {
             const executionEnvironment = config.env["EXECUTION_ENVIRONMENT"];
-            const dataEnvironment = config.env["DATA_ENVIRONMENT"];
 
-            console.log(`Execution environment: ${executionEnvironment}; dataEnvironment: ${dataEnvironment}`);
+            console.log(`Execution environment: ${executionEnvironment}`);
             if (executionEnvironment === "developmentLocal") {
                 console.log("Detected local development run. Running all tests per default. In order to run a specific test run npm run cypress run --spec <./.../specific_test.ts>");
                 config.specPattern = ["tests/e2e/specs"];

@@ -59,7 +59,7 @@ plugins {
     id("org.openapi.generator") version "6.6.0" apply false
     id("com.github.ben-manes.versions") version "0.47.0"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.8.21" apply false
-    kotlin("plugin.serialization") version "1.8.21" apply false
+    kotlin("plugin.serialization") version "1.8.22" apply false
 }
 
 sonar {

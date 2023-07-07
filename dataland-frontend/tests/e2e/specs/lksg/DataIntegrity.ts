@@ -19,7 +19,6 @@ describeIf(
     "correctly in the frontend",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    dataEnvironments: ["fakeFixtures"],
   },
   function (): void {
     beforeEach(() => {

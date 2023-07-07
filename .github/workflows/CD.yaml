@@ -3,10 +3,6 @@ name: CD
 on:
   workflow_dispatch:
     inputs:
-      realData:
-        description: 'Use real data'
-        required: false
-        type: boolean
       resetStackAndRepopulate:
         description: 'Reset non-user related Docker Volumes & Re-populate'
         required: false
@@ -73,7 +69,6 @@ jobs:
       - rebuild-docker-images
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
-      REALDATA: ${{ github.event.inputs.realData }}
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/logObjects
@@ -149,8 +144,6 @@ jobs:
     needs:
       - deploy-to-server-with-latest-built-images
       - upload-dataland-frontend-client
-    env:
-      REALDATA: ${{ github.event.inputs.realData }}
     strategy:
       fail-fast: false
       matrix:
@@ -174,13 +167,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get GitHub real data image on demand
-        run: |
-          if [[ $REALDATA == true ]]; then
-            echo "Retrieving real data"
-            rm -rf ./testing/data/documents/*
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.18
-          fi
       - name: Download frontend API clients
         uses: actions/download-artifact@v3
         with:

@@ -1,3 +1,4 @@
+import { describeIf } from "@e2e/support/TestUtility";
 import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
@@ -26,33 +27,37 @@ function getCompanyWithReportingObligationAndAssurance(): FixtureData<EuTaxonomy
   );
 }
 
-describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy result page", () => {
-  it("tooltips are present and contain text as expected", function () {
-    const NFRDText = "Non financial disclosure directive";
-    const AssuranceText = "Level of Assurance specifies the confidence level";
-    cy.ensureLoggedIn();
-    getKeycloakToken(reader_name, reader_pw).then((token) => {
-      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
-        (storedCompanies) => {
-          const testCompany = getCompanyWithReportingObligationAndAssurance();
-          const companyId = assertDefined(
-            storedCompanies.find((storedCompany) => {
-              return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
-            })?.companyId
-          );
-          cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveData");
-          cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
-          cy.wait("@retrieveData", { timeout: Cypress.env("short_timeout_in_ms") as number });
-          cy.get(".p-card-content .text-left strong").contains("NFRD required");
-          cy.get('.material-icons[title="NFRD required"]').trigger("mouseenter", "center");
-          cy.get(".p-tooltip").should("be.visible").contains(NFRDText);
-          cy.get('.material-icons[title="NFRD required"]').trigger("mouseleave");
-          cy.get(".p-tooltip").should("not.exist");
-          cy.get(".p-card-content .text-left strong").contains("Level of Assurance");
-          cy.get('.material-icons[title="Level of Assurance"]').trigger("mouseenter", "center");
-          cy.get(".p-tooltip").should("be.visible").contains(AssuranceText);
-        }
-      );
+describeIf(
+  "As a user, I expect informative tooltips to be shown on the EuTaxonomy result page",
+  { executionEnvironments: ["developmentLocal", "ci", "developmentCd"] },
+  () => {
+    it("tooltips are present and contain text as expected", function () {
+      const NFRDText = "Non financial disclosure directive";
+      const AssuranceText = "Level of Assurance specifies the confidence level";
+      cy.ensureLoggedIn();
+      getKeycloakToken(reader_name, reader_pw).then((token) => {
+        cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+          (storedCompanies) => {
+            const testCompany = getCompanyWithReportingObligationAndAssurance();
+            const companyId = assertDefined(
+              storedCompanies.find((storedCompany) => {
+                return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
+              })?.companyId
+            );
+            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveData");
+            cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
+            cy.wait("@retrieveData", { timeout: Cypress.env("short_timeout_in_ms") as number });
+            cy.get(".p-card-content .text-left strong").contains("NFRD required");
+            cy.get('.material-icons[title="NFRD required"]').trigger("mouseenter", "center");
+            cy.get(".p-tooltip").should("be.visible").contains(NFRDText);
+            cy.get('.material-icons[title="NFRD required"]').trigger("mouseleave");
+            cy.get(".p-tooltip").should("not.exist");
+            cy.get(".p-card-content .text-left strong").contains("Level of Assurance");
+            cy.get('.material-icons[title="Level of Assurance"]').trigger("mouseenter", "center");
+            cy.get(".p-tooltip").should("be.visible").contains(AssuranceText);
+          }
+        );
+      });
     });
-  });
-});
+  }
+);
