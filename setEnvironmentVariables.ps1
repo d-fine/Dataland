@@ -49,8 +49,4 @@
 [Environment]::SetEnvironmentVariable("INTERNAL_BACKEND_URL", "http://host.docker.internal:8080/api", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("FRONTEND_LOCATION_CONFIG", "Test", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_LOCATION_CONFIG", "Dev", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("TRUSTEE_BASE_URL", "https://eurodatdemo.westeurope.cloudapp.azure.com", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("TRUSTEE_ENVIRONMENT_NAME", "integration", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("TARGETSERVER_STARTUP_URL", "https://try7eflmqd.execute-api.eu-central-1.amazonaws.com/default?instance=i-wh4t3v3r", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("TARGETSERVER_URL", "tunnel.dataland.com", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("GITHUB_USER", "marcelrasbachdfine", [System.EnvironmentVariableTarget]::User)
+
