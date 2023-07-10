@@ -105,6 +105,13 @@ class CompanyDataController(
         )
     }
 
+    override fun patchCompanyById(companyId: String): ResponseEntity<StoredCompany> {
+        return ResponseEntity.ok(
+                companyManager
+                        .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
+        )
+    }
+
     override fun getTeaserCompanies(): List<String> {
         return companyManager.getTeaserCompanyIds()
     }
