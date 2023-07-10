@@ -188,12 +188,14 @@ interface CompanyApi {
     /**
      * A method to update company informtion for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
+     * @param companyInformation includes the company information
      * @return updated information about the company
      */
     @Operation(
-            summary = "Update company information",
+            summary = "Update company information selectively",
             description = "Changed elements of a company information behind the given company Id is updated.",
     )
+    //what other response codes are relevant? What if the new value is an invalid input? or id doesn't exist?
     @ApiResponses(
             value = [
                 ApiResponse(responseCode = "200", description = "Successfully updated company information."),
@@ -206,7 +208,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchCompanyById(
-            @PathVariable("companyId") companyId: String
+            @PathVariable("companyId") companyId: String,
             @Valid @RequestBody companyInformation: CompanyInformation,
     ): ResponseEntity<StoredCompany>
 
