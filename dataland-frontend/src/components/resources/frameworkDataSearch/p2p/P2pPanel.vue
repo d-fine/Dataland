@@ -4,7 +4,7 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
-    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index">
+    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left;">
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
         <a @click="toggleExpansion(index)">{{ arrayOfKpiDataObject[0] }}</a>
         <div v-show="isExpanded(index)">
