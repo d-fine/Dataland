@@ -11,11 +11,7 @@
       :expandableRowGroups="true"
       v-model:expandedRowGroups="expandedRowGroups"
     >
-      <Column
-        bodyClass="headers-bg"
-        headerStyle=" display: none;"
-        field="kpiKey"
-      >
+      <Column bodyClass="headers-bg" bodyStyle="width: 30vw;" headerStyle=" display: none;" field="kpiKey">
         <template #body="slotProps">
           <span class="table-left-label" :data-test="slotProps.data.kpiKey">{{ slotProps.data.kpiLabel }}</span>
           <em
@@ -32,6 +28,7 @@
       <Column
         v-for="reportingPeriodWithDataId of listOfReportingPeriodsWithDataId"
         headerStyle="display: none;"
+        bodyStyle="width: 30vw;"
         :field="reportingPeriodWithDataId.dataId"
         :key="reportingPeriodWithDataId.dataId"
       >

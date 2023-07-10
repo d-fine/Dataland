@@ -4,13 +4,34 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
-    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left;">
-      <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])" @click="toggleExpansion(index)"> {{ arrayOfKpiDataObject[0]}}
-
+    <DataTable>
+      <Column
+        bodyClass="headers-bg"
+        headerStyle="width: 30vw;"
+        headerClass="horizontal-headers-size"
+        field="kpiK9087ey"
+        header="KPIs"
+      >
+      </Column>
+      <Column
+        v-for="reportingPeriodWithDataId of listOfDataSetReportingPeriods"
+        headerClass="horizontal-headers-size"
+        headerStyle="width: 30vw;"
+        :field="reportingPeriodWithDataId.dataId"
+        :header="reportingPeriodWithDataId.reportingPeriod"
+        :key="reportingPeriodWithDataId.dataId"
+      >
+      </Column>
+    </DataTable>
+    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index">
+      <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
+        <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">
+          <a @click="toggleExpansion(index)">{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
+        </div>
         <div v-show="isExpanded(index)">
           <P2pCompanyDataTable
-              :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
-              :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+            :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
+            :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
           />
         </div>
         <hr />
@@ -34,10 +55,12 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataAndMetaInformationPathwaysToParisData, PathwaysToParisData } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
+import Column from "primevue/column";
+import DataTable from "primevue/datatable";
 
 export default defineComponent({
   name: "P2pPanel",
-  components: { P2pCompanyDataTable },
+  components: { P2pCompanyDataTable, DataTable, Column },
   data() {
     return {
       firstRender: true,
@@ -50,8 +73,6 @@ export default defineComponent({
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
       listOfDataObjects: [] as Array<KpiDataObject>,
       mapOfKpiKeysToDataObjectsArrays: new Map() as Map<string, Array<KpiDataObject>>,
-      heading: "Plan Communications",
-      // isExpanded: false,
       expandedGroup: [],
     };
   },
@@ -137,20 +158,7 @@ export default defineComponent({
       }
       this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
       this.resultKpiData = kpiData;
-      //methode die distinkte category aus der map raus zieht
-      //mit categories die subcategories rausziehen (einfiltern der Map nach Kategorien)
     },
-    /*convertToCategoryMap(mapOfKpiKeysToDataObjects: Map<string, KpiDataObject>): void{
-        console.log(this.mapOfKpiKeysToDataObjects)
-         for (const kpiKey in mapOfKpiKeysToDataObjects) {
-          const categoryName = mapOfKpiKeysToDataObjects.get(kpiKey).categoryLabel
-             this.mapOfKpiKeysToDataObjectsArrays.set(categoryName, mapOfKpiKeysToDataObjects.get(kpiKey))
-
-
-         }
-         console.log(this.mapOfKpiKeysToDataObjectsArrays)
-    },
-    */
     /**
      * Retrieves and converts the stored array of LkSG datasets in order to make it displayable in the frontend.
      */
@@ -219,7 +227,9 @@ export default defineComponent({
      */
     shouldCategoryBeRendered(categoryName: string): boolean {
       const category = assertDefined(p2pDataModel.find((category) => category.label === categoryName));
-      return this.p2pDataAndMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.data).some((singleP2pData) => category.showIf(singleP2pData));
+      return this.p2pDataAndMetaInfo
+        .map((dataAndMetaInfo) => dataAndMetaInfo.data)
+        .some((singleP2pData) => category.showIf(singleP2pData));
     },
 
     /**
@@ -254,6 +264,14 @@ export default defineComponent({
           )
         : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
     },
+    /**
+     * Retrieves the color for a given category from P2P Data Model
+     * @param categoryName The name of the category whose color is searched
+     * @returns color as string
+     */
+    colorOfCategory(categoryName: string): string {
+      return assertDefined(p2pDataModel.find((category) => category.label === categoryName)).color;
+    },
 
     /**
      *
@@ -281,9 +299,18 @@ export default defineComponent({
 
       return returnValue ?? kpiValue;
     },
+    /**
+     *
+     * @param key elememt for which the check should be run
+     * @returns if the element is expanded or not
+     */
     isExpanded(key) {
       return this.expandedGroup.indexOf(key) !== -1;
     },
+    /**
+     *
+     * @param key elememt for which the check should be run
+     */
     toggleExpansion(key) {
       if (this.isExpanded(key)) this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
       else this.expandedGroup.push(key);
