@@ -317,6 +317,7 @@ export default defineComponent({
     },
   },
 });
+//TODO Rework this to be an actual method in the method block
 const coll = document.getElementsByClassName("collapsible");
 let i;
 
