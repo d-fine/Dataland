@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.PatchMapping
 
 /**
  * Defines the restful dataland-backend API regarding company data.
@@ -183,6 +184,31 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<StoredCompany>
+
+    /**
+     * A method to update company informtion for one specific company identified by its company Id
+     * @param companyId identifier of the company in dataland
+     * @return updated information about the company
+     */
+    @Operation(
+            summary = "Update company information",
+            description = "Changed elements of a company information behind the given company Id is updated.",
+    )
+    @ApiResponses(
+            value = [
+                ApiResponse(responseCode = "200", description = "Successfully updated company information."),
+            ],
+    )
+    @PatchMapping(
+            value = ["/{companyId}"],
+            consumes = ["application/json"],
+            produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun patchCompanyById(
+            @PathVariable("companyId") companyId: String
+            @Valid @RequestBody companyInformation: CompanyInformation,
+    ): ResponseEntity<StoredCompany>
 
     /**
      * A method to get the teaser company IDs.
