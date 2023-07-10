@@ -6,7 +6,9 @@
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
     <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index">
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
-        <a @click="toggleExpansion(index)">{{ arrayOfKpiDataObject[0] }}</a>
+        <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">
+          <a @click="toggleExpansion(index)">{{arrayOfKpiDataObject[0].toUpperCase()}}</a>
+        </div>
         <div v-show="isExpanded(index)">
           <P2pCompanyDataTable
               :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
@@ -220,6 +222,15 @@ export default defineComponent({
     shouldCategoryBeRendered(categoryName: string): boolean {
       const category = assertDefined(p2pDataModel.find((category) => category.label === categoryName));
       return this.p2pDataAndMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.data).some((singleP2pData) => category.showIf(singleP2pData));
+    },
+
+    /**
+     * Retrieves the color for a given category from P2P Data Model
+     * @param categoryName The name of the category whose color is searched
+     * @returns color as string
+     */
+    colorOfCategory(categoryName: string): string {
+      return assertDefined(p2pDataModel.find((category) => category.label === categoryName)).color;
     },
 
     /**
