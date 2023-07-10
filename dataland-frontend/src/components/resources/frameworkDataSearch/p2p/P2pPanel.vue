@@ -4,15 +4,17 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
-    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left;">
-      <a @click="toggleExpansion(arrayOfKpiDataObject)">{{ arrayOfKpiDataObject[0] }}</a>
-      <div v-show="isExpanded(index)">
-        <P2pCompanyDataTable
-          :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
-          :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
-        />
+    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index">
+      <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
+        <a @click="toggleExpansion(index)">{{ arrayOfKpiDataObject[0] }}</a>
+        <div v-show="isExpanded(index)">
+          <P2pCompanyDataTable
+              :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
+              :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+          />
+        </div>
+        <hr />
       </div>
-      <hr />
     </div>
   </div>
 </template>
@@ -208,6 +210,16 @@ export default defineComponent({
       this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
         this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
       );
+    },
+
+    /**
+     * Checks whether a given category shall be displayed for at least one of the P2P datasets to display
+     * @param categoryName The name of the category to check
+     * @returns true if category shall be displayed, else false
+     */
+    shouldCategoryBeRendered(categoryName: string): boolean {
+      const category = assertDefined(p2pDataModel.find((category) => category.label === categoryName));
+      return this.p2pDataAndMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.data).some((singleP2pData) => category.showIf(singleP2pData));
     },
 
     /**
