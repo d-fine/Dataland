@@ -13,10 +13,8 @@
     >
       <Column
         bodyClass="headers-bg"
-        headerStyle="width: 30vw;"
-        headerClass="horizontal-headers-size"
+        headerStyle=" display: none;"
         field="kpiKey"
-        header="KPIs"
       >
         <template #body="slotProps">
           <span class="table-left-label" :data-test="slotProps.data.kpiKey">{{ slotProps.data.kpiLabel }}</span>
@@ -33,10 +31,8 @@
       </Column>
       <Column
         v-for="reportingPeriodWithDataId of listOfReportingPeriodsWithDataId"
-        headerClass="horizontal-headers-size"
-        headerStyle="width: 30vw;"
+        headerStyle="display: none;"
         :field="reportingPeriodWithDataId.dataId"
-        :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
       >
         <template #body="slotProps">
@@ -106,11 +102,6 @@
         </template>
       </Column>
 
-      <Column field="subcategoryKey">
-        <DataTable>
-          <Column>Test</Column>
-        </DataTable>
-      </Column>
       <template #groupheader="slotProps">
         <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
           {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
@@ -132,7 +123,7 @@ import Tooltip from "primevue/tooltip";
 import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
-  name: "LksgCompanyDataTable",
+  name: "P2pCompanyDataTable",
   components: { DataTable, Column, DocumentLink },
   directives: {
     tooltip: Tooltip,
@@ -250,5 +241,8 @@ export default defineComponent({
     float: right;
     cursor: pointer;
   }
+}
+.tree-table-no-header thead {
+  display: none;
 }
 </style>
