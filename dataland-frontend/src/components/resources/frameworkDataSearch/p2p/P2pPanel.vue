@@ -76,12 +76,12 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfDataSetReportingPeriods = [];
-      void this.fetchP2pData();
+      this.fetchP2pData().catch((error) => console.log(error));
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
         this.listOfDataSetReportingPeriods = [];
-        void this.fetchP2pData();
+        this.fetchP2pData().catch((error) => console.log(error));
       }
     },
   },
@@ -91,7 +91,7 @@ export default defineComponent({
     };
   },
   created() {
-    void this.fetchP2pData();
+    this.fetchP2pData().catch((error) => console.log(error));
     this.firstRender = false;
   },
   methods: {
