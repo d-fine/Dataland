@@ -5,12 +5,7 @@
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
     <DataTable>
-      <Column
-        bodyClass="headers-bg"
-        headerStyle="width: 30vw;"
-        headerClass="horizontal-headers-size"
-        header="KPIs"
-      >
+      <Column bodyClass="headers-bg" headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs">
       </Column>
       <Column
         v-for="reportingPeriodWithDataId of listOfDataSetReportingPeriods"
@@ -24,12 +19,12 @@
     </DataTable>
     <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
-          <!--//TODO fix the height of the category row -->
-          <div class="w-full d-dataset-toggle" @click="toggleExpansion(index)">
-        <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`" >
-          <a >{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
-        </div>
+        <!--//TODO fix the height of the category row -->
+        <div class="w-full d-dataset-toggle" @click="toggleExpansion(index)">
+          <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">
+            <a>{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
           </div>
+        </div>
         <div v-show="isExpanded(index)">
           <P2pCompanyDataTable
             :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
@@ -197,7 +192,7 @@ export default defineComponent({
                     .some((singleP2pData) => field.showIf(singleP2pData))
                 ) {
                   this.createKpiDataObjects(
-                    kpiKey,
+                    kpiKey as string,
                     kpiValue as KpiValue,
                     subcategory,
                     categoryResult,
@@ -305,14 +300,14 @@ export default defineComponent({
      * @param key elememt for which the check should be run
      * @returns if the element is expanded or not
      */
-    isExpanded(key) {
+    isExpanded(key: string) {
       return this.expandedGroup.indexOf(key) !== -1;
     },
     /**
      *
      * @param key elememt for which the check should be run
      */
-    toggleExpansion(key) {
+    toggleExpansion(key: string) {
       if (this.isExpanded(key)) this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
       else this.expandedGroup.push(key);
     },
@@ -321,12 +316,12 @@ export default defineComponent({
 </script>
 <style scoped lang="scss">
 .d-dataset-toggle {
-    cursor: pointer;
+  cursor: pointer;
 }
-.d-table-style{
+.d-table-style {
   font-size: 16px;
   text-align: left;
-  background-color: #F6F5EF;
+  background-color: #f6f5ef;
 }
 //TODO extract styles to css classes, extract inline style to classes, remove unused code and check if there are already classes which have the styles needed
-</style >
+</style>
