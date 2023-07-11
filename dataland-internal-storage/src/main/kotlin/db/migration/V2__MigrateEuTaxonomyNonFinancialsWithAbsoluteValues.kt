@@ -13,35 +13,30 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
         val getQueryResultSet = context!!.connection.createStatement().executeQuery("SELECT data from data_items WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"eutaxonomy-non-financials\\\\\\\"%'")
         val companyAssociatedDataSets = mutableListOf<JSONObject>()
         while(getQueryResultSet.next()) {
-            println("LOOP")
             companyAssociatedDataSets.add(JSONObject(
                 objectMapper.readValue(
                     getQueryResultSet.getString("data"), String::class.java
                 )
             ))
         }
-        println("Length before filter ${companyAssociatedDataSets.size}")
         companyAssociatedDataSets.filter { it.getString("dataType") == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value }
-        println("Length before filter ${companyAssociatedDataSets.size}")
         val cashflowTypes = listOf("capex", "opex", "revenue")
         val fieldsToMigrate = mapOf("alignedPercentage" to "alignedData", "eligiblePercentage" to "eligibleData")
         companyAssociatedDataSets.forEach {
-            if(it.getString("dataType") != DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value) {
-                println("NO")
-                return@forEach
-            }
             println("Migrating dataset")
             val data = JSONObject(it.getString("data"))
+            println("OLD ${data.toString(2)}")
             cashflowTypes.forEach { cashflowType ->
                 val cashFlow = (data.opt(cashflowType) ?: return@forEach) as JSONObject
                 fieldsToMigrate.keys.forEach { fieldToMigrate ->
-                    val dataToMigrate = (cashFlow.opt(fieldToMigrate) ?: return@forEach) as JSONObject
-                    dataToMigrate.append("valueAsPercentage", (cashFlow.opt("value") ?: return@forEach) as BigDecimal)
+                    val dataToMigrate = (cashFlow.opt(fieldToMigrate)?.run { if (it == JSONObject.NULL) null else it } ?: return@forEach) as JSONObject
+                    dataToMigrate.append("valueAsPercentage", cashFlow.opt("value") as BigDecimal?)
                     dataToMigrate.remove("value")
                     cashFlow.remove(fieldToMigrate)
                     cashFlow.append(fieldsToMigrate[fieldToMigrate]!!, dataToMigrate)
                 }
             }
+            println("NEW ${data.toString(2)}")
         }
     }
 }
