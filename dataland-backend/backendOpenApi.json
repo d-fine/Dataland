@@ -2376,9 +2376,20 @@
             "type": "object",
             "additionalProperties": {
               "type": "array",
+              "example": {
+                "Lei": [
+                  "ExampleLei"
+                ]
+              },
               "items": {
-                "type": "string"
+                "type": "string",
+                "example": "{\"Lei\":[\"ExampleLei\"]}"
               }
+            },
+            "example": {
+              "Lei": [
+                "ExampleLei"
+              ]
             }
           },
           "countryCode": {
@@ -5106,9 +5117,20 @@
             "type": "object",
             "additionalProperties": {
               "type": "array",
+              "example": {
+                "Lei": [
+                  "ExampleLei"
+                ]
+              },
               "items": {
-                "type": "string"
+                "type": "string",
+                "example": "{\"Lei\":[\"ExampleLei\"]}"
               }
+            },
+            "example": {
+              "Lei": [
+                "ExampleLei"
+              ]
             }
           },
           "countryCode": {
