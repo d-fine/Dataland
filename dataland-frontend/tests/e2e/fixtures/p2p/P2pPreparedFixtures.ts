@@ -1,6 +1,6 @@
 import { FixtureData } from "@sharedUtils/Fixtures";
-import { PathwaysToParisData} from "@clients/backend";
-import { generateP2pFixture} from "./P2pDataFixtures";
+import { PathwaysToParisData } from "@clients/backend";
+import { generateP2pFixture } from "./P2pDataFixtures";
 
 /**
  * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
@@ -21,14 +21,15 @@ export function generateP2pPreparedFixtures(): Array<FixtureData<PathwaysToParis
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForSixP2pDataSetsInDifferentYears(input: FixtureData<PathwaysToParisData>): FixtureData<PathwaysToParisData> {
+function manipulateFixtureForSixP2pDataSetsInDifferentYears(
+  input: FixtureData<PathwaysToParisData>
+): FixtureData<PathwaysToParisData> {
   input.companyInformation.companyName = "six-p2p-data-sets-in-different-years";
   if (input.t.general?.general?.dataDate) input.t.general.general.dataDate = "2022-01-01";
   else console.error("fakeFixture created improperly: dataDate missing");
   input.reportingPeriod = "2022";
   return input;
 }
-
 
 /**
  * Sets the company name, and, data date and reporting period in the fixture data to
@@ -37,10 +38,12 @@ function manipulateFixtureForSixP2pDataSetsInDifferentYears(input: FixtureData<P
  * @param date the date in the format "YYYY-MM-DD"
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForDate(input: FixtureData<PathwaysToParisData>, date: string): FixtureData<PathwaysToParisData> {
+function manipulateFixtureForDate(
+  input: FixtureData<PathwaysToParisData>,
+  date: string
+): FixtureData<PathwaysToParisData> {
   input.companyInformation.companyName = "P2p-date-" + date;
   input.t.general.general.dataDate = date;
   input.reportingPeriod = date.split("-")[0];
   return input;
 }
-

@@ -5,7 +5,8 @@ import {
   CompanyAssociatedDataPathwaysToParisData,
   DataAndMetaInformationPathwaysToParisData,
   DataMetaInformation,
-  DataTypeEnum, P2pSector,
+  DataTypeEnum,
+  P2pSector,
   PathwaysToParisData,
   QaStatus,
 } from "@clients/backend";
@@ -61,7 +62,7 @@ describe("Component test for P2pPanel", () => {
     cy.intercept("/api/data/p2p/mock-data-id", {
       companyId: "mock-company-id",
       reportingPeriod: preparedFixture.reportingPeriod,
-      data:  p2pData,
+      data: p2pData,
     } as CompanyAssociatedDataPathwaysToParisData);
     cy.mountWithPlugins(P2pPanel, {
       keycloak: minimalKeycloakMock({}),
@@ -112,7 +113,9 @@ describe("Component test for P2pPanel", () => {
    * @param baseDataset the lksg dataset used as a basis for constructing the 6 mocked ones
    * @returns a mocked api response
    */
-  function constructCompanyApiResponseForLksgForSixYears(baseDataset: PathwaysToParisData): DataAndMetaInformationPathwaysToParisData[] {
+  function constructCompanyApiResponseForLksgForSixYears(
+    baseDataset: PathwaysToParisData
+  ): DataAndMetaInformationPathwaysToParisData[] {
     const p2pDatasets: DataAndMetaInformationPathwaysToParisData[] = [];
     for (let i = 0; i < 6; i++) {
       const reportingYear = 2023 + i;
