@@ -5,35 +5,46 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
-import java.math.BigDecimal
 
 class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration() {
+    data class DataTableEntity(
+        val dataId: String,
+        val companyAssociatedData: JSONObject,
+    ) {
+        fun getWriteQuery(): String {
+            return "UPDATE data_items SET data = '${ObjectMapper().writeValueAsString(companyAssociatedData.toString())}' WHERE data_id = '$dataId'"
+        }
+    }
+
     private val cashFlowTypes = listOf("capex", "opex", "revenue")
     private val fieldsToMigrate = mapOf("alignedPercentage" to "alignedData", "eligiblePercentage" to "eligibleData")
+    private val objectMapper = ObjectMapper()
+
 
     override fun migrate(context: Context?) {
-        val objectMapper = ObjectMapper()
-        val getQueryResultSet = context!!.connection.createStatement().executeQuery("SELECT data from data_items WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"eutaxonomy-non-financials\\\\\\\"%'")
-        val companyAssociatedDataSets = mutableListOf<JSONObject>()
+        val getQueryResultSet = context!!.connection.createStatement().executeQuery("SELECT * from data_items WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"eutaxonomy-non-financials\\\\\\\"%'")
+        val companyAssociatedDataSets = mutableListOf<DataTableEntity>()
         while (getQueryResultSet.next()) {
             companyAssociatedDataSets.add(
-                JSONObject(
-                    objectMapper.readValue(
-                        getQueryResultSet.getString("data"), String::class.java,
+                DataTableEntity(
+                    getQueryResultSet.getString("data_id"),
+                    JSONObject(
+                        objectMapper.readValue(
+                            getQueryResultSet.getString("data"), String::class.java,
+                        ),
                     ),
                 ),
             )
         }
-        companyAssociatedDataSets.filter { it.getString("dataType") == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value }
+        companyAssociatedDataSets.filter { it.companyAssociatedData.getString("dataType") == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value }
         companyAssociatedDataSets.forEach {
-            println("Migrating dataset")
-            migrateDataset(it.getString("data"))
+            it.companyAssociatedData.put("data", migrateDataset(it.companyAssociatedData.getString("data")))
+            context.connection.createStatement().execute(it.getWriteQuery())
         }
     }
 
     private fun migrateDataset(datasetString: String): String {
         val dataset = JSONObject(datasetString)
-        println("OLD $dataset")
         cashFlowTypes.forEach { cashflowType ->
             val cashFlow = (dataset.opt(cashflowType) ?: return@forEach) as JSONObject
             fieldsToMigrate.keys.forEach { fieldToMigrate ->
@@ -44,7 +55,6 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
                 cashFlow.remove(fieldToMigrate)
             }
         }
-        println("NEW $dataset")
         return dataset.toString()
     }
 }
