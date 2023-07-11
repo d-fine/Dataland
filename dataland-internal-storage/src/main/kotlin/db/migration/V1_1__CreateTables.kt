@@ -1,0 +1,23 @@
+package db.migration
+
+import org.flywaydb.core.api.migration.BaseJavaMigration
+import org.flywaydb.core.api.migration.Context
+
+class V1_1__CreateTables : BaseJavaMigration() {
+    override fun migrate(context: Context?) {
+        context!!.connection.createStatement().execute(
+            "CREATE TABLE data_items (" +
+                "data_id varchar(255) NOT NULL, " +
+                "data text NOT NULL, " +
+                "PRIMARY KEY (data_id)" +
+                ")"
+        )
+        context!!.connection.createStatement().execute(
+            "CREATE TABLE blob_items (" +
+                "blob_id varchar(255) NOT NULL, " +
+                "data oid, " +
+                "PRIMARY KEY (blob_id)" +
+                ")"
+        )
+    }
+}
