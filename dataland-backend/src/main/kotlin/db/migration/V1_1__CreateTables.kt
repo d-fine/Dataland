@@ -17,7 +17,7 @@ class V1_1__CreateTables : BaseJavaMigration() {
                 "sector varchar(255), " +
                 "website varchar(255), " +
                 "PRIMARY KEY (company_id)" +
-                ")"
+                ")",
         )
         context!!.connection.createStatement().execute(
             "CREATE TABLE company_identifiers (" +
@@ -25,13 +25,13 @@ class V1_1__CreateTables : BaseJavaMigration() {
                 "identifier_value varchar(255) NOT NULL, " +
                 "company_id varchar(255) NOT NULL, " +
                 "PRIMARY KEY (identifier_type, identifier_value)" +
-                ")"
+                ")",
         )
         context!!.connection.createStatement().execute(
             "CREATE TABLE stored_company_entity_company_alternative_names (" +
                 "stored_company_entity_company_id varchar(255) NOT NULL, " +
                 "company_alternative_names varchar(255)" +
-                ")"
+                ")",
         )
         context!!.connection.createStatement().execute(
             "CREATE TABLE data_meta_information (" +
@@ -44,7 +44,7 @@ class V1_1__CreateTables : BaseJavaMigration() {
                 "uploader_user_id varchar(255) NOT NULL, " +
                 "company_id varchar(255), " +
                 "PRIMARY KEY (data_id)" +
-                ")"
+                ")",
         )
         context!!.connection.createStatement().execute(
             "CREATE TABLE invite_meta_info (" +
@@ -55,7 +55,7 @@ class V1_1__CreateTables : BaseJavaMigration() {
                 "user_id varchar(255), " +
                 "was_invite_successful boolean, " +
                 "PRIMARY KEY (invite_id)" +
-                ")"
+                ")",
         )
     }
 }

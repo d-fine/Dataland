@@ -10,14 +10,14 @@ class V1_1__CreateTables : BaseJavaMigration() {
                 "data_id varchar(255) NOT NULL, " +
                 "data text NOT NULL, " +
                 "PRIMARY KEY (data_id)" +
-                ")"
+                ")",
         )
         context!!.connection.createStatement().execute(
             "CREATE TABLE blob_items (" +
                 "blob_id varchar(255) NOT NULL, " +
                 "data oid, " +
                 "PRIMARY KEY (blob_id)" +
-                ")"
+                ")",
         )
     }
 }
