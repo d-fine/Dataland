@@ -130,6 +130,8 @@ jobs:
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
           LOAD_GLEIF_GOLDEN_COPY: ${{ github.event.inputs.loadGleifGoldenCopy }}
+          BACKEND_MIGRATION_BASELINE_VERSION: ${{ vars.BACKEND_MIGRATION_BASELINE_VERSION || 1}}
+          INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION: ${{ vars.INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION || 1 }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
