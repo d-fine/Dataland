@@ -99,6 +99,7 @@
         </template>
       </Column>
 
+      <Column field="subcategoryKey"></Column>
       <template #groupheader="slotProps">
         <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
           {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
