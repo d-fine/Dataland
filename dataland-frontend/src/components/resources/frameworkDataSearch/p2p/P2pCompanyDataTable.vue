@@ -180,6 +180,7 @@ export default defineComponent({
      * @param value the string to check
      * @returns true if the string is 'Yes' or 'No'
      */
+    //TODO Make sure that this is still working
     isYesNo(value: string) {
       return Object.values(YesNo).toString().includes(value);
     },

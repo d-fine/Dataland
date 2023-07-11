@@ -1,5 +1,6 @@
-import { generateP2pFixture } from "@e2e/fixtures/p2p/P2pDataFixtures";
+import { generateP2pFixture} from "@e2e/fixtures/p2p/P2pDataFixtures";
 import fs from "fs";
+import {generateP2pPreparedFixtures} from "@e2e/fixtures/p2p/P2pPreparedFixtures";
 
 /**
  * Generates and exports fake fixtures for the P2p framework
@@ -9,5 +10,10 @@ export function exportFixturesP2p(): void {
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithP2pData.json",
     JSON.stringify(companyInformationWithP2pData, null, "\t")
+  );
+  const preparedFixtureP2pDataForFinancials = generateP2pPreparedFixtures();
+  fs.writeFileSync(
+      "../testing/data/CompanyInformationWithP2pPreparedFixtures.json",
+      JSON.stringify(preparedFixtureP2pDataForFinancials, null, "\t")
   );
 }
