@@ -21,11 +21,17 @@
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
         <!--//TODO fix the height of the category row -->
         <div class="w-full d-dataset-toggle" @click="toggleExpansion(index)">
-          <div>
-            <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
-              arrayOfKpiDataObject[0].toUpperCase()
-            }}</span>
-            <button style="float: right">Tsdsdsd</button>
+          <div v-if="!isExpanded(index)">
+            <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{ arrayOfKpiDataObject[0].toUpperCase() }}</span>
+            <button class="pt-2 pr-2" style="float: right; border:none; background-color: #f6f5ef">
+              <span class="pi pi-chevron-right" style="color:#e67f3f;font-size: 14px"></span>
+            </button>
+          </div>
+          <div v-if="isExpanded(index)">
+            <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{ arrayOfKpiDataObject[0].toUpperCase() }}</span>
+            <button class="pt-2 pr-3" style="float: right; border:none; background-color: #f6f5ef">
+              <span class="pi pi-chevron-down" style="color:#e67f3f;font-size: 14px"></span>
+            </button>
           </div>
         </div>
         <div v-show="isExpanded(index)">
