@@ -10,7 +10,7 @@ import java.math.BigDecimal
 class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         val objectMapper = ObjectMapper()
-        val getQueryResultSet = context!!.connection.createStatement().executeQuery("SELECT data from data_items")//" WHERE data ILIKE '\\\"dataType\\\":\\\"eutaxonomy-non-financials\\\"'")
+        val getQueryResultSet = context!!.connection.createStatement().executeQuery("SELECT data from data_items WHERE data LIKE '%\\\"dataType\\\":\\\"eutaxonomy-non-financials\\\"%'")
         val companyAssociatedDataSets = mutableListOf<JSONObject>()
         while(getQueryResultSet.next()) {
             companyAssociatedDataSets.add(JSONObject(
@@ -23,6 +23,10 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
         val cashflowTypes = listOf("capex", "opex", "revenue")
         val fieldsToMigrate = mapOf("alignedPercentage" to "alignedData", "eligiblePercentage" to "eligibleData")
         companyAssociatedDataSets.forEach {
+            if(it.getString("dataType") != DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value) {
+                println("NO")
+                return@forEach
+            }
             println("Migrating dataset")
             val data = JSONObject(it.getString("data"))
             cashflowTypes.forEach { cashflowType ->
