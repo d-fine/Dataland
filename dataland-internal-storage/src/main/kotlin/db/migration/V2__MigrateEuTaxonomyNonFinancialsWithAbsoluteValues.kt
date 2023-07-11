@@ -10,7 +10,7 @@ import java.math.BigDecimal
 class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         val objectMapper = ObjectMapper()
-        val getQueryResultSet = context!!.connection.createStatement().executeQuery("SELECT data from data_items WHERE data LIKE '%\\\"dataType\\\":\\\"eutaxonomy-non-financials\\\"%'")
+        val getQueryResultSet = context!!.connection.createStatement().executeQuery("SELECT data from data_items WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"eutaxonomy-non-financials\\\\\\\"%'")
         val companyAssociatedDataSets = mutableListOf<JSONObject>()
         while(getQueryResultSet.next()) {
             println("LOOP")
