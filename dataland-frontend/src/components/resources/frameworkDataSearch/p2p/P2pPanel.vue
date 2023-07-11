@@ -333,6 +333,17 @@ for (i = 0; i < coll.length; i++) {
     }
   });
 }
+
+
+/* const listDiv = document.getElementById('list'); */
+const clickableA = document.getElementById('badge');
+const ObjectLink = document.getElementById('list');
+if (clickableA && ObjectLink) {
+  ObjectLink.addEventListener('click', () => {
+    clickableA.click();
+  });
+}
+
 </script>
 <style scoped>
 .collapsible {
