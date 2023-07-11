@@ -362,5 +362,5 @@ for (i = 0; i < coll.length; i++) {
 .d-dataset-toggle {
     cursor: pointer;
 }
-
+//TODO extract styles to css classes, extract inline style to classes, remove unused code
 </style>
