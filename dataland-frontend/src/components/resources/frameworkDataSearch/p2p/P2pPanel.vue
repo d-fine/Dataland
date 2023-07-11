@@ -297,7 +297,7 @@ export default defineComponent({
     },
     /**
      *
-     * @param key elememt for which the check should be run
+     * @param key element for which the check should be run
      * @returns if the element is expanded or not
      */
     isExpanded(key: string) {
@@ -305,7 +305,7 @@ export default defineComponent({
     },
     /**
      *
-     * @param key elememt for which the check should be run
+     * @param key element for which the check should be run
      */
     toggleExpansion(key: string) {
       if (this.isExpanded(key)) this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
