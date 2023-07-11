@@ -71,7 +71,8 @@ class CompanyManagerTest(
 
     @Test
     fun `search for identifier substring to verify substring matching in company search`() {
-        val searchString = testCompanyList.first().identifiers.values.first { it.isNotEmpty() }.first().drop(1).dropLast(1)
+        val searchString = testCompanyList.first().identifiers.values
+            .first { it.isNotEmpty() }.first().drop(1).dropLast(1)
         var occurencesOfSearchString = 0
         for (companyInformation in testCompanyList) {
             require(!(companyInformation.companyName.contains(searchString))) {

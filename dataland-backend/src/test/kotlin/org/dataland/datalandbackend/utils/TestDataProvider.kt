@@ -23,7 +23,8 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
     }
 
     fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
-        return getCompanyInformation(requiredQuantity).map { it.copy(identifiers = IdentifierType.values().associateWith { emptyList() }) }
+        return getCompanyInformation(requiredQuantity)
+            .map { it.copy(identifiers = IdentifierType.values().associateWith { emptyList() }) }
     }
 
     fun getEmptySmeDataset(): SmeData {
