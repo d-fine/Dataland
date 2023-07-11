@@ -675,6 +675,134 @@
         ]
       }
     },
+    "/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve company information.",
+        "description": "Company information behind the given company Id is retrieved.",
+        "operationId": "getCompanyById",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompany"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Update company information selectively",
+        "description": "Changed elements of a company information behind the given company Id is updated.",
+        "operationId": "patchCompanyById",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyInformationPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompany"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/identifiers/{identifierType}/{identifier}": {
       "head": {
         "tags": [
@@ -1729,66 +1857,6 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForFinancials"
                   }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/companies/{companyId}": {
-      "get": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Retrieve company information.",
-        "description": "Company information behind the given company Id is retrieved.",
-        "operationId": "getCompanyById",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved company information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredCompany"
                 }
               }
             }
@@ -4879,30 +4947,6 @@
           }
         }
       },
-      "CompanyIdentifier": {
-        "required": [
-          "identifierType",
-          "identifierValue"
-        ],
-        "type": "object",
-        "properties": {
-          "identifierType": {
-            "type": "string",
-            "enum": [
-              "Lei",
-              "Isin",
-              "PermId",
-              "Ticker",
-              "Duns",
-              "CompanyRegistrationNumber",
-              "VatNumber"
-            ]
-          },
-          "identifierValue": {
-            "type": "string"
-          }
-        }
-      },
       "CompanyInformation": {
         "required": [
           "companyName",
@@ -4934,9 +4978,12 @@
             "type": "string"
           },
           "identifiers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CompanyIdentifier"
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           "countryCode": {
@@ -4969,6 +5016,53 @@
             "items": {
               "$ref": "#/components/schemas/DataMetaInformation"
             }
+          }
+        }
+      },
+      "CompanyInformationPatch": {
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyAlternativeNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "companyLegalForm": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "headquartersPostalCode": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string"
+          },
+          "identifiers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "teaserCompany": {
+            "type": "boolean"
+          },
+          "isTeaserCompany": {
+            "type": "boolean"
           }
         }
       },

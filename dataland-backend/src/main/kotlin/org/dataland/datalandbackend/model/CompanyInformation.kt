@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
  * --- API model ---
@@ -32,7 +33,7 @@ data class CompanyInformation(
     val sector: String?,
 
     @field:JsonProperty(required = true)
-    val identifiers: List<CompanyIdentifier>,
+    val identifiers: Map<IdentifierType, List<String>>,
 
     @field:JsonProperty(required = true)
     val countryCode: String,

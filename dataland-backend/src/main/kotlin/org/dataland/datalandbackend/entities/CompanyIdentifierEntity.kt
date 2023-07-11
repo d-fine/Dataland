@@ -38,14 +38,7 @@ data class CompanyIdentifierEntity(
 
     @Transient
     private var isNew: Boolean = false,
-) : Persistable<CompanyIdentifierEntityId>, ApiModelConversion<CompanyIdentifier> {
+) : Persistable<CompanyIdentifierEntityId>{
     override fun getId(): CompanyIdentifierEntityId = CompanyIdentifierEntityId(identifierValue, identifierType)
     override fun isNew(): Boolean = isNew
-
-    override fun toApiModel(viewingUser: DatalandAuthentication?): CompanyIdentifier {
-        return CompanyIdentifier(
-            identifierValue = identifierValue,
-            identifierType = identifierType,
-        )
-    }
 }

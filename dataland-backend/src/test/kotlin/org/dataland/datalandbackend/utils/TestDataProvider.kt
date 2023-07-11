@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.model.sme.SmeData
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +23,7 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
     }
 
     fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
-        return getCompanyInformation(requiredQuantity).map { it.copy(identifiers = emptyList()) }
+        return getCompanyInformation(requiredQuantity).map { it.copy(identifiers = IdentifierType.values().associateWith { emptyList() }) }
     }
 
     fun getEmptySmeDataset(): SmeData {

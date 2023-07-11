@@ -202,13 +202,9 @@ class CompanyDataControllerTest {
         val companyInformation = baseCompanyInformation.copy(
             companyName = name,
             companyAlternativeNames = alternativeNames,
-            identifiers = listOf(
-                apiAccessor.createCompanyIdentifier(
-                    CompanyIdentifier.IdentifierType.isin,
-                    identifier
-                        ?: UUID.randomUUID().toString(),
-                ),
-            ),
+            identifiers = mapOf(
+                CompanyIdentifier.IdentifierType.isin.value to listOf(UUID.randomUUID().toString())
+            )
         )
         apiAccessor.companyDataControllerApi.postCompany(companyInformation)
     }

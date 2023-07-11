@@ -384,12 +384,6 @@ class ApiAccessor {
         Thread.sleep(waitTime)
         return uploadedMetaData
     }
-    fun createCompanyIdentifier(type: CompanyIdentifier.IdentifierType, value: String): CompanyIdentifier {
-        return CompanyIdentifier(
-            type,
-            value,
-        )
-    }
 }
 
 data class UploadInfo(

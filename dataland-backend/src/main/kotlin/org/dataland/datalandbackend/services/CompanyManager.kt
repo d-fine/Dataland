@@ -69,11 +69,13 @@ class CompanyManager(
         savedCompanyEntity: StoredCompanyEntity,
         companyInformation: CompanyInformation,
     ): List<CompanyIdentifierEntity> {
-        val newIdentifiers = companyInformation.identifiers.map {
-            CompanyIdentifierEntity(
-                identifierType = it.identifierType, identifierValue = it.identifierValue,
-                company = savedCompanyEntity, isNew = true,
-            )
+        val newIdentifiers = companyInformation.identifiers.flatMap { identifierPair ->
+            identifierPair.value.map {
+                CompanyIdentifierEntity(
+                    identifierType = identifierPair.key, identifierValue = it,
+                    company = savedCompanyEntity, isNew = true,
+                )
+            }
         }
         try {
             return companyIdentifierRepository.saveAllAndFlush(newIdentifiers).toList()
@@ -124,6 +126,11 @@ class CompanyManager(
         patch.countryCode?.let { companyEntity.countryCode = it }
         patch.website?.let { companyEntity.website = it }
         patch.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
+
+        if (patch.companyAlternativeNames != null) {
+            companyEntity.companyAlternativeNames = patch.companyAlternativeNames
+        }
+
 
         return companyRepository.save(companyEntity)
     }
