@@ -9,7 +9,6 @@
         bodyClass="headers-bg"
         headerStyle="width: 30vw;"
         headerClass="horizontal-headers-size"
-        field="kpiK9087ey"
         header="KPIs"
       >
       </Column>
@@ -23,12 +22,14 @@
       >
       </Column>
     </DataTable>
-    <div id="list" v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left; background-color: #F6F5EF;">
+    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left; background-color: #F6F5EF;">
         <!-- //TODO: @click einfügen und probieren oder link auf innere a umgebung für virtuelles klicken -->
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
-        <div id="expandableRow" :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">
-          <a id="badge" @click="toggleExpansion(index)">{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
+          <div class="w-full d-dataset-toggle" @click="toggleExpansion(index)">
+        <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`" >
+          <a >{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
         </div>
+          </div>
         <div v-show="isExpanded(index)">
           <P2pCompanyDataTable
             :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
@@ -333,17 +334,6 @@ for (i = 0; i < coll.length; i++) {
     }
   });
 }
-
-
-/* const listDiv = document.getElementById('list'); */
-const clickableA = document.getElementById('badge');
-const ObjectLink = document.getElementById('list');
-if (clickableA && ObjectLink) {
-  ObjectLink.addEventListener('click', () => {
-    clickableA.click();
-  });
-}
-
 </script>
 <style scoped>
 .collapsible {
@@ -369,4 +359,8 @@ if (clickableA && ObjectLink) {
   overflow: hidden;
   background-color: #f1f1f1;
 }
+.d-dataset-toggle {
+    cursor: pointer;
+}
+
 </style>
