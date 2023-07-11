@@ -22,8 +22,7 @@
       >
       </Column>
     </DataTable>
-    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left; background-color: #F6F5EF;">
-        <!-- //TODO: @click einfügen und probieren oder link auf innere a umgebung für virtuelles klicken -->
+    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
           <div class="w-full d-dataset-toggle" @click="toggleExpansion(index)">
         <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`" >
@@ -319,48 +318,15 @@ export default defineComponent({
     },
   },
 });
-//TODO Rework this to be an actual method in the method block
-const coll = document.getElementsByClassName("collapsible");
-let i;
-
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function () {
-    this.classList.toggle("active");
-    const content = this.nextElementSibling;
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block";
-    }
-  });
-}
 </script>
 <style scoped lang="scss">
-.collapsible {
-  background-color: #777;
-  color: white;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-}
-
-.active,
-.collapsible:hover {
-  background-color: #555;
-}
-
-.content {
-  padding: 0 18px;
-  display: none;
-  overflow: hidden;
-  background-color: #f1f1f1;
-}
 .d-dataset-toggle {
     cursor: pointer;
 }
-//TODO extract styles to css classes, extract inline style to classes, remove unused code
+.d-table-style{
+  font-size: 16px;
+  text-align: left;
+  background-color: #F6F5EF;
+}
+//TODO extract styles to css classes, extract inline style to classes, remove unused code and check if there are already classes which have the styles needed
 </style >
