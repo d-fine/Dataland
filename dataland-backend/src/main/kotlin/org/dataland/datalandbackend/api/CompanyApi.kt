@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -196,7 +197,6 @@ interface CompanyApi {
         summary = "Update company information selectively",
         description = "Changed elements of a company information behind the given company Id is updated.",
     )
-    // what other response codes are relevant? What if the new value is an invalid input? or id doesn't exist?
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully updated company information."),
@@ -211,7 +211,34 @@ interface CompanyApi {
     fun patchCompanyById(
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody
-        companyInformation: CompanyInformationPatch,
+        companyInformationPatch: CompanyInformationPatch,
+    ): ResponseEntity<StoredCompany>
+
+    /**
+     * A method to update company informtion entirely
+     * @param companyId identifier of the company in dataland
+     * @param companyInformation includes the company information
+     * @return updated information about the company
+     */
+    @Operation(
+            summary = "Update company information entirely",
+            description = "all elements of a company information behind the given company Id is updated.",
+    )
+    @ApiResponses(
+            value = [
+                ApiResponse(responseCode = "200", description = "Successfully updated company information."),
+            ],
+    )
+    @PutMapping(
+            value = ["/{companyId}"],
+            consumes = ["application/json"],
+            produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun putCompanyById(
+            @PathVariable("companyId") companyId: String,
+            @Valid @RequestBody
+            companyInformation: CompanyInformation,
     ): ResponseEntity<StoredCompany>
 
     /**

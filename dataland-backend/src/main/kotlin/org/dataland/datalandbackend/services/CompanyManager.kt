@@ -129,6 +129,28 @@ class CompanyManager(
     }
 
     /**
+     * Method to put the information of a company.
+     * @param companyId the id of the company to patch
+     * @param companyInformation denotes information of the company
+     * @return the updated company information object
+     */
+    @Transactional
+    fun putCompany(companyId: String, companyInformation: CompanyInformation): StoredCompanyEntity {
+        val companyEntity = getCompanyById(companyId)
+        logger.info("Updating Company ${companyEntity.companyName} with ID $companyId")
+        companyEntity.companyName = companyInformation.companyName
+        companyEntity.companyLegalForm = companyInformation.companyLegalForm
+        companyEntity.headquarters = companyInformation.headquarters
+        companyEntity.headquartersPostalCode = companyInformation.headquartersPostalCode
+        companyEntity.sector = companyInformation.sector
+        companyEntity.countryCode = companyInformation.countryCode
+        companyEntity.website = companyInformation.website
+        companyEntity.isTeaserCompany = companyInformation.isTeaserCompany
+
+        return companyRepository.save(companyEntity)
+    }
+
+    /**
      * Method to search for companies matching the company name or identifier
      * @param filter The filter to use during searching
      * @param viewingUser The user that is viewing the API model
