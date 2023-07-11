@@ -23,11 +23,11 @@
       >
       </Column>
     </DataTable>
-    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left;">
+    <div id="list" v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left; background-color: #F6F5EF;">
         <!-- //TODO: @click einfügen und probieren oder link auf innere a umgebung für virtuelles klicken -->
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
-        <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">
-          <a @click="toggleExpansion(index)">{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
+        <div id="expandableRow" :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">
+          <a id="badge" @click="toggleExpansion(index)">{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
         </div>
         <div v-show="isExpanded(index)">
           <P2pCompanyDataTable
