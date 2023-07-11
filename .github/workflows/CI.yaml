@@ -175,6 +175,9 @@ jobs:
       - name: Execute E2E Tests
         run: ./testing/e2e_test_launcher.sh
         env:
+          TEST_STH: ${{ vars.RABBITMQ_USER || "e" }}
+          TEST_STH_ELSE: ${{ vars.ABCRABBITMQ_USER || "f" }}
+          TEST_STH_ELSEE: ${{ vars.ABCRABBITMQ_USER || 2 }}
           KEYCLOAK_FRONTEND_URL: "https://local-dev.dataland.com/keycloak"
           KEYCLOAK_DB_PASSWORD: "password"
           BACKEND_DB_PASSWORD: "password"
