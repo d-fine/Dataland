@@ -18,10 +18,9 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
 
     private val cashFlowTypes = listOf("capex", "opex", "revenue")
     private val fieldsToMigrate = mapOf("alignedPercentage" to "alignedData", "eligiblePercentage" to "eligibleData")
-    private val objectMapper = ObjectMapper()
-
 
     override fun migrate(context: Context?) {
+        val objectMapper = ObjectMapper()
         val getQueryResultSet = context!!.connection.createStatement().executeQuery("SELECT * from data_items WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"eutaxonomy-non-financials\\\\\\\"%'")
         val companyAssociatedDataSets = mutableListOf<DataTableEntity>()
         while (getQueryResultSet.next()) {
