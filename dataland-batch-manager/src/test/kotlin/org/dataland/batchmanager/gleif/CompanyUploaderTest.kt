@@ -3,7 +3,7 @@ package org.dataland.batchmanager.gleif
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
@@ -31,7 +31,7 @@ class CompanyUploaderTest {
         sector = "dummy",
         website = null,
         identifiers = mapOf(
-            CompanyIdentifier.IdentifierType.lei.value to listOf("DummyLei1"),
+            IdentifierType.lei.value to listOf("DummyLei1"),
         ),
     )
 
@@ -45,7 +45,7 @@ class CompanyUploaderTest {
         sector = "dummy",
         website = null,
         identifiers = mapOf(
-            CompanyIdentifier.IdentifierType.lei.value to listOf("DummyLei2"),
+            IdentifierType.lei.value to listOf("DummyLei2"),
         ),
     )
 

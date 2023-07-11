@@ -1,6 +1,6 @@
 package org.dataland.batchmanager.service
 
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
@@ -30,7 +30,7 @@ class GleifMappingTest {
         sector = null,
         website = null,
         identifiers = mapOf(
-            CompanyIdentifier.IdentifierType.lei.value to listOf(expectedGleifCompanyInformation.lei),
+            IdentifierType.lei.value to listOf(expectedGleifCompanyInformation.lei),
         ),
     )
 
