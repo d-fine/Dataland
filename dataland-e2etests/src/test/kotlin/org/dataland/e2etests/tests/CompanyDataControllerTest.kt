@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -38,6 +39,98 @@ class CompanyDataControllerTest {
         assertTrue(
             uploadInfo.actualStoredCompany.companyId.isNotEmpty(),
             "No valid company Id was assigned to the posted company.",
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if patching basic properties works as expected`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+
+        val startingCompanyInformation = uploadInfo.inputCompanyInformation
+
+        val patchObject = CompanyInformationPatch(
+            companyName = startingCompanyInformation.companyName + "-UPDATED",
+            website = "Updated Website",
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId,
+            patchObject,
+        )
+        val newCompanyInformation = updatedCompany.companyInformation
+        assertEquals(
+            newCompanyInformation.companyName, startingCompanyInformation.companyName + "-UPDATED",
+            "The company should have been updated",
+        )
+        assertEquals(
+            newCompanyInformation.website, "Updated Website",
+            "The website should have been set",
+        )
+        assertEquals(
+            newCompanyInformation.sector, startingCompanyInformation.sector,
+            "The sector should not have been changed",
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if patching identifiers works as expected`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val companyInformationToUpload = apiAccessor
+            .testDataProviderEuTaxonomyForFinancials
+            .getCompanyInformationWithRandomIdentifiers(1)
+            .first()
+        val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformationToUpload)
+
+        val patchObject = CompanyInformationPatch(
+            identifiers = mapOf(
+                IdentifierType.lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
+                IdentifierType.duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
+            ),
+        )
+
+        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
+            uploadedCompany.companyId,
+            patchObject,
+        )
+        val newCompanyInformation = updatedCompany.companyInformation
+
+        assertEquals(
+            newCompanyInformation.identifiers[IdentifierType.isin.value],
+            uploadedCompany.companyInformation.identifiers[IdentifierType.isin.value],
+            "Unpatched identifiers should remain the same",
+        )
+
+        assertEquals(
+            newCompanyInformation.identifiers[IdentifierType.lei.value],
+            patchObject.identifiers!![IdentifierType.lei.value],
+            "The update should work as expected",
+        )
+
+        assertEquals(
+            newCompanyInformation.identifiers[IdentifierType.duns.value],
+            patchObject.identifiers!![IdentifierType.duns.value],
+            "The update should work as expected",
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if patching alternative names works as expected`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+
+        val patchObject = CompanyInformationPatch(
+            companyAlternativeNames = listOf("Alt-Name-1", "Alt-Name-2"),
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId,
+            patchObject,
+        )
+        val newCompanyInformation = updatedCompany.companyInformation
+        assertEquals(
+            newCompanyInformation.companyAlternativeNames, patchObject.companyAlternativeNames!!,
+            "The company alternative names should have been updated",
         )
     }
 
