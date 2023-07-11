@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
@@ -30,6 +31,9 @@ data class CompanyInformationPatch(
 
     val sector: String? = null,
 
+    @field:Schema(
+        example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}",
+    )
     val identifiers: Map<IdentifierType, List<String>>? = null,
 
     val countryCode: String? = null,

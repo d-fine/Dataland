@@ -1,7 +1,7 @@
 package org.dataland.batchmanager.service
 
-import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.junit.jupiter.api.Assertions

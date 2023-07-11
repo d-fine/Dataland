@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -67,9 +68,9 @@ class CompanyManager(
 
     private fun createAndAssociateIdentifiers(
         savedCompanyEntity: StoredCompanyEntity,
-        companyInformation: CompanyInformation,
+        identifierMap: Map<IdentifierType, List<String>>,
     ): List<CompanyIdentifierEntity> {
-        val newIdentifiers = companyInformation.identifiers.flatMap { identifierPair ->
+        val newIdentifiers = identifierMap.flatMap { identifierPair ->
             identifierPair.value.map {
                 CompanyIdentifierEntity(
                     identifierType = identifierPair.key, identifierValue = it,
@@ -102,10 +103,19 @@ class CompanyManager(
         val companyId = IdUtils.generateUUID()
         logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
         val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
-        val identifiers = createAndAssociateIdentifiers(savedCompany, companyInformation)
+        val identifiers = createAndAssociateIdentifiers(savedCompany, companyInformation.identifiers)
         savedCompany.identifiers = identifiers.toMutableList()
         logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
         return savedCompany
+    }
+
+    private fun replaceCompanyIdentifiers(
+        companyEntity: StoredCompanyEntity,
+        identifierType: IdentifierType,
+        newIdentifiers: List<String>,
+    ) {
+        companyIdentifierRepository.deleteAllByCompanyAndIdentifierType(companyEntity, identifierType)
+        createAndAssociateIdentifiers(companyEntity, mapOf(identifierType to newIdentifiers))
     }
 
     /**
@@ -129,6 +139,16 @@ class CompanyManager(
 
         if (patch.companyAlternativeNames != null) {
             companyEntity.companyAlternativeNames = patch.companyAlternativeNames
+        }
+
+        if (patch.identifiers != null) {
+            for (keypair in patch.identifiers) {
+                replaceCompanyIdentifiers(
+                    companyEntity = companyEntity,
+                    identifierType = keypair.key,
+                    newIdentifiers = keypair.value,
+                )
+            }
         }
 
         return companyRepository.save(companyEntity)
