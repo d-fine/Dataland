@@ -67,7 +67,8 @@ data class StoredCompanyEntity(
         }
 
         for (identifier in identifiers) {
-            val entry = identifierMap[identifier.identifierType]!!
+            val entry = identifierMap[identifier.identifierType]
+            requireNotNull(entry)
             entry.add(identifier.identifierValue)
         }
 

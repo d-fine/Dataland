@@ -93,23 +93,19 @@ class CompanyDataControllerTest {
             uploadedCompany.companyId,
             patchObject,
         )
-        val newCompanyInformation = updatedCompany.companyInformation
 
+        val oldIdentifiers = uploadedCompany.companyInformation.identifiers
+        val newIdentifiers = updatedCompany.companyInformation.identifiers
         assertEquals(
-            newCompanyInformation.identifiers[IdentifierType.isin.value],
-            uploadedCompany.companyInformation.identifiers[IdentifierType.isin.value],
+            oldIdentifiers[IdentifierType.isin.value], newIdentifiers[IdentifierType.isin.value],
             "Unpatched identifiers should remain the same",
         )
-
         assertEquals(
-            newCompanyInformation.identifiers[IdentifierType.lei.value],
-            patchObject.identifiers!![IdentifierType.lei.value],
+            newIdentifiers[IdentifierType.lei.value], patchObject.identifiers!![IdentifierType.lei.value],
             "The update should work as expected",
         )
-
         assertEquals(
-            newCompanyInformation.identifiers[IdentifierType.duns.value],
-            patchObject.identifiers!![IdentifierType.duns.value],
+            newIdentifiers[IdentifierType.duns.value], patchObject.identifiers!![IdentifierType.duns.value],
             "The update should work as expected",
         )
     }
