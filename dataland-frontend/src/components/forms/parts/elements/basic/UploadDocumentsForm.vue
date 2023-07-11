@@ -89,11 +89,8 @@ export default defineComponent({
     },
   },
   watch: {
-    fileNamesForPrefill: {
-      handler() {
-        this.prefillFileUpload();
-      },
-      deep: true,
+    fileNamesForPrefill() {
+      this.prefillFileUpload();
     },
   },
   methods: {
