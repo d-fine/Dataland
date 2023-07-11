@@ -13,13 +13,16 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
         val getQueryResultSet = context!!.connection.createStatement().executeQuery("SELECT data from data_items WHERE data LIKE '%\\\"dataType\\\":\\\"eutaxonomy-non-financials\\\"%'")
         val companyAssociatedDataSets = mutableListOf<JSONObject>()
         while(getQueryResultSet.next()) {
+            println("LOOP")
             companyAssociatedDataSets.add(JSONObject(
                 objectMapper.readValue(
                     getQueryResultSet.getString("data"), String::class.java
                 )
             ))
         }
+        println("Length before filter ${companyAssociatedDataSets.size}")
         companyAssociatedDataSets.filter { it.getString("dataType") == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value }
+        println("Length before filter ${companyAssociatedDataSets.size}")
         val cashflowTypes = listOf("capex", "opex", "revenue")
         val fieldsToMigrate = mapOf("alignedPercentage" to "alignedData", "eligiblePercentage" to "eligibleData")
         companyAssociatedDataSets.forEach {
