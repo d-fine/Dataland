@@ -20,11 +20,17 @@
     <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
         <!--//TODO fix the height of the category row -->
-        <div class="w-full d-dataset-toggle" @click="toggleExpansion(index)">
-          <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">
-            <a>{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
-          </div>
+          <div class="w-full d-dataset-toggle" @click="toggleExpansion(index)">
+        <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`" >
+          <a >{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
         </div>
+            <div  v-if="!isExpanded(index)">
+              <button class="p-row-toggler p-link" type="button" style="text-align:left"> asdf </button>
+            </div>
+            <div  v-if="isExpanded(index)">
+              <button class="p-row-toggler p-link" type="button" style="text-align:left"> qewrtz </button>
+            </div>
+          </div>
         <div v-show="isExpanded(index)">
           <P2pCompanyDataTable
             :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
