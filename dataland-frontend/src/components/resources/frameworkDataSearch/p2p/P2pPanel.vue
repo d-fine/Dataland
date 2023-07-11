@@ -335,7 +335,7 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 .collapsible {
   background-color: #777;
   color: white;
@@ -363,4 +363,4 @@ for (i = 0; i < coll.length; i++) {
     cursor: pointer;
 }
 //TODO extract styles to css classes, extract inline style to classes, remove unused code
-</style>
+</style >
