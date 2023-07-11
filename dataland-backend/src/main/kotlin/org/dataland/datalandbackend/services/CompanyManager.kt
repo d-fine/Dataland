@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
@@ -103,6 +104,28 @@ class CompanyManager(
         savedCompany.identifiers = identifiers.toMutableList()
         logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
         return savedCompany
+    }
+
+    /**
+     * Method to patch the information of a company.
+     * @param companyId the id of the company to patch
+     * @param patch the patch to apply to the company
+     * @return the updated company information object
+     */
+    @Transactional
+    fun patchCompany(companyId: String, patch: CompanyInformationPatch): StoredCompanyEntity {
+        val companyEntity = getCompanyById(companyId)
+        logger.info("Patching Company ${companyEntity.companyName} with ID $companyId")
+        patch.companyName?.let { companyEntity.companyName = it }
+        patch.companyLegalForm?.let { companyEntity.companyLegalForm = it }
+        patch.headquarters?.let { companyEntity.headquarters = it }
+        patch.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
+        patch.sector?.let { companyEntity.sector = it }
+        patch.countryCode?.let { companyEntity.countryCode = it }
+        patch.website?.let { companyEntity.website = it }
+        patch.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
+
+        return companyRepository.save(companyEntity)
     }
 
     /**

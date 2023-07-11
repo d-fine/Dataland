@@ -8,19 +8,20 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.PatchMapping
 
 /**
  * Defines the restful dataland-backend API regarding company data.
@@ -192,24 +193,25 @@ interface CompanyApi {
      * @return updated information about the company
      */
     @Operation(
-            summary = "Update company information selectively",
-            description = "Changed elements of a company information behind the given company Id is updated.",
+        summary = "Update company information selectively",
+        description = "Changed elements of a company information behind the given company Id is updated.",
     )
-    //what other response codes are relevant? What if the new value is an invalid input? or id doesn't exist?
+    // what other response codes are relevant? What if the new value is an invalid input? or id doesn't exist?
     @ApiResponses(
-            value = [
-                ApiResponse(responseCode = "200", description = "Successfully updated company information."),
-            ],
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully updated company information."),
+        ],
     )
     @PatchMapping(
-            value = ["/{companyId}"],
-            consumes = ["application/json"],
-            produces = ["application/json"],
+        value = ["/{companyId}"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchCompanyById(
-            @PathVariable("companyId") companyId: String,
-            @Valid @RequestBody companyInformation: CompanyInformation,
+        @PathVariable("companyId") companyId: String,
+        @Valid @RequestBody
+        companyInformation: CompanyInformationPatch,
     ): ResponseEntity<StoredCompany>
 
     /**

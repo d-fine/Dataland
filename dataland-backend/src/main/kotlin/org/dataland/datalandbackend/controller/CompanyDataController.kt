@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -105,10 +106,14 @@ class CompanyDataController(
         )
     }
 
-    override fun patchCompanyById(companyId: String, companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
+    override fun patchCompanyById(
+        companyId: String,
+        companyInformationPatch: CompanyInformationPatch,
+    ): ResponseEntity<StoredCompany> {
+        companyManager.patchCompany(companyId, companyInformationPatch)
         return ResponseEntity.ok(
-                companyManager
-                        .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
+            companyManager
+                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
         )
     }
 
