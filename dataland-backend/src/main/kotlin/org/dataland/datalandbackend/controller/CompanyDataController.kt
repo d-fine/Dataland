@@ -118,13 +118,13 @@ class CompanyDataController(
     }
 
     override fun putCompanyById(
-            companyId: String,
-            companyInformation: CompanyInformation,
+        companyId: String,
+        companyInformation: CompanyInformation,
     ): ResponseEntity<StoredCompany> {
         companyManager.putCompany(companyId, companyInformation)
         return ResponseEntity.ok(
-                companyManager
-                        .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
+            companyManager
+                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
         )
     }
 

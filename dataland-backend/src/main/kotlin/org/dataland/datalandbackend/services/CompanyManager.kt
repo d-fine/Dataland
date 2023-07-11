@@ -131,7 +131,6 @@ class CompanyManager(
             companyEntity.companyAlternativeNames = patch.companyAlternativeNames
         }
 
-
         return companyRepository.save(companyEntity)
     }
 

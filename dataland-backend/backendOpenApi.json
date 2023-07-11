@@ -20,6 +20,202 @@
     }
   ],
   "paths": {
+    "/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve company information.",
+        "description": "Company information behind the given company Id is retrieved.",
+        "operationId": "getCompanyById",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompany"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Update company information entirely",
+        "description": "all elements of a company information behind the given company Id is updated.",
+        "operationId": "putCompanyById",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyInformation"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompany"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Update company information selectively",
+        "description": "Changed elements of a company information behind the given company Id is updated.",
+        "operationId": "patchCompanyById",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyInformationPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompany"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/invite": {
       "post": {
         "tags": [
@@ -675,134 +871,6 @@
         ]
       }
     },
-    "/companies/{companyId}": {
-      "get": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Retrieve company information.",
-        "description": "Company information behind the given company Id is retrieved.",
-        "operationId": "getCompanyById",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved company information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredCompany"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Update company information selectively",
-        "description": "Changed elements of a company information behind the given company Id is updated.",
-        "operationId": "patchCompanyById",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyInformationPatch"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully updated company information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredCompany"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/companies/identifiers/{identifierType}/{identifier}": {
       "head": {
         "tags": [
@@ -817,16 +885,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "Lei",
-                "Isin",
-                "PermId",
-                "Ticker",
-                "Duns",
-                "CompanyRegistrationNumber",
-                "VatNumber"
-              ]
+              "$ref": "#/components/schemas/IdentifierType"
             }
           },
           {
@@ -2283,6 +2342,125 @@
   },
   "components": {
     "schemas": {
+      "CompanyInformation": {
+        "required": [
+          "companyName",
+          "countryCode",
+          "headquarters",
+          "identifiers"
+        ],
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyAlternativeNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "companyLegalForm": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "headquartersPostalCode": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string"
+          },
+          "identifiers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "isTeaserCompany": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DataMetaInformation": {
+        "required": [
+          "companyId",
+          "currentlyActive",
+          "dataId",
+          "dataType",
+          "qaStatus",
+          "reportingPeriod",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "uploaderUserId": {
+            "type": "string"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "currentlyActive": {
+            "type": "boolean"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          }
+        }
+      },
+      "QaStatus": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ]
+      },
+      "StoredCompany": {
+        "required": [
+          "companyId",
+          "companyInformation",
+          "dataRegisteredByDataland"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyInformation": {
+            "$ref": "#/components/schemas/CompanyInformation"
+          },
+          "dataRegisteredByDataland": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataMetaInformation"
+            }
+          }
+        }
+      },
       "InviteMetaInfoEntity": {
         "type": "object",
         "properties": {
@@ -2486,53 +2664,6 @@
           "Yes",
           "No",
           "NA"
-        ]
-      },
-      "DataMetaInformation": {
-        "required": [
-          "companyId",
-          "currentlyActive",
-          "dataId",
-          "dataType",
-          "qaStatus",
-          "reportingPeriod",
-          "uploadTime"
-        ],
-        "type": "object",
-        "properties": {
-          "dataId": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "dataType": {
-            "$ref": "#/components/schemas/DataTypeEnum"
-          },
-          "uploaderUserId": {
-            "type": "string"
-          },
-          "uploadTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "currentlyActive": {
-            "type": "boolean"
-          },
-          "qaStatus": {
-            "$ref": "#/components/schemas/QaStatus"
-          }
-        }
-      },
-      "QaStatus": {
-        "type": "string",
-        "enum": [
-          "Pending",
-          "Accepted",
-          "Rejected"
         ]
       },
       "CompanyAssociatedDataSfdrData": {
@@ -4947,78 +5078,6 @@
           }
         }
       },
-      "CompanyInformation": {
-        "required": [
-          "companyName",
-          "countryCode",
-          "headquarters",
-          "identifiers"
-        ],
-        "type": "object",
-        "properties": {
-          "companyName": {
-            "type": "string"
-          },
-          "companyAlternativeNames": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "companyLegalForm": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "headquartersPostalCode": {
-            "type": "string"
-          },
-          "sector": {
-            "type": "string"
-          },
-          "identifiers": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "website": {
-            "type": "string"
-          },
-          "isTeaserCompany": {
-            "type": "boolean"
-          }
-        }
-      },
-      "StoredCompany": {
-        "required": [
-          "companyId",
-          "companyInformation",
-          "dataRegisteredByDataland"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyInformation": {
-            "$ref": "#/components/schemas/CompanyInformation"
-          },
-          "dataRegisteredByDataland": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DataMetaInformation"
-            }
-          }
-        }
-      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -5065,6 +5124,18 @@
             "type": "boolean"
           }
         }
+      },
+      "IdentifierType": {
+        "type": "string",
+        "enum": [
+          "Lei",
+          "Isin",
+          "PermId",
+          "Ticker",
+          "Duns",
+          "CompanyRegistrationNumber",
+          "VatNumber"
+        ]
       },
       "DataAndMetaInformationSmeData": {
         "required": [

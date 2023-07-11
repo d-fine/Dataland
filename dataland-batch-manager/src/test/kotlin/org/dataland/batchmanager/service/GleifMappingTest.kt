@@ -29,11 +29,8 @@ class GleifMappingTest {
         headquartersPostalCode = expectedGleifCompanyInformation.headquartersPostalCode,
         sector = null,
         website = null,
-        identifiers = listOf(
-            CompanyIdentifier(
-                identifierType = CompanyIdentifier.IdentifierType.lei,
-                identifierValue = expectedGleifCompanyInformation.lei,
-            ),
+        identifiers = mapOf(
+            CompanyIdentifier.IdentifierType.lei.value to listOf(expectedGleifCompanyInformation.lei),
         ),
     )
 

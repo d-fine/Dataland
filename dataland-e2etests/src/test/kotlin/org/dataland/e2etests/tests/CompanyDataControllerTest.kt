@@ -2,8 +2,8 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -203,8 +203,8 @@ class CompanyDataControllerTest {
             companyName = name,
             companyAlternativeNames = alternativeNames,
             identifiers = mapOf(
-                CompanyIdentifier.IdentifierType.isin.value to listOf(UUID.randomUUID().toString())
-            )
+                IdentifierType.isin.value to listOf(identifier ?: UUID.randomUUID().toString()),
+            ),
         )
         apiAccessor.companyDataControllerApi.postCompany(companyInformation)
     }

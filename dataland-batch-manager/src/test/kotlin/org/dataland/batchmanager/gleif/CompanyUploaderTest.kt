@@ -30,11 +30,8 @@ class CompanyUploaderTest {
         headquartersPostalCode = "CompanyPostalCode",
         sector = "dummy",
         website = null,
-        identifiers = listOf(
-            CompanyIdentifier(
-                identifierType = CompanyIdentifier.IdentifierType.lei,
-                identifierValue = "DummyLei1",
-            ),
+        identifiers = mapOf(
+            CompanyIdentifier.IdentifierType.lei.value to listOf("DummyLei1"),
         ),
     )
 
@@ -47,11 +44,8 @@ class CompanyUploaderTest {
         headquartersPostalCode = "CompanyPostalCode",
         sector = "dummy",
         website = null,
-        identifiers = listOf(
-            CompanyIdentifier(
-                identifierType = CompanyIdentifier.IdentifierType.lei,
-                identifierValue = "DummyLei2",
-            ),
+        identifiers = mapOf(
+            CompanyIdentifier.IdentifierType.lei.value to listOf("DummyLei2"),
         ),
     )
 

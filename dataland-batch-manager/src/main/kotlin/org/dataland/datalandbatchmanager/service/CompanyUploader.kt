@@ -36,7 +36,7 @@ class CompanyUploader(
             try {
                 logger.info(
                     "Uploading company data for ${companyInformation.companyName} " +
-                        "(LEI: ${companyInformation.identifiers[0].identifierValue})",
+                        "(LEI: ${companyInformation.identifiers["Lei"]!!.first()})",
                 )
                 companyDataControllerApi.postCompany(companyInformation)
                 break

@@ -16,9 +16,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -221,24 +221,24 @@ interface CompanyApi {
      * @return updated information about the company
      */
     @Operation(
-            summary = "Update company information entirely",
-            description = "all elements of a company information behind the given company Id is updated.",
+        summary = "Update company information entirely",
+        description = "all elements of a company information behind the given company Id is updated.",
     )
     @ApiResponses(
-            value = [
-                ApiResponse(responseCode = "200", description = "Successfully updated company information."),
-            ],
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully updated company information."),
+        ],
     )
     @PutMapping(
-            value = ["/{companyId}"],
-            consumes = ["application/json"],
-            produces = ["application/json"],
+        value = ["/{companyId}"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun putCompanyById(
-            @PathVariable("companyId") companyId: String,
-            @Valid @RequestBody
-            companyInformation: CompanyInformation,
+        @PathVariable("companyId") companyId: String,
+        @Valid @RequestBody
+        companyInformation: CompanyInformation,
     ): ResponseEntity<StoredCompany>
 
     /**
