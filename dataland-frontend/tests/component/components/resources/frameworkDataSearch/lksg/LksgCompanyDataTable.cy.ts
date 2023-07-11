@@ -70,6 +70,8 @@ describe("Component test for LksgCompanyDataTable", () => {
     return {
       subcategoryKey: "_masterData",
       subcategoryLabel: "Master Data",
+      categoryKey: "_masterData",
+      categoryLabel: "Master Data",
       kpiKey: "dummy",
       kpiLabel: label,
       kpiDescription: "",

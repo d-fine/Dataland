@@ -23,7 +23,8 @@
       >
       </Column>
     </DataTable>
-    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left;"> //TODO: @click einfügen und probieren oder link auf innere a umgebung für virtuelles klicken
+    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" style="font-size: 16px; text-align: left;">
+        <!-- //TODO: @click einfügen und probieren oder link auf innere a umgebung für virtuelles klicken -->
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
         <div :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">
           <a @click="toggleExpansion(index)">{{ arrayOfKpiDataObject[0].toUpperCase() }}</a>
@@ -317,6 +318,7 @@ export default defineComponent({
     },
   },
 });
+//TODO Rework this to be an actual method in the method block
 const coll = document.getElementsByClassName("collapsible");
 let i;
 
