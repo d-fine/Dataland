@@ -11,9 +11,8 @@
         {{ label }}
       </h5>
     </div>
-
     <FormKit type="group" :name="name" v-if="isItActive">
-      <div>
+      <div data-test="ProcurementCategoryFormElementContent">
         <div class="form-field border-none">
           <NaceCodeFormFieldBindData
             label="Definition Product Type/Service"
@@ -58,6 +57,7 @@
               label="Number of Direct Supliers"
               description="State the number of direct suppliers per procurement category and country (own operations)"
               :is-required="false"
+              data-test="directSuppliersHeader"
             />
           </div>
           <FormKit
@@ -67,7 +67,7 @@
             label="Suppliers Per Country"
           >
             <div v-for="el in selectedCountries" :key="el.label">
-              <div class="justify-content-between flex align-items-center">
+              <div class="justify-content-between flex align-items-center" data-test="supplierCountry">
                 <h5>{{ removeWordFromPhrase(el.value, el.label) }}</h5>
                 <div class="justify-content-end flex align-items-center">
                   <FormKit
@@ -77,12 +77,14 @@
                     step="1"
                     validation="required"
                     validation-label="Number of suppliers per country"
+                    data-test="supplierCountryValue"
                     outer-class="my-0 mx-3"
                   />
                   <PrimeButton
                     icon="pi pi-times"
                     rounded
                     class="p-button-icon"
+                    data-test="removeElementBtn"
                     @click="removeItemFromListOfSelectedCountries(el.value)"
                   />
                 </div>

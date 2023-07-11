@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field">
+  <div class="form-field" data-test="ProcurementCategoriesFormField">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit type="group" name="procurementCategories">
       <ProcurementCategoryFormElement :name="ProcurementCategoryType.Products" label="Products" />

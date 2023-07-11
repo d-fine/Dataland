@@ -225,9 +225,9 @@ function fillInMostImportantProducts(): void {
 }
 
 /**
- *
+ * Fills out Procurement Categories
  */
-function fillInProcurementCategories(): void {
+export function fillInProcurementCategories(): void {
   cy.get('[data-test="dataPointToggleButton"]').first().click();
   cy.get('[data-test="suppliersPerCountryCode"] .p-multiselect').should("exist").click();
 
@@ -248,10 +248,8 @@ function fillInProcurementCategories(): void {
   cy.get('[data-test="supplierCountry"]')
     .should("have.length", 2)
     .each(($el, index) => {
-      const wrapped = cy.wrap($el);
-      console.log({ $el, name: selectedCountries[index], wrapped });
-      wrapped.get("h5").should("contain.text", selectedCountries[index]);
-      wrapped.get('[data-test="supplierCountryValue"]').should("exist").type("2");
+      cy.wrap($el).find("h5").should("contain.text", selectedCountries[index]);
+      cy.wrap($el).find('[data-test="supplierCountryValue"]').should("exist").type("2", { force: true });
     });
 }
 
