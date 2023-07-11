@@ -44,7 +44,8 @@ import java.time.Instant
 class DataManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired val companyManager: CompanyManager,
+    @Autowired val companyQueryManager: CompanyQueryManager,
+    @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired var messageUtils: MessageQueueUtils,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
@@ -58,7 +59,7 @@ class DataManagerTest(
     @BeforeEach
     fun reset() {
         dataManager = DataManager(
-            objectMapper, companyManager, dataMetaInformationManager,
+            objectMapper, companyQueryManager, dataMetaInformationManager,
             mockStorageClient, mockCloudEventMessageHandler, messageUtils,
         )
         spyDataManager = spy(dataManager)
@@ -66,7 +67,7 @@ class DataManagerTest(
 
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt(): StorableDataSet {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
-        val companyId = companyManager.addCompany(companyInformation).companyId
+        val companyId = companyAlterationManager.addCompany(companyInformation).companyId
         return StorableDataSet(
             companyId,
             DataType("eutaxonomy-non-financials"),
@@ -227,7 +228,7 @@ class DataManagerTest(
             ClientException(statusCode = HttpStatus.NOT_FOUND.value()),
         )
         dataManager = DataManager(
-            objectMapper, companyManager, mockDataMetaInformationManager,
+            objectMapper, companyQueryManager, mockDataMetaInformationManager,
             mockStorageClient, mockCloudEventMessageHandler, messageUtils,
         )
         assertThrows<ResourceNotFoundApiException> { dataManager.getDataSet(mockMetaInfo.dataId, DataType("lksg"), "") }

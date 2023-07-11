@@ -19,7 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class CompanyManagerTest(
     @Autowired val objectMapper: ObjectMapper,
-    @Autowired val testCompanyManager: CompanyManager,
+    @Autowired val testCompanyAlterationManager: CompanyAlterationManager,
+    @Autowired val testCompanyQueryManager: CompanyQueryManager,
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
     val testCompanyList = testDataProvider.getCompanyInformation(4)
@@ -27,17 +28,17 @@ class CompanyManagerTest(
     @BeforeEach
     fun addTestCompanies() {
         for (company in testCompanyList) {
-            testCompanyManager.addCompany(company)
+            testCompanyAlterationManager.addCompany(company)
         }
     }
 
     @Test
     fun `add sample company and check if it can be retrieved by using the company ID that is returned`() {
         val testCompanyData = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
-        val testCompanyId = testCompanyManager.addCompany(testCompanyData).companyId
+        val testCompanyId = testCompanyAlterationManager.addCompany(testCompanyData).companyId
         assertEquals(
             StoredCompany(testCompanyId, testCompanyData, mutableListOf()),
-            testCompanyManager.getCompanyApiModelById(testCompanyId),
+            testCompanyQueryManager.getCompanyApiModelById(testCompanyId),
             "The company behind the company ID in the post-response " +
                 "does not contain company information of the posted company.",
         )
@@ -45,7 +46,7 @@ class CompanyManagerTest(
 
     @Test
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
-        val allCompaniesInStore = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+        val allCompaniesInStore = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
             "",
         )
         assertTrue(
@@ -59,7 +60,7 @@ class CompanyManagerTest(
     @Test
     fun `search for them one by one by using their names`() {
         for (company in testCompanyList) {
-            val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            val searchResponse = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
                 searchString = company.companyName,
             )
             assertTrue(
@@ -83,7 +84,7 @@ class CompanyManagerTest(
                 if (identifier.contains(searchString)) { occurencesOfSearchString += 1 }
             }
         }
-        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+        val searchResponse = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
             searchString,
         )
         assertEquals(
@@ -102,7 +103,7 @@ class CompanyManagerTest(
                 occurencesOfSearchString += 1
             }
         }
-        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+        val searchResponse = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
             searchString = searchString,
         )
         assertEquals(
@@ -115,7 +116,7 @@ class CompanyManagerTest(
     @Test
     fun `search for name substring to check the ordering of results`() {
         val searchString = testCompanyList.first().companyName.take(1)
-        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+        val searchResponse = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
             searchString = searchString,
         )
         val responsesStartingWith =
