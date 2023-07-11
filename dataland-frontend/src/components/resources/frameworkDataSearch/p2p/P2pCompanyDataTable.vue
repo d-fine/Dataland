@@ -181,7 +181,7 @@ export default defineComponent({
      * @returns true if the string is 'Yes' or 'No'
      */
     isYesNo(value: string) {
-      return (Object.values(YesNo) as string[]).includes(value);
+      return Object.values(YesNo).toString().includes(value);
     },
     /**
      * Opens a modal to display a table with the provided list of production sites
