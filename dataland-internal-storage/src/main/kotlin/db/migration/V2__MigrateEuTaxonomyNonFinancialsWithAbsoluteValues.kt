@@ -23,7 +23,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
         val cashflowTypes = listOf("capex", "opex", "revenue")
         val fieldsToMigrate = mapOf("alignedPercentage" to "alignedData", "eligiblePercentage" to "eligibleData")
         companyAssociatedDataSets.forEach {
-            println(it.getString("data"))
+            println("Migrating dataset")
             val data = JSONObject(it.getString("data"))
             cashflowTypes.forEach { cashflowType ->
                 val cashFlow = (data.opt(cashflowType) ?: return@forEach) as JSONObject
