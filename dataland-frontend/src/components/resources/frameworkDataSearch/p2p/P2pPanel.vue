@@ -55,7 +55,7 @@
 <script lang="ts">
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/p2p/P2pCompanyDataTable.vue";
+import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -215,8 +215,8 @@ export default defineComponent({
             }
 
             this.mapOfKpiKeysToDataObjectsArrays.set(this.categoryName, this.listOfDataObjects);
-              console.log(this.mapOfKpiKeysToDataObjectsArrays)
-              console.log(this.mapOfKpiKeysToDataObjects)
+            console.log(this.mapOfKpiKeysToDataObjectsArrays);
+            console.log(this.mapOfKpiKeysToDataObjects);
           }
         });
       }

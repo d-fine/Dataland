@@ -15,7 +15,7 @@
 <script lang="ts">
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/p2p/P2pCompanyDataTable.vue";
+import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";

@@ -12,7 +12,14 @@
       :headerInputStyle="headerInputStyle"
       v-model:expandedRowGroups="expandedRowGroups"
     >
-      <Column bodyClass="headers-bg" bodyStyle="width: 30vw;" headerClass="horizontal-headers-size" :headerStyle="headerInputStyle" field="kpiKey" header="KPIs">
+      <Column
+        bodyClass="headers-bg"
+        bodyStyle="width: 30vw;"
+        headerClass="horizontal-headers-size"
+        :headerStyle="headerInputStyle"
+        field="kpiKey"
+        header="KPIs"
+      >
         <template #body="slotProps">
           <span class="table-left-label" :data-test="slotProps.data.kpiKey">{{ slotProps.data.kpiLabel }}</span>
           <em
@@ -148,9 +155,9 @@ export default defineComponent({
       type: Array as PropType<Array<KpiDataObject>>,
       default: () => [],
     },
-      headerInputStyle: {
-          type: String,
-      },
+    headerInputStyle: {
+      type: String,
+    },
     listOfReportingPeriodsWithDataId: {
       type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
       default: () => [],
