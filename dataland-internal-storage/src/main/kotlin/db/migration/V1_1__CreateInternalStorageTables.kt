@@ -16,7 +16,7 @@ class V1_1__CreateInternalStorageTables : BaseJavaMigration() {
                 "PRIMARY KEY (data_id)" +
                 ")",
         )
-        context!!.connection.createStatement().execute(
+        context.connection.createStatement().execute(
             "CREATE TABLE blob_items (" +
                 "blob_id varchar(255) NOT NULL, " +
                 "data oid, " +
