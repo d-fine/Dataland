@@ -147,19 +147,21 @@ class CompanyAlterationManager(
      */
     @Transactional
     fun putCompany(companyId: String, companyInformation: CompanyInformation): StoredCompanyEntity {
-        val companyEntity = companyQueryManager.getCompanyById(companyId)
-        logger.info("Updating Company ${companyEntity.companyName} with ID $companyId")
-        companyEntity.companyName = companyInformation.companyName
-        companyEntity.companyLegalForm = companyInformation.companyLegalForm
-        companyEntity.headquarters = companyInformation.headquarters
-        companyEntity.headquartersPostalCode = companyInformation.headquartersPostalCode
-        companyEntity.sector = companyInformation.sector
-        companyEntity.countryCode = companyInformation.countryCode
-        companyEntity.website = companyInformation.website
-        companyEntity.isTeaserCompany = companyInformation.isTeaserCompany
-        companyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
-        companyEntity.identifiers = companyInformation.identifiers
-
-        return companyRepository.save(companyEntity)
+        val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
+        logger.info("Updating Company ${storedCompanyEntity.companyName} with ID $companyId")
+        storedCompanyEntity.companyName = companyInformation.companyName
+        storedCompanyEntity.companyLegalForm = companyInformation.companyLegalForm
+        storedCompanyEntity.headquarters = companyInformation.headquarters
+        storedCompanyEntity.headquartersPostalCode = companyInformation.headquartersPostalCode
+        storedCompanyEntity.sector = companyInformation.sector
+        storedCompanyEntity.countryCode = companyInformation.countryCode
+        storedCompanyEntity.website = companyInformation.website
+        storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany
+        storedCompanyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
+        companyIdentifierRepository.deleteAllByCompany(
+            storedCompanyEntity,
+        )
+        createAndAssociateIdentifiers(storedCompanyEntity, companyInformation.identifiers)
+        return companyRepository.save(storedCompanyEntity)
     }
 }

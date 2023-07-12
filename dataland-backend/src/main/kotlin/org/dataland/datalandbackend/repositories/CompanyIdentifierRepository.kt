@@ -18,4 +18,11 @@ interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, C
         company: StoredCompanyEntity,
         identifierType: IdentifierType,
     )
+
+    /**
+     * Auto-Generated function to delete all identifiers belonging to a company
+     */
+    fun deleteAllByCompany(
+        company: StoredCompanyEntity,
+    )
 }
