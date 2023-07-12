@@ -18,15 +18,15 @@
       </Column>
     </DataTable>
     <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
-      <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
+      <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])" style="height: 40px">
         <!--//TODO fix the height of the category row -->
-        <div class="w-full d-cursor-pointer" @click="toggleExpansion(index)">
-          <div v-if="!isExpanded(index)" class="d-category">
-            <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`" style="display: inline-block; vertical-align: middle">{{
+        <div class="pt-1 w-full d-cursor-pointer" @click="toggleExpansion(index)">
+          <div v-if="!isExpanded(index)">
+            <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
               arrayOfKpiDataObject[0].toUpperCase()
             }}</span>
-            <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
-             <span class="pr-1 pi pi-chevron-right d-chevron-font"></span>
+            <button class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
+             <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
             </button>
           </div>
           <div v-if="isExpanded(index)">
