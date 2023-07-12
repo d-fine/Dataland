@@ -25,16 +25,16 @@
             <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
               arrayOfKpiDataObject[0].toUpperCase()
             }}</span>
-            <button class="pt-2 pr-2 d-cursor-pointer" style="float: right; border: none; background-color: #f6f5ef">
-              <span class="pi pi-chevron-right" style="color: #e67f3f; font-size: 14px"></span>
+            <button class="pt-2 pr-2 d-cursor-pointer d-chevron-style">
+              <span class="pi pi-chevron-right d-chevron-font"></span>
             </button>
           </div>
           <div v-if="isExpanded(index)">
             <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
               arrayOfKpiDataObject[0].toUpperCase()
             }}</span>
-            <button class="pt-2 pr-3 d-cursor-pointer" style="float: right; border: none; background-color: #f6f5ef">
-              <span class="pi pi-chevron-down" style="color: #e67f3f; font-size: 14px"></span>
+            <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
+              <span class="pi pi-chevron-down d-chevron-font"></span>
             </button>
           </div>
         </div>
@@ -328,11 +328,21 @@ export default defineComponent({
 });
 </script>
 <style scoped lang="scss">
-
 .d-table-style {
   font-size: 16px;
   text-align: left;
   background-color: #f6f5ef;
+}
+
+.d-chevron-style {
+  float: right;
+  border: none;
+  background-color: #f6f5ef;
+}
+
+.d-chevron-font {
+  color: #e67f3f;
+  font-size: 14px;
 }
 //TODO extract styles to css classes, extract inline style to classes, remove unused code and check if there are already classes which have the styles needed
 </style>
