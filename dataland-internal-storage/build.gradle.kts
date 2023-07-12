@@ -64,6 +64,7 @@ openApi {
 
 tasks.test {
     useJUnitPlatform()
+    systemProperty("spring.profiles.active", "nodb")
 
     extensions.configure(JacocoTaskExtension::class) {
         setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
