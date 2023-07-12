@@ -234,15 +234,15 @@ export default defineComponent({
      */
     reformatProcurementCategoriesValue(inputObject: Map<ProcurementCategoryType, LksgProcurementCategory> | null) {
       if (inputObject == null) return null;
-      const inputObjectEntries = Object.entries(inputObject) as [string, LksgProcurementCategory][];
+      const inputObjectEntries = Object.entries(inputObject) as [ProcurementCategoryType, LksgProcurementCategory][];
       return inputObjectEntries.map(([procurementCategoryType, lksgProcurementCategory]) => {
         const definitionsOfProductTypeOrService =
           lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes.length > 1
             ? lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes
-            : lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes[0] || "";
+            : lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes[0] ?? "";
 
         return {
-          procurementCategory: procurementCategoryType as ProcurementCategoryType,
+          procurementCategory: procurementCategoryType,
           definitionsOfProductTypeOrService,
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
             new Map(Object.entries(lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {}))
