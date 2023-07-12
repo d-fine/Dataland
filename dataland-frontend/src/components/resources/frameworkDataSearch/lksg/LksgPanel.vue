@@ -192,9 +192,7 @@ export default defineComponent({
      */
     reformatCountriesValue(kpiValue: KpiValue) {
       return Array.isArray(kpiValue)
-        ? kpiValue.map(
-            (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
-          )
+        ? kpiValue.map((countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort))
         : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
     },
 
@@ -210,7 +208,7 @@ export default defineComponent({
       if (numberOfSuppliersPerCountryCode != undefined) {
         const readableListOfSuppliersAndCountries = Array.from(numberOfSuppliersPerCountryCode.entries()).map(
           ([countryCode, numberOfSuppliers]) => {
-            const countryName = getCountryNameFromCountryCode(countryCode) ?? countryCode;
+            const countryName = getCountryNameFromCountryCode(countryCode);
             if (numberOfSuppliers != undefined) {
               return String(numberOfSuppliers) + " suppliers from " + countryName;
             } else {
