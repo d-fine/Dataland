@@ -87,7 +87,7 @@ sonar {
             "sonar.cpd.exclusions",
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
-            "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts",
+                "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts",
         )
     }
 }
