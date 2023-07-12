@@ -91,7 +91,7 @@ jobs:
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
         if: always()
       - name: Execute unit tests for all spring services
-        run: ./gradlew :dataland-backend:test --spring.profiles.active=nodb :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test --no-daemon --stacktrace
+        run: ./gradlew :dataland-backend:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test --spring.profiles.active=nodb  --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
