@@ -9,9 +9,10 @@
       :sortOrder="1"
       sortMode="single"
       :expandableRowGroups="true"
+      :headerInputStyle="headerInputStyle"
       v-model:expandedRowGroups="expandedRowGroups"
     >
-      <Column bodyClass="headers-bg" bodyStyle="width: 30vw;" headerStyle=" display: none;" field="kpiKey">
+      <Column bodyClass="headers-bg" bodyStyle="width: 30vw;" headerClass="horizontal-headers-size" :headerStyle="headerInputStyle" field="kpiKey" header="KPIs">
         <template #body="slotProps">
           <span class="table-left-label" :data-test="slotProps.data.kpiKey">{{ slotProps.data.kpiLabel }}</span>
           <em
@@ -27,9 +28,11 @@
       </Column>
       <Column
         v-for="reportingPeriodWithDataId of listOfReportingPeriodsWithDataId"
-        headerStyle="display: none;"
+        headerClass="horizontal-headers-size"
+        :headerStyle="headerInputStyle"
         bodyStyle="width: 30vw;"
         :field="reportingPeriodWithDataId.dataId"
+        :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
       >
         <template #body="slotProps">
@@ -145,6 +148,9 @@ export default defineComponent({
       type: Array as PropType<Array<KpiDataObject>>,
       default: () => [],
     },
+      headerInputStyle: {
+          type: String,
+      },
     listOfReportingPeriodsWithDataId: {
       type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
       default: () => [],
@@ -240,8 +246,5 @@ export default defineComponent({
     float: right;
     cursor: pointer;
   }
-}
-.tree-table-no-header thead {
-  display: none;
 }
 </style>

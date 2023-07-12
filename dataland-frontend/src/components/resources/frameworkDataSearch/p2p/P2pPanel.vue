@@ -3,7 +3,7 @@
     <p class="font-medium text-xl">Loading P2P Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
+  <div v-if="mapOfKpiKeysToDataObjectsArrays.size > 0 && !waitingForData">
     <DataTable>
       <Column bodyClass="headers-bg" headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs">
       </Column>
@@ -44,6 +44,7 @@
           <P2pCompanyDataTable
             :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
             :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+            headerInputStyle="display: none;"
           />
         </div>
       </div>
@@ -57,13 +58,11 @@ import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComp
 import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/p2p/P2pCompanyDataTable.vue";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
-
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
-
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { reformatValueForDisplay } from "@/utils/FrameworkPanelDisplay";
-import { DataAndMetaInformationPathwaysToParisData, PathwaysToParisData } from "@clients/backend";
+import { DataAndMetaInformationPathwaysToParisData } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import Column from "primevue/column";
@@ -76,7 +75,6 @@ export default defineComponent({
     return {
       firstRender: true,
       waitingForData: true,
-      testData: null as PathwaysToParisData | null | undefined,
       resultKpiData: null as KpiDataObject,
       categoryName: String(),
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
@@ -123,7 +121,6 @@ export default defineComponent({
           const singleP2pData = (
             await p2pDataControllerApi.getCompanyAssociatedP2pData(this.singleDataMetaInfoToDisplay.dataId)
           ).data.data;
-          this.testData = singleP2pData;
           this.p2pDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleP2pData }];
         } else {
           this.p2pDataAndMetaInfo = (
@@ -185,7 +182,6 @@ export default defineComponent({
           for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
             this.listOfDataObjects = [];
-            //categories einsammeln
             for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
               string,
               object | null
@@ -219,10 +215,9 @@ export default defineComponent({
             }
 
             this.mapOfKpiKeysToDataObjectsArrays.set(this.categoryName, this.listOfDataObjects);
+              console.log(this.mapOfKpiKeysToDataObjectsArrays)
+              console.log(this.mapOfKpiKeysToDataObjects)
           }
-          console.log(this.mapOfKpiKeysToDataObjectsArrays);
-          const test = this.mapOfKpiKeysToDataObjectsArrays.get(this.categoryName);
-          console.log(test);
         });
       }
       //TODO check if the old map mapOfKpiKeysToDataObjects is still necessary
