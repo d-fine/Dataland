@@ -54,7 +54,7 @@
           <div class="flex justify-content-between">
             <UploadFormHeader
               v-if="selectedCountries.length > 0"
-              label="Number of Direct Suppliers"
+              :label="lksgDataModelTranslations.procurementCategories.directSuppliers"
               description="State the number of direct suppliers per procurement category and country (own operations)"
               :is-required="false"
               data-test="directSuppliersHeader"
@@ -108,6 +108,7 @@ import PrimeButton from "primevue/button";
 import NaceCodeFormFieldBindData from "@/components/forms/parts/fields/NaceCodeFormFieldBindData.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { LksgProcurementCategory } from "@clients/backend";
+import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   name: "ProcurementCategoryFormElement",
@@ -134,6 +135,7 @@ export default defineComponent({
       allCountry: getDataset(DropdownDatasetIdentifier.CountryCodes),
       selectedCountries: [],
       numberOfSuppliersPerCountryCodeValue: [],
+      lksgDataModelTranslations: detailsCompanyDataTableColumnHeaders,
     };
   },
   watch: {
