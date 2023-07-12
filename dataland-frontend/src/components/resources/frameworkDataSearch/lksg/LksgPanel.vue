@@ -236,31 +236,25 @@ export default defineComponent({
      */
     reformatProcurementCategoriesValue(inputObject: Map<ProcurementCategoryType, LksgProcurementCategory> | null) {
       if (inputObject == null) return null;
-      const listOfProductCategories = [];
-      for (const [procurementCategory, lksgProductCategory] of Object.entries(inputObject)) {
-        const definitionsOfProductTypeOrService = function (): string[] | string {
-          if ((lksgProductCategory as LksgProcurementCategory).procuredProductTypesAndServicesNaceCodes?.length > 1) {
-            return (lksgProductCategory as LksgProcurementCategory).procuredProductTypesAndServicesNaceCodes;
-          } else {
-            return (lksgProductCategory as LksgProcurementCategory).procuredProductTypesAndServicesNaceCodes[0];
-          }
-        };
+      const inputObjectEntries = Object.entries(inputObject) as [string, LksgProcurementCategory][];
+      return inputObjectEntries.map(([procurementCategory, lksgProductCategory]) => {
+        const definitionsOfProductTypeOrService =
+          lksgProductCategory.procuredProductTypesAndServicesNaceCodes.length > 1
+            ? lksgProductCategory.procuredProductTypesAndServicesNaceCodes
+            : lksgProductCategory.procuredProductTypesAndServicesNaceCodes[0] || "";
 
-        listOfProductCategories.push({
+        return {
           procurementCategory: procurementCategory as ProcurementCategoryType,
-          definitionsOfProductTypeOrService: definitionsOfProductTypeOrService(),
+          definitionsOfProductTypeOrService,
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
-            new Map(
-              Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountryCode ?? {})
-            )
+            new Map(Object.entries(lksgProductCategory.numberOfSuppliersPerCountryCode ?? {}))
           ),
           percentageOfTotalProcurement:
-            (lksgProductCategory as LksgProcurementCategory).percentageOfTotalProcurement != null
-              ? String((lksgProductCategory as LksgProcurementCategory).percentageOfTotalProcurement)
+            lksgProductCategory.percentageOfTotalProcurement != null
+              ? String(lksgProductCategory.percentageOfTotalProcurement)
               : null,
-        });
-      }
-      return listOfProductCategories;
+        };
+      });
     },
 
     /**
