@@ -131,6 +131,36 @@ class CompanyDataControllerTest {
     }
 
     @Test
+    fun `post a dummy company and check if the putting mechanism for basic properties works as expected`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+
+        val startingCompanyInformation = uploadInfo.inputCompanyInformation
+
+        val companyInformation = CompanyInformation(
+                companyName = startingCompanyInformation.companyName + "-UPDATED",
+                website = "Updated Website",
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(
+                companyId,
+                companyInformation,
+        )
+        val newCompanyInformation = updatedCompany.companyInformation
+        assertEquals(
+                newCompanyInformation.companyName, startingCompanyInformation.companyName + "-UPDATED",
+                "The company should have been updated",
+        )
+        assertEquals(
+                newCompanyInformation.website, "Updated Website",
+                "The website should have been set",
+        )
+        assertEquals(
+                null, startingCompanyInformation.sector,
+                "The sector should have been set to null",
+        )
+    }
+    @Test
     fun `post a dummy company and check if that specific company can be queried by its company Id`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
