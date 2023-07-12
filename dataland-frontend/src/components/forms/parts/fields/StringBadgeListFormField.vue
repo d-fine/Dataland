@@ -9,7 +9,7 @@
         label="Add"
         class="p-button-text"
         icon="pi pi-plus"
-      ></PrimeButton>
+      />
     </div>
 
     <FormKit
