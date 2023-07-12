@@ -79,7 +79,6 @@ export default defineComponent({
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
       listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
-      listOfDataObjects: [] as Array<KpiDataObject>,
       mapOfKpiKeysToDataObjectsArrays: new Map() as Map<string, Array<KpiDataObject>>,
       expandedGroup: [],
     };
@@ -180,7 +179,7 @@ export default defineComponent({
           });
           for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
-            this.listOfDataObjects = [];
+            const listOfDataObjects = [];
             for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
               string,
               object | null
@@ -208,12 +207,12 @@ export default defineComponent({
                     categoryResult,
                     dataIdOfP2pDataset
                   );
-                  this.listOfDataObjects.push(this.resultKpiData);
+                  listOfDataObjects.push(this.resultKpiData);
                 }
               }
             }
 
-            this.mapOfKpiKeysToDataObjectsArrays.set(this.categoryName, this.listOfDataObjects);
+            this.mapOfKpiKeysToDataObjectsArrays.set(this.categoryName, listOfDataObjects);
             console.log(this.mapOfKpiKeysToDataObjectsArrays);
             console.log(this.mapOfKpiKeysToDataObjects);
           }
