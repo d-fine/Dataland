@@ -4,7 +4,7 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
-    <DataTable>
+    <DataTable tableClass="onlyHeaders">
       <Column bodyClass="headers-bg" headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs">
       </Column>
       <Column
@@ -19,9 +19,8 @@
     </DataTable>
     <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
-        <div style="height: 40px">
-          <!--//TODO fix the height of the category row -->
-          <div class="pt-1 w-full d-cursor-pointer" @click="toggleExpansion(index)">
+        <div>
+          <div class="pt-2 pl-2 pb-2 w-full d-cursor-pointer border-bottom-table p-2" @click="toggleExpansion(index)">
             <div v-if="!isExpanded(index)">
               <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
                 arrayOfKpiDataObject[0].toUpperCase()
