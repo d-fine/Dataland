@@ -113,7 +113,7 @@ describe("Component test for P2pPanel", () => {
    * @param baseDataset the lksg dataset used as a basis for constructing the 6 mocked ones
    * @returns a mocked api response
    */
-  function constructCompanyApiResponseForLksgForSixYears(
+  function constructCompanyApiResponseForP2pForSixYears(
     baseDataset: PathwaysToParisData
   ): DataAndMetaInformationPathwaysToParisData[] {
     const p2pDatasets: DataAndMetaInformationPathwaysToParisData[] = [];
@@ -141,9 +141,9 @@ describe("Component test for P2pPanel", () => {
     return p2pDatasets;
   }
 
-  it("Check Lksg view page for company with six P2p data sets reported in different years ", () => {
+  it("Check P2p view page for company with six P2p data sets reported in different years ", () => {
     const preparedFixture = getPreparedFixture("six-p2p-data-sets-in-different-years", preparedFixtures);
-    const mockedData = constructCompanyApiResponseForLksgForSixYears(preparedFixture.t);
+    const mockedData = constructCompanyApiResponseForP2pForSixYears(preparedFixture.t);
     cy.intercept("/api/data/p2p/companies/mock-company-id", mockedData);
 
     cy.mountWithPlugins(P2pPanel, {

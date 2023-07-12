@@ -20,21 +20,21 @@
     <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
         <!--//TODO fix the height of the category row -->
-        <div class="w-full d-dataset-toggle" @click="toggleExpansion(index)">
+        <div class="w-full d-cursor-pointer" @click="toggleExpansion(index)">
           <div v-if="!isExpanded(index)" class="d-category">
             <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`" style="display: inline-block; vertical-align: middle">{{
               arrayOfKpiDataObject[0].toUpperCase()
             }}</span>
-            <button class="pt-2 pr-2" style="float: right; border: none; background-color: #f6f5ef">
-              <span class="pi pi-chevron-right" style="color: #e67f3f; font-size: 14px"></span>
+            <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
+             <span class="pr-1 pi pi-chevron-right d-chevron-font"></span>
             </button>
           </div>
           <div v-if="isExpanded(index)">
             <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
               arrayOfKpiDataObject[0].toUpperCase()
             }}</span>
-            <button class="pt-2 pr-3" style="float: right; border: none; background-color: #f6f5ef">
-              <span class="pi pi-chevron-down" style="color: #e67f3f; font-size: 14px"></span>
+            <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
+              <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
             </button>
           </div>
         </div>
@@ -328,9 +328,6 @@ export default defineComponent({
 });
 </script>
 <style scoped lang="scss">
-.d-dataset-toggle {
-  cursor: pointer;
-}
 .d-category {
   height: 53.33px;
   vertical-align: middle;
@@ -339,6 +336,17 @@ export default defineComponent({
   font-size: 16px;
   text-align: left;
   background-color: #f6f5ef;
+}
+
+.d-chevron-style {
+  float: right;
+  border: none;
+  background-color: #f6f5ef;
+}
+
+.d-chevron-font {
+  color: #e67f3f;
+  font-size: 14px;
 }
 //TODO extract styles to css classes, extract inline style to classes, remove unused code and check if there are already classes which have the styles needed
 </style>
