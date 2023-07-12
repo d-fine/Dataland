@@ -214,7 +214,6 @@ export default defineComponent({
           }
         });
       }
-      //TODO check if the old map mapOfKpiKeysToDataObjects is still necessary
       this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
         this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
       );
