@@ -114,7 +114,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check if patching alternative names works as expected`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val companyId = uploadInfo.actualStoredCompany.companyId
-
+        // shouldn't patching companyAlternativeNames mean appending something to the list? This (also in patchCompany function) compeltely replaces it (like put)
         val patchObject = CompanyInformationPatch(
             companyAlternativeNames = listOf("Alt-Name-1", "Alt-Name-2"),
         )
@@ -124,6 +124,7 @@ class CompanyDataControllerTest {
             patchObject,
         )
         val newCompanyInformation = updatedCompany.companyInformation
+        //shouldn't we compare with listOf("Alt-Name-1", "Alt-Name-2")?
         assertEquals(
             newCompanyInformation.companyAlternativeNames, patchObject.companyAlternativeNames!!,
             "The company alternative names should have been updated",
@@ -134,12 +135,13 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check if the putting mechanism for basic properties works as expected`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val companyId = uploadInfo.actualStoredCompany.companyId
-
-        val startingCompanyInformation = uploadInfo.inputCompanyInformation
-
         val companyInformation = CompanyInformation(
-                companyName = startingCompanyInformation.companyName + "-UPDATED",
-                website = "Updated Website",
+                companyName = "Updated Name",
+                headquarters = "Updated HQ",
+                companyAlternativeNames = listOf("Alt-Name-1", "Alt-Name-2"),
+                identifiers = mapOf(
+                        IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}"),
+                ),
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(
@@ -148,17 +150,46 @@ class CompanyDataControllerTest {
         )
         val newCompanyInformation = updatedCompany.companyInformation
         assertEquals(
-                newCompanyInformation.companyName, startingCompanyInformation.companyName + "-UPDATED",
+                newCompanyInformation.companyName, "Updated Name",
                 "The company should have been updated",
         )
         assertEquals(
-                newCompanyInformation.website, "Updated Website",
-                "The website should have been set",
+                newCompanyInformation.website, "Updated HQ",
+                "The headquarters should have been updated",
         )
         assertEquals(
-                null, startingCompanyInformation.sector,
-                "The sector should have been set to null",
+                newCompanyInformation.companyAlternativeNames, listOf("Alt-Name-1", "Alt-Name-2"),
+                "The company alternative names should have been updated",
         )
+        //null or "" ?
+        assertEquals(
+                newCompanyInformation.sector, "",
+                "The sector should have been deleted",
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if the putting mechanism for idetifiers works as expected`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+        val companyInformation = CompanyInformation(
+                companyName = "Name",
+                headquarters = "HQ",
+                identifiers = mapOf(
+                        IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}","Test-Lei2${UUID.randomUUID()}"),
+                ),
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(
+                companyId,
+                companyInformation,
+        )
+        val newCompanyInformation = updatedCompany.companyInformation
+
+        //TODO assertEquals(
+               // newCompanyInformation.identifiers, ?,
+               // "The company identifiers should have been updated",
+       // )
     }
     @Test
     fun `post a dummy company and check if that specific company can be queried by its company Id`() {
