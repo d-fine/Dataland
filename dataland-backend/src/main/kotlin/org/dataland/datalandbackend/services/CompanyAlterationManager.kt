@@ -157,6 +157,15 @@ class CompanyAlterationManager(
         companyEntity.countryCode = companyInformation.countryCode
         companyEntity.website = companyInformation.website
         companyEntity.isTeaserCompany = companyInformation.isTeaserCompany
+        companyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
+
+            for (keypair in companyInformation.identifiers) {
+                replaceCompanyIdentifiers(
+                        companyEntity = companyEntity,
+                        identifierType = keypair.key,
+                        newIdentifiers = keypair.value,
+                )
+            }
 
         return companyRepository.save(companyEntity)
     }
