@@ -60,7 +60,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
                 val dataToMigrate = getJsonObjectOrActualNull(cashFlow, fieldToMigrate) ?: return@forEach
                 dataToMigrate.put("valueAsPercentage", dataToMigrate.opt("value"))
                 dataToMigrate.remove("value")
-                cashFlow.put(fieldsToMigrate[fieldToMigrate]!!, dataToMigrate)
+                cashFlow.put(fieldsToMigrate.getValue(fieldToMigrate), dataToMigrate)
                 cashFlow.remove(fieldToMigrate)
             }
         }
