@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import {
   DataMetaInformation,
@@ -22,7 +22,7 @@ describeIf(
   },
   function (): void {
     beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
     /**
@@ -57,12 +57,11 @@ describeIf(
     it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
-      getKeycloakToken(uploader_name, uploader_pw)
+      getKeycloakToken(admin_name, admin_pw)
         .then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
         })
         .then((storedCompany) => {
-          cy.ensureLoggedIn(admin_name, admin_pw);
           cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
           cy.visitAndCheckAppMount(
             "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload"
