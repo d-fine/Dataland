@@ -69,6 +69,10 @@ openApi {
 }
 
 tasks.test {
+    springBoot {
+        systemProperty("spring.profiles.active", "nodb")
+    }
+    systemProperty("spring.profiles.active", "nodb")
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
