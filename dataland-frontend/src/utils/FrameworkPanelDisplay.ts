@@ -18,7 +18,7 @@ export function convertToMillions(inputNumber: number): string {
  * @param kpiValue the value that should be reformated corresponding to its field
  * @returns the reformatted Country value ready for display
  */
-export function reformatIndustriesValue(kpiValue: KpiValue) {
+export function reformatIndustriesValue(kpiValue: KpiValue): string | string[] | number | object | null {
   return Array.isArray(kpiValue)
     ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
     : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
@@ -29,7 +29,7 @@ export function reformatIndustriesValue(kpiValue: KpiValue) {
  * @param kpiValue the value that should be reformated corresponding to its field
  * @returns the reformatted Country value ready for display
  */
-export function reformatCountriesValue(kpiValue: KpiValue) {
+export function reformatCountriesValue(kpiValue: KpiValue): string | string[] {
   return Array.isArray(kpiValue)
     ? kpiValue.map((countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort)
     : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
