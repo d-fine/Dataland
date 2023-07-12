@@ -1,7 +1,7 @@
-import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
+import DisplayFrameworkDataTable from "../../../../../src/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { DocumentReference, YesNo } from "@clients/backend";
-import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { DocumentReference, YesNo } from "../../../../../build/clients/backend";
+import { KpiDataObject, KpiValue } from "../../../../../src/components/resources/frameworkDataSearch/KpiDataObject";
 
 describe("Component test for DisplayFrameworkDataTable", () => {
   const dataId = "dummyId";
