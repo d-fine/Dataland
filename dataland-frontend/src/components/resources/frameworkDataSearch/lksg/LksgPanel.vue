@@ -199,7 +199,7 @@ export default defineComponent({
     },
 
     /**
-     * Generates a list of readible strings (or just a single one) combining suppliers and their associated countries
+     * Generates a list of readable strings (or just a single one) combining suppliers and their associated countries
      * @param numberOfSuppliersPerCountryCode the map of number of suppliers and associated companies
      * from which strings are written
      * @returns the constructed collection of readable strings
@@ -237,21 +237,21 @@ export default defineComponent({
     reformatProcurementCategoriesValue(inputObject: Map<ProcurementCategoryType, LksgProcurementCategory> | null) {
       if (inputObject == null) return null;
       const inputObjectEntries = Object.entries(inputObject) as [string, LksgProcurementCategory][];
-      return inputObjectEntries.map(([procurementCategory, lksgProductCategory]) => {
+      return inputObjectEntries.map(([procurementCategoryType, lksgProcurementCategory]) => {
         const definitionsOfProductTypeOrService =
-          lksgProductCategory.procuredProductTypesAndServicesNaceCodes.length > 1
-            ? lksgProductCategory.procuredProductTypesAndServicesNaceCodes
-            : lksgProductCategory.procuredProductTypesAndServicesNaceCodes[0] || "";
+          lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes.length > 1
+            ? lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes
+            : lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes[0] || "";
 
         return {
-          procurementCategory: procurementCategory as ProcurementCategoryType,
+          procurementCategory: procurementCategoryType as ProcurementCategoryType,
           definitionsOfProductTypeOrService,
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
-            new Map(Object.entries(lksgProductCategory.numberOfSuppliersPerCountryCode ?? {}))
+            new Map(Object.entries(lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {}))
           ),
           percentageOfTotalProcurement:
-            lksgProductCategory.percentageOfTotalProcurement != null
-              ? String(lksgProductCategory.percentageOfTotalProcurement)
+            lksgProcurementCategory.percentageOfTotalProcurement != null
+              ? String(lksgProcurementCategory.percentageOfTotalProcurement)
               : null,
         };
       });
