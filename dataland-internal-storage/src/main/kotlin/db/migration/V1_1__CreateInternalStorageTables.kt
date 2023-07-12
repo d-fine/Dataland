@@ -7,7 +7,7 @@ import org.flywaydb.core.api.migration.Context
  * This migration script handles the creation of the initial databases
  */
 @Suppress("ClassNaming")
-class V1_1__CreateTables : BaseJavaMigration() {
+class V1_1__CreateInternalStorageTables : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
             "CREATE TABLE data_items (" +
