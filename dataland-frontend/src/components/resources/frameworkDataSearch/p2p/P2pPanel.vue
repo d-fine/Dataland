@@ -21,8 +21,8 @@
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
         <!--//TODO fix the height of the category row -->
         <div class="w-full d-dataset-toggle" @click="toggleExpansion(index)">
-          <div v-if="!isExpanded(index)">
-            <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
+          <div v-if="!isExpanded(index)" class="d-category">
+            <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`" style="display: inline-block; vertical-align: middle">{{
               arrayOfKpiDataObject[0].toUpperCase()
             }}</span>
             <button class="pt-2 pr-2" style="float: right; border: none; background-color: #f6f5ef">
@@ -330,6 +330,10 @@ export default defineComponent({
 <style scoped lang="scss">
 .d-dataset-toggle {
   cursor: pointer;
+}
+.d-category {
+  height: 53.33px;
+  vertical-align: middle;
 }
 .d-table-style {
   font-size: 16px;
