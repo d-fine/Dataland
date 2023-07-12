@@ -25,8 +25,8 @@
             <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
               arrayOfKpiDataObject[0].toUpperCase()
             }}</span>
-            <button class="pt-2 pr-2 d-cursor-pointer d-chevron-style">
-              <span class="pi pi-chevron-right d-chevron-font"></span>
+            <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
+             <span class="pr-1 pi pi-chevron-right d-chevron-font"></span>
             </button>
           </div>
           <div v-if="isExpanded(index)">
@@ -34,7 +34,7 @@
               arrayOfKpiDataObject[0].toUpperCase()
             }}</span>
             <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
-              <span class="pi pi-chevron-down d-chevron-font"></span>
+              <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
             </button>
           </div>
         </div>
