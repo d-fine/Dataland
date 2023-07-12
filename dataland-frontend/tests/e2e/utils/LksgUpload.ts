@@ -237,9 +237,9 @@ export function fillInProcurementCategories(): void {
     .should("exist")
     .each(($item, index) => {
       if (index < 2) {
-        const coutryName = $item[0].innerText.split(" ").slice(0, -1).join(" ");
+        const countryName = $item[0].innerText.split(" ").slice(0, -1).join(" ");
         cy.wrap($item).click();
-        selectedCountries.push(coutryName);
+        selectedCountries.push(countryName);
       }
     });
 
