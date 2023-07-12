@@ -20,7 +20,6 @@
     <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
         <div style="height: 40px">
-          <!--//TODO fix the height of the category row -->
           <div class="pt-1 w-full d-cursor-pointer" @click="toggleExpansion(index)">
             <div v-if="!isExpanded(index)">
               <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{

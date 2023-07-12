@@ -1,5 +1,5 @@
-import P2pPanel from "../../../../../../src/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
-import { FixtureData, getPreparedFixture } from "../../../../../sharedUtils/Fixtures";
+import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
   CompanyAssociatedDataPathwaysToParisData,
@@ -9,8 +9,8 @@ import {
   P2pSector,
   PathwaysToParisData,
   QaStatus,
-} from "../../../../../../build/clients/backend";
-import { sortReportingPeriodsToDisplayAsColumns } from "../../../../../../src/utils/DataTableDisplay";
+} from "@clients/backend";
+import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
