@@ -50,17 +50,17 @@
 </template>
 
 <script lang="ts">
-import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/p2p/P2pCompanyDataTable.vue";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
+
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { reformatValueForDisplay } from "@/utils/FrameworkPanelDisplay";
 import { DataAndMetaInformationPathwaysToParisData, PathwaysToParisData } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
@@ -160,7 +160,7 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfP2pDataset]: this.reformatValueForDisplay(kpiField, kpiValue) },
+        content: { [dataIdOfP2pDataset]: reformatValueForDisplay(kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -240,39 +240,6 @@ export default defineComponent({
         .map((dataAndMetaInfo) => dataAndMetaInfo.data)
         .some((singleP2pData) => category.showIf(singleP2pData));
     },
-
-    /**
-     * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
-     * @param inputNumber The number to convert
-     * @returns a string with the converted number and "MM" at the end
-     */
-    convertToMillions(inputNumber: number): string {
-      return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
-    },
-
-    /**
-     * Converts a nace code to a human readable value
-     * @param kpiValue the value that should be reformated corresponding to its field
-     * @returns the reformatted Country value ready for display
-     */
-    reformatIndustriesValue(kpiValue: KpiValue) {
-      return Array.isArray(kpiValue)
-        ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
-        : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
-    },
-
-    /**
-     * Converts a country code to a human readable value
-     * @param kpiValue the value that should be reformated corresponding to its field
-     * @returns the reformatted Country value ready for display
-     */
-    reformatCountriesValue(kpiValue: KpiValue) {
-      return Array.isArray(kpiValue)
-        ? kpiValue.map(
-            (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
-          )
-        : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
-    },
     /**
      * Retrieves the color for a given category from P2P Data Model
      * @param categoryName The name of the category whose color is searched
@@ -280,33 +247,6 @@ export default defineComponent({
      */
     colorOfCategory(categoryName: string): string {
       return assertDefined(p2pDataModel.find((category) => category.label === categoryName)).color;
-    },
-
-    /**
-     *
-     * @param kpiField the Field to which the value belongs
-     * @param kpiValue the value that should be reformated corresponding to its field
-     * @returns the reformatted value ready for display
-     */
-    reformatValueForDisplay(kpiField: Field, kpiValue: KpiValue): KpiValue {
-      if (kpiField.name === "totalRevenue" && typeof kpiValue === "number") {
-        kpiValue = this.convertToMillions(kpiValue);
-      }
-      if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
-        kpiValue = this.reformatIndustriesValue(kpiValue);
-      }
-      if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
-        kpiValue = this.reformatCountriesValue(kpiValue);
-      }
-
-      let returnValue;
-
-      if (kpiField.options?.length) {
-        const filteredOption = kpiField.options.find((option: DropdownOption) => option.value === kpiValue);
-        if (filteredOption) returnValue = filteredOption.label;
-      }
-
-      return returnValue ?? kpiValue;
     },
     /**
      *
