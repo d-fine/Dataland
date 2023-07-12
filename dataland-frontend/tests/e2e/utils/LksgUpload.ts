@@ -243,7 +243,7 @@ export function fillInProcurementCategories(): void {
       }
     });
 
-  cy.get('[data-test="directSuppliersHeader"]').should("exist").should("contain", "Number of Direct Supliers");
+  cy.get('[data-test="directSuppliersHeader"]').should("exist").should("contain", "Number of Direct Suppliers");
 
   cy.get('[data-test="supplierCountry"]')
     .should("have.length", 2)
