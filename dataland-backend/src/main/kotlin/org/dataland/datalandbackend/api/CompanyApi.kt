@@ -195,7 +195,7 @@ interface CompanyApi {
      */
     @Operation(
         summary = "Update company information selectively",
-        description = "Changed elements of a company information behind the given company Id is updated.",
+        description = "Provided fields of the company associated with the given company Id are updated.",
     )
     @ApiResponses(
         value = [
@@ -222,7 +222,7 @@ interface CompanyApi {
      */
     @Operation(
         summary = "Update company information entirely",
-        description = "all elements of a company information behind the given company Id is updated.",
+        description = "Replace all company information of the company associated with the given company Id",
     )
     @ApiResponses(
         value = [
