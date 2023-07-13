@@ -55,7 +55,9 @@ function manipulateFixtureForDate(
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForOneP2pDataSetWithProductionSites(input: FixtureData<PathwaysToParisData>): FixtureData<PathwaysToParisData> {
+function manipulateFixtureForOneP2pDataSetWithProductionSites(
+  input: FixtureData<PathwaysToParisData>
+): FixtureData<PathwaysToParisData> {
   input.companyInformation.companyName = "one-p2p-data-set-with-two-sectors";
   input.t.general.general.dataDate = "2022-01-01";
   input.t.general.general.sector = ["Ammonia", "Cement"];

@@ -22,9 +22,11 @@
         <div>
           <div class="pt-2 pl-2 pb-2 w-full d-cursor-pointer border-bottom-table p-2" @click="toggleExpansion(index)">
             <div v-if="!isExpanded(index)">
-              <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`" :data-test="arrayOfKpiDataObject[0]">{{
-                arrayOfKpiDataObject[0].toUpperCase()
-              }}</span>
+              <span
+                :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`"
+                :data-test="arrayOfKpiDataObject[0]"
+                >{{ arrayOfKpiDataObject[0].toUpperCase() }}</span
+              >
               <button class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
                 <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
               </button>
