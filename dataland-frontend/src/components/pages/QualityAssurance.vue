@@ -210,72 +210,48 @@ export default defineComponent({
         const dataId = data.dataId;
         this.dataId = dataId;
         if (filteredData === DataTypeEnum.EutaxonomyNonFinancials) {
-          try {
-            const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
-            ).getEuTaxonomyDataForNonFinancialsControllerApi();
-            const companyAssociatedData =
-              await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                assertDefined(dataId)
-              );
-            this.dataSet = assertDefined(companyAssociatedData.data.data);
-          } catch (error) {
-            console.error(error);
-          }
+          const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getEuTaxonomyDataForNonFinancialsControllerApi();
+          const companyAssociatedData =
+            await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
+              assertDefined(dataId)
+            );
+          this.dataSet = assertDefined(companyAssociatedData.data.data);
         } else if (filteredData === DataTypeEnum.EutaxonomyFinancials) {
-          try {
-            const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
-            ).getEuTaxonomyDataForFinancialsControllerApi();
-            const companyAssociatedData =
-              await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-                assertDefined(dataId)
-              );
-            this.dataSet = assertDefined(companyAssociatedData.data.data);
-          } catch (error) {
-            console.error(error);
-          }
+          const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getEuTaxonomyDataForFinancialsControllerApi();
+          const companyAssociatedData =
+            await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
+              assertDefined(dataId)
+            );
+          this.dataSet = assertDefined(companyAssociatedData.data.data);
         } else if (filteredData === DataTypeEnum.Lksg) {
-          try {
-            const lksgDataControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
-            ).getLksgDataControllerApi();
-            const singleLksgData = await lksgDataControllerApi.getCompanyAssociatedLksgData(assertDefined(dataId));
-            this.dataSet = assertDefined(singleLksgData.data.data);
-          } catch (error) {
-            console.error(error);
-          }
+          const lksgDataControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getLksgDataControllerApi();
+          const singleLksgData = await lksgDataControllerApi.getCompanyAssociatedLksgData(assertDefined(dataId));
+          this.dataSet = assertDefined(singleLksgData.data.data);
         } else if (filteredData === DataTypeEnum.Sfdr) {
-          try {
-            const sfdrDataControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
-            ).getSfdrDataControllerApi();
+          const sfdrDataControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getSfdrDataControllerApi();
 
-            const singleSfdrData = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
-            this.dataSet = assertDefined(singleSfdrData.data.data);
-          } catch (error) {
-            console.error(error);
-          }
+          const singleSfdrData = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
+          this.dataSet = assertDefined(singleSfdrData.data.data);
         } else if (filteredData === DataTypeEnum.P2p) {
-          try {
-            const p2pDataControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
-            ).getP2pDataControllerApi();
-            const singleP2pData = await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId);
-            this.dataSet = assertDefined(singleP2pData.data.data);
-          } catch (error) {
-            console.error(error);
-          }
+          const p2pDataControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getP2pDataControllerApi();
+          const singleP2pData = await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId);
+          this.dataSet = assertDefined(singleP2pData.data.data);
         } else if (filteredData === DataTypeEnum.Sme) {
-          try {
-            const smeDataControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
-            ).getSmeDataControllerApi();
-            const singleSmeData = await smeDataControllerApi.getCompanyAssociatedSmeData(dataId);
-            this.dataSet = assertDefined(singleSmeData.data.data);
-          } catch (error) {
-            console.error(error);
-          }
+          const smeDataControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getSmeDataControllerApi();
+          const singleSmeData = await smeDataControllerApi.getCompanyAssociatedSmeData(dataId);
+          this.dataSet = assertDefined(singleSmeData.data.data);
         }
       } catch (error) {
         console.error(error);
