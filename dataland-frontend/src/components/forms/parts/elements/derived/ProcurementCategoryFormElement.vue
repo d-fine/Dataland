@@ -14,7 +14,7 @@
             description="Define the procured product types/services per category (own operations)"
             name="procuredProductTypesAndServicesNaceCodes"
             v-model:selectedNaceCodesBind="procuredProductTypesAndServicesNaceCodesValue"
-          ></NaceCodeFormFieldBindData>
+          />
         </div>
 
         <div class="form-field border-none">
@@ -37,7 +37,7 @@
             placeholder="Countries"
             description="Name the sourcing countries per category (own operations)"
             name="suppliersPerCountryCode"
-            :options="allCountry"
+            :options="allCountries"
             optionLabel="label"
             v-model:selectedItemsBindInternal="selectedCountries"
             innerClass="long"
@@ -67,7 +67,7 @@
                   <FormKit
                     type="number"
                     :name="el.value"
-                    min="0"
+                    min="1"
                     step="1"
                     validation="required"
                     validation-label="Number of suppliers per country"
@@ -125,7 +125,7 @@ export default defineComponent({
       isItActive: !!this.procurementCategories[this.name],
       procuredProductTypesAndServicesNaceCodesValue: [],
       percentageOfTotalProcurementValue: "",
-      allCountry: getDataset(DropdownDatasetIdentifier.CountryCodes),
+      allCountries: getDataset(DropdownDatasetIdentifier.CountryCodes),
       selectedCountries: [],
       numberOfSuppliersPerCountryCodeValue: [],
     };
@@ -137,7 +137,7 @@ export default defineComponent({
   },
   computed: {
     preSelectedCountries() {
-      return this.allCountry.filter((el) =>
+      return this.allCountries.filter((el) =>
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
         this.procurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(el.value)
       );
