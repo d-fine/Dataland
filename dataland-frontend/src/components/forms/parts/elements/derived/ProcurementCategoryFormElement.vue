@@ -39,7 +39,6 @@
             name="suppliersPerCountryCode"
             :options="allCountry"
             optionLabel="label"
-            :optionValue="false"
             v-model:selectedItemsBindInternal="selectedCountries"
             innerClass="long"
             :ignore="true"

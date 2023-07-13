@@ -73,12 +73,12 @@ export const MultiSelectFormProps = Object.assign(deepCopyObject(FormFieldPropsW
     required: true,
   },
   optionValue: {
-    type: [String, Boolean] as PropType<string | boolean>,
-    default: "value",
+    type: [String, Function] as PropType<string | boolean>,
+    required: false,
   },
   optionLabel: {
-    type: [String, Boolean] as PropType<string | boolean>,
-    default: "label",
+    type: [String, Function] as PropType<string | boolean>,
+    required: false,
   },
   modelValue: {
     type: Array,
