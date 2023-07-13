@@ -68,7 +68,9 @@ describe("As a user, I expect the search functionality on the /companies page to
     }
   );
 
-  describeIf("", { executionEnvironments: ["developmentLocal", "ci", "developmentCd"] }, () => {
+  describeIf("", {
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+  }, () => {
     it(
       "Checks that the country-code filter synchronises between the search bar and the drop down and works",
       { scrollBehavior: false },
@@ -183,7 +185,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   describeIf(
     "As a user, I expect the search results to adjust according to the framework filter",
     {
-      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
     },
     function () {
       beforeEach(function () {

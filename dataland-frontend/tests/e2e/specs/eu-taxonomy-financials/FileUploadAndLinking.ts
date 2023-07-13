@@ -15,7 +15,7 @@ describeIf(
   "As a user, I want to add and link documents to the EU Taxonomy form",
 
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
   },
   function () {
     beforeEach(() => {

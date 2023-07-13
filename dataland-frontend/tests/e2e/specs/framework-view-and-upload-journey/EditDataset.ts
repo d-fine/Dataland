@@ -12,7 +12,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 describeIf(
   "Validates the edit button functionality on the view framework page",
   {
-    executionEnvironments: ["developmentLocal", "ci"],
+    executionEnvironments: ["developmentLocal", "ci"], onlyExecuteOnReset: false
   },
   () => {
     let uploadIds: UploadIds;

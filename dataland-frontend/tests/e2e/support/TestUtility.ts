@@ -2,6 +2,7 @@ import { Suite } from "mocha";
 
 export interface ExecutionConfig {
   executionEnvironments: Array<ExecutionEnvironment>;
+  onlyExecuteOnReset: Boolean;
 }
 export type ExecutionEnvironment = "developmentLocal" | "ci" | "developmentCd" | "previewCd";
 
@@ -14,10 +15,19 @@ export type ExecutionEnvironment = "developmentLocal" | "ci" | "developmentCd" |
  */
 export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this: Suite) => void): Suite {
   const executionEnvironment = Cypress.env("EXECUTION_ENVIRONMENT") as ExecutionEnvironment;
+  const isDatabaseReset = Cypress.env("RESET_DATABASE") as ExecutionEnvironment;
 
   if (execConfig.executionEnvironments.indexOf(executionEnvironment) === -1) {
     return describe(`${name} - Disabled`, () => {
       it(`Has been disabled because the execution environment ${executionEnvironment} has not been allowed`, () => {
+        // Stub-Test just so its displayed why test suit wasn't executed
+      });
+    });
+  }
+
+  if(execConfig.onlyExecuteOnReset && !isDatabaseReset) {
+    return describe(`${name} - Disabled`, () => {
+      it(`Has been disabled because the tests are only run when the databases are reset`, () => {
         // Stub-Test just so its displayed why test suit wasn't executed
       });
     });

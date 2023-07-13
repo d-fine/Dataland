@@ -29,7 +29,7 @@ function getCompanyWithReportingObligationAndAssurance(): FixtureData<EuTaxonomy
 
 describeIf(
   "As a user, I expect informative tooltips to be shown on the EuTaxonomy result page",
-  { executionEnvironments: ["developmentLocal", "ci", "developmentCd"] },
+  { executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: true },
   () => {
     it("tooltips are present and contain text as expected", function () {
       const NFRDText = "Non financial disclosure directive";

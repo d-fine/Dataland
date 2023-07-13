@@ -8,7 +8,7 @@ import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 describeIf(
   "Validation for correct display of 'Rejected' badge",
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
   },
   () => {
     it("Verifies that the badge is shown as expected when an uploaded Lksg dataset gets rejected", () => {

@@ -198,6 +198,7 @@ jobs:
           KEYCLOAK_ADMIN: ${{ vars.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
+          CYPRESS_RESET_DATABASE: ${{ github.event.inputs.resetStackAndRepopulate }}
           CYPRESS_EXECUTION_ENVIRONMENT: ${{ vars.CYPRESS_EXECUTION_ENVIRONMENT }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true

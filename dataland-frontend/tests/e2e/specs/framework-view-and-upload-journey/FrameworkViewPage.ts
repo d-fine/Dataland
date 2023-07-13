@@ -21,7 +21,7 @@ describe("The shared header of the framework pages should act as expected", { sc
     "As a user, I expect the framework selection dropdown to work correctly " +
       "to make it possible to switch between framework views",
     {
-      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
     },
     function (): void {
       const nameOfCompanyAlpha = "company-alpha-with-four-different-framework-types";
