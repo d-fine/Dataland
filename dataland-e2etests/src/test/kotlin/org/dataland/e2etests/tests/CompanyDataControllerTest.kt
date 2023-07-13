@@ -167,7 +167,6 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if the putting mechanism for identifiers works as expected`() {
-        // TODO should upload a company with e.g. DUNS and then check that DUNS is gone
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val companyId = uploadInfo.actualStoredCompany.companyId
         val put1CompanyInformation = CompanyInformation(
