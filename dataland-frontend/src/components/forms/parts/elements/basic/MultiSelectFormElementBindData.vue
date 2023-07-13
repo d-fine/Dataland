@@ -9,42 +9,17 @@
     :optionLabel="optionLabel"
     :maxSelectedLabels="3"
   />
-  <!--
-    Note: It is required to set the id of this div to the FormKit node Id to allow the checkCustomInputs methods
-    in the validationUtils.ts file to scroll to this component when an error is detected. This is because the FormKit
-    List type does not create a wrapper component on its own.
-  -->
-  <div :id="formkitMultiSelectFormElementBindData?.node?.props?.id || undefined">
-    <FormKit
-      type="list"
-      ref="formkitMultiSelectFormElementBindData"
-      :validation-label="validationLabel"
-      :validation="validation"
-      :name="name"
-      v-model="selections"
-      outer-class="hidden-input"
-      :ignore="ignore"
-    >
-      <FormKitMessages />
-    </FormKit>
-  </div>
 </template>
 
 <script lang="ts">
-import { ComponentPropsOptions, defineComponent, ref } from "vue";
-import { FormKit, FormKitMessages } from "@formkit/vue";
+import { ComponentPropsOptions, defineComponent } from "vue";
 import MultiSelect from "primevue/multiselect";
 import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "MultiSelectFormElementBindData",
-  components: { FormKit, MultiSelect, FormKitMessages },
-  setup() {
-    return {
-      formkitMultiSelectFormElementBindData: ref(),
-    };
-  },
+  components: { MultiSelect },
   emits: ["update:selectedItemsBind"],
   computed: {
     selections: {

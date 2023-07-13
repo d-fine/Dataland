@@ -41,7 +41,6 @@
             optionLabel="label"
             v-model:selectedItemsBindInternal="selectedCountries"
             innerClass="long"
-            :ignore="true"
           />
         </div>
         <div class="form-field border-none">
@@ -62,7 +61,7 @@
           >
             <div v-for="el in selectedCountries" :key="el.label">
               <div class="justify-content-between flex align-items-center" data-test="supplierCountry">
-                <h5>{{ removeWordFromPhrase(el.value, el.label) }}</h5>
+                <h5>{{ getCountryNameFromCountryCode(el.value) }}</h5>
                 <div class="justify-content-end flex align-items-center">
                   <FormKit
                     type="number"
@@ -102,6 +101,7 @@ import PrimeButton from "primevue/button";
 import NaceCodeFormFieldBindData from "@/components/forms/parts/fields/NaceCodeFormFieldBindData.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { LksgProcurementCategory } from "@clients/backend";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 
 export default defineComponent({
   name: "ProcurementCategoryFormElement",
@@ -128,45 +128,29 @@ export default defineComponent({
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodes),
       selectedCountries: [],
       numberOfSuppliersPerCountryCodeValue: [],
+      getCountryNameFromCountryCode,
     };
   },
-  watch: {
-    preSelectedCountries(newValue: []) {
-      this.selectedCountries = newValue;
-    },
+  mounted() {
+    this.selectedCountries = this.setPreSelectedCountries();
   },
-  computed: {
-    preSelectedCountries() {
+  methods: {
+    /**
+     * Sets the selectedCountries according to the value of which countries have been selected
+     * @returns Pre Selected Countries
+     */
+    setPreSelectedCountries() {
       return this.allCountries.filter((el) =>
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
         this.procurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(el.value)
       );
     },
-  },
-  methods: {
     /**
      * Remove item from selected countries list
      * @param countryCode - Country code to be removed
      */
     removeItemFromListOfSelectedCountries(countryCode: string) {
       this.selectedCountries = this.selectedCountries.filter((el) => countryCode !== el.value);
-    },
-
-    /**
-     * remove the word from the phrase
-     * @param word - word to remove
-     * @param phrase - phrase from which we remove
-     * @returns phrase without the removed word
-     */
-    removeWordFromPhrase(word: string, phrase: string): string {
-      const splittedPhrase: [string] = phrase.split(" ");
-      for (let i = splittedPhrase.length - 1; i >= 0; i--) {
-        if (splittedPhrase[i].includes(word)) {
-          splittedPhrase.splice(i, 1);
-          break;
-        }
-      }
-      return splittedPhrase.join(" ");
     },
   },
 });

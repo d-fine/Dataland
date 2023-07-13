@@ -84,8 +84,4 @@ export const MultiSelectFormProps = Object.assign(deepCopyObject(FormFieldPropsW
     type: Array,
     default: () => [],
   },
-  ignore: {
-    type: Boolean,
-    default: false,
-  },
 }) as Readonly<ComponentPropsOptions>;

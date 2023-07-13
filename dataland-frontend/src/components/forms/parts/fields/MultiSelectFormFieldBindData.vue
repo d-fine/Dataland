@@ -11,7 +11,6 @@
       :inner-class="innerClass"
       :optionLabel="optionLabel"
       :optionValue="optionValue"
-      :ignore="ignore"
     />
   </div>
 </template>
