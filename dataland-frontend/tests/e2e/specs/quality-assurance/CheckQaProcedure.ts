@@ -126,7 +126,7 @@ function testSubmittedDatasetIsInReviewListAndRejected(
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
   cy.visitAndCheckAppMount("/datasets");
 
-  cy.get('[data-test="datasets-table"] .p-datatable-tbody')
+  cy.get('[data-test="datasets-table"] .p-datatable-tbody', { timeout: Cypress.env("medium_timeout_in_ms") as number })
     .first()
     .should("exist")
     .get(".data-test-company-name")
