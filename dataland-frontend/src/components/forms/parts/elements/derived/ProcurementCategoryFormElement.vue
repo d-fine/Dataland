@@ -68,7 +68,7 @@
                   <FormKit
                     type="number"
                     :name="el.value"
-                    min="0"
+                    min="1"
                     step="1"
                     validation="required"
                     validation-label="Number of suppliers per country"
