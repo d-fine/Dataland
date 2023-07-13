@@ -13,7 +13,6 @@ export const detailsCompanyDataTableColumnHeaders = {
     procurementCategory: "Procurement Category",
     definitionsOfProductTypeOrService: "Definitions of Product Type or Service",
     suppliersAndCountries: "Number of Direct Suppliers and Countries",
-    directSuppliers: "Number of Direct Suppliers",
     percentageOfTotalProcurement: "Order Volume",
   },
   industry: {
