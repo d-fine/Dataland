@@ -25,7 +25,6 @@ describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    onlyExecuteOnDatabaseReset: false,
   },
   function () {
     beforeEach(() => {

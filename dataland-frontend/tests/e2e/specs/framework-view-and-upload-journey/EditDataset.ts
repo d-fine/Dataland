@@ -13,7 +13,6 @@ describeIf(
   "Validates the edit button functionality on the view framework page",
   {
     executionEnvironments: ["developmentLocal", "ci"],
-    onlyExecuteOnDatabaseReset: false,
   },
   () => {
     let uploadIds: UploadIds;

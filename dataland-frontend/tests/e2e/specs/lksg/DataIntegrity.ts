@@ -19,7 +19,6 @@ describeIf(
     "correctly in the frontend",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    onlyExecuteOnDatabaseReset: false,
   },
   function (): void {
     beforeEach(() => {

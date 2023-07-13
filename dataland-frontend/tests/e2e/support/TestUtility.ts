@@ -2,7 +2,7 @@ import { Suite } from "mocha";
 
 export interface ExecutionConfig {
   executionEnvironments: Array<ExecutionEnvironment>;
-  onlyExecuteOnDatabaseReset: boolean;
+  onlyExecuteOnDatabaseReset?: boolean;
 }
 export type ExecutionEnvironment = "developmentLocal" | "ci" | "developmentCd" | "previewCd";
 
