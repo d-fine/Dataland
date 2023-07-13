@@ -235,7 +235,10 @@ export default defineComponent({
     reformatProcurementCategoriesValue(inputObject: Map<ProcurementCategoryType, LksgProcurementCategory> | null) {
       if (inputObject == null) return null;
       const inputObjectEntries = Object.entries(inputObject) as [ProcurementCategoryType, LksgProcurementCategory][];
-      return inputObjectEntries.map(([procurementCategoryType, lksgProcurementCategory]) => {
+      return inputObjectEntries.map((inputEntry: [ProcurementCategoryType, LksgProcurementCategory]) => {
+        const procurementCategoryType = inputEntry[0];
+        const lksgProcurementCategory = inputEntry[1];
+
         const definitionsOfProductTypeOrService =
           lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes.length > 1
             ? lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes
