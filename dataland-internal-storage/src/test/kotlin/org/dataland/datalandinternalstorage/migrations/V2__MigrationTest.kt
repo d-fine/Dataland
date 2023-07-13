@@ -13,7 +13,6 @@ import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.Statement
 
-@Suppress("ClassNaming")
 class V2__MigrationTest {
     private val objectMapper = ObjectMapper()
 

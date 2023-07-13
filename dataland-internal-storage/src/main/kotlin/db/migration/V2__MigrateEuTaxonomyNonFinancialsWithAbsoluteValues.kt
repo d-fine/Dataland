@@ -10,7 +10,6 @@ import org.json.JSONObject
  * This migration script updates the EU Taxonomy for non-financials data model switching
  * from a field called value for percentages only to a structure holding the absolute value of a cash flow type as well
  */
-@Suppress("ClassNaming")
 class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration() {
     private data class DataTableEntity(
         val dataId: String,

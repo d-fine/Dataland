@@ -6,7 +6,6 @@ import org.flywaydb.core.api.migration.Context
 /**
  * This migration script handles the creation of the initial databases
  */
-@Suppress("ClassNaming")
 class V1_1__CreateBackendTables : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         createCompanyTables(context!!)
