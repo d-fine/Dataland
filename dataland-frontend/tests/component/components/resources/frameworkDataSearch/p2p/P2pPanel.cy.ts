@@ -81,8 +81,7 @@ describe("Component test for P2pPanel", () => {
         };
       },
     });
-    cy.get(`span[data-test=General]`).click();
-    cy.get(`span[data-test=_general]`).click();
+
     cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
     cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("exist");
 
@@ -155,8 +154,6 @@ describe("Component test for P2pPanel", () => {
         };
       },
     });
-    cy.get(`span[data-test=General]`).click();
-    cy.get(`span[data-test=_general]`).click();
     cy.get("table").find(`tr:contains("Data Date")`).find(`span`).eq(6).contains("2023");
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
