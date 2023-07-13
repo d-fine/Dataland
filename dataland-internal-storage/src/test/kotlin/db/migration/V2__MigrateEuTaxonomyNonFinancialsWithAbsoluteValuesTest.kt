@@ -81,7 +81,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
     }
 
     private val dummyDataPoint = JSONObject(
-        "{\"value\":0.1,\"dataSource\":{\"report\":\"some report\"},\"quality\":\"Estimated\"}"
+        "{\"value\":0.1,\"dataSource\":{\"report\":\"some report\"},\"quality\":\"Estimated\"}",
     )
     private val dummyDataPointAbsoluteAndPercentage = JSONObject(
         "{\"valueAsPercentage\":0.1,\"dataSource\":{\"report\":\"some report\"},\"quality\":\"Estimated\"}",

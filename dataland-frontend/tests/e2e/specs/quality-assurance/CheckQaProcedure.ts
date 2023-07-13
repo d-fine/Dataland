@@ -37,7 +37,7 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        testSubmittedDatasetIsInReviewListAndPending(storedCompany.companyInformation.companyName);
+        testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany.companyInformation.companyName);
       });
     });
 
@@ -46,7 +46,7 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         const dataMetaInfo = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        testSubmittedDatasetIsInReviewListAndRejected(storedCompany, dataMetaInfo);
+        testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
       });
     });
   }
@@ -56,7 +56,7 @@ describeIf(
  * Tests that the item was added and is visible on the QA list
  * @param companyName The name of the company
  */
-function testSubmittedDatasetIsInReviewListAndPending(companyName: string): void {
+function testSubmittedDatasetIsInReviewListAndAcceptIt(companyName: string): void {
   testDatasetPresentWithCorrectStatus(companyName, "PENDING");
 
   safeLogout();
@@ -83,11 +83,11 @@ function testSubmittedDatasetIsInReviewListAndPending(companyName: string): void
 }
 
 /**
- * Tests that the item was added and is visible on the QA list
- * @param storedCompany the stored company uploading the dataset
- * @param dataset the data meta information that wa suploaded
+ * Tests that the dataset is visible on the QA list and reject it and if the edit button is present on the view page
+ * @param storedCompany the stored company owning the dataset
+ * @param dataset the data meta information that was uploaded
  */
-function testSubmittedDatasetIsInReviewListAndRejected(
+function testSubmittedDatasetIsInReviewListAndRejectIt(
   storedCompany: StoredCompany,
   dataset: DataMetaInformation
 ): void {
