@@ -1,7 +1,6 @@
-package org.dataland.datalandinternalstorage.migrations
+package db.migration
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import db.migration.V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -13,7 +12,7 @@ import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.Statement
 
-class V2__MigrationTest {
+class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
     private val objectMapper = ObjectMapper()
 
     @Test
