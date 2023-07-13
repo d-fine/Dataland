@@ -92,7 +92,8 @@ describe(
     describeIf(
       "Upload and validate EuTaxonomy for financials data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+        onlyExecuteOnReset: false,
       },
       () => {
         let fixtureDataForEuTaxonomyFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
@@ -119,7 +120,8 @@ describe(
     describeIf(
       "Upload and validate EuTaxonomy for non-financials data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+        onlyExecuteOnReset: false,
       },
       () => {
         let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
@@ -148,7 +150,8 @@ describe(
     describeIf(
       "Upload and validate Lksg data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+        onlyExecuteOnReset: false,
       },
       () => {
         let companiesWithLksgData: Array<FixtureData<LksgData>>;
@@ -172,7 +175,8 @@ describe(
     describeIf(
       "Upload and validate P2p data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+        onlyExecuteOnReset: false,
       },
       () => {
         let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
@@ -196,7 +200,8 @@ describe(
     describeIf(
       "Upload and validate Sfdr data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+        onlyExecuteOnReset: false,
       },
       () => {
         let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
@@ -220,7 +225,8 @@ describe(
     describeIf(
       "Upload and validate Sme data",
       {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+        onlyExecuteOnReset: false,
       },
       () => {
         let companiesWithSmeData: Array<FixtureData<SmeData>>;

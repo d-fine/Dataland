@@ -100,7 +100,8 @@ describe("As a user, I expect the search functionality on the /companies page to
   describeIf(
     "",
     {
-      executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+      onlyExecuteOnReset: true,
     },
     () => {
       it(
@@ -245,7 +246,8 @@ describe("As a user, I expect the search functionality on the /companies page to
   describeIf(
     "As a user, I expect substrings of the autocomplete suggestions to be highlighted if they match my search string",
     {
-      executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+      onlyExecuteOnReset: false,
     },
     () => {
       it("Check if substrings of autocomplete entries are highlighted", { scrollBehavior: false }, () => {

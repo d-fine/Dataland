@@ -10,7 +10,8 @@ import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 describeIf(
   "As a user, I expect to be able to add a new dataset and see it as pending",
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    onlyExecuteOnReset: false,
   },
   function () {
     let storedCompany: StoredCompany;
@@ -45,8 +46,8 @@ describeIf(
       const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        const lksgDataset = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        testSubmittedDatasetIsInReviewListAndRejected(storedCompany, lksgDataset);
+        const dataMetaInfo = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
+        testSubmittedDatasetIsInReviewListAndRejected(storedCompany, dataMetaInfo);
       });
     });
   }

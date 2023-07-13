@@ -8,7 +8,8 @@ import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 describeIf(
   "Check if each page is visitable if and only if the corresponding role is given",
   {
-    executionEnvironments: ["developmentLocal", "ci"], onlyExecuteOnReset: false
+    executionEnvironments: ["developmentLocal", "ci"],
+    onlyExecuteOnReset: false,
   },
   () => {
     let readerAndUploaderPages = [] as string[];

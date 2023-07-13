@@ -30,7 +30,8 @@ describe("As a developer, I want to ensure that security relevant headers are se
   describeIf(
     "Check CSP headers in the local development environment",
     {
-      executionEnvironments: ["developmentLocal"], onlyExecuteOnReset: false
+      executionEnvironments: ["developmentLocal"],
+      onlyExecuteOnReset: false,
     },
     () => {
       checkCommonCspHeaders(
@@ -45,7 +46,8 @@ describe("As a developer, I want to ensure that security relevant headers are se
   describeIf(
     "Check CSP headers in the CI/CD environment",
     {
-      executionEnvironments: ["ci", "developmentCd", "previewCd"], onlyExecuteOnReset: false
+      executionEnvironments: ["ci", "developmentCd", "previewCd"],
+      onlyExecuteOnReset: false,
     },
     () => {
       checkCommonCspHeaders(
@@ -67,7 +69,8 @@ describe("As a developer, I want to ensure that security relevant headers are se
   describeIf(
     "Check Cache headers in the CD environment",
     {
-      executionEnvironments: ["developmentCd", "previewCd"], onlyExecuteOnReset: false
+      executionEnvironments: ["developmentCd", "previewCd"],
+      onlyExecuteOnReset: false,
     },
     () => {
       it("test for frontend response", () => {

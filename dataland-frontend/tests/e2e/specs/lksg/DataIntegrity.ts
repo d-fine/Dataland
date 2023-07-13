@@ -18,7 +18,8 @@ describeIf(
   "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
     "correctly in the frontend",
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    onlyExecuteOnReset: false,
   },
   function (): void {
     beforeEach(() => {

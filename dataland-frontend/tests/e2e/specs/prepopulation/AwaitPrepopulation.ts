@@ -7,7 +7,8 @@ import { describeIf } from "@e2e/support/TestUtility";
 describeIf(
   "I want to ensure that the prepopulation has finished before executing any further tests",
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnReset: false
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    onlyExecuteOnReset: false,
   },
   () => {
     let expectedNumberOfCompanies = 0;

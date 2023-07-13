@@ -5,7 +5,8 @@ describe("As a developer, I want to ensure that cypress behaves as expected", ()
   describeIf(
     "In the CI pipeline and in the local development environment, testing endpoint should be exposed",
     {
-      executionEnvironments: ["developmentLocal", "ci"], onlyExecuteOnReset: false
+      executionEnvironments: ["developmentLocal", "ci"],
+      onlyExecuteOnReset: false,
     },
     () => {
       it("Test that 500 request interception can be disabled for individual requests", () => {
@@ -28,7 +29,8 @@ describe("As a developer, I want to ensure that cypress behaves as expected", ()
   describeIf(
     "In the CD pipeline, testing endpoint should NOT be exposed",
     {
-      executionEnvironments: ["developmentCd", "previewCd"], onlyExecuteOnReset: false
+      executionEnvironments: ["developmentCd", "previewCd"],
+      onlyExecuteOnReset: false,
     },
     () => {
       it("Test that the testing endpoints are not available", () => {

@@ -7,7 +7,8 @@ describe("As a user I expect a data request page where I can download an excel t
   describeIf(
     "Do not execute these tests in the CD pipeline to prevent sending emails",
     {
-      executionEnvironments: ["developmentLocal", "ci"], onlyExecuteOnReset: false
+      executionEnvironments: ["developmentLocal", "ci"],
+      onlyExecuteOnReset: false,
     },
     (): void => {
       const uploadBoxSelector = "div.p-fileupload-content";
