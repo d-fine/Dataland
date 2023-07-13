@@ -2,7 +2,7 @@ import { Suite } from "mocha";
 
 export interface ExecutionConfig {
   executionEnvironments: Array<ExecutionEnvironment>;
-  onlyExecuteOnReset: boolean;
+  onlyExecuteOnDatabaseReset: boolean;
 }
 export type ExecutionEnvironment = "developmentLocal" | "ci" | "developmentCd" | "previewCd";
 
@@ -25,7 +25,7 @@ export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this:
     });
   }
 
-  if (execConfig.onlyExecuteOnReset && !isDatabaseReset) {
+  if (execConfig.onlyExecuteOnDatabaseReset && !isDatabaseReset) {
     return describe(`${name} - Disabled`, () => {
       it(`Has been disabled because the tests are only run when the databases are reset`, () => {
         // Stub-Test just so its displayed why test suit wasn't executed

@@ -9,7 +9,7 @@ describeIf(
   "Check if each page is visitable if and only if the corresponding role is given",
   {
     executionEnvironments: ["developmentLocal", "ci"],
-    onlyExecuteOnReset: false,
+    onlyExecuteOnDatabaseReset: false,
   },
   () => {
     let readerAndUploaderPages = [] as string[];

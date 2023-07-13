@@ -10,7 +10,7 @@ describeIf(
   "As a user, I expect to be able to edit datasets with multiple reporting periods",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    onlyExecuteOnReset: false,
+    onlyExecuteOnDatabaseReset: false,
   },
   function () {
     let testData: FixtureData<LksgData>;

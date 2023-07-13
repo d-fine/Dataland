@@ -13,7 +13,7 @@ describeIf(
   "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    onlyExecuteOnReset: false,
+    onlyExecuteOnDatabaseReset: false,
   },
   function (): void {
     beforeEach(() => {

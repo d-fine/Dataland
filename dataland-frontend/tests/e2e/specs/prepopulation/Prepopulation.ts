@@ -93,7 +93,7 @@ describe(
       "Upload and validate EuTaxonomy for financials data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-        onlyExecuteOnReset: false,
+        onlyExecuteOnDatabaseReset: false,
       },
       () => {
         let fixtureDataForEuTaxonomyFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
@@ -121,7 +121,7 @@ describe(
       "Upload and validate EuTaxonomy for non-financials data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-        onlyExecuteOnReset: false,
+        onlyExecuteOnDatabaseReset: false,
       },
       () => {
         let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
@@ -151,7 +151,7 @@ describe(
       "Upload and validate Lksg data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-        onlyExecuteOnReset: false,
+        onlyExecuteOnDatabaseReset: false,
       },
       () => {
         let companiesWithLksgData: Array<FixtureData<LksgData>>;
@@ -176,7 +176,7 @@ describe(
       "Upload and validate P2p data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-        onlyExecuteOnReset: false,
+        onlyExecuteOnDatabaseReset: false,
       },
       () => {
         let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
@@ -201,7 +201,7 @@ describe(
       "Upload and validate Sfdr data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-        onlyExecuteOnReset: false,
+        onlyExecuteOnDatabaseReset: false,
       },
       () => {
         let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
@@ -226,7 +226,7 @@ describe(
       "Upload and validate Sme data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-        onlyExecuteOnReset: false,
+        onlyExecuteOnDatabaseReset: false,
       },
       () => {
         let companiesWithSmeData: Array<FixtureData<SmeData>>;

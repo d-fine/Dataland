@@ -11,7 +11,7 @@ describeIf(
   "As a user, I expect to be able to add a new dataset and see it as pending",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    onlyExecuteOnReset: false,
+    onlyExecuteOnDatabaseReset: false,
   },
   function () {
     let storedCompany: StoredCompany;

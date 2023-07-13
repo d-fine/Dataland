@@ -16,7 +16,7 @@ describeIf(
 
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    onlyExecuteOnReset: false,
+    onlyExecuteOnDatabaseReset: false,
   },
   function () {
     beforeEach(() => {

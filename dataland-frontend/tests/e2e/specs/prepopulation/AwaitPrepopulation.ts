@@ -8,7 +8,7 @@ describeIf(
   "I want to ensure that the prepopulation has finished before executing any further tests",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    onlyExecuteOnReset: false,
+    onlyExecuteOnDatabaseReset: false,
   },
   () => {
     let expectedNumberOfCompanies = 0;

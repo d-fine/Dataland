@@ -21,7 +21,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
     "",
     {
       executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-      onlyExecuteOnReset: false,
+      onlyExecuteOnDatabaseReset: false,
     },
     () => {
       beforeEach(function () {
