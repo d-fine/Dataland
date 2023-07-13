@@ -47,7 +47,7 @@ export default defineComponent({
   data() {
     return {
       existingElements: [] as unknown[],
-      listOfElementIds: (this.displayOneByDefault ? [0] : []) as number[],
+      listOfElementIds: (this.displayOneSubFormPerDefault ? [0] : []) as number[],
       idCounter: 0,
     };
   },
@@ -57,7 +57,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    displayOneByDefault: {
+    displayOneSubFormPerDefault: {
       type: Boolean,
       default: false,
     },
@@ -79,7 +79,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    for (let i = this.displayOneByDefault ? 1 : 0; i < this.existingElements.length; i++) {
+    for (let i = this.displayOneSubFormPerDefault ? 1 : 0; i < this.existingElements.length; i++) {
       this.addItem();
     }
   },
