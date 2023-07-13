@@ -180,20 +180,13 @@ export default defineComponent({
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
             const categoryResult = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
-            for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
-              string,
-              object | null
-            ][]) {
-              if (subCategoryObject == null) continue;
-              this.extractedFunction(
-                subCategoryObject,
-                categoryKey,
-                subCategoryKey,
-                categoryResult,
-                dataIdOfP2pDataset,
-                listOfDataObjects
-              );
-            }
+            this.iteratesThroughSubcategories(
+              categoryObject,
+              categoryKey,
+              categoryResult,
+              dataIdOfP2pDataset,
+              listOfDataObjects
+            );
 
             this.mapOfKpiKeysToDataObjectsArrays.set(categoryResult.label, listOfDataObjects);
           }
@@ -204,6 +197,36 @@ export default defineComponent({
       );
     },
     /**
+     * Iterates through all subcategories of a category
+     * @param categoryObject the data object of the framework's category
+     * @param categoryKey the key of the corresponding framework's category
+     * @param categoryResult  the category object of the framework's category
+     * @param dataIdOfP2pDataset  the data ID of the P2P dataset
+     * @param listOfDataObjects a map containing the category and it's corresponding Kpis
+     */
+    iteratesThroughSubcategories(
+      categoryObject,
+      categoryKey,
+      categoryResult: Category,
+      dataIdOfP2pDataset: string,
+      listOfDataObjects: Array<KpiDataObject>
+    ) {
+      for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
+        string,
+        object | null
+      ][]) {
+        if (subCategoryObject == null) continue;
+        this.assembleDataKpiObject(
+          subCategoryObject,
+          categoryKey,
+          subCategoryKey,
+          categoryResult,
+          dataIdOfP2pDataset,
+          listOfDataObjects
+        );
+      }
+    },
+    /**
      * Builds the result Kpi Data Object and adds it to the result list
      * @param subCategoryObject the data object of the framework's subcategory
      * @param categoryKey the key of the corresponding framework's category
@@ -212,7 +235,7 @@ export default defineComponent({
      * @param dataIdOfP2pDataset the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
      */
-    extractedFunction(
+    assembleDataKpiObject(
       subCategoryObject: object,
       categoryKey,
       subCategoryKey: string,
