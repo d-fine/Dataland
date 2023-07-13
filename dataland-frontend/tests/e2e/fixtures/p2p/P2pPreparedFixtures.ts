@@ -1,7 +1,6 @@
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { PathwaysToParisData } from "@clients/backend";
 import { generateP2pFixture } from "./P2pDataFixtures";
-import {generateLksgFixture} from "@e2e/fixtures/lksg/LksgDataFixtures";
 
 /**
  * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
@@ -57,7 +56,7 @@ function manipulateFixtureForDate(
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForOneP2pDataSetWithProductionSites(input: FixtureData<PathwaysToParisData>): FixtureData<PathwaysToParisData> {
-  input.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
+  input.companyInformation.companyName = "one-p2p-data-set-with-two-sectors";
   input.t.general.general.dataDate = "2022-01-01";
   input.t.general.general.sector = ["Ammonia", "Cement"];
   return input;

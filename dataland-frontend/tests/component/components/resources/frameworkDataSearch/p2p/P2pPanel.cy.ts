@@ -44,6 +44,8 @@ describe("Component test for P2pPanel", () => {
         this.convertP2pDataToFrontendFormat();
       },
     });
+    cy.get(`span[data-test=General]`).click();
+    cy.get(`span[data-test=_general]`).click();
     cy.get("td:contains('Ammonia')").should("exist");
   });
 
@@ -56,7 +58,7 @@ describe("Component test for P2pPanel", () => {
   }
 
   it("Check P2p view page for company with one P2p data set", () => {
-    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-two-production-sites", preparedFixtures);
+    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-two-sectors", preparedFixtures);
     const p2pData = preparedFixture.t;
 
     cy.intercept("/api/data/p2p/mock-data-id", {
@@ -81,7 +83,8 @@ describe("Component test for P2pPanel", () => {
         };
       },
     });
-
+    cy.get(`span[data-test=General]`).click();
+    cy.get(`span[data-test=_general]`).click();
     cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
     cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("exist");
 
@@ -154,6 +157,8 @@ describe("Component test for P2pPanel", () => {
         };
       },
     });
+    cy.get(`span[data-test=General]`).click();
+    cy.get(`span[data-test=_general]`).click();
     cy.get("table").find(`tr:contains("Data Date")`).find(`span`).eq(6).contains("2023");
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
