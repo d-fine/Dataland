@@ -14,7 +14,7 @@
             description="Define the procured product types/services per category (own operations)"
             name="procuredProductTypesAndServicesNaceCodes"
             v-model:selectedNaceCodesBind="procuredProductTypesAndServicesNaceCodesValue"
-          ></NaceCodeFormFieldBindData>
+          />
         </div>
 
         <div class="form-field border-none">
