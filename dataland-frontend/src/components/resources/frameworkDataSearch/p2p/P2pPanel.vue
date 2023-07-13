@@ -165,7 +165,7 @@ export default defineComponent({
       this.resultKpiData = kpiData;
     },
     /**
-     * Retrieves and converts the stored array of LkSG datasets in order to make it displayable in the frontend.
+     * Retrieves and converts the stored array of P2P datasets in order to make it displayable in the frontend.
      */
     convertP2pDataToFrontendFormat(): void {
       if (this.p2pDataAndMetaInfo.length) {
@@ -178,36 +178,21 @@ export default defineComponent({
           });
           for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
-            const listOfDataObjects = [];
+            const listOfDataObjects: Array<KpiDataObject> = [];
             const categoryResult = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
             for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
               string,
               object | null
             ][]) {
               if (subCategoryObject == null) continue;
-              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
-                if (kpiValue == null) continue;
-                const subcategory = assertDefined(
-                  p2pDataModel
-                    .find((category) => category.name === categoryKey)
-                    ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
-                );
-                const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
-                if (
-                  this.p2pDataAndMetaInfo
-                    .map((dataAndMetaInfo) => dataAndMetaInfo.data)
-                    .some((singleP2pData) => field.showIf(singleP2pData))
-                ) {
-                  this.createKpiDataObjects(
-                    kpiKey as string,
-                    kpiValue as KpiValue,
-                    subcategory,
-                    categoryResult,
-                    dataIdOfP2pDataset
-                  );
-                  listOfDataObjects.push(this.resultKpiData);
-                }
-              }
+              this.extractedFunction(
+                subCategoryObject,
+                categoryKey,
+                subCategoryKey,
+                categoryResult,
+                dataIdOfP2pDataset,
+                listOfDataObjects
+              );
             }
 
             this.mapOfKpiKeysToDataObjectsArrays.set(categoryResult.label, listOfDataObjects);
@@ -218,7 +203,47 @@ export default defineComponent({
         this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
       );
     },
-
+    /**
+     * Builds the result Kpi Data Object and adds it to the result list
+     * @param subCategoryObject the data object of the framework's subcategory
+     * @param categoryKey the key of the corresponding framework's category
+     * @param subCategoryKey the key of the corresponding framework's subcategory
+     * @param categoryResult the category object of the framework's category
+     * @param dataIdOfP2pDataset the data ID of the P2P dataset
+     * @param listOfDataObjects a map containing the category and it's corresponding Kpis
+     */
+    extractedFunction(
+      subCategoryObject: object,
+      categoryKey,
+      subCategoryKey: string,
+      categoryResult: Category,
+      dataIdOfP2pDataset: string,
+      listOfDataObjects: Array<KpiDataObject>
+    ) {
+      for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
+        if (kpiValue == null) continue;
+        const subcategory = assertDefined(
+          p2pDataModel
+            .find((category) => category.name === categoryKey)
+            ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
+        );
+        const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
+        if (
+          this.p2pDataAndMetaInfo
+            .map((dataAndMetaInfo) => dataAndMetaInfo.data)
+            .some((singleP2pData) => field.showIf(singleP2pData))
+        ) {
+          this.createKpiDataObjects(
+            kpiKey as string,
+            kpiValue as KpiValue,
+            subcategory,
+            categoryResult,
+            dataIdOfP2pDataset
+          );
+          listOfDataObjects.push(this.resultKpiData);
+        }
+      }
+    },
     /**
      * Checks whether a given category shall be displayed for at least one of the P2P datasets to display
      * @param categoryName The name of the category to check
