@@ -16,7 +16,13 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationSfdrData } from "@clients/backend";
+import {
+  CompanyReport,
+  DataAndMetaInformationSfdrData,
+  SfdrData,
+  SfdrEnvironmental,
+  SfdrSocial,
+} from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -124,37 +130,52 @@ export default defineComponent({
     },
 
     /**
+     * @param oneSfdrDataset sfdr dataset with meta information
+     * @returns an object with data ID and reporting period
+     */
+    createColumnIdentifierObject(oneSfdrDataset: DataAndMetaInformationSfdrData) {
+      const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
+      const reportingPeriodOfSfdrDataset = oneSfdrDataset.metaInfo?.reportingPeriod ?? "";
+      return {
+        dataId: dataIdOfSfdrDataset,
+        reportingPeriod: reportingPeriodOfSfdrDataset,
+      };
+    },
+
+    /**
+     *
+     * @param sfdrData Data object from DataAndMetaInformationSfdrData
+     * @param columnIdentifierDataId key name of the SFDR dataset property
+     */
+    createKpiDataObjectsForSfdrDataProps(sfdrData: SfdrData, columnIdentifierDataId: string) {
+      Object.entries(sfdrData)
+        .filter((dataEntry) => dataEntry[1] !== null)
+        .forEach((dataEntry: [string, SfdrSocial | SfdrEnvironmental | { [key: string]: CompanyReport }]) => {
+          const [sfdrDataPropName, sfdrDataPropValue] = dataEntry;
+          Object.entries(sfdrDataPropValue).forEach((propValue: [string, object | string]) => {
+            const [kpiKey, kpiValue] = propValue;
+            this.createKpiDataObjects(kpiKey, kpiValue, sfdrDataPropName, columnIdentifierDataId);
+          });
+        });
+    },
+
+    /**
      * Retrieves and converts values from an array of SFDR datasets in order to make it displayable in the frontend.
      *
      */
-    convertSfdrDataToFrontendFormat(): void {
-      if (this.sfdrDataAndMetaInfo.length) {
-        this.sfdrDataAndMetaInfo.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
-          const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
-          const reportingPeriodOfSfdrDataset = oneSfdrDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfColumnIdentifierObjects.push({
-            dataId: dataIdOfSfdrDataset,
-            reportingPeriod: reportingPeriodOfSfdrDataset,
-          });
-          for (const areaObject of Object.values(oneSfdrDataset.data) as object | null[]) {
-            if (areaObject == null) {
-              continue;
-            }
-            for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [
-              string,
-              object | null
-            ][]) {
-              if (subAreaObject == null) {
-                continue;
-              }
-              for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
-                this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataIdOfSfdrDataset);
-              }
-            }
-          }
-        });
-      }
-      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(this.listOfColumnIdentifierObjects);
+    convertSfdrDataToFrontendFormat() {
+      const mappedOfColumnIdentifierObjects = this.sfdrDataAndMetaInfo.map(
+        (oneSfdrDataset: DataAndMetaInformationSfdrData) => {
+          const columnIdentifier = this.createColumnIdentifierObject(oneSfdrDataset);
+          Object.values(oneSfdrDataset.data)
+            .filter((sfdrData: SfdrData) => sfdrData !== null)
+            .forEach((sfdrData: SfdrData) => {
+              this.createKpiDataObjectsForSfdrDataProps(sfdrData, columnIdentifier.dataId);
+            });
+          return columnIdentifier;
+        }
+      );
+      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(mappedOfColumnIdentifierObjects);
     },
   },
 });
