@@ -87,10 +87,8 @@ class CompanyDataControllerTest {
                 IdentifierType.duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
             ),
         )
-        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
-            uploadedCompany.companyId,
-            patchObject,
-        )
+        val updatedCompany =
+            apiAccessor.companyDataControllerApi.patchCompanyById(uploadedCompany.companyId, patchObject)
         val oldIdentifiers = uploadedCompany.companyInformation.identifiers
         val newIdentifiers = updatedCompany.companyInformation.identifiers
         assertEquals(
