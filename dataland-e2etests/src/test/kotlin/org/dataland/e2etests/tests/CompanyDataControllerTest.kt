@@ -81,19 +81,16 @@ class CompanyDataControllerTest {
             .getCompanyInformationWithRandomIdentifiers(1)
             .first()
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformationToUpload)
-
         val patchObject = CompanyInformationPatch(
             identifiers = mapOf(
                 IdentifierType.lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
                 IdentifierType.duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
             ),
         )
-
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
             uploadedCompany.companyId,
             patchObject,
         )
-
         val oldIdentifiers = uploadedCompany.companyInformation.identifiers
         val newIdentifiers = updatedCompany.companyInformation.identifiers
         assertEquals(
@@ -136,16 +133,11 @@ class CompanyDataControllerTest {
             companyName = "Updated Name${UUID.randomUUID()}",
             headquarters = "Updated HQ${UUID.randomUUID()}",
             companyAlternativeNames = listOf("Alt-Name-1${UUID.randomUUID()}", "Alt-Name-2${UUID.randomUUID()}"),
-            identifiers = mapOf(
-                IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}"),
-            ),
+            identifiers = mapOf(IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
             countryCode = "DE",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(
-            companyId,
-            putCompanyInformation,
-        )
+        val updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, putCompanyInformation)
         assertEquals(
             putCompanyInformation.companyName, updatedCompany.companyInformation.companyName,
             "The company should have been updated",
@@ -159,10 +151,7 @@ class CompanyDataControllerTest {
                 updatedCompany.companyInformation.companyAlternativeNames!!.toSet(),
             "The company alternative names should have been updated",
         )
-        assertEquals(
-            null, updatedCompany.companyInformation.sector,
-            "The sector should have been deleted",
-        )
+        assertEquals(null, updatedCompany.companyInformation.sector, "The sector should have been deleted")
     }
 
     @Test
@@ -178,11 +167,8 @@ class CompanyDataControllerTest {
             countryCode = "DE",
         )
         val put2CompanyInformation = put1CompanyInformation.copy(
-            identifiers = mapOf(
-                IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
-            ),
+            identifiers = mapOf(IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
         )
-
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         var updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put1CompanyInformation)
         assertTrue(
