@@ -29,10 +29,11 @@ import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataP
  */
 export function generateP2pFixture(
   numFixtures: number,
-  undefinedProbability = 0.5
+  undefinedProbability = 0.5,
+  boolRandom = true
 ): FixtureData<PathwaysToParisData>[] {
   return generateFixtureDataset<PathwaysToParisData>(
-    () => generateP2pData(undefinedProbability),
+    () => generateP2pData(undefinedProbability, boolRandom),
     numFixtures,
     (dataSet: PathwaysToParisData) => dataSet.general.general.dataDate.substring(0, 4)
   );
@@ -44,7 +45,6 @@ export function generateP2pFixture(
  * @returns a random P2pAmmonia
  */
 export function getSectorAmmonia(undefinedProbability: number): P2pAmmonia {
-  console.log(undefinedProbability);
   return {
     decarbonisation: {
       energyMix: valueOrUndefined(randomPercentageValue(), undefinedProbability),
@@ -288,10 +288,13 @@ export function getSectorGeneral(undefinedProbability: number, sectors: Array<P2
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
  * @returns a random P2P dataset
  */
-export function generateP2pData(undefinedProbability = 0.5): PathwaysToParisData {
-  const sectors = faker.helpers.arrayElements(Object.values(P2pSector));
-  console.log(undefinedProbability);
+export function generateP2pData(undefinedProbability = 0.5, boolRandom = true): PathwaysToParisData {
+  let dummySectors = Object.values(P2pSector);
+  if (boolRandom) {
+    dummySectors = faker.helpers.arrayElements(Object.values(P2pSector));
+  }
 
+  const sectors = dummySectors;
   return {
     general: getSectorGeneral(undefinedProbability, sectors),
     ammonia: sectors.indexOf("Ammonia") != -1 ? getSectorAmmonia(undefinedProbability) : undefined,

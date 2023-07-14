@@ -7,13 +7,13 @@ import { generateP2pFixture } from "./P2pDataFixtures";
  * via manipulator-functions to set specific values for those fields.
  * @returns the prepared fixtures
  */
-export function generateP2pPreparedFixtures(undef_probability = 0.5): Array<FixtureData<PathwaysToParisData>> {
+export function generateP2pPreparedFixtures(undef_probability = 0.5, boolRandom = true): Array<FixtureData<PathwaysToParisData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixture(1, undef_probability)[0]));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability)[0], "2023-04-18"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability)[0], "2023-06-22"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability)[0], "2022-07-30"));
-  preparedFixtures.push(manipulateFixtureForOneP2pDataSetWithTwoSectors(generateP2pFixture(1, undef_probability)[0]));
+  preparedFixtures.push(manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixture(1, undef_probability, boolRandom)[0]));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability, boolRandom)[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability, boolRandom)[0], "2023-06-22"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability, boolRandom)[0], "2022-07-30"));
+  preparedFixtures.push(manipulateFixtureForOneP2pDataSetWithTwoSectors(generateP2pFixture(1, undef_probability, boolRandom)[0]));
   return preparedFixtures;
 }
 
