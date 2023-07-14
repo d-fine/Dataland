@@ -17,15 +17,12 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
 
     @Test
     fun `test that migration writes the expected results into the datatable`() {
-        val originalDatabaseDataEntry = buildOriginalDatabaseEntry()
-        val expectedTransformedDatabaseDataEntry = buildExpectedTransformedDatabaseEntry()
-        val migration = V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues()
         val mockContext = mock(Context::class.java)
         val mockConnection = mock(Connection::class.java)
         val mockStatement = mock(Statement::class.java)
         val mockResultSet = mock(ResultSet::class.java)
         `when`(mockResultSet.getString("data_id")).thenReturn("data-id")
-        `when`(mockResultSet.getString("data")).thenReturn(originalDatabaseDataEntry)
+        `when`(mockResultSet.getString("data")).thenReturn(buildOriginalDatabaseEntry())
         `when`(mockResultSet.next()).thenReturn(true, false)
         `when`(mockStatement.executeQuery(any())).thenReturn(mockResultSet)
         `when`(mockStatement.execute(any())).then {
@@ -33,7 +30,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
             val newDatabaseEntryString = databaseUpdateQuery.split("'")[1]
             val newDatabaseEntry = JSONObject(objectMapper.readValue(newDatabaseEntryString, String::class.java))
             assertTrue(
-                JSONObject(objectMapper.readValue(expectedTransformedDatabaseDataEntry, String::class.java)).similar(
+                JSONObject(objectMapper.readValue(buildExpectedTransformedDatabaseEntry(), String::class.java)).similar(
                     newDatabaseEntry,
                 ),
             )
@@ -41,11 +38,12 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
         }
         `when`(mockConnection.createStatement()).thenReturn(mockStatement)
         `when`(mockContext.connection).thenReturn(mockConnection)
+        val migration = V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues()
         migration.migrate(mockContext)
     }
 
-    val affectedFields = listOf("capex", "opex", "revenue")
-    val unaffectedFields = listOf("something")
+    private val affectedFields = listOf("capex", "opex", "revenue")
+    private val unaffectedFields = listOf("something")
     private fun buildOriginalDatabaseEntry(): String {
         val dataset = JSONObject()
         (affectedFields + unaffectedFields).forEach {
@@ -72,27 +70,25 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
     }
 
     private val unaffectedDetail = "totalAmount"
-    private fun buildOldDetailsPerCashFlowType(): JSONObject {
-        val cashFlowObject = JSONObject()
-        listOf(unaffectedDetail, "alignedPercentage", "eligiblePercentage").forEach {
-            cashFlowObject.put(it, dummyDataPoint)
-        }
-        return cashFlowObject
-    }
-
     private val dummyDataPoint = JSONObject(
         "{\"value\":0.1,\"dataSource\":{\"report\":\"some report\"},\"quality\":\"Estimated\"}",
     )
     private val dummyDataPointAbsoluteAndPercentage = JSONObject(
         "{\"valueAsPercentage\":0.1,\"dataSource\":{\"report\":\"some report\"},\"quality\":\"Estimated\"}",
     )
+    private fun buildOldDetailsPerCashFlowType(): JSONObject {
+        val cashFlowObject = JSONObject()
+        listOf(unaffectedDetail, "alignedPercentage").forEach {
+            cashFlowObject.put(it, dummyDataPoint)
+        }
+        cashFlowObject.put("eligiblePercentage", JSONObject.NULL);
+        return cashFlowObject
+    }
+
     private fun buildNewDetailsPerCashFlowType(): JSONObject {
         val cashFlowObject = JSONObject()
-        listOf("alignedData", "eligibleData").forEach {
-            cashFlowObject.put(
-                it, dummyDataPointAbsoluteAndPercentage,
-            )
-        }
+        cashFlowObject.put("alignedData", dummyDataPointAbsoluteAndPercentage,)
+        cashFlowObject.put("eligibleData", JSONObject.NULL)
         cashFlowObject.put(unaffectedDetail, dummyDataPoint)
         return cashFlowObject
     }
