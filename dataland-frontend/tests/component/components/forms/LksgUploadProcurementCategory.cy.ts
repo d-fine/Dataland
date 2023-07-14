@@ -13,6 +13,11 @@ describe("Component tests for the CreateLksgDataset that test dependent fields",
           ],
         };
       },
+      // The code below is required to complete the component mock yet interferes with the type resolution of the
+      // mountWithPlugins function.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mounted: () => undefined,
     }).then(() => {
       cy.get('[data-test="ProcurementCategoryFormElementContent"]').should("be.visible");
       cy.get('[data-test="dataPointToggleButton"]').click();
