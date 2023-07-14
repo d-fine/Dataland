@@ -132,7 +132,9 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.selectedCountries = this.setPreSelectedCountries();
+    if(this.procurementCategories[this.name]) {
+        this.selectedCountries = this.setPreSelectedCountries();
+    }
   },
   methods: {
     /**
