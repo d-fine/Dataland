@@ -44,6 +44,7 @@ export function generateP2pFixture(
  * @returns a random P2pAmmonia
  */
 export function getSectorAmmonia(undefinedProbability: number): P2pAmmonia {
+  console.log(undefinedProbability);
   return {
     decarbonisation: {
       energyMix: valueOrUndefined(randomPercentageValue(), undefinedProbability),
@@ -289,6 +290,7 @@ export function getSectorGeneral(undefinedProbability: number, sectors: Array<P2
  */
 export function generateP2pData(undefinedProbability = 0.5): PathwaysToParisData {
   const sectors = faker.helpers.arrayElements(Object.values(P2pSector));
+  console.log(undefinedProbability);
 
   return {
     general: getSectorGeneral(undefinedProbability, sectors),

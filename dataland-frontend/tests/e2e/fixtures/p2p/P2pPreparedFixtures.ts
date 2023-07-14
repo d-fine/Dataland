@@ -7,13 +7,13 @@ import { generateP2pFixture } from "./P2pDataFixtures";
  * via manipulator-functions to set specific values for those fields.
  * @returns the prepared fixtures
  */
-export function generateP2pPreparedFixtures(): Array<FixtureData<PathwaysToParisData>> {
+export function generateP2pPreparedFixtures(undef_probability = 0.5): Array<FixtureData<PathwaysToParisData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixture(1)[0]));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1)[0], "2023-04-18"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1)[0], "2023-06-22"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1)[0], "2022-07-30"));
-  preparedFixtures.push(manipulateFixtureForOneP2pDataSetWithTwoSectors(generateP2pFixture(1)[0]));
+  preparedFixtures.push(manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixture(1, undef_probability)[0]));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability)[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability)[0], "2023-06-22"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability)[0], "2022-07-30"));
+  preparedFixtures.push(manipulateFixtureForOneP2pDataSetWithTwoSectors(generateP2pFixture(1, undef_probability)[0]));
   return preparedFixtures;
 }
 
@@ -26,9 +26,9 @@ function manipulateFixtureForSixP2pDataSetsInDifferentYears(
   input: FixtureData<PathwaysToParisData>
 ): FixtureData<PathwaysToParisData> {
   input.companyInformation.companyName = "six-p2p-data-sets-in-different-years";
-  if (input.t.general?.general?.dataDate) input.t.general.general.dataDate = "2022-01-01";
+  if (input.t.general?.general?.dataDate) input.t.general.general.dataDate = "2023-01-01";
   else console.error("fakeFixture created improperly: dataDate missing");
-  input.reportingPeriod = "2022";
+  input.reportingPeriod = "2023";
   return input;
 }
 
