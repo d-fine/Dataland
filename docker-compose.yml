@@ -146,6 +146,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INVITATION_REQUEST_RECEIVERS: ${INVITATION_REQUEST_RECEIVERS}
       INVITATION_REQUEST_CC: ${INVITATION_REQUEST_CC}
+      BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
   backend-db:
     restart: always
     profiles: ["production", "testing", "development"]
@@ -231,6 +232,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION: ${INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION:-1}
     depends_on:
       - internal-storage-db
     extra_hosts:
