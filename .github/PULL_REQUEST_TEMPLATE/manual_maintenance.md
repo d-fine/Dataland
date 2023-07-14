@@ -125,7 +125,7 @@ check that all ssh-keys are set and erased from people that have left
 ## Check e-mails sent by backend
 
 - [ ] Send an invitation (data) request from one of the dev servers and check if the e-mail to info@dataland.com
-  contains the right attachments and is displayed correctly.
+  contains the right attachments and is displayed correctly..
 
 ## Check RabbitMQ dead letter queue and disk space
 
