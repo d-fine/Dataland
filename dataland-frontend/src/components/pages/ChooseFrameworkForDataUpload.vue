@@ -45,6 +45,10 @@
                 <div :id="dataType + 'Label'" class="col-3 p-3">
                   <h3>{{ humanizeString(dataType) }}</h3>
                   <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
+                  <p v-if="dataType === DataTypeEnum.P2p">
+                    Click the link to visit the source of the framework:
+                    <a href="https://pathwaystoparis.com/en/tool-box/transformation-perfomance/"> {{ humanizeString(dataType) }}</a>
+                  </p>
                 </div>
                 <div class="col-9 d-card">
                   <MetaInfoPerCompanyAndFramework
@@ -128,6 +132,7 @@ export default defineComponent({
   },
 
   methods: {
+
     /**
      * Function building a unified for subtitle for a framework type
      * @param dataTypeTitle the type of the framework (humanized name)
@@ -136,7 +141,6 @@ export default defineComponent({
     buildSubtitle(dataTypeTitle: string): string {
       return `Overview of all existing ${dataTypeTitle} datasets for this company.`;
     },
-
     /**
      *  Sorts a list of data meta information alphabetically by their reporting period
      * @param listOfDataMetaInfo the list of data meta information to be sorted
