@@ -10,7 +10,7 @@ on:
 
 jobs:
   log-everything:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/logObjects
@@ -29,7 +29,7 @@ jobs:
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
   frontend-component-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
@@ -65,7 +65,7 @@ jobs:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
   gradle-based-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
@@ -133,7 +133,7 @@ jobs:
         with:
           subfolder: 'unit-tests-backend'
   e2e-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: github.event_name != 'workflow_dispatch'
     needs:
       - rebuild-docker-images
@@ -248,7 +248,7 @@ jobs:
         with:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
   sonar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: always()
     needs:
       - e2e-tests
@@ -318,7 +318,7 @@ jobs:
           name: SonarStageReports
           path: ./build/reports
   manual-maintenance-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -326,7 +326,7 @@ jobs:
       - name: "Check if manual maintenance was executed recently"
         run: git log --since $(date -d "- 28 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
   summary:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: success()
     needs:
       - sonar
