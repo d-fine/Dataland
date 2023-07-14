@@ -50,6 +50,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation(libs.json)
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation(libs.flyway)
 }
 
 openApi {

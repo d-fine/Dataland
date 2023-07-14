@@ -23,7 +23,7 @@ plugins {
     id("org.springframework.boot")
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.jpa")
-    kotlin("plugin.serialization") version "1.8.22"
+    kotlin("plugin.serialization")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.mailjet.client)
     implementation(project(":dataland-message-queue-utils"))
+    implementation(libs.flyway)
 }
 
 openApi {
