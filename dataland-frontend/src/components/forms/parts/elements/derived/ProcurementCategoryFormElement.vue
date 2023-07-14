@@ -18,17 +18,12 @@
         </div>
 
         <div class="form-field border-none">
-          <UploadFormHeader
+          <PercentageFormField
             label="Order Volume"
             description="State your order volume per procurement category in the last fiscal year (percentage of total volume) (own operations)"
             :is-required="false"
-          />
-          <FormKit
-            type="text"
-            v-model="percentageOfTotalProcurementValue"
+            v-model:percentageFieldValueBind="percentageOfTotalProcurementValue"
             name="percentageOfTotalProcurement"
-            validation="number"
-            inner-class="long"
           />
         </div>
         <div class="form-field border-none">
@@ -97,8 +92,9 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import { FormKit } from "@formkit/vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
-import PrimeButton from "primevue/button";
 import NaceCodeFormFieldBindData from "@/components/forms/parts/fields/NaceCodeFormFieldBindData.vue";
+import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
+import PrimeButton from "primevue/button";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { LksgProcurementCategory } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
@@ -118,6 +114,7 @@ export default defineComponent({
     MultiSelectFormFieldBindData,
     PrimeButton,
     NaceCodeFormFieldBindData,
+    PercentageFormField,
   },
   props: BaseFormFieldProps,
   data() {
@@ -132,8 +129,8 @@ export default defineComponent({
     };
   },
   mounted() {
-    if(this.procurementCategories[this.name]) {
-        this.selectedCountries = this.setPreSelectedCountries();
+    if (this.procurementCategories[this.name]) {
+      this.selectedCountries = this.setPreSelectedCountries();
     }
   },
   methods: {
