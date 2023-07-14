@@ -47,7 +47,7 @@
                   <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
                   <p v-if="dataType === DataTypeEnum.P2p">
                     Click the link to visit the source of the framework:
-                    <a v-bind:href="P2P_SOURCE_LINK()"> {{ humanizeString(dataType) }}</a>
+                    <a href="https://pathwaystoparis.com/en/tool-box/transformation-perfomance/"> {{ humanizeString(dataType) }}</a>
                   </p>
                 </div>
                 <div class="col-9 d-card">
@@ -85,7 +85,6 @@ import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue"
 import TheFooter from "@/components/general/TheFooter.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import { P2P_SOURCE_LINK } from "@/utils/Constants";
 
 export default defineComponent({
   name: "ChooseFramework",
@@ -133,13 +132,6 @@ export default defineComponent({
   },
 
   methods: {
-    /**
-     * Constructs the link for the framework
-     * @class
-     */
-    P2P_SOURCE_LINK() {
-      return P2P_SOURCE_LINK;
-    },
 
     /**
      * Function building a unified for subtitle for a framework type

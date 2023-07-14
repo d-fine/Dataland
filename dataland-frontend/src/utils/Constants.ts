@@ -49,5 +49,3 @@ export const TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS = 2000;
 export const UPLOAD_FILE_SIZE_DISPLAY_DECIMALS = 2;
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
-
-export const P2P_SOURCE_LINK = "https://pathwaystoparis.com/en/tool-box/transformation-perfomance/";
