@@ -57,7 +57,7 @@ describe("Component test for P2pPanel", () => {
     cy.get(`span[id=${groupKey}]`).siblings("button").last().click();
   }
 
-  it.only("Check P2p view page for company with one P2p data set", () => {
+  it("Check P2p view page for company with one P2p data set", () => {
     const preparedFixture = getPreparedFixture("one-p2p-data-set-with-two-sectors", preparedFixtures);
     const p2pData = preparedFixture.t;
 
