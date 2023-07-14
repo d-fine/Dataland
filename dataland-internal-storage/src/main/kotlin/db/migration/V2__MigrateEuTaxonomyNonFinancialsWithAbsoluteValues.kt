@@ -56,21 +56,15 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
         cashFlowTypes.forEach { cashflowType ->
             val cashFlow = (dataset.opt(cashflowType) ?: return@forEach) as JSONObject
             fieldsToMigrate.keys.forEach { fieldToMigrate ->
-                val dataToMigrate = getJsonObjectOrActualNull(cashFlow, fieldToMigrate) ?: return@forEach
-                dataToMigrate.put("valueAsPercentage", dataToMigrate.opt("value"))
-                dataToMigrate.remove("value")
+                val dataToMigrate = cashFlow.opt(fieldToMigrate) ?: return@forEach
+                if (dataToMigrate != JSONObject.NULL && dataToMigrate is JSONObject) {
+                    dataToMigrate.put("valueAsPercentage", dataToMigrate.opt("value"))
+                    dataToMigrate.remove("value")
+                }
                 cashFlow.put(fieldsToMigrate.getValue(fieldToMigrate), dataToMigrate)
                 cashFlow.remove(fieldToMigrate)
             }
         }
         return dataset.toString()
-    }
-
-    private fun getJsonObjectOrActualNull(baseObject: JSONObject, fieldName: String): JSONObject? {
-        return (
-            baseObject.opt(fieldName)?.let {
-                if (it == JSONObject.NULL) null else it
-            } ?: return null
-            ) as JSONObject
     }
 }
