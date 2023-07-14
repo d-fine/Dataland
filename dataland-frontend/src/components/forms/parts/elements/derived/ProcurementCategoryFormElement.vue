@@ -18,7 +18,7 @@
         </div>
 
         <div class="form-field border-none">
-          <PercentageFormFieldBindData
+          <PercentageFormField
             label="Order Volume"
             description="State your order volume per procurement category in the last fiscal year (percentage of total volume) (own operations)"
             :is-required="false"
@@ -93,7 +93,7 @@ import { FormKit } from "@formkit/vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
 import NaceCodeFormFieldBindData from "@/components/forms/parts/fields/NaceCodeFormFieldBindData.vue";
-import PercentageFormFieldBindData from "@/components/forms/parts/fields/PercentageFormFieldBindData.vue";
+import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import PrimeButton from "primevue/button";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { LksgProcurementCategory } from "@clients/backend";
@@ -114,7 +114,7 @@ export default defineComponent({
     MultiSelectFormFieldBindData,
     PrimeButton,
     NaceCodeFormFieldBindData,
-    PercentageFormFieldBindData,
+    PercentageFormField,
   },
   props: BaseFormFieldProps,
   data() {
