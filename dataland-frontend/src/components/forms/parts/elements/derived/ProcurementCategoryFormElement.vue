@@ -10,7 +10,7 @@
       <div data-test="ProcurementCategoryFormElementContent">
         <div class="form-field border-none">
           <NaceCodeFormFieldBindData
-            label="Definition Product Type/Service"
+            label="Procured Products/Services"
             description="Define the procured product types/services per category (own operations)"
             name="procuredProductTypesAndServicesNaceCodes"
             v-model:selectedNaceCodesBind="procuredProductTypesAndServicesNaceCodesValue"
@@ -19,7 +19,7 @@
 
         <div class="form-field border-none">
           <UploadFormHeader
-            label="Order Volume per Procurement %"
+            label="Order Volume"
             description="State your order volume per procurement category in the last fiscal year (percentage of total volume) (own operations)"
             :is-required="false"
           />
@@ -33,9 +33,9 @@
         </div>
         <div class="form-field border-none">
           <MultiSelectFormFieldBindData
-            label="Sourcing Country per Category"
+            label="Sourcing Countries"
             placeholder="Countries"
-            description="Name the sourcing countries per category (own operations)"
+            description="Name the sourcing countries per procurement category (own operations)"
             name="suppliersPerCountryCode"
             :options="allCountries"
             v-model:selectedItemsBindInternal="selectedCountries"
@@ -46,7 +46,7 @@
           <div class="flex justify-content-between">
             <UploadFormHeader
               v-if="selectedCountries.length > 0"
-              label="Number of Direct Suppliers"
+              label="Number of direct Suppliers"
               description="State the number of direct suppliers per procurement category and country (own operations)"
               :is-required="false"
               data-test="directSuppliersHeader"
