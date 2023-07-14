@@ -17,7 +17,6 @@
       name="relatedCorporateSupplyChain"
       label="Related Corporate Supply Chain"
       description="Please give an overview of the related corporate supply chain(s) and key business relationships (by procurement or order volume) (own operations)"
-      v-model="existingRelatedCorporateSupplyChain"
     />
   </div>
 </template>
@@ -34,11 +33,6 @@ export default defineComponent({
     InputTextFormField,
     FreeTextFormField,
     StringBadgeListFormField,
-  },
-  data() {
-    return {
-      existingRelatedCorporateSupplyChain: "",
-    };
   },
 });
 </script>
