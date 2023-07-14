@@ -45,6 +45,10 @@
                 <div :id="dataType + 'Label'" class="col-3 p-3">
                   <h3>{{ humanizeString(dataType) }}</h3>
                   <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
+                  <p v-if="dataType === DataTypeEnum.P2p">
+                    Click the link to visit the source of the framework:
+                    <a v-bind:href="P2P_SOURCE_LINK()"> {{ humanizeString(dataType) }}</a>
+                  </p>
                 </div>
                 <div class="col-9 d-card">
                   <MetaInfoPerCompanyAndFramework
@@ -81,6 +85,7 @@ import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue"
 import TheFooter from "@/components/general/TheFooter.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { P2P_SOURCE_LINK } from "@/utils/Constants";
 
 export default defineComponent({
   name: "ChooseFramework",
@@ -129,6 +134,14 @@ export default defineComponent({
 
   methods: {
     /**
+     * Constructs the link for the framework
+     * @class
+     */
+    P2P_SOURCE_LINK() {
+      return P2P_SOURCE_LINK;
+    },
+
+    /**
      * Function building a unified for subtitle for a framework type
      * @param dataTypeTitle the type of the framework (humanized name)
      * @returns a unified subtitle
@@ -136,7 +149,6 @@ export default defineComponent({
     buildSubtitle(dataTypeTitle: string): string {
       return `Overview of all existing ${dataTypeTitle} datasets for this company.`;
     },
-
     /**
      *  Sorts a list of data meta information alphabetically by their reporting period
      * @param listOfDataMetaInfo the list of data meta information to be sorted
