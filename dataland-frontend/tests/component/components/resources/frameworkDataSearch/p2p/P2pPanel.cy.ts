@@ -189,24 +189,6 @@ describe("Component test for P2pPanel", () => {
       secondTemp = [firstTemp[1], firstTemp[0]];
       expect(sortReportingPeriodsToDisplayAsColumns(firstTemp)).to.deep.equal(secondTemp);
     }
-    /*
-    expect(sortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject])).to.deep.equal([
-      firstYearObject,
-      secondYearObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject])).to.deep.equal([
-      firstYearObject,
-      secondYearObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject])).to.deep.equal([
-      firstOtherObject,
-      secondOtherObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([firstOtherObject, secondOtherObject])).to.deep.equal([
-      firstOtherObject,
-      secondOtherObject,
-    ]);
-    */
     expect(
       sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
