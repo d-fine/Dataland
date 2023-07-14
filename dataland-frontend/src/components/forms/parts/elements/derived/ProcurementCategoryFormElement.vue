@@ -9,7 +9,7 @@
     <FormKit type="group" :name="name" v-if="isItActive">
       <div data-test="ProcurementCategoryFormElementContent">
         <div class="form-field border-none">
-          <NaceCodeFormFieldBindData
+          <NaceCodeFormField
             label="Procured Products/Services"
             description="Define the procured product types/services per category (own operations)"
             name="procuredProductTypesAndServicesNaceCodes"
@@ -92,7 +92,7 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import { FormKit } from "@formkit/vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
-import NaceCodeFormFieldBindData from "@/components/forms/parts/fields/NaceCodeFormFieldBindData.vue";
+import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import PrimeButton from "primevue/button";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
@@ -113,7 +113,7 @@ export default defineComponent({
     UploadFormHeader,
     MultiSelectFormFieldBindData,
     PrimeButton,
-    NaceCodeFormFieldBindData,
+    NaceCodeFormField,
     PercentageFormField,
   },
   props: BaseFormFieldProps,

@@ -35,7 +35,7 @@ export default defineComponent({
   props: {
     ...FormFieldPropsWithPlaceholder,
     percentageFieldValueBind: {
-      type: String,
+      type: [String, Number],
       required: false,
     },
   },

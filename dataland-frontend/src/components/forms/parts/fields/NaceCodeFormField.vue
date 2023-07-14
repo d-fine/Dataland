@@ -40,9 +40,27 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedNaceCodes: [] as Array<string>,
+      innerSelectedNaceCodes: [] as Array<string>,
     };
   },
-  props: BaseFormFieldProps,
+  computed: {
+    selectedNaceCodes: {
+      get(): [] {
+        return this.selectedNaceCodesBind ?? this.innerSelectedNaceCodes;
+      },
+      set(newValue: []) {
+        this.$emit("update:selectedNaceCodesBind", newValue);
+        this.innerSelectedNaceCodes = newValue;
+      },
+    },
+  },
+
+  props: {
+    ...BaseFormFieldProps,
+    selectedNaceCodesBind: {
+      type: Array,
+      required: false,
+    },
+  },
 });
 </script>
