@@ -12,7 +12,6 @@ export function sortReportingPeriodsToDisplayAsColumns(
   );
 }
 
-
 /**
  * Compares two reporting periods for sorting
  * @param firstReportingPeriod the first reporting period to compare
