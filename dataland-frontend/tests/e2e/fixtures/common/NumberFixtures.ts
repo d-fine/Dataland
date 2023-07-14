@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker/locale/de";
+import { faker } from "@faker-js/faker";
 
 const percentagePrecision = 0.0001;
 const maxEuro = 1000000;

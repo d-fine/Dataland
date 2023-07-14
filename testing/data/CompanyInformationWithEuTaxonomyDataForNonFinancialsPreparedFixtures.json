@@ -2,68 +2,56 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Björnland",
-			"headquartersPostalCode": "68869",
-			"sector": "bandwidth",
+			"headquarters": "Teaganfurt",
+			"sector": "convergence",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "6C2vcoPIP9mWOMj"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "6mijIXLZ1"
-				},
-				{
 					"identifierType": "Isin",
-					"identifierValue": "rwL0dWLSnFn9"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "DkaRthS"
+					"identifierValue": "m4S5TouUVGAw"
 				}
 			],
-			"countryCode": "GQ",
+			"countryCode": "IO",
 			"companyAlternativeNames": [
-				"Förster, Scc und Fitschen",
-				"Fried-Jacob",
-				"Tuschmo-Buchholz"
+				"Thiel, Davis and Konopelski",
+				"Windler Group"
 			],
-			"website": "https://fundamental-schlange.com",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://disloyal-ladle.name",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2023-05-23",
+			"numberOfEmployees": 11267,
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "GMD"
-				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-06-09",
-					"currency": "SCR"
+					"isGroupLevel": "No",
+					"currency": "CAD"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Cremin Group",
+				"dataSource": {
+					"page": 1112,
+					"report": "ESEFReport",
+					"tagName": "relationships"
+				}
 			},
-			"scopeOfEntities": "No",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.3498,
+					"valueAsPercentage": 0.6671,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.5955,
+					"valueAsPercentage": 0.2737,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.4391,
+					"valueAsPercentage": 0.5176,
 					"quality": "NA"
 				}
 			}
@@ -73,224 +61,194 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "West Karl",
-			"headquartersPostalCode": "45978",
-			"sector": "platforms",
+			"headquarters": "Sophieberg",
+			"headquartersPostalCode": "65066-5453",
+			"sector": "supply-chains",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "kaRvemM4rHzLZyY"
+					"identifierValue": "ZManfptnMpVdqjB"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "xwVBtyaHh"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "kF11DkM5Cj3lRILxsegS"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "UEpJN82CQM"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "p9gnwCg"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "qvidLCrr1"
-				}
-			],
-			"countryCode": "CW",
-			"companyAlternativeNames": [
-				"Jakubczyk AG",
-				"Proske, Weidner und Drews"
-			],
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2023-05-04",
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "DJF"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2023-01-05",
-					"currency": "RWF"
-				}
-			},
-			"assurance": {
-				"assurance": "None"
-			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "No",
-			"opex": {
-				"totalAmount": {
-					"value": 343301.54170747846,
-					"dataSource": {
-						"page": 185,
-						"report": "AnnualReport",
-						"tagName": "e-markets"
-					},
-					"quality": "Reported",
-					"comment": "override virtual panel"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.3739,
-					"dataSource": {
-						"page": 823,
-						"report": "SustainabilityReport",
-						"tagName": "schemas"
-					},
-					"quality": "Audited",
-					"comment": "override wireless bandwidth",
-					"valueAsAbsolute": 455956.6491981968
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 410822.3715447821,
-					"dataSource": {
-						"page": 1115,
-						"report": "AnnualReport",
-						"tagName": "portals"
-					},
-					"quality": "Reported",
-					"comment": "back up virtual feed"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.4877,
-					"quality": "Incomplete",
-					"valueAsAbsolute": 958511.6806789301
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 991226.1406192556,
-					"dataSource": {
-						"page": 521,
-						"report": "AnnualReport",
-						"tagName": "e-markets"
-					},
-					"quality": "Incomplete",
-					"comment": "transmit 1080p feed"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.1993,
-					"dataSource": {
-						"page": 377,
-						"report": "AnnualReport",
-						"tagName": "channels"
-					},
-					"quality": "Audited",
-					"comment": "quantify multi-byte panel",
-					"valueAsAbsolute": 631118.9557542093
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Chemnitz",
-			"headquartersPostalCode": "07876",
-			"sector": "web services",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "5CQhEDrf1kNqzFD"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "C0O0S87oe"
+					"identifierValue": "yZiammXjQ"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "2XlvmRQdeVaD"
+					"identifierValue": "OKgy8neMGeRR"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "dXL0uz1sZhsJEJHLeICX"
+					"identifierValue": "w2PHtttsFpjFXNu2iZL3"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "CrAnZWHq6C"
+					"identifierValue": "IaWe0D6FCw"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "XjqlU3P"
+					"identifierValue": "3CIfPtE"
 				}
 			],
-			"countryCode": "NG",
+			"countryCode": "VG",
 			"companyAlternativeNames": [
-				"Lorenz-Thränhardt",
-				"Pajonk AG",
-				"Tegethof-Schedler",
-				"Wiese, Knoblich und Zaituc"
+				"Leannon - O'Keefe"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://elaborate-stove.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Schönfeld KG",
-				"dataSource": {
-					"page": 728,
-					"report": "ESEFReport",
-					"tagName": "systems"
+			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "JPY"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-02-19",
+					"currency": "KPW"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-11-24",
+					"currency": "KWD"
 				}
 			},
+			"assurance": {
+				"assurance": "LimitedAssurance"
+			},
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
 			"opex": {
-				"alignedData": {
-					"dataSource": {
-						"page": 76,
-						"report": "ESEFReport",
-						"tagName": "communities"
-					},
-					"quality": "Reported",
-					"comment": "reboot redundant protocol",
-					"valueAsAbsolute": 796514.3253095448
+				"totalAmount": {
+					"value": 318350.32699164003,
+					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.2169,
-					"dataSource": {
-						"page": 869,
-						"report": "ESEFReport",
-						"tagName": "communities"
-					},
-					"quality": "Audited",
-					"comment": "index bluetooth pixel"
+					"valueAsPercentage": 0.4711,
+					"quality": "Estimated",
+					"valueAsAbsolute": 864920.643507503
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 148392.20982976258,
+					"value": 622649.6879360639,
 					"quality": "Incomplete"
 				},
-				"alignedData": {
-					"valueAsPercentage": 0.4091,
-					"quality": "Estimated"
-				},
 				"eligibleData": {
-					"valueAsPercentage": 0.5632,
+					"valueAsPercentage": 0.718,
 					"dataSource": {
-						"page": 748,
-						"report": "ESEFReport",
-						"tagName": "schemas"
+						"page": 39,
+						"report": "IntegratedReport",
+						"tagName": "lifetime value"
 					},
-					"quality": "Estimated",
-					"comment": "index virtual driver"
+					"quality": "Reported",
+					"comment": "bypass back-end feed",
+					"valueAsAbsolute": 456261.9467964396
 				}
 			},
-			"revenue": {}
+			"revenue": {
+				"totalAmount": {
+					"value": 643724.0622588433,
+					"quality": "Incomplete"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.1235,
+					"dataSource": {
+						"page": 356,
+						"report": "IntegratedReport",
+						"tagName": "infrastructures"
+					},
+					"quality": "Estimated",
+					"comment": "generate redundant hard drive",
+					"valueAsAbsolute": 780102.352029644
+				}
+			}
 		},
 		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Remingtonton",
+			"headquartersPostalCode": "75296-7692",
+			"sector": "lifetime value",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "AinHrEquBqyd"
+				}
+			],
+			"countryCode": "UZ",
+			"companyAlternativeNames": [
+				"Herzog - Kohler",
+				"Kulas, Lockman and Cole",
+				"Larkin - Kohler",
+				"Robel and Sons"
+			],
+			"website": "https://lanky-mouser.com",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearEnd": "2023-05-24",
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Hintz - Quigley"
+			},
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 715344.2493989132,
+					"dataSource": {
+						"page": 1190,
+						"report": "AnnualReport",
+						"tagName": "metrics"
+					},
+					"quality": "Incomplete",
+					"comment": "bypass neural pixel"
+				},
+				"alignedData": {
+					"quality": "Incomplete",
+					"valueAsAbsolute": 733840.8433482982
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 986,
+						"report": "IntegratedReport",
+						"tagName": "e-business"
+					},
+					"quality": "Estimated",
+					"comment": "copy solid state protocol"
+				},
+				"alignedData": {
+					"dataSource": {
+						"page": 391,
+						"report": "AnnualReport",
+						"tagName": "web services"
+					},
+					"quality": "Reported",
+					"comment": "bypass cross-platform sensor",
+					"valueAsAbsolute": 227622.6514368318
+				}
+			},
+			"revenue": {
+				"alignedData": {
+					"dataSource": {
+						"page": 1076,
+						"report": "AnnualReport",
+						"tagName": "initiatives"
+					},
+					"quality": "Incomplete",
+					"comment": "synthesize bluetooth bandwidth",
+					"valueAsAbsolute": 190263.70478095487
+				}
+			}
+		},
+		"reportingPeriod": "2020"
 	}
 ]

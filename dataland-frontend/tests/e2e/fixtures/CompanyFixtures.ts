@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker/locale/de";
+import { faker } from "@faker-js/faker";
 import { CompanyIdentifierIdentifierTypeEnum, CompanyInformation } from "@clients/backend";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 

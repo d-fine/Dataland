@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker/locale/de";
+import { faker } from "@faker-js/faker";
 
 /**
  * Randomly returns a country from "BE", "DE", "FR", "IT", "LU", "PL", "PT", "ES"
