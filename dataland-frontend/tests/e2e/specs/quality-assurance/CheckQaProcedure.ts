@@ -129,7 +129,7 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
     if (element.prop("disabled")) {
       return;
     }
-    element.click();
+    element.trigger("click");
   });
 }
 
