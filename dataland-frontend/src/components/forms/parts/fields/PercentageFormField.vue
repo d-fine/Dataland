@@ -20,7 +20,7 @@ import { FormKit } from "@formkit/vue";
 import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
-  name: "PercentageFormFieldBindData",
+  name: "PercentageFormField",
   components: { FormKit, UploadFormHeader },
   computed: {
     percentageFieldValue: {
