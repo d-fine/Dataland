@@ -3,14 +3,14 @@
     <InputTextFormField
       name="productName"
       label="Product Name"
-      description="Please enter the name of the product"
+      description="Please state the name of the important manufactured/distributed/offered product or service"
       :required="true"
       validation="required"
     />
     <StringBadgeListFormField
       name="productionSteps"
       label="Production Steps"
-      description="Please give a brief overview of the production steps/activities undertaken"
+      description="Please give a brief overview of the production steps/activities"
       data-test-add-button="addProductionStep"
     />
     <FreeTextFormField

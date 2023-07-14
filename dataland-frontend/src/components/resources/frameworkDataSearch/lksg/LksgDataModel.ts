@@ -251,7 +251,7 @@ export const lksgDataModel = [
           },
           {
             name: "procurementCategories",
-            label: "Procurement Categories",
+            label: "Products/Services Categories purchased",
             description: "Name their procurement categories (products, raw materials, services) (own operations)",
             component: "ProcurementCategoriesFormField",
             required: false,
