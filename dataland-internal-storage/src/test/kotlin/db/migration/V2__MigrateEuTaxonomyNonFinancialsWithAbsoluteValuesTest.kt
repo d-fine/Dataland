@@ -81,13 +81,13 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
         listOf(unaffectedDetail, "alignedPercentage").forEach {
             cashFlowObject.put(it, dummyDataPoint)
         }
-        cashFlowObject.put("eligiblePercentage", JSONObject.NULL);
+        cashFlowObject.put("eligiblePercentage", JSONObject.NULL)
         return cashFlowObject
     }
 
     private fun buildNewDetailsPerCashFlowType(): JSONObject {
         val cashFlowObject = JSONObject()
-        cashFlowObject.put("alignedData", dummyDataPointAbsoluteAndPercentage,)
+        cashFlowObject.put("alignedData", dummyDataPointAbsoluteAndPercentage)
         cashFlowObject.put("eligibleData", JSONObject.NULL)
         cashFlowObject.put(unaffectedDetail, dummyDataPoint)
         return cashFlowObject
