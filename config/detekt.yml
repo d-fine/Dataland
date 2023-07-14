@@ -287,7 +287,7 @@ naming:
     ignoreOverridden: true
   ClassNaming:
     active: true
-    classPattern: '[A-Z][a-zA-Z0-9]*'
+    classPattern: '^(V(0|[1-9][0-9]*)_((0|[1-9][0-9]*)_)*_|)[A-Z][a-zA-Z0-9]*$'
   ConstructorParameterNaming:
     active: true
     parameterPattern: '[a-z][A-Za-z0-9]*'

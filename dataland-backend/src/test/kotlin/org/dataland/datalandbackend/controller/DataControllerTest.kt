@@ -28,7 +28,7 @@ import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 
-@SpringBootTest(classes = [DatalandBackend::class])
+@SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 internal class DataControllerTest(
     @Autowired @Spy
