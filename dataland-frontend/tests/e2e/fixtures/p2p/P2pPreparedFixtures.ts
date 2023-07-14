@@ -1,19 +1,28 @@
 import { FixtureData } from "@sharedUtils/Fixtures";
-import { PathwaysToParisData,} from "@clients/backend";
+import { PathwaysToParisData } from "@clients/backend";
 import { generateP2pFixture } from "./P2pDataFixtures";
 
 /**
  * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
  * via manipulator-functions to set specific values for those fields.
+ * @param undef_probability probability for a field to be undefined
+ * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
  * @returns the prepared fixtures
  */
-export function generateP2pPreparedFixtures(undef_probability = 0.5, boolRandom = true): Array<FixtureData<PathwaysToParisData>> {
+export function generateP2pPreparedFixtures(
+  undef_probability = 0.5,
+  toggleRandomSectors = true
+): Array<FixtureData<PathwaysToParisData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixture(1, undef_probability, boolRandom)[0]));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability, boolRandom)[0], "2023-04-18"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability, boolRandom)[0], "2023-06-22"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability, boolRandom)[0], "2022-07-30"));
-  preparedFixtures.push(manipulateFixtureForOneP2pDataSetWithTwoSectors(generateP2pFixture(1, undef_probability, boolRandom)[0]));
+  preparedFixtures.push(
+    manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixture(1, undef_probability, toggleRandomSectors)[0])
+  );
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability)[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability)[0], "2023-06-22"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1, undef_probability)[0], "2022-07-30"));
+  preparedFixtures.push(
+    manipulateFixtureForOneP2pDataSetWithTwoSectors(generateP2pFixture(1, undef_probability, toggleRandomSectors)[0])
+  );
   return preparedFixtures;
 }
 
