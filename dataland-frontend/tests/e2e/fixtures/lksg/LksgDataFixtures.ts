@@ -75,8 +75,8 @@ export function generateArrayOfProductionSites(undefinedProbability = 0.5): Lksg
 function generateProduct(): LksgProduct {
   return {
     productName: faker.commerce.productName(),
-    productionSteps: valueOrUndefined(generateArray(() => faker.commerce.productName())),
-    relatedCorporateSupplyChain: valueOrUndefined(faker.commerce.productName()),
+    productionSteps: valueOrUndefined(generateArray(() => `${faker.word.verb()} ${faker.commerce.productName()}`)),
+    relatedCorporateSupplyChain: valueOrUndefined(faker.lorem.sentences()),
   };
 }
 
