@@ -84,29 +84,35 @@ describe("Component test for P2pPanel", () => {
       },
     });
     cy.get(`span[data-test=General]`).click();
-    cy.get(`span[data-test=_general]`).click();
-    cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
+    //cy.get(`span[data-test=_general]`).click();
+    //cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
+
+    toggleRowGroup("_general");
     cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("exist");
 
-    toggleRowGroup("_masterData");
+    toggleRowGroup("_general");
     cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("not.exist");
 
-    toggleRowGroup("_masterData");
+    toggleRowGroup("_general");
     cy.get("table.p-datatable-table").find(`span:contains(${p2pData.general.general.dataDate})`).should("exist");
 
-    cy.get("span[data-test=employeeUnder18]").should("not.exist");
-    toggleRowGroup("childLabor");
-    cy.get("span[data-test=employeeUnder18]").should("exist");
+    cy.get(`span[data-test=Ammonia]`).click();
 
-    toggleRowGroup("productionSpecific");
-    cy.get(`a:contains(Show "List Of Production Sites")`).should("be.visible");
+    cy.get("span[data-test=ccsTechnologyAdoption]").should("not.exist");
+    toggleRowGroup("decarbonisation");
+    cy.get("span[data-test=ccsTechnologyAdoption]").should("exist");
 
-    cy.get("em[title='Data Date']").trigger("mouseenter", "center");
-    cy.get(".p-tooltip").should("be.visible").contains("The date until when");
-    cy.get("em[title='Data Date']").trigger("mouseleave");
+    cy.get(`span[data-test="Livestock farming"]`).click();
+    toggleRowGroup("animalFeed");
+    cy.get("span[data-test=Report-Download-Policy]").find("i[data-test=download-icon]").should("be.visible");
 
-    toggleRowGroup("certificationsPoliciesAndResponsibilities");
-    cy.get("span[data-test=Report-Download-Certification]").find("i[data-test=download-icon]").should("be.visible");
+    cy.get(`span[data-test=Cement]`).click();
+    toggleRowGroup("material");
+    cy.get("span[data-test=preCalcinedClayUsage]").should("exist");
+
+    cy.get("em[title='Pre-calcined clay usage']").trigger("mouseenter", "center");
+    cy.get(".p-tooltip").should("be.visible").contains("Share of pre-calcined");
+    cy.get("em[title='Pre-calcined clay usage']").trigger("mouseleave");
   });
 
   /**

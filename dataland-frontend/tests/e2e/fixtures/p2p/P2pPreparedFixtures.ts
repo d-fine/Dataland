@@ -1,5 +1,5 @@
 import { FixtureData } from "@sharedUtils/Fixtures";
-import { PathwaysToParisData } from "@clients/backend";
+import { PathwaysToParisData,} from "@clients/backend";
 import { generateP2pFixture } from "./P2pDataFixtures";
 
 /**
@@ -13,7 +13,7 @@ export function generateP2pPreparedFixtures(): Array<FixtureData<PathwaysToParis
   preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1)[0], "2023-04-18"));
   preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1)[0], "2023-06-22"));
   preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1)[0], "2022-07-30"));
-  preparedFixtures.push(manipulateFixtureForOneP2pDataSetWithProductionSites(generateP2pFixture(1)[0]));
+  preparedFixtures.push(manipulateFixtureForOneP2pDataSetWithTwoSectors(generateP2pFixture(1)[0]));
   return preparedFixtures;
 }
 
@@ -55,11 +55,21 @@ function manipulateFixtureForDate(
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForOneP2pDataSetWithProductionSites(
+function manipulateFixtureForOneP2pDataSetWithTwoSectors(
   input: FixtureData<PathwaysToParisData>
 ): FixtureData<PathwaysToParisData> {
   input.companyInformation.companyName = "one-p2p-data-set-with-two-sectors";
   input.t.general.general.dataDate = "2022-01-01";
-  input.t.general.general.sector = ["Ammonia", "Cement"];
+  input.reportingPeriod = "2022";
+  input.t.general.general.sector = ["Ammonia", "Cement", "LivestockFarming"];
+  input.t.ammonia!.decarbonisation!.ccsTechnologyAdoption = 0.54;
+  input.t.cement!.material!.preCalcinedClayUsage = 0.23;
+  input.t.livestockFarming!.animalFeed!.externalFeedCertification = {
+    value: "Yes",
+    dataSource: {
+      name: "Policy",
+      reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+    },
+  };
   return input;
 }
