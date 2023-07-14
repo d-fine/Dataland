@@ -47,7 +47,9 @@
                   <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
                   <p v-if="dataType === DataTypeEnum.P2p">
                     Click the link to visit the source of the framework:
-                    <a href="https://pathwaystoparis.com/en/tool-box/transformation-perfomance/"> {{ humanizeString(dataType) }}</a>
+                    <a href="https://pathwaystoparis.com/en/tool-box/transformation-perfomance/">
+                      {{ humanizeString(dataType) }}</a
+                    >
                   </p>
                 </div>
                 <div class="col-9 d-card">
@@ -132,7 +134,6 @@ export default defineComponent({
   },
 
   methods: {
-
     /**
      * Function building a unified for subtitle for a framework type
      * @param dataTypeTitle the type of the framework (humanized name)
