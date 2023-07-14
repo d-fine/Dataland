@@ -21,7 +21,7 @@ describe("Component test for P2pPanel", () => {
     });
   });
 
-  it.only("Should display the correct categories in the sector field", () => {
+  it("Should display the correct categories in the sector field", () => {
     const pseudoP2pData = {
       general: { general: { dataDate: "2023-01-01", sector: [P2pSector.Ammonia] } },
     } as PathwaysToParisData;
@@ -57,7 +57,7 @@ describe("Component test for P2pPanel", () => {
     cy.get(`span[id=${groupKey}]`).siblings("button").last().click();
   }
 
-  it("Check P2p view page for company with one P2p data set", () => {
+  it.only("Check P2p view page for company with one P2p data set", () => {
     const preparedFixture = getPreparedFixture("one-p2p-data-set-with-two-sectors", preparedFixtures);
     const p2pData = preparedFixture.t;
 
@@ -83,10 +83,9 @@ describe("Component test for P2pPanel", () => {
         };
       },
     });
-    cy.get(`span[data-test=General]`).click();
-    //cy.get(`span[data-test=_general]`).click();
-    //cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
 
+    cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
+    cy.get(`span[data-test=General]`).click();
     toggleRowGroup("_general");
     cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("exist");
 
