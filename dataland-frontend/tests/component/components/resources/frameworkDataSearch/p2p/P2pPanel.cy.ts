@@ -21,7 +21,7 @@ describe("Component test for P2pPanel", () => {
     });
   });
 
-  it("Should display the total revenue kpi in the correct format", () => {
+  it.only("Should display the correct categories in the sector field", () => {
     const pseudoP2pData = {
       general: { general: { dataDate: "2023-01-01", sector: [P2pSector.Ammonia] } },
     } as PathwaysToParisData;
