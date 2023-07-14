@@ -9,11 +9,11 @@ import { generateP2pFixture } from "./P2pDataFixtures";
  */
 export function generateP2pPreparedFixtures(): Array<FixtureData<PathwaysToParisData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixture(1)[0]));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1)[0], "2023-04-18"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1)[0], "2023-06-22"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1)[0], "2022-07-30"));
-  preparedFixtures.push(manipulateFixtureForOneP2pDataSetWithTwoSectors(generateP2pFixture(1)[0]));
+  preparedFixtures.push(manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixture(1,1)[0]));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1,1)[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1,1)[0], "2023-06-22"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixture(1,1)[0], "2022-07-30"));
+  preparedFixtures.push(manipulateFixtureForOneP2pDataSetWithTwoSectors(generateP2pFixture(1,1)[0]));
   return preparedFixtures;
 }
 
