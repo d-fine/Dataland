@@ -38,6 +38,7 @@
             description="Name the sourcing countries per procurement category (own operations)"
             name="suppliersPerCountryCode"
             :options="allCountries"
+            optionLabel="label"
             v-model:selectedItemsBindInternal="selectedCountries"
             innerClass="long"
           />
