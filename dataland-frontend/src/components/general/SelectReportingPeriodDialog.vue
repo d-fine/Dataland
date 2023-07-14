@@ -12,6 +12,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { DataMetaInformation } from "@clients/backend";
+import { compareReportingPeriods } from "@/utils/DataTableDisplay";
 
 interface ReportingPeriodTableEntry {
   reportingPeriod: string;
@@ -42,37 +43,12 @@ export default defineComponent({
       if (this.mapOfReportingPeriodToActiveDataset) {
         const sortedReportingPeriodMetaInfoPairs = Array.from(
           (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries()
-        ).sort((firstEl, secondEl) => this.compareReportingPeriods(firstEl[0], secondEl[0]));
+        ).sort((firstEl, secondEl) => compareReportingPeriods(firstEl[0], secondEl[0]));
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
-          this.dataTableContents.unshift({
+          this.dataTableContents.push({
             reportingPeriod: key,
             editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,
           });
-        }
-      }
-    },
-    /**
-     * Compares two reporting periods for sorting
-     * @param firstReportingPeriod the first reporting period to compare
-     * @param secondReportingPeriod the reporting period to compare with
-     * @returns 1 if the first reporting period should be sorted after to the second one else -1
-     */
-    compareReportingPeriods(firstReportingPeriod: string, secondReportingPeriod: string): number {
-      if (!isNaN(Number(firstReportingPeriod)) && !isNaN(Number(secondReportingPeriod))) {
-        if (Number(firstReportingPeriod) < Number(secondReportingPeriod)) {
-          return 1;
-        } else {
-          return -1;
-        }
-      } else if (!isNaN(Number(firstReportingPeriod))) {
-        return -1;
-      } else if (!isNaN(Number(secondReportingPeriod))) {
-        return 1;
-      } else {
-        if (firstReportingPeriod > secondReportingPeriod) {
-          return 1;
-        } else {
-          return -1;
         }
       }
     },
