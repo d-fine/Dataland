@@ -291,9 +291,9 @@ export function getSectorGeneral(undefinedProbability: number, sectors: Array<P2
  */
 function generateSectors(toggleRandomSectors: boolean): P2pSector[] {
   if (toggleRandomSectors) {
-    return Object.values(P2pSector);
-  } else {
     return faker.helpers.arrayElements(Object.values(P2pSector));
+  } else {
+    return Object.values(P2pSector);
   }
 }
 /**
@@ -304,7 +304,6 @@ function generateSectors(toggleRandomSectors: boolean): P2pSector[] {
  */
 export function generateP2pData(undefinedProbability = 0.5, toggleRandomSectors = true): PathwaysToParisData {
   const inputSectors = generateSectors(toggleRandomSectors);
-
   return {
     general: getSectorGeneral(undefinedProbability, inputSectors),
     ammonia: inputSectors.indexOf("Ammonia") != -1 ? getSectorAmmonia(undefinedProbability) : undefined,
