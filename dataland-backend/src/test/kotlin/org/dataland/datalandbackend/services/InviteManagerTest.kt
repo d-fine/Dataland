@@ -20,7 +20,7 @@ import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 
-@SpringBootTest(classes = [DatalandBackend::class])
+@SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class InviteManagerTest {
     private val emailErrorMessage = "Your invite failed due to an error that occurred when Dataland was trying to " +
