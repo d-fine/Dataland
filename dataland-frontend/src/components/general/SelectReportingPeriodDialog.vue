@@ -55,7 +55,7 @@ export default defineComponent({
      * Compares two reporting periods for sorting
      * @param firstReportingPeriod the first reporting period to compare
      * @param secondReportingPeriod the reporting period to compare with
-     * @returns 1 if the first reporting period should be sorted previous to the second one else -1
+     * @returns 1 if the first reporting period should be sorted after to the second one else -1
      */
     reportingPeriodComparator(firstReportingPeriod: string, secondReportingPeriod: string): number {
       if (!isNaN(Number(firstReportingPeriod)) && !isNaN(Number(secondReportingPeriod))) {
