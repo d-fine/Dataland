@@ -55,7 +55,7 @@ import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearc
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { Category, Subcategory, Field } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
@@ -65,7 +65,6 @@ import DataTable from "primevue/datatable";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import { Field } from "@/utils/GenericFrameworkTypes";
 
 export default defineComponent({
   name: "P2pPanel",

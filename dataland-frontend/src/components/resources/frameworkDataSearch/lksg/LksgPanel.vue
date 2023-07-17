@@ -20,14 +20,13 @@ import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearc
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Subcategory } from "@/utils/GenericFrameworkTypes";
+import { Subcategory, Field } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataAndMetaInformationLksgData } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import { Field } from "@/utils/GenericFrameworkTypes";
 
 export default defineComponent({
   name: "LksgPanel",
