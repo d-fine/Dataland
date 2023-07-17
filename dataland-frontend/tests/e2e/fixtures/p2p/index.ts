@@ -1,4 +1,4 @@
-import { generateP2pFixture } from "@e2e/fixtures/p2p/P2pDataFixtures";
+import { generateP2pFixtures } from "@e2e/fixtures/p2p/P2pDataFixtures";
 import fs from "fs";
 import { generateP2pPreparedFixtures } from "@e2e/fixtures/p2p/P2pPreparedFixtures";
 
@@ -7,7 +7,7 @@ import { generateP2pPreparedFixtures } from "@e2e/fixtures/p2p/P2pPreparedFixtur
  */
 export function exportFixturesP2p(): void {
   const probability = 0.5;
-  const companyInformationWithP2pData = generateP2pFixture(150, probability);
+  const companyInformationWithP2pData = generateP2pFixtures(150, probability);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithP2pData.json",
     JSON.stringify(companyInformationWithP2pData, null, "\t")

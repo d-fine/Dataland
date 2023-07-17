@@ -28,7 +28,7 @@ import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataP
  * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
  * @returns a set number of P2P fixtures
  */
-export function generateP2pFixture(
+export function generateP2pFixtures(
   numFixtures: number,
   undefinedProbability = 0.5,
   toggleRandomSectors = true

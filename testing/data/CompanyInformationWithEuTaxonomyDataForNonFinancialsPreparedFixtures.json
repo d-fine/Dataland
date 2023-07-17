@@ -2,62 +2,193 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Leipzig",
-			"sector": "portals",
+			"headquarters": "West Vincent",
+			"headquartersPostalCode": "66129",
+			"sector": "action-items",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [],
 				"PermId": [],
 				"Ticker": [
-					"oDJ3kqc"
+					"9h4W2GK"
 				],
-				"Duns": [
-					"AyqNRFWW5"
-				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"DatqSGWuA02ibEZ"
+					"xIBSlgNPxD5oDte"
 				]
 			},
-			"countryCode": "MQ",
+			"countryCode": "AZ",
 			"companyAlternativeNames": [
-				"Drees, Tonat und Grötzinger"
+				"Gerschler-Reinelt",
+				"Salzer-Conrad",
+				"Stanger-Kölotzei"
 			],
-			"website": "https://nutzlich-bett.ch/",
+			"website": "https://unvergleichbar-theater.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 87040,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-08-01",
 			"referencedReports": {
-				"IntegratedReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "SAR"
+					"isGroupLevel": "NA",
+					"currency": "FJD"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"reportDate": "2023-05-08",
+					"currency": "SHP"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
 				"dataSource": {
-					"page": 445,
-					"report": "IntegratedReport",
-					"tagName": "mindshare"
+					"page": 352,
+					"report": "SustainabilityReport",
+					"tagName": "deliverables"
 				}
 			},
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.4578,
+					"valueAsPercentage": 0.9714,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.9318,
+					"valueAsPercentage": 0.3255,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.0736,
+					"valueAsPercentage": 0.9602,
 					"quality": "NA"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Ost Quirinscheid",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"sLvTPt5qjzDT"
+				],
+				"PermId": [],
+				"Ticker": [
+					"a3Ar0OB"
+				],
+				"Duns": [
+					"d4WYzutVm"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"SNmX27PPsR2s318"
+				]
+			},
+			"countryCode": "TW",
+			"companyAlternativeNames": [
+				"Bieler-Knut",
+				"Mockenhaupt GmbH",
+				"Wessel GmbH"
+			],
+			"website": "https://prinzipientreu-stunde.ch/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2023-06-22",
+			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-10-25",
+					"currency": "FKP"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-06-24",
+					"currency": "SGD"
+				}
+			},
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Giesa-Mulrain"
+			},
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 600160.3531534784,
+					"dataSource": {
+						"page": 744,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
+					},
+					"quality": "Reported",
+					"comment": "reboot redundant bus"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.3109,
+					"dataSource": {
+						"page": 525,
+						"report": "AnnualReport",
+						"tagName": "action-items"
+					},
+					"quality": "Audited",
+					"comment": "program multi-byte interface",
+					"valueAsAbsolute": 878845.9247443825
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 379820.94164472073,
+					"dataSource": {
+						"page": 1030,
+						"report": "SustainabilityReport",
+						"tagName": "communities"
+					},
+					"quality": "Reported",
+					"comment": "index bluetooth circuit"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.0402,
+					"quality": "Estimated",
+					"valueAsAbsolute": 118521.03461278602
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 300887.6134175807,
+					"dataSource": {
+						"page": 540,
+						"report": "SustainabilityReport",
+						"tagName": "metrics"
+					},
+					"quality": "Incomplete",
+					"comment": "generate virtual circuit"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.5913,
+					"dataSource": {
+						"page": 334,
+						"report": "SustainabilityReport",
+						"tagName": "action-items"
+					},
+					"quality": "Audited",
+					"comment": "index wireless protocol",
+					"valueAsAbsolute": 820273.543940857
 				}
 			}
 		},
@@ -65,185 +196,68 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Schwarzerdorf",
-			"headquartersPostalCode": "45036",
-			"sector": "architectures",
+			"companyName": "company_without_reports",
+			"headquarters": "Ost Efe",
+			"headquartersPostalCode": "91778",
+			"sector": "deliverables",
 			"identifiers": {
-				"Lei": [
-					"ZKxfCF5yaasLivh5qhle"
-				],
-				"Isin": [
-					"LFLroVjyzUbP",
-					"n0bbaxqYrmpe"
-				],
+				"Lei": [],
+				"Isin": [],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"7UW2FaN7q"
+					"H2BIyN2IN"
 				],
 				"CompanyRegistrationNumber": [
-					"luYONMxWOC76o7F"
+					"2MjJxiXRsdtk2Oy"
 				]
 			},
-			"countryCode": "AQ",
-			"companyAlternativeNames": [
-				"Häfner UG"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"countryCode": "AZ",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2023-06-20",
-			"numberOfEmployees": 4751,
-			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-08-23",
-					"currency": "SCR"
-				}
-			},
+			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 426,
-					"report": "IntegratedReport",
-					"tagName": "content"
-				}
+				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
 			"reportingObligation": "No",
 			"opex": {
-				"totalAmount": {
-					"value": 111131.54368940741,
-					"dataSource": {
-						"page": 661,
-						"report": "IntegratedReport",
-						"tagName": "lifetime value"
-					},
-					"quality": "Incomplete",
-					"comment": "hack haptic pixel"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.5566,
-					"dataSource": {
-						"page": 902,
-						"report": "IntegratedReport",
-						"tagName": "ROI"
-					},
-					"quality": "Audited",
-					"comment": "bypass optical program",
-					"valueAsAbsolute": 509830.1208112389
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 906590.0439396501,
-					"dataSource": {
-						"page": 101,
-						"report": "IntegratedReport",
-						"tagName": "systems"
-					},
-					"quality": "Reported",
-					"comment": "connect wireless bandwidth"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.2443,
-					"quality": "Estimated",
-					"valueAsAbsolute": 277574.24081210047
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 626139.9691691622,
-					"dataSource": {
-						"page": 557,
-						"report": "IntegratedReport",
-						"tagName": "partnerships"
-					},
-					"quality": "Estimated",
-					"comment": "reboot multi-byte protocol"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.2561,
-					"dataSource": {
-						"page": 2,
-						"report": "IntegratedReport",
-						"tagName": "solutions"
-					},
-					"quality": "Reported",
-					"comment": "calculate multi-byte panel",
-					"valueAsAbsolute": 53976.554435212165
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "West Rayanland",
-			"headquartersPostalCode": "70736",
-			"sector": "networks",
-			"identifiers": {
-				"Lei": [
-					"Agt5hx5QSp4IkySULBba"
-				],
-				"Isin": [
-					"DSgecG348Sjv",
-					"WyCCwPvD4stM"
-				],
-				"PermId": [
-					"7nSOiCQIaX"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "NO",
-			"companyAlternativeNames": [
-				"Auer, Oppong und Schuster",
-				"Förster, Heinemann und Diedrich",
-				"Hornung, Niklaus und Cornelsen",
-				"Kulma Gruppe"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2022-12-18",
-			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Karsten-Venghaus"
-			},
-			"activityLevelReporting": "Yes",
-			"opex": {
-				"totalAmount": {
-					"value": 862108.5174730979,
-					"dataSource": {
-						"page": 372,
-						"report": "AnnualReport",
-						"tagName": "markets"
-					},
-					"quality": "Audited",
-					"comment": "compress multi-byte array"
-				},
 				"alignedData": {
-					"valueAsPercentage": 0.2885,
-					"quality": "Estimated",
-					"valueAsAbsolute": 495748.38167754933
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.576,
+					"valueAsPercentage": 0.8229,
 					"quality": "Estimated"
 				}
 			},
-			"revenue": {}
+			"capex": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 555,
+						"report": "SustainabilityReport",
+						"tagName": "e-markets"
+					},
+					"quality": "Estimated",
+					"comment": "override solid state application"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.7733,
+					"dataSource": {
+						"page": 424,
+						"report": "ESEFReport",
+						"tagName": "applications"
+					},
+					"quality": "Audited",
+					"comment": "bypass back-end sensor",
+					"valueAsAbsolute": 824243.0988466367
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"quality": "Incomplete"
+				}
+			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	}
 ]
