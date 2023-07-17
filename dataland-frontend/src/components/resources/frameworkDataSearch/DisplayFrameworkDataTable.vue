@@ -131,7 +131,7 @@ import Tooltip from "primevue/tooltip";
 import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
-  name: "P2pCompanyDataTable",
+  name: "DisplayFrameworkDataTable",
   components: { DataTable, Column, DocumentLink },
   directives: {
     tooltip: Tooltip,
