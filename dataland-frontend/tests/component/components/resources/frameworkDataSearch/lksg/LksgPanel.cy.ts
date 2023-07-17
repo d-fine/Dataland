@@ -165,30 +165,29 @@ describe("Component test for LksgPanel", () => {
     const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
     const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
-
-    const objectArray = [firstYearObject, secondYearObject, firstOtherObject, secondOtherObject];
-    const indexArray = [
-      [2, 1],
-      [1, 2],
-      [4, 3],
-      [3, 4],
-    ];
-
-    let firstTemp: { array: { dataId: string; reportingPeriod: string }[] };
-    let secondTemp: { array: { dataId: string; reportingPeriod: string }[] };
-    for (let i = 0; i < 4; i++) {
-      firstTemp = [objectArray[i][indexArray[i][0]], objectArray[i][indexArray[i][1]]];
-      secondTemp = [firstTemp[1], firstTemp[0]];
-      expect(sortReportingPeriodsToDisplayAsColumns(firstTemp)).to.deep.equal(secondTemp);
-    }
-    expect(
-      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
-    ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
-
+    expect(sortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject])).to.deep.equal([
+      firstYearObject,
+      secondYearObject,
+    ]);
+    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject])).to.deep.equal([
+      firstYearObject,
+      secondYearObject,
+    ]);
     expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([
       firstYearObject,
       firstYearObject,
       secondYearObject,
     ]);
+    expect(sortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject])).to.deep.equal([
+      firstOtherObject,
+      secondOtherObject,
+    ]);
+    expect(sortReportingPeriodsToDisplayAsColumns([firstOtherObject, secondOtherObject])).to.deep.equal([
+      firstOtherObject,
+      secondOtherObject,
+    ]);
+    expect(
+        sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
+    ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });
