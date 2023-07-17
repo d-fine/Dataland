@@ -165,14 +165,14 @@ describe("Component test for LksgPanel", () => {
     const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
     const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
-
+    const boolList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
-      expect(sortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], Boolean(i))).to.deep.equal([
+      expect(sortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], boolList[i])).to.deep.equal([
         firstYearObject,
         secondYearObject,
       ]);
 
-      expect(sortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], Boolean(i))).to.deep.equal([
+      expect(sortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], boolList[i])).to.deep.equal([
         firstOtherObject,
         secondOtherObject,
       ]);
