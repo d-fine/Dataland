@@ -9,7 +9,7 @@ import {
   LksgData,
   QaStatus,
 } from "@clients/backend";
-import {ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns} from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -168,11 +168,11 @@ describe("Component test for LksgPanel", () => {
     const boolList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
       expect(
-          swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], boolList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], boolList[i])
       ).to.deep.equal([firstYearObject, secondYearObject]);
 
       expect(
-          swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], boolList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], boolList[i])
       ).to.deep.equal([firstOtherObject, secondOtherObject]);
     }
     expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([
@@ -181,7 +181,7 @@ describe("Component test for LksgPanel", () => {
       secondYearObject,
     ]);
     expect(
-        sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
+      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });
@@ -194,8 +194,8 @@ describe("Component test for LksgPanel", () => {
  * @returns sorted list
  */
 function swapAndSortReportingPeriodsToDisplayAsColumns(
-    listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
-    boolSwap = false
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
+  boolSwap = false
 ): ReportingPeriodOfDataSetWithId[] {
   let swappedList: ReportingPeriodOfDataSetWithId[];
   if (boolSwap && listOfDataDateToDisplayAsColumns.length == 2) {
