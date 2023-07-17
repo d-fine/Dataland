@@ -115,10 +115,10 @@ describe("Component test for P2pPanel", () => {
   });
 
   /**
-   * This functions imitates an api response of the /data/lksg/companies/mock-company-id endpoint
-   * to include 6 active Lksg datasets from different years to test the simultaneous display of multiple Lksg
+   * This functions imitates an api response of the /data/p2p/companies/mock-company-id endpoint
+   * to include 6 active p2p datasets from different years to test the simultaneous display of multiple Lksg
    * datasets (constructed datasets range from 2023 to 2028)
-   * @param baseDataset the lksg dataset used as a basis for constructing the 6 mocked ones
+   * @param baseDataset the p2p dataset used as a basis for constructing the 6 mocked ones
    * @returns a mocked api response
    */
   function constructCompanyApiResponseForP2pForSixYears(
