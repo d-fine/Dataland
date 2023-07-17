@@ -116,7 +116,7 @@ describe("Component test for P2pPanel", () => {
 
   /**
    * This functions imitates an api response of the /data/p2p/companies/mock-company-id endpoint
-   * to include 6 active p2p datasets from different years to test the simultaneous display of multiple Lksg
+   * to include 6 active p2p datasets from different years to test the simultaneous display of multiple P2P
    * datasets (constructed datasets range from 2023 to 2028)
    * @param baseDataset the p2p dataset used as a basis for constructing the 6 mocked ones
    * @returns a mocked api response
