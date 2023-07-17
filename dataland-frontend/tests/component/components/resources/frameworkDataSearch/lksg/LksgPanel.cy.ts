@@ -22,14 +22,14 @@ describe("Component test for LksgPanel", () => {
 
   it("Should display the total revenue kpi in the correct format", () => {
     const pseudoLksgData = {
-      general: {masterData: {dataDate: "2023-01-01", totalRevenue: 1234567.89}},
+      general: { masterData: { dataDate: "2023-01-01", totalRevenue: 1234567.89 } },
     } as LksgData;
 
     cy.mountWithPlugins(LksgPanel, {
       data() {
         return {
           waitingForData: false,
-          lksgDataAndMetaInfo: [{data: pseudoLksgData} as DataAndMetaInformationLksgData],
+          lksgDataAndMetaInfo: [{ data: pseudoLksgData } as DataAndMetaInformationLksgData],
         };
       },
       // The code below is required to complete the component mock yet interferes with the type resolution of the
@@ -155,28 +155,34 @@ describe("Component test for LksgPanel", () => {
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
       cy.get(`span.p-column-title`)
-          .eq(indexOfColumn)
-          .should("contain.text", (2029 - indexOfColumn).toString());
+        .eq(indexOfColumn)
+        .should("contain.text", (2029 - indexOfColumn).toString());
     }
   });
 
   it("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
-    const firstYearObject = {dataId: "5", reportingPeriod: "2022"};
-    const secondYearObject = {dataId: "2", reportingPeriod: "2020"};
-    const firstOtherObject = {dataId: "3", reportingPeriod: "Q2-2020"};
-    const secondOtherObject = {dataId: "6", reportingPeriod: "Q3-2020"};
+    const firstYearObject = { dataId: "5", reportingPeriod: "2022" };
+    const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
+    const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
+    const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
 
     const objectArray = [firstYearObject, secondYearObject, firstOtherObject, secondOtherObject];
-    const indexArray = [[2, 1], [1, 2], [4, 3], [3, 4]];
+    const indexArray = [
+      [2, 1],
+      [1, 2],
+      [4, 3],
+      [3, 4],
+    ];
 
-    let firstTemp, secondTemp;
+    let firstTemp: { array: { dataId: string; reportingPeriod: string }[] };
+    let secondTemp: { array: { dataId: string; reportingPeriod: string }[] };
     for (let i = 0; i < 4; i++) {
       firstTemp = [objectArray[i][indexArray[i][0]], objectArray[i][indexArray[i][1]]];
       secondTemp = [firstTemp[1], firstTemp[0]];
       expect(sortReportingPeriodsToDisplayAsColumns(firstTemp)).to.deep.equal(secondTemp);
     }
     expect(
-        sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
+      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
 
     expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([

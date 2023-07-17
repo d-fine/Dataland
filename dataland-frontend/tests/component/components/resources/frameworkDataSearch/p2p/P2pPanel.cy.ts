@@ -11,7 +11,6 @@ import {
   QaStatus,
 } from "@clients/backend";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import {length} from "axios";
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
@@ -181,9 +180,16 @@ describe("Component test for P2pPanel", () => {
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
 
     const objectArray = [firstYearObject, secondYearObject, firstOtherObject, secondOtherObject];
-    const indexArray = [[2,1], [1,2], [4,3], [3,4]];
+    const indexArray = [
+      [2, 1],
+      [1, 2],
+      [4, 3],
+      [3, 4],
+    ];
 
-    let firstTemp, secondTemp;
+    let firstTemp: { array: { dataId: string; reportingPeriod: string }[] };
+    let secondTemp: { array: { dataId: string; reportingPeriod: string }[] };
+
     for (let i = 0; i < 4; i++) {
       firstTemp = [objectArray[i][indexArray[i][0]], objectArray[i][indexArray[i][1]]];
       secondTemp = [firstTemp[1], firstTemp[0]];
@@ -199,5 +205,4 @@ describe("Component test for P2pPanel", () => {
       secondYearObject,
     ]);
   });
-
 });
