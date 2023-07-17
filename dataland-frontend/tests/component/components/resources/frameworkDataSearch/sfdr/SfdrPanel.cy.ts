@@ -109,7 +109,7 @@ describe("Component tests for SfdrPanel", () => {
     }
   });
 
-  it("Check Sfdr view page for a dataset which has null values", () => {
+  it("Check Sfdr view page for a datasett which has null values", () => {
     const preparedFixture = getPreparedFixture("sfdr-a-lot-of-nulls", preparedFixtures);
     cy.mountWithPlugins(SfdrPanel, {
       data() {
