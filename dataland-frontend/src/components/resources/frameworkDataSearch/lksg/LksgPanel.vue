@@ -6,7 +6,7 @@
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
     <DisplayFrameworkDataTable
       :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
-      :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+      :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
       headerInputStyle="width: 30vw;"
     />
   </div>
@@ -34,19 +34,19 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
-      listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
+      arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
     };
   },
   props: PanelProps,
   watch: {
     companyId() {
-      this.listOfDataSetReportingPeriods = [];
+      this.arrayOfReportingPeriodWithDataId = [];
       void this.fetchLksgData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
-        this.listOfDataSetReportingPeriods = [];
+        this.arrayOfReportingPeriodWithDataId = [];
         void this.fetchLksgData();
       }
     },
@@ -126,7 +126,7 @@ export default defineComponent({
         this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
           const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfDataSetReportingPeriods.push({
+          this.arrayOfReportingPeriodWithDataId.push({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
@@ -147,8 +147,8 @@ export default defineComponent({
           }
         });
       }
-      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
-        this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
+      this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
+        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
       );
     },
   },
