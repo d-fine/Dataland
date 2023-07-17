@@ -22,17 +22,18 @@
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObjectsMapItem[0])">
         <div>
           <div class="pt-2 pl-2 pb-2 w-full d-cursor-pointer border-bottom-table p-2" @click="toggleExpansion(index)">
-              <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObjectsMapItem[0])}`"
-                :data-test="arrayOfKpiDataObjectsMapItem[0]"
-                >{{ arrayOfKpiDataObjectsMapItem[0].toUpperCase() }}
-              </span>
-              <button v-if="!isExpanded(index)" class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
-                <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
-              </button>
-              <button v-if="isExpanded(index)" class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
-                <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
-              </button>
-            </div>
+            <span
+              :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObjectsMapItem[0])}`"
+              :data-test="arrayOfKpiDataObjectsMapItem[0]"
+              >{{ arrayOfKpiDataObjectsMapItem[0].toUpperCase() }}
+            </span>
+            <button v-if="!isExpanded(index)" class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
+              <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
+            </button>
+            <button v-if="isExpanded(index)" class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
+              <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
+            </button>
+          </div>
         </div>
         <div v-show="isExpanded(index)">
           <DisplayFrameworkDataTable
@@ -47,6 +48,7 @@
 </template>
 
 <script lang="ts">
+import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
@@ -55,13 +57,15 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { reformatValueForDisplay } from "@/utils/FrameworkPanelDisplay";
 import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { Field } from "@/utils/GenericFrameworkTypes";
 
 export default defineComponent({
   name: "P2pPanel",
@@ -155,7 +159,7 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfP2pDataset]: reformatValueForDisplay(kpiField, kpiValue) },
+        content: { [dataIdOfP2pDataset]: this.reformatValueForDisplay(kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -245,11 +249,10 @@ export default defineComponent({
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
         if (kpiValue == null) continue;
         const subcategory = assertDefined(
-          p2pDataModel
-            .find((category) => category.name === categoryKey)
-            ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
+          frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
+        //TODO computed property p2pDataAndMetaInfo. Map of fieldName to ShowIfBoolean
         if (
           this.p2pDataAndMetaInfo
             .map((dataAndMetaInfo) => dataAndMetaInfo.data)
@@ -300,6 +303,66 @@ export default defineComponent({
     toggleExpansion(key: string) {
       if (this.isExpanded(key)) this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
       else this.expandedGroup.push(key);
+    },
+
+    /**
+     * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
+     * @param inputNumber The number to convert
+     * @returns a string with the converted number and "MM" at the end
+     */
+    convertToMillions(inputNumber: number): string {
+      return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
+    },
+
+    /**
+     * Converts a nace code to a human readable value
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted Country value ready for display
+     */
+    reformatIndustriesValue(kpiValue: KpiValue): string | string[] | number | object | null {
+      return Array.isArray(kpiValue)
+        ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
+        : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+    },
+
+    /**
+     * Converts a country code to a human readable value
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted Country value ready for display
+     */
+    reformatCountriesValue(kpiValue: KpiValue): string | string[] {
+      return Array.isArray(kpiValue)
+        ? kpiValue.map(
+            (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
+          )
+        : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+    },
+
+    /**
+     *
+     * @param kpiField the Field to which the value belongs
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted value ready for display
+     */
+    reformatValueForDisplay(kpiField: Field, kpiValue: KpiValue): KpiValue {
+      if (kpiField.name === "totalRevenue" && typeof kpiValue === "number") {
+        kpiValue = this.convertToMillions(kpiValue);
+      }
+      if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
+        kpiValue = this.reformatIndustriesValue(kpiValue);
+      }
+      if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
+        kpiValue = this.reformatCountriesValue(kpiValue);
+      }
+
+      let returnValue;
+
+      if (kpiField.options?.length) {
+        const filteredOption = kpiField.options.find((option: DropdownOption) => option.value === kpiValue);
+        if (filteredOption) returnValue = filteredOption.label;
+      }
+
+      return returnValue ?? kpiValue;
     },
   },
 });
