@@ -22,25 +22,17 @@
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObjectsMapItem[0])">
         <div>
           <div class="pt-2 pl-2 pb-2 w-full d-cursor-pointer border-bottom-table p-2" @click="toggleExpansion(index)">
-            <div v-if="!isExpanded(index)">
-              <span
-                :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObjectsMapItem[0])}`"
+              <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObjectsMapItem[0])}`"
                 :data-test="arrayOfKpiDataObjectsMapItem[0]"
-                >{{ arrayOfKpiDataObjectsMapItem[0].toUpperCase() }}</span
-              >
-              <button class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
+                >{{ arrayOfKpiDataObjectsMapItem[0].toUpperCase() }}
+              </span>
+              <button v-if="!isExpanded(index)" class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
                 <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
               </button>
-            </div>
-            <div v-if="isExpanded(index)">
-              <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObjectsMapItem[0])}`">{{
-                arrayOfKpiDataObjectsMapItem[0].toUpperCase()
-              }}</span>
-              <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
+              <button v-if="isExpanded(index)" class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
                 <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
               </button>
             </div>
-          </div>
         </div>
         <div v-show="isExpanded(index)">
           <DisplayFrameworkDataTable
