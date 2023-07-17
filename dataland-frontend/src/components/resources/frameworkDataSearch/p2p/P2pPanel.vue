@@ -1,6 +1,6 @@
 <template>
-  <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading {{ humanizeString(DataTypeEnum.P2p) }} Data...</p>
+  <div v-if="!waitingForData" class="d-center-div text-center px-7 py-4">
+    <p class="font-medium text-xl">Loading {{ humanizeString(dataTypeEnum.P2p) }} Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfCategoryKeysToDataObjectArrays.size > 0 && !waitingForData">
@@ -73,14 +73,11 @@ import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "P2pPanel",
-  computed: {
-    DataTypeEnum() {
-      return DataTypeEnum;
-    },
-  },
+
   components: { DisplayFrameworkDataTable, DataTable, Column },
   data() {
     return {
+      dataTypeEnum: DataTypeEnum,
       firstRender: true,
       waitingForData: true,
       resultKpiData: null as KpiDataObject,
