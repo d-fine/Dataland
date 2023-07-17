@@ -59,7 +59,6 @@ export default defineComponent({
     ...BaseFormFieldProps,
     selectedNaceCodesBind: {
       type: Array,
-      required: false,
     },
   },
 });

@@ -2,253 +2,269 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Teaganfurt",
-			"sector": "convergence",
+			"headquarters": "Yuma",
+			"sector": "niches",
 			"identifiers": [
 				{
-					"identifierType": "Isin",
-					"identifierValue": "m4S5TouUVGAw"
+					"identifierType": "PermId",
+					"identifierValue": "RTZesCkFLj"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "uVghAjf"
 				}
 			],
-			"countryCode": "IO",
+			"countryCode": "GI",
 			"companyAlternativeNames": [
-				"Thiel, Davis and Konopelski",
-				"Windler Group"
+				"Breitenberg Inc"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://disloyal-ladle.name",
+			"companyLegalForm": "GmbH",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 11267,
+			"fiscalYearEnd": "2023-06-05",
+			"numberOfEmployees": 42952,
 			"referencedReports": {
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"currency": "CAD"
+					"currency": "ETB"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Cremin Group",
+				"assurance": "LimitedAssurance",
+				"provider": "Wintheiser LLC",
 				"dataSource": {
-					"page": 1112,
+					"page": 889,
 					"report": "ESEFReport",
-					"tagName": "relationships"
+					"tagName": "metrics"
 				}
 			},
+			"reportingObligation": "Yes",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.6671,
+					"valueAsPercentage": 0.9854,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.2737,
+					"valueAsPercentage": 0.2833,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.5176,
+					"valueAsPercentage": 0.834,
 					"quality": "NA"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Sophieberg",
-			"headquartersPostalCode": "65066-5453",
-			"sector": "supply-chains",
+			"headquarters": "Jacobiland",
+			"headquartersPostalCode": "79594-8450",
+			"sector": "metrics",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "ZManfptnMpVdqjB"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "yZiammXjQ"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "OKgy8neMGeRR"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "w2PHtttsFpjFXNu2iZL3"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "IaWe0D6FCw"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "3CIfPtE"
+					"identifierType": "VatNumber",
+					"identifierValue": "Qi6wKHA6E"
 				}
 			],
-			"countryCode": "VG",
-			"companyAlternativeNames": [
-				"Leannon - O'Keefe"
-			],
-			"website": "https://elaborate-stove.net/",
+			"countryCode": "MN",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-04-24",
+			"numberOfEmployees": 73917,
 			"referencedReports": {
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "JPY"
+					"reportDate": "2022-11-30",
+					"currency": "EGP"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-02-19",
-					"currency": "KPW"
+					"reportDate": "2023-04-08",
+					"currency": "SRD"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-11-24",
-					"currency": "KWD"
+					"reportDate": "2023-03-16",
+					"currency": "SDG"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "ReasonableAssurance",
+				"dataSource": {
+					"page": 1016,
+					"report": "IntegratedReport",
+					"tagName": "mindshare"
+				}
 			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 318350.32699164003,
+					"value": 136280.15464637429,
+					"dataSource": {
+						"page": 397,
+						"report": "IntegratedReport",
+						"tagName": "users"
+					},
+					"quality": "Audited",
+					"comment": "quantify optical application"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.7224,
+					"dataSource": {
+						"page": 983,
+						"report": "SustainabilityReport",
+						"tagName": "models"
+					},
+					"quality": "Audited",
+					"comment": "back up open-source transmitter",
+					"valueAsAbsolute": 485863.3502619341
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 647958.0752900802,
 					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.4711,
-					"quality": "Estimated",
-					"valueAsAbsolute": 864920.643507503
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 622649.6879360639,
-					"quality": "Incomplete"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.718,
+					"valueAsPercentage": 0.8466,
 					"dataSource": {
-						"page": 39,
-						"report": "IntegratedReport",
-						"tagName": "lifetime value"
+						"page": 940,
+						"report": "SustainabilityReport",
+						"tagName": "relationships"
 					},
-					"quality": "Reported",
-					"comment": "bypass back-end feed",
-					"valueAsAbsolute": 456261.9467964396
+					"quality": "Audited",
+					"comment": "back up optical application",
+					"valueAsAbsolute": 963507.2336648591
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 643724.0622588433,
-					"quality": "Incomplete"
+					"value": 733743.5787543654,
+					"dataSource": {
+						"page": 476,
+						"report": "IntegratedReport",
+						"tagName": "relationships"
+					},
+					"quality": "Audited",
+					"comment": "connect primary application"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.1235,
+					"valueAsPercentage": 0.1305,
 					"dataSource": {
-						"page": 356,
-						"report": "IntegratedReport",
-						"tagName": "infrastructures"
-					},
-					"quality": "Estimated",
-					"comment": "generate redundant hard drive",
-					"valueAsAbsolute": 780102.352029644
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Remingtonton",
-			"headquartersPostalCode": "75296-7692",
-			"sector": "lifetime value",
-			"identifiers": [
-				{
-					"identifierType": "Isin",
-					"identifierValue": "AinHrEquBqyd"
-				}
-			],
-			"countryCode": "UZ",
-			"companyAlternativeNames": [
-				"Herzog - Kohler",
-				"Kulas, Lockman and Cole",
-				"Larkin - Kohler",
-				"Robel and Sons"
-			],
-			"website": "https://lanky-mouser.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2023-05-24",
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Hintz - Quigley"
-			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
-			"opex": {
-				"totalAmount": {
-					"value": 715344.2493989132,
-					"dataSource": {
-						"page": 1190,
-						"report": "AnnualReport",
-						"tagName": "metrics"
-					},
-					"quality": "Incomplete",
-					"comment": "bypass neural pixel"
-				},
-				"alignedData": {
-					"quality": "Incomplete",
-					"valueAsAbsolute": 733840.8433482982
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 986,
-						"report": "IntegratedReport",
-						"tagName": "e-business"
-					},
-					"quality": "Estimated",
-					"comment": "copy solid state protocol"
-				},
-				"alignedData": {
-					"dataSource": {
-						"page": 391,
-						"report": "AnnualReport",
-						"tagName": "web services"
+						"page": 307,
+						"report": "ESEFReport",
+						"tagName": "bandwidth"
 					},
 					"quality": "Reported",
-					"comment": "bypass cross-platform sensor",
-					"valueAsAbsolute": 227622.6514368318
-				}
-			},
-			"revenue": {
-				"alignedData": {
-					"dataSource": {
-						"page": 1076,
-						"report": "AnnualReport",
-						"tagName": "initiatives"
-					},
-					"quality": "Incomplete",
-					"comment": "synthesize bluetooth bandwidth",
-					"valueAsAbsolute": 190263.70478095487
+					"comment": "bypass primary capacitor",
+					"valueAsAbsolute": 486119.45274751633
 				}
 			}
 		},
 		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "New Delpha",
+			"headquartersPostalCode": "91271",
+			"sector": "applications",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "PGJLTakD0sB1cN1"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "aCgzMb0bU9"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "lv1Frqc"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "aKIXueMmq"
+				}
+			],
+			"countryCode": "CR",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://well-to-do-bout.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-07-09",
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Hackett - Schulist"
+			},
+			"scopeOfEntities": "Yes",
+			"opex": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 1047,
+						"report": "IntegratedReport",
+						"tagName": "portals"
+					},
+					"quality": "Reported",
+					"comment": "back up multi-byte system"
+				},
+				"alignedData": {
+					"valueAsPercentage": 0.4561,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 356089.74302886054
+				},
+				"eligibleData": {
+					"dataSource": {
+						"page": 570,
+						"report": "IntegratedReport",
+						"tagName": "synergies"
+					},
+					"quality": "Audited",
+					"comment": "bypass neural monitor"
+				}
+			},
+			"capex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.8226,
+					"dataSource": {
+						"page": 627,
+						"report": "IntegratedReport",
+						"tagName": "web services"
+					},
+					"quality": "Reported",
+					"comment": "synthesize solid state monitor",
+					"valueAsAbsolute": 577322.9850456119
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 111,
+						"report": "IntegratedReport",
+						"tagName": "paradigms"
+					},
+					"quality": "Estimated",
+					"comment": "bypass cross-platform port"
+				},
+				"eligibleData": {
+					"quality": "Incomplete",
+					"valueAsAbsolute": 430197.94315332547
+				}
+			}
+		},
+		"reportingPeriod": "2022"
 	}
 ]

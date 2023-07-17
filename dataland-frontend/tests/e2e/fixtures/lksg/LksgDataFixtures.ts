@@ -36,6 +36,18 @@ export function generateLksgFixture(numFixtures: number, undefinedProbability = 
 }
 
 /**
+ * Generates a Lksg fixture with a dataset with many null values for categories, subcategories and field values
+ * @returns the fixture
+ */
+export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
+  return generateFixtureDataset<LksgData>(
+    () => generateOneLksgDatasetWithManyNulls(),
+    1,
+    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
+  )[0];
+}
+
+/**
  * Generates a array of random length with content
  * @param generator generator for a single entry
  * @param min the minimum number of entries
@@ -153,6 +165,36 @@ export function generateListOfNaceCodes(): string[] {
     return faker.helpers.arrayElement(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]);
   }).sort((a, b) => a.localeCompare(b));
   return [...new Set(values)];
+}
+
+/**
+ * Generates an LKSG dataset with the value null for some categories, subcategories and field values.
+ * Datasets that were uploaded via the Dataland API can look like this in production.
+ * @returns the dataset
+ */
+export function generateOneLksgDatasetWithManyNulls(): LksgData {
+  return {
+    general: {
+      masterData: {
+        dataDate: "1999-12-24",
+        headOfficeInGermany: null!,
+        groupOfCompanies: null!,
+        groupOfCompaniesName: null!,
+        industry: null!,
+        numberOfEmployees: null!,
+        seasonalOrMigrantWorkers: null!,
+        shareOfTemporaryWorkers: null!,
+        totalRevenueCurrency: null!,
+        totalRevenue: null!,
+        fixedAndWorkingCapital: null!,
+      },
+      productionSpecific: null!,
+      productionSpecificOwnOperations: null!,
+    },
+    governance: null!,
+    social: null!,
+    environmental: null!,
+  };
 }
 
 /**
