@@ -2,328 +2,293 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Bostad",
-			"headquartersPostalCode": "48792-2861",
-			"sector": "initiatives",
-			"identifiers": [
-				{
-					"identifierType": "Duns",
-					"identifierValue": "FCcxFWfWa"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "Ka7S0pyaF4eR"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "CsEejsnywQXwk5JWMXOy"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "Q2hayiOJyM"
-				}
-			],
-			"countryCode": "RU",
+			"headquarters": "Zoestadt",
+			"headquartersPostalCode": "33242",
+			"sector": "niches",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"KOEAjreHaQ7l"
+				],
+				"PermId": [
+					"vbdCa0YKEF"
+				],
+				"Ticker": [
+					"uBZM4EV"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"kkDzc7n84U9OGRL"
+				]
+			},
+			"countryCode": "SC",
 			"companyAlternativeNames": [],
-			"website": "https://tragic-mainland.info",
+			"website": "https://normal-gebaude.ch/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-01-23",
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-06-11",
-					"currency": "BBD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "KMF"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-04-16",
-					"currency": "KGS"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 435,
-					"report": "ESEFReport",
-					"tagName": "eyeballs"
-				}
-			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
-			"opex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.7047,
-					"quality": "NA"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.9322,
-					"quality": "NA"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.0914,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Sigurdville",
-			"headquartersPostalCode": "29854",
-			"sector": "technologies",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "bY5vj8nh6p5rzHO"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "WT96LsTp3Dkz"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "6jRa3fY1fg"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "GTGaU8l"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "8pPOLaI0F"
-				}
-			],
-			"countryCode": "LR",
-			"companyAlternativeNames": [
-				"Hegmann, Block and Wilkinson"
-			],
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-08-25",
-			"numberOfEmployees": 80619,
+			"fiscalYearEnd": "2022-12-15",
+			"numberOfEmployees": 89946,
 			"referencedReports": {
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"currency": "HKD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "JOD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "GBP"
+					"currency": "MMK"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "GEL"
+					"isGroupLevel": "NA",
+					"reportDate": "2022-08-21",
+					"currency": "GHS"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-06-15",
+					"currency": "DOP"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "KWD"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
-			"reportingObligation": "No",
+			"scopeOfEntities": "NA",
+			"opex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.8703,
+					"quality": "NA"
+				}
+			},
+			"capex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.4788,
+					"quality": "NA"
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"valueAsPercentage": 0.1097,
+					"quality": "NA"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Juliusland",
+			"headquartersPostalCode": "98024",
+			"sector": "infrastructures",
+			"identifiers": {
+				"Lei": [
+					"NfZNF9d5HZaQIzz41Oda"
+				],
+				"Isin": [
+					"zbSK9xDcegjV",
+					"oT7CVnPP6QPE"
+				],
+				"PermId": [
+					"KfJkwUs2FB"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"Y2PZDXX6u"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MM",
+			"companyAlternativeNames": [
+				"Mensing-Görlich",
+				"Teufel GmbH",
+				"Trauth GmbH & Co. KG"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://zeitlos-sandstein.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2023-02-23",
+			"numberOfEmployees": 36519,
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "XCD"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2022-11-21",
+					"currency": "TMT"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-10-15",
+					"currency": "CZK"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-04-21",
+					"currency": "UGX"
+				}
+			},
+			"assurance": {
+				"assurance": "LimitedAssurance"
+			},
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 493175.1854484901,
+					"value": 197693.21146886796,
 					"dataSource": {
-						"page": 621,
-						"report": "AnnualReport",
-						"tagName": "lifetime value"
+						"page": 630,
+						"report": "SustainabilityReport",
+						"tagName": "technologies"
 					},
-					"quality": "Estimated",
-					"comment": "parse 1080p feed"
+					"quality": "Reported",
+					"comment": "reboot virtual bandwidth"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.9375,
+					"valueAsPercentage": 0.1003,
 					"dataSource": {
-						"page": 613,
-						"report": "ESEFReport",
-						"tagName": "ROI"
+						"page": 96,
+						"report": "SustainabilityReport",
+						"tagName": "deliverables"
 					},
 					"quality": "Incomplete",
-					"comment": "calculate primary bus",
-					"valueAsAbsolute": 683825.2781191841
+					"comment": "reboot neural bus",
+					"valueAsAbsolute": 680372.3628050648
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 549473.2378749177,
-					"dataSource": {
-						"page": 543,
-						"report": "IntegratedReport",
-						"tagName": "architectures"
-					},
-					"quality": "Estimated",
-					"comment": "compress open-source bandwidth"
+					"value": 516707.90045754984,
+					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.4078,
+					"valueAsPercentage": 0.4885,
 					"dataSource": {
-						"page": 803,
-						"report": "SustainabilityReport",
-						"tagName": "initiatives"
+						"page": 166,
+						"report": "AnnualReport",
+						"tagName": "functionalities"
 					},
-					"quality": "Audited",
-					"comment": "copy cross-platform circuit",
-					"valueAsAbsolute": 437439.54902747646
+					"quality": "Reported",
+					"comment": "navigate primary port",
+					"valueAsAbsolute": 462125.0001597218
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 816257.5329071842,
+					"value": 760786.6954640485,
 					"dataSource": {
-						"page": 742,
-						"report": "SustainabilityReport",
-						"tagName": "synergies"
-					},
-					"quality": "Audited",
-					"comment": "navigate online array"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.1452,
-					"dataSource": {
-						"page": 421,
-						"report": "AnnualReport",
-						"tagName": "bandwidth"
+						"page": 265,
+						"report": "IntegratedReport",
+						"tagName": "web services"
 					},
 					"quality": "Reported",
-					"comment": "generate neural hard drive",
-					"valueAsAbsolute": 288000.37489272654
+					"comment": "generate back-end monitor"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.6675,
+					"dataSource": {
+						"page": 921,
+						"report": "SustainabilityReport",
+						"tagName": "action-items"
+					},
+					"quality": "Incomplete",
+					"comment": "back up wireless sensor",
+					"valueAsAbsolute": 579286.9824450463
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "North Tommieboro",
-			"headquartersPostalCode": "17096",
-			"sector": "infrastructures",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "WWc6s5TKiTbRQbJ"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "fGu27UJd8"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "sJNhZX2PJDNd"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "RMbMPULUh8D3irCo2glv"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "1AwklyAVuv"
-				}
-			],
-			"countryCode": "ER",
+			"headquarters": "Hoossland",
+			"headquartersPostalCode": "11257",
+			"sector": "models",
+			"identifiers": {
+				"Lei": [
+					"5FUWHMBZQJaTwNwc93Ot"
+				],
+				"Isin": [],
+				"PermId": [
+					"o5LuBIvqdU"
+				],
+				"Ticker": [
+					"o8gahrc"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"L8k0kElNC"
+				],
+				"CompanyRegistrationNumber": [
+					"uik9nywl9wcjy2C"
+				]
+			},
+			"countryCode": "VE",
 			"companyAlternativeNames": [
-				"Johnson Inc",
-				"Kuhn LLC",
-				"O'Reilly Inc"
+				"Dieckmann-Ahlke",
+				"Hamann-Bieler",
+				"Manns, Morgenstern und Prey",
+				"Thyssen GmbH"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://yearly-gelding.net",
+			"companyLegalForm": "GmbH",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2023-01-20",
-			"numberOfEmployees": 26750,
+			"fiscalYearDeviation": "NoDeviation",
+			"numberOfEmployees": 64097,
 			"assurance": {
-				"assurance": "ReasonableAssurance"
-			},
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
-			"opex": {
-				"totalAmount": {
-					"value": 847698.743827641,
-					"dataSource": {
-						"page": 1066,
-						"report": "AnnualReport",
-						"tagName": "markets"
-					},
-					"quality": "Incomplete",
-					"comment": "program bluetooth monitor"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.5842,
-					"dataSource": {
-						"page": 855,
-						"report": "IntegratedReport",
-						"tagName": "relationships"
-					},
-					"quality": "Reported",
-					"comment": "bypass multi-byte array",
-					"valueAsAbsolute": 873858.1896875985
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.9116,
-					"dataSource": {
-						"page": 511,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
-					},
-					"quality": "Audited",
-					"comment": "navigate wireless application"
+				"assurance": "ReasonableAssurance",
+				"provider": "Bauschinger-Petzold",
+				"dataSource": {
+					"page": 1120,
+					"report": "AnnualReport",
+					"tagName": "ROI"
 				}
 			},
+			"reportingObligation": "No",
+			"opex": {},
 			"capex": {},
 			"revenue": {
 				"totalAmount": {
-					"value": 966578.5831632093,
 					"dataSource": {
-						"page": 470,
-						"report": "SustainabilityReport",
-						"tagName": "schemas"
+						"page": 942,
+						"report": "AnnualReport",
+						"tagName": "eyeballs"
 					},
-					"quality": "Incomplete",
-					"comment": "back up open-source panel"
+					"quality": "Reported",
+					"comment": "back up digital alarm"
 				},
 				"alignedData": {
-					"valueAsPercentage": 0.7288,
+					"valueAsPercentage": 0.8692,
 					"dataSource": {
-						"page": 188,
-						"report": "SustainabilityReport",
-						"tagName": "interfaces"
+						"page": 247,
+						"report": "AnnualReport",
+						"tagName": "partnerships"
 					},
-					"quality": "Reported",
-					"comment": "program digital circuit",
-					"valueAsAbsolute": 962472.4959605373
+					"quality": "Estimated",
+					"comment": "reboot solid state array"
 				},
 				"eligibleData": {
+					"valueAsPercentage": 0.6374,
 					"dataSource": {
-						"page": 762,
+						"page": 1030,
 						"report": "AnnualReport",
-						"tagName": "action-items"
+						"tagName": "blockchains"
 					},
 					"quality": "Reported",
-					"comment": "input multi-byte protocol"
+					"comment": "program redundant sensor"
 				}
 			}
 		},

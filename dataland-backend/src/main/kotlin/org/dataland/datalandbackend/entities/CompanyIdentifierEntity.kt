@@ -10,10 +10,7 @@ import jakarta.persistence.IdClass
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
-import org.dataland.datalandbackend.interfaces.ApiModelConversion
-import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.data.domain.Persistable
 
 /**
@@ -38,14 +35,7 @@ data class CompanyIdentifierEntity(
 
     @Transient
     private var isNew: Boolean = false,
-) : Persistable<CompanyIdentifierEntityId>, ApiModelConversion<CompanyIdentifier> {
+) : Persistable<CompanyIdentifierEntityId> {
     override fun getId(): CompanyIdentifierEntityId = CompanyIdentifierEntityId(identifierValue, identifierType)
     override fun isNew(): Boolean = isNew
-
-    override fun toApiModel(viewingUser: DatalandAuthentication?): CompanyIdentifier {
-        return CompanyIdentifier(
-            identifierValue = identifierValue,
-            identifierType = identifierType,
-        )
-    }
 }

@@ -1,5 +1,5 @@
-import { faker } from "@faker-js/faker";
-import { CompanyIdentifierIdentifierTypeEnum, CompanyInformation } from "@clients/backend";
+import { faker } from "@faker-js/faker/locale/de";
+import { CompanyInformation } from "@clients/backend";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 const legalForms = [
@@ -22,6 +22,28 @@ export function getRandomCompanyLegalForm(): string {
 }
 
 /**
+ * Generates a random set of unique identifiers
+ * @returns a random set of identifiers
+ */
+function getRandomIdentifiers(): { [p: string]: string[] } {
+  const identifiers: { [p: string]: string[] } = {};
+  identifiers["Lei"] = faker.helpers.arrayElements([faker.string.alphanumeric(20)], { min: 0, max: 1 });
+  identifiers["Isin"] = faker.helpers.arrayElements([faker.string.alphanumeric(12), faker.string.alphanumeric(12)], {
+    min: 0,
+    max: 2,
+  });
+  identifiers["PermId"] = faker.helpers.arrayElements([faker.string.alphanumeric(10)], { min: 0, max: 1 });
+  identifiers["Ticker"] = faker.helpers.arrayElements([faker.string.alphanumeric(7)], { min: 0, max: 1 });
+  identifiers["Duns"] = faker.helpers.arrayElements([faker.string.alphanumeric(9)], { min: 0, max: 1 });
+  identifiers["VatNumber"] = faker.helpers.arrayElements([faker.string.alphanumeric(9)], { min: 0, max: 1 });
+  identifiers["CompanyRegistrationNumber"] = faker.helpers.arrayElements([faker.string.alphanumeric(15)], {
+    min: 0,
+    max: 1,
+  });
+  return identifiers;
+}
+
+/**
  * Generates a company fixture with random information
  * @returns information about a randomly generated company
  */
@@ -31,40 +53,7 @@ export function generateCompanyInformation(): CompanyInformation {
     headquarters: faker.location.city(),
     headquartersPostalCode: valueOrUndefined(faker.location.zipCode()),
     sector: faker.company.buzzNoun(),
-    identifiers: faker.helpers
-      .arrayElements([
-        {
-          identifierType: CompanyIdentifierIdentifierTypeEnum.Lei,
-          identifierValue: faker.string.alphanumeric(20),
-        },
-        {
-          identifierType: CompanyIdentifierIdentifierTypeEnum.Isin,
-          identifierValue: faker.string.alphanumeric(12),
-        },
-        {
-          identifierType: CompanyIdentifierIdentifierTypeEnum.PermId,
-          identifierValue: faker.string.alphanumeric(10),
-        },
-        {
-          identifierType: CompanyIdentifierIdentifierTypeEnum.Ticker,
-          identifierValue: faker.string.alphanumeric(7),
-        },
-        {
-          identifierType: CompanyIdentifierIdentifierTypeEnum.Duns,
-          identifierValue: faker.string.alphanumeric(9),
-        },
-        {
-          identifierType: CompanyIdentifierIdentifierTypeEnum.VatNumber,
-          identifierValue: faker.string.alphanumeric(9),
-        },
-        {
-          identifierType: CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber,
-          identifierValue: faker.string.alphanumeric(15),
-        },
-      ])
-      .sort((a, b) => {
-        return a.identifierType.localeCompare(b.identifierType);
-      }),
+    identifiers: getRandomIdentifiers(),
     countryCode: faker.location.countryCode(),
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();

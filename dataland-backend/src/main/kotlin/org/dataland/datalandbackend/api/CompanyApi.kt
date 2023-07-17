@@ -8,14 +8,17 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -181,8 +184,62 @@ interface CompanyApi {
         value = ["/{companyId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @CompanyQueryManager.isCompanyPublic(#companyId)")
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<StoredCompany>
+
+    /**
+     * A method to update company informtion for one specific company identified by its company Id
+     * @param companyId identifier of the company in dataland
+     * @param companyInformation includes the company information
+     * @return updated information about the company
+     */
+    @Operation(
+        summary = "Update company information selectively",
+        description = "Provided fields of the company associated with the given company Id are updated.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully updated company information."),
+        ],
+    )
+    @PatchMapping(
+        value = ["/{companyId}"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun patchCompanyById(
+        @PathVariable("companyId") companyId: String,
+        @Valid @RequestBody
+        companyInformationPatch: CompanyInformationPatch,
+    ): ResponseEntity<StoredCompany>
+
+    /**
+     * A method to update company informtion entirely
+     * @param companyId identifier of the company in dataland
+     * @param companyInformation includes the company information
+     * @return updated information about the company
+     */
+    @Operation(
+        summary = "Update company information entirely",
+        description = "Replace all company information of the company associated with the given company Id",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully updated company information."),
+        ],
+    )
+    @PutMapping(
+        value = ["/{companyId}"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun putCompanyById(
+        @PathVariable("companyId") companyId: String,
+        @Valid @RequestBody
+        companyInformation: CompanyInformation,
+    ): ResponseEntity<StoredCompany>
 
     /**
      * A method to get the teaser company IDs.

@@ -2,8 +2,10 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -38,6 +40,147 @@ class CompanyDataControllerTest {
         assertTrue(
             uploadInfo.actualStoredCompany.companyId.isNotEmpty(),
             "No valid company Id was assigned to the posted company.",
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if patching basic properties works as expected`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+
+        val startingCompanyInformation = uploadInfo.inputCompanyInformation
+
+        val patchObject = CompanyInformationPatch(
+            companyName = startingCompanyInformation.companyName + "-UPDATED",
+            website = "Updated Website",
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId,
+            patchObject,
+        )
+        assertEquals(
+            patchObject.companyName, updatedCompany.companyInformation.companyName,
+            "The company should have been updated",
+        )
+        assertEquals(
+            patchObject.website, updatedCompany.companyInformation.website,
+            "The website should have been set",
+        )
+        assertEquals(
+            startingCompanyInformation.sector, updatedCompany.companyInformation.sector,
+            "The sector should not have been changed",
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if patching identifiers works as expected`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val companyInformationToUpload = apiAccessor
+            .testDataProviderEuTaxonomyForFinancials
+            .getCompanyInformationWithRandomIdentifiers(1)
+            .first()
+        val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformationToUpload)
+        val patchObject = CompanyInformationPatch(
+            identifiers = mapOf(
+                IdentifierType.lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
+                IdentifierType.duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
+            ),
+        )
+        val updatedCompany =
+            apiAccessor.companyDataControllerApi.patchCompanyById(uploadedCompany.companyId, patchObject)
+        val oldIdentifiers = uploadedCompany.companyInformation.identifiers
+        val newIdentifiers = updatedCompany.companyInformation.identifiers
+        assertEquals(
+            oldIdentifiers[IdentifierType.isin.value], newIdentifiers[IdentifierType.isin.value],
+            "Unpatched identifiers should remain the same",
+        )
+        assertEquals(
+            patchObject.identifiers!![IdentifierType.lei.value], newIdentifiers[IdentifierType.lei.value],
+            "The update should work as expected",
+        )
+        assertEquals(
+            patchObject.identifiers!![IdentifierType.duns.value], newIdentifiers[IdentifierType.duns.value],
+            "The update should work as expected",
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if patching alternative names works as expected`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+        val patchObject = CompanyInformationPatch(
+            companyAlternativeNames = listOf("Alt-Name-1", "Alt-Name-2"),
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId,
+            patchObject,
+        )
+        assertEquals(
+            patchObject.companyAlternativeNames!!, updatedCompany.companyInformation.companyAlternativeNames,
+            "The company alternative names should have been updated",
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if the putting mechanism for basic properties works as expected`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+        val putCompanyInformation = CompanyInformation(
+            companyName = "Updated Name${UUID.randomUUID()}",
+            headquarters = "Updated HQ${UUID.randomUUID()}",
+            companyAlternativeNames = listOf("Alt-Name-1${UUID.randomUUID()}", "Alt-Name-2${UUID.randomUUID()}"),
+            identifiers = mapOf(IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
+            countryCode = "DE",
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, putCompanyInformation)
+        assertEquals(
+            putCompanyInformation.companyName, updatedCompany.companyInformation.companyName,
+            "The company should have been updated",
+        )
+        assertEquals(
+            putCompanyInformation.headquarters, updatedCompany.companyInformation.headquarters,
+            "The headquarters should have been updated",
+        )
+        assertTrue(
+            putCompanyInformation.companyAlternativeNames!!.toSet() ==
+                updatedCompany.companyInformation.companyAlternativeNames!!.toSet(),
+            "The company alternative names should have been updated",
+        )
+        assertEquals(null, updatedCompany.companyInformation.sector, "The sector should have been deleted")
+    }
+
+    @Test
+    fun `post a dummy company and check if the putting mechanism for identifiers works as expected`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+        val put1CompanyInformation = CompanyInformation(
+            companyName = "Name",
+            headquarters = "HQ",
+            identifiers = mapOf(
+                IdentifierType.duns.value to listOf("Test-Duns${UUID.randomUUID()}", "Test-Duns2${UUID.randomUUID()}"),
+            ),
+            countryCode = "DE",
+        )
+        val put2CompanyInformation = put1CompanyInformation.copy(
+            identifiers = mapOf(IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        var updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put1CompanyInformation)
+        assertTrue(
+            put1CompanyInformation.identifiers[IdentifierType.duns.value]!!.toSet() ==
+                updatedCompany.companyInformation.identifiers[IdentifierType.duns.value]!!.toSet() &&
+                updatedCompany.companyInformation.identifiers[IdentifierType.lei.value]!!.isEmpty(),
+            "The Duns identifiers should have been updated and the Lei identifiers should still be empty",
+        )
+        updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put2CompanyInformation)
+        assertTrue(
+            put2CompanyInformation.identifiers[IdentifierType.lei.value]!!.toSet() ==
+                updatedCompany.companyInformation.identifiers[IdentifierType.lei.value]!!.toSet() &&
+                updatedCompany.companyInformation.identifiers[IdentifierType.duns.value]!!.isEmpty(),
+            "The Lei identifiers should have been updated and the Duns identifiers should have been deleted",
         )
     }
 
@@ -202,12 +345,8 @@ class CompanyDataControllerTest {
         val companyInformation = baseCompanyInformation.copy(
             companyName = name,
             companyAlternativeNames = alternativeNames,
-            identifiers = listOf(
-                apiAccessor.createCompanyIdentifier(
-                    CompanyIdentifier.IdentifierType.isin,
-                    identifier
-                        ?: UUID.randomUUID().toString(),
-                ),
+            identifiers = mapOf(
+                IdentifierType.isin.value to listOf(identifier ?: UUID.randomUUID().toString()),
             ),
         )
         apiAccessor.companyDataControllerApi.postCompany(companyInformation)

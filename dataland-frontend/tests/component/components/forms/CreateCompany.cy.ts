@@ -7,7 +7,7 @@ describe("Component test for CreateCompany", () => {
   it("Check that the initial values are correct", () => {
     expect(wrapper.vm.postCompanyProcessed).to.equal(false);
     expect(wrapper.vm.companyAlternativeNames).to.be.an("array").that.is.empty;
-    expect(wrapper.vm.identifiers).to.be.an("array").that.is.empty;
+    expect(wrapper.vm.identifiers).to.be.an("object").that.is.empty;
     expect(wrapper.vm.allCountryCodes).to.be.an("array").that.is.not.empty;
     expect(wrapper.vm.companyDataExplanations).to.be.an("object").that.is.not.empty;
     expect(wrapper.vm.companyDataNames).to.be.an("object").that.is.not.empty;
@@ -16,7 +16,7 @@ describe("Component test for CreateCompany", () => {
   });
 
   it("Check that an error message is displayed when trying to upload a company without any identifiers", () => {
-    void wrapper.setData({ identifiers: [] });
+    void wrapper.setData({ identifiers: {} });
     void (wrapper.vm.postCompanyInformation as () => Promise<void>)();
     expect(wrapper.vm.uploadSucceded).to.be.false;
     expect(wrapper.vm.postCompanyProcessed).to.be.true;
