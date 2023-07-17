@@ -187,7 +187,7 @@ describe("Component test for LksgPanel", () => {
       secondOtherObject,
     ]);
     expect(
-        sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
+      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });
