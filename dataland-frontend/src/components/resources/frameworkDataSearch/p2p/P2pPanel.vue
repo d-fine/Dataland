@@ -1,9 +1,9 @@
 <template>
-  <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading {{ humanizeString(DataTypeEnum.P2p) }} Data...</p>
+  <div v-if="!waitingForData" class="d-center-div text-center px-7 py-4">
+    <p class="font-medium text-xl">Loading {{ humanizeString(dataTypeEnum.P2p) }} Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="mapOfKpiKeysToDataObjectsArrays.size > 0 && !waitingForData">
+  <div v-if="mapOfCategoryKeysToDataObjectArrays.size > 0 && !waitingForData">
     <DataTable tableClass="onlyHeaders">
       <Column headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs"> </Column>
       <Column
@@ -15,7 +15,7 @@
       />
     </DataTable>
     <div
-      v-for="(arrayOfKpiDataObjectsMapItem, index) in mapOfKpiKeysToDataObjectsArrays"
+      v-for="(arrayOfKpiDataObjectsMapItem, index) in mapOfCategoryKeysToDataObjectArrays"
       :key="index"
       class="d-table-style"
     >
@@ -65,21 +65,18 @@ import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "P2pPanel",
-  computed: {
-    DataTypeEnum() {
-      return DataTypeEnum;
-    },
-  },
+
   components: { DisplayFrameworkDataTable, DataTable, Column },
   data() {
     return {
+      dataTypeEnum: DataTypeEnum,
       firstRender: true,
       waitingForData: true,
       resultKpiData: null as KpiDataObject,
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
       arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
-      mapOfKpiKeysToDataObjectsArrays: new Map() as Map<string, Array<KpiDataObject>>,
+      mapOfCategoryKeysToDataObjectArrays: new Map() as Map<string, Array<KpiDataObject>>,
       expandedGroup: [],
     };
   },
@@ -181,16 +178,16 @@ export default defineComponent({
           for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
-            const categoryResult = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
+            const frameworkCategoryData = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
             this.iterateThroughSubcategories(
               categoryObject,
               categoryKey,
-              categoryResult,
+              frameworkCategoryData,
               dataIdOfP2pDataset,
               listOfDataObjects
             );
 
-            this.mapOfKpiKeysToDataObjectsArrays.set(categoryResult.label, listOfDataObjects);
+            this.mapOfCategoryKeysToDataObjectArrays.set(frameworkCategoryData.label, listOfDataObjects);
           }
         });
       }
@@ -202,14 +199,14 @@ export default defineComponent({
      * Iterates through all subcategories of a category
      * @param categoryObject the data object of the framework's category
      * @param categoryKey the key of the corresponding framework's category
-     * @param categoryResult  the category object of the framework's category
+     * @param frameworkCategoryData  the category object of the framework's category
      * @param dataIdOfP2pDataset  the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
      */
     iterateThroughSubcategories(
       categoryObject,
       categoryKey,
-      categoryResult: Category,
+      frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
       listOfDataObjects: Array<KpiDataObject>
     ) {
@@ -218,11 +215,11 @@ export default defineComponent({
         object | null
       ][]) {
         if (subCategoryObject == null) continue;
-        this.assembleDataKpiObject(
+        this.iterateThroughSubcategoryKpis(
           subCategoryObject,
           categoryKey,
           subCategoryKey,
-          categoryResult,
+          frameworkCategoryData,
           dataIdOfP2pDataset,
           listOfDataObjects
         );
@@ -233,15 +230,15 @@ export default defineComponent({
      * @param subCategoryObject the data object of the framework's subcategory
      * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
-     * @param categoryResult the category object of the framework's category
+     * @param frameworkCategoryData the category object of the framework's category
      * @param dataIdOfP2pDataset the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
      */
-    assembleDataKpiObject(
+    iterateThroughSubcategoryKpis(
       subCategoryObject: object,
       categoryKey,
       subCategoryKey: string,
-      categoryResult: Category,
+      frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
       listOfDataObjects: Array<KpiDataObject>
     ) {
@@ -262,7 +259,7 @@ export default defineComponent({
             kpiKey as string,
             kpiValue as KpiValue,
             subcategory,
-            categoryResult,
+            frameworkCategoryData,
             dataIdOfP2pDataset
           );
           listOfDataObjects.push(this.resultKpiData);
@@ -289,7 +286,7 @@ export default defineComponent({
       return assertDefined(p2pDataModel.find((category) => category.label === categoryName)).color;
     },
     /**
-     *
+     * Checks whether an element is expanded or not
      * @param key element for which the check should be run
      * @returns if the element is expanded or not
      */
@@ -297,7 +294,7 @@ export default defineComponent({
       return this.expandedGroup.indexOf(key) !== -1;
     },
     /**
-     *
+     * Expands and collapses an item
      * @param key element for which the check should be run
      */
     toggleExpansion(key: string) {
