@@ -2,172 +2,241 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Yuma",
-			"sector": "niches",
+			"headquarters": "West Dixieborough",
+			"headquartersPostalCode": "27974-0416",
+			"sector": "ROI",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "1Mh1pxjWVi6CrsG"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "oNehMjQ3q"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "4dkELXXqO3z3"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "A8E5JmgTS1ArjK5EGkMf"
+				},
+				{
 					"identifierType": "PermId",
-					"identifierValue": "RTZesCkFLj"
+					"identifierValue": "Cd82rnyW90"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "uVghAjf"
-				}
-			],
-			"countryCode": "GI",
-			"companyAlternativeNames": [
-				"Breitenberg Inc"
-			],
-			"companyLegalForm": "GmbH",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2023-06-05",
-			"numberOfEmployees": 42952,
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "ETB"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Wintheiser LLC",
-				"dataSource": {
-					"page": 889,
-					"report": "ESEFReport",
-					"tagName": "metrics"
-				}
-			},
-			"reportingObligation": "Yes",
-			"opex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.9854,
-					"quality": "NA"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.2833,
-					"quality": "NA"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.834,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Jacobiland",
-			"headquartersPostalCode": "79594-8450",
-			"sector": "metrics",
-			"identifiers": [
+					"identifierValue": "Wpqqcem"
+				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "Qi6wKHA6E"
+					"identifierValue": "1gSwYFKWs"
 				}
 			],
-			"countryCode": "MN",
+			"countryCode": "IL",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://prickly-surround.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-04-24",
-			"numberOfEmployees": 73917,
 			"referencedReports": {
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-03-25",
+					"currency": "QAR"
+				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-11-30",
-					"currency": "EGP"
+					"reportDate": "2022-11-04",
+					"currency": "ILS"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-04-08",
-					"currency": "SRD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-03-16",
-					"currency": "SDG"
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-11-08",
+					"currency": "VND"
 				}
 			},
 			"assurance": {
 				"assurance": "ReasonableAssurance",
+				"provider": "Reichert LLC",
 				"dataSource": {
-					"page": 1016,
-					"report": "IntegratedReport",
-					"tagName": "mindshare"
+					"page": 248,
+					"report": "ESEFReport",
+					"tagName": "content"
 				}
 			},
+			"reportingObligation": "No",
+			"opex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.3634,
+					"quality": "NA"
+				}
+			},
+			"capex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.7626,
+					"quality": "NA"
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"valueAsPercentage": 0.9625,
+					"quality": "NA"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Robertsbury",
+			"headquartersPostalCode": "89733",
+			"sector": "applications",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "uiBfl6Z7ULUpSwQ"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ZMwyRz68e"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "Hu3fP2pbZzD7"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "4BxZOf40BVwwvrrFw1gk"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "uM0PEVsvlZ"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "cE7mOUu"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "2hwqrIttu"
+				}
+			],
+			"countryCode": "MP",
+			"companyAlternativeNames": [
+				"O'Kon - Boehm",
+				"Skiles - Keeling",
+				"Vandervort - Veum",
+				"Williamson, Keeling and Rippin"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://judicious-lifestyle.biz",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearEnd": "2023-04-26",
+			"numberOfEmployees": 60919,
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-08-25",
+					"currency": "NOK"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "TTD"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-08-22",
+					"currency": "SRD"
+				}
+			},
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Connelly, Bahringer and Kreiger",
+				"dataSource": {
+					"page": 158,
+					"report": "ESEFReport",
+					"tagName": "eyeballs"
+				}
+			},
+			"reportingObligation": "No",
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 136280.15464637429,
+					"value": 234042.0254971832,
 					"dataSource": {
-						"page": 397,
+						"page": 738,
 						"report": "IntegratedReport",
-						"tagName": "users"
+						"tagName": "metrics"
 					},
-					"quality": "Audited",
-					"comment": "quantify optical application"
+					"quality": "Estimated",
+					"comment": "generate solid state application"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.7224,
+					"valueAsPercentage": 0.8851,
 					"dataSource": {
-						"page": 983,
-						"report": "SustainabilityReport",
-						"tagName": "models"
+						"page": 467,
+						"report": "AnnualReport",
+						"tagName": "platforms"
 					},
-					"quality": "Audited",
-					"comment": "back up open-source transmitter",
-					"valueAsAbsolute": 485863.3502619341
+					"quality": "Reported",
+					"comment": "copy open-source driver",
+					"valueAsAbsolute": 286272.57318003103
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 647958.0752900802,
-					"quality": "Estimated"
+					"value": 342937.0574420318,
+					"dataSource": {
+						"page": 1072,
+						"report": "ESEFReport",
+						"tagName": "synergies"
+					},
+					"quality": "Reported",
+					"comment": "quantify virtual capacitor"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.8466,
+					"valueAsPercentage": 0.8408,
 					"dataSource": {
-						"page": 940,
-						"report": "SustainabilityReport",
-						"tagName": "relationships"
+						"page": 237,
+						"report": "AnnualReport",
+						"tagName": "blockchains"
 					},
 					"quality": "Audited",
-					"comment": "back up optical application",
-					"valueAsAbsolute": 963507.2336648591
+					"comment": "generate optical array",
+					"valueAsAbsolute": 602078.9475063793
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 733743.5787543654,
+					"value": 175098.72670052573,
 					"dataSource": {
-						"page": 476,
-						"report": "IntegratedReport",
-						"tagName": "relationships"
+						"page": 390,
+						"report": "AnnualReport",
+						"tagName": "content"
 					},
-					"quality": "Audited",
-					"comment": "connect primary application"
+					"quality": "Estimated",
+					"comment": "input haptic transmitter"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.1305,
+					"valueAsPercentage": 0.9847,
 					"dataSource": {
-						"page": 307,
-						"report": "ESEFReport",
-						"tagName": "bandwidth"
+						"page": 766,
+						"report": "AnnualReport",
+						"tagName": "content"
 					},
-					"quality": "Reported",
-					"comment": "bypass primary capacitor",
-					"valueAsAbsolute": 486119.45274751633
+					"quality": "Audited",
+					"comment": "parse optical monitor",
+					"valueAsAbsolute": 451157.4022122659
 				}
 			}
 		},
@@ -176,95 +245,68 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "New Delpha",
-			"headquartersPostalCode": "91271",
-			"sector": "applications",
+			"headquarters": "Tremblayton",
+			"headquartersPostalCode": "14106",
+			"sector": "schemas",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "PGJLTakD0sB1cN1"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "aCgzMb0bU9"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "lv1Frqc"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "aKIXueMmq"
+					"identifierType": "Isin",
+					"identifierValue": "rI1Gc1sQl1k5"
 				}
 			],
-			"countryCode": "CR",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://well-to-do-bout.net",
+			"countryCode": "UG",
+			"companyAlternativeNames": [
+				"Frami Group",
+				"Mills - Baumbach",
+				"Pollich LLC",
+				"Wunsch - Jaskolski"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://submissive-chopstick.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-07-09",
+			"numberOfEmployees": 22611,
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Hackett - Schulist"
+				"assurance": "ReasonableAssurance",
+				"provider": "Haag - D'Amore"
 			},
-			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
 			"opex": {
-				"totalAmount": {
+				"eligibleData": {
 					"dataSource": {
-						"page": 1047,
-						"report": "IntegratedReport",
-						"tagName": "portals"
+						"page": 768,
+						"report": "AnnualReport",
+						"tagName": "action-items"
 					},
-					"quality": "Reported",
-					"comment": "back up multi-byte system"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.4561,
 					"quality": "Incomplete",
-					"valueAsAbsolute": 356089.74302886054
-				},
-				"eligibleData": {
-					"dataSource": {
-						"page": 570,
-						"report": "IntegratedReport",
-						"tagName": "synergies"
-					},
-					"quality": "Audited",
-					"comment": "bypass neural monitor"
+					"comment": "bypass auxiliary sensor"
 				}
 			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.8226,
-					"dataSource": {
-						"page": 627,
-						"report": "IntegratedReport",
-						"tagName": "web services"
-					},
-					"quality": "Reported",
-					"comment": "synthesize solid state monitor",
-					"valueAsAbsolute": 577322.9850456119
-				}
-			},
+			"capex": {},
 			"revenue": {
 				"totalAmount": {
 					"dataSource": {
-						"page": 111,
-						"report": "IntegratedReport",
+						"page": 57,
+						"report": "AnnualReport",
+						"tagName": "convergence"
+					},
+					"quality": "Audited",
+					"comment": "hack cross-platform pixel"
+				},
+				"alignedData": {
+					"valueAsPercentage": 0.1372,
+					"dataSource": {
+						"page": 1075,
+						"report": "AnnualReport",
 						"tagName": "paradigms"
 					},
-					"quality": "Estimated",
-					"comment": "bypass cross-platform port"
-				},
-				"eligibleData": {
-					"quality": "Incomplete",
-					"valueAsAbsolute": 430197.94315332547
+					"quality": "Reported",
+					"comment": "back up haptic array"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	}
 ]

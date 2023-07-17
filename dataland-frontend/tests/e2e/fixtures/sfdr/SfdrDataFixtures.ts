@@ -155,3 +155,22 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
     referencedReports: reports,
   };
 }
+
+/**
+ * Generates an SFDR dataset with the value null for some categories, subcategories and field values.
+ * Datasets that were uploaded via the Dataland API can look like this in production.
+ * @returns the dataset
+ */
+export function generateOneSfdrDatasetWithManyNulls(): SfdrData {
+  return {
+    social: {
+      general: {
+        fiscalYearEnd: "marker-for-test",
+        groupLevelAnnualReport: null!,
+      },
+      socialAndEmployeeMatters: null!,
+    },
+    environmental: null!,
+    referencedReports: null!,
+  };
+}
