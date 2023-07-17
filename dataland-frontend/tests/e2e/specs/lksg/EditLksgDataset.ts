@@ -35,6 +35,9 @@ describeIf(
           );
 
           testEditDataButton(storedCompany, lksgDatasetFor2021);
+          
+          cy.get('[data-test="upload-files-button-environmentalManagementSystemInternationalCertification"]').should("exist");
+          cy.get('[data-test="upload-files-button-environmentalManagementSystemNationalCertification"]').should("exist");
         });
       });
     });

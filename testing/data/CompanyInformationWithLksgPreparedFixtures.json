@@ -1411,7 +1411,14 @@
 					"riskManagementSystemRisks": "No",
 					"riskManagementSystemIdentifiedRisks": "Practical",
 					"riskManagementSystemMeasures": "blockchains",
-					"riskManagementSystemResponsibility": "Yes"
+					"riskManagementSystemResponsibility": "Yes",
+					"environmentalManagementSystem":"Yes",
+					"environmentalManagementSystemInternationalCertification": {
+						"value": "Yes"
+					},
+					"environmentalManagementSystemNationalCertification": {
+						"value": "Yes"
+					}
 				},
 				"grievanceMechanismOwnOperations": {
 					"grievanceHandlingMechanism": "No",
