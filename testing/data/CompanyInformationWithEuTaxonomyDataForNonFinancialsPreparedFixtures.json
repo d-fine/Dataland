@@ -2,241 +2,213 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "West Dixieborough",
-			"headquartersPostalCode": "27974-0416",
-			"sector": "ROI",
+			"headquarters": "Bostad",
+			"headquartersPostalCode": "48792-2861",
+			"sector": "initiatives",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "1Mh1pxjWVi6CrsG"
-				},
-				{
 					"identifierType": "Duns",
-					"identifierValue": "oNehMjQ3q"
+					"identifierValue": "FCcxFWfWa"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "4dkELXXqO3z3"
+					"identifierValue": "Ka7S0pyaF4eR"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "A8E5JmgTS1ArjK5EGkMf"
+					"identifierValue": "CsEejsnywQXwk5JWMXOy"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "Cd82rnyW90"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "Wpqqcem"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "1gSwYFKWs"
+					"identifierValue": "Q2hayiOJyM"
 				}
 			],
-			"countryCode": "IL",
+			"countryCode": "RU",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://prickly-surround.biz/",
+			"website": "https://tragic-mainland.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"referencedReports": {
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-03-25",
-					"currency": "QAR"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-11-04",
-					"currency": "ILS"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-11-08",
-					"currency": "VND"
-				}
-			},
-			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Reichert LLC",
-				"dataSource": {
-					"page": 248,
-					"report": "ESEFReport",
-					"tagName": "content"
-				}
-			},
-			"reportingObligation": "No",
-			"opex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.3634,
-					"quality": "NA"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.7626,
-					"quality": "NA"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.9625,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Robertsbury",
-			"headquartersPostalCode": "89733",
-			"sector": "applications",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "uiBfl6Z7ULUpSwQ"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "ZMwyRz68e"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "Hu3fP2pbZzD7"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "4BxZOf40BVwwvrrFw1gk"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "uM0PEVsvlZ"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "cE7mOUu"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "2hwqrIttu"
-				}
-			],
-			"countryCode": "MP",
-			"companyAlternativeNames": [
-				"O'Kon - Boehm",
-				"Skiles - Keeling",
-				"Vandervort - Veum",
-				"Williamson, Keeling and Rippin"
-			],
-			"companyLegalForm": "GmbH",
-			"website": "https://judicious-lifestyle.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2023-04-26",
-			"numberOfEmployees": 60919,
+			"fiscalYearEnd": "2023-01-23",
 			"referencedReports": {
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-08-25",
-					"currency": "NOK"
+					"reportDate": "2023-06-11",
+					"currency": "BBD"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "Yes",
-					"currency": "TTD"
+					"currency": "KMF"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-08-22",
-					"currency": "SRD"
+					"reportDate": "2023-04-16",
+					"currency": "KGS"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Connelly, Bahringer and Kreiger",
 				"dataSource": {
-					"page": 158,
+					"page": 435,
 					"report": "ESEFReport",
 					"tagName": "eyeballs"
 				}
 			},
+			"scopeOfEntities": "NA",
+			"reportingObligation": "Yes",
+			"opex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.7047,
+					"quality": "NA"
+				}
+			},
+			"capex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.9322,
+					"quality": "NA"
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"valueAsPercentage": 0.0914,
+					"quality": "NA"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Sigurdville",
+			"headquartersPostalCode": "29854",
+			"sector": "technologies",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "bY5vj8nh6p5rzHO"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "WT96LsTp3Dkz"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "6jRa3fY1fg"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "GTGaU8l"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "8pPOLaI0F"
+				}
+			],
+			"countryCode": "LR",
+			"companyAlternativeNames": [
+				"Hegmann, Block and Wilkinson"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-08-25",
+			"numberOfEmployees": 80619,
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "HKD"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "JOD"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "GBP"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "GEL"
+				}
+			},
+			"assurance": {
+				"assurance": "None"
+			},
 			"reportingObligation": "No",
-			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 234042.0254971832,
+					"value": 493175.1854484901,
 					"dataSource": {
-						"page": 738,
-						"report": "IntegratedReport",
-						"tagName": "metrics"
+						"page": 621,
+						"report": "AnnualReport",
+						"tagName": "lifetime value"
 					},
 					"quality": "Estimated",
-					"comment": "generate solid state application"
+					"comment": "parse 1080p feed"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.8851,
+					"valueAsPercentage": 0.9375,
 					"dataSource": {
-						"page": 467,
-						"report": "AnnualReport",
-						"tagName": "platforms"
+						"page": 613,
+						"report": "ESEFReport",
+						"tagName": "ROI"
 					},
-					"quality": "Reported",
-					"comment": "copy open-source driver",
-					"valueAsAbsolute": 286272.57318003103
+					"quality": "Incomplete",
+					"comment": "calculate primary bus",
+					"valueAsAbsolute": 683825.2781191841
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 342937.0574420318,
+					"value": 549473.2378749177,
 					"dataSource": {
-						"page": 1072,
-						"report": "ESEFReport",
-						"tagName": "synergies"
+						"page": 543,
+						"report": "IntegratedReport",
+						"tagName": "architectures"
 					},
-					"quality": "Reported",
-					"comment": "quantify virtual capacitor"
+					"quality": "Estimated",
+					"comment": "compress open-source bandwidth"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.8408,
+					"valueAsPercentage": 0.4078,
 					"dataSource": {
-						"page": 237,
-						"report": "AnnualReport",
-						"tagName": "blockchains"
+						"page": 803,
+						"report": "SustainabilityReport",
+						"tagName": "initiatives"
 					},
 					"quality": "Audited",
-					"comment": "generate optical array",
-					"valueAsAbsolute": 602078.9475063793
+					"comment": "copy cross-platform circuit",
+					"valueAsAbsolute": 437439.54902747646
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 175098.72670052573,
+					"value": 816257.5329071842,
 					"dataSource": {
-						"page": 390,
-						"report": "AnnualReport",
-						"tagName": "content"
-					},
-					"quality": "Estimated",
-					"comment": "input haptic transmitter"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.9847,
-					"dataSource": {
-						"page": 766,
-						"report": "AnnualReport",
-						"tagName": "content"
+						"page": 742,
+						"report": "SustainabilityReport",
+						"tagName": "synergies"
 					},
 					"quality": "Audited",
-					"comment": "parse optical monitor",
-					"valueAsAbsolute": 451157.4022122659
+					"comment": "navigate online array"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.1452,
+					"dataSource": {
+						"page": 421,
+						"report": "AnnualReport",
+						"tagName": "bandwidth"
+					},
+					"quality": "Reported",
+					"comment": "generate neural hard drive",
+					"valueAsAbsolute": 288000.37489272654
 				}
 			}
 		},
@@ -245,68 +217,116 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Tremblayton",
-			"headquartersPostalCode": "14106",
-			"sector": "schemas",
+			"headquarters": "North Tommieboro",
+			"headquartersPostalCode": "17096",
+			"sector": "infrastructures",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "WWc6s5TKiTbRQbJ"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "fGu27UJd8"
+				},
+				{
 					"identifierType": "Isin",
-					"identifierValue": "rI1Gc1sQl1k5"
+					"identifierValue": "sJNhZX2PJDNd"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "RMbMPULUh8D3irCo2glv"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "1AwklyAVuv"
 				}
 			],
-			"countryCode": "UG",
+			"countryCode": "ER",
 			"companyAlternativeNames": [
-				"Frami Group",
-				"Mills - Baumbach",
-				"Pollich LLC",
-				"Wunsch - Jaskolski"
+				"Johnson Inc",
+				"Kuhn LLC",
+				"O'Reilly Inc"
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://submissive-chopstick.net/",
+			"website": "https://yearly-gelding.net",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"numberOfEmployees": 22611,
+			"fiscalYearEnd": "2023-01-20",
+			"numberOfEmployees": 26750,
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Haag - D'Amore"
+				"assurance": "ReasonableAssurance"
 			},
 			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
-				"eligibleData": {
+				"totalAmount": {
+					"value": 847698.743827641,
 					"dataSource": {
-						"page": 768,
+						"page": 1066,
 						"report": "AnnualReport",
-						"tagName": "action-items"
+						"tagName": "markets"
 					},
 					"quality": "Incomplete",
-					"comment": "bypass auxiliary sensor"
+					"comment": "program bluetooth monitor"
+				},
+				"alignedData": {
+					"valueAsPercentage": 0.5842,
+					"dataSource": {
+						"page": 855,
+						"report": "IntegratedReport",
+						"tagName": "relationships"
+					},
+					"quality": "Reported",
+					"comment": "bypass multi-byte array",
+					"valueAsAbsolute": 873858.1896875985
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.9116,
+					"dataSource": {
+						"page": 511,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
+					},
+					"quality": "Audited",
+					"comment": "navigate wireless application"
 				}
 			},
 			"capex": {},
 			"revenue": {
 				"totalAmount": {
+					"value": 966578.5831632093,
 					"dataSource": {
-						"page": 57,
-						"report": "AnnualReport",
-						"tagName": "convergence"
+						"page": 470,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
 					},
-					"quality": "Audited",
-					"comment": "hack cross-platform pixel"
+					"quality": "Incomplete",
+					"comment": "back up open-source panel"
 				},
 				"alignedData": {
-					"valueAsPercentage": 0.1372,
+					"valueAsPercentage": 0.7288,
 					"dataSource": {
-						"page": 1075,
-						"report": "AnnualReport",
-						"tagName": "paradigms"
+						"page": 188,
+						"report": "SustainabilityReport",
+						"tagName": "interfaces"
 					},
 					"quality": "Reported",
-					"comment": "back up haptic array"
+					"comment": "program digital circuit",
+					"valueAsAbsolute": 962472.4959605373
+				},
+				"eligibleData": {
+					"dataSource": {
+						"page": 762,
+						"report": "AnnualReport",
+						"tagName": "action-items"
+					},
+					"quality": "Reported",
+					"comment": "input multi-byte protocol"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2020"
 	}
 ]
