@@ -42,7 +42,7 @@
           </div>
         </div>
         <div v-show="isExpanded(index)">
-          <P2pCompanyDataTable
+          <DisplayFrameworkDataTable
             :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
             :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
             headerInputStyle="display: none;"
@@ -56,7 +56,7 @@
 <script lang="ts">
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
+import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -71,7 +71,7 @@ import DataTable from "primevue/datatable";
 
 export default defineComponent({
   name: "P2pPanel",
-  components: { P2pCompanyDataTable, DataTable, Column },
+  components: { DisplayFrameworkDataTable, DataTable, Column },
   data() {
     return {
       firstRender: true,
