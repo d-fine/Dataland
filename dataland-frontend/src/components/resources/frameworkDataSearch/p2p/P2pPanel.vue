@@ -11,7 +11,6 @@
         v-for="reportingPeriodWithDataId of listOfDataSetReportingPeriods"
         headerClass="horizontal-headers-size"
         headerStyle="width: 30vw;"
-        :field="reportingPeriodWithDataId.dataId"
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
       />
