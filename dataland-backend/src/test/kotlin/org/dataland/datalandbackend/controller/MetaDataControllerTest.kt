@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.lksg.LksgData
-import org.dataland.datalandbackend.services.CompanyManager
+import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.CompanyUploader
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -42,7 +42,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 internal class MetaDataControllerTest(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val companyManager: CompanyManager,
+    @Autowired private val companyManager: CompanyAlterationManager,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val metaDataController: MetaDataController,
 ) {
