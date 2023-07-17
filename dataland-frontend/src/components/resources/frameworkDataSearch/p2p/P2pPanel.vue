@@ -5,7 +5,7 @@
   </div>
   <div v-if="mapOfKpiKeysToDataObjectsArrays.size > 0 && !waitingForData">
     <DataTable tableClass="onlyHeaders">
-      <Column bodyClass="headers-bg" headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs">
+      <Column headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs">
       </Column>
       <Column
         v-for="reportingPeriodWithDataId of listOfDataSetReportingPeriods"
