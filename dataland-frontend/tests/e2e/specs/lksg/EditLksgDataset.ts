@@ -18,6 +18,37 @@ describeIf(
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
         testData = getPreparedFixture("LkSG-date-2023-04-18", preparedFixtures);
+
+        testData.t.governance = {
+          ...testData.t.governance,
+          ...{
+            riskManagementOwnOperations: {
+              environmentalManagementSystem: "Yes",
+              environmentalManagementSystemInternationalCertification: {
+                value: "Yes",
+              },
+              environmentalManagementSystemNationalCertification: {
+                value: "Yes",
+              },
+            },
+          },
+        };
+
+        testData.t.environmental = {
+          ...testData.t.environmental,
+          ...{
+            useOfMercuryMercuryWasteMinamataConvention: {
+              mercuryAndMercuryWasteHandling: "Yes",
+              mercuryAndMercuryWasteHandlingPolicy: {
+                value: "Yes",
+                dataSource: {
+                  name: "Policy",
+                  reference: "12345",
+                },
+              },
+            },
+          },
+        };
       });
     });
 
