@@ -110,7 +110,7 @@ describe("Component test for P2pPanel", () => {
     cy.get("span[data-test=preCalcinedClayUsage]").should("exist");
 
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseenter", "center");
-    cy.get(".p-tooltip").should("be.visible").contains("Share of pre-calcined");
+    cy.get(".p-tooltip").should("be.visible").should("contain.text", "Share of pre-calcined");
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseleave");
   });
 
