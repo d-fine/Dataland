@@ -42,6 +42,14 @@ describeIf(
           cy.get('[data-test="upload-files-button-environmentalManagementSystemNationalCertification"]').should(
             "exist"
           );
+
+          cy.get('[data-test="mercuryAndMercuryWasteHandlingPolicy"] [data-test="files-to-upload-remove"]')
+            .should("exist")
+            .click();
+          cy.get('[data-test="mercuryAndMercuryWasteHandlingPolicy"] [data-test="FileUploadContainer"]').should(
+            "not.exist"
+          );
+          cy.get('[data-test="upload-files-button-mercuryAndMercuryWasteHandlingPolicy"]').should("exist");
         });
       });
     });
