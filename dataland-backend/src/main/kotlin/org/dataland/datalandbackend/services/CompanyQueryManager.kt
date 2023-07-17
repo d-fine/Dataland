@@ -130,4 +130,6 @@ class CompanyQueryManager(
     fun isCompanyPublic(companyId: String): Boolean {
         return getCompanyById(companyId).isTeaserCompany
     }
+
+    //ToDO: create function getCompanyByLei
 }

@@ -52,4 +52,63 @@ class CompanyUploader(
             }
         }
     }
+
+    fun uploadOrPatchSingleCompany(
+            companyInformation: CompanyInformation,
+    ) {
+        var counter = 0
+        while (counter < MAX_RETRIES) {
+            try {
+                logger.info(
+                        "Uploading company data for ${companyInformation.companyName} " +
+                                "(LEI: ${companyInformation.identifiers["Lei"]!!.first()})",
+                )
+                companyDataControllerApi.postCompany(companyInformation)
+                break
+          //  } catch (exception: ClientException) {
+          //      logger.error("Unable to upload company data. Response was: ${exception.message}.")
+          //      companyDataControllerApi.patchCompanyByLei(companyInformation)
+            } catch (exception: ClientException) {
+                logger.error("Unable to upload company data. Response was: ${exception.message}.")
+                counter = MAX_RETRIES
+            } catch (exception: SocketTimeoutException) {
+                logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
+                counter++
+            } catch (exception: ServerException) {
+                logger.error("Unexpected server exception. Response was: ${exception.message}.")
+                counter++
+            }
+        }
+    }
+
+    fun patchCompanyByLei(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
+        //val companyEntity = companyQueryManager.getCompanyByLei(companyInformation.identifiers[IdentifierType.lei.value].toSet())
+        //or
+        // val companyEntity = companyQueryManager.getCompanyByLei(companyInformation.identifiers["Lei"]!!.first())
+        logger.info("Patching Company ${companyEntity.companyName} with Lei ${companyInformation.identifiers["Lei"]!!.first()}")
+        companyInformation.companyName?.let { companyEntity.companyName = it }
+        companyInformation.companyLegalForm?.let { companyEntity.companyLegalForm = it }
+        companyInformation.headquarters?.let { companyEntity.headquarters = it }
+        companyInformation.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
+        companyInformation.sector?.let { companyEntity.sector = it }
+        companyInformation.countryCode?.let { companyEntity.countryCode = it }
+        companyInformation.website?.let { companyEntity.website = it }
+        companyInformation.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
+
+        if (companyInformation.companyAlternativeNames != null) {
+            companyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
+        }
+
+        if (companyInformation.identifiers != null) {
+            for (keypair in companyInformation.identifiers) {
+                replaceCompanyIdentifiers(
+                        companyEntity = companyEntity,
+                        identifierType = keypair.key,
+                        newIdentifiers = keypair.value,
+                )
+            }
+        }
+
+        return companyRepository.save(companyEntity)
+    }
 }
