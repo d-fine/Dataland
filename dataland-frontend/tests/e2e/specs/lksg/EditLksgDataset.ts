@@ -52,7 +52,7 @@ describeIf(
       });
     });
 
-    it("Check whether Edit Data buttonn has dropdown with 2 different Reporting Periods", () => {
+    it("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         const testCompany = generateDummyCompanyInformation(`company-for-testing-edit-button-${new Date().getTime()}`);
         return uploadCompanyViaApi(token, testCompany).then(async (storedCompany) => {
