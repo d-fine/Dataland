@@ -152,9 +152,11 @@ export default defineComponent({
         .filter((dataEntry) => dataEntry[1] !== null)
         .forEach((dataEntry: [string, SfdrSocial | SfdrEnvironmental | { [key: string]: CompanyReport }]) => {
           const [sfdrDataPropName, sfdrDataPropValue] = dataEntry;
-          Object.entries(sfdrDataPropValue).forEach((propValue: [string, object | string]) => {
+          Object.entries(sfdrDataPropValue).forEach((propValue: [string, object | string | null]) => {
             const [kpiKey, kpiValue] = propValue;
-            this.createKpiDataObjects(kpiKey, kpiValue, sfdrDataPropName, columnIdentifierDataId);
+            if (kpiValue !== null) {
+              this.createKpiDataObjects(kpiKey, kpiValue, sfdrDataPropName, columnIdentifierDataId);
+            }
           });
         });
     },
