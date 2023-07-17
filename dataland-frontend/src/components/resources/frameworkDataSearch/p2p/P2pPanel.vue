@@ -1,21 +1,19 @@
 <template>
   <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading P2P Data...</p>
+    <p class="font-medium text-xl">Loading {{ humanizeString(DataTypeEnum.P2p) }} Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjectsArrays.size > 0 && !waitingForData">
     <DataTable tableClass="onlyHeaders">
-      <Column bodyClass="headers-bg" headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs">
+      <Column headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs">
       </Column>
       <Column
         v-for="reportingPeriodWithDataId of listOfDataSetReportingPeriods"
         headerClass="horizontal-headers-size"
         headerStyle="width: 30vw;"
-        :field="reportingPeriodWithDataId.dataId"
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
-      >
-      </Column>
+      />
     </DataTable>
     <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
@@ -63,14 +61,20 @@ import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns 
 import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { reformatValueForDisplay } from "@/utils/FrameworkPanelDisplay";
-import { DataAndMetaInformationPathwaysToParisData } from "@clients/backend";
+import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "P2pPanel",
+  computed: {
+    DataTypeEnum() {
+      return DataTypeEnum;
+    },
+  },
   components: { DisplayFrameworkDataTable, DataTable, Column },
   data() {
     return {
@@ -107,6 +111,7 @@ export default defineComponent({
     this.firstRender = false;
   },
   methods: {
+    humanizeString,
     /**
      * Fetches all accepted P2P datasets for the current company and converts them to the required frontend format.
      */
