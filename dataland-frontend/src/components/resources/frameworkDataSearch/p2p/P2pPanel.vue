@@ -190,7 +190,7 @@ export default defineComponent({
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
             const categoryResult = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
-            this.iteratesThroughSubcategories(
+            this.iterateThroughSubcategories(
               categoryObject,
               categoryKey,
               categoryResult,
@@ -214,7 +214,7 @@ export default defineComponent({
      * @param dataIdOfP2pDataset  the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
      */
-    iteratesThroughSubcategories(
+    iterateThroughSubcategories(
       categoryObject,
       categoryKey,
       categoryResult: Category,
