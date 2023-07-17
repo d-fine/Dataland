@@ -142,6 +142,7 @@ export default defineComponent({
       },
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccesfully: true,
+      hasUserUploaderRights: undefined,
     };
   },
   computed: {

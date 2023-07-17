@@ -9,8 +9,6 @@
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
       @select="handleFilesSelected"
-      :file-names-for-prefill="fileNamesForPrefill"
-      :index-of-report-to-remove="indexOfReportToRemove"
     >
       <template #header="{ files, chooseCallback }">
         <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
@@ -62,7 +60,6 @@ import {
   isThereActuallyANewFileSelected,
   removeFileTypeExtension,
 } from "@/utils/FileUploadUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "UploadDocumentsForm",
@@ -89,27 +86,11 @@ export default defineComponent({
     },
     fileNamesForPrefill: {
       type: Array,
-      default: undefined,
-    },
-    indexOfReportToRemove: {
-      type: Array,
-      default: undefined,
     },
   },
   watch: {
-    fileNamesForPrefill: {
-      handler() {
-        this.prefillFileUpload();
-      },
-      deep: true,
-    },
-    indexOfReportToRemove: {
-      handler() {
-        if (this.indexOfReportToRemove) {
-          this.removeDocumentFromDocumentsToUpload(assertDefined(this.indexOfReportToRemove)[0] as number);
-        }
-      },
-      deep: true,
+    fileNamesForPrefill() {
+      this.prefillFileUpload();
     },
   },
   methods: {
@@ -142,11 +123,10 @@ export default defineComponent({
     /**
      * Remove document from files uploaded
      * @param indexOfFileToRemove index number of the file to remove
-     * @param deleteCount the number of files to delete
      */
-    removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number, deleteCount = 1) {
+    removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number) {
       ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
-      this.documentsToUpload.splice(indexOfFileToRemove, deleteCount);
+      this.documentsToUpload.splice(indexOfFileToRemove, 1);
       this.emitDocumentsChangedEvent();
     },
 

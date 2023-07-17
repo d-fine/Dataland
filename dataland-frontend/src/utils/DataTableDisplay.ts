@@ -7,21 +7,35 @@
 export function sortReportingPeriodsToDisplayAsColumns(
   listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[]
 ): ReportingPeriodOfDataSetWithId[] {
-  return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) => {
-    if (!isNaN(Number(dataSetA.reportingPeriod[0])) && !isNaN(Number(dataSetB.reportingPeriod[0]))) {
-      if (dataSetA.reportingPeriod < dataSetB.reportingPeriod) {
-        return 1;
-      } else {
-        return -1;
-      }
+  return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) =>
+    compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod)
+  );
+}
+
+/**
+ * Compares two reporting periods for sorting
+ * @param firstReportingPeriod the first reporting period to compare
+ * @param secondReportingPeriod the reporting period to compare with
+ * @returns 1 if the first reporting period should be sorted after to the second one else -1
+ */
+export function compareReportingPeriods(firstReportingPeriod: string, secondReportingPeriod: string): number {
+  if (!isNaN(Number(firstReportingPeriod)) && !isNaN(Number(secondReportingPeriod))) {
+    if (Number(firstReportingPeriod) < Number(secondReportingPeriod)) {
+      return 1;
     } else {
-      if (dataSetA.reportingPeriod > dataSetB.reportingPeriod) {
-        return 1;
-      } else {
-        return -1;
-      }
+      return -1;
     }
-  });
+  } else if (!isNaN(Number(firstReportingPeriod))) {
+    return -1;
+  } else if (!isNaN(Number(secondReportingPeriod))) {
+    return 1;
+  } else {
+    if (firstReportingPeriod > secondReportingPeriod) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
 }
 
 export type ReportingPeriodOfDataSetWithId = {
