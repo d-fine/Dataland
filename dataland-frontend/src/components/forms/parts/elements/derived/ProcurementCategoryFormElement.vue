@@ -42,7 +42,7 @@
           <div class="flex justify-content-between">
             <UploadFormHeader
               v-if="selectedCountries.length > 0"
-              label="Number of direct Suppliers"
+              label="Number of Direct Suppliers"
               description="State the number of direct suppliers per procurement category and country (own operations)"
               :is-required="false"
               data-test="directSuppliersHeader"
