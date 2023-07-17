@@ -44,12 +44,12 @@ import java.util.*
 */
 @Component("DataManager")
 class DataManager(
-    @Autowired var objectMapper: ObjectMapper,
-    @Autowired var companyManager: CompanyManager,
-    @Autowired var metaDataManager: DataMetaInformationManager,
-    @Autowired var storageClient: StorageControllerApi,
-    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var messageUtils: MessageQueueUtils,
+    @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val companyQueryManager: CompanyQueryManager,
+    @Autowired private val metaDataManager: DataMetaInformationManager,
+    @Autowired private val storageClient: StorageControllerApi,
+    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired private val messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInMemoryStorage = mutableMapOf<String, String>()
@@ -102,7 +102,7 @@ class DataManager(
      */
     @Transactional(propagation = Propagation.NEVER)
     fun storeMetaDataFrom(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
-        val company = companyManager.getCompanyById(storableDataSet.companyId)
+        val company = companyQueryManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
                 "'${storableDataSet.companyId}', Company Name ${company.companyName} to storage Interface. " +
@@ -323,6 +323,6 @@ class DataManager(
     @Transactional(readOnly = true)
     fun isDataSetPublic(dataId: String): Boolean {
         val associatedCompanyId = metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
-        return companyManager.isCompanyPublic(associatedCompanyId)
+        return companyQueryManager.isCompanyPublic(associatedCompanyId)
     }
 }

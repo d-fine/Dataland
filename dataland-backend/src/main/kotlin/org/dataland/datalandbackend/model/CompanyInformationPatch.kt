@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
  * --- API model ---
- * Class for defining the request body of a post company request
+ * Defines an update to basic company information
  * @param companyName official name of the company
  * @param companyAlternativeNames other names or abbreviations the company is known under
  * @param companyLegalForm legal structure of the company (e.g. „Public Limited Company (PLC)‟)
@@ -18,34 +18,30 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  * @param isTeaserCompany flag to indicate if the company is a teaser company or not
  * @param website the url under which the company website can be reached
  */
-data class CompanyInformation(
-    @field:JsonProperty(required = true)
-    val companyName: String,
+data class CompanyInformationPatch(
+    val companyName: String? = null,
 
-    val companyAlternativeNames: List<String>?,
+    val companyAlternativeNames: List<String>? = null,
 
-    val companyLegalForm: String?,
+    val companyLegalForm: String? = null,
 
-    @field:JsonProperty(required = true)
-    val headquarters: String,
+    val headquarters: String? = null,
 
-    val headquartersPostalCode: String?,
+    val headquartersPostalCode: String? = null,
 
-    val sector: String?,
+    val sector: String? = null,
 
-    @field:JsonProperty(required = true)
     @field:Schema(
         example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}",
     )
-    val identifiers: Map<IdentifierType, List<String>>,
+    val identifiers: Map<IdentifierType, List<String>>? = null,
 
-    @field:JsonProperty(required = true)
-    val countryCode: String,
+    val countryCode: String? = null,
 
     // The following annotation is required (including the value field) due to a known issue with the openApi generator
     // for boolean fields starting with is
-    @get:JsonProperty(value = "isTeaserCompany")
-    val isTeaserCompany: Boolean = false,
+    @field:JsonProperty(value = "isTeaserCompany")
+    val isTeaserCompany: Boolean? = null,
 
-    val website: String?,
+    val website: String? = null,
 )

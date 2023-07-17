@@ -14,7 +14,7 @@ docker volume prune --force --all
 
 echo "Rebuilding clients..."
 ./gradlew clean
-./gradlew assemble
+./gradlew assemble --rerun-tasks
 
 rm ./*github_env.log || true
 ./build-utils/base_rebuild_gradle_dockerfile.sh

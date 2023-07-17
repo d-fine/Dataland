@@ -94,7 +94,7 @@ interface DataApi<T> {
         value = ["/companies/{companyId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @CompanyQueryManager.isCompanyPublic(#companyId)")
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,

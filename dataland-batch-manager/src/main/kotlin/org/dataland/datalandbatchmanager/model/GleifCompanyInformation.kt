@@ -2,7 +2,6 @@ package org.dataland.datalandbatchmanager.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 
 /**
@@ -39,8 +38,8 @@ data class GleifCompanyInformation(
             headquartersPostalCode = headquartersPostalCode,
             sector = null,
             website = null,
-            identifiers = listOf(
-                CompanyIdentifier(identifierType = CompanyIdentifier.IdentifierType.lei, identifierValue = lei),
+            identifiers = mapOf(
+                "Lei" to listOf(lei),
             ),
         )
     }

@@ -7,10 +7,10 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
@@ -75,17 +75,21 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithTData.slice(0 until requiredQuantity)
-            .map { it.companyInformation.copy(identifiers = emptyList()) }
+            .map {
+                it.companyInformation.copy(
+                    identifiers = IdentifierType.values().map { id -> id.value }.associateWith { emptyList() },
+                )
+            }
     }
 
     fun getCompanyInformationWithRandomIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithTData.slice(0 until requiredQuantity)
             .map {
-                val randomIsin = CompanyIdentifier(
-                    identifierValue = UUID.randomUUID().toString(),
-                    identifierType = CompanyIdentifier.IdentifierType.isin,
+                it.companyInformation.copy(
+                    identifiers = mapOf(
+                        IdentifierType.isin.value to listOf(UUID.randomUUID().toString()),
+                    ),
                 )
-                it.companyInformation.copy(identifiers = listOf(randomIsin))
             }
     }
 

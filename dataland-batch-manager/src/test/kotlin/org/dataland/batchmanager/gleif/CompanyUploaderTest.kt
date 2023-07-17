@@ -3,8 +3,8 @@ package org.dataland.batchmanager.gleif
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
 import org.junit.jupiter.api.BeforeEach
@@ -30,11 +30,8 @@ class CompanyUploaderTest {
         headquartersPostalCode = "CompanyPostalCode",
         sector = "dummy",
         website = null,
-        identifiers = listOf(
-            CompanyIdentifier(
-                identifierType = CompanyIdentifier.IdentifierType.lei,
-                identifierValue = "DummyLei1",
-            ),
+        identifiers = mapOf(
+            IdentifierType.lei.value to listOf("DummyLei1"),
         ),
     )
 
@@ -47,11 +44,8 @@ class CompanyUploaderTest {
         headquartersPostalCode = "CompanyPostalCode",
         sector = "dummy",
         website = null,
-        identifiers = listOf(
-            CompanyIdentifier(
-                identifierType = CompanyIdentifier.IdentifierType.lei,
-                identifierValue = "DummyLei2",
-            ),
+        identifiers = mapOf(
+            IdentifierType.lei.value to listOf("DummyLei2"),
         ),
     )
 

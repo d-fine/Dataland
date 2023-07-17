@@ -1,12 +1,5 @@
 import { DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
-import {
-  CompanyIdentifier,
-  CompanyIdentifierIdentifierTypeEnum,
-  CompanyInformation,
-  DataMetaInformation,
-  DataTypeEnum,
-  QaStatus,
-} from "@clients/backend";
+import { IdentifierType, CompanyInformation, DataMetaInformation, DataTypeEnum, QaStatus } from "@clients/backend";
 
 /**
  * Method to prepare an array consisting of one simple dataset to be displayed in the data table of the "AVAILABLE
@@ -14,18 +7,15 @@ import {
  * @returns The dummy dataSearchStoredCompany instance as an array with one entry
  */
 export function prepareSimpleDataSearchStoredCompanyArray(): DataSearchStoredCompany[] {
-  const mockCompanyInformation = {
+  const mockCompanyInformation: CompanyInformation = {
     companyName: "testCompany",
     headquarters: "testHeadquarters",
     sector: "testSector",
-    identifiers: [
-      {
-        identifierType: CompanyIdentifierIdentifierTypeEnum.PermId,
-        identifierValue: "testPermId",
-      },
-    ] as Array<CompanyIdentifier>,
+    identifiers: {
+      [IdentifierType.PermId]: ["testPermId"],
+    },
     countryCode: "DE",
-  } as CompanyInformation;
+  };
 
   const mockDataMetaInformation = {
     dataId: "testDataId",
@@ -42,7 +32,7 @@ export function prepareSimpleDataSearchStoredCompanyArray(): DataSearchStoredCom
       companyName: mockCompanyInformation.companyName,
       companyInformation: mockCompanyInformation,
       companyId: mockDataMetaInformation.companyId,
-      permId: mockCompanyInformation.identifiers[0].identifierValue,
+      permId: mockCompanyInformation.identifiers[IdentifierType.PermId][0],
       dataRegisteredByDataland: [mockDataMetaInformation],
     },
   ];

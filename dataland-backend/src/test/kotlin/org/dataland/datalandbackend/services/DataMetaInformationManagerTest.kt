@@ -21,7 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class DataMetaInformationManagerTest(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired private val companyManager: CompanyManager,
+    @Autowired private val companyManager: CompanyAlterationManager,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
     private val testDataProvider = TestDataProvider(objectMapper)
