@@ -144,10 +144,11 @@ describe("As a user, I expect the search functionality on the /companies page to
 
       it("Execute a company Search by identifier and assure that the company is found", () => {
         cy.visitAndCheckAppMount("/companies");
-        const inputValue =
-          companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.identifiers[0].identifierValue;
+        const allIdentifiers = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.identifiers;
+        const anyIdentifierKey = assertDefined(Object.keys(allIdentifiers).find((it) => allIdentifiers[it].length > 0));
+        const anyIdentifier = allIdentifiers[anyIdentifierKey][0];
         const expectedCompanyName = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
-        executeCompanySearchWithStandardSearchBar(inputValue);
+        executeCompanySearchWithStandardSearchBar(anyIdentifier);
         cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
       });
 

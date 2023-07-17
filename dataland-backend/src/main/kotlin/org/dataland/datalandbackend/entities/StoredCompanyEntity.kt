@@ -11,6 +11,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
 /**
@@ -60,6 +61,19 @@ data class StoredCompanyEntity(
 ) : ApiModelConversion<StoredCompany> {
     @JsonValue
     override fun toApiModel(viewingUser: DatalandAuthentication?): StoredCompany {
+        val identifierMap = mutableMapOf<IdentifierType, MutableList<String>>()
+        for (identifierType in IdentifierType.values()) {
+            identifierMap[identifierType] = mutableListOf()
+        }
+
+        for (identifier in identifiers) {
+            val entry = identifierMap[identifier.identifierType]
+            requireNotNull(entry)
+            entry.add(identifier.identifierValue)
+        }
+
+        identifierMap.values.forEach { it.sort() }
+
         return StoredCompany(
             companyId = companyId,
             companyInformation = CompanyInformation(
@@ -69,7 +83,7 @@ data class StoredCompanyEntity(
                 headquarters = headquarters,
                 headquartersPostalCode = headquartersPostalCode,
                 sector = sector,
-                identifiers = identifiers.map { it.toApiModel(viewingUser) }.toList(),
+                identifiers = identifierMap,
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,
                 website = website,

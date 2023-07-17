@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 @Component("DataMetaInformationManager")
 class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
-    @Autowired private val companyManager: CompanyManager,
+    @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
 
     /**
@@ -76,7 +76,7 @@ class DataMetaInformationManager(
         reportingPeriod: String?,
     ): List<DataMetaInformationEntity> {
         if (companyId != "") {
-            companyManager.verifyCompanyIdExists(companyId)
+            companyQueryManager.verifyCompanyIdExists(companyId)
         }
         val dataTypeFilter = dataType?.name ?: ""
         val reportingPeriodFilter = reportingPeriod ?: ""

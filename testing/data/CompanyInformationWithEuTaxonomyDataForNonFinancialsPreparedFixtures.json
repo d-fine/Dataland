@@ -2,327 +2,262 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Rebekkadorf",
-			"sector": "content",
-			"identifiers": [
-				{
-					"identifierType": "Duns",
-					"identifierValue": "XHFF2SdC8"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "PhgtdiMIBlNR"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "iGZDp1TjXSao8dq1gNlg"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "1Yk8jXUNtd"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "PBYfLrh"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "2uh5wDoSM"
-				}
+			"headquarters": "West Vincent",
+			"headquartersPostalCode": "66129",
+			"sector": "action-items",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [
+					"9h4W2GK"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"xIBSlgNPxD5oDte"
+				]
+			},
+			"countryCode": "AZ",
+			"companyAlternativeNames": [
+				"Gerschler-Reinelt",
+				"Salzer-Conrad",
+				"Stanger-Kölotzei"
 			],
-			"countryCode": "BO",
-			"companyAlternativeNames": [],
-			"website": "https://respektiert-tornado.name",
+			"website": "https://unvergleichbar-theater.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-08-01",
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "JMD"
-				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "MUR"
+					"isGroupLevel": "NA",
+					"currency": "FJD"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-07-15",
-					"currency": "UYU"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-11-23",
-					"currency": "JPY"
+					"isGroupLevel": "NA",
+					"reportDate": "2023-05-08",
+					"currency": "SHP"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Eberhard KG",
 				"dataSource": {
-					"page": 439,
-					"report": "ESEFReport",
-					"tagName": "relationships"
+					"page": 352,
+					"report": "SustainabilityReport",
+					"tagName": "deliverables"
 				}
 			},
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.4069,
+					"valueAsPercentage": 0.9714,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.2521,
+					"valueAsPercentage": 0.3255,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.7269,
+					"valueAsPercentage": 0.9602,
 					"quality": "NA"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Nord Anastasialand",
-			"headquartersPostalCode": "70613",
-			"sector": "action-items",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "PE7wkwl7Bai91Fo"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "GqLuhvyMb"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "oVcWlkNyaG"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "Ydtwvl8"
-				}
-			],
-			"countryCode": "BB",
+			"headquarters": "Ost Quirinscheid",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"sLvTPt5qjzDT"
+				],
+				"PermId": [],
+				"Ticker": [
+					"a3Ar0OB"
+				],
+				"Duns": [
+					"d4WYzutVm"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"SNmX27PPsR2s318"
+				]
+			},
+			"countryCode": "TW",
 			"companyAlternativeNames": [
-				"Hübenbecker-Alexander",
-				"Ritschel-Mehl"
+				"Bieler-Knut",
+				"Mockenhaupt GmbH",
+				"Wessel GmbH"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://kontrolliert-gesellschaft.org/",
+			"website": "https://prinzipientreu-stunde.ch/",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2023-06-22",
 			"referencedReports": {
-				"IntegratedReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-05-06",
-					"currency": "BRL"
+					"isGroupLevel": "NA",
+					"reportDate": "2022-10-25",
+					"currency": "FKP"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "MYR"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "DJF"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-01",
-					"currency": "SRD"
+					"reportDate": "2023-06-24",
+					"currency": "SGD"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 693,
-					"report": "AnnualReport",
-					"tagName": "schemas"
-				}
+				"provider": "Giesa-Mulrain"
 			},
 			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 942259.6572083421,
+					"value": 600160.3531534784,
 					"dataSource": {
-						"page": 135,
-						"report": "AnnualReport",
-						"tagName": "communities"
+						"page": 744,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
 					},
-					"quality": "Incomplete",
-					"comment": "calculate bluetooth port"
+					"quality": "Reported",
+					"comment": "reboot redundant bus"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.0089,
+					"valueAsPercentage": 0.3109,
 					"dataSource": {
-						"page": 12,
+						"page": 525,
 						"report": "AnnualReport",
-						"tagName": "supply-chains"
+						"tagName": "action-items"
 					},
-					"quality": "Incomplete",
-					"comment": "compress online card",
-					"valueAsAbsolute": 435545.0516799465
+					"quality": "Audited",
+					"comment": "program multi-byte interface",
+					"valueAsAbsolute": 878845.9247443825
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 765489.688469097,
+					"value": 379820.94164472073,
 					"dataSource": {
-						"page": 400,
-						"report": "ESEFReport",
-						"tagName": "web services"
+						"page": 1030,
+						"report": "SustainabilityReport",
+						"tagName": "communities"
 					},
-					"quality": "Estimated",
-					"comment": "generate solid state capacitor"
+					"quality": "Reported",
+					"comment": "index bluetooth circuit"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.4766,
-					"dataSource": {
-						"page": 163,
-						"report": "IntegratedReport",
-						"tagName": "action-items"
-					},
-					"quality": "Audited",
-					"comment": "calculate back-end driver",
-					"valueAsAbsolute": 119409.27987452596
+					"valueAsPercentage": 0.0402,
+					"quality": "Estimated",
+					"valueAsAbsolute": 118521.03461278602
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 899649.283348117,
+					"value": 300887.6134175807,
 					"dataSource": {
-						"page": 186,
-						"report": "ESEFReport",
-						"tagName": "relationships"
-					},
-					"quality": "Audited",
-					"comment": "synthesize virtual capacitor"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.7183,
-					"dataSource": {
-						"page": 1085,
-						"report": "IntegratedReport",
-						"tagName": "web services"
+						"page": 540,
+						"report": "SustainabilityReport",
+						"tagName": "metrics"
 					},
 					"quality": "Incomplete",
-					"comment": "navigate 1080p bandwidth",
-					"valueAsAbsolute": 570164.5752531476
+					"comment": "generate virtual circuit"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.5913,
+					"dataSource": {
+						"page": 334,
+						"report": "SustainabilityReport",
+						"tagName": "action-items"
+					},
+					"quality": "Audited",
+					"comment": "index wireless protocol",
+					"valueAsAbsolute": 820273.543940857
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Bringmannstadt",
-			"headquartersPostalCode": "77560",
-			"sector": "architectures",
-			"identifiers": [
-				{
-					"identifierType": "PermId",
-					"identifierValue": "7DKNdtfxKT"
-				}
-			],
-			"countryCode": "KY",
+			"headquarters": "Ost Efe",
+			"headquartersPostalCode": "91778",
+			"sector": "deliverables",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"H2BIyN2IN"
+				],
+				"CompanyRegistrationNumber": [
+					"2MjJxiXRsdtk2Oy"
+				]
+			},
+			"countryCode": "AZ",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://elitar-flughafen.com/",
+			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2023-01-06",
-			"numberOfEmployees": 92961,
+			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
 				"assurance": "None"
 			},
 			"reportingObligation": "No",
 			"opex": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 208,
-						"report": "AnnualReport",
-						"tagName": "action-items"
-					},
-					"quality": "Reported",
-					"comment": "index solid state feed"
+				"alignedData": {
+					"valueAsPercentage": 0.8229,
+					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"totalAmount": {
 					"dataSource": {
-						"page": 939,
-						"report": "AnnualReport",
-						"tagName": "methodologies"
+						"page": 555,
+						"report": "SustainabilityReport",
+						"tagName": "e-markets"
 					},
 					"quality": "Estimated",
-					"comment": "transmit haptic array"
-				},
-				"alignedData": {
-					"dataSource": {
-						"page": 472,
-						"report": "AnnualReport",
-						"tagName": "applications"
-					},
-					"quality": "Incomplete",
-					"comment": "back up mobile firewall",
-					"valueAsAbsolute": 312108.4463549778
+					"comment": "override solid state application"
 				},
 				"eligibleData": {
+					"valueAsPercentage": 0.7733,
 					"dataSource": {
-						"page": 133,
-						"report": "AnnualReport",
-						"tagName": "interfaces"
+						"page": 424,
+						"report": "ESEFReport",
+						"tagName": "applications"
 					},
-					"quality": "Reported",
-					"comment": "override auxiliary monitor"
+					"quality": "Audited",
+					"comment": "bypass back-end sensor",
+					"valueAsAbsolute": 824243.0988466367
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 1143,
-						"report": "AnnualReport",
-						"tagName": "communities"
-					},
-					"quality": "Reported",
-					"comment": "transmit virtual transmitter"
-				},
-				"alignedData": {
-					"dataSource": {
-						"page": 799,
-						"report": "AnnualReport",
-						"tagName": "experiences"
-					},
-					"quality": "Reported",
-					"comment": "bypass online feed"
-				},
 				"eligibleData": {
-					"valueAsPercentage": 0.6139,
-					"dataSource": {
-						"page": 82,
-						"report": "AnnualReport",
-						"tagName": "interfaces"
-					},
-					"quality": "Audited",
-					"comment": "back up redundant monitor"
+					"quality": "Incomplete"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2020"
 	}
 ]

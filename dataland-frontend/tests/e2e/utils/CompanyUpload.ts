@@ -1,6 +1,6 @@
 import {
   CompanyDataControllerApi,
-  CompanyIdentifierIdentifierTypeEnum,
+  IdentifierType,
   CompanyInformation,
   Configuration,
   StoredCompany,
@@ -62,12 +62,9 @@ export function generateDummyCompanyInformation(companyName: string, sector = "I
     companyName: companyName,
     headquarters: "Imaginary-City",
     sector: sector,
-    identifiers: [
-      {
-        identifierType: CompanyIdentifierIdentifierTypeEnum.PermId,
-        identifierValue: faker.string.alphanumeric(10),
-      },
-    ],
+    identifiers: {
+      [IdentifierType.PermId]: [faker.string.alphanumeric(10)],
+    },
     countryCode: "DE",
     isTeaserCompany: false,
   };

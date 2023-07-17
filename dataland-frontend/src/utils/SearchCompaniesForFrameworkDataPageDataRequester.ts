@@ -4,7 +4,14 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum, QaStatus } from "@clients/backend";
+import {
+  StoredCompany,
+  CompanyInformation,
+  DataMetaInformation,
+  DataTypeEnum,
+  QaStatus,
+  IdentifierType,
+} from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { useFrameworkFiltersStore } from "@/stores/Stores";
@@ -30,16 +37,14 @@ export interface FrameworkDataSearchFilterInterface {
  * @returns the perm id retrieved from the company object. Empty string if no perm id is known.
  */
 function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
-  const permIdIdentifier = storedCompany.companyInformation.identifiers.filter(
-    (identifier): boolean => identifier.identifierType === "PermId"
-  );
+  const permIdIdentifier = storedCompany.companyInformation.identifiers[IdentifierType.PermId];
   if (permIdIdentifier.length == 1) {
-    return permIdIdentifier[0].identifierValue;
+    return permIdIdentifier[0];
   } else if (permIdIdentifier.length == 0) {
     return "";
   } else {
     console.error("More than one PermId found for a specific company");
-    return permIdIdentifier[0].identifierValue;
+    return permIdIdentifier[0];
   }
 }
 

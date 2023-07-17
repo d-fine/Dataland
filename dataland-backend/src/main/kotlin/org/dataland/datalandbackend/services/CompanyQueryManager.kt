@@ -1,37 +1,25 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
-import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyIdAndName
-import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
-import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.hibernate.exception.ConstraintViolationException
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 /**
- * Implementation of a company manager for Dataland
+ * Implementation of common read-only queries against company data
  * @param companyRepository  JPA for company data
- * @param companyIdentifierRepository JPA repository for company identifiers
  */
-@Component("CompanyManager")
-class CompanyManager(
+@Service("CompanyQueryManager")
+class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     /**
      * Method to verify that a given company exists in the company store
      * @param companyId the ID of the to be verified company
@@ -40,69 +28,6 @@ class CompanyManager(
         if (!companyRepository.existsById(companyId)) {
             throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
         }
-    }
-
-    private fun createStoredCompanyEntityWithoutForeignReferences(
-        companyId: String,
-        companyInformation: CompanyInformation,
-    ): StoredCompanyEntity {
-        val newCompanyEntity = StoredCompanyEntity(
-            companyId = companyId,
-            companyName = companyInformation.companyName,
-            companyAlternativeNames = companyInformation.companyAlternativeNames,
-            companyLegalForm = companyInformation.companyLegalForm,
-            headquarters = companyInformation.headquarters,
-            headquartersPostalCode = companyInformation.headquartersPostalCode,
-            sector = companyInformation.sector,
-            identifiers = mutableListOf(),
-            dataRegisteredByDataland = mutableListOf(),
-            countryCode = companyInformation.countryCode,
-            isTeaserCompany = companyInformation.isTeaserCompany,
-            website = companyInformation.website,
-        )
-
-        return companyRepository.save(newCompanyEntity)
-    }
-
-    private fun createAndAssociateIdentifiers(
-        savedCompanyEntity: StoredCompanyEntity,
-        companyInformation: CompanyInformation,
-    ): List<CompanyIdentifierEntity> {
-        val newIdentifiers = companyInformation.identifiers.map {
-            CompanyIdentifierEntity(
-                identifierType = it.identifierType, identifierValue = it.identifierValue,
-                company = savedCompanyEntity, isNew = true,
-            )
-        }
-        try {
-            return companyIdentifierRepository.saveAllAndFlush(newIdentifiers).toList()
-        } catch (ex: DataIntegrityViolationException) {
-            val cause = ex.cause
-            if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
-                throw InvalidInputApiException(
-                    "Company identifier already used",
-                    "Could not insert company as one company identifier is already used to identify another company",
-                )
-            }
-            throw ex
-        }
-    }
-
-    /**
-     * Method to add a company
-     * @param companyInformation denotes information of the company
-     * @return information of the newly created entry in the company data store of Dataland,
-     * including the generated company ID
-     */
-    @Transactional(rollbackFor = [InvalidInputApiException::class])
-    fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
-        val companyId = IdUtils.generateUUID()
-        logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
-        val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
-        val identifiers = createAndAssociateIdentifiers(savedCompany, companyInformation)
-        savedCompany.identifiers = identifiers.toMutableList()
-        logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
-        return savedCompany
     }
 
     /**

@@ -1,9 +1,8 @@
 package org.dataland.e2etests.tests
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
@@ -94,47 +93,44 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     fun `post a dummy company and check if it can be searched for by identifier at the right time`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithRandomIdentifier()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val firstIdentifier = uploadInfo.inputCompanyInformation.identifiers.values.first { it.isNotEmpty() }.first()
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
-                searchString = uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
+                searchString = firstIdentifier,
                 onlyCompanyNames = false,
             ).isEmpty(),
             "The posted company was found in the query results.",
         )
         apiAccessor.companyDataControllerApi.existsIdentifier(
-            CompanyDataControllerApi.IdentifierType_existsIdentifier.permId,
-            uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
+            IdentifierType.permId,
+            firstIdentifier,
         )
         uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId)
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
-                searchString = uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
+                searchString = firstIdentifier,
                 onlyCompanyNames = false,
             ).any { it.companyId == uploadInfo.actualStoredCompany.companyId },
             "The posted company could not be found in the query results when querying for its first identifiers value.",
         )
     }
 
-    private fun testThatSearchForCompanyIdentifierWorks(identifier: CompanyIdentifier) {
+    private fun testThatSearchForCompanyIdentifierWorks(identifierType: String, identifierValue: String) {
         val searchResponse = apiAccessor.companyDataControllerApi.getCompanies(
-            searchString = identifier.identifierValue,
+            searchString = identifierValue,
             onlyCompanyNames = false,
 
         )
             .toMutableList()
-        // The response list is filtered to exclude results that match in account of another identifier having
-        // the required value but the looked for identifier type does not exist (This happens due to the test
-        // data having non-unique identifier values for different identifier types)
-        searchResponse.retainAll {
-            it.companyInformation.identifiers.any {
-                    identifierInResponse ->
-                identifierInResponse.identifierType == identifier.identifierType
-            }
-        }
         assertTrue(
-            searchResponse.all { results -> results.companyInformation.identifiers.any { it == identifier } },
+            searchResponse.all
+                {
+                        results ->
+                    results.companyInformation.identifiers[identifierType]
+                        ?.any { it == identifierValue } ?: false
+                },
             "The search by identifier returns at least one company that does not contain the looked" +
-                "for value $identifier.",
+                "for value $identifierType.",
         )
     }
 
@@ -145,9 +141,9 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val testCompanyList = listOf(
             CompanyInformation(
                 company1, "",
-                listOf(
-                    apiAccessor.createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, "Isin$testString"),
-                    apiAccessor.createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, "Lei$testString"),
+                identifiers = mapOf(
+                    IdentifierType.isin.value to listOf("Isin$testString"),
+                    IdentifierType.lei.value to listOf("Lei$testString"),
                 ),
                 "",
                 listOf(company1 + testString),
@@ -155,19 +151,19 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         )
         val companyResponse = apiAccessor.companyDataControllerApi.postCompany(testCompanyList.first())
         uploadTestEuTaxonomyFinancialsDataSet(companyResponse.companyId)
-        for (identifier in testCompanyList.first().identifiers) {
-            testThatSearchForCompanyIdentifierWorks(identifier)
-        }
+        testThatSearchForCompanyIdentifierWorks(IdentifierType.isin.value, "Isin$testString")
+        testThatSearchForCompanyIdentifierWorks(IdentifierType.lei.value, "Lei$testString")
     }
 
     @Test
     fun `upload a company with a dataset and check if it can be found via an empty name search`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val companyIdentifier = listOf(
-            apiAccessor.createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, UUID.randomUUID().toString()),
-        )
         val companyInformation = CompanyInformation(
-            "retrieve empty search string", "", companyIdentifier, "",
+            "retrieve empty search string", "",
+            mapOf(
+                IdentifierType.lei.value to listOf(UUID.randomUUID().toString()),
+            ),
+            "",
             listOf(),
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
@@ -190,8 +186,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val testIdentifier = UUID.randomUUID().toString()
         val testName = "SubstringSearch"
-        val companyIdentifier = listOf(
-            apiAccessor.createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, testIdentifier),
+        val companyIdentifier = mapOf(
+            IdentifierType.lei.value to listOf(testIdentifier),
         )
         val companyInformation = CompanyInformation(
             testName, "", companyIdentifier, "", listOf(),
@@ -250,24 +246,24 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         return listOf(
             CompanyInformation(
                 company9, "",
-                listOf(
-                    apiAccessor.createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, "3$inputString"),
+                mapOf(
+                    IdentifierType.isin.value to listOf("3$inputString"),
                 ),
                 "", listOf(),
             ),
-            CompanyInformation(company8, "", listOf(), "", listOf("3$inputString", "other_name")),
-            CompanyInformation("3$inputString", "", listOf(), "", listOf()),
-            CompanyInformation(company5, "", listOf(), "", listOf("${inputString}2")),
-            CompanyInformation("${inputString}2", "", listOf(), "", listOf()),
+            CompanyInformation(company8, "", mapOf(), "", listOf("3$inputString", "other_name")),
+            CompanyInformation("3$inputString", "", mapOf(), "", listOf()),
+            CompanyInformation(company5, "", mapOf(), "", listOf("${inputString}2")),
+            CompanyInformation("${inputString}2", "", mapOf(), "", listOf()),
             CompanyInformation(
                 company3, "",
-                listOf(
-                    apiAccessor.createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, inputString),
+                mapOf(
+                    IdentifierType.isin.value to listOf(inputString),
                 ),
                 "", listOf(),
             ),
-            CompanyInformation(company2, "", listOf(), "", listOf(inputString)),
-            CompanyInformation(inputString, "", listOf(), "", listOf()),
+            CompanyInformation(company2, "", mapOf(), "", listOf(inputString)),
+            CompanyInformation(inputString, "", mapOf(), "", listOf()),
         )
     }
     private fun uploadTestEuTaxonomyFinancialsDataSet(companyId: String): DataMetaInformation {
