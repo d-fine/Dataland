@@ -1,6 +1,6 @@
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { LksgData } from "@clients/backend";
-import { generateLksgFixture, generateProductionSite } from "./LksgDataFixtures";
+import { generateLksgFixture, generateOneLksgFixtureWithManyNulls, generateProductionSite } from "./LksgDataFixtures";
 
 /**
  * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
@@ -15,6 +15,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-04-18"));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-06-22"));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2022-07-30"));
+  preparedFixtures.push(manipulateFixtureForLksgDatasetWithLotsOfNulls(generateOneLksgFixtureWithManyNulls()));
   return preparedFixtures;
 }
 
@@ -45,7 +46,7 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
 }
 
 /**
- * Sets the company name, and, data date and reporting period in the fixture data to
+ * Sets the company name, data date and reporting period in the fixture data to
  * specific values needed for tests.
  * @param input Fixture data to be manipulated
  * @param date the date in the format "YYYY-MM-DD"
@@ -59,7 +60,8 @@ function manipulateFixtureForDate(input: FixtureData<LksgData>, date: string): F
 }
 
 /**
- * Sets the company name of a Lksg fixture dataset to a specific given name
+ * Sets the company name, production sites, and list of production sites of a Lksg fixture dataset to
+ * specific values needed for tests.
  * @param fixture Fixture data to be manipulated
  * @returns the manipulated input
  */
@@ -67,5 +69,15 @@ function manipulateFixtureForAllFields(fixture: FixtureData<LksgData>): FixtureD
   fixture.companyInformation.companyName = "lksg-all-fields";
   fixture.t.general.productionSpecific!.productionSites = "Yes";
   fixture.t.general.productionSpecific!.listOfProductionSites = [generateProductionSite(0), generateProductionSite(0)];
+  return fixture;
+}
+
+/**
+ * Sets the company name of a Lksg fixture dataset to a specific given name
+ * @param fixture Fixture data to be manipulated
+ * @returns the manipulated input
+ */
+function manipulateFixtureForLksgDatasetWithLotsOfNulls(fixture: FixtureData<LksgData>): FixtureData<LksgData> {
+  fixture.companyInformation.companyName = "lksg-a-lot-of-nulls";
   return fixture;
 }
