@@ -47,7 +47,11 @@
                   <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
                   <p v-if="dataType === DataTypeEnum.P2p">
                     Click the link to visit the source of the framework:
-                    <a href="https://pathwaystoparis.com/en/tool-box/transformation-perfomance/">
+                    <a
+                      href="https://pathwaystoparis.com/en/tool-box/transformation-perfomance/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {{ humanizeString(dataType) }}</a
                     >
                   </p>
