@@ -297,7 +297,7 @@ export default defineComponent({
       return assertDefined(p2pDataModel.find((category) => category.label === categoryName)).color;
     },
     /**
-     *
+     * Checks whether an element is expanded or not
      * @param key element for which the check should be run
      * @returns if the element is expanded or not
      */
@@ -305,7 +305,7 @@ export default defineComponent({
       return this.expandedGroup.indexOf(key) !== -1;
     },
     /**
-     *
+     * Expands and collapses an item
      * @param key element for which the check should be run
      */
     toggleExpansion(key: string) {
