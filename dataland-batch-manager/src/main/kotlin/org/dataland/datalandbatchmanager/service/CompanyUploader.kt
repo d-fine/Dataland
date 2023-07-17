@@ -66,8 +66,8 @@ class CompanyUploader(
                 companyDataControllerApi.postCompany(companyInformation)
                 break
           //  } catch (exception: ClientException) {
-          //      logger.error("Unable to upload company data. Response was: ${exception.message}.")
-          //      companyDataControllerApi.patchCompanyByLei(companyInformation)
+          //      logger.error("Unable to upload company data. Response was: ${exception.message}.") --- do we need a message?
+          //      companyDataControllerApi.patchCompanyByLei(companyInformation) --- function needs to be implemented
             } catch (exception: ClientException) {
                 logger.error("Unable to upload company data. Response was: ${exception.message}.")
                 counter = MAX_RETRIES
@@ -87,18 +87,18 @@ class CompanyUploader(
         // val companyEntity = companyQueryManager.getCompanyByLei(companyInformation.identifiers["Lei"]!!.first())
         logger.info("Patching Company ${companyEntity.companyName} with Lei ${companyInformation.identifiers["Lei"]!!.first()}")
         companyInformation.companyName?.let { companyEntity.companyName = it }
-        companyInformation.companyLegalForm?.let { companyEntity.companyLegalForm = it }
+        //companyInformation.companyLegalForm?.let { companyEntity.companyLegalForm = it } --not part of gleif company info
         companyInformation.headquarters?.let { companyEntity.headquarters = it }
         companyInformation.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
-        companyInformation.sector?.let { companyEntity.sector = it }
+        //companyInformation.sector?.let { companyEntity.sector = it } --not part of gleif company info
         companyInformation.countryCode?.let { companyEntity.countryCode = it }
-        companyInformation.website?.let { companyEntity.website = it }
+        //companyInformation.website?.let { companyEntity.website = it } --not part of gleif company info
         companyInformation.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
 
-        if (companyInformation.companyAlternativeNames != null) {
-            companyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
-        }
-
+        //if (companyInformation.companyAlternativeNames != null) {
+           // companyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
+        //} --not part of gleif company info
+        //this can be adapted to support just Lei - but is it even possible for Lei to change for gleif companies?
         if (companyInformation.identifiers != null) {
             for (keypair in companyInformation.identifiers) {
                 replaceCompanyIdentifiers(
@@ -112,3 +112,15 @@ class CompanyUploader(
         return companyRepository.save(companyEntity)
     }
 }
+
+// the error we get when posting a company with an already existing lei:
+/*{
+  "errors": [
+    {
+      "httpStatus": 400,
+      "errorType": "invalid-input",
+      "summary": "Company identifier already used",
+      "message": "Could not insert company as one company identifier is already used to identify another company"
+    }
+  ]
+}/*
