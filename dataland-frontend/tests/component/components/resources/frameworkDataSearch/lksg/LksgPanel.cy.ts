@@ -9,7 +9,7 @@ import {
   LksgData,
   QaStatus,
 } from "@clients/backend";
-import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -167,25 +167,42 @@ describe("Component test for LksgPanel", () => {
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
     const boolList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
-      expect(sortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], boolList[i])).to.deep.equal([
-        firstYearObject,
-        secondYearObject,
-      ]);
+      expect(
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], boolList[i])
+      ).to.deep.equal([firstYearObject, secondYearObject]);
 
-      expect(sortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], boolList[i])).to.deep.equal([
-        firstOtherObject,
-        secondOtherObject,
-      ]);
+      expect(
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], boolList[i])
+      ).to.deep.equal([firstOtherObject, secondOtherObject]);
     }
-
     expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([
       firstYearObject,
       firstYearObject,
       secondYearObject,
     ]);
-
     expect(
       sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });
+
+/**
+ * Calls the testfunction for sorting and swaps the list entries if necessary.
+ * @param  listOfDataDateToDisplayAsColumns list of objects to sort
+ * @param boolSwap toogles the swap of both list elements in listOfDataDateToDisplayAsColumns (in case there are two.
+ * Shortens the test-function and avoids code duplications.
+ * @returns sorted list
+ */
+function swapAndSortReportingPeriodsToDisplayAsColumns(
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
+  boolSwap = false
+): ReportingPeriodOfDataSetWithId[] {
+  let swappedList: ReportingPeriodOfDataSetWithId[];
+  if (boolSwap && listOfDataDateToDisplayAsColumns.length == 2) {
+    swappedList = listOfDataDateToDisplayAsColumns.slice();
+    swappedList[0] = listOfDataDateToDisplayAsColumns[1];
+    swappedList[1] = listOfDataDateToDisplayAsColumns[0];
+    listOfDataDateToDisplayAsColumns = swappedList.slice();
+  }
+  return sortReportingPeriodsToDisplayAsColumns(listOfDataDateToDisplayAsColumns);
+}
