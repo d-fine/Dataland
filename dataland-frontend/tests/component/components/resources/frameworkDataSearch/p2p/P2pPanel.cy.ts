@@ -178,26 +178,21 @@ describe("Component test for P2pPanel", () => {
     const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
     const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
-    expect(sortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject])).to.deep.equal([
-      firstYearObject,
-      secondYearObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject])).to.deep.equal([
-      firstYearObject,
-      secondYearObject,
-    ]);
+    for (let i = 0; i < 2; i++) {
+      expect(sortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], Boolean(i))).to.deep.equal([
+        firstYearObject,
+        secondYearObject,
+      ]);
+
+      expect(sortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], Boolean(i))).to.deep.equal([
+        firstOtherObject,
+        secondOtherObject,
+      ]);
+    }
     expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([
       firstYearObject,
       firstYearObject,
       secondYearObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject])).to.deep.equal([
-      firstOtherObject,
-      secondOtherObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([firstOtherObject, secondOtherObject])).to.deep.equal([
-      firstOtherObject,
-      secondOtherObject,
     ]);
     expect(
       sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
