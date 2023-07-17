@@ -55,6 +55,8 @@ dependencyResolutionManagement {
             library("json", "org.json:json:20230618")
 
             library("commons-io", "commons-io:commons-io:2.12.0")
+
+            library("flyway", "org.flywaydb:flyway-core:9.8.1")
         }
     }
 }

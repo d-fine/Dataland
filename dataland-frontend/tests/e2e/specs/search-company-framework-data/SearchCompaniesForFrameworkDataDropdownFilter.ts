@@ -70,80 +70,89 @@ describe("As a user, I expect the search functionality on the /companies page to
     }
   );
 
-  describeIf("", { executionEnvironments: ["developmentLocal", "ci", "developmentCd"] }, () => {
-    it(
-      "Checks that the country-code filter synchronises between the search bar and the drop down and works",
-      { scrollBehavior: false },
-      () => {
-        const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
-        const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
-          (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
-        )!.companyInformation;
+  describeIf(
+    "",
+    {
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+      onlyExecuteOnDatabaseReset: true,
+    },
+    () => {
+      it(
+        "Checks that the country-code filter synchronises between the search bar and the drop down and works",
+        { scrollBehavior: false },
+        () => {
+          const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
+          const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
+            (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
+          )!.companyInformation;
 
-        const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
+          const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
 
-        cy.ensureLoggedIn();
-        cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
-        cy.visit(
-          `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
-        )
-          .wait("@companies-meta-information")
-          .get("div[class='col-12 text-left']")
-          .should("contain.text", failureMessageOnAvailableDatasetsPage)
-          .get("#country-filter")
-          .click()
-          .get('input[placeholder="Search countries"]')
-          .type(`${demoCompanyToTestForCountryName}`)
-          .get("li")
-          .contains(RegExp(`^${demoCompanyToTestForCountryName}$`))
-          .click()
-          .get("td[class='d-bg-white w-3 d-datatable-column-left']")
-          .contains(demoCompanyToTestFor.companyName)
-          .should("exist")
-          .url()
-          .should("contain", `countryCode=${convertStringToQueryParamFormat(demoCompanyToTestFor.countryCode)}`);
-      }
-    );
+          cy.ensureLoggedIn();
+          cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+          cy.visit(
+            `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
+          )
+            .wait("@companies-meta-information")
+            .get("div[class='col-12 text-left']")
+            .should("contain.text", failureMessageOnAvailableDatasetsPage)
+            .get("#country-filter")
+            .click()
+            .get('input[placeholder="Search countries"]')
+            .type(`${demoCompanyToTestForCountryName}`)
+            .get("li")
+            .contains(RegExp(`^${demoCompanyToTestForCountryName}$`))
+            .click()
+            .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+            .contains(demoCompanyToTestFor.companyName)
+            .should("exist")
+            .url()
+            .should("contain", `countryCode=${convertStringToQueryParamFormat(demoCompanyToTestFor.countryCode)}`);
+        }
+      );
 
-    it(
-      "Checks that the sector filter synchronises between the search bar and the drop down and works",
-      { scrollBehavior: false },
-      () => {
-        const demoCompanyToTestFor = assertDefined(
-          companiesWithEuTaxonomyDataForNonFinancials.find((it) => it.companyInformation?.sector !== undefined)
-            ?.companyInformation
-        );
-        expect(demoCompanyToTestFor?.sector).to.not.be.undefined;
+      it(
+        "Checks that the sector filter synchronises between the search bar and the drop down and works",
+        { scrollBehavior: false },
+        () => {
+          const demoCompanyToTestFor = assertDefined(
+            companiesWithEuTaxonomyDataForNonFinancials.find((it) => it.companyInformation?.sector !== undefined)
+              ?.companyInformation
+          );
+          expect(demoCompanyToTestFor?.sector).to.not.be.undefined;
 
-        const demoCompanyWithDifferentSector = assertDefined(
-          companiesWithEuTaxonomyDataForNonFinancials.find(
-            (it) =>
-              it.companyInformation?.sector !== demoCompanyToTestFor.sector &&
-              it.companyInformation?.sector !== undefined
-          )?.companyInformation
-        );
-        expect(demoCompanyWithDifferentSector?.sector).to.not.be.undefined;
+          const demoCompanyWithDifferentSector = assertDefined(
+            companiesWithEuTaxonomyDataForNonFinancials.find(
+              (it) =>
+                it.companyInformation?.sector !== demoCompanyToTestFor.sector &&
+                it.companyInformation?.sector !== undefined
+            )?.companyInformation
+          );
+          expect(demoCompanyWithDifferentSector?.sector).to.not.be.undefined;
 
-        cy.ensureLoggedIn();
-        cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
-        cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
-          .wait("@companies-meta-information")
-          .get("div[class='col-12 text-left']")
-          .should("contain.text", failureMessageOnAvailableDatasetsPage)
-          .get("#sector-filter")
-          .click()
-          .get('input[placeholder="Search sectors"]')
-          .type(`${demoCompanyToTestFor.sector}`)
-          .get("li")
-          .contains(RegExp(`^${demoCompanyToTestFor.sector}$`))
-          .click()
-          .get("td[class='d-bg-white w-3 d-datatable-column-left']")
-          .contains(demoCompanyToTestFor.companyName)
-          .should("exist");
-        cy.url().should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector)}`);
-      }
-    );
-  });
+          cy.ensureLoggedIn();
+          cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+          cy.visit(
+            `/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`
+          )
+            .wait("@companies-meta-information")
+            .get("div[class='col-12 text-left']")
+            .should("contain.text", failureMessageOnAvailableDatasetsPage)
+            .get("#sector-filter")
+            .click()
+            .get('input[placeholder="Search sectors"]')
+            .type(`${demoCompanyToTestFor.sector!}`)
+            .get("li")
+            .contains(RegExp(`^${demoCompanyToTestFor.sector!}$`))
+            .click()
+            .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+            .contains(demoCompanyToTestFor.companyName)
+            .should("exist");
+          cy.url().should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector!)}`);
+        }
+      );
+    }
+  );
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
     cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyNonFinancials}`);

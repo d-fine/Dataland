@@ -37,7 +37,7 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        testSubmittedDatasetIsInReviewListAndPending(storedCompany.companyInformation.companyName);
+        testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany.companyInformation.companyName);
       });
     });
 
@@ -45,8 +45,8 @@ describeIf(
       const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        const lksgDataset = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        testSubmittedDatasetIsInReviewListAndRejected(storedCompany, lksgDataset);
+        const dataMetaInfo = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
+        testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
       });
     });
   }
@@ -56,13 +56,13 @@ describeIf(
  * Tests that the item was added and is visible on the QA list
  * @param companyName The name of the company
  */
-function testSubmittedDatasetIsInReviewListAndPending(companyName: string): void {
+function testSubmittedDatasetIsInReviewListAndAcceptIt(companyName: string): void {
   testDatasetPresentWithCorrectStatus(companyName, "PENDING");
 
   safeLogout();
   login(reviewer_name, reviewer_pw);
 
-  cy.visitAndCheckAppMount("/qualityassurance");
+  viewRecentlyUploadedDatasetsInQaTable();
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
@@ -70,7 +70,7 @@ function testSubmittedDatasetIsInReviewListAndPending(companyName: string): void
     .get(".qa-review-company-name")
     .should("contain", companyName);
 
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody').last().click();
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
 
   cy.get(".p-dialog").should("exist").get(".p-dialog-header").should("contain", companyName);
   cy.get(".p-dialog").get('.p-dialog-content pre[id="dataset-container"]').should("not.be.empty");
@@ -83,23 +83,24 @@ function testSubmittedDatasetIsInReviewListAndPending(companyName: string): void
 }
 
 /**
- * Tests that the item was added and is visible on the QA list
- * @param storedCompany the stored company uploading the dataset
- * @param dataset the data meta information that wa suploaded
+ * Tests that the dataset is visible on the QA list and reject it and if the edit button is present on the view page
+ * @param storedCompany the stored company owning the dataset
+ * @param dataset the data meta information that was uploaded
  */
-function testSubmittedDatasetIsInReviewListAndRejected(
+function testSubmittedDatasetIsInReviewListAndRejectIt(
   storedCompany: StoredCompany,
   dataset: DataMetaInformation
 ): void {
   login(reviewer_name, reviewer_pw);
-  cy.visitAndCheckAppMount("/qualityassurance");
 
   cy.intercept(`**/api/metadata/${dataset.dataId}`).as("getMetadata");
   cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformation");
 
+  viewRecentlyUploadedDatasetsInQaTable();
+
   cy.wait("@getMetadata").wait("@getCompanyInformation");
 
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody').last().click();
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
   cy.get(".p-dialog").get('button[id="reject-button"]').should("exist").click();
 
   safeLogout();
@@ -118,20 +119,36 @@ function testSubmittedDatasetIsInReviewListAndRejected(
 }
 
 /**
- * Visitst the datasets page and verifies that the last dataset matches the company name and expected status
+ * Visits the quality assurance page and switches to the last table page
+ */
+function viewRecentlyUploadedDatasetsInQaTable(): void {
+  cy.intercept("**/qa/datasets").as("getQaQueue");
+  cy.visitAndCheckAppMount("/qualityassurance");
+  cy.wait("@getQaQueue");
+  cy.get(".p-paginator-last", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then((element) => {
+    if (element.prop("disabled")) {
+      return;
+    }
+    element.trigger("click");
+  });
+}
+
+/**
+ * Visits the datasets page and verifies that the last dataset matches the company name and expected status
  * @param companyName The name of the company that just uploaded
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
   cy.visitAndCheckAppMount("/datasets");
 
-  cy.get('[data-test="datasets-table"] .p-datatable-tbody')
+  cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
+    timeout: Cypress.env("medium_timeout_in_ms") as number,
+  })
     .first()
-    .should("exist")
-    .get(".data-test-company-name")
+    .find(".data-test-company-name")
     .should("contain", companyName);
 
-  cy.get('[data-test="datasets-table"]').first().get('span[data-test="qa-status"]').should("contain", status);
+  cy.get('[data-test="datasets-table"]').get('span[data-test="qa-status"]').should("contain", status);
 }
 
 /**
