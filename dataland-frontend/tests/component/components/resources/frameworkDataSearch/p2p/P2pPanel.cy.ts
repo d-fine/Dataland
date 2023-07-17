@@ -58,7 +58,7 @@ describe("Component test for P2pPanel", () => {
   }
 
   it("Check P2p view page for company with one P2p data set", () => {
-    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-two-sectors", preparedFixtures);
+    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-three-sectors", preparedFixtures);
     const p2pData = preparedFixture.t;
 
     cy.intercept("/api/data/p2p/mock-data-id", {

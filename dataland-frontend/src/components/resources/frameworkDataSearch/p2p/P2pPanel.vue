@@ -5,33 +5,36 @@
   </div>
   <div v-if="mapOfKpiKeysToDataObjectsArrays.size > 0 && !waitingForData">
     <DataTable tableClass="onlyHeaders">
-      <Column headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs">
-      </Column>
+      <Column headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs"> </Column>
       <Column
-        v-for="reportingPeriodWithDataId of listOfDataSetReportingPeriods"
+        v-for="reportingPeriodWithDataId of arrayOfReportingPeriodWithDataId"
         headerClass="horizontal-headers-size"
         headerStyle="width: 30vw;"
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
       />
     </DataTable>
-    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
-      <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
+    <div
+      v-for="(arrayOfKpiDataObjectsMapItem, index) in mapOfKpiKeysToDataObjectsArrays"
+      :key="index"
+      class="d-table-style"
+    >
+      <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObjectsMapItem[0])">
         <div>
           <div class="pt-2 pl-2 pb-2 w-full d-cursor-pointer border-bottom-table p-2" @click="toggleExpansion(index)">
             <div v-if="!isExpanded(index)">
               <span
-                :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`"
-                :data-test="arrayOfKpiDataObject[0]"
-                >{{ arrayOfKpiDataObject[0].toUpperCase() }}</span
+                :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObjectsMapItem[0])}`"
+                :data-test="arrayOfKpiDataObjectsMapItem[0]"
+                >{{ arrayOfKpiDataObjectsMapItem[0].toUpperCase() }}</span
               >
               <button class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
                 <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
               </button>
             </div>
             <div v-if="isExpanded(index)">
-              <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
-                arrayOfKpiDataObject[0].toUpperCase()
+              <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObjectsMapItem[0])}`">{{
+                arrayOfKpiDataObjectsMapItem[0].toUpperCase()
               }}</span>
               <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
                 <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
@@ -41,8 +44,8 @@
         </div>
         <div v-show="isExpanded(index)">
           <DisplayFrameworkDataTable
-            :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
-            :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+            :arrayOfKpiDataObjects="arrayOfKpiDataObjectsMapItem[1]"
+            :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
             headerInputStyle="display: none;"
           />
         </div>
@@ -82,7 +85,7 @@ export default defineComponent({
       waitingForData: true,
       resultKpiData: null as KpiDataObject,
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
-      listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
+      arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
       mapOfKpiKeysToDataObjectsArrays: new Map() as Map<string, Array<KpiDataObject>>,
       expandedGroup: [],
@@ -91,12 +94,12 @@ export default defineComponent({
   props: PanelProps,
   watch: {
     companyId() {
-      this.listOfDataSetReportingPeriods = [];
+      this.arrayOfReportingPeriodWithDataId = [];
       this.fetchP2pData().catch((error) => console.log(error));
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
-        this.listOfDataSetReportingPeriods = [];
+        this.arrayOfReportingPeriodWithDataId = [];
         this.fetchP2pData().catch((error) => console.log(error));
       }
     },
@@ -179,7 +182,7 @@ export default defineComponent({
         this.p2pDataAndMetaInfo.forEach((oneP2pDataset: DataAndMetaInformationPathwaysToParisData) => {
           const dataIdOfP2pDataset = oneP2pDataset.metaInfo?.dataId ?? "";
           const reportingPeriodOfP2pDataset = oneP2pDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfDataSetReportingPeriods.push({
+          this.arrayOfReportingPeriodWithDataId.push({
             dataId: dataIdOfP2pDataset,
             reportingPeriod: reportingPeriodOfP2pDataset,
           });
@@ -199,8 +202,8 @@ export default defineComponent({
           }
         });
       }
-      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
-        this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
+      this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
+        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
       );
     },
     /**
