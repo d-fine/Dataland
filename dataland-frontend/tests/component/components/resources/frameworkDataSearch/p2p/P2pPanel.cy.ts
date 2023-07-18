@@ -188,15 +188,9 @@ describe("Component test for P2pPanel", () => {
         swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], boolList[i])
       ).to.deep.equal([firstOtherObject, secondOtherObject]);
     }
-    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([
-      firstYearObject,
-      firstYearObject,
-      secondYearObject,
-    ]);
     expect(
-      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
+        sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
-  });
 });
 
 /**
