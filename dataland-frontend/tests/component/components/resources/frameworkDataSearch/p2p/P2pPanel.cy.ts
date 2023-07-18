@@ -174,10 +174,10 @@ describe("Component test for P2pPanel", () => {
   });
 
   it("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
-    const firstYearObject = { dataId: "5", reportingPeriod: "2022" };
-    const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
-    const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
-    const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
+    const firstYearObject = { dataId: "5", reportingPeriod: "2022"};
+    const secondYearObject = { dataId: "2", reportingPeriod: "2020"};
+    const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020"};
+    const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020"};
     const boolList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
       expect(
