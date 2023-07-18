@@ -10,7 +10,7 @@ import {
   LksgData,
   QaStatus,
 } from "@clients/backend";
-import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;

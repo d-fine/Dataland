@@ -3,7 +3,7 @@
  * periods (strings starting with numbers should at least be listed before those that do not)
  * @param  listOfDataDateToDisplayAsColumns list of objects to sort
  * Shortens the test-function and avoids code duplications.
- * @returns [] list of sorted objects
+ * @returns list of sorted objects
  */
 export function sortReportingPeriodsToDisplayAsColumns(
   listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[]
