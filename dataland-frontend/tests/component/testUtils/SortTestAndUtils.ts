@@ -23,19 +23,18 @@ export function swapAndSortReportingPeriodsToDisplayAsColumns(
 
 /**
  * @param firstYearObject first object used in sorting test
+ * @param firstYearObject.dataId data id of the object
+ * @param firstYearObject.reportingPeriod reporting period of the object
  * @param secondYearObject second object used in sorting test
+ * @param secondYearObject.dataId data id of the object
+ * @param secondYearObject.reportingPeriod reporting period of the object
  * @param firstOtherObject third object used in sorting test
- * @param firstOtherObject fourth object used in sorting test
- * @param firstYearObject.dataId
- * @param firstYearObject.reportingPeriod
- * @param secondYearObject.dataId
+ * @param firstOtherObject.dataId data id of the object
+ * @param firstOtherObject.reportingPeriod reporting period of the object
+ * @param secondOtherObject fourth object used in sorting test
+ * @param secondOtherObject.dataId data id of the object
+ * @param secondOtherObject.reportingPeriod reporting period of the object
  * @param shouldSwapList list of booleans: gives the instructions in the for loop to swap the inputs (saves lines of code).
- * @param secondYearObject.reportingPeriod
- * @param firstOtherObject.dataId
- * @param firstOtherObject.reportingPeriod
- * @param secondOtherObject
- * @param secondOtherObject.dataId
- * @param secondOtherObject.reportingPeriod
  */
 export function sortReportingPeriodsToDisplayAsColumnsTest(
   firstYearObject: { dataId: string; reportingPeriod: string },
