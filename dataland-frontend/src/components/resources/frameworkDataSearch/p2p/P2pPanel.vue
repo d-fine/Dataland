@@ -56,7 +56,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum } from "@clients/backend";
+import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum, PathwaysToParisData } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import Column from "primevue/column";
@@ -184,7 +184,8 @@ export default defineComponent({
               categoryKey,
               frameworkCategoryData,
               dataIdOfP2pDataset,
-              listOfDataObjects
+              listOfDataObjects,
+              oneP2pDataset.data
             );
 
             this.mapOfCategoryKeysToDataObjectArrays.set(frameworkCategoryData.label, listOfDataObjects);
@@ -202,13 +203,15 @@ export default defineComponent({
      * @param frameworkCategoryData  the category object of the framework's category
      * @param dataIdOfP2pDataset  the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
+     * @param oneP2pDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategories(
       categoryObject,
       categoryKey,
       frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
-      listOfDataObjects: Array<KpiDataObject>
+      listOfDataObjects: Array<KpiDataObject>,
+      oneP2pDataset: PathwaysToParisData
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
         string,
@@ -221,7 +224,8 @@ export default defineComponent({
           subCategoryKey,
           frameworkCategoryData,
           dataIdOfP2pDataset,
-          listOfDataObjects
+          listOfDataObjects,
+          oneP2pDataset
         );
       }
     },
@@ -233,6 +237,7 @@ export default defineComponent({
      * @param frameworkCategoryData the category object of the framework's category
      * @param dataIdOfP2pDataset the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
+     * @param oneP2pDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategoryKpis(
       subCategoryObject: object,
@@ -240,7 +245,8 @@ export default defineComponent({
       subCategoryKey: string,
       frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
-      listOfDataObjects: Array<KpiDataObject>
+      listOfDataObjects: Array<KpiDataObject>,
+      oneP2pDataset: PathwaysToParisData
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
         if (kpiValue == null) continue;
@@ -248,12 +254,9 @@ export default defineComponent({
           frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
-        //TODO computed property p2pDataAndMetaInfo. Map of fieldName to ShowIfBoolean
-        if (
-          this.p2pDataAndMetaInfo
-            .map((dataAndMetaInfo) => dataAndMetaInfo.data)
-            .some((singleP2pData) => field.showIf(singleP2pData))
-        ) {
+
+        //TODO computed property p2pDataAndMetaInfo. Map of fieldName to ShowIfBoolean, Remove when Review coment is closed
+        if (field.showIf(oneP2pDataset)) {
           this.createKpiDataObjects(
             kpiKey as string,
             kpiValue as KpiValue,
