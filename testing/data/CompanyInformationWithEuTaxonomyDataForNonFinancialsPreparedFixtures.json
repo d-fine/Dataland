@@ -2,76 +2,76 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Zoestadt",
-			"headquartersPostalCode": "33242",
-			"sector": "niches",
+			"headquarters": "Schuhajstadt",
+			"headquartersPostalCode": "63095",
+			"sector": "networks",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"KOEAjreHaQ7l"
+				"Lei": [
+					"uZgJclSShyKCxR8iz0F8"
 				],
-				"PermId": [
-					"vbdCa0YKEF"
-				],
-				"Ticker": [
-					"uBZM4EV"
-				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"kkDzc7n84U9OGRL"
-				]
+				"VatNumber": [
+					"NsWx7zhm0"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SC",
-			"companyAlternativeNames": [],
-			"website": "https://normal-gebaude.ch/",
+			"countryCode": "MS",
+			"companyAlternativeNames": [
+				"Bode, Knoblich und Langfeld",
+				"Jarets, Ruch und Zauber",
+				"Liebold, Goldkamp und Roba",
+				"Strunz GmbH & Co. KG"
+			],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2022-12-15",
-			"numberOfEmployees": 89946,
+			"numberOfEmployees": 42673,
 			"referencedReports": {
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "MMK"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-08-21",
-					"currency": "GHS"
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-01-23",
+					"currency": "TZS"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-06-15",
-					"currency": "DOP"
+					"currency": "CHF"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "KGS"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "KWD"
+					"reportDate": "2022-12-25",
+					"currency": "RWF"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "NA",
+			"scopeOfEntities": "No",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.8703,
+					"valueAsPercentage": 0.3567,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.4788,
+					"valueAsPercentage": 0.9468,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.1097,
+					"valueAsPercentage": 0.1658,
 					"quality": "NA"
 				}
 			}
@@ -81,217 +81,167 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Juliusland",
-			"headquartersPostalCode": "98024",
-			"sector": "infrastructures",
+			"headquarters": "Luanascheid",
+			"sector": "systems",
 			"identifiers": {
 				"Lei": [
-					"NfZNF9d5HZaQIzz41Oda"
+					"FiURrbCDuFBkPMBfkBFn"
 				],
 				"Isin": [
-					"zbSK9xDcegjV",
-					"oT7CVnPP6QPE"
+					"0FttEemytuyp"
 				],
-				"PermId": [
-					"KfJkwUs2FB"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"Y2PZDXX6u"
+					"jr55NVTQx"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MM",
-			"companyAlternativeNames": [
-				"Mensing-Görlich",
-				"Teufel GmbH",
-				"Trauth GmbH & Co. KG"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://zeitlos-sandstein.org",
+			"countryCode": "FK",
+			"companyAlternativeNames": [],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-02-23",
-			"numberOfEmployees": 36519,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-06-08",
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "XCD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-11-21",
-					"currency": "TMT"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-10-15",
-					"currency": "CZK"
-				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-04-21",
-					"currency": "UGX"
+					"currency": "USD"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 9,
+					"report": "SustainabilityReport",
+					"tagName": "schemas"
+				}
 			},
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 197693.21146886796,
-					"dataSource": {
-						"page": 630,
-						"report": "SustainabilityReport",
-						"tagName": "technologies"
-					},
-					"quality": "Reported",
-					"comment": "reboot virtual bandwidth"
+					"value": 863602.1040263586,
+					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.1003,
+					"valueAsPercentage": 0.2002,
 					"dataSource": {
-						"page": 96,
+						"page": 44,
 						"report": "SustainabilityReport",
-						"tagName": "deliverables"
+						"tagName": "schemas"
 					},
-					"quality": "Incomplete",
-					"comment": "reboot neural bus",
-					"valueAsAbsolute": 680372.3628050648
+					"quality": "Audited",
+					"comment": "compress redundant application",
+					"valueAsAbsolute": 651926.957780961
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 516707.90045754984,
-					"quality": "Estimated"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.4885,
+					"value": 541728.9647040889,
 					"dataSource": {
-						"page": 166,
-						"report": "AnnualReport",
-						"tagName": "functionalities"
-					},
-					"quality": "Reported",
-					"comment": "navigate primary port",
-					"valueAsAbsolute": 462125.0001597218
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 760786.6954640485,
-					"dataSource": {
-						"page": 265,
-						"report": "IntegratedReport",
-						"tagName": "web services"
-					},
-					"quality": "Reported",
-					"comment": "generate back-end monitor"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.6675,
-					"dataSource": {
-						"page": 921,
+						"page": 41,
 						"report": "SustainabilityReport",
-						"tagName": "action-items"
-					},
-					"quality": "Incomplete",
-					"comment": "back up wireless sensor",
-					"valueAsAbsolute": 579286.9824450463
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Hoossland",
-			"headquartersPostalCode": "11257",
-			"sector": "models",
-			"identifiers": {
-				"Lei": [
-					"5FUWHMBZQJaTwNwc93Ot"
-				],
-				"Isin": [],
-				"PermId": [
-					"o5LuBIvqdU"
-				],
-				"Ticker": [
-					"o8gahrc"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"L8k0kElNC"
-				],
-				"CompanyRegistrationNumber": [
-					"uik9nywl9wcjy2C"
-				]
-			},
-			"countryCode": "VE",
-			"companyAlternativeNames": [
-				"Dieckmann-Ahlke",
-				"Hamann-Bieler",
-				"Manns, Morgenstern und Prey",
-				"Thyssen GmbH"
-			],
-			"companyLegalForm": "GmbH",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"numberOfEmployees": 64097,
-			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Bauschinger-Petzold",
-				"dataSource": {
-					"page": 1120,
-					"report": "AnnualReport",
-					"tagName": "ROI"
-				}
-			},
-			"reportingObligation": "No",
-			"opex": {},
-			"capex": {},
-			"revenue": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 942,
-						"report": "AnnualReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Reported",
-					"comment": "back up digital alarm"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.8692,
-					"dataSource": {
-						"page": 247,
-						"report": "AnnualReport",
 						"tagName": "partnerships"
 					},
-					"quality": "Estimated",
-					"comment": "reboot solid state array"
+					"quality": "Audited",
+					"comment": "synthesize cross-platform firewall"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.6374,
+					"valueAsPercentage": 0.1699,
 					"dataSource": {
-						"page": 1030,
-						"report": "AnnualReport",
-						"tagName": "blockchains"
+						"page": 809,
+						"report": "SustainabilityReport",
+						"tagName": "bandwidth"
 					},
-					"quality": "Reported",
-					"comment": "program redundant sensor"
+					"quality": "Audited",
+					"comment": "back up online circuit",
+					"valueAsAbsolute": 164686.3320027478
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 257290.85644707084,
+					"dataSource": {
+						"page": 1013,
+						"report": "SustainabilityReport",
+						"tagName": "experiences"
+					},
+					"quality": "Incomplete",
+					"comment": "index redundant system"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.5479,
+					"quality": "Estimated",
+					"valueAsAbsolute": 200887.68610730767
 				}
 			}
 		},
 		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Annabellescheid",
+			"sector": "supply-chains",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [
+					"qECJqr7"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"gjrtR4JeX"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IN",
+			"companyAlternativeNames": [
+				"Lokar Gruppe"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://flott-feuer.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "Yes",
+			"opex": {
+				"alignedData": {
+					"quality": "Estimated"
+				}
+			},
+			"capex": {
+				"alignedData": {
+					"quality": "Incomplete"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 515,
+						"report": "IntegratedReport",
+						"tagName": "deliverables"
+					},
+					"quality": "Reported",
+					"comment": "navigate virtual port"
+				},
+				"eligibleData": {
+					"dataSource": {
+						"page": 23,
+						"report": "IntegratedReport",
+						"tagName": "technologies"
+					},
+					"quality": "Audited",
+					"comment": "transmit 1080p program",
+					"valueAsAbsolute": 470478.0742409639
+				}
+			}
+		},
+		"reportingPeriod": "2021"
 	}
 ]
