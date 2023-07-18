@@ -7,7 +7,8 @@
       :validation-label="validationLabel ?? label"
       :validation="`number|between:0,100|${validation}`"
       :placeholder="placeholder ?? 'Value in %'"
-      inner-class="short"
+      v-model="percentageFieldValue"
+      :innerClass="innerClass"
     />
   </div>
 </template>
@@ -21,6 +22,21 @@ import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/F
 export default defineComponent({
   name: "PercentageFormField",
   components: { FormKit, UploadFormHeader },
-  props: FormFieldPropsWithPlaceholder,
+  computed: {
+    percentageFieldValue: {
+      get(): string {
+        return this.percentageFieldValueBind;
+      },
+      set(newValue: string) {
+        this.$emit("update:percentageFieldValueBind", newValue);
+      },
+    },
+  },
+  props: {
+    ...FormFieldPropsWithPlaceholder,
+    percentageFieldValueBind: {
+      type: [String, Number],
+    },
+  },
 });
 </script>

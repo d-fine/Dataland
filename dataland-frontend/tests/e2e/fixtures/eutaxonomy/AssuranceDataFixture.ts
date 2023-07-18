@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker/locale/de";
+import { faker } from "@faker-js/faker";
 import { generateDataSource } from "@e2e/fixtures/common/DataSourceFixtures";
 import { AssuranceData, AssuranceDataAssuranceEnum } from "@clients/backend";
 import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";

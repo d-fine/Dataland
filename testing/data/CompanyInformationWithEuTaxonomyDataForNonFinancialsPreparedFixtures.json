@@ -2,259 +2,274 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "West Vincent",
-			"headquartersPostalCode": "66129",
-			"sector": "action-items",
+			"headquarters": "Mockenhauptburg",
+			"sector": "functionalities",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"KyX134xhdDjTV3hxpthe"
+				],
 				"Isin": [],
 				"PermId": [],
-				"Ticker": [
-					"9h4W2GK"
+				"Ticker": [],
+				"Duns": [
+					"ckUccyDWK"
 				],
-				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"xIBSlgNPxD5oDte"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AZ",
-			"companyAlternativeNames": [
-				"Gerschler-Reinelt",
-				"Salzer-Conrad",
-				"Stanger-Kölotzei"
-			],
-			"website": "https://unvergleichbar-theater.net/",
+			"countryCode": "HN",
+			"companyAlternativeNames": [],
+			"website": "https://heroisch-auge.name",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-08-01",
+			"numberOfEmployees": 66533,
 			"referencedReports": {
-				"SustainabilityReport": {
+				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "FJD"
+					"reportDate": "2023-01-17",
+					"currency": "BRL"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"reportDate": "2023-05-08",
-					"currency": "SHP"
+					"currency": "XPF"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-12-29",
+					"currency": "SYP"
+				}
+			},
+			"assurance": {
+				"assurance": "ReasonableAssurance"
+			},
+			"scopeOfEntities": "NA",
+			"opex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.5266,
+					"quality": "NA"
+				}
+			},
+			"capex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.5715,
+					"quality": "NA"
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"valueAsPercentage": 0.2251,
+					"quality": "NA"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Nord Maditaland",
+			"sector": "mindshare",
+			"identifiers": {
+				"Lei": [
+					"IVIoqDtx9IMSuYoCfln2"
+				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"pPniL5WlA"
+				],
+				"VatNumber": [
+					"31xG4OXMr"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PK",
+			"companyAlternativeNames": [],
+			"website": "https://putzig-hand.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-08-16",
+					"currency": "SBD"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
 				"dataSource": {
-					"page": 352,
-					"report": "SustainabilityReport",
-					"tagName": "deliverables"
+					"page": 128,
+					"report": "IntegratedReport",
+					"tagName": "platforms"
 				}
 			},
-			"scopeOfEntities": "Yes",
+			"scopeOfEntities": "No",
 			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
 			"opex": {
+				"totalAmount": {
+					"value": 658598.0589850806,
+					"dataSource": {
+						"page": 1112,
+						"report": "IntegratedReport",
+						"tagName": "content"
+					},
+					"quality": "Audited",
+					"comment": "bypass solid state transmitter"
+				},
 				"eligibleData": {
-					"valueAsPercentage": 0.9714,
-					"quality": "NA"
+					"valueAsPercentage": 0.2872,
+					"dataSource": {
+						"page": 181,
+						"report": "IntegratedReport",
+						"tagName": "markets"
+					},
+					"quality": "Reported",
+					"comment": "reboot multi-byte microchip",
+					"valueAsAbsolute": 534888.6078223586
 				}
 			},
 			"capex": {
+				"totalAmount": {
+					"value": 88376.616302412,
+					"dataSource": {
+						"page": 476,
+						"report": "IntegratedReport",
+						"tagName": "experiences"
+					},
+					"quality": "Audited",
+					"comment": "override 1080p pixel"
+				},
 				"eligibleData": {
-					"valueAsPercentage": 0.3255,
-					"quality": "NA"
+					"valueAsPercentage": 0.8085,
+					"dataSource": {
+						"page": 42,
+						"report": "IntegratedReport",
+						"tagName": "schemas"
+					},
+					"quality": "Reported",
+					"comment": "connect wireless driver",
+					"valueAsAbsolute": 683760.1622566581
 				}
 			},
 			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.9602,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Ost Quirinscheid",
-			"sector": "metrics",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"sLvTPt5qjzDT"
-				],
-				"PermId": [],
-				"Ticker": [
-					"a3Ar0OB"
-				],
-				"Duns": [
-					"d4WYzutVm"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"SNmX27PPsR2s318"
-				]
-			},
-			"countryCode": "TW",
-			"companyAlternativeNames": [
-				"Bieler-Knut",
-				"Mockenhaupt GmbH",
-				"Wessel GmbH"
-			],
-			"website": "https://prinzipientreu-stunde.ch/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-06-22",
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-10-25",
-					"currency": "FKP"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-06-24",
-					"currency": "SGD"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Giesa-Mulrain"
-			},
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
-			"opex": {
 				"totalAmount": {
-					"value": 600160.3531534784,
-					"dataSource": {
-						"page": 744,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
-					},
-					"quality": "Reported",
-					"comment": "reboot redundant bus"
+					"value": 165758.09742789716,
+					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.3109,
-					"dataSource": {
-						"page": 525,
-						"report": "AnnualReport",
-						"tagName": "action-items"
-					},
-					"quality": "Audited",
-					"comment": "program multi-byte interface",
-					"valueAsAbsolute": 878845.9247443825
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 379820.94164472073,
-					"dataSource": {
-						"page": 1030,
-						"report": "SustainabilityReport",
-						"tagName": "communities"
-					},
-					"quality": "Reported",
-					"comment": "index bluetooth circuit"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.0402,
+					"valueAsPercentage": 0.9244,
 					"quality": "Estimated",
-					"valueAsAbsolute": 118521.03461278602
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 300887.6134175807,
-					"dataSource": {
-						"page": 540,
-						"report": "SustainabilityReport",
-						"tagName": "metrics"
-					},
-					"quality": "Incomplete",
-					"comment": "generate virtual circuit"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.5913,
-					"dataSource": {
-						"page": 334,
-						"report": "SustainabilityReport",
-						"tagName": "action-items"
-					},
-					"quality": "Audited",
-					"comment": "index wireless protocol",
-					"valueAsAbsolute": 820273.543940857
+					"valueAsAbsolute": 255466.80982224643
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Ost Efe",
-			"headquartersPostalCode": "91778",
-			"sector": "deliverables",
+			"headquarters": "Süd Joleenland",
+			"headquartersPostalCode": "44262",
+			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"H2BIyN2IN"
+				"Lei": [
+					"FiTECDUhdwkTjyz7CvTf"
 				],
-				"CompanyRegistrationNumber": [
-					"2MjJxiXRsdtk2Oy"
-				]
+				"Isin": [],
+				"PermId": [
+					"YsNcO9NFZu"
+				],
+				"Ticker": [
+					"ihH2ytX"
+				],
+				"Duns": [
+					"CSMJKyCSL"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AZ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"countryCode": "MU",
+			"companyAlternativeNames": [
+				"Assmus GmbH & Co. KG",
+				"Kinzy-Riethmüller",
+				"Malkus, Rheder und Dieckmann",
+				"Pohl, Kallensee und Sammert"
+			],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-09-03",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance"
 			},
-			"reportingObligation": "No",
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
-				"alignedData": {
-					"valueAsPercentage": 0.8229,
-					"quality": "Estimated"
+				"totalAmount": {
+					"value": 433726.1985754594,
+					"dataSource": {
+						"page": 665,
+						"report": "ESEFReport",
+						"tagName": "blockchains"
+					},
+					"quality": "Reported",
+					"comment": "synthesize cross-platform microchip"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.9849,
+					"dataSource": {
+						"page": 931,
+						"report": "ESEFReport",
+						"tagName": "web services"
+					},
+					"quality": "Audited",
+					"comment": "index optical circuit",
+					"valueAsAbsolute": 451703.3365322277
 				}
 			},
 			"capex": {
 				"totalAmount": {
+					"value": 929936.7674393579,
 					"dataSource": {
-						"page": 555,
-						"report": "SustainabilityReport",
-						"tagName": "e-markets"
+						"page": 1189,
+						"report": "IntegratedReport",
+						"tagName": "channels"
 					},
 					"quality": "Estimated",
-					"comment": "override solid state application"
+					"comment": "synthesize 1080p interface"
 				},
-				"eligibleData": {
-					"valueAsPercentage": 0.7733,
+				"alignedData": {
 					"dataSource": {
-						"page": 424,
-						"report": "ESEFReport",
-						"tagName": "applications"
+						"page": 726,
+						"report": "IntegratedReport",
+						"tagName": "networks"
 					},
 					"quality": "Audited",
-					"comment": "bypass back-end sensor",
-					"valueAsAbsolute": 824243.0988466367
+					"comment": "quantify neural array",
+					"valueAsAbsolute": 78350.05460074171
+				},
+				"eligibleData": {
+					"quality": "Estimated",
+					"valueAsAbsolute": 858919.2646672018
 				}
 			},
 			"revenue": {
-				"eligibleData": {
-					"quality": "Incomplete"
+				"totalAmount": {
+					"value": 312289.7433466278,
+					"dataSource": {
+						"page": 879,
+						"report": "IntegratedReport",
+						"tagName": "synergies"
+					},
+					"quality": "Reported",
+					"comment": "index solid state card"
 				}
 			}
 		},

@@ -7,7 +7,6 @@
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
-      inner-class="short"
     />
   </div>
 </template>

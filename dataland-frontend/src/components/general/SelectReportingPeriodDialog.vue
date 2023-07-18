@@ -12,6 +12,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { DataMetaInformation } from "@clients/backend";
+import { compareReportingPeriods } from "@/utils/DataTableDisplay";
 
 interface ReportingPeriodTableEntry {
   reportingPeriod: string;
@@ -31,19 +32,20 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.reportingPeriodDataTableContents();
+    this.setReportingPeriodDataTableContents();
   },
   methods: {
     /**
      * It extracts data from Dataset and builds a link to edit the report on its basis
      *
      */
-    reportingPeriodDataTableContents(): void {
+    setReportingPeriodDataTableContents(): void {
       if (this.mapOfReportingPeriodToActiveDataset) {
-        let key: string;
-        let value: DataMetaInformation;
-        for ([key, value] of this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>) {
-          this.dataTableContents.unshift({
+        const sortedReportingPeriodMetaInfoPairs = Array.from(
+          (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries()
+        ).sort((firstEl, secondEl) => compareReportingPeriods(firstEl[0], secondEl[0]));
+        for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
+          this.dataTableContents.push({
             reportingPeriod: key,
             editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,
           });
