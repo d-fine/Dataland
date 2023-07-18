@@ -42,6 +42,7 @@ function humanizeViaMapping(rawText: string): string {
     "eutaxonomy-non-financials": "EU Taxonomy for non-financial companies",
     lksg: "LkSG",
     sfdr: "SFDR",
+    sme: "SME",
     p2p: "WWF Pathway to Paris",
     inhouseproduction: "In-house Production",
     contractprocessing: "Contract Processing",
