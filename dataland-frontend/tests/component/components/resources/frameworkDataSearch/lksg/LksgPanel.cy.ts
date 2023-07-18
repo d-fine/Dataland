@@ -2,14 +2,14 @@ import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestAndUtils";
-import { CompanyAssociatedDataLksgData,
+import {
+  CompanyAssociatedDataLksgData,
   DataAndMetaInformationLksgData,
   DataMetaInformation,
   DataTypeEnum,
   LksgData,
   QaStatus,
 } from "@clients/backend";
-import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -192,6 +192,12 @@ describe("Component test for LksgPanel", () => {
     const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
     const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
-    sortReportingPeriodsToDisplayAsColumnsTest(firstYearObject, secondYearObject, firstOtherObject, secondOtherObject, shouldSwapList);
+    sortReportingPeriodsToDisplayAsColumnsTest(
+      firstYearObject,
+      secondYearObject,
+      firstOtherObject,
+      secondOtherObject,
+      shouldSwapList
+    );
   });
 });

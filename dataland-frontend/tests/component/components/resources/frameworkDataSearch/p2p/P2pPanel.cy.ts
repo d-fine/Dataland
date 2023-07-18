@@ -12,7 +12,6 @@ import {
   QaStatus,
 } from "@clients/backend";
 
-
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
 
@@ -180,6 +179,12 @@ describe("Component test for P2pPanel", () => {
     const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
     const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
-    sortReportingPeriodsToDisplayAsColumnsTest(firstYearObject, secondYearObject, firstOtherObject, secondOtherObject, shouldSwapList);
+    sortReportingPeriodsToDisplayAsColumnsTest(
+      firstYearObject,
+      secondYearObject,
+      firstOtherObject,
+      secondOtherObject,
+      shouldSwapList
+    );
   });
 });

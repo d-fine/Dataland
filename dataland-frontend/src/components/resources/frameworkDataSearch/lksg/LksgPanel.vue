@@ -26,6 +26,8 @@ import { DataAndMetaInformationLksgData, LksgData, LksgProcurementCategory } fro
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -256,7 +258,7 @@ export default defineComponent({
     },
 
     /**
-     * Reformats the kpis into the necessary format for the frontend
+     *
      * @param kpiField the Field to which the value belongs
      * @param kpiValue the value that should be reformated corresponding to its field
      * @returns the reformatted value ready for display
