@@ -165,14 +165,14 @@ describe("Component test for LksgPanel", () => {
     const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
     const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
-    const boolList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
+    const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], boolList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
       ).to.deep.equal([firstYearObject, secondYearObject]);
 
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], boolList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
       ).to.deep.equal([firstOtherObject, secondOtherObject]);
     }
     expect(
@@ -184,16 +184,16 @@ describe("Component test for LksgPanel", () => {
 /**
  * Calls the testfunction for sorting and swaps the list entries if necessary.
  * @param  listOfDataDateToDisplayAsColumns list of objects to sort
- * @param shouldSwap toogles the swap of both list elements in listOfDataDateToDisplayAsColumns (in case there are two.
+ * @param boolSwap toogles the swap of both list elements in listOfDataDateToDisplayAsColumns (in case there are two.
  * Shortens the test-function and avoids code duplications.
  * @returns sorted list
  */
 function swapAndSortReportingPeriodsToDisplayAsColumns(
   listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
-  shouldSwap = false
+  boolSwap = false
 ): ReportingPeriodOfDataSetWithId[] {
   let swappedList: ReportingPeriodOfDataSetWithId[];
-  if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {
+  if (boolSwap && listOfDataDateToDisplayAsColumns.length == 2) {
     swappedList = listOfDataDateToDisplayAsColumns.slice();
     swappedList[0] = listOfDataDateToDisplayAsColumns[1];
     swappedList[1] = listOfDataDateToDisplayAsColumns[0];
