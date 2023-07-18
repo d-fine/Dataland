@@ -10,6 +10,7 @@ import {
   PathwaysToParisData,
   QaStatus,
 } from "@clients/backend";
+import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestUtils";
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
