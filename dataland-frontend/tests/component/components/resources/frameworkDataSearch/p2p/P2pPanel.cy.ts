@@ -1,7 +1,7 @@
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import {swapAndSortReportingPeriodsToDisplayAsColumns} from "@ct/testUtils/SwapForSortTest";
+import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestAndUtils";
 import {
   CompanyAssociatedDataPathwaysToParisData,
   DataAndMetaInformationPathwaysToParisData,
@@ -11,7 +11,7 @@ import {
   PathwaysToParisData,
   QaStatus,
 } from "@clients/backend";
-import {sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
@@ -180,17 +180,6 @@ describe("Component test for P2pPanel", () => {
     const firstOtherObject = {dataId: "3", reportingPeriod: "Q2-2020"};
     const secondOtherObject = {dataId: "6", reportingPeriod: "Q3-2020"};
     const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
-    for (let i = 0; i < 2; i++) {
-      expect(
-          swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
-      ).to.deep.equal([firstYearObject, secondYearObject]);
-
-      expect(
-          swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
-      ).to.deep.equal([firstOtherObject, secondOtherObject]);
-    }
-    expect(
-        sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
-    ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
+    sortReportingPeriodsToDisplayAsColumnsTest(firstYearObject, secondYearObject, firstOtherObject, secondOtherObject, shouldSwapList);
   });
 });
