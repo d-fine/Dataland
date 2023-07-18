@@ -4,49 +4,52 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
-    <P2pCompanyDataTable
+    <DisplayFrameworkDataTable
       :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
-      :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+      :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
       headerInputStyle="width: 30vw;"
     />
   </div>
 </template>
 
 <script lang="ts">
+import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
+import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Subcategory } from "@/utils/GenericFrameworkTypes";
-import { reformatValueForDisplay } from "@/utils/FrameworkPanelDisplay";
+import { Subcategory, Field } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationLksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData, LksgData, LksgProcurementCategory } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
+import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "LksgPanel",
-  components: { P2pCompanyDataTable },
+  components: { DisplayFrameworkDataTable },
   data() {
     return {
       firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
-      listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
+      arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
     };
   },
   props: PanelProps,
   watch: {
     companyId() {
-      this.listOfDataSetReportingPeriods = [];
+      this.arrayOfReportingPeriodWithDataId = [];
       void this.fetchLksgData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
-        this.listOfDataSetReportingPeriods = [];
+        this.arrayOfReportingPeriodWithDataId = [];
         void this.fetchLksgData();
       }
     },
@@ -110,7 +113,7 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfLksgDataset]: reformatValueForDisplay(kpiField, kpiValue) },
+        content: { [dataIdOfLksgDataset]: this.reformatValueForDisplay(kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -126,30 +129,164 @@ export default defineComponent({
         this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
           const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfDataSetReportingPeriods.push({
+          this.arrayOfReportingPeriodWithDataId.push({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(oneLksgDataset.data)) {
-            for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
-              string,
-              object
-            ][]) {
-              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
-                const subcategory = assertDefined(
-                  lksgDataModel
-                    .find((category) => category.name === categoryKey)
-                    ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
-                );
-                this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataIdOfLksgDataset);
-              }
-            }
-          }
+          this.addKpisOfOneDatasetToTableModel(oneLksgDataset.data, dataIdOfLksgDataset);
         });
       }
-      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
-        this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
+      this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
+        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
       );
+    },
+    /**
+     * Adds the kpis of an LkSG dataset to the model passed to the data table
+     * @param lksgData the LkSG dataset to iterate over
+     * @param dataId the datasets ID
+     */
+    addKpisOfOneDatasetToTableModel(lksgData: LksgData, dataId: string) {
+      for (const [categoryKey, categoryObject] of Object.entries(lksgData) as [string, object | null]) {
+        if (categoryObject == null) continue;
+        for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
+          string,
+          object | null
+        ][]) {
+          if (subCategoryObject == null) continue;
+          for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
+            if (kpiValue == null) continue;
+            const subcategory = assertDefined(
+              lksgDataModel
+                .find((category) => category.name === categoryKey)
+                ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
+            );
+            this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataId);
+          }
+        }
+      }
+    },
+
+    /**
+     * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
+     * @param inputNumber The number to convert
+     * @returns a string with the converted number and "MM" at the end
+     */
+    convertToMillions(inputNumber: number): string {
+      return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
+    },
+
+    /**
+     * Converts a nace code to a human readable value
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted Country value ready for display
+     */
+    reformatIndustriesValue(kpiValue: KpiValue) {
+      return Array.isArray(kpiValue)
+        ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
+        : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+    },
+
+    /**
+     * Converts a country code to a human readable value
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted Country value ready for display
+     */
+    reformatCountriesValue(kpiValue: KpiValue) {
+      return Array.isArray(kpiValue)
+        ? kpiValue.map((countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort))
+        : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+    },
+
+    /**
+     * Generates a list of readable strings (or just a single one) combining suppliers and their associated countries
+     * @param numberOfSuppliersPerCountryCode the map of number of suppliers and associated companies
+     * from which strings are written
+     * @returns the constructed collection of readable strings
+     */
+    generateReadableCombinationOfNumberOfSuppliersAndCountries(
+      numberOfSuppliersPerCountryCode?: Map<string, number | undefined | null>
+    ) {
+      if (numberOfSuppliersPerCountryCode != undefined) {
+        const readableListOfSuppliersAndCountries = Array.from(numberOfSuppliersPerCountryCode.entries()).map(
+          ([countryCode, numberOfSuppliers]) => {
+            const countryName = getCountryNameFromCountryCode(countryCode);
+            if (numberOfSuppliers != undefined) {
+              return String(numberOfSuppliers) + " suppliers from " + countryName;
+            } else {
+              return "There are suppliers from " + countryName;
+            }
+          }
+        );
+        if (readableListOfSuppliersAndCountries.length > 1) {
+          return readableListOfSuppliersAndCountries;
+        } else {
+          return readableListOfSuppliersAndCountries[0];
+        }
+      } else {
+        return null;
+      }
+    },
+
+    /**
+     * Converts the map of ProcurementCategory and LksgProductCategory into an array for a proper handling of the
+     * DetailsCompanyDataTable in the LksgCompanyDataTable (modal showing information related to Procurement Categories)
+     * @param inputObject Map to convert to array
+     * @returns The constructed map
+     */
+    reformatProcurementCategoriesValue(inputObject: Map<ProcurementCategoryType, LksgProcurementCategory> | null) {
+      if (inputObject == null) return null;
+      const inputObjectEntries = Object.entries(inputObject) as [ProcurementCategoryType, LksgProcurementCategory][];
+      return inputObjectEntries.map((inputEntry: [ProcurementCategoryType, LksgProcurementCategory]) => {
+        const [procurementCategoryType, lksgProcurementCategory] = inputEntry;
+        const definitionsOfProductTypeOrService =
+          lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes.length > 1
+            ? lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes
+            : lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes[0] ?? "";
+
+        return {
+          procurementCategory: procurementCategoryType,
+          definitionsOfProductTypeOrService,
+          suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
+            new Map(Object.entries(lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {}))
+          ),
+          percentageOfTotalProcurement:
+            lksgProcurementCategory.percentageOfTotalProcurement != null
+              ? String(lksgProcurementCategory.percentageOfTotalProcurement)
+              : null,
+        };
+      });
+    },
+
+    /**
+     *
+     * @param kpiField the Field to which the value belongs
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted value ready for display
+     */
+    reformatValueForDisplay(kpiField: Field, kpiValue: KpiValue): KpiValue {
+      if (kpiField.name === "totalRevenue" && typeof kpiValue === "number") {
+        kpiValue = this.convertToMillions(kpiValue);
+      }
+      if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
+        kpiValue = this.reformatIndustriesValue(kpiValue);
+      }
+      if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
+        kpiValue = this.reformatCountriesValue(kpiValue);
+      }
+      if (kpiField.name === "procurementCategories") {
+        kpiValue = this.reformatProcurementCategoriesValue(
+          kpiValue as Map<ProcurementCategoryType, LksgProcurementCategory> | null
+        );
+      }
+
+      let returnValue;
+
+      if (kpiField.options?.length) {
+        const filteredOption = kpiField.options.find((option: DropdownOption) => option.value === kpiValue);
+        if (filteredOption) returnValue = filteredOption.label;
+      }
+
+      return returnValue ?? kpiValue;
     },
   },
 });

@@ -127,7 +127,7 @@
               v-model="lei"
               type="text"
               :placeholder="companyDataNames.lei"
-              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Lei}`"
+              :validation="`identifierDoesNotExistValidator:${IdentifierType.Lei}`"
             />
 
             <UploadFormHeader :label="companyDataNames.isin" :description="companyDataExplanations.isin" />
@@ -136,7 +136,7 @@
               v-model="isin"
               type="text"
               :placeholder="companyDataNames.isin"
-              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Isin}`"
+              :validation="`identifierDoesNotExistValidator:${IdentifierType.Isin}`"
             />
 
             <UploadFormHeader :label="companyDataNames.ticker" :description="companyDataExplanations.ticker" />
@@ -145,7 +145,7 @@
               v-model="ticker"
               type="text"
               :placeholder="companyDataNames.ticker"
-              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Ticker}`"
+              :validation="`identifierDoesNotExistValidator:${IdentifierType.Ticker}`"
             />
 
             <UploadFormHeader :label="companyDataNames.permId" :description="companyDataExplanations.permId" />
@@ -154,7 +154,7 @@
               v-model="permId"
               type="text"
               :placeholder="companyDataNames.permId"
-              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.PermId}`"
+              :validation="`identifierDoesNotExistValidator:${IdentifierType.PermId}`"
             />
 
             <UploadFormHeader :label="companyDataNames.duns" :description="companyDataExplanations.duns" />
@@ -163,7 +163,7 @@
               v-model="duns"
               type="text"
               :placeholder="companyDataNames.duns"
-              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Duns}`"
+              :validation="`identifierDoesNotExistValidator:${IdentifierType.Duns}`"
             />
 
             <UploadFormHeader
@@ -175,7 +175,7 @@
               v-model="companyRegistrationNumber"
               type="text"
               :placeholder="companyDataNames.companyRegistrationNumber"
-              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber}`"
+              :validation="`identifierDoesNotExistValidator:${IdentifierType.CompanyRegistrationNumber}`"
             />
 
             <UploadFormHeader :label="companyDataNames.vatNumber" :description="companyDataExplanations.vatNumber" />
@@ -184,7 +184,7 @@
               v-model="vatNumber"
               type="text"
               :placeholder="companyDataNames.vatNumber"
-              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.VatNumber}`"
+              :validation="`identifierDoesNotExistValidator:${IdentifierType.VatNumber}`"
             />
           </FormKit>
 
@@ -209,7 +209,7 @@ import { FormKit } from "@formkit/vue";
 import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
+import { CompanyInformation, IdentifierType } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
 import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
@@ -263,7 +263,7 @@ export default defineComponent({
     sector: "",
     website: "",
     checkCustomInputs,
-    identifiers: [] as Array<CompanyIdentifier>,
+    identifiers: {} as { [key: string]: Array<string> },
     enteredCompanyAlternativeName: "",
     allCountryCodes: getAllCountryCodes(),
     postCompanyProcessed: false,
@@ -273,7 +273,7 @@ export default defineComponent({
     companyDataExplanations,
     companyDataNames,
     gicsSectors,
-    CompanyIdentifierIdentifierTypeEnum,
+    IdentifierType,
   }),
   methods: {
     /**
@@ -282,10 +282,7 @@ export default defineComponent({
      * @param identifierType the type of the identifier to check
      * @returns true if and only if there is no company with the in the node specified identifier of the specified type
      */
-    async identifierDoesNotExistValidator(
-      node: FormKitNode,
-      identifierType: CompanyIdentifierIdentifierTypeEnum
-    ): Promise<boolean> {
+    async identifierDoesNotExistValidator(node: FormKitNode, identifierType: IdentifierType): Promise<boolean> {
       try {
         await (
           await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
@@ -300,30 +297,26 @@ export default defineComponent({
     },
     /**
      * Adds a CompanyIdentifier to the array of identifiers
-     * @param identifierType the type of the identifier as specified in CompanyIdentifierIdentifierTypeEnum
+     * @param identifierType the type of the identifier as specified in IdentifierType
      * @param identifierValue the value of the identifier
      */
-    addIdentifier(identifierType: CompanyIdentifierIdentifierTypeEnum, identifierValue: string): void {
+    setIdentifier(identifierType: IdentifierType, identifierValue: string): void {
       if (identifierValue !== "") {
-        const newIdentifier = {
-          identifierType: identifierType,
-          identifierValue: identifierValue,
-        } as CompanyIdentifier;
-        this.identifiers.push(newIdentifier);
+        this.identifiers[identifierType] = [identifierValue];
       }
     },
     /**
      * Creates a new array of identifiers using the currently existing values
      */
     collectIdentifiers(): void {
-      this.identifiers = new Array<CompanyIdentifier>();
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Lei, this.lei);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Isin, this.isin);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Ticker, this.ticker);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.PermId, this.permId);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Duns, this.duns);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber, this.companyRegistrationNumber);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.VatNumber, this.vatNumber);
+      this.identifiers = {};
+      this.setIdentifier(IdentifierType.Lei, this.lei);
+      this.setIdentifier(IdentifierType.Isin, this.isin);
+      this.setIdentifier(IdentifierType.Ticker, this.ticker);
+      this.setIdentifier(IdentifierType.PermId, this.permId);
+      this.setIdentifier(IdentifierType.Duns, this.duns);
+      this.setIdentifier(IdentifierType.CompanyRegistrationNumber, this.companyRegistrationNumber);
+      this.setIdentifier(IdentifierType.VatNumber, this.vatNumber);
     },
     /**
      * Adds the value from the input field for company alternative names to the corresponding array.

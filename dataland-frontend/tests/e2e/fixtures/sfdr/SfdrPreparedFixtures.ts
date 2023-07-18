@@ -1,6 +1,6 @@
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { SfdrData } from "@clients/backend";
-import { generateSfdrData } from "./SfdrDataFixtures";
+import { generateOneSfdrDatasetWithManyNulls, generateSfdrData } from "./SfdrDataFixtures";
 import { FixtureData } from "@sharedUtils/Fixtures";
 
 type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>;
@@ -23,6 +23,13 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   for (let i = 0; i < manipulatorFunctions.length; i++) {
     preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
   }
+
+  preparedFixtures.push(
+    manipulateFixtureForSfdrDatasetWithLotsOfNulls(
+      generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]
+    )
+  );
+
   return preparedFixtures;
 }
 
@@ -46,4 +53,14 @@ function manipulateFixtureForTwoSfdrDataSetsInDifferentYears(input: FixtureData<
   input.companyInformation.companyName = "two-sfdr-data-sets-in-different-years";
   input.t.social!.general!.fiscalYearEnd = "2020-01-03";
   return input;
+}
+
+/**
+ * Sets the company name of a SFDR fixture dataset to a specific given name
+ * @param fixture Fixture data to be manipulated
+ * @returns the manipulated input
+ */
+function manipulateFixtureForSfdrDatasetWithLotsOfNulls(fixture: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  fixture.companyInformation.companyName = "sfdr-a-lot-of-nulls";
+  return fixture;
 }

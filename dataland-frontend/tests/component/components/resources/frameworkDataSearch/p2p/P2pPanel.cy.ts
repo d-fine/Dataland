@@ -10,8 +10,7 @@ import {
   PathwaysToParisData,
   QaStatus,
 } from "@clients/backend";
-import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import {length} from "axios";
+import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestUtils";
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
@@ -59,7 +58,7 @@ describe("Component test for P2pPanel", () => {
   }
 
   it("Check P2p view page for company with one P2p data set", () => {
-    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-two-sectors", preparedFixtures);
+    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-three-sectors", preparedFixtures);
     const p2pData = preparedFixture.t;
 
     cy.intercept("/api/data/p2p/mock-data-id", {
@@ -111,15 +110,15 @@ describe("Component test for P2pPanel", () => {
     cy.get("span[data-test=preCalcinedClayUsage]").should("exist");
 
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseenter", "center");
-    cy.get(".p-tooltip").should("be.visible").contains("Share of pre-calcined");
+    cy.get(".p-tooltip").should("be.visible").should("contain.text", "Share of pre-calcined");
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseleave");
   });
 
   /**
-   * This functions imitates an api response of the /data/lksg/companies/mock-company-id endpoint
-   * to include 6 active Lksg datasets from different years to test the simultaneous display of multiple Lksg
+   * This functions imitates an api response of the /data/p2p/companies/mock-company-id endpoint
+   * to include 6 active p2p datasets from different years to test the simultaneous display of multiple P2P
    * datasets (constructed datasets range from 2023 to 2028)
-   * @param baseDataset the lksg dataset used as a basis for constructing the 6 mocked ones
+   * @param baseDataset the p2p dataset used as a basis for constructing the 6 mocked ones
    * @returns a mocked api response
    */
   function constructCompanyApiResponseForP2pForSixYears(
@@ -179,25 +178,13 @@ describe("Component test for P2pPanel", () => {
     const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
     const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
-
-    const objectArray = [firstYearObject, secondYearObject, firstOtherObject, secondOtherObject];
-    const indexArray = [[2,1], [1,2], [4,3], [3,4]];
-
-    let firstTemp, secondTemp;
-    for (let i = 0; i < 4; i++) {
-      firstTemp = [objectArray[i][indexArray[i][0]], objectArray[i][indexArray[i][1]]];
-      secondTemp = [firstTemp[1], firstTemp[0]];
-      expect(sortReportingPeriodsToDisplayAsColumns(firstTemp)).to.deep.equal(secondTemp);
-    }
-    expect(
-      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
-    ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
-
-    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([
-      firstYearObject,
+    const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
+    sortReportingPeriodsToDisplayAsColumnsTest(
       firstYearObject,
       secondYearObject,
-    ]);
+      firstOtherObject,
+      secondOtherObject,
+      shouldSwapList
+    );
   });
-
 });

@@ -1,82 +1,30 @@
 <template>
-  <div class="form-field">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <FormKit
-      type="list"
-      :name="name"
-      :label="label"
-      :validation="validation"
-      :validation-label="validationLabel!"
-      v-model="existingProductionSites"
-    >
-      <FormKit type="group" v-for="id in listOfProductionSiteIds" :key="id">
-        <div data-test="productionSiteSection" class="productionSiteSection">
-          <em
-            data-test="removeItemFromListOfProductionSites"
-            @click="removeItemFromListOfProductionSites(id)"
-            class="material-icons close-section"
-            >close</em
-          >
-          <ProductionSiteFormElement :id="id.toString()" />
-        </div>
-      </FormKit>
-      <PrimeButton
-        data-test="ADD-NEW-Production-Site-button"
-        label="ADD NEW Production Site"
-        class="p-button-text"
-        icon="pi pi-plus"
-        @click="addNewProductionSite"
-      />
-    </FormKit>
-  </div>
+  <FormListFormField
+    :name="name"
+    :label="label"
+    :description="description"
+    :required="required"
+    :validation="validation"
+    :validation-label="validationLabel"
+    display-one-sub-form-per-default
+    sub-form-component="ProductionSiteFormElement"
+    data-test-add-button="addNewProductionSiteButton"
+    label-add-button="ADD NEW Production Site"
+    data-test-sub-form="productionSiteSection"
+    data-test-remove-button="removeItemFromListOfProductionSites"
+  />
 </template>
 
 <script lang="ts">
-import { FormKit } from "@formkit/vue";
-import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
-import { LksgProductionSite } from "@clients/backend";
-import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import FormListFormField from "@/components/forms/parts/fields/FormListFormField.vue";
 
 export default defineComponent({
   name: "ProductionSitesFormField",
-  props: FormFieldProps,
-  data() {
-    return {
-      existingProductionSites: [] as LksgProductionSite[],
-      listOfProductionSiteIds: [0] as number[],
-      idCounter: 0,
-    };
-  },
+  props: BaseFormFieldProps,
   components: {
-    UploadFormHeader,
-    ProductionSiteFormElement,
-    FormKit,
-    PrimeButton,
-  },
-  mounted() {
-    for (let i = 1; i < this.existingProductionSites.length; i++) {
-      this.addNewProductionSite();
-    }
-  },
-  methods: {
-    /**
-     * Adds a new Object to the ProductionSite array
-     */
-    addNewProductionSite() {
-      this.idCounter++;
-      this.listOfProductionSiteIds.push(this.idCounter);
-    },
-
-    /**
-     * Remove Object from ProductionSite array
-     * @param id - the id of the object in the array
-     */
-    removeItemFromListOfProductionSites(id: number) {
-      this.listOfProductionSiteIds = this.listOfProductionSiteIds.filter((el) => el !== id);
-    },
+    FormListFormField,
   },
 });
 </script>

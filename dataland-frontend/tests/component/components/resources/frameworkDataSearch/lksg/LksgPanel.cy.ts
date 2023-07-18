@@ -1,6 +1,7 @@
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestUtils";
 import {
   CompanyAssociatedDataLksgData,
   DataAndMetaInformationLksgData,
@@ -9,7 +10,6 @@ import {
   LksgData,
   QaStatus,
 } from "@clients/backend";
-import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -22,14 +22,14 @@ describe("Component test for LksgPanel", () => {
 
   it("Should display the total revenue kpi in the correct format", () => {
     const pseudoLksgData = {
-      general: {masterData: {dataDate: "2023-01-01", totalRevenue: 1234567.89}},
+      general: { masterData: { dataDate: "2023-01-01", totalRevenue: 1234567.89 } },
     } as LksgData;
 
     cy.mountWithPlugins(LksgPanel, {
       data() {
         return {
           waitingForData: false,
-          lksgDataAndMetaInfo: [{data: pseudoLksgData} as DataAndMetaInformationLksgData],
+          lksgDataAndMetaInfo: [{ data: pseudoLksgData } as DataAndMetaInformationLksgData],
         };
       },
       // The code below is required to complete the component mock yet interferes with the type resolution of the
@@ -44,6 +44,32 @@ describe("Component test for LksgPanel", () => {
       },
     });
     cy.get("td:contains('1.23 MM')").should("exist");
+  });
+
+  it("Should be able to handle null values in a Lksg dataset and not display rows for those values", () => {
+    const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
+    cy.mountWithPlugins(LksgPanel, {
+      data() {
+        return {
+          waitingForData: false,
+          lksgDataAndMetaInfo: [{ data: preparedFixture.t } as DataAndMetaInformationLksgData],
+        };
+      },
+      // The code below is required to complete the component mock yet interferes with the type resolution of the
+      // mountWithPlugins function.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      created() {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,
+        this.convertLksgDataToFrontendFormat();
+      },
+    });
+    // make sure only dataDate is there and other cards aren't
+    cy.contains("span", "1999-12-24").should("exist");
+    cy.get("em").its("length").should("equal", 1);
+    cy.get("tr").its("length").should("equal", 3);
   });
 
   /**
@@ -155,34 +181,23 @@ describe("Component test for LksgPanel", () => {
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
       cy.get(`span.p-column-title`)
-          .eq(indexOfColumn)
-          .should("contain.text", (2029 - indexOfColumn).toString());
+        .eq(indexOfColumn)
+        .should("contain.text", (2029 - indexOfColumn).toString());
     }
   });
 
   it("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
-    const firstYearObject = {dataId: "5", reportingPeriod: "2022"};
-    const secondYearObject = {dataId: "2", reportingPeriod: "2020"};
-    const firstOtherObject = {dataId: "3", reportingPeriod: "Q2-2020"};
-    const secondOtherObject = {dataId: "6", reportingPeriod: "Q3-2020"};
-
-    const objectArray = [firstYearObject, secondYearObject, firstOtherObject, secondOtherObject];
-    const indexArray = [[2, 1], [1, 2], [4, 3], [3, 4]];
-
-    let firstTemp, secondTemp;
-    for (let i = 0; i < 4; i++) {
-      firstTemp = [objectArray[i][indexArray[i][0]], objectArray[i][indexArray[i][1]]];
-      secondTemp = [firstTemp[1], firstTemp[0]];
-      expect(sortReportingPeriodsToDisplayAsColumns(firstTemp)).to.deep.equal(secondTemp);
-    }
-    expect(
-        sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
-    ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
-
-    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([
-      firstYearObject,
+    const firstYearObject = { dataId: "5", reportingPeriod: "2022" };
+    const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
+    const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
+    const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
+    const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
+    sortReportingPeriodsToDisplayAsColumnsTest(
       firstYearObject,
       secondYearObject,
-    ]);
+      firstOtherObject,
+      secondOtherObject,
+      shouldSwapList
+    );
   });
 });

@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker/locale/de";
+import { faker } from "@faker-js/faker";
 import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";

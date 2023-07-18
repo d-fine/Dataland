@@ -1,8 +1,8 @@
 package org.dataland.e2etests.utils
 
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.FRONTEND_DISPLAYED_FRAMEWORKS
 
 class GeneralTestDataProvider {
@@ -19,8 +19,8 @@ class GeneralTestDataProvider {
             companyName,
             "DummyCity",
             (
-                listOf(
-                    CompanyIdentifier(CompanyIdentifier.IdentifierType.permId, getRandomAlphaNumericString()),
+                mapOf(
+                    IdentifierType.permId.value to listOf(getRandomAlphaNumericString()),
                 )
                 ),
             "DE",

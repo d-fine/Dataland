@@ -2,87 +2,65 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Rebekkadorf",
-			"sector": "content",
-			"identifiers": [
-				{
-					"identifierType": "Duns",
-					"identifierValue": "XHFF2SdC8"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "PhgtdiMIBlNR"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "iGZDp1TjXSao8dq1gNlg"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "1Yk8jXUNtd"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "PBYfLrh"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "2uh5wDoSM"
-				}
-			],
-			"countryCode": "BO",
+			"headquarters": "Mockenhauptburg",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [
+					"KyX134xhdDjTV3hxpthe"
+				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"ckUccyDWK"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "HN",
 			"companyAlternativeNames": [],
-			"website": "https://respektiert-tornado.name",
+			"website": "https://heroisch-auge.name",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"numberOfEmployees": 66533,
 			"referencedReports": {
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "JMD"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "MUR"
+					"reportDate": "2023-01-17",
+					"currency": "BRL"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-07-15",
-					"currency": "UYU"
+					"isGroupLevel": "NA",
+					"currency": "XPF"
 				},
-				"AnnualReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "Yes",
-					"reportDate": "2022-11-23",
-					"currency": "JPY"
+					"reportDate": "2022-12-29",
+					"currency": "SYP"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Eberhard KG",
-				"dataSource": {
-					"page": 439,
-					"report": "ESEFReport",
-					"tagName": "relationships"
-				}
+				"assurance": "ReasonableAssurance"
 			},
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "NA",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.4069,
+					"valueAsPercentage": 0.5266,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.2521,
+					"valueAsPercentage": 0.5715,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.7269,
+					"valueAsPercentage": 0.2251,
 					"quality": "NA"
 				}
 			}
@@ -92,237 +70,209 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Nord Anastasialand",
-			"headquartersPostalCode": "70613",
-			"sector": "action-items",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "PE7wkwl7Bai91Fo"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "GqLuhvyMb"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "oVcWlkNyaG"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "Ydtwvl8"
-				}
-			],
-			"countryCode": "BB",
-			"companyAlternativeNames": [
-				"Hübenbecker-Alexander",
-				"Ritschel-Mehl"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://kontrolliert-gesellschaft.org/",
+			"headquarters": "Nord Maditaland",
+			"sector": "mindshare",
+			"identifiers": {
+				"Lei": [
+					"IVIoqDtx9IMSuYoCfln2"
+				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"pPniL5WlA"
+				],
+				"VatNumber": [
+					"31xG4OXMr"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PK",
+			"companyAlternativeNames": [],
+			"website": "https://putzig-hand.net",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "NoDeviation",
 			"referencedReports": {
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-05-06",
-					"currency": "BRL"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "MYR"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "DJF"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-01",
-					"currency": "SRD"
+					"reportDate": "2022-08-16",
+					"currency": "SBD"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
 				"dataSource": {
-					"page": 693,
-					"report": "AnnualReport",
-					"tagName": "schemas"
+					"page": 128,
+					"report": "IntegratedReport",
+					"tagName": "platforms"
 				}
 			},
+			"scopeOfEntities": "No",
 			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 942259.6572083421,
+					"value": 658598.0589850806,
 					"dataSource": {
-						"page": 135,
-						"report": "AnnualReport",
-						"tagName": "communities"
+						"page": 1112,
+						"report": "IntegratedReport",
+						"tagName": "content"
 					},
-					"quality": "Incomplete",
-					"comment": "calculate bluetooth port"
+					"quality": "Audited",
+					"comment": "bypass solid state transmitter"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.0089,
+					"valueAsPercentage": 0.2872,
 					"dataSource": {
-						"page": 12,
-						"report": "AnnualReport",
-						"tagName": "supply-chains"
+						"page": 181,
+						"report": "IntegratedReport",
+						"tagName": "markets"
 					},
-					"quality": "Incomplete",
-					"comment": "compress online card",
-					"valueAsAbsolute": 435545.0516799465
+					"quality": "Reported",
+					"comment": "reboot multi-byte microchip",
+					"valueAsAbsolute": 534888.6078223586
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 765489.688469097,
+					"value": 88376.616302412,
 					"dataSource": {
-						"page": 400,
-						"report": "ESEFReport",
-						"tagName": "web services"
-					},
-					"quality": "Estimated",
-					"comment": "generate solid state capacitor"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.4766,
-					"dataSource": {
-						"page": 163,
+						"page": 476,
 						"report": "IntegratedReport",
-						"tagName": "action-items"
-					},
-					"quality": "Audited",
-					"comment": "calculate back-end driver",
-					"valueAsAbsolute": 119409.27987452596
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 899649.283348117,
-					"dataSource": {
-						"page": 186,
-						"report": "ESEFReport",
-						"tagName": "relationships"
-					},
-					"quality": "Audited",
-					"comment": "synthesize virtual capacitor"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.7183,
-					"dataSource": {
-						"page": 1085,
-						"report": "IntegratedReport",
-						"tagName": "web services"
-					},
-					"quality": "Incomplete",
-					"comment": "navigate 1080p bandwidth",
-					"valueAsAbsolute": 570164.5752531476
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Bringmannstadt",
-			"headquartersPostalCode": "77560",
-			"sector": "architectures",
-			"identifiers": [
-				{
-					"identifierType": "PermId",
-					"identifierValue": "7DKNdtfxKT"
-				}
-			],
-			"countryCode": "KY",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://elitar-flughafen.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2023-01-06",
-			"numberOfEmployees": 92961,
-			"assurance": {
-				"assurance": "None"
-			},
-			"reportingObligation": "No",
-			"opex": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 208,
-						"report": "AnnualReport",
-						"tagName": "action-items"
-					},
-					"quality": "Reported",
-					"comment": "index solid state feed"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 939,
-						"report": "AnnualReport",
-						"tagName": "methodologies"
-					},
-					"quality": "Estimated",
-					"comment": "transmit haptic array"
-				},
-				"alignedData": {
-					"dataSource": {
-						"page": 472,
-						"report": "AnnualReport",
-						"tagName": "applications"
-					},
-					"quality": "Incomplete",
-					"comment": "back up mobile firewall",
-					"valueAsAbsolute": 312108.4463549778
-				},
-				"eligibleData": {
-					"dataSource": {
-						"page": 133,
-						"report": "AnnualReport",
-						"tagName": "interfaces"
-					},
-					"quality": "Reported",
-					"comment": "override auxiliary monitor"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 1143,
-						"report": "AnnualReport",
-						"tagName": "communities"
-					},
-					"quality": "Reported",
-					"comment": "transmit virtual transmitter"
-				},
-				"alignedData": {
-					"dataSource": {
-						"page": 799,
-						"report": "AnnualReport",
 						"tagName": "experiences"
 					},
-					"quality": "Reported",
-					"comment": "bypass online feed"
+					"quality": "Audited",
+					"comment": "override 1080p pixel"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.6139,
+					"valueAsPercentage": 0.8085,
 					"dataSource": {
-						"page": 82,
-						"report": "AnnualReport",
-						"tagName": "interfaces"
+						"page": 42,
+						"report": "IntegratedReport",
+						"tagName": "schemas"
 					},
-					"quality": "Audited",
-					"comment": "back up redundant monitor"
+					"quality": "Reported",
+					"comment": "connect wireless driver",
+					"valueAsAbsolute": 683760.1622566581
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 165758.09742789716,
+					"quality": "Estimated"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.9244,
+					"quality": "Estimated",
+					"valueAsAbsolute": 255466.80982224643
 				}
 			}
 		},
 		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Süd Joleenland",
+			"headquartersPostalCode": "44262",
+			"sector": "lifetime value",
+			"identifiers": {
+				"Lei": [
+					"FiTECDUhdwkTjyz7CvTf"
+				],
+				"Isin": [],
+				"PermId": [
+					"YsNcO9NFZu"
+				],
+				"Ticker": [
+					"ihH2ytX"
+				],
+				"Duns": [
+					"CSMJKyCSL"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MU",
+			"companyAlternativeNames": [
+				"Assmus GmbH & Co. KG",
+				"Kinzy-Riethmüller",
+				"Malkus, Rheder und Dieckmann",
+				"Pohl, Kallensee und Sammert"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearEnd": "2022-09-03",
+			"assurance": {
+				"assurance": "ReasonableAssurance"
+			},
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 433726.1985754594,
+					"dataSource": {
+						"page": 665,
+						"report": "ESEFReport",
+						"tagName": "blockchains"
+					},
+					"quality": "Reported",
+					"comment": "synthesize cross-platform microchip"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.9849,
+					"dataSource": {
+						"page": 931,
+						"report": "ESEFReport",
+						"tagName": "web services"
+					},
+					"quality": "Audited",
+					"comment": "index optical circuit",
+					"valueAsAbsolute": 451703.3365322277
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 929936.7674393579,
+					"dataSource": {
+						"page": 1189,
+						"report": "IntegratedReport",
+						"tagName": "channels"
+					},
+					"quality": "Estimated",
+					"comment": "synthesize 1080p interface"
+				},
+				"alignedData": {
+					"dataSource": {
+						"page": 726,
+						"report": "IntegratedReport",
+						"tagName": "networks"
+					},
+					"quality": "Audited",
+					"comment": "quantify neural array",
+					"valueAsAbsolute": 78350.05460074171
+				},
+				"eligibleData": {
+					"quality": "Estimated",
+					"valueAsAbsolute": 858919.2646672018
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 312289.7433466278,
+					"dataSource": {
+						"page": 879,
+						"report": "IntegratedReport",
+						"tagName": "synergies"
+					},
+					"quality": "Reported",
+					"comment": "index solid state card"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
 	}
 ]

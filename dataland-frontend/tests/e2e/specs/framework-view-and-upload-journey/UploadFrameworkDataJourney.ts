@@ -1,13 +1,7 @@
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi, uploadCompanyViaForm } from "@e2e/utils/CompanyUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import {
-  CompanyIdentifierIdentifierTypeEnum,
-  DataTypeEnum,
-  EuTaxonomyDataForFinancials,
-  LksgData,
-  StoredCompany,
-} from "@clients/backend";
+import { IdentifierType, DataTypeEnum, EuTaxonomyDataForFinancials, LksgData, StoredCompany } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
@@ -127,11 +121,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.get('button[name="addCompany"]').click();
         cy.get('li[id="createCompanyForm-incomplete"]').should("exist");
         cy.get("input[name='permId']").type(
-          assertDefined(
-            storedCompanyForManyDatasetsCompany.companyInformation.identifiers.find(
-              (id) => id.identifierType == CompanyIdentifierIdentifierTypeEnum.PermId
-            )
-          ).identifierValue
+          assertDefined(storedCompanyForManyDatasetsCompany.companyInformation.identifiers[IdentifierType.PermId])[0]
         );
         cy.contains(identifierDoesExistMessage).should("exist");
         cy.get("input[name='permId']").type("thisshouldnotexist");

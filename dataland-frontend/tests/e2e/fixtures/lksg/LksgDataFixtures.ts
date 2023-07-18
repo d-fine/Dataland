@@ -1,7 +1,9 @@
-import { faker } from "@faker-js/faker/locale/de";
+import { faker } from "@faker-js/faker";
 import {
   LksgAddress,
   LksgData,
+  LksgProcurementCategory,
+  LksgProduct,
   LksgProductionSite,
   NationalOrInternationalMarket,
   ShareOfTemporaryWorkers,
@@ -16,6 +18,8 @@ import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtu
 import { generateIso2CountryCode, generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataPointFixtures";
+import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
+import { valueOrNull } from "@e2e/fixtures/common/DataPointFixtures";
 
 /**
  * Generates a set number of LKSG fixtures
@@ -29,6 +33,29 @@ export function generateLksgFixture(numFixtures: number, undefinedProbability = 
     numFixtures,
     (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
   );
+}
+
+/**
+ * Generates a Lksg fixture with a dataset with many null values for categories, subcategories and field values
+ * @returns the fixture
+ */
+export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
+  return generateFixtureDataset<LksgData>(
+    () => generateOneLksgDatasetWithManyNulls(),
+    1,
+    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
+  )[0];
+}
+
+/**
+ * Generates a array of random length with content
+ * @param generator generator for a single entry
+ * @param min the minimum number of entries
+ * @param max the maximum number of entries
+ * @returns the generated array
+ */
+function generateArray<T>(generator: () => T, min = 0, max = 5): T[] {
+  return Array.from({ length: faker.number.int({ min, max }) }, () => generator());
 }
 
 /**
@@ -50,19 +77,61 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
  * @returns 0 to 5 random production sites
  */
 export function generateArrayOfProductionSites(undefinedProbability = 0.5): LksgProductionSite[] {
-  return Array.from({ length: faker.number.int({ min: 0, max: 5 }) }, () =>
-    generateProductionSite(undefinedProbability)
+  return generateArray(() => generateProductionSite(undefinedProbability));
+}
+
+/**
+ * Generates a random product
+ * @returns a random product
+ */
+function generateProduct(): LksgProduct {
+  return {
+    productName: faker.commerce.productName(),
+    productionSteps: valueOrUndefined(generateArray(() => `${faker.word.verb()} ${faker.commerce.productMaterial()}`)),
+    relatedCorporateSupplyChain: valueOrUndefined(faker.lorem.sentences()),
+  };
+}
+
+/**
+ * Generates a random procurement category
+ * @returns random procurement category
+ */
+function generateProcurementCategory(): LksgProcurementCategory {
+  const numberOfSuppliersPerCountryCodeAsMap = new Map<string, number>(
+    generateArray(() => [generateIso2CountryCode(), valueOrNull(faker.number.int({ min: 0, max: 50 }))!])
+  );
+  return {
+    procuredProductTypesAndServicesNaceCodes: generateListOfNaceCodes(),
+    numberOfSuppliersPerCountryCode: valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
+    percentageOfTotalProcurement: valueOrUndefined(randomPercentageValue()),
+  };
+}
+
+/**
+ * Generates a random map of procurement categories
+ * @returns random map of procurement categories
+ */
+function generateProcurementCategories(): { [key: string]: LksgProcurementCategory } {
+  const procurementCategories = Object.values(ProcurementCategoryType);
+  const keys = [] as ProcurementCategoryType[];
+  procurementCategories.forEach((category) => {
+    if (faker.datatype.boolean()) {
+      keys.push(category);
+    }
+  });
+  return Object.fromEntries(
+    new Map<string, LksgProcurementCategory>(
+      keys.map((procurementCategoryType) => [procurementCategoryType as string, generateProcurementCategory()])
+    )
   );
 }
 
 /**
- * Generates a random list of goods or services
- * @returns random list of goods or services
+ * Generates a random array of goods or services
+ * @returns random array of goods or services
  */
 export function generateListOfGoodsOrServices(): string[] {
-  return Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => {
-    return faker.commerce.productName();
-  });
+  return generateArray(() => faker.commerce.productName(), 1);
 }
 
 /**
@@ -96,6 +165,36 @@ export function generateListOfNaceCodes(): string[] {
     return faker.helpers.arrayElement(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]);
   }).sort((a, b) => a.localeCompare(b));
   return [...new Set(values)];
+}
+
+/**
+ * Generates an LKSG dataset with the value null for some categories, subcategories and field values.
+ * Datasets that were uploaded via the Dataland API can look like this in production.
+ * @returns the dataset
+ */
+export function generateOneLksgDatasetWithManyNulls(): LksgData {
+  return {
+    general: {
+      masterData: {
+        dataDate: "1999-12-24",
+        headOfficeInGermany: null!,
+        groupOfCompanies: null!,
+        groupOfCompaniesName: null!,
+        industry: null!,
+        numberOfEmployees: null!,
+        seasonalOrMigrantWorkers: null!,
+        shareOfTemporaryWorkers: null!,
+        totalRevenueCurrency: null!,
+        totalRevenue: null!,
+        fixedAndWorkingCapital: null!,
+      },
+      productionSpecific: null!,
+      productionSpecificOwnOperations: null!,
+    },
+    governance: null!,
+    social: null!,
+    environmental: null!,
+  };
 }
 
 /**
@@ -139,6 +238,10 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
           undefinedProbability
         ),
         specificProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
+      },
+      productionSpecificOwnOperations: {
+        mostImportantProducts: valueOrUndefined(generateArray(generateProduct), undefinedProbability),
+        procurementCategories: valueOrUndefined(generateProcurementCategories(), undefinedProbability),
       },
     },
     governance: {

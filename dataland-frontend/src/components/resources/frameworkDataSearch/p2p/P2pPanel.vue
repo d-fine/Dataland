@@ -1,50 +1,44 @@
 <template>
   <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading P2P Data...</p>
+    <p class="font-medium text-xl">Loading {{ humanizeString(dataTypeEnum.P2p) }} Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="mapOfKpiKeysToDataObjectsArrays.size > 0 && !waitingForData">
+  <div v-if="mapOfCategoryKeysToDataObjectArrays.size > 0 && !waitingForData">
     <DataTable tableClass="onlyHeaders">
-      <Column bodyClass="headers-bg" headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs">
-      </Column>
+      <Column headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs"> </Column>
       <Column
-        v-for="reportingPeriodWithDataId of listOfDataSetReportingPeriods"
+        v-for="reportingPeriodWithDataId of arrayOfReportingPeriodWithDataId"
         headerClass="horizontal-headers-size"
         headerStyle="width: 30vw;"
-        :field="reportingPeriodWithDataId.dataId"
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
-      >
-      </Column>
+      />
     </DataTable>
-    <div v-for="(arrayOfKpiDataObject, index) in mapOfKpiKeysToDataObjectsArrays" :key="index" class="d-table-style">
-      <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObject[0])">
+    <div
+      v-for="(arrayOfKpiDataObjectsMapItem, index) in mapOfCategoryKeysToDataObjectArrays"
+      :key="index"
+      class="d-table-style"
+    >
+      <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObjectsMapItem[0])">
         <div>
           <div class="pt-2 pl-2 pb-2 w-full d-cursor-pointer border-bottom-table p-2" @click="toggleExpansion(index)">
-            <div v-if="!isExpanded(index)">
-              <span
-                :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`"
-                :data-test="arrayOfKpiDataObject[0]"
-                >{{ arrayOfKpiDataObject[0].toUpperCase() }}</span
-              >
-              <button class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
-                <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
-              </button>
-            </div>
-            <div v-if="isExpanded(index)">
-              <span :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObject[0])}`">{{
-                arrayOfKpiDataObject[0].toUpperCase()
-              }}</span>
-              <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
-                <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
-              </button>
-            </div>
+            <span
+              :class="`p-badge badge-${colorOfCategory(arrayOfKpiDataObjectsMapItem[0])}`"
+              :data-test="arrayOfKpiDataObjectsMapItem[0]"
+              >{{ arrayOfKpiDataObjectsMapItem[0].toUpperCase() }}
+            </span>
+            <button v-if="!isExpanded(index)" class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
+              <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
+            </button>
+            <button v-if="isExpanded(index)" class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
+              <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
+            </button>
           </div>
         </div>
         <div v-show="isExpanded(index)">
-          <P2pCompanyDataTable
-            :arrayOfKpiDataObjects="arrayOfKpiDataObject[1]"
-            :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+          <DisplayFrameworkDataTable
+            :arrayOfKpiDataObjects="arrayOfKpiDataObjectsMapItem[1]"
+            :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
             headerInputStyle="display: none;"
           />
         </div>
@@ -56,43 +50,45 @@
 <script lang="ts">
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import P2pCompanyDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
+import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { reformatValueForDisplay } from "@/utils/FrameworkPanelDisplay";
-import { DataAndMetaInformationPathwaysToParisData } from "@clients/backend";
+import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum, PathwaysToParisData } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "P2pPanel",
-  components: { P2pCompanyDataTable, DataTable, Column },
+
+  components: { DisplayFrameworkDataTable, DataTable, Column },
   data() {
     return {
+      dataTypeEnum: DataTypeEnum,
       firstRender: true,
       waitingForData: true,
       resultKpiData: null as KpiDataObject,
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
-      listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
+      arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
-      mapOfKpiKeysToDataObjectsArrays: new Map() as Map<string, Array<KpiDataObject>>,
+      mapOfCategoryKeysToDataObjectArrays: new Map() as Map<string, Array<KpiDataObject>>,
       expandedGroup: [],
     };
   },
   props: PanelProps,
   watch: {
     companyId() {
-      this.listOfDataSetReportingPeriods = [];
+      this.arrayOfReportingPeriodWithDataId = [];
       this.fetchP2pData().catch((error) => console.log(error));
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
-        this.listOfDataSetReportingPeriods = [];
+        this.arrayOfReportingPeriodWithDataId = [];
         this.fetchP2pData().catch((error) => console.log(error));
       }
     },
@@ -107,6 +103,7 @@ export default defineComponent({
     this.firstRender = false;
   },
   methods: {
+    humanizeString,
     /**
      * Fetches all accepted P2P datasets for the current company and converts them to the required frontend format.
      */
@@ -158,7 +155,7 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfP2pDataset]: reformatValueForDisplay(kpiField, kpiValue) },
+        content: { [dataIdOfP2pDataset]: (kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -174,57 +171,61 @@ export default defineComponent({
         this.p2pDataAndMetaInfo.forEach((oneP2pDataset: DataAndMetaInformationPathwaysToParisData) => {
           const dataIdOfP2pDataset = oneP2pDataset.metaInfo?.dataId ?? "";
           const reportingPeriodOfP2pDataset = oneP2pDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfDataSetReportingPeriods.push({
+          this.arrayOfReportingPeriodWithDataId.push({
             dataId: dataIdOfP2pDataset,
             reportingPeriod: reportingPeriodOfP2pDataset,
           });
           for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
-            const categoryResult = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
-            this.iteratesThroughSubcategories(
+            const frameworkCategoryData = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
+            this.iterateThroughSubcategories(
               categoryObject,
               categoryKey,
-              categoryResult,
+              frameworkCategoryData,
               dataIdOfP2pDataset,
-              listOfDataObjects
+              listOfDataObjects,
+              oneP2pDataset.data
             );
 
-            this.mapOfKpiKeysToDataObjectsArrays.set(categoryResult.label, listOfDataObjects);
+            this.mapOfCategoryKeysToDataObjectArrays.set(frameworkCategoryData.label, listOfDataObjects);
           }
         });
       }
-      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
-        this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
+      this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
+        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
       );
     },
     /**
      * Iterates through all subcategories of a category
      * @param categoryObject the data object of the framework's category
      * @param categoryKey the key of the corresponding framework's category
-     * @param categoryResult  the category object of the framework's category
+     * @param frameworkCategoryData  the category object of the framework's category
      * @param dataIdOfP2pDataset  the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
+     * @param oneP2pDataset dataset for which the show if conditions should be checked
      */
-    iteratesThroughSubcategories(
+    iterateThroughSubcategories(
       categoryObject,
       categoryKey,
-      categoryResult: Category,
+      frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
-      listOfDataObjects: Array<KpiDataObject>
+      listOfDataObjects: Array<KpiDataObject>,
+      oneP2pDataset: PathwaysToParisData
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
         string,
         object | null
       ][]) {
         if (subCategoryObject == null) continue;
-        this.assembleDataKpiObject(
+        this.iterateThroughSubcategoryKpis(
           subCategoryObject,
           categoryKey,
           subCategoryKey,
-          categoryResult,
+          frameworkCategoryData,
           dataIdOfP2pDataset,
-          listOfDataObjects
+          listOfDataObjects,
+          oneP2pDataset
         );
       }
     },
@@ -233,36 +234,34 @@ export default defineComponent({
      * @param subCategoryObject the data object of the framework's subcategory
      * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
-     * @param categoryResult the category object of the framework's category
+     * @param frameworkCategoryData the category object of the framework's category
      * @param dataIdOfP2pDataset the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
+     * @param oneP2pDataset dataset for which the show if conditions should be checked
      */
-    assembleDataKpiObject(
+    iterateThroughSubcategoryKpis(
       subCategoryObject: object,
       categoryKey,
       subCategoryKey: string,
-      categoryResult: Category,
+      frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
-      listOfDataObjects: Array<KpiDataObject>
+      listOfDataObjects: Array<KpiDataObject>,
+      oneP2pDataset: PathwaysToParisData
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
         if (kpiValue == null) continue;
         const subcategory = assertDefined(
-          p2pDataModel
-            .find((category) => category.name === categoryKey)
-            ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
+          frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
-        if (
-          this.p2pDataAndMetaInfo
-            .map((dataAndMetaInfo) => dataAndMetaInfo.data)
-            .some((singleP2pData) => field.showIf(singleP2pData))
-        ) {
+
+        //TODO computed property p2pDataAndMetaInfo. Map of fieldName to ShowIfBoolean, Remove when Review coment is closed
+        if (field.showIf(oneP2pDataset)) {
           this.createKpiDataObjects(
             kpiKey as string,
             kpiValue as KpiValue,
             subcategory,
-            categoryResult,
+            frameworkCategoryData,
             dataIdOfP2pDataset
           );
           listOfDataObjects.push(this.resultKpiData);
@@ -289,7 +288,7 @@ export default defineComponent({
       return assertDefined(p2pDataModel.find((category) => category.label === categoryName)).color;
     },
     /**
-     *
+     * Checks whether an element is expanded or not
      * @param key element for which the check should be run
      * @returns if the element is expanded or not
      */
@@ -297,7 +296,7 @@ export default defineComponent({
       return this.expandedGroup.indexOf(key) !== -1;
     },
     /**
-     *
+     * Expands and collapses an item
      * @param key element for which the check should be run
      */
     toggleExpansion(key: string) {
@@ -328,5 +327,4 @@ export default defineComponent({
   color: #e67f3f;
   font-size: 14px;
 }
-//TODO extract styles to css classes, extract inline style to classes, remove unused code and check if there are already classes which have the styles needed
 </style>
