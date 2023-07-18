@@ -304,7 +304,8 @@ class CompanyDataControllerTest {
             "The status code is ${response.statusCode} instead of the expected 400.",
         )
         assertTrue(
-            response.body.toString().contains("At least one of the identifiers you entered are already being used by another company"),
+            response.body.toString()
+                .contains("At least one of the identifiers you entered are already being used by another company"),
             "The response message is not as expected.",
         )
         assertTrue(

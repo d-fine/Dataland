@@ -65,7 +65,7 @@ class GleifGoldenCopyIngestor(
 
             logger.info("Retrieving all company data available via GLEIF.")
             val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
-            processFile(tempFile, gleifApiAccessor::getFullGoldenCopy, fullGoldenCopy = true)
+            processFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
@@ -76,17 +76,16 @@ class GleifGoldenCopyIngestor(
     private fun processDeltaFile() {
         logger.info("Starting update cycle for latest delta file.")
         val tempFile = File.createTempFile("gleif_update_delta", ".csv")
-        processFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta, fullGoldenCopy = false)
+        processFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
     }
 
     @Synchronized
-    private fun processFile(csvFile: File, downloadFile: (file: File) -> Unit, fullGoldenCopy: Boolean) {
+    private fun processFile(csvFile: File, downloadFile: (file: File) -> Unit) {
         waitForBackend()
         val start = System.nanoTime()
         try {
             downloadFile(csvFile)
-            uploadCompanies(csvFile, fullGoldenCopy)
-            }
+            uploadCompanies(csvFile)
         } finally {
             if (!csvFile.delete()) {
                 logger.error("Unable to delete temporary file $csvFile")
@@ -111,7 +110,7 @@ class GleifGoldenCopyIngestor(
         }
     }
 
-    private fun uploadCompanies(csvFile: File, fullGoldenCopy: Boolean) {
+    private fun uploadCompanies(csvFile: File) {
         val gleifDataStream = gleifParser.getCsvStreamFromZip(csvFile)
         val gleifIterator = gleifParser.readGleifDataFromBufferedReader(gleifDataStream)
         val gleifIterable = Iterable<GleifCompanyInformation> { gleifIterator }
@@ -120,12 +119,7 @@ class GleifGoldenCopyIngestor(
         try {
             uploadThreadPool.submit {
                 StreamSupport.stream(gleifIterable.spliterator(), true)
-                    .forEach {
-                        if (fullGoldenCopy) {
-                            companyUploader.uploadSingleCompany(it.toCompanyInformation())
-                        } else {
-                            companyUploader.uploadOrPatchSingleCompany(it.toCompanyInformation())
-                    }
+                    .forEach { companyUploader.uploadOrPatchSingleCompany(it) }
             }.get()
         } finally {
             uploadThreadPool.shutdown()
