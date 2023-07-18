@@ -1,7 +1,6 @@
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestAndUtils";
 import {
   CompanyAssociatedDataPathwaysToParisData,
   DataAndMetaInformationPathwaysToParisData,
@@ -171,20 +170,5 @@ describe("Component test for P2pPanel", () => {
         .eq(indexOfColumn)
         .should("contain.text", (2029 - indexOfColumn).toString());
     }
-  });
-
-  it("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
-    const firstYearObject = { dataId: "5", reportingPeriod: "2022" };
-    const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
-    const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
-    const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
-    const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
-    sortReportingPeriodsToDisplayAsColumnsTest(
-      firstYearObject,
-      secondYearObject,
-      firstOtherObject,
-      secondOtherObject,
-      shouldSwapList
-    );
   });
 });
