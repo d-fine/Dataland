@@ -290,7 +290,11 @@ class CompanyDataControllerTest {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithRandomIdentifiers(1).first()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
+        val storedCompany = apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
+
+        val storedCompanyIdentifier = storedCompany
+            .companyInformation.identifiers.entries.first { it.value.isNotEmpty() }
+
         val response = apiAccessor.companyDataControllerApi.postCompanyWithHttpInfo(testCompanyInformation)
             as ClientError
 
@@ -300,8 +304,12 @@ class CompanyDataControllerTest {
             "The status code is ${response.statusCode} instead of the expected 400.",
         )
         assertTrue(
-            response.body.toString().contains("Could not insert company as one company identifier is already used"),
+            response.body.toString().contains("At least one of the identifiers you entered are already being used by another company"),
             "The response message is not as expected.",
+        )
+        assertTrue(
+            response.body.toString().contains(storedCompanyIdentifier.value.first()),
+            "The response message does not contain the duplicate identifier.",
         )
     }
 

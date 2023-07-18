@@ -103,11 +103,6 @@ class CompanyQueryManager(
         return companyRepository.findById(companyId).get()
     }
 
-    @Transactional
-    fun getCompanyByLei(lei: IdentifierType): StoredCompanyEntity {
-        //return companyRepository.findByLei(lei).get() -- doesn't exist
-    }
-
     /**
      * Method to retrieve information about a specific company
      * @param companyId
@@ -135,5 +130,4 @@ class CompanyQueryManager(
     fun isCompanyPublic(companyId: String): Boolean {
         return getCompanyById(companyId).isTeaserCompany
     }
-
 }

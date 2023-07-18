@@ -1,7 +1,9 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
+import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.exceptions.DuplicateIdentifierException
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -51,10 +53,29 @@ class CompanyAlterationManager(
         return companyRepository.save(newCompanyEntity)
     }
 
+    private fun assertNoDuplicateIdentifiersExist(identifierMap: Map<IdentifierType, List<String>>) {
+        val duplicateIdentifiers = companyIdentifierRepository.findAllById(
+            identifierMap.flatMap { identifierPair ->
+                identifierPair.value.map {
+                    CompanyIdentifierEntityId(
+                        identifierType = identifierPair.key,
+                        identifierValue = it,
+                    )
+                }
+            },
+        )
+
+        if (duplicateIdentifiers.isNotEmpty()) {
+            throw DuplicateIdentifierException(duplicateIdentifiers)
+        }
+    }
+
     private fun createAndAssociateIdentifiers(
         savedCompanyEntity: StoredCompanyEntity,
         identifierMap: Map<IdentifierType, List<String>>,
     ): List<CompanyIdentifierEntity> {
+        assertNoDuplicateIdentifiersExist(identifierMap)
+
         val newIdentifiers = identifierMap.flatMap { identifierPair ->
             identifierPair.value.map {
                 CompanyIdentifierEntity(
@@ -68,10 +89,8 @@ class CompanyAlterationManager(
         } catch (ex: DataIntegrityViolationException) {
             val cause = ex.cause
             if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
-                throw InvalidInputApiException(
-                    "Company identifier already used",
-                    "Could not insert company as one company identifier is already used to identify another company",
-                )
+                // Cannot access the list of duplicate identifiers here because of hibernate caching.
+                throw DuplicateIdentifierException(listOf())
             }
             throw ex
         }
