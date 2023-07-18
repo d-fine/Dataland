@@ -305,7 +305,7 @@ class CompanyDataControllerTest {
         )
         assertTrue(
             response.body.toString()
-                .contains("At least one of the identifiers you entered are already being used by another company"),
+                .contains("At least one of the identifiers you entered is already being used by another company"),
             "The response message is not as expected.",
         )
         assertTrue(

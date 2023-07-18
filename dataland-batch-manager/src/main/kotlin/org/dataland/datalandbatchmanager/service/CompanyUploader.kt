@@ -37,33 +37,33 @@ class CompanyUploader(
         val exceptionBodyString = exceptionResponse.body.toString()
 
         val errorResponseBody = objectMapper.readTree(exceptionBodyString)
-        val firstError = errorResponseBody.get("errors").get(0)
-        if (firstError.get("errorType").textValue() != "duplicate-company-identifier") {
+        val firstError = errorResponseBody.get("errors")?.get(0)
+        if (firstError?.get("errorType")?.textValue() != "duplicate-company-identifier") {
             return null
         }
 
         val conflictingIdentifiers = firstError.get("metaInformation")
-        if (!conflictingIdentifiers.isArray || conflictingIdentifiers.size() != 1) {
+        if (conflictingIdentifiers == null || !conflictingIdentifiers.isArray || conflictingIdentifiers.size() != 1) {
             return null
         }
 
         val conflictingIdentifier = conflictingIdentifiers.get(0)
-        val conflictingIdentifierType = conflictingIdentifier.get("identifierType").textValue()
+        val conflictingIdentifierType = conflictingIdentifier.get("identifierType")?.textValue()
         if (conflictingIdentifierType != "Lei") {
             return null
         }
 
-        return conflictingIdentifier.get("companyId").textValue()
+        return conflictingIdentifier.get("companyId")?.textValue()
     }
 
-    private fun retryCatchingErrors(function: () -> Unit) {
+    private fun retryOnCommonApiErrors(functionToExecute: () -> Unit) {
         var counter = 0
         while (counter < MAX_RETRIES) {
             try {
-                function()
+                functionToExecute()
                 break
             } catch (exception: ClientException) {
-                logger.error("Unable to upload company data. Response was: ${exception.message}.")
+                logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
                 counter++
             } catch (exception: SocketTimeoutException) {
                 logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
@@ -77,6 +77,7 @@ class CompanyUploader(
 
     /**
      * Uploads a single Company to the dataland backend performing at most MAX_RETRIES retries.
+     * If the company (identified by the LEI) already exists on dataland, it is patched instead.
      * This function absorbs errors and logs them.
      */
     fun uploadOrPatchSingleCompany(
@@ -84,7 +85,7 @@ class CompanyUploader(
     ) {
         var patchCompanyId: String? = null
 
-        retryCatchingErrors {
+        retryOnCommonApiErrors {
             try {
                 logger.info(
                     "Uploading company data for ${companyInformation.companyName} " +
@@ -113,11 +114,11 @@ class CompanyUploader(
     /**
      * Updates the information regarding a single company using the dataland-backend API.
      */
-    fun patchSingleCompany(
+    private fun patchSingleCompany(
         companyId: String,
         companyInformation: GleifCompanyInformation,
     ) {
-        retryCatchingErrors {
+        retryOnCommonApiErrors {
             companyDataControllerApi.patchCompanyById(
                 companyId,
                 companyInformation.toCompanyPatch(),

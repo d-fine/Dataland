@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.exceptions.DuplicateIdentifierException
+import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -66,7 +66,7 @@ class CompanyAlterationManager(
         )
 
         if (duplicateIdentifiers.isNotEmpty()) {
-            throw DuplicateIdentifierException(duplicateIdentifiers)
+            throw DuplicateIdentifierApiException(duplicateIdentifiers)
         }
     }
 
@@ -90,7 +90,7 @@ class CompanyAlterationManager(
             val cause = ex.cause
             if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
                 // Cannot access the list of duplicate identifiers here because of hibernate caching.
-                throw DuplicateIdentifierException(listOf())
+                throw DuplicateIdentifierApiException(null)
             }
             throw ex
         }
