@@ -3,7 +3,7 @@ import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns 
 /**
  * Calls the testfunction for sorting and swaps the list entries if necessary.
  * @param  listOfDataDateToDisplayAsColumns list of objects to sort
- * @param shouldSwap toogles the swap of both list elements in listOfDataDateToDisplayAsColumns (in case there are two.
+ * @param shouldSwap toggles the swap of both list elements in listOfDataDateToDisplayAsColumns (in case there are two.
  * Shortens the test-function and avoids code duplications.
  * @returns sorted list
  */
