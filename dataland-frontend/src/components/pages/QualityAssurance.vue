@@ -254,7 +254,7 @@ export default defineComponent({
           ).getSmeDataControllerApi();
           const companyAssociatedDataResponse = await smeDataControllerApi.getCompanyAssociatedSmeData(dataId);
           this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-          } else {
+        } else {
           throw new Error("The data type of the selected dataset is not supported by the QA frontend.");
         }
       } catch (error) {

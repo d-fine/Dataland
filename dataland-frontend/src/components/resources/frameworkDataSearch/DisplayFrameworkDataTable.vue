@@ -138,7 +138,7 @@ export default defineComponent({
   },
   data() {
     return {
-      expandedRowGroups: ["_masterData"],
+      expandedRowGroups: ["_masterData", "_general"],
       yesLabelMap: new Map<boolean, string>([
         [true, "Certified"],
         [false, "Yes"],

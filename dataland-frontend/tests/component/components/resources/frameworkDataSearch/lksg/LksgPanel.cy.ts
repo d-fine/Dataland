@@ -9,10 +9,7 @@ import {
   LksgData,
   QaStatus,
 } from "@clients/backend";
-import {
-  ReportingPeriodOfDataSetWithId,
-  sortReportingPeriodsToDisplayAsColumns
-} from "../../../../../../src/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -197,23 +194,28 @@ describe("Component test for LksgPanel", () => {
     const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
       expect(
-          swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
       ).to.deep.equal([firstYearObject, secondYearObject]);
 
       expect(
-          swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
       ).to.deep.equal([firstOtherObject, secondOtherObject]);
     }
     expect(
-        sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
+      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });
 
-
+/**
+ * The function swaps and sorts the data date columns to display
+ * @param listOfDataDateToDisplayAsColumns is a list of data dates to display
+ * @param shouldSwap boolean which determines if the list should be swapped or not
+ * @returns the sorted reporting periods to display based on the given list of data dates
+ */
 function swapAndSortReportingPeriodsToDisplayAsColumns(
-    listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
-    shouldSwap = false
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
+  shouldSwap = false
 ): ReportingPeriodOfDataSetWithId[] {
   let swappedList: ReportingPeriodOfDataSetWithId[];
   if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {
