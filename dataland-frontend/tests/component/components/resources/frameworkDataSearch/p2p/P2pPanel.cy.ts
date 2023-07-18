@@ -1,6 +1,7 @@
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import {swapAndSortReportingPeriodsToDisplayAsColumns} from "@ct/testUtils/SwapForSortTest";
 import {
   CompanyAssociatedDataPathwaysToParisData,
   DataAndMetaInformationPathwaysToParisData,
@@ -23,14 +24,14 @@ describe("Component test for P2pPanel", () => {
 
   it("Should display the correct categories in the sector field", () => {
     const pseudoP2pData = {
-      general: { general: { dataDate: "2023-01-01", sector: [P2pSector.Ammonia] } },
+      general: {general: {dataDate: "2023-01-01", sector: [P2pSector.Ammonia]}},
     } as PathwaysToParisData;
 
     cy.mountWithPlugins(P2pPanel, {
       data() {
         return {
           waitingForData: false,
-          p2pDataAndMetaInfo: [{ data: pseudoP2pData } as DataAndMetaInformationPathwaysToParisData],
+          p2pDataAndMetaInfo: [{data: pseudoP2pData} as DataAndMetaInformationPathwaysToParisData],
         };
       },
       // The code below is required to complete the component mock yet interferes with the type resolution of the
@@ -122,7 +123,7 @@ describe("Component test for P2pPanel", () => {
    * @returns a mocked api response
    */
   function constructCompanyApiResponseForP2pForSixYears(
-    baseDataset: PathwaysToParisData
+      baseDataset: PathwaysToParisData
   ): DataAndMetaInformationPathwaysToParisData[] {
     const p2pDatasets: DataAndMetaInformationPathwaysToParisData[] = [];
     for (let i = 0; i < 6; i++) {
@@ -168,48 +169,28 @@ describe("Component test for P2pPanel", () => {
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
       cy.get(`span.p-column-title`)
-        .eq(indexOfColumn)
-        .should("contain.text", (2029 - indexOfColumn).toString());
+          .eq(indexOfColumn)
+          .should("contain.text", (2029 - indexOfColumn).toString());
     }
   });
 
   it("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
-    const firstYearObject = { dataId: "5", reportingPeriod: "2022"};
-    const secondYearObject = { dataId: "2", reportingPeriod: "2020"};
-    const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020"};
-    const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020"};
+    const firstYearObject = {dataId: "5", reportingPeriod: "2022"};
+    const secondYearObject = {dataId: "2", reportingPeriod: "2020"};
+    const firstOtherObject = {dataId: "3", reportingPeriod: "Q2-2020"};
+    const secondOtherObject = {dataId: "6", reportingPeriod: "Q3-2020"};
     const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
+          swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
       ).to.deep.equal([firstYearObject, secondYearObject]);
 
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
+          swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
       ).to.deep.equal([firstOtherObject, secondOtherObject]);
     }
     expect(
         sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
+  });
 });
-
-/**
- * Calls the testfunction for sorting and swaps the list entries if necessary.
- * @param  listOfDataDateToDisplayAsColumns list of objects to sort
- * @param shouldSwap toogles the swap of both list elements in listOfDataDateToDisplayAsColumns (in case there are two.
- * Shortens the test-function and avoids code duplications.
- * @returns sorted list
- */
-function swapAndSortReportingPeriodsToDisplayAsColumns(
-  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
-  shouldSwap = false
-): ReportingPeriodOfDataSetWithId[] {
-  let swappedList: ReportingPeriodOfDataSetWithId[];
-  if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {
-    swappedList = listOfDataDateToDisplayAsColumns.slice();
-    swappedList[0] = listOfDataDateToDisplayAsColumns[1];
-    swappedList[1] = listOfDataDateToDisplayAsColumns[0];
-    listOfDataDateToDisplayAsColumns = swappedList.slice();
-  }
-  return sortReportingPeriodsToDisplayAsColumns(listOfDataDateToDisplayAsColumns);
-}
