@@ -1,7 +1,7 @@
 import {
-    ReportingPeriodOfDataSetWithId,
-    sortReportingPeriodsToDisplayAsColumns
-} from "../../../src/utils/DataTableDisplay";
+  ReportingPeriodOfDataSetWithId,
+  sortReportingPeriodsToDisplayAsColumns,
+} from "@/utils/DataTableDisplay";
 
 /**
  * Calls the testfunction for sorting and swaps the list entries if necessary.
@@ -11,15 +11,15 @@ import {
  * @returns sorted list
  */
 export function swapAndSortReportingPeriodsToDisplayAsColumns(
-    listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
-    shouldSwap = false
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
+  shouldSwap = false
 ): ReportingPeriodOfDataSetWithId[] {
-    let swappedList: ReportingPeriodOfDataSetWithId[];
-    if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {
-        swappedList = listOfDataDateToDisplayAsColumns.slice();
-        swappedList[0] = listOfDataDateToDisplayAsColumns[1];
-        swappedList[1] = listOfDataDateToDisplayAsColumns[0];
-        listOfDataDateToDisplayAsColumns = swappedList.slice();
-    }
-    return sortReportingPeriodsToDisplayAsColumns(listOfDataDateToDisplayAsColumns);
+  let swappedList: ReportingPeriodOfDataSetWithId[];
+  if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {
+    swappedList = listOfDataDateToDisplayAsColumns.slice();
+    swappedList[0] = listOfDataDateToDisplayAsColumns[1];
+    swappedList[1] = listOfDataDateToDisplayAsColumns[0];
+    listOfDataDateToDisplayAsColumns = swappedList.slice();
+  }
+  return sortReportingPeriodsToDisplayAsColumns(listOfDataDateToDisplayAsColumns);
 }
