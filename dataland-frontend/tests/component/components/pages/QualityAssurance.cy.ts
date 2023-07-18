@@ -56,13 +56,13 @@ describe("Component tests for the Quality Assurance page", () => {
       companyInformation: qaDataObject.companyInformation,
       dataRegisteredByDataland: [qaDataObject.metaInformation],
     });
-    let dataTypeString;
+    let dataTypeString: string;
     if (dataType === DataTypeEnum.P2p) {
       dataTypeString = "p2p";
     } else if (dataType === DataTypeEnum.Sme) {
       dataTypeString = "sme";
     }
-    cy.intercept(`**/api/data/${dataTypeString}/*`, {
+    cy.intercept(`**/api/data/${dataTypeString!}/*`, {
       companyId: qaDataObject.metaInformation.companyId,
       reportingPeriod: fixtureData.reportingPeriod,
       data: fixtureData.t,
