@@ -4,6 +4,17 @@ export const detailsCompanyDataTableColumnHeaders = {
     addressOfProductionSite: "Address",
     listOfGoodsOrServices: "List Of Goods Or Services",
   },
+  mostImportantProducts: {
+    productName: "Product Name",
+    productionSteps: "Production Steps",
+    relatedCorporateSupplyChain: "Related Corporate Supply Chain",
+  },
+  procurementCategories: {
+    procurementCategory: "Procurement Category",
+    definitionsOfProductTypeOrService: "Definitions of Product Type or Service",
+    suppliersAndCountries: "Number of Direct Suppliers and Countries",
+    percentageOfTotalProcurement: "Order Volume",
+  },
   industry: {
     industry: "NACE Code",
   },

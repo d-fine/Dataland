@@ -8,7 +8,7 @@
   font-family: $ibm-plex-sans;
   transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
   border-radius: 0;
-  line-height: $line-height-2;
+  line-height: $line-height-1;
   margin: $spacing-xxxs;
   &:enabled:hover {
     background: darken($btn-primary-bg, 20%);
@@ -59,6 +59,13 @@
   &.p-button-sm {
     font-size: $fs-sm;
     padding: $spacing-xxs $spacing-xs;
+  }
+  &.p-button-icon {
+    padding: $spacing-xxxs;
+    line-height: .75rem;
+    .pi {
+      font-size: $fs-xs;
+    }
   }
   &.p-button-outlined {
     background-color: transparent;

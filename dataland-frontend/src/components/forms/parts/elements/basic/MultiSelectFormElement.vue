@@ -32,7 +32,7 @@
 import { defineComponent, ref } from "vue";
 import { FormKit, FormKitMessages } from "@formkit/vue";
 import MultiSelect from "primevue/multiselect";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "MultiSelectFormElement",
@@ -47,31 +47,6 @@ export default defineComponent({
       selections: [] as string[],
     };
   },
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    validation: {
-      type: String,
-      default: "",
-    },
-    validationLabel: {
-      type: String,
-      default: "",
-    },
-    placeholder: {
-      type: String,
-      default: "",
-    },
-    options: {
-      type: Array as () => Array<DropdownOption>,
-      required: true,
-    },
-    innerClass: {
-      type: String,
-      default: "",
-    },
-  },
+  props: DropdownOptionFormFieldProps,
 });
 </script>

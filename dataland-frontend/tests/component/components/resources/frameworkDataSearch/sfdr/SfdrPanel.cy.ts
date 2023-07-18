@@ -108,4 +108,29 @@ describe("Component tests for SfdrPanel", () => {
         .should("contain.text", (2029 - indexOfColumn).toString());
     }
   });
+
+  it("Check Sfdr view page for a dataset which has null values", () => {
+    const preparedFixture = getPreparedFixture("sfdr-a-lot-of-nulls", preparedFixtures);
+    cy.mountWithPlugins(SfdrPanel, {
+      data() {
+        return {
+          waitingForData: false,
+          sfdrDataAndMetaInfo: [{ data: preparedFixture.t } as DataAndMetaInformationSfdrData],
+        };
+      },
+      // The code below is required to complete the component mock yet interferes with the type resolution of the
+      // mountWithPlugins function.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      created() {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,
+        this.convertSfdrDataToFrontendFormat();
+      },
+    });
+    cy.contains("span", "marker-for-test").should("exist");
+    cy.get("em").its("length").should("equal", 1);
+    cy.get("tr").its("length").should("equal", 3);
+  });
 });

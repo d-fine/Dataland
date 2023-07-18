@@ -29,4 +29,19 @@ object JsonExampleFormattingConstants {
         "\"InvestmentFirm\": " +
         taxonomyEligibilityActivity +
         "}"
+
+    private const val procurementCategory = "{" +
+        "\"procuredProductTypesAndServicesNaceCodes\": [\"string\"]," +
+        "\"numberOfSuppliersPerCountryCode\": {" +
+        "\"DE\": null," +
+        "\"GB\": 2" +
+        "}," +
+        "\"percentageOfTotalProcurement\": 0" +
+        "}"
+
+    const val PROCUREMENT_CATEGORIES_DEFAULT_VALUE: String = "{" +
+        "\"Products\": $procurementCategory," +
+        "\"Services\": $procurementCategory," +
+        "\"RawMaterials\": $procurementCategory" +
+        "}"
 }

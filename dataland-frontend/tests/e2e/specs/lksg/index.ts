@@ -3,5 +3,5 @@
  */
 describe("Tests for view page of Lksg-Framework data", () => {
   require("./DataIntegrity");
-  require("./EditButtonWithMultipleReportingPeriods");
+  require("./EditLksgDataset");
 });
