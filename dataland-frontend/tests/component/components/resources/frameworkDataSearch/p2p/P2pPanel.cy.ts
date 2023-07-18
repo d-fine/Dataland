@@ -196,16 +196,16 @@ describe("Component test for P2pPanel", () => {
 /**
  * Calls the testfunction for sorting and swaps the list entries if necessary.
  * @param  listOfDataDateToDisplayAsColumns list of objects to sort
- * @param boolSwap toogles the swap of both list elements in listOfDataDateToDisplayAsColumns (in case there are two.
+ * @param shouldSwap toogles the swap of both list elements in listOfDataDateToDisplayAsColumns (in case there are two.
  * Shortens the test-function and avoids code duplications.
  * @returns sorted list
  */
 function swapAndSortReportingPeriodsToDisplayAsColumns(
   listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
-  boolSwap = false
+  shouldSwap = false
 ): ReportingPeriodOfDataSetWithId[] {
   let swappedList: ReportingPeriodOfDataSetWithId[];
-  if (boolSwap && listOfDataDateToDisplayAsColumns.length == 2) {
+  if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {
     swappedList = listOfDataDateToDisplayAsColumns.slice();
     swappedList[0] = listOfDataDateToDisplayAsColumns[1];
     swappedList[1] = listOfDataDateToDisplayAsColumns[0];
