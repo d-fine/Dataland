@@ -1,7 +1,7 @@
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 /**
- * Calls the testfunction for sorting and swaps the list entries if necessary.
+ * Calls the test function for sorting and swaps the list entries if necessary.
  * @param  listOfDataDateToDisplayAsColumns list of objects to sort
  * @param shouldSwap toggles the swap of both list elements in listOfDataDateToDisplayAsColumns (in case there are two.
  * Shortens the test-function and avoids code duplications.
