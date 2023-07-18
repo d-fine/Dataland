@@ -6,12 +6,10 @@
     :required="required"
     :validation="validation"
     :validation-label="validationLabel"
-    display-one-sub-form-per-default
-    sub-form-component="ProductionSiteFormElement"
-    data-test-add-button="addNewProductionSiteButton"
-    label-add-button="ADD NEW Production Site"
-    data-test-sub-form="productionSiteSection"
-    data-test-remove-button="removeItemFromListOfProductionSites"
+    sub-form-component="ProductFormElement"
+    data-test-add-button="addNewProductButton"
+    label-add-button="ADD NEW Product"
+    data-test-sub-form="productSection"
   />
 </template>
 
@@ -21,7 +19,7 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import FormListFormField from "@/components/forms/parts/fields/FormListFormField.vue";
 
 export default defineComponent({
-  name: "ProductionSitesFormField",
+  name: "MostImportantProductsFormField",
   props: BaseFormFieldProps,
   components: {
     FormListFormField,

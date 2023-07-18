@@ -6,11 +6,7 @@
   <!-- Select company reports -->
   <div class="col-9 formFields">
     <h3 class="mt-0">Select company reports</h3>
-    <UploadDocumentsForm
-      @documentsChanged="updateSelectedReports"
-      :index-of-report-to-remove="indexOfReportToRemove"
-      :name="fileUpload"
-    />
+    <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="fileUpload" />
   </div>
   <FormKit name="referencedReports" type="group">
     <div class="uploadFormSection">
@@ -82,7 +78,6 @@ export default defineComponent({
     return {
       reportsToUpload: [] as ReportToUpload[] | undefined,
       storedReports: [] as StoredReport[],
-      indexOfReportToRemove: [] as number[],
     };
   },
   props: {
@@ -122,7 +117,9 @@ export default defineComponent({
         const indexOfLastSelectedFile = reports.length - 1;
         const lastSelectedFile = reports[indexOfLastSelectedFile].file;
         this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
-        this.indexOfReportToRemove = [indexOfLastSelectedFile];
+        (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(
+          indexOfLastSelectedFile
+        );
       } else {
         this.emitReferenceableReportNamesChangedEvent();
       }

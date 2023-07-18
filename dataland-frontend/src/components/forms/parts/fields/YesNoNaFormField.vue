@@ -6,22 +6,13 @@
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :label="label"
-      :options="[
-        {
-          label: 'Yes',
-          value: 'Yes',
-        },
-        {
-          label: 'No',
-          value: 'No',
-        },
-        {
-          label: 'N/A',
-          value: 'NA',
-        },
-      ]"
+      :options="{
+        Yes: 'Yes',
+        No: 'No',
+        NA: 'N/A',
+      }"
       :required="required"
-    ></RadioButtonsFormField>
+    />
   </div>
 </template>
 

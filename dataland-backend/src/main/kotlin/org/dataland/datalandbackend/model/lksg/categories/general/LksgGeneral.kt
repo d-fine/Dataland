@@ -3,6 +3,8 @@ package org.dataland.datalandbackend.model.lksg.categories.general
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgMasterData
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production.LksgProductionSpecific
+import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production
+    .LksgProductionSpecificOwnOperations
 
 /**
  * --- API model ---
@@ -13,4 +15,6 @@ data class LksgGeneral(
     val masterData: LksgMasterData,
 
     val productionSpecific: LksgProductionSpecific?,
+
+    val productionSpecificOwnOperations: LksgProductionSpecificOwnOperations?,
 )

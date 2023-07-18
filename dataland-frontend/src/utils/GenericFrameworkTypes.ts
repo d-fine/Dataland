@@ -31,4 +31,6 @@ export interface Field {
 
   // selection specific values
   options?: DropdownOption[];
+  // filed form fields from an existing data set
+  existingFieldValues?: (dataModel?: LksgData) => object;
 }

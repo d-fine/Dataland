@@ -162,7 +162,7 @@ function selectDummyDateInDataPicker(): void {
  */
 function testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite(): void {
   cy.get('div[data-test="productionSiteSection"]').should("be.visible");
-  cy.get('button[data-test="ADD-NEW-Production-Site-button"]').should("be.visible").click();
+  cy.get('button[data-test="addNewProductionSiteButton"]').should("be.visible").click();
   cy.get('div[data-test="productionSiteSection"]').should("have.length", 2);
   cy.get('[data-test="removeItemFromListOfProductionSites"]').eq(1).click();
   cy.get('div[data-test="productionSiteSection"]').should("have.length", 1);
@@ -195,6 +195,65 @@ function fillRequiredLksgFieldsWithDummyData(): void {
 }
 
 /**
+ * Adds a new product and fills its form
+ * @param productName the name of the product to fill in
+ * @param productionSteps the production steps to fill in
+ * @param description the description to fill in
+ */
+function fillNewProduct(productName: string, productionSteps: string[], description?: string): void {
+  cy.get('button[data-test="addNewProductButton"]').click();
+  const productFormElementSelector = '[data-test="productSection"] [data-test="productFormElement"]';
+  cy.get(productFormElementSelector).last().find('input[name="productName"]').type(productName);
+  if (productionSteps.length > 0 && productionSteps.some((productionStep) => productionStep.length > 0)) {
+    cy.get(productFormElementSelector)
+      .last()
+      .find('input[data-test="listOfElementsInput"]')
+      .type(productionSteps.join(", "));
+    cy.get(productFormElementSelector).last().find('[data-test="addProductionStep"]').click();
+  }
+  if (description) {
+    cy.get(productFormElementSelector).last().find('textarea[name="relatedCorporateSupplyChain"]').type(description);
+  }
+}
+
+/**
+ * Adds some products to the most important products form
+ */
+function fillInMostImportantProducts(): void {
+  fillNewProduct("Test Product 1", ["first", "second"], "Description of something");
+  fillNewProduct("Test Product 2", []);
+}
+
+/**
+ * Fills out Procurement Categories
+ */
+export function fillInProcurementCategories(): void {
+  cy.get('[data-test="dataPointToggleButton"]').first().click();
+  cy.get('[data-test="suppliersPerCountryCode"] .p-multiselect').should("exist").click();
+
+  const selectedCountries: string[] = [];
+
+  cy.get(".p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item")
+    .should("exist")
+    .each(($item, index) => {
+      if (index < 2) {
+        const countryName = $item[0].innerText.split(" ").slice(0, -1).join(" ");
+        cy.wrap($item).click();
+        selectedCountries.push(countryName);
+      }
+    });
+
+  cy.get('[data-test="directSuppliersHeader"]').should("exist").should("contain", "Number of Direct Suppliers");
+
+  cy.get('[data-test="supplierCountry"]')
+    .should("have.length", 2)
+    .each(($el, index) => {
+      cy.wrap($el).find("h5").should("contain.text", selectedCountries[index]);
+      cy.wrap($el).find('[data-test="supplierCountryValue"]').should("exist").type("2", { force: true });
+    });
+}
+
+/**
  * Uploads a single LKSG data entry for a company via form
  */
 export function uploadLksgDataViaForm(): void {
@@ -207,6 +266,8 @@ export function uploadLksgDataViaForm(): void {
   selectDummyDateInDataPicker();
 
   recursivelySelectYesOnAllFields(15);
+  fillInMostImportantProducts();
+  fillInProcurementCategories();
 
   uploadDocuments.selectDocumentAtEachFileSelector("test-report");
 

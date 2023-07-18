@@ -47,6 +47,32 @@ describe("Component test for LksgPanel", () => {
     cy.get("td:contains('1.23 MM')").should("exist");
   });
 
+  it("Should be able to handle null values in a Lksg dataset and not display rows for those values", () => {
+    const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
+    cy.mountWithPlugins(LksgPanel, {
+      data() {
+        return {
+          waitingForData: false,
+          lksgDataAndMetaInfo: [{ data: preparedFixture.t } as DataAndMetaInformationLksgData],
+        };
+      },
+      // The code below is required to complete the component mock yet interferes with the type resolution of the
+      // mountWithPlugins function.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      created() {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,
+        this.convertLksgDataToFrontendFormat();
+      },
+    });
+    // make sure only dataDate is there and other cards aren't
+    cy.contains("span", "1999-12-24").should("exist");
+    cy.get("em").its("length").should("equal", 1);
+    cy.get("tr").its("length").should("equal", 3);
+  });
+
   /**
    * Toggles the data-table row group with the given key
    * @param groupKey the key of the row group to expand

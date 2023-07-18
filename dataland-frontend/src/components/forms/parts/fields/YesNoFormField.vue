@@ -1,33 +1,23 @@
 <template>
   <div class="form-field" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <FormKit v-if="certificateRequiredIfYes" type="group" :name="name">
+    <FormKit v-if="certificateRequiredIfYes" v-model="baseDataPointYesNo" type="group" :name="name">
       <RadioButtonsFormElement
         name="value"
         :validation="validation"
         :validation-label="validationLabel ?? label"
-        :options="[
-          {
-            label: 'Yes',
-            value: 'Yes',
-          },
-          {
-            label: 'No',
-            value: 'No',
-          },
-        ]"
+        :options="yesNoOptions"
         :data-test="dataTest"
-        @input="setDocumentRequired($event)"
       />
       <UploadDocumentsForm
-        v-show="yesSelected"
+        v-show="baseDataPointYesNo.value === 'Yes'"
         @documentsChanged="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
         :name="name"
         :more-than-one-document-allowed="false"
         :file-names-for-prefill="fileNamesForPrefill"
       />
-      <FormKit v-if="yesSelected" type="group" name="dataSource">
+      <FormKit v-if="baseDataPointYesNo.value === 'Yes'" type="group" name="dataSource">
         <FormKit type="hidden" name="name" v-model="documentName" />
         <FormKit type="text" name="reference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
       </FormKit>
@@ -38,16 +28,7 @@
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
-      :options="[
-        {
-          label: 'Yes',
-          value: 'Yes',
-        },
-        {
-          label: 'No',
-          value: 'No',
-        },
-      ]"
+      :options="yesNoOptions"
     />
   </div>
 </template>
@@ -59,6 +40,7 @@ import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/Rad
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { DocumentToUpload } from "@/utils/FileUploadUtils";
+import { BaseDataPointYesNo } from "@clients/backend";
 
 export default defineComponent({
   name: "YesNoFormField",
@@ -67,54 +49,46 @@ export default defineComponent({
   props: { ...YesNoFormFieldProps, dataTest: String },
   data() {
     return {
-      yesSelected: false,
-      referencedDocument: {} as DocumentToUpload,
+      baseDataPointYesNo: {} as BaseDataPointYesNo,
+      referencedDocument: undefined as DocumentToUpload | undefined,
       documentName: "",
       documentReference: "",
       fileNamesForPrefill: [] as string[],
+      yesNoOptions: {
+        Yes: "Yes",
+        No: "No",
+      },
+      isMounted: false,
     };
   },
 
   emits: ["documentUpdated"],
   mounted() {
     this.updateFileUploadFiles();
+    this.isMounted = true;
   },
   watch: {
-    yesSelected() {
-      this.deleteDocument();
-    },
-    documentName() {
-      this.updateFileUploadFiles();
-    },
-  },
-  methods: {
-    /**
-     * Sets the value yesSelected to true when "Yes" is selected
-     * @param event the "Yes" / "No" selection event
-     */
-    setDocumentRequired(event: Event) {
-      this.yesSelected = (event as unknown as string) === "Yes";
-    },
-
-    /**
-     * If "No" is reselected after one has uploaded a file, this handles removing the file(s) and clearing
-     * the certificate list.
-     */
-    deleteDocument() {
-      if (!this.yesSelected) {
+    baseDataPointYesNo(newValue: BaseDataPointYesNo, oldValue: BaseDataPointYesNo) {
+      if (newValue.value === "No" && oldValue.value === "Yes" && this.certificateRequiredIfYes) {
         (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
       }
     },
-
+    documentName() {
+      if (this.isMounted) {
+        this.updateFileUploadFiles();
+      }
+    },
+  },
+  methods: {
     /**
      * Emits event that selected document changed
      * @param updatedDocuments the updated documents that are currently selected (only one in this case)
      */
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
       this.referencedDocument = updatedDocuments[0];
-      this.documentName = updatedDocuments[0]?.fileNameWithoutSuffix ?? "";
-      this.documentReference = updatedDocuments[0]?.reference ?? "";
-      this.$emit("documentUpdated", this.name, updatedDocuments[0]);
+      this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
+      this.documentReference = this.referencedDocument?.reference ?? "";
+      this.$emit("documentUpdated", this.name, this.referencedDocument);
     },
 
     /**
@@ -122,8 +96,8 @@ export default defineComponent({
      * of the given dataset (in the case of editing a dataset)
      */
     updateFileUploadFiles() {
-      if (this.documentName !== "" && Object.keys(this.referencedDocument).length == 0) {
-        this.fileNamesForPrefill.push(this.documentName);
+      if (this.documentName !== "" && this.referencedDocument === undefined) {
+        this.fileNamesForPrefill = [this.documentName];
       }
     },
   },

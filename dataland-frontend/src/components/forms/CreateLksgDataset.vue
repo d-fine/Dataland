@@ -2,11 +2,11 @@
   <Card class="col-12 page-wrapper-card p-3">
     <template #title>New Dataset - LkSG</template>
     <template #content>
-      <div v-show="waitingForData" class="d-center-div text-center px-7 py-4">
+      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading LkSG data...</p>
         <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
-      <div v-show="!waitingForData" class="grid uploadFormWrapper">
+      <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedLksgData"
@@ -29,33 +29,35 @@
                 :name="category.name"
               >
                 <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
-                    <div :class="`p-badge badge-${category.color}`">
-                      <span>{{ category.label.toUpperCase() }}</span>
+                  <template v-if="subcategoryVisibility.get(subcategory) ?? true">
+                    <div class="col-3 p-3 topicLabel">
+                      <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
+                      <div :class="`p-badge badge-${category.color}`">
+                        <span>{{ category.label.toUpperCase() }}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="col-9 formFields">
-                    <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
-                      <component
-                        v-if="field.showIf(companyAssociatedLksgData.data)"
-                        :is="field.component"
-                        :label="field.label"
-                        :placeholder="field.placeholder"
-                        :description="field.description"
-                        :name="field.name"
-                        :options="field.options"
-                        :required="field.required"
-                        :certificateRequiredIfYes="field.certificateRequiredIfYes"
-                        :validation="field.validation"
-                        :validation-label="field.validationLabel"
-                        :data-test="field.name"
-                        @documentUpdated="updateDocumentList"
-                        :ref="field.name"
-                      />
-                    </FormKit>
-                  </div>
+                    <div class="col-9 formFields">
+                      <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                        <component
+                          v-if="field.showIf(companyAssociatedLksgData.data)"
+                          :is="field.component"
+                          :label="field.label"
+                          :placeholder="field.placeholder"
+                          :description="field.description"
+                          :name="field.name"
+                          :options="field.options"
+                          :required="field.required"
+                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
+                          :validation="field.validation"
+                          :validation-label="field.validationLabel"
+                          :data-test="field.name"
+                          @documentUpdated="updateDocumentList"
+                          :ref="field.name"
+                        />
+                      </FormKit>
+                    </div>
+                  </template>
                 </div>
               </FormKit>
             </FormKit>
@@ -73,7 +75,11 @@
             <li v-for="category in lksgDataModel" :key="category">
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
-                  <a @click="smoothScroll(`#${subcategory.name}`)">{{ subcategory.label }}</a>
+                  <a
+                    v-if="subcategoryVisibility.get(subcategory) ?? true"
+                    @click="smoothScroll(`#${subcategory.name}`)"
+                    >{{ subcategory.label }}</a
+                  >
                 </li>
               </ul>
             </li>
@@ -87,7 +93,7 @@
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, computed } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
@@ -119,6 +125,9 @@ import ProductionSitesFormField from "@/components/forms/parts/fields/Production
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
+import { Subcategory } from "@/utils/GenericFrameworkTypes";
+import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -150,6 +159,8 @@ export default defineComponent({
     YesNoNaFormField,
     PercentageFormField,
     ProductionSitesFormField,
+    MostImportantProductsFormField,
+    ProcurementCategoriesFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -158,7 +169,7 @@ export default defineComponent({
   data() {
     return {
       formId: "createLkSGForm",
-      waitingForData: false,
+      waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedLksgData: {} as CompanyAssociatedDataLksgData,
       lksgDataModel,
@@ -186,6 +197,18 @@ export default defineComponent({
         // IGNORED
       },
     },
+    subcategoryVisibility(): Map<Subcategory, boolean> {
+      const map = new Map<Subcategory, boolean>();
+      for (const category of this.lksgDataModel) {
+        for (const subcategory of category.subcategories) {
+          map.set(
+            subcategory,
+            subcategory.fields.some((field) => field.showIf(this.companyAssociatedLksgData.data))
+          );
+        }
+      }
+      return map;
+    },
   },
   props: {
     companyID: {
@@ -197,6 +220,8 @@ export default defineComponent({
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
       void this.loadLKSGData(dataId);
+    } else {
+      this.waitingForData = false;
     }
   },
   methods: {
@@ -263,6 +288,13 @@ export default defineComponent({
         this.documents.delete(fieldName);
       }
     },
+  },
+  provide() {
+    return {
+      procurementCategories: computed(() => {
+        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations?.procurementCategories;
+      }),
+    };
   },
 });
 </script>

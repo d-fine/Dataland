@@ -4291,6 +4291,9 @@
           },
           "productionSpecific": {
             "$ref": "#/components/schemas/LksgProductionSpecific"
+          },
+          "productionSpecificOwnOperations": {
+            "$ref": "#/components/schemas/LksgProductionSpecificOwnOperations"
           }
         }
       },
@@ -4456,6 +4459,79 @@
           }
         }
       },
+      "LksgProcurementCategory": {
+        "required": [
+          "procuredProductTypesAndServicesNaceCodes"
+        ],
+        "type": "object",
+        "properties": {
+          "procuredProductTypesAndServicesNaceCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numberOfSuppliersPerCountryCode": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "percentageOfTotalProcurement": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "Products": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "percentageOfTotalProcurement": 0
+          },
+          "Services": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "percentageOfTotalProcurement": 0
+          },
+          "RawMaterials": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "percentageOfTotalProcurement": 0
+          }
+        }
+      },
+      "LksgProduct": {
+        "required": [
+          "productName"
+        ],
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string"
+          },
+          "productionSteps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "relatedCorporateSupplyChain": {
+            "type": "string"
+          }
+        }
+      },
       "LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention": {
         "type": "object",
         "properties": {
@@ -4534,6 +4610,52 @@
           },
           "specificProcurement": {
             "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "LksgProductionSpecificOwnOperations": {
+        "type": "object",
+        "properties": {
+          "mostImportantProducts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LksgProduct"
+            }
+          },
+          "procurementCategories": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LksgProcurementCategory"
+            },
+            "example": {
+              "Products": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "percentageOfTotalProcurement": 0
+              },
+              "Services": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "percentageOfTotalProcurement": 0
+              },
+              "RawMaterials": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "percentageOfTotalProcurement": 0
+              }
+            }
           }
         }
       },
