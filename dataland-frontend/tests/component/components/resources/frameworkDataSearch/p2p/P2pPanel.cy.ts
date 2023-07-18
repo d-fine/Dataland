@@ -1,7 +1,6 @@
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestAndUtils";
 import {
   CompanyAssociatedDataPathwaysToParisData,
   DataAndMetaInformationPathwaysToParisData,
@@ -11,6 +10,7 @@ import {
   PathwaysToParisData,
   QaStatus,
 } from "@clients/backend";
+import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestUtils";
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;

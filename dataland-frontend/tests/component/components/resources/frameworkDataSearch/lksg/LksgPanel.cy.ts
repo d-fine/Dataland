@@ -1,7 +1,7 @@
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestAndUtils";
+import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestUtils";
 import {
   CompanyAssociatedDataLksgData,
   DataAndMetaInformationLksgData,
