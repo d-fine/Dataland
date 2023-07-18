@@ -21,9 +21,27 @@
   }
 }
 
-.jumpLinks {
+.submitSideBar {
   left: auto;
   right: 0;
+  max-height: 100vh;
+  > ul {
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+    padding-bottom: 50px;
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #efefef;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #e7e7e7;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #d2d2d2;
+    }
+  }
   ul {
     margin: 0;
     padding: 0;

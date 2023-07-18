@@ -1,5 +1,5 @@
 <template>
-  <div data-test="submitSideBar" ref="submitSideBar" class="col-3 p-3 text-left jumpLinks">
+  <div data-test="submitSideBar" ref="submitSideBar" class="col-3 p-3 text-left submitSideBar">
     <slot></slot>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default defineComponent({
         this.elementPosition = submitSideBar.getBoundingClientRect().top;
       }
       if (window.scrollY > this.elementPosition) {
-        submitSideBar.style.position = "fixed";
+        submitSideBar.style.position = "sticky";
         submitSideBar.style.top = "60px";
       } else {
         submitSideBar.style.position = "relative";
