@@ -338,7 +338,7 @@ export default defineComponent({
     },
 
     /**
-     *
+     * Reformats the kpis into the necessary format for the frontend
      * @param kpiField the Field to which the value belongs
      * @param kpiValue the value that should be reformated corresponding to its field
      * @returns the reformatted value ready for display
