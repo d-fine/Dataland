@@ -148,17 +148,19 @@ export default defineComponent({
      * @param columnIdentifierDataId key name of the SFDR dataset property
      */
     createKpiDataObjectsForSfdrDataProps(sfdrData: SfdrData, columnIdentifierDataId: string) {
-      Object.entries(sfdrData)
-        .filter((dataEntry) => dataEntry[1] !== null)
-        .forEach((dataEntry: [string, SfdrSocial | SfdrEnvironmental | { [key: string]: CompanyReport }]) => {
-          const [sfdrDataPropName, sfdrDataPropValue] = dataEntry;
-          Object.entries(sfdrDataPropValue).forEach((propValue: [string, object | string | null]) => {
-            const [kpiKey, kpiValue] = propValue;
-            if (kpiValue !== null) {
-              this.createKpiDataObjects(kpiKey, kpiValue, sfdrDataPropName, columnIdentifierDataId);
-            }
-          });
+      const dataEntry = Object.entries(sfdrData).map((dataEntry) => {
+        if (dataEntry[1] == null) {
+          dataEntry[1] = {};
+        }
+        return dataEntry;
+      });
+      dataEntry.forEach((dataEntry: [string, SfdrSocial | SfdrEnvironmental | { [key: string]: CompanyReport }]) => {
+        const [sfdrDataPropName, sfdrDataPropValue] = dataEntry;
+        Object.entries(sfdrDataPropValue).forEach((propValue: [string, object | string | null]) => {
+          const [kpiKey, kpiValue] = propValue;
+          this.createKpiDataObjects(kpiKey, kpiValue ?? "", sfdrDataPropName, columnIdentifierDataId);
         });
+      });
     },
 
     /**

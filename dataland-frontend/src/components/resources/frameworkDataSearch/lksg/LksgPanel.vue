@@ -146,20 +146,28 @@ export default defineComponent({
      */
     addKpisOfOneDatasetToTableModel(lksgData: LksgData, dataId: string) {
       for (const [categoryKey, categoryObject] of Object.entries(lksgData) as [string, object | null]) {
-        if (categoryObject == null) continue;
+        if (categoryObject == null) {
+          lksgData[categoryKey as string] = {};
+          continue;
+        }
         for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
           string,
           object | null
         ][]) {
-          if (subCategoryObject == null) continue;
+          if (subCategoryObject == null) {
+            categoryObject[subCategoryKey] = {};
+            continue;
+          }
           for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
-            if (kpiValue == null) continue;
+            if (kpiValue == null) {
+              subCategoryObject[kpiKey] = "";
+            }
             const subcategory = assertDefined(
               lksgDataModel
                 .find((category) => category.name === categoryKey)
                 ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
             );
-            this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataId);
+            this.createKpiDataObjects(kpiKey, (kpiValue as KpiValue) ?? "", subcategory, dataId);
           }
         }
       }
