@@ -43,8 +43,6 @@ describe("Component test for P2pPanel", () => {
         this.convertP2pDataToFrontendFormat();
       },
     });
-    cy.get(`span[data-test=General]`).click();
-    cy.get(`span[data-test=_general]`).click();
     cy.get("td:contains('Ammonia')").should("exist");
   });
 
@@ -84,8 +82,6 @@ describe("Component test for P2pPanel", () => {
     });
 
     cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
-    cy.get(`span[data-test=General]`).click();
-    toggleRowGroup("_general");
     cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("exist");
 
     toggleRowGroup("_general");
@@ -161,8 +157,6 @@ describe("Component test for P2pPanel", () => {
         };
       },
     });
-    cy.get(`span[data-test=General]`).click();
-    cy.get(`span[data-test=_general]`).click();
     cy.get("table").find(`tr:contains("Data Date")`).find(`span`).eq(6).contains("2023");
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
