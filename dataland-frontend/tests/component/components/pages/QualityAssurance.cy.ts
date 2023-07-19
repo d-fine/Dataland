@@ -3,6 +3,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { DataMetaInformation, DataTypeEnum, PathwaysToParisData, SmeData } from "@clients/backend";
 import { QaStatus } from "@clients/qaservice";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describe("Component tests for the Quality Assurance page", () => {
   const keycloakMock = minimalKeycloakMock({
@@ -62,7 +63,7 @@ describe("Component tests for the Quality Assurance page", () => {
     } else if (dataType === DataTypeEnum.Sme) {
       dataTypeString = "sme";
     }
-    cy.intercept(`**/api/data/${dataTypeString}/*`, {
+    cy.intercept(`**/api/data/${assertDefined(dataTypeString)}/*`, {
       companyId: qaDataObject.metaInformation.companyId,
       reportingPeriod: fixtureData.reportingPeriod,
       data: fixtureData.t,
@@ -89,9 +90,9 @@ describe("Component tests for the Quality Assurance page", () => {
   });
 
   it("Checks that SME datasets can be reviewed as expected", () => {
-    cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
+    cy.fixture("CompanyInformationWithSmePreparedFixtures").then(function (jsonContent) {
       const preparedSmeFixtures = jsonContent as Array<FixtureData<SmeData>>;
-      const smeFixtureData = getPreparedFixture("Biedermann UG", preparedSmeFixtures);
+      const smeFixtureData = getPreparedFixture("SME-year-2023", preparedSmeFixtures);
       const smeDataId = "smeTestDataId";
       createQaDataObjectAndPerformRequestCheck(smeFixtureData, smeDataId, DataTypeEnum.Sme);
     });
