@@ -71,7 +71,7 @@
             <span
               v-else-if="
                 slotProps.data.kpiFormFieldComponent === 'PercentageFormField' &&
-                slotProps.data.content[reportingPeriodWithDataId.dataId] == true
+                slotProps.data.content[reportingPeriodWithDataId.dataId] !== ''
               "
             >
               {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} %</span
