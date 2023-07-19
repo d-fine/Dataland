@@ -16,7 +16,7 @@
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
+import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -126,14 +126,14 @@ export default defineComponent({
      */
     convertLksgDataToFrontendFormat(): void {
       if (this.lksgDataAndMetaInfo.length) {
-        this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
-          const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
-          const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
+        this.lksgDataAndMetaInfo.forEach((currentLksgDataset: DataAndMetaInformationLksgData) => {
+          const dataIdOfLksgDataset = currentLksgDataset.metaInfo?.dataId ?? "";
+          const reportingPeriodOfLksgDataset = currentLksgDataset.metaInfo?.reportingPeriod ?? "";
           this.arrayOfReportingPeriodWithDataId.push({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
-          this.addKpisOfOneDatasetToTableModel(oneLksgDataset.data, dataIdOfLksgDataset);
+          this.addKpisOfOneDatasetToTableModel(currentLksgDataset.data, dataIdOfLksgDataset);
         });
       }
       this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(

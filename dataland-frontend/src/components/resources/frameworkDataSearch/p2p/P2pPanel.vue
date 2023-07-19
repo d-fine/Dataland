@@ -50,7 +50,7 @@
 <script lang="ts">
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
+import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -169,14 +169,16 @@ export default defineComponent({
      */
     convertP2pDataToFrontendFormat(): void {
       if (this.p2pDataAndMetaInfo.length) {
-        this.p2pDataAndMetaInfo.forEach((oneP2pDataset: DataAndMetaInformationPathwaysToParisData) => {
-          const dataIdOfP2pDataset = oneP2pDataset.metaInfo?.dataId ?? "";
-          const reportingPeriodOfP2pDataset = oneP2pDataset.metaInfo?.reportingPeriod ?? "";
+        this.p2pDataAndMetaInfo.forEach((currentP2pDataset: DataAndMetaInformationPathwaysToParisData) => {
+          const dataIdOfP2pDataset = currentP2pDataset.metaInfo?.dataId ?? "";
+          const reportingPeriodOfP2pDataset = currentP2pDataset.metaInfo?.reportingPeriod ?? "";
           this.arrayOfReportingPeriodWithDataId.push({
             dataId: dataIdOfP2pDataset,
             reportingPeriod: reportingPeriodOfP2pDataset,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(oneP2pDataset.data) as [string, object] | null) {
+          for (const [categoryKey, categoryObject] of Object.entries(currentP2pDataset.data) as
+            | [string, object]
+            | null) {
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
             const frameworkCategoryData = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
@@ -186,7 +188,7 @@ export default defineComponent({
               frameworkCategoryData,
               dataIdOfP2pDataset,
               listOfDataObjects,
-              oneP2pDataset.data
+              currentP2pDataset.data
             );
 
             this.mapOfCategoryKeysToDataObjectArrays.set(frameworkCategoryData.label, listOfDataObjects);
@@ -256,7 +258,6 @@ export default defineComponent({
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
-        //TODO computed property p2pDataAndMetaInfo. Map of fieldName to ShowIfBoolean, Remove when Review coment is closed
         if (field.showIf(oneP2pDataset)) {
           this.createKpiDataObjects(
             kpiKey as string,

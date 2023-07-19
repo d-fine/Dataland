@@ -1,4 +1,4 @@
-import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/DisplayFrameworkDataTable.vue";
+import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { DocumentReference, YesNo } from "@clients/backend";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
