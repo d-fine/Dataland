@@ -112,7 +112,7 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfLksgDataset]: this.reformatValueForDisplay(kpiField, kpiValue) },
+        content: { [dataIdOfLksgDataset]: this.reformatValueForDisplay(kpiField, kpiValue ?? "") },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -167,7 +167,7 @@ export default defineComponent({
                 .find((category) => category.name === categoryKey)
                 ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
             );
-            this.createKpiDataObjects(kpiKey, (kpiValue as KpiValue) ?? "", subcategory, dataId);
+            this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataId);
           }
         }
       }
