@@ -85,6 +85,10 @@ describe("Component test for P2pPanel", () => {
     cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("exist");
 
     toggleRowGroup("_general");
+    cy.get(`span[data-test=General]`).click();
+    cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("not.exist");
+    cy.get(`span[data-test=General]`).click();
+
     cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("not.exist");
 
     toggleRowGroup("_general");

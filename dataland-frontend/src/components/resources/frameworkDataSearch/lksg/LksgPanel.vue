@@ -4,7 +4,7 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
-    <DisplayFrameworkDataTable
+    <TwoLayerDataTable
       :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
       :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
       headerInputStyle="width: 30vw;"
@@ -16,7 +16,7 @@
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
+import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -31,7 +31,7 @@ import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "LksgPanel",
-  components: { DisplayFrameworkDataTable },
+  components: { TwoLayerDataTable: TwoLayerDataTable },
   data() {
     return {
       firstRender: true,

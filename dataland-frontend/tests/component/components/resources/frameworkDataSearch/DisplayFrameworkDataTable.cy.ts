@@ -1,9 +1,9 @@
-import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
+import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { DocumentReference, YesNo } from "@clients/backend";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
-describe("Component test for DisplayFrameworkDataTable", () => {
+describe("Component test for TwoLayerDataTable", () => {
   const dataId = "dummyId";
   const dummyDataSource = { name: "document", reference: "123" } as DocumentReference;
   const emptyStringDataSource = { name: "", reference: "" } as DocumentReference;
@@ -24,7 +24,7 @@ describe("Component test for DisplayFrameworkDataTable", () => {
     ];
 
     const reportingPeriodWithDataId = { dataId: dataId, reportingPeriod: "2023" };
-    cy.mountWithPlugins(DisplayFrameworkDataTable, {
+    cy.mountWithPlugins(TwoLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {

@@ -36,7 +36,7 @@
           </div>
         </div>
         <div v-show="isExpanded(index)">
-          <DisplayFrameworkDataTable
+          <TwoLayerDataTable
             :arrayOfKpiDataObjects="arrayOfKpiDataObjectsMapItem[1]"
             :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
             headerInputStyle="display: none;"
@@ -50,7 +50,7 @@
 <script lang="ts">
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import DisplayFrameworkDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
+import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -66,7 +66,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 export default defineComponent({
   name: "P2pPanel",
 
-  components: { DisplayFrameworkDataTable, DataTable, Column },
+  components: { TwoLayerDataTable: TwoLayerDataTable, DataTable, Column },
   data() {
     return {
       expandedGroup: [0],
@@ -206,7 +206,7 @@ export default defineComponent({
      * @param frameworkCategoryData  the category object of the framework's category
      * @param dataIdOfP2pDataset  the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param oneP2pDataset dataset for which the show if conditions should be checked
+     * @param currentP2pDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategories(
       categoryObject,
@@ -214,7 +214,7 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
       listOfDataObjects: Array<KpiDataObject>,
-      oneP2pDataset: PathwaysToParisData
+      currentP2pDataset: PathwaysToParisData
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
         string,
@@ -228,7 +228,7 @@ export default defineComponent({
           frameworkCategoryData,
           dataIdOfP2pDataset,
           listOfDataObjects,
-          oneP2pDataset
+          currentP2pDataset
         );
       }
     },
@@ -240,7 +240,7 @@ export default defineComponent({
      * @param frameworkCategoryData the category object of the framework's category
      * @param dataIdOfP2pDataset the data ID of the P2P dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param oneP2pDataset dataset for which the show if conditions should be checked
+     * @param currentP2pDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategoryKpis(
       subCategoryObject: object,
@@ -249,16 +249,18 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
       listOfDataObjects: Array<KpiDataObject>,
-      oneP2pDataset: PathwaysToParisData
+      currentP2pDataset: PathwaysToParisData
     ) {
-      for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
-        if (kpiValue == null) continue;
+      for (let [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
+        if (kpiValue == null) {
+          kpiValue = "";
+        }
         const subcategory = assertDefined(
           frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
-        if (field.showIf(oneP2pDataset)) {
+        if (field.showIf(currentP2pDataset)) {
           this.createKpiDataObjects(
             kpiKey as string,
             kpiValue as KpiValue,
