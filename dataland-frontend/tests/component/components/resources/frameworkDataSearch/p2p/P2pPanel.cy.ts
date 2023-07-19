@@ -10,7 +10,6 @@ import {
   PathwaysToParisData,
   QaStatus,
 } from "@clients/backend";
-import { sortReportingPeriodsToDisplayAsColumnsTest } from "@ct/testUtils/SortTestUtils";
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
@@ -171,20 +170,5 @@ describe("Component test for P2pPanel", () => {
         .eq(indexOfColumn)
         .should("contain.text", (2029 - indexOfColumn).toString());
     }
-  });
-
-  it("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
-    const firstYearObject = { dataId: "5", reportingPeriod: "2022" };
-    const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
-    const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
-    const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
-    const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
-    sortReportingPeriodsToDisplayAsColumnsTest(
-      firstYearObject,
-      secondYearObject,
-      firstOtherObject,
-      secondOtherObject,
-      shouldSwapList
-    );
   });
 });

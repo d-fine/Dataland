@@ -69,6 +69,7 @@ export default defineComponent({
   components: { DisplayFrameworkDataTable, DataTable, Column },
   data() {
     return {
+      expandedGroup: [0],
       dataTypeEnum: DataTypeEnum,
       firstRender: true,
       waitingForData: true,
@@ -77,7 +78,6 @@ export default defineComponent({
       arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
       mapOfCategoryKeysToDataObjectArrays: new Map() as Map<string, Array<KpiDataObject>>,
-      expandedGroup: [],
     };
   },
   props: PanelProps,
@@ -102,6 +102,7 @@ export default defineComponent({
     this.fetchP2pData().catch((error) => console.log(error));
     this.firstRender = false;
   },
+
   methods: {
     humanizeString,
     /**
@@ -292,14 +293,14 @@ export default defineComponent({
      * @param key element for which the check should be run
      * @returns if the element is expanded or not
      */
-    isExpanded(key: string) {
+    isExpanded(key: number) {
       return this.expandedGroup.indexOf(key) !== -1;
     },
     /**
      * Expands and collapses an item
      * @param key element for which the check should be run
      */
-    toggleExpansion(key: string) {
+    toggleExpansion(key: number) {
       if (this.isExpanded(key)) this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
       else this.expandedGroup.push(key);
     },
