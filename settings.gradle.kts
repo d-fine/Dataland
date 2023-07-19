@@ -44,19 +44,19 @@ dependencyResolutionManagement {
             library("cloudevents-api", "io.cloudevents:cloudevents-api:2.5.0")
             library("cloudevents-json-jackson", "io.cloudevents:cloudevents-json-jackson:2.5.0")
             library("cloudevents-core", "io.cloudevents:cloudevents-core:2.5.0")
-            library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.3")
+            library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.4")
             library("mailjet-client", "com.mailjet:mailjet-client:5.2.3")
 
-            library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.28")
+            library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.29")
 
             library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:5.0.0")
             library("mockito-inline", "org.mockito:mockito-inline:5.2.0")
 
             library("json", "org.json:json:20230618")
 
-            library("commons-io", "commons-io:commons-io:2.12.0")
+            library("commons-io", "commons-io:commons-io:2.13.0")
 
-            library("flyway", "org.flywaydb:flyway-core:9.8.1")
+            library("flyway", "org.flywaydb:flyway-core:9.20.1")
         }
     }
 }
