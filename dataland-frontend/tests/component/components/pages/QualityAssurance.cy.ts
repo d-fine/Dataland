@@ -3,7 +3,6 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { DataMetaInformation, DataTypeEnum, PathwaysToParisData, SmeData } from "@clients/backend";
 import { QaStatus } from "@clients/qaservice";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describe("Component tests for the Quality Assurance page", () => {
   const keycloakMock = minimalKeycloakMock({
@@ -17,7 +16,7 @@ describe("Component tests for the Quality Assurance page", () => {
    * @param dataType The type of the dataset to review
    * @returns the data meta information object created
    */
-  function mockQaDataObjectForDatasetWithId(
+  function mockDataMetaInformationForFixtureDataWithIdAndType(
     fixtureData: FixtureData<PathwaysToParisData | SmeData>,
     dataId: string,
     dataType: DataTypeEnum
@@ -47,7 +46,7 @@ describe("Component tests for the Quality Assurance page", () => {
   ): void {
     const qaDataObject = {
       dataId: dataId,
-      metaInformation: mockQaDataObjectForDatasetWithId(fixtureData, dataId, dataType),
+      metaInformation: mockDataMetaInformationForFixtureDataWithIdAndType(fixtureData, dataId, dataType),
       companyInformation: fixtureData.companyInformation,
     };
     cy.intercept("**/qa/datasets", [dataId]);
@@ -57,24 +56,13 @@ describe("Component tests for the Quality Assurance page", () => {
       companyInformation: qaDataObject.companyInformation,
       dataRegisteredByDataland: [qaDataObject.metaInformation],
     });
-    let dataTypeString;
-    if (dataType === DataTypeEnum.P2p) {
-      dataTypeString = "p2p";
-    } else if (dataType === DataTypeEnum.Sme) {
-      dataTypeString = "sme";
-    }
-    cy.intercept(`**/api/data/${assertDefined(dataTypeString)}/*`, {
+    cy.intercept(`**/api/data/${dataType}/*`, {
       companyId: qaDataObject.metaInformation.companyId,
       reportingPeriod: fixtureData.reportingPeriod,
       data: fixtureData.t,
     }).as("fetchData");
     cy.mountWithPlugins<typeof QualityAssurance>(QualityAssurance, {
       keycloak: keycloakMock,
-    }).then((mounted) => {
-      void mounted.wrapper.setData({
-        dataIdList: [dataId],
-        displayDataOfPage: [qaDataObject],
-      });
     });
     cy.contains("td", `${dataId}`).click();
     cy.wait("@fetchData");
