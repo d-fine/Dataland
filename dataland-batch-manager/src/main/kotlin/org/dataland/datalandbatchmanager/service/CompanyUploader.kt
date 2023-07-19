@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,7 +50,7 @@ class CompanyUploader(
 
         val conflictingIdentifier = conflictingIdentifiers.get(0)
         val conflictingIdentifierType = conflictingIdentifier.get("identifierType")?.textValue()
-        if (conflictingIdentifierType != "Lei") {
+        if (conflictingIdentifierType != IdentifierType.lei.value) {
             return null
         }
 
