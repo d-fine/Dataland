@@ -252,11 +252,9 @@ export default defineComponent({
       currentP2pDataset: PathwaysToParisData
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
-        let kpiValueWorking;
+        let kpiValueToCreateDataObject = kpiValue as KpiValue;
         if (kpiValue == null) {
-          kpiValueWorking = "" as KpiValue;
-        } else {
-          kpiValueWorking = kpiValue as KpiValue;
+          kpiValueToCreateDataObject = "" as KpiValue;
         }
         const subcategory = assertDefined(
           frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
@@ -266,7 +264,7 @@ export default defineComponent({
         if (field.showIf(currentP2pDataset)) {
           this.createKpiDataObjects(
             kpiKey as string,
-            kpiValueWorking,
+            kpiValueToCreateDataObject,
             subcategory,
             frameworkCategoryData,
             dataIdOfP2pDataset
