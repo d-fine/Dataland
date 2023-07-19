@@ -2,170 +2,184 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Mockenhauptburg",
-			"sector": "functionalities",
+			"headquarters": "Jasperland",
+			"headquartersPostalCode": "72480",
+			"sector": "e-commerce",
 			"identifiers": {
 				"Lei": [
-					"KyX134xhdDjTV3hxpthe"
+					"r6RGF4nZ3eTeBpS4HDx5"
 				],
-				"Isin": [],
+				"Isin": [
+					"Aw9NdHSPrZub",
+					"l14LcgdBSWXj"
+				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"EJxN2d3"
+				],
 				"Duns": [
-					"ckUccyDWK"
+					"7KL28nOrK"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "HN",
-			"companyAlternativeNames": [],
-			"website": "https://heroisch-auge.name",
+			"countryCode": "BH",
+			"companyAlternativeNames": [
+				"Fusenig, Pohland und Eich"
+			],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 66533,
+			"numberOfEmployees": 97202,
 			"referencedReports": {
-				"IntegratedReport": {
+				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-01-17",
-					"currency": "BRL"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "XPF"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-12-29",
-					"currency": "SYP"
+					"currency": "HKD"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
+			"scopeOfEntities": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.5266,
+					"valueAsPercentage": 0.5461,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.5715,
+					"valueAsPercentage": 0.0109,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.2251,
+					"valueAsPercentage": 0.1965,
 					"quality": "NA"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Nord Maditaland",
-			"sector": "mindshare",
+			"headquarters": "Lübeck",
+			"headquartersPostalCode": "19568",
+			"sector": "lifetime value",
 			"identifiers": {
 				"Lei": [
-					"IVIoqDtx9IMSuYoCfln2"
+					"7gzcfLAC6Sto4xKUBWHd"
 				],
-				"Isin": [],
+				"Isin": [
+					"9z4B8rO5H99n",
+					"omKSdbdmzV6U"
+				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"pPniL5WlA"
+					"brINcTkL2"
 				],
 				"VatNumber": [
-					"31xG4OXMr"
+					"krsItvqQY"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"RNpONRcQ4TZ0xDQ"
+				]
 			},
-			"countryCode": "PK",
-			"companyAlternativeNames": [],
-			"website": "https://putzig-hand.net",
+			"countryCode": "BY",
+			"companyAlternativeNames": [
+				"Greithanner-Lehner",
+				"Jellinghaus Gruppe",
+				"Rietmüller-Moritz"
+			],
+			"website": "https://leuchtend-blume.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-09-15",
+			"numberOfEmployees": 90730,
 			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-03-31",
+					"currency": "TJS"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "BOB"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2023-02-10",
+					"currency": "NOK"
+				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-08-16",
-					"currency": "SBD"
+					"isGroupLevel": "NA",
+					"reportDate": "2023-06-27",
+					"currency": "ZMW"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 128,
-					"report": "IntegratedReport",
-					"tagName": "platforms"
-				}
+				"assurance": "None"
 			},
 			"scopeOfEntities": "No",
 			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 658598.0589850806,
-					"dataSource": {
-						"page": 1112,
-						"report": "IntegratedReport",
-						"tagName": "content"
-					},
-					"quality": "Audited",
-					"comment": "bypass solid state transmitter"
+					"value": 138479.89097703248,
+					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.2872,
-					"dataSource": {
-						"page": 181,
-						"report": "IntegratedReport",
-						"tagName": "markets"
-					},
-					"quality": "Reported",
-					"comment": "reboot multi-byte microchip",
-					"valueAsAbsolute": 534888.6078223586
+					"valueAsPercentage": 0.9359,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 737421.2062801234
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 88376.616302412,
+					"value": 708999.3519242853,
 					"dataSource": {
-						"page": 476,
+						"page": 1197,
 						"report": "IntegratedReport",
-						"tagName": "experiences"
+						"tagName": "bandwidth"
 					},
-					"quality": "Audited",
-					"comment": "override 1080p pixel"
+					"quality": "Estimated",
+					"comment": "navigate mobile bandwidth"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.8085,
-					"dataSource": {
-						"page": 42,
-						"report": "IntegratedReport",
-						"tagName": "schemas"
-					},
-					"quality": "Reported",
-					"comment": "connect wireless driver",
-					"valueAsAbsolute": 683760.1622566581
+					"valueAsPercentage": 0.9882,
+					"quality": "Estimated",
+					"valueAsAbsolute": 593435.1035277359
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 165758.09742789716,
-					"quality": "Estimated"
+					"value": 620928.2597876154,
+					"dataSource": {
+						"page": 395,
+						"report": "SustainabilityReport",
+						"tagName": "networks"
+					},
+					"quality": "Incomplete",
+					"comment": "back up primary system"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.9244,
-					"quality": "Estimated",
-					"valueAsAbsolute": 255466.80982224643
+					"valueAsPercentage": 0.6812,
+					"dataSource": {
+						"page": 653,
+						"report": "SustainabilityReport",
+						"tagName": "lifetime value"
+					},
+					"quality": "Audited",
+					"comment": "generate optical pixel",
+					"valueAsAbsolute": 120104.47857901454
 				}
 			}
 		},
@@ -174,102 +188,75 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Süd Joleenland",
-			"headquartersPostalCode": "44262",
-			"sector": "lifetime value",
+			"headquarters": "Ost Mandy",
+			"sector": "functionalities",
 			"identifiers": {
-				"Lei": [
-					"FiTECDUhdwkTjyz7CvTf"
+				"Lei": [],
+				"Isin": [
+					"M5D4K9g7k5sF",
+					"QVZJKRAwDif3"
 				],
-				"Isin": [],
-				"PermId": [
-					"YsNcO9NFZu"
-				],
+				"PermId": [],
 				"Ticker": [
-					"ihH2ytX"
+					"qlD9D8O"
 				],
-				"Duns": [
-					"CSMJKyCSL"
-				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MU",
+			"countryCode": "CO",
 			"companyAlternativeNames": [
-				"Assmus GmbH & Co. KG",
-				"Kinzy-Riethmüller",
-				"Malkus, Rheder und Dieckmann",
-				"Pohl, Kallensee und Sammert"
+				"Feuerbach-Hartlieb",
+				"John GmbH & Co. KG"
 			],
+			"website": "https://wohlwollend-burostuhl.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2022-09-03",
+			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "None"
 			},
 			"scopeOfEntities": "Yes",
 			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
-				"totalAmount": {
-					"value": 433726.1985754594,
+				"eligibleData": {
+					"valueAsPercentage": 0.2872,
 					"dataSource": {
-						"page": 665,
-						"report": "ESEFReport",
-						"tagName": "blockchains"
+						"page": 1054,
+						"report": "IntegratedReport",
+						"tagName": "deliverables"
 					},
 					"quality": "Reported",
-					"comment": "synthesize cross-platform microchip"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.9849,
-					"dataSource": {
-						"page": 931,
-						"report": "ESEFReport",
-						"tagName": "web services"
-					},
-					"quality": "Audited",
-					"comment": "index optical circuit",
-					"valueAsAbsolute": 451703.3365322277
+					"comment": "override back-end port",
+					"valueAsAbsolute": 228255.06450608373
 				}
 			},
 			"capex": {
-				"totalAmount": {
-					"value": 929936.7674393579,
-					"dataSource": {
-						"page": 1189,
-						"report": "IntegratedReport",
-						"tagName": "channels"
-					},
-					"quality": "Estimated",
-					"comment": "synthesize 1080p interface"
-				},
-				"alignedData": {
-					"dataSource": {
-						"page": 726,
-						"report": "IntegratedReport",
-						"tagName": "networks"
-					},
-					"quality": "Audited",
-					"comment": "quantify neural array",
-					"valueAsAbsolute": 78350.05460074171
-				},
 				"eligibleData": {
-					"quality": "Estimated",
-					"valueAsAbsolute": 858919.2646672018
+					"valueAsPercentage": 0.7382,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"value": 312289.7433466278,
+				"alignedData": {
 					"dataSource": {
-						"page": 879,
+						"page": 43,
 						"report": "IntegratedReport",
-						"tagName": "synergies"
+						"tagName": "platforms"
+					},
+					"quality": "Audited",
+					"comment": "compress multi-byte program"
+				},
+				"eligibleData": {
+					"dataSource": {
+						"page": 1121,
+						"report": "IntegratedReport",
+						"tagName": "e-markets"
 					},
 					"quality": "Reported",
-					"comment": "index solid state card"
+					"comment": "connect neural interface"
 				}
 			}
 		},

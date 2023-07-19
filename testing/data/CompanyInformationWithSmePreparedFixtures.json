@@ -2,67 +2,68 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Sindelfingen",
-			"headquartersPostalCode": "72403",
-			"sector": "paradigms",
+			"headquarters": "Neu Mats",
+			"sector": "technologies",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"ldvYyShKlizE",
-					"PS0MpFK8LiKS"
+				"Lei": [
+					"sZ9OOxP1HD0e0OKlNOO7"
 				],
-				"PermId": [],
+				"Isin": [
+					"Ib03SDzAYUTt",
+					"FkXGIpIqIxON"
+				],
+				"PermId": [
+					"ZZdWoaolZU"
+				],
 				"Ticker": [
-					"90CY4gY"
+					"FWA0lp6"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"8ffeiTzsv"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"LLscckL8xOPg88i"
+					"NLisJVq6d3eHoZT"
 				]
 			},
-			"countryCode": "UG",
+			"countryCode": "PF",
 			"companyAlternativeNames": [
-				"Dobbrunz-Kummle",
-				"Golling, Kumbernuss und Ender",
-				"Schäffer, Sihler und Koha",
-				"Schley-Schüler"
+				"Sagafe OHG"
 			],
 			"isTeaserCompany": false
 		},
 		"t": {
+			"industry": "Trade",
 			"financialYear": 2023,
-			"totalRevenue": 935300.1183248125,
-			"researchAndDevelopmentExpenses": 662680.9346023947,
-			"energyEfficiencyInvestments": "OneToFivePercent",
-			"operatingCosts": 719142.6375531591,
-			"totalAssets": 58866.12598551437,
+			"totalRevenue": 273522.74706354365,
+			"researchAndDevelopmentExpenses": 285355.9655020945,
+			"energyEfficiencyInvestments": "LessThanOnePercent",
+			"operatingCosts": 634308.9172500186,
+			"totalAssets": 489145.4644501209,
 			"yearsSinceFounded": "FiveToTenYears",
-			"productCategoryWithHighestSales": "convergence",
-			"productCategoryWithHighestSalesShareOfSales": 0.0134,
-			"productCategoryWithSecondHighestSales": "architectures",
-			"productCategoryWithSecondHighestSalesShareOfSales": 0.309,
-			"totalAreaCompany": 3200175797436416,
-			"totalPowerConsumption": 4984527929737216,
-			"totalPowerCosts": 784841.3592670113,
-			"heatingEnergyConsumption": 1650115242622976,
-			"totalHeatingCosts": 361142.14648259804,
-			"roomWaterHeating": "Oil",
-			"shareOwnEnergyProduction": "TwentyfiveToFiftyPercent",
-			"waterSewageCosts": 774534.7754680552,
-			"wasteDisposalCosts": 179542.84771112725,
-			"wasteRecyclingRate": 0.6606,
-			"numberOfEmployees": 635,
-			"numberOfTemporaryWorkers": 308,
-			"shareOfFullTimeEmployees": 0.9432,
-			"shareOfEmployeesSubjectToSocialSecurityContributions": 0.3852,
-			"employeeFluctuation": 0.541,
-			"shareOfFemaleEmployees": 0.8198,
-			"proportionOfFemaleEmployeesInManagement": 0.4282,
-			"healthAndOldAgeOffers": "No",
-			"numberVacationDays": 24,
+			"productCategoryWithHighestSales": "bandwidth",
+			"productCategoryWithHighestSalesShareOfSales": 0.6713,
+			"productCategoryWithSecondHighestSales": "schemas",
+			"productCategoryWithSecondHighestSalesShareOfSales": 0.4722,
+			"totalAreaCompany": 7456553483370496,
+			"totalPowerConsumption": 6937375133401088,
+			"totalPowerCosts": 513355.4872823879,
+			"useOfGreenElectricity": "NA",
+			"heatingEnergyConsumption": 8297730279473152,
+			"totalHeatingCosts": 655823.6127370037,
+			"roomWaterHeating": "Gas",
+			"shareOwnEnergyProduction": "MoreThanSeventyfivePercent",
+			"waterSewageCosts": 187496.04903860018,
+			"wasteDisposalCosts": 398052.87087801844,
+			"wasteRecyclingRate": 0.6545,
+			"numberOfEmployees": 840,
+			"numberOfTemporaryWorkers": 227,
+			"shareOfFullTimeEmployees": 0.1189,
+			"shareOfEmployeesSubjectToSocialSecurityContributions": 0.8805,
+			"employeeFluctuation": 0.6029,
+			"shareOfFemaleEmployees": 0.614,
+			"proportionOfFemaleEmployeesInManagement": 0.9652,
+			"oshMeasures": "No",
+			"healthAndOldAgeOffers": "Yes",
+			"numberVacationDays": 5,
 			"nonProfitProjects": "NA"
 		},
 		"reportingPeriod": "2023"

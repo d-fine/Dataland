@@ -20,8 +20,6 @@ export function generateP2pPreparedFixtures(
     )
   );
   preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, undef_probability)[0], "2023-04-18"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, undef_probability)[0], "2023-06-22"));
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, undef_probability)[0], "2022-07-30"));
   preparedFixtures.push(
     manipulateFixtureForOneP2pDataSetWithThreeSectors(generateP2pFixtures(1, undef_probability, toggleRandomSectors)[0])
   );
