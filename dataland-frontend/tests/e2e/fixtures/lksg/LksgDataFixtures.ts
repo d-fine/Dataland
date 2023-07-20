@@ -62,15 +62,6 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
 }
 
 /**
- * Generates an array consisting of 0 to 5 random production sites
- * @param undefinedProbability the percentage of undefined values in the returned production site
- * @returns 0 to 5 random production sites
- */
-export function generateArrayOfProductionSites(undefinedProbability = 0.5): LksgProductionSite[] {
-  return generateArray(() => generateProductionSite(undefinedProbability));
-}
-
-/**
  * Generates a random product
  * @returns a random product
  */
@@ -196,7 +187,10 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         ),
         subcontractingCompaniesIndustries: valueOrUndefined(generateListOfNaceCodes(), undefinedProbability),
         productionSites: valueOrUndefined(randomYesNo(), undefinedProbability),
-        listOfProductionSites: valueOrUndefined(generateArrayOfProductionSites(), undefinedProbability),
+        listOfProductionSites: valueOrUndefined(
+          generateArray(() => generateProductionSite(undefinedProbability)),
+          undefinedProbability
+        ),
         market: valueOrUndefined(
           faker.helpers.arrayElement([
             NationalOrInternationalMarket.National,
