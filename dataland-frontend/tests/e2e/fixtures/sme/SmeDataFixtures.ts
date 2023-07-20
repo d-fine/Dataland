@@ -31,12 +31,10 @@ function generateProduct(): SmeProduct {
  * @returns a random production site
  */
 export function generateProductionSite(undefinedProbability = 0.5): SmeProductionSite {
-  // TODO do undefined values for nullable things too
-  console.log(undefinedProbability); // TODO remove at the end
   return {
-    nameOfProductionSite: faker.company.name(),
-    addressOfProductionSite: generateAddress(),
-    percentageOfTotalRevenue: valueOrUndefined(randomPercentageValue()),
+    nameOfProductionSite: valueOrUndefined(faker.company.name(), undefinedProbability),
+    addressOfProductionSite: valueOrUndefined(generateAddress(undefinedProbability), undefinedProbability),
+    percentageOfTotalRevenue: valueOrUndefined(randomPercentageValue(), undefinedProbability),
   };
 }
 
@@ -50,7 +48,7 @@ export function generateSmeData(undefinedProbability = 0.5): SmeData {
     general: {
       basicInformation: {
         sector: generateListOfNaceCodes(),
-        addressOfHeadquarters: generateAddress(),
+        addressOfHeadquarters: generateAddress(undefinedProbability),
         numberOfEmployees: randomNumber(10000),
         fiscalYearStart: randomFutureDate(),
       },

@@ -55,8 +55,8 @@ export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
  */
 export function generateProductionSite(undefinedProbability = 0.5): LksgProductionSite {
   return {
-    nameOfProductionSite: faker.company.name(),
-    addressOfProductionSite: generateAddress(),
+    nameOfProductionSite: valueOrUndefined(faker.company.name(), undefinedProbability),
+    addressOfProductionSite: generateAddress(undefinedProbability),
     listOfGoodsOrServices: valueOrUndefined(generateListOfGoodsOrServices(), undefinedProbability),
   };
 }
