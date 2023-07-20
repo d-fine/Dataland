@@ -10,7 +10,7 @@ import java.math.BigDecimal
  */
 data class SmeProduct(
     @field:JsonProperty(required = true)
-    val productName: String,
+    override val name: String,
 
     val percentageOfTotalRevenue: BigDecimal?,
-) : ProductBase(productName)
+) : ProductBase(name)
