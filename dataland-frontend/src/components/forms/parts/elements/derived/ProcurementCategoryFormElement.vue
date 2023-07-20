@@ -122,7 +122,7 @@ export default defineComponent({
       isItActive: !!this.procurementCategories[this.name],
       procuredProductTypesAndServicesNaceCodesValue: [],
       percentageOfTotalProcurementValue: "",
-      allCountries: getDataset(DropdownDatasetIdentifier.CountryCodes),
+      allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
       selectedCountries: [],
       numberOfSuppliersPerCountryCodeValue: [],
       getCountryNameFromCountryCode,

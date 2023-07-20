@@ -166,7 +166,7 @@ export const lksgDataModel = [
             label: "Subcontracting Companies Countries",
             description: "In which countries do the subcontracting companies operate?",
             component: "MultiSelectFormField",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.isContractProcessing === "Yes",
@@ -808,7 +808,7 @@ export const lksgDataModel = [
             label: "High Risk Countries Raw Materials Location",
             description: "From which conflict/high-risk regions do you source your raw materials?",
             component: "MultiSelectFormField",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesRawMaterials === "Yes",
@@ -829,7 +829,7 @@ export const lksgDataModel = [
             label: "High Risk Countries",
             description: "In which high risk countries does your company have activities?",
             component: "MultiSelectFormField",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesActivity === "Yes",
@@ -850,7 +850,7 @@ export const lksgDataModel = [
             label: "High Risk Countries Procurement Name",
             description: "From which high risk countries does your company procure from?",
             component: "MultiSelectFormField",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesProcurement === "Yes",
