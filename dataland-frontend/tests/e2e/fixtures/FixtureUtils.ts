@@ -42,7 +42,18 @@ export function generateArray<T>(generator: () => T, min = 0, max = 5): T[] {
   return Array.from({ length: faker.number.int({ min, max }) }, () => generator());
 }
 
-export interface DataPoint<T, Y> {
-  label: string;
-  value: (x: T) => Y | undefined;
+/**
+ * Picks a random number of distinct values from an array and returns them
+ * @param inputArray is the array containing all available values to choose from
+ * @returns an array with a random number of distinct values chosen from the inputArray
+ */
+export function getRandomNumberOfDistinctElementsFromArray<T>(inputArray: T[]): T[] {
+  const arrayOfAvailableDistinctValues = [...Array.from(new Set(inputArray))];
+  const numElementsForResultArray = Math.floor(Math.random() * arrayOfAvailableDistinctValues.length) + 1;
+  const resultArray: T[] = [];
+  while (resultArray.length < numElementsForResultArray) {
+    const randomIndex = Math.floor(Math.random() * arrayOfAvailableDistinctValues.length);
+    resultArray.push(arrayOfAvailableDistinctValues.splice(randomIndex, 1)[0]);
+  }
+  return resultArray;
 }
