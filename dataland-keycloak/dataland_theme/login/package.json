@@ -19,14 +19,14 @@
     "primeicons": "^6.0.1"
   },
   "devDependencies": {
-    "@types/node": "20.3.1",
-    "@typescript-eslint/eslint-plugin": "^5.60.1",
-    "eslint": "^8.43.0",
+    "@types/node": "20.4.2",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "npm-check-updates": "^16.10.13",
-    "sass": "^1.63.6",
+    "eslint-plugin-prettier": "^5.0.0",
+    "npm-check-updates": "^16.10.16",
+    "sass": "^1.64.0",
     "typescript": "5.0.4",
-    "vite": "^4.3.9"
+    "vite": "^4.4.4"
   }
 }
