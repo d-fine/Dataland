@@ -2673,7 +2673,10 @@
             "type": "number"
           },
           "naturalHazardsCovered": {
-            "$ref": "#/components/schemas/NaturalHazard"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NaturalHazard"
+            }
           }
         }
       },
