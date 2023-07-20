@@ -16,5 +16,5 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] The new feature is manually used/tested/observed on dev server
   - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
-- [ ] Make sure that pull requests in the development tools repository, which are connected to this pull requests, 
+- [ ] Make sure that pull requests in the development tools repository, which are connected to this pull requests 
 are merged
