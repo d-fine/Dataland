@@ -68,9 +68,8 @@
               </a>
               <a
                 v-else-if="
-                  (slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
-                    slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')) &&
-                  slotProps.data.kpiKey !== 'sector'
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
                 "
                 @click="
                   openModalAndDisplayValuesInSubTable(

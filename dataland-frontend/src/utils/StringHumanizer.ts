@@ -46,12 +46,7 @@ function humanizeViaMapping(rawText: string): string {
     p2p: "WWF Pathway to Paris",
     inhouseproduction: "In-house Production",
     contractprocessing: "Contract Processing",
-    hvcPlastics: "Hvc Plastics",
-    commercialRealEstate: "Commercial Real Estate",
-    residentialRealEstate: "Residential Real Estate",
-    freightTransportByRoad: "Freight Transport By Road",
-    electricityGeneration: "Electricity Generation",
-    livestockFarming: "Livestock Farming",
+    hvcPlastics: "HVC Plastics",
   };
   const lowerCaseText = rawText.toLowerCase();
   return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : "";
