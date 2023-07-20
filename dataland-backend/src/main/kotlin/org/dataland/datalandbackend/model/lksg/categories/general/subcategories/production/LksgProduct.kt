@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.generics.ProductBase
 
 /**
  * --- API model ---
@@ -8,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class LksgProduct(
     @field:JsonProperty(required = true)
-    val productName: String,
+    override val name: String,
 
     val productionSteps: List<String>?,
 
     val relatedCorporateSupplyChain: String?,
-)
+) : ProductBase(name)
