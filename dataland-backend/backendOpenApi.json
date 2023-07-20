@@ -2718,14 +2718,11 @@
       },
       "SmeProduct": {
         "required": [
-          "productName"
+          "name"
         ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
-          },
-          "productName": {
             "type": "string"
           },
           "percentageOfTotalRevenue": {
@@ -5465,10 +5462,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
