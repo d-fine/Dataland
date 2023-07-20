@@ -2496,14 +2496,29 @@
           }
         }
       },
-      "CompanyAgeBracket": {
-        "type": "string",
-        "enum": [
-          "LessThanOneYear",
-          "OneToFiveYears",
-          "FiveToTenYears",
-          "MoreThanTenYears"
-        ]
+      "Address": {
+        "required": [
+          "city",
+          "country"
+        ],
+        "type": "object",
+        "properties": {
+          "streetAndHouseNumber": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
       },
       "CompanyAssociatedDataSmeData": {
         "required": [
@@ -2524,157 +2539,241 @@
           }
         }
       },
-      "EnergyEfficiencyBracket": {
-        "type": "string",
-        "enum": [
-          "LessThanOnePercent",
-          "OneToFivePercent",
-          "FiveToTenPercent",
-          "TenToFifteenPercent",
-          "FifteenToTwentyPercent",
-          "TwentyToTwentyfivePercent",
-          "MoreThanTwentyfivePercent"
-        ]
-      },
-      "EnergyProductionBracket": {
-        "type": "string",
-        "enum": [
-          "LessThanTwentyfivePercent",
-          "TwentyfiveToFiftyPercent",
-          "FiftyToSeventyfivePercent",
-          "MoreThanSeventyfivePercent"
-        ]
-      },
-      "HeatSource": {
+      "EnergySourceForHeatingAndHotWater": {
         "type": "string",
         "enum": [
           "Oil",
           "Gas",
-          "Electricity",
-          "DistrictHeat"
+          "Electric",
+          "DistrictHeating"
         ]
       },
-      "Industry": {
+      "NaturalHazard": {
         "type": "string",
         "enum": [
-          "ConstructionIndustry",
-          "ManufacturingIndustry",
-          "Trade"
+          "Hail",
+          "Wind",
+          "Flooding",
+          "EarthQuake",
+          "Avalanche",
+          "Snow"
+        ]
+      },
+      "PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower": {
+        "type": "string",
+        "enum": [
+          "LessThan25",
+          "Between25And50",
+          "Between50And75",
+          "GreaterThan75"
+        ]
+      },
+      "PercentRangeForInvestmentsInEnergyEfficiency": {
+        "type": "string",
+        "enum": [
+          "LessThan1",
+          "Between1And5",
+          "Between5And10",
+          "Between10And15",
+          "Between15And20",
+          "Between20And25",
+          "GreaterThan25"
         ]
       },
       "SmeData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
-          "industry": {
-            "$ref": "#/components/schemas/Industry"
+          "general": {
+            "$ref": "#/components/schemas/SmeGeneral"
           },
-          "financialYear": {
-            "type": "number"
+          "production": {
+            "$ref": "#/components/schemas/SmeProduction"
           },
-          "totalRevenue": {
-            "type": "number"
+          "power": {
+            "$ref": "#/components/schemas/SmePower"
           },
-          "researchAndDevelopmentExpenses": {
-            "type": "number"
+          "insurances": {
+            "$ref": "#/components/schemas/SmeInsurances"
+          }
+        }
+      },
+      "SmeGeneral": {
+        "required": [
+          "basicInformation"
+        ],
+        "type": "object",
+        "properties": {
+          "basicInformation": {
+            "$ref": "#/components/schemas/SmeGeneralBasicInformation"
           },
-          "energyEfficiencyInvestments": {
-            "$ref": "#/components/schemas/EnergyEfficiencyBracket"
+          "businessNumbers": {
+            "$ref": "#/components/schemas/SmeGeneralBusinessNumbers"
+          }
+        }
+      },
+      "SmeGeneralBasicInformation": {
+        "required": [
+          "addressOfHeadquarters",
+          "fiscalYearStart",
+          "numberOfEmployees",
+          "sector"
+        ],
+        "type": "object",
+        "properties": {
+          "sector": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
-          "operatingCosts": {
-            "type": "number"
-          },
-          "totalAssets": {
-            "type": "number"
-          },
-          "yearsSinceFounded": {
-            "$ref": "#/components/schemas/CompanyAgeBracket"
-          },
-          "productCategoryWithHighestSales": {
-            "type": "string"
-          },
-          "productCategoryWithHighestSalesShareOfSales": {
-            "type": "number"
-          },
-          "productCategoryWithSecondHighestSales": {
-            "type": "string"
-          },
-          "productCategoryWithSecondHighestSalesShareOfSales": {
-            "type": "number"
-          },
-          "totalAreaCompany": {
-            "type": "number"
-          },
-          "totalPowerConsumption": {
-            "type": "number"
-          },
-          "totalPowerCosts": {
-            "type": "number"
-          },
-          "useOfGreenElectricity": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "heatingEnergyConsumption": {
-            "type": "number"
-          },
-          "totalHeatingCosts": {
-            "type": "number"
-          },
-          "roomWaterHeating": {
-            "$ref": "#/components/schemas/HeatSource"
-          },
-          "shareOwnEnergyProduction": {
-            "$ref": "#/components/schemas/EnergyProductionBracket"
-          },
-          "waterSewageCosts": {
-            "type": "number"
-          },
-          "wasteDisposalCosts": {
-            "type": "number"
-          },
-          "wasteRecyclingRate": {
-            "type": "number"
+          "addressOfHeadquarters": {
+            "$ref": "#/components/schemas/Address"
           },
           "numberOfEmployees": {
             "type": "number"
           },
-          "numberOfTemporaryWorkers": {
-            "type": "number"
-          },
-          "shareOfFullTimeEmployees": {
-            "type": "number"
-          },
-          "shareOfEmployeesSubjectToSocialSecurityContributions": {
-            "type": "number"
-          },
-          "employeeFluctuation": {
-            "type": "number"
-          },
-          "shareOfFemaleEmployees": {
-            "type": "number"
-          },
-          "proportionOfFemaleEmployeesInManagement": {
-            "type": "number"
-          },
-          "oshMeasures": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "healthAndOldAgeOffers": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "numberVacationDays": {
-            "type": "number"
-          },
-          "nonProfitProjects": {
-            "$ref": "#/components/schemas/YesNoNa"
+          "fiscalYearStart": {
+            "type": "string",
+            "format": "date"
           }
         }
       },
-      "YesNoNa": {
+      "SmeGeneralBusinessNumbers": {
+        "type": "object",
+        "properties": {
+          "revenueInEur": {
+            "type": "number"
+          },
+          "operatingCostInEur": {
+            "type": "number"
+          },
+          "capitalAssetsInEur": {
+            "type": "number"
+          }
+        }
+      },
+      "SmeInsurances": {
+        "type": "object",
+        "properties": {
+          "naturalHazards": {
+            "$ref": "#/components/schemas/SmeInsurancesNaturalHazards"
+          }
+        }
+      },
+      "SmeInsurancesNaturalHazards": {
+        "type": "object",
+        "properties": {
+          "insuranceAgainstNaturalHazards": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "amountCoveredByInsuranceAgainstNaturalHazards": {
+            "type": "number"
+          },
+          "naturalHazardsCovered": {
+            "$ref": "#/components/schemas/NaturalHazard"
+          }
+        }
+      },
+      "SmePower": {
+        "type": "object",
+        "properties": {
+          "investments": {
+            "$ref": "#/components/schemas/SmePowerInvestments"
+          },
+          "consumption": {
+            "$ref": "#/components/schemas/SmePowerConsumption"
+          }
+        }
+      },
+      "SmePowerConsumption": {
+        "type": "object",
+        "properties": {
+          "powerConsumptionInMwh": {
+            "type": "number"
+          },
+          "powerFromRenewableSources": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "energyConsumptionHeatingAndHotWater": {
+            "type": "number"
+          },
+          "primaryEnergySourceForHeatingAndHotWater": {
+            "$ref": "#/components/schemas/EnergySourceForHeatingAndHotWater"
+          },
+          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
+            "$ref": "#/components/schemas/PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower"
+          }
+        }
+      },
+      "SmePowerInvestments": {
+        "type": "object",
+        "properties": {
+          "percentageOfInvestmentsInEnhancingEnergyEfficiency": {
+            "$ref": "#/components/schemas/PercentRangeForInvestmentsInEnergyEfficiency"
+          }
+        }
+      },
+      "SmeProduct": {
+        "required": [
+          "productName"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "percentageOfTotalRevenue": {
+            "type": "number"
+          }
+        }
+      },
+      "SmeProduction": {
+        "type": "object",
+        "properties": {
+          "sites": {
+            "$ref": "#/components/schemas/SmeProductionSites"
+          },
+          "products": {
+            "$ref": "#/components/schemas/SmeProductionProducts"
+          }
+        }
+      },
+      "SmeProductionProducts": {
+        "type": "object",
+        "properties": {
+          "producedProducts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SmeProduct"
+            }
+          }
+        }
+      },
+      "SmeProductionSites": {
+        "type": "object",
+        "properties": {
+          "nameOfProductionSite": {
+            "type": "string"
+          },
+          "addressOfProductionSite": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "percentageOfTotalRevenue": {
+            "type": "number"
+          }
+        }
+      },
+      "YesNo": {
         "type": "string",
         "enum": [
           "Yes",
-          "No",
-          "NA"
+          "No"
         ]
       },
       "CompanyAssociatedDataSfdrData": {
@@ -3230,11 +3329,12 @@
           }
         }
       },
-      "YesNo": {
+      "YesNoNa": {
         "type": "string",
         "enum": [
           "Yes",
-          "No"
+          "No",
+          "NA"
         ]
       },
       "BaseDataPointYesNo": {
@@ -3902,30 +4002,6 @@
           }
         }
       },
-      "LksgAddress": {
-        "required": [
-          "city",
-          "country"
-        ],
-        "type": "object",
-        "properties": {
-          "streetAndHouseNumber": {
-            "type": "string"
-          },
-          "postalCode": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          }
-        }
-      },
       "LksgCertificationsPoliciesAndResponsibilities": {
         "type": "object",
         "properties": {
@@ -4514,11 +4590,11 @@
       },
       "LksgProduct": {
         "required": [
-          "productName"
+          "name"
         ],
         "type": "object",
         "properties": {
-          "productName": {
+          "name": {
             "type": "string"
           },
           "productionSteps": {
@@ -4562,7 +4638,7 @@
             "type": "string"
           },
           "addressOfProductionSite": {
-            "$ref": "#/components/schemas/LksgAddress"
+            "$ref": "#/components/schemas/Address"
           },
           "listOfGoodsOrServices": {
             "type": "array",
@@ -5378,10 +5454,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
