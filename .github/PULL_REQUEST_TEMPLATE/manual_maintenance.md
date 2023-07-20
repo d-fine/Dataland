@@ -24,6 +24,7 @@ appear.
 - [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
 - [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloakd Docker images
 - [ ] Skipped typescript update to 5.1.5 as eslint does not support it yet
+- [ ] Flyway version from 9.18.0 and above (until 9.21.1) seem to cause issues. Future versions should be tried
 - [ ] The Docker-compose-plugin v.2.19.1 causes connection issues:
   If running `sudo apt-get update && sudo apt-get upgrade` on the servers causes connection issues
   this can be possibly fixed by reverting the docker-compose-plugin version
