@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { LksgData, LksgProduct, SmeData, SmeProduct, SmeProductionSite } from "@clients/backend";
-import { randomYesNo, randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
-import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { SmeData, SmeProduct, SmeProductionSite } from "@clients/backend";
+import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
+import { randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
@@ -31,6 +31,8 @@ function generateProduct(): SmeProduct {
  * @returns a random production site
  */
 export function generateProductionSite(undefinedProbability = 0.5): SmeProductionSite {
+  // TODO do undefined values for nullable things too
+  console.log(undefinedProbability); // TODO remove at the end
   return {
     nameOfProductionSite: faker.company.name(),
     addressOfProductionSite: generateAddress(),
