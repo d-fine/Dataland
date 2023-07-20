@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus
 /**
  * An InvalidInputApiException should be thrown if the provided input is somehow invalid
  */
-class InvalidInputApiException(
+open class InvalidInputApiException(
     val summary: String,
     override val message: String,
     cause: Throwable? = null,
