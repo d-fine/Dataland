@@ -14,7 +14,7 @@ import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFi
 import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { generateIso2CountryCode, generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
+import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataPointFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
@@ -88,7 +88,7 @@ function generateProduct(): LksgProduct {
  */
 function generateProcurementCategory(): LksgProcurementCategory {
   const numberOfSuppliersPerCountryCodeAsMap = new Map<string, number>(
-    generateArray(() => [generateIso2CountryCode(), valueOrNull(faker.number.int({ min: 0, max: 50 }))!])
+    generateArray(() => [getRandomIso2CountryCode(), valueOrNull(faker.number.int({ min: 0, max: 50 }))!])
   );
   return {
     procuredProductTypesAndServicesNaceCodes: generateListOfNaceCodes(),
@@ -190,7 +190,10 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
           undefinedProbability
         ),
         isContractProcessing: valueOrUndefined(randomYesNo(), undefinedProbability),
-        subcontractingCompaniesCountries: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
+        subcontractingCompaniesCountries: valueOrUndefined(
+          generateArray(getRandomIso2CountryCode),
+          undefinedProbability
+        ),
         subcontractingCompaniesIndustries: valueOrUndefined(generateListOfNaceCodes(), undefinedProbability),
         productionSites: valueOrUndefined(randomYesNo(), undefinedProbability),
         listOfProductionSites: valueOrUndefined(generateArrayOfProductionSites(), undefinedProbability),
@@ -281,11 +284,17 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         humanRightsViolationAction: valueOrUndefined(randomYesNo(), undefinedProbability),
         humanRightsViolationActionMeasures: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
         highRiskCountriesRawMaterials: valueOrUndefined(randomYesNo(), undefinedProbability),
-        highRiskCountriesRawMaterialsLocation: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
+        highRiskCountriesRawMaterialsLocation: valueOrUndefined(
+          generateArray(getRandomIso2CountryCode),
+          undefinedProbability
+        ),
         highRiskCountriesActivity: valueOrUndefined(randomYesNo(), undefinedProbability),
-        highRiskCountries: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
+        highRiskCountries: valueOrUndefined(generateArray(getRandomIso2CountryCode), undefinedProbability),
         highRiskCountriesProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
-        highRiskCountriesProcurementName: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
+        highRiskCountriesProcurementName: valueOrUndefined(
+          generateArray(getRandomIso2CountryCode),
+          undefinedProbability
+        ),
       },
     },
     social: {

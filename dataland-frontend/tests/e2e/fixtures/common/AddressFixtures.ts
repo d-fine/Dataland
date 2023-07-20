@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
+import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { Address } from "@clients/backend";
 
 /**
@@ -12,6 +12,6 @@ export function generateAddress(): Address {
     city: faker.location.city(),
     state: faker.location.state(),
     postalCode: faker.location.zipCode(),
-    country: generateIso2CountryCode(),
+    country: getRandomIso2CountryCode(),
   };
 }
