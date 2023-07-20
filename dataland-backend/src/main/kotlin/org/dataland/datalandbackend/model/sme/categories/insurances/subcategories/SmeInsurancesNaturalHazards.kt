@@ -13,5 +13,5 @@ data class SmeInsurancesNaturalHazards(
 
     val amountCoveredByInsuranceAgainstNaturalHazards: BigDecimal? = null,
 
-    val naturalHazardsCovered: NaturalHazard? = null,
+    val naturalHazardsCovered: List<NaturalHazard>? = null,
 )
