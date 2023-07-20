@@ -2,69 +2,65 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Neu Mats",
-			"sector": "technologies",
+			"headquarters": "Knolldorf",
+			"headquartersPostalCode": "71556",
+			"sector": "partnerships",
 			"identifiers": {
-				"Lei": [
-					"sZ9OOxP1HD0e0OKlNOO7"
-				],
+				"Lei": [],
 				"Isin": [
-					"Ib03SDzAYUTt",
-					"FkXGIpIqIxON"
+					"eMQ0Yb4W4zS3"
 				],
 				"PermId": [
-					"ZZdWoaolZU"
+					"MqnrH8lRRe"
 				],
 				"Ticker": [
-					"FWA0lp6"
+					"EKopQZI"
 				],
 				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"NLisJVq6d3eHoZT"
+					"ph1akabxKnpaNaQ"
 				]
 			},
-			"countryCode": "PF",
-			"companyAlternativeNames": [
-				"Sagafe OHG"
-			],
+			"countryCode": "CL",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://nutzbringend-hotel.net",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"industry": "Trade",
+			"industry": "ManufacturingIndustry",
 			"financialYear": 2023,
-			"totalRevenue": 273522.74706354365,
-			"researchAndDevelopmentExpenses": 285355.9655020945,
-			"energyEfficiencyInvestments": "LessThanOnePercent",
-			"operatingCosts": 634308.9172500186,
-			"totalAssets": 489145.4644501209,
-			"yearsSinceFounded": "FiveToTenYears",
-			"productCategoryWithHighestSales": "bandwidth",
-			"productCategoryWithHighestSalesShareOfSales": 0.6713,
-			"productCategoryWithSecondHighestSales": "schemas",
-			"productCategoryWithSecondHighestSalesShareOfSales": 0.4722,
-			"totalAreaCompany": 7456553483370496,
-			"totalPowerConsumption": 6937375133401088,
-			"totalPowerCosts": 513355.4872823879,
+			"totalRevenue": 476874.1402775049,
+			"researchAndDevelopmentExpenses": 400830.2191272378,
+			"energyEfficiencyInvestments": "OneToFivePercent",
+			"operatingCosts": 208352.3043547757,
+			"totalAssets": 98740.11537758633,
+			"yearsSinceFounded": "OneToFiveYears",
+			"productCategoryWithHighestSales": "communities",
+			"productCategoryWithHighestSalesShareOfSales": 0.2217,
+			"productCategoryWithSecondHighestSales": "initiatives",
+			"productCategoryWithSecondHighestSalesShareOfSales": 0.7509,
+			"totalAreaCompany": 1607751537000448,
+			"totalPowerConsumption": 4033701834915840,
+			"totalPowerCosts": 883676.3624916784,
 			"useOfGreenElectricity": "NA",
-			"heatingEnergyConsumption": 8297730279473152,
-			"totalHeatingCosts": 655823.6127370037,
-			"roomWaterHeating": "Gas",
-			"shareOwnEnergyProduction": "MoreThanSeventyfivePercent",
-			"waterSewageCosts": 187496.04903860018,
-			"wasteDisposalCosts": 398052.87087801844,
-			"wasteRecyclingRate": 0.6545,
-			"numberOfEmployees": 840,
-			"numberOfTemporaryWorkers": 227,
-			"shareOfFullTimeEmployees": 0.1189,
-			"shareOfEmployeesSubjectToSocialSecurityContributions": 0.8805,
-			"employeeFluctuation": 0.6029,
-			"shareOfFemaleEmployees": 0.614,
-			"proportionOfFemaleEmployeesInManagement": 0.9652,
-			"oshMeasures": "No",
-			"healthAndOldAgeOffers": "Yes",
-			"numberVacationDays": 5,
-			"nonProfitProjects": "NA"
+			"heatingEnergyConsumption": 6879234117074944,
+			"totalHeatingCosts": 845128.6902534775,
+			"roomWaterHeating": "DistrictHeat",
+			"shareOwnEnergyProduction": "TwentyfiveToFiftyPercent",
+			"waterSewageCosts": 657290.1155683212,
+			"wasteDisposalCosts": 552020.1993058436,
+			"wasteRecyclingRate": 0.0869,
+			"numberOfEmployees": 366,
+			"numberOfTemporaryWorkers": 146,
+			"shareOfFullTimeEmployees": 0.4089,
+			"shareOfEmployeesSubjectToSocialSecurityContributions": 0.2208,
+			"employeeFluctuation": 0.9248,
+			"shareOfFemaleEmployees": 0.1396,
+			"proportionOfFemaleEmployeesInManagement": 0.8297,
+			"numberVacationDays": 10,
+			"nonProfitProjects": "No"
 		},
 		"reportingPeriod": "2023"
 	}

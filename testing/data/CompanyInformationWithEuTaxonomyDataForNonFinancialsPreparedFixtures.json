@@ -2,246 +2,262 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Schuhajstadt",
-			"headquartersPostalCode": "63095",
-			"sector": "networks",
+			"headquarters": "Süd Ennastadt",
+			"headquartersPostalCode": "38059",
+			"sector": "content",
 			"identifiers": {
-				"Lei": [
-					"uZgJclSShyKCxR8iz0F8"
+				"Lei": [],
+				"Isin": [
+					"Ib6eJtX4Yu5N"
 				],
-				"Isin": [],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"NsWx7zhm0"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MS",
+			"countryCode": "MV",
 			"companyAlternativeNames": [
-				"Bode, Knoblich und Langfeld",
-				"Jarets, Ruch und Zauber",
-				"Liebold, Goldkamp und Roba",
-				"Strunz GmbH & Co. KG"
+				"Daub UG",
+				"Kosenkow GmbH & Co. KG",
+				"Kreissig Gruppe",
+				"Schramm-Teichmann"
 			],
+			"website": "https://erlebnisreich-galaxie.de",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 42673,
+			"fiscalYearEnd": "2022-11-13",
+			"numberOfEmployees": 36715,
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-01-23",
-					"currency": "TZS"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "CHF"
-				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "KGS"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-25",
-					"currency": "RWF"
+					"currency": "NAD"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "None"
 			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "Yes",
 			"activityLevelReporting": "No",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.3567,
+					"valueAsPercentage": 0.9841,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.9468,
+					"valueAsPercentage": 0.3557,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.1658,
+					"valueAsPercentage": 0.6768,
 					"quality": "NA"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Luanascheid",
-			"sector": "systems",
+			"headquarters": "Alanaburg",
+			"sector": "interfaces",
 			"identifiers": {
 				"Lei": [
-					"FiURrbCDuFBkPMBfkBFn"
+					"01SNY6iLwnqiUSyhv5Hj"
 				],
 				"Isin": [
-					"0FttEemytuyp"
+					"uKB6v2h4Cqce"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"jr55NVTQx"
+					"n5ImH0dCo"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FK",
-			"companyAlternativeNames": [],
+			"countryCode": "BV",
+			"companyAlternativeNames": [
+				"Geissler-Käther"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-06-08",
 			"referencedReports": {
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "USD"
+					"isGroupLevel": "NA",
+					"reportDate": "2023-05-12",
+					"currency": "HUF"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "QAR"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 9,
-					"report": "SustainabilityReport",
-					"tagName": "schemas"
-				}
+				"provider": "Ledner - Dach"
 			},
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 863602.1040263586,
-					"quality": "Estimated"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.2002,
+					"value": 741730.3753900342,
 					"dataSource": {
-						"page": 44,
+						"page": 1011,
 						"report": "SustainabilityReport",
-						"tagName": "schemas"
+						"tagName": "models"
 					},
 					"quality": "Audited",
-					"comment": "compress redundant application",
-					"valueAsAbsolute": 651926.957780961
+					"comment": "reboot bluetooth protocol"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.8281,
+					"dataSource": {
+						"page": 791,
+						"report": "SustainabilityReport",
+						"tagName": "lifetime value"
+					},
+					"quality": "Reported",
+					"comment": "input auxiliary panel",
+					"valueAsAbsolute": 314830.03260800615
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 541728.9647040889,
+					"value": 491082.8687250614,
 					"dataSource": {
-						"page": 41,
-						"report": "SustainabilityReport",
-						"tagName": "partnerships"
+						"page": 975,
+						"report": "IntegratedReport",
+						"tagName": "action-items"
 					},
 					"quality": "Audited",
-					"comment": "synthesize cross-platform firewall"
+					"comment": "reboot open-source microchip"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.1699,
-					"dataSource": {
-						"page": 809,
-						"report": "SustainabilityReport",
-						"tagName": "bandwidth"
-					},
-					"quality": "Audited",
-					"comment": "back up online circuit",
-					"valueAsAbsolute": 164686.3320027478
+					"valueAsPercentage": 0.2684,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 377927.3918713443
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 257290.85644707084,
-					"dataSource": {
-						"page": 1013,
-						"report": "SustainabilityReport",
-						"tagName": "experiences"
-					},
-					"quality": "Incomplete",
-					"comment": "index redundant system"
+					"value": 63407.90641261265,
+					"quality": "Incomplete"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.5479,
-					"quality": "Estimated",
-					"valueAsAbsolute": 200887.68610730767
+					"valueAsPercentage": 0.8301,
+					"dataSource": {
+						"page": 486,
+						"report": "SustainabilityReport",
+						"tagName": "paradigms"
+					},
+					"quality": "Incomplete",
+					"comment": "calculate online feed",
+					"valueAsAbsolute": 557587.3421155848
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Annabellescheid",
-			"sector": "supply-chains",
+			"headquarters": "Süd Salome",
+			"headquartersPostalCode": "39434",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"MT68Zsj3JCwoUg0viwf3"
+				],
 				"Isin": [],
-				"PermId": [],
+				"PermId": [
+					"XvuAe7WfQy"
+				],
 				"Ticker": [
-					"qECJqr7"
+					"ClRsgFw"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"gjrtR4JeX"
+				"Duns": [
+					"5Sji9ii1q"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"qvjoNjtEEqpK0zb"
+				]
 			},
-			"countryCode": "IN",
+			"countryCode": "ER",
 			"companyAlternativeNames": [
-				"Lokar Gruppe"
+				"Ernst, Mai und Langhirt",
+				"Liebold, Wachenbrunner und Hess",
+				"Siener-Rumpf",
+				"Tonat-Clarius"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://flott-feuer.org",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"numberOfEmployees": 4824,
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 903,
+					"report": "ESEFReport",
+					"tagName": "architectures"
+				}
 			},
-			"scopeOfEntities": "Yes",
+			"scopeOfEntities": "NA",
+			"reportingObligation": "No",
 			"opex": {
-				"alignedData": {
-					"quality": "Estimated"
+				"totalAmount": {
+					"value": 577207.4155043811,
+					"dataSource": {
+						"page": 304,
+						"report": "AnnualReport",
+						"tagName": "methodologies"
+					},
+					"quality": "Audited",
+					"comment": "calculate back-end monitor"
 				}
 			},
 			"capex": {
-				"alignedData": {
-					"quality": "Incomplete"
-				}
-			},
-			"revenue": {
 				"totalAmount": {
-					"dataSource": {
-						"page": 515,
-						"report": "IntegratedReport",
-						"tagName": "deliverables"
-					},
-					"quality": "Reported",
-					"comment": "navigate virtual port"
+					"value": 323480.5118176155,
+					"quality": "Incomplete"
+				},
+				"alignedData": {
+					"quality": "Estimated"
 				},
 				"eligibleData": {
 					"dataSource": {
-						"page": 23,
-						"report": "IntegratedReport",
-						"tagName": "technologies"
+						"page": 1191,
+						"report": "AnnualReport",
+						"tagName": "markets"
 					},
-					"quality": "Audited",
-					"comment": "transmit 1080p program",
-					"valueAsAbsolute": 470478.0742409639
+					"quality": "Reported",
+					"comment": "synthesize mobile firewall",
+					"valueAsAbsolute": 159869.3770589307
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"valueAsPercentage": 0.0619,
+					"dataSource": {
+						"page": 46,
+						"report": "ESEFReport",
+						"tagName": "communities"
+					},
+					"quality": "Reported",
+					"comment": "generate digital bandwidth",
+					"valueAsAbsolute": 762085.8410838991
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	}
 ]
