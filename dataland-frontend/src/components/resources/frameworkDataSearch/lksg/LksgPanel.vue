@@ -155,6 +155,7 @@ export default defineComponent({
           object | null
         ][]) {
           if (subCategoryObject == null) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             categoryObject[subCategoryKey] = {};
             continue;
           }
