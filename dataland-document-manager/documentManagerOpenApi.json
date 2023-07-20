@@ -523,6 +523,9 @@
           "httpStatus": {
             "type": "number"
           },
+          "metaInformation": {
+            "type": "object"
+          },
           "errorType": {
             "type": "string"
           },

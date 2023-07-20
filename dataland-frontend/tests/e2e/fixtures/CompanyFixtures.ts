@@ -52,7 +52,7 @@ export function generateCompanyInformation(): CompanyInformation {
     companyName: faker.company.name(),
     headquarters: faker.location.city(),
     headquartersPostalCode: valueOrUndefined(faker.location.zipCode()),
-    sector: faker.company.buzzNoun(),
+    sector: valueOrUndefined(faker.company.buzzNoun()),
     identifiers: getRandomIdentifiers(),
     countryCode: faker.location.countryCode(),
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
