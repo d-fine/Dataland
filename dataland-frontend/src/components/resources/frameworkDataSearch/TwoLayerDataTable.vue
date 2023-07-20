@@ -221,7 +221,7 @@ export default defineComponent({
       return (Object.values(YesNo) as string[]).includes(value);
     },
     /**
-     * Converts a list of strings to readable values and opens model to display those
+     * Converts a list of strings to readable values and opens modal to display those
      * @param listOfValues An array consisting of production sites
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
