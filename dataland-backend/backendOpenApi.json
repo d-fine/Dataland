@@ -2747,7 +2747,7 @@
       "SmeProductionProducts": {
         "type": "object",
         "properties": {
-          "producedProducts": {
+          "listOfProducts": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SmeProduct"
@@ -2755,7 +2755,7 @@
           }
         }
       },
-      "SmeProductionSites": {
+      "SmeProductionSite": {
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
@@ -2766,6 +2766,17 @@
           },
           "percentageOfTotalRevenue": {
             "type": "number"
+          }
+        }
+      },
+      "SmeProductionSites": {
+        "type": "object",
+        "properties": {
+          "listOfProductionSites": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SmeProductionSite"
+            }
           }
         }
       },
@@ -5454,10 +5465,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
