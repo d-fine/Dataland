@@ -5,15 +5,18 @@ import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random address
- * @param undefinedProbability
+ * @param undefinedProbability the probability for "undefined" values in nullable fields
  * @returns a random address
  */
 export function generateAddress(undefinedProbability = 0.5): Address {
   return {
-    streetAndHouseNumber: valueOrUndefined(faker.location.street() + " " + faker.location.buildingNumber()),
+    streetAndHouseNumber: valueOrUndefined(
+      faker.location.street() + " " + faker.location.buildingNumber(),
+      undefinedProbability
+    ),
     city: faker.location.city(),
-    state: valueOrUndefined(faker.location.state()),
-    postalCode: valueOrUndefined(faker.location.zipCode()),
+    state: valueOrUndefined(faker.location.state(), undefinedProbability),
+    postalCode: valueOrUndefined(faker.location.zipCode(), undefinedProbability),
     country: getRandomIso2CountryCode(),
   };
 }
