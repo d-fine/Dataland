@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
 import {
-  LksgAddress,
   LksgData,
   LksgProcurementCategory,
   LksgProduct,
@@ -12,7 +11,7 @@ import { randomYesNo, randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
-import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateIso2CountryCode, generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
@@ -20,6 +19,8 @@ import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataPointFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { valueOrNull } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 
 /**
  * Generates a set number of LKSG fixtures
@@ -45,17 +46,6 @@ export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
     1,
     (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
   )[0];
-}
-
-/**
- * Generates a array of random length with content
- * @param generator generator for a single entry
- * @param min the minimum number of entries
- * @param max the maximum number of entries
- * @returns the generated array
- */
-function generateArray<T>(generator: () => T, min = 0, max = 5): T[] {
-  return Array.from({ length: faker.number.int({ min, max }) }, () => generator());
 }
 
 /**
@@ -86,7 +76,7 @@ export function generateArrayOfProductionSites(undefinedProbability = 0.5): Lksg
  */
 function generateProduct(): LksgProduct {
   return {
-    productName: faker.commerce.productName(),
+    name: faker.commerce.productName(),
     productionSteps: valueOrUndefined(generateArray(() => `${faker.word.verb()} ${faker.commerce.productMaterial()}`)),
     relatedCorporateSupplyChain: valueOrUndefined(faker.lorem.sentences()),
   };
@@ -135,36 +125,11 @@ export function generateListOfGoodsOrServices(): string[] {
 }
 
 /**
- * Generates a random address
- * @returns a random address
- */
-export function generateAddress(): LksgAddress {
-  return {
-    streetAndHouseNumber: faker.location.street() + " " + faker.location.buildingNumber(),
-    city: faker.location.city(),
-    state: faker.location.state(),
-    postalCode: faker.location.zipCode(),
-    country: generateIso2CountryCode(),
-  };
-}
-
-/**
  * Randomly returns <10%, 10-25%, 25-50% or >50%
  * @returns one of the four percentage intervals as string
  */
 export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers {
   return faker.helpers.arrayElement(Object.values(ShareOfTemporaryWorkers));
-}
-
-/**
- * Generates a random list of Nace codes (unique and sorted)
- * @returns random list of Nace codes
- */
-export function generateListOfNaceCodes(): string[] {
-  const values = Array.from({ length: faker.number.int({ min: 0, max: 5 }) }, () => {
-    return faker.helpers.arrayElement(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]);
-  }).sort((a, b) => a.localeCompare(b));
-  return [...new Set(values)];
 }
 
 /**
