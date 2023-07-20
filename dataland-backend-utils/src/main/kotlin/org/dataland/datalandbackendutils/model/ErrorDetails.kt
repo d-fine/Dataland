@@ -28,4 +28,8 @@ data class ErrorDetails(
     @JsonProperty("stackTrace")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     val stackTrace: String? = null,
+
+    @JsonProperty("metaInformation")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val metaInformation: Any? = null,
 )

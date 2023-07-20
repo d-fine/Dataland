@@ -2,61 +2,76 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Jasperland",
-			"headquartersPostalCode": "72480",
-			"sector": "e-commerce",
+			"headquarters": "Schuhajstadt",
+			"headquartersPostalCode": "63095",
+			"sector": "networks",
 			"identifiers": {
 				"Lei": [
-					"r6RGF4nZ3eTeBpS4HDx5"
+					"uZgJclSShyKCxR8iz0F8"
 				],
-				"Isin": [
-					"Aw9NdHSPrZub",
-					"l14LcgdBSWXj"
-				],
+				"Isin": [],
 				"PermId": [],
-				"Ticker": [
-					"EJxN2d3"
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"NsWx7zhm0"
 				],
-				"Duns": [
-					"7KL28nOrK"
-				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BH",
+			"countryCode": "MS",
 			"companyAlternativeNames": [
-				"Fusenig, Pohland und Eich"
+				"Bode, Knoblich und Langfeld",
+				"Jarets, Ruch und Zauber",
+				"Liebold, Goldkamp und Roba",
+				"Strunz GmbH & Co. KG"
 			],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 97202,
+			"numberOfEmployees": 42673,
 			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-01-23",
+					"currency": "TZS"
+				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "HKD"
+					"currency": "CHF"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "KGS"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-12-25",
+					"currency": "RWF"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance"
 			},
 			"scopeOfEntities": "No",
-			"activityLevelReporting": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.5461,
+					"valueAsPercentage": 0.3567,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.0109,
+					"valueAsPercentage": 0.9468,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.1965,
+					"valueAsPercentage": 0.1658,
 					"quality": "NA"
 				}
 			}
@@ -66,200 +81,167 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Lübeck",
-			"headquartersPostalCode": "19568",
-			"sector": "lifetime value",
+			"headquarters": "Luanascheid",
+			"sector": "systems",
 			"identifiers": {
 				"Lei": [
-					"7gzcfLAC6Sto4xKUBWHd"
+					"FiURrbCDuFBkPMBfkBFn"
 				],
 				"Isin": [
-					"9z4B8rO5H99n",
-					"omKSdbdmzV6U"
+					"0FttEemytuyp"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"brINcTkL2"
-				],
-				"VatNumber": [
-					"krsItvqQY"
-				],
-				"CompanyRegistrationNumber": [
-					"RNpONRcQ4TZ0xDQ"
-				]
-			},
-			"countryCode": "BY",
-			"companyAlternativeNames": [
-				"Greithanner-Lehner",
-				"Jellinghaus Gruppe",
-				"Rietmüller-Moritz"
-			],
-			"website": "https://leuchtend-blume.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2022-09-15",
-			"numberOfEmployees": 90730,
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-03-31",
-					"currency": "TJS"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "BOB"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2023-02-10",
-					"currency": "NOK"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-06-27",
-					"currency": "ZMW"
-				}
-			},
-			"assurance": {
-				"assurance": "None"
-			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
-			"opex": {
-				"totalAmount": {
-					"value": 138479.89097703248,
-					"quality": "Estimated"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.9359,
-					"quality": "Incomplete",
-					"valueAsAbsolute": 737421.2062801234
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 708999.3519242853,
-					"dataSource": {
-						"page": 1197,
-						"report": "IntegratedReport",
-						"tagName": "bandwidth"
-					},
-					"quality": "Estimated",
-					"comment": "navigate mobile bandwidth"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.9882,
-					"quality": "Estimated",
-					"valueAsAbsolute": 593435.1035277359
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 620928.2597876154,
-					"dataSource": {
-						"page": 395,
-						"report": "SustainabilityReport",
-						"tagName": "networks"
-					},
-					"quality": "Incomplete",
-					"comment": "back up primary system"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.6812,
-					"dataSource": {
-						"page": 653,
-						"report": "SustainabilityReport",
-						"tagName": "lifetime value"
-					},
-					"quality": "Audited",
-					"comment": "generate optical pixel",
-					"valueAsAbsolute": 120104.47857901454
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Ost Mandy",
-			"sector": "functionalities",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"M5D4K9g7k5sF",
-					"QVZJKRAwDif3"
-				],
-				"PermId": [],
-				"Ticker": [
-					"qlD9D8O"
-				],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"jr55NVTQx"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CO",
-			"companyAlternativeNames": [
-				"Feuerbach-Hartlieb",
-				"John GmbH & Co. KG"
-			],
-			"website": "https://wohlwollend-burostuhl.org/",
+			"countryCode": "FK",
+			"companyAlternativeNames": [],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"assurance": {
-				"assurance": "None"
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-06-08",
+			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "USD"
+				}
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 9,
+					"report": "SustainabilityReport",
+					"tagName": "schemas"
+				}
+			},
 			"opex": {
+				"totalAmount": {
+					"value": 863602.1040263586,
+					"quality": "Estimated"
+				},
 				"eligibleData": {
-					"valueAsPercentage": 0.2872,
+					"valueAsPercentage": 0.2002,
 					"dataSource": {
-						"page": 1054,
-						"report": "IntegratedReport",
-						"tagName": "deliverables"
+						"page": 44,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
 					},
-					"quality": "Reported",
-					"comment": "override back-end port",
-					"valueAsAbsolute": 228255.06450608373
+					"quality": "Audited",
+					"comment": "compress redundant application",
+					"valueAsAbsolute": 651926.957780961
 				}
 			},
 			"capex": {
+				"totalAmount": {
+					"value": 541728.9647040889,
+					"dataSource": {
+						"page": 41,
+						"report": "SustainabilityReport",
+						"tagName": "partnerships"
+					},
+					"quality": "Audited",
+					"comment": "synthesize cross-platform firewall"
+				},
 				"eligibleData": {
-					"valueAsPercentage": 0.7382,
-					"quality": "Estimated"
+					"valueAsPercentage": 0.1699,
+					"dataSource": {
+						"page": 809,
+						"report": "SustainabilityReport",
+						"tagName": "bandwidth"
+					},
+					"quality": "Audited",
+					"comment": "back up online circuit",
+					"valueAsAbsolute": 164686.3320027478
 				}
 			},
 			"revenue": {
-				"alignedData": {
+				"totalAmount": {
+					"value": 257290.85644707084,
 					"dataSource": {
-						"page": 43,
-						"report": "IntegratedReport",
-						"tagName": "platforms"
+						"page": 1013,
+						"report": "SustainabilityReport",
+						"tagName": "experiences"
 					},
-					"quality": "Audited",
-					"comment": "compress multi-byte program"
+					"quality": "Incomplete",
+					"comment": "index redundant system"
 				},
 				"eligibleData": {
-					"dataSource": {
-						"page": 1121,
-						"report": "IntegratedReport",
-						"tagName": "e-markets"
-					},
-					"quality": "Reported",
-					"comment": "connect neural interface"
+					"valueAsPercentage": 0.5479,
+					"quality": "Estimated",
+					"valueAsAbsolute": 200887.68610730767
 				}
 			}
 		},
 		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Annabellescheid",
+			"sector": "supply-chains",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [
+					"qECJqr7"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"gjrtR4JeX"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IN",
+			"companyAlternativeNames": [
+				"Lokar Gruppe"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://flott-feuer.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "Yes",
+			"opex": {
+				"alignedData": {
+					"quality": "Estimated"
+				}
+			},
+			"capex": {
+				"alignedData": {
+					"quality": "Incomplete"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 515,
+						"report": "IntegratedReport",
+						"tagName": "deliverables"
+					},
+					"quality": "Reported",
+					"comment": "navigate virtual port"
+				},
+				"eligibleData": {
+					"dataSource": {
+						"page": 23,
+						"report": "IntegratedReport",
+						"tagName": "technologies"
+					},
+					"quality": "Audited",
+					"comment": "transmit 1080p program",
+					"valueAsAbsolute": 470478.0742409639
+				}
+			}
+		},
+		"reportingPeriod": "2021"
 	}
 ]

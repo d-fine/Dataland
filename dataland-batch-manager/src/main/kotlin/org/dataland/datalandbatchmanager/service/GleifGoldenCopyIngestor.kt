@@ -119,7 +119,7 @@ class GleifGoldenCopyIngestor(
         try {
             uploadThreadPool.submit {
                 StreamSupport.stream(gleifIterable.spliterator(), true)
-                    .forEach { companyUploader.uploadSingleCompany(it.toCompanyInformation()) }
+                    .forEach { companyUploader.uploadOrPatchSingleCompany(it) }
             }.get()
         } finally {
             uploadThreadPool.shutdown()
