@@ -1,10 +1,10 @@
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import { LksgData } from "@clients/backend";
-
+import { LksgData, PathwaysToParisData } from "@clients/backend";
 export interface Category {
   name: string;
   label: string;
   color: string;
+  showIf: (dataModel?: LksgData | PathwaysToParisData) => boolean;
   subcategories: Array<Subcategory>;
 }
 
@@ -15,7 +15,7 @@ export interface Subcategory {
 }
 
 export interface Field {
-  showIf: (dataModel?: LksgData) => boolean;
+  showIf: (dataModel?: LksgData | PathwaysToParisData) => boolean;
   name: string;
   label: string;
   description: string;
