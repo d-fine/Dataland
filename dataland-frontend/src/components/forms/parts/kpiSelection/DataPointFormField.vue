@@ -10,10 +10,10 @@
             />
             <FormKit
               type="number"
-              :name="name"
+              name="value"
               :description="description ?? ''"
               validation-label=""
-              v-model="value"
+              v-model="currentValue"
               :placeholder="'Value'"
               step="any"
               min="0"
@@ -106,7 +106,7 @@ export default defineComponent({
       label: qualityOption,
       value: qualityOption,
     })),
-    value: "",
+    currentValue: "",
     currentReportValue: "",
     currentPageValue: "",
     currentQualityValue: "",
