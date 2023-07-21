@@ -12,7 +12,17 @@ import {
   getRandomPercentageRangeEnergyConsumption,
   getRandomPercentageRangeInvestmentEnergyEfficiency,
 } from "@e2e/fixtures/sme/SmeEnumFixtures";
-import { generateArray } from "@e2e/fixtures/FixtureUtils";
+import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
+
+/**
+ * Generates a set number of SME fixtures
+ * @param numFixtures the number of SME fixtures to generate
+ * @returns a set number of SME fixtures
+ */
+export function generateSmeFixtures(numFixtures: number): FixtureData<SmeData>[] {
+  return generateFixtureDataset<SmeData>(() => generateSmeData(), numFixtures);
+}
 
 /**
  * Generates a random product
