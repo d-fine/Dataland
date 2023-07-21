@@ -7,6 +7,9 @@
     <div v-if="userRoles.includes('ROLE_UPLOADER')" data-test="userRoleUploader" class="p-badge badge-green">
       <span>WRITE</span>
     </div>
+    <div v-if="userRoles.includes('ROLE_REVIEWER')" data-test="userRoleReviewer" class="p-badge badge-purple">
+      <span>REVIEWER</span>
+    </div>
     <div v-if="userRoles.includes('ROLE_ADMIN')" data-test="userRoleAdmin" class="p-badge badge-blue">
       <span>ADMIN</span>
     </div>
