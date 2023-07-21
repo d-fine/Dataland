@@ -342,7 +342,7 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
+import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointFormEuTaxonomy.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { uploadFiles, ReportToUpload } from "@/utils/FileUploadUtils";
 

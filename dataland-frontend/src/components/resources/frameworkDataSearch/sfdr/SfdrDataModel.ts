@@ -1,4 +1,3 @@
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { Category } from "@/utils/GenericFrameworkTypes";
 
 
@@ -13,7 +12,7 @@ export const sfdrDataModel = [{
         name: "highImpactClimateSectorEnergyConsumptionNaceH",
         label: "High Impact Climate Sector Energy Consumption NACE H",
         description: "Total energy consumption per high impact climate sector",
-        component: "DataPointForm",
+        component: "DataPointFormField",
         required: true,
         showIf: (): boolean => true,
         validation: "required"
