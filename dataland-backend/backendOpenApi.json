@@ -5378,10 +5378,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
@@ -5436,6 +5436,9 @@
         "properties": {
           "httpStatus": {
             "type": "number"
+          },
+          "metaInformation": {
+            "type": "object"
           },
           "errorType": {
             "type": "string"
