@@ -2,65 +2,85 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Knolldorf",
-			"headquartersPostalCode": "71556",
-			"sector": "partnerships",
+			"headquarters": "Ost Elifscheid",
+			"sector": "methodologies",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"XF454S0sO2cDvtVD9J2K"
+				],
 				"Isin": [
-					"eMQ0Yb4W4zS3"
+					"Hc4MZ9H5aiJa",
+					"uTAyUO4qmggv"
 				],
 				"PermId": [
-					"MqnrH8lRRe"
+					"4X0zBpf70t"
 				],
 				"Ticker": [
-					"EKopQZI"
+					"tFEdXh5"
 				],
-				"Duns": [],
+				"Duns": [
+					"e2lcoZZjT"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"ph1akabxKnpaNaQ"
+					"GoXFw5MYTqc30Fd"
 				]
 			},
-			"countryCode": "CL",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://nutzbringend-hotel.net",
+			"countryCode": "DE",
+			"companyAlternativeNames": [
+				"Manz, Börner und Dix",
+				"Möllinger UG",
+				"Neuendorf, Eggenmueller und Hofmann"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://komfortabel-gold.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"industry": "ManufacturingIndustry",
-			"financialYear": 2023,
-			"totalRevenue": 476874.1402775049,
-			"researchAndDevelopmentExpenses": 400830.2191272378,
-			"energyEfficiencyInvestments": "OneToFivePercent",
-			"operatingCosts": 208352.3043547757,
-			"totalAssets": 98740.11537758633,
-			"yearsSinceFounded": "OneToFiveYears",
-			"productCategoryWithHighestSales": "communities",
-			"productCategoryWithHighestSalesShareOfSales": 0.2217,
-			"productCategoryWithSecondHighestSales": "initiatives",
-			"productCategoryWithSecondHighestSalesShareOfSales": 0.7509,
-			"totalAreaCompany": 1607751537000448,
-			"totalPowerConsumption": 4033701834915840,
-			"totalPowerCosts": 883676.3624916784,
-			"useOfGreenElectricity": "NA",
-			"heatingEnergyConsumption": 6879234117074944,
-			"totalHeatingCosts": 845128.6902534775,
-			"roomWaterHeating": "DistrictHeat",
-			"shareOwnEnergyProduction": "TwentyfiveToFiftyPercent",
-			"waterSewageCosts": 657290.1155683212,
-			"wasteDisposalCosts": 552020.1993058436,
-			"wasteRecyclingRate": 0.0869,
-			"numberOfEmployees": 366,
-			"numberOfTemporaryWorkers": 146,
-			"shareOfFullTimeEmployees": 0.4089,
-			"shareOfEmployeesSubjectToSocialSecurityContributions": 0.2208,
-			"employeeFluctuation": 0.9248,
-			"shareOfFemaleEmployees": 0.1396,
-			"proportionOfFemaleEmployeesInManagement": 0.8297,
-			"numberVacationDays": 10,
-			"nonProfitProjects": "No"
+			"general": {
+				"basicInformation": {
+					"sector": [],
+					"addressOfHeadquarters": {
+						"city": "New Caseyview",
+						"state": "Missouri",
+						"country": "NO"
+					},
+					"numberOfEmployees": 3894,
+					"fiscalYearStart": "2023-11-27"
+				},
+				"businessNumbers": {
+					"operatingCostInEur": 28452605,
+					"capitalAssetsInEur": 23806784
+				}
+			},
+			"production": {
+				"sites": {},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Small Granite Computer",
+							"percentageOfTotalRevenue": 0.3787
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": 1891,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 601,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 5835645
+				}
+			}
 		},
 		"reportingPeriod": "2023"
 	}
