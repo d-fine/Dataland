@@ -3,6 +3,11 @@
   background: $table-background-color;
   color: $main-text-color;
   .onlyHeaders {
+    .horizontal-headers-size {
+      &:first-of-type {
+        width: 30vw;
+      }
+    }
     .p-datatable-tbody {
       display: none;
     }
@@ -50,6 +55,7 @@
   .headers-bg {
     background-color: $tables-headers-bg;
     display: table-cell;
+    width: 30vw;
   }
   .horizontal-headers-size {
     min-width: 100px;
