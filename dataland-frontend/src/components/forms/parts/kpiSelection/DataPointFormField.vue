@@ -11,7 +11,7 @@
             />
             <FormKit
               type="number"
-              name="valueAsPercentage"
+              :name="name"
               validation-label=""
               v-model="currentPercentageValue"
               :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
@@ -30,7 +30,7 @@
             />
             <FormKit
               type="number"
-              name="valueAsAbsolute"
+              :name="name"
               validation-label=""
               v-model="currentAmountValue"
               :placeholder="'Value'"
@@ -46,12 +46,12 @@
       </div>
       <div v-else>
         <UploadFormHeader
-          :label="valueType === 'percent' ? `${label} (%)` : `${label}`"
+          :label="`${label} (%)`"
           :description="describtion ?? ''"
         />
         <FormKit
           type="number"
-          name="value"
+          :name="name"
           validation-label=""
           v-model="currentAmountValue"
           :placeholder="'Value'"
