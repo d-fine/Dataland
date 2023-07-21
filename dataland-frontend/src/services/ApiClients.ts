@@ -12,6 +12,10 @@ import {
   LksgDataControllerApiInterface,
   SfdrDataControllerApi,
   SfdrDataControllerApiInterface,
+  P2pDataControllerApiInterface,
+  P2pDataControllerApi,
+  SmeDataControllerApiInterface,
+  SmeDataControllerApi,
   InviteControllerApi,
 } from "@clients/backend/api";
 import { DocumentControllerApi } from "@clients/documentmanager";
@@ -73,6 +77,14 @@ export class ApiClientProvider {
 
   async getSfdrDataControllerApi(): Promise<SfdrDataControllerApiInterface> {
     return this.getConstructedApi(SfdrDataControllerApi);
+  }
+
+  async getP2pDataControllerApi(): Promise<P2pDataControllerApiInterface> {
+    return this.getConstructedApi(P2pDataControllerApi);
+  }
+
+  async getSmeDataControllerApi(): Promise<SmeDataControllerApiInterface> {
+    return this.getConstructedApi(SmeDataControllerApi);
   }
 
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {

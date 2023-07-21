@@ -9,12 +9,14 @@
       :sortOrder="1"
       sortMode="single"
       :expandableRowGroups="true"
+      :headerInputStyle="headerInputStyle"
       v-model:expandedRowGroups="expandedRowGroups"
     >
       <Column
         bodyClass="headers-bg"
-        headerStyle="width: 30vw;"
+        bodyStyle="width: 30vw;"
         headerClass="horizontal-headers-size"
+        :headerStyle="headerInputStyle"
         field="kpiKey"
         header="KPIs"
       >
@@ -34,7 +36,8 @@
       <Column
         v-for="reportingPeriodWithDataId of listOfReportingPeriodsWithDataId"
         headerClass="horizontal-headers-size"
-        headerStyle="width: 30vw;"
+        :headerStyle="headerInputStyle"
+        bodyStyle="width: 30vw;"
         :field="reportingPeriodWithDataId.dataId"
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
@@ -49,6 +52,22 @@
             <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
               <a
                 v-if="
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 &&
+                  slotProps.data.kpiKey == 'sector'
+                "
+                @click="
+                  convertsListToReadableFormatAndShowsInModal(
+                    slotProps.data.content[reportingPeriodWithDataId.dataId],
+                    slotProps.data.kpiLabel,
+                    slotProps.data.kpiKey
+                  )
+                "
+                class="link"
+                >Show "{{ slotProps.data.kpiLabel }}"
+                <em class="material-icons" aria-hidden="true" title=""> dataset </em>
+              </a>
+              <a
+                v-else-if="
                   slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
                   slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
                 "
@@ -63,9 +82,15 @@
                 >Show "{{ slotProps.data.kpiLabel }}"
                 <em class="material-icons" aria-hidden="true" title=""> dataset </em>
               </a>
+
               <span v-else> {{ slotProps.data.content[reportingPeriodWithDataId.dataId][0] }} </span>
             </template>
-            <span v-else-if="slotProps.data.kpiFormFieldComponent === 'PercentageFormField'">
+            <span
+              v-else-if="
+                slotProps.data.kpiFormFieldComponent === 'PercentageFormField' &&
+                slotProps.data.content[reportingPeriodWithDataId.dataId] !== ''
+              "
+            >
               {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} %</span
             >
             <span
@@ -126,16 +151,17 @@ import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Tooltip from "primevue/tooltip";
 import { defineComponent, PropType } from "vue";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
-  name: "LksgCompanyDataTable",
+  name: "DisplayFrameworkDataTable",
   components: { DataTable, Column, DocumentLink },
   directives: {
     tooltip: Tooltip,
   },
   data() {
     return {
-      expandedRowGroups: ["_masterData"],
+      expandedRowGroups: ["_masterData", "_general"],
       yesLabelMap: new Map<boolean, string>([
         [true, "Certified"],
         [false, "Yes"],
@@ -151,6 +177,9 @@ export default defineComponent({
     arrayOfKpiDataObjects: {
       type: Array as PropType<Array<KpiDataObject>>,
       default: () => [],
+    },
+    headerInputStyle: {
+      type: String,
     },
     listOfReportingPeriodsWithDataId: {
       type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
@@ -190,6 +219,20 @@ export default defineComponent({
     isYesNo(value: string) {
       return (Object.values(YesNo) as string[]).includes(value);
     },
+    /**
+     * Converts a list of strings to readable values and opens modal to display those
+     * @param listOfValues An array consisting of production sites
+     * @param modalTitle The title for the modal, which is derived from the key of the KPI
+     * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
+     */
+    convertsListToReadableFormatAndShowsInModal(listOfValues: [], modalTitle: string, kpiKey: string) {
+      const resultList = [];
+      listOfValues.forEach((entry) => {
+        resultList.push(humanizeString(entry));
+      });
+      this.openModalAndDisplayValuesInSubTable(resultList, modalTitle, kpiKey);
+    },
+
     /**
      * Opens a modal to display a table with the provided list of production sites
      * @param listOfValues An array consisting of production sites
