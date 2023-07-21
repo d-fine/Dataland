@@ -1,0 +1,67 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "SME-year-2023",
+			"headquarters": "Knolldorf",
+			"headquartersPostalCode": "71556",
+			"sector": "partnerships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"eMQ0Yb4W4zS3"
+				],
+				"PermId": [
+					"MqnrH8lRRe"
+				],
+				"Ticker": [
+					"EKopQZI"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"ph1akabxKnpaNaQ"
+				]
+			},
+			"countryCode": "CL",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://nutzbringend-hotel.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"industry": "ManufacturingIndustry",
+			"financialYear": 2023,
+			"totalRevenue": 476874.1402775049,
+			"researchAndDevelopmentExpenses": 400830.2191272378,
+			"energyEfficiencyInvestments": "OneToFivePercent",
+			"operatingCosts": 208352.3043547757,
+			"totalAssets": 98740.11537758633,
+			"yearsSinceFounded": "OneToFiveYears",
+			"productCategoryWithHighestSales": "communities",
+			"productCategoryWithHighestSalesShareOfSales": 0.2217,
+			"productCategoryWithSecondHighestSales": "initiatives",
+			"productCategoryWithSecondHighestSalesShareOfSales": 0.7509,
+			"totalAreaCompany": 1607751537000448,
+			"totalPowerConsumption": 4033701834915840,
+			"totalPowerCosts": 883676.3624916784,
+			"useOfGreenElectricity": "NA",
+			"heatingEnergyConsumption": 6879234117074944,
+			"totalHeatingCosts": 845128.6902534775,
+			"roomWaterHeating": "DistrictHeat",
+			"shareOwnEnergyProduction": "TwentyfiveToFiftyPercent",
+			"waterSewageCosts": 657290.1155683212,
+			"wasteDisposalCosts": 552020.1993058436,
+			"wasteRecyclingRate": 0.0869,
+			"numberOfEmployees": 366,
+			"numberOfTemporaryWorkers": 146,
+			"shareOfFullTimeEmployees": 0.4089,
+			"shareOfEmployeesSubjectToSocialSecurityContributions": 0.2208,
+			"employeeFluctuation": 0.9248,
+			"shareOfFemaleEmployees": 0.1396,
+			"proportionOfFemaleEmployeesInManagement": 0.8297,
+			"numberVacationDays": 10,
+			"nonProfitProjects": "No"
+		},
+		"reportingPeriod": "2023"
+	}
+]

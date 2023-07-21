@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex align-items-center d-drop-down-toggle"
+    class="flex align-items-center d-cursor-pointer"
     id="profile-picture-dropdown-toggle"
     @click="toggleDropdownMenu"
   >
@@ -187,9 +187,6 @@ export default defineComponent({
 <style scoped>
 .p-menuitem-link {
   background-color: #0b191f;
-}
-.d-drop-down-toggle {
-  cursor: pointer;
 }
 
 .d-profile-picture {
