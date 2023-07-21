@@ -9,7 +9,7 @@ import {
   LksgData,
   QaStatus,
 } from "@clients/backend";
-import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -191,29 +191,38 @@ describe("Component test for LksgPanel", () => {
     const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
     const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
     const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
-    expect(sortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject])).to.deep.equal([
-      firstYearObject,
-      secondYearObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject])).to.deep.equal([
-      firstYearObject,
-      secondYearObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([
-      firstYearObject,
-      firstYearObject,
-      secondYearObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject])).to.deep.equal([
-      firstOtherObject,
-      secondOtherObject,
-    ]);
-    expect(sortReportingPeriodsToDisplayAsColumns([firstOtherObject, secondOtherObject])).to.deep.equal([
-      firstOtherObject,
-      secondOtherObject,
-    ]);
+    const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
+    for (let i = 0; i < 2; i++) {
+      expect(
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
+      ).to.deep.equal([firstYearObject, secondYearObject]);
+
+      expect(
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
+      ).to.deep.equal([firstOtherObject, secondOtherObject]);
+    }
     expect(
       sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });
+
+/**
+ * The function swaps and sorts the data date columns to display
+ * @param listOfDataDateToDisplayAsColumns is a list of data dates to display
+ * @param shouldSwap boolean which determines if the list should be swapped or not
+ * @returns the sorted reporting periods to display based on the given list of data dates
+ */
+function swapAndSortReportingPeriodsToDisplayAsColumns(
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
+  shouldSwap = false
+): ReportingPeriodOfDataSetWithId[] {
+  let swappedList: ReportingPeriodOfDataSetWithId[];
+  if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {
+    swappedList = listOfDataDateToDisplayAsColumns.slice();
+    swappedList[0] = listOfDataDateToDisplayAsColumns[1];
+    swappedList[1] = listOfDataDateToDisplayAsColumns[0];
+    listOfDataDateToDisplayAsColumns = swappedList.slice();
+  }
+  return sortReportingPeriodsToDisplayAsColumns(listOfDataDateToDisplayAsColumns);
+}
