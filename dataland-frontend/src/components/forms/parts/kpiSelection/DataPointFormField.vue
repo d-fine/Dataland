@@ -2,75 +2,39 @@
   <DataPointHeader :label="label" :description="description" :is-required="required" />
 
     <div class="form-field" >
-      <div v-if="valueType === 'percent' && showSecondInput" class="p-0">
         <div class="next-to-each-other">
           <div class="p-0">
             <UploadFormHeader
-              :label="valueType === 'percent' ? `${label} (%)` : `${label}`"
+              :label="label"
               :description="description ?? ''"
             />
             <FormKit
               type="number"
               :name="name"
+              :description="description ?? ''"
               validation-label=""
-              v-model="currentPercentageValue"
-              :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
-              step="any"
-              min="0"
-              :validation="valueType === 'percent' ? 'number|between:0,100' : 'number'"
-              :inner-class="{
-                short: false,
-              }"
-            />
-          </div>
-          <div>
-            <UploadFormHeader
-              :label="`${label}`"
-              :description="`${describtion}Amount` ?? ''"
-            />
-            <FormKit
-              type="number"
-              :name="name"
-              validation-label=""
-              v-model="currentAmountValue"
+              v-model="value"
               :placeholder="'Value'"
               step="any"
               min="0"
-              :validation="'number'"
+              :required = "required"
+              :validation="validation"
               :inner-class="{
                 short: false,
               }"
             />
           </div>
+
         </div>
-      </div>
-      <div v-else>
-        <UploadFormHeader
-          :label="`${label} (%)`"
-          :description="describtion ?? ''"
-        />
-        <FormKit
-          type="number"
-          :name="name"
-          validation-label=""
-          v-model="currentAmountValue"
-          :placeholder="'Value'"
-          step="any"
-          min="0"
-          :validation="'number'"
-          :inner-class="{
-            short: true,
-          }"
-        />
-      </div>
+
     </div>
-    <!--
+    <!-- //TODO make the label and description modular instead of being hardcoded -->
     <div class="form-field">
       <FormKit type="group"  name="dataSource">
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
-            <UploadFormHeader :label="kpiNameMappings.report ?? ''" :description="kpiInfoMappings.report ?? ''" />
+            <UploadFormHeader :label="'Report'" :description="'Upload Report'" />
             <FormKit
               type="select"
               name="report"
@@ -81,7 +45,7 @@
             />
           </div>
           <div>
-            <UploadFormHeader :label="kpiNameMappings.page ?? ''" :description="kpiInfoMappings.page ?? ''" />
+            <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
             <FormKit
               outer-class="w-100"
               v-model="currentPageValue"
@@ -97,7 +61,7 @@
         </div>
       </FormKit>
     </div>
--->
+
     <!-- Data quality -->
     <div class="form-field">
       <UploadFormHeader
@@ -128,7 +92,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
@@ -137,23 +100,27 @@ import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 
 export default defineComponent({
   name: "DataPointFormField",
-  components: { DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
+  components: { DataPointHeader, UploadFormHeader, FormKit },
   data: () => ({
     qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
       label: qualityOption,
       value: qualityOption,
     })),
-    currentAmountValue: "",
-    currentPercentageValue: "",
+    value: "",
     currentReportValue: "",
     currentPageValue: "",
     currentQualityValue: "",
-    qualityValueBeforeDataPointWasDisabled: "",
   }),
   props: {
     name: {
       type: String,
     },
+      label: {
+          type: String,
+      },
+      description: {
+          type: String,
+      },
     kpiInfoMappings: {
       type: Object,
       default: null,
@@ -170,10 +137,7 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    showSecondInput: {
-      type: Boolean,
-      default: false,
-    },
+
   },
   methods: {
     selectNothingIfNotExistsFormKitPlugin,
