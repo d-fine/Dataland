@@ -49,3 +49,4 @@
 [Environment]::SetEnvironmentVariable("INTERNAL_BACKEND_URL", "http://host.docker.internal:8080/api", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("FRONTEND_LOCATION_CONFIG", "Test", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_LOCATION_CONFIG", "Dev", [System.EnvironmentVariableTarget]::User)
+
