@@ -146,19 +146,12 @@ export default defineComponent({
      */
     addKpisOfOneDatasetToTableModel(lksgData: LksgData, dataId: string) {
       for (const [categoryKey, categoryObject] of Object.entries(lksgData) as [string, object | null]) {
-        if (categoryObject == null) {
-          lksgData[categoryKey as string] = {};
-          continue;
-        }
+        if (categoryObject == null) continue;
         for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
           string,
           object | null
         ][]) {
-          if (subCategoryObject == null) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            categoryObject[subCategoryKey] = {};
-            continue;
-          }
+          if (subCategoryObject == null) continue;
           for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
             if (kpiValue == null) {
               subCategoryObject[kpiKey] = "";
