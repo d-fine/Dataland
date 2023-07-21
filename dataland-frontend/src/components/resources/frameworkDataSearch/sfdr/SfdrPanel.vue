@@ -150,7 +150,7 @@ export default defineComponent({
     createKpiDataObjectsForSfdrDataProps(sfdrData: SfdrData, columnIdentifierDataId: string) {
       const dataEntries = Object.entries(sfdrData).map((dataEntry) => {
         if (dataEntry[1] == null) {
-          dataEntry[1] = {};
+          dataEntry[1] = "";
         }
         return dataEntry;
       });
