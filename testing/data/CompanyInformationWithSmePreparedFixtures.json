@@ -2,89 +2,69 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Kressestadt",
-			"sector": "partnerships",
+			"headquarters": "Clarissastadt",
+			"headquartersPostalCode": "98120",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"LjM16bm5Px5i"
+					"iPLTNnKUBP1N",
+					"Ge50PxDyjAMp"
 				],
 				"PermId": [
-					"4ZjsC2Zuc6"
+					"3sPz0ScBVz"
 				],
 				"Ticker": [
-					"eneZBtQ"
+					"81fONqe"
 				],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"NISzkGbiX9efhvd"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "JE",
+			"countryCode": "GF",
 			"companyAlternativeNames": [
-				"Broening UG",
-				"Dahm-Everts",
-				"Komoll UG"
+				"Buss UG",
+				"Ender-Kupfer",
+				"Wartenberg, Döbel und Dauer",
+				"Wolff, Neubauer und Franke"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
+			"companyLegalForm": "Partnership without Limited Liability",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [],
+					"sector": [
+						"G",
+						"I"
+					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Feest Grove 7709",
-						"city": "Margate",
-						"state": "Oklahoma",
-						"postalCode": "46493-1358",
-						"country": "MF"
+						"streetAndHouseNumber": "Rex Keys 36733",
+						"city": "Orinview",
+						"country": "HU"
 					},
-					"numberOfEmployees": 3752,
-					"fiscalYearStart": "2023-10-03"
+					"numberOfEmployees": 5773,
+					"fiscalYearStart": "2024-03-23"
 				},
 				"businessNumbers": {
-					"revenueInEur": 2285006,
-					"operatingCostInEur": 24505968,
-					"capitalAssetsInEur": 38070004
+					"revenueInEur": 64308206,
+					"capitalAssetsInEur": 32348126
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Ryan LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Murphy Shoals 8995",
-								"city": "Fort Katharinaburgh",
-								"postalCode": "87407",
-								"country": "AR"
+								"city": "Elkhart",
+								"country": "RW"
 							}
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Clare Burgs 197",
-								"city": "Binsfield",
-								"state": "Connecticut",
-								"country": "TW"
-							},
-							"percentageOfTotalRevenue": 0.5124
-						},
-						{
-							"nameOfProductionSite": "Wilderman - Lang",
-							"addressOfProductionSite": {
-								"city": "Shaniaton",
-								"state": "Hawaii",
-								"country": "QA"
-							}
-						},
-						{
-							"nameOfProductionSite": "Kessler, Schinner and McKenzie",
-							"addressOfProductionSite": {
-								"city": "South Angelita",
-								"state": "Pennsylvania",
-								"postalCode": "95080-0821",
-								"country": "AQ"
+								"city": "Dejonboro",
+								"state": "Rhode Island",
+								"country": "PG"
 							}
 						}
 					]
@@ -92,12 +72,14 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Refined Soft Chicken",
-							"percentageOfTotalRevenue": 0.238
+							"name": "Intelligent Rubber Keyboard"
 						},
 						{
-							"name": "Recycled Frozen Computer",
-							"percentageOfTotalRevenue": 0.2511
+							"name": "Practical Rubber Cheese"
+						},
+						{
+							"name": "Handcrafted Frozen Towels",
+							"percentageOfTotalRevenue": 0.1525
 						}
 					]
 				}
@@ -106,20 +88,14 @@
 				"investments": {},
 				"consumption": {
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 957,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"energyConsumptionHeatingAndHotWater": 993,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 29236381,
-					"naturalHazardsCovered": [
-						"Wind",
-						"Avalanche",
-						"Flooding",
-						"Snow",
-						"EarthQuake"
-					]
+					"insuranceAgainstNaturalHazards": "Yes"
 				}
 			}
 		},
