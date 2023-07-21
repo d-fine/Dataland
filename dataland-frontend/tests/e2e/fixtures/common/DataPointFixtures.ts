@@ -4,7 +4,7 @@ import { generateDataSource } from "./DataSourceFixtures";
 import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNo, randomYesNoNa } from "./YesNoFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-import {randomPastDate } from "@e2e/fixtures/common/DateFixtures";
+import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];

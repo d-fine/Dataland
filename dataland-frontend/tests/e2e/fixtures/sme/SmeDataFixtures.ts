@@ -43,7 +43,7 @@ function generateProduct(): SmeProduct {
 export function generateProductionSite(undefinedProbability = 0.5): SmeProductionSite {
   return {
     nameOfProductionSite: valueOrUndefined(faker.company.name(), undefinedProbability),
-    addressOfProductionSite: valueOrUndefined(generateAddress(undefinedProbability), undefinedProbability),
+    addressOfProductionSite: generateAddress(undefinedProbability),
     percentageOfTotalRevenue: valueOrUndefined(randomPercentageValue(), undefinedProbability),
   };
 }

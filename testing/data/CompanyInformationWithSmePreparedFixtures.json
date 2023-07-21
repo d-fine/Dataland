@@ -2,38 +2,32 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Ost Elifscheid",
-			"sector": "methodologies",
+			"headquarters": "Kressestadt",
+			"sector": "partnerships",
 			"identifiers": {
-				"Lei": [
-					"XF454S0sO2cDvtVD9J2K"
-				],
+				"Lei": [],
 				"Isin": [
-					"Hc4MZ9H5aiJa",
-					"uTAyUO4qmggv"
+					"LjM16bm5Px5i"
 				],
 				"PermId": [
-					"4X0zBpf70t"
+					"4ZjsC2Zuc6"
 				],
 				"Ticker": [
-					"tFEdXh5"
+					"eneZBtQ"
 				],
-				"Duns": [
-					"e2lcoZZjT"
-				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"GoXFw5MYTqc30Fd"
+					"NISzkGbiX9efhvd"
 				]
 			},
-			"countryCode": "DE",
+			"countryCode": "JE",
 			"companyAlternativeNames": [
-				"Manz, Börner und Dix",
-				"Möllinger UG",
-				"Neuendorf, Eggenmueller und Hofmann"
+				"Broening UG",
+				"Dahm-Everts",
+				"Komoll UG"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://komfortabel-gold.net/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -41,44 +35,91 @@
 				"basicInformation": {
 					"sector": [],
 					"addressOfHeadquarters": {
-						"city": "New Caseyview",
-						"state": "Missouri",
-						"country": "NO"
+						"streetAndHouseNumber": "Feest Grove 7709",
+						"city": "Margate",
+						"state": "Oklahoma",
+						"postalCode": "46493-1358",
+						"country": "MF"
 					},
-					"numberOfEmployees": 3894,
-					"fiscalYearStart": "2023-11-27"
+					"numberOfEmployees": 3752,
+					"fiscalYearStart": "2023-10-03"
 				},
 				"businessNumbers": {
-					"operatingCostInEur": 28452605,
-					"capitalAssetsInEur": 23806784
+					"revenueInEur": 2285006,
+					"operatingCostInEur": 24505968,
+					"capitalAssetsInEur": 38070004
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Murphy Shoals 8995",
+								"city": "Fort Katharinaburgh",
+								"postalCode": "87407",
+								"country": "AR"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Clare Burgs 197",
+								"city": "Binsfield",
+								"state": "Connecticut",
+								"country": "TW"
+							},
+							"percentageOfTotalRevenue": 0.5124
+						},
+						{
+							"nameOfProductionSite": "Wilderman - Lang",
+							"addressOfProductionSite": {
+								"city": "Shaniaton",
+								"state": "Hawaii",
+								"country": "QA"
+							}
+						},
+						{
+							"nameOfProductionSite": "Kessler, Schinner and McKenzie",
+							"addressOfProductionSite": {
+								"city": "South Angelita",
+								"state": "Pennsylvania",
+								"postalCode": "95080-0821",
+								"country": "AQ"
+							}
+						}
+					]
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Small Granite Computer",
-							"percentageOfTotalRevenue": 0.3787
+							"name": "Refined Soft Chicken",
+							"percentageOfTotalRevenue": 0.238
+						},
+						{
+							"name": "Recycled Frozen Computer",
+							"percentageOfTotalRevenue": 0.2511
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 1891,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 601,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 957,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 5835645
+					"amountCoveredByInsuranceAgainstNaturalHazards": 29236381,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Avalanche",
+						"Flooding",
+						"Snow",
+						"EarthQuake"
+					]
 				}
 			}
 		},
