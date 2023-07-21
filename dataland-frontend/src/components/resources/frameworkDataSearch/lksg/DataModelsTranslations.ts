@@ -5,7 +5,7 @@ export const detailsCompanyDataTableColumnHeaders = {
     listOfGoodsOrServices: "List Of Goods Or Services",
   },
   mostImportantProducts: {
-    productName: "Product Name",
+    name: "Product Name",
     productionSteps: "Production Steps",
     relatedCorporateSupplyChain: "Related Corporate Supply Chain",
   },
