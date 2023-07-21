@@ -2,209 +2,166 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Zoestadt",
-			"headquartersPostalCode": "33242",
-			"sector": "niches",
+			"headquarters": "Süd Ennastadt",
+			"headquartersPostalCode": "38059",
+			"sector": "content",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"KOEAjreHaQ7l"
+					"Ib6eJtX4Yu5N"
 				],
-				"PermId": [
-					"vbdCa0YKEF"
-				],
-				"Ticker": [
-					"uBZM4EV"
-				],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"kkDzc7n84U9OGRL"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SC",
-			"companyAlternativeNames": [],
-			"website": "https://normal-gebaude.ch/",
+			"countryCode": "MV",
+			"companyAlternativeNames": [
+				"Daub UG",
+				"Kosenkow GmbH & Co. KG",
+				"Kreissig Gruppe",
+				"Schramm-Teichmann"
+			],
+			"website": "https://erlebnisreich-galaxie.de",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2022-12-15",
-			"numberOfEmployees": 89946,
+			"fiscalYearEnd": "2022-11-13",
+			"numberOfEmployees": 36715,
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "MMK"
-				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-08-21",
-					"currency": "GHS"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-06-15",
-					"currency": "DOP"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "KWD"
+					"currency": "NAD"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.8703,
+					"valueAsPercentage": 0.9841,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.4788,
+					"valueAsPercentage": 0.3557,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.1097,
+					"valueAsPercentage": 0.6768,
 					"quality": "NA"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Juliusland",
-			"headquartersPostalCode": "98024",
-			"sector": "infrastructures",
+			"headquarters": "Alanaburg",
+			"sector": "interfaces",
 			"identifiers": {
 				"Lei": [
-					"NfZNF9d5HZaQIzz41Oda"
+					"01SNY6iLwnqiUSyhv5Hj"
 				],
 				"Isin": [
-					"zbSK9xDcegjV",
-					"oT7CVnPP6QPE"
+					"uKB6v2h4Cqce"
 				],
-				"PermId": [
-					"KfJkwUs2FB"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"Y2PZDXX6u"
+					"n5ImH0dCo"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MM",
+			"countryCode": "BV",
 			"companyAlternativeNames": [
-				"Mensing-Görlich",
-				"Teufel GmbH",
-				"Trauth GmbH & Co. KG"
+				"Geissler-Käther"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://zeitlos-sandstein.org",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-02-23",
-			"numberOfEmployees": 36519,
+			"fiscalYearDeviation": "Deviation",
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "XCD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-11-21",
-					"currency": "TMT"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-10-15",
-					"currency": "CZK"
-				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-04-21",
-					"currency": "UGX"
+					"isGroupLevel": "NA",
+					"reportDate": "2023-05-12",
+					"currency": "HUF"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "QAR"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "LimitedAssurance",
+				"provider": "Ledner - Dach"
 			},
 			"reportingObligation": "Yes",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 197693.21146886796,
+					"value": 741730.3753900342,
 					"dataSource": {
-						"page": 630,
+						"page": 1011,
 						"report": "SustainabilityReport",
-						"tagName": "technologies"
+						"tagName": "models"
 					},
-					"quality": "Reported",
-					"comment": "reboot virtual bandwidth"
+					"quality": "Audited",
+					"comment": "reboot bluetooth protocol"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.1003,
+					"valueAsPercentage": 0.8281,
 					"dataSource": {
-						"page": 96,
+						"page": 791,
 						"report": "SustainabilityReport",
-						"tagName": "deliverables"
+						"tagName": "lifetime value"
 					},
-					"quality": "Incomplete",
-					"comment": "reboot neural bus",
-					"valueAsAbsolute": 680372.3628050648
+					"quality": "Reported",
+					"comment": "input auxiliary panel",
+					"valueAsAbsolute": 314830.03260800615
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 516707.90045754984,
-					"quality": "Estimated"
+					"value": 491082.8687250614,
+					"dataSource": {
+						"page": 975,
+						"report": "IntegratedReport",
+						"tagName": "action-items"
+					},
+					"quality": "Audited",
+					"comment": "reboot open-source microchip"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.4885,
-					"dataSource": {
-						"page": 166,
-						"report": "AnnualReport",
-						"tagName": "functionalities"
-					},
-					"quality": "Reported",
-					"comment": "navigate primary port",
-					"valueAsAbsolute": 462125.0001597218
+					"valueAsPercentage": 0.2684,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 377927.3918713443
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 760786.6954640485,
-					"dataSource": {
-						"page": 265,
-						"report": "IntegratedReport",
-						"tagName": "web services"
-					},
-					"quality": "Reported",
-					"comment": "generate back-end monitor"
+					"value": 63407.90641261265,
+					"quality": "Incomplete"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.6675,
+					"valueAsPercentage": 0.8301,
 					"dataSource": {
-						"page": 921,
+						"page": 486,
 						"report": "SustainabilityReport",
-						"tagName": "action-items"
+						"tagName": "paradigms"
 					},
 					"quality": "Incomplete",
-					"comment": "back up wireless sensor",
-					"valueAsAbsolute": 579286.9824450463
+					"comment": "calculate online feed",
+					"valueAsAbsolute": 557587.3421155848
 				}
 			}
 		},
@@ -213,85 +170,94 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Hoossland",
-			"headquartersPostalCode": "11257",
-			"sector": "models",
+			"headquarters": "Süd Salome",
+			"headquartersPostalCode": "39434",
 			"identifiers": {
 				"Lei": [
-					"5FUWHMBZQJaTwNwc93Ot"
+					"MT68Zsj3JCwoUg0viwf3"
 				],
 				"Isin": [],
 				"PermId": [
-					"o5LuBIvqdU"
+					"XvuAe7WfQy"
 				],
 				"Ticker": [
-					"o8gahrc"
+					"ClRsgFw"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"L8k0kElNC"
+				"Duns": [
+					"5Sji9ii1q"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"uik9nywl9wcjy2C"
+					"qvjoNjtEEqpK0zb"
 				]
 			},
-			"countryCode": "VE",
+			"countryCode": "ER",
 			"companyAlternativeNames": [
-				"Dieckmann-Ahlke",
-				"Hamann-Bieler",
-				"Manns, Morgenstern und Prey",
-				"Thyssen GmbH"
+				"Ernst, Mai und Langhirt",
+				"Liebold, Wachenbrunner und Hess",
+				"Siener-Rumpf",
+				"Tonat-Clarius"
 			],
-			"companyLegalForm": "GmbH",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"numberOfEmployees": 64097,
+			"fiscalYearDeviation": "Deviation",
+			"numberOfEmployees": 4824,
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Bauschinger-Petzold",
+				"assurance": "LimitedAssurance",
 				"dataSource": {
-					"page": 1120,
-					"report": "AnnualReport",
-					"tagName": "ROI"
+					"page": 903,
+					"report": "ESEFReport",
+					"tagName": "architectures"
 				}
 			},
+			"scopeOfEntities": "NA",
 			"reportingObligation": "No",
-			"opex": {},
-			"capex": {},
-			"revenue": {
+			"opex": {
 				"totalAmount": {
+					"value": 577207.4155043811,
 					"dataSource": {
-						"page": 942,
+						"page": 304,
 						"report": "AnnualReport",
-						"tagName": "eyeballs"
+						"tagName": "methodologies"
 					},
-					"quality": "Reported",
-					"comment": "back up digital alarm"
+					"quality": "Audited",
+					"comment": "calculate back-end monitor"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 323480.5118176155,
+					"quality": "Incomplete"
 				},
 				"alignedData": {
-					"valueAsPercentage": 0.8692,
-					"dataSource": {
-						"page": 247,
-						"report": "AnnualReport",
-						"tagName": "partnerships"
-					},
-					"quality": "Estimated",
-					"comment": "reboot solid state array"
+					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.6374,
 					"dataSource": {
-						"page": 1030,
+						"page": 1191,
 						"report": "AnnualReport",
-						"tagName": "blockchains"
+						"tagName": "markets"
 					},
 					"quality": "Reported",
-					"comment": "program redundant sensor"
+					"comment": "synthesize mobile firewall",
+					"valueAsAbsolute": 159869.3770589307
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"valueAsPercentage": 0.0619,
+					"dataSource": {
+						"page": 46,
+						"report": "ESEFReport",
+						"tagName": "communities"
+					},
+					"quality": "Reported",
+					"comment": "generate digital bandwidth",
+					"valueAsAbsolute": 762085.8410838991
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2023"
 	}
 ]

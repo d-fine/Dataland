@@ -1,9 +1,9 @@
-import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
+import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { DocumentReference, YesNo } from "@clients/backend";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
-describe("Component test for LksgCompanyDataTable", () => {
+describe("Component test for TwoLayerDataTable", () => {
   const dataId = "dummyId";
   const dummyDataSource = { name: "document", reference: "123" } as DocumentReference;
   const emptyStringDataSource = { name: "", reference: "" } as DocumentReference;
@@ -24,7 +24,7 @@ describe("Component test for LksgCompanyDataTable", () => {
     ];
 
     const reportingPeriodWithDataId = { dataId: dataId, reportingPeriod: "2023" };
-    cy.mountWithPlugins(LksgCompanyDataTable, {
+    cy.mountWithPlugins(TwoLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
@@ -70,6 +70,8 @@ describe("Component test for LksgCompanyDataTable", () => {
     return {
       subcategoryKey: "_masterData",
       subcategoryLabel: "Master Data",
+      categoryKey: "_masterData",
+      categoryLabel: "Master Data",
       kpiKey: "dummy",
       kpiLabel: label,
       kpiDescription: "",
