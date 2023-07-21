@@ -2,100 +2,106 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Clarissastadt",
-			"headquartersPostalCode": "98120",
+			"headquarters": "Antoninastead",
+			"sector": "niches",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"iPLTNnKUBP1N",
-					"Ge50PxDyjAMp"
+				"Lei": [
+					"QaL2kLsmBYJhWAGRUdks"
 				],
+				"Isin": [],
 				"PermId": [
-					"3sPz0ScBVz"
+					"O15GYukFZ4"
 				],
 				"Ticker": [
-					"81fONqe"
+					"FHlaXv5"
 				],
 				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GF",
+			"countryCode": "BZ",
 			"companyAlternativeNames": [
-				"Buss UG",
-				"Ender-Kupfer",
-				"Wartenberg, Döbel und Dauer",
-				"Wolff, Neubauer und Franke"
+				"Langworth, MacGyver and Anderson",
+				"Shields, Rath and Crooks"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
+			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
+						"B",
+						"D",
 						"G",
-						"I"
+						"H"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Rex Keys 36733",
-						"city": "Orinview",
-						"country": "HU"
+						"city": "Johanville",
+						"state": "Hawaii",
+						"country": "GQ"
 					},
-					"numberOfEmployees": 5773,
-					"fiscalYearStart": "2024-03-23"
+					"numberOfEmployees": 8787,
+					"fiscalYearStart": "2023-11-10"
 				},
 				"businessNumbers": {
-					"revenueInEur": 64308206,
-					"capitalAssetsInEur": 32348126
+					"revenueInEur": 76296779,
+					"capitalAssetsInEur": 4051971
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Ryan LLC",
+							"nameOfProductionSite": "Goldner - Bednar",
 							"addressOfProductionSite": {
-								"city": "Elkhart",
-								"country": "RW"
+								"city": "New Helene",
+								"postalCode": "62910",
+								"country": "GB"
+							},
+							"percentageOfTotalRevenue": 0.4457
+						},
+						{
+							"nameOfProductionSite": "Weimann Inc",
+							"addressOfProductionSite": {
+								"city": "Eagan",
+								"state": "Missouri",
+								"country": "VI"
 							}
 						},
 						{
 							"addressOfProductionSite": {
-								"city": "Dejonboro",
-								"state": "Rhode Island",
-								"country": "PG"
+								"city": "Uptonstead",
+								"state": "South Carolina",
+								"country": "BD"
+							},
+							"percentageOfTotalRevenue": 0.2204
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Zieme Burg 8607",
+								"city": "North Janiyastead",
+								"state": "Nevada",
+								"country": "MM"
 							}
 						}
 					]
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Intelligent Rubber Keyboard"
-						},
-						{
-							"name": "Practical Rubber Cheese"
-						},
-						{
-							"name": "Handcrafted Frozen Towels",
-							"percentageOfTotalRevenue": 0.1525
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {},
 				"consumption": {
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 993,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 846,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes"
+					"amountCoveredByInsuranceAgainstNaturalHazards": 5470169,
+					"naturalHazardsCovered": [
+						"Flooding"
+					]
 				}
 			}
 		},
