@@ -154,9 +154,6 @@ export default defineComponent({
         ][]) {
           if (subCategoryObject == null) continue;
           for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
-            if (kpiValue == null) {
-              subCategoryObject[kpiKey] = "";
-            }
             const subcategory = assertDefined(
               lksgDataModel
                 .find((category) => category.name === categoryKey)
