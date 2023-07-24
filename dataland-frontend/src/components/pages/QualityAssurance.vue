@@ -149,7 +149,7 @@ export default defineComponent({
         const firstDatasetOnPageIndex = this.currentPage * this.datasetsPerPage;
         const dataIdsOnPage = this.dataIdList.slice(
           firstDatasetOnPageIndex,
-          firstDatasetOnPageIndex + this.datasetsPerPage
+          firstDatasetOnPageIndex + this.datasetsPerPage,
         );
         for (const dataId of dataIdsOnPage) {
           dataOfPage.push(await this.addDatasetAssociatedInformationToDisplayList(dataId));
@@ -165,13 +165,13 @@ export default defineComponent({
      */
     async gatherControllerApis() {
       this.qaServiceControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getQaControllerApi();
       this.metaDataInformationControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getMetaDataControllerApi();
       this.companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getCompanyDataControllerApi();
     },
     /**
@@ -212,11 +212,11 @@ export default defineComponent({
         if (filteredData === DataTypeEnum.EutaxonomyNonFinancials) {
           try {
             const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
+              assertDefined(this.getKeycloakPromise)(),
             ).getEuTaxonomyDataForNonFinancialsControllerApi();
             const companyAssociatedData =
               await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                assertDefined(dataId)
+                assertDefined(dataId),
               );
             this.dataSet = assertDefined(companyAssociatedData.data.data);
           } catch (error) {
@@ -225,11 +225,11 @@ export default defineComponent({
         } else if (filteredData === DataTypeEnum.EutaxonomyFinancials) {
           try {
             const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
+              assertDefined(this.getKeycloakPromise)(),
             ).getEuTaxonomyDataForFinancialsControllerApi();
             const companyAssociatedData =
               await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-                assertDefined(dataId)
+                assertDefined(dataId),
               );
             this.dataSet = assertDefined(companyAssociatedData.data.data);
           } catch (error) {
@@ -238,7 +238,7 @@ export default defineComponent({
         } else if (filteredData === DataTypeEnum.Lksg) {
           try {
             const lksgDataControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
+              assertDefined(this.getKeycloakPromise)(),
             ).getLksgDataControllerApi();
             const singleLksgData = await lksgDataControllerApi.getCompanyAssociatedLksgData(assertDefined(dataId));
             this.dataSet = assertDefined(singleLksgData.data.data);
@@ -248,7 +248,7 @@ export default defineComponent({
         } else if (filteredData === DataTypeEnum.Sfdr) {
           try {
             const sfdrDataControllerApi = await new ApiClientProvider(
-              assertDefined(this.getKeycloakPromise)()
+              assertDefined(this.getKeycloakPromise)(),
             ).getSfdrDataControllerApi();
 
             const singleSfdrData = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);

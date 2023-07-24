@@ -53,14 +53,14 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             .then((storedCompany) => {
               const preparedFixture = getPreparedFixture(
                 "eligible-activity-Point-0.26",
-                euTaxoFinancialPreparedFixtures
+                euTaxoFinancialPreparedFixtures,
               );
               storedCompanyForManyDatasetsCompany = storedCompany;
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
                 "2023",
-                preparedFixture.t
+                preparedFixture.t,
               );
             })
             .then((dataMetaInformationOfFirstUpload) => {
@@ -71,13 +71,13 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                 .then(() => {
                   const preparedFixture = getPreparedFixture(
                     "eligible-activity-Point-0.26",
-                    euTaxoFinancialPreparedFixtures
+                    euTaxoFinancialPreparedFixtures,
                   );
                   return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     "2022",
-                    preparedFixture.t
+                    preparedFixture.t,
                   );
                 })
                 .then((dataMetaInformationOfSecondUpload) => {
@@ -87,7 +87,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     getRandomReportingPeriod(),
-                    preparedFixture.t
+                    preparedFixture.t,
                   );
                 })
                 .then((dataMetaInformationLksgUpload) => {
@@ -121,7 +121,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.get('button[name="addCompany"]').click();
         cy.get('li[id="createCompanyForm-incomplete"]').should("exist");
         cy.get("input[name='permId']").type(
-          assertDefined(storedCompanyForManyDatasetsCompany.companyInformation.identifiers[IdentifierType.PermId])[0]
+          assertDefined(storedCompanyForManyDatasetsCompany.companyInformation.identifiers[IdentifierType.PermId])[0],
         );
         cy.contains(identifierDoesExistMessage).should("exist");
         cy.get("input[name='permId']").type("thisshouldnotexist");
@@ -135,13 +135,13 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
        * if the company name appears as title
        */
       function verifyChoosingFrameworkPageForUploadedTestCompanyWithManyDatasets(
-        uploadedTestCompanyName: string
+        uploadedTestCompanyName: string,
       ): void {
         cy.contains("h1", uploadedTestCompanyName);
 
         cy.get("div[id=eutaxonomyDataSetsContainer]").contains("Be the first to create this dataset");
         cy.get("div[id=eutaxonomyDataSetsContainer]").contains(
-          "Create another dataset for EU Taxonomy for financial companies"
+          "Create another dataset for EU Taxonomy for financial companies",
         );
         cy.get("div[id=eutaxonomyDataSetsContainer]")
           .find("[data-test='createDatasetButton']")
@@ -149,7 +149,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
 
         cy.get("div[id=sfdrContainer]").contains("Be the first to create this dataset");
         cy.get("div[id=sfdrContainer]").contains(
-          "Uploading data for this framework is currently not enabled on the Dataland frontend."
+          "Uploading data for this framework is currently not enabled on the Dataland frontend.",
         );
         cy.get("div[id=sfdrContainer]").find('button.p-disabled[aria-label="Create Dataset"]').should("exist");
 
@@ -177,7 +177,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         storedCompanyForTest: StoredCompany,
         dataIdOfFirstUploadedEuTaxoFinancialsDataset: string,
         dataIdOfSecondUploadedEuTaxoFinancialsDataset: string,
-        dataIdOfLksgDataset: string
+        dataIdOfLksgDataset: string,
       ): void {
         cy.get("div[id=eutaxonomyDataSetsContainer")
           .find(`a.text-primary:contains(financial companies)`)
@@ -188,7 +188,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .should(
             "eq",
             getBaseUrl() +
-              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
+              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`,
           );
         cy.go("back");
         cy.get("div[id=eutaxonomyDataSetsContainer")
@@ -200,7 +200,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .should(
             "eq",
             getBaseUrl() +
-              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
+              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`,
           );
         cy.go("back");
 
@@ -209,7 +209,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .url()
           .should(
             "contain",
-            `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfLksgDataset}`
+            `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfLksgDataset}`,
           );
       }
 
@@ -236,7 +236,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
           cy.url().should(
             "eq",
-            getBaseUrl() + `/companies/${storedCompanyForManyDatasetsCompany.companyId}/frameworks/upload`
+            getBaseUrl() + `/companies/${storedCompanyForManyDatasetsCompany.companyId}/frameworks/upload`,
           );
 
           verifyChoosingFrameworkPageForUploadedTestCompanyWithManyDatasets(testCompanyNameForManyDatasetsCompany);
@@ -245,10 +245,10 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             storedCompanyForManyDatasetsCompany,
             dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod,
             dataIdOfSecondEuTaxoFinancialsUpload,
-            dataIdOfLksgUpload
+            dataIdOfLksgUpload,
           );
-        }
+        },
       );
-    }
+    },
   );
 });

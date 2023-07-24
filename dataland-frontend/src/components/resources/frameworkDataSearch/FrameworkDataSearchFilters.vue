@@ -112,39 +112,39 @@ export default defineComponent({
     selectedCountriesInt: {
       get(): Array<CountryCodeSelectableItem> {
         return this.availableCountries.filter((countryCodeSelectableItem) =>
-          this.selectedCountryCodes.includes(countryCodeSelectableItem.countryCode)
+          this.selectedCountryCodes.includes(countryCodeSelectableItem.countryCode),
         );
       },
       set(newValue: Array<CountryCodeSelectableItem>) {
         this.$emit(
           "update:selectedCountryCodes",
-          newValue.map((countryCodeSelectableItem) => countryCodeSelectableItem.countryCode)
+          newValue.map((countryCodeSelectableItem) => countryCodeSelectableItem.countryCode),
         );
       },
     },
     selectedFrameworksInt: {
       get(): Array<FrameworkSelectableItem> {
         return this.availableFrameworks.filter((frameworkSelectableItem) =>
-          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType)
+          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType),
         );
       },
       set(newValue: Array<FrameworkSelectableItem>) {
         this.$emit(
           "update:selectedFrameworks",
-          newValue.map((frameworkSelectableItem) => frameworkSelectableItem.frameworkDataType)
+          newValue.map((frameworkSelectableItem) => frameworkSelectableItem.frameworkDataType),
         );
       },
     },
     selectedSectorsInt: {
       get(): Array<SelectableItem> {
         return this.availableSectors.filter((selectableItem) =>
-          this.selectedSectors.includes(selectableItem.displayName)
+          this.selectedSectors.includes(selectableItem.displayName),
         );
       },
       set(newValue: Array<SelectableItem>) {
         this.$emit(
           "update:selectedSectors",
-          newValue.map((selectableItem) => selectableItem.displayName)
+          newValue.map((selectableItem) => selectableItem.displayName),
         );
       },
     },
@@ -177,7 +177,7 @@ export default defineComponent({
      */
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getCompanyDataControllerApi();
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();

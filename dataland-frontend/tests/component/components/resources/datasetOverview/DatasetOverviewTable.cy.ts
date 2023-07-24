@@ -67,7 +67,7 @@ describe("Component test for DatasetOverviewTable", () => {
     cy.get("tbody td a").should(
       "have.attr",
       "href",
-      `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`
+      `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`,
     );
   });
 

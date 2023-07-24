@@ -6,7 +6,7 @@ import { generateDatapoint, generateDatapointAbsoluteAndPercentage } from "@e2e/
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 
 type generatorFunction = (
-  input: FixtureData<EuTaxonomyDataForNonFinancials>
+  input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ) => FixtureData<EuTaxonomyDataForNonFinancials>;
 
 /**
@@ -23,7 +23,7 @@ export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
   ];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
     generateEuTaxonomyDataForNonFinancials,
-    creationFunctions.length
+    creationFunctions.length,
   );
   const preparedFixtures = [];
   for (let i = 0; i < creationFunctions.length; i++) {
@@ -38,7 +38,7 @@ export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
  * @returns the modified fixture
  */
 function createOnlyEglibileNumbers(
-  input: FixtureData<EuTaxonomyDataForNonFinancials>
+  input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
   input.companyInformation.companyName = "only-eligible-numbers";
   input.t.opex = {
@@ -65,7 +65,7 @@ function createOnlyEglibileNumbers(
  * @returns the modified fixture
  */
 function createOnlyEligibleAndTotalNumbers(
-  input: FixtureData<EuTaxonomyDataForNonFinancials>
+  input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
   input.companyInformation.companyName = "only-eligible-and-total-numbers";
   input.t.opex = {
@@ -74,7 +74,7 @@ function createOnlyEligibleAndTotalNumbers(
     eligibleData: generateDatapointAbsoluteAndPercentage(
       randomEuroValue(),
       randomPercentageValue(),
-      input.t.referencedReports!
+      input.t.referencedReports!,
     ),
   };
   input.t.capex = {
@@ -83,7 +83,7 @@ function createOnlyEligibleAndTotalNumbers(
     eligibleData: generateDatapointAbsoluteAndPercentage(
       randomEuroValue(),
       randomPercentageValue(),
-      input.t.referencedReports!
+      input.t.referencedReports!,
     ),
   };
   input.t.revenue = {
@@ -92,7 +92,7 @@ function createOnlyEligibleAndTotalNumbers(
     eligibleData: generateDatapointAbsoluteAndPercentage(
       randomEuroValue(),
       randomPercentageValue(),
-      input.t.referencedReports!
+      input.t.referencedReports!,
     ),
   };
   return input;
@@ -104,7 +104,7 @@ function createOnlyEligibleAndTotalNumbers(
  * @returns the modified fixture
  */
 function createDatasetWithoutReferencedReports(
-  input: FixtureData<EuTaxonomyDataForNonFinancials>
+  input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
   input.companyInformation.companyName = "company_without_reports";
   input.t.referencedReports = undefined;

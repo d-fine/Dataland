@@ -10,6 +10,6 @@ export function exportFixturesSme(): void {
   const companyInformationWithSmeData = generateFixtureDataset<SmeData>(generateSmeData, 150);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithSmeData.json",
-    JSON.stringify(companyInformationWithSmeData, null, "\t")
+    JSON.stringify(companyInformationWithSmeData, null, "\t"),
   );
 }

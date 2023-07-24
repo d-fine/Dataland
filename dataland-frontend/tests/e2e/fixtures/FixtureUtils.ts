@@ -16,7 +16,7 @@ export type ReferencedDocuments = { [key: string]: CompanyReport | DocumentRefer
 export function generateFixtureDataset<T>(
   frameworkDataGenerator: () => T,
   numElements: number,
-  reportingPeriodGenerator: (dataSet: T) => string = getRandomReportingPeriod
+  reportingPeriodGenerator: (dataSet: T) => string = getRandomReportingPeriod,
 ): Array<FixtureData<T>> {
   const fixtureDataset = [];
   for (let id = 1; id <= numElements; id++) {

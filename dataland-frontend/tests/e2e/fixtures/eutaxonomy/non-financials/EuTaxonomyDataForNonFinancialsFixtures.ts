@@ -18,15 +18,15 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments):
       generateDatapointAbsoluteAndPercentage(
         valueOrUndefined(randomEuroValue()),
         valueOrUndefined(randomPercentageValue()),
-        reports
-      )
+        reports,
+      ),
     ),
     eligibleData: valueOrUndefined(
       generateDatapointAbsoluteAndPercentage(
         valueOrUndefined(randomEuroValue()),
         valueOrUndefined(randomPercentageValue()),
-        reports
-      )
+        reports,
+      ),
     ),
   };
 }

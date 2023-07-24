@@ -38,7 +38,7 @@ describe(
       token: string,
       companyId: string,
       reportingPeriod: string,
-      dataset: T
+      dataset: T,
     ) => Promise<DataMetaInformation>;
 
     /**
@@ -49,7 +49,7 @@ describe(
      */
     function prepopulate<T>(
       fixtureDataForFrameworkT: Array<FixtureData<T>>,
-      uploadOneFrameworkDataset: UploadFunction<T>
+      uploadOneFrameworkDataset: UploadFunction<T>,
     ): void {
       cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
         doThingsInChunks(fixtureDataForFrameworkT, chunkSize, async (fixtureData) => {
@@ -68,7 +68,7 @@ describe(
      */
     function checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
       dataType: DataTypeEnum,
-      expectedNumberOfCompanies: number
+      expectedNumberOfCompanies: number,
     ): void {
       cy.getKeycloakToken(admin_name, admin_pw)
         .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, dataType)))
@@ -78,7 +78,7 @@ describe(
               response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
             `Found ${response.numberOfCompaniesForDataType} companies having 
             ${response.numberOfDataSetsForDataType} datasets with datatype ${dataType}, 
-            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`
+            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`,
           );
         });
     }
@@ -110,10 +110,10 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
             DataTypeEnum.EutaxonomyFinancials,
-            fixtureDataForEuTaxonomyFinancials.length
+            fixtureDataForEuTaxonomyFinancials.length,
           );
         });
-      }
+      },
     );
 
     describeIf(
@@ -139,10 +139,10 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
             DataTypeEnum.EutaxonomyNonFinancials,
-            companiesWithEuTaxonomyDataForNonFinancials.length
+            companiesWithEuTaxonomyDataForNonFinancials.length,
           );
         });
-      }
+      },
     );
 
     describeIf(
@@ -166,7 +166,7 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Lksg, companiesWithLksgData.length);
         });
-      }
+      },
     );
 
     describeIf(
@@ -190,7 +190,7 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.P2p, companiesWithP2pData.length);
         });
-      }
+      },
     );
 
     describeIf(
@@ -214,7 +214,7 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
         });
-      }
+      },
     );
 
     describeIf(
@@ -238,7 +238,7 @@ describe(
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sme, companiesWithSmeData.length);
         });
-      }
+      },
     );
-  }
+  },
 );

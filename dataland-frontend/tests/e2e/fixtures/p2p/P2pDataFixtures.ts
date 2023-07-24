@@ -29,12 +29,12 @@ import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataP
  */
 export function generateP2pFixture(
   numFixtures: number,
-  undefinedProbability = 0.5
+  undefinedProbability = 0.5,
 ): FixtureData<PathwaysToParisData>[] {
   return generateFixtureDataset<PathwaysToParisData>(
     () => generateP2pData(undefinedProbability),
     numFixtures,
-    (dataSet: PathwaysToParisData) => dataSet.general.general.dataDate.substring(0, 4)
+    (dataSet: PathwaysToParisData) => dataSet.general.general.dataDate.substring(0, 4),
   );
 }
 
@@ -276,7 +276,7 @@ export function getSectorGeneral(undefinedProbability: number, sectors: Array<P2
       capexShareInGhgIntensivePlants: valueOrUndefined(randomPercentageValue(), undefinedProbability),
       researchAndDevelopmentExpenditureForNetZeroSolutions: valueOrUndefined(
         randomPercentageValue(),
-        undefinedProbability
+        undefinedProbability,
       ),
     },
   };

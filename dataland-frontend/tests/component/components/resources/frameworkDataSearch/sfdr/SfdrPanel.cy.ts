@@ -66,7 +66,7 @@ describe("Component tests for SfdrPanel", () => {
     for (let i = 0; i < 6; i++) {
       const reportingYear = 2023 + i;
       const fiscalYearEnd = `${reportingYear}-01-01`;
-      const sfdrData = structuredClone(baseDataset) as SfdrData;
+      const sfdrData = structuredClone(baseDataset);
       sfdrData.social!.general!.fiscalYearEnd = fiscalYearEnd;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,

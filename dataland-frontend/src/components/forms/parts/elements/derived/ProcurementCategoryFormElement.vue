@@ -139,9 +139,10 @@ export default defineComponent({
      * @returns Pre Selected Countries
      */
     setPreSelectedCountries() {
-      return this.allCountries.filter((el) =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
-        this.procurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(el.value)
+      return this.allCountries.filter(
+        (el) =>
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
+          this.procurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(el.value),
       );
     },
     /**

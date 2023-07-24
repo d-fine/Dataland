@@ -38,14 +38,14 @@ export class ApiClientProvider {
 
   async getConstructedApi<T>(
     constructor: new (configuration: Configuration | undefined, basePath: string) => T,
-    basePath = "/api"
+    basePath = "/api",
   ): Promise<T> {
     const configuration = await this.getConfiguration();
     return new constructor(configuration, basePath);
   }
 
   async getConstructedDocumentManager<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T,
   ): Promise<T> {
     const configuration = await this.getConfiguration();
     return new constructor(configuration, "/documents");

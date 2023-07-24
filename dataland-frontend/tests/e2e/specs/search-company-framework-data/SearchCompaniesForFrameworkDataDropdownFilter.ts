@@ -46,7 +46,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           getBaseUrl() +
             `/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
             `&framework=${DataTypeEnum.Lksg}` +
-            `&framework=${DataTypeEnum.Sfdr}`
+            `&framework=${DataTypeEnum.Sfdr}`,
         )
         .get("div.p-multiselect-panel")
         .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
@@ -63,9 +63,9 @@ describe("As a user, I expect the search functionality on the /companies page to
         getBaseUrl() +
           `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}` +
           `&framework=${DataTypeEnum.Lksg}` +
-          `&framework=${DataTypeEnum.Sfdr}`
+          `&framework=${DataTypeEnum.Sfdr}`,
       );
-    }
+    },
   );
 
   describeIf(
@@ -81,7 +81,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
           const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
-            (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
+            (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode,
           )!.companyInformation;
 
           const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
@@ -89,7 +89,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.ensureLoggedIn();
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(
-            `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
+            `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`,
           )
             .wait("@companies-meta-information")
             .get("div[class='col-12 text-left']")
@@ -106,7 +106,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             .should("exist")
             .url()
             .should("contain", `countryCode=${convertStringToQueryParamFormat(demoCompanyToTestFor.countryCode)}`);
-        }
+        },
       );
 
       it(
@@ -115,7 +115,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const demoCompanyToTestFor = assertDefined(
             companiesWithEuTaxonomyDataForNonFinancials.find((it) => it.companyInformation?.sector !== undefined)
-              ?.companyInformation
+              ?.companyInformation,
           );
           expect(demoCompanyToTestFor?.sector).to.not.be.undefined;
 
@@ -123,15 +123,15 @@ describe("As a user, I expect the search functionality on the /companies page to
             companiesWithEuTaxonomyDataForNonFinancials.find(
               (it) =>
                 it.companyInformation?.sector !== demoCompanyToTestFor.sector &&
-                it.companyInformation?.sector !== undefined
-            )?.companyInformation
+                it.companyInformation?.sector !== undefined,
+            )?.companyInformation,
           );
           expect(demoCompanyWithDifferentSector?.sector).to.not.be.undefined;
 
           cy.ensureLoggedIn();
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(
-            `/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`
+            `/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`,
           )
             .wait("@companies-meta-information")
             .get("div[class='col-12 text-left']")
@@ -147,9 +147,9 @@ describe("As a user, I expect the search functionality on the /companies page to
             .contains(demoCompanyToTestFor.companyName)
             .should("exist");
           cy.url().should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector!)}`);
-        }
+        },
       );
-    }
+    },
   );
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
@@ -184,7 +184,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .click();
       verifySearchResultTable();
       cy.get("div.p-multiselect-panel").should("not.exist");
-    }
+    },
   );
 
   describeIf(
@@ -232,7 +232,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.visit(`/companies?input=${companyName}`)
             .get("div[class='col-12 text-left']")
             .should("contain.text", failureMessageOnAvailableDatasetsPage);
-        }
+        },
       );
 
       const companyNameMarker = "Data987654321";
@@ -249,7 +249,7 @@ describe("As a user, I expect the search functionality on the /companies page to
                   token,
                   storedCompany.companyId,
                   fixtureData.reportingPeriod,
-                  fixtureData.t
+                  fixtureData.t,
                 );
               });
             });
@@ -268,12 +268,12 @@ describe("As a user, I expect the search functionality on the /companies page to
             .get("div[class='col-12 text-left']")
             .should("contain.text", failureMessageOnAvailableDatasetsPage);
           cy.visit(
-            `/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}&framework=${DataTypeEnum.EutaxonomyFinancials}`
+            `/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}&framework=${DataTypeEnum.EutaxonomyFinancials}`,
           )
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should("exist");
-        }
+        },
       );
 
       /**
@@ -313,9 +313,9 @@ describe("As a user, I expect the search functionality on the /companies page to
                     token,
                     storedCompany.companyId,
                     fixtureData.reportingPeriod,
-                    fixtureData.t
+                    fixtureData.t,
                   );
-                }
+                },
               );
             });
           });
@@ -332,15 +332,15 @@ describe("As a user, I expect the search functionality on the /companies page to
                   token,
                   storedCompany.companyId,
                   firstFixtureDataForEuTaxonomyNonFinancials.reportingPeriod,
-                  firstFixtureDataForEuTaxonomyNonFinancials.t
+                  firstFixtureDataForEuTaxonomyNonFinancials.t,
                 );
-              }
+              },
             );
           });
 
           checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, DataTypeEnum.EutaxonomyNonFinancials);
-        }
+        },
       );
-    }
+    },
   );
 });

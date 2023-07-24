@@ -25,7 +25,7 @@ function instantiateVueApp(): void {
     PiniaSharedState({
       enable: false,
       type: "native",
-    }) as PiniaPlugin
+    }) as PiniaPlugin,
   );
   app.use(plugin, defaultConfig);
   app.use(DialogService);

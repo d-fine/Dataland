@@ -5,10 +5,10 @@
  * @returns []
  */
 export function sortReportingPeriodsToDisplayAsColumns(
-  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[]
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
 ): ReportingPeriodOfDataSetWithId[] {
   return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) =>
-    compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod)
+    compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod),
   );
 }
 

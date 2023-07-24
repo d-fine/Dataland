@@ -143,7 +143,7 @@ describe("Component test for LksgPanel", () => {
     for (let i = 0; i < 6; i++) {
       const reportingYear = 2023 + i;
       const reportingDate = `${reportingYear}-01-01`;
-      const lksgData = structuredClone(baseDataset) as LksgData;
+      const lksgData = structuredClone(baseDataset);
       lksgData.general.masterData.dataDate = reportingDate;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
@@ -213,7 +213,7 @@ describe("Component test for LksgPanel", () => {
       secondOtherObject,
     ]);
     expect(
-      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
+      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject]),
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });

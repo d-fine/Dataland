@@ -8,6 +8,6 @@ export function exportFixturesP2p(): void {
   const companyInformationWithP2pData = generateP2pFixture(150);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithP2pData.json",
-    JSON.stringify(companyInformationWithP2pData, null, "\t")
+    JSON.stringify(companyInformationWithP2pData, null, "\t"),
   );
 }

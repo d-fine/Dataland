@@ -370,7 +370,7 @@ export default defineComponent({
           this.uploadSucceded = false;
         } else {
           const companyDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            assertDefined(this.getKeycloakPromise)(),
           ).getCompanyDataControllerApi();
           const response = await companyDataControllerApi.postCompany(company);
           const newCompanyId = response.data.companyId;

@@ -118,7 +118,7 @@ export default defineComponent({
         const lastSelectedFile = reports[indexOfLastSelectedFile].file;
         this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
         (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(
-          indexOfLastSelectedFile
+          indexOfLastSelectedFile,
         );
       } else {
         this.emitReferenceableReportNamesChangedEvent();
