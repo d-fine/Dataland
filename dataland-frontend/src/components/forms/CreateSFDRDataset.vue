@@ -50,6 +50,7 @@
                           :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
+                          :evidenceDesired="field.evidenceDesired"
                           :data-test="field.name"
                           @documentUpdated="updateDocumentList"
                           :ref="field.name"
@@ -150,7 +151,7 @@ export default defineComponent({
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
-      DataPointFormField,
+    DataPointFormField,
     DateFormField,
     SingleSelectFormField,
     MultiSelectFormField,
@@ -277,19 +278,18 @@ export default defineComponent({
         this.postSfdrDataProcessed = true;
       }
     },
-      /**
-       * updates the list of certificates that were uploaded in the corresponding formfields on change
-       * @param fieldName the name of the formfield as a key
-       * @param document the certificate as combined object of reference id and file content
-       */
-      updateDocumentList(fieldName: string, document: DocumentToUpload) {
-          if (document) {
-              this.documents.set(fieldName, document);
-          } else {
-              this.documents.delete(fieldName);
-          }
-      },
-
-}})
-;
+    /**
+     * updates the list of certificates that were uploaded in the corresponding formfields on change
+     * @param fieldName the name of the formfield as a key
+     * @param document the certificate as combined object of reference id and file content
+     */
+    updateDocumentList(fieldName: string, document: DocumentToUpload) {
+      if (document) {
+        this.documents.set(fieldName, document);
+      } else {
+        this.documents.delete(fieldName);
+      }
+    },
+  },
+});
 </script>

@@ -22,7 +22,75 @@
         <FormKit type="text" name="reference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
       </FormKit>
     </FormKit>
+    <div v-else-if="evidenceDesired">
+      <FormKit v-model="baseDataPointYesNo" type="group" :name="name">
+        <RadioButtonsFormElement
+          name="value"
+          :validation="validation"
+          :validation-label="validationLabel ?? label"
+          :options="yesNoOptions"
+          :data-test="dataTest"
+        />
+        <!-- //TODO make the label and description modular instead of being hardcoded -->
+        <div class="form-field">
+          <FormKit type="group" name="dataSource">
+            <div class="next-to-each-other">
+              <div class="flex-1">
+                <UploadFormHeader :label="'Report'" :description="'Upload Report'" />
+                <FormKit
+                  type="select"
+                  name="report"
+                  v-model="currentReportValue"
+                  placeholder="Select a report"
+                  :options="['None...', ...reportsName]"
+                />
+              </div>
+              <div>
+                <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
+                <FormKit
+                  outer-class="w-100"
+                  v-model="currentPageValue"
+                  type="number"
+                  name="page"
+                  placeholder="Page"
+                  validation-label="Page"
+                  step="1"
+                  min="0"
+                  validation="min:0"
+                />
+              </div>
+            </div>
+          </FormKit>
+        </div>
 
+        <!-- Data quality -->
+        <div class="form-field">
+          <UploadFormHeader
+            label="Data quality"
+            description="The level of confidence associated to the value."
+            :is-required="true"
+          />
+          <div class="md:col-6 col-12 p-0">
+            <FormKit
+              type="select"
+              v-model="currentQualityValue"
+              name="quality"
+              :validation="'required'"
+              validation-label="Data quality"
+              placeholder="Data quality"
+              :options="qualityOptions"
+            />
+          </div>
+        </div>
+        <div class="form-field">
+          <FormKit
+            type="textarea"
+            name="comment"
+            placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
+          />
+        </div>
+      </FormKit>
+    </div>
     <RadioButtonsFormElement
       v-else
       :name="name"
@@ -40,13 +108,21 @@ import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/Rad
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { DocumentToUpload } from "@/utils/FileUploadUtils";
-import { BaseDataPointYesNo } from "@clients/backend";
+import { BaseDataPointYesNo, QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "YesNoFormField",
   components: { RadioButtonsFormElement, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
-  props: { ...YesNoFormFieldProps, dataTest: String },
+  props: {
+    ...YesNoFormFieldProps,
+    dataTest: String,
+    reportsName: {
+      type: Array,
+      default: () => [],
+    },
+  },
+
   data() {
     return {
       baseDataPointYesNo: {} as BaseDataPointYesNo,
@@ -59,6 +135,13 @@ export default defineComponent({
         No: "No",
       },
       isMounted: false,
+      qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
+        label: qualityOption,
+        value: qualityOption,
+      })),
+      currentReportValue: "",
+      currentPageValue: "",
+      currentQualityValue: "",
     };
   },
 
