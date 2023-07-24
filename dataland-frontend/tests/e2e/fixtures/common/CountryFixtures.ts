@@ -1,4 +1,5 @@
 import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
+import { faker } from "@faker-js/faker";
 
 const allIso2CountryCodes = getAllCountryCodes();
 
@@ -7,6 +8,5 @@ const allIso2CountryCodes = getAllCountryCodes();
  * @returns the randomly chosen country code
  */
 export function getRandomIso2CountryCode(): string {
-  const randomIndex = Math.floor(Math.random() * allIso2CountryCodes.length);
-  return allIso2CountryCodes[randomIndex];
+  return faker.helpers.arrayElement(allIso2CountryCodes);
 }

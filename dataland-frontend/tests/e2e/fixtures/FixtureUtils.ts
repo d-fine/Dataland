@@ -50,10 +50,5 @@ export function generateArray<T>(generator: () => T, min = 0, max = 5): T[] {
 export function getRandomNumberOfDistinctElementsFromArray<T>(inputArray: T[]): T[] {
   const arrayOfAvailableDistinctValues = [...Array.from(new Set(inputArray))];
   const numElementsForResultArray = Math.floor(Math.random() * arrayOfAvailableDistinctValues.length) + 1;
-  const resultArray: T[] = [];
-  while (resultArray.length < numElementsForResultArray) {
-    const randomIndex = Math.floor(Math.random() * arrayOfAvailableDistinctValues.length);
-    resultArray.push(arrayOfAvailableDistinctValues.splice(randomIndex, 1)[0]);
-  }
-  return resultArray;
+  return faker.helpers.uniqueArray(arrayOfAvailableDistinctValues, numElementsForResultArray);
 }
