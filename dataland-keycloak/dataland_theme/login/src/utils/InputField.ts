@@ -8,7 +8,7 @@ export class InputField {
       inputFieldContainer.querySelector<HTMLInputElement>(`input`)!;
     this.inputErrorContainer =
       inputFieldContainer.querySelector<HTMLDivElement>(
-        `div.input-error-container`
+        `div.input-error-container`,
       )!;
     this.inputErrorTextSpan =
       inputFieldContainer.querySelector<HTMLSpanElement>(`span.input-error`)!;
