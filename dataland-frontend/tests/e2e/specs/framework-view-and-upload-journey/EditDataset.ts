@@ -73,6 +73,7 @@ describeIf(
       cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
       submitButton.buttonAppearsEnabled();
+
       cy.get("button[data-test=files-to-upload-remove]")
         .first()
         .parents(".form-field:first")
@@ -85,6 +86,7 @@ describeIf(
             .find(`button[data-test=files-to-upload-remove]`)
             .should("not.exist");
         });
+
       cy.get("button[data-test=files-to-upload-remove]")
         .eq(0)
         .parents(".form-field:first")
