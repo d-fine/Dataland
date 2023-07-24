@@ -46,7 +46,7 @@ describe("Component test for LksgPanel", () => {
     cy.get("td:contains('1.23 MM')").should("exist");
   });
 
-  it("Should be able to handle null values in a Lksg dataset and not display rows for those values", () => {
+  it("Should be able to handle null values in a Lksg dataset and display rows for those values", () => {
     const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
     cy.mountWithPlugins(LksgPanel, {
       data() {
@@ -68,8 +68,9 @@ describe("Component test for LksgPanel", () => {
     });
     // make sure only dataDate is there and other cards aren't
     cy.contains("span", "1999-12-24").should("exist");
-    cy.get("em").its("length").should("equal", 1);
-    cy.get("tr").its("length").should("equal", 3);
+    cy.contains("td.headers-bg", "Industry").should("exist");
+    cy.get("em").its("length").should("equal", 11);
+    cy.get("tr").its("length").should("equal", 13);
   });
 
   /**
