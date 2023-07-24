@@ -154,15 +154,12 @@ export default defineComponent({
         ][]) {
           if (subCategoryObject == null) continue;
           for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
-            if (kpiValue == null) {
-              subCategoryObject[kpiKey] = "";
-            }
             const subcategory = assertDefined(
               lksgDataModel
                 .find((category) => category.name === categoryKey)
                 ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
             );
-            this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataId);
+            this.createKpiDataObjects(kpiKey, (kpiValue as KpiValue) ?? "", subcategory, dataId);
           }
         }
       }
