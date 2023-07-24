@@ -6,7 +6,7 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>;
 
 /**
- * Generates SFDR prepared fixtures by generating random SFDR datasets and afterwards manipulating some fields
+ * Generates SFDR prepared fixtures by generating random SFDR datasets and afterward manipulating some fields
  * via manipulator-functions to set specific values for those fields.
  * @returns the prepared fixtures
  */

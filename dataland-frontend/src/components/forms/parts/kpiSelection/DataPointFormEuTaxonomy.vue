@@ -90,7 +90,7 @@
               :disabled="!dataPointIsAvailable"
               v-model="currentReportValue"
               placeholder="Select a report"
-              :options="['None...', ...reportsName]"
+              :options="['None...', ... reportsName]"
               :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
           </div>
