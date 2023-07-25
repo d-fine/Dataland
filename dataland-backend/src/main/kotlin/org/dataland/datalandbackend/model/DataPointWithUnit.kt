@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 
 /**
  * --- API model ---
- * Fields of a generic data point and its source
+ * Fields of a generic data point with unit and its source
  */
 data class DataPointWithUnit<T>(
     val value: T? = null,
