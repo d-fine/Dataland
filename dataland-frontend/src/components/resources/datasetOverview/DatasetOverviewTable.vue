@@ -126,15 +126,16 @@ export default defineComponent({
     applySearchFilter(searchString: string): void {
       this.loading = true;
       let arrayToFilter: DatasetTableInfo[];
-      if (searchString.includes(this.latestSearchString)) {
+      const lowerCaseSearchString = searchString.toLowerCase();
+      if (lowerCaseSearchString.includes(this.latestSearchString.toLowerCase())) {
         arrayToFilter = this.displayedDatasetTableInfos;
       } else {
         arrayToFilter = this.datasetTableInfos as DatasetTableInfo[];
       }
       this.displayedDatasetTableInfos = arrayToFilter.filter((datasetTableInfo: DatasetTableInfo) => {
-        return datasetTableInfo.companyName.includes(searchString);
+        return datasetTableInfo.companyName.toLowerCase().includes(lowerCaseSearchString);
       });
-      this.latestSearchString = searchString;
+      this.latestSearchString = lowerCaseSearchString;
       this.loading = false;
     },
 

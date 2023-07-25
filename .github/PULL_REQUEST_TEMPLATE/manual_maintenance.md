@@ -141,6 +141,9 @@ check that all ssh-keys are set and erased from people that have left
   accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
 
+## Check that links to external webpages are working
+- [ ] Go to the frameworks/upload page and check that the link to WWF Pathway to Paris is still working as intended.
+
 ## Check that the main branch has no sonar issues
 - [ ] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar 
   findings fix them.

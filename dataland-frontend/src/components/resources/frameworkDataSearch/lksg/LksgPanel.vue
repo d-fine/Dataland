@@ -4,9 +4,10 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
-    <LksgCompanyDataTable
+    <TwoLayerDataTable
       :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
-      :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
+      :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
+      headerInputStyle="width: 30vw;"
     />
   </div>
 </template>
@@ -15,40 +16,40 @@
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
+import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { Subcategory, Field } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataAndMetaInformationLksgData, LksgData, LksgProcurementCategory } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "LksgPanel",
-  components: { LksgCompanyDataTable },
+  components: { TwoLayerDataTable: TwoLayerDataTable },
   data() {
     return {
       firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
-      listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
+      arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
     };
   },
   props: PanelProps,
   watch: {
     companyId() {
-      this.listOfDataSetReportingPeriods = [];
+      this.arrayOfReportingPeriodWithDataId = [];
       void this.fetchLksgData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
-        this.listOfDataSetReportingPeriods = [];
+        this.arrayOfReportingPeriodWithDataId = [];
         void this.fetchLksgData();
       }
     },
@@ -112,7 +113,7 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfLksgDataset]: this.reformatValueForDisplay(kpiField, kpiValue) },
+        content: { [dataIdOfLksgDataset]: this.reformatValueForDisplay(kpiField, kpiValue ?? "") },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -125,18 +126,18 @@ export default defineComponent({
      */
     convertLksgDataToFrontendFormat(): void {
       if (this.lksgDataAndMetaInfo.length) {
-        this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
-          const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
-          const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfDataSetReportingPeriods.push({
+        this.lksgDataAndMetaInfo.forEach((currentLksgDataset: DataAndMetaInformationLksgData) => {
+          const dataIdOfLksgDataset = currentLksgDataset.metaInfo?.dataId ?? "";
+          const reportingPeriodOfLksgDataset = currentLksgDataset.metaInfo?.reportingPeriod ?? "";
+          this.arrayOfReportingPeriodWithDataId.push({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
-          this.addKpisOfOneDatasetToTableModel(oneLksgDataset.data, dataIdOfLksgDataset);
+          this.addKpisOfOneDatasetToTableModel(currentLksgDataset.data, dataIdOfLksgDataset);
         });
       }
-      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
-        this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[],
+      this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
+        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
       );
     },
     /**
@@ -153,13 +154,12 @@ export default defineComponent({
         ][]) {
           if (subCategoryObject == null) continue;
           for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
-            if (kpiValue == null) continue;
             const subcategory = assertDefined(
               lksgDataModel
                 .find((category) => category.name === categoryKey)
                 ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
             );
-            this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataId);
+            this.createKpiDataObjects(kpiKey, (kpiValue as KpiValue) ?? "", subcategory, dataId);
           }
         }
       }

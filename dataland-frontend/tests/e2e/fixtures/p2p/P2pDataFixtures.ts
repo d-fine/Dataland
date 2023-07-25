@@ -25,14 +25,16 @@ import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataP
  * Generates a set number of P2P fixtures
  * @param numFixtures the number of P2P fixtures to generate
  * @param undefinedProbability the probability of fields to be undefined (number between 0 and 1)
+ * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
  * @returns a set number of P2P fixtures
  */
-export function generateP2pFixture(
+export function generateP2pFixtures(
   numFixtures: number,
   undefinedProbability = 0.5,
+  toggleRandomSectors = true
 ): FixtureData<PathwaysToParisData>[] {
   return generateFixtureDataset<PathwaysToParisData>(
-    () => generateP2pData(undefinedProbability),
+    () => generateP2pData(undefinedProbability, toggleRandomSectors),
     numFixtures,
     (dataSet: PathwaysToParisData) => dataSet.general.general.dataDate.substring(0, 4),
   );
@@ -283,31 +285,45 @@ export function getSectorGeneral(undefinedProbability: number, sectors: Array<P2
 }
 
 /**
+ * Method to generate the sectors for a p2p dataset
+ * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
+ * @returns the sectors used for generating fixtures
+ */
+function generateSectors(toggleRandomSectors: boolean): P2pSector[] {
+  if (toggleRandomSectors) {
+    return faker.helpers.arrayElements(Object.values(P2pSector));
+  } else {
+    return Object.values(P2pSector);
+  }
+}
+/**
  * Generates a random P2P dataset
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
+ * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
  * @returns a random P2P dataset
  */
-export function generateP2pData(undefinedProbability = 0.5): PathwaysToParisData {
-  const sectors = faker.helpers.arrayElements(Object.values(P2pSector));
-
+export function generateP2pData(undefinedProbability = 0.5, toggleRandomSectors = true): PathwaysToParisData {
+  const inputSectors = generateSectors(toggleRandomSectors);
   return {
-    general: getSectorGeneral(undefinedProbability, sectors),
-    ammonia: sectors.indexOf("Ammonia") != -1 ? getSectorAmmonia(undefinedProbability) : undefined,
-    automotive: sectors.indexOf("Automotive") != -1 ? getSectorAutomotive(undefinedProbability) : undefined,
-    hvcPlastics: sectors.indexOf("HVCPlastics") != -1 ? getSectorHVCPlastics(undefinedProbability) : undefined,
+    general: getSectorGeneral(undefinedProbability, inputSectors),
+    ammonia: inputSectors.indexOf("Ammonia") != -1 ? getSectorAmmonia(undefinedProbability) : undefined,
+    automotive: inputSectors.indexOf("Automotive") != -1 ? getSectorAutomotive(undefinedProbability) : undefined,
+    hvcPlastics: inputSectors.indexOf("HVCPlastics") != -1 ? getSectorHVCPlastics(undefinedProbability) : undefined,
     commercialRealEstate:
-      sectors.indexOf("CommercialRealEstate") != -1 ? getSectorRealEstate(undefinedProbability) : undefined,
+      inputSectors.indexOf("CommercialRealEstate") != -1 ? getSectorRealEstate(undefinedProbability) : undefined,
     residentialRealEstate:
-      sectors.indexOf("ResidentialRealEstate") != -1 ? getSectorRealEstate(undefinedProbability) : undefined,
-    steel: sectors.indexOf("Steel") != -1 ? getSectorSteel(undefinedProbability) : undefined,
+      inputSectors.indexOf("ResidentialRealEstate") != -1 ? getSectorRealEstate(undefinedProbability) : undefined,
+    steel: inputSectors.indexOf("Steel") != -1 ? getSectorSteel(undefinedProbability) : undefined,
     freightTransportByRoad:
-      sectors.indexOf("FreightTransportByRoad") != -1
+      inputSectors.indexOf("FreightTransportByRoad") != -1
         ? getSectorFreightTransportByRoad(undefinedProbability)
         : undefined,
     electricityGeneration:
-      sectors.indexOf("ElectricityGeneration") != -1 ? getSectorElectricityGeneration(undefinedProbability) : undefined,
+      inputSectors.indexOf("ElectricityGeneration") != -1
+        ? getSectorElectricityGeneration(undefinedProbability)
+        : undefined,
     livestockFarming:
-      sectors.indexOf("LivestockFarming") != -1 ? getSectorLivestockFarming(undefinedProbability) : undefined,
-    cement: sectors.indexOf("Cement") != -1 ? getSectorCement(undefinedProbability) : undefined,
+      inputSectors.indexOf("LivestockFarming") != -1 ? getSectorLivestockFarming(undefinedProbability) : undefined,
+    cement: inputSectors.indexOf("Cement") != -1 ? getSectorCement(undefinedProbability) : undefined,
   };
 }

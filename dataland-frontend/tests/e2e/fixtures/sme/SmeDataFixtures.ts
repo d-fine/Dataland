@@ -11,6 +11,21 @@ import {
 import { randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+
+/**
+ * Generates a set number of SME fixtures
+ * @param numFixtures the number of SME fixtures to generate
+ * @returns a set number of P2P fixtures
+ */
+export function generateSmeFixtures(numFixtures: number): FixtureData<SmeData>[] {
+  return generateFixtureDataset<SmeData>(
+    () => generateSmeData(),
+    numFixtures,
+    (dataSet: SmeData) => String(dataSet.financialYear)
+  );
+}
 
 /**
  * Generates a random SME dataset

@@ -1,6 +1,8 @@
 export interface KpiDataObject {
   subcategoryKey: string;
   subcategoryLabel: string;
+  categoryKey: string;
+  categoryLabel: string;
   kpiKey: string;
   kpiLabel: string;
   kpiDescription: string;

@@ -86,6 +86,11 @@ body {
     background: var(--blue-100);
   }
 
+  &.badge-purple {
+    color: var(--purple-700);
+    background: var(--purple-100);
+  }
+
   &.badge-gray {
     color: var(--gray-700);
     background: var(--gray-100);
@@ -235,4 +240,8 @@ body {
 
 .p-disabled, .p-component:disabled {
   opacity: .5;
+}
+
+.d-cursor-pointer {
+  cursor: pointer;
 }
