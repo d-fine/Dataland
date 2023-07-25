@@ -36,10 +36,10 @@ internal class DataControllerTest(
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
 
-    val testDataType = DataType.valueOf("sme")
+    val testDataType = DataType.valueOf("eutaxonomy-non-financials")
     val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
-    val someSmeData = testDataProvider.getEmptySmeDataset()
-    val someSmeDataAsString = objectMapper.writeValueAsString(someSmeData)!!
+    val someEuTaxoData = testDataProvider.getEuTaxonomyForNonFinancialsDataset()
+    val someEuTaxoDataAsString = objectMapper.writeValueAsString(someEuTaxoData)!!
 
     val testUserId = "testuser"
     val otherUserId = "otheruser"
@@ -56,14 +56,15 @@ internal class DataControllerTest(
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockDataManager: DataManager
     lateinit var mockDataMetaInformationManager: DataMetaInformationManager
-    lateinit var dataController: SmeDataController
+    lateinit var dataController: EuTaxonomyDataForNonFinancialsController
 
     @BeforeEach
     fun resetMocks() {
         mockSecurityContext = mock(SecurityContext::class.java)
         mockDataManager = mock(DataManager::class.java)
         mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
-        dataController = SmeDataController(mockDataManager, mockDataMetaInformationManager, objectMapper)
+        dataController =
+            EuTaxonomyDataForNonFinancialsController(mockDataManager, mockDataMetaInformationManager, objectMapper)
     }
 
     @Test
@@ -101,7 +102,7 @@ internal class DataControllerTest(
                 "",
                 0,
                 "",
-                someSmeDataAsString,
+                someEuTaxoDataAsString,
             ),
         )
     }
@@ -154,7 +155,7 @@ internal class DataControllerTest(
     private fun assertExpectedDatasetForDataId(dataId: String) {
         Assertions.assertEquals(
             dataController.getCompanyAssociatedData(dataId).body!!.data,
-            someSmeData,
+            someEuTaxoData,
         )
     }
 

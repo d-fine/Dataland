@@ -1,7 +1,7 @@
 <template>
   <div data-test="productFormElement">
     <InputTextFormField
-      name="productName"
+      name="name"
       label="Product Name"
       description="Please state the name of the important manufactured/distributed/offered product or service"
       :required="true"
