@@ -1,20 +1,29 @@
+let className = "col-9";
+
 <template>
   <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
     <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
   <!-- Select company reports -->
-  <div class="col-9 formFields">
+
+  <div v-if="isEuTaxonomy" class={className}>
     <h3 class="mt-0">Select company reports</h3>
     <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="fileUpload" />
   </div>
+  <div v-if="isEuTaxonomy" className = "col-9 formFields"> </div>
+  <div v-else class={className}>
+    <h3 class="mt-0">Select company reports</h3>
+    <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="fileUpload" />
+  </div>
+
   <FormKit name="referencedReports" type="group">
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div
         v-for="reportToUpload of reportsToUpload"
         :key="reportToUpload.file.name"
-        class="col-9 formFields"
+        class={className}
         data-test="report-to-upload-form"
       >
         <div :data-test="reportToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">

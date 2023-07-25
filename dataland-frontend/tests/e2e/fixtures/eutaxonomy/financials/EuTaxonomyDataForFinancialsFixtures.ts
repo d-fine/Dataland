@@ -80,7 +80,7 @@ export function generateEuTaxonomyDataForFinancialsWithTypes(
 ): EuTaxonomyDataForFinancials {
   const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields();
   const eligibilityKpis = Object.fromEntries(
-    financialServicesTypes.map((it) => [it, generateEligibilityKpis(assertDefined(returnBase.referencedReports))])
+    financialServicesTypes.map((it) => [it, generateEligibiilityKpis(assertDefined(returnBase.referencedReports))])
   );
   returnBase.financialServicesTypes = financialServicesTypes;
   returnBase.eligibilityKpis = eligibilityKpis;
