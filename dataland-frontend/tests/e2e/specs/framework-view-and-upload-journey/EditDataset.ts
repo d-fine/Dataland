@@ -105,6 +105,7 @@ describeIf(
             .find("input[type=file]")
             .selectFile(`../testing/data/documents/test-report.pdf`, { force: true, log: true });
         });
+      cy.wait(4000);
       submitButton.buttonAppearsEnabled();
       submitButton.clickButton();
       cy.get("h4").contains("Upload successfully executed.").should("exist");
