@@ -58,6 +58,7 @@
               <FormKit type="group" name="data" label="data">
                 <UploadReports
                   ref="UploadReports"
+                  :isEuTaxonomy="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports"
                   @referenceableReportNamesChanged="handleChangeOfReferenceableReportNames"
                 />

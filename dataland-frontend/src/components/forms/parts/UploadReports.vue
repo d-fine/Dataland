@@ -1,5 +1,5 @@
 <template>
-  <div class="col-3 p-3 topicLabel">
+  <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
     <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
@@ -84,6 +84,10 @@ export default defineComponent({
     referencedReportsForPrefill: {
       type: Object as () => { [key: string]: CompanyReport },
     },
+      isEuTaxonomy: {
+          type: Boolean,
+          default: false,
+      },
   },
   computed: {
     allReferenceableReportNames(): string[] {
