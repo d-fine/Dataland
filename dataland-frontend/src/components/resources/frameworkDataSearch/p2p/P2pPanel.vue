@@ -312,10 +312,6 @@ export default defineComponent({
 });
 </script>
 <style scoped lang="scss">
-.d-category {
-  height: 53.33px;
-  vertical-align: middle;
-}
 .d-table-style {
   font-size: 16px;
   text-align: left;

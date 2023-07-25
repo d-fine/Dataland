@@ -1,9 +1,5 @@
 <template>
-  <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading {{ humanizeString(dataType) }} Data...</p>
-    <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-  </div>
-  <div v-if="mapOfCategoryKeysToDataObjectArrays.size > 0 && !waitingForData">
+  <div v-show="mapOfCategoryKeysToDataObjectArrays.size > 0">
     <DataTable tableClass="onlyHeaders">
       <Column headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs"> </Column>
       <Column
@@ -49,124 +45,79 @@
 
 <script lang="ts">
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
-import { smeDataModel } from "@/components/resources/frameworkDataSearch/sme/SmeDataModel";
-import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
-    DataAndMetaInformationSmeData,
-    DataTypeEnum,
-    SmeData
+  DataAndMetaInformationPathwaysToParisData,
+  DataAndMetaInformationSmeData, PathwaysToParisData,
+  SmeData
 } from "@clients/backend";
-import Keycloak from "keycloak-js";
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
-  name: "SmePanel",
+  name: "ThreeLayerTable",
 
   components: { TwoLayerDataTable, DataTable, Column },
   data() {
     return {
       expandedGroup: [0],
-      dataTypeEnum: DataTypeEnum,
-      firstRender: true,
-      waitingForData: true,
       resultKpiData: null as KpiDataObject,
-      smeDataAndMetaInfo: [] as Array<DataAndMetaInformationSmeData>,
       arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
       mapOfCategoryKeysToDataObjectArrays: new Map() as Map<string, Array<KpiDataObject>>,
     };
   },
   props: {
-    ...PanelProps,
-    dataType: {
-      type: String,
+    dataModel: {
+      type: Array as () => Array<Category>,
       required: true,
     },
+    dataAndMetaInfo: {
+      type: Array as () => Array<DataAndMetaInformationSmeData | DataAndMetaInformationPathwaysToParisData>, // TODO generalize datatype to DataAndMetaInformation
+      required: true
+    }
   },
   watch: {
-    companyId() {
-      this.arrayOfReportingPeriodWithDataId = [];
-      this.fetchSmeData().catch((error) => console.log(error));
-    },
-    singleDataMetaInfoToDisplay() {
-      if (!this.firstRender) {
-        this.arrayOfReportingPeriodWithDataId = [];
-        this.fetchSmeData().catch((error) => console.log(error));
+    dataAndMetaInfo() {
+      if(this.dataAndMetaInfo.length > 0) {
+        this.convertDataToFrontendFormat()
       }
-    },
+    }
   },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
-  created() {
-    this.fetchSmeData().catch((error) => console.log(error));
-    this.firstRender = false;
-  },
-
+  emits: ["dataConverted"],
   methods: {
     humanizeString,
-    /**
-     * Fetches all accepted SME datasets for the current company and converts them to the required frontend format.
-     */
-    async fetchSmeData() {
-      try {
-        this.waitingForData = true;
-        const smeDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getSmeDataControllerApi();
-        if (this.singleDataMetaInfoToDisplay) {
-          const singleSmeData = (
-            await smeDataControllerApi.getCompanyAssociatedSmeData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data;
-          this.smeDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSmeData }];
-        } else {
-          this.smeDataAndMetaInfo = (
-            await smeDataControllerApi.getAllCompanySmeData(assertDefined(this.companyId))
-          ).data;
-        }
-        this.convertSmeDataToFrontendFormat();
-        this.waitingForData = false;
-      } catch (error) {
-        console.error(error);
-      }
-    },
-
     /**
      * Creates kpi data objects to pass them to the data table.
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
      * @param subcategory The sub category to which the kpi belongs
      * @param category category to which the kpi belongs to
-     * @param dataIdOfSmeDataset The value of the date kpi of an LkSG dataset
+     * @param dataId The value of the date kpi of an LkSG dataset
      */
     createKpiDataObjects(
       kpiKey: string,
       kpiValue: KpiValue,
       subcategory: Subcategory,
       category: Category,
-      dataIdOfSmeDataset: string
+      dataId: string
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
       const kpiData = {
-        categoryKey: category.name == "general" ? `_${category.name}` : category.name,
+        categoryKey: category.name == "general" ? `_${category.name}` : category.name, // TODO generalize
         categoryLabel: category.label ? category.label : category.name,
-        subcategoryKey: subcategory.name == "basicInformation" ? `_${subcategory.name}` : subcategory.name,
+        subcategoryKey: subcategory.name == "basicInformation" ? `_${subcategory.name}` : subcategory.name, // TODO generalize
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfSmeDataset]: (kpiField, kpiValue) },
+        content: { [dataId]: (kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -175,30 +126,31 @@ export default defineComponent({
       this.resultKpiData = kpiData;
     },
     /**
-     * Retrieves and converts the stored array of SME datasets in order to make it displayable in the frontend.
+     * Retrieves and converts the stored array of datasets in order to make it displayable in the frontend.
      */
-    convertSmeDataToFrontendFormat(): void {
-      if (this.smeDataAndMetaInfo.length) {
-        this.smeDataAndMetaInfo.forEach((currentSmeDataset: DataAndMetaInformationSmeData) => {
-          const dataIdOfSmeDataset = currentSmeDataset.metaInfo?.dataId ?? "";
-          const reportingPeriodOfSmeDataset = currentSmeDataset.metaInfo?.reportingPeriod ?? "";
+    convertDataToFrontendFormat(): void {
+      this.arrayOfReportingPeriodWithDataId = [];
+      if (this.dataAndMetaInfo.length) {
+        this.dataAndMetaInfo.forEach((currentDataset) => {
+          const dataId = currentDataset.metaInfo?.dataId ?? "";
+          const reportingPeriod = currentDataset.metaInfo?.reportingPeriod ?? "";
           this.arrayOfReportingPeriodWithDataId.push({
-            dataId: dataIdOfSmeDataset,
-            reportingPeriod: reportingPeriodOfSmeDataset,
+            dataId: dataId,
+            reportingPeriod: reportingPeriod,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(currentSmeDataset.data) as
+          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data) as
             | [string, object]
             | null) {
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
-            const frameworkCategoryData = assertDefined(smeDataModel.find((category) => category.name === categoryKey));
+            const frameworkCategoryData = assertDefined(this.dataModel.find((category) => category.name === categoryKey));
             this.iterateThroughSubcategories(
               categoryObject,
               categoryKey,
               frameworkCategoryData,
-              dataIdOfSmeDataset,
+              dataId,
               listOfDataObjects,
-              currentSmeDataset.data
+              currentDataset.data
             );
 
             this.mapOfCategoryKeysToDataObjectArrays.set(frameworkCategoryData.label, listOfDataObjects);
@@ -208,23 +160,24 @@ export default defineComponent({
       this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
         this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
       );
+      this.$emit("dataConverted");
     },
     /**
      * Iterates through all subcategories of a category
      * @param categoryObject the data object of the framework's category
      * @param categoryKey the key of the corresponding framework's category
      * @param frameworkCategoryData  the category object of the framework's category
-     * @param dataIdOfSmeDataset  the data ID of the SME dataset
+     * @param dataId  the ID of the dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param currentSmeDataset dataset for which the show if conditions should be checked
+     * @param currentDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategories(
       categoryObject,
       categoryKey,
       frameworkCategoryData: Category,
-      dataIdOfSmeDataset: string,
+      dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentSmeDataset: SmeData
+      currentDataset: SmeData | PathwaysToParisData
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
         string,
@@ -236,9 +189,9 @@ export default defineComponent({
           categoryKey,
           subCategoryKey,
           frameworkCategoryData,
-          dataIdOfSmeDataset,
+          dataId,
           listOfDataObjects,
-          currentSmeDataset
+          currentDataset
         );
       }
     },
@@ -248,18 +201,18 @@ export default defineComponent({
      * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
      * @param frameworkCategoryData the category object of the framework's category
-     * @param dataIdOfSmeDataset the data ID of the SME dataset
+     * @param dataId the ID of the dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param currentSmeDataset dataset for which the show if conditions should be checked
+     * @param currentDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategoryKpis(
       subCategoryObject: object,
       categoryKey,
       subCategoryKey: string,
       frameworkCategoryData: Category,
-      dataIdOfSmeDataset: string,
+      dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentSmeDataset: SmeData
+      currentDataset: SmeData | PathwaysToParisData
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
         let kpiValueToCreateDataObject = kpiValue as KpiValue;
@@ -271,36 +224,36 @@ export default defineComponent({
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
-        if (field.showIf(currentSmeDataset)) {
+        if (field.showIf(currentDataset)) {
           this.createKpiDataObjects(
             kpiKey as string,
             kpiValueToCreateDataObject,
             subcategory,
             frameworkCategoryData,
-            dataIdOfSmeDataset
+            dataId
           );
           listOfDataObjects.push(this.resultKpiData);
         }
       }
     },
     /**
-     * Checks whether a given category shall be displayed for at least one of the SME datasets to display
+     * Checks whether a given category shall be displayed for at least one of the datasets to display
      * @param categoryName The name of the category to check
      * @returns true if category shall be displayed, else false
      */
     shouldCategoryBeRendered(categoryName: string): boolean {
-      const category = assertDefined(smeDataModel.find((category) => category.label === categoryName));
-      return this.smeDataAndMetaInfo
+      const category = assertDefined(this.dataModel.find((category) => category.label === categoryName));
+      return this.dataAndMetaInfo
         .map((dataAndMetaInfo) => dataAndMetaInfo.data)
-        .some((singleSmeData) => category.showIf(singleSmeData));
+        .some((data) => category.showIf(data));
     },
     /**
-     * Retrieves the color for a given category from SME Data Model
+     * Retrieves the color for a given category from Data Model
      * @param categoryName The name of the category whose color is searched
      * @returns color as string
      */
     colorOfCategory(categoryName: string): string {
-      return assertDefined(smeDataModel.find((category) => category.label === categoryName)).color;
+      return assertDefined(this.dataModel.find((category) => category.label === categoryName)).color;
     },
     /**
      * Checks whether an element is expanded or not
@@ -322,10 +275,6 @@ export default defineComponent({
 });
 </script>
 <style scoped lang="scss">
-.d-category {
-  height: 53.33px;
-  vertical-align: middle;
-}
 .d-table-style {
   font-size: 16px;
   text-align: left;
