@@ -195,11 +195,11 @@ describe("Component test for LksgPanel", () => {
     const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i]),
       ).to.deep.equal([firstYearObject, secondYearObject]);
 
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i]),
       ).to.deep.equal([firstOtherObject, secondOtherObject]);
     }
     expect(
@@ -216,7 +216,7 @@ describe("Component test for LksgPanel", () => {
  */
 function swapAndSortReportingPeriodsToDisplayAsColumns(
   listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
-  shouldSwap = false
+  shouldSwap = false,
 ): ReportingPeriodOfDataSetWithId[] {
   let swappedList: ReportingPeriodOfDataSetWithId[];
   if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {

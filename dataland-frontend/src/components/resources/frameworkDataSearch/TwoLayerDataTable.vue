@@ -59,7 +59,7 @@
                   convertsListToReadableFormatAndShowsInModal(
                     slotProps.data.content[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey
+                    slotProps.data.kpiKey,
                   )
                 "
                 class="link"

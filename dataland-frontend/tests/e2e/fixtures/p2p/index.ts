@@ -15,6 +15,6 @@ export function exportFixturesP2p(): void {
   const preparedFixtureP2pDataForFinancials = generateP2pPreparedFixtures(probability, false);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithP2pPreparedFixtures.json",
-    JSON.stringify(preparedFixtureP2pDataForFinancials, null, "\t")
+    JSON.stringify(preparedFixtureP2pDataForFinancials, null, "\t"),
   );
 }
