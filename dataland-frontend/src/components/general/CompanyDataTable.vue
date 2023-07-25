@@ -11,12 +11,7 @@
       :expandableRowGroups="true"
       v-model:expandedRowGroups="expandedRowGroups"
     >
-      <Column
-        bodyClass="headers-bg"
-        headerClass="horizontal-headers-size"
-        field="kpiKey"
-        header="KPIs"
-      >
+      <Column bodyClass="headers-bg" headerClass="horizontal-headers-size" field="kpiKey" header="KPIs">
         <template #body="slotProps">
           <span class="table-left-label">{{
             kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : slotProps.data.kpiKey
