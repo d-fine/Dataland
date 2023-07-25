@@ -50,6 +50,7 @@
                           :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
+                          :evidenceDesired="field.evidenceDesired"
                           :data-test="field.name"
                           @documentUpdated="updateDocumentList"
                           :ref="field.name"
@@ -92,7 +93,7 @@
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import { defineComponent, inject, computed } from "vue";
+import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
@@ -119,6 +120,7 @@ import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsF
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
+import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
@@ -150,7 +152,7 @@ export default defineComponent({
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
-      DataPointFormField,
+    DataPointFormField,
     DateFormField,
     SingleSelectFormField,
     MultiSelectFormField,
@@ -162,6 +164,7 @@ export default defineComponent({
     ProductionSitesFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
+    UploadReports,
   },
   directives: {
     tooltip: Tooltip,
@@ -277,19 +280,18 @@ export default defineComponent({
         this.postSfdrDataProcessed = true;
       }
     },
-      /**
-       * updates the list of certificates that were uploaded in the corresponding formfields on change
-       * @param fieldName the name of the formfield as a key
-       * @param document the certificate as combined object of reference id and file content
-       */
-      updateDocumentList(fieldName: string, document: DocumentToUpload) {
-          if (document) {
-              this.documents.set(fieldName, document);
-          } else {
-              this.documents.delete(fieldName);
-          }
-      },
-
-}})
-;
+    /**
+     * updates the list of certificates that were uploaded in the corresponding formfields on change
+     * @param fieldName the name of the formfield as a key
+     * @param document the certificate as combined object of reference id and file content
+     */
+    updateDocumentList(fieldName: string, document: DocumentToUpload) {
+      if (document) {
+        this.documents.set(fieldName, document);
+      } else {
+        this.documents.delete(fieldName);
+      }
+    },
+  },
+});
 </script>

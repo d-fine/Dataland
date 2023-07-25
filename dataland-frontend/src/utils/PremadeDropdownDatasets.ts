@@ -22,8 +22,8 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
   switch (datasetIdentifier) {
     case DropdownDatasetIdentifier.CountryCodesIso2:
       return getCountryCodeDropdownDataset();
-    //case DropdownDatasetIdentifier.CountryCodesIso3:
-      //return getCountryCodeDropdownDataset();
+    case DropdownDatasetIdentifier.CountryCodesIso3:
+      return getCountryCodeDropdownDataset();
     case DropdownDatasetIdentifier.CurrencyCodes:
       return getCurrencyCodeDropdownDataset();
   }
