@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.model.sme.SmeData
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.File
 
@@ -27,8 +26,8 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
             .map { it.copy(identifiers = IdentifierType.values().associateWith { emptyList() }) }
     }
 
-    fun getEmptySmeDataset(): SmeData {
-        return objectMapper.readValue("{}", SmeData::class.java)
+    fun getEuTaxonomyForNonFinancialsDataset(): EuTaxonomyDataForNonFinancials {
+        return testCompanyInformationWithEuTaxonomyData.first().t
     }
 
     fun getEmptyStoredCompanyEntity(): StoredCompanyEntity {
