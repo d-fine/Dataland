@@ -47,12 +47,19 @@
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
+  DataAndMetaInformationEuTaxonomyDataForFinancials,
+  DataAndMetaInformationLksgData,
   DataAndMetaInformationPathwaysToParisData,
-  DataAndMetaInformationSmeData, PathwaysToParisData,
-  SmeData
+  DataAndMetaInformationSfdrData,
+  DataAndMetaInformationSmeData,
+  EuTaxonomyDataForFinancials,
+  LksgData,
+  PathwaysToParisData,
+  SfdrData,
+  SmeData,
 } from "@clients/backend";
 import { defineComponent } from "vue";
 import Column from "primevue/column";
@@ -70,6 +77,8 @@ export default defineComponent({
       arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
       mapOfCategoryKeysToDataObjectArrays: new Map() as Map<string, Array<KpiDataObject>>,
+      importantCategoryKeys: ["general"],
+      importantSubcategoryKeys: ["general", "basicInformation", "masterData"],
     };
   },
   props: {
@@ -78,20 +87,23 @@ export default defineComponent({
       required: true,
     },
     dataAndMetaInfo: {
-      type: Array as () => Array<DataAndMetaInformationSmeData | DataAndMetaInformationPathwaysToParisData>, // TODO generalize datatype to DataAndMetaInformation
-      required: true
-    }
+      type: Array as () => Array<DataAndMetaInformation>,
+      required: true,
+    },
+    formatValueForDisplay: {
+      type: Function as () => (field: Field, value: KpiValue) => KpiValue,
+      default: (field: Field, value: KpiValue): KpiValue => value,
+    },
   },
   watch: {
     dataAndMetaInfo() {
-      if(this.dataAndMetaInfo.length > 0) {
-        this.convertDataToFrontendFormat()
+      if (this.dataAndMetaInfo.length > 0) {
+        this.convertDataToFrontendFormat();
       }
-    }
+    },
   },
   emits: ["dataConverted"],
   methods: {
-    humanizeString,
     /**
      * Creates kpi data objects to pass them to the data table.
      * @param kpiKey The field name of a kpi
@@ -109,15 +121,17 @@ export default defineComponent({
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
       const kpiData = {
-        categoryKey: category.name == "general" ? `_${category.name}` : category.name, // TODO generalize
+        categoryKey: this.importantCategoryKeys.includes(category.name) ? `_${category.name}` : category.name,
         categoryLabel: category.label ? category.label : category.name,
-        subcategoryKey: subcategory.name == "basicInformation" ? `_${subcategory.name}` : subcategory.name, // TODO generalize
+        subcategoryKey: this.importantSubcategoryKeys.includes(subcategory.name)
+          ? `_${subcategory.name}`
+          : subcategory.name,
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataId]: (kpiField, kpiValue) },
+        content: { [dataId]: this.formatValueForDisplay(kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -138,12 +152,12 @@ export default defineComponent({
             dataId: dataId,
             reportingPeriod: reportingPeriod,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data) as
-            | [string, object]
-            | null) {
+          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
-            const frameworkCategoryData = assertDefined(this.dataModel.find((category) => category.name === categoryKey));
+            const frameworkCategoryData = assertDefined(
+              this.dataModel.find((category) => category.name === categoryKey)
+            );
             this.iterateThroughSubcategories(
               categoryObject,
               categoryKey,
@@ -177,7 +191,7 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: SmeData | PathwaysToParisData
+      currentDataset: FrameworkData
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
         string,
@@ -212,7 +226,7 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: SmeData | PathwaysToParisData
+      currentDataset: FrameworkData
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
         let kpiValueToCreateDataObject = kpiValue as KpiValue;
@@ -243,9 +257,7 @@ export default defineComponent({
      */
     shouldCategoryBeRendered(categoryName: string): boolean {
       const category = assertDefined(this.dataModel.find((category) => category.label === categoryName));
-      return this.dataAndMetaInfo
-        .map((dataAndMetaInfo) => dataAndMetaInfo.data)
-        .some((data) => category.showIf(data));
+      return this.dataAndMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.data).some((data) => category.showIf(data));
     },
     /**
      * Retrieves the color for a given category from Data Model
@@ -273,6 +285,21 @@ export default defineComponent({
     },
   },
 });
+
+type FrameworkData =
+  | EuTaxonomyDataForFinancials
+  | EuTaxonomyDataForFinancials
+  | LksgData
+  | SfdrData
+  | SmeData
+  | PathwaysToParisData;
+type DataAndMetaInformation =
+  | DataAndMetaInformationEuTaxonomyDataForFinancials
+  | DataAndMetaInformationEuTaxonomyDataForFinancials
+  | DataAndMetaInformationLksgData
+  | DataAndMetaInformationSfdrData
+  | DataAndMetaInformationSmeData
+  | DataAndMetaInformationPathwaysToParisData;
 </script>
 <style scoped lang="scss">
 .d-table-style {

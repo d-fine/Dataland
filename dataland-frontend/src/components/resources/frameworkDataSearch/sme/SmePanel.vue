@@ -4,7 +4,12 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-show="!waitingForData">
-    <ThreeLayerTable :data-model="smeDataModel" :data-and-meta-info="smeDataAndMetaInfo" @data-converted="handleFinishedDataConversion" />
+    <ThreeLayerTable
+      :data-model="smeDataModel"
+      :data-and-meta-info="smeDataAndMetaInfo"
+      @data-converted="handleFinishedDataConversion"
+      :format-value-for-display="formatValueForDisplay"
+    />
   </div>
 </template>
 
@@ -13,21 +18,18 @@ import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComp
 import { smeDataModel } from "@/components/resources/frameworkDataSearch/sme/SmeDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {
-    DataAndMetaInformationSmeData,
-    DataTypeEnum,
-    SmeData
-} from "@clients/backend";
+import { DataAndMetaInformationSmeData, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
+import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { Field } from "@/utils/GenericFrameworkTypes";
 
 export default defineComponent({
   name: "SmePanel",
 
-  components: { ThreeLayerTable, Column },
+  components: { ThreeLayerTable },
   data() {
     return {
       DataTypeEnum,
@@ -88,6 +90,22 @@ export default defineComponent({
      */
     handleFinishedDataConversion() {
       this.waitingForData = false;
+    },
+    /**
+     * Formats KPI values for display
+     * @param field the considered KPI field
+     * @param value the value to be formatted
+     * @returns the formatted value
+     */
+    formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
+      if (field.name == "addressOfHeadquarters") {
+        return Object.values(value).join(", ");
+      } else if (field.name == "percentageOfInvestmentsInEnhancingEnergyEfficiency") {
+        return humanizeString(value as string);
+      } else if (field.name == "energyConsumptionCoveredByOwnRenewablePowerGeneration") {
+        return humanizeString(value as string);
+      }
+      return value;
     },
   },
 });

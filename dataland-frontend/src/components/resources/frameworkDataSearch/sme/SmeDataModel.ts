@@ -165,7 +165,7 @@ export const smeDataModel = [
               },
               {
                 label: "> 25%",
-                value: "> 25%",
+                value: "> 25%", // TODO the actual values are wrong
               },
             ],
             required: false,
@@ -240,7 +240,7 @@ export const smeDataModel = [
             options: [
               {
                 label: "< 25%",
-                value: "< 25%",
+                value: "< 25%", // TODO adapt DD table
               },
               {
                 label: "25-50%",
