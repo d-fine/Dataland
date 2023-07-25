@@ -101,5 +101,13 @@ describe("Component test for DatasetOverviewTable", () => {
     cy.get("input").type(someSearchStringThatMatchesNoCompany);
     cy.get("td").contains(nameOfCompanyAlpha).should("not.exist");
     cy.get("td").contains(nameOfCompanyBeta).should("not.exist");
+    cy.get("input").clear();
+    cy.get("input").type(nameOfCompanyAlpha.toLowerCase());
+    cy.get("td").contains(nameOfCompanyAlpha).should("exist");
+    cy.get("td").contains(nameOfCompanyBeta).should("not.exist");
+    cy.get("input").clear();
+    cy.get("input").type(nameOfCompanyBeta.toUpperCase());
+    cy.get("td").contains(nameOfCompanyAlpha).should("not.exist");
+    cy.get("td").contains(nameOfCompanyBeta).should("exist");
   });
 });

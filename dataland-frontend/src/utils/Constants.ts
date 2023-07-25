@@ -21,12 +21,12 @@ export const MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY =
 
 // - Available frameworks settings
 export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = Object.values(DataTypeEnum).filter(
-  (frameworkName) => [DataTypeEnum.Sme as string, DataTypeEnum.P2p as string].indexOf(frameworkName) === -1,
+  (frameworkName) => [DataTypeEnum.Sme as string].indexOf(frameworkName) === -1
 ) as Array<DataTypeEnum>;
 
 export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = Object.values(DataTypeEnum).filter(
   (frameworkName) =>
-    [DataTypeEnum.Sfdr as string, DataTypeEnum.Sme as string, DataTypeEnum.P2p as string].indexOf(frameworkName) === -1,
+    [DataTypeEnum.Sfdr as string, DataTypeEnum.Sme as string, DataTypeEnum.P2p as string].indexOf(frameworkName) === -1
 ) as Array<DataTypeEnum>;
 
 // - Keycloak and session management related settings
