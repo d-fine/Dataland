@@ -106,26 +106,11 @@ export default defineComponent({
     currentQualityValue: "",
   }),
   props: {
-    name: {
-      type: String,
-    },
     label: {
       type: String,
     },
     description: {
       type: String,
-    },
-    kpiInfoMappings: {
-      type: Object,
-      default: null,
-    },
-    kpiNameMappings: {
-      type: Object,
-      default: null,
-    },
-    valueType: {
-      type: String as () => "percent" | "number",
-      default: "percent",
     },
     reportsName: {
       type: Array,

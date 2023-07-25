@@ -37,7 +37,7 @@ export const sfdrDataModel = [
             description:
               "Does your company have a current annual report, sustainability report, integrated report or ESEF report? If yes, please share the information with us.",
             unit: "",
-            component: "CompanyReportFormField",
+            component: "UploadReports",
             required: false,
             showIf: (): boolean => true,
           },
