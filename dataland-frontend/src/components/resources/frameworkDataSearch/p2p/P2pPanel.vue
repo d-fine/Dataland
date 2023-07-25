@@ -5,7 +5,7 @@
   </div>
   <div v-if="mapOfCategoryKeysToDataObjectArrays.size > 0 && !waitingForData">
     <DataTable tableClass="onlyHeaders">
-      <Column headerClass="horizontal-headers-size" header="KPIs"> </Column>
+      <Column headerClass="horizontal-headers-size first-horizontal-headers-size" header="KPIs"> </Column>
       <Column
         v-for="reportingPeriodWithDataId of arrayOfReportingPeriodWithDataId"
         headerClass="horizontal-headers-size"

@@ -13,7 +13,6 @@
     >
       <Column
         bodyClass="headers-bg"
-        headerStyle="width: 30vw;"
         headerClass="horizontal-headers-size"
         field="kpiKey"
         header="KPIs"
@@ -36,7 +35,6 @@
       <Column
         v-for="reportingPeriod of reportingPeriodsOfDataSets"
         headerClass="horizontal-headers-size"
-        headerStyle="width: 30vw;"
         :field="reportingPeriod.dataId"
         :header="reportingPeriod.reportingPeriod"
         :key="reportingPeriod.dataId"

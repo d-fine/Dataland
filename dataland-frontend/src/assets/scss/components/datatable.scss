@@ -2,11 +2,17 @@
   border-radius: 0;
   background: $table-background-color;
   color: $main-text-color;
+  .horizontal-headers-size {
+    &:first-of-type {
+      width: 30vw;
+    }
+  }
   .onlyHeaders {
-    .horizontal-headers-size {
-      &:first-of-type {
-        width: 30vw;
-      }
+    tr {
+      display:flex;
+    }
+    tr th:not(.first-horizontal-headers-size) {
+      flex: 1;
     }
     .p-datatable-tbody {
       display: none;
@@ -56,10 +62,6 @@
     background-color: $tables-headers-bg;
     display: table-cell;
     width: 30vw;
-  }
-  .horizontal-headers-size {
-    min-width: 100px;
-    max-width: 500px;
   }
   .auto-headers-size {
     width: auto;
