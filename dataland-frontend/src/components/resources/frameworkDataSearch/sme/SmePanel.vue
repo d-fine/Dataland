@@ -1,6 +1,6 @@
 <template>
   <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading {{ humanizeString(dataTypeEnum.P2p) }} Data...</p>
+    <p class="font-medium text-xl">Loading {{ humanizeString(dataTypeEnum.Sme) }} Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="mapOfCategoryKeysToDataObjectArrays.size > 0 && !waitingForData">
@@ -51,12 +51,16 @@
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
-import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
+import { smeDataModel } from "@/components/resources/frameworkDataSearch/sme/SmeDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum, PathwaysToParisData } from "@clients/backend";
+import {
+    DataAndMetaInformationSmeData,
+    DataTypeEnum,
+    SmeData
+} from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import Column from "primevue/column";
@@ -64,7 +68,7 @@ import DataTable from "primevue/datatable";
 import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
-  name: "P2pPanel",
+  name: "SmePanel",
 
   components: { TwoLayerDataTable, DataTable, Column },
   data() {
@@ -74,7 +78,7 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       resultKpiData: null as KpiDataObject,
-      p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
+      smeDataAndMetaInfo: [] as Array<DataAndMetaInformationSmeData>,
       arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
       mapOfCategoryKeysToDataObjectArrays: new Map() as Map<string, Array<KpiDataObject>>,
@@ -84,12 +88,12 @@ export default defineComponent({
   watch: {
     companyId() {
       this.arrayOfReportingPeriodWithDataId = [];
-      this.fetchP2pData().catch((error) => console.log(error));
+      this.fetchSmeData().catch((error) => console.log(error));
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
         this.arrayOfReportingPeriodWithDataId = [];
-        this.fetchP2pData().catch((error) => console.log(error));
+        this.fetchSmeData().catch((error) => console.log(error));
       }
     },
   },
@@ -99,32 +103,32 @@ export default defineComponent({
     };
   },
   created() {
-    this.fetchP2pData().catch((error) => console.log(error));
+    this.fetchSmeData().catch((error) => console.log(error));
     this.firstRender = false;
   },
 
   methods: {
     humanizeString,
     /**
-     * Fetches all accepted P2P datasets for the current company and converts them to the required frontend format.
+     * Fetches all accepted SME datasets for the current company and converts them to the required frontend format.
      */
-    async fetchP2pData() {
+    async fetchSmeData() {
       try {
         this.waitingForData = true;
-        const p2pDataControllerApi = await new ApiClientProvider(
+        const smeDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
-        ).getP2pDataControllerApi();
+        ).getSmeDataControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
-          const singleP2pData = (
-            await p2pDataControllerApi.getCompanyAssociatedP2pData(this.singleDataMetaInfoToDisplay.dataId)
+          const singleSmeData = (
+            await smeDataControllerApi.getCompanyAssociatedSmeData(this.singleDataMetaInfoToDisplay.dataId)
           ).data.data;
-          this.p2pDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleP2pData }];
+          this.smeDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSmeData }];
         } else {
-          this.p2pDataAndMetaInfo = (
-            await p2pDataControllerApi.getAllCompanyP2pData(assertDefined(this.companyId))
+          this.smeDataAndMetaInfo = (
+            await smeDataControllerApi.getAllCompanySmeData(assertDefined(this.companyId))
           ).data;
         }
-        this.convertP2pDataToFrontendFormat();
+        this.convertSmeDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -137,26 +141,26 @@ export default defineComponent({
      * @param kpiValue The corresponding value to the kpiKey
      * @param subcategory The sub category to which the kpi belongs
      * @param category category to which the kpi belongs to
-     * @param dataIdOfP2pDataset The value of the date kpi of an LkSG dataset
+     * @param dataIdOfSmeDataset The value of the date kpi of an LkSG dataset
      */
     createKpiDataObjects(
       kpiKey: string,
       kpiValue: KpiValue,
       subcategory: Subcategory,
       category: Category,
-      dataIdOfP2pDataset: string
+      dataIdOfSmeDataset: string
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
       const kpiData = {
         categoryKey: category.name == "general" ? `_${category.name}` : category.name,
         categoryLabel: category.label ? category.label : category.name,
-        subcategoryKey: subcategory.name == "general" ? `_${subcategory.name}` : subcategory.name,
+        subcategoryKey: subcategory.name == "basicInformation" ? `_${subcategory.name}` : subcategory.name,
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfP2pDataset]: (kpiField, kpiValue) },
+        content: { [dataIdOfSmeDataset]: (kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -165,30 +169,30 @@ export default defineComponent({
       this.resultKpiData = kpiData;
     },
     /**
-     * Retrieves and converts the stored array of P2P datasets in order to make it displayable in the frontend.
+     * Retrieves and converts the stored array of SME datasets in order to make it displayable in the frontend.
      */
-    convertP2pDataToFrontendFormat(): void {
-      if (this.p2pDataAndMetaInfo.length) {
-        this.p2pDataAndMetaInfo.forEach((currentP2pDataset: DataAndMetaInformationPathwaysToParisData) => {
-          const dataIdOfP2pDataset = currentP2pDataset.metaInfo?.dataId ?? "";
-          const reportingPeriodOfP2pDataset = currentP2pDataset.metaInfo?.reportingPeriod ?? "";
+    convertSmeDataToFrontendFormat(): void {
+      if (this.smeDataAndMetaInfo.length) {
+        this.smeDataAndMetaInfo.forEach((currentSmeDataset: DataAndMetaInformationSmeData) => {
+          const dataIdOfSmeDataset = currentSmeDataset.metaInfo?.dataId ?? "";
+          const reportingPeriodOfSmeDataset = currentSmeDataset.metaInfo?.reportingPeriod ?? "";
           this.arrayOfReportingPeriodWithDataId.push({
-            dataId: dataIdOfP2pDataset,
-            reportingPeriod: reportingPeriodOfP2pDataset,
+            dataId: dataIdOfSmeDataset,
+            reportingPeriod: reportingPeriodOfSmeDataset,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(currentP2pDataset.data) as
+          for (const [categoryKey, categoryObject] of Object.entries(currentSmeDataset.data) as
             | [string, object]
             | null) {
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
-            const frameworkCategoryData = assertDefined(p2pDataModel.find((category) => category.name === categoryKey));
+            const frameworkCategoryData = assertDefined(smeDataModel.find((category) => category.name === categoryKey));
             this.iterateThroughSubcategories(
               categoryObject,
               categoryKey,
               frameworkCategoryData,
-              dataIdOfP2pDataset,
+              dataIdOfSmeDataset,
               listOfDataObjects,
-              currentP2pDataset.data
+              currentSmeDataset.data
             );
 
             this.mapOfCategoryKeysToDataObjectArrays.set(frameworkCategoryData.label, listOfDataObjects);
@@ -204,17 +208,17 @@ export default defineComponent({
      * @param categoryObject the data object of the framework's category
      * @param categoryKey the key of the corresponding framework's category
      * @param frameworkCategoryData  the category object of the framework's category
-     * @param dataIdOfP2pDataset  the data ID of the P2P dataset
+     * @param dataIdOfSmeDataset  the data ID of the SME dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param currentP2pDataset dataset for which the show if conditions should be checked
+     * @param currentSmeDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategories(
       categoryObject,
       categoryKey,
       frameworkCategoryData: Category,
-      dataIdOfP2pDataset: string,
+      dataIdOfSmeDataset: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentP2pDataset: PathwaysToParisData
+      currentSmeDataset: SmeData
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
         string,
@@ -226,9 +230,9 @@ export default defineComponent({
           categoryKey,
           subCategoryKey,
           frameworkCategoryData,
-          dataIdOfP2pDataset,
+          dataIdOfSmeDataset,
           listOfDataObjects,
-          currentP2pDataset
+          currentSmeDataset
         );
       }
     },
@@ -238,18 +242,18 @@ export default defineComponent({
      * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
      * @param frameworkCategoryData the category object of the framework's category
-     * @param dataIdOfP2pDataset the data ID of the P2P dataset
+     * @param dataIdOfSmeDataset the data ID of the SME dataset
      * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param currentP2pDataset dataset for which the show if conditions should be checked
+     * @param currentSmeDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategoryKpis(
       subCategoryObject: object,
       categoryKey,
       subCategoryKey: string,
       frameworkCategoryData: Category,
-      dataIdOfP2pDataset: string,
+      dataIdOfSmeDataset: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentP2pDataset: PathwaysToParisData
+      currentSmeDataset: SmeData
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
         let kpiValueToCreateDataObject = kpiValue as KpiValue;
@@ -261,36 +265,36 @@ export default defineComponent({
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
-        if (field.showIf(currentP2pDataset)) {
+        if (field.showIf(currentSmeDataset)) {
           this.createKpiDataObjects(
             kpiKey as string,
             kpiValueToCreateDataObject,
             subcategory,
             frameworkCategoryData,
-            dataIdOfP2pDataset
+            dataIdOfSmeDataset
           );
           listOfDataObjects.push(this.resultKpiData);
         }
       }
     },
     /**
-     * Checks whether a given category shall be displayed for at least one of the P2P datasets to display
+     * Checks whether a given category shall be displayed for at least one of the SME datasets to display
      * @param categoryName The name of the category to check
      * @returns true if category shall be displayed, else false
      */
     shouldCategoryBeRendered(categoryName: string): boolean {
-      const category = assertDefined(p2pDataModel.find((category) => category.label === categoryName));
-      return this.p2pDataAndMetaInfo
+      const category = assertDefined(smeDataModel.find((category) => category.label === categoryName));
+      return this.smeDataAndMetaInfo
         .map((dataAndMetaInfo) => dataAndMetaInfo.data)
-        .some((singleP2pData) => category.showIf(singleP2pData));
+        .some((singleSmeData) => category.showIf(singleSmeData));
     },
     /**
-     * Retrieves the color for a given category from P2P Data Model
+     * Retrieves the color for a given category from SME Data Model
      * @param categoryName The name of the category whose color is searched
      * @returns color as string
      */
     colorOfCategory(categoryName: string): string {
-      return assertDefined(p2pDataModel.find((category) => category.label === categoryName)).color;
+      return assertDefined(smeDataModel.find((category) => category.label === categoryName)).color;
     },
     /**
      * Checks whether an element is expanded or not
