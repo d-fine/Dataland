@@ -31,7 +31,7 @@ import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataP
 export function generateP2pFixtures(
   numFixtures: number,
   undefinedProbability = 0.5,
-  toggleRandomSectors = true
+  toggleRandomSectors = true,
 ): FixtureData<PathwaysToParisData>[] {
   return generateFixtureDataset<PathwaysToParisData>(
     () => generateP2pData(undefinedProbability, toggleRandomSectors),

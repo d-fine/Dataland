@@ -14,6 +14,6 @@ export function exportFixturesSme(): void {
   const preparedSmeFixtureData = generateSmePreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithSmePreparedFixtures.json",
-    JSON.stringify(preparedSmeFixtureData, null, "\t")
+    JSON.stringify(preparedSmeFixtureData, null, "\t"),
   );
 }

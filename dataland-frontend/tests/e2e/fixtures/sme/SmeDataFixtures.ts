@@ -23,7 +23,7 @@ export function generateSmeFixtures(numFixtures: number): FixtureData<SmeData>[]
   return generateFixtureDataset<SmeData>(
     () => generateSmeData(),
     numFixtures,
-    (dataSet: SmeData) => String(dataSet.financialYear)
+    (dataSet: SmeData) => String(dataSet.financialYear),
   );
 }
 

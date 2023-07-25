@@ -137,7 +137,7 @@ export default defineComponent({
         });
       }
       this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
-        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
+        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[],
       );
     },
     /**

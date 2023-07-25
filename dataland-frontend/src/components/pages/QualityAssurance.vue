@@ -149,7 +149,7 @@ export default defineComponent({
         const firstDatasetOnPageIndex = this.currentPage * this.datasetsPerPage;
         const dataIdsOnPage = this.dataIdList.slice(
           firstDatasetOnPageIndex,
-          firstDatasetOnPageIndex + this.datasetsPerPage
+          firstDatasetOnPageIndex + this.datasetsPerPage,
         );
         for (const dataId of dataIdsOnPage) {
           dataOfPage.push(await this.addDatasetAssociatedInformationToDisplayList(dataId));
@@ -165,13 +165,13 @@ export default defineComponent({
      */
     async gatherControllerApis() {
       this.qaServiceControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getQaControllerApi();
       this.metaDataInformationControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getMetaDataControllerApi();
       this.companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getCompanyDataControllerApi();
     },
     /**
@@ -211,46 +211,46 @@ export default defineComponent({
         this.dataId = dataId;
         if (filteredData === DataTypeEnum.EutaxonomyNonFinancials) {
           const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            assertDefined(this.getKeycloakPromise)(),
           ).getEuTaxonomyDataForNonFinancialsControllerApi();
           const companyAssociatedDataResponse =
             await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-              assertDefined(dataId)
+              assertDefined(dataId),
             );
           this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
         } else if (filteredData === DataTypeEnum.EutaxonomyFinancials) {
           const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            assertDefined(this.getKeycloakPromise)(),
           ).getEuTaxonomyDataForFinancialsControllerApi();
           const companyAssociatedDataResponse =
             await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-              assertDefined(dataId)
+              assertDefined(dataId),
             );
           this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
         } else if (filteredData === DataTypeEnum.Lksg) {
           const lksgDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            assertDefined(this.getKeycloakPromise)(),
           ).getLksgDataControllerApi();
           const companyAssociatedDataResponse = await lksgDataControllerApi.getCompanyAssociatedLksgData(
-            assertDefined(dataId)
+            assertDefined(dataId),
           );
           this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
         } else if (filteredData === DataTypeEnum.Sfdr) {
           const sfdrDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            assertDefined(this.getKeycloakPromise)(),
           ).getSfdrDataControllerApi();
 
           const companyAssociatedDataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
           this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
         } else if (filteredData === DataTypeEnum.P2p) {
           const p2pDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            assertDefined(this.getKeycloakPromise)(),
           ).getP2pDataControllerApi();
           const companyAssociatedDataResponse = await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId);
           this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
         } else if (filteredData === DataTypeEnum.Sme) {
           const smeDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            assertDefined(this.getKeycloakPromise)(),
           ).getSmeDataControllerApi();
           const companyAssociatedDataResponse = await smeDataControllerApi.getCompanyAssociatedSmeData(dataId);
           this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
