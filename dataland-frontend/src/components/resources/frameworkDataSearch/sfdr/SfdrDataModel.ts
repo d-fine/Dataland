@@ -12,14 +12,22 @@ export const sfdrDataModel = [
         label: "General",
         fields: [
           {
-            name: "fiscalYear",
-            label: "Fiscal Year",
-            description: "Fiscal Year (Deviation/ No Deviation)",
-            unit: "",
-            component: "InputTextFormField",
-            required: true,
-            showIf: (): boolean => true,
-            validation: "required",
+            name : "fiscalYear",
+            label : "Fiscal Year",
+            description : "Does the fiscal year deviate from the calender year?",
+            unit : "",
+            component : "RadioButtonsFormField",
+            evidenceDesired : false,
+            options : [ {
+              label : "Deviation",
+              value : "Deviation"
+            }, {
+              label : "No Deviation",
+              value : "NoDeviation"
+            } ],
+            required : true,
+            showIf : (): boolean => true,
+            validation : "required"
           },
           {
             name: "fiscalYearEnd",
