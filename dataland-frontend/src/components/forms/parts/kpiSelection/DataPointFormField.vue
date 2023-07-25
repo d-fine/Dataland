@@ -7,7 +7,7 @@
         <UploadFormHeader :label="label" :description="description ?? ''" />
         <FormKit
           type="number"
-          name="value"
+          :name="name"
           :description="description ?? ''"
           validation-label=""
           v-model="currentValue"

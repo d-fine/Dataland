@@ -1,49 +1,21 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
-import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
-import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import java.time.LocalDate
+import org.dataland.datalandbackend.model.enums.commons.YesNoNa
+import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.CompanyReport
 
 /**
  * --- API model ---
- * Fields of the SFDR questionnaire regarding the impact topic "General"
+ * Fields of the subcategory "General" belonging to the category "Social" of the sfdr framework.
  */
-data class SfdrGeneral(
-    val fiscalYear: FiscalYearDeviation?,
+data class SfdrSocialGeneral(
+    val fiscalYear: String? = null,
 
-    val fiscalYearEnd: LocalDate?,
+    @field:JsonProperty(required = true)
+    val fiscalYearEnd: LocalDate,
 
-    val annualReport: String?,
+    val reports: Map<String, CompanyReport>?,
 
-    val groupLevelAnnualReport: YesNoNa?,
-
-    val annualReportDate: LocalDate?,
-
-    val annualReportCurrency: String?,
-
-    val sustainabilityReport: String?,
-
-    val groupLevelSustainabilityReport: YesNoNa?,
-
-    val sustainabilityReportDate: LocalDate?,
-
-    val sustainabilityReportCurrency: String?,
-
-    val integratedReport: String?,
-
-    val groupLevelIntegratedReport: YesNoNa?,
-
-    val integratedReportDate: LocalDate?,
-
-    val integratedReportCurrency: String?,
-
-    val esefReport: String?,
-
-    val groupLevelEsefReport: YesNoNa?,
-
-    val esefReportDate: LocalDate?,
-
-    val esefReportCurrency: String?,
-
-    val scopeOfEntities: YesNoNa?,
+    val scopeOfEntities: YesNoNa? = null,
 )

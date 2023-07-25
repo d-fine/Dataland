@@ -2865,6 +2865,26 @@
           }
         }
       },
+      "DataPointString": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
       "DataPointYesNo": {
         "required": [
           "quality"
@@ -2885,13 +2905,6 @@
           }
         }
       },
-      "FiscalYearDeviation": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
-      },
       "QualityOptions": {
         "type": "string",
         "enum": [
@@ -2902,21 +2915,44 @@
           "NA"
         ]
       },
-      "SfdrAnticorruptionAndAntibribery": {
+      "SfdrData": {
+        "required": [
+          "social"
+        ],
         "type": "object",
         "properties": {
-          "reportedCasesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+          "social": {
+            "$ref": "#/components/schemas/SfdrSocial"
           },
-          "reportedConvictionsOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "reportedFinesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+          "environmental": {
+            "$ref": "#/components/schemas/SfdrEnvironmental"
           }
         }
       },
-      "SfdrBiodiversity": {
+      "SfdrEnvironmental": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalGreenhouseGasEmissions"
+          },
+          "energyPerformance": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalEnergyPerformance"
+          },
+          "biodiversity": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalBiodiversity"
+          },
+          "water": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalWater"
+          },
+          "waste": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalWaste"
+          },
+          "emissions": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalEmissions"
+          }
+        }
+      },
+      "SfdrEnvironmentalBiodiversity": {
         "type": "object",
         "properties": {
           "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
@@ -2930,24 +2966,7 @@
           }
         }
       },
-      "SfdrData": {
-        "type": "object",
-        "properties": {
-          "social": {
-            "$ref": "#/components/schemas/SfdrSocial"
-          },
-          "environmental": {
-            "$ref": "#/components/schemas/SfdrEnvironmental"
-          },
-          "referencedReports": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            }
-          }
-        }
-      },
-      "SfdrEmissions": {
+      "SfdrEnvironmentalEmissions": {
         "type": "object",
         "properties": {
           "inorganicPollutants": {
@@ -2964,7 +2983,7 @@
           }
         }
       },
-      "SfdrEnergyPerformance": {
+      "SfdrEnvironmentalEnergyPerformance": {
         "type": "object",
         "properties": {
           "renewableEnergyProduction": {
@@ -3032,105 +3051,7 @@
           }
         }
       },
-      "SfdrEnvironmental": {
-        "type": "object",
-        "properties": {
-          "greenhouseGasEmissions": {
-            "$ref": "#/components/schemas/SfdrGreenhouseGasEmissions"
-          },
-          "energyPerformance": {
-            "$ref": "#/components/schemas/SfdrEnergyPerformance"
-          },
-          "biodiversity": {
-            "$ref": "#/components/schemas/SfdrBiodiversity"
-          },
-          "water": {
-            "$ref": "#/components/schemas/SfdrWater"
-          },
-          "waste": {
-            "$ref": "#/components/schemas/SfdrWaste"
-          },
-          "emissions": {
-            "$ref": "#/components/schemas/SfdrEmissions"
-          }
-        }
-      },
-      "SfdrGeneral": {
-        "type": "object",
-        "properties": {
-          "fiscalYear": {
-            "$ref": "#/components/schemas/FiscalYearDeviation"
-          },
-          "fiscalYearEnd": {
-            "type": "string",
-            "format": "date"
-          },
-          "annualReport": {
-            "type": "string"
-          },
-          "groupLevelAnnualReport": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "annualReportDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "annualReportCurrency": {
-            "type": "string"
-          },
-          "sustainabilityReport": {
-            "type": "string"
-          },
-          "groupLevelSustainabilityReport": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "sustainabilityReportDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "sustainabilityReportCurrency": {
-            "type": "string"
-          },
-          "integratedReport": {
-            "type": "string"
-          },
-          "groupLevelIntegratedReport": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "integratedReportDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "integratedReportCurrency": {
-            "type": "string"
-          },
-          "esefReport": {
-            "type": "string"
-          },
-          "groupLevelEsefReport": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "esefReportDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "esefReportCurrency": {
-            "type": "string"
-          },
-          "scopeOfEntities": {
-            "$ref": "#/components/schemas/YesNoNa"
-          }
-        }
-      },
-      "SfdrGreenSecurities": {
-        "type": "object",
-        "properties": {
-          "securitiesNotCertifiedAsGreen": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          }
-        }
-      },
-      "SfdrGreenhouseGasEmissions": {
+      "SfdrEnvironmentalGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
           "scope1": {
@@ -3153,7 +3074,129 @@
           }
         }
       },
-      "SfdrHumanRights": {
+      "SfdrEnvironmentalWaste": {
+        "type": "object",
+        "properties": {
+          "hazardousWaste": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "manufactureOfAgrochemicalPesticidesProducts": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "landDegradationDesertificationSoilSealingExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "sustainableAgriculturePolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "sustainableOceansAndSeasPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "wasteNonRecycled": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "threatenedSpeciesExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "biodiversityProtectionPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "deforestationPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          }
+        }
+      },
+      "SfdrEnvironmentalWater": {
+        "type": "object",
+        "properties": {
+          "emissionsToWater": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "waterConsumption": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "waterReused": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "waterManagementPolicy": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          },
+          "waterStressAreaExposure": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          }
+        }
+      },
+      "SfdrSocial": {
+        "required": [
+          "general"
+        ],
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrSocialGeneral"
+          },
+          "socialAndEmployeeMatters": {
+            "$ref": "#/components/schemas/SfdrSocialSocialAndEmployeeMatters"
+          },
+          "greenSecurities": {
+            "$ref": "#/components/schemas/SfdrSocialGreenSecurities"
+          },
+          "humanRights": {
+            "$ref": "#/components/schemas/SfdrSocialHumanRights"
+          },
+          "antiCorruptionAndAntiBribery": {
+            "$ref": "#/components/schemas/SfdrSocialAntiCorruptionAndAntiBribery"
+          }
+        }
+      },
+      "SfdrSocialAntiCorruptionAndAntiBribery": {
+        "type": "object",
+        "properties": {
+          "reportedCasesOfBriberyCorruption": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "reportedConvictionsOfBriberyCorruption": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "reportedFinesOfBriberyCorruption": {
+            "$ref": "#/components/schemas/DataPointString"
+          }
+        }
+      },
+      "SfdrSocialGeneral": {
+        "required": [
+          "fiscalYear",
+          "fiscalYearEnd"
+        ],
+        "type": "object",
+        "properties": {
+          "fiscalYear": {
+            "type": "string"
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "reports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
+          },
+          "scopeOfEntities": {
+            "$ref": "#/components/schemas/YesNoNa"
+          }
+        }
+      },
+      "SfdrSocialGreenSecurities": {
+        "type": "object",
+        "properties": {
+          "securitiesNotCertifiedAsGreen": {
+            "$ref": "#/components/schemas/DataPointYesNo"
+          }
+        }
+      },
+      "SfdrSocialHumanRights": {
         "type": "object",
         "properties": {
           "humanRightsPolicy": {
@@ -3176,27 +3219,7 @@
           }
         }
       },
-      "SfdrSocial": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SfdrGeneral"
-          },
-          "socialAndEmployeeMatters": {
-            "$ref": "#/components/schemas/SfdrSocialAndEmployeeMatters"
-          },
-          "greenSecurities": {
-            "$ref": "#/components/schemas/SfdrGreenSecurities"
-          },
-          "humanRights": {
-            "$ref": "#/components/schemas/SfdrHumanRights"
-          },
-          "anticorruptionAndAntibribery": {
-            "$ref": "#/components/schemas/SfdrAnticorruptionAndAntibribery"
-          }
-        }
-      },
-      "SfdrSocialAndEmployeeMatters": {
+      "SfdrSocialSocialAndEmployeeMatters": {
         "type": "object",
         "properties": {
           "humanRightsLegalProceedings": {
@@ -3220,7 +3243,7 @@
           "childForcedDiscriminationPolicy": {
             "$ref": "#/components/schemas/DataPointYesNo"
           },
-          "iso14001": {
+          "iso14001Certificate": {
             "$ref": "#/components/schemas/DataPointYesNo"
           },
           "briberyCorruptionPolicy": {
@@ -3245,10 +3268,10 @@
             "$ref": "#/components/schemas/DataPointYesNo"
           },
           "averageGrossHourlyEarningsMaleEmployees": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointString"
           },
           "averageGrossHourlyEarningsFemaleEmployees": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointString"
           },
           "femaleBoardMembers": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
@@ -3285,58 +3308,6 @@
           },
           "ceoToEmployeePayGap": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
-          }
-        }
-      },
-      "SfdrWaste": {
-        "type": "object",
-        "properties": {
-          "hazardousWaste": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "manufactureOfAgrochemicalPesticidesProducts": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "landDegradationDesertificationSoilSealingExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "sustainableAgriculturePolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "sustainableOceansAndSeasPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "wasteNonRecycled": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "threatenedSpeciesExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "biodiversityProtectionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "deforestationPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          }
-        }
-      },
-      "SfdrWater": {
-        "type": "object",
-        "properties": {
-          "emissionsToWater": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "waterConsumption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "waterReused": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "waterManagementPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "waterStressAreaExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
           }
         }
       },
@@ -5074,6 +5045,13 @@
           }
         }
       },
+      "FiscalYearDeviation": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
+      },
       "CompanyAssociatedDataEuTaxonomyDataForFinancials": {
         "required": [
           "companyId",
@@ -5465,10 +5443,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

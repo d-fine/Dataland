@@ -5,12 +5,12 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the SFDR questionnaire regarding the impact topic "Anti-corruption and anti-bribery"
+ * Fields of the subcategory "Anti-corruption and anti-bribery" belonging to the category "Social" of the sfdr framework.
  */
-data class SfdrAnticorruptionAndAntibribery(
-    val reportedCasesOfBriberyCorruption: DataPoint<BigDecimal>?,
+data class SfdrSocialAntiCorruptionAndAntiBribery(
+    val reportedCasesOfBriberyCorruption: DataPoint<BigDecimal>? = null,
 
-    val reportedConvictionsOfBriberyCorruption: DataPoint<BigDecimal>?,
+    val reportedConvictionsOfBriberyCorruption: DataPoint<BigDecimal>? = null,
 
-    val reportedFinesOfBriberyCorruption: DataPoint<BigDecimal>?,
+    val reportedFinesOfBriberyCorruption: DataPoint<String>? = null,
 )
