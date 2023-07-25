@@ -196,14 +196,14 @@ function fillRequiredLksgFieldsWithDummyData(): void {
 
 /**
  * Adds a new product and fills its form
- * @param productName the name of the product to fill in
+ * @param name of the product to fill in
  * @param productionSteps the production steps to fill in
  * @param description the description to fill in
  */
-function fillNewProduct(productName: string, productionSteps: string[], description?: string): void {
+function fillNewProduct(name: string, productionSteps: string[], description?: string): void {
   cy.get('button[data-test="addNewProductButton"]').click();
   const productFormElementSelector = '[data-test="productSection"] [data-test="productFormElement"]';
-  cy.get(productFormElementSelector).last().find('input[name="productName"]').type(productName);
+  cy.get(productFormElementSelector).last().find('input[name="name"]').type(name);
   if (productionSteps.length > 0 && productionSteps.some((productionStep) => productionStep.length > 0)) {
     cy.get(productFormElementSelector)
       .last()

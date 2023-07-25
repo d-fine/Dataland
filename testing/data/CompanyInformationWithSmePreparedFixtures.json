@@ -2,65 +2,108 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Knolldorf",
-			"headquartersPostalCode": "71556",
-			"sector": "partnerships",
+			"headquarters": "Antoninastead",
+			"sector": "niches",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"eMQ0Yb4W4zS3"
+				"Lei": [
+					"QaL2kLsmBYJhWAGRUdks"
 				],
+				"Isin": [],
 				"PermId": [
-					"MqnrH8lRRe"
+					"O15GYukFZ4"
 				],
 				"Ticker": [
-					"EKopQZI"
+					"FHlaXv5"
 				],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"ph1akabxKnpaNaQ"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CL",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://nutzbringend-hotel.net",
+			"countryCode": "BZ",
+			"companyAlternativeNames": [
+				"Langworth, MacGyver and Anderson",
+				"Shields, Rath and Crooks"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"industry": "ManufacturingIndustry",
-			"financialYear": 2023,
-			"totalRevenue": 476874.1402775049,
-			"researchAndDevelopmentExpenses": 400830.2191272378,
-			"energyEfficiencyInvestments": "OneToFivePercent",
-			"operatingCosts": 208352.3043547757,
-			"totalAssets": 98740.11537758633,
-			"yearsSinceFounded": "OneToFiveYears",
-			"productCategoryWithHighestSales": "communities",
-			"productCategoryWithHighestSalesShareOfSales": 0.2217,
-			"productCategoryWithSecondHighestSales": "initiatives",
-			"productCategoryWithSecondHighestSalesShareOfSales": 0.7509,
-			"totalAreaCompany": 1607751537000448,
-			"totalPowerConsumption": 4033701834915840,
-			"totalPowerCosts": 883676.3624916784,
-			"useOfGreenElectricity": "NA",
-			"heatingEnergyConsumption": 6879234117074944,
-			"totalHeatingCosts": 845128.6902534775,
-			"roomWaterHeating": "DistrictHeat",
-			"shareOwnEnergyProduction": "TwentyfiveToFiftyPercent",
-			"waterSewageCosts": 657290.1155683212,
-			"wasteDisposalCosts": 552020.1993058436,
-			"wasteRecyclingRate": 0.0869,
-			"numberOfEmployees": 366,
-			"numberOfTemporaryWorkers": 146,
-			"shareOfFullTimeEmployees": 0.4089,
-			"shareOfEmployeesSubjectToSocialSecurityContributions": 0.2208,
-			"employeeFluctuation": 0.9248,
-			"shareOfFemaleEmployees": 0.1396,
-			"proportionOfFemaleEmployeesInManagement": 0.8297,
-			"numberVacationDays": 10,
-			"nonProfitProjects": "No"
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"B",
+						"D",
+						"G",
+						"H"
+					],
+					"addressOfHeadquarters": {
+						"city": "Johanville",
+						"state": "Hawaii",
+						"country": "GQ"
+					},
+					"numberOfEmployees": 8787,
+					"fiscalYearStart": "2023-11-10"
+				},
+				"businessNumbers": {
+					"revenueInEur": 76296779,
+					"capitalAssetsInEur": 4051971
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Goldner - Bednar",
+							"addressOfProductionSite": {
+								"city": "New Helene",
+								"postalCode": "62910",
+								"country": "GB"
+							},
+							"percentageOfTotalRevenue": 0.4457
+						},
+						{
+							"nameOfProductionSite": "Weimann Inc",
+							"addressOfProductionSite": {
+								"city": "Eagan",
+								"state": "Missouri",
+								"country": "VI"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"city": "Uptonstead",
+								"state": "South Carolina",
+								"country": "BD"
+							},
+							"percentageOfTotalRevenue": 0.2204
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Zieme Burg 8607",
+								"city": "North Janiyastead",
+								"state": "Nevada",
+								"country": "MM"
+							}
+						}
+					]
+				},
+				"products": {}
+			},
+			"power": {
+				"investments": {},
+				"consumption": {
+					"energyConsumptionHeatingAndHotWater": 846,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"amountCoveredByInsuranceAgainstNaturalHazards": 5470169,
+					"naturalHazardsCovered": [
+						"Flooding"
+					]
+				}
+			}
 		},
 		"reportingPeriod": "2023"
 	}

@@ -2,6 +2,7 @@ import { CompanyReport, DocumentReference } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { FixtureData } from "@sharedUtils/Fixtures";
+import { faker } from "@faker-js/faker";
 
 export type ReferencedDocuments = { [key: string]: CompanyReport | DocumentReference };
 
@@ -30,7 +31,24 @@ export function generateFixtureDataset<T>(
   return fixtureDataset;
 }
 
-export interface DataPoint<T, Y> {
-  label: string;
-  value: (x: T) => Y | undefined;
+/**
+ * Generates a array of random length with content
+ * @param generator generator for a single entry
+ * @param min the minimum number of entries
+ * @param max the maximum number of entries
+ * @returns the generated array
+ */
+export function generateArray<T>(generator: () => T, min = 0, max = 5): T[] {
+  return Array.from({ length: faker.number.int({ min, max }) }, () => generator());
+}
+
+/**
+ * Picks a random number of distinct values from an array and returns them
+ * @param inputArray is the array containing all available values to choose from
+ * @returns an array with a random number of distinct values chosen from the inputArray
+ */
+export function getRandomNumberOfDistinctElementsFromArray<T>(inputArray: T[]): T[] {
+  const arrayOfAvailableDistinctValues = [...Array.from(new Set(inputArray))];
+  const numElementsForResultArray = Math.floor(Math.random() * arrayOfAvailableDistinctValues.length) + 1;
+  return faker.helpers.uniqueArray(arrayOfAvailableDistinctValues, numElementsForResultArray);
 }
