@@ -6,18 +6,18 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the SFDR questionnaire regarding the impact topic "Human rights"
+ * Fields of the subcategory "Human rights" belonging to the category "Social" of the sfdr framework.
  */
-data class SfdrHumanRights(
-    val humanRightsPolicy: DataPoint<YesNo>?,
+data class SfdrSocialHumanRights(
+    val humanRightsPolicy: DataPoint<YesNo>? = null,
 
-    val humanRightsDueDiligence: DataPoint<YesNo>?,
+    val humanRightsDueDiligence: DataPoint<YesNo>? = null,
 
-    val traffickingInHumanBeingsPolicy: DataPoint<YesNo>?,
+    val traffickingInHumanBeingsPolicy: DataPoint<YesNo>? = null,
 
-    val reportedChildLabourIncidents: DataPoint<YesNo>?,
+    val reportedChildLabourIncidents: DataPoint<YesNo>? = null,
 
-    val reportedForcedOrCompulsoryLabourIncidents: DataPoint<YesNo>?,
+    val reportedForcedOrCompulsoryLabourIncidents: DataPoint<YesNo>? = null,
 
-    val reportedIncidentsOfHumanRights: DataPoint<BigDecimal>?,
+    val reportedIncidentsOfHumanRights: DataPoint<BigDecimal>? = null,
 )

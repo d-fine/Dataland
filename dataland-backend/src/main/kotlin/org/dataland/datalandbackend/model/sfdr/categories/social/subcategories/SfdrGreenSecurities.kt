@@ -5,8 +5,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the SFDR questionnaire regarding the impact topic "Green securities"
+ * Fields of the subcategory "Green securities" belonging to the category "Social" of the sfdr framework.
  */
-data class SfdrGreenSecurities(
+data class SfdrSocialGreenSecurities(
     val securitiesNotCertifiedAsGreen: DataPoint<YesNo>? = null,
 )

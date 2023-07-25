@@ -1,21 +1,21 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
 import org.dataland.datalandbackend.model.DataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the SFDR questionnaire regarding the impact topic "Water"
+ * Fields of the subcategory "Water" belonging to the category "Environmental" of the sfdr framework.
  */
-data class SfdrWater(
-    val emissionsToWater: DataPoint<BigDecimal>?,
+data class SfdrEnvironmentalWater(
+    val emissionsToWater: DataPoint<BigDecimal>? = null,
 
-    val waterConsumption: DataPoint<BigDecimal>?,
+    val waterConsumption: DataPoint<BigDecimal>? = null,
 
-    val waterReused: DataPoint<BigDecimal>?,
+    val waterReused: DataPoint<BigDecimal>? = null,
 
-    val waterManagementPolicy: DataPoint<YesNo>?,
+    val waterManagementPolicy: DataPoint<YesNo>? = null,
 
-    val waterStressAreaExposure: DataPoint<YesNo>?,
+    val waterStressAreaExposure: DataPoint<YesNo>? = null,
 )

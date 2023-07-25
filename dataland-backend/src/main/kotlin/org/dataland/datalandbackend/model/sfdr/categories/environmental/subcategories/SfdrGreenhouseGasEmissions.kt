@@ -1,23 +1,23 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
 import org.dataland.datalandbackend.model.DataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the SFDR questionnaire regarding the impact topic "Greenhouse Gas Emissions"
+ * Fields of the subcategory "Greenhouse gas emissions " belonging to the category "Environmental" of the sfdr framework.
  */
-data class SfdrGreenhouseGasEmissions(
-    val scope1: DataPoint<BigDecimal>?,
+data class SfdrEnvironmentalGreenhouseGasEmissions(
+    val scope1: DataPoint<BigDecimal>? = null,
 
-    val scope2: DataPoint<BigDecimal>?,
+    val scope2: DataPoint<BigDecimal>? = null,
 
-    val scope3: DataPoint<BigDecimal>?,
+    val scope3: DataPoint<BigDecimal>? = null,
 
-    val enterpriseValue: DataPoint<BigDecimal>?,
+    val enterpriseValue: DataPoint<BigDecimal>? = null,
 
-    val totalRevenue: DataPoint<BigDecimal>?,
+    val totalRevenue: DataPoint<BigDecimal>? = null,
 
-    val fossilFuelSectorExposure: DataPoint<YesNo>?,
+    val fossilFuelSectorExposure: DataPoint<YesNo>? = null,
 )
