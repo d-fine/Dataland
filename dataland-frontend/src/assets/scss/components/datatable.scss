@@ -4,7 +4,7 @@
   color: $main-text-color;
   .horizontal-headers-size {
     &:first-of-type {
-      width: 30vw;
+      width: $first-table-column-width;
     }
   }
   .onlyHeaders {
@@ -61,7 +61,7 @@
   .headers-bg {
     background-color: $tables-headers-bg;
     display: table-cell;
-    width: 30vw;
+    width: $first-table-column-width;
   }
   .auto-headers-size {
     width: auto;
@@ -69,6 +69,19 @@
   .p-rowgroup-header {
     background-color: $table-background-hover-color-light;
     cursor: pointer;
+    td {
+      position: relative;
+      button {
+        position: absolute;
+        right: 1rem;
+        top:50%;
+        margin-top: -7px;
+      }
+      span {
+        display: block;
+        width: $first-table-column-width;
+      }
+    }
   }
   .p-datatable-thead {
     tr {
