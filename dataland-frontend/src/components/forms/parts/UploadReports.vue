@@ -18,7 +18,7 @@ let className = "col-9";
   </div>
 
   <FormKit name="referencedReports" type="group">
-    <div class="uploadFormSection">
+    <div class="uploadFormSection; width=100px">
       <!-- List of company reports to upload -->
       <div
         v-for="reportToUpload of reportsToUpload"
