@@ -1,19 +1,21 @@
 package org.dataland.datalandbackend.model.sfdr
 
-import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.model.CompanyReport
+import org.dataland.datalandbackend.model.sfdr.categories.general.SfdrGeneral
 import org.dataland.datalandbackend.model.sfdr.categories.environmental.SfdrEnvironmental
 import org.dataland.datalandbackend.model.sfdr.categories.social.SfdrSocial
+import org.dataland.datalandbackend.annotations.DataType
+import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * --- API model ---
- * Data class containing all fields of the questionnaire for the SFDR framework
+ * Fields of the sfdr framework.
  */
 @DataType("sfdr")
 data class SfdrData(
-    val social: SfdrSocial?,
+    @field:JsonProperty(required = true)
+    val general: SfdrGeneral,
 
-    val environmental: SfdrEnvironmental?,
+    val environmental: SfdrEnvironmental? = null,
 
-    val referencedReports: Map<String, CompanyReport>?,
+    val social: SfdrSocial? = null,
 )
