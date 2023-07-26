@@ -1,54 +1,40 @@
 import { faker } from "@faker-js/faker";
 import {
-  Industry,
-  CompanyAgeBracket,
-  EnergyEfficiencyBracket,
-  EnergyProductionBracket,
-  HeatSource,
+  EnergySourceForHeatingAndHotWater,
+  NaturalHazard,
+  PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower,
+  PercentRangeForInvestmentsInEnergyEfficiency,
 } from "@clients/backend";
-
-const possibleCompanyAgeBracketUndefinedValues = [undefined, ...Object.values(CompanyAgeBracket)];
+import { getRandomNumberOfDistinctElementsFromArray } from "@e2e/fixtures/FixtureUtils";
 
 /**
- * Picks a random company age bracket or undefined
- * @returns a random company age bracket or undefined
+ * Picks a random percentage range option
+ * @returns a random percentage range option
  */
-export function randomCompanyAgeBracketOrUndefined(): CompanyAgeBracket | undefined {
-  return faker.helpers.arrayElement(possibleCompanyAgeBracketUndefinedValues);
+export function getRandomPercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower {
+  return faker.helpers.arrayElement([...Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)]);
 }
 
-const possibleIndustryUndefinedValues = [undefined, ...Object.values(Industry)];
 /**
- * Picks a random industry or undefined
- * @returns a random industry or undefined
+ * Picks a random percentage range option
+ * @returns a random percentage range option
  */
-export function randomIndustryOrUndefined(): Industry | undefined {
-  return faker.helpers.arrayElement(possibleIndustryUndefinedValues);
+export function getRandomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency {
+  return faker.helpers.arrayElement([...Object.values(PercentRangeForInvestmentsInEnergyEfficiency)]);
 }
 
-const possibleHeatSourceUndefinedValues = [undefined, ...Object.values(HeatSource)];
 /**
- * Picks a random heat source or undefined
- * @returns a random heat source or undefined
+ * Picks a random heat source
+ * @returns a random heat source
  */
-export function randomHeatSourceOrUndefined(): HeatSource | undefined {
-  return faker.helpers.arrayElement(possibleHeatSourceUndefinedValues);
+export function getRandomHeatSource(): EnergySourceForHeatingAndHotWater {
+  return faker.helpers.arrayElement([...Object.values(EnergySourceForHeatingAndHotWater)]);
 }
 
-const possibleEnergyEfficiencyBracketUndefinedValues = [undefined, ...Object.values(EnergyEfficiencyBracket)];
 /**
- * Picks a random energy efficiency bracket or undefined
- * @returns a random energy efficiency bracket or undefined
+ * Picks a random natural hazard
+ * @returns a random natural hazard
  */
-export function randomEnergyEfficiencyBracketOrUndefined(): EnergyEfficiencyBracket | undefined {
-  return faker.helpers.arrayElement(possibleEnergyEfficiencyBracketUndefinedValues);
-}
-
-const possibleEnergyProductionBracketUndefinedValues = [undefined, ...Object.values(EnergyProductionBracket)];
-/**
- * Picks a random energy production bracket or undefined
- * @returns a random energy production bracket or undefined
- */
-export function randomEnergyProductionBracketOrUndefined(): EnergyProductionBracket | undefined {
-  return faker.helpers.arrayElement(possibleEnergyProductionBracketUndefinedValues);
+export function getRandomSlectionOfNaturalHazards(): NaturalHazard[] {
+  return getRandomNumberOfDistinctElementsFromArray(Object.values(NaturalHazard));
 }

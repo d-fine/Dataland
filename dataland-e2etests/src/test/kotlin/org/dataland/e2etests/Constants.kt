@@ -41,6 +41,8 @@ val FRONTEND_DISPLAYED_FRAMEWORKS = listOf(
     DataTypeEnum.eutaxonomyMinusFinancials,
     DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
     DataTypeEnum.lksg,
+    DataTypeEnum.sfdr,
+    DataTypeEnum.p2p,
 )
 
 // Set maxNumberOfDaysSelectableForApiKeyValidity
