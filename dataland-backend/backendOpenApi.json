@@ -2905,6 +2905,13 @@
           }
         }
       },
+      "FiscalYearDeviation": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
+      },
       "QualityOptions": {
         "type": "string",
         "enum": [
@@ -2917,15 +2924,18 @@
       },
       "SfdrData": {
         "required": [
-          "social"
+          "general"
         ],
         "type": "object",
         "properties": {
-          "social": {
-            "$ref": "#/components/schemas/SfdrSocial"
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneral"
           },
           "environmental": {
             "$ref": "#/components/schemas/SfdrEnvironmental"
+          },
+          "social": {
+            "$ref": "#/components/schemas/SfdrSocial"
           }
         }
       },
@@ -3126,15 +3136,50 @@
           }
         }
       },
-      "SfdrSocial": {
+      "SfdrGeneral": {
         "required": [
           "general"
         ],
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/SfdrSocialGeneral"
+            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+          }
+        }
+      },
+      "SfdrGeneralGeneral": {
+        "required": [
+          "dataDate",
+          "fiscalYear",
+          "fiscalYearEnd"
+        ],
+        "type": "object",
+        "properties": {
+          "dataDate": {
+            "type": "string",
+            "format": "date"
           },
+          "fiscalYear": {
+            "$ref": "#/components/schemas/FiscalYearDeviation"
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
+          },
+          "scopeOfEntities": {
+            "$ref": "#/components/schemas/YesNoNa"
+          }
+        }
+      },
+      "SfdrSocial": {
+        "type": "object",
+        "properties": {
           "socialAndEmployeeMatters": {
             "$ref": "#/components/schemas/SfdrSocialSocialAndEmployeeMatters"
           },
@@ -3160,31 +3205,6 @@
           },
           "reportedFinesOfBriberyCorruption": {
             "$ref": "#/components/schemas/DataPointString"
-          }
-        }
-      },
-      "SfdrSocialGeneral": {
-        "required": [
-          "fiscalYear",
-          "fiscalYearEnd"
-        ],
-        "type": "object",
-        "properties": {
-          "fiscalYear": {
-            "type": "string"
-          },
-          "fiscalYearEnd": {
-            "type": "string",
-            "format": "date"
-          },
-          "reports": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            }
-          },
-          "scopeOfEntities": {
-            "$ref": "#/components/schemas/YesNoNa"
           }
         }
       },
@@ -5044,13 +5064,6 @@
             "$ref": "#/components/schemas/DataPointAbsoluteAndPercentageBigDecimal"
           }
         }
-      },
-      "FiscalYearDeviation": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
       },
       "CompanyAssociatedDataEuTaxonomyDataForFinancials": {
         "required": [
