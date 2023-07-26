@@ -100,7 +100,12 @@ export default defineComponent({
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
       if (field.name == "addressOfHeadquarters") {
-        return Object.values(value).join(", ");
+        let address : String = "";
+        address = `${Object.values(value)[0]} <br>
+                   ${Object.values(value)[2]} ${Object.values(value)[1]} <br>
+                   ${Object.values(value)[3]} ${Object.values(value)[4]} <br>`
+        ;
+        return address;
       } else if (
         field.name == "percentageOfInvestmentsInEnhancingEnergyEfficiency" ||
         field.name == "energyConsumptionCoveredByOwnRenewablePowerGeneration"
