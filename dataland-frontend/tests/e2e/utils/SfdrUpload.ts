@@ -1,12 +1,16 @@
 import {
-  CompanyInformation,
-  Configuration,
-  DataMetaInformation,
-  SfdrData,
-  SfdrDataControllerApi,
+    CompanyInformation,
+    Configuration,
+    DataMetaInformation, DataTypeEnum,
+    SfdrData,
+    SfdrDataControllerApi,
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
+import {submitButton} from "@sharedUtils/components/SubmitButton";
+import {uploadDocuments} from "@sharedUtils/components/UploadDocuments";
+import {TEST_PDF_FILE_NAME} from "@e2e/utils/Constants";
+import {fillAndValidateEuTaxonomyForNonFinancialsUploadForm} from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 /**
  * Uploads a single SFDR data entry for a company
@@ -58,4 +62,36 @@ export function uploadCompanyAndSfdrDataViaApi(
       );
     }
   );
+}
+/**
+ * Fills the Sfdr upload form with the given dataset
+ * @param data the data to fill the form with
+ */
+export function uploadSfdrDataViaForm( companyId: string, valueFieldNotFilled = false) : void {
+    cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}/upload`);
+    submitButton.buttonIsAddDataButton();
+    submitButton.buttonAppearsDisabled();
+    uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+    uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+    uploadDocuments.fillAllReportsToUploadForms(1);
+
+    fillAndValidateSfdrUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
+    submitButton.buttonAppearsEnabled();
+    cy.intercept({
+        url: `**/api/data/${DataTypeEnum.Sfdr}`,
+        times: 1,
+    }).as("postCompanyAssociatedData");
+    submitButton.clickButton();
+    cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+}
+
+/**
+ * Fills all the fields of the Sfdr upload form for non-financial companies
+ * @param valueFieldNotFilled Value which, if true, disables the value field
+ * @param assuranceReportName name of the assurance data source
+ */
+function fillAndValidateSfdrUploadForm( valueFieldNotFilled: boolean,
+                                                assuranceReportName: string) : void {
+    console.log("Test");
+    //TODO to be tailored to SFDR form
 }
