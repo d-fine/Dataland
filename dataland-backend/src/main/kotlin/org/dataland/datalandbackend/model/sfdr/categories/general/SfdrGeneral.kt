@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * --- API model ---
  * Fields of the category "General" of the sfdr framework.
  */
+
 data class SfdrGeneral(
-      @field:JsonProperty(required = true)
+      @field:JsonProperty(value = "general", required = true)
       val general: SfdrGeneralGeneral,
 )
