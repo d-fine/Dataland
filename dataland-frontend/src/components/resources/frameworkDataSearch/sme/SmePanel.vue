@@ -100,11 +100,18 @@ export default defineComponent({
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
       if (field.name == "addressOfHeadquarters") {
-        let address : String = "";
-        address = `${Object.values(value)[0]} <br>
-                   ${Object.values(value)[2]} ${Object.values(value)[1]} <br>
-                   ${Object.values(value)[3]} ${Object.values(value)[4]} <br>`
-        ;
+        let address: String = "";
+        if (Object.values(value)[0] != "") {
+          address += `${Object.values(value)[0]}\n`
+        };
+        if (Object.values(value)[1] != "") {
+          address += `${Object.values(value)[1]} `
+        };
+        address += `${Object.values(value)[2]} \n`;
+        if (Object.values(value)[3] != "") {
+          address += `${Object.values(value)[3]}, `
+        };
+        address += `${Object.values(value)[4]}`;
         return address;
       } else if (
         field.name == "percentageOfInvestmentsInEnhancingEnergyEfficiency" ||

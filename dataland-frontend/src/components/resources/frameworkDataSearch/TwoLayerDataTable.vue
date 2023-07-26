@@ -126,7 +126,7 @@
               </span>
               <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}</span>
             </span>
-            <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId] }}</span>
+            <span v-else style="white-space: pre-wrap">{{ slotProps.data.content[reportingPeriodWithDataId.dataId] }}</span>
           </template>
         </template>
       </Column>
@@ -154,7 +154,7 @@ import { defineComponent, PropType } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
-  name: "DisplayFrameworkDataTable",
+  name: "TwoLayerDataTable",
   components: { DataTable, Column, DocumentLink },
   directives: {
     tooltip: Tooltip,
