@@ -25,6 +25,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { Field } from "@/utils/GenericFrameworkTypes";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "SmePanel",
@@ -100,10 +101,11 @@ export default defineComponent({
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
       if (field.name == "addressOfHeadquarters") {
         return Object.values(value).join(", ");
-      } else if (field.name == "percentageOfInvestmentsInEnhancingEnergyEfficiency") {
-        return humanizeString(value as string);
-      } else if (field.name == "energyConsumptionCoveredByOwnRenewablePowerGeneration") {
-        return humanizeString(value as string);
+      } else if (
+        field.name == "percentageOfInvestmentsInEnhancingEnergyEfficiency" ||
+        field.name == "energyConsumptionCoveredByOwnRenewablePowerGeneration"
+      ) {
+        // return assertDefined(assertDefined(field.options).find((option) => option.value === value).label);
       }
       return value;
     },

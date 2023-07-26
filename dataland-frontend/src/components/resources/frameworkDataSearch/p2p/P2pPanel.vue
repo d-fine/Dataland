@@ -32,7 +32,7 @@ import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLay
 export default defineComponent({
   name: "P2pPanel",
 
-  components: {ThreeLayerTable, TwoLayerDataTable, DataTable, Column },
+  components: { ThreeLayerTable, TwoLayerDataTable, DataTable, Column },
   data() {
     return {
       DataTypeEnum,
@@ -78,7 +78,7 @@ export default defineComponent({
           const singleP2pData = (
             await p2pDataControllerApi.getCompanyAssociatedP2pData(this.singleDataMetaInfoToDisplay.dataId)
           ).data.data;
-          this.p2pDataAndMetaInfo = [{metaInfo: this.singleDataMetaInfoToDisplay, data: singleP2pData}];
+          this.p2pDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleP2pData }];
         } else {
           this.p2pDataAndMetaInfo = (
             await p2pDataControllerApi.getAllCompanyP2pData(assertDefined(this.companyId))
