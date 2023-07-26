@@ -91,6 +91,7 @@ import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
+import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "DataPointFormField",
@@ -105,16 +106,21 @@ export default defineComponent({
     currentPageValue: "",
     currentQualityValue: "",
   }),
+  emits: ["documentUpdated"],
   props: {
-    label: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
+    ...YesNoFormFieldProps,
     reportsName: {
       type: Array,
       default: () => [],
+    },
+    dataTest: {
+      type: String,
+    },
+    placeholder: {
+      type: String,
+    },
+    options: {
+      type: Array,
     },
   },
   methods: {

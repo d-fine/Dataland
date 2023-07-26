@@ -7,14 +7,14 @@ let className = "col-9";
   </div>
   <!-- Select company reports -->
 
-  <div v-if="isEuTaxonomy" class={className}>
+  <div v-if="isEuTaxonomy" class="{className}">
     <h3 class="mt-0">Select company reports</h3>
-    <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="fileUpload" />
+    <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
   </div>
-  <div v-if="isEuTaxonomy" className = "col-9 formFields"> </div>
-  <div v-else class={className}>
+  <div v-if="isEuTaxonomy" className="col-9 formFields"></div>
+  <div v-else class="{className}">
     <h3 class="mt-0">Select company reports</h3>
-    <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="fileUpload" />
+    <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
   </div>
 
   <FormKit name="referencedReports" type="group">
@@ -23,7 +23,7 @@ let className = "col-9";
       <div
         v-for="reportToUpload of reportsToUpload"
         :key="reportToUpload.file.name"
-        class={className}
+        class="{className}"
         data-test="report-to-upload-form"
       >
         <div :data-test="reportToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
@@ -74,6 +74,7 @@ import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
 import { ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
+import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "UploadReports",
@@ -82,7 +83,7 @@ export default defineComponent({
     ReportFormElement,
     PrimeButton,
   },
-  emits: ["referenceableReportNamesChanged"],
+  emits: ["documentUpdated"],
   data() {
     return {
       reportsToUpload: [] as ReportToUpload[] | undefined,
@@ -90,13 +91,23 @@ export default defineComponent({
     };
   },
   props: {
+    ...YesNoFormFieldProps,
     referencedReportsForPrefill: {
       type: Object as () => { [key: string]: CompanyReport },
     },
-      isEuTaxonomy: {
-          type: Boolean,
-          default: false,
-      },
+    isEuTaxonomy: {
+      type: Boolean,
+      default: false,
+    },
+    dataTest: {
+      type: String,
+    },
+    placeholder: {
+      type: String,
+    },
+    options: {
+      type: Array,
+    },
   },
   computed: {
     allReferenceableReportNames(): string[] {
@@ -115,7 +126,7 @@ export default defineComponent({
      * Emits event that referenceable files changed
      */
     emitReferenceableReportNamesChangedEvent() {
-      this.$emit("referenceableReportNamesChanged", this.allReferenceableReportNames);
+      this.$emit("documentUpdated", this.allReferenceableReportNames);
     },
     /**
      * Handles selection of a file by the user. First it checks if the file name is already taken.
