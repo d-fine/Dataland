@@ -18,6 +18,7 @@
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
 
             <FormKit type="group" name="data" label="data">
               <FormKit
@@ -105,7 +106,7 @@ import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 import { AxiosError } from "axios";
-import { CompanyAssociatedDataSfdrData } from "@clients/backend";
+import { CompanyAssociatedDataSfdrData, CompanyReport } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -188,9 +189,9 @@ export default defineComponent({
     };
   },
   computed: {
-    /*yearOfDataDate: {
+    yearOfDataDate: {
       get(): string {
-        const currentDate = this.CompanyAssociatedDataSfdrData .?.general?.masterData?.dataDate;
+        const currentDate = this.companyAssociatedSfdrData.data?.social?.general?.fiscalYearEnd;
         if (currentDate === undefined) {
           return "";
         } else {
@@ -201,7 +202,6 @@ export default defineComponent({
         // IGNORED
       },
     },
-    */
     subcategoryVisibility(): Map<Subcategory, boolean> {
       const map = new Map<Subcategory, boolean>();
       for (const category of this.sfdrDataModel) {
@@ -247,7 +247,14 @@ export default defineComponent({
       /*if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
       }*/
-      this.companyAssociatedSfdrData = objectDropNull(sfdrDataset as ObjectType) as CompanyAssociatedDataSfdrData;
+      const referencedReports = sfdrDataset.data.referencedReports;
+      delete sfdrDataset.data.referencedReports;
+      const clonedSfdrDataset = { ...sfdrDataset } as ObjectType;
+      clonedSfdrDataset.referencedReports = referencedReports as {
+        [key: string]: CompanyReport;
+      };
+
+      this.companyAssociatedSfdrData = objectDropNull(clonedSfdrDataset) as CompanyAssociatedDataSfdrData;
       this.waitingForData = false;
     },
     /**
@@ -259,10 +266,25 @@ export default defineComponent({
         if (this.documents.size > 0) {
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
+
+        const clonedCompanyAssociatedSfdrData = JSON.parse(
+          JSON.stringify(this.companyAssociatedSfdrData)
+        ) as CompanyAssociatedDataSfdrData;
+        if (clonedCompanyAssociatedSfdrData.data?.social?.general) {
+          const general = clonedCompanyAssociatedSfdrData.data?.social?.general as ObjectType;
+          const referencedReports = general.referencedReports;
+          delete (clonedCompanyAssociatedSfdrData.data.social.general as ObjectType).referencedReports;
+          clonedCompanyAssociatedSfdrData.data.referencedReports = referencedReports as {
+            [key: string]: CompanyReport;
+          };
+        }
+
+        console.log("clonedCompanyAssociatedSfdrData", clonedCompanyAssociatedSfdrData);
+
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
-        await sfdrDataControllerApi.postCompanyAssociatedSfdrData(this.companyAssociatedSfdrData);
+        await sfdrDataControllerApi.postCompanyAssociatedSfdrData(clonedCompanyAssociatedSfdrData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
@@ -285,7 +307,7 @@ export default defineComponent({
      * @param fieldName the name of the formfield as a key
      * @param document the certificate as combined object of reference id and file content
      */
-    updateDocumentList(fieldName: string, document: DocumentToUpload) {
+    updateDocumentList(fieldName: string, document: DocumentToUpload): void {
       if (document) {
         this.documents.set(fieldName, document);
       } else {

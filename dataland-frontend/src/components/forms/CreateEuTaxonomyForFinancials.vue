@@ -56,10 +56,10 @@
               <FormKit type="group" name="data" label="data" validation-label="data" validation="required">
                 <UploadReports
                   ref="UploadReports"
-                  :isEuTaxonomy=true
+                  :isEuTaxonomy="true"
                   :editMode="editMode"
                   :referencedReportsForPrefill="templateDataset?.referencedReports"
-                  @referenceableReportNamesChanged="handleChangeOfReferenceableReportNames"
+                  @documentUpdated="handleChangeOfReferenceableReportNames"
                 />
 
                 <EuTaxonomyBasicInformation
