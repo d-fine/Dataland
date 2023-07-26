@@ -1,7 +1,78 @@
 <template>
-  <div class="form-field">
+  <div class="form-field" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <div v-if="evidenceDesired">
+      <FormKit type="group" :name="name"> // TODO: Add v-model=BaseDataPointNumber after backend from devtools is integrated
+        <FormKit
+          type="text"
+          :name="name"
+          :validation-label="validationLabel ?? label"
+          :validation="`number|${validation}`"
+          :placeholder="placeholder"
+          :inner-class="innerClass"
+        />
+        <!-- //TODO make the label and description modular instead of being hardcoded -->
+        <div class="form-field">
+          <FormKit type="group" name="dataSource">
+            <div class="next-to-each-other">
+              <div class="flex-1">
+                <UploadFormHeader :label="'Report'" :description="'Upload Report'" />
+                <FormKit
+                    type="select"
+                    name="report"
+                    v-model="currentReportValue"
+                    placeholder="Select a report"
+                    :options="['None...', ...reportsName]"
+                />
+              </div>
+              <div>
+                <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
+                <FormKit
+                    outer-class="w-100"
+                    v-model="currentPageValue"
+                    type="number"
+                    name="page"
+                    placeholder="Page"
+                    validation-label="Page"
+                    step="1"
+                    min="0"
+                    validation="min:0"
+                />
+              </div>
+            </div>
+          </FormKit>
+        </div>
+
+        <!-- Data quality -->
+        <div class="form-field">
+          <UploadFormHeader
+              label="Data quality"
+              description="The level of confidence associated to the value."
+              :is-required="true"
+          />
+          <div class="md:col-6 col-12 p-0">
+            <FormKit
+                type="select"
+                v-model="currentQualityValue"
+                name="quality"
+                :validation="'required'"
+                validation-label="Data quality"
+                placeholder="Data quality"
+                :options="qualityOptions"
+            />
+          </div>
+        </div>
+        <div class="form-field">
+          <FormKit
+              type="textarea"
+              name="comment"
+              placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
+          />
+        </div>
+      </FormKit>
+    </div>
     <FormKit
+      v-else
       type="text"
       :name="name"
       :validation-label="validationLabel ?? label"
@@ -16,11 +87,23 @@
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
+import { NumberFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "NumberFormField",
   components: { FormKit, UploadFormHeader },
-  props: FormFieldPropsWithPlaceholder,
+  props: NumberFormFieldProps,
+  data() {
+    return {
+      qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
+        label: qualityOption,
+        value: qualityOption,
+      })),
+      currentReportValue: "",
+      currentPageValue: "",
+      currentQualityValue: "",
+    }
+  }
 });
 </script>
