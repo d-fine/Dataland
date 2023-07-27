@@ -51,11 +51,13 @@ import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   DataAndMetaInformationEuTaxonomyDataForFinancials,
+  DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataAndMetaInformationLksgData,
   DataAndMetaInformationPathwaysToParisData,
   DataAndMetaInformationSfdrData,
   DataAndMetaInformationSmeData,
   EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForNonFinancials,
   LksgData,
   PathwaysToParisData,
   SfdrData,
@@ -287,14 +289,14 @@ export default defineComponent({
 
 type FrameworkData =
   | EuTaxonomyDataForFinancials
-  | EuTaxonomyDataForFinancials
+  | EuTaxonomyDataForNonFinancials
   | LksgData
   | SfdrData
   | SmeData
   | PathwaysToParisData;
 type DataAndMetaInformation =
   | DataAndMetaInformationEuTaxonomyDataForFinancials
-  | DataAndMetaInformationEuTaxonomyDataForFinancials
+  | DataAndMetaInformationEuTaxonomyDataForNonFinancials
   | DataAndMetaInformationLksgData
   | DataAndMetaInformationSfdrData
   | DataAndMetaInformationSmeData

@@ -2,7 +2,7 @@ import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vu
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
-  CompanyAssociatedDataPathwaysToParisData, CompanyAssociatedDataSmeData,
+  CompanyAssociatedDataPathwaysToParisData,
   DataAndMetaInformationPathwaysToParisData,
   DataMetaInformation,
   DataTypeEnum,
