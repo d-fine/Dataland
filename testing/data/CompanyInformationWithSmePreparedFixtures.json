@@ -2,27 +2,113 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Fort Allen",
-			"headquartersPostalCode": "00747-7903",
+			"headquarters": "Turnerview",
+			"sector": "supply-chains",
 			"identifiers": {
 				"Lei": [
-					"5QCIGJaXfAYQ18CPnFIm"
+					"6O5mniwDEZGbZxhgtnXg"
 				],
 				"Isin": [
-					"5AwKbAHyJRhQ"
+					"tAp88LYTZeLt",
+					"tkSYvDYnBPpv"
 				],
 				"PermId": [
-					"6xSPC3ImEP"
+					"mAdQItcpuL"
 				],
+				"Ticker": [],
+				"Duns": [
+					"RZkEWp8fG"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"XS7UfLC7I8lNuRP"
+				]
+			},
+			"countryCode": "IE",
+			"companyAlternativeNames": [
+				"Hackett - Moen",
+				"Lynch Inc",
+				"Olson - Donnelly",
+				"Roberts LLC"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"F",
+						"M"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Josefina Island 49099",
+						"city": "Dietrichfurt",
+						"country": "PH"
+					},
+					"numberOfEmployees": 9757,
+					"fiscalYearStart": "2024-01-22"
+				},
+				"businessNumbers": {
+					"operatingCostInEur": 69737476,
+					"capitalAssetsInEur": 14460191
+				}
+			},
+			"production": {
+				"sites": {},
+				"products": {}
+			},
+			"power": {
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
+				"consumption": {
+					"powerFromRenewableSources": "No",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 2727065,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Snow",
+						"EarthQuake",
+						"Hail",
+						"Wind",
+						"Flooding"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "Fort Werner",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"02UEAfcTo7vu",
+					"WbxdWlnFVY53"
+				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"0ytVrA07tUefeer"
+					"oCLFOstXB7ypKPW"
 				]
 			},
-			"countryCode": "AO",
-			"companyAlternativeNames": [],
+			"countryCode": "BS",
+			"companyAlternativeNames": [
+				"Botsford - Rosenbaum",
+				"Casper, Altenwerth and Brown",
+				"Hoeger - Wisozk",
+				"Romaguera - McLaughlin"
+			],
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -30,17 +116,19 @@
 				"basicInformation": {
 					"sector": [
 						"A",
-						"C",
-						"F"
+						"B",
+						"F",
+						"K"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Blake Square 495",
-						"city": "West Jenifer",
-						"postalCode": "62753",
-						"country": "MS"
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
 					},
-					"numberOfEmployees": 8480,
-					"fiscalYearStart": "2024-06-23"
+					"numberOfEmployees": 3706,
+					"fiscalYearStart": "2024-05-20"
 				},
 				"businessNumbers": {}
 			},
@@ -49,21 +137,17 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Gorgeous Metal Fish",
-							"percentageOfTotalRevenue": 0.3865
+							"name": "Sleek Bronze Tuna",
+							"percentageOfTotalRevenue": 0.3272
 						},
 						{
-							"name": "Elegant Rubber Shoes",
-							"percentageOfTotalRevenue": 0.0443
+							"name": "Small Fresh Salad"
 						},
 						{
-							"name": "Sleek Granite Chicken"
+							"name": "Fantastic Soft Chicken"
 						},
 						{
-							"name": "Sleek Metal Gloves"
-						},
-						{
-							"name": "Intelligent Rubber Shoes"
+							"name": "Generic Rubber Chips"
 						}
 					]
 				}
@@ -74,15 +158,126 @@
 				},
 				"consumption": {
 					"powerFromRenewableSources": "Yes",
+					"primaryEnergySourceForHeatingAndHotWater": "Electric"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"naturalHazardsCovered": [
+						"Flooding",
+						"Snow",
+						"Wind",
+						"Avalanche",
+						"Hail",
+						"EarthQuake"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "New Aileentown",
+			"headquartersPostalCode": "41547-7602",
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"paBP0w0g4W5w",
+					"YPZFg9Go3gZr"
+				],
+				"PermId": [
+					"ERIToXHacv"
+				],
+				"Ticker": [],
+				"Duns": [
+					"MIHvCORm2"
+				],
+				"VatNumber": [
+					"63YDkvOtt"
+				],
+				"CompanyRegistrationNumber": [
+					"JRYgNS3ElcMaPQa"
+				]
+			},
+			"countryCode": "PK",
+			"companyAlternativeNames": [
+				"Bartoletti Group",
+				"Carroll, Bartell and Kilback",
+				"Lind, Pfeffer and Lakin",
+				"Runte - Kovacek"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://leafy-cormorant.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"C",
+						"E",
+						"J"
+					],
+					"addressOfHeadquarters": {
+						"city": "City 17",
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 133,
+					"fiscalYearStart": "2023-07-30"
+				},
+				"businessNumbers": {
+					"operatingCostInEur": 42273196
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Waelchi Radial 5380",
+								"city": "North Alexandre",
+								"postalCode": "88207",
+								"country": "IM"
+							}
+						},
+						{
+							"nameOfProductionSite": "Hettinger - Hartmann",
+							"addressOfProductionSite": {
+								"city": "Noahboro",
+								"state": "New York",
+								"country": "BR"
+							},
+							"percentageOfTotalRevenue": 0.2902
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Gorgeous Bronze Table",
+							"percentageOfTotalRevenue": 0.194
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+				},
+				"consumption": {
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 10685243
+					"insuranceAgainstNaturalHazards": "Yes"
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2022"
 	}
 ]

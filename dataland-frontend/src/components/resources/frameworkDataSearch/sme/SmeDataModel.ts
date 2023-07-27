@@ -141,31 +141,31 @@ export const smeDataModel = [
             options: [
               {
                 label: "< 1%",
-                value: "< 1%",
+                value: "LessThan1", // TODO adapt the data dictionary so these get generated
               },
               {
                 label: "1-5%",
-                value: "1-5%",
+                value: "Between1And5",
               },
               {
                 label: "5-10%",
-                value: "5-10%",
+                value: "Between5And10",
               },
               {
                 label: "10-15%",
-                value: "10-15%",
+                value: "Between10And15",
               },
               {
                 label: "15-20%",
-                value: "15-20%",
+                value: "Between15And20",
               },
               {
                 label: "20-25%",
-                value: "20-25%",
+                value: "Between20And25",
               },
               {
                 label: "> 25%",
-                value: "> 25%", // TODO the actual values are wrong
+                value: "GreaterThan25",
               },
             ],
             required: false,
@@ -240,19 +240,19 @@ export const smeDataModel = [
             options: [
               {
                 label: "< 25%",
-                value: "< 25%", // TODO adapt DD table
+                value: "LessThan25", // TODO adapt DD table
               },
               {
                 label: "25-50%",
-                value: "25-50%",
+                value: "Between25And50",
               },
               {
                 label: "50-75%",
-                value: "50-75%",
+                value: "Between50And75",
               },
               {
                 label: "> 75%",
-                value: "> 75%",
+                value: "GreaterThan75",
               },
             ],
             required: false,

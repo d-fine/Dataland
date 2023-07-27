@@ -1,14 +1,20 @@
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
   DataMetaInformation,
-  SmeData, CompanyAssociatedDataSmeData,
+  SmeData,
+  CompanyAssociatedDataSmeData,
+  DataAndMetaInformationSmeData,
+  DataTypeEnum,
 } from "@clients/backend";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
-
+import { threeLayerTable } from "@sharedUtils/components/ThreeLayerTable";
+import { QaStatus } from "@clients/qaservice";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describe("Component tests for SmePanel", () => {
   let preparedFixtures: Array<FixtureData<SmeData>>;
+  const companyId = "mock-company-id";
 
   before(function () {
     cy.fixture("CompanyInformationWithSmePreparedFixtures").then(function (jsonContent) {
@@ -21,7 +27,7 @@ describe("Component tests for SmePanel", () => {
     const smeData = preparedFixture.t;
 
     cy.intercept("/api/data/sme/mock-data-id", {
-      companyId: "mock-company-id",
+      companyId: companyId,
       reportingPeriod: preparedFixture.reportingPeriod,
       data: smeData,
     } as CompanyAssociatedDataSmeData);
@@ -29,7 +35,7 @@ describe("Component tests for SmePanel", () => {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          companyId: "mock-company-id",
+          companyId: companyId,
           singleDataMetaInfoToDisplay: {
             dataId: "mock-data-id",
             reportingPeriod: preparedFixture.reportingPeriod,
@@ -37,38 +43,77 @@ describe("Component tests for SmePanel", () => {
         };
       },
     });
-    cy.get("table.p-datatable-table")
-      .find(`span:contains(${smeData.general!.basicInformation!.numberOfEmployees!})`)
-      .should("exist");
+    cy.get(
+      threeLayerTable.getFieldByContentSelector(smeData.general.basicInformation.numberOfEmployees.toString())
+    ).should("exist");
 
-    spanExistsNot("< 1%");
-    spanIsNotVisible("Investments");
-    toggleRow('POWER')
-    spanExistsNot("< 1%");
-    toggleRow("Investments")
-    spanExists("< 1%");
-    spanExistsNot("< 25%");
-    toggleRow("Consumption")
-    spanExists("< 25%");
+    cy.get(threeLayerTable.getFieldByContentSelector("< 1%")).should("not.exist");
+    threeLayerTable.subcategoryIsNotVisible("Investments");
+    threeLayerTable.toggleCategory("POWER");
+    cy.get(threeLayerTable.getFieldByContentSelector("< 1%")).should("not.exist");
+    threeLayerTable.toggleSubcategory("Investments");
+    cy.get(threeLayerTable.getFieldByContentSelector("< 1%")).should("exist");
+    cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("not.exist");
+    threeLayerTable.toggleSubcategory("Consumption");
+    cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("exist");
   });
 
-  // TODO make the selectors in the functions more specific for categories, subcategories and fields
-
-  function toggleRow(rowLabel: string) {
-    cy.get(`span:contains('${rowLabel}')`).click();
+  /**
+   * Generates a partly predefined DataMetaInformation object
+   * @param dataId the data ID to use in the meta information
+   * @param reportingPeriod the reporting period to use in the meta information
+   * @returns the constructed DataMetaInformation object
+   */
+  function generateMetaInformation(dataId: string, reportingPeriod: string): DataMetaInformation {
+    return {
+      dataId: dataId,
+      companyId: companyId,
+      reportingPeriod: reportingPeriod,
+      dataType: DataTypeEnum.Sme,
+      uploadTime: 0,
+      currentlyActive: true,
+      qaStatus: QaStatus.Accepted,
+    };
   }
 
-  function spanExists(partialContent: string) {
-    cy.get(`span:contains('${partialContent}')`).should("exist");
-  }
+  it("Check that headquarter addresses are correctly displayed on the sme view page", () => {
+    const minimumAddressFixture = getPreparedFixture("SME-minimum-address", preparedFixtures);
+    const maximumAddressFixture = getPreparedFixture("SME-maximum-address", preparedFixtures);
 
-  function spanExistsNot(partialContent: string) {
-    cy.get(`span:contains('${partialContent}')`).should("not.exist");
-  }
-
-  function spanIsNotVisible(partialContent: string) {
-    cy.get(`span:contains('${partialContent}')`).should("not.visible");
-  }
-
-  // TODO add test for address
+    cy.intercept(`/api/data/sme/companies/${companyId}`, [
+      {
+        metaInfo: generateMetaInformation("minimum-address-data-id", minimumAddressFixture.reportingPeriod),
+        data: minimumAddressFixture.t,
+      },
+      {
+        metaInfo: generateMetaInformation("maximum-address-data-id", maximumAddressFixture.reportingPeriod),
+        data: maximumAddressFixture.t,
+      },
+    ] as DataAndMetaInformationSmeData[]);
+    cy.mountWithPlugins(SmePanel, {
+      keycloak: minimalKeycloakMock({}),
+      data() {
+        return {
+          companyId: companyId,
+        };
+      },
+    });
+    const minimumAddress = minimumAddressFixture.t.general.basicInformation.addressOfHeadquarters;
+    cy.get("td span[data-test='addressOfHeadquarters']")
+      .parent()
+      .siblings()
+      .eq(0)
+      .should("have.text", `${minimumAddress.city}\n${minimumAddress.country}`);
+    const maximumAddress = maximumAddressFixture.t.general.basicInformation.addressOfHeadquarters;
+    cy.get("td span[data-test='addressOfHeadquarters']")
+      .parent()
+      .siblings()
+      .eq(1)
+      .should(
+        "have.text",
+        `${assertDefined(maximumAddress.streetAndHouseNumber)}\n${assertDefined(maximumAddress.postalCode)} ${
+          maximumAddress.city
+        }\n${assertDefined(maximumAddress.state)}, ${maximumAddress.country}`
+      );
+  });
 });

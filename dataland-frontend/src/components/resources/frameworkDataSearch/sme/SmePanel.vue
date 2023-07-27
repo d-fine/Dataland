@@ -25,7 +25,6 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { Field } from "@/utils/GenericFrameworkTypes";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "SmePanel",
@@ -100,26 +99,57 @@ export default defineComponent({
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
       if (field.name == "addressOfHeadquarters") {
-        let address: String = "";
-        if (Object.values(value)[0] != "") {
-          address += `${Object.values(value)[0]}\n`
-        };
-        if (Object.values(value)[1] != "") {
-          address += `${Object.values(value)[1]} `
-        };
-        address += `${Object.values(value)[2]} \n`;
-        if (Object.values(value)[3] != "") {
-          address += `${Object.values(value)[3]}, `
-        };
-        address += `${Object.values(value)[4]}`;
-        return address;
+        return this.formatAddress(value as object);
       } else if (
         field.name == "percentageOfInvestmentsInEnhancingEnergyEfficiency" ||
         field.name == "energyConsumptionCoveredByOwnRenewablePowerGeneration"
       ) {
-        // TODO return assertDefined(assertDefined(field.options).find((option) => option.value === value).label);
+        return assertDefined(assertDefined(field.options).find((option) => option.value === value).label);
       }
       return value;
+    },
+
+    /**
+     * Formats an address to a multiline string
+     * @param addressObject the address in object form
+     * @returns the multiline address string
+     */
+    formatAddress(addressObject: object): string {
+      /**
+       * Tests if a provided string is defined and non-empty
+       * @param value the string to test
+       * @returns true if the string is defined and non-empty, else false
+       */
+      function isProperString(value?: string): boolean {
+        return value != undefined && value != "";
+      }
+
+      /**
+       * Tries to get the value of a field with a key or undefined if no such field was found
+       * @param key the key to get the data for
+       * @returns the value corresponding to the key or undefined if no such field was found
+       */
+      function getEntryValue(key: string): string | undefined {
+        const searchResult = Object.entries(addressObject).find((entry) => entry[0] == key);
+        return searchResult ? (searchResult[1] as string) : undefined;
+      }
+
+      let addressString = "";
+      const streetAndHouseNumber = getEntryValue("streetAndHouseNumber");
+      if (isProperString(streetAndHouseNumber)) {
+        addressString += `${assertDefined(streetAndHouseNumber)}\n`;
+      }
+      const postalCode = getEntryValue("postalCode");
+      if (isProperString(postalCode)) {
+        addressString += `${assertDefined(postalCode)} `;
+      }
+      addressString += `${assertDefined(getEntryValue("city"))}\n`;
+      const state = getEntryValue("state");
+      if (isProperString(state)) {
+        addressString += `${assertDefined(state)}, `;
+      }
+      addressString += assertDefined(getEntryValue("country"));
+      return addressString;
     },
   },
 });

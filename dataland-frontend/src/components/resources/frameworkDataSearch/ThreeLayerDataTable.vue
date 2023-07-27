@@ -64,7 +64,6 @@ import {
 import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
-import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "ThreeLayerTable",

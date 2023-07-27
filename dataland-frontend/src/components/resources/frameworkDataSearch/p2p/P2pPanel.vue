@@ -13,26 +13,20 @@
 </template>
 
 <script lang="ts">
-import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum, PathwaysToParisData } from "@clients/backend";
+import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import Column from "primevue/column";
-import DataTable from "primevue/datatable";
 import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 
 export default defineComponent({
   name: "P2pPanel",
 
-  components: { ThreeLayerTable, TwoLayerDataTable, DataTable, Column },
+  components: { ThreeLayerTable },
   data() {
     return {
       DataTypeEnum,

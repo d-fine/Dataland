@@ -126,7 +126,9 @@
               </span>
               <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}</span>
             </span>
-            <span v-else style="white-space: pre-wrap">{{ slotProps.data.content[reportingPeriodWithDataId.dataId] }}</span>
+            <span v-else style="white-space: pre-wrap">{{
+              slotProps.data.content[reportingPeriodWithDataId.dataId]
+            }}</span>
           </template>
         </template>
       </Column>
