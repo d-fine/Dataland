@@ -1,6 +1,8 @@
 export const sfdrKpisNameMappings = {
+  dataDate: "Data Date",
   fiscalYear: "Fiscal Year",
   fiscalYearEnd: "Fiscal Year End",
+  referencedReports: "Referenced Reports",
   annualReport: "Annual Report",
   groupLevelAnnualReport: "Group Level Annual Report",
   annualReportDate: "Annual Report Date",
@@ -118,8 +120,11 @@ export const sfdrKpisNameMappings = {
 };
 
 export const sfdrKpisInfoMappings = {
+  dataDate: "The date until when the information collected is valid",
   fiscalYear: "Fiscal Year (Deviation/ No Deviation)",
   fiscalYearEnd: "The date the fiscal year ends",
+  referencedReports:
+    "Does your company have a current annual report, sustainability report, integrated report or ESEF report? If yes, please share the information with us.",
   annualReport: "Link to Annual Report",
   groupLevelAnnualReport: "Is Annual Report on a Group level",
   annualReportDate: "The date for which the information presented in the report is valid through",
@@ -274,7 +279,7 @@ export const sfdrKpisInfoMappings = {
 };
 
 export const sfdrSubAreasNameMappings = {
-  anticorruptionAndAntibribery: "Anti-corruption and anti-bribery",
+  antiCorruptionAndAntiBribery: "Anti-corruption and anti-bribery",
   biodiversity: "Biodiversity",
   childLabour: "Child labour",
   emissions: "Emissions",
