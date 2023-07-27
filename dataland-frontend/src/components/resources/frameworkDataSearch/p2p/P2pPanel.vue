@@ -8,6 +8,7 @@
       :data-model="p2pDataModel"
       :data-and-meta-info="p2pDataAndMetaInfo"
       @data-converted="handleFinishedDataConversion"
+      :format-value-for-display="formatValueForDisplay"
     />
   </div>
 </template>
@@ -22,6 +23,8 @@ import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
+import { Field } from "@/utils/GenericFrameworkTypes";
+import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 export default defineComponent({
   name: "P2pPanel",
@@ -87,6 +90,18 @@ export default defineComponent({
      */
     handleFinishedDataConversion() {
       this.waitingForData = false;
+    },
+    /**
+     * Formats KPI values for display
+     * @param field the considered KPI field
+     * @param value the value to be formatted
+     * @returns the formatted value
+     */
+    formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
+      if (field.name == "sector") {
+        return (value as string[]).map((sector) => humanizeString(sector));
+      }
+      return value;
     },
   },
 });

@@ -108,7 +108,6 @@ export default defineComponent({
       }
       return value;
     },
-
     /**
      * Formats an address to a multiline string
      * @param addressObject the address in object form

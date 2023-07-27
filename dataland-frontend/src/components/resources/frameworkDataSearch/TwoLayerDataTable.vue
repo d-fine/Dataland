@@ -52,22 +52,6 @@
             <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
               <a
                 v-if="
-                  slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 &&
-                  slotProps.data.kpiKey == 'sector'
-                "
-                @click="
-                  convertsListToReadableFormatAndShowsInModal(
-                    slotProps.data.content[reportingPeriodWithDataId.dataId],
-                    slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey
-                  )
-                "
-                class="link"
-                >Show "{{ slotProps.data.kpiLabel }}"
-                <em class="material-icons" aria-hidden="true" title=""> dataset </em>
-              </a>
-              <a
-                v-else-if="
                   slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
                   slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
                 "
@@ -153,7 +137,6 @@ import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Tooltip from "primevue/tooltip";
 import { defineComponent, PropType } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
@@ -221,20 +204,6 @@ export default defineComponent({
     isYesNo(value: string) {
       return (Object.values(YesNo) as string[]).includes(value);
     },
-    /**
-     * Converts a list of strings to readable values and opens modal to display those
-     * @param listOfValues An array consisting of production sites
-     * @param modalTitle The title for the modal, which is derived from the key of the KPI
-     * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
-     */
-    convertsListToReadableFormatAndShowsInModal(listOfValues: [], modalTitle: string, kpiKey: string) {
-      const resultList = [];
-      listOfValues.forEach((entry) => {
-        resultList.push(humanizeString(entry));
-      });
-      this.openModalAndDisplayValuesInSubTable(resultList, modalTitle, kpiKey);
-    },
-
     /**
      * Opens a modal to display a table with the provided list of production sites
      * @param listOfValues An array consisting of production sites
