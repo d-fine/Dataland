@@ -69,7 +69,7 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         const smeDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getSmeDataControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
           const singleSmeData = (

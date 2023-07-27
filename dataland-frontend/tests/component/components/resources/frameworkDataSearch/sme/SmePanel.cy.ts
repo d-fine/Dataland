@@ -44,7 +44,7 @@ describe("Component tests for SmePanel", () => {
       },
     });
     cy.get(
-      threeLayerTable.getFieldByContentSelector(smeData.general.basicInformation.numberOfEmployees.toString())
+      threeLayerTable.getFieldByContentSelector(smeData.general.basicInformation.numberOfEmployees.toString()),
     ).should("exist");
 
     cy.get(threeLayerTable.getFieldByContentSelector("< 1%")).should("not.exist");
@@ -113,7 +113,7 @@ describe("Component tests for SmePanel", () => {
         "have.text",
         `${assertDefined(maximumAddress.streetAndHouseNumber)}\n${assertDefined(maximumAddress.postalCode)} ${
           maximumAddress.city
-        }\n${assertDefined(maximumAddress.state)}, ${maximumAddress.country}`
+        }\n${assertDefined(maximumAddress.state)}, ${maximumAddress.country}`,
       );
   });
 });

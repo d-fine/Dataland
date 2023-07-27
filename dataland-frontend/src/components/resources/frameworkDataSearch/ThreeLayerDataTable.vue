@@ -1,7 +1,11 @@
 <template>
   <div v-show="mapOfCategoryKeysToDataObjectArrays.size > 0">
     <DataTable tableClass="onlyHeaders">
-      <Column headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs"> </Column>
+      <Column
+        headerStyle="width: 30vw;"
+        headerClass="horizontal-headers-size first-horizontal-headers-size"
+        header="KPIs"
+      />
       <Column
         v-for="reportingPeriodWithDataId of arrayOfReportingPeriodWithDataId"
         headerClass="horizontal-headers-size"
@@ -118,7 +122,7 @@ export default defineComponent({
       kpiValue: KpiValue,
       subcategory: Subcategory,
       category: Category,
-      dataId: string
+      dataId: string,
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
       const kpiData = {
@@ -157,7 +161,7 @@ export default defineComponent({
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
             const frameworkCategoryData = assertDefined(
-              this.dataModel.find((category) => category.name === categoryKey)
+              this.dataModel.find((category) => category.name === categoryKey),
             );
             this.iterateThroughSubcategories(
               categoryObject,
@@ -165,7 +169,7 @@ export default defineComponent({
               frameworkCategoryData,
               dataId,
               listOfDataObjects,
-              currentDataset.data
+              currentDataset.data,
             );
 
             this.mapOfCategoryKeysToDataObjectArrays.set(frameworkCategoryData.label, listOfDataObjects);
@@ -173,7 +177,7 @@ export default defineComponent({
         });
       }
       this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
-        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
+        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[],
       );
       this.$emit("dataConverted");
     },
@@ -192,11 +196,11 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkData
+      currentDataset: FrameworkData,
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
         string,
-        object | null
+        object | null,
       ][]) {
         if (subCategoryObject == null) continue;
         this.iterateThroughSubcategoryKpis(
@@ -206,7 +210,7 @@ export default defineComponent({
           frameworkCategoryData,
           dataId,
           listOfDataObjects,
-          currentDataset
+          currentDataset,
         );
       }
     },
@@ -227,7 +231,7 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkData
+      currentDataset: FrameworkData,
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
         let kpiValueToCreateDataObject = kpiValue as KpiValue;
@@ -235,7 +239,7 @@ export default defineComponent({
           kpiValueToCreateDataObject = "" as KpiValue;
         }
         const subcategory = assertDefined(
-          frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
+          frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
@@ -245,7 +249,7 @@ export default defineComponent({
             kpiValueToCreateDataObject,
             subcategory,
             frameworkCategoryData,
-            dataId
+            dataId,
           );
           listOfDataObjects.push(this.resultKpiData);
         }

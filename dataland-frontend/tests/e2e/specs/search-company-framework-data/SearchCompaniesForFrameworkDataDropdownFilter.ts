@@ -66,7 +66,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           `&framework=${DataTypeEnum.Lksg}` +
           `&framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sfdr}` +
-          `&framework=${DataTypeEnum.Sme}`
+          `&framework=${DataTypeEnum.Sme}`,
       );
     },
   );
