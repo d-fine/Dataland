@@ -2,106 +2,84 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Antoninastead",
-			"sector": "niches",
+			"headquarters": "Fort Allen",
+			"headquartersPostalCode": "00747-7903",
 			"identifiers": {
 				"Lei": [
-					"QaL2kLsmBYJhWAGRUdks"
+					"5QCIGJaXfAYQ18CPnFIm"
 				],
-				"Isin": [],
+				"Isin": [
+					"5AwKbAHyJRhQ"
+				],
 				"PermId": [
-					"O15GYukFZ4"
+					"6xSPC3ImEP"
 				],
-				"Ticker": [
-					"FHlaXv5"
-				],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"0ytVrA07tUefeer"
+				]
 			},
-			"countryCode": "BZ",
-			"companyAlternativeNames": [
-				"Langworth, MacGyver and Anderson",
-				"Shields, Rath and Crooks"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"countryCode": "AO",
+			"companyAlternativeNames": [],
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
-						"D",
-						"G",
-						"H"
+						"A",
+						"C",
+						"F"
 					],
 					"addressOfHeadquarters": {
-						"city": "Johanville",
-						"state": "Hawaii",
-						"country": "GQ"
+						"streetAndHouseNumber": "Blake Square 495",
+						"city": "West Jenifer",
+						"postalCode": "62753",
+						"country": "MS"
 					},
-					"numberOfEmployees": 8787,
-					"fiscalYearStart": "2023-11-10"
+					"numberOfEmployees": 8480,
+					"fiscalYearStart": "2024-06-23"
 				},
-				"businessNumbers": {
-					"revenueInEur": 76296779,
-					"capitalAssetsInEur": 4051971
-				}
+				"businessNumbers": {}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
+				"sites": {},
+				"products": {
+					"listOfProducts": [
 						{
-							"nameOfProductionSite": "Goldner - Bednar",
-							"addressOfProductionSite": {
-								"city": "New Helene",
-								"postalCode": "62910",
-								"country": "GB"
-							},
-							"percentageOfTotalRevenue": 0.4457
+							"name": "Gorgeous Metal Fish",
+							"percentageOfTotalRevenue": 0.3865
 						},
 						{
-							"nameOfProductionSite": "Weimann Inc",
-							"addressOfProductionSite": {
-								"city": "Eagan",
-								"state": "Missouri",
-								"country": "VI"
-							}
+							"name": "Elegant Rubber Shoes",
+							"percentageOfTotalRevenue": 0.0443
 						},
 						{
-							"addressOfProductionSite": {
-								"city": "Uptonstead",
-								"state": "South Carolina",
-								"country": "BD"
-							},
-							"percentageOfTotalRevenue": 0.2204
+							"name": "Sleek Granite Chicken"
 						},
 						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Zieme Burg 8607",
-								"city": "North Janiyastead",
-								"state": "Nevada",
-								"country": "MM"
-							}
+							"name": "Sleek Metal Gloves"
+						},
+						{
+							"name": "Intelligent Rubber Shoes"
 						}
 					]
-				},
-				"products": {}
+				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 846,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric"
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 5470169,
-					"naturalHazardsCovered": [
-						"Flooding"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 10685243
 				}
 			}
 		},

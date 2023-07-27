@@ -117,7 +117,7 @@ export default defineComponent({
         field.name == "percentageOfInvestmentsInEnhancingEnergyEfficiency" ||
         field.name == "energyConsumptionCoveredByOwnRenewablePowerGeneration"
       ) {
-        // return assertDefined(assertDefined(field.options).find((option) => option.value === value).label);
+        // TODO return assertDefined(assertDefined(field.options).find((option) => option.value === value).label);
       }
       return value;
     },

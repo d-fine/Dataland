@@ -22,5 +22,10 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
 function manipulateFixtureForYear(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
   input.companyInformation.companyName = "SME-year-" + year;
   input.reportingPeriod = year;
+  input.t.power ??= {}
+  input.t.power.investments ??= {}
+  input.t.power.investments.percentageOfInvestmentsInEnhancingEnergyEfficiency = "LessThan1";
+  input.t.power.consumption ??= {}
+  input.t.power.consumption.energyConsumptionCoveredByOwnRenewablePowerGeneration = "LessThan25";
   return input;
 }
