@@ -5,11 +5,10 @@
   </div>
   <div v-if="mapOfCategoryKeysToDataObjectArrays.size > 0 && !waitingForData">
     <DataTable tableClass="onlyHeaders">
-      <Column headerStyle="width: 30vw;" headerClass="horizontal-headers-size" header="KPIs"> </Column>
+      <Column headerClass="horizontal-headers-size first-horizontal-headers-size" header="KPIs"> </Column>
       <Column
         v-for="reportingPeriodWithDataId of arrayOfReportingPeriodWithDataId"
         headerClass="horizontal-headers-size"
-        headerStyle="width: 30vw;"
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
       />
@@ -27,10 +26,10 @@
               :data-test="arrayOfKpiDataObjectsMapItem[0]"
               >{{ arrayOfKpiDataObjectsMapItem[0].toUpperCase() }}
             </span>
-            <button v-if="!isExpanded(index)" class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
+            <button v-if="!isExpanded(index)" class="pt-1 pr-2 d-cursor-pointer d-chevron-style">
               <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
             </button>
-            <button v-if="isExpanded(index)" class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
+            <button v-if="isExpanded(index)" class="pt-2 pr-2 d-cursor-pointer d-chevron-style">
               <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
             </button>
           </div>

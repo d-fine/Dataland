@@ -14,7 +14,6 @@
     >
       <Column
         bodyClass="headers-bg"
-        bodyStyle="width: 30vw;"
         headerClass="horizontal-headers-size"
         :headerStyle="headerInputStyle"
         field="kpiKey"
@@ -37,7 +36,6 @@
         v-for="reportingPeriodWithDataId of listOfReportingPeriodsWithDataId"
         headerClass="horizontal-headers-size"
         :headerStyle="headerInputStyle"
-        bodyStyle="width: 30vw;"
         :field="reportingPeriodWithDataId.dataId"
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"

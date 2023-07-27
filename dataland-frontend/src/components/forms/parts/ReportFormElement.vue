@@ -22,21 +22,15 @@
     <FormKit type="text" :modelValue="reference" name="reference" :outer-class="{ 'hidden-input': true }" />
 
     <!-- Currency used in the report -->
-    <div class="form-field" data-test="currencyUsedInTheReport">
-      <UploadFormHeader
-        label="Currency"
-        description="The 3-letter alpha code that represents the currency used in the report."
-      />
-      <div class="lg:col-4 md:col-4 col-12 p-0">
-        <FormKit
-          type="text"
-          name="currency"
-          validation="length:2,3"
-          validation-label="Currency used in the report"
-          placeholder="Currency used in the report"
-        />
-      </div>
-    </div>
+    <SingleSelectFormField
+      validation="length:2,3"
+      validation-label="Currency used in the report"
+      placeholder="Currency used in the report"
+      :options="countryCodeOptions"
+      name="currency"
+      label="Currency"
+      description="The 3-letter alpha code that represents the currency used in the report."
+    />
     <!-- Integrated report is on a group level -->
     <div class="form-field">
       <YesNoFormField
@@ -55,12 +49,15 @@ import { FormKit } from "@formkit/vue";
 import Calendar from "primevue/calendar";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 
 export default defineComponent({
   name: "ReportFormElement",
-  components: { YesNoFormField, FormKit, UploadFormHeader, Calendar },
+  components: { YesNoFormField, FormKit, UploadFormHeader, Calendar, SingleSelectFormField },
   data() {
     return {
+      countryCodeOptions: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
       reportDateAsDate: undefined as undefined | Date,
     };
   },

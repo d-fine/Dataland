@@ -7,7 +7,6 @@
     <TwoLayerDataTable
       :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
       :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
-      headerInputStyle="width: 30vw;"
     />
   </div>
 </template>
