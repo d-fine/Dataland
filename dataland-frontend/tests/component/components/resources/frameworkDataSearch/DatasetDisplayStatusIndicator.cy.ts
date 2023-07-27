@@ -13,7 +13,7 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   };
 
   it("Should display a superseded warning message when the dataset is superseded", () => {
-    const supersededDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
+    const supersededDataset = structuredClone(acceptedAndActiveDataset);
     supersededDataset.currentlyActive = false;
     supersededDataset.qaStatus = QaStatus.Accepted;
 
@@ -33,12 +33,12 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
     cy.get("a[data-test=datasetDisplayStatusLink]").should(
       "have.attr",
       "href",
-      `/companies/${supersededDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${supersededDataset.reportingPeriod}`
+      `/companies/${supersededDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${supersededDataset.reportingPeriod}`,
     );
   });
 
   it("Should display a QA-Pending warning message when the dataset is pending QA", () => {
-    const datasetPendingReview = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
+    const datasetPendingReview = structuredClone(acceptedAndActiveDataset);
     datasetPendingReview.currentlyActive = false;
     datasetPendingReview.qaStatus = QaStatus.Pending;
 
@@ -56,7 +56,7 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   });
 
   it("Should display a show all message when only one active dataset is viewed when multiview and multiple are available", () => {
-    const otherReportingPeriod = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
+    const otherReportingPeriod = structuredClone(acceptedAndActiveDataset);
     otherReportingPeriod.reportingPeriod = "other-reporting-period";
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
       data() {
@@ -76,12 +76,12 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
     cy.get("a[data-test=datasetDisplayStatusLink]").should(
       "have.attr",
       "href",
-      `/companies/${acceptedAndActiveDataset.companyId}/frameworks/${DataTypeEnum.Lksg}`
+      `/companies/${acceptedAndActiveDataset.companyId}/frameworks/${DataTypeEnum.Lksg}`,
     );
   });
 
   it("Should not display anything when only one active dataset is viewed when singleview and multiple are available", () => {
-    const otherReportingPeriod = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
+    const otherReportingPeriod = structuredClone(acceptedAndActiveDataset);
     otherReportingPeriod.reportingPeriod = "other-reporting-period";
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
       data() {
@@ -116,7 +116,7 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   });
 
   it("Should display button if rejected dataset is displayed and accepted one exists", () => {
-    const rejectedDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
+    const rejectedDataset = structuredClone(acceptedAndActiveDataset);
     rejectedDataset.currentlyActive = false;
     rejectedDataset.qaStatus = QaStatus.Rejected;
 
@@ -136,7 +136,7 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   });
 
   it("Should not display button if only a rejected dataset exists", () => {
-    const rejectedDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
+    const rejectedDataset = structuredClone(acceptedAndActiveDataset);
     rejectedDataset.currentlyActive = false;
     rejectedDataset.qaStatus = QaStatus.Rejected;
 

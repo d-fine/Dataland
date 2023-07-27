@@ -11,11 +11,11 @@ export function exportFixturesSfdrData(): void {
   const companyInformationWithSfdrData = generateFixtureDataset<SfdrData>(generateSfdrData, 100);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithSfdrData.json",
-    JSON.stringify(companyInformationWithSfdrData, null, "\t")
+    JSON.stringify(companyInformationWithSfdrData, null, "\t"),
   );
   const preparedFixtureSfdrData = generateSfdrPreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithSfdrPreparedFixtures.json",
-    JSON.stringify(preparedFixtureSfdrData, null, "\t")
+    JSON.stringify(preparedFixtureSfdrData, null, "\t"),
   );
 }

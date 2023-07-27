@@ -76,7 +76,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.get("input[id=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
       cy.scrollTo(0, 0);
       cy.get("input[id=search_bar_top]").should("have.value", inputValue1 + inputValue2);
-    }
+    },
   );
 
   /**
@@ -139,7 +139,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.get("input[id=search_bar_top]").should("contain.value", inputValue);
           checkViewButtonWorks();
           cy.get("h1").contains(inputValue);
-        }
+        },
       );
 
       it("Execute a company Search by identifier and assure that the company is found", () => {
@@ -163,7 +163,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               it.companyInformation.companyAlternativeNames !== undefined &&
               it.companyInformation.companyAlternativeNames.length > 0
             );
-          })
+          }),
         );
       }
 
@@ -173,7 +173,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.visitAndCheckAppMount("/companies");
         executeCompanySearchWithStandardSearchBar(searchValue);
       });
-    }
+    },
   );
 
   it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
@@ -184,7 +184,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           cy.visitAndCheckAppMount(
-            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
           );
           cy.get("input[id=framework_data_search_bar_standard]")
             .should("not.be.disabled")
@@ -192,7 +192,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             .should("have.value", inputValue)
             .invoke("attr", "placeholder")
             .should("contain", placeholder);
-        }
+        },
       );
     });
   });
@@ -239,7 +239,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               .url()
               .should("include", "/frameworks/eutaxonomy");
           });
-        }
+        },
       );
     });
   });
@@ -261,7 +261,7 @@ describe("As a user, I expect the search functionality on the /companies page to
                 token,
                 storedCompany.companyId,
                 fixtureData.reportingPeriod,
-                fixtureData.t
+                fixtureData.t,
               );
             });
           });
@@ -277,6 +277,6 @@ describe("As a user, I expect the search functionality on the /companies page to
             .should("exist");
         });
       });
-    }
+    },
   );
 });

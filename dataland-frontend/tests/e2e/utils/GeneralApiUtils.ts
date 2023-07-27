@@ -15,7 +15,7 @@ export interface UploadIds {
 export async function getStoredCompaniesForDataType(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
   const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
     undefined,
-    new Set([dataType])
+    new Set([dataType]),
   );
   return response.data;
 }
@@ -29,7 +29,7 @@ export async function getStoredCompaniesForDataType(token: string, dataType: Dat
  */
 export async function countCompaniesAndDataSetsForDataType(
   token: string,
-  dataType: DataTypeEnum
+  dataType: DataTypeEnum,
 ): Promise<{ numberOfCompaniesForDataType: number; numberOfDataSetsForDataType: number }> {
   const storedCompaniesForDataType = await getStoredCompaniesForDataType(token, dataType);
   let numberOfDataSetsForDataType = 0;
@@ -55,7 +55,7 @@ export function interceptAllAndCheckFor500Errors(): void {
       if (response.statusCode >= 500 && !is500ResponseAllowed) {
         assert(
           false,
-          `Received a ${response.statusCode} Response from the Dataland backend (request to ${incomingRequest.url})`
+          `Received a ${response.statusCode} Response from the Dataland backend (request to ${incomingRequest.url})`,
         );
       }
     });

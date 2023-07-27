@@ -10,16 +10,16 @@ import { generateEuTaxonomyForNonFinancialsPreparedFixtures } from "@e2e/fixture
 export function exportFixturesEuTaxonomyNonFinancial(): void {
   const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
     generateEuTaxonomyDataForNonFinancials,
-    150
+    150,
   );
   companyInformationWithEuTaxonomyDataForNonFinancials[0].companyInformation.isTeaserCompany = true;
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json",
-    JSON.stringify(companyInformationWithEuTaxonomyDataForNonFinancials, null, "\t")
+    JSON.stringify(companyInformationWithEuTaxonomyDataForNonFinancials, null, "\t"),
   );
   const preparedFixtureEuTaxonomyDataForNonFinancials = generateEuTaxonomyForNonFinancialsPreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures.json",
-    JSON.stringify(preparedFixtureEuTaxonomyDataForNonFinancials, null, "\t")
+    JSON.stringify(preparedFixtureEuTaxonomyDataForNonFinancials, null, "\t"),
   );
 }

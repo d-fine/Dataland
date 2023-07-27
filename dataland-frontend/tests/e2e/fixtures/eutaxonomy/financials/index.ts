@@ -10,15 +10,15 @@ import { generateEuTaxonomyForFinancialsPreparedFixtures } from "./EuTaxonomyDat
 export function exportFixturesEuTaxonomyFinancial(): void {
   const companyInformationWithEuTaxonomyDataForFinancials = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
-    100
+    100,
   );
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",
-    JSON.stringify(companyInformationWithEuTaxonomyDataForFinancials, null, "\t")
+    JSON.stringify(companyInformationWithEuTaxonomyDataForFinancials, null, "\t"),
   );
   const preparedFixtureEuTaxonomyDataForFinancials = generateEuTaxonomyForFinancialsPreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures.json",
-    JSON.stringify(preparedFixtureEuTaxonomyDataForFinancials, null, "\t")
+    JSON.stringify(preparedFixtureEuTaxonomyDataForFinancials, null, "\t"),
   );
 }

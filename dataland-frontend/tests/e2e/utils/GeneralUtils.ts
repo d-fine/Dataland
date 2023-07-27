@@ -41,7 +41,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
   testData: T,
   formFill: (data: T) => void,
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
-  afterDatasetSubmission: (companyId: string) => void
+  afterDatasetSubmission: (companyId: string) => void,
 ): void {
   getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
     return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
@@ -51,7 +51,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
         formFill(testData);
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
         afterDatasetSubmission(storedCompany.companyId);
-      }
+      },
     );
   });
 }

@@ -26,7 +26,7 @@ export function uploadAllDocuments(token: string): void {
 export async function uploadDocumentViaApi(
   token: string,
   buffer: ArrayBuffer,
-  name: string
+  name: string,
 ): Promise<DocumentUploadResponse> {
   const arr = new Uint8Array(buffer);
   const file = new File([arr], name, { type: "application/pdf" });
@@ -34,7 +34,7 @@ export async function uploadDocumentViaApi(
     await new DocumentControllerApi(
       new Configuration({
         accessToken: token,
-      })
+      }),
     ).postDocument(file)
   ).data;
 }
