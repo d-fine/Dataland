@@ -34,7 +34,7 @@ describe("Component tests for the DatasetOverview page", () => {
    * @returns the selector to choose a tab
    */
   function getTabSelector(tabIndex: number): string {
-    return `.p-tabview-header[data-index="${tabIndex}"]`;
+    return `.p-tabview-header[data-pc-index="${tabIndex}"]`;
   }
 
   /**

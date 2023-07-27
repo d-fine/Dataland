@@ -13,18 +13,18 @@ zxcvbnOptions.setOptions({
 });
 
 const passwordFieldWrappingDiv = document.querySelector<HTMLDivElement>(
-  "div[data-role=password-primary]"
+  "div[data-role=password-primary]",
 )!;
 const passwordField = new InputField(passwordFieldWrappingDiv);
 
 const confirmPasswordFieldWrappingDiv = document.querySelector<HTMLDivElement>(
-  "div[data-role=password-confirm]"
+  "div[data-role=password-confirm]",
 )!;
 const confirmPasswordField = new InputField(confirmPasswordFieldWrappingDiv);
 
 const form = document.querySelector<HTMLInputElement>("form")!;
 const passwordStrengthIndicatorInner = document.querySelector<HTMLInputElement>(
-  "#password-strength-indicator > div"
+  "#password-strength-indicator > div",
 )!;
 
 function updatePasswordStrengthIndicator(levelCss: string) {
@@ -42,7 +42,7 @@ function evaluatePasswordSecurity(): boolean {
   const passwordLength = passwordField.inputField.value.length;
   if (passwordLength < 12) {
     passwordField.overrideFieldErrorMessage(
-      "Please choose a password with at least 12 characters"
+      "Please choose a password with at least 12 characters",
     );
     updatePasswordStrengthIndicator("d-password-strength-too-short");
     return false;
@@ -50,7 +50,7 @@ function evaluatePasswordSecurity(): boolean {
 
   if (passwordLength > 128) {
     passwordField.overrideFieldErrorMessage(
-      "Please choose a password with at most 128 characters"
+      "Please choose a password with at most 128 characters",
     );
     updatePasswordStrengthIndicator("d-password-strength-too-short");
     return false;
@@ -58,7 +58,7 @@ function evaluatePasswordSecurity(): boolean {
 
   const zxvbnEvaluation = zxcvbn(passwordField.inputField.value);
   updatePasswordStrengthIndicator(
-    `d-password-strength-${zxvbnEvaluation.score}`
+    `d-password-strength-${zxvbnEvaluation.score}`,
   );
   if (zxvbnEvaluation.score <= 1) {
     let response = "This password is too insecure. ";
@@ -76,7 +76,7 @@ function evaluatePasswordSecurity(): boolean {
 const debouncedEvaluatePasswordSecurity = debounce(
   evaluatePasswordSecurity,
   200,
-  false
+  false,
 );
 
 function checkIfPasswordAndConfirmMatch(): boolean {
@@ -88,7 +88,7 @@ function checkIfPasswordAndConfirmMatch(): boolean {
   } else {
     if (confirmPasswordField.inputField.value.length > 0) {
       confirmPasswordField.overrideFieldErrorMessage(
-        "Password confirmation doesn't match."
+        "Password confirmation doesn't match.",
       );
     }
     return false;

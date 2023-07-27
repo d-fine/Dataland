@@ -37,9 +37,9 @@ describe("As a developer, I want to ensure that security relevant headers are se
         "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'unsafe-eval' " +
           "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o='; style-src 'self' 'unsafe-inline'; " +
           "frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; " +
-          "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/"
+          "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/",
       );
-    }
+    },
   );
 
   describeIf(
@@ -52,9 +52,9 @@ describe("As a developer, I want to ensure that security relevant headers are se
         "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'unsafe-eval' " +
           "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o='; style-src 'self' 'unsafe-inline'; " +
           "frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; " +
-          "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/"
+          "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/",
       );
-    }
+    },
   );
 
   it("test for frontend response", () => {
@@ -78,7 +78,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
           expect(response.headers).to.have.property("cache-control", "max-age=31536000, public");
         });
       });
-    }
+    },
   );
 
   it("test for backend response", () => {
@@ -86,7 +86,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
       expect(response.headers).to.have.property("cache-control", "no-cache, no-store, max-age=0, must-revalidate");
       expect(response.headers).to.have.property(
         "content-security-policy",
-        "frame-ancestors 'none'; default-src 'none'"
+        "frame-ancestors 'none'; default-src 'none'",
       );
       checkCommonHeaders(response);
       expect(response.headers).to.have.property("x-frame-options", "DENY");
@@ -99,7 +99,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
         "content-security-policy",
         "default-src 'self'; script-src 'self' 'sha256-4IiDsMH+GkJlxivIDNfi6qk0O5HPtzyvNwVT3Wt8TIw=';" +
           " style-src 'self'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:;" +
-          " img-src 'self' data:"
+          " img-src 'self' data:",
       );
       checkCommonHeaders(response);
     });

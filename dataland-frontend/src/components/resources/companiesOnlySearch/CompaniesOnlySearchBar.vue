@@ -90,7 +90,7 @@ export default defineComponent({
     async searchCompanyName(autoCompleteCompleteEvent: AutoCompleteCompleteEvent) {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getCompanyDataControllerApi();
         const response = await companyDataControllerApi.getCompaniesBySearchString(autoCompleteCompleteEvent.query);
         this.autocompleteArray = response.data;

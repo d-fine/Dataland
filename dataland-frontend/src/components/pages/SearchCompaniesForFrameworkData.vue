@@ -260,7 +260,7 @@ export default defineComponent({
       if (queryFrameworks !== undefined) {
         const allowedDataTypeEnumValues = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
         return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
-          allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam)
+          allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam),
         ) as Array<DataTypeEnum>;
       } else {
         return ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE;
@@ -363,7 +363,7 @@ export default defineComponent({
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
       const allFrameworksSelected = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.every((frameworkAsDataTypeEnum) =>
-        this.currentFilteredFrameworks.includes(frameworkAsDataTypeEnum)
+        this.currentFilteredFrameworks.includes(frameworkAsDataTypeEnum),
       );
       let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
       if (allFrameworksSelected) queryFrameworks = undefined;

@@ -51,7 +51,8 @@ describeIf(
     function goToEditForm(companyId: string, expectPdfTest: boolean): void {
       goToEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyNonFinancials).then((interception) => {
         const referencedReports = assertDefined(
-          (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data?.referencedReports
+          (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data
+            ?.referencedReports,
         );
         expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectPdfTest);
         expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
@@ -107,7 +108,7 @@ describeIf(
 
               cy.get(`[data-test="capexSection"] [data-test="total"] select[name="report"]`).select(TEST_PDF_FILE_NAME);
               cy.get(`[data-test="opexSection"] [data-test="total"] select[name="report"]`).select(
-                `${TEST_PDF_FILE_NAME}2`
+                `${TEST_PDF_FILE_NAME}2`,
               );
             },
             (request) => {
@@ -128,24 +129,24 @@ describeIf(
                 },
                 (request) => {
                   const data = assertDefined(
-                    (request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data
+                    (request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data,
                   );
                   expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(false);
                   expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
-                }
+                },
               ).as(postRequestAlias);
               cy.get('button[data-test="submitButton"]').click();
               cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then(
                 (interception) => {
                   expect(interception.response?.statusCode).to.eq(200);
-                }
+                },
               );
               goToEditForm(companyId, false);
               validateFrontendAndBackendDocumentHashesCoincede();
-            }
+            },
           );
         });
-      }
+      },
     );
 
     /**
@@ -172,7 +173,7 @@ describeIf(
               cy.wait("@getDataForMyDatasetsPage");
 
               cy.visitAndCheckAppMount(
-                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
               );
 
               cy.get("[data-test='companyNameTitle']").contains("All fields filled");
@@ -184,10 +185,10 @@ describeIf(
                 checkThatFilesWithSameContentDontGetReuploaded(storedCompany.companyId, templateDataId);
                 checkIfLinkedReportsAreDownloadable(storedCompany.companyId);
               });
-            }
+            },
           );
         });
-      }
+      },
     );
 
     /**
@@ -225,13 +226,13 @@ describeIf(
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
       cy.contains("[data-test='taxocard']", "Eligible Revenue").should(
         "contain",
-        newValueForEligibleRevenueAfterEdit + "%"
+        newValueForEligibleRevenueAfterEdit + "%",
       );
       return cy.wait("@getMetaDataForViewPage").then((interception) => {
         return assertDefined(
           (assertDefined(interception.response).body as DataMetaInformation[]).find(
-            (dataMetaInfo) => dataMetaInfo.currentlyActive
-          )
+            (dataMetaInfo) => dataMetaInfo.currentlyActive,
+          ),
         ).dataId;
       });
     }
@@ -291,7 +292,7 @@ describeIf(
      */
     function checkThatFilesWithSameContentDontGetReuploaded(companyId: string, templateDataId: string): void {
       cy.visitAndCheckAppMount(
-        `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload?templateDataId=${templateDataId}`
+        `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload?templateDataId=${templateDataId}`,
       );
       cy.wait("@getDataToPrefillForm");
       cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
@@ -300,11 +301,11 @@ describeIf(
           contents: `../${TEST_PDF_FILE_PATH}`,
           fileName: differentFileNameForSameFile + ".pdf",
         },
-        { force: true }
+        { force: true },
       );
       uploadDocuments.fillAllReportsToUploadForms();
       cy.get(`div[data-test=capexSection] div[data-test=total] select[name="report"]`).select(
-        differentFileNameForSameFile
+        differentFileNameForSameFile,
       );
       cy.intercept({ url: `**/documents/*`, method: "HEAD" }).as("documentExists");
       cy.intercept(`**/documents/`, cy.spy().as("postDocument"));
@@ -345,5 +346,5 @@ describeIf(
         });
       });
     }
-  }
+  },
 );

@@ -23,7 +23,7 @@ function getCompanyWithReportingObligationAndAssurance(): FixtureData<EuTaxonomy
   return assertDefined(
     companiesWithEuTaxonomyDataForNonFinancials.find((it) => {
       return it.t.reportingObligation !== undefined && it.t.assurance !== undefined;
-    })
+    }),
   );
 }
 
@@ -42,7 +42,7 @@ describeIf(
             const companyId = assertDefined(
               storedCompanies.find((storedCompany) => {
                 return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
-              })?.companyId
+              })?.companyId,
             );
             cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveData");
             cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
@@ -55,9 +55,9 @@ describeIf(
             cy.get(".p-card-content .text-left strong").contains("Level of Assurance");
             cy.get('.material-icons[title="Level of Assurance"]').trigger("mouseenter", "center");
             cy.get(".p-tooltip").should("be.visible").contains(AssuranceText);
-          }
+          },
         );
       });
     });
-  }
+  },
 );

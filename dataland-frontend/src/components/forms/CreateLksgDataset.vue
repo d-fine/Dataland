@@ -203,7 +203,7 @@ export default defineComponent({
         for (const subcategory of category.subcategories) {
           map.set(
             subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedLksgData.data))
+            subcategory.fields.some((field) => field.showIf(this.companyAssociatedLksgData.data)),
           );
         }
       }
@@ -233,7 +233,7 @@ export default defineComponent({
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const lkSGDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getLksgDataControllerApi();
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
@@ -255,7 +255,7 @@ export default defineComponent({
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
         const lkSGDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");

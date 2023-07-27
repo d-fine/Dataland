@@ -144,7 +144,7 @@ describe("Component test for LksgPanel", () => {
     for (let i = 0; i < 6; i++) {
       const reportingYear = 2023 + i;
       const reportingDate = `${reportingYear}-01-01`;
-      const lksgData = structuredClone(baseDataset) as LksgData;
+      const lksgData = structuredClone(baseDataset);
       lksgData.general.masterData.dataDate = reportingDate;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
@@ -195,15 +195,15 @@ describe("Component test for LksgPanel", () => {
     const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i]),
       ).to.deep.equal([firstYearObject, secondYearObject]);
 
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i]),
       ).to.deep.equal([firstOtherObject, secondOtherObject]);
     }
     expect(
-      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
+      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject]),
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });
@@ -216,7 +216,7 @@ describe("Component test for LksgPanel", () => {
  */
 function swapAndSortReportingPeriodsToDisplayAsColumns(
   listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
-  shouldSwap = false
+  shouldSwap = false,
 ): ReportingPeriodOfDataSetWithId[] {
   let swappedList: ReportingPeriodOfDataSetWithId[];
   if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {

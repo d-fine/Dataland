@@ -275,7 +275,7 @@ export default defineComponent({
       const selectedFile = this.getSelectedFile();
       try {
         const inviteControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getInviteControllerApi();
         const response = await inviteControllerApi.submitInvite(selectedFile, {
           onUploadProgress: (progressEvent) => {

@@ -48,7 +48,7 @@ export default defineComponent({
       try {
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getDocumentControllerApi();
         await documentControllerApi
           .getDocument(reference, {

@@ -24,17 +24,17 @@ export async function uploadOneLksgDatasetViaApi(
   companyId: string,
   reportingPeriod: string,
   data: LksgData,
-  bypassQa = true
+  bypassQa = true,
 ): Promise<DataMetaInformation> {
   const response = await new LksgDataControllerApi(
-    new Configuration({ accessToken: token })
+    new Configuration({ accessToken: token }),
   ).postCompanyAssociatedLksgData(
     {
       companyId,
       reportingPeriod,
       data,
     },
-    bypassQa
+    bypassQa,
   );
   return response.data;
 }
@@ -51,16 +51,16 @@ export function uploadCompanyAndLksgDataViaApi(
   token: string,
   companyInformation: CompanyInformation,
   testData: LksgData,
-  reportingPeriod: string
+  reportingPeriod: string,
 ): Promise<UploadIds> {
   return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
     (storedCompany) => {
       return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, reportingPeriod, testData).then(
         (dataMetaInformation) => {
           return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
-        }
+        },
       );
-    }
+    },
   );
 }
 

@@ -3,6 +3,7 @@ import Keycloak, { KeycloakPromise } from "keycloak-js";
 export interface KeycloakMockConfiguration {
   userId?: string;
   roles?: Array<string>;
+  idTokenParsed?: { picture: string };
 }
 
 /**
@@ -14,7 +15,7 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
   const mock = {
     token: "mocked-token",
     authenticated: true,
-    idTokenParsed: {
+    idTokenParsed: config.idTokenParsed ?? {
       sub: config.userId ?? "mock-user-id",
     },
     realmAccess: {
