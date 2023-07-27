@@ -12,7 +12,7 @@ creation URL (or simply copy this md file into the description)
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
-- [ ] Update keycloak 21.0.1 is skipped due to issues in the realm.json, the new docker image, account console
+- [ ] Update keycloak 22.0.0 is skipped due to issues in the realm.json, the new docker image, account console
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
 - [ ] Update Cypress to >= 12.12.0 introduces an issue with the usage of `$route` in component test 
@@ -22,8 +22,11 @@ appear.
   https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 - [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
-- [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloakd Docker images
-- [ ] Skipped typescript update to 5.1.5 as eslint does not support it yet
+- [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloak Docker images
+- [ ] Flyway version from 9.18.0 and above (until 9.21.1) seem to cause issues. Future versions should be tried
+- [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
+  If running `sudo apt-get update && sudo apt-get upgrade` on the servers causes connection issues
+  this can be possibly fixed by reverting the docker-compose-plugin version
 ### Gradle update
 
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
@@ -77,7 +80,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
-  document-manager-db and frontend-dev in `./docker-compose.yml`
+  document-manager-db, qa-service-db and frontend-dev in `./docker-compose.yml`
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new
   service that is not covered by the tasks above)
 

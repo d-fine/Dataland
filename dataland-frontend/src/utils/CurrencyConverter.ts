@@ -7,7 +7,7 @@
  */
 export function convertCurrencyNumbersToNotationWithLetters(
   numberToConvert: number | undefined,
-  maxNumberOfDigitsAfterDecimalPoint?: number
+  maxNumberOfDigitsAfterDecimalPoint?: number,
 ): string {
   const lookup = [
     { value: 1, symbol: "" },

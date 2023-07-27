@@ -14,7 +14,6 @@
     >
       <Column
         bodyClass="headers-bg"
-        bodyStyle="width: 30vw;"
         headerClass="horizontal-headers-size"
         :headerStyle="headerInputStyle"
         field="kpiKey"
@@ -37,7 +36,6 @@
         v-for="reportingPeriodWithDataId of listOfReportingPeriodsWithDataId"
         headerClass="horizontal-headers-size"
         :headerStyle="headerInputStyle"
-        bodyStyle="width: 30vw;"
         :field="reportingPeriodWithDataId.dataId"
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
@@ -59,7 +57,7 @@
                   openModalAndDisplayValuesInSubTable(
                     slotProps.data.content[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey
+                    slotProps.data.kpiKey,
                   )
                 "
                 class="link"
@@ -202,7 +200,7 @@ export default defineComponent({
      * @returns true if the string is 'Yes' or 'No'
      */
     isYesNo(value: string) {
-      return (Object.values(YesNo) as string[]).includes(value);
+      return Object.values(YesNo).includes(value);
     },
     /**
      * Opens a modal to display a table with the provided list of production sites
@@ -231,7 +229,7 @@ export default defineComponent({
       const id = (event.target as Element).id;
 
       const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-        this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === child.id)
+        this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === child.id),
       )[0];
 
       if (matchingChild || this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === id)) {

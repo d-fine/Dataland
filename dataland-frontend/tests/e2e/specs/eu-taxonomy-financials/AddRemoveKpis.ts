@@ -33,8 +33,8 @@ describeIf(
         testData.t,
         (data) => fillAndValidateEuTaxonomyCreditInstitutionForm(data),
         () => undefined,
-        () => undefined
+        () => undefined,
       );
     });
-  }
+  },
 );

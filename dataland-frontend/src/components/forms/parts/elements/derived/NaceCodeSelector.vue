@@ -151,7 +151,7 @@ export default defineComponent({
   watch: {
     searchFilter(searchFilter: string) {
       if (searchFilter) {
-        const copy = structuredClone(naceCodeTree) as Array<TreeNode>;
+        const copy = structuredClone(naceCodeTree);
         this.filteredTreeValues = filterNodes(copy, searchFilter);
         const expandedKeysDict = {};
         for (const node of this.filteredTreeValues) {

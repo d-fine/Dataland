@@ -121,13 +121,13 @@ describe("Component test for P2pPanel", () => {
    * @returns a mocked api response
    */
   function constructCompanyApiResponseForP2pForSixYears(
-    baseDataset: PathwaysToParisData
+    baseDataset: PathwaysToParisData,
   ): DataAndMetaInformationPathwaysToParisData[] {
     const p2pDatasets: DataAndMetaInformationPathwaysToParisData[] = [];
     for (let i = 0; i < 6; i++) {
       const reportingYear = 2023 + i;
       const reportingDate = `${reportingYear}-01-01`;
-      const p2pData = structuredClone(baseDataset) as PathwaysToParisData;
+      const p2pData = structuredClone(baseDataset);
       p2pData.general.general.dataDate = reportingDate;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,

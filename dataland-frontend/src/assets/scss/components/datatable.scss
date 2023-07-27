@@ -2,7 +2,18 @@
   border-radius: 0;
   background: $table-background-color;
   color: $main-text-color;
+  .horizontal-headers-size {
+    &:first-of-type {
+      width: $first-table-column-width;
+    }
+  }
   .onlyHeaders {
+    tr {
+      display:flex;
+    }
+    tr th:not(.first-horizontal-headers-size) {
+      flex: 1;
+    }
     .p-datatable-tbody {
       display: none;
     }
@@ -50,10 +61,7 @@
   .headers-bg {
     background-color: $tables-headers-bg;
     display: table-cell;
-  }
-  .horizontal-headers-size {
-    min-width: 100px;
-    max-width: 500px;
+    width: $first-table-column-width;
   }
   .auto-headers-size {
     width: auto;
@@ -61,6 +69,19 @@
   .p-rowgroup-header {
     background-color: $table-background-hover-color-light;
     cursor: pointer;
+    td {
+      position: relative;
+      button {
+        position: absolute;
+        right: 1rem;
+        top:50%;
+        margin-top: -7px;
+      }
+      span {
+        display: block;
+        width: $first-table-column-width;
+      }
+    }
   }
   .p-datatable-thead {
     tr {

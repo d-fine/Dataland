@@ -11,22 +11,22 @@
   },
   "dependencies": {
     "@ibm/plex": "^6.3.0",
-    "@zxcvbn-ts/core": "^3.0.2",
+    "@zxcvbn-ts/core": "^3.0.3",
     "@zxcvbn-ts/language-common": "^2.0.1",
     "@zxcvbn-ts/language-en": "^2.1.0",
-    "material-icons": "^1.13.8",
+    "material-icons": "^1.13.9",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1"
   },
   "devDependencies": {
-    "@types/node": "20.3.1",
-    "@typescript-eslint/eslint-plugin": "^5.60.1",
-    "eslint": "^8.43.0",
+    "@types/node": "20.4.2",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "npm-check-updates": "^16.10.13",
-    "sass": "^1.63.6",
-    "typescript": "5.0.4",
-    "vite": "^4.3.9"
+    "eslint-plugin-prettier": "^5.0.0",
+    "npm-check-updates": "^16.10.16",
+    "sass": "^1.64.0",
+    "typescript": "5.1.6",
+    "vite": "^4.4.6"
   }
 }

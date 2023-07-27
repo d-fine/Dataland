@@ -140,8 +140,8 @@ export default defineComponent({
               "Retrieving meta data information for data ID " +
                 dataMetaInfoForNewlyChosenReportingPeriod.dataId +
                 " failed with error " +
-                String(err)
-            )
+                String(err),
+            ),
           );
         } else {
           this.isReportingPeriodInUrlInvalid = true;
@@ -205,7 +205,7 @@ export default defineComponent({
     async getMetaDataForDataId(dataId: string) {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
@@ -252,12 +252,12 @@ export default defineComponent({
      * active data meta information objects
      */
     handleUpdateActiveDataMetaInfo(
-      receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
+      receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>,
     ) {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
       this.createListOfDataMetaInfoForDisplayedDatasets().catch((err) =>
-        console.log("Retrieving data meta info failed with error " + String(err))
+        console.log("Retrieving data meta info failed with error " + String(err)),
       );
       this.isWaitingForListOfDataIdsToDisplay = false;
     },

@@ -59,7 +59,7 @@ describe("Component test for ViewFrameworkBase", () => {
       cy.fixture("MapsForReportingsPeriodForDifferentDatasetAsArrays.json").then(
         async (data: { "eutaxonomy-financials": []; lksg: [] }) => {
           expect(Array.from(wrapper.vm.mapOfReportingPeriodToActiveDataset)).to.deep.equal(
-            data[DataTypeEnum.EutaxonomyFinancials] as []
+            data[DataTypeEnum.EutaxonomyFinancials] as [],
           );
           await wrapper.setProps({ dataType: DataTypeEnum.Lksg });
           await nextTick();
@@ -69,7 +69,7 @@ describe("Component test for ViewFrameworkBase", () => {
               expect(Array.from(wrapper.vm.mapOfReportingPeriodToActiveDataset)).to.deep.equal(data[DataTypeEnum.Lksg]);
             });
           });
-        }
+        },
       );
     });
   });
@@ -113,7 +113,7 @@ describe("Component test for ViewFrameworkBase", () => {
         cy.get("a[data-test=gotoNewDatasetButton] > button").should("exist");
         cy.get("button[data-test=editDatasetButton]").should("exist");
       });
-    }
+    },
   );
 
   it(
@@ -138,10 +138,10 @@ describe("Component test for ViewFrameworkBase", () => {
         cy.get("a[data-test=gotoNewDatasetButton]").should(
           "have.attr",
           "href",
-          "/companies/mock-company-id/frameworks/upload"
+          "/companies/mock-company-id/frameworks/upload",
         );
         cy.get("button[data-test=editDatasetButton]").should("not.exist");
       });
-    }
+    },
   );
 });

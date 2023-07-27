@@ -42,7 +42,7 @@ export default defineComponent({
     setReportingPeriodDataTableContents(): void {
       if (this.mapOfReportingPeriodToActiveDataset) {
         const sortedReportingPeriodMetaInfoPairs = Array.from(
-          (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries()
+          (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries(),
         ).sort((firstEl, secondEl) => compareReportingPeriods(firstEl[0], secondEl[0]));
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
           this.dataTableContents.push({

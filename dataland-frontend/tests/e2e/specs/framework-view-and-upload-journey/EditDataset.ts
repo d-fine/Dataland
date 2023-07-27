@@ -28,8 +28,8 @@ describeIf(
               token,
               preparedFixture.companyInformation,
               preparedFixture.t,
-              preparedFixture.reportingPeriod
-            )
+              preparedFixture.reportingPeriod,
+            ),
           )
           .then((idsUploaded) => {
             uploadIds = idsUploaded;
@@ -59,7 +59,7 @@ describeIf(
         .then(() => {
           return getKeycloakToken(admin_name, admin_pw).then(async (token) => {
             const data = await new LksgDataControllerApi(
-              new Configuration({ accessToken: token })
+              new Configuration({ accessToken: token }),
             ).getAllCompanyLksgData(uploadIds.companyId, false);
             expect(data.data).to.have.length(2);
             expect(data.data[0].data).to.deep.equal(data.data[1].data);
@@ -73,6 +73,7 @@ describeIf(
       cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
       submitButton.buttonAppearsEnabled();
+
       cy.get("button[data-test=files-to-upload-remove]")
         .first()
         .parents(".form-field:first")
@@ -85,6 +86,7 @@ describeIf(
             .find(`button[data-test=files-to-upload-remove]`)
             .should("not.exist");
         });
+
       cy.get("button[data-test=files-to-upload-remove]")
         .eq(0)
         .parents(".form-field:first")
@@ -97,15 +99,18 @@ describeIf(
             .should("be.visible")
             .click();
           cy.get(
-            `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(dataTest)}]`
+            `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(
+              dataTest,
+            )}]`,
           ).should("be.visible");
           cy.get(`div[data-test=${assertDefined(dataTest)}]`)
             .find("input[type=file]")
             .selectFile(`../testing/data/documents/test-report.pdf`, { force: true, log: true });
         });
+      submitButton.exists();
       submitButton.buttonAppearsEnabled();
       submitButton.clickButton();
       cy.get("h4").contains("Upload successfully executed.").should("exist");
     });
-  }
+  },
 );

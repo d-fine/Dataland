@@ -17,7 +17,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   ];
   const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
-    manipulatorFunctions.length
+    manipulatorFunctions.length,
   );
   const preparedFixtures = [];
   for (let i = 0; i < manipulatorFunctions.length; i++) {
@@ -26,8 +26,8 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
 
   preparedFixtures.push(
     manipulateFixtureForSfdrDatasetWithLotsOfNulls(
-      generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]
-    )
+      generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0],
+    ),
   );
 
   return preparedFixtures;

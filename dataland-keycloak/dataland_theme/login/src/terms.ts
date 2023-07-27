@@ -6,13 +6,13 @@ const cancelButton =
 const acceptTermsCbx =
   document.querySelector<HTMLInputElement>("#accept_terms")!;
 const acceptTermsError = document.querySelector<HTMLDivElement>(
-  "#accept_terms_error"
+  "#accept_terms_error",
 )!;
 
 const acceptPrivacyCbx =
   document.querySelector<HTMLInputElement>("#accept_privacy")!;
 const acceptPrivacyError = document.querySelector<HTMLDivElement>(
-  "#accept_privacy_error"
+  "#accept_privacy_error",
 )!;
 
 const responseInput = document.querySelector<HTMLInputElement>("#response")!;
@@ -20,7 +20,7 @@ const tocForm = document.querySelector<HTMLFormElement>("#toc-form")!;
 
 function requireChecked(
   checkBox: HTMLInputElement,
-  errorDiv: HTMLDivElement
+  errorDiv: HTMLDivElement,
 ): boolean {
   if (checkBox.checked) {
     errorDiv.style.display = "none";

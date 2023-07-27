@@ -75,7 +75,7 @@ export function ensureLoggedIn(username?: string, password?: string): void {
           .url()
           .should(
             "eq",
-            getBaseUrl() + "/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step2.html"
+            getBaseUrl() + "/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step2.html",
           );
         cy.window()
           .then((window): boolean => {
@@ -88,7 +88,7 @@ export function ensureLoggedIn(username?: string, password?: string): void {
           .should("be.true");
       },
       cacheAcrossSpecs: true,
-    }
+    },
   );
 }
 
@@ -102,7 +102,7 @@ export function ensureLoggedIn(username?: string, password?: string): void {
 export function getKeycloakToken(
   username = reader_name,
   password = reader_pw,
-  client_id = "dataland-public"
+  client_id = "dataland-public",
 ): Chainable<string> {
   return cy
     .request({

@@ -200,7 +200,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:20.3.1
+    image: node:20.5.0
     networks:
       internal:
         aliases:
@@ -388,7 +388,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:15.2
+    image: postgres:15.3
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:

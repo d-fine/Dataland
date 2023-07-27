@@ -11,7 +11,7 @@ export const uploadDocuments = {
         fileName: `${filename}.pdf`,
         mimeType: "application/pdf",
       },
-      { force: true }
+      { force: true },
     );
   },
   numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload: number): void {
@@ -26,7 +26,7 @@ export const uploadDocuments = {
       cy.wrap(element).find(`[data-test="reportDate"] button`).should("have.class", "p-datepicker-trigger").click();
       cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
       cy.get("div.p-datepicker").find(`span:contains("12")`).click();
-      cy.wrap(element).find(`input[name="currency"]`).clear().type("zzz");
+      cy.wrap(element).find("select[name=currency]").select("EUR");
       cy.wrap(element).find(`input[value="No"]`).click();
     });
   },

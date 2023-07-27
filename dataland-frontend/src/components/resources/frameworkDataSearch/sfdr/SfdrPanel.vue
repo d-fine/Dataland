@@ -80,7 +80,7 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getSfdrDataControllerApi();
 
         if (this.singleDataMetaInfoToDisplay) {
@@ -111,7 +111,7 @@ export default defineComponent({
       kpiKey: string,
       kpiValue: object | string,
       subAreaKey: string,
-      dataIdOfSfdrDataset: string
+      dataIdOfSfdrDataset: string,
     ): void {
       let indexOfExistingItem = -1;
       const kpiDataObject = {
@@ -120,7 +120,7 @@ export default defineComponent({
         [dataIdOfSfdrDataset]: kpiValue,
       };
       indexOfExistingItem = this.kpiDataObjects.findIndex(
-        (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey
+        (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey,
       );
       if (indexOfExistingItem !== -1) {
         Object.assign(this.kpiDataObjects[indexOfExistingItem], kpiDataObject);
@@ -177,7 +177,7 @@ export default defineComponent({
               this.createKpiDataObjectsForSfdrDataProps(sfdrData, columnIdentifier.dataId);
             });
           return columnIdentifier;
-        }
+        },
       );
       this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(mappedOfColumnIdentifierObjects);
     },

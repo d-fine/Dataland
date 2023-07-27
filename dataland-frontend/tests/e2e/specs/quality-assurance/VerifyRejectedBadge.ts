@@ -26,8 +26,8 @@ describeIf(
               token,
               preparedFixture.companyInformation,
               preparedFixture.t,
-              preparedFixture.reportingPeriod
-            )
+              preparedFixture.reportingPeriod,
+            ),
           )
           .then((uploadIds) => {
             cy.visit(`/qualityassurance`);
@@ -44,5 +44,5 @@ describeIf(
           });
       });
     });
-  }
+  },
 );
