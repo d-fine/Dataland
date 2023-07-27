@@ -50,13 +50,6 @@ export const FormFieldPropsWithPlaceholder = Object.assign(deepCopyObject(BaseFo
   },
 }) as Readonly<ComponentPropsOptions>;
 
-export const NumberFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
-  evidenceDesired: {
-    type: Boolean,
-    default: false,
-  },
-}) as Readonly<ComponentPropsOptions>;
-
 export const DateFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
   todayAsMax: {
     type: Boolean,
