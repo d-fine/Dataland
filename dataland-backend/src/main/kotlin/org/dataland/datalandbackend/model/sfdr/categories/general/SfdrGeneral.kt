@@ -9,6 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 
 data class SfdrGeneral(
-      @field:JsonProperty(value = "general", required = true)
+      @JsonProperty(value = "general", required = true)
       val general: SfdrGeneralGeneral,
 )
