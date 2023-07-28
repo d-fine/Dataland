@@ -22,7 +22,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
             permissions: ["clipboardReadWrite", "clipboardSanitizedWrite"],
             origin: window.location.origin,
           },
-        })
+        }),
       );
     }
 
@@ -54,7 +54,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("textarea#newKeyHolder").should("not.exist");
     cy.get('[data-test="text-info"]').should(
       "contain",
-      "If you don't have access to your API Key you can generate a new one"
+      "If you don't have access to your API Key you can generate a new one",
     );
     cy.get('[id="apiKeyUsageInfoMessage"]').should("contain", "You can use the API-Keys as bearer-tokens");
     cy.get('[data-test="action-button"]').should("contain", "REGENERATE API KEY").click();

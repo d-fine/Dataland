@@ -118,8 +118,8 @@ export default defineComponent({
           e,
           this.kpiDataObjectsToDisplay,
           "subAreaKey",
-          this.expandedRowGroups
-        ))
+          this.expandedRowGroups,
+        )),
     );
   },
   methods: {

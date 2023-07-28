@@ -208,7 +208,7 @@ export default defineComponent({
         for (const subcategory of category.subcategories) {
           map.set(
             subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedSfdrData.data))
+            subcategory.fields.some((field) => field.showIf(this.companyAssociatedSfdrData.data)),
           );
         }
       }
@@ -238,7 +238,7 @@ export default defineComponent({
     async loadSfdrData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const sfdrDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getSfdrDataControllerApi();
 
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
@@ -268,7 +268,7 @@ export default defineComponent({
         }
 
         const clonedCompanyAssociatedSfdrData = JSON.parse(
-          JSON.stringify(this.companyAssociatedSfdrData)
+          JSON.stringify(this.companyAssociatedSfdrData),
         ) as CompanyAssociatedDataSfdrData;
         if (clonedCompanyAssociatedSfdrData.data?.social?.general) {
           const general = clonedCompanyAssociatedSfdrData.data?.social?.general as ObjectType;
@@ -282,7 +282,7 @@ export default defineComponent({
         console.log("clonedCompanyAssociatedSfdrData", clonedCompanyAssociatedSfdrData);
 
         const sfdrDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getSfdrDataControllerApi();
         await sfdrDataControllerApi.postCompanyAssociatedSfdrData(clonedCompanyAssociatedSfdrData);
         this.$emit("datasetCreated");

@@ -196,7 +196,7 @@ export default defineComponent({
         this.$router
           .push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${reportingPeriod}`)
           .catch((err) =>
-            console.log("Setting route for reporting period " + reportingPeriod + " failed with error " + String(err))
+            console.log("Setting route for reporting period " + reportingPeriod + " failed with error " + String(err)),
           );
       }
     },
@@ -219,15 +219,15 @@ export default defineComponent({
      * active data meta information objects
      */
     handleUpdateActiveDataMetaInfo(
-      receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
+      receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>,
     ) {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
       this.reportingPeriodsInDropdown = this.getKeysFromMapAndReturnAsAlphabeticallySortedArray(
-        receivedMapOfReportingPeriodsToActiveDataMetaInfo
+        receivedMapOfReportingPeriodsToActiveDataMetaInfo,
       );
       this.chooseDataMetaInfoForDisplayedDataset().catch((err) =>
-        console.log("Retrieving data meta info failed with error " + String(err))
+        console.log("Retrieving data meta info failed with error " + String(err)),
       );
       this.isWaitingForDataIdToDisplay = false;
     },
@@ -258,7 +258,7 @@ export default defineComponent({
     async getMetaDataForDataId(dataId: string) {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
@@ -307,7 +307,7 @@ export default defineComponent({
       if (latestDataMetaInformation && this.companyId && this.dataType) {
         this.$router
           .replace(
-            `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${latestDataMetaInformation.reportingPeriod}`
+            `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${latestDataMetaInformation.reportingPeriod}`,
           )
           .catch((err) => console.log("Replacing route failed with error " + String(err)));
       }

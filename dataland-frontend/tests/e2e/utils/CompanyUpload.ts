@@ -78,10 +78,10 @@ export function generateDummyCompanyInformation(companyName: string, sector = "I
  */
 export async function uploadCompanyViaApi(
   token: string,
-  companyInformation: CompanyInformation
+  companyInformation: CompanyInformation,
 ): Promise<StoredCompany> {
   const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
-    companyInformation
+    companyInformation,
   );
   return data.data;
 }

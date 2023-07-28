@@ -411,7 +411,7 @@ export default defineComponent({
     async fetchTemplateData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
       const dataResponse =
@@ -425,7 +425,7 @@ export default defineComponent({
       }
       this.templateDataset = companyAssociatedEuTaxonomyData.data;
       const receivedFormInputsModel = convertValuesFromDecimalsToPercentages(
-        companyAssociatedEuTaxonomyData as ObjectType
+        companyAssociatedEuTaxonomyData as ObjectType,
       );
       this.waitingForData = false;
       updateObject(this.formInputsModel as ObjectType, receivedFormInputsModel);
@@ -442,21 +442,21 @@ export default defineComponent({
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
-          this.namesOfAllCompanyReportsForTheDataset
+          this.namesOfAllCompanyReportsForTheDataset,
         );
 
         await uploadFiles(
           (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
-          assertDefined(this.getKeycloakPromise)
+          assertDefined(this.getKeycloakPromise),
         );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         this.postEuTaxonomyDataForNonFinancialsResponse =
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+            formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
           );
         this.$emit("datasetCreated");
       } catch (error) {

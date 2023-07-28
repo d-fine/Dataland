@@ -163,14 +163,18 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
  */
 export function generateOneSfdrDatasetWithManyNulls(): SfdrData {
   return {
-    social: {
+    general: {
       general: {
+        dataDate: "27-08-2022",
+        fiscalYear: "Deviation",
         fiscalYearEnd: "marker-for-test",
-        groupLevelAnnualReport: null!,
+        scopeOfEntities: null!,
+        referencedReports: null!,
       },
+    },
+    social: {
       socialAndEmployeeMatters: null!,
     },
     environmental: null!,
-    referencedReports: null!,
   };
 }

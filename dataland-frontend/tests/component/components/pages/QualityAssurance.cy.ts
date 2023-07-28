@@ -19,7 +19,7 @@ describe("Component tests for the Quality Assurance page", () => {
   function mockDataMetaInformationForFixtureDataWithIdAndType(
     fixtureData: FixtureData<PathwaysToParisData | SmeData>,
     dataId: string,
-    dataType: DataTypeEnum
+    dataType: DataTypeEnum,
   ): DataMetaInformation {
     return {
       dataId: dataId,
@@ -42,7 +42,7 @@ describe("Component tests for the Quality Assurance page", () => {
   function createQaDataObjectAndPerformRequestCheck(
     fixtureData: FixtureData<PathwaysToParisData | SmeData>,
     dataId: string,
-    dataType: DataTypeEnum
+    dataType: DataTypeEnum,
   ): void {
     const qaDataObject = {
       dataId: dataId,
