@@ -288,7 +288,7 @@ export function generateOneSfdrDatasetWithManyNulls(): SfdrData {
     general: {
       general: {
         dataDate: "27-08-2022",
-        fiscalYear: "Deviation",
+        fiscalYearDeviation: "Deviation",
         fiscalYearEnd: "marker-for-test",
         scopeOfEntities: null!,
         referencedReports: null!,

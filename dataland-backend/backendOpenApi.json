@@ -3153,7 +3153,7 @@
       "SfdrGeneralGeneral": {
         "required": [
           "dataDate",
-          "fiscalYear",
+          "fiscalYearDeviation",
           "fiscalYearEnd"
         ],
         "type": "object",
@@ -3162,7 +3162,7 @@
             "type": "string",
             "format": "date"
           },
-          "fiscalYear": {
+          "fiscalYearDeviation": {
             "$ref": "#/components/schemas/FiscalYearDeviation"
           },
           "fiscalYearEnd": {

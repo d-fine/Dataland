@@ -15,7 +15,7 @@ data class SfdrGeneralGeneral(
     val dataDate: LocalDate,
 
     @field:JsonProperty(required = true)
-    val fiscalYear: FiscalYearDeviation,
+    val fiscalYearDeviation: FiscalYearDeviation,
 
     @field:JsonProperty(required = true)
     val fiscalYearEnd: LocalDate,
