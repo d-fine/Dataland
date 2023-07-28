@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
 import org.dataland.datalandbackend.model.DataPoint
+import org.dataland.datalandbackend.model.DataPointWithUnit
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -39,21 +40,21 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val oecdGuidelinesForMultinationalEnterprisesPolicy: DataPoint<YesNo>? = null,
 
-    val averageGrossHourlyEarningsMaleEmployees: DataPoint<BigDecimal>? = null,
+    val averageGrossHourlyEarningsMaleEmployees: DataPointWithUnit<BigDecimal>? = null,
 
-    val averageGrossHourlyEarningsFemaleEmployees: DataPoint<BigDecimal>? = null,
+    val averageGrossHourlyEarningsFemaleEmployees: DataPointWithUnit<BigDecimal>? = null,
 
-    val femaleBoardMembers: DataPoint<BigDecimal>? = null,
+    val femaleBoardMembers: DataPointWithUnit<BigDecimal>? = null,
 
-    val maleBoardMembers: DataPoint<BigDecimal>? = null,
+    val maleBoardMembers: DataPointWithUnit<BigDecimal>? = null,
 
     val controversialWeaponsExposure: DataPoint<YesNo>? = null,
 
     val workplaceAccidentPreventionPolicy: DataPoint<YesNo>? = null,
 
-    val rateOfAccidents: DataPoint<BigDecimal>? = null,
+    val rateOfAccidents: DataPointWithUnit<BigDecimal>? = null,
 
-    val workdaysLost: DataPoint<BigDecimal>? = null,
+    val workdaysLost: DataPointWithUnit<BigDecimal>? = null,
 
     val supplierCodeOfConduct: DataPoint<YesNo>? = null,
 
@@ -61,9 +62,9 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val whistleblowerProtectionPolicy: DataPoint<YesNo>? = null,
 
-    val reportedIncidentsOfDiscrimination: DataPoint<BigDecimal>? = null,
+    val reportedIncidentsOfDiscrimination: DataPointWithUnit<BigDecimal>? = null,
 
-    val sanctionsIncidentsOfDiscrimination: DataPoint<BigDecimal>? = null,
+    val sanctionsIncidentsOfDiscrimination: DataPointWithUnit<BigDecimal>? = null,
 
-    val ceoToEmployeePayGap: DataPoint<BigDecimal>? = null,
+    val ceoToEmployeePayGap: DataPointWithUnit<BigDecimal>? = null,
 )

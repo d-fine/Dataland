@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
 import org.dataland.datalandbackend.model.DataPoint
+import org.dataland.datalandbackend.model.DataPointWithUnit
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -19,5 +20,5 @@ data class SfdrSocialHumanRights(
 
     val reportedForcedOrCompulsoryLabourIncidents: DataPoint<YesNo>? = null,
 
-    val reportedIncidentsOfHumanRights: DataPoint<BigDecimal>? = null,
+    val reportedIncidentsOfHumanRights: DataPointWithUnit<BigDecimal>? = null,
 )

@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
-import org.dataland.datalandbackend.model.DataPoint
+import org.dataland.datalandbackend.model.DataPointWithUnit
 import java.math.BigDecimal
 
 /**
@@ -8,9 +8,9 @@ import java.math.BigDecimal
  * Fields of the subcategory "Anti-corruption and anti-bribery" belonging to the category "Social" of the sfdr framework.
  */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
-    val reportedCasesOfBriberyCorruption: DataPoint<BigDecimal>? = null,
+    val reportedCasesOfBriberyCorruption: DataPointWithUnit<BigDecimal>? = null,
 
-    val reportedConvictionsOfBriberyCorruption: DataPoint<BigDecimal>? = null,
+    val reportedConvictionsOfBriberyCorruption: DataPointWithUnit<BigDecimal>? = null,
 
-    val reportedFinesOfBriberyCorruption: DataPoint<BigDecimal>? = null,
+    val reportedFinesOfBriberyCorruption: DataPointWithUnit<BigDecimal>? = null,
 )
