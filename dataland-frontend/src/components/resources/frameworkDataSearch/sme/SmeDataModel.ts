@@ -17,7 +17,9 @@ export const smeDataModel = [
             label: "Sector",
             description:
               "Please select the industry sector in which your company was mainly active in the relevant fiscal year.",
+            unit: "",
             component: "NaceCodeFormField",
+            evidenceDesired: false,
             required: true,
             showIf: (): boolean => true,
             validation: "required|length:1",
@@ -26,7 +28,9 @@ export const smeDataModel = [
             name: "addressOfHeadquarters",
             label: "Address Of Headquarters",
             description: "Please provide the full address of your company's headquarters in the relevant fiscal year.",
+            unit: "",
             component: "AddressFormField",
+            evidenceDesired: false,
             required: true,
             showIf: (): boolean => true,
             validation: "required",
@@ -35,7 +39,9 @@ export const smeDataModel = [
             name: "numberOfEmployees",
             label: "Number of Employees",
             description: "Please provide the number of workforce employed by your company in the relevant fiscal year.",
+            unit: "",
             component: "NumberFormField",
+            evidenceDesired: false,
             required: true,
             showIf: (): boolean => true,
             validation: "required",
@@ -44,7 +50,9 @@ export const smeDataModel = [
             name: "fiscalYearStart",
             label: "Fiscal Year Start",
             description: "Please provide the starting date of the company's fiscal year to which you refer.",
+            unit: "",
             component: "DateFormField",
+            evidenceDesired: false,
             required: true,
             showIf: (): boolean => true,
             validation: "required",
@@ -59,7 +67,9 @@ export const smeDataModel = [
             name: "revenueInEur",
             label: "Revenue in EUR",
             description: "Please provide your company's revenue in the relevant year in Euro.",
+            unit: "",
             component: "NumberFormField",
+            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -67,7 +77,9 @@ export const smeDataModel = [
             name: "operatingCostInEur",
             label: "Operating Cost in EUR",
             description: "Please provide your company's operating cost in the relevant fiscal year in Euro.",
+            unit: "",
             component: "NumberFormField",
+            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -76,7 +88,9 @@ export const smeDataModel = [
             label: "Capital assets in EUR",
             description:
               "Please provide the value of your company's capital assets in the relevant fiscal year in Euro.",
+            unit: "",
             component: "NumberFormField",
+            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -99,7 +113,9 @@ export const smeDataModel = [
             label: "List of Production Sites",
             description:
               "Please provide the percentage of revenue generated at the provided main branch/production site or your headquarters relative to your company's total revenue in the relevant fiscal year.",
+            unit: "",
             component: "ProductionSitesFormFieldSme",
+            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -114,7 +130,9 @@ export const smeDataModel = [
             label: "List of Products",
             description:
               "Please provide the HS-Code of the product category generating the highest revenue in your company in the relevant fiscal year. Please use the provided link to identify the product category code.",
+            unit: "",
             component: "ProductsFormFieldSme",
+            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -137,11 +155,13 @@ export const smeDataModel = [
             label: "Percentage of investments in enhancing energy efficiency",
             description:
               "Please provide the fraction of your company's total investments that was primarily spent to enhance energy efficiency in the last fiscal year.",
+            unit: "",
             component: "RadioButtonsFormField",
+            evidenceDesired: false,
             options: [
               {
                 label: "< 1%",
-                value: "LessThan1", // TODO adapt the data dictionary so these get generated
+                value: "LessThan1",
               },
               {
                 label: "1-5%",
@@ -181,7 +201,9 @@ export const smeDataModel = [
             name: "powerConsumptionInMwh",
             label: "Power consumption in MWh",
             description: "Please provide your company's power consumption in the relevant fiscal year in MWh.",
+            unit: "",
             component: "NumberFormField",
+            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -190,7 +212,9 @@ export const smeDataModel = [
             label: "power from renewable sources",
             description:
               "Please provide information whether your company has been primarily using power from renewable sources in the relevant fiscal year.",
+            unit: "",
             component: "YesNoFormField",
+            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
             certificateRequiredIfYes: false,
@@ -200,7 +224,9 @@ export const smeDataModel = [
             label: "Energy consumption heating and hot water",
             description:
               "Please provide your company's power consumption for heating and hot water generation in the relevant fiscal year in MWh.",
+            unit: "",
             component: "NumberFormField",
+            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -209,7 +235,9 @@ export const smeDataModel = [
             label: "Primary energy source for heating and hot water",
             description:
               "Please provide the energy source primarily used by your company for heating/hot water generation in the relevant fiscal year.",
+            unit: "",
             component: "RadioButtonsFormField",
+            evidenceDesired: false,
             options: [
               {
                 label: "Oil",
@@ -236,11 +264,13 @@ export const smeDataModel = [
             label: "Energy consumption covered by own renewable power generation",
             description:
               "Please provide the portion of consumed power generated by your own renewable sources relative to your company's total power consumption in the relevant fiscal year.",
+            unit: "",
             component: "RadioButtonsFormField",
+            evidenceDesired: false,
             options: [
               {
                 label: "< 25%",
-                value: "LessThan25", // TODO adapt DD table
+                value: "LessThan25",
               },
               {
                 label: "25-50%",
@@ -277,7 +307,9 @@ export const smeDataModel = [
             label: "Insurance against natural hazards",
             description:
               "Please provide information whether your company has insurance against natural hazards at its branch/production site generating most revenue, or its headquarters.",
+            unit: "",
             component: "YesNoFormField",
+            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
             certificateRequiredIfYes: false,
@@ -287,7 +319,9 @@ export const smeDataModel = [
             label: "Amount covered by insurance against natural hazards",
             description:
               "Please provide the amount covered by the insurance in EUR. In case your company has different policies for different natural hazards please provide the average amount covered.",
+            unit: "",
             component: "NumberFormField",
+            evidenceDesired: false,
             required: false,
             showIf: (dataModel: SmeData): boolean =>
               dataModel?.insurances?.naturalHazards?.insuranceAgainstNaturalHazards === "Yes",
@@ -296,7 +330,9 @@ export const smeDataModel = [
             name: "naturalHazardsCovered",
             label: "Natural Hazards covered",
             description: "Please identify all natural hazards covered by your insurance.",
+            unit: "",
             component: "MultiSelectFormField",
+            evidenceDesired: false,
             options: [
               {
                 label: "Hail",

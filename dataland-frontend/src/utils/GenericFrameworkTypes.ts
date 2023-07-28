@@ -25,6 +25,8 @@ export interface Field {
   validation?: string;
   validationLabel?: string;
   required?: boolean;
+  unit?: string;
+  evidenceDesired?: boolean;
 
   // input field specific values
   placeholder?: string;
