@@ -40,7 +40,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  */
 function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "company-with-one-sfdr-data-set";
-  input.t.general!.general!.referencedReports = "/test_pdf.pdf";
+  input.t.general!.general!.referencedReports = {"test-report":"/test_pdf.pdf"};
   return input;
 }
 
