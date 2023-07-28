@@ -40,6 +40,7 @@
             :arrayOfKpiDataObjects="arrayOfKpiDataObjectsMapItem[1]"
             :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
             headerInputStyle="display: none;"
+            :details-header-mapping="detailsHeaderMapping"
           />
         </div>
       </div>
@@ -98,6 +99,10 @@ export default defineComponent({
     formatValueForDisplay: {
       type: Function as () => (field: Field, value: KpiValue) => KpiValue,
       default: (field: Field, value: KpiValue): KpiValue => value,
+    },
+    detailsHeaderMapping: {
+      type: Object,
+      default: {},
     },
   },
   watch: {

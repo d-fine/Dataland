@@ -9,6 +9,7 @@
       :data-and-meta-info="smeDataAndMetaInfo"
       @data-converted="handleFinishedDataConversion"
       :format-value-for-display="formatValueForDisplay"
+      :details-header-mapping="detailsCompanyDataTableColumnHeaders"
     />
   </div>
 </template>
@@ -18,17 +19,20 @@ import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComp
 import { smeDataModel } from "@/components/resources/frameworkDataSearch/sme/SmeDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationSmeData, DataTypeEnum } from "@clients/backend";
+import {DataAndMetaInformationSmeData, DataTypeEnum, SmeProduct, SmeProductionSite} from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { Field } from "@/utils/GenericFrameworkTypes";
+import {
+  detailsCompanyDataTableColumnHeaders
+} from "@/components/resources/frameworkDataSearch/sme/DataModelsTranslations";
+import {convertToMillions} from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   name: "SmePanel",
-
   components: { ThreeLayerTable },
   data() {
     return {
@@ -37,6 +41,7 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       smeDataAndMetaInfo: [] as Array<DataAndMetaInformationSmeData>,
+      detailsCompanyDataTableColumnHeaders,
     };
   },
   props: PanelProps,
@@ -98,14 +103,34 @@ export default defineComponent({
      * @returns the formatted value
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
-      if (field.name == "addressOfHeadquarters") {
+      if (value == null) {
+        return value;
+      } else if (field.name == "addressOfHeadquarters") {
         return this.formatAddress(value as object);
       } else if (
         field.name == "percentageOfInvestmentsInEnhancingEnergyEfficiency" ||
         field.name == "energyConsumptionCoveredByOwnRenewablePowerGeneration"
       ) {
         return assertDefined(assertDefined(field.options).find((option) => option.value === value).label);
+      } else if (field.name == "listOfProductionSites") {
+        const listOfProductionSites = value as SmeProductionSite[]
+        return listOfProductionSites.map((productionSite) => ({
+          nameOfProductionSite: productionSite.nameOfProductionSite,
+          addressOfProductionSite: productionSite.addressOfProductionSite,
+          percentageOfTotalRevenue: `${productionSite.percentageOfTotalRevenue}%`,
+        }));
+      } else if (field.name == "listOfProducts") {
+        const listOfProducts = value as SmeProduct[];
+        return listOfProducts.map((product) => ({
+          name: product.name,
+          percentageOfTotalRevenue: `${product.percentageOfTotalRevenue}%`,
+        }));
+      } else if (field.name == "totalRevenue") {
+        return convertToMillions(value as number);
       }
+      // TODO create component tests for the new cases
+      // TODO what happens if each of these is not set (null)
+      // TODO test each table manually
       return value;
     },
     /**

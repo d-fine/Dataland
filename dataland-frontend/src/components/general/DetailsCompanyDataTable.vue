@@ -5,8 +5,8 @@
       :field="keyOfColumn"
       :key="keyOfColumn"
       :header="
-        detailsCompanyDataTableColumnHeaders[kpiKeyOfTable]
-          ? detailsCompanyDataTableColumnHeaders[kpiKeyOfTable][keyOfColumn]
+        detailsHeaderMapping![kpiKeyOfTable]
+          ? detailsHeaderMapping![kpiKeyOfTable][keyOfColumn]
           : humanizeString(kpiKeyOfTable)
       "
       headerStyle="width: 15vw;"
@@ -34,7 +34,6 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -43,12 +42,17 @@ export default defineComponent({
   data() {
     return {
       listOfRowContents: [] as Array<object | string>,
-      detailsCompanyDataTableColumnHeaders,
       kpiKeyOfTable: "" as string,
       keysOfValuesForColumnDisplay: [] as string[],
       keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing"] as string[],
       humanizeString,
     };
+  },
+  props: {
+    detailsHeaderMapping: {
+      type: Object,
+      default: {},
+    },
   },
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;

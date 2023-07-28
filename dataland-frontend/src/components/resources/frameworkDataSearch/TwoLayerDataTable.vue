@@ -168,6 +168,10 @@ export default defineComponent({
       type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
       default: () => [],
     },
+    detailsHeaderMapping: {
+      type: Object,
+      default: {},
+    },
   },
   mounted() {
     document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
@@ -204,7 +208,7 @@ export default defineComponent({
     },
     /**
      * Opens a modal to display a table with the provided list of production sites
-     * @param listOfValues An array consisting of production sites
+     * @param listOfValues An array consisting of the data to display
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
      */
@@ -214,6 +218,7 @@ export default defineComponent({
           header: modalTitle,
           modal: true,
           dismissableMask: true,
+          detailsHeaderMapping: this.detailsHeaderMapping,
         },
         data: {
           listOfRowContents: listOfValues,
