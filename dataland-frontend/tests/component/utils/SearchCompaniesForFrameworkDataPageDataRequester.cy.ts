@@ -70,7 +70,7 @@ describe("Component test for ViewFrameworkBase", () => {
       new Set<DataTypeEnum>(),
       new Set<string>(),
       new Set<string>(),
-      Promise.resolve({} as Keycloak)
+      Promise.resolve({} as Keycloak),
     );
     cy.wait(100).then(() => {
       expect(storedCompanies).to.have.length(1);

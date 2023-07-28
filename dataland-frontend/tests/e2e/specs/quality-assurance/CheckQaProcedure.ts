@@ -49,7 +49,7 @@ describeIf(
         testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
       });
     });
-  }
+  },
 );
 
 /**
@@ -89,7 +89,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(companyName: string): voi
  */
 function testSubmittedDatasetIsInReviewListAndRejectIt(
   storedCompany: StoredCompany,
-  dataset: DataMetaInformation
+  dataset: DataMetaInformation,
 ): void {
   login(reviewer_name, reviewer_pw);
 
@@ -114,7 +114,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 
   cy.url().should(
     "eq",
-    getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${dataset.dataId}`
+    getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${dataset.dataId}`,
   );
 }
 

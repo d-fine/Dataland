@@ -19,7 +19,7 @@ describe("The page should behave well-defined when the user logs out in a differ
         cy.get("button[name=login_dataland_button_on_session_modal]", { timeout: 10000 }).click();
         cy.get("#username").should("exist").get("#password").should("exist").get("#kc-login").should("exist");
       });
-    }
+    },
   );
 
   /**

@@ -20,7 +20,7 @@ describeIf(
     let testData: FixtureData<SfdrData>;
 
     before(function () {
-      cy.fixture("CompanyInformationWithSfdrDataPreparedFixtures").then(function (jsonContent) {
+      cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
         testData = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
       });
@@ -39,12 +39,12 @@ describeIf(
         .then((storedCompany) => {
           cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
           cy.visitAndCheckAppMount(
-            "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Sfdr + "/upload"
+            "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Sfdr + "/upload",
           );
           cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.url().should(
             "eq",
-            getBaseUrl() + "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Sfdr + "/upload"
+            getBaseUrl() + "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Sfdr + "/upload",
           );
           cy.get("h1").should("contain", testCompanyName);
           uploadSfdrDataViaForm(storedCompany.companyId);
@@ -72,5 +72,5 @@ describeIf(
       cy.get(".p-dialog tr").eq(1).find("td").eq(2).should("have.text", "Description of something");
       cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
     }
-  }
+  },
 );

@@ -6,10 +6,10 @@
  * @returns list of sorted objects
  */
 export function sortReportingPeriodsToDisplayAsColumns(
-  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[]
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
 ): ReportingPeriodOfDataSetWithId[] {
   return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) =>
-    compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod)
+    compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod),
   );
 }
 
@@ -56,12 +56,12 @@ export function expandRowGroupOnHeaderClick<T>(
   event: Event,
   referenceData: Array<T>,
   targetKey: keyof T,
-  expandedRowGroups: string[] = []
+  expandedRowGroups: string[] = [],
 ): string[] {
   const id = (event.target as Element).id;
 
   const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-    referenceData.some((dataObject) => dataObject[targetKey] === child.id)
+    referenceData.some((dataObject) => dataObject[targetKey] === child.id),
   )[0];
 
   if (matchingChild || referenceData.some((dataObject) => dataObject[targetKey] === id)) {

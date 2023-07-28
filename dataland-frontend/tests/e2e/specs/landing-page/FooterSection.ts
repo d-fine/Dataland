@@ -21,7 +21,7 @@ describe("As a user, I expect the footer section to be present and contain relev
 
     const frameworksToCheck = Object.values(DataTypeEnum).filter(
       (frameworkName) =>
-        ([DataTypeEnum.Sfdr, DataTypeEnum.Sme, DataTypeEnum.P2p] as DataTypeEnum[]).indexOf(frameworkName) === -1
+        ([DataTypeEnum.Sfdr, DataTypeEnum.Sme, DataTypeEnum.P2p] as DataTypeEnum[]).indexOf(frameworkName) === -1,
     );
     frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on ${framework}`, () => {
@@ -31,7 +31,7 @@ describe("As a user, I expect the footer section to be present and contain relev
               const companyId = storedCompanies[0].companyId;
               cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${framework}`);
               checkFooter();
-            }
+            },
           );
         });
       });

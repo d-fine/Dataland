@@ -121,7 +121,7 @@ describe("Component test for P2pPanel", () => {
    * @returns a mocked api response
    */
   function constructCompanyApiResponseForP2pForSixYears(
-    baseDataset: PathwaysToParisData
+    baseDataset: PathwaysToParisData,
   ): DataAndMetaInformationPathwaysToParisData[] {
     const p2pDatasets: DataAndMetaInformationPathwaysToParisData[] = [];
     for (let i = 0; i < 6; i++) {

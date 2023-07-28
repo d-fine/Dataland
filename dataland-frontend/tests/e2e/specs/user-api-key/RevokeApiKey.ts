@@ -3,7 +3,7 @@ describe("As a user I expect my api key will be revoke correctly", () => {
     cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithKey.json" }).as(
-      "apiKeyInfo"
+      "apiKeyInfo",
     );
     cy.get("div#existingApiKeyCard").should("exist");
     cy.get("button").contains("DELETE").click();

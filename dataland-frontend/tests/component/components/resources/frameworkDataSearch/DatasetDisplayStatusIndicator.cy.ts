@@ -33,7 +33,7 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
     cy.get("a[data-test=datasetDisplayStatusLink]").should(
       "have.attr",
       "href",
-      `/companies/${supersededDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${supersededDataset.reportingPeriod}`
+      `/companies/${supersededDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${supersededDataset.reportingPeriod}`,
     );
   });
 
@@ -76,7 +76,7 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
     cy.get("a[data-test=datasetDisplayStatusLink]").should(
       "have.attr",
       "href",
-      `/companies/${acceptedAndActiveDataset.companyId}/frameworks/${DataTypeEnum.Lksg}`
+      `/companies/${acceptedAndActiveDataset.companyId}/frameworks/${DataTypeEnum.Lksg}`,
     );
   });
 

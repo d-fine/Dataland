@@ -28,8 +28,8 @@ describeIf(
               token,
               preparedFixture.companyInformation,
               preparedFixture.t,
-              preparedFixture.reportingPeriod
-            )
+              preparedFixture.reportingPeriod,
+            ),
           )
           .then((idsUploaded) => {
             uploadIds = idsUploaded;
@@ -59,7 +59,7 @@ describeIf(
         .then(() => {
           return getKeycloakToken(admin_name, admin_pw).then(async (token) => {
             const data = await new LksgDataControllerApi(
-              new Configuration({ accessToken: token })
+              new Configuration({ accessToken: token }),
             ).getAllCompanyLksgData(uploadIds.companyId, false);
             expect(data.data).to.have.length(2);
             expect(data.data[0].data).to.deep.equal(data.data[1].data);
@@ -99,7 +99,9 @@ describeIf(
             .should("be.visible")
             .click();
           cy.get(
-            `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(dataTest)}]`
+            `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(
+              dataTest,
+            )}]`,
           ).should("be.visible");
           cy.get(`div[data-test=${assertDefined(dataTest)}]`)
             .find("input[type=file]")
@@ -110,5 +112,5 @@ describeIf(
       submitButton.clickButton();
       cy.get("h4").contains("Upload successfully executed.").should("exist");
     });
-  }
+  },
 );

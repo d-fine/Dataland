@@ -70,7 +70,7 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getLksgDataControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
           const singleLksgData = (
@@ -101,7 +101,7 @@ export default defineComponent({
       kpiKey: string,
       kpiValue: KpiValue,
       subcategory: Subcategory,
-      dataIdOfLksgDataset: string
+      dataIdOfLksgDataset: string,
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
 
@@ -136,7 +136,7 @@ export default defineComponent({
         });
       }
       this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
-        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
+        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[],
       );
     },
     /**
@@ -149,14 +149,14 @@ export default defineComponent({
         if (categoryObject == null) continue;
         for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
           string,
-          object | null
+          object | null,
         ][]) {
           if (subCategoryObject == null) continue;
           for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
             const subcategory = assertDefined(
               lksgDataModel
                 .find((category) => category.name === categoryKey)
-                ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
+                ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
             );
             this.createKpiDataObjects(kpiKey, (kpiValue as KpiValue) ?? "", subcategory, dataId);
           }
@@ -202,7 +202,7 @@ export default defineComponent({
      * @returns the constructed collection of readable strings
      */
     generateReadableCombinationOfNumberOfSuppliersAndCountries(
-      numberOfSuppliersPerCountryCode?: Map<string, number | undefined | null>
+      numberOfSuppliersPerCountryCode?: Map<string, number | undefined | null>,
     ) {
       if (numberOfSuppliersPerCountryCode != undefined) {
         const readableListOfSuppliersAndCountries = Array.from(numberOfSuppliersPerCountryCode.entries()).map(
@@ -213,7 +213,7 @@ export default defineComponent({
             } else {
               return "There are suppliers from " + countryName;
             }
-          }
+          },
         );
         if (readableListOfSuppliersAndCountries.length > 1) {
           return readableListOfSuppliersAndCountries;
@@ -245,7 +245,7 @@ export default defineComponent({
           procurementCategory: procurementCategoryType,
           definitionsOfProductTypeOrService,
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
-            new Map(Object.entries(lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {}))
+            new Map(Object.entries(lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {})),
           ),
           percentageOfTotalProcurement:
             lksgProcurementCategory.percentageOfTotalProcurement != null
@@ -273,7 +273,7 @@ export default defineComponent({
       }
       if (kpiField.name === "procurementCategories") {
         kpiValue = this.reformatProcurementCategoriesValue(
-          kpiValue as Map<ProcurementCategoryType, LksgProcurementCategory> | null
+          kpiValue as Map<ProcurementCategoryType, LksgProcurementCategory> | null,
         );
       }
 

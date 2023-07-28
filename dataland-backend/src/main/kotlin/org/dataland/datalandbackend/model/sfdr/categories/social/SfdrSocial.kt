@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social
 
-import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialSocialAndEmployeeMatters
+import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialAntiCorruptionAndAntiBribery
 import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialGreenSecurities
 import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialHumanRights
-import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialAntiCorruptionAndAntiBribery
+import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialSocialAndEmployeeMatters
 
 /**
  * --- API model ---

@@ -33,7 +33,7 @@ describe("As a user I want to be able to register for an account and be able to 
     typePasswordAndExpectError("abc", "at least 12 characters");
     typePasswordAndExpectError(
       "PasswordPasswordPassword",
-      'Repeated character patterns like "abcabcabc" are easy to guess'
+      'Repeated character patterns like "abcabcabc" are easy to guess',
     );
     typePasswordAndExpectError("qwerty123456", "This is a commonly used password");
     typePasswordAndExpectError("a".repeat(200), "at most 128 characters");

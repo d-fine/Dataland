@@ -44,7 +44,7 @@ export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak,
  */
 export function startSessionSetIntervalFunctionAndReturnItsId(
   keycloak: Keycloak,
-  onSurpassingExpiredSessionTimestampCallback: () => void
+  onSurpassingExpiredSessionTimestampCallback: () => void,
 ): number {
   const functionIdOfSetInterval = setInterval(() => {
     const currentTimestampInMs = new Date().getTime();
@@ -76,7 +76,7 @@ export function isRefreshTokenExpiryTimestampInSharedStoreReached(): boolean {
   } else {
     throw Error(
       "No expiry timestamp for the current refresh token could be found in the store. " +
-        "This is not acceptable for running Dataland."
+        "This is not acceptable for running Dataland.",
     );
   }
 }

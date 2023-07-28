@@ -57,7 +57,7 @@
                   convertsListToReadableFormatAndShowsInModal(
                     slotProps.data.content[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey
+                    slotProps.data.kpiKey,
                   )
                 "
                 class="link"
@@ -73,7 +73,7 @@
                   openModalAndDisplayValuesInSubTable(
                     slotProps.data.content[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey
+                    slotProps.data.kpiKey,
                   )
                 "
                 class="link"
@@ -186,7 +186,7 @@ export default defineComponent({
   },
   mounted() {
     document.addEventListener("click", (e) =>
-      expandRowGroupOnHeaderClick(e, this.arrayOfKpiDataObjects, "subcategoryKey", this.expandedRowGroups)
+      expandRowGroupOnHeaderClick(e, this.arrayOfKpiDataObjects, "subcategoryKey", this.expandedRowGroups),
     );
   },
   methods: {
