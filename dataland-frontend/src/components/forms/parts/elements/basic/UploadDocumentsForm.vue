@@ -8,6 +8,7 @@
       :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
+      :multiple="true"
       @select="handleFilesSelected"
     >
       <template #header="{ files, chooseCallback }">
@@ -102,21 +103,30 @@ export default defineComponent({
      * @param event full event object containing the files
      * @param event.files files
      */
-    async handleFilesSelected(event: FileUploadSelectEvent): Promise<void> {
+    handleFilesSelected(event: FileUploadSelectEvent) {
+      console.log('wyvhodzi 0', event.files)
       const selectedFilesByUser = event.files as File[];
       if (isThereActuallyANewFileSelected(selectedFilesByUser, this.documentsToUpload)) {
-        const lastSelectedFile = selectedFilesByUser[selectedFilesByUser.length - 1];
-        const documentToUpload = { file: lastSelectedFile } as DocumentToUpload;
-        documentToUpload.reference = await calculateSha256HashFromFile(documentToUpload.file);
-        documentToUpload.fileNameWithoutSuffix = removeFileTypeExtension(documentToUpload.file.name);
-        this.documentsToUpload.push(documentToUpload);
-        this.emitDocumentsChangedEvent();
+        const documentsToUpload = Promise.all(
+          selectedFilesByUser.map(async (file) => {
+            return {
+              file: file,
+              reference: await calculateSha256HashFromFile(file),
+              fileNameWithoutSuffix: removeFileTypeExtension(file.name),
+            };
+          })
+        );
+        void documentsToUpload.then((documentsToUpload) => {
+          this.documentsToUpload = documentsToUpload;
+          this.emitDocumentsChangedEvent();
+        });
       }
     },
     /**
      * Emits event that selected documents changed
      */
     emitDocumentsChangedEvent() {
+      console.log('wychodzi 1', this.documentsToUpload);
       this.$emit("documentsChanged", this.documentsToUpload);
     },
 

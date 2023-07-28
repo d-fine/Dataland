@@ -7,6 +7,7 @@
     :validation="validation"
     :outer-class="{
       'yes-no-radio': true,
+      'form-field': true,
     }"
     :inner-class="{
       'formkit-inner': false,

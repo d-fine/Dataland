@@ -171,7 +171,7 @@ export default defineComponent({
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
       this.documentReference = this.referencedDocument?.reference ?? "";
-      this.$emit("documentUpdated", this.name, this.referencedDocument);
+      this.$emit("documentUpdated", this.documentName, this.referencedDocument);
     },
 
     /**

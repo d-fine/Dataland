@@ -1,5 +1,3 @@
-let className = "col-9";
-
 <template>
   <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
     <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
@@ -7,23 +5,23 @@ let className = "col-9";
   </div>
   <!-- Select company reports -->
 
-  <div v-if="isEuTaxonomy" class="{className}">
+  <div v-if="isEuTaxonomy" class="formField">
     <h3 class="mt-0">Select company reports</h3>
     <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
   </div>
   <div v-if="isEuTaxonomy" className="col-9 formFields"></div>
-  <div v-else class="{className}">
+  <div v-else class="formField">
     <h3 class="mt-0">Select company reports</h3>
     <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
   </div>
 
   <FormKit name="referencedReports" type="group">
-    <div class="uploadFormSection; width=100px">
+    <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div
         v-for="reportToUpload of reportsToUpload"
         :key="reportToUpload.file.name"
-        class="{className}"
+        class="formField"
         data-test="report-to-upload-form"
       >
         <div :data-test="reportToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
@@ -126,8 +124,37 @@ export default defineComponent({
      * Emits event that referenceable files changed
      */
     emitReferenceableReportNamesChangedEvent() {
+      console.log("documentUpdated", this.allReferenceableReportNames);
       this.$emit("documentUpdated", this.allReferenceableReportNames);
     },
+    // /**
+    //  * Checks if there are duplicates in files and displays information if so
+    //  */
+    // duplicatesInFilesHandles() {
+    //   console.log("documentUpdated", this.allReferenceableReportNames);
+    //   this.$emit("documentUpdated", this.allReferenceableReportNames);
+    // },
+    // /**
+    //  * Handles selection of a file by the user. First it checks if the file name is already taken.
+    //  * If yes, the selected file is removed again and a popup with an error message is shown.
+    //  * Else the file is added to the reports that shall be uploaded, then the sha256 hashes are calculated
+    //  * and added to the respective files.
+    //  * @param reports the list of all reports currently selected in the file upload
+    //  */
+    // updateSelectedReports(reports: ReportToUpload[]) {
+    //   console.log("updateSelectedReports", reports);
+    //   this.reportsToUpload = reports;
+    //   if (this.duplicatesAmongReferenceableReportNames()) {
+    //     const indexOfLastSelectedFile = reports.length - 1;
+    //     const lastSelectedFile = reports[indexOfLastSelectedFile].file;
+    //     this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
+    //     (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(
+    //         indexOfLastSelectedFile
+    //     );
+    //   } else {
+    //     this.emitReferenceableReportNamesChangedEvent();
+    //   }
+    // },
     /**
      * Handles selection of a file by the user. First it checks if the file name is already taken.
      * If yes, the selected file is removed again and a popup with an error message is shown.
@@ -136,14 +163,38 @@ export default defineComponent({
      * @param reports the list of all reports currently selected in the file upload
      */
     updateSelectedReports(reports: ReportToUpload[]) {
+      console.log("updateSelectedReports 1!!!", reports);
       this.reportsToUpload = reports;
       if (this.duplicatesAmongReferenceableReportNames()) {
-        const indexOfLastSelectedFile = reports.length - 1;
-        const lastSelectedFile = reports[indexOfLastSelectedFile].file;
-        this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
-        (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(
-          indexOfLastSelectedFile,
-        );
+
+        // const duplicates = this.allReferenceableReportNames.filter((name, index) => this.allReferenceableReportNames.indexOf(name) !== index);
+        // console.log('DUPLICATES', duplicates)
+
+        this.reportsToUpload.forEach((element, index) => {
+
+
+          for (let i = this.reportsToUpload.length - 1; i >= 0; i--) {
+            const currentElement = this.reportsToUpload[i];
+            const lowerIndex = this.reportsToUpload.indexOf(currentElement);
+            if (lowerIndex !== i) {
+
+              console.log('!!!!!!!! index !!!!!!!', index)
+              (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(index)
+            }
+          }
+        });
+
+        // this.reportsToUpload.forEach((record, index) => {
+        //   if (duplicates.includes(record.fileNameWithoutSuffix)) {
+        //
+        //     this.openModalToDisplayDuplicateNameError(record.fileNameWithoutSuffix);
+        //     // (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(
+        //     //     index,
+        //     // )
+        //   }});
+        // const indexOfLastSelectedFile = reports.length - 1;
+        // const lastSelectedFile = reports[indexOfLastSelectedFile].file;
+
       } else {
         this.emitReferenceableReportNamesChangedEvent();
       }
@@ -202,6 +253,10 @@ export default defineComponent({
      * @returns a boolean stating if any file name is duplicated among the reference report names
      */
     duplicatesAmongReferenceableReportNames(): boolean {
+      console.log("Duplication check");
+      console.log("allReferenceableReportNames", this.allReferenceableReportNames, this.allReferenceableReportNames.length);
+      console.log("Set(this.allReferenceableReportNames)", new Set(this.allReferenceableReportNames), new Set(this.allReferenceableReportNames).size);
+      console.log("check", this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size);
       return this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size;
     },
   },

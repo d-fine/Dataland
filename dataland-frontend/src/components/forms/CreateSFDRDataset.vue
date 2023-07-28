@@ -53,7 +53,7 @@
                           :validation-label="field.validationLabel"
                           :evidenceDesired="field.evidenceDesired"
                           :data-test="field.name"
-                          @documentUpdated="updateDocumentList"
+                          @documentUpdated="handleChangeOfReferenceableReportNames"
                           :ref="field.name"
                         />
                       </FormKit>
@@ -303,6 +303,13 @@ export default defineComponent({
       }
     },
     /**
+     * Updates the local list of names of referenceable reports
+     * @param reportNames new list of the referenceable reports' names
+     */
+    handleChangeOfReferenceableReportNames(reportNames: string[]) {
+      this.namesOfAllCompanyReportsForTheDataset = reportNames;
+    },
+    /**
      * updates the list of certificates that were uploaded in the corresponding formfields on change
      * @param fieldName the name of the formfield as a key
      * @param document the certificate as combined object of reference id and file content
@@ -312,6 +319,24 @@ export default defineComponent({
         this.documents.set(fieldName, document);
       } else {
         this.documents.delete(fieldName);
+      }
+    },
+    /**
+     * updates the list of documents that were uploaded
+     * @param fieldName the name of the formfield as a key
+     * @param document the certificate as combined object of reference id and file content
+     */
+    updateDocumentsList(action: object): void {
+      switch (payload.typ) {
+        case "upload":
+          this.items.push(payload.payload);
+          break;
+        case "delete":
+          const indexToDelete = this.items.indexOf(payload.payload);
+          if (indexToDelete !== -1) {
+            this.items.splice(indexToDelete, 1);
+          }
+          break;
       }
     },
   },
