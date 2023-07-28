@@ -1,3 +1,4 @@
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { Category } from "@/utils/GenericFrameworkTypes";
 
 
@@ -115,9 +116,10 @@ export const sfdrDataModel = [ {
       name : "totalRevenue",
       label : "Total Revenue",
       description : "Company Total Revenue ",
-      unit : "Currency",
+      unit : "",
       component : "DataPointFormField",
       evidenceDesired : true,
+      options : getDataset(DropdownDatasetIdentifier.CurrencyCodes),
       required : false,
       showIf : (): boolean => true
     }, {
@@ -705,18 +707,20 @@ export const sfdrDataModel = [ {
       name : "averageGrossHourlyEarningsMaleEmployees",
       label : "Average Gross Hourly Earnings Male Employees",
       description : "Average gross hourly earnings of male employees",
-      unit : "Currency",
+      unit : "",
       component : "DataPointFormField",
       evidenceDesired : true,
+      options : getDataset(DropdownDatasetIdentifier.CurrencyCodes),
       required : false,
       showIf : (): boolean => true
     }, {
       name : "averageGrossHourlyEarningsFemaleEmployees",
       label : "Average Gross Hourly Earnings Female Employees",
       description : "Average gross hourly earnings of female employees",
-      unit : "Currency",
+      unit : "",
       component : "DataPointFormField",
       evidenceDesired : true,
+      options : getDataset(DropdownDatasetIdentifier.CurrencyCodes),
       required : false,
       showIf : (): boolean => true
     }, {
@@ -935,9 +939,10 @@ export const sfdrDataModel = [ {
       name : "reportedFinesOfBriberyCorruption",
       label : "Reported Fines Of Bribery Corruption",
       description : "Amount of fines for violations of anti-corruption and anti-bribery laws.",
-      unit : "Currency",
+      unit : "",
       component : "DataPointFormField",
       evidenceDesired : true,
+      options : getDataset(DropdownDatasetIdentifier.CurrencyCodes),
       required : false,
       showIf : (): boolean => true
     } ]
