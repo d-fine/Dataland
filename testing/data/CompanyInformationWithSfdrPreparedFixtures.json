@@ -2,845 +2,690 @@
 	{
 		"companyInformation": {
 			"companyName": "company-with-one-sfdr-data-set",
-			"headquarters": "Turcotteberg",
-			"headquartersPostalCode": "96113-5222",
-			"sector": "convergence",
+			"headquarters": "East Weldonton",
+			"headquartersPostalCode": "47126",
 			"identifiers": {
 				"Lei": [
-					"ugSzphhLHAx7qTxQr8ES"
+					"mkIVJzENiypD934q3NHY"
 				],
-				"Isin": [],
+				"Isin": [
+					"0t9XRDvsxI4c"
+				],
 				"PermId": [],
 				"Ticker": [
-					"C58fYPx"
+					"uQHg9kE"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"gqf4FpUrb"
+				"Duns": [
+					"VrhEqAUBA"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"3ehnNpbczZHFSSK"
+					"zhjad5hsg9QTyb5"
 				]
 			},
-			"countryCode": "AU",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH",
+			"countryCode": "CK",
+			"companyAlternativeNames": [
+				"Farrell and Sons",
+				"Hamill - Prohaska",
+				"Kling and Sons",
+				"Wyman Group"
+			],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"social": {
+			"general": {
 				"general": {
-					"fiscalYear": "Deviation",
-					"fiscalYearEnd": "2024-02-06",
-					"groupLevelAnnualReport": "Yes",
-					"annualReport": "/test_pdf.pdf",
-					"annualReportDate": "2024-03-17",
-					"annualReportCurrency": "EUR",
-					"sustainabilityReport": "https://optimal-sewer.org/cumbersome-ginseng.pdf",
-					"sustainabilityReportDate": "2024-01-04",
-					"sustainabilityReportCurrency": "USD",
-					"integratedReport": "https://all-testimonial.com/dramatic-salary.pdf",
-					"integratedReportDate": "2024-04-16",
-					"integratedReportCurrency": "AUD",
-					"esefReport": "https://animated-menu.name/same-evaporation.pdf",
-					"esefReportDate": "2023-12-20",
-					"esefReportCurrency": "CAD",
-					"scopeOfEntities": "NA"
-				},
-				"socialAndEmployeeMatters": {
-					"iloCoreLabourStandards": {
-						"value": "Yes",
-						"quality": "Estimated"
-					},
-					"environmentalPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 822,
-							"report": "SustainabilityReport",
-							"tagName": "bandwidth"
-						},
-						"quality": "Audited",
-						"comment": "reboot open-source microchip"
-					},
-					"childForcedDiscriminationPolicy": {
-						"value": "No",
-						"dataSource": {
-							"page": 376,
-							"report": "SustainabilityReport",
-							"tagName": "e-commerce"
-						},
-						"quality": "Incomplete",
-						"comment": "transmit wireless monitor"
-					},
-					"briberyCorruptionPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 1133,
-							"report": "AnnualReport",
-							"tagName": "methodologies"
-						},
-						"quality": "Incomplete",
-						"comment": "quantify online feed"
-					},
-					"technologiesExpertiseTransferPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 119,
-							"report": "IntegratedReport",
-							"tagName": "functionalities"
-						},
-						"quality": "Estimated",
-						"comment": "quantify optical transmitter"
-					},
-					"fairCompetitionPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 754,
-							"report": "AnnualReport",
-							"tagName": "applications"
-						},
-						"quality": "Incomplete",
-						"comment": "index neural interface"
-					},
-					"violationOfTaxRulesAndRegulation": {
-						"value": "No",
-						"dataSource": {
-							"page": 874,
-							"report": "ESEFReport",
-							"tagName": "relationships"
-						},
-						"quality": "Incomplete",
-						"comment": "override back-end panel"
-					},
-					"unGlobalCompactPrinciplesCompliancePolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 455,
-							"report": "IntegratedReport",
-							"tagName": "experiences"
-						},
-						"quality": "Audited",
-						"comment": "synthesize primary program"
-					},
-					"oecdGuidelinesForMultinationalEnterprisesPolicy": {
-						"value": "Yes",
-						"quality": "Incomplete"
-					},
-					"averageGrossHourlyEarningsMaleEmployees": {
-						"value": 85.71327216923237,
-						"quality": "Incomplete"
-					},
-					"workplaceAccidentPreventionPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 131,
-							"report": "SustainabilityReport",
-							"tagName": "infrastructures"
-						},
-						"quality": "Estimated",
-						"comment": "navigate multi-byte microchip"
-					},
-					"rateOfAccidents": {
-						"value": 8957426063638528,
-						"quality": "Incomplete"
-					},
-					"supplierCodeOfConduct": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 1059,
-							"report": "IntegratedReport",
-							"tagName": "interfaces"
-						},
-						"quality": "Incomplete",
-						"comment": "synthesize haptic pixel"
-					},
-					"reportedIncidentsOfDiscrimination": {
-						"value": 1754826840997888,
-						"dataSource": {
-							"page": 666,
-							"report": "ESEFReport",
-							"tagName": "functionalities"
-						},
-						"quality": "Incomplete",
-						"comment": "reboot virtual pixel"
-					},
-					"ceoToEmployeePayGap": {
-						"value": 6378848954351616,
-						"quality": "Incomplete"
-					}
-				},
-				"humanRights": {
-					"reportedIncidentsOfHumanRights": {
-						"quality": "NA"
-					}
-				},
-				"greenSecurities": {},
-				"anticorruptionAndAntibribery": {
-					"reportedCasesOfBriberyCorruption": {
-						"value": 8685716502478848,
-						"quality": "Estimated"
-					}
+					"dataDate": "2023-02-09",
+					"fiscalYearDeviation": "NoDeviation",
+					"fiscalYearEnd": "2023-06-13"
 				}
 			},
 			"environmental": {
 				"greenhouseGasEmissions": {
-					"totalRevenue": {
-						"value": 484541.4743642323,
+					"scope1": {
+						"value": 85.92987922020257,
 						"dataSource": {
-							"page": 431,
+							"page": 19,
 							"report": "SustainabilityReport",
 							"tagName": "applications"
 						},
+						"quality": "Reported",
+						"comment": "calculate multi-byte matrix"
+					},
+					"totalRevenue": {
+						"value": 54.35470740776509,
+						"dataSource": {
+							"page": 703,
+							"report": "IntegratedReport",
+							"tagName": "models"
+						},
 						"quality": "Audited",
-						"comment": "back up virtual protocol"
+						"comment": "transmit online alarm"
+					},
+					"fossilFuelSectorExposure": {
+						"value": "No",
+						"dataSource": {
+							"page": 597,
+							"report": "AnnualReport",
+							"tagName": "e-markets"
+						},
+						"quality": "Reported",
+						"comment": "back up haptic panel"
 					}
 				},
 				"energyPerformance": {
 					"renewableEnergyProduction": {
-						"value": 6555903950061568,
+						"value": 47.642304096370935,
 						"dataSource": {
-							"page": 239,
+							"page": 637,
+							"report": "AnnualReport",
+							"tagName": "solutions"
+						},
+						"quality": "Audited",
+						"comment": "parse 1080p matrix"
+					},
+					"nonRenewableEnergyProduction": {
+						"value": 13.391608046367764,
+						"dataSource": {
+							"page": 1165,
+							"report": "AnnualReport",
+							"tagName": "technologies"
+						},
+						"quality": "Estimated",
+						"comment": "hack primary feed"
+					},
+					"highImpactClimateSectorEnergyConsumptionNaceA": {
+						"value": 26.24701797030866,
+						"dataSource": {
+							"page": 275,
+							"report": "AnnualReport",
+							"tagName": "deliverables"
+						},
+						"quality": "Reported",
+						"comment": "back up neural card"
+					},
+					"highImpactClimateSectorEnergyConsumptionNaceL": {
+						"value": 80.67528926767409,
+						"dataSource": {
+							"page": 1133,
 							"report": "IntegratedReport",
 							"tagName": "technologies"
 						},
-						"quality": "Reported",
-						"comment": "override haptic panel"
-					},
-					"nonRenewableEnergyProduction": {
-						"value": 2626677930721280,
-						"dataSource": {
-							"page": 277,
-							"report": "SustainabilityReport",
-							"tagName": "mindshare"
-						},
-						"quality": "Reported",
-						"comment": "synthesize digital matrix"
-					},
-					"highImpactClimateSectorEnergyConsumptionNaceB": {
-						"value": 7875951364931584,
-						"dataSource": {
-							"page": 1159,
-							"report": "ESEFReport",
-							"tagName": "niches"
-						},
 						"quality": "Incomplete",
-						"comment": "calculate primary driver"
+						"comment": "back up wireless protocol"
 					},
-					"highImpactClimateSectorEnergyConsumptionNaceE": {
-						"value": 4663147554144256,
-						"quality": "Incomplete"
-					},
-					"highImpactClimateSectorEnergyConsumptionNaceF": {
-						"value": 1043642382811136,
+					"nonRenewableEnergyConsumptionNuclearEnergy": {
+						"value": 15.514822769910097,
 						"dataSource": {
-							"page": 995,
-							"report": "SustainabilityReport",
-							"tagName": "initiatives"
-						},
-						"quality": "Incomplete",
-						"comment": "transmit virtual circuit"
-					},
-					"highImpactClimateSectorEnergyConsumptionNaceH": {
-						"value": 2022546941673472,
-						"dataSource": {
-							"page": 551,
+							"page": 120,
 							"report": "IntegratedReport",
 							"tagName": "systems"
 						},
-						"quality": "Reported",
-						"comment": "compress haptic sensor"
-					},
-					"totalHighImpactClimateSectorEnergyConsumption": {
-						"value": 7993211521859584,
-						"quality": "Estimated"
-					},
-					"nonRenewableEnergyConsumptionFossilFuels": {
-						"value": 7378396008939520,
-						"dataSource": {
-							"page": 245,
-							"report": "SustainabilityReport",
-							"tagName": "methodologies"
-						},
-						"quality": "Reported",
-						"comment": "parse primary sensor"
-					},
-					"nonRenewableEnergyConsumptionCrudeOil": {
-						"value": 5971092405485568,
-						"dataSource": {
-							"page": 856,
-							"report": "ESEFReport",
-							"tagName": "metrics"
-						},
-						"quality": "Reported",
-						"comment": "program redundant transmitter"
-					},
-					"nonRenewableEnergyConsumptionNaturalGas": {
-						"value": 1656926144299008,
-						"dataSource": {
-							"page": 1002,
-							"report": "SustainabilityReport",
-							"tagName": "applications"
-						},
-						"quality": "Reported",
-						"comment": "compress wireless bus"
-					},
-					"nonRenewableEnergyConsumptionLignite": {
-						"value": 5761296356081664,
-						"dataSource": {
-							"page": 986,
-							"report": "ESEFReport",
-							"tagName": "functionalities"
-						},
-						"quality": "Reported",
-						"comment": "input neural firewall"
-					},
-					"nonRenewableEnergyConsumptionNuclearEnergy": {
-						"value": 4739320648826880,
-						"dataSource": {
-							"page": 478,
-							"report": "SustainabilityReport",
-							"tagName": "functionalities"
-						},
 						"quality": "Audited",
-						"comment": "override open-source capacitor"
-					},
-					"nonRenewableEnergyConsumptionOther": {
-						"value": 8440059260829696,
-						"dataSource": {
-							"page": 1055,
-							"report": "AnnualReport",
-							"tagName": "metrics"
-						},
-						"quality": "Audited",
-						"comment": "transmit open-source bus"
+						"comment": "copy neural pixel"
 					}
 				},
 				"biodiversity": {
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"value": "No",
-						"dataSource": {
-							"page": 243,
-							"report": "SustainabilityReport",
-							"tagName": "users"
-						},
-						"quality": "Incomplete",
-						"comment": "bypass primary monitor"
+						"value": "Yes",
+						"quality": "Estimated"
 					},
 					"protectedAreasExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"page": 831,
-							"report": "SustainabilityReport",
-							"tagName": "applications"
+							"page": 262,
+							"report": "AnnualReport",
+							"tagName": "eyeballs"
 						},
-						"quality": "Reported",
-						"comment": "reboot primary capacitor"
+						"quality": "Audited",
+						"comment": "synthesize solid state circuit"
 					}
 				},
 				"water": {
-					"emissionsToWater": {
-						"value": 5023293818011648,
-						"quality": "Estimated"
+					"waterConsumption": {
+						"value": 51.3814456993714,
+						"dataSource": {
+							"page": 94,
+							"report": "ESEFReport",
+							"tagName": "channels"
+						},
+						"quality": "Reported",
+						"comment": "compress mobile port"
+					},
+					"waterManagementPolicy": {
+						"value": "Yes",
+						"quality": "Incomplete"
 					},
 					"waterStressAreaExposure": {
-						"value": "Yes",
-						"quality": "Estimated"
-					}
-				},
-				"waste": {
-					"hazardousWaste": {
-						"value": 7808764417671168,
-						"dataSource": {
-							"page": 337,
-							"report": "SustainabilityReport",
-							"tagName": "functionalities"
-						},
-						"quality": "Reported",
-						"comment": "copy back-end circuit"
-					},
-					"manufactureOfAgrochemicalPesticidesProducts": {
-						"value": "Yes",
-						"quality": "Estimated"
-					},
-					"sustainableOceansAndSeasPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 275,
-							"report": "IntegratedReport",
-							"tagName": "networks"
-						},
-						"quality": "Reported",
-						"comment": "connect solid state bus"
-					},
-					"wasteNonRecycled": {
-						"value": 8909915468857344,
-						"dataSource": {
-							"page": 782,
-							"report": "ESEFReport",
-							"tagName": "infrastructures"
-						},
-						"quality": "Reported",
-						"comment": "quantify digital array"
-					},
-					"biodiversityProtectionPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 1170,
-							"report": "SustainabilityReport",
-							"tagName": "applications"
-						},
-						"quality": "Reported",
-						"comment": "input wireless program"
-					}
-				},
-				"emissions": {}
-			},
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-08",
-					"currency": "AMD"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2023-06-02",
-					"currency": "CLP"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-05-17",
-					"currency": "CHF"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "TND"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "two-sfdr-data-sets-in-different-years",
-			"headquarters": "Howecester",
-			"identifiers": {
-				"Lei": [
-					"RXxHSZf7mAR4OAn2twco"
-				],
-				"Isin": [
-					"sUsPYtWqP925",
-					"42m0pu2pNwQV"
-				],
-				"PermId": [
-					"CUDlMggWWT"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"BVX1yQSVu"
-				],
-				"CompanyRegistrationNumber": [
-					"R6m1Ku89WIwE5oD"
-				]
-			},
-			"countryCode": "ER",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"social": {
-				"general": {
-					"fiscalYearEnd": "2020-01-03",
-					"groupLevelAnnualReport": "No",
-					"annualReportDate": "2024-01-14",
-					"annualReportCurrency": "EUR",
-					"sustainabilityReportDate": "2024-06-04",
-					"sustainabilityReportCurrency": "AUD",
-					"integratedReportDate": "2023-09-16",
-					"integratedReportCurrency": "AUD",
-					"esefReportDate": "2023-09-16",
-					"esefReportCurrency": "AUD"
-				},
-				"socialAndEmployeeMatters": {
-					"iso14001": {
 						"value": "No",
 						"dataSource": {
-							"page": 632,
-							"report": "SustainabilityReport",
-							"tagName": "convergence"
-						},
-						"quality": "Incomplete",
-						"comment": "compress cross-platform monitor"
-					},
-					"briberyCorruptionPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 710,
-							"report": "IntegratedReport",
+							"page": 1166,
+							"report": "ESEFReport",
 							"tagName": "content"
 						},
 						"quality": "Audited",
-						"comment": "compress digital transmitter"
+						"comment": "parse virtual program"
+					}
+				},
+				"waste": {},
+				"emissions": {}
+			},
+			"social": {
+				"socialAndEmployeeMatters": {
+					"humanRightsLegalProceedings": {
+						"value": "No",
+						"quality": "Incomplete"
+					},
+					"corruptionLegalProceedings": {
+						"value": "No",
+						"dataSource": {
+							"page": 120,
+							"report": "SustainabilityReport",
+							"tagName": "ROI"
+						},
+						"quality": "Audited",
+						"comment": "bypass online card"
+					},
+					"briberyCorruptionPolicy": {
+						"value": "No",
+						"dataSource": {
+							"page": 730,
+							"report": "ESEFReport",
+							"tagName": "channels"
+						},
+						"quality": "Reported",
+						"comment": "navigate haptic port"
+					},
+					"fairBusinessMarketingAdvertisingPolicy": {
+						"value": "No",
+						"dataSource": {
+							"page": 740,
+							"report": "IntegratedReport",
+							"tagName": "communities"
+						},
+						"quality": "Estimated",
+						"comment": "parse neural circuit"
+					},
+					"technologiesExpertiseTransferPolicy": {
+						"value": "No",
+						"dataSource": {
+							"page": 979,
+							"report": "IntegratedReport",
+							"tagName": "niches"
+						},
+						"quality": "Reported",
+						"comment": "transmit 1080p capacitor"
+					},
+					"violationOfTaxRulesAndRegulation": {
+						"value": "No",
+						"dataSource": {
+							"page": 513,
+							"report": "IntegratedReport",
+							"tagName": "blockchains"
+						},
+						"quality": "Reported",
+						"comment": "input online system"
 					},
 					"unGlobalCompactPrinciplesCompliancePolicy": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
-							"page": 382,
+							"page": 814,
 							"report": "SustainabilityReport",
 							"tagName": "schemas"
 						},
-						"quality": "Reported",
-						"comment": "program primary system"
+						"quality": "Audited",
+						"comment": "back up primary driver"
 					},
-					"averageGrossHourlyEarningsMaleEmployees": {
-						"value": 56.502835964784026,
-						"quality": "Estimated"
-					},
-					"maleBoardMembers": {
-						"value": 899205105188864,
+					"oecdGuidelinesForMultinationalEnterprisesPolicy": {
+						"value": "No",
 						"dataSource": {
-							"page": 574,
-							"report": "IntegratedReport",
-							"tagName": "platforms"
+							"page": 556,
+							"report": "AnnualReport",
+							"tagName": "methodologies"
 						},
 						"quality": "Reported",
-						"comment": "parse open-source bandwidth"
+						"comment": "navigate open-source panel"
+					},
+					"averageGrossHourlyEarningsMaleEmployees": {
+						"value": 83.52274226490408,
+						"dataSource": {
+							"page": 769,
+							"report": "AnnualReport",
+							"tagName": "models"
+						},
+						"quality": "Reported",
+						"comment": "navigate solid state application"
+					},
+					"averageGrossHourlyEarningsFemaleEmployees": {
+						"value": 3.500390611588955,
+						"quality": "Estimated"
+					},
+					"supplierCodeOfConduct": {
+						"value": "Yes",
+						"quality": "Estimated"
 					},
 					"grievanceHandlingMechanism": {
 						"value": "No",
 						"dataSource": {
-							"page": 43,
-							"report": "IntegratedReport",
-							"tagName": "networks"
-						},
-						"quality": "Audited",
-						"comment": "program primary hard drive"
-					},
-					"whistleblowerProtectionPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 666,
+							"page": 1027,
 							"report": "SustainabilityReport",
-							"tagName": "e-commerce"
-						},
-						"quality": "Incomplete",
-						"comment": "back up digital microchip"
-					},
-					"ceoToEmployeePayGap": {
-						"value": 1794480302718976,
-						"dataSource": {
-							"page": 300,
-							"report": "IntegratedReport",
-							"tagName": "convergence"
+							"tagName": "e-business"
 						},
 						"quality": "Estimated",
-						"comment": "compress bluetooth monitor"
-					}
-				},
-				"humanRights": {
-					"traffickingInHumanBeingsPolicy": {
-						"value": "Yes",
-						"quality": "Estimated"
+						"comment": "bypass online feed"
 					},
-					"reportedChildLabourIncidents": {
-						"value": "No",
+					"sanctionsIncidentsOfDiscrimination": {
+						"value": 87.42951145395637,
 						"dataSource": {
-							"page": 463,
-							"report": "IntegratedReport",
-							"tagName": "partnerships"
+							"page": 1146,
+							"report": "ESEFReport",
+							"tagName": "metrics"
 						},
 						"quality": "Audited",
-						"comment": "calculate optical sensor"
-					},
-					"reportedForcedOrCompulsoryLabourIncidents": {
-						"value": "No",
-						"dataSource": {
-							"page": 543,
-							"report": "SustainabilityReport",
-							"tagName": "web services"
-						},
-						"quality": "Reported",
-						"comment": "back up online matrix"
+						"comment": "program digital pixel"
 					}
 				},
 				"greenSecurities": {
 					"securitiesNotCertifiedAsGreen": {
 						"value": "Yes",
 						"dataSource": {
-							"page": 236,
-							"report": "SustainabilityReport",
-							"tagName": "technologies"
-						},
-						"quality": "Reported",
-						"comment": "transmit open-source alarm"
-					}
-				},
-				"anticorruptionAndAntibribery": {
-					"reportedFinesOfBriberyCorruption": {
-						"value": 280175.5158929154,
-						"dataSource": {
-							"page": 1021,
+							"page": 429,
 							"report": "IntegratedReport",
 							"tagName": "communities"
 						},
-						"quality": "Reported",
-						"comment": "hack online driver"
-					}
-				}
-			},
-			"environmental": {
-				"greenhouseGasEmissions": {
-					"scope3": {
-						"quality": "NA"
-					},
-					"totalRevenue": {
-						"value": 371639.15265118703,
-						"dataSource": {
-							"page": 446,
-							"report": "AnnualReport",
-							"tagName": "supply-chains"
-						},
-						"quality": "Estimated",
-						"comment": "back up auxiliary port"
+						"quality": "Audited",
+						"comment": "override mobile system"
 					}
 				},
-				"energyPerformance": {
-					"nonRenewableEnergyConsumption": {
-						"value": 7847697472028672,
+				"humanRights": {
+					"humanRightsPolicy": {
+						"value": "No",
+						"quality": "Estimated"
+					},
+					"humanRightsDueDiligence": {
+						"value": "No",
+						"dataSource": {
+							"page": 584,
+							"report": "SustainabilityReport",
+							"tagName": "content"
+						},
+						"quality": "Reported",
+						"comment": "navigate auxiliary capacitor"
+					},
+					"reportedForcedOrCompulsoryLabourIncidents": {
+						"value": "Yes",
 						"dataSource": {
 							"page": 660,
-							"report": "AnnualReport",
-							"tagName": "methodologies"
-						},
-						"quality": "Audited",
-						"comment": "compress neural interface"
-					},
-					"highImpactClimateSectorEnergyConsumptionNaceB": {
-						"value": 5250540684443648,
-						"dataSource": {
-							"page": 338,
-							"report": "AnnualReport",
-							"tagName": "partnerships"
-						},
-						"quality": "Incomplete",
-						"comment": "program online circuit"
-					},
-					"highImpactClimateSectorEnergyConsumptionNaceC": {
-						"value": 5609472024117248,
-						"quality": "Incomplete"
-					},
-					"highImpactClimateSectorEnergyConsumptionNaceF": {
-						"quality": "NA"
-					},
-					"highImpactClimateSectorEnergyConsumptionNaceG": {
-						"value": 2360744813264896,
-						"dataSource": {
-							"page": 441,
-							"report": "IntegratedReport",
-							"tagName": "functionalities"
-						},
-						"quality": "Incomplete",
-						"comment": "bypass optical driver"
-					},
-					"highImpactClimateSectorEnergyConsumptionNaceL": {
-						"value": 5866545592926208,
-						"dataSource": {
-							"page": 1120,
-							"report": "IntegratedReport",
-							"tagName": "channels"
-						},
-						"quality": "Reported",
-						"comment": "synthesize online alarm"
-					},
-					"nonRenewableEnergyConsumptionFossilFuels": {
-						"value": 985307086323712,
-						"quality": "Estimated"
-					},
-					"nonRenewableEnergyConsumptionCrudeOil": {
-						"value": 2428438453420032,
-						"quality": "Incomplete"
-					},
-					"nonRenewableEnergyConsumptionNaturalGas": {
-						"value": 3132466367823872,
-						"dataSource": {
-							"page": 6,
-							"report": "IntegratedReport",
-							"tagName": "portals"
-						},
-						"quality": "Audited",
-						"comment": "back up auxiliary circuit"
-					},
-					"nonRenewableEnergyConsumptionNuclearEnergy": {
-						"quality": "NA"
-					},
-					"nonRenewableEnergyConsumptionOther": {
-						"quality": "NA"
-					}
-				},
-				"biodiversity": {
-					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 697,
-							"report": "SustainabilityReport",
-							"tagName": "portals"
-						},
-						"quality": "Incomplete",
-						"comment": "connect cross-platform pixel"
-					}
-				},
-				"water": {
-					"emissionsToWater": {
-						"value": 1833115173519360,
-						"quality": "Estimated"
-					},
-					"waterConsumption": {
-						"value": 888998461440000,
-						"dataSource": {
-							"page": 1163,
-							"report": "SustainabilityReport",
-							"tagName": "metrics"
-						},
-						"quality": "Reported",
-						"comment": "connect wireless pixel"
-					},
-					"waterReused": {
-						"value": 2552765547020288,
-						"dataSource": {
-							"page": 20,
-							"report": "SustainabilityReport",
-							"tagName": "ROI"
-						},
-						"quality": "Incomplete",
-						"comment": "generate solid state card"
-					}
-				},
-				"waste": {
-					"sustainableAgriculturePolicy": {
-						"value": "Yes",
-						"quality": "Incomplete"
-					},
-					"wasteNonRecycled": {
-						"value": 960741435768832,
-						"dataSource": {
-							"page": 616,
 							"report": "SustainabilityReport",
 							"tagName": "platforms"
 						},
 						"quality": "Incomplete",
-						"comment": "hack primary pixel"
-					},
-					"deforestationPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 1141,
-							"report": "AnnualReport",
-							"tagName": "lifetime value"
-						},
-						"quality": "Incomplete",
-						"comment": "back up haptic pixel"
+						"comment": "program mobile firewall"
 					}
 				},
-				"emissions": {
-					"inorganicPollutants": {
-						"value": 6042180344872960,
-						"quality": "Incomplete"
-					},
-					"airPollutants": {
-						"value": 1795509660418048,
-						"dataSource": {
-							"page": 932,
-							"report": "SustainabilityReport",
-							"tagName": "communities"
-						},
-						"quality": "Reported",
-						"comment": "navigate wireless alarm"
-					},
-					"ozoneDepletionSubstances": {
-						"value": 5311365973540864,
-						"dataSource": {
-							"page": 733,
-							"report": "SustainabilityReport",
-							"tagName": "mindshare"
-						},
-						"quality": "Estimated",
-						"comment": "reboot neural array"
-					},
-					"carbonReductionInitiatives": {
-						"value": "No",
+				"antiCorruptionAndAntiBribery": {
+					"reportedConvictionsOfBriberyCorruption": {
+						"value": 60.06209459155798,
 						"quality": "Incomplete"
 					}
-				}
-			},
-			"referencedReports": {
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "PKR"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "SRD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-08-24",
-					"currency": "JOD"
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "two-sfdr-data-sets-in-different-years",
+			"headquarters": "West Jamison",
+			"headquartersPostalCode": "86090",
+			"identifiers": {
+				"Lei": [
+					"TLSxUQWBG7IBevQVpCVO"
+				],
+				"Isin": [
+					"YnnZVguYUbFT"
+				],
+				"PermId": [
+					"VLKgapLe93"
+				],
+				"Ticker": [],
+				"Duns": [
+					"IGDlwjDtu"
+				],
+				"VatNumber": [
+					"5w2qLMqWM"
+				],
+				"CompanyRegistrationNumber": [
+					"QUTU7XFZxrWlW5W"
+				]
+			},
+			"countryCode": "CV",
+			"companyAlternativeNames": [
+				"Brown, Stamm and Marks",
+				"Stehr - Witting"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://potable-porcelain.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"dataDate": "2023-04-21",
+					"fiscalYearDeviation": "Deviation",
+					"fiscalYearEnd": "2020-01-03",
+					"referencedReports": {
+						"IntegratedReport": {
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"isGroupLevel": "Yes",
+							"reportDate": "2022-08-11",
+							"currency": "BTN"
+						},
+						"ESEFReport": {
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"isGroupLevel": "No",
+							"currency": "DKK"
+						}
+					},
+					"scopeOfEntities": "No"
+				}
+			},
+			"environmental": {
+				"greenhouseGasEmissions": {
+					"scope1": {
+						"value": 2.872329857200384,
+						"dataSource": {
+							"page": 406,
+							"report": "ESEFReport",
+							"tagName": "partnerships"
+						},
+						"quality": "Reported",
+						"comment": "parse back-end card"
+					},
+					"scope2": {
+						"value": 11.078150849789381,
+						"dataSource": {
+							"page": 1017,
+							"report": "ESEFReport",
+							"tagName": "methodologies"
+						},
+						"quality": "Estimated",
+						"comment": "transmit redundant transmitter"
+					}
+				},
+				"energyPerformance": {
+					"renewableEnergyProduction": {
+						"value": 40.89500615373254,
+						"quality": "Incomplete"
+					},
+					"highImpactClimateSectorEnergyConsumptionNaceA": {
+						"value": 36.70945845078677,
+						"dataSource": {
+							"page": 1110,
+							"report": "ESEFReport",
+							"tagName": "convergence"
+						},
+						"quality": "Estimated",
+						"comment": "compress open-source driver"
+					},
+					"highImpactClimateSectorEnergyConsumptionNaceD": {
+						"value": 34.55366073176265,
+						"quality": "Estimated"
+					}
+				},
+				"biodiversity": {
+					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+						"value": "No",
+						"dataSource": {
+							"page": 31,
+							"report": "IntegratedReport",
+							"tagName": "interfaces"
+						},
+						"quality": "Reported",
+						"comment": "bypass primary bandwidth"
+					},
+					"protectedAreasExposure": {
+						"value": "No",
+						"dataSource": {
+							"page": 790,
+							"report": "ESEFReport",
+							"tagName": "paradigms"
+						},
+						"quality": "Reported",
+						"comment": "navigate digital feed"
+					},
+					"rareOrEndangeredEcosystemsExposure": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 745,
+							"report": "IntegratedReport",
+							"tagName": "action-items"
+						},
+						"quality": "Estimated",
+						"comment": "calculate cross-platform driver"
+					}
+				},
+				"water": {},
+				"waste": {
+					"manufactureOfAgrochemicalPesticidesProducts": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 1195,
+							"report": "ESEFReport",
+							"tagName": "models"
+						},
+						"quality": "Reported",
+						"comment": "override digital alarm"
+					},
+					"threatenedSpeciesExposure": {
+						"value": "No",
+						"dataSource": {
+							"page": 1158,
+							"report": "ESEFReport",
+							"tagName": "content"
+						},
+						"quality": "Audited",
+						"comment": "generate online port"
+					},
+					"biodiversityProtectionPolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 971,
+							"report": "IntegratedReport",
+							"tagName": "schemas"
+						},
+						"quality": "Audited",
+						"comment": "navigate optical monitor"
+					}
+				},
+				"emissions": {
+					"carbonReductionInitiatives": {
+						"value": "No",
+						"dataSource": {
+							"page": 986,
+							"report": "ESEFReport",
+							"tagName": "platforms"
+						},
+						"quality": "Audited",
+						"comment": "compress optical program"
+					}
+				}
+			},
+			"social": {
+				"socialAndEmployeeMatters": {
+					"humanRightsLegalProceedings": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 637,
+							"report": "ESEFReport",
+							"tagName": "channels"
+						},
+						"quality": "Audited",
+						"comment": "reboot virtual capacitor"
+					},
+					"iloCoreLabourStandards": {
+						"value": "Yes",
+						"quality": "Incomplete"
+					},
+					"transparencyDisclosurePolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 1015,
+							"report": "ESEFReport",
+							"tagName": "supply-chains"
+						},
+						"quality": "Estimated",
+						"comment": "parse bluetooth transmitter"
+					},
+					"iso14001Certificate": {
+						"value": "No",
+						"dataSource": {
+							"page": 396,
+							"report": "ESEFReport",
+							"tagName": "applications"
+						},
+						"quality": "Audited",
+						"comment": "hack haptic pixel"
+					},
+					"briberyCorruptionPolicy": {
+						"value": "No",
+						"dataSource": {
+							"page": 293,
+							"report": "IntegratedReport",
+							"tagName": "channels"
+						},
+						"quality": "Estimated",
+						"comment": "index mobile feed"
+					},
+					"fairBusinessMarketingAdvertisingPolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 1157,
+							"report": "ESEFReport",
+							"tagName": "communities"
+						},
+						"quality": "Incomplete",
+						"comment": "parse open-source matrix"
+					},
+					"violationOfTaxRulesAndRegulation": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 1115,
+							"report": "IntegratedReport",
+							"tagName": "synergies"
+						},
+						"quality": "Reported",
+						"comment": "transmit haptic monitor"
+					},
+					"supplierCodeOfConduct": {
+						"value": "No",
+						"quality": "Estimated"
+					},
+					"grievanceHandlingMechanism": {
+						"value": "No",
+						"dataSource": {
+							"page": 7,
+							"report": "IntegratedReport",
+							"tagName": "experiences"
+						},
+						"quality": "Audited",
+						"comment": "program cross-platform hard drive"
+					},
+					"whistleblowerProtectionPolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 554,
+							"report": "ESEFReport",
+							"tagName": "eyeballs"
+						},
+						"quality": "Estimated",
+						"comment": "generate redundant sensor"
+					}
+				},
+				"greenSecurities": {},
+				"humanRights": {
+					"humanRightsPolicy": {
+						"value": "No",
+						"dataSource": {
+							"page": 1145,
+							"report": "ESEFReport",
+							"tagName": "relationships"
+						},
+						"quality": "Estimated",
+						"comment": "reboot virtual program"
+					},
+					"traffickingInHumanBeingsPolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 197,
+							"report": "IntegratedReport",
+							"tagName": "partnerships"
+						},
+						"quality": "Incomplete",
+						"comment": "synthesize solid state hard drive"
+					},
+					"reportedForcedOrCompulsoryLabourIncidents": {
+						"value": "No",
+						"dataSource": {
+							"page": 425,
+							"report": "IntegratedReport",
+							"tagName": "interfaces"
+						},
+						"quality": "Audited",
+						"comment": "back up redundant panel"
+					}
+				},
+				"antiCorruptionAndAntiBribery": {}
+			}
+		},
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
 			"companyName": "sfdr-a-lot-of-nulls",
-			"headquarters": "Bethlehem",
+			"headquarters": "Royceworth",
+			"sector": "applications",
 			"identifiers": {
-				"Lei": [
-					"bUICJwsprG7gAnGOyf7l"
-				],
+				"Lei": [],
 				"Isin": [
-					"X4CmoxjWnWfC",
-					"sMZxVoYNfnup"
+					"PJn9N7af228C"
 				],
 				"PermId": [
-					"2XAvbYBhHi"
+					"KbkNXqOWLN"
 				],
-				"Ticker": [
-					"kdhudca"
-				],
+				"Ticker": [],
 				"Duns": [
-					"6n1ckfvto"
+					"K0MIaCHlP"
 				],
 				"VatNumber": [
-					"51d8cVa8n"
+					"AA6VM8wCX"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NR",
+			"countryCode": "SI",
 			"companyAlternativeNames": [
-				"Altenwerth, Sporer and O'Connell",
-				"Bergstrom - Kertzmann",
-				"Ortiz, Wyman and Dibbert",
-				"Weissnat Group"
+				"Hodkiewicz, Osinski and Jenkins",
+				"Johnson and Sons",
+				"Volkman - Bradtke"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://personal-day.net",
+			"website": "https://likable-peanut.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"social": {
+			"general": {
 				"general": {
+					"dataDate": "27-08-2022",
+					"fiscalYearDeviation": "Deviation",
 					"fiscalYearEnd": "marker-for-test",
-					"groupLevelAnnualReport": null
-				},
+					"scopeOfEntities": null,
+					"referencedReports": null
+				}
+			},
+			"social": {
 				"socialAndEmployeeMatters": null
 			},
-			"environmental": null,
-			"referencedReports": null
+			"environmental": null
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2019"
 	}
 ]
