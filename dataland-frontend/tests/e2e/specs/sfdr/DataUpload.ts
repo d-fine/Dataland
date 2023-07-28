@@ -22,7 +22,7 @@ describeIf(
     before(function () {
       cy.fixture("CompanyInformationWithSfdrDataPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
-        testData = getPreparedFixture("company-for-all-types", preparedFixtures);
+        testData = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
       });
     });
 
