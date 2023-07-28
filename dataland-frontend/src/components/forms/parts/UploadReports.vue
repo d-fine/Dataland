@@ -74,7 +74,7 @@ import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
 import { ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { UploadReportsProps, YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "UploadReports",
@@ -91,23 +91,7 @@ export default defineComponent({
     };
   },
   props: {
-    ...YesNoFormFieldProps,
-    referencedReportsForPrefill: {
-      type: Object as () => { [key: string]: CompanyReport },
-    },
-    isEuTaxonomy: {
-      type: Boolean,
-      default: false,
-    },
-    dataTest: {
-      type: String,
-    },
-    placeholder: {
-      type: String,
-    },
-    options: {
-      type: Array,
-    },
+    ...UploadReportsProps,
   },
   computed: {
     allReferenceableReportNames(): string[] {
