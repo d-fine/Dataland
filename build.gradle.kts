@@ -88,7 +88,8 @@ sonar {
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts",
+                "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
+                    "dataland-frontend/src/components/resources/frameworkDataSearch/sfdr/SfdrDataModel.ts",
         )
     }
 }
