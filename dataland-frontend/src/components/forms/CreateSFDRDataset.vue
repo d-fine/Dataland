@@ -191,11 +191,12 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.companyAssociatedSfdrData.data?.social?.general?.fiscalYearEnd;
+        const currentDate = this.companyAssociatedSfdrData.data.general.general.fiscalYearEnd;
         if (currentDate === undefined) {
           return "";
         } else {
-          return currentDate.split("-")[0];
+          const currentDateSegments = currentDate.split("-");
+          return currentDateSegments[0] ?? new Date().getFullYear();
         }
       },
       set() {
