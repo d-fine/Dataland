@@ -40,7 +40,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  */
 function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "company-with-one-sfdr-data-set";
-  input.t.general!.general!.referencedReports = {"test-report":"/test_pdf.pdf"};
+  input.t.general.general.referencedReports = { "test-report": "/test_pdf.pdf" };
   return input;
 }
 
@@ -51,7 +51,7 @@ function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<
  */
 function manipulateFixtureForTwoSfdrDataSetsInDifferentYears(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "two-sfdr-data-sets-in-different-years";
-  input.t.general!.general!.fiscalYearEnd = "2020-01-03";
+  input.t.general.general.fiscalYearEnd = "2020-01-03";
   return input;
 }
 
