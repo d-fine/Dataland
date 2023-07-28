@@ -120,8 +120,8 @@ export default defineComponent({
       allFrameworksExceptEuTaxonomy: Object.values(DataTypeEnum).filter(
         (frameworkName) =>
           [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
-            frameworkName,
-          ) === -1,
+            frameworkName
+          ) === -1
       ) as DataTypeEnum[],
       waitingForData: true,
       DataTypeEnum,
@@ -152,7 +152,7 @@ export default defineComponent({
      * @returns the sorted list of data meta information
      */
     sortListOfDataMetaInfoAlphabeticallyByReportingPeriod(
-      listOfDataMetaInfo: DataMetaInformation[],
+      listOfDataMetaInfo: DataMetaInformation[]
     ): DataMetaInformation[] {
       listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {
         if (dataMetaInfoA.reportingPeriod > dataMetaInfoB.reportingPeriod) return -1;
@@ -168,7 +168,7 @@ export default defineComponent({
      */
     sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfo: Array<DataMetaInformation>): Array<DataMetaInformation> {
       return listOfDataMetaInfo.sort(
-        (dataMetaInfoA, dataMetaInfoB) => dataMetaInfoB.uploadTime - dataMetaInfoA.uploadTime,
+        (dataMetaInfoA, dataMetaInfoB) => dataMetaInfoB.uploadTime - dataMetaInfoA.uploadTime
       );
     },
 
@@ -180,7 +180,7 @@ export default defineComponent({
      * @returns a map with the distinct reporting periods as keys and arrays of data meta info for that period as values
      */
     groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
-      listOfDataMetaInfo: DataMetaInformation[],
+      listOfDataMetaInfo: DataMetaInformation[]
     ): Map<string, DataMetaInformation[]> {
       return listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
         groups.get(dataMetaInfo.reportingPeriod)
@@ -201,13 +201,13 @@ export default defineComponent({
         this.sortListOfDataMetaInfoAlphabeticallyByReportingPeriod(listOfDataMetaInfo);
       const mapOfReportingPeriodToListOfDataMetaInfo =
         this.groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
-          listOfDataMetaInfoSortedByReportingPeriod,
+          listOfDataMetaInfoSortedByReportingPeriod
         );
       const resultArray: DataMetaInformation[] = [];
       Array.from(mapOfReportingPeriodToListOfDataMetaInfo.values()).forEach(
         (listOfDataMetaInfoForUniqueReportingPeriod) => {
           resultArray.push(...this.sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfoForUniqueReportingPeriod));
-        },
+        }
       );
       return resultArray;
     },
@@ -219,7 +219,7 @@ export default defineComponent({
     async getMetaInfoAboutAllDataSetsForCurrentCompany() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;

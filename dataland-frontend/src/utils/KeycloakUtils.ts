@@ -8,7 +8,7 @@ import Keycloak from "keycloak-js";
  * @returns the Keycloak-promise returned by the getter-function
  */
 export async function waitForAndReturnResolvedKeycloakPromise(
-  keycloakPromiseGetter: () => Promise<Keycloak>,
+  keycloakPromiseGetter: () => Promise<Keycloak>
 ): Promise<Keycloak> {
   const keycloakPromiseGetterAsserted: () => Promise<Keycloak> = assertDefined(keycloakPromiseGetter);
   return keycloakPromiseGetterAsserted();
@@ -38,7 +38,7 @@ export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
  */
 export async function checkIfUserHasRole(
   keycloakRole: string,
-  keycloakPromiseGetter?: () => Promise<Keycloak>,
+  keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<boolean> {
   if (keycloakPromiseGetter) {
     const roles = await getKeycloakRolesForUser(keycloakPromiseGetter);

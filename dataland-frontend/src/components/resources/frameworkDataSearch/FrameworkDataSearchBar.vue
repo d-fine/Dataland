@@ -219,7 +219,7 @@ export default defineComponent({
           new Set(this.filter?.frameworkFilter),
           new Set(this.filter?.countryCodeFilter),
           new Set(this.filter?.sectorFilter),
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         );
         this.$emit("companies-received", resultsArray);
       }
@@ -237,7 +237,7 @@ export default defineComponent({
         new Set(this.filter?.frameworkFilter),
         new Set(this.filter?.countryCodeFilter),
         new Set(this.filter?.sectorFilter),
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumOfDisplayedAutocompleteEntries);
     },

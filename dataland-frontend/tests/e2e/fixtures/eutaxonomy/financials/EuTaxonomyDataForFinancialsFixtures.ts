@@ -23,7 +23,7 @@ export function generateInsuranceKpis(referencedReports: ReferencedDocuments): I
   return {
     taxonomyEligibleNonLifeInsuranceActivities: generateDatapointOrNotReportedAtRandom(
       taxonomyEligibleNonLifeInsuranceActivities,
-      referencedReports,
+      referencedReports
     ),
   };
 }
@@ -52,7 +52,7 @@ export function generateCreditInstitutionKpis(referencedReports: ReferencedDocum
     tradingPortfolio: generateDatapointOrNotReportedAtRandom(tradingPortfolio, referencedReports),
     tradingPortfolioAndInterbankLoans: generateDatapointOrNotReportedAtRandom(
       tradingPortfolioAndInterbankLoans,
-      referencedReports,
+      referencedReports
     ),
     greenAssetRatio: generateDatapointOrNotReportedAtRandom(greenAssetRatioCreditInstitution, referencedReports),
   };
@@ -76,11 +76,11 @@ export function generateInvestmentFirmKpis(referencedReports: ReferencedDocument
  * @returns a random eutaxonomy-financials fixture
  */
 export function generateEuTaxonomyDataForFinancialsWithTypes(
-  financialServicesTypes: Array<EuTaxonomyDataForFinancialsFinancialServicesTypesEnum>,
+  financialServicesTypes: Array<EuTaxonomyDataForFinancialsFinancialServicesTypesEnum>
 ): EuTaxonomyDataForFinancials {
   const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields();
   const eligibilityKpis = Object.fromEntries(
-    financialServicesTypes.map((it) => [it, generateEligibilityKpis(assertDefined(returnBase.referencedReports))]),
+    financialServicesTypes.map((it) => [it, generateEligibilityKpis(assertDefined(returnBase.referencedReports))])
   );
   returnBase.financialServicesTypes = financialServicesTypes;
   returnBase.eligibilityKpis = eligibilityKpis;
@@ -105,7 +105,7 @@ export function generateEuTaxonomyDataForFinancialsWithTypes(
  */
 export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancials {
   const financialServicesTypes = faker.helpers.arrayElements(
-    Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum),
+    Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum)
   );
   return generateEuTaxonomyDataForFinancialsWithTypes(financialServicesTypes);
 }

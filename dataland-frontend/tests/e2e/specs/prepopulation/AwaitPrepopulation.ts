@@ -42,11 +42,11 @@ describeIf(
           .then(async (token) => {
             const financialResponse = await countCompaniesAndDataSetsForDataType(
               token,
-              DataTypeEnum.EutaxonomyFinancials,
+              DataTypeEnum.EutaxonomyFinancials
             );
             const nonFinancialResponse = await countCompaniesAndDataSetsForDataType(
               token,
-              DataTypeEnum.EutaxonomyNonFinancials,
+              DataTypeEnum.EutaxonomyNonFinancials
             );
             let totalCompanies =
               financialResponse.numberOfCompaniesForDataType + nonFinancialResponse.numberOfCompaniesForDataType;
@@ -61,10 +61,10 @@ describeIf(
               p2pResponse.numberOfCompaniesForDataType;
             assert(
               totalCompanies >= expectedNumberOfCompanies,
-              `Found ${totalCompanies} companies (Expecting at least ${expectedNumberOfCompanies})`,
+              `Found ${totalCompanies} companies (Expecting at least ${expectedNumberOfCompanies})`
             );
           });
-      },
+      }
     );
-  },
+  }
 );

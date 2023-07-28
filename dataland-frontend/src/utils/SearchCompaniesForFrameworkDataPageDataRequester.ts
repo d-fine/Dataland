@@ -61,7 +61,7 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
       companyId: company.companyId,
       permId: retrievePermIdFromStoredCompany(company),
       dataRegisteredByDataland: company.dataRegisteredByDataland,
-    }),
+    })
   );
 }
 
@@ -86,7 +86,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   frameworkFilter: Set<DataTypeEnum>,
   countryCodeFilter: Set<string>,
   sectorFilter: Set<string>,
-  keycloakPromise: Promise<Keycloak>,
+  keycloakPromise: Promise<Keycloak>
 ): Promise<Array<DataSearchStoredCompany>> {
   let mappedResponse: Array<DataSearchStoredCompany> = [];
 
@@ -101,7 +101,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
       frameworkFilter,
       countryCodeFilter,
       sectorFilter,
-      onlyCompanyNames,
+      onlyCompanyNames
     );
     const responseData: Array<StoredCompany> = response.data;
     mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(filterCompaniesForAcceptedDataset(responseData));
@@ -119,7 +119,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
  */
 function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCompany[] {
   return companies.filter((company) =>
-    company.dataRegisteredByDataland.some((dataMetaInfo) => dataMetaInfo.qaStatus == QaStatus.Accepted),
+    company.dataRegisteredByDataland.some((dataMetaInfo) => dataMetaInfo.qaStatus == QaStatus.Accepted)
   );
 }
 
@@ -134,21 +134,21 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
  */
 export function getRouterLinkTargetFramework(
   companyData: DataSearchStoredCompany,
-  selectedFiltersForFrameworks: DataTypeEnum[] = useFrameworkFiltersStore().selectedFiltersForFrameworks,
+  selectedFiltersForFrameworks: DataTypeEnum[] = useFrameworkFiltersStore().selectedFiltersForFrameworks
 ): string {
   const activeDataRegisteredByDataland = companyData.dataRegisteredByDataland.filter(
-    (dataMetaInfo: DataMetaInformation) => dataMetaInfo.currentlyActive,
+    (dataMetaInfo: DataMetaInformation) => dataMetaInfo.currentlyActive
   );
   const actuallySelectedFiltersForFrameworks =
     selectedFiltersForFrameworks.length == 0 ? ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE : selectedFiltersForFrameworks;
   const frameworkToRouteTo = activeDataRegisteredByDataland.find((dataMetaInfo) =>
-    actuallySelectedFiltersForFrameworks.includes(dataMetaInfo.dataType),
+    actuallySelectedFiltersForFrameworks.includes(dataMetaInfo.dataType)
   )?.dataType;
   if (frameworkToRouteTo) {
     return `/companies/${companyData.companyId}/frameworks/${frameworkToRouteTo}`;
   } else {
     throw new Error(
-      "No data meta info for the frameworks set in the filters could be found in the data of the server response.",
+      "No data meta info for the frameworks set in the filters could be found in the data of the server response."
     );
   }
 }

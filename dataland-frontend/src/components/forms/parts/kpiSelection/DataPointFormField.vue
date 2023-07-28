@@ -3,12 +3,12 @@
     <FormKit type="group" :name="name">
       <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       <FormKit
-          type="text"
-          :name="name"
-          :validation-label="validationLabel ?? label"
-          :validation="`number|${validation}`"
-          :placeholder="placeholder"
-          :inner-class="innerClass"
+        type="text"
+        :name="name"
+        :validation-label="validationLabel ?? label"
+        :validation="`number|${validation}`"
+        :placeholder="placeholder"
+        :inner-class="innerClass"
       />
       <!-- //TODO make the label and description modular instead of being hardcoded -->
       <div class="form-field">
@@ -17,25 +17,25 @@
             <div class="flex-1">
               <UploadFormHeader :label="'Report'" :description="'Upload Report'" />
               <FormKit
-                  type="select"
-                  name="report"
-                  v-model="currentReportValue"
-                  placeholder="Select a report"
-                  :options="['None...', ...reportsName]"
+                type="select"
+                name="report"
+                v-model="currentReportValue"
+                placeholder="Select a report"
+                :options="['None...', ...reportsName]"
               />
             </div>
             <div>
               <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
               <FormKit
-                  outer-class="w-100"
-                  v-model="currentPageValue"
-                  type="number"
-                  name="page"
-                  placeholder="Page"
-                  validation-label="Page"
-                  step="1"
-                  min="0"
-                  validation="min:0"
+                outer-class="w-100"
+                v-model="currentPageValue"
+                type="number"
+                name="page"
+                placeholder="Page"
+                validation-label="Page"
+                step="1"
+                min="0"
+                validation="min:0"
               />
             </div>
           </div>
@@ -45,116 +45,116 @@
       <!-- Data quality -->
       <div class="form-field">
         <UploadFormHeader
-            label="Data quality"
-            description="The level of confidence associated to the value."
-            :is-required="true"
+          label="Data quality"
+          description="The level of confidence associated to the value."
+          :is-required="true"
         />
         <div class="md:col-6 col-12 p-0">
           <FormKit
-              type="select"
-              v-model="currentQualityValue"
-              name="quality"
-              :validation="'required'"
-              validation-label="Data quality"
-              placeholder="Data quality"
-              :options="qualityOptions"
+            type="select"
+            v-model="currentQualityValue"
+            name="quality"
+            :validation="'required'"
+            validation-label="Data quality"
+            placeholder="Data quality"
+            :options="qualityOptions"
           />
         </div>
       </div>
       <div class="form-field">
         <FormKit
-            type="textarea"
-            name="comment"
-            placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
+          type="textarea"
+          name="comment"
+          placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
         />
       </div>
     </FormKit>
   </template>
 
-<!--// TODO There should no reports uploaded here -->
+  <!--// TODO There should no reports uploaded here -->
   <template v-else>
-  <div class="form-field">
-    <div class="next-to-each-other">
-      <div class="p-0">
-        <UploadFormHeader :label="label" :description="description ?? ''" />
+    <div class="form-field">
+      <div class="next-to-each-other">
+        <div class="p-0">
+          <UploadFormHeader :label="label" :description="description ?? ''" />
+          <FormKit
+            type="number"
+            :name="name"
+            :description="description ?? ''"
+            validation-label=""
+            v-model="currentValue"
+            :placeholder="'Value'"
+            step="any"
+            min="0"
+            :required="required"
+            :validation="validation"
+            :inner-class="{
+              short: false,
+            }"
+          />
+        </div>
+      </div>
+    </div>
+    <!-- //TODO make the label and description modular instead of being hardcoded -->
+    <div class="form-field">
+      <FormKit type="group" name="dataSource">
+        <div class="next-to-each-other">
+          <div class="flex-1">
+            <UploadFormHeader :label="'Report'" :description="'Upload Report'" />
+            <FormKit
+              type="select"
+              name="report"
+              v-model="currentReportValue"
+              placeholder="Select a report"
+              :options="['None...', ...reportsName]"
+              :plugins="[selectNothingIfNotExistsFormKitPlugin]"
+            />
+          </div>
+          <div>
+            <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
+            <FormKit
+              outer-class="w-100"
+              v-model="currentPageValue"
+              type="number"
+              name="page"
+              placeholder="Page"
+              validation-label="Page"
+              step="1"
+              min="0"
+              validation="min:0"
+            />
+          </div>
+        </div>
+      </FormKit>
+    </div>
+
+    <!-- Data quality -->
+    <div class="form-field">
+      <UploadFormHeader
+        label="Data quality"
+        description="The level of confidence associated to the value."
+        :is-required="true"
+      />
+      <div class="md:col-6 col-12 p-0">
         <FormKit
-          type="number"
-          :name="name"
-          :description="description ?? ''"
-          validation-label=""
-          v-model="currentValue"
-          :placeholder="'Value'"
-          step="any"
-          min="0"
-          :required="required"
-          :validation="validation"
-          :inner-class="{
-            short: false,
-          }"
+          type="select"
+          v-model="currentQualityValue"
+          name="quality"
+          :validation="'required'"
+          validation-label="Data quality"
+          placeholder="Data quality"
+          :options="qualityOptions"
         />
       </div>
     </div>
-  </div>
-  <!-- //TODO make the label and description modular instead of being hardcoded -->
-  <div class="form-field">
-    <FormKit type="group" name="dataSource">
-      <div class="next-to-each-other">
-        <div class="flex-1">
-          <UploadFormHeader :label="'Report'" :description="'Upload Report'" />
-          <FormKit
-            type="select"
-            name="report"
-            v-model="currentReportValue"
-            placeholder="Select a report"
-            :options="['None...', ...reportsName]"
-            :plugins="[selectNothingIfNotExistsFormKitPlugin]"
-          />
-        </div>
-        <div>
-          <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
-          <FormKit
-            outer-class="w-100"
-            v-model="currentPageValue"
-            type="number"
-            name="page"
-            placeholder="Page"
-            validation-label="Page"
-            step="1"
-            min="0"
-            validation="min:0"
-          />
-        </div>
-      </div>
-    </FormKit>
-  </div>
-
-  <!-- Data quality -->
-  <div class="form-field">
-    <UploadFormHeader
-      label="Data quality"
-      description="The level of confidence associated to the value."
-      :is-required="true"
-    />
-    <div class="md:col-6 col-12 p-0">
+    <div class="form-field">
       <FormKit
-        type="select"
-        v-model="currentQualityValue"
-        name="quality"
-        :validation="'required'"
-        validation-label="Data quality"
-        placeholder="Data quality"
-        :options="qualityOptions"
+        type="textarea"
+        name="comment"
+        placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
       />
     </div>
-  </div>
-  <div class="form-field">
-    <FormKit
-      type="textarea"
-      name="comment"
-      placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
-    />
-  </div>
-</template>
+  </template>
 </template>
 
 <script lang="ts">
@@ -201,5 +201,4 @@ export default defineComponent({
   },
 });
 </script>
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>

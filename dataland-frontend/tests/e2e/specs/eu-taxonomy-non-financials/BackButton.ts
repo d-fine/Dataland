@@ -11,11 +11,11 @@ describe("As a user, I expect the back button to work properly", () => {
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies) => {
           cy.visitAndCheckAppMount(
-            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
+            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
           );
           cy.get("[data-test='taxocard']").should("exist");
           cy.contains("span", "BACK").click().url().should("include", "/companies");
-        },
+        }
       );
     });
   });

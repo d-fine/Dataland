@@ -111,7 +111,7 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         const p2pDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getP2pDataControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
           const singleP2pData = (
@@ -143,7 +143,7 @@ export default defineComponent({
       kpiValue: KpiValue,
       subcategory: Subcategory,
       category: Category,
-      dataIdOfP2pDataset: string,
+      dataIdOfP2pDataset: string
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
       const kpiData = {
@@ -187,7 +187,7 @@ export default defineComponent({
               frameworkCategoryData,
               dataIdOfP2pDataset,
               listOfDataObjects,
-              currentP2pDataset.data,
+              currentP2pDataset.data
             );
 
             this.mapOfCategoryKeysToDataObjectArrays.set(frameworkCategoryData.label, listOfDataObjects);
@@ -195,7 +195,7 @@ export default defineComponent({
         });
       }
       this.arrayOfReportingPeriodWithDataId = sortReportingPeriodsToDisplayAsColumns(
-        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[],
+        this.arrayOfReportingPeriodWithDataId as ReportingPeriodOfDataSetWithId[]
       );
     },
     /**
@@ -213,11 +213,11 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentP2pDataset: PathwaysToParisData,
+      currentP2pDataset: PathwaysToParisData
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
         string,
-        object | null,
+        object | null
       ][]) {
         if (subCategoryObject == null) continue;
         this.iterateThroughSubcategoryKpis(
@@ -227,7 +227,7 @@ export default defineComponent({
           frameworkCategoryData,
           dataIdOfP2pDataset,
           listOfDataObjects,
-          currentP2pDataset,
+          currentP2pDataset
         );
       }
     },
@@ -248,7 +248,7 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataIdOfP2pDataset: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentP2pDataset: PathwaysToParisData,
+      currentP2pDataset: PathwaysToParisData
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
         let kpiValueToCreateDataObject = kpiValue as KpiValue;
@@ -256,7 +256,7 @@ export default defineComponent({
           kpiValueToCreateDataObject = "" as KpiValue;
         }
         const subcategory = assertDefined(
-          frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
+          frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
@@ -266,7 +266,7 @@ export default defineComponent({
             kpiValueToCreateDataObject,
             subcategory,
             frameworkCategoryData,
-            dataIdOfP2pDataset,
+            dataIdOfP2pDataset
           );
           listOfDataObjects.push(this.resultKpiData);
         }

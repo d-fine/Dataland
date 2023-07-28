@@ -22,13 +22,13 @@ export const admin_pw = getStringCypressEnv("KEYCLOAK_DATALAND_ADMIN_PASSWORD");
 export function doThingsInChunks<T>(
   dataArray: Array<T>,
   chunkSize: number,
-  processor: (element: T) => Promise<void>,
+  processor: (element: T) => Promise<void>
 ): Chainable<void> {
   let promise: Promise<void> = Promise.resolve();
   for (let i = 0; i < dataArray.length; i += chunkSize) {
     const chunk = dataArray.slice(i, i + chunkSize);
     promise = promise.then(
-      (): Promise<void> => Promise.all(chunk.map((element): Promise<void> => processor(element))).then(),
+      (): Promise<void> => Promise.all(chunk.map((element): Promise<void> => processor(element))).then()
     );
   }
   return cy.then((): Bluebird<void> => {
@@ -46,7 +46,7 @@ export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T>
     promise
       .then(
         (result): void => resolve(result),
-        (reason): void => reject(reason),
+        (reason): void => reject(reason)
       )
       .catch((reason): void => reject(reason));
   });

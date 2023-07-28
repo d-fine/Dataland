@@ -12,17 +12,17 @@ export async function uploadOneP2pDatasetViaApi(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: PathwaysToParisData,
+  data: PathwaysToParisData
 ): Promise<DataMetaInformation> {
   const response = await new P2pDataControllerApi(
-    new Configuration({ accessToken: token }),
+    new Configuration({ accessToken: token })
   ).postCompanyAssociatedP2pData(
     {
       companyId,
       reportingPeriod,
       data,
     },
-    true,
+    true
   );
   return response.data;
 }

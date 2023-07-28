@@ -25,17 +25,17 @@ export async function uploadOneSfdrDataset(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: SfdrData,
+  data: SfdrData
 ): Promise<DataMetaInformation> {
   const response = await new SfdrDataControllerApi(
-    new Configuration({ accessToken: token }),
+    new Configuration({ accessToken: token })
   ).postCompanyAssociatedSfdrData(
     {
       companyId,
       reportingPeriod,
       data,
     },
-    true,
+    true
   );
   return response.data;
 }
@@ -52,16 +52,16 @@ export function uploadCompanyAndSfdrDataViaApi(
   token: string,
   companyInformation: CompanyInformation,
   testData: SfdrData,
-  reportingPeriod: string,
+  reportingPeriod: string
 ): Promise<UploadIds> {
   return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
     (storedCompany) => {
       return uploadOneSfdrDataset(token, storedCompany.companyId, reportingPeriod, testData).then(
         (dataMetaInformation) => {
           return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
-        },
+        }
       );
-    },
+    }
   );
 }
 /**

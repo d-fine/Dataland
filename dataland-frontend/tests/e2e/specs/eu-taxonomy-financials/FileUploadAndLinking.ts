@@ -82,20 +82,20 @@ describeIf(
             (request) => {
               const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
               expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(
-                areBothDocumentsStillUploaded,
+                areBothDocumentsStillUploaded
               );
               expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
-            },
+            }
           ).as(postRequestAlias);
           cy.get('button[data-test="submitButton"]').click();
           cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("short_timeout_in_ms") as number }).then(
             (interception) => {
               expect(interception.response?.statusCode).to.eq(200);
-            },
+            }
           );
           gotoEditForm(companyId, false);
-        },
+        }
       );
     });
-  },
+  }
 );

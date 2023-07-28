@@ -42,7 +42,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
  */
 export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
   valueFieldNotFilled: boolean,
-  assuranceReportName: string,
+  assuranceReportName: string
 ): void {
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
@@ -126,17 +126,17 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: EuTaxonomyDataForFinancials,
+  data: EuTaxonomyDataForFinancials
 ): Promise<DataMetaInformation> {
   const dataMetaInformation = await new EuTaxonomyDataForNonFinancialsControllerApi(
-    new Configuration({ accessToken: token }),
+    new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForNonFinancials(
     {
       companyId,
       reportingPeriod,
       data,
     },
-    true,
+    true
   );
   return dataMetaInformation.data;
 }

@@ -62,7 +62,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
         frameworkQueryParam: string,
-        searchStringQueryParam: string,
+        searchStringQueryParam: string
       ): void {
         cy.intercept("/api/companies?searchString=**false").as("getSearchResults");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
@@ -80,7 +80,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function typeSearchStringIntoSearchBarAndSelectFirstSuggestion(
         searchString: string,
-        searchBarSelector = "input#search_bar_top",
+        searchBarSelector = "input#search_bar_top"
       ): void {
         cy.intercept("/api/companies?searchString=**true").as("autocompleteSuggestions");
         cy.get(searchBarSelector).click();
@@ -107,7 +107,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           .should("have.text", humanizeString(expectedChosenFramework));
         if (
           ([DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyNonFinancials] as string[]).indexOf(
-            expectedChosenFramework,
+            expectedChosenFramework
           ) >= 0
         ) {
           cy.get("[data-test='taxocard']").should("exist");
@@ -211,7 +211,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function validateDisplayStatusContainerAndGetButton(
         expectedTextInContainer: string,
-        expectedButtonText: string,
+        expectedButtonText: string
       ): Cypress.Chainable {
         return cy
           .get(`[data-test="datasetDisplayStatusContainer"]:contains(${expectedTextInContainer})`)
@@ -276,7 +276,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2023",
-                getPreparedFixture("LkSG-date-2023-04-18", lksgPreparedFixtures).t,
+                getPreparedFixture("LkSG-date-2023-04-18", lksgPreparedFixtures).t
               ).then((dataMetaInformation) => {
                 dataIdOfSupersededLksg2023ForAlpha = dataMetaInformation.dataId;
               });
@@ -287,7 +287,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2023",
-                  getPreparedFixture("LkSG-date-2023-06-22", lksgPreparedFixtures).t,
+                  getPreparedFixture("LkSG-date-2023-06-22", lksgPreparedFixtures).t
                 );
               });
             })
@@ -297,7 +297,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2022",
-                  getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
+                  getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t
                 );
               });
             })
@@ -306,7 +306,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2019",
-                getPreparedFixture("company-with-one-sfdr-data-set", sfdrPreparedFixtures).t,
+                getPreparedFixture("company-with-one-sfdr-data-set", sfdrPreparedFixtures).t
               );
             })
             .then(() => {
@@ -314,7 +314,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2019",
-                getPreparedFixture("eligible-activity-Point-0.29", euTaxoFinancialPreparedFixtures).t,
+                getPreparedFixture("eligible-activity-Point-0.29", euTaxoFinancialPreparedFixtures).t
               ).then((dataMetaInformation) => {
                 dataIdOfSupersededFinancial2019ForAlpha = dataMetaInformation.dataId;
               });
@@ -325,7 +325,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2019",
-                  getPreparedFixture("eligible-activity-Point-0.292", euTaxoFinancialPreparedFixtures).t,
+                  getPreparedFixture("eligible-activity-Point-0.292", euTaxoFinancialPreparedFixtures).t
                 );
               });
             })
@@ -335,7 +335,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2016",
-                  getPreparedFixture("eligible-activity-Point-0.26", euTaxoFinancialPreparedFixtures).t,
+                  getPreparedFixture("eligible-activity-Point-0.26", euTaxoFinancialPreparedFixtures).t
                 );
               });
             })
@@ -344,7 +344,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2015",
-                getPreparedFixture("only-eligible-and-total-numbers", euTaxoNonFinancialPreparedFixtures).t,
+                getPreparedFixture("only-eligible-and-total-numbers", euTaxoNonFinancialPreparedFixtures).t
               );
             });
         });
@@ -363,7 +363,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfBeta,
                 "2015",
-                getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
+                getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t
               );
             })
             .then(async () => {
@@ -371,7 +371,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfBeta,
                 "2014",
-                getPreparedFixture("only-eligible-and-total-numbers", euTaxoNonFinancialPreparedFixtures).t,
+                getPreparedFixture("only-eligible-and-total-numbers", euTaxoNonFinancialPreparedFixtures).t
               );
             });
         });
@@ -439,7 +439,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
           DataTypeEnum.EutaxonomyNonFinancials,
-          nameOfCompanyAlpha,
+          nameOfCompanyAlpha
         );
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
 
@@ -468,7 +468,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
           waitForCompanyRequest(() => {
             cy.visit(
-              `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`,
+              `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
             );
           });
           waitForDataRequest(() => {
@@ -480,7 +480,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
           waitForCompanyRequest(() => {
             cy.visit(
-              `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`,
+              `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
             );
           });
           waitForDataRequest(() => {
@@ -488,7 +488,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           });
 
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
-        },
+        }
       );
 
       it("Check that using back-button and dropdowns on the view-page work as expected", () => {
@@ -532,7 +532,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenReportingPeriod("2015");
         validateDropdownOptions(
           reportingPeriodDropdownSelector,
-          expectedReportingPeriodsForEuTaxoNonFinancialsForAlpha,
+          expectedReportingPeriodsForEuTaxoNonFinancialsForAlpha
         );
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
@@ -550,7 +550,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenReportingPeriod("2015");
         validateDropdownOptions(
           reportingPeriodDropdownSelector,
-          expectedReportingPeriodsForEuTaxoNonFinancialsForAlpha,
+          expectedReportingPeriodsForEuTaxoNonFinancialsForAlpha
         );
 
         clickBackButton();
@@ -600,7 +600,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateEUTaxonomyFinancialsTable("26");
 
         cy.visit(
-          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/reportingPeriods/${nonExistingReportingPeriod}`,
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
         );
 
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
@@ -617,7 +617,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenReportingPeriod("Select...", true);
 
         cy.visit(
-          `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
+          `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
         );
 
         getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
@@ -638,7 +638,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.intercept("/api/metadata/**").as("getMetaDataForSpecificDataId");
         cy.visit(
-          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
         );
 
         cy.contains("2023-04-18").should("exist");
@@ -648,14 +648,14 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         cy.url().should(
           "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`,
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
         );
         cy.contains("2023-06-22").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
         validateDataDatesOfDisplayedLksgDatasets(["2023-06-22"]);
         validateDisplayStatusContainerAndGetButton(
           "You are only viewing a single available dataset",
-          "View All",
+          "View All"
         ).click();
 
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
@@ -668,7 +668,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         cy.url().should(
           "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`,
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
         );
         cy.contains("2022-07-30").should("not.exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
@@ -680,7 +680,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
             DataTypeEnum.Lksg
-          }/${dataIdOfSupersededLksg2023ForAlpha}`,
+          }/${dataIdOfSupersededLksg2023ForAlpha}`
         );
         cy.contains("2023-04-18").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
@@ -688,7 +688,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active");
 
         cy.visit(
-          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`,
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`
         );
         validateEUTaxonomyFinancialsTable("29");
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
@@ -697,7 +697,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
             DataTypeEnum.EutaxonomyFinancials
-          }/reportingPeriods/2019`,
+          }/reportingPeriods/2019`
         );
         validateEUTaxonomyFinancialsTable("29.2");
         getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
@@ -707,10 +707,10 @@ describe("The shared header of the framework pages should act as expected", { sc
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
             DataTypeEnum.EutaxonomyFinancials
-          }/${dataIdOfSupersededFinancial2019ForAlpha}`,
+          }/${dataIdOfSupersededFinancial2019ForAlpha}`
         );
         validateEUTaxonomyFinancialsTable("29");
       });
-    },
+    }
   );
 });

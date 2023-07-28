@@ -83,7 +83,7 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
   cy.get(
     `input[name="fiscalYearDeviation"][value=${
       data.fiscalYearDeviation ? data.fiscalYearDeviation.toString() : "Deviation"
-    }]`,
+    }]`
   ).check();
   cy.get('input[name="scopeOfEntities"][value="No"]').check();
   cy.get('div[data-test="submitSideBar"] li:last a').click();
@@ -99,7 +99,7 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
   cy.get(
     `input[name="activityLevelReporting"][value=${
       data.activityLevelReporting ? data.activityLevelReporting.toString() : "No"
-    }]`,
+    }]`
   ).check();
   cy.get('input[name="numberOfEmployees"]').type("-13");
   cy.get('em[title="Number Of Employees"]').click();
@@ -124,13 +124,13 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
   fillField(
     "insuranceKpis",
     "taxonomyEligibleNonLifeInsuranceActivities",
-    data.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities,
+    data.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities
   );
   fillField("investmentFirmKpis", "greenAssetRatio", data.investmentFirmKpis?.greenAssetRatio);
   fillField(
     "creditInstitutionKpis",
     "tradingPortfolioAndInterbankLoans",
-    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans,
+    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
   );
   fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
   fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
@@ -213,17 +213,17 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
   companyId: string,
   reportingPeriod: string,
   data: EuTaxonomyDataForFinancials,
-  bypassQa = true,
+  bypassQa = true
 ): Promise<DataMetaInformation> {
   const response = await new EuTaxonomyDataForFinancialsControllerApi(
-    new Configuration({ accessToken: token }),
+    new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForFinancials(
     {
       companyId,
       reportingPeriod,
       data,
     },
-    bypassQa,
+    bypassQa
   );
   return response.data;
 }
@@ -236,7 +236,7 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
 export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
   goToEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
     const referencedReports = assertDefined(
-      (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports,
+      (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports
     );
     expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
     expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
@@ -261,21 +261,21 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
   formFillSteps: (data: EuTaxonomyDataForFinancials) => void,
   afterFormFill: () => void,
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
-  afterDatasetSubmission: (companyId: string) => void,
+  afterDatasetSubmission: (companyId: string) => void
 ): void {
   getKeycloakToken(admin_name, admin_pw).then((token: string) => {
     return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
       (storedCompany): void => {
         cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount(
-          `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
+          `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
         );
         beforeFormFill();
         formFillSteps(testData);
         afterFormFill();
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
         afterDatasetSubmission(storedCompany.companyId);
-      },
+      }
     );
   });
 }
@@ -295,11 +295,11 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   cy.get(
     `input[name="fiscalYearDeviation"][value=${
       data.fiscalYearDeviation ? data.fiscalYearDeviation.toString() : "Deviation"
-    }]`,
+    }]`
   ).check();
 
   cy.get('input[name="numberOfEmployees"]').type(
-    `${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`,
+    `${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`
   );
 
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
@@ -328,7 +328,7 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   fillField(
     "creditInstitutionKpis",
     "tradingPortfolioAndInterbankLoans",
-    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans,
+    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
   );
   fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
   fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
@@ -341,7 +341,7 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
  * @param submissionDataIntercept function that asserts content of an intercepted request
  */
 export function submitFilledInEuTaxonomyForm(
-  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
 ): void {
   const postRequestAlias = "postDataAlias";
   cy.intercept(
@@ -350,7 +350,7 @@ export function submitFilledInEuTaxonomyForm(
       url: `**/api/data/**`,
       times: 1,
     },
-    submissionDataIntercept,
+    submissionDataIntercept
   ).as(postRequestAlias);
   cy.get('button[data-test="submitButton"]').click();
   cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {

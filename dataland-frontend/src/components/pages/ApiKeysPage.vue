@@ -216,7 +216,7 @@ export default defineComponent({
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
         const resolvedKeycloakPromise = await keycloakPromiseGetter();
         const apiKeyManagerController: ApiKeyControllerApiInterface = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getApiKeyManagerController();
         const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser();
         this.waitingForData = false;
@@ -241,7 +241,7 @@ export default defineComponent({
       try {
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
         const apiKeyManagerController = await new ApiClientProvider(
-          keycloakPromiseGetter(),
+          keycloakPromiseGetter()
         ).getApiKeyManagerController();
         await apiKeyManagerController.revokeApiKey();
         this.userAlreadyHasApiKey = false;
@@ -261,7 +261,7 @@ export default defineComponent({
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
 
         const apiKeyManagerController = await new ApiClientProvider(
-          keycloakPromiseGetter(),
+          keycloakPromiseGetter()
         ).getApiKeyManagerController();
         const response = await apiKeyManagerController.generateApiKey(daysValid);
         this.waitingForData = false;

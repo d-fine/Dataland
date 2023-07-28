@@ -44,22 +44,22 @@ describeIf(
      */
     function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(
       fixtureData: FixtureData<EuTaxonomyDataForNonFinancials>,
-      euTaxonomyPageVerifier: () => void,
+      euTaxonomyPageVerifier: () => void
     ): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(
           token,
-          generateDummyCompanyInformation(fixtureData.companyInformation.companyName),
+          generateDummyCompanyInformation(fixtureData.companyInformation.companyName)
         ).then((storedCompany) => {
           return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
             token,
             storedCompany.companyId,
             fixtureData.reportingPeriod,
-            fixtureData.t,
+            fixtureData.t
           ).then(() => {
             cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
             cy.visitAndCheckAppMount(
-              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
+              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
             );
             cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
               euTaxonomyPageVerifier();
@@ -77,7 +77,7 @@ describeIf(
           .should("contain", "Eligible Revenue")
           .should(
             "contain",
-            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligibleData!.valueAsPercentage!)}%`,
+            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligibleData!.valueAsPercentage!)}%`
           );
         cy.get(".font-medium.text-3xl").should("contain", "€");
       });
@@ -90,7 +90,7 @@ describeIf(
           .should("contain", "Eligible OpEx")
           .should(
             "contain",
-            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligibleData!.valueAsPercentage!)}%`,
+            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligibleData!.valueAsPercentage!)}%`
           );
         cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `With a total of`);
         cy.get(".font-medium.text-3xl").should("not.contain", "€");
@@ -115,7 +115,7 @@ describeIf(
             uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId, true);
             cy.intercept(`/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
             cy.visitAndCheckAppMount(
-              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
+              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
             );
             cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
               cy.get("h1[class='mb-0']").contains(companyName);
@@ -123,7 +123,7 @@ describeIf(
             });
           });
         });
-      },
+      }
     );
-  },
+  }
 );

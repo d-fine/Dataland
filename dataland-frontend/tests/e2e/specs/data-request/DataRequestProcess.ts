@@ -29,7 +29,7 @@ describe("As a user I expect a data request page where I can download an excel t
             mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             lastModified: Date.now(),
           },
-          { action: "drag-drop" },
+          { action: "drag-drop" }
         );
       }
 
@@ -46,7 +46,7 @@ describe("As a user I expect a data request page where I can download an excel t
        * @param moreValidation a function that can be used to impose further restraints on the intercepted api message
        */
       function submitAndValidateSuccess(
-        moreValidation: (interception: Interception) => void = (): void => undefined,
+        moreValidation: (interception: Interception) => void = (): void => undefined
       ): void {
         cy.intercept("**/api/invite").as("invite");
         submit();
@@ -201,6 +201,6 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.get(errorMessageSelector).find("div").should("contain.text", "Excel file is empty.");
         cy.get(titleSelector).should("contain.text", "Submission failed");
       });
-    },
+    }
   );
 });

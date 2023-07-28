@@ -65,6 +65,6 @@ describe("Component test for ApiKeyCard.vue", () => {
           expect(val).to.include("13");
         });
       cy.get('[data-test="cancelGenerateApiKey"]').click();
-    },
+    }
   );
 });

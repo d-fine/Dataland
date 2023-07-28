@@ -11,14 +11,14 @@ function animation(
   startTime: number,
   startPosition: number,
   totalDistanceToScroll: number,
-  totalDurationForScrolling: number,
+  totalDurationForScrolling: number
 ): void {
   const elapsedTime = currentTime - startTime;
   const positionToScrollTo = totalDistanceToScroll * (elapsedTime / totalDurationForScrolling) + startPosition;
   window.scrollTo(0, positionToScrollTo);
   if (elapsedTime < totalDurationForScrolling)
     requestAnimationFrame((currentTime) =>
-      animation(currentTime, startTime, startPosition, totalDistanceToScroll, totalDurationForScrolling),
+      animation(currentTime, startTime, startPosition, totalDistanceToScroll, totalDurationForScrolling)
     );
 }
 

@@ -11,7 +11,7 @@ export const uploadDocuments = {
         fileName: `${filename}.pdf`,
         mimeType: "application/pdf",
       },
-      { force: true },
+      { force: true }
     );
   },
   numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload: number): void {

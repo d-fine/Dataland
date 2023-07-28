@@ -11,19 +11,17 @@ import { generateP2pFixtures } from "./P2pDataFixtures";
  */
 export function generateP2pPreparedFixtures(
   undef_probability: number,
-  toggleRandomSectors = true,
+  toggleRandomSectors = true
 ): Array<FixtureData<PathwaysToParisData>> {
   const preparedFixtures = [];
   preparedFixtures.push(
     manipulateFixtureForSixP2pDataSetsInDifferentYears(
-      generateP2pFixtures(1, undef_probability, toggleRandomSectors)[0],
-    ),
+      generateP2pFixtures(1, undef_probability, toggleRandomSectors)[0]
+    )
   );
   preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, undef_probability)[0], "2023-04-18"));
   preparedFixtures.push(
-    manipulateFixtureForOneP2pDataSetWithThreeSectors(
-      generateP2pFixtures(1, undef_probability, toggleRandomSectors)[0],
-    ),
+    manipulateFixtureForOneP2pDataSetWithThreeSectors(generateP2pFixtures(1, undef_probability, toggleRandomSectors)[0])
   );
   return preparedFixtures;
 }
@@ -34,7 +32,7 @@ export function generateP2pPreparedFixtures(
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForSixP2pDataSetsInDifferentYears(
-  input: FixtureData<PathwaysToParisData>,
+  input: FixtureData<PathwaysToParisData>
 ): FixtureData<PathwaysToParisData> {
   input.companyInformation.companyName = "six-p2p-data-sets-in-different-years";
   if (input.t.general?.general?.dataDate) input.t.general.general.dataDate = "2023-01-01";
@@ -52,7 +50,7 @@ function manipulateFixtureForSixP2pDataSetsInDifferentYears(
  */
 function manipulateFixtureForDate(
   input: FixtureData<PathwaysToParisData>,
-  date: string,
+  date: string
 ): FixtureData<PathwaysToParisData> {
   input.companyInformation.companyName = "P2p-date-" + date;
   input.t.general.general.dataDate = date;
@@ -67,7 +65,7 @@ function manipulateFixtureForDate(
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForOneP2pDataSetWithThreeSectors(
-  input: FixtureData<PathwaysToParisData>,
+  input: FixtureData<PathwaysToParisData>
 ): FixtureData<PathwaysToParisData> {
   input.companyInformation.companyName = "one-p2p-data-set-with-three-sectors";
   input.t.general.general.dataDate = "2022-01-01";

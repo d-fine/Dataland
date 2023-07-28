@@ -86,7 +86,7 @@ export function objectDropNull(obj: ObjectType): ObjectType {
   return JSON.parse(
     JSON.stringify(obj, (key, value: string | number) => {
       return value ?? undefined;
-    }),
+    })
   ) as ObjectType;
 }
 

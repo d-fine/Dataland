@@ -18,7 +18,7 @@ export class DatasetTableInfo {
     readonly companyId: string,
     readonly dataId: string,
     readonly dataReportingPeriod: string,
-    readonly status: DatasetStatus,
+    readonly status: DatasetStatus
   ) {}
 }
 
@@ -45,7 +45,7 @@ export function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStat
  */
 export async function getMyDatasetTableInfos(
   getKeycloakPromise: () => Promise<Keycloak>,
-  searchString?: string,
+  searchString?: string
 ): Promise<DatasetTableInfo[]> {
   let userId: string | undefined;
   const companyDataControllerApi = await new ApiClientProvider(getKeycloakPromise()).getCompanyDataControllerApi();
@@ -56,7 +56,7 @@ export async function getMyDatasetTableInfos(
       undefined,
       undefined,
       undefined,
-      true,
+      true
     )
   ).data;
   const parsedIdToken = (await getKeycloakPromise()).idTokenParsed;
@@ -68,7 +68,7 @@ export async function getMyDatasetTableInfos(
     company.dataRegisteredByDataland
       .filter(
         (dataMetaInfo: DataMetaInformation) =>
-          dataMetaInfo.uploaderUserId == userId && ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(dataMetaInfo.dataType),
+          dataMetaInfo.uploaderUserId == userId && ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(dataMetaInfo.dataType)
       )
       .map(
         (dataMetaInfo: DataMetaInformation) =>
@@ -79,8 +79,8 @@ export async function getMyDatasetTableInfos(
             company.companyId,
             dataMetaInfo.dataId,
             dataMetaInfo.reportingPeriod,
-            getDatasetStatus(dataMetaInfo),
-          ),
-      ),
+            getDatasetStatus(dataMetaInfo)
+          )
+      )
   );
 }

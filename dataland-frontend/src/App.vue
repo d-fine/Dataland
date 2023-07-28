@@ -38,7 +38,7 @@ export default defineComponent({
         const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
         this.functionIdOfSessionSetInterval = startSessionSetIntervalFunctionAndReturnItsId(
           this.resolvedKeycloakPromise,
-          openSessionWarningModalBound,
+          openSessionWarningModalBound
         );
       }
     },

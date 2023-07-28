@@ -64,12 +64,12 @@ describeIf(
         .then((storedCompany) => {
           cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
           cy.visitAndCheckAppMount(
-            "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload",
+            "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload"
           );
           cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.url().should(
             "eq",
-            getBaseUrl() + "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload",
+            getBaseUrl() + "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload"
           );
           cy.get("h1").should("contain", testCompanyName);
           uploadLksgDataViaForm();
@@ -82,7 +82,7 @@ describeIf(
         cy.fixture("CompanyInformationWithLksgPreparedFixtures").then((lksgDataSets) => {
           const lksgData = prepareLksgViewIntercepts(
             getPreparedFixture("one-lksg-data-set-with-two-production-sites", lksgDataSets as FixtureData<LksgData>[]),
-            (metaInfos as DataMetaInformation[])[0],
+            (metaInfos as DataMetaInformation[])[0]
           );
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
           toggleRowGroup("productionSpecific");
@@ -105,7 +105,7 @@ describeIf(
      */
     function prepareLksgViewIntercepts(
       lksgDataFixture: FixtureData<LksgData>,
-      dataMetaInfo: DataMetaInformation,
+      dataMetaInfo: DataMetaInformation
     ): LksgData {
       dataMetaInfo.dataType = DataTypeEnum.Lksg;
       dataMetaInfo.qaStatus = QaStatus.Accepted;
@@ -141,5 +141,5 @@ describeIf(
       });
       return lksgData;
     }
-  },
+  }
 );

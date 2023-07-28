@@ -62,29 +62,29 @@ describeIf(
             token,
             storedCompany.companyId,
             "2021",
-            testData.t,
+            testData.t
           );
 
           testEditDataButton(storedCompany, lksgDatasetFor2021);
 
           cy.get('[data-test="upload-files-button-environmentalManagementSystemInternationalCertification"]').should(
-            "exist",
+            "exist"
           );
           cy.get('[data-test="upload-files-button-environmentalManagementSystemNationalCertification"]').should(
-            "exist",
+            "exist"
           );
 
           cy.get('[data-test="mercuryAndMercuryWasteHandlingPolicy"] [data-test="files-to-upload-remove"]')
             .should("exist")
             .click();
           cy.get('[data-test="mercuryAndMercuryWasteHandlingPolicy"] [data-test="FileUploadContainer"]').should(
-            "not.exist",
+            "not.exist"
           );
           cy.get('[data-test="upload-files-button-mercuryAndMercuryWasteHandlingPolicy"]').should("exist");
         });
       });
     });
-  },
+  }
 );
 
 /**
@@ -106,6 +106,6 @@ function testEditDataButton(storedCompany: StoredCompany, uploadedDataset: DataM
   cy.url().should(
     "eq",
     getBaseUrl() +
-      `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${uploadedDataset.dataId}`,
+      `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${uploadedDataset.dataId}`
   );
 }

@@ -178,7 +178,7 @@ export default defineComponent({
         this.gotoUpdateForm(
           this.singleDataMetaInfoToDisplay.companyId,
           this.singleDataMetaInfoToDisplay.dataType,
-          this.singleDataMetaInfoToDisplay.dataId,
+          this.singleDataMetaInfoToDisplay.dataId
         );
       } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
         const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
@@ -189,7 +189,7 @@ export default defineComponent({
         this.gotoUpdateForm(
           assertDefined(this.companyID),
           this.dataType as DataTypeEnum,
-          Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId,
+          Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId
         );
       }
     },
@@ -201,7 +201,7 @@ export default defineComponent({
      */
     gotoUpdateForm(companyID: string, dataType: DataTypeEnum, dataId: string) {
       void this.$router.push(
-        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`,
+        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
       );
     },
     /**
@@ -262,7 +262,7 @@ export default defineComponent({
      * @param listOfActiveDataMetaInfo The list to be used as input for the map.
      */
     setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
-      listOfActiveDataMetaInfo: DataMetaInformation[],
+      listOfActiveDataMetaInfo: DataMetaInformation[]
     ) {
       this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
       listOfActiveDataMetaInfo.forEach((dataMetaInfo: DataMetaInformation) => {
@@ -285,15 +285,15 @@ export default defineComponent({
     async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod,
+          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
         this.setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod,
+          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
         this.isDataProcessedSuccesfully = true;

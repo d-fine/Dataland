@@ -12,7 +12,7 @@ export function generateAddress(undefinedProbability = 0.5): Address {
   return {
     streetAndHouseNumber: valueOrUndefined(
       faker.location.street() + " " + faker.location.buildingNumber(),
-      undefinedProbability,
+      undefinedProbability
     ),
     city: faker.location.city(),
     state: valueOrUndefined(faker.location.state(), undefinedProbability),

@@ -33,7 +33,7 @@ export const euTaxonomyKPIsModel = {
  * @returns the kpi field name
  */
 export function getKpiFieldNameForOneFinancialServiceType(
-  financialServiceType: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
+  financialServiceType: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
 ): string {
   const matchingKeys = [];
   for (const [key, value] of Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType)) {

@@ -200,11 +200,11 @@ export default defineComponent({
         this.waitingForData = true;
         if (this.dataID != "loading") {
           const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
+            assertDefined(this.getKeycloakPromise)()
           ).getEuTaxonomyDataForFinancialsControllerApi();
           const companyAssociatedData =
             await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-              assertDefined(this.dataID),
+              assertDefined(this.dataID)
             );
           this.dataSet = companyAssociatedData.data.data;
           this.waitingForData = false;

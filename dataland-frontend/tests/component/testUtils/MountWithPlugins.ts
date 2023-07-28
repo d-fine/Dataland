@@ -35,7 +35,7 @@ declare global {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
         component: T,
-        options: ComponentMountingOptions<T>,
+        options: ComponentMountingOptions<T>
       ): Cypress.Chainable<{
         wrapper: VueWrapper<InstanceType<T>>;
         component: VueWrapper<InstanceType<T>>["vm"];
@@ -54,7 +54,7 @@ declare global {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   component: T,
-  options: ComponentMountingOptions<T>,
+  options: ComponentMountingOptions<T>
 ): Cypress.Chainable<{
   wrapper: VueWrapper<InstanceType<T>>;
   component: VueWrapper<InstanceType<T>>["vm"];

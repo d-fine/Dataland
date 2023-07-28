@@ -82,5 +82,5 @@ describeIf(
         cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should("not.exist");
       });
     });
-  },
+  }
 );

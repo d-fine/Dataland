@@ -77,7 +77,7 @@ export default defineComponent({
     },
     existsAcceptedVersion(): boolean {
       return (this.receivedMapOfReportingPeriodsToActiveDataMetaInfo as Map<string, DataMetaInformation>).has(
-        this.displayedDataset?.reportingPeriod ?? "",
+        this.displayedDataset?.reportingPeriod ?? ""
       );
     },
     areMoreDatasetsViewableSimultaneously(): boolean {

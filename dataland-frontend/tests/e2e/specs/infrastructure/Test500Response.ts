@@ -18,12 +18,12 @@ describe("As a developer, I want to ensure that cypress behaves as expected", ()
             fetch("/api/testing/getDummy500Response", { headers: { Authorization: `Bearer ${token}` } }).then(
               (response) => {
                 assert(response.status >= 500, "Expected a 500 response");
-              },
-            ),
-          ),
+              }
+            )
+          )
         );
       });
-    },
+    }
   );
   describeIf(
     "In the CD pipeline, testing endpoint should NOT be exposed",
@@ -36,10 +36,10 @@ describe("As a developer, I want to ensure that cypress behaves as expected", ()
           wrapPromiseToCypressPromise(
             fetch("/api/testing/getDummy500Response", { headers: { Authorization: `Bearer ${token}` } }).then((r) => {
               assert(r.status == 404, "Expected a 404 response");
-            }),
-          ),
+            })
+          )
         );
       });
-    },
+    }
   );
 });

@@ -40,7 +40,7 @@ describeIf(
     function uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials,
-      reportingPeriod: string,
+      reportingPeriod: string
     ): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
@@ -49,13 +49,13 @@ describeIf(
               token,
               storedCompany.companyId,
               reportingPeriod,
-              testData,
+              testData
             ).then(() => {
               cy.visitAndCheckAppMount(
-                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
+                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
               );
             });
-          },
+          }
         );
       });
     }
@@ -126,7 +126,7 @@ describeIf(
     function checkCreditInstitutionValues(
       testData: EuTaxonomyDataForFinancials,
       individualFieldSubmission: boolean,
-      dualFieldSubmission: boolean,
+      dualFieldSubmission: boolean
     ): void {
       checkCommonFields("CreditInstitution", testData.eligibilityKpis!.CreditInstitution);
       if (individualFieldSubmission) {
@@ -159,7 +159,7 @@ describeIf(
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t,
-        testData.reportingPeriod,
+        testData.reportingPeriod
       );
       checkCreditInstitutionValues(testData.t, false, true);
     });
@@ -169,7 +169,7 @@ describeIf(
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t,
-        testData.reportingPeriod,
+        testData.reportingPeriod
       );
       checkCreditInstitutionValues(testData.t, true, false);
     });
@@ -179,7 +179,7 @@ describeIf(
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t,
-        testData.reportingPeriod,
+        testData.reportingPeriod
       );
       checkInsuranceValues(testData.t);
       cy.get("body").should("not.contain", "Trading portfolio");
@@ -191,7 +191,7 @@ describeIf(
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t,
-        testData.reportingPeriod,
+        testData.reportingPeriod
       );
       checkInvestmentFirmValues(testData.t);
     });
@@ -201,7 +201,7 @@ describeIf(
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t,
-        testData.reportingPeriod,
+        testData.reportingPeriod
       );
       checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
       cy.get("body").should("not.contain", "Trading portfolio");
@@ -214,12 +214,12 @@ describeIf(
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t,
-        testData.reportingPeriod,
+        testData.reportingPeriod
       );
       checkInsuranceValues(testData.t);
       checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
       cy.get("body").should("not.contain", "Trading portfolio");
       cy.get("body").should("not.contain", "demand interbank loans");
     });
-  },
+  }
 );

@@ -79,7 +79,7 @@ export function generateSmeData(undefinedProbability = 0.5): SmeData {
     power: {
       investments: {
         percentageOfInvestmentsInEnhancingEnergyEfficiency: valueOrUndefined(
-          getRandomPercentageRangeInvestmentEnergyEfficiency(),
+          getRandomPercentageRangeInvestmentEnergyEfficiency()
         ),
       },
       consumption: {
@@ -88,7 +88,7 @@ export function generateSmeData(undefinedProbability = 0.5): SmeData {
         energyConsumptionHeatingAndHotWater: valueOrUndefined(randomNumber(1000), undefinedProbability),
         primaryEnergySourceForHeatingAndHotWater: valueOrUndefined(getRandomHeatSource()),
         energyConsumptionCoveredByOwnRenewablePowerGeneration: valueOrUndefined(
-          getRandomPercentageRangeEnergyConsumption(),
+          getRandomPercentageRangeEnergyConsumption()
         ),
       },
     },

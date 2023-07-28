@@ -9,11 +9,11 @@ export function exportFixturesLksg(): void {
   const companyInformationWithLksgData = generateLksgFixture(150);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithLksgData.json",
-    JSON.stringify(companyInformationWithLksgData, null, "\t"),
+    JSON.stringify(companyInformationWithLksgData, null, "\t")
   );
   const preparedFixtureLksgDataForFinancials = generateLksgPreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithLksgPreparedFixtures.json",
-    JSON.stringify(preparedFixtureLksgDataForFinancials, null, "\t"),
+    JSON.stringify(preparedFixtureLksgDataForFinancials, null, "\t")
   );
 }

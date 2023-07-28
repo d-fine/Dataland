@@ -98,17 +98,17 @@ export default defineComponent({
     async queryCompany() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getCompanyDataControllerApi();
         const companyResponse = await companyDataControllerApi.getTeaserCompanies();
         this.companyID = companyResponse.data[0];
 
         const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
           this.companyID,
-          DataTypeEnum.EutaxonomyNonFinancials,
+          DataTypeEnum.EutaxonomyNonFinancials
         );
         const filteredData = apiResponse.data.filter((dataItem) => {
           if (dataItem.dataType === DataTypeEnum.EutaxonomyNonFinancials) {

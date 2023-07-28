@@ -27,7 +27,7 @@ export interface ReportToUpload extends CompanyReport {
  */
 export async function uploadFiles(
   files: ReportToUpload[] | DocumentToUpload[],
-  getKeycloakPromise: () => Promise<Keycloak>,
+  getKeycloakPromise: () => Promise<Keycloak>
 ): Promise<void> {
   const documentControllerApi = await new ApiClientProvider(getKeycloakPromise()).getDocumentControllerApi();
   for (const fileToUpload of files) {
@@ -59,7 +59,7 @@ export async function uploadFiles(
  */
 export function isThereActuallyANewFileSelected(
   filesCurrentlySelectedByUser: File[],
-  previouslySelectedDocuments: DocumentToUpload[],
+  previouslySelectedDocuments: DocumentToUpload[]
 ): boolean {
   return filesCurrentlySelectedByUser.length != previouslySelectedDocuments.length;
 }
