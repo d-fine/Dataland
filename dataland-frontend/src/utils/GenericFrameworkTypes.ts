@@ -19,6 +19,7 @@ export interface Field {
   name: string;
   label: string;
   description: string;
+  unit?: string;
   component: string;
   dependency?: string;
   certificateRequiredIfYes?: boolean;
@@ -26,6 +27,7 @@ export interface Field {
   validationLabel?: string;
   required?: boolean;
   evidenceDesired?: boolean;
+
 
   // input field specific values
   placeholder?: string;
