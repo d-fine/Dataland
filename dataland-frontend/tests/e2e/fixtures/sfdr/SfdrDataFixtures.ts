@@ -18,7 +18,7 @@ export function generateSfdrData(undefinedProbability = 0.5): SfdrData {
     general: {
       general: {
         dataDate: randomPastDate(),
-        fiscalYear: randomFiscalYearDeviation(),
+        fiscalYearDeviation: randomFiscalYearDeviation(),
         fiscalYearEnd: randomPastDate(),
         referencedReports: reports,
         scopeOfEntities: valueOrUndefined(randomYesNo(), undefinedProbability),
