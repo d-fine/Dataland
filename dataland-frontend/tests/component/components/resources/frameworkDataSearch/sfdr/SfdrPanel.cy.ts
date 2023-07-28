@@ -39,19 +39,15 @@ describe("Component tests for SfdrPanel", () => {
         };
       },
     });
-    cy.get("table.p-datatable-table")
-      .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
-      .should("exist");
+    cy.get("table.p-datatable-table").find(`span:contains(${sfdrData.general.general.fiscalYearEnd})`).should("exist");
 
     cy.get("button.p-row-toggler").eq(0).click();
     cy.get("table.p-datatable-table")
-      .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
+      .find(`span:contains(${sfdrData.general.general.fiscalYearEnd})`)
       .should("not.exist");
 
     cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("table.p-datatable-table")
-      .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
-      .should("exist");
+    cy.get("table.p-datatable-table").find(`span:contains(${sfdrData.general.general.fiscalYearEnd})`).should("exist");
   });
 
   /**
@@ -67,7 +63,7 @@ describe("Component tests for SfdrPanel", () => {
       const reportingYear = 2023 + i;
       const fiscalYearEnd = `${reportingYear}-01-01`;
       const sfdrData = structuredClone(baseDataset);
-      sfdrData.social!.general!.fiscalYearEnd = fiscalYearEnd;
+      sfdrData.general.general.fiscalYearEnd = fiscalYearEnd;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
         reportingPeriod: reportingYear.toString(),

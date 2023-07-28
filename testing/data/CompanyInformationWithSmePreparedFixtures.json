@@ -2,105 +2,98 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Antoninastead",
-			"sector": "niches",
+			"headquarters": "Johns Creek",
 			"identifiers": {
 				"Lei": [
-					"QaL2kLsmBYJhWAGRUdks"
+					"tFzUyYOlRepwhAQEeX5i"
 				],
 				"Isin": [],
-				"PermId": [
-					"O15GYukFZ4"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"BwX4ZHVi4"
 				],
-				"Ticker": [
-					"FHlaXv5"
-				],
-				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"sp0a3aOCFHxdYBB"
+				]
 			},
-			"countryCode": "BZ",
-			"companyAlternativeNames": [
-				"Langworth, MacGyver and Anderson",
-				"Shields, Rath and Crooks"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"countryCode": "NL",
+			"companyAlternativeNames": [],
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
 						"D",
-						"G",
 						"H"
 					],
 					"addressOfHeadquarters": {
-						"city": "Johanville",
-						"state": "Hawaii",
-						"country": "GQ"
+						"city": "Fort Eldon",
+						"postalCode": "85456",
+						"country": "BG"
 					},
-					"numberOfEmployees": 8787,
-					"fiscalYearStart": "2023-11-10"
+					"numberOfEmployees": 6351,
+					"fiscalYearStart": "2024-05-01"
 				},
-				"businessNumbers": {
-					"revenueInEur": 76296779,
-					"capitalAssetsInEur": 4051971
-				}
+				"businessNumbers": {}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Goldner - Bednar",
+							"nameOfProductionSite": "DuBuque and Sons",
 							"addressOfProductionSite": {
-								"city": "New Helene",
-								"postalCode": "62910",
-								"country": "GB"
-							},
-							"percentageOfTotalRevenue": 0.4457
-						},
-						{
-							"nameOfProductionSite": "Weimann Inc",
-							"addressOfProductionSite": {
-								"city": "Eagan",
-								"state": "Missouri",
-								"country": "VI"
+								"city": "Dietrichboro",
+								"state": "Ohio",
+								"postalCode": "81995",
+								"country": "AW"
 							}
 						},
 						{
+							"nameOfProductionSite": "Becker and Sons",
 							"addressOfProductionSite": {
-								"city": "Uptonstead",
-								"state": "South Carolina",
-								"country": "BD"
+								"streetAndHouseNumber": "Wyman Park 8363",
+								"city": "Buena Park",
+								"country": "PW"
 							},
-							"percentageOfTotalRevenue": 0.2204
+							"percentageOfTotalRevenue": 0.3712
 						},
 						{
+							"nameOfProductionSite": "Hegmann - Littel",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Zieme Burg 8607",
-								"city": "North Janiyastead",
-								"state": "Nevada",
-								"country": "MM"
+								"city": "Schultzstead",
+								"state": "Louisiana",
+								"country": "GI"
 							}
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": []
+				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+				},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 846,
+					"energyConsumptionHeatingAndHotWater": 411,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 5470169,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 42180764,
 					"naturalHazardsCovered": [
-						"Flooding"
+						"Flooding",
+						"Hail",
+						"EarthQuake",
+						"Snow",
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}

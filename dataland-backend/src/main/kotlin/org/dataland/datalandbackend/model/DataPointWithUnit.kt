@@ -17,5 +17,5 @@ data class DataPointWithUnit<T>(
 
     val comment: String? = null,
 
-    val unit: String,
+    val unit: String?,
 )

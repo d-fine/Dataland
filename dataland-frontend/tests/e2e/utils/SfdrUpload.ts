@@ -11,7 +11,6 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyU
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
-import { fillAndValidateEuTaxonomyForNonFinancialsUploadForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 /**
  * Uploads a single SFDR data entry for a company
@@ -66,9 +65,8 @@ export function uploadCompanyAndSfdrDataViaApi(
 }
 /**
  * Fills the Sfdr upload form with the given dataset
- * @param data the data to fill the form with
- * @param companyId
- * @param valueFieldNotFilled
+ * @param companyId comany id stored in database
+ * @param valueFieldNotFilled optional parameter to define if value field is populated
  */
 export function uploadSfdrDataViaForm(companyId: string, valueFieldNotFilled = false): void {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}/upload`);
