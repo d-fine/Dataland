@@ -39,9 +39,9 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val oecdGuidelinesForMultinationalEnterprisesPolicy: DataPoint<YesNo>? = null,
 
-    val averageGrossHourlyEarningsMaleEmployees: DataPoint<String>? = null,
+    val averageGrossHourlyEarningsMaleEmployees: DataPoint<BigDecimal>? = null,
 
-    val averageGrossHourlyEarningsFemaleEmployees: DataPoint<String>? = null,
+    val averageGrossHourlyEarningsFemaleEmployees: DataPoint<BigDecimal>? = null,
 
     val femaleBoardMembers: DataPoint<BigDecimal>? = null,
 
