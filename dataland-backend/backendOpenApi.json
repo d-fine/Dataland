@@ -2865,14 +2865,14 @@
           }
         }
       },
-      "DataPointString": {
+      "DataPointWithUnitBigDecimal": {
         "required": [
           "quality"
         ],
         "type": "object",
         "properties": {
           "value": {
-            "type": "string"
+            "type": "number"
           },
           "quality": {
             "$ref": "#/components/schemas/QualityOptions"
@@ -2881,6 +2881,9 @@
             "$ref": "#/components/schemas/CompanyReportReference"
           },
           "comment": {
+            "type": "string"
+          },
+          "unit": {
             "type": "string"
           }
         }
@@ -2980,13 +2983,13 @@
         "type": "object",
         "properties": {
           "inorganicPollutants": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "airPollutants": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "ozoneDepletionSubstances": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "carbonReductionInitiatives": {
             "$ref": "#/components/schemas/DataPointYesNo"
@@ -2997,67 +3000,67 @@
         "type": "object",
         "properties": {
           "renewableEnergyProduction": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "renewableEnergyConsumption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonRenewableEnergyConsumption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonRenewableEnergyProduction": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "highImpactClimateSectorEnergyConsumptionNaceA": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "highImpactClimateSectorEnergyConsumptionNaceB": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "highImpactClimateSectorEnergyConsumptionNaceC": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "highImpactClimateSectorEnergyConsumptionNaceD": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "highImpactClimateSectorEnergyConsumptionNaceE": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "highImpactClimateSectorEnergyConsumptionNaceF": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "highImpactClimateSectorEnergyConsumptionNaceG": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "highImpactClimateSectorEnergyConsumptionNaceH": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "highImpactClimateSectorEnergyConsumptionNaceL": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "totalHighImpactClimateSectorEnergyConsumption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonRenewableEnergyConsumptionFossilFuels": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonRenewableEnergyConsumptionCrudeOil": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonRenewableEnergyConsumptionNaturalGas": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonRenewableEnergyConsumptionLignite": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonRenewableEnergyConsumptionCoal": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonRenewableEnergyConsumptionNuclearEnergy": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonRenewableEnergyConsumptionOther": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           }
         }
       },
@@ -3065,19 +3068,19 @@
         "type": "object",
         "properties": {
           "scope1": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "scope2": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "scope3": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "enterpriseValue": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "totalRevenue": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "fossilFuelSectorExposure": {
             "$ref": "#/components/schemas/DataPointYesNo"
@@ -3088,7 +3091,7 @@
         "type": "object",
         "properties": {
           "hazardousWaste": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "manufactureOfAgrochemicalPesticidesProducts": {
             "$ref": "#/components/schemas/DataPointYesNo"
@@ -3120,13 +3123,13 @@
         "type": "object",
         "properties": {
           "emissionsToWater": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "waterConsumption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "waterReused": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "waterManagementPolicy": {
             "$ref": "#/components/schemas/DataPointYesNo"
@@ -3198,13 +3201,13 @@
         "type": "object",
         "properties": {
           "reportedCasesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "reportedConvictionsOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "reportedFinesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointString"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           }
         }
       },
@@ -3235,7 +3238,7 @@
             "$ref": "#/components/schemas/DataPointYesNo"
           },
           "reportedIncidentsOfHumanRights": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           }
         }
       },
@@ -3288,16 +3291,16 @@
             "$ref": "#/components/schemas/DataPointYesNo"
           },
           "averageGrossHourlyEarningsMaleEmployees": {
-            "$ref": "#/components/schemas/DataPointString"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "averageGrossHourlyEarningsFemaleEmployees": {
-            "$ref": "#/components/schemas/DataPointString"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "femaleBoardMembers": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "maleBoardMembers": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "controversialWeaponsExposure": {
             "$ref": "#/components/schemas/DataPointYesNo"
@@ -3306,10 +3309,10 @@
             "$ref": "#/components/schemas/DataPointYesNo"
           },
           "rateOfAccidents": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "workdaysLost": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "supplierCodeOfConduct": {
             "$ref": "#/components/schemas/DataPointYesNo"
@@ -3321,13 +3324,13 @@
             "$ref": "#/components/schemas/DataPointYesNo"
           },
           "reportedIncidentsOfDiscrimination": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "sanctionsIncidentsOfDiscrimination": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "ceoToEmployeePayGap": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           }
         }
       },

@@ -2,8 +2,8 @@ package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcate
 
 import org.dataland.datalandbackend.model.DataPoint
 import org.dataland.datalandbackend.model.DataPointWithUnit
-import java.math.BigDecimal
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import java.math.BigDecimal
 
 /**
  * --- API model ---

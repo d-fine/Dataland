@@ -1,11 +1,11 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental
 
-import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalGreenhouseGasEmissions
-import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalEnergyPerformance
 import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalBiodiversity
-import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalWater
-import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalWaste
 import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalEmissions
+import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalEnergyPerformance
+import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalGreenhouseGasEmissions
+import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalWaste
+import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories.SfdrEnvironmentalWater
 
 /**
  * --- API model ---
