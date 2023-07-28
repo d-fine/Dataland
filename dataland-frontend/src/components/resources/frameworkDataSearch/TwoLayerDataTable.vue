@@ -57,7 +57,7 @@
                   convertsListToReadableFormatAndShowsInModal(
                     slotProps.data.content[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey,
+                    slotProps.data.kpiKey
                   )
                 "
                 class="link"
@@ -73,7 +73,7 @@
                   openModalAndDisplayValuesInSubTable(
                     slotProps.data.content[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey,
+                    slotProps.data.kpiKey
                   )
                 "
                 class="link"
@@ -143,7 +143,7 @@
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId, expandRowGroupOnHeaderClick } from "@/utils/DataTableDisplay";
 import { BaseDataPointYesNo, YesNo } from "@clients/backend";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
@@ -185,7 +185,9 @@ export default defineComponent({
     },
   },
   mounted() {
-    document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
+    document.addEventListener("click", (e) =>
+      expandRowGroupOnHeaderClick(e, this.arrayOfKpiDataObjects, "subcategoryKey", this.expandedRowGroups)
+    );
   },
   methods: {
     /**
@@ -249,23 +251,6 @@ export default defineComponent({
           kpiKeyOfTable: kpiKey,
         },
       });
-    },
-    /**
-     * Enables groupRowExpansion (and collapse) when clicking on the whole header row
-     * @param event a click event
-     */
-    expandRowGroupOnHeaderClick(event: Event) {
-      const id = (event.target as Element).id;
-
-      const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-        this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === child.id),
-      )[0];
-
-      if (matchingChild || this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === id)) {
-        const index = this.expandedRowGroups.indexOf(matchingChild?.id ?? id);
-        if (index === -1) this.expandedRowGroups.push(matchingChild?.id ?? id);
-        else this.expandedRowGroups.splice(index, 1);
-      }
     },
   },
 });

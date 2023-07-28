@@ -54,7 +54,7 @@
 
       <Column field="subAreaKey" header="Impact Area"></Column>
       <template #groupheader="slotProps">
-        <span>{{
+        <span :id="slotProps.data.subAreaKey">{{
           subAreaNameMappings[slotProps.data.subAreaKey]
             ? subAreaNameMappings[slotProps.data.subAreaKey]
             : slotProps.data.subAreaKey
@@ -71,7 +71,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
-import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
+import { expandRowGroupOnHeaderClick, ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 
 export default defineComponent({
   name: "CompanyDataTable",
@@ -88,7 +88,7 @@ export default defineComponent({
   },
   props: {
     kpiDataObjects: {
-      type: Array,
+      type: Array as PropType<Array<{ [index: string]: string | object; subAreaKey: string; kpiKey: string }>>,
       default: () => [],
       required: true,
     },
@@ -111,6 +111,16 @@ export default defineComponent({
   },
   mounted() {
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;
+    document.addEventListener(
+      "click",
+      (e) =>
+        (this.expandedRowGroups = expandRowGroupOnHeaderClick(
+          e,
+          this.kpiDataObjectsToDisplay,
+          "subAreaKey",
+          this.expandedRowGroups
+        ))
+    );
   },
   methods: {
     /**
