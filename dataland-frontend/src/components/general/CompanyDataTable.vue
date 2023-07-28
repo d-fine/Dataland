@@ -73,6 +73,8 @@ import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTabl
 import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { expandRowGroupOnHeaderClick, ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 
+type SfdrKpiObject = { [index: string]: string | object; subAreaKey: string; kpiKey: string };
+
 export default defineComponent({
   name: "CompanyDataTable",
   components: { DataTable, Column },
@@ -81,14 +83,14 @@ export default defineComponent({
   },
   data() {
     return {
-      kpiDataObjectsToDisplay: [],
+      kpiDataObjectsToDisplay: [] as SfdrKpiObject[],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames: detailsCompanyDataTableColumnHeaders.listOfProductionSites,
     };
   },
   props: {
     kpiDataObjects: {
-      type: Array as PropType<Array<{ [index: string]: string | object; subAreaKey: string; kpiKey: string }>>,
+      type: Array as PropType<Array<SfdrKpiObject>>,
       default: () => [],
       required: true,
     },
