@@ -1,5 +1,3 @@
-let className = "col-9";
-
 <template>
   <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
     <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
@@ -69,12 +67,12 @@ let className = "col-9";
 <script lang="ts">
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
-import { CompanyReport } from "@clients/backend";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
 import { ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { UploadReportsProps, YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { UploadReportsProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
   name: "UploadReports",
@@ -148,12 +146,13 @@ export default defineComponent({
     prefillAlreadyUploadedReports() {
       if (this.referencedReportsForPrefill) {
         for (const key in this.referencedReportsForPrefill) {
+          const referencedReport = (this.referencedReportsForPrefill as { [key: string]: CompanyReport })[key];
           this.storedReports.push({
             reportName: key,
-            reference: this.referencedReportsForPrefill[key].reference,
-            currency: this.referencedReportsForPrefill[key].currency,
-            reportDate: this.referencedReportsForPrefill[key].reportDate,
-            isGroupLevel: this.referencedReportsForPrefill[key].isGroupLevel,
+            reference: referencedReport.reference,
+            currency: referencedReport.currency,
+            reportDate: referencedReport.reportDate,
+            isGroupLevel: referencedReport.isGroupLevel,
           });
         }
         this.emitReferenceableReportNamesChangedEvent();
