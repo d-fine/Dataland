@@ -5,7 +5,6 @@ import { DataTypeEnum, SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadSfdrDataViaForm } from "@e2e/utils/SfdrUpload";
-import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new SFDR dataset",
