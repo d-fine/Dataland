@@ -42,7 +42,7 @@
                   name="report"
                   v-model="currentReportValue"
                   placeholder="Select a report"
-                  :options="['None...', ...reportsName]"
+                  :options="['None...', ...displayreportsName]"
                 />
               </div>
               <div>
@@ -108,18 +108,23 @@ import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/Rad
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { DocumentToUpload } from "@/utils/FileUploadUtils";
-import { BaseDataPointYesNo, QualityOptions } from "@clients/backend";
+import {BaseDataPointYesNo, LksgProcurementCategory, QualityOptions} from "@clients/backend";
 
 export default defineComponent({
   name: "YesNoFormField",
   components: { RadioButtonsFormElement, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
+  inject: {
+    injectReportsName: {
+      from: "namesOfAllCompanyReportsForTheDataset",
+      default: [] as string[],
+    },
+  },
   props: {
     ...YesNoFormFieldProps,
     dataTest: String,
     reportsName: {
-      type: Array,
-      default: () => [],
+      type: Array<string>,
     },
   },
 
@@ -141,10 +146,14 @@ export default defineComponent({
       })),
       currentReportValue: "",
       currentPageValue: "",
-      currentQualityValue: "",
+      currentQualityValue: "Audited",
     };
   },
-
+  computed: {
+    displayreportsName(): string[]  {
+      return this.reportsName || this.injectReportsName;
+    }
+  },
   emits: ["documentUpdated"],
   mounted() {
     this.updateFileUploadFiles();

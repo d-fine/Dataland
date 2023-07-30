@@ -4,7 +4,6 @@
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
   <!-- Select company reports -->
-
   <div v-if="isEuTaxonomy" class="formField">
     <h3 class="mt-0">Select company reports</h3>
     <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
@@ -31,7 +30,6 @@
           <ReportFormElement :name="reportToUpload.fileNameWithoutSuffix" :reference="reportToUpload.reference" />
         </div>
       </div>
-    </div>
     <div v-if="storedReports.length > 0" class="uploadFormSection">
       <!-- List of company reports -->
       <div class="col-3 p-3 topicLabel">
@@ -61,6 +59,7 @@
         />
       </div>
     </div>
+    </div>
   </FormKit>
 </template>
 
@@ -76,6 +75,12 @@ import { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
   name: "UploadReports",
+  inject: {
+    injectreferencedReportsForPrefill: {
+      from: "referencedReportsForPrefill",
+      default: {},
+    },
+  },
   components: {
     UploadDocumentsForm,
     ReportFormElement,
@@ -84,6 +89,7 @@ export default defineComponent({
   emits: ["documentUpdated"],
   data() {
     return {
+      referencedReportsForPrefillFromInject: this.injectreferencedReportsForPrefill,
       reportsToUpload: [] as ReportToUpload[] | undefined,
       storedReports: [] as StoredReport[],
     };
@@ -97,48 +103,31 @@ export default defineComponent({
       const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName);
       return namesOfFilesToUpload.concat(namesOfStoredReports);
     },
-  },
-  watch: {
-    referencedReportsForPrefill() {
-      this.prefillAlreadyUploadedReports();
+    displayReferencedReportsForPrefill() {
+      console.log('LKLKKKKK', this.referencedReportsForPrefillFromInject)
+      if (this.referencedReportsForPrefill && this.referencedReportsForPrefill.length) {
+        return this.referencedReportsForPrefill
+      } else if (this.referencedReportsForPrefillFromInject) {
+        return this.referencedReportsForPrefillFromInject
+      } else {
+        return []
+      }
     },
+  },
+  mounted() {
+    this.prefillAlreadyUploadedReports();
   },
   methods: {
     /**
      * Emits event that referenceable files changed
      */
     emitReferenceableReportNamesChangedEvent() {
-      console.log("documentUpdated", this.allReferenceableReportNames);
-      this.$emit("documentUpdated", this.allReferenceableReportNames);
+      if (this.isEuTaxonomy) {
+        this.$emit("documentUpdated", this.allReferenceableReportNames);
+      } else {
+        this.$emit("documentUpdated", this.allReferenceableReportNames, this.reportsToUpload);
+      }
     },
-    // /**
-    //  * Checks if there are duplicates in files and displays information if so
-    //  */
-    // duplicatesInFilesHandles() {
-    //   console.log("documentUpdated", this.allReferenceableReportNames);
-    //   this.$emit("documentUpdated", this.allReferenceableReportNames);
-    // },
-    // /**
-    //  * Handles selection of a file by the user. First it checks if the file name is already taken.
-    //  * If yes, the selected file is removed again and a popup with an error message is shown.
-    //  * Else the file is added to the reports that shall be uploaded, then the sha256 hashes are calculated
-    //  * and added to the respective files.
-    //  * @param reports the list of all reports currently selected in the file upload
-    //  */
-    // updateSelectedReports(reports: ReportToUpload[]) {
-    //   console.log("updateSelectedReports", reports);
-    //   this.reportsToUpload = reports;
-    //   if (this.duplicatesAmongReferenceableReportNames()) {
-    //     const indexOfLastSelectedFile = reports.length - 1;
-    //     const lastSelectedFile = reports[indexOfLastSelectedFile].file;
-    //     this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
-    //     (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(
-    //         indexOfLastSelectedFile
-    //     );
-    //   } else {
-    //     this.emitReferenceableReportNamesChangedEvent();
-    //   }
-    // },
     /**
      * Handles selection of a file by the user. First it checks if the file name is already taken.
      * If yes, the selected file is removed again and a popup with an error message is shown.
@@ -150,35 +139,16 @@ export default defineComponent({
       console.log("updateSelectedReports 1!!!", reports);
       this.reportsToUpload = reports;
       if (this.duplicatesAmongReferenceableReportNames()) {
-
-        // const duplicates = this.allReferenceableReportNames.filter((name, index) => this.allReferenceableReportNames.indexOf(name) !== index);
-        // console.log('DUPLICATES', duplicates)
-
-        this.reportsToUpload.forEach((element, index) => {
-
-
-          for (let i = this.reportsToUpload.length - 1; i >= 0; i--) {
-            const currentElement = this.reportsToUpload[i];
-            const lowerIndex = this.reportsToUpload.indexOf(currentElement);
-            if (lowerIndex !== i) {
-
-              console.log('!!!!!!!! index !!!!!!!', index)
-              (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(index)
+        for (let i = 0; i < this.reportsToUpload.length; i++) {
+          const currentName = this.reportsToUpload[i].fileNameWithoutSuffix;
+          for (let j = i + 1; j < this.reportsToUpload.length; j++) {
+            if (this.reportsToUpload[j].fileNameWithoutSuffix === currentName) {
+              this.openModalToDisplayDuplicateNameError(this.reportsToUpload[j].fileNameWithoutSuffix);
+              (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(j);
+              j--; // We reduce j to recheck the item that will take the place of the deleted item
             }
           }
-        });
-
-        // this.reportsToUpload.forEach((record, index) => {
-        //   if (duplicates.includes(record.fileNameWithoutSuffix)) {
-        //
-        //     this.openModalToDisplayDuplicateNameError(record.fileNameWithoutSuffix);
-        //     // (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(
-        //     //     index,
-        //     // )
-        //   }});
-        // const indexOfLastSelectedFile = reports.length - 1;
-        // const lastSelectedFile = reports[indexOfLastSelectedFile].file;
-
+        }
       } else {
         this.emitReferenceableReportNamesChangedEvent();
       }
@@ -197,9 +167,12 @@ export default defineComponent({
      * Initializes the already uploaded reports from provided reports
      */
     prefillAlreadyUploadedReports() {
-      if (this.referencedReportsForPrefill) {
-        for (const key in this.referencedReportsForPrefill) {
-          const referencedReport = (this.referencedReportsForPrefill as { [key: string]: CompanyReport })[key];
+      console.log('*****222', this.injectreferencedReportsForPrefill)
+      console.log('!!!!!!->', this.displayReferencedReportsForPrefill)
+      if (this.displayReferencedReportsForPrefill) {
+        console.log('!!!!!!->', this.displayReferencedReportsForPrefill)
+        for (const key in this.displayReferencedReportsForPrefill) {
+          const referencedReport = (this.displayReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
           this.storedReports.push({
             reportName: key,
             reference: referencedReport.reference,
@@ -239,8 +212,16 @@ export default defineComponent({
      */
     duplicatesAmongReferenceableReportNames(): boolean {
       console.log("Duplication check");
-      console.log("allReferenceableReportNames", this.allReferenceableReportNames, this.allReferenceableReportNames.length);
-      console.log("Set(this.allReferenceableReportNames)", new Set(this.allReferenceableReportNames), new Set(this.allReferenceableReportNames).size);
+      console.log(
+        "allReferenceableReportNames",
+        this.allReferenceableReportNames,
+        this.allReferenceableReportNames.length
+      );
+      console.log(
+        "Set(this.allReferenceableReportNames)",
+        new Set(this.allReferenceableReportNames),
+        new Set(this.allReferenceableReportNames).size
+      );
       console.log("check", this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size);
       return this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size;
     },

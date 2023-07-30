@@ -88,10 +88,6 @@ export const MultiSelectFormProps = Object.assign(deepCopyObject(FormFieldPropsW
 }) as Readonly<ComponentPropsOptions>;
 
 export const DataPointFormFieldProps = Object.assign(deepCopyObject(YesNoFormFieldProps as ObjectType), {
-  reportsName: {
-    type: Array,
-    default: () => [],
-  },
   dataTest: {
     type: String,
   },

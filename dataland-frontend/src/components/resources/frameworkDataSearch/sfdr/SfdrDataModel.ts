@@ -24,7 +24,7 @@ export const sfdrDataModel = [
             validation: "required",
           },
           {
-            name: "fiscalYear",
+            name: "fiscalYearDeviation",
             label: "Fiscal Year",
             description: "Does the fiscal year deviate from the calender year?",
             unit: "",

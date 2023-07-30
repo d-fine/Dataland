@@ -53,7 +53,7 @@
                           :validation-label="field.validationLabel"
                           :evidenceDesired="field.evidenceDesired"
                           :data-test="field.name"
-                          @documentUpdated="handleChangeOfReferenceableReportNames"
+                          @documentUpdated="updateDocumentsList"
                           :ref="field.name"
                         />
                       </FormKit>
@@ -94,7 +94,7 @@
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, computed } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
@@ -127,7 +127,7 @@ import PercentageFormField from "@/components/forms/parts/fields/PercentageFormF
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { DocumentToUpload, ReportToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
@@ -185,13 +185,15 @@ export default defineComponent({
       postSfdrDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documents: new Map() as Map<string, DocumentToUpload>,
+      documents: [] as DocumentToUpload[],
+      referencedReportsForPrefill: {},
+      namesOfAllCompanyReportsForTheDataset: [] as string[],
     };
   },
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.companyAssociatedSfdrData.data.general.general.fiscalYearEnd;
+        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd;
         if (currentDate === undefined) {
           return "";
         } else {
@@ -209,7 +211,7 @@ export default defineComponent({
         for (const subcategory of category.subcategories) {
           map.set(
             subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedSfdrData.data)),
+            subcategory.fields.some((field) => field.showIf(this.companyAssociatedSfdrData.data))
           );
         }
       }
@@ -239,7 +241,7 @@ export default defineComponent({
     async loadSfdrData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const sfdrDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       ).getSfdrDataControllerApi();
 
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
@@ -248,14 +250,16 @@ export default defineComponent({
       /*if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
       }*/
-      const referencedReports = sfdrDataset.data.referencedReports;
+      const referencedReports = sfdrDataset.data?.general?.general?.referencedReports;
       delete sfdrDataset.data.referencedReports;
       const clonedSfdrDataset = { ...sfdrDataset } as ObjectType;
-      clonedSfdrDataset.referencedReports = referencedReports as {
-        [key: string]: CompanyReport;
-      };
+      this.referencedReportsForPrefill = clonedSfdrDataset.data?.general?.general?.referencedReports;
+      // clonedSfdrDataset.referencedReports = referencedReports as {
+      //   [key: string]: CompanyReport;
+      // };
 
       this.companyAssociatedSfdrData = objectDropNull(clonedSfdrDataset) as CompanyAssociatedDataSfdrData;
+      console.log('this.companyAssociatedSfdrData', this.companyAssociatedSfdrData)
       this.waitingForData = false;
     },
     /**
@@ -265,11 +269,11 @@ export default defineComponent({
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
-          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
+          await uploadFiles(this.documents, assertDefined(this.getKeycloakPromise));
         }
 
         const clonedCompanyAssociatedSfdrData = JSON.parse(
-          JSON.stringify(this.companyAssociatedSfdrData),
+          JSON.stringify(this.companyAssociatedSfdrData)
         ) as CompanyAssociatedDataSfdrData;
         if (clonedCompanyAssociatedSfdrData.data?.social?.general) {
           const general = clonedCompanyAssociatedSfdrData.data?.social?.general as ObjectType;
@@ -283,7 +287,7 @@ export default defineComponent({
         console.log("clonedCompanyAssociatedSfdrData", clonedCompanyAssociatedSfdrData);
 
         const sfdrDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
         await sfdrDataControllerApi.postCompanyAssociatedSfdrData(clonedCompanyAssociatedSfdrData);
         this.$emit("datasetCreated");
@@ -304,42 +308,23 @@ export default defineComponent({
       }
     },
     /**
-     * Updates the local list of names of referenceable reports
-     * @param reportNames new list of the referenceable reports' names
-     */
-    handleChangeOfReferenceableReportNames(reportNames: string[]) {
-      this.namesOfAllCompanyReportsForTheDataset = reportNames;
-    },
-    /**
-     * updates the list of certificates that were uploaded in the corresponding formfields on change
-     * @param fieldName the name of the formfield as a key
-     * @param document the certificate as combined object of reference id and file content
-     */
-    updateDocumentList(fieldName: string, document: DocumentToUpload): void {
-      if (document) {
-        this.documents.set(fieldName, document);
-      } else {
-        this.documents.delete(fieldName);
-      }
-    },
-    /**
      * updates the list of documents that were uploaded
-     * @param fieldName the name of the formfield as a key
-     * @param document the certificate as combined object of reference id and file content
+     * @param action object containing type of action and data
      */
-    updateDocumentsList(action: object): void {
-      switch (payload.typ) {
-        case "upload":
-          this.items.push(payload.payload);
-          break;
-        case "delete":
-          const indexToDelete = this.items.indexOf(payload.payload);
-          if (indexToDelete !== -1) {
-            this.items.splice(indexToDelete, 1);
-          }
-          break;
-      }
+    updateDocumentsList(reportsNames: string[], reportsToUpload: DocumentToUpload[]) {
+      this.namesOfAllCompanyReportsForTheDataset = reportsNames;
+      this.documents = reportsToUpload;
     },
+  },
+  provide() {
+    return {
+      namesOfAllCompanyReportsForTheDataset: computed(() => {
+        return this.namesOfAllCompanyReportsForTheDataset;
+      }),
+      referencedReportsForPrefill: computed(() => {
+        return this.referencedReportsForPrefill;
+      }),
+    };
   },
 });
 </script>

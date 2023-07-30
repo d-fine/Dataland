@@ -21,7 +21,7 @@
                 name="report"
                 v-model="currentReportValue"
                 placeholder="Select a report"
-                :options="['None...', ...reportsName]"
+                :options="['None...', ...displayreportsName]"
               />
             </div>
             <div>
@@ -106,7 +106,7 @@
               name="report"
               v-model="currentReportValue"
               placeholder="Select a report"
-              :options="['None...', ...reportsName]"
+              :options="['None...', ...displayreportsName]"
               :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
           </div>
@@ -168,19 +168,36 @@ import { DataPointFormFieldProps } from "@/components/forms/parts/fields/FormFie
 export default defineComponent({
   name: "DataPointFormField",
   components: { UploadFormHeader, FormKit },
-  data: () => ({
-    qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
-      label: qualityOption,
-      value: qualityOption,
-    })),
-    currentValue: "",
-    currentReportValue: "",
-    currentPageValue: "",
-    currentQualityValue: "",
-  }),
+  inject: {
+    injectReportsName: {
+      from: "namesOfAllCompanyReportsForTheDataset",
+      default: [] as string[],
+    },
+  },
+  computed: {
+    displayreportsName(): string[] {
+      return this.reportsName || this.injectReportsName;
+    },
+  },
+  data() {
+    return {
+      reportsNameFromInject: this.injectReportsName,
+      qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
+        label: qualityOption,
+        value: qualityOption,
+      })),
+      currentValue: "",
+      currentReportValue: "",
+      currentPageValue: "",
+      currentQualityValue: "Audited",
+    };
+  },
   emits: ["documentUpdated"],
   props: {
     ...DataPointFormFieldProps,
+    reportsName: {
+      type: Array<string>,
+    },
   },
   methods: {
     selectNothingIfNotExistsFormKitPlugin,
