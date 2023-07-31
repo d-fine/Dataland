@@ -5,9 +5,7 @@
       :field="keyOfColumn"
       :key="keyOfColumn"
       :header="
-        columnHeaders![kpiKeyOfTable]
-          ? columnHeaders![kpiKeyOfTable][keyOfColumn]
-          : humanizeString(kpiKeyOfTable)
+        columnHeaders![kpiKeyOfTable] ? columnHeaders![kpiKeyOfTable][keyOfColumn] : humanizeString(kpiKeyOfTable)
       "
       headerStyle="width: 15vw;"
     >
@@ -54,7 +52,7 @@ export default defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       listOfRowContents: Array<object | string>;
       kpiKeyOfTable: string;
-      columnHeaders: object,
+      columnHeaders: object;
     };
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;

@@ -2,60 +2,91 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Turnerview",
-			"sector": "supply-chains",
+			"headquarters": "Kolbyfort",
+			"headquartersPostalCode": "08266-6651",
+			"sector": "paradigms",
 			"identifiers": {
 				"Lei": [
-					"6O5mniwDEZGbZxhgtnXg"
+					"fZqOSgQ13ZF47G0RkSWK"
 				],
 				"Isin": [
-					"tAp88LYTZeLt",
-					"tkSYvDYnBPpv"
+					"GYm54WMPkU1D"
 				],
-				"PermId": [
-					"mAdQItcpuL"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"RZkEWp8fG"
-				],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"XS7UfLC7I8lNuRP"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IE",
+			"countryCode": "FM",
 			"companyAlternativeNames": [
-				"Hackett - Moen",
-				"Lynch Inc",
-				"Olson - Donnelly",
-				"Roberts LLC"
+				"Klocko LLC",
+				"Rempel, Hickle and Boyle",
+				"Wiegand, Erdman and McGlynn"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"F",
-						"M"
+						"B",
+						"J"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Josefina Island 49099",
-						"city": "Dietrichfurt",
-						"country": "PH"
+						"streetAndHouseNumber": "Michael Ford 1337",
+						"city": "Mannton",
+						"state": "Massachusetts",
+						"country": "GH"
 					},
-					"numberOfEmployees": 9757,
-					"fiscalYearStart": "2024-01-22"
+					"numberOfEmployees": 2838,
+					"fiscalYearStart": "2023-10-15"
 				},
-				"businessNumbers": {
-					"operatingCostInEur": 69737476,
-					"capitalAssetsInEur": 14460191
+				"companyFinancials": {
+					"operatingCostInEur": 56882822,
+					"capitalAssetsInEur": 34133663
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Schaden Ramp 7829",
+								"city": "West Mireyacester",
+								"state": "North Dakota",
+								"postalCode": "43076",
+								"country": "AQ"
+							},
+							"percentageOfTotalRevenue": 0.6794
+						},
+						{
+							"nameOfProductionSite": "Rohan Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Sydnie Walk 178",
+								"city": "Nitzschetown",
+								"country": "EG"
+							}
+						},
+						{
+							"nameOfProductionSite": "Harris LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Schoen Passage 2789",
+								"city": "Kilbackberg",
+								"country": "VU"
+							},
+							"percentageOfTotalRevenue": 0.672
+						},
+						{
+							"nameOfProductionSite": "Bashirian, Sauer and Wilkinson",
+							"addressOfProductionSite": {
+								"city": "Melodyfield",
+								"postalCode": "57513-6059",
+								"country": "BN"
+							}
+						}
+					]
+				},
 				"products": {}
 			},
 			"power": {
@@ -63,21 +94,21 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerFromRenewableSources": "No",
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 709,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 2727065,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 17055661,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Snow",
-						"EarthQuake",
 						"Hail",
-						"Wind",
-						"Flooding"
+						"Flooding",
+						"Avalanche",
+						"EarthQuake"
 					]
 				}
 			}
@@ -87,38 +118,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Werner",
+			"headquarters": "Fort Fausto",
+			"sector": "synergies",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [
-					"02UEAfcTo7vu",
-					"WbxdWlnFVY53"
+				"Isin": [],
+				"PermId": [
+					"QtzNk77xpU"
 				],
-				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
+				"Duns": [
+					"HctAJA5Rt"
+				],
+				"VatNumber": [
+					"QUgbiGsIL"
+				],
 				"CompanyRegistrationNumber": [
-					"oCLFOstXB7ypKPW"
+					"dEsAP1FStNe6b1t"
 				]
 			},
-			"countryCode": "BS",
+			"countryCode": "SG",
 			"companyAlternativeNames": [
-				"Botsford - Rosenbaum",
-				"Casper, Altenwerth and Brown",
-				"Hoeger - Wisozk",
-				"Romaguera - McLaughlin"
+				"Kutch, Kuhlman and Quigley"
 			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://visible-female.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
-						"B",
-						"F",
-						"K"
+						"M"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -127,51 +158,27 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3706,
-					"fiscalYearStart": "2024-05-20"
+					"numberOfEmployees": 3219,
+					"fiscalYearStart": "2024-06-13"
 				},
-				"businessNumbers": {}
+				"companyFinancials": {}
 			},
 			"production": {
 				"sites": {},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Sleek Bronze Tuna",
-							"percentageOfTotalRevenue": 0.3272
-						},
-						{
-							"name": "Small Fresh Salad"
-						},
-						{
-							"name": "Fantastic Soft Chicken"
-						},
-						{
-							"name": "Generic Rubber Chips"
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
-				},
+				"investments": {},
 				"consumption": {
-					"powerFromRenewableSources": "Yes",
-					"primaryEnergySourceForHeatingAndHotWater": "Electric"
+					"powerConsumptionInMwh": 287,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 735,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Snow",
-						"Wind",
-						"Avalanche",
-						"Hail",
-						"EarthQuake"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 7940208
 				}
 			}
 		},
@@ -180,102 +187,75 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "New Aileentown",
-			"headquartersPostalCode": "41547-7602",
-			"sector": "e-commerce",
+			"headquarters": "Lake Saigeview",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"SWhiiXxGMFkqRcmYKxFt"
+				],
 				"Isin": [
-					"paBP0w0g4W5w",
-					"YPZFg9Go3gZr"
+					"e7kxwI54IHe6"
 				],
 				"PermId": [
-					"ERIToXHacv"
+					"N20g59GsX3"
 				],
-				"Ticker": [],
-				"Duns": [
-					"MIHvCORm2"
+				"Ticker": [
+					"9xUnudZ"
 				],
+				"Duns": [],
 				"VatNumber": [
-					"63YDkvOtt"
+					"FeDItr7KN"
 				],
 				"CompanyRegistrationNumber": [
-					"JRYgNS3ElcMaPQa"
+					"Ha9j2uuh4nXDaHV"
 				]
 			},
-			"countryCode": "PK",
+			"countryCode": "NZ",
 			"companyAlternativeNames": [
-				"Bartoletti Group",
-				"Carroll, Bartell and Kilback",
-				"Lind, Pfeffer and Lakin",
-				"Runte - Kovacek"
+				"Haley, Flatley and Lesch",
+				"Jakubowski - McClure",
+				"Kerluke, Willms and Huels",
+				"Marquardt LLC"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://leafy-cormorant.net",
+			"website": "https://quick-sorrow.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"C",
+						"A",
 						"E",
-						"J"
+						"H",
+						"M"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 133,
-					"fiscalYearStart": "2023-07-30"
+					"numberOfEmployees": 2126,
+					"fiscalYearStart": "2023-08-22"
 				},
-				"businessNumbers": {
-					"operatingCostInEur": 42273196
+				"companyFinancials": {
+					"revenueInEur": 14610393,
+					"operatingCostInEur": 12723683,
+					"capitalAssetsInEur": 66031350
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Waelchi Radial 5380",
-								"city": "North Alexandre",
-								"postalCode": "88207",
-								"country": "IM"
-							}
-						},
-						{
-							"nameOfProductionSite": "Hettinger - Hartmann",
-							"addressOfProductionSite": {
-								"city": "Noahboro",
-								"state": "New York",
-								"country": "BR"
-							},
-							"percentageOfTotalRevenue": 0.2902
-						}
-					]
-				},
+				"sites": {},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Gorgeous Bronze Table",
-							"percentageOfTotalRevenue": 0.194
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
-				},
+				"investments": {},
 				"consumption": {
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 290,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes"
-				}
+				"naturalHazards": {}
 			}
 		},
 		"reportingPeriod": "2022"

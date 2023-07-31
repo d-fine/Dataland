@@ -60,8 +60,8 @@ export const smeDataModel = [
         ],
       },
       {
-        name: "businessNumbers",
-        label: "Business Numbers",
+        name: "companyFinancials",
+        label: "Company Financials",
         fields: [
           {
             name: "revenueInEur",
