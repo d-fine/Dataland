@@ -4,9 +4,9 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the subcategory "Business Numbers" belonging to the category "General" of the sme framework.
-*/
-data class SmeGeneralBusinessNumbers(
+ * Fields of the subcategory "Company Financials" belonging to the category "General" of the sme framework.
+ */
+data class SmeGeneralCompanyFinancials(
     val revenueInEur: BigDecimal? = null,
 
     val operatingCostInEur: BigDecimal? = null,
