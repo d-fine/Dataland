@@ -97,7 +97,9 @@ function fillAndValidateSfdrUploadForm(valueFieldNotFilled: boolean, assuranceRe
     selectDummyDates("dataDate");
     selectDummyDates("fiscalYearEnd");
 
-    recursivelySelectYesOnAllFields(15); //TODO check if this works as indended
+    recursivelySelectYesOnAllFields(15);
+    //recursivelySelectReportedQualityFields(); //TODO create function
+    //recursivelySelectUploadedReportInDropdownField //TODO create function
 }
 
 
