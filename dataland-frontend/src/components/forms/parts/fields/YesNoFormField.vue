@@ -146,7 +146,7 @@ export default defineComponent({
       })),
       currentReportValue: "",
       currentPageValue: "",
-      currentQualityValue: "Audited",
+      currentQualityValue: "",
     };
   },
   computed: {
