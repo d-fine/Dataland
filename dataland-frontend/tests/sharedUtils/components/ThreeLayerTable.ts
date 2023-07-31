@@ -8,6 +8,9 @@ export const threeLayerTable = {
   getFieldByContentSelector(partialContent: string): string {
     return `td[role='cell'] > span:contains('${partialContent}')`;
   },
+  getFieldByTestIdentifier(dataTest: string, dataColumnIndex = 0): Cypress.Chainable {
+    return cy.get(`td span[data-test='${dataTest}']`).parent().siblings().eq(dataColumnIndex);
+  },
   toggleCategory(categoryLabel: string): void {
     cy.get(this.getCategorySelector(categoryLabel)).click();
   },

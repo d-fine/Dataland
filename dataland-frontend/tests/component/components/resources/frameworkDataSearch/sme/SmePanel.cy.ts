@@ -5,12 +5,15 @@ import {
   CompanyAssociatedDataSmeData,
   DataAndMetaInformationSmeData,
   DataTypeEnum,
+  PercentRangeForInvestmentsInEnergyEfficiency,
+  PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower,
 } from "@clients/backend";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
 import { threeLayerTable } from "@sharedUtils/components/ThreeLayerTable";
 import { QaStatus } from "@clients/qaservice";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { smeDataModel } from "@/components/resources/frameworkDataSearch/sme/SmeDataModel";
 
 describe("Component tests for SmePanel", () => {
   let preparedFixtures: Array<FixtureData<SmeData>>;
@@ -56,6 +59,11 @@ describe("Component tests for SmePanel", () => {
     cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("not.exist");
     threeLayerTable.toggleSubcategory("Consumption");
     cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("exist");
+
+    threeLayerTable.toggleSubcategory("Company Financials");
+    threeLayerTable.getFieldByTestIdentifier("revenueInEur").should("contain.text", "0 MM");
+    threeLayerTable.getFieldByTestIdentifier("operatingCostInEur").should("contain.text", "1 MM");
+    threeLayerTable.getFieldByTestIdentifier("capitalAssetsInEur").should("contain.text", "2 MM");
   });
 
   /**
@@ -99,21 +107,54 @@ describe("Component tests for SmePanel", () => {
       },
     });
     const minimumAddress = minimumAddressFixture.t.general.basicInformation.addressOfHeadquarters;
-    cy.get("td span[data-test='addressOfHeadquarters']")
-      .parent()
-      .siblings()
-      .eq(0)
+    threeLayerTable
+      .getFieldByTestIdentifier("addressOfHeadquarters", 0)
       .should("have.text", `${minimumAddress.city}\n${minimumAddress.country}`);
     const maximumAddress = maximumAddressFixture.t.general.basicInformation.addressOfHeadquarters;
-    cy.get("td span[data-test='addressOfHeadquarters']")
-      .parent()
-      .siblings()
-      .eq(1)
+    threeLayerTable
+      .getFieldByTestIdentifier("addressOfHeadquarters", 1)
       .should(
         "have.text",
         `${assertDefined(maximumAddress.streetAndHouseNumber)}\n${assertDefined(maximumAddress.postalCode)} ${
           maximumAddress.city
         }\n${assertDefined(maximumAddress.state)}, ${maximumAddress.country}`,
       );
+  });
+
+  /**
+   * Asserts that an enum model from the backend coincedes with the one extracted from the generated data model
+   * @param backendModel the backend model representing the enum to check
+   * @param categoryName the name of the category containing a field with values from the enum
+   * @param subcategoryName the name of the subcategory containing a field with values from the enum
+   * @param fieldName the field with values from the enum
+   */
+  function assertBackendModelEqualsGeneratedDataModel(
+    backendModel: object,
+    categoryName: string,
+    subcategoryName: string,
+    fieldName: string,
+  ): void {
+    const modelOptions = smeDataModel
+      .find((category) => category.name == categoryName)!
+      .subcategories.find((subcategory) => subcategory.name == subcategoryName)!
+      .fields.find((field) => field.name == fieldName)!.options!;
+    const enumValuesFromOptions = new Set(modelOptions.map((option) => option.value));
+    const enumValuesFromBackend = new Set(Object.values(backendModel));
+    expect(enumValuesFromBackend).to.deep.equal(enumValuesFromOptions);
+  }
+
+  it("Check if the enum in the data model are equal to the ones in the backend", () => {
+    assertBackendModelEqualsGeneratedDataModel(
+      PercentRangeForInvestmentsInEnergyEfficiency,
+      "power",
+      "investments",
+      "percentageOfInvestmentsInEnhancingEnergyEfficiency",
+    );
+    assertBackendModelEqualsGeneratedDataModel(
+      PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower,
+      "power",
+      "consumption",
+      "energyConsumptionCoveredByOwnRenewablePowerGeneration",
+    );
   });
 });

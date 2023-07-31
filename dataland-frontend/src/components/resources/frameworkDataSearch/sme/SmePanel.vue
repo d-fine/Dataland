@@ -132,8 +132,6 @@ export default defineComponent({
       } else if (fieldsToConvertToMillions.includes(field.name)) {
         return convertToMillions(value as number);
       }
-      // TODO create component tests for the new cases
-      // TODO test each table manually
       return value;
     },
     /**

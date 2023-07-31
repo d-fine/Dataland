@@ -29,6 +29,11 @@ function manipulateFixtureForYear(input: FixtureData<SmeData>, year: string): Fi
   input.t.power.investments.percentageOfInvestmentsInEnhancingEnergyEfficiency = "LessThan1";
   input.t.power.consumption ??= {};
   input.t.power.consumption.energyConsumptionCoveredByOwnRenewablePowerGeneration = "LessThan25";
+  input.t.general.companyFinancials = {
+    revenueInEur: 0,
+    operatingCostInEur: 1000000,
+    capitalAssetsInEur: 2000000,
+  };
   return input;
 }
 
