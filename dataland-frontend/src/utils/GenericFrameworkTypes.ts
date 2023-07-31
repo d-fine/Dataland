@@ -1,10 +1,24 @@
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import { LksgData, PathwaysToParisData, SmeData } from "@clients/backend";
+import {
+  DataAndMetaInformationEuTaxonomyDataForFinancials,
+  DataAndMetaInformationEuTaxonomyDataForNonFinancials,
+  DataAndMetaInformationLksgData,
+  DataAndMetaInformationPathwaysToParisData,
+  DataAndMetaInformationSfdrData,
+  DataAndMetaInformationSmeData,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForNonFinancials,
+  LksgData,
+  PathwaysToParisData,
+  SfdrData,
+  SmeData,
+} from "@clients/backend";
+
 export interface Category {
   name: string;
   label: string;
   color: string;
-  showIf: (dataModel?: LksgData | PathwaysToParisData | SmeData) => boolean;
+  showIf: (dataModel?: FrameworkData) => boolean;
   subcategories: Array<Subcategory>;
 }
 
@@ -15,7 +29,7 @@ export interface Subcategory {
 }
 
 export interface Field {
-  showIf: (dataModel?: LksgData | PathwaysToParisData | SmeData) => boolean;
+  showIf: (dataModel?: FrameworkData) => boolean;
   name: string;
   label: string;
   description: string;
@@ -36,3 +50,19 @@ export interface Field {
   // filed form fields from an existing data set
   existingFieldValues?: (dataModel?: LksgData) => object;
 }
+
+export type FrameworkData =
+  | EuTaxonomyDataForFinancials
+  | EuTaxonomyDataForNonFinancials
+  | LksgData
+  | SfdrData
+  | SmeData
+  | PathwaysToParisData;
+
+export type DataAndMetaInformation =
+  | DataAndMetaInformationEuTaxonomyDataForFinancials
+  | DataAndMetaInformationEuTaxonomyDataForNonFinancials
+  | DataAndMetaInformationLksgData
+  | DataAndMetaInformationSfdrData
+  | DataAndMetaInformationSmeData
+  | DataAndMetaInformationPathwaysToParisData;

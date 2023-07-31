@@ -52,22 +52,8 @@
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { Category, DataAndMetaInformation, Field, FrameworkData, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {
-  DataAndMetaInformationEuTaxonomyDataForFinancials,
-  DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-  DataAndMetaInformationLksgData,
-  DataAndMetaInformationPathwaysToParisData,
-  DataAndMetaInformationSfdrData,
-  DataAndMetaInformationSmeData,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
-  LksgData,
-  PathwaysToParisData,
-  SfdrData,
-  SmeData,
-} from "@clients/backend";
 import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
@@ -141,7 +127,7 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataId]: this.formatValueForDisplay(kpiField, kpiValue) },
+        content: { [dataId]: this.formatValueForDisplay(kpiField, kpiValue) ?? "" },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -239,23 +225,13 @@ export default defineComponent({
       currentDataset: FrameworkData,
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
-        let kpiValueToCreateDataObject = kpiValue as KpiValue;
-        if (kpiValue == null) {
-          kpiValueToCreateDataObject = "" as KpiValue;
-        }
         const subcategory = assertDefined(
           frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
         if (field.showIf(currentDataset)) {
-          this.createKpiDataObjects(
-            kpiKey as string,
-            kpiValueToCreateDataObject,
-            subcategory,
-            frameworkCategoryData,
-            dataId,
-          );
+          this.createKpiDataObjects(kpiKey as string, kpiValue as KpiValue, subcategory, frameworkCategoryData, dataId);
           listOfDataObjects.push(this.resultKpiData);
         }
       }
@@ -295,21 +271,6 @@ export default defineComponent({
     },
   },
 });
-
-type FrameworkData =
-  | EuTaxonomyDataForFinancials
-  | EuTaxonomyDataForNonFinancials
-  | LksgData
-  | SfdrData
-  | SmeData
-  | PathwaysToParisData;
-type DataAndMetaInformation =
-  | DataAndMetaInformationEuTaxonomyDataForFinancials
-  | DataAndMetaInformationEuTaxonomyDataForNonFinancials
-  | DataAndMetaInformationLksgData
-  | DataAndMetaInformationSfdrData
-  | DataAndMetaInformationSmeData
-  | DataAndMetaInformationPathwaysToParisData;
 </script>
 <style scoped lang="scss">
 .d-table-style {
