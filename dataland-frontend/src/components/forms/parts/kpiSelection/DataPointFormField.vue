@@ -53,6 +53,7 @@
         />
         <div class="md:col-6 col-12 p-0">
           <FormKit
+              data-test="dataQuality"
             type="select"
             v-model="currentQualityValue"
             name="quality"
