@@ -7,8 +7,7 @@ import org.dataland.datalandbackend.model.sfdr.categories.general.subcategories.
  * --- API model ---
  * Fields of the category "General" of the sfdr framework.
  */
-
 data class SfdrGeneral(
-    @JsonProperty(value = "general", required = true)
+    @field:JsonProperty(required = true)
     val general: SfdrGeneralGeneral,
 )

@@ -7,8 +7,8 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the subcategory "Greenhouse gas emissions " belonging to the category "Environmental" of the
- * sfdr framework.
+ * Fields of the subcategory "Greenhouse gas emissions " belonging to the category "Environmental" of the sfdr
+ * framework.
  */
 data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope1: DataPointWithUnit<BigDecimal>? = null,

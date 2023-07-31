@@ -2845,26 +2845,6 @@
           }
         }
       },
-      "DataPointBigDecimal": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number"
-          },
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/CompanyReportReference"
-          },
-          "comment": {
-            "type": "string"
-          }
-        }
-      },
       "DataPointWithUnitBigDecimal": {
         "required": [
           "quality"
@@ -3106,7 +3086,7 @@
             "$ref": "#/components/schemas/DataPointYesNo"
           },
           "wasteNonRecycled": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "threatenedSpeciesExposure": {
             "$ref": "#/components/schemas/DataPointYesNo"
@@ -5009,6 +4989,26 @@
           },
           "valueAsAbsolute": {
             "type": "number"
+          }
+        }
+      },
+      "DataPointBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
           }
         }
       },
