@@ -11,6 +11,7 @@
         :placeholder="placeholder"
         :inner-class="innerClass"
       />
+        <!-- //TODO add the unit field to this component -->
       <!-- //TODO make the label and description modular instead of being hardcoded -->
       <div class="form-field">
         <FormKit type="group" name="dataSource">

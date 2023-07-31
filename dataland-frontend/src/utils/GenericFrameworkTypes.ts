@@ -28,7 +28,6 @@ export interface Field {
   required?: boolean;
   evidenceDesired?: boolean;
 
-
   // input field specific values
   placeholder?: string;
 

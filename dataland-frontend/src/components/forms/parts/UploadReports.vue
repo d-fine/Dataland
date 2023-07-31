@@ -30,35 +30,35 @@
           <ReportFormElement :name="reportToUpload.fileNameWithoutSuffix" :reference="reportToUpload.reference" />
         </div>
       </div>
-    <div v-if="storedReports.length > 0" class="uploadFormSection">
-      <!-- List of company reports -->
-      <div class="col-3 p-3 topicLabel">
-        <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
-      </div>
-      <div
-        v-for="(storedReport, index) of storedReports"
-        :key="storedReport.reportName"
-        class="col-9 formFields"
-        data-test="report-uploaded-form"
-      >
-        <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
-          <div class="flex w-full">
-            <h3 class="mt-0">{{ storedReport.reportName }}</h3>
-            <PrimeButton
-              :data-test="'remove-' + storedReport.reportName"
-              @click="removeReportFromStoredReports(index)"
-              icon="pi pi-times"
-              class="p-button-edit-reports"
-            />
-          </div>
+      <div v-if="storedReports.length > 0" class="uploadFormSection">
+        <!-- List of company reports -->
+        <div class="col-3 p-3 topicLabel">
+          <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
         </div>
-        <ReportFormElement
-          :name="storedReport.reportName"
-          :report-date="storedReport.reportDate"
-          :reference="storedReport.reference"
-        />
+        <div
+          v-for="(storedReport, index) of storedReports"
+          :key="storedReport.reportName"
+          class="col-9 formFields"
+          data-test="report-uploaded-form"
+        >
+          <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
+            <div class="flex w-full">
+              <h3 class="mt-0">{{ storedReport.reportName }}</h3>
+              <PrimeButton
+                :data-test="'remove-' + storedReport.reportName"
+                @click="removeReportFromStoredReports(index)"
+                icon="pi pi-times"
+                class="p-button-edit-reports"
+              />
+            </div>
+          </div>
+          <ReportFormElement
+            :name="storedReport.reportName"
+            :report-date="storedReport.reportDate"
+            :reference="storedReport.reference"
+          />
+        </div>
       </div>
-    </div>
     </div>
   </FormKit>
 </template>
@@ -104,13 +104,13 @@ export default defineComponent({
       return namesOfFilesToUpload.concat(namesOfStoredReports);
     },
     displayReferencedReportsForPrefill() {
-      console.log('LKLKKKKK', this.referencedReportsForPrefillFromInject)
+      console.log("LKLKKKKK", this.referencedReportsForPrefillFromInject);
       if (this.referencedReportsForPrefill && this.referencedReportsForPrefill.length) {
-        return this.referencedReportsForPrefill
+        return this.referencedReportsForPrefill;
       } else if (this.referencedReportsForPrefillFromInject) {
-        return this.referencedReportsForPrefillFromInject
+        return this.referencedReportsForPrefillFromInject;
       } else {
-        return []
+        return [];
       }
     },
   },
@@ -167,10 +167,10 @@ export default defineComponent({
      * Initializes the already uploaded reports from provided reports
      */
     prefillAlreadyUploadedReports() {
-      console.log('*****222', this.injectreferencedReportsForPrefill)
-      console.log('!!!!!!->', this.displayReferencedReportsForPrefill)
+      console.log("*****222", this.injectreferencedReportsForPrefill);
+      console.log("!!!!!!->", this.displayReferencedReportsForPrefill);
       if (this.displayReferencedReportsForPrefill) {
-        console.log('!!!!!!->', this.displayReferencedReportsForPrefill)
+        console.log("!!!!!!->", this.displayReferencedReportsForPrefill);
         for (const key in this.displayReferencedReportsForPrefill) {
           const referencedReport = (this.displayReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
           this.storedReports.push({
@@ -215,12 +215,12 @@ export default defineComponent({
       console.log(
         "allReferenceableReportNames",
         this.allReferenceableReportNames,
-        this.allReferenceableReportNames.length
+        this.allReferenceableReportNames.length,
       );
       console.log(
         "Set(this.allReferenceableReportNames)",
         new Set(this.allReferenceableReportNames),
-        new Set(this.allReferenceableReportNames).size
+        new Set(this.allReferenceableReportNames).size,
       );
       console.log("check", this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size);
       return this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size;
