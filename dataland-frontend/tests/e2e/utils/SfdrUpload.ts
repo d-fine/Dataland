@@ -11,9 +11,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyU
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
-import {
-    recursivelySelectYesOnAllFields,
-} from "@e2e/utils/LksgUpload"
+import { recursivelySelectYesOnAllFields } from "@e2e/utils/LksgUpload";
 
 /**
  * Uploads a single SFDR data entry for a company
@@ -80,6 +78,9 @@ export function uploadSfdrDataViaForm(companyId: string, valueFieldNotFilled = f
   uploadDocuments.fillAllReportsToUploadForms(1);
 
   fillAndValidateSfdrUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
+  submitButton.clickButton();
+
+  cy.get("div.p-message-success").should("be.visible");
 }
 
 /**
@@ -95,11 +96,11 @@ function fillAndValidateSfdrUploadForm(valueFieldNotFilled: boolean, assuranceRe
     submitButton.buttonIsAddDataButton();
     submitButton.buttonAppearsDisabled();
     selectDummyDates("dataDate");
+    cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
     selectDummyDates("fiscalYearEnd");
 
     recursivelySelectYesOnAllFields(15);
-    //recursivelySelectReportedQualityFields(); //TODO create function
-    //recursivelySelectUploadedReportInDropdownField //TODO create function
+    recursivelySelectReportedQualityFields();
 }
 
 
@@ -107,11 +108,21 @@ function fillAndValidateSfdrUploadForm(valueFieldNotFilled: boolean, assuranceRe
  * Selects a dummy year in the Sfdr upload form date picker.
  */
 function selectDummyDates(fieldName = "dataDate"): void {
-    cy.get(`[data-test="${fieldName}"]`).find("button.p-datepicker-trigger").click();
-    cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
-    cy.get("div.p-datepicker").find('span:contains("13")').click();
-    cy.get(`input[name="${fieldName}"]`).should(($input) => {
-        const val = $input.val();
-        expect(val).to.include("-13");
+  cy.get(`[data-test="${fieldName}"]`).find("button.p-datepicker-trigger").click();
+  cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
+  cy.get("div.p-datepicker").find('span:contains("13")').click();
+  cy.get(`input[name="${fieldName}"]`).should(($input) => {
+    const val = $input.val();
+    expect(val).to.include("-13");
+  });
+}
+
+/**
+ * Opens the Reported Quality Fields and selects the first option
+ */
+function recursivelySelectReportedQualityFields() :void {
+    cy.get(`[data-test="dataQuality"`)
+        .each(($element) =>  {
+            cy.wrap($element).select("Audited");
     });
 }
