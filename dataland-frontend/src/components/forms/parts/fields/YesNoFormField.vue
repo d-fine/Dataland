@@ -24,19 +24,21 @@
     </FormKit>
     <div v-else-if="evidenceDesired">
       <FormKit v-model="baseDataPointYesNo" type="group" :name="name">
-        <RadioButtonsFormElement
-          name="value"
-          :validation="validation"
-          :validation-label="validationLabel ?? label"
-          :options="yesNoOptions"
-          :data-test="dataTest"
-        />
+        <div class="mb-3">
+          <RadioButtonsFormElement
+            name="value"
+            :validation="validation"
+            :validation-label="validationLabel ?? label"
+            :options="yesNoOptions"
+            :data-test="dataTest"
+          />
+        </div>
         <!-- //TODO make the label and description modular instead of being hardcoded -->
-        <div class="form-field">
+        <div>
           <FormKit type="group" name="dataSource">
             <div class="next-to-each-other">
               <div class="flex-1">
-                <UploadFormHeader :label="'Report'" :description="'Upload Report'" />
+                <UploadFormHeader :label="`${label} Report`" :description="'Upload Report'" />
                 <FormKit
                   type="select"
                   name="report"
@@ -64,9 +66,9 @@
         </div>
 
         <!-- Data quality -->
-        <div class="form-field">
+        <div class="mb-4">
           <UploadFormHeader
-            label="Data quality"
+            :label="`${label} Quality`"
             description="The level of confidence associated to the value."
             :is-required="true"
           />
@@ -108,7 +110,7 @@ import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/Rad
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { DocumentToUpload } from "@/utils/FileUploadUtils";
-import {BaseDataPointYesNo, LksgProcurementCategory, QualityOptions} from "@clients/backend";
+import { BaseDataPointYesNo, LksgProcurementCategory, QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "YesNoFormField",
@@ -150,9 +152,9 @@ export default defineComponent({
     };
   },
   computed: {
-    displayreportsName(): string[]  {
+    displayreportsName(): string[] {
       return this.reportsName || this.injectReportsName;
-    }
+    },
   },
   emits: ["documentUpdated"],
   mounted() {

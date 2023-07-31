@@ -1,22 +1,24 @@
 <template>
   <template v-if="evidenceDesired">
     <FormKit type="group" :name="name">
-      <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
-      <FormKit
-        type="text"
-        :name="name"
-        v-model="currentValue"
-        :validation-label="validationLabel ?? label"
-        :validation="`number|${validation}`"
-        :placeholder="placeholder"
-        :inner-class="innerClass"
-      />
+      <div class="mb-3">
+        <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
+        <FormKit
+          type="text"
+          name="value"
+          v-model="currentValue"
+          :validation-label="validationLabel ?? label"
+          :validation="`number|${validation}`"
+          :placeholder="placeholder"
+          :inner-class="innerClass"
+        />
+      </div>
       <!-- //TODO make the label and description modular instead of being hardcoded -->
-      <div class="form-field">
+      <div>
         <FormKit type="group" name="dataSource">
           <div class="next-to-each-other">
             <div class="flex-1">
-              <UploadFormHeader :label="'Report'" :description="'Upload Report'" />
+              <UploadFormHeader :label="`${label} Report`" :description="'Upload Report'" />
               <FormKit
                 type="select"
                 name="report"
@@ -45,9 +47,9 @@
       </div>
 
       <!-- Data quality -->
-      <div class="form-field">
+      <div class="mb-4">
         <UploadFormHeader
-          label="Data quality"
+          :label="`${label} Quality`"
           description="The level of confidence associated to the value."
           :is-required="true"
         />
@@ -135,4 +137,3 @@ export default defineComponent({
   },
 });
 </script>
-<script setup lang="ts"></script>
