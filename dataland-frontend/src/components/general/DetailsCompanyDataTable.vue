@@ -5,8 +5,8 @@
       :field="keyOfColumn"
       :key="keyOfColumn"
       :header="
-        detailsHeaderMapping![kpiKeyOfTable]
-          ? detailsHeaderMapping![kpiKeyOfTable][keyOfColumn]
+        columnHeaders![kpiKeyOfTable]
+          ? columnHeaders![kpiKeyOfTable][keyOfColumn]
           : humanizeString(kpiKeyOfTable)
       "
       headerStyle="width: 15vw;"
@@ -46,21 +46,18 @@ export default defineComponent({
       keysOfValuesForColumnDisplay: [] as string[],
       keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing"] as string[],
       humanizeString,
+      columnHeaders: {},
     };
-  },
-  props: {
-    detailsHeaderMapping: {
-      type: Object,
-      default: {},
-    },
   },
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
       listOfRowContents: Array<object | string>;
       kpiKeyOfTable: string;
+      columnHeaders: object,
     };
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
+    this.columnHeaders = dialogRefData.columnHeaders;
     if (typeof dialogRefData.listOfRowContents[0] === "string") {
       this.keysOfValuesForColumnDisplay.push(this.kpiKeyOfTable);
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));

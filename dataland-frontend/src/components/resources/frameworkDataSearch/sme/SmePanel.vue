@@ -9,7 +9,7 @@
       :data-and-meta-info="smeDataAndMetaInfo"
       @data-converted="handleFinishedDataConversion"
       :format-value-for-display="formatValueForDisplay"
-      :details-header-mapping="detailsCompanyDataTableColumnHeaders"
+      :modal-column-headers="smeModalColumnHeaders"
     />
   </div>
 </template>
@@ -19,17 +19,15 @@ import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComp
 import { smeDataModel } from "@/components/resources/frameworkDataSearch/sme/SmeDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {DataAndMetaInformationSmeData, DataTypeEnum, SmeProduct, SmeProductionSite} from "@clients/backend";
+import { DataAndMetaInformationSmeData, DataTypeEnum, SmeProduct, SmeProductionSite } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { Field } from "@/utils/GenericFrameworkTypes";
-import {
-  detailsCompanyDataTableColumnHeaders
-} from "@/components/resources/frameworkDataSearch/sme/DataModelsTranslations";
-import {convertToMillions} from "@/utils/NumberConversionUtils";
+import { smeModalColumnHeaders } from "@/components/resources/frameworkDataSearch/sme/SmeModalColumnHeaders";
+import { convertToMillions } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   name: "SmePanel",
@@ -41,7 +39,7 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       smeDataAndMetaInfo: [] as Array<DataAndMetaInformationSmeData>,
-      detailsCompanyDataTableColumnHeaders,
+      smeModalColumnHeaders,
     };
   },
   props: PanelProps,
@@ -113,7 +111,7 @@ export default defineComponent({
       ) {
         return assertDefined(assertDefined(field.options).find((option) => option.value === value).label);
       } else if (field.name == "listOfProductionSites") {
-        const listOfProductionSites = value as SmeProductionSite[]
+        const listOfProductionSites = value as SmeProductionSite[];
         return listOfProductionSites.map((productionSite) => ({
           nameOfProductionSite: productionSite.nameOfProductionSite,
           addressOfProductionSite: productionSite.addressOfProductionSite,

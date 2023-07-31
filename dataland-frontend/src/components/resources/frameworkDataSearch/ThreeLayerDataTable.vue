@@ -40,7 +40,7 @@
             :arrayOfKpiDataObjects="arrayOfKpiDataObjectsMapItem[1]"
             :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
             headerInputStyle="display: none;"
-            :details-header-mapping="detailsHeaderMapping"
+            :modal-column-headers="modalColumnHeaders"
           />
         </div>
       </div>
@@ -100,7 +100,7 @@ export default defineComponent({
       type: Function as () => (field: Field, value: KpiValue) => KpiValue,
       default: (field: Field, value: KpiValue): KpiValue => value,
     },
-    detailsHeaderMapping: {
+    modalColumnHeaders: {
       type: Object,
       default: {},
     },

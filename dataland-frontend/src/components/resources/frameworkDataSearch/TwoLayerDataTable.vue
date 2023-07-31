@@ -168,7 +168,7 @@ export default defineComponent({
       type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
       default: () => [],
     },
-    detailsHeaderMapping: {
+    modalColumnHeaders: {
       type: Object,
       default: {},
     },
@@ -218,11 +218,11 @@ export default defineComponent({
           header: modalTitle,
           modal: true,
           dismissableMask: true,
-          detailsHeaderMapping: this.detailsHeaderMapping,
         },
         data: {
           listOfRowContents: listOfValues,
           kpiKeyOfTable: kpiKey,
+          columnHeaders: this.modalColumnHeaders,
         },
       });
     },

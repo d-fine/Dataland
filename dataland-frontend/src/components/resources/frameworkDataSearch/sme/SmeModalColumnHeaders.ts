@@ -1,4 +1,4 @@
-export const detailsCompanyDataTableColumnHeaders = {
+export const smeModalColumnHeaders = {
   listOfProductionSites: {
     nameOfProductionSite: "Name",
     addressOfProductionSite: "Address",

@@ -7,7 +7,7 @@
     <TwoLayerDataTable
       :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
       :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
-      :details-header-mapping="detailsCompanyDataTableColumnHeaders"
+      :modal-column-headers="lksgModalColumnHeaders"
     />
   </div>
 </template>
@@ -28,8 +28,8 @@ import { defineComponent, inject } from "vue";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
-import {convertToMillions} from "@/utils/NumberConversionUtils";
+import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
+import { convertToMillions } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -41,7 +41,7 @@ export default defineComponent({
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
       arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
-      detailsCompanyDataTableColumnHeaders
+      lksgModalColumnHeaders,
     };
   },
   props: PanelProps,
