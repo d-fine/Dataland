@@ -84,7 +84,7 @@ function fillSingleProductionSite(): void {
  * This action needs to be recursive as clicking yes on some fields will result in other fields getting visible
  * @param maxCounter the maximum recursion depth before an error is thrown
  */
-function recursivelySelectYesOnAllFields(maxCounter: number): void {
+export function recursivelySelectYesOnAllFields(maxCounter: number): void {
   if (maxCounter <= 0) {
     throw new Error("Recursion depth exceeded selecting yes on all input fields");
   }
@@ -219,7 +219,7 @@ function fillNewProduct(name: string, productionSteps: string[], description?: s
 /**
  * Adds some products to the most important products form
  */
-function fillInMostImportantProducts(): void {
+export function fillInMostImportantProducts(): void {
   fillNewProduct("Test Product 1", ["first", "second"], "Description of something");
   fillNewProduct("Test Product 2", []);
 }

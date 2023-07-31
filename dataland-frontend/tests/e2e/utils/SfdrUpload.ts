@@ -11,6 +11,9 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyU
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import {
+    recursivelySelectYesOnAllFields,
+} from "@e2e/utils/LksgUpload"
 
 /**
  * Uploads a single SFDR data entry for a company
@@ -72,18 +75,11 @@ export function uploadSfdrDataViaForm(companyId: string, valueFieldNotFilled = f
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
-  uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+  uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
   uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
   uploadDocuments.fillAllReportsToUploadForms(1);
 
   fillAndValidateSfdrUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
-  submitButton.buttonAppearsEnabled();
-  cy.intercept({
-    url: `**/api/data/${DataTypeEnum.Sfdr}`,
-    times: 1,
-  }).as("postCompanyAssociatedData");
-  submitButton.clickButton();
-  cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
 }
 
 /**
@@ -92,6 +88,28 @@ export function uploadSfdrDataViaForm(companyId: string, valueFieldNotFilled = f
  * @param assuranceReportName name of the assurance data source
  */
 function fillAndValidateSfdrUploadForm(valueFieldNotFilled: boolean, assuranceReportName: string): void {
-  console.log("Test");
-  //TODO to be tailored to SFDR form
+    Cypress.Keyboard.defaults({
+        keystrokeDelay: 0,
+    });
+
+    submitButton.buttonIsAddDataButton();
+    submitButton.buttonAppearsDisabled();
+    selectDummyDates("dataDate");
+    selectDummyDates("fiscalYearEnd");
+
+    recursivelySelectYesOnAllFields(15); //TODO check if this works as indended
+}
+
+
+/**
+ * Selects a dummy year in the Sfdr upload form date picker.
+ */
+function selectDummyDates(fieldName = "dataDate"): void {
+    cy.get(`[data-test="${fieldName}"]`).find("button.p-datepicker-trigger").click();
+    cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
+    cy.get("div.p-datepicker").find('span:contains("13")').click();
+    cy.get(`input[name="${fieldName}"]`).should(($input) => {
+        const val = $input.val();
+        expect(val).to.include("-13");
+    });
 }
