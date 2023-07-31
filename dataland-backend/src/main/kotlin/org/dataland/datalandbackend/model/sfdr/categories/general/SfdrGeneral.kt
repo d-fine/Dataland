@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.sfdr.categories.general
 
-import org.dataland.datalandbackend.model.sfdr.categories.general.subcategories.SfdrGeneralGeneral
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.sfdr.categories.general.subcategories.SfdrGeneralGeneral
 
 /**
  * --- API model ---

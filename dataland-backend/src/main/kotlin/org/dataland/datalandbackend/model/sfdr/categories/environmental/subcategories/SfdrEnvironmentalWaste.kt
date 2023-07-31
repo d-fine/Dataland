@@ -20,7 +20,7 @@ data class SfdrEnvironmentalWaste(
 
     val sustainableOceansAndSeasPolicy: DataPoint<YesNo>? = null,
 
-    val wasteNonRecycled: DataPoint<BigDecimal>? = null,
+    val wasteNonRecycled: DataPointWithUnit<BigDecimal>? = null,
 
     val threatenedSpeciesExposure: DataPoint<YesNo>? = null,
 
