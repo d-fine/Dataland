@@ -101,33 +101,38 @@ export default defineComponent({
      * @returns the formatted value
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
+      const fieldsToConvertToMillions = ["revenueInEur", "operatingCostInEur", "capitalAssetsInEur"];
+      const optionFields = [
+        "percentageOfInvestmentsInEnhancingEnergyEfficiency",
+        "energyConsumptionCoveredByOwnRenewablePowerGeneration",
+      ];
       if (value == null) {
         return value;
       } else if (field.name == "addressOfHeadquarters") {
         return this.formatAddress(value as object);
-      } else if (
-        field.name == "percentageOfInvestmentsInEnhancingEnergyEfficiency" ||
-        field.name == "energyConsumptionCoveredByOwnRenewablePowerGeneration"
-      ) {
+      } else if (optionFields.includes(field.name)) {
         return assertDefined(assertDefined(field.options).find((option) => option.value === value).label);
       } else if (field.name == "listOfProductionSites") {
         const listOfProductionSites = value as SmeProductionSite[];
         return listOfProductionSites.map((productionSite) => ({
           nameOfProductionSite: productionSite.nameOfProductionSite,
           addressOfProductionSite: productionSite.addressOfProductionSite,
-          percentageOfTotalRevenue: `${productionSite.percentageOfTotalRevenue}%`,
+          percentageOfTotalRevenue: productionSite.percentageOfTotalRevenue
+            ? `${productionSite.percentageOfTotalRevenue}%`
+            : undefined,
         }));
       } else if (field.name == "listOfProducts") {
         const listOfProducts = value as SmeProduct[];
         return listOfProducts.map((product) => ({
           name: product.name,
-          percentageOfTotalRevenue: `${product.percentageOfTotalRevenue}%`,
+          percentageOfTotalRevenue: product.percentageOfTotalRevenue
+            ? `${product.percentageOfTotalRevenue}%`
+            : undefined,
         }));
-      } else if (field.name == "totalRevenue") {
+      } else if (fieldsToConvertToMillions.includes(field.name)) {
         return convertToMillions(value as number);
       }
       // TODO create component tests for the new cases
-      // TODO what happens if each of these is not set (null)
       // TODO test each table manually
       return value;
     },

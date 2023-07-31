@@ -102,7 +102,7 @@ export default defineComponent({
     },
     modalColumnHeaders: {
       type: Object,
-      default: {},
+      default: () => ({}),
     },
   },
   watch: {
