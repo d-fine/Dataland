@@ -13,6 +13,7 @@ import {
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
+  const companyId = "mock-company-id";
 
   before(function () {
     cy.fixture("CompanyInformationWithP2pPreparedFixtures").then(function (jsonContent) {
@@ -25,22 +26,21 @@ describe("Component test for P2pPanel", () => {
       general: { general: { dataDate: "2023-01-01", sector: [P2pSector.Ammonia] } },
     } as PathwaysToParisData;
 
+    cy.intercept("/api/data/p2p/mock-data-id", {
+      companyId: companyId,
+      reportingPeriod: "2023",
+      data: pseudoP2pData,
+    } as CompanyAssociatedDataPathwaysToParisData);
     cy.mountWithPlugins(P2pPanel, {
+      keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          waitingForData: false,
-          p2pDataAndMetaInfo: [{ data: pseudoP2pData } as DataAndMetaInformationPathwaysToParisData],
+          companyId: companyId,
+          singleDataMetaInfoToDisplay: {
+            dataId: "mock-data-id",
+            reportingPeriod: "2023",
+          } as DataMetaInformation,
         };
-      },
-      // The code below is required to complete the component mock yet interferes with the type resolution of the
-      // mountWithPlugins function.
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      created() {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,
-        this.convertP2pDataToFrontendFormat();
       },
     });
     cy.get("td:contains('Ammonia')").should("exist");

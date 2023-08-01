@@ -70,7 +70,8 @@ import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
+import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 import { expandRowGroupOnHeaderClick, ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 
 type SfdrKpiObject = { [index: string]: string | object; subAreaKey: string; kpiKey: string };
@@ -85,7 +86,7 @@ export default defineComponent({
     return {
       kpiDataObjectsToDisplay: [] as SfdrKpiObject[],
       expandedRowGroups: ["_general"],
-      listOfProductionSitesConvertedNames: detailsCompanyDataTableColumnHeaders.listOfProductionSites,
+      listOfProductionSitesConvertedNames: lksgModalColumnHeaders.listOfProductionSites,
     };
   },
   props: {

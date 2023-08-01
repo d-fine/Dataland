@@ -10,11 +10,13 @@ import { generateSmeFixtures } from "@e2e/fixtures/sme/SmeDataFixtures";
 export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
   const preparedFixtures = [];
   preparedFixtures.push(manipulateFixtureForYear(generateSmeFixtures(1)[0], "2023"));
+  preparedFixtures.push(manipulateFixtureForMaximumAddress(generateSmeFixtures(1)[0]));
+  preparedFixtures.push(manipulateFixtureForMinimumAddress(generateSmeFixtures(1)[0]));
   return preparedFixtures;
 }
 
 /**
- * Sets the company name and reporting period in the fixture data to specific values needed for tests.
+ * Sets the company name, reporting period and some data in the fixture data to specific values needed for tests.
  * @param input Fixture data to be manipulated
  * @param year the year as a number
  * @returns the manipulated fixture data
@@ -22,5 +24,51 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
 function manipulateFixtureForYear(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
   input.companyInformation.companyName = "SME-year-" + year;
   input.reportingPeriod = year;
+  input.t.power ??= {};
+  input.t.power.investments ??= {};
+  input.t.power.investments.percentageOfInvestmentsInEnhancingEnergyEfficiency = "LessThan1";
+  input.t.power.consumption ??= {};
+  input.t.power.consumption.energyConsumptionCoveredByOwnRenewablePowerGeneration = "LessThan25";
+  input.t.general.companyFinancials = {
+    revenueInEur: 0,
+    operatingCostInEur: 1000000,
+    capitalAssetsInEur: 2000000,
+  };
+  return input;
+}
+
+/**
+ * Sets the company name and headquarters address with maximum number of address fields
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForMaximumAddress(input: FixtureData<SmeData>): FixtureData<SmeData> {
+  input.companyInformation.companyName = "SME-maximum-address";
+  input.reportingPeriod = "2021";
+  input.t.general.basicInformation.addressOfHeadquarters = {
+    streetAndHouseNumber: "Main Street 12",
+    postalCode: "12345",
+    city: "Nonexistingen",
+    state: "Fiction",
+    country: "Imagination",
+  };
+  return input;
+}
+
+/**
+ * Sets the company name and headquarters address with minimum number of address fields
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForMinimumAddress(input: FixtureData<SmeData>): FixtureData<SmeData> {
+  input.companyInformation.companyName = "SME-minimum-address";
+  input.reportingPeriod = "2022";
+  input.t.general.basicInformation.addressOfHeadquarters = {
+    streetAndHouseNumber: undefined,
+    postalCode: undefined,
+    city: "City 17",
+    state: undefined,
+    country: "Uninspired",
+  };
   return input;
 }
