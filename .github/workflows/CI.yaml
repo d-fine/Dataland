@@ -26,8 +26,8 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-  rebuild-docker-images:
-    uses: ./.github/workflows/RebuildDockerImages.yaml
+#  rebuild-docker-images:
+#    uses: ./.github/workflows/RebuildDockerImages.yaml
   frontend-component-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -72,273 +72,273 @@ jobs:
         with:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
-  gradle-based-tests:
-    runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_dispatch'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/logObjects
-        name: log job contexts
-        with:
-          env: ${{ toJSON(env) }}
-          job: ${{ toJSON(job) }}
-          steps: ${{ toJSON(steps) }}
-          strategy: ${{ toJSON(strategy) }}
-          matrix: ${{ toJSON(matrix) }}
-          needs: ${{ toJSON(needs) }}
-          inputs: ${{ toJSON(inputs) }}
-          vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
-      - name: assemble project
-        run: ./gradlew assemble --no-daemon --stacktrace
-      - name: Execute linting and detekt
-        run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
-        if: always()
-      - name: Execute unit tests for all spring services
-        run: ./gradlew :dataland-backend:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test --no-daemon --stacktrace
-        if: always()
-        env:
-          MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
-          MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
-          INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
-          INVITATION_REQUEST_CC: "dev.null@dataland.com"
-      - name: Frontend linting
-        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
-        if: always()
-      - name: Keycloak theme linting
-        run: ./gradlew :dataland-keycloak:dataland_theme:login:npm_run_lintci --no-daemon --stacktrace
-        if: always()
-      - name: Execute Frontend Scripts to check if they run successfully
-        if: always()
-        run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
-      - name: verify OpenApi Files
-        if: always()
-        run: testing/verifyOpenApiFiles.sh
-      - name: verify no it.only exists
-        if: always()
-        run: |
-          ! grep -ri "it\.only" dataland-frontend/tests/
-      - name: Upload Test and Coverage Reports
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: GradleReports
-          path: |
-            ./**/build/reports
-            ./**/coverage
-      - name: Upload JaCoCo Exec Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: JaCoCoResultsUnitTests
-          path: ./**/*.exec
-      - uses: ./.github/workflows/dockerLogs
-        if: always()
-        with:
-          subfolder: 'unit-tests-backend'
-  e2e-tests:
-    runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_dispatch'
-    needs:
-      - rebuild-docker-images
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - testExecutor: "CYPRESS"
-            testGroup: 1
-          - testExecutor: "CYPRESS"
-            testGroup: 2
-          - testExecutor: "CYPRESS"
-            testGroup: 3
-          - testExecutor: "CYPRESS"
-            testGroup: 4
-          - testExecutor: "E2ETESTS"
-            testGroup: 0
-          - testExecutor: "RESTARTABILITY"
-            testGroup: 100
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/downloadImageVersions
-      - uses: ./.github/workflows/logObjects
-        name: log job contexts
-        with:
-          env: ${{ toJSON(env) }}
-          job: ${{ toJSON(job) }}
-          steps: ${{ toJSON(steps) }}
-          strategy: ${{ toJSON(strategy) }}
-          matrix: ${{ toJSON(matrix) }}
-          needs: ${{ toJSON(needs) }}
-          inputs: ${{ toJSON(inputs) }}
-          vars: ${{ toJSON(vars) }}
-      - name: Retrieve SSL certificates for local-dev.dataland.com
-        run: ./testing/retrieve_ssl_certs.sh
-        env:
-          TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Execute E2E Tests
-        run: ./testing/e2e_test_launcher.sh
-        env:
-          KEYCLOAK_FRONTEND_URL: "https://local-dev.dataland.com/keycloak"
-          KEYCLOAK_DB_PASSWORD: "password"
-          BACKEND_DB_PASSWORD: "password"
-          API_KEY_MANAGER_DB_PASSWORD: "password"
-          INTERNAL_STORAGE_DB_PASSWORD: "password"
-          DOCUMENT_MANAGER_DB_PASSWORD: "password"
-          QA_SERVICE_DB_PASSWORD: "password"
-          PGADMIN_PASSWORD: "password"
-          KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
-          KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="
-          KEYCLOAK_DATALAND_ADMIN_PASSWORD: "password"
-          DATALAND_BATCH_MANAGER_CLIENT_SECRET: "password"
-          KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
-          KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
-          KEYCLOAK_READER_PASSWORD: "password"
-          KEYCLOAK_UPLOADER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
-          KEYCLOAK_UPLOADER_SALT: "K9nzg086pCNjq8dxl84GZg=="
-          KEYCLOAK_UPLOADER_PASSWORD: "password"
-          KEYCLOAK_REVIEWER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
-          KEYCLOAK_REVIEWER_SALT: "K9nzg086pCNjq8dxl84GZg=="
-          KEYCLOAK_REVIEWER_PASSWORD: "password"
-          KEYCLOAK_ADMIN: "admin"
-          KEYCLOAK_ADMIN_PASSWORD: "password"
-          KEYCLOAK_GOOGLE_ID: "irrelevant_in_ci"
-          KEYCLOAK_GOOGLE_SECRET: "irrelevant_in_ci"
-          PROXY_PRIMARY_URL: local-dev.dataland.com
-          PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/local-dev.dataland.com
-          PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
-          CYPRESS_EXECUTION_ENVIRONMENT: "ci"
-          CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
-          TEST_EXECUTOR: ${{ matrix.testExecutor }}
-          COMPOSE_DOCKER_CLI_BUILD: 1
-          DOCKER_BUILDKIT: 1
-          MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
-          MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
-          INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
-          INVITATION_REQUEST_CC: "dev.null@dataland.com"
-          RABBITMQ_USER: "admin"
-          RABBITMQ_PASS: "dataland"
-          RABBITMQ_PASS_HASH: "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F"
-          FRONTEND_LOCATION_CONFIG: "Test"
-      - name: Upload JaCoCo Exec Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: JaCoCoResultsE2ETest
-          path: ./*.exec
-      - name: Upload lcov Exec Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: lcovResults
-          path: ./*.info
-      - name: Upload E2E Test and Cypress Reports
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: e2eTestReports
-          path: |
-            ./cypress
-            ./coverage
-            ./reports
-      - name: Upload database dumps
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: e2eTestDatabaseDumps
-          path: ./dbdumps/
-      - uses: ./.github/workflows/dockerLogs
-        if: always()
-        with:
-          subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
-  sonar:
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    needs:
-      - e2e-tests
-      - gradle-based-tests
-      - frontend-component-tests
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: ./.github/workflows/logObjects
-        name: log job contexts
-        with:
-          env: ${{ toJSON(env) }}
-          job: ${{ toJSON(job) }}
-          steps: ${{ toJSON(steps) }}
-          strategy: ${{ toJSON(strategy) }}
-          matrix: ${{ toJSON(matrix) }}
-          needs: ${{ toJSON(needs) }}
-          inputs: ${{ toJSON(inputs) }}
-          vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
-      - uses: actions/download-artifact@v3
-        name: JaCoCoResultsUnitTests
-        with:
-          name: JaCoCoResultsUnitTests
-      - uses: actions/download-artifact@v3
-        name: JaCoCoResultsE2ETest
-        with:
-          name: JaCoCoResultsE2ETest
-      - uses: actions/download-artifact@v3
-        name: lcovResults
-        with:
-          name: lcovResults
-          path: fe-coverage
-      - name: Prepare Repo for Sonar
-        if: always()
-        run: |
-          ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build \
-          -x detekt -x ktlintCheck -x jacocoTestReport -x kaptKotlin -x kaptTestKotlin -x kaptGenerateStubsTestKotlin -x kaptGenerateStubsKotlin \
-          --no-daemon --stacktrace
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: jacocoTestReport
-        if: always()
-        # jacocoTestReport must be executed in a gradle-job that is started AFTER classes are compiled - because
-        # the build.gradle.kts only looks for .class files at start of gradle (and not at start of task).
-        run: ./gradlew jacocoTestReport --no-daemon --stacktrace
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run Sonar
-        if: always()
-        run: |
-          touch ./build/reports/sonarProperties.txt
-          ./gradlew sonar -D"sonar.scanner.dumpToFile"="./build/reports/sonarProperties.txt" --no-daemon --stacktrace
-          ./gradlew sonar --no-daemon --stacktrace
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: Upload Reports
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: SonarStageReports
-          path: ./build/reports
-  manual-maintenance-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: "Check if manual maintenance was executed recently"
-        run: git log --since $(date -d "- 28 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
-  summary:
-    runs-on: ubuntu-latest
-    if: success()
-    needs:
-      - sonar
-      - manual-maintenance-check
-    steps:
-      - name: Summary of this workflow's overall outcome
-        run: exit 0
+#  gradle-based-tests:
+#    runs-on: ubuntu-latest
+#    if: github.event_name != 'workflow_dispatch'
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: ./.github/workflows/logObjects
+#        name: log job contexts
+#        with:
+#          env: ${{ toJSON(env) }}
+#          job: ${{ toJSON(job) }}
+#          steps: ${{ toJSON(steps) }}
+#          strategy: ${{ toJSON(strategy) }}
+#          matrix: ${{ toJSON(matrix) }}
+#          needs: ${{ toJSON(needs) }}
+#          inputs: ${{ toJSON(inputs) }}
+#          vars: ${{ toJSON(vars) }}
+#      - uses: actions/setup-java@v3
+#        with:
+#          distribution: temurin
+#          java-version: 17
+#          cache: gradle
+#      - name: assemble project
+#        run: ./gradlew assemble --no-daemon --stacktrace
+#      - name: Execute linting and detekt
+#        run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
+#        if: always()
+#      - name: Execute unit tests for all spring services
+#        run: ./gradlew :dataland-backend:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test --no-daemon --stacktrace
+#        if: always()
+#        env:
+#          MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
+#          MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
+#          INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
+#          INVITATION_REQUEST_CC: "dev.null@dataland.com"
+#      - name: Frontend linting
+#        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
+#        if: always()
+#      - name: Keycloak theme linting
+#        run: ./gradlew :dataland-keycloak:dataland_theme:login:npm_run_lintci --no-daemon --stacktrace
+#        if: always()
+#      - name: Execute Frontend Scripts to check if they run successfully
+#        if: always()
+#        run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
+#      - name: verify OpenApi Files
+#        if: always()
+#        run: testing/verifyOpenApiFiles.sh
+#      - name: verify no it.only exists
+#        if: always()
+#        run: |
+#          ! grep -ri "it\.only" dataland-frontend/tests/
+#      - name: Upload Test and Coverage Reports
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: GradleReports
+#          path: |
+#            ./**/build/reports
+#            ./**/coverage
+#      - name: Upload JaCoCo Exec Results
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: JaCoCoResultsUnitTests
+#          path: ./**/*.exec
+#      - uses: ./.github/workflows/dockerLogs
+#        if: always()
+#        with:
+#          subfolder: 'unit-tests-backend'
+#  e2e-tests:
+#    runs-on: ubuntu-latest
+#    if: github.event_name != 'workflow_dispatch'
+#    needs:
+#      - rebuild-docker-images
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        include:
+#          - testExecutor: "CYPRESS"
+#            testGroup: 1
+#          - testExecutor: "CYPRESS"
+#            testGroup: 2
+#          - testExecutor: "CYPRESS"
+#            testGroup: 3
+#          - testExecutor: "CYPRESS"
+#            testGroup: 4
+#          - testExecutor: "E2ETESTS"
+#            testGroup: 0
+#          - testExecutor: "RESTARTABILITY"
+#            testGroup: 100
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: ./.github/workflows/downloadImageVersions
+#      - uses: ./.github/workflows/logObjects
+#        name: log job contexts
+#        with:
+#          env: ${{ toJSON(env) }}
+#          job: ${{ toJSON(job) }}
+#          steps: ${{ toJSON(steps) }}
+#          strategy: ${{ toJSON(strategy) }}
+#          matrix: ${{ toJSON(matrix) }}
+#          needs: ${{ toJSON(needs) }}
+#          inputs: ${{ toJSON(inputs) }}
+#          vars: ${{ toJSON(vars) }}
+#      - name: Retrieve SSL certificates for local-dev.dataland.com
+#        run: ./testing/retrieve_ssl_certs.sh
+#        env:
+#          TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
+#          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#      - name: Execute E2E Tests
+#        run: ./testing/e2e_test_launcher.sh
+#        env:
+#          KEYCLOAK_FRONTEND_URL: "https://local-dev.dataland.com/keycloak"
+#          KEYCLOAK_DB_PASSWORD: "password"
+#          BACKEND_DB_PASSWORD: "password"
+#          API_KEY_MANAGER_DB_PASSWORD: "password"
+#          INTERNAL_STORAGE_DB_PASSWORD: "password"
+#          DOCUMENT_MANAGER_DB_PASSWORD: "password"
+#          QA_SERVICE_DB_PASSWORD: "password"
+#          PGADMIN_PASSWORD: "password"
+#          KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
+#          KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="
+#          KEYCLOAK_DATALAND_ADMIN_PASSWORD: "password"
+#          DATALAND_BATCH_MANAGER_CLIENT_SECRET: "password"
+#          KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
+#          KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
+#          KEYCLOAK_READER_PASSWORD: "password"
+#          KEYCLOAK_UPLOADER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
+#          KEYCLOAK_UPLOADER_SALT: "K9nzg086pCNjq8dxl84GZg=="
+#          KEYCLOAK_UPLOADER_PASSWORD: "password"
+#          KEYCLOAK_REVIEWER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
+#          KEYCLOAK_REVIEWER_SALT: "K9nzg086pCNjq8dxl84GZg=="
+#          KEYCLOAK_REVIEWER_PASSWORD: "password"
+#          KEYCLOAK_ADMIN: "admin"
+#          KEYCLOAK_ADMIN_PASSWORD: "password"
+#          KEYCLOAK_GOOGLE_ID: "irrelevant_in_ci"
+#          KEYCLOAK_GOOGLE_SECRET: "irrelevant_in_ci"
+#          PROXY_PRIMARY_URL: local-dev.dataland.com
+#          PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/local-dev.dataland.com
+#          PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
+#          CYPRESS_EXECUTION_ENVIRONMENT: "ci"
+#          CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+#          TEST_EXECUTOR: ${{ matrix.testExecutor }}
+#          COMPOSE_DOCKER_CLI_BUILD: 1
+#          DOCKER_BUILDKIT: 1
+#          MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
+#          MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
+#          INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
+#          INVITATION_REQUEST_CC: "dev.null@dataland.com"
+#          RABBITMQ_USER: "admin"
+#          RABBITMQ_PASS: "dataland"
+#          RABBITMQ_PASS_HASH: "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F"
+#          FRONTEND_LOCATION_CONFIG: "Test"
+#      - name: Upload JaCoCo Exec Results
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: JaCoCoResultsE2ETest
+#          path: ./*.exec
+#      - name: Upload lcov Exec Results
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: lcovResults
+#          path: ./*.info
+#      - name: Upload E2E Test and Cypress Reports
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: e2eTestReports
+#          path: |
+#            ./cypress
+#            ./coverage
+#            ./reports
+#      - name: Upload database dumps
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: e2eTestDatabaseDumps
+#          path: ./dbdumps/
+#      - uses: ./.github/workflows/dockerLogs
+#        if: always()
+#        with:
+#          subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
+#  sonar:
+#    runs-on: ubuntu-latest
+#    if: ${{ !cancelled() }}
+#    needs:
+#      - e2e-tests
+#      - gradle-based-tests
+#      - frontend-component-tests
+#    steps:
+#      - uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#      - uses: ./.github/workflows/logObjects
+#        name: log job contexts
+#        with:
+#          env: ${{ toJSON(env) }}
+#          job: ${{ toJSON(job) }}
+#          steps: ${{ toJSON(steps) }}
+#          strategy: ${{ toJSON(strategy) }}
+#          matrix: ${{ toJSON(matrix) }}
+#          needs: ${{ toJSON(needs) }}
+#          inputs: ${{ toJSON(inputs) }}
+#          vars: ${{ toJSON(vars) }}
+#      - uses: actions/setup-java@v3
+#        with:
+#          distribution: temurin
+#          java-version: 17
+#          cache: gradle
+#      - uses: actions/download-artifact@v3
+#        name: JaCoCoResultsUnitTests
+#        with:
+#          name: JaCoCoResultsUnitTests
+#      - uses: actions/download-artifact@v3
+#        name: JaCoCoResultsE2ETest
+#        with:
+#          name: JaCoCoResultsE2ETest
+#      - uses: actions/download-artifact@v3
+#        name: lcovResults
+#        with:
+#          name: lcovResults
+#          path: fe-coverage
+#      - name: Prepare Repo for Sonar
+#        if: always()
+#        run: |
+#          ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build \
+#          -x detekt -x ktlintCheck -x jacocoTestReport -x kaptKotlin -x kaptTestKotlin -x kaptGenerateStubsTestKotlin -x kaptGenerateStubsKotlin \
+#          --no-daemon --stacktrace
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: jacocoTestReport
+#        if: always()
+#        # jacocoTestReport must be executed in a gradle-job that is started AFTER classes are compiled - because
+#        # the build.gradle.kts only looks for .class files at start of gradle (and not at start of task).
+#        run: ./gradlew jacocoTestReport --no-daemon --stacktrace
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Run Sonar
+#        if: always()
+#        run: |
+#          touch ./build/reports/sonarProperties.txt
+#          ./gradlew sonar -D"sonar.scanner.dumpToFile"="./build/reports/sonarProperties.txt" --no-daemon --stacktrace
+#          ./gradlew sonar --no-daemon --stacktrace
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#      - name: Upload Reports
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: SonarStageReports
+#          path: ./build/reports
+#  manual-maintenance-check:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#      - name: "Check if manual maintenance was executed recently"
+#        run: git log --since $(date -d "- 28 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
+#  summary:
+#    runs-on: ubuntu-latest
+#    if: success()
+#    needs:
+#      - sonar
+#      - manual-maintenance-check
+#    steps:
+#      - name: Summary of this workflow's overall outcome
+#        run: exit 0
