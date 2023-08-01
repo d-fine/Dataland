@@ -35,6 +35,11 @@
               :company-id="companyId"
               :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
             />
+            <SmePanel
+              v-if="dataType === DataTypeEnum.Sme"
+              :company-id="companyId"
+              :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
+            />
           </div>
         </div>
       </div>
@@ -77,10 +82,11 @@ import { AxiosError } from "axios";
 import Keycloak from "keycloak-js";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
+import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { P2pPanel, DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
+  components: { P2pPanel, DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase, SmePanel },
   props: {
     companyId: {
       type: String,

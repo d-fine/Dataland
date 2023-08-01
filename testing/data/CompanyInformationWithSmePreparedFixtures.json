@@ -2,87 +2,182 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Antoninastead",
-			"sector": "niches",
+			"headquarters": "Kubhaven",
+			"headquartersPostalCode": "05378-5384",
 			"identifiers": {
 				"Lei": [
-					"QaL2kLsmBYJhWAGRUdks"
+					"AZJWesIIGuVY2oPByZUT"
 				],
 				"Isin": [],
 				"PermId": [
-					"O15GYukFZ4"
+					"Ths9KRWsxa"
 				],
 				"Ticker": [
-					"FHlaXv5"
+					"nWpbIJN"
 				],
-				"Duns": [],
-				"VatNumber": [],
+				"Duns": [
+					"SrqjuXc1L"
+				],
+				"VatNumber": [
+					"8oNt65DsT"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BZ",
+			"countryCode": "EE",
 			"companyAlternativeNames": [
-				"Langworth, MacGyver and Anderson",
-				"Shields, Rath and Crooks"
+				"Lockman Group",
+				"Parker Inc",
+				"Williamson Group"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
-						"D",
-						"G",
-						"H"
+						"C",
+						"J"
 					],
 					"addressOfHeadquarters": {
-						"city": "Johanville",
-						"state": "Hawaii",
-						"country": "GQ"
+						"city": "Fort Leopoldostad",
+						"state": "Maryland",
+						"postalCode": "53107",
+						"country": "SD"
 					},
-					"numberOfEmployees": 8787,
-					"fiscalYearStart": "2023-11-10"
+					"numberOfEmployees": 1468,
+					"fiscalYearStart": "2024-05-02"
 				},
-				"businessNumbers": {
-					"revenueInEur": 76296779,
-					"capitalAssetsInEur": 4051971
+				"companyFinancials": {
+					"revenueInEur": 0,
+					"operatingCostInEur": 1000000,
+					"capitalAssetsInEur": 2000000
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": []
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Luxurious Wooden Cheese"
+						},
+						{
+							"name": "Oriental Metal Car",
+							"percentageOfTotalRevenue": 0.2119
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": 609,
+					"powerFromRenewableSources": "No",
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"amountCoveredByInsuranceAgainstNaturalHazards": 47186806,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"EarthQuake"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "West Jaredcester",
+			"identifiers": {
+				"Lei": [
+					"X5iut0eEhfq27Oz2M5Ez"
+				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MH",
+			"companyAlternativeNames": [
+				"Daugherty, Cruickshank and Heathcote",
+				"Feeney LLC",
+				"Funk - Stanton",
+				"Jacobi and Sons"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://scented-warrant.biz",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"F",
+						"H",
+						"K"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
+					},
+					"numberOfEmployees": 7715,
+					"fiscalYearStart": "2024-05-10"
+				},
+				"companyFinancials": {
+					"revenueInEur": 45189783,
+					"operatingCostInEur": 76138923
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Goldner - Bednar",
+							"nameOfProductionSite": "Deckow - Casper",
 							"addressOfProductionSite": {
-								"city": "New Helene",
-								"postalCode": "62910",
-								"country": "GB"
-							},
-							"percentageOfTotalRevenue": 0.4457
-						},
-						{
-							"nameOfProductionSite": "Weimann Inc",
-							"addressOfProductionSite": {
-								"city": "Eagan",
-								"state": "Missouri",
-								"country": "VI"
+								"streetAndHouseNumber": "Minnie Underpass 454",
+								"city": "North Renee",
+								"state": "Hawaii",
+								"postalCode": "41075",
+								"country": "AQ"
 							}
 						},
 						{
 							"addressOfProductionSite": {
-								"city": "Uptonstead",
-								"state": "South Carolina",
-								"country": "BD"
+								"streetAndHouseNumber": "McGlynn Roads 64441",
+								"city": "Fort Marcelino",
+								"state": "Utah",
+								"country": "FR"
 							},
-							"percentageOfTotalRevenue": 0.2204
+							"percentageOfTotalRevenue": 0.7679
+						},
+						{
+							"nameOfProductionSite": "Collins - Upton",
+							"addressOfProductionSite": {
+								"city": "Gibsonville",
+								"state": "New Mexico",
+								"country": "NZ"
+							},
+							"percentageOfTotalRevenue": 0.6639
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Zieme Burg 8607",
-								"city": "North Janiyastead",
-								"state": "Nevada",
-								"country": "MM"
+								"streetAndHouseNumber": "Diego Club 271",
+								"city": "Nienowworth",
+								"postalCode": "89630-9344",
+								"country": "NO"
 							}
 						}
 					]
@@ -91,20 +186,93 @@
 			},
 			"power": {
 				"investments": {},
+				"consumption": {}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 33072897
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "Skylarport",
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"g4fO7h1pQnIX"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"dgvJu4C5mGQtJcB"
+				]
+			},
+			"countryCode": "SC",
+			"companyAlternativeNames": [
+				"Runolfsson, Quigley and Durgan",
+				"Wiegand LLC"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"H",
+						"L",
+						"M"
+					],
+					"addressOfHeadquarters": {
+						"city": "City 17",
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 3289,
+					"fiscalYearStart": "2023-11-29"
+				},
+				"companyFinancials": {
+					"revenueInEur": 54656771,
+					"operatingCostInEur": 69146132
+				}
+			},
+			"production": {
+				"sites": {},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Luxurious Plastic Car"
+						},
+						{
+							"name": "Unbranded Steel Bacon"
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 846,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric"
+					"powerConsumptionInMwh": 219,
+					"energyConsumptionHeatingAndHotWater": 177,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 5470169,
 					"naturalHazardsCovered": [
-						"Flooding"
+						"Flooding",
+						"Snow"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2022"
 	}
 ]
