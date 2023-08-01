@@ -50,19 +50,16 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Frontend component testing
-        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace
+        run: timeout 15m bash -c "./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace" | tee cypress-component-test-logs.log
         env:
           DEBUG: cypress:*
         if: always()
-      - name: Record Github Runner Kernel Logs
-        if: always()
-        run: dmesg > runner-kernel-log.log
-      - name: Upload Github Runner Kernel Logs
+      - name: Upload Cypress Component Test Logs
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: componentTestRunnerKernelLog
-          path: runner-kernel-log.log
+          name: componentTestCypressLogs
+          path: cypress-component-test-logs.log
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v3
