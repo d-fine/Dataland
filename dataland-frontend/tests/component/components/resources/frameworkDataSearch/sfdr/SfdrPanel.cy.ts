@@ -126,8 +126,8 @@ describe("Component tests for SfdrPanel", () => {
       },
     });
     cy.contains("span", "marker-for-test").should("exist");
-    cy.contains("td.headers-bg", "Group Level Annual Report").should("exist");
-    cy.get("em").its("length").should("equal", 2);
-    cy.get("tr").its("length").should("equal", 4);
+    cy.contains("td.headers-bg", "Data Date").should("exist");
+    cy.get("em").its("length").should("equal", 5);
+    cy.get("tr").its("length").should("equal", 7);
   });
 });
