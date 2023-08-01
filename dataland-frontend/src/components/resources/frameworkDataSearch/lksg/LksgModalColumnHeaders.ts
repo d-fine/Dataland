@@ -1,8 +1,8 @@
-export const detailsCompanyDataTableColumnHeaders = {
+export const lksgModalColumnHeaders = {
   listOfProductionSites: {
     nameOfProductionSite: "Name",
     addressOfProductionSite: "Address",
-    listOfGoodsOrServices: "List Of Goods Or Services",
+    listOfGoodsOrServices: "List of Goods or Services",
   },
   mostImportantProducts: {
     name: "Product Name",

@@ -2609,8 +2609,8 @@
           "basicInformation": {
             "$ref": "#/components/schemas/SmeGeneralBasicInformation"
           },
-          "businessNumbers": {
-            "$ref": "#/components/schemas/SmeGeneralBusinessNumbers"
+          "companyFinancials": {
+            "$ref": "#/components/schemas/SmeGeneralCompanyFinancials"
           }
         }
       },
@@ -2641,7 +2641,7 @@
           }
         }
       },
-      "SmeGeneralBusinessNumbers": {
+      "SmeGeneralCompanyFinancials": {
         "type": "object",
         "properties": {
           "revenueInEur": {

@@ -27,3 +27,12 @@ export function formatBytesUserFriendly(numberOfBytes: number, precision: number
 
   return `${parseFloat((numberOfBytes / Math.pow(k, i)).toFixed(precision))} ${sizes[i]}`;
 }
+
+/**
+ * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
+ * @param inputNumber The number to convert
+ * @returns a string with the converted number and "MM" at the end
+ */
+export function convertToMillions(inputNumber: number): string {
+  return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
+}

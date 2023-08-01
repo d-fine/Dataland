@@ -62,7 +62,7 @@ export function generateSmeData(undefinedProbability = 0.5): SmeData {
         numberOfEmployees: randomNumber(10000),
         fiscalYearStart: randomFutureDate(),
       },
-      businessNumbers: {
+      companyFinancials: {
         revenueInEur: valueOrUndefined(randomNumber(100000000), undefinedProbability),
         operatingCostInEur: valueOrUndefined(randomNumber(80000000), undefinedProbability),
         capitalAssetsInEur: valueOrUndefined(randomNumber(70000000), undefinedProbability),

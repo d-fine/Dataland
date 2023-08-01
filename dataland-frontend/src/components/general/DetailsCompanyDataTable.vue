@@ -5,9 +5,7 @@
       :field="keyOfColumn"
       :key="keyOfColumn"
       :header="
-        detailsCompanyDataTableColumnHeaders[kpiKeyOfTable]
-          ? detailsCompanyDataTableColumnHeaders[kpiKeyOfTable][keyOfColumn]
-          : humanizeString(kpiKeyOfTable)
+        columnHeaders![kpiKeyOfTable] ? columnHeaders![kpiKeyOfTable][keyOfColumn] : humanizeString(kpiKeyOfTable)
       "
       headerStyle="width: 15vw;"
     >
@@ -34,7 +32,6 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -43,11 +40,11 @@ export default defineComponent({
   data() {
     return {
       listOfRowContents: [] as Array<object | string>,
-      detailsCompanyDataTableColumnHeaders,
       kpiKeyOfTable: "" as string,
       keysOfValuesForColumnDisplay: [] as string[],
       keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing"] as string[],
       humanizeString,
+      columnHeaders: {},
     };
   },
   mounted() {
@@ -55,8 +52,10 @@ export default defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       listOfRowContents: Array<object | string>;
       kpiKeyOfTable: string;
+      columnHeaders: object;
     };
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
+    this.columnHeaders = dialogRefData.columnHeaders;
     if (typeof dialogRefData.listOfRowContents[0] === "string") {
       this.keysOfValuesForColumnDisplay.push(this.kpiKeyOfTable);
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
