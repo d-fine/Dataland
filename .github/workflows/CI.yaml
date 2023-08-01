@@ -51,7 +51,18 @@ jobs:
           cache: gradle
       - name: Frontend component testing
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace
+        env:
+          DEBUG: cypress:*
         if: always()
+      - name: Record Github Runner Kernel Logs
+        if: always()
+        run: dmesg > runner-kernel-log.log
+      - name: Upload Github Runner Kernel Logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: componentTestRunnerKernelLog
+          path: runner-kernel-log.log
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v3
