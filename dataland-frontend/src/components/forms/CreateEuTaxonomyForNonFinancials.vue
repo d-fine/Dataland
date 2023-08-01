@@ -57,6 +57,7 @@
             <div class="uploadFormSection grid">
               <FormKit type="group" name="data" label="data">
                 <UploadReports
+                  name="UploadReports"
                   ref="UploadReports"
                   :isEuTaxonomy="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports"
@@ -375,7 +376,7 @@ export default defineComponent({
     postEuTaxonomyDataForNonFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
     message: "",
     namesOfAllCompanyReportsForTheDataset: [] as string[],
-    templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
+    templateDataset: {} as EuTaxonomyDataForNonFinancials,
   }),
   computed: {
     reportingPeriodYear(): number {
@@ -390,7 +391,7 @@ export default defineComponent({
       type: String,
     },
   },
-  created() {
+  mounted() {
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
@@ -411,7 +412,7 @@ export default defineComponent({
     async fetchTemplateData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
       const dataResponse =
@@ -425,7 +426,7 @@ export default defineComponent({
       }
       this.templateDataset = companyAssociatedEuTaxonomyData.data;
       const receivedFormInputsModel = convertValuesFromDecimalsToPercentages(
-        companyAssociatedEuTaxonomyData as ObjectType,
+        companyAssociatedEuTaxonomyData as ObjectType
       );
       this.waitingForData = false;
       updateObject(this.formInputsModel as ObjectType, receivedFormInputsModel);
@@ -442,21 +443,21 @@ export default defineComponent({
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
-          this.namesOfAllCompanyReportsForTheDataset,
+          this.namesOfAllCompanyReportsForTheDataset
         );
 
         await uploadFiles(
           (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
-          assertDefined(this.getKeycloakPromise),
+          assertDefined(this.getKeycloakPromise)
         );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         this.postEuTaxonomyDataForNonFinancialsResponse =
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+            formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForNonFinancials
           );
         this.$emit("datasetCreated");
       } catch (error) {

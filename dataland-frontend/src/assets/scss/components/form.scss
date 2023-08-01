@@ -684,3 +684,9 @@ input[type="checkbox"], input[type="radio"]{
   background: $btn-primary-bg !important;
   border: 0 !important;
 }
+
+.bordered-box {
+  border: 2px dotted $input-separator;
+  border-radius: $upload-form-radius;
+  padding: 16px;
+}

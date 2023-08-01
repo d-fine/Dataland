@@ -4,11 +4,7 @@
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
   <!-- Select company reports -->
-  <div v-if="isEuTaxonomy" class="col-9 formFields">
-    <h3 class="mt-0">Select company reports</h3>
-    <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
-  </div>
-  <div v-else class="formField">
+  <div :class="isEuTaxonomy ? 'col-9 formFields' : 'formField'">
     <h3 class="mt-0">Select company reports</h3>
     <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
   </div>
@@ -19,7 +15,7 @@
       <div
         v-for="reportToUpload of reportsToUpload"
         :key="reportToUpload.file.name"
-        class="col-9 formFields"
+        :class="isEuTaxonomy ? 'col-9 formFields' : 'bordered-box p-3 mb-3'"
         data-test="report-to-upload-form"
       >
         <div :data-test="reportToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
@@ -29,34 +25,37 @@
           <ReportFormElement :name="reportToUpload.fileNameWithoutSuffix" :reference="reportToUpload.reference" />
         </div>
       </div>
-      <div v-if="storedReports.length > 0" class="uploadFormSection">
-        <!-- List of company reports -->
-        <div class="col-3 p-3 topicLabel">
-          <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
-        </div>
-        <div
-          v-for="(storedReport, index) of storedReports"
-          :key="storedReport.reportName"
-          class="col-9 formFields"
-          data-test="report-uploaded-form"
-        >
-          <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
-            <div class="flex w-full">
-              <h3 class="mt-0">{{ storedReport.reportName }}</h3>
-              <PrimeButton
-                :data-test="'remove-' + storedReport.reportName"
-                @click="removeReportFromStoredReports(index)"
-                icon="pi pi-times"
-                class="p-button-edit-reports"
-              />
-            </div>
+    </div>
+    <div v-if="storedReports.length > 0" class="uploadFormSection">
+      <!-- List of company reports -->
+      <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
+        <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
+      </div>
+      <div v-else class="col-12">
+        <h3 class="mt-0">Uploaded company reports</h3>
+      </div>
+      <div
+        v-for="(storedReport, index) of storedReports"
+        :key="storedReport.reportName"
+        :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
+        data-test="report-uploaded-form"
+      >
+        <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
+          <div class="flex w-full">
+            <h3 class="mt-0">{{ storedReport.reportName }}</h3>
+            <PrimeButton
+              :data-test="'remove-' + storedReport.reportName"
+              @click="removeReportFromStoredReports(index)"
+              icon="pi pi-times"
+              class="p-button-edit-reports"
+            />
           </div>
-          <ReportFormElement
-            :name="storedReport.reportName"
-            :report-date="storedReport.reportDate"
-            :reference="storedReport.reference"
-          />
         </div>
+        <ReportFormElement
+          :name="storedReport.reportName"
+          :report-date="storedReport.reportDate"
+          :reference="storedReport.reference"
+        />
       </div>
     </div>
   </FormKit>
@@ -75,7 +74,7 @@ import { CompanyReport } from "@clients/backend";
 export default defineComponent({
   name: "UploadReports",
   inject: {
-    injectreferencedReportsForPrefill: {
+    injectReferencedReportsForPrefill: {
       from: "referencedReportsForPrefill",
       default: {},
     },
@@ -88,7 +87,6 @@ export default defineComponent({
   emits: ["documentUpdated"],
   data() {
     return {
-      referencedReportsForPrefillFromInject: this.injectreferencedReportsForPrefill,
       reportsToUpload: [] as ReportToUpload[] | undefined,
       storedReports: [] as StoredReport[],
     };
@@ -96,21 +94,16 @@ export default defineComponent({
   props: {
     ...UploadReportsProps,
   },
+  watch: {
+    referencedReportsForPrefill() {
+      this.prefillAlreadyUploadedReports();
+    },
+  },
   computed: {
     allReferenceableReportNames(): string[] {
       const namesOfFilesToUpload = this.reportsToUpload.map((reportToUpload) => reportToUpload.fileNameWithoutSuffix);
       const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName);
       return namesOfFilesToUpload.concat(namesOfStoredReports);
-    },
-    displayReferencedReportsForPrefill() {
-      console.log("LKLKKKKK", this.referencedReportsForPrefillFromInject);
-      if (this.referencedReportsForPrefill && this.referencedReportsForPrefill.length) {
-        return this.referencedReportsForPrefill;
-      } else if (this.referencedReportsForPrefillFromInject) {
-        return this.referencedReportsForPrefillFromInject;
-      } else {
-        return [];
-      }
     },
   },
   mounted() {
@@ -135,7 +128,6 @@ export default defineComponent({
      * @param reports the list of all reports currently selected in the file upload
      */
     updateSelectedReports(reports: ReportToUpload[]) {
-      console.log("updateSelectedReports 1!!!", reports);
       this.reportsToUpload = reports;
       if (this.duplicatesAmongReferenceableReportNames()) {
         for (let i = 0; i < this.reportsToUpload.length; i++) {
@@ -166,12 +158,11 @@ export default defineComponent({
      * Initializes the already uploaded reports from provided reports
      */
     prefillAlreadyUploadedReports() {
-      console.log("*****222", this.injectreferencedReportsForPrefill);
-      console.log("!!!!!!->", this.displayReferencedReportsForPrefill);
-      if (this.displayReferencedReportsForPrefill) {
-        console.log("!!!!!!->", this.displayReferencedReportsForPrefill);
-        for (const key in this.displayReferencedReportsForPrefill) {
-          const referencedReport = (this.displayReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
+      const sourceOfReferencedReportsForPrefill =
+        this.referencedReportsForPrefill ?? this.injectReferencedReportsForPrefill;
+      if (sourceOfReferencedReportsForPrefill) {
+        for (const key in sourceOfReferencedReportsForPrefill) {
+          const referencedReport = (sourceOfReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
           this.storedReports.push({
             reportName: key,
             reference: referencedReport.reference,
@@ -210,18 +201,6 @@ export default defineComponent({
      * @returns a boolean stating if any file name is duplicated among the reference report names
      */
     duplicatesAmongReferenceableReportNames(): boolean {
-      console.log("Duplication check");
-      console.log(
-        "allReferenceableReportNames",
-        this.allReferenceableReportNames,
-        this.allReferenceableReportNames.length,
-      );
-      console.log(
-        "Set(this.allReferenceableReportNames)",
-        new Set(this.allReferenceableReportNames),
-        new Set(this.allReferenceableReportNames).size,
-      );
-      console.log("check", this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size);
       return this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size;
     },
   },

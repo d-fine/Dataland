@@ -34,6 +34,7 @@
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
+                  name="UploadReports"
                   data-test="reportingPeriodLabel"
                   :label="euTaxonomyKpiNameMappings.reportingPeriod"
                   :description="euTaxonomyKpiInfoMappings.reportingPeriod"
@@ -404,25 +405,25 @@ export default defineComponent({
         {
           label: "Credit Institution",
           value: getKpiFieldNameForOneFinancialServiceType(
-            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution
           ),
         },
         {
           label: "Investment Firm",
           value: getKpiFieldNameForOneFinancialServiceType(
-            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm,
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm
           ),
         },
         {
           label: "Insurance & Re-insurance",
           value: getKpiFieldNameForOneFinancialServiceType(
-            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance
           ),
         },
         {
           label: "Asset Management",
           value: getKpiFieldNameForOneFinancialServiceType(
-            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement,
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement
           ),
         },
       ],
@@ -447,7 +448,7 @@ export default defineComponent({
       this.confirmedSelectedFinancialServiceTypes = newValue.map(
         (financialServiceOption: { label: string; value: string }): string => {
           return euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[financialServiceOption.value] as string;
-        },
+        }
       );
     },
   },
@@ -499,11 +500,11 @@ export default defineComponent({
               this.extractFinancialServiceTypes(companyAssociatedEuTaxonomyData.data);
 
               const receivedFormInputsModel = convertValuesFromDecimalsToPercentages(
-                companyAssociatedEuTaxonomyData as ObjectType,
+                companyAssociatedEuTaxonomyData as ObjectType
               );
 
               (receivedFormInputsModel.data as ObjectType).kpiSections = this.extractKpis(
-                receivedFormInputsModel.data as ObjectType,
+                receivedFormInputsModel.data as ObjectType
               );
 
               this.waitingForData = false;
@@ -512,7 +513,7 @@ export default defineComponent({
                 .then(() => updateObject(this.formInputsModel as ObjectType, receivedFormInputsModel))
                 .catch((e) => console.log(e));
             })
-            .catch((e) => console.log(e)),
+            .catch((e) => console.log(e))
         )
         .catch((e) => console.log(e));
     },
@@ -562,9 +563,9 @@ export default defineComponent({
             return arrayWithCompanyKpiTypes?.includes(
               euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[
                 financialServiceOption.value
-              ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
+              ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
             );
-          },
+          }
         );
         this.confirmSelectedKPIs();
       }
@@ -632,21 +633,21 @@ export default defineComponent({
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
-          this.namesOfAllCompanyReportsForTheDataset,
+          this.namesOfAllCompanyReportsForTheDataset
         );
 
         await uploadFiles(
           (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
-          assertDefined(this.getKeycloakPromise),
+          assertDefined(this.getKeycloakPromise)
         );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(clonedFormInputsModel);
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForFinancials,
+            formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForFinancials
           );
         this.$emit("datasetCreated");
       } catch (error) {
@@ -664,7 +665,7 @@ export default defineComponent({
      */
     removeKpisSection(value: string) {
       const filtered = this.confirmedSelectedFinancialServiceOptions.filter(
-        (financialServiceOption: { label: string; value: string }) => financialServiceOption.value !== value,
+        (financialServiceOption: { label: string; value: string }) => financialServiceOption.value !== value
       );
 
       this.confirmedSelectedFinancialServiceOptions = filtered;
