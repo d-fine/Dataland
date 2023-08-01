@@ -4,11 +4,10 @@
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
   <!-- Select company reports -->
-  <div v-if="isEuTaxonomy" class="formField">
+  <div v-if="isEuTaxonomy" class="col-9 formFields">
     <h3 class="mt-0">Select company reports</h3>
     <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
   </div>
-  <div v-if="isEuTaxonomy" className="col-9 formFields"></div>
   <div v-else class="formField">
     <h3 class="mt-0">Select company reports</h3>
     <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
@@ -20,7 +19,7 @@
       <div
         v-for="reportToUpload of reportsToUpload"
         :key="reportToUpload.file.name"
-        class="formField"
+        class="col-9 formFields"
         data-test="report-to-upload-form"
       >
         <div :data-test="reportToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
