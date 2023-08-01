@@ -121,8 +121,7 @@ function selectDummyDates(fieldName = "dataDate"): void {
  * Opens the Reported Quality Fields and selects the first option
  */
 function recursivelySelectReportedQualityFields() :void {
-    cy.get(`[data-test="dataQuality"`)
-        .each(($element) =>  {
-            cy.wrap($element).select("Audited");
+    cy.get(`select[name="quality"]`).each(($element) => {
+        cy.wrap($element).select(3);
     });
 }
