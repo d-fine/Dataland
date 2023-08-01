@@ -30,6 +30,7 @@ jobs:
 #    uses: ./.github/workflows/RebuildDockerImages.yaml
   frontend-component-tests:
     runs-on: ubuntu-latest
+    container: ubuntu
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
@@ -44,11 +45,13 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
+#      - uses: actions/setup-java@v3
+#        with:
+#          distribution: temurin
+#          java-version: 17
+#          cache: gradle
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb openjdk-17-jdk git
       - name: Frontend component testing
         run: timeout 15m bash -c "./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace 2>&1 | tee cypress-component-test-logs.log"
         env:
@@ -60,12 +63,6 @@ jobs:
         with:
           name: componentTestCypressLogs
           path: cypress-component-test-logs.log
-      - name: Upload Runner Syslog
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: componentTestRunnerSyslog
-          path: /var/log/syslog
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v3
