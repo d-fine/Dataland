@@ -10,6 +10,7 @@ import {
 } from "@clients/backend";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
+import SmeWrapper from "@/components/resources/frameworkDataSearch/sme/SmeWrapper.vue";
 import { threeLayerTable } from "@sharedUtils/components/ThreeLayerTable";
 import { QaStatus } from "@clients/qaservice";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -25,7 +26,7 @@ describe("Component tests for SmePanel", () => {
     });
   });
 
-  it("Check Sme view page for company with one Sme data set", () => {
+  it.only("Check Sme view page for company with one Sme data set", () => {
     const preparedFixture = getPreparedFixture("SME-year-2023", preparedFixtures);
     const smeData = preparedFixture.t;
 
@@ -34,7 +35,8 @@ describe("Component tests for SmePanel", () => {
       reportingPeriod: preparedFixture.reportingPeriod,
       data: smeData,
     } as CompanyAssociatedDataSmeData);
-    cy.mountWithPlugins(SmePanel, {
+    cy.mountWithPlugins(SmeWrapper, {
+      global: { stubs: { transition: false } },
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
@@ -59,6 +61,10 @@ describe("Component tests for SmePanel", () => {
     cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("not.exist");
     threeLayerTable.toggleSubcategory("Consumption");
     cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("exist");
+
+    threeLayerTable.getFieldByTestIdentifier("sector").find("a").eq(0).click()
+    cy.wait(1000)
+    cy.get(".p-dialog-header-close").trigger("click");
 
     threeLayerTable.toggleSubcategory("Company Financials");
     threeLayerTable.getFieldByTestIdentifier("revenueInEur").should("contain.text", "0 MM");
