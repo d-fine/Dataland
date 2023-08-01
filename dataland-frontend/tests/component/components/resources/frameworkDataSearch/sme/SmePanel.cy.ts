@@ -10,7 +10,6 @@ import {
 } from "@clients/backend";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
-import SmeWrapper from "@/components/resources/frameworkDataSearch/sme/SmeWrapper.vue";
 import { threeLayerTable } from "@sharedUtils/components/ThreeLayerTable";
 import { QaStatus } from "@clients/qaservice";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -35,19 +34,19 @@ describe("Component tests for SmePanel", () => {
       reportingPeriod: preparedFixture.reportingPeriod,
       data: smeData,
     } as CompanyAssociatedDataSmeData);
-    cy.mountWithPlugins(SmeWrapper, {
-      global: { stubs: { transition: false } },
-      keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyId: companyId,
-          singleDataMetaInfoToDisplay: {
-            dataId: "mock-data-id",
-            reportingPeriod: preparedFixture.reportingPeriod,
-          } as DataMetaInformation,
-        };
+    cy.mountWithDialog(
+      SmePanel,
+      {
+        keycloak: minimalKeycloakMock({}),
       },
-    });
+      {
+        companyId: companyId,
+        singleDataMetaInfoToDisplay: {
+          dataId: "mock-data-id",
+          reportingPeriod: preparedFixture.reportingPeriod,
+        } as DataMetaInformation,
+      },
+    );
     cy.get(
       threeLayerTable.getFieldByContentSelector(smeData.general.basicInformation.numberOfEmployees.toString()),
     ).should("exist");
@@ -62,8 +61,7 @@ describe("Component tests for SmePanel", () => {
     threeLayerTable.toggleSubcategory("Consumption");
     cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("exist");
 
-    threeLayerTable.getFieldByTestIdentifier("sector").find("a").eq(0).click()
-    cy.wait(1000)
+    threeLayerTable.getFieldByTestIdentifier("sector").find("a").eq(0).click();
     cy.get(".p-dialog-header-close").trigger("click");
 
     threeLayerTable.toggleSubcategory("Company Financials");

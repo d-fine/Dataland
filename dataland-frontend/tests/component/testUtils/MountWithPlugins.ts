@@ -6,9 +6,10 @@ import { plugin, defaultConfig } from "@formkit/vue";
 import { createMemoryHistory, createRouter, Router } from "vue-router";
 import { mount } from "cypress/vue";
 import { VueWrapper } from "@vue/test-utils";
-import { DefineComponent } from "vue";
+import { DefineComponent, defineComponent, h } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import DynamicDialog from "primevue/dynamicdialog";
 
 /*
   This file defines a alternative mounting function that also includes many creature comforts
@@ -17,11 +18,14 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
   The no-explicit-any overrides are present as the original mount type definitions also include these anys
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ComponentMountingOptions<T extends DefineComponent<any, any, any, any, any>> = Parameters<typeof mount<T>>[1] & {
+type MountingOptions = {
   router?: Router;
   keycloak?: Keycloak;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ComponentMountingOptions<T extends DefineComponent<any, any, any, any, any>> = Parameters<typeof mount<T>>[1] &
+  MountingOptions;
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -36,6 +40,20 @@ declare global {
       mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
         component: T,
         options: ComponentMountingOptions<T>,
+      ): Cypress.Chainable<{
+        wrapper: VueWrapper<InstanceType<T>>;
+        component: VueWrapper<InstanceType<T>>["vm"];
+      }>;
+      /**
+       * Helper mount function for Vue Components utilizing the DynamicDialog component
+       * @param component Vue Component or JSX Element to mount
+       * @param options Options passed to Vue Test Utils
+       */
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mountWithDialog<T extends DefineComponent<any, any, any, any, any>>(
+        component: T,
+        options: MountingOptions,
+        props: object,
       ): Cypress.Chainable<{
         wrapper: VueWrapper<InstanceType<T>>;
         component: VueWrapper<InstanceType<T>>["vm"];
@@ -103,4 +121,30 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   return mount(component, options);
 }
 
+/**
+ * Mounts a component in a wrapper also containing a DynamicDialog. Manipulating the component is only possible through the properties.
+ * @param component the component you want to mount
+ * @param options general mounting options
+ * @param props properties to set for the component
+ * @returns a cypress chainable for the mounted wrapper and the wrapper of the Vue component
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mountWithDialog<T extends DefineComponent<any, any, any, any, any>>(
+  component: T,
+  options: MountingOptions,
+  props: object = {},
+): Cypress.Chainable {
+  const componentWrapper = defineComponent({
+    render() {
+      return [h(DynamicDialog), h(component, props ?? {})];
+    },
+  });
+  const wrapperOptions = options as ComponentMountingOptions<typeof componentWrapper>;
+  wrapperOptions.global ??= {};
+  wrapperOptions.global.stubs ??= {};
+  wrapperOptions.global.stubs.transition = false;
+  return mountWithPlugins(componentWrapper, wrapperOptions);
+}
+
 Cypress.Commands.add("mountWithPlugins", mountWithPlugins);
+Cypress.Commands.add("mountWithDialog", mountWithDialog);
