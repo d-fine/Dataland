@@ -110,7 +110,7 @@ import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/Rad
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { DocumentToUpload } from "@/utils/FileUploadUtils";
-import { BaseDataPointYesNo, LksgProcurementCategory, QualityOptions } from "@clients/backend";
+import { BaseDataPointYesNo, QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "YesNoFormField",
