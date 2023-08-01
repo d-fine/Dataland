@@ -54,7 +54,7 @@
 
       <Column field="subAreaKey" header="Impact Area"></Column>
       <template #groupheader="slotProps">
-        <span :id="slotProps.data.subAreaKey">{{
+        <span :id="slotProps.data.subAreaKey" :data-row-header-click="slotProps.data.subAreaKey">{{
           subAreaNameMappings[slotProps.data.subAreaKey]
             ? subAreaNameMappings[slotProps.data.subAreaKey]
             : slotProps.data.subAreaKey
@@ -71,7 +71,11 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
-import { expandRowGroupOnHeaderClick, ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
+import {
+  ReportingPeriodOfDataSetWithId,
+  mountRowHeaderClickEventListeners,
+  unmountRowHeaderClickEventListeners,
+} from "@/utils/DataTableDisplay";
 
 type SfdrKpiObject = { [index: string]: string | object; subAreaKey: string; kpiKey: string };
 
@@ -86,6 +90,7 @@ export default defineComponent({
       kpiDataObjectsToDisplay: [] as SfdrKpiObject[],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames: lksgModalColumnHeaders.listOfProductionSites,
+      rowClickHandlersMap: new Map() as Map<Element, () => void>,
     };
   },
   props: {
@@ -111,18 +116,17 @@ export default defineComponent({
       default: () => ({}),
     },
   },
+  created() {
+    this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+      () => this.expandedRowGroups,
+      (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
+    );
+  },
+  unmounted() {
+    this.rowClickHandlersMap = unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
+  },
   mounted() {
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;
-    document.addEventListener(
-      "click",
-      (e) =>
-        (this.expandedRowGroups = expandRowGroupOnHeaderClick(
-          e,
-          this.kpiDataObjectsToDisplay,
-          "subAreaKey",
-          this.expandedRowGroups,
-        )),
-    );
   },
   methods: {
     /**

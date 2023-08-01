@@ -45,29 +45,47 @@ export type ReportingPeriodOfDataSetWithId = {
 };
 
 /**
- * Enables group row expansion (and collapse) on DataTable when clicking on the whole header row
- * @param event a click event
- * @param referenceData array of items to be checked
- * @param targetKey the name of the key/property of the item to be checked
- * @param expandedRowGroups an array of currently expaned rows
- * @returns an updated array of expanded rows
+ * Adds click event listeners on DataTable row headers to expand and collapse row
+ * @param expandedRowsOnClick function passes the latest list of expanded row id's
+ * @param newExpandedRowsCallback function that returns the updated (after click) list of expanded row id's
+ * @returns the map of rows and their click handlers needed for unmounting
  */
-export function expandRowGroupOnHeaderClick<T>(
-  event: Event,
-  referenceData: Array<T>,
-  targetKey: keyof T,
-  expandedRowGroups: string[] = [],
-): string[] {
-  const id = (event.target as Element).id;
+export function mountRowHeaderClickEventListeners(
+  expandedRowsOnClick: () => string[],
+  newExpandedRowsCallback: (newExpandedRows: string[]) => void,
+): Map<Element, () => void> {
+  const handlerMap: Map<Element, () => void> = new Map();
+  let expandedRowGroups: string[] = [];
 
-  const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-    referenceData.some((dataObject) => dataObject[targetKey] === child.id),
-  )[0];
+  setTimeout(() => {
+    document.querySelectorAll("[data-row-header-click]").forEach((el) => {
+      const clickHandler = (): void => {
+        expandedRowGroups = expandedRowsOnClick();
+        if (!expandedRowGroups.includes(el.id)) {
+          expandedRowGroups.push(el.id);
+        } else {
+          expandedRowGroups = expandedRowGroups.filter((id: string) => id !== el.id);
+        }
+        newExpandedRowsCallback(expandedRowGroups);
+      };
+      handlerMap.set(el, clickHandler);
+      el.parentNode?.addEventListener("click", clickHandler);
+    });
+  });
 
-  if (matchingChild || referenceData.some((dataObject) => dataObject[targetKey] === id)) {
-    const index = expandedRowGroups.indexOf(matchingChild?.id ?? id);
-    if (index === -1) expandedRowGroups.push(matchingChild?.id ?? id);
-    else expandedRowGroups.splice(index, 1);
-  }
-  return expandedRowGroups;
+  return handlerMap;
+}
+
+/**
+ * 
+ * @param handlerMap the map of rows and their click handlers that need to be looped and have their event listeners removed
+ * @returns an updated, empty (hopefully) map of the rows and click handlers. This can be double checked in the component as length is expeted to be 0.
+ */
+export function unmountRowHeaderClickEventListeners(handlerMap: Map<Element, () => void>): Map<Element, () => void> {
+  handlerMap.forEach((listener: () => void, el: Element) => {
+    el.parentNode?.removeEventListener("click", listener);
+    handlerMap.delete(el);
+  });
+
+  return handlerMap;
 }

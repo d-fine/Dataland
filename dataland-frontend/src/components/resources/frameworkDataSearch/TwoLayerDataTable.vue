@@ -117,7 +117,12 @@
 
       <Column field="subcategoryKey"></Column>
       <template #groupheader="slotProps">
-        <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
+        <span
+          :data-test="slotProps.data.subcategoryKey"
+          :data-row-header-click="slotProps.data.subcategoryKey"
+          :id="slotProps.data.subcategoryKey"
+          style="cursor: pointer"
+        >
           {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
         </span>
       </template>
@@ -129,7 +134,11 @@
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { ReportingPeriodOfDataSetWithId, expandRowGroupOnHeaderClick } from "@/utils/DataTableDisplay";
+import {
+  ReportingPeriodOfDataSetWithId,
+  mountRowHeaderClickEventListeners,
+  unmountRowHeaderClickEventListeners,
+} from "@/utils/DataTableDisplay";
 import { BaseDataPointYesNo, YesNo } from "@clients/backend";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
@@ -154,6 +163,7 @@ export default defineComponent({
         [false, "No"],
       ]),
       YesNo,
+      rowClickHandlersMap: new Map() as Map<Element, () => void>,
     };
   },
   props: {
@@ -173,10 +183,14 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  mounted() {
-    document.addEventListener("click", (e) =>
-      expandRowGroupOnHeaderClick(e, this.arrayOfKpiDataObjects, "subcategoryKey", this.expandedRowGroups),
+  created() {
+    this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+      () => this.expandedRowGroups,
+      (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
     );
+  },
+  unmounted() {
+    this.rowClickHandlersMap = unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
   },
   methods: {
     /**
@@ -214,7 +228,7 @@ export default defineComponent({
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
      */
-    openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, kpiKey: string) {
+    openModalAndDisplayValuesInSubTable(listOfValues: string[], modalTitle: string, kpiKey: string) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
           header: modalTitle,
