@@ -25,7 +25,7 @@ describe("Component tests for SmePanel", () => {
     });
   });
 
-  it.only("Check Sme view page for company with one Sme data set", () => {
+  it("Check Sme view page for company with one Sme data set", () => {
     const preparedFixture = getPreparedFixture("SME-year-2023", preparedFixtures);
     const smeData = preparedFixture.t;
 
