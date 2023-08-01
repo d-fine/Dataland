@@ -131,7 +131,12 @@
 
       <Column field="subcategoryKey"></Column>
       <template #groupheader="slotProps">
-        <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
+        <span
+          :data-test="slotProps.data.subcategoryKey"
+          :data-row-header-click="slotProps.data.subcategoryKey"
+          :id="slotProps.data.subcategoryKey"
+          style="cursor: pointer"
+        >
           {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
         </span>
       </template>
@@ -143,7 +148,7 @@
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { ReportingPeriodOfDataSetWithId, expandRowGroupOnHeaderClick } from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 import { BaseDataPointYesNo, YesNo } from "@clients/backend";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
@@ -169,6 +174,7 @@ export default defineComponent({
         [false, "No"],
       ]),
       YesNo,
+      listenersMap: new Map(),
     };
   },
   props: {
@@ -184,10 +190,26 @@ export default defineComponent({
       default: () => [],
     },
   },
-  mounted() {
-    document.addEventListener("click", (e) =>
-      expandRowGroupOnHeaderClick(e, this.arrayOfKpiDataObjects, "subcategoryKey", this.expandedRowGroups),
-    );
+  created() {
+    setTimeout(() => {
+      document.querySelectorAll("[data-row-header-click]").forEach((el) => {
+        const clickHandler = (): void => {
+          if (!this.expandedRowGroups.includes(el.id)) {
+            this.expandedRowGroups.push(el.id);
+          } else {
+            this.expandedRowGroups = this.expandedRowGroups.filter((id: string) => id !== el.id);
+          }
+        };
+        this.listenersMap.set(el, clickHandler);
+        el.parentNode?.addEventListener("click", clickHandler);
+      });
+    });
+  },
+  unmounted() {
+    this.listenersMap.forEach((listener: () => void, el: HTMLElement) => {
+      el.parentNode?.removeEventListener("click", listener);
+      this.listenersMap.delete(el);
+    });
   },
   methods: {
     /**
@@ -225,8 +247,8 @@ export default defineComponent({
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
      */
-    convertsListToReadableFormatAndShowsInModal(listOfValues: [], modalTitle: string, kpiKey: string) {
-      const resultList = [];
+    convertsListToReadableFormatAndShowsInModal(listOfValues: string[], modalTitle: string, kpiKey: string) {
+      const resultList: string[] = [];
       listOfValues.forEach((entry) => {
         resultList.push(humanizeString(entry));
       });
@@ -239,7 +261,7 @@ export default defineComponent({
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
      */
-    openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, kpiKey: string) {
+    openModalAndDisplayValuesInSubTable(listOfValues: string[], modalTitle: string, kpiKey: string) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
           header: modalTitle,

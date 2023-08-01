@@ -43,31 +43,3 @@ export type ReportingPeriodOfDataSetWithId = {
   dataId: string;
   reportingPeriod: string;
 };
-
-/**
- * Enables group row expansion (and collapse) on DataTable when clicking on the whole header row
- * @param event a click event
- * @param referenceData array of items to be checked
- * @param targetKey the name of the key/property of the item to be checked
- * @param expandedRowGroups an array of currently expaned rows
- * @returns an updated array of expanded rows
- */
-export function expandRowGroupOnHeaderClick<T>(
-  event: Event,
-  referenceData: Array<T>,
-  targetKey: keyof T,
-  expandedRowGroups: string[] = [],
-): string[] {
-  const id = (event.target as Element).id;
-
-  const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-    referenceData.some((dataObject) => dataObject[targetKey] === child.id),
-  )[0];
-
-  if (matchingChild || referenceData.some((dataObject) => dataObject[targetKey] === id)) {
-    const index = expandedRowGroups.indexOf(matchingChild?.id ?? id);
-    if (index === -1) expandedRowGroups.push(matchingChild?.id ?? id);
-    else expandedRowGroups.splice(index, 1);
-  }
-  return expandedRowGroups;
-}

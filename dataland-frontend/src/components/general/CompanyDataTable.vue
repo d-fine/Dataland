@@ -53,8 +53,9 @@
       </Column>
 
       <Column field="subAreaKey" header="Impact Area"></Column>
+
       <template #groupheader="slotProps">
-        <span :id="slotProps.data.subAreaKey">{{
+        <span :id="slotProps.data.subAreaKey" :data-row-header-click="slotProps.data.subAreaKey">{{
           subAreaNameMappings[slotProps.data.subAreaKey]
             ? subAreaNameMappings[slotProps.data.subAreaKey]
             : slotProps.data.subAreaKey
@@ -71,7 +72,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
-import { expandRowGroupOnHeaderClick, ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 
 type SfdrKpiObject = { [index: string]: string | object; subAreaKey: string; kpiKey: string };
 
@@ -86,6 +87,7 @@ export default defineComponent({
       kpiDataObjectsToDisplay: [] as SfdrKpiObject[],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames: detailsCompanyDataTableColumnHeaders.listOfProductionSites,
+      listenersMap: new Map(),
     };
   },
   props: {
@@ -111,18 +113,29 @@ export default defineComponent({
       default: () => ({}),
     },
   },
+  created() {
+    setTimeout(() => {
+      document.querySelectorAll("[data-row-header-click]").forEach((el) => {
+        const clickHandler = (): void => {
+          if (!this.expandedRowGroups.includes(el.id)) {
+            this.expandedRowGroups.push(el.id);
+          } else {
+            this.expandedRowGroups = this.expandedRowGroups.filter((id: string) => id !== el.id);
+          }
+        };
+        this.listenersMap.set(el, clickHandler);
+        el.parentNode?.addEventListener("click", clickHandler);
+      });
+    });
+  },
+  unmounted() {
+    this.listenersMap.forEach((listener: () => void, el: HTMLElement) => {
+      el.parentNode?.removeEventListener("click", listener);
+      this.listenersMap.delete(el);
+    });
+  },
   mounted() {
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;
-    document.addEventListener(
-      "click",
-      (e) =>
-        (this.expandedRowGroups = expandRowGroupOnHeaderClick(
-          e,
-          this.kpiDataObjectsToDisplay,
-          "subAreaKey",
-          this.expandedRowGroups,
-        )),
-    );
   },
   methods: {
     /**
