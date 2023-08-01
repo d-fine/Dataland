@@ -71,7 +71,6 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
-import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 import { expandRowGroupOnHeaderClick, ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 
 type SfdrKpiObject = { [index: string]: string | object; subAreaKey: string; kpiKey: string };
