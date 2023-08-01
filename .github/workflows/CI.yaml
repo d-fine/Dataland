@@ -65,7 +65,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           component: true
-          project: ./dataland-frontend
+          working-directory: ./dataland-frontend
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v3
