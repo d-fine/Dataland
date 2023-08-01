@@ -50,7 +50,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Frontend component testing
-        run: timeout 15m bash -c "./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace" | tee cypress-component-test-logs.log
+        run: timeout 15m bash -c "./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace" 2>&1 | tee cypress-component-test-logs.log
         env:
           DEBUG: cypress:*
         if: always()
