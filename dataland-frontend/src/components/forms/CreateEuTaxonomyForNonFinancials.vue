@@ -57,6 +57,7 @@
             <div class="uploadFormSection grid">
               <FormKit type="group" name="data" label="data">
                 <UploadReports
+                  name="UploadReports"
                   ref="UploadReports"
                   :isEuTaxonomy="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports"
@@ -375,7 +376,7 @@ export default defineComponent({
     postEuTaxonomyDataForNonFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
     message: "",
     namesOfAllCompanyReportsForTheDataset: [] as string[],
-    templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
+    templateDataset: {} as EuTaxonomyDataForNonFinancials,
   }),
   computed: {
     reportingPeriodYear(): number {
@@ -390,7 +391,7 @@ export default defineComponent({
       type: String,
     },
   },
-  created() {
+  mounted() {
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;

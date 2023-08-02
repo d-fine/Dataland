@@ -34,6 +34,7 @@
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
+                  name="UploadReports"
                   data-test="reportingPeriodLabel"
                   :label="euTaxonomyKpiNameMappings.reportingPeriod"
                   :description="euTaxonomyKpiInfoMappings.reportingPeriod"

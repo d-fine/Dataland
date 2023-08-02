@@ -43,3 +43,49 @@ export type ReportingPeriodOfDataSetWithId = {
   dataId: string;
   reportingPeriod: string;
 };
+
+/**
+ * Adds click event listeners on DataTable row headers to expand and collapse row
+ * @param expandedRowsOnClick function passes the latest list of expanded row id's
+ * @param newExpandedRowsCallback function that returns the updated (after click) list of expanded row id's
+ * @returns the map of rows and their click handlers needed for unmounting
+ */
+export function mountRowHeaderClickEventListeners(
+  expandedRowsOnClick: () => string[],
+  newExpandedRowsCallback: (newExpandedRows: string[]) => void,
+): Map<Element, () => void> {
+  const handlerMap: Map<Element, () => void> = new Map();
+  let expandedRowGroups: string[] = [];
+
+  setTimeout(() => {
+    document.querySelectorAll("[data-row-header-click]").forEach((el) => {
+      const clickHandler = (): void => {
+        expandedRowGroups = expandedRowsOnClick();
+        if (!expandedRowGroups.includes(el.id)) {
+          expandedRowGroups.push(el.id);
+        } else {
+          expandedRowGroups = expandedRowGroups.filter((id: string) => id !== el.id);
+        }
+        newExpandedRowsCallback(expandedRowGroups);
+      };
+      handlerMap.set(el, clickHandler);
+      el.parentNode?.addEventListener("click", clickHandler);
+    });
+  });
+
+  return handlerMap;
+}
+
+/**
+ *
+ * @param handlerMap the map of rows and their click handlers that need to be looped and have their event listeners removed
+ * @returns an updated, empty (hopefully) map of the rows and click handlers. This can be double checked in the component as length is expeted to be 0.
+ */
+export function unmountRowHeaderClickEventListeners(handlerMap: Map<Element, () => void>): Map<Element, () => void> {
+  handlerMap.forEach((listener: () => void, el: Element) => {
+    el.parentNode?.removeEventListener("click", listener);
+    handlerMap.delete(el);
+  });
+
+  return handlerMap;
+}

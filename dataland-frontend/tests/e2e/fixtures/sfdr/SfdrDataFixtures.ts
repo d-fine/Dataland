@@ -1,6 +1,10 @@
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
-import { generateNumericOrEmptyDatapoint, generateYesNoOrEmptyDatapoint, generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
+import {
+  generateNumericOrEmptyDatapoint,
+  generateYesNoOrEmptyDatapoint,
+  generateReferencedReports,
+} from "@e2e/fixtures/common/DataPointFixtures";
 import { SfdrData } from "@clients/backend";
 import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";

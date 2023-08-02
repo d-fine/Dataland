@@ -134,7 +134,11 @@
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
+import {
+  ReportingPeriodOfDataSetWithId,
+  mountRowHeaderClickEventListeners,
+  unmountRowHeaderClickEventListeners,
+} from "@/utils/DataTableDisplay";
 import { BaseDataPointYesNo, YesNo } from "@clients/backend";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
@@ -159,7 +163,7 @@ export default defineComponent({
         [false, "No"],
       ]),
       YesNo,
-      listenersMap: new Map(),
+      rowClickHandlersMap: new Map() as Map<Element, () => void>,
     };
   },
   props: {
@@ -180,25 +184,13 @@ export default defineComponent({
     },
   },
   created() {
-    setTimeout(() => {
-      document.querySelectorAll("[data-row-header-click]").forEach((el) => {
-        const clickHandler = (): void => {
-          if (!this.expandedRowGroups.includes(el.id)) {
-            this.expandedRowGroups.push(el.id);
-          } else {
-            this.expandedRowGroups = this.expandedRowGroups.filter((id: string) => id !== el.id);
-          }
-        };
-        this.listenersMap.set(el, clickHandler);
-        el.parentNode?.addEventListener("click", clickHandler);
-      });
-    });
+    this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+      () => this.expandedRowGroups,
+      (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
+    );
   },
   unmounted() {
-    this.listenersMap.forEach((listener: () => void, el: HTMLElement) => {
-      el.parentNode?.removeEventListener("click", listener);
-      this.listenersMap.delete(el);
-    });
+    this.rowClickHandlersMap = unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
   },
   methods: {
     /**

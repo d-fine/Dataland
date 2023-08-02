@@ -71,7 +71,11 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
-import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
+import {
+  ReportingPeriodOfDataSetWithId,
+  mountRowHeaderClickEventListeners,
+  unmountRowHeaderClickEventListeners,
+} from "@/utils/DataTableDisplay";
 
 type SfdrKpiObject = { [index: string]: string | object; subAreaKey: string; kpiKey: string };
 
@@ -86,7 +90,7 @@ export default defineComponent({
       kpiDataObjectsToDisplay: [] as SfdrKpiObject[],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames: lksgModalColumnHeaders.listOfProductionSites,
-      listenersMap: new Map(),
+      rowClickHandlersMap: new Map() as Map<Element, () => void>,
     };
   },
   props: {
@@ -113,25 +117,13 @@ export default defineComponent({
     },
   },
   created() {
-    setTimeout(() => {
-      document.querySelectorAll("[data-row-header-click]").forEach((el) => {
-        const clickHandler = (): void => {
-          if (!this.expandedRowGroups.includes(el.id)) {
-            this.expandedRowGroups.push(el.id);
-          } else {
-            this.expandedRowGroups = this.expandedRowGroups.filter((id: string) => id !== el.id);
-          }
-        };
-        this.listenersMap.set(el, clickHandler);
-        el.parentNode?.addEventListener("click", clickHandler);
-      });
-    });
+    this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+      () => this.expandedRowGroups,
+      (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
+    );
   },
   unmounted() {
-    this.listenersMap.forEach((listener: () => void, el: HTMLElement) => {
-      el.parentNode?.removeEventListener("click", listener);
-      this.listenersMap.delete(el);
-    });
+    this.rowClickHandlersMap = unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
   },
   mounted() {
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;
