@@ -59,32 +59,20 @@ describeIf(
     function validateFormUploadedData(companyId: string): void {
       cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sfdr);
       cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(0).should("have.text", "General");
-      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(1).should("have.text", "Anti-corruption and anti-bribery");
+      //cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(0).find("td").should("have.text", "Data Date");
+
+      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(1)
+          .should("have.text", "Anti-corruption and anti-bribery");
       cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(2).should("have.text", "Biodiversity");
 
-      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(3).click();
-      //cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(3).find(".p-row-toggler").click();
-      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(3).find(".p-row-toggler").find(".headers-bg");
+      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(3).find(".p-row-toggler").click();
 
-      /**
-      /**
-       *
+      cy.contains("td.headers-bg", "Data Date").should("exist");
+      cy.contains("td.headers-bg", "Data Date").siblings("td").should("have.text", "2023-07-13");
 
-      cy.get(`[data-test="sfdrCompanyTable"]`).should("have.text", "Fiscal Year End");
-      cy.get(`[data-test="sfdrCompanyTable"]`).should("have.text", "Annual Report Date");
-
-
-      cy.get(".p-dialog th").eq(0).should("have.text", "Product Name");
-      cy.get(".p-dialog th").eq(1).should("have.text", "Production Steps");
-      cy.get(".p-dialog th").eq(2).should("have.text", "Related Corporate Supply Chain");
-      cy.get(".p-dialog tr").should("have.length", 3);
-      cy.get(".p-dialog tr").eq(1).find("td").eq(0).should("have.text", "Test Product 1");
-      cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").should("have.length", 2);
-      cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(0).should("have.text", "first");
-      cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(1).should("have.text", "second");
-      cy.get(".p-dialog tr").eq(1).find("td").eq(2).should("have.text", "Description of something");
-      cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
-       */
+      cy.contains("td.headers-bg", "Carbon Reduction Initiatives").should("exist");
+      cy.contains("td.headers-bg", "Carbon Reduction Initiatives")
+          .siblings("td").should("have.text", "Yes");
     }
   },
 );

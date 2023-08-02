@@ -13,7 +13,7 @@
     >
       <Column bodyClass="headers-bg" headerClass="horizontal-headers-size" field="kpiKey" header="KPIs">
         <template #body="slotProps">
-          <span class="table-left-label">{{
+          <span :data-test="slotProps.data.kpiKey" class="table-left-label">{{
             kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : slotProps.data.kpiKey
           }}</span>
           <em
