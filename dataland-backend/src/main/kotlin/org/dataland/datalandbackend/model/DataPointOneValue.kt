@@ -5,9 +5,9 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 
 /**
  * --- API model ---
- * Fields of a generic data point with unit and its source
+ * Fields of a generic data point and its source
  */
-data class DataPointWithUnit<T>(
+data class DataPointOneValue<T>(
     val value: T? = null,
 
     @field:JsonProperty(required = true)
@@ -16,6 +16,4 @@ data class DataPointWithUnit<T>(
     override val dataSource: CompanyReportReference? = null,
 
     override val comment: String? = null,
-
-    val unit: String?,
-) :DataPointBaseInformation(quality, dataSource, comment)
+): DataPointBaseInformation(quality, dataSource, comment)

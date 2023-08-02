@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
-import org.dataland.datalandbackend.model.DataPoint
+import org.dataland.datalandbackend.model.DataPointOneValue
 import org.dataland.datalandbackend.model.DataPointWithUnit
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -12,19 +12,19 @@ import java.math.BigDecimal
 data class SfdrEnvironmentalWaste(
     val hazardousWaste: DataPointWithUnit<BigDecimal>? = null,
 
-    val manufactureOfAgrochemicalPesticidesProducts: DataPoint<YesNo>? = null,
+    val manufactureOfAgrochemicalPesticidesProducts: DataPointOneValue<YesNo>? = null,
 
-    val landDegradationDesertificationSoilSealingExposure: DataPoint<YesNo>? = null,
+    val landDegradationDesertificationSoilSealingExposure: DataPointOneValue<YesNo>? = null,
 
-    val sustainableAgriculturePolicy: DataPoint<YesNo>? = null,
+    val sustainableAgriculturePolicy: DataPointOneValue<YesNo>? = null,
 
-    val sustainableOceansAndSeasPolicy: DataPoint<YesNo>? = null,
+    val sustainableOceansAndSeasPolicy: DataPointOneValue<YesNo>? = null,
 
     val wasteNonRecycled: DataPointWithUnit<BigDecimal>? = null,
 
-    val threatenedSpeciesExposure: DataPoint<YesNo>? = null,
+    val threatenedSpeciesExposure: DataPointOneValue<YesNo>? = null,
 
-    val biodiversityProtectionPolicy: DataPoint<YesNo>? = null,
+    val biodiversityProtectionPolicy: DataPointOneValue<YesNo>? = null,
 
-    val deforestationPolicy: DataPoint<YesNo>? = null,
+    val deforestationPolicy: DataPointOneValue<YesNo>? = null,
 )

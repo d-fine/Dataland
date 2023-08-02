@@ -11,12 +11,12 @@ data class DataPointAbsoluteAndPercentage<T> (
     val valueAsPercentage: T? = null,
 
     @field:JsonProperty(required = true)
-    val quality: QualityOptions,
+    override val quality: QualityOptions,
 
-    val dataSource: CompanyReportReference? = null,
+    override val dataSource: CompanyReportReference? = null,
 
-    val comment: String? = null,
+    override val comment: String? = null,
 
     val valueAsAbsolute: T? = null,
 
-)
+) :DataPointBaseInformation(quality, dataSource, comment)

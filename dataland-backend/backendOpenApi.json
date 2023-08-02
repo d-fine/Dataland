@@ -2845,45 +2845,45 @@
           }
         }
       },
+      "DataPointOneValueYesNo": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
       "DataPointWithUnitBigDecimal": {
         "required": [
           "quality"
         ],
         "type": "object",
         "properties": {
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          },
           "value": {
             "type": "number"
           },
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/CompanyReportReference"
-          },
-          "comment": {
-            "type": "string"
-          },
           "unit": {
-            "type": "string"
-          }
-        }
-      },
-      "DataPointYesNo": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/CompanyReportReference"
-          },
-          "comment": {
             "type": "string"
           }
         }
@@ -2949,13 +2949,13 @@
         "type": "object",
         "properties": {
           "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "protectedAreasExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "rareOrEndangeredEcosystemsExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           }
         }
       },
@@ -2972,7 +2972,7 @@
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "carbonReductionInitiatives": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           }
         }
       },
@@ -3063,7 +3063,7 @@
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "fossilFuelSectorExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           }
         }
       },
@@ -3074,28 +3074,28 @@
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "manufactureOfAgrochemicalPesticidesProducts": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "landDegradationDesertificationSoilSealingExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "sustainableAgriculturePolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "sustainableOceansAndSeasPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "wasteNonRecycled": {
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "threatenedSpeciesExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "biodiversityProtectionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "deforestationPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           }
         }
       },
@@ -3112,10 +3112,10 @@
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "waterManagementPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "waterStressAreaExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           }
         }
       },
@@ -3195,7 +3195,7 @@
         "type": "object",
         "properties": {
           "securitiesNotCertifiedAsGreen": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           }
         }
       },
@@ -3203,19 +3203,19 @@
         "type": "object",
         "properties": {
           "humanRightsPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "humanRightsDueDiligence": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "traffickingInHumanBeingsPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "reportedChildLabourIncidents": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "reportedForcedOrCompulsoryLabourIncidents": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "reportedIncidentsOfHumanRights": {
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
@@ -3226,49 +3226,49 @@
         "type": "object",
         "properties": {
           "humanRightsLegalProceedings": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "iloCoreLabourStandards": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "environmentalPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "corruptionLegalProceedings": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "transparencyDisclosurePolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "humanRightsDueDiligencePolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "childForcedDiscriminationPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "iso14001Certificate": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "briberyCorruptionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "fairBusinessMarketingAdvertisingPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "technologiesExpertiseTransferPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "fairCompetitionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "violationOfTaxRulesAndRegulation": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "unGlobalCompactPrinciplesCompliancePolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "oecdGuidelinesForMultinationalEnterprisesPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "averageGrossHourlyEarningsMaleEmployees": {
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
@@ -3283,10 +3283,10 @@
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "controversialWeaponsExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "workplaceAccidentPreventionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "rateOfAccidents": {
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
@@ -3295,13 +3295,13 @@
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "supplierCodeOfConduct": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "grievanceHandlingMechanism": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "whistleblowerProtectionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "reportedIncidentsOfDiscrimination": {
             "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
@@ -4975,9 +4975,6 @@
         ],
         "type": "object",
         "properties": {
-          "valueAsPercentage": {
-            "type": "number"
-          },
           "quality": {
             "$ref": "#/components/schemas/QualityOptions"
           },
@@ -4986,21 +4983,21 @@
           },
           "comment": {
             "type": "string"
+          },
+          "valueAsPercentage": {
+            "type": "number"
           },
           "valueAsAbsolute": {
             "type": "number"
           }
         }
       },
-      "DataPointBigDecimal": {
+      "DataPointOneValueBigDecimal": {
         "required": [
           "quality"
         ],
         "type": "object",
         "properties": {
-          "value": {
-            "type": "number"
-          },
           "quality": {
             "$ref": "#/components/schemas/QualityOptions"
           },
@@ -5009,6 +5006,9 @@
           },
           "comment": {
             "type": "string"
+          },
+          "value": {
+            "type": "number"
           }
         }
       },
@@ -5058,7 +5058,7 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "alignedData": {
             "$ref": "#/components/schemas/DataPointAbsoluteAndPercentageBigDecimal"
@@ -5091,16 +5091,16 @@
         "type": "object",
         "properties": {
           "tradingPortfolio": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "interbankLoans": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "tradingPortfolioAndInterbankLoans": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "greenAssetRatio": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         }
       },
@@ -5108,19 +5108,19 @@
         "type": "object",
         "properties": {
           "taxonomyEligibleActivity": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "taxonomyNonEligibleActivity": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "derivatives": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "banksAndIssuers": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "investmentNonNfrd": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         },
         "example": {
@@ -5280,7 +5280,7 @@
         "type": "object",
         "properties": {
           "taxonomyEligibleNonLifeInsuranceActivities": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         }
       },
@@ -5288,7 +5288,7 @@
         "type": "object",
         "properties": {
           "greenAssetRatio": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         }
       },
