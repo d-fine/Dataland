@@ -930,8 +930,8 @@ export const lksgDataModel = [ {
       showIf : (): boolean => true,
       certificateRequiredIfYes : false
     }, {
-      name : "employmentUnderLocalMinimumAgePreventionEmploymentContracts\n\n",
-      label : "Employment Under Local Minimum Age Prevention -  Employment Contracts\n\n",
+      name : "employmentUnderLocalMinimumAgePreventionEmploymentContracts",
+      label : "Employment Under Local Minimum Age Prevention -  Employment Contracts",
       description : "Is a formal recruitment process including the conclusion of employment contracts one of these measures?",
       unit : "",
       component : "YesNoFormField",
