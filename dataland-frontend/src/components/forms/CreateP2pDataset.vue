@@ -23,7 +23,7 @@
             <FormKit type="group" name="data" label="data">
               <FormKit
                 type="group"
-                v-for="category in p2pDataModel"
+                v-for="category in visibleCategories"
                 :key="category"
                 :label="category.label"
                 :name="category.name"
@@ -72,7 +72,7 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in p2pDataModel" :key="category">
+            <li v-for="category in visibleCategories" :key="category">
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
                   <a
@@ -126,7 +126,7 @@ import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import { Subcategory } from "@/utils/GenericFrameworkTypes";
+import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 
 export default defineComponent({
@@ -197,13 +197,20 @@ export default defineComponent({
         // IGNORED
       },
     },
+    visibleCategories(): Category[] {
+      const a = this.p2pDataModel.filter(
+        (category) => category.showIf(this.companyAssociatedP2pData.data) || category.name === "general"
+      );
+      console.log(a);
+      return a;
+    },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       const map = new Map<Subcategory, boolean>();
       for (const category of this.p2pDataModel) {
         for (const subcategory of category.subcategories) {
           map.set(
             subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedP2pData.data)),
+            subcategory.fields.some((field) => field.showIf(this.companyAssociatedP2pData.data))
           );
         }
       }
@@ -233,7 +240,7 @@ export default defineComponent({
     async loadP2pData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const p2pDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       ).getP2pDataControllerApi();
 
       const dataResponse = await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId);
@@ -242,7 +249,9 @@ export default defineComponent({
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
       }
-      this.companyAssociatedP2pData = objectDropNull(p2pDataset as ObjectType) as CompanyAssociatedDataPathwaysToParisData;
+      this.companyAssociatedP2pData = objectDropNull(
+        p2pDataset as ObjectType
+      ) as CompanyAssociatedDataPathwaysToParisData;
       this.waitingForData = false;
     },
     /**
@@ -255,7 +264,7 @@ export default defineComponent({
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
         const p2pDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getP2pDataControllerApi();
         await p2pDataControllerApi.postCompanyAssociatedP2pData(this.companyAssociatedP2pData);
         this.$emit("datasetCreated");
@@ -289,13 +298,13 @@ export default defineComponent({
       }
     },
   },
- /* provide() {
+  /* provide() {
     return {
       procurementCategories: computed(() => {
         return this.companyAssociatedP2pData.data?.general?.productionSpecificOwnOperations?.procurementCategories;
       }),
     };
   },*/
-    // TODO at the very end: Check for duplicate code!!! There is a lot!
+  // TODO at the very end: Check for duplicate code!!! There is a lot!
 });
 </script>
