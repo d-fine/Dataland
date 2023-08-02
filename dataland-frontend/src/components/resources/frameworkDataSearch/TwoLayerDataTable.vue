@@ -163,7 +163,7 @@ export default defineComponent({
         [false, "No"],
       ]),
       YesNo,
-      rowClickHandlersMap: new Map() as Map<Element, () => void>,
+      rowClickHandlersMap: new Map() as Map<Element, EventListener>,
     };
   },
   props: {
@@ -184,13 +184,14 @@ export default defineComponent({
     },
   },
   created() {
-    this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+    mountRowHeaderClickEventListeners(
       () => this.expandedRowGroups,
       (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
     );
   },
   unmounted() {
-    this.rowClickHandlersMap = unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
+    unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
+    this.rowClickHandlersMap = new Map();
   },
   methods: {
     /**

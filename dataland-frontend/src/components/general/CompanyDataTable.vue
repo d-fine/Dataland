@@ -90,7 +90,7 @@ export default defineComponent({
       kpiDataObjectsToDisplay: [] as SfdrKpiObject[],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames: lksgModalColumnHeaders.listOfProductionSites,
-      rowClickHandlersMap: new Map() as Map<Element, () => void>,
+      rowClickHandlersMap: new Map() as Map<Element, EventListener>,
     };
   },
   props: {
@@ -117,13 +117,14 @@ export default defineComponent({
     },
   },
   created() {
-    this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+    mountRowHeaderClickEventListeners(
       () => this.expandedRowGroups,
       (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
     );
   },
   unmounted() {
-    this.rowClickHandlersMap = unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
+    unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
+    this.rowClickHandlersMap = new Map();
   },
   mounted() {
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;
