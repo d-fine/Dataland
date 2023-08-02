@@ -73,7 +73,7 @@ describeIf(
                 .then((token: string) => {
                     uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName))
                         .then((storedCompany) => {
-                    uploadOneP2pDatasetViaApi(token, storedCompany.companyId, "2021", testP2pCompany.t)
+                    return uploadOneP2pDatasetViaApi(token, storedCompany.companyId, "2021", testP2pCompany.t)
                         .then((dataMetaInformation) => {
                         cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
                         cy.visitAndCheckAppMount(
