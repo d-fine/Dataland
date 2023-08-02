@@ -18,4 +18,4 @@ data class DataPointWithUnit<T>(
     override val comment: String? = null,
 
     val unit: String?,
-) :DataPointBaseInformation(quality, dataSource, comment)
+) : DataPointBaseInformation(quality, dataSource, comment)

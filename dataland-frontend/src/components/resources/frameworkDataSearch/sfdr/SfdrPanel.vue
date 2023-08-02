@@ -5,7 +5,7 @@
   </div>
   <div v-if="kpiDataObjects.length && !waitingForData">
     <CompanyDataTable
-        data-test="sfdrCompanyTable"
+      data-test="sfdrCompanyTable"
       :kpiDataObjects="kpiDataObjects"
       :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
       :kpiNameMappings="sfdrKpisNameMappings"

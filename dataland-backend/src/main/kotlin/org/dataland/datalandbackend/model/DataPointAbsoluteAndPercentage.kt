@@ -19,4 +19,4 @@ data class DataPointAbsoluteAndPercentage<T> (
 
     val valueAsAbsolute: T? = null,
 
-) :DataPointBaseInformation(quality, dataSource, comment)
+) : DataPointBaseInformation(quality, dataSource, comment)
