@@ -31,7 +31,7 @@
                 <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
-                      <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
+                      <h4 :id="`${category.name}-${subcategory.name}`" class="anchor title">{{ subcategory.label }}</h4>
                       <div :class="`p-badge badge-${category.color}`">
                         <span>{{ category.label.toUpperCase() }}</span>
                       </div>
@@ -77,8 +77,8 @@
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
-                    @click="smoothScroll(`#${subcategory.name}`)"
-                    >{{ subcategory.label }}</a
+                    @click="smoothScroll(`#${category.name}-${subcategory.name}`)"
+                    >{{ category.label + ": " + subcategory.label }}</a
                   >
                 </li>
               </ul>
