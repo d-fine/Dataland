@@ -3,15 +3,26 @@
     <FormKit type="group" :name="name">
       <div class="mb-3">
         <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
-        <FormKit
-          type="text"
-          name="value"
-          v-model="currentValue"
-          :validation-label="validationLabel ?? label"
-          :validation="`number|${validation}`"
-          :placeholder="placeholder"
-          :inner-class="innerClass"
-        />
+        <div class="next-to-each-other">
+          <FormKit
+            type="text"
+            name="value"
+            v-model="currentValue"
+            :validation-label="validationLabel ?? label"
+            :validation="`number|${validation}`"
+            placeholder="Value"
+          />
+          <span v-if="unit" class="form-field-label pb-3">in {{ unit }}</span>
+          <FormKit
+            v-if="options"
+            type="select"
+            name="unit"
+            v-model="currentUnit"
+            placeholder="Unit"
+            :options="options"
+            inner-class="medium"
+          />
+        </div>
       </div>
       <!-- //TODO make the label and description modular instead of being hardcoded -->
       <div>
@@ -113,6 +124,9 @@ export default defineComponent({
     displayreportsName(): string[] {
       return this.reportsName ?? this.injectReportsName;
     },
+    // isUnit(): boolean {
+    //   return
+    // }
   },
   data() {
     return {
@@ -121,6 +135,7 @@ export default defineComponent({
         value: qualityOption,
       })),
       currentValue: "",
+      currentUnit: "",
       currentReportValue: "",
       currentPageValue: "",
       currentQualityValue: "",
@@ -129,9 +144,6 @@ export default defineComponent({
   emits: ["documentUpdated"],
   props: {
     ...DataPointFormFieldProps,
-    reportsName: {
-      type: Array<string>,
-    },
   },
   methods: {
     selectNothingIfNotExistsFormKitPlugin,

@@ -15,7 +15,7 @@
       <div
         v-for="reportToUpload of reportsToUpload"
         :key="reportToUpload.file.name"
-        :class="isEuTaxonomy ? 'col-9 formFields' : 'bordered-box p-3 mb-3'"
+        :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
         data-test="report-to-upload-form"
       >
         <div :data-test="reportToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
