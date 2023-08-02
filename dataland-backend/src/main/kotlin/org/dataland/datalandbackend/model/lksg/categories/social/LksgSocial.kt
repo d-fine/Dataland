@@ -1,46 +1,35 @@
 package org.dataland.datalandbackend.model.lksg.categories.social
 
-import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
-    .LksgChildLabor
-import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
-    .LksgContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
-import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
-    .LksgDisregardForFreedomOfAssociation
-import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
-    .LksgDisregardForOccupationalHealthSafety
-import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
-    .LksgForcedLaborSlavery
-import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
-    .LksgUnequalTreatmentOfEmployment
-import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
-    .LksgUnlawfulEvictionDeprivationOfLandForestAndWater
-import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
-    .LksgUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights
-import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
-    .LksgWithholdingAdequateWages
+import org.dataland.datalandbackend.model.lksg.categories.social.subcategories.LksgSocialChildLabor
+import org.dataland.datalandbackend.model.lksg.categories.social.subcategories.LksgSocialForcedLaborSlavery
+import org.dataland.datalandbackend.model.lksg.categories.social.subcategories.LksgSocialWithholdingAdequateWages
+import org.dataland.datalandbackend.model.lksg.categories.social.subcategories.LksgSocialDisregardForOccupationalHealthSafety
+import org.dataland.datalandbackend.model.lksg.categories.social.subcategories.LksgSocialDisregardForFreedomOfAssociation
+import org.dataland.datalandbackend.model.lksg.categories.social.subcategories.LksgSocialUnequalTreatmentOfEmployment
+import org.dataland.datalandbackend.model.lksg.categories.social.subcategories.LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+import org.dataland.datalandbackend.model.lksg.categories.social.subcategories.LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater
+import org.dataland.datalandbackend.model.lksg.categories.social.subcategories.LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights
 
 /**
  * --- API model ---
- * Impact topics of the LKSG questionnaire's impact area "Social"
- */
+ * Fields of the category "Social" of the lksg framework.
+*/
 data class LksgSocial(
-    val childLabor: LksgChildLabor?,
+      val childLabor: LksgSocialChildLabor? = null,
 
-    val forcedLaborSlavery: LksgForcedLaborSlavery?,
+      val forcedLaborSlavery: LksgSocialForcedLaborSlavery? = null,
 
-    val withholdingAdequateWages: LksgWithholdingAdequateWages?,
+      val withholdingAdequateWages: LksgSocialWithholdingAdequateWages? = null,
 
-    val disregardForOccupationalHealthSafety: LksgDisregardForOccupationalHealthSafety?,
+      val disregardForOccupationalHealthSafety: LksgSocialDisregardForOccupationalHealthSafety? = null,
 
-    val disregardForFreedomOfAssociation: LksgDisregardForFreedomOfAssociation?,
+      val disregardForFreedomOfAssociation: LksgSocialDisregardForFreedomOfAssociation? = null,
 
-    val unequalTreatmentOfEmployment: LksgUnequalTreatmentOfEmployment?,
+      val unequalTreatmentOfEmployment: LksgSocialUnequalTreatmentOfEmployment? = null,
 
-    val contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption:
-    LksgContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?,
+      val contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption: LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption? = null,
 
-    val unlawfulEvictionDeprivationOfLandForestAndWater: LksgUnlawfulEvictionDeprivationOfLandForestAndWater?,
+      val unlawfulEvictionDeprivationOfLandForestAndWater: LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater? = null,
 
-    val useOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
-    LksgUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights?,
+      val useOfPrivatePublicSecurityForcesWithDisregardForHumanRights: LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights? = null,
 )
