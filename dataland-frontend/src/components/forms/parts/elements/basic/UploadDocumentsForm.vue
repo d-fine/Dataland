@@ -113,7 +113,7 @@ export default defineComponent({
               reference: await calculateSha256HashFromFile(file),
               fileNameWithoutSuffix: removeFileTypeExtension(file.name),
             };
-          })
+          }),
         );
         void documentsToUpload.then((documentsToUpload) => {
           this.documentsToUpload = documentsToUpload;

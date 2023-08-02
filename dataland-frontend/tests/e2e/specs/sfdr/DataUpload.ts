@@ -61,8 +61,10 @@ describeIf(
       cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(0).should("have.text", "General");
       //cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(0).find("td").should("have.text", "Data Date");
 
-      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(1)
-          .should("have.text", "Anti-corruption and anti-bribery");
+      cy.get(".p-datatable-tbody")
+        .find(".p-rowgroup-header")
+        .eq(1)
+        .should("have.text", "Anti-corruption and anti-bribery");
       cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(2).should("have.text", "Biodiversity");
 
       cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(3).find(".p-row-toggler").click();
@@ -71,8 +73,7 @@ describeIf(
       cy.contains("td.headers-bg", "Data Date").siblings("td").should("have.text", "2023-07-13");
 
       cy.contains("td.headers-bg", "Carbon Reduction Initiatives").should("exist");
-      cy.contains("td.headers-bg", "Carbon Reduction Initiatives")
-          .siblings("td").should("have.text", "Yes");
+      cy.contains("td.headers-bg", "Carbon Reduction Initiatives").siblings("td").should("have.text", "Yes");
     }
   },
 );
