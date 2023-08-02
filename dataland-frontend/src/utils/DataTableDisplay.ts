@@ -53,13 +53,30 @@ export type ReportingPeriodOfDataSetWithId = {
 export function mountRowHeaderClickEventListeners(
   expandedRowsOnClick: () => string[],
   newExpandedRowsCallback: (newExpandedRows: string[]) => void,
-): Map<Element, () => void> {
-  const handlerMap: Map<Element, () => void> = new Map();
+): Map<Element, EventListener> {
+  const handlerMap: Map<Element | HTMLButtonElement, EventListener> = new Map();
   let expandedRowGroups: string[] = [];
 
-  setTimeout(() => {
-    document.querySelectorAll("[data-row-header-click]").forEach((el) => {
-      const clickHandler = (): void => {
+  const t = setTimeout(() => {
+    const buttonAttributeName = "data-parent-id";
+    const rows = Array.from(document.querySelectorAll("[data-row-header-click]")).filter((el) => el);
+    const rowButtons = rows
+      .map((el: Element) => {
+        const button = el.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');
+        if (button) {
+          button?.setAttribute(buttonAttributeName, el.id);
+          return button;
+        }
+        return void 0;
+      })
+      .filter((button): button is HTMLButtonElement => !!button);
+
+    [...rows, ...rowButtons].forEach((el: Element | HTMLButtonElement) => {
+      let clickHandler: EventListener | null = (evt): void => {
+        if (!el.id) {
+          evt.stopImmediatePropagation();
+        }
+
         expandedRowGroups = expandedRowsOnClick();
         if (!expandedRowGroups.includes(el.id)) {
           expandedRowGroups.push(el.id);
@@ -68,24 +85,41 @@ export function mountRowHeaderClickEventListeners(
         }
         newExpandedRowsCallback(expandedRowGroups);
       };
-      handlerMap.set(el, clickHandler);
-      el.parentNode?.addEventListener("click", clickHandler);
+
+      let target;
+      if (el?.getAttribute(buttonAttributeName)) {
+        target = el;
+      } else {
+        target = el.parentNode;
+      }
+
+      if (target) {
+        handlerMap.set(target as Element, clickHandler);
+        target?.addEventListener("click", clickHandler);
+      }
+
+      clickHandler = null;
     });
+
+    clearTimeout(t);
   });
 
   return handlerMap;
 }
 
 /**
- * 
+ *
  * @param handlerMap the map of rows and their click handlers that need to be looped and have their event listeners removed
- * @returns an updated, empty (hopefully) map of the rows and click handlers. This can be double checked in the component as length is expeted to be 0.
  */
-export function unmountRowHeaderClickEventListeners(handlerMap: Map<Element, () => void>): Map<Element, () => void> {
-  handlerMap.forEach((listener: () => void, el: Element) => {
-    el.parentNode?.removeEventListener("click", listener);
+export function unmountRowHeaderClickEventListeners(handlerMap: Map<Element, EventListener>): void {
+  const buttonAttributeName = "data-parent-id";
+  handlerMap.forEach((clickHandler: EventListener | null, el: Element) => {
+    if (el?.getAttribute(buttonAttributeName)) {
+      el.removeEventListener("click", clickHandler as EventListener);
+    } else {
+      el.parentNode?.removeEventListener("click", clickHandler);
+    }
+    clickHandler = null;
     handlerMap.delete(el);
   });
-
-  return handlerMap;
 }
