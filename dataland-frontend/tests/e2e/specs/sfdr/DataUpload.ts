@@ -5,6 +5,7 @@ import { DataTypeEnum, SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadSfdrDataViaForm } from "@e2e/utils/SfdrUpload";
+import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new SFDR dataset",
@@ -47,7 +48,7 @@ describeIf(
           );
           cy.get("h1").should("contain", testCompanyName);
           uploadSfdrDataViaForm(storedCompany.companyId);
-          //validateFormUploadedData(storedCompany.companyId);
+          validateFormUploadedData(storedCompany.companyId);
         });
     });
 
@@ -57,9 +58,22 @@ describeIf(
      */
     function validateFormUploadedData(companyId: string): void {
       cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sfdr);
-      cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
-      cy.contains('Show "Most Important Products"').click();
-      cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Most Important Products");
+      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(0).should("have.text", "General");
+      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(1).should("have.text", "Anti-corruption and anti-bribery");
+      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(2).should("have.text", "Biodiversity");
+
+      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(3).click();
+      //cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(3).find(".p-row-toggler").click();
+      cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(3).find(".p-row-toggler").find(".headers-bg");
+
+      /**
+      /**
+       *
+
+      cy.get(`[data-test="sfdrCompanyTable"]`).should("have.text", "Fiscal Year End");
+      cy.get(`[data-test="sfdrCompanyTable"]`).should("have.text", "Annual Report Date");
+
+
       cy.get(".p-dialog th").eq(0).should("have.text", "Product Name");
       cy.get(".p-dialog th").eq(1).should("have.text", "Production Steps");
       cy.get(".p-dialog th").eq(2).should("have.text", "Related Corporate Supply Chain");
@@ -70,6 +84,7 @@ describeIf(
       cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(1).should("have.text", "second");
       cy.get(".p-dialog tr").eq(1).find("td").eq(2).should("have.text", "Description of something");
       cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
+       */
     }
   },
 );
