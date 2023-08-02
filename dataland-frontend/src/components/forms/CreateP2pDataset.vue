@@ -52,7 +52,6 @@
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
-                          @documentUpdated="updateDocumentList"
                           :ref="field.name"
                         />
                       </FormKit>
@@ -180,7 +179,6 @@ export default defineComponent({
       postP2pDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documents: new Map() as Map<string, DocumentToUpload>,
     };
   },
   computed: {
@@ -260,9 +258,6 @@ export default defineComponent({
     async postP2pData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.documents.size > 0) {
-          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
-        }
         const p2pDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getP2pDataControllerApi();
@@ -284,27 +279,8 @@ export default defineComponent({
         this.postP2pDataProcessed = true;
       }
     },
-
-    /**
-     * updates the list of certificates that were uploaded in the corresponding formfields on change
-     * @param fieldName the name of the formfield as a key
-     * @param document the certificate as combined object of reference id and file content
-     */
-    updateDocumentList(fieldName: string, document: DocumentToUpload) {
-      if (document) {
-        this.documents.set(fieldName, document);
-      } else {
-        this.documents.delete(fieldName);
-      }
-    },
   },
-  /* provide() {
-    return {
-      procurementCategories: computed(() => {
-        return this.companyAssociatedP2pData.data?.general?.productionSpecificOwnOperations?.procurementCategories;
-      }),
-    };
-  },*/
+
   // TODO at the very end: Check for duplicate code!!! There is a lot!
 });
 </script>
