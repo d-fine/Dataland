@@ -5,7 +5,6 @@ import { DataTypeEnum, SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadSfdrDataViaForm } from "@e2e/utils/SfdrUpload";
-import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new SFDR dataset",
@@ -16,18 +15,6 @@ describeIf(
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
     });
-
-    let testData: FixtureData<SfdrData>;
-
-    before(function () {
-      cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
-        testData = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
-      });
-    });
-
-    const keycloakToken = "";
-    const frontendDocumentHash = "";
 
     it("Create a company via api and upload an Sfdr dataset via the Sfdr upload form", () => {
       const uniqueCompanyMarker = Date.now().toString();
