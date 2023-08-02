@@ -104,7 +104,6 @@ export default defineComponent({
      * @param event.files files
      */
     handleFilesSelected(event: FileUploadSelectEvent) {
-      console.log("wyvhodzi 0", event.files);
       const selectedFilesByUser = event.files as File[];
       if (isThereActuallyANewFileSelected(selectedFilesByUser, this.documentsToUpload)) {
         const documentsToUpload = Promise.all(
@@ -114,7 +113,7 @@ export default defineComponent({
               reference: await calculateSha256HashFromFile(file),
               fileNameWithoutSuffix: removeFileTypeExtension(file.name),
             };
-          }),
+          })
         );
         void documentsToUpload.then((documentsToUpload) => {
           this.documentsToUpload = documentsToUpload;
@@ -126,7 +125,6 @@ export default defineComponent({
      * Emits event that selected documents changed
      */
     emitDocumentsChangedEvent() {
-      console.log("wychodzi 1", this.documentsToUpload);
       this.$emit("documentsChanged", this.documentsToUpload);
     },
 
