@@ -100,10 +100,14 @@ export default defineComponent({
     },
   },
   computed: {
+    namesOfFilesToUpload() {
+      return this.reportsToUpload.map((reportToUpload) => reportToUpload.fileNameWithoutSuffix);
+    },
+    namesOfStoredReports() {
+      return this.storedReports.map((storedReport) => storedReport.reportName);
+    },
     allReferenceableReportNames(): string[] {
-      const namesOfFilesToUpload = this.reportsToUpload.map((reportToUpload) => reportToUpload.fileNameWithoutSuffix);
-      const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName);
-      return namesOfFilesToUpload.concat(namesOfStoredReports);
+      return this.namesOfFilesToUpload.concat(this.namesOfStoredReports);
     },
   },
   mounted() {
@@ -130,14 +134,18 @@ export default defineComponent({
     updateSelectedReports(reports: ReportToUpload[]) {
       this.reportsToUpload = reports;
       if (this.duplicatesAmongReferenceableReportNames()) {
+        const foundExistingRecords = [];
         for (let i = 0; i < this.reportsToUpload.length; i++) {
           const currentName = this.reportsToUpload[i].fileNameWithoutSuffix;
-          for (let j = i + 1; j < this.reportsToUpload.length; j++) {
-            if (this.reportsToUpload[j].fileNameWithoutSuffix === currentName) {
-              this.openModalToDisplayDuplicateNameError(this.reportsToUpload[j].fileNameWithoutSuffix);
-              (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(j);
-              j--; // We reduce j to recheck the item that will take the place of the deleted item
-            }
+          if (
+            foundExistingRecords.indexOf(currentName) === -1 &&
+            this.namesOfStoredReports.indexOf(currentName) === -1
+          ) {
+            foundExistingRecords.push(currentName);
+          } else {
+            this.openModalToDisplayDuplicateNameError(this.reportsToUpload[i].fileNameWithoutSuffix);
+            (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(i);
+            i--; // We reduce i to recheck the item that will take the place of the deleted item
           }
         }
       } else {

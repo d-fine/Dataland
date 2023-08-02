@@ -127,7 +127,7 @@ import PercentageFormField from "@/components/forms/parts/fields/PercentageFormF
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { DocumentToUpload, ReportToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
@@ -211,7 +211,7 @@ export default defineComponent({
         for (const subcategory of category.subcategories) {
           map.set(
             subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedSfdrData.data)),
+            subcategory.fields.some((field) => field.showIf(this.companyAssociatedSfdrData.data))
           );
         }
       }
@@ -241,25 +241,16 @@ export default defineComponent({
     async loadSfdrData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const sfdrDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       ).getSfdrDataControllerApi();
 
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
       const sfdrDataset = dataResponse.data;
-      //const dataDateFromDataset = sfdrDataset.data?. .general?.masterData?.dataDate;
-      /*if (dataDateFromDataset) {
-        this.dataDate = new Date(dataDateFromDataset);
-      }*/
-      const referencedReports = sfdrDataset.data?.general?.general?.referencedReports;
       delete sfdrDataset.data.referencedReports;
       const clonedSfdrDataset = { ...sfdrDataset } as ObjectType;
       this.referencedReportsForPrefill = clonedSfdrDataset.data?.general?.general?.referencedReports;
-      // clonedSfdrDataset.referencedReports = referencedReports as {
-      //   [key: string]: CompanyReport;
-      // };
 
       this.companyAssociatedSfdrData = objectDropNull(clonedSfdrDataset) as CompanyAssociatedDataSfdrData;
-      console.log("this.companyAssociatedSfdrData", this.companyAssociatedSfdrData);
       this.waitingForData = false;
     },
     /**
@@ -273,7 +264,7 @@ export default defineComponent({
         }
 
         const clonedCompanyAssociatedSfdrData = JSON.parse(
-          JSON.stringify(this.companyAssociatedSfdrData),
+          JSON.stringify(this.companyAssociatedSfdrData)
         ) as CompanyAssociatedDataSfdrData;
         if (clonedCompanyAssociatedSfdrData.data?.social?.general) {
           const general = clonedCompanyAssociatedSfdrData.data?.social?.general as ObjectType;
@@ -287,7 +278,7 @@ export default defineComponent({
         console.log("clonedCompanyAssociatedSfdrData", clonedCompanyAssociatedSfdrData);
 
         const sfdrDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
         await sfdrDataControllerApi.postCompanyAssociatedSfdrData(clonedCompanyAssociatedSfdrData);
         this.$emit("datasetCreated");
@@ -310,9 +301,8 @@ export default defineComponent({
     //TODO refactor the name of this file to CreateSfdrDataset
     /**
      * updates the list of documents that were uploaded
-     * @param action object containing type of action and data
-     * @param reportsNames
-     * @param reportsToUpload
+     * @param reportsNames repots names
+     * @param reportsToUpload reports to upload
      */
     updateDocumentsList(reportsNames: string[], reportsToUpload: DocumentToUpload[]) {
       this.namesOfAllCompanyReportsForTheDataset = reportsNames;
