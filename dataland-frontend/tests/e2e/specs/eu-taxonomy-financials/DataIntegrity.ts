@@ -3,7 +3,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
-  DataPointBigDecimal,
+  DataPointOneValueBigDecimal,
   DataTypeEnum,
   EligibilityKpis,
   EuTaxonomyDataForFinancials,
@@ -66,7 +66,7 @@ describeIf(
      * @param value the value of the datapoint to format as a percentage
      * @returns the formatted string
      */
-    function formatPercentNumber(value?: DataPointBigDecimal): string {
+    function formatPercentNumber(value?: DataPointOneValueBigDecimal): string {
       if (value === undefined || value === null || value.value === undefined || value.value === null)
         return "No data has been reported";
       return (Math.round(value.value * 100 * 100) / 100).toString();
