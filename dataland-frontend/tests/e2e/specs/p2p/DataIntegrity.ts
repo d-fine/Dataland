@@ -1,0 +1,99 @@
+import { describeIf } from "@e2e/support/TestUtility";
+import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import {
+    DataMetaInformation,
+    DataTypeEnum,
+    PathwaysToParisData,
+    StoredCompany,
+} from "@clients/backend";
+import { uploadOneP2pDatasetViaApi } from "@e2e/utils/P2pUpload";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
+
+
+let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
+before(function () {
+    cy.fixture("CompanyInformationWithP2pData").then(function (jsonContent) {
+        companiesWithP2pData = jsonContent as Array<FixtureData<PathwaysToParisData>>;
+    });
+});
+
+const testCompanyP2pData = companiesWithP2pData[0].t;
+
+describeIf(
+    "As a user, I expect to be able to upload P2P data via X, and that the uploaded data is displayed " +
+    "correctly in the frontend",
+    {
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    },
+    function (): void {
+        beforeEach(() => {
+            cy.ensureLoggedIn(admin_name, admin_pw);
+        });
+
+        /**
+         * Toggles the data-table row group with the given key
+         * @param groupKey the key of the row group to expand
+         */
+        function toggleRowGroup(groupKey: string): void {
+            cy.get(`span[data-test=${groupKey}]`).siblings("button").last().click();
+        }
+
+        /**
+         * validates that the data uploaded via the function `uploadOneP2pDatasetViaApi` is displayed correctly for a company
+         * @param companyId the company associated to the data uploaded via form
+         */
+        function validateFormUploadedData(companyId: string): void {
+            cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.P2p);
+            /**
+            cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
+            cy.contains('Show "Most Important Products"').click();
+            cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Most Important Products");
+            cy.get(".p-dialog th").eq(0).should("have.text", "Product Name");
+            cy.get(".p-dialog th").eq(1).should("have.text", "Production Steps");
+            cy.get(".p-dialog th").eq(2).should("have.text", "Related Corporate Supply Chain");
+            cy.get(".p-dialog tr").should("have.length", 3);
+            cy.get(".p-dialog tr").eq(1).find("td").eq(0).should("have.text", "Test Product 1");
+            cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").should("have.length", 2);
+            cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(0).should("have.text", "first");
+            cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(1).should("have.text", "second");
+            cy.get(".p-dialog tr").eq(1).find("td").eq(2).should("have.text", "Description of something");
+            cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
+             */
+        }
+
+
+        it("Create a company via api and upload a P2P dataset via the api", () => {
+            const uniqueCompanyMarker = Date.now().toString();
+            const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
+            getKeycloakToken(admin_name, admin_pw)
+                .then((token: string) => {
+                    uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName))
+                        .then((storedCompany) => {
+                    uploadOneP2pDatasetViaApi(token, storedCompany.companyId, "2021", testCompanyP2pData)
+                        .then((dataMetaInformation) => {
+                        cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+                        cy.visitAndCheckAppMount(
+                            "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.P2p + "/upload" + "?templateDataId=" + dataMetaInformation.dataId,
+                        );
+                        cy.wait("@getCompanyInformation", {timeout: Cypress.env("medium_timeout_in_ms") as number});
+                        cy.url().should(
+                            "eq",
+                            getBaseUrl() + "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.P2p + "/upload" + "?templateDataId=" + dataMetaInformation.dataId,
+                        );
+                        cy.get("h1").should("contain", testCompanyName);
+                        //validateFormUploadedData(storedCompany.companyId);
+                        submitButton.clickButton();
+                        cy.url().should(
+                            "eq",
+                            getBaseUrl() + "/datasets",
+                            );
+                    });
+                });
+            });
+        });
+
+    },
+);
