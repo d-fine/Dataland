@@ -77,7 +77,7 @@ export function mountRowHeaderClickEventListeners(
 }
 
 /**
- * 
+ *
  * @param handlerMap the map of rows and their click handlers that need to be looped and have their event listeners removed
  * @returns an updated, empty (hopefully) map of the rows and click handlers. This can be double checked in the component as length is expeted to be 0.
  */
