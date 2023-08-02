@@ -1,7 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { DataTypeEnum, SfdrData } from "@clients/backend";
+import { DataTypeEnum } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadSfdrDataViaForm } from "@e2e/utils/SfdrUpload";
