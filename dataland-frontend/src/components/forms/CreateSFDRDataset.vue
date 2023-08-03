@@ -248,7 +248,7 @@ export default defineComponent({
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports;
-      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData.data) as CompanyAssociatedDataSfdrData;
+      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData) as CompanyAssociatedDataSfdrData;
 
       this.waitingForData = false;
     },
