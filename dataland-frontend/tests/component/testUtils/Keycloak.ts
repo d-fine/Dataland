@@ -1,4 +1,4 @@
-import Keycloak, { KeycloakPromise } from "keycloak-js";
+import Keycloak from "keycloak-js";
 
 export interface KeycloakMockConfiguration {
   userId?: string;
@@ -27,8 +27,8 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
       ESLint, however, does not recognize the usage of this function ==> ESlint-Disable
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    updateToken(minValidity: number): KeycloakPromise<boolean, boolean> {
-      return Promise.resolve(true) as KeycloakPromise<boolean, boolean>;
+    updateToken(minValidity: number): Promise<boolean> {
+      return Promise.resolve(true) as Promise<boolean>;
     },
     hasRealmRole(role: string): boolean {
       return this.realmAccess.roles.includes(role);
