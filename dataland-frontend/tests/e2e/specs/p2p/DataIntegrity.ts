@@ -33,21 +33,16 @@ describeIf(
      * @param dataId
      */
     function validateFormUploadedData(companyId: string, dataId: string): void {
-      const firstSector = testP2pCompany.t.general.general.sectors[0];
-      const secondSector = testP2pCompany.t.general.general.sectors[1];
       cy.visit(`/companies/${companyId}/frameworks/${DataTypeEnum.P2p}/${dataId}`);
       cy.get('td > [data-test="general"]').click();
       cy.contains('Show "Sector"').click();
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sector");
       cy.get(".p-dialog th").eq(0).should("have.text", "Sector");
-      cy.get(".p-dialog tr")
-        .eq(1)
-        .find("td")
-        .eq(0)
-        .find("li")
-        .should("have.length", testP2pCompany.t.general.general.sectors.length);
-      cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").eq(0).should("have.text", firstSector);
-      cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").eq(1).should("have.text", secondSector);
+      testP2pCompany.t.general.general.sectors.forEach((sector, index) => {
+        cy.get(".p-dialog tr")
+          .eq(index + 1)
+          .should("have.text", sector);
+      });
       cy.get('td > [data-test="emissionsPlanning"]').click();
       //cy.contains('6503');
     }
