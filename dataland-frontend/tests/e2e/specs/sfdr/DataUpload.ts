@@ -1,10 +1,20 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
-import { DataTypeEnum } from "@clients/backend";
+import { DataTypeEnum, SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadSfdrDataViaForm } from "@e2e/utils/SfdrUpload";
+import { uploadCompanyAndSfdrDataViaApi, uploadOneSfdrDataset, uploadSfdrDataViaForm } from "@e2e/utils/SfdrUpload";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
+let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
+let testSfdrCompany: FixtureData<SfdrData>;
+before(function () {
+  cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
+    companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
+    testSfdrCompany = getPreparedFixture("CompanyInformationWithSfdrData", companiesWithSfdrData);
+  });
+});
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new SFDR dataset",
   {
@@ -60,5 +70,49 @@ describeIf(
       cy.contains("td.headers-bg", "Carbon Reduction Initiatives").should("exist");
       cy.contains("td.headers-bg", "Carbon Reduction Initiatives").siblings("td").should("have.text", "Yes");
     }
+
+    it("Create a company via api and upload a SFDR dataset via the api", () => {
+      const uniqueCompanyMarker = Date.now().toString();
+      const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+          return uploadOneSfdrDataset(token, storedCompany.companyId, "2021", testSfdrCompany.t).then(
+            (dataMetaInformation) => {
+              console.log(testSfdrCompany.t);
+              cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+              cy.visitAndCheckAppMount(
+                "/companies/" +
+                  storedCompany.companyId +
+                  "/frameworks/" +
+                  DataTypeEnum.Sfdr +
+                  "/upload" +
+                  "?templateDataId=" +
+                  dataMetaInformation.dataId,
+              );
+              cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+
+              cy.url().should(
+                "eq",
+                getBaseUrl() +
+                  "/companies/" +
+                  storedCompany.companyId +
+                  "/frameworks/" +
+                  DataTypeEnum.Sfdr +
+                  "/upload" +
+                  "?templateDataId=" +
+                  dataMetaInformation.dataId,
+              );
+
+              cy.get("h1").should("contain", "bkztjzfa<dssadsddjzlb");
+
+              submitButton.clickButton();
+              console.log("submitted");
+              cy.url().should("eq", getBaseUrl() + "/datasets");
+              validateFormUploadedData(storedCompany.companyId);
+            },
+          );
+        });
+      });
+    });
   },
 );
