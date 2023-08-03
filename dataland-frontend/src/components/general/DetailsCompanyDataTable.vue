@@ -43,7 +43,7 @@ export default defineComponent({
       listOfRowContents: [] as Array<object | string>,
       kpiKeyOfTable: "" as string,
       keysOfValuesForColumnDisplay: [] as string[],
-      keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing"] as string[],
+      keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing", "sectors"] as string[],
       humanizeString,
       columnHeaders: {},
     };
