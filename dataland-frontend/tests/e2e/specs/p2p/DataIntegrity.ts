@@ -30,18 +30,20 @@ describeIf(
     /**
      * validates that the data uploaded via the function `uploadOneP2pDatasetViaApi` is displayed correctly for a company
      * @param companyId the company associated to the data uploaded via form
-     * @param dataId
+     * @param dataId the company p2p id for accessing its view page
      */
     function validateFormUploadedData(companyId: string, dataId: string): void {
       cy.visit(`/companies/${companyId}/frameworks/${DataTypeEnum.P2p}/${dataId}`);
       cy.contains('Show "Sectors"').click();
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
       cy.get(".p-dialog th").eq(0).should("have.text", "Sectors");
-      testP2pCompany.t.general.general.sectors.forEach((sector, index) => {
+      testP2pCompany.t.general.general.sectors.forEach((sector) => {
         cy.get("span").contains(sector).should("exist");
       });
+      cy.get(".p-dialog").find(".p-dialog-header-icon").click();
       cy.get('td > [data-test="emissionsPlanning"]').click();
-      //cy.contains('6503');
+      cy.contains("8245");
+      cy.contains("AUTOMOTIVE").click();
     }
 
     it("Create a company via api and upload a P2P dataset via the api", () => {
@@ -58,17 +60,17 @@ describeIf(
                   "/frameworks/" +
                   DataTypeEnum.P2p +
                   "/upload?templateDataId=" +
-                  dataMetaInformation.dataId
+                  dataMetaInformation.dataId,
               );
               cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
               cy.get("h1").should("contain", testCompanyName);
               submitButton.clickButton();
               cy.url().should("eq", getBaseUrl() + "/datasets");
               validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
-            }
+            },
           );
         });
       });
     });
-  }
+  },
 );
