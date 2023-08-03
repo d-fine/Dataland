@@ -62,17 +62,17 @@ describeIf(
                   "/frameworks/" +
                   DataTypeEnum.P2p +
                   "/upload?templateDataId=" +
-                  dataMetaInformation.dataId
+                  dataMetaInformation.dataId,
               );
               cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
               cy.get("h1").should("contain", testCompanyName);
               submitButton.clickButton();
               cy.url().should("eq", getBaseUrl() + "/datasets");
               validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
-            }
+            },
           );
         });
       });
     });
-  }
+  },
 );
