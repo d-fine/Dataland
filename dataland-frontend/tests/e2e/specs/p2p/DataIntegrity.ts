@@ -47,14 +47,16 @@ describeIf(
          * @param companyId the company associated to the data uploaded via form
          */
         function validateFormUploadedData(companyId: string, dataId: string): void {
+            const firstSector = testP2pCompany.t.general.general.sector[0];
+            const secondSector = testP2pCompany.t.general.general.sector[1];
             cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.P2p + dataId);
             cy.get('td > [data-test="general"]').click();
             cy.contains('Show "Sector"').click();
             cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sector");
             cy.get(".p-dialog th").eq(0).should("have.text", "Sector");
             cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").should("have.length", 10);
-            cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").eq(0).should("have.text", "Automotive");
-            cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").eq(2).should("have.text", "Ammonia");
+            cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").eq(0).should("have.text", firstSector);
+            cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").eq(1).should("have.text", secondSector);
             cy.get('td > [data-test="emissionsPlanning"]').click();
             //cy.contains('6503');
         }
