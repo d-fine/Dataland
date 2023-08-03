@@ -2652,7 +2652,7 @@
     "frontendUrl": "${KEYCLOAK_FRONTEND_URL}",
     "acr.loa.map": "{}"
   },
-  "keycloakVersion": "21.1.2",
+  "keycloakVersion": "21.0.2",
   "userManagedAccessAllowed": false,
   "clientProfiles": {
     "profiles": []
