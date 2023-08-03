@@ -122,7 +122,7 @@ export default defineComponent({
   },
   computed: {
     displayreportsName(): string[] {
-      return (this.reportsName ?? this.injectReportsName) as string;
+      return (this.reportsName ?? this.injectReportsName) as string[];
     },
     // isUnit(): boolean {
     //   return
