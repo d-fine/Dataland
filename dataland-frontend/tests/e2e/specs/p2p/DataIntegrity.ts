@@ -39,7 +39,7 @@ describeIf(
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
       cy.get(".p-dialog th").eq(0).should("have.text", "Sectors");
       testP2pCompany.t.general.general.sectors.forEach((sector) => {
-        cy.get("span").contains(humanizeString(sector)).should("exist");
+        cy.get("span").contains(sector).should("exist");
       });
       cy.get(".p-dialog").find(".p-dialog-header-icon").click();
       cy.get('td > [data-test="emissionsPlanning"]').click();
