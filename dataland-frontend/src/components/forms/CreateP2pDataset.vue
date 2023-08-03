@@ -279,7 +279,5 @@ export default defineComponent({
       }
     },
   },
-
-  // TODO at the very end: Check for duplicate code!!! There is a lot!
 });
 </script>

@@ -3,5 +3,4 @@
  */
 describe("Tests for view page of P2P-Framework data", () => {
   require("./DataIntegrity");
-  //require("./EditP2PDataset");
 });
