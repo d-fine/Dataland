@@ -105,6 +105,7 @@ describeIf(
               );
 
               cy.get("h1").should("contain", testCompanyName);
+              //TODO remove selectReportedQualityForAllFields(), shift the validation into the existing function, remove other test once quality is no longer mandatory
               selectReportedQualityForAllFields();
               submitButton.clickButton();
               cy.url().should("eq", getBaseUrl() + "/datasets");
