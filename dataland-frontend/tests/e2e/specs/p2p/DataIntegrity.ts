@@ -1,10 +1,10 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataMetaInformation, DataTypeEnum, PathwaysToParisData, StoredCompany } from "@clients/backend";
+import { DataTypeEnum, PathwaysToParisData } from "@clients/backend";
 import { uploadOneP2pDatasetViaApi } from "@e2e/utils/P2pUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
