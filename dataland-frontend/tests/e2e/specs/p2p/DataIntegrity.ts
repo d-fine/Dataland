@@ -14,16 +14,17 @@ import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 
 let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
+let testP2pCompany: FixtureData<PathwaysToParisData>;
 before(function () {
     cy.fixture("CompanyInformationWithP2pData").then(function (jsonContent) {
         companiesWithP2pData = jsonContent as Array<FixtureData<PathwaysToParisData>>;
+        testP2pCompany = companiesWithP2pData[0];
     });
 });
 
-const testCompanyP2pData = companiesWithP2pData[0].t;
 
 describeIf(
-    "As a user, I expect to be able to upload P2P data via X, and that the uploaded data is displayed " +
+    "As a user, I expect to be able to upload P2P data via the api, and that the uploaded data is displayed " +
     "correctly in the frontend",
     {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
@@ -45,23 +46,17 @@ describeIf(
          * validates that the data uploaded via the function `uploadOneP2pDatasetViaApi` is displayed correctly for a company
          * @param companyId the company associated to the data uploaded via form
          */
-        function validateFormUploadedData(companyId: string): void {
-            cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.P2p);
-            /**
-            cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
-            cy.contains('Show "Most Important Products"').click();
-            cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Most Important Products");
-            cy.get(".p-dialog th").eq(0).should("have.text", "Product Name");
-            cy.get(".p-dialog th").eq(1).should("have.text", "Production Steps");
-            cy.get(".p-dialog th").eq(2).should("have.text", "Related Corporate Supply Chain");
-            cy.get(".p-dialog tr").should("have.length", 3);
-            cy.get(".p-dialog tr").eq(1).find("td").eq(0).should("have.text", "Test Product 1");
-            cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").should("have.length", 2);
-            cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(0).should("have.text", "first");
-            cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(1).should("have.text", "second");
-            cy.get(".p-dialog tr").eq(1).find("td").eq(2).should("have.text", "Description of something");
-            cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
-             */
+        function validateFormUploadedData(companyId: string, dataId: string): void {
+            cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.P2p + dataId);
+            cy.get('td > [data-test="general"]').click();
+            cy.contains('Show "Sector"').click();
+            cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sector");
+            cy.get(".p-dialog th").eq(0).should("have.text", "Sector");
+            cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").should("have.length", 10);
+            cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").eq(0).should("have.text", "Automotive");
+            cy.get(".p-dialog tr").eq(1).find("td").eq(0).find("li").eq(2).should("have.text", "Ammonia");
+            cy.get('td > [data-test="emissionsPlanning"]').click();
+            //cy.contains('6503');
         }
 
 
@@ -72,7 +67,7 @@ describeIf(
                 .then((token: string) => {
                     uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName))
                         .then((storedCompany) => {
-                    uploadOneP2pDatasetViaApi(token, storedCompany.companyId, "2021", testCompanyP2pData)
+                    return uploadOneP2pDatasetViaApi(token, storedCompany.companyId, "2021", testP2pCompany.t)
                         .then((dataMetaInformation) => {
                         cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
                         cy.visitAndCheckAppMount(
@@ -84,7 +79,7 @@ describeIf(
                             getBaseUrl() + "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.P2p + "/upload" + "?templateDataId=" + dataMetaInformation.dataId,
                         );
                         cy.get("h1").should("contain", testCompanyName);
-                        //validateFormUploadedData(storedCompany.companyId);
+                        validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
                         submitButton.clickButton();
                         cy.url().should(
                             "eq",
