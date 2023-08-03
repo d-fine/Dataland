@@ -24,17 +24,17 @@ export async function uploadOneLksgDatasetViaApi(
   companyId: string,
   reportingPeriod: string,
   data: LksgData,
-  bypassQa = true,
+  bypassQa = true
 ): Promise<DataMetaInformation> {
   const response = await new LksgDataControllerApi(
-    new Configuration({ accessToken: token }),
+    new Configuration({ accessToken: token })
   ).postCompanyAssociatedLksgData(
     {
       companyId,
       reportingPeriod,
       data,
     },
-    bypassQa,
+    bypassQa
   );
   return response.data;
 }
@@ -51,16 +51,16 @@ export function uploadCompanyAndLksgDataViaApi(
   token: string,
   companyInformation: CompanyInformation,
   testData: LksgData,
-  reportingPeriod: string,
+  reportingPeriod: string
 ): Promise<UploadIds> {
   return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
     (storedCompany) => {
       return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, reportingPeriod, testData).then(
         (dataMetaInformation) => {
           return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
-        },
+        }
       );
-    },
+    }
   );
 }
 
@@ -254,6 +254,17 @@ export function fillInProcurementCategories(): void {
 }
 
 /**
+ * Test if the showIf-functionality works by using one example from the LKSG Framework.
+ */
+function checkIfUploadFieldDependenciesAreRespected(): void {
+  cy.get("input[name=capacity]").should("not.exist");
+  cy.get("input[id=manufacturingCompany-option-yes]").click();
+  cy.get("input[name=capacity]").should("be.visible").type("5000");
+  cy.get("input[id=manufacturingCompany-option-no]").click();
+  cy.get("input[name=capacity]").should("not.exist");
+}
+
+/**
  * Uploads a single LKSG data entry for a company via form
  */
 export function uploadLksgDataViaForm(): void {
@@ -264,6 +275,8 @@ export function uploadLksgDataViaForm(): void {
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
   selectDummyDateInDataPicker();
+
+  checkIfUploadFieldDependenciesAreRespected();
 
   recursivelySelectYesOnAllFields(15);
   fillInMostImportantProducts();
