@@ -1,3 +1,4 @@
+import { SfdrData } from "@clients/backend";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { Category } from "@/utils/GenericFrameworkTypes";
 
@@ -25,7 +26,7 @@ export const sfdrDataModel = [
           },
           {
             name: "fiscalYearDeviation",
-            label: "Fiscal Year",
+            label: "Fiscal Year Deviation",
             description: "Does the fiscal year deviate from the calender year?",
             unit: "",
             component: "RadioButtonsFormField",
