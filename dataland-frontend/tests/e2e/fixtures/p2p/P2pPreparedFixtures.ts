@@ -73,6 +73,7 @@ function manipulateFixtureForOneP2pDataSetWithThreeSectors(
   input.t.general.general.dataDate = "2022-01-01";
   input.reportingPeriod = "2022";
   input.t.general.general.sectors = ["Ammonia", "Cement", "LivestockFarming"];
+  input.t.general.emissionsPlanning!.relativeEmissions = 12;
   input.t.ammonia!.decarbonisation!.ccsTechnologyAdoption = 0.54;
   input.t.cement!.material!.preCalcinedClayUsage = 0.23;
   input.t.livestockFarming!.animalFeed!.externalFeedCertification = {

@@ -4,15 +4,15 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, PathwaysToParisData } from "@clients/backend";
 import { uploadOneP2pDatasetViaApi } from "@e2e/utils/P2pUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
-let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
-let testP2pCompany: FixtureData<PathwaysToParisData>;
+let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
 before(function () {
   cy.fixture("CompanyInformationWithP2pPreparedFixtures").then(function (jsonContent) {
-    companiesWithP2pData = jsonContent as Array<FixtureData<PathwaysToParisData>>;
-    testP2pCompany = companiesWithP2pData[0];
+    const preparedFixturesP2p = jsonContent as Array<FixtureData<PathwaysToParisData>>;
+    p2pFixtureForTest = getPreparedFixture("one-p2p-data-set-with-three-sectors", preparedFixturesP2p);
   });
 });
 
@@ -37,14 +37,15 @@ describeIf(
       cy.contains('Show "Sectors"').click();
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
       cy.get(".p-dialog th").eq(0).should("have.text", "Sectors");
-      testP2pCompany.t.general.general.sectors.forEach((sector) => {
+      p2pFixtureForTest.t.general.general.sectors.forEach((sector) => {
         cy.get("span").contains(sector).should("exist");
       });
       cy.get(".p-dialog").find(".p-dialog-header-icon").click();
       cy.get('td > [data-test="emissionsPlanning"]').click();
-      cy.contains("8245");
-      cy.contains("AUTOMOTIVE").click();
-      cy.contains("1672");
+      cy.contains(assertDefined(p2pFixtureForTest.t.general.emissionsPlanning?.relativeEmissions));
+      cy.contains("CEMENT").click();
+      cy.contains("Material").click();
+      cy.contains(assertDefined(p2pFixtureForTest.t.cement?.material?.preCalcinedClayUsage));
     }
 
     it("Create a company via api and upload a P2P dataset via the api", () => {
@@ -52,7 +53,7 @@ describeIf(
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          return uploadOneP2pDatasetViaApi(token, storedCompany.companyId, "2021", testP2pCompany.t).then(
+          return uploadOneP2pDatasetViaApi(token, storedCompany.companyId, "2021", p2pFixtureForTest.t).then(
             (dataMetaInformation) => {
               cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
               cy.visitAndCheckAppMount(
