@@ -77,7 +77,7 @@ export function uploadSfdrDataViaForm(companyId: string, valueFieldNotFilled = f
   uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
   uploadDocuments.fillAllReportsToUploadForms(1);
 
-  fillAndValidateSfdrUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
+  fillAndValidateSfdrUploadForm();
   submitButton.clickButton();
 
   cy.get("div.p-message-success").should("be.visible");
