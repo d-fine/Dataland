@@ -44,6 +44,8 @@ describeIf(
       cy.get('td > [data-test="emissionsPlanning"]').click();
       cy.contains("8245");
       cy.contains("AUTOMOTIVE").click();
+      cy.contains("1672");
+
     }
 
     it("Create a company via api and upload a P2P dataset via the api", () => {
