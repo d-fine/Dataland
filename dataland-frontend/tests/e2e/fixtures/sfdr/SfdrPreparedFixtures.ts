@@ -55,6 +55,11 @@ function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<
 function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "CompanyInformationWithSfdrData";
   input.t.general.general.fiscalYearEnd = "2020-01-03";
+  input.t.environmental!.energyPerformance = undefined;
+  input.t.environmental!.waste = undefined;
+  input.t.environmental!.water = undefined;
+  input.t.environmental!.emissions = undefined;
+  input.t.environmental!.greenhouseGasEmissions = undefined;
   input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure = {
     quality: "Audited",
     dataSource: {
@@ -84,6 +89,13 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
     },
     comment: "string",
     value: "Yes",
+  };
+
+  input.t.social = {
+    antiCorruptionAndAntiBribery: undefined,
+    greenSecurities: undefined,
+    humanRights: undefined,
+    socialAndEmployeeMatters: undefined,
   };
   return input;
 }

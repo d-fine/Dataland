@@ -3,9 +3,10 @@ import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { DataTypeEnum, SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadCompanyAndSfdrDataViaApi, uploadOneSfdrDataset, uploadSfdrDataViaForm } from "@e2e/utils/SfdrUpload";
+import { selectReportedQualityForAllFields, uploadOneSfdrDataset, uploadSfdrDataViaForm } from "@e2e/utils/SfdrUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
 
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
 let testSfdrCompany: FixtureData<SfdrData>;
@@ -75,7 +76,7 @@ describeIf(
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           return uploadOneSfdrDataset(token, storedCompany.companyId, "2021", testSfdrCompany.t).then(
             (dataMetaInformation) => {
               console.log(testSfdrCompany.t);
@@ -103,12 +104,25 @@ describeIf(
                   dataMetaInformation.dataId,
               );
 
-              cy.get("h1").should("contain", "bkztjzfa<dssadsddjzlb");
-
+              cy.get("h1").should("contain", testCompanyName);
+              selectReportedQualityForAllFields();
               submitButton.clickButton();
-              console.log("submitted");
               cy.url().should("eq", getBaseUrl() + "/datasets");
-              validateFormUploadedData(storedCompany.companyId);
+              cy.visit("/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Sfdr);
+              cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(0).should("have.text", "General");
+
+              cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(2).should("have.text", "Biodiversity");
+              toggleRowGroup("biodiversity");
+              cy.contains("td.headers-bg", "Primary Forest And Wooded Land Of Native Species Exposure").should("exist");
+              cy.contains("td.headers-bg", "Primary Forest And Wooded Land Of Native Species Exposure")
+                .siblings("td")
+                .should("have.text", "Yes");
+              cy.contains("td.headers-bg", "Protected Areas Exposure").should("exist");
+              cy.contains("td.headers-bg", "Protected Areas Exposure").siblings("td").should("have.text", "No");
+              cy.contains("td.headers-bg", "Rare Or Endangered Ecosystems Exposure").should("exist");
+              cy.contains("td.headers-bg", "Rare Or Endangered Ecosystems Exposure")
+                .siblings("td")
+                .should("have.text", "Yes");
             },
           );
         });

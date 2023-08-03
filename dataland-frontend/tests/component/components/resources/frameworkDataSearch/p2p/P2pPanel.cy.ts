@@ -10,6 +10,7 @@ import {
   PathwaysToParisData,
   QaStatus,
 } from "@clients/backend";
+import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
@@ -45,14 +46,6 @@ describe("Component test for P2pPanel", () => {
     });
     cy.get("td:contains('Ammonia')").should("exist");
   });
-
-  /**
-   * Toggles the data-table row group with the given key
-   * @param groupKey the key of the row group to expand
-   */
-  function toggleRowGroup(groupKey: string): void {
-    cy.get(`span[id=${groupKey}]`).siblings("button").last().click();
-  }
 
   it("Check P2p view page for company with one P2p data set", () => {
     const preparedFixture = getPreparedFixture("one-p2p-data-set-with-three-sectors", preparedFixtures);

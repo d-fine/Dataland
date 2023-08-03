@@ -1,4 +1,3 @@
-import { SfdrData } from "@clients/backend";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { Category } from "@/utils/GenericFrameworkTypes";
 

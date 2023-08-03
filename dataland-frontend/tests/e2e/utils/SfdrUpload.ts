@@ -97,7 +97,7 @@ function fillAndValidateSfdrUploadForm(): void {
   selectDummyDates("fiscalYearEnd");
 
   recursivelySelectYesOnAllFields(15);
-  recursivelySelectReportedQualityFields();
+  selectReportedQualityForAllFields();
 }
 
 /**
@@ -117,7 +117,7 @@ function selectDummyDates(fieldName = "dataDate"): void {
 /**
  * Opens the Reported Quality Fields and selects the first option
  */
-function recursivelySelectReportedQualityFields(): void {
+export function selectReportedQualityForAllFields(): void {
   cy.get(`select[name="quality"]`).each(($element) => {
     cy.wrap($element).select(3);
   });
