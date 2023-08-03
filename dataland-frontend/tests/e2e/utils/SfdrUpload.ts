@@ -67,7 +67,6 @@ export function uploadCompanyAndSfdrDataViaApi(
 /**
  * Fills the Sfdr upload form with the given dataset
  * @param companyId comany id stored in database
- * @param valueFieldNotFilled optional parameter to define if value field is populated
  */
 export function uploadSfdrDataViaForm(companyId: string): void {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}/upload`);
