@@ -107,7 +107,7 @@ import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 import { AxiosError } from "axios";
-import { CompanyAssociatedDataSfdrData, CompanyReport } from "@clients/backend";
+import { CompanyAssociatedDataSfdrData } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -126,7 +126,7 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
+import { objectDropNull } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
@@ -246,12 +246,7 @@ export default defineComponent({
       ).getSfdrDataControllerApi();
 
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
-      const sfdrDataset = dataResponse.data;
-      delete sfdrDataset.data.referencedReports;
-      const clonedSfdrDataset = { ...sfdrDataset } as ObjectType;
-      this.referencedReportsForPrefill = clonedSfdrDataset.data?.general?.general?.referencedReports;
-
-      this.companyAssociatedSfdrData = objectDropNull(clonedSfdrDataset) as CompanyAssociatedDataSfdrData;
+      this.companyAssociatedSfdrData = objectDropNull(dataResponse) as CompanyAssociatedDataSfdrData;
       this.waitingForData = false;
     },
     /**
@@ -264,24 +259,10 @@ export default defineComponent({
           await uploadFiles(this.documents, assertDefined(this.getKeycloakPromise));
         }
 
-        const clonedCompanyAssociatedSfdrData = JSON.parse(
-          JSON.stringify(this.companyAssociatedSfdrData),
-        ) as CompanyAssociatedDataSfdrData;
-        if (clonedCompanyAssociatedSfdrData.data?.social?.general) {
-          const general = clonedCompanyAssociatedSfdrData.data?.social?.general as ObjectType;
-          const referencedReports = general.referencedReports;
-          delete (clonedCompanyAssociatedSfdrData.data.social.general as ObjectType).referencedReports;
-          clonedCompanyAssociatedSfdrData.data.referencedReports = referencedReports as {
-            [key: string]: CompanyReport;
-          };
-        }
-
-        console.log("clonedCompanyAssociatedSfdrData", clonedCompanyAssociatedSfdrData);
-
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getSfdrDataControllerApi();
-        await sfdrDataControllerApi.postCompanyAssociatedSfdrData(clonedCompanyAssociatedSfdrData);
+        await sfdrDataControllerApi.postCompanyAssociatedSfdrData(this.companyAssociatedSfdrData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";

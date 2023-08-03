@@ -70,6 +70,7 @@ import { ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { UploadReportsProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { CompanyReport } from "@clients/backend";
+import { ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "UploadReports",
@@ -166,8 +167,9 @@ export default defineComponent({
      * Initializes the already uploaded reports from provided reports
      */
     prefillAlreadyUploadedReports() {
-      const sourceOfReferencedReportsForPrefill =
-        this.referencedReportsForPrefill ?? this.injectReferencedReportsForPrefill;
+      const sourceOfReferencedReportsForPrefill = (this.referencedReportsForPrefill ||
+        this.injectReferencedReportsForPrefill) as ObjectType;
+
       if (sourceOfReferencedReportsForPrefill) {
         for (const key in sourceOfReferencedReportsForPrefill) {
           const referencedReport = (sourceOfReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
