@@ -2846,9 +2846,6 @@
         }
       },
       "DataPointOneValueYesNo": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "quality": {
@@ -4970,9 +4967,6 @@
         }
       },
       "DataPointAbsoluteAndPercentageBigDecimal": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "quality": {
@@ -4993,9 +4987,6 @@
         }
       },
       "DataPointOneValueBigDecimal": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "quality": {
