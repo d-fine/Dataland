@@ -85,10 +85,8 @@ export function uploadSfdrDataViaForm(companyId: string, valueFieldNotFilled = f
 
 /**
  * Fills all the fields of the Sfdr upload form for non-financial companies
- * @param valueFieldNotFilled Value which, if true, disables the value field
- * @param assuranceReportName name of the assurance data source
  */
-function fillAndValidateSfdrUploadForm(valueFieldNotFilled: boolean, assuranceReportName: string): void {
+function fillAndValidateSfdrUploadForm(): void {
   Cypress.Keyboard.defaults({
     keystrokeDelay: 0,
   });
@@ -105,7 +103,7 @@ function fillAndValidateSfdrUploadForm(valueFieldNotFilled: boolean, assuranceRe
 
 /**
  * Selects a dummy year in the Sfdr upload form date picker.
- * @param fieldName
+ * @param fieldName name of the test element labeled with dataTest and the fieldName
  */
 function selectDummyDates(fieldName = "dataDate"): void {
   cy.get(`[data-test="${fieldName}"]`).find("button.p-datepicker-trigger").click();
