@@ -187,7 +187,7 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       documents: [] as DocumentToUpload[],
-      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
+      referencedReportsForPrefill: {} as { [key: string]: CompanyReport } | undefined,
       namesOfAllCompanyReportsForTheDataset: [] as string[],
     };
   },
@@ -246,7 +246,10 @@ export default defineComponent({
       ).getSfdrDataControllerApi();
 
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
-      this.companyAssociatedSfdrData = objectDropNull(dataResponse) as CompanyAssociatedDataSfdrData;
+      const sfdrResponseData = dataResponse.data;
+      this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports;
+      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData) as CompanyAssociatedDataSfdrData;
+
       this.waitingForData = false;
     },
     /**

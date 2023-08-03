@@ -134,24 +134,32 @@ export default defineComponent({
      */
     updateSelectedReports(reports: ReportToUpload[]) {
       this.reportsToUpload = reports;
+
       if (this.duplicatesAmongReferenceableReportNames()) {
-        const foundExistingRecords = [];
-        for (let i = this.reportsToUpload.length - 1; i >= 0; i--) {
+        const foundExistingRecords = new Set<string>();
+        const duplicatesWithIndex = [];
+
+        for (let i = 0; i < this.reportsToUpload.length; i++) {
           const currentName = this.reportsToUpload[i].fileNameWithoutSuffix;
-          if (
-            foundExistingRecords.indexOf(currentName) === -1 &&
-            this.namesOfStoredReports.indexOf(currentName) === -1
-          ) {
-            foundExistingRecords.push(currentName);
+
+          if (foundExistingRecords.has(currentName) || this.namesOfStoredReports.indexOf(currentName) !== -1) {
+            duplicatesWithIndex.push({ report: this.reportsToUpload[i], index: i });
           } else {
-            this.openModalToDisplayDuplicateNameError(this.reportsToUpload[i].fileNameWithoutSuffix);
-            (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(i);
+            foundExistingRecords.add(currentName);
           }
         }
+
+        // Reverse the duplicates array before processing to make sure
+        // the removal does not affect the remaining indexes.
+        duplicatesWithIndex.reverse().forEach(({ report, index }) => {
+          this.openModalToDisplayDuplicateNameError(report.fileNameWithoutSuffix);
+          (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(index);
+        });
       } else {
         this.emitReferenceableReportNamesChangedEvent();
       }
     },
+
     /**
      * When the X besides existing reports is clicked this function should be called and
      * removes the corresponding report from the list
