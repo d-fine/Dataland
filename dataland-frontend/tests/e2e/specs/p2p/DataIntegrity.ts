@@ -6,6 +6,7 @@ import { uploadOneP2pDatasetViaApi } from "@e2e/utils/P2pUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
 let testP2pCompany: FixtureData<PathwaysToParisData>;
@@ -38,7 +39,7 @@ describeIf(
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
       cy.get(".p-dialog th").eq(0).should("have.text", "Sectors");
       testP2pCompany.t.general.general.sectors.forEach((sector) => {
-        cy.get("span").contains(sector).should("exist");
+        cy.get("span").contains(humanizeString(sector)).should("exist");
       });
       cy.get(".p-dialog").find(".p-dialog-header-icon").click();
       cy.get('td > [data-test="emissionsPlanning"]').click();
@@ -60,17 +61,17 @@ describeIf(
                   "/frameworks/" +
                   DataTypeEnum.P2p +
                   "/upload?templateDataId=" +
-                  dataMetaInformation.dataId,
+                  dataMetaInformation.dataId
               );
               cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
               cy.get("h1").should("contain", testCompanyName);
               submitButton.clickButton();
               cy.url().should("eq", getBaseUrl() + "/datasets");
               validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
-            },
+            }
           );
         });
       });
     });
-  },
+  }
 );
