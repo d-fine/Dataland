@@ -114,7 +114,8 @@ export default defineComponent({
               fileNameWithoutSuffix: removeFileTypeExtension(file.name),
             };
           }),
-        );
+        ) as Promise<DocumentToUpload[]>;
+
         void documentsToUpload.then((documentsToUpload) => {
           this.documentsToUpload = documentsToUpload;
           this.emitDocumentsChangedEvent();
