@@ -45,7 +45,6 @@ describeIf(
     function validateFormUploadedData(companyId: string): void {
       cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sfdr);
       cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(0).should("have.text", "General");
-      //cy.get(".p-datatable-tbody").find(".p-rowgroup-header").eq(0).find("td").should("have.text", "Data Date");
 
       cy.get(".p-datatable-tbody")
         .find(".p-rowgroup-header")
