@@ -149,7 +149,7 @@ export default defineComponent({
           }
         }
 
-        this.handleReportDuplicates(duplicatesWithIndex);
+        this.handleReportDuplicates(duplicatesWithIndex.reverse());
       } else {
         this.emitReferenceableReportNamesChangedEvent();
       }
@@ -159,7 +159,7 @@ export default defineComponent({
      * @param duplicatesWithIndex a list of reports to upload
      */
     handleReportDuplicates(duplicatesWithIndex: { report: ReportToUpload; index: number }[]) {
-      duplicatesWithIndex.reverse().forEach(({ report, index }) => {
+      duplicatesWithIndex.forEach(({ report, index }) => {
         this.openModalToDisplayDuplicateNameError(report.fileNameWithoutSuffix);
         (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(index);
       });
