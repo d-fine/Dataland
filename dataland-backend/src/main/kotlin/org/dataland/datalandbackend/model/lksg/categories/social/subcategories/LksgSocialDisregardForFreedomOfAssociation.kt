@@ -5,7 +5,8 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the subcategory "Disregard for freedom of association" belonging to the category "Social" of the lksg framework.
+ * Fields of the subcategory "Disregard for freedom of association" belonging to the category "Social" of the
+ * Lksg framework.
 */
 data class LksgSocialDisregardForFreedomOfAssociation(
       val freedomOfAssociation: YesNo? = null,

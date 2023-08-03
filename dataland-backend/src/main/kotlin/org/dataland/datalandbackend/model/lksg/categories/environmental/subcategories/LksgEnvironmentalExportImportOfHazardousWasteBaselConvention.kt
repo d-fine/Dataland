@@ -4,7 +4,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the subcategory "Export/import of hazardous waste (Basel Convention)" belonging to the category "Environmental" of the lksg framework.
+ * Fields of the subcategory "Export/import of hazardous waste (Basel Convention)"
+ * belonging to the category "Environmental" of the lksg framework.
 */
 data class LksgEnvironmentalExportImportOfHazardousWasteBaselConvention(
       val persistentOrganicPollutantsProductionAndUseTransboundaryMovements: YesNo? = null,

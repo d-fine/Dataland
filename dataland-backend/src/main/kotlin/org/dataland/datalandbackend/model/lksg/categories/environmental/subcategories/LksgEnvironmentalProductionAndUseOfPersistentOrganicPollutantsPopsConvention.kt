@@ -4,7 +4,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the subcategory "Production and use of persistent organic pollutants (POPs Convention)" belonging to the category "Environmental" of the lksg framework.
+ * Fields of the subcategory "Production and use of persistent organic pollutants (POPs Convention)" belonging to the
+ * category "Environmental" of the lksg framework.
 */
 data class LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention(
       val persistentOrganicPollutantsProductionAndUse: YesNo? = null,

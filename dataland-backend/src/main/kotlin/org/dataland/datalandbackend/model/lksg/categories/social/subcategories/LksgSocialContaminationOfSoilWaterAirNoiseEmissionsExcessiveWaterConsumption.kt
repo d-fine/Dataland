@@ -4,7 +4,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the subcategory "Contamination of soil/water/air, noise emissions, excessive water consumption" belonging to the category "Social" of the lksg framework.
+ * Fields of the subcategory "Contamination of soil/water/air, noise emissions, excessive water consumption"
+ * belonging to the category "Social" of the Lksg framework.
 */
 data class LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption(
       val harmfulSoilImpact: YesNo? = null,

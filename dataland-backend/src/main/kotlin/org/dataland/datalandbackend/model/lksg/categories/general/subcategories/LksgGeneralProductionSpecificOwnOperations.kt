@@ -8,7 +8,8 @@ import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 
 /**
  * --- API model ---
- * Fields of the subcategory "Production-specific - Own Operations" belonging to the category "General" of the lksg framework.
+ * Fields of the subcategory "Production-specific - Own Operations" belonging to the category "General" of the
+ * Lksg framework.
 */
 data class LksgGeneralProductionSpecificOwnOperations(
       val mostImportantProducts: List<LksgProduct>? = null,

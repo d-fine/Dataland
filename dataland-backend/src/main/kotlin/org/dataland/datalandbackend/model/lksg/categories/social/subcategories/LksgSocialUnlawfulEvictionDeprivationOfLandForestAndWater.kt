@@ -4,7 +4,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the subcategory "Unlawful eviction/deprivation of land, forest and water" belonging to the category "Social" of the lksg framework.
+ * Fields of the subcategory "Unlawful eviction/deprivation of land, forest and water" belonging to the category
+ * "Social" of the Lksg framework.
 */
 data class LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater(
       val unlawfulEvictionAndTakingOfLand: YesNo? = null,

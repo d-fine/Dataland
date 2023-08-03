@@ -6,7 +6,8 @@ import org.dataland.datalandbackend.model.BaseDataPoint
 
 /**
  * --- API model ---
- * Fields of the subcategory "Disregard for occupational health/safety" belonging to the category "Social" of the lksg framework.
+ * Fields of the subcategory "Disregard for occupational health/safety" belonging to the category "Social" of the
+ * Lksg framework.
 */
 data class LksgSocialDisregardForOccupationalHealthSafety(
       val lowSkillWork: YesNo? = null,

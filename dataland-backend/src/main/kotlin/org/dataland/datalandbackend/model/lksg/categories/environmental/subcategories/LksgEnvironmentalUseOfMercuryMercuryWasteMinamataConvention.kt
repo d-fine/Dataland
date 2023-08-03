@@ -5,7 +5,8 @@ import org.dataland.datalandbackend.model.BaseDataPoint
 
 /**
  * --- API model ---
- * Fields of the subcategory "Use of mercury, mercury waste (Minamata Convention)" belonging to the category "Environmental" of the lksg framework.
+ * Fields of the subcategory "Use of mercury, mercury waste (Minamata Convention)" belonging to the category
+ * "Environmental" of the lksg framework.
 */
 data class LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention(
       val mercuryAndMercuryWasteHandling: YesNo? = null,

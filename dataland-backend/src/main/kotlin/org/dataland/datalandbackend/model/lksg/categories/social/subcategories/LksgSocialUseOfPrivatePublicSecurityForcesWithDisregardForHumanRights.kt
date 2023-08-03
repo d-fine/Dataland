@@ -5,7 +5,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 
 /**
  * --- API model ---
- * Fields of the subcategory "Use of private/public security forces with disregard for human rights" belonging to the category "Social" of the lksg framework.
+ * Fields of the subcategory "Use of private/public security forces with disregard for human rights" belonging to the
+ * category "Social" of the Lksg framework.
 */
 data class LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights(
       val useOfPrivatePublicSecurityForces: YesNo? = null,

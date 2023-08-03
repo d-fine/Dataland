@@ -1,9 +1,13 @@
 package org.dataland.datalandbackend.model.lksg.categories.governance
 
-import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories.LksgGovernanceRiskManagementOwnOperations
-import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories.LksgGovernanceGrievanceMechanismOwnOperations
-import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories.LksgGovernanceCertificationsPoliciesAndResponsibilities
-import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories.LksgGovernanceGeneralViolations
+import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
+      .LksgGovernanceRiskManagementOwnOperations
+import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
+      .LksgGovernanceGrievanceMechanismOwnOperations
+import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
+      .LksgGovernanceCertificationsPoliciesAndResponsibilities
+import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
+      .LksgGovernanceGeneralViolations
 
 /**
  * --- API model ---
