@@ -10,7 +10,7 @@ import { submitButton } from "@sharedUtils/components/SubmitButton";
 let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
 let testP2pCompany: FixtureData<PathwaysToParisData>;
 before(function () {
-  cy.fixture("CompanyInformationWithP2pData").then(function (jsonContent) {
+  cy.fixture("CompanyInformationWithP2pPreparedFixtures").then(function (jsonContent) {
     companiesWithP2pData = jsonContent as Array<FixtureData<PathwaysToParisData>>;
     testP2pCompany = companiesWithP2pData[0];
   });
@@ -65,9 +65,9 @@ describeIf(
               );
               cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
               cy.get("h1").should("contain", testCompanyName);
-              validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
               submitButton.clickButton();
               cy.url().should("eq", getBaseUrl() + "/datasets");
+              validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
             }
           );
         });
