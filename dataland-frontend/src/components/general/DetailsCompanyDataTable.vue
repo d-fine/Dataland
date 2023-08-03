@@ -12,7 +12,6 @@
       <template #body="{ data }">
         <template v-if="data[keyOfColumn]">
           <ul v-if="Array.isArray(data[keyOfColumn])">
-            <h1>YEA ITS ME</h1>
             <li :key="el" v-for="el in data[keyOfColumn]">{{ el }}</li>
           </ul>
           <div v-else-if="typeof data[keyOfColumn] === 'object'">
