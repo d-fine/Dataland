@@ -6,7 +6,6 @@ import { uploadOneP2pDatasetViaApi } from "@e2e/utils/P2pUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { humanizeString } from "@/utils/StringHumanizer";
 
 let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
 let testP2pCompany: FixtureData<PathwaysToParisData>;
@@ -46,7 +45,6 @@ describeIf(
       cy.contains("8245");
       cy.contains("AUTOMOTIVE").click();
       cy.contains("1672");
-
     }
 
     it("Create a company via api and upload a P2P dataset via the api", () => {
