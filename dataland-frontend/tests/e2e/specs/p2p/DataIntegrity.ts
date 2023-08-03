@@ -40,8 +40,10 @@ describeIf(
       testP2pCompany.t.general.general.sectors.forEach((sector, index) => {
         cy.get("span").contains(sector).should("exist");
       });
+      cy.get(".p-dialog").find(".p-dialog-header-icon").click();
       cy.get('td > [data-test="emissionsPlanning"]').click();
-      //cy.contains('6503');
+      cy.contains('8245');
+      cy.contains('AUTOMOTIVE').click();
     }
 
     it("Create a company via api and upload a P2P dataset via the api", () => {
