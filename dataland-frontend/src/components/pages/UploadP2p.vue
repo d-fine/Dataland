@@ -26,7 +26,7 @@ export default defineComponent({
   name: "UploadP2p",
   components: {
     AuthorizationWrapper,
-      CreateP2pDataset,
+    CreateP2pDataset,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,

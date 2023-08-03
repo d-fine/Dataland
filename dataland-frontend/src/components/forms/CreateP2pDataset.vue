@@ -196,7 +196,7 @@ export default defineComponent({
     },
     visibleCategories(): Category[] {
       const a = this.p2pDataModel.filter(
-        (category) => category.showIf(this.companyAssociatedP2pData.data) || category.name === "general"
+        (category) => category.showIf(this.companyAssociatedP2pData.data) || category.name === "general",
       );
       console.log(a);
       return a;
@@ -207,7 +207,7 @@ export default defineComponent({
         for (const subcategory of category.subcategories) {
           map.set(
             subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedP2pData.data))
+            subcategory.fields.some((field) => field.showIf(this.companyAssociatedP2pData.data)),
           );
         }
       }
@@ -237,7 +237,7 @@ export default defineComponent({
     async loadP2pData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const p2pDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getP2pDataControllerApi();
 
       const dataResponse = await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId);
@@ -247,7 +247,7 @@ export default defineComponent({
         this.dataDate = new Date(dataDateFromDataset);
       }
       this.companyAssociatedP2pData = objectDropNull(
-        p2pDataset as ObjectType
+        p2pDataset as ObjectType,
       ) as CompanyAssociatedDataPathwaysToParisData;
       this.waitingForData = false;
     },
@@ -258,7 +258,7 @@ export default defineComponent({
       this.messageCounter++;
       try {
         const p2pDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getP2pDataControllerApi();
         await p2pDataControllerApi.postCompanyAssociatedP2pData(this.companyAssociatedP2pData);
         this.$emit("datasetCreated");
