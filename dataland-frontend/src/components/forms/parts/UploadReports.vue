@@ -136,7 +136,7 @@ export default defineComponent({
       this.reportsToUpload = reports;
       if (this.duplicatesAmongReferenceableReportNames()) {
         const foundExistingRecords = [];
-        for (let i = 0; i < this.reportsToUpload.length; i++) {
+        for (let i = this.reportsToUpload.length - 1; i >= 0; i--) {
           const currentName = this.reportsToUpload[i].fileNameWithoutSuffix;
           if (
             foundExistingRecords.indexOf(currentName) === -1 &&
@@ -146,7 +146,6 @@ export default defineComponent({
           } else {
             this.openModalToDisplayDuplicateNameError(this.reportsToUpload[i].fileNameWithoutSuffix);
             (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(i);
-            i--; // We reduce i to recheck the item that will take the place of the deleted item
           }
         }
       } else {
