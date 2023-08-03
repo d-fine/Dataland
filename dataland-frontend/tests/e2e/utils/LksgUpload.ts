@@ -219,7 +219,7 @@ function fillNewProduct(name: string, productionSteps: string[], description?: s
 /**
  * Adds some products to the most important products form
  */
-export function fillInMostImportantProducts(): void {
+function fillInMostImportantProducts(): void {
   fillNewProduct("Test Product 1", ["first", "second"], "Description of something");
   fillNewProduct("Test Product 2", []);
 }
@@ -227,7 +227,7 @@ export function fillInMostImportantProducts(): void {
 /**
  * Fills out Procurement Categories
  */
-export function fillInProcurementCategories(): void {
+function fillInProcurementCategories(): void {
   cy.get('[data-test="dataPointToggleButton"]').first().click();
   cy.get('[data-test="suppliersPerCountryCode"] .p-multiselect').should("exist").click();
 
