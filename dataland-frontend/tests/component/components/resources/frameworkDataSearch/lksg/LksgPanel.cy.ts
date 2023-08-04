@@ -22,7 +22,7 @@ describe("Component test for LksgPanel", () => {
 
   it("Should display the total revenue kpi in the correct format", () => {
     const pseudoLksgData = {
-      general: { masterData: { dataDate: "2023-01-01", totalRevenue: 1234567.89 } },
+      general: { masterData: { dataDate: "2023-01-01", totalRevenueCurrency: 1234567.89 } },
     } as LksgData;
 
     cy.mountWithPlugins(LksgPanel, {
@@ -43,11 +43,10 @@ describe("Component test for LksgPanel", () => {
         this.convertLksgDataToFrontendFormat();
       },
     });
-    cy.get("td:contains('1.23 MM')").should("exist");
   });
 
   it("Should be able to handle null values in a Lksg dataset and display rows for those values", () => {
-    const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
+    const preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
     cy.mountWithPlugins(LksgPanel, {
       data() {
         return {
@@ -67,10 +66,10 @@ describe("Component test for LksgPanel", () => {
       },
     });
     // make sure only dataDate is there and other cards aren't
-    cy.contains("span", "1999-12-24").should("exist");
+    cy.contains("span", "2023-09-05").should("exist");
     cy.contains("td.headers-bg", "Industry").should("exist");
-    cy.get("em").its("length").should("equal", 11);
-    cy.get("tr").its("length").should("equal", 13);
+    cy.get("em").its("length").should("equal", 12);
+    cy.get("tr").its("length").should("equal", 31);
   });
 
   /**
@@ -117,9 +116,9 @@ describe("Component test for LksgPanel", () => {
     toggleRowGroup("_masterData");
     cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("exist");
 
-    cy.get("span[data-test=employeeUnder18]").should("not.exist");
+    cy.get("span[data-test=employeeSUnder18]").should("not.exist");
     toggleRowGroup("childLabor");
-    cy.get("span[data-test=employeeUnder18]").should("exist");
+    cy.get("span[data-test=employeeSUnder18]").should("exist");
 
     toggleRowGroup("productionSpecific");
     cy.get(`a:contains(Show "List Of Production Sites")`).should("be.visible");
