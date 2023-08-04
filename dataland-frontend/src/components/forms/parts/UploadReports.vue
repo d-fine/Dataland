@@ -149,7 +149,7 @@ export default defineComponent({
           }
         }
 
-        this.handleReportDuplicates(duplicatesWithIndex.reverse());
+        this.handleReportDuplicates([...duplicatesWithIndex].reverse());
       } else {
         this.emitReferenceableReportNamesChangedEvent();
       }
