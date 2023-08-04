@@ -61,7 +61,7 @@
       </div>
 
       <!-- Data quality -->
-      <div class="mb-4">
+      <div class="mb-4" data-test="dataQuality">
         <UploadFormHeader
           :label="`${label} Quality`"
           description="The level of confidence associated to the value."
@@ -69,7 +69,6 @@
         />
         <div class="md:col-6 col-12 p-0">
           <FormKit
-            data-test="dataQuality"
             type="select"
             :modelValue="!isDataQualityRequired ? 'NA' : currentQualityValue"
             name="quality"
