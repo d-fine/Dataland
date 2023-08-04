@@ -28,7 +28,7 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     updateToken(minValidity: number): Promise<boolean> {
-      return Promise.resolve(true) as Promise<boolean>;
+      return Promise.resolve(true);
     },
     hasRealmRole(role: string): boolean {
       return this.realmAccess.roles.includes(role);
