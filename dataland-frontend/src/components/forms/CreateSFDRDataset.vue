@@ -186,7 +186,7 @@ export default defineComponent({
       postSfdrDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documents: [] as DocumentToUpload[],
+      documents: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport } | undefined,
       namesOfAllCompanyReportsForTheDataset: [] as string[],
     };
@@ -259,7 +259,7 @@ export default defineComponent({
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
-          await uploadFiles(this.documents, assertDefined(this.getKeycloakPromise));
+          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
         const sfdrDataControllerApi = await new ApiClientProvider(
@@ -291,7 +291,8 @@ export default defineComponent({
      */
     updateDocumentsList(reportsNames: string[], reportsToUpload: DocumentToUpload[]) {
       this.namesOfAllCompanyReportsForTheDataset = reportsNames;
-      this.documents = reportsToUpload;
+      this.documents = new Map();
+      reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
     },
   },
   provide() {
