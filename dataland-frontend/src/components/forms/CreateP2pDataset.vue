@@ -126,6 +126,7 @@ import { smoothScroll } from "@/utils/SmoothScroll";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
+import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 
 export default defineComponent({
   setup() {
@@ -202,16 +203,7 @@ export default defineComponent({
       return a;
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      const map = new Map<Subcategory, boolean>();
-      for (const category of this.p2pDataModel) {
-        for (const subcategory of category.subcategories) {
-          map.set(
-            subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedP2pData.data)),
-          );
-        }
-      }
-      return map;
+      return createSubcategoryVisibilityMap(this.p2pDataModel, this.companyAssociatedP2pData.data);
     },
   },
   props: {
