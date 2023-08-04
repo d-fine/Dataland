@@ -122,6 +122,8 @@ export default defineComponent({
             ? `${productionSite.percentageOfTotalRevenue}%`
             : undefined,
         }));
+      } else if (field.name == "sector"){
+        return convertNace(value);
       } else if (field.name == "listOfProducts") {
         const listOfProducts = value as SmeProduct[];
         return listOfProducts.map((product) => ({
