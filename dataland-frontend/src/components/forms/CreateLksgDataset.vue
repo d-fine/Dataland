@@ -163,9 +163,6 @@ export default defineComponent({
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
   },
-  directives: {
-    tooltip: Tooltip,
-  },
   emits: ["datasetCreated"],
   data() {
     return {
