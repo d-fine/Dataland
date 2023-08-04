@@ -2,292 +2,287 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Loveland",
+			"headquarters": "South Burdette",
+			"sector": "action-items",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"hfn6evWLhe0WLqyF2UWj"
+				],
 				"Isin": [
-					"0vOjKHdY9AEm"
+					"1aEqK9tR48VS"
 				],
 				"PermId": [
-					"shkwvY9gy5"
+					"lH86IdV0zZ"
 				],
-				"Ticker": [
-					"zZH2QM4"
+				"Ticker": [],
+				"Duns": [
+					"s9jgkVKXZ"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"E5qvHxCFa"
-				],
-				"CompanyRegistrationNumber": [
-					"54taKslyodZwVpP"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SX",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://vivid-item.com",
+			"countryCode": "IE",
+			"companyAlternativeNames": [
+				"Donnelly - Predovic",
+				"Torphy - Rice"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://naive-capital.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2022-12-19",
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-08-23",
-					"currency": "AMD"
-				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "RSD"
+					"isGroupLevel": "Yes",
+					"currency": "MGA"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "TZS"
+					"currency": "BSD"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-09-23",
+					"currency": "CUP"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
-			"activityLevelReporting": "No",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.8985,
+					"valueAsPercentage": 0.7045,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.5434,
+					"valueAsPercentage": 0.8758,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.8988,
+					"valueAsPercentage": 0.3205,
 					"quality": "NA"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Fort Dane",
-			"headquartersPostalCode": "27154",
-			"sector": "initiatives",
+			"headquarters": "Port Efrainfurt",
+			"headquartersPostalCode": "00131-8089",
+			"sector": "schemas",
 			"identifiers": {
 				"Lei": [
-					"XXL4HR70OGRiwFQHHx8T"
+					"4YAtZXQ6UJg1zat4nYXi"
 				],
 				"Isin": [
-					"pECfzjfHhkIz",
-					"TiUrZ2U86CI3"
+					"F7hvZzkh2Fuo"
 				],
 				"PermId": [
-					"JxeqZbxaVU"
+					"knYhrr972b"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"nkNztLS"
+				],
 				"Duns": [
-					"XNbffDPXA"
+					"bIrMg4vIz"
 				],
-				"VatNumber": [
-					"EwQspOJQE"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"FW9PxTvMwkZFIcH"
+				]
 			},
-			"countryCode": "CI",
+			"countryCode": "PL",
 			"companyAlternativeNames": [
-				"Green Group",
-				"Tremblay, Green and Koepp",
-				"Zboncak, Bode and Smitham"
+				"Feeney - Johnston",
+				"Gleason, Sauer and Kertzmann",
+				"McGlynn, Bernier and Dickens",
+				"Schuppe, Beer and Gerlach"
 			],
-			"website": "https://incredible-strand.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"numberOfEmployees": 88604,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-10-09",
+			"numberOfEmployees": 95116,
 			"referencedReports": {
-				"ESEFReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-02-18",
-					"currency": "BIF"
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-10-06",
+					"currency": "IQD"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "UZS"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-11-01",
-					"currency": "VND"
+					"reportDate": "2023-01-04",
+					"currency": "PKR"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Kihn Group"
+				"assurance": "None"
 			},
+			"scopeOfEntities": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 602868.0489514954,
-					"quality": "Estimated"
+					"value": 834142.2916739248,
+					"dataSource": {
+						"page": 960,
+						"report": "SustainabilityReport",
+						"tagName": "markets"
+					},
+					"quality": "Reported",
+					"comment": "calculate auxiliary port"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.4691,
-					"dataSource": {
-						"page": 804,
-						"report": "SustainabilityReport",
-						"tagName": "methodologies"
-					},
-					"quality": "Estimated",
-					"comment": "bypass solid state feed",
-					"valueAsAbsolute": 400715.2689155191
+					"valueAsPercentage": 0.8987,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 255612.6789539121
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 707755.4719522595,
+					"value": 414881.79315347224,
 					"dataSource": {
-						"page": 940,
+						"page": 285,
 						"report": "SustainabilityReport",
-						"tagName": "synergies"
+						"tagName": "initiatives"
 					},
-					"quality": "Audited",
-					"comment": "copy neural interface"
+					"quality": "Reported",
+					"comment": "generate bluetooth monitor"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.2587,
+					"valueAsPercentage": 0.1639,
 					"dataSource": {
-						"page": 1056,
-						"report": "AnnualReport",
-						"tagName": "solutions"
+						"page": 203,
+						"report": "SustainabilityReport",
+						"tagName": "supply-chains"
 					},
 					"quality": "Audited",
-					"comment": "synthesize digital microchip",
-					"valueAsAbsolute": 278317.8042853251
+					"comment": "input online application",
+					"valueAsAbsolute": 445258.84113973007
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 58021.84803178534,
+					"value": 793546.1766785011,
 					"dataSource": {
-						"page": 771,
+						"page": 747,
 						"report": "AnnualReport",
-						"tagName": "networks"
+						"tagName": "metrics"
 					},
-					"quality": "Audited",
-					"comment": "reboot mobile capacitor"
+					"quality": "Reported",
+					"comment": "copy bluetooth alarm"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.173,
-					"quality": "Incomplete",
-					"valueAsAbsolute": 730204.514041543
+					"valueAsPercentage": 0.2942,
+					"quality": "Estimated",
+					"valueAsAbsolute": 471188.25496872887
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "East Neal",
-			"headquartersPostalCode": "63517",
-			"sector": "e-business",
+			"headquarters": "West Abdiel",
+			"headquartersPostalCode": "40507",
+			"sector": "niches",
 			"identifiers": {
 				"Lei": [
-					"jYgnfLMqKy3oBatIlcPG"
+					"advY7GRcuftLUjwJCxx4"
 				],
 				"Isin": [
-					"5Pcv7bEsmlQ7"
+					"tdB0jmi4uVyU"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"PermId": [
+					"x8dvQUuan1"
+				],
+				"Ticker": [
+					"2tkZ1CL"
+				],
+				"Duns": [
+					"QndYeTgKB"
+				],
 				"VatNumber": [
-					"278VR3yJI"
+					"Ro3T0LxkJ"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"ZYtWSSXNswiVist"
+				]
 			},
-			"countryCode": "FK",
+			"countryCode": "CV",
 			"companyAlternativeNames": [
-				"Miller Inc",
-				"Rodriguez, Pagac and Brakus",
-				"Shields - Hane"
+				"Shields LLC"
 			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://treasured-zombie.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 43482,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-01-21",
 			"assurance": {
-				"assurance": "LimitedAssurance",
+				"assurance": "ReasonableAssurance",
+				"provider": "Effertz - Hilpert",
 				"dataSource": {
-					"page": 768,
-					"report": "SustainabilityReport",
-					"tagName": "initiatives"
+					"page": 34,
+					"report": "AnnualReport",
+					"tagName": "mindshare"
 				}
 			},
-			"scopeOfEntities": "NA",
-			"activityLevelReporting": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 974340.7507543452,
-					"quality": "Estimated"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.1408,
+					"value": 829614.3804676831,
 					"dataSource": {
-						"page": 1,
-						"report": "ESEFReport",
-						"tagName": "users"
+						"page": 945,
+						"report": "IntegratedReport",
+						"tagName": "methodologies"
 					},
-					"quality": "Estimated",
-					"comment": "connect solid state system"
+					"quality": "Audited",
+					"comment": "navigate optical circuit"
 				}
 			},
 			"capex": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 713,
-						"report": "SustainabilityReport",
-						"tagName": "platforms"
-					},
-					"quality": "Incomplete",
-					"comment": "parse cross-platform panel"
-				},
 				"alignedData": {
-					"valueAsPercentage": 0.1814,
+					"quality": "Incomplete"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.6607,
 					"dataSource": {
-						"page": 459,
-						"report": "IntegratedReport",
-						"tagName": "mindshare"
+						"page": 1066,
+						"report": "AnnualReport",
+						"tagName": "e-markets"
 					},
-					"quality": "Audited",
-					"comment": "connect neural interface",
-					"valueAsAbsolute": 451046.22460203245
+					"quality": "Reported",
+					"comment": "parse solid state bandwidth",
+					"valueAsAbsolute": 832957.0208443329
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 123060.03933772445,
+					"value": 861208.1373343244,
 					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.6769,
 					"dataSource": {
-						"page": 120,
-						"report": "IntegratedReport",
-						"tagName": "lifetime value"
+						"page": 386,
+						"report": "ESEFReport",
+						"tagName": "applications"
 					},
-					"quality": "Estimated",
-					"comment": "synthesize bluetooth matrix",
-					"valueAsAbsolute": 528089.6641779691
+					"quality": "Reported",
+					"comment": "transmit redundant system",
+					"valueAsAbsolute": 500626.5531410463
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2019"
 	}
 ]

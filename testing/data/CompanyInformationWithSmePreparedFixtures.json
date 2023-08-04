@@ -2,50 +2,45 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Kubhaven",
-			"headquartersPostalCode": "05378-5384",
+			"headquarters": "Jeffersonville",
+			"headquartersPostalCode": "35420",
+			"sector": "content",
 			"identifiers": {
 				"Lei": [
-					"AZJWesIIGuVY2oPByZUT"
+					"CJejuLSamLVp0PvGqyNl"
 				],
 				"Isin": [],
-				"PermId": [
-					"Ths9KRWsxa"
-				],
-				"Ticker": [
-					"nWpbIJN"
-				],
-				"Duns": [
-					"SrqjuXc1L"
-				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [
-					"8oNt65DsT"
+					"eau9K9xUI"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "EE",
+			"countryCode": "CW",
 			"companyAlternativeNames": [
-				"Lockman Group",
-				"Parker Inc",
-				"Williamson Group"
+				"Klein - Robel",
+				"Kozey - Swift",
+				"Kunze, Muller and Waters",
+				"Wuckert - Ryan"
 			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://punctual-muffin.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"C",
-						"J"
+						"C"
 					],
 					"addressOfHeadquarters": {
-						"city": "Fort Leopoldostad",
-						"state": "Maryland",
-						"postalCode": "53107",
-						"country": "SD"
+						"city": "Schillerview",
+						"country": "SJ"
 					},
-					"numberOfEmployees": 1468,
-					"fiscalYearStart": "2024-05-02"
+					"numberOfEmployees": 2821,
+					"fiscalYearStart": "2023-11-10"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -54,37 +49,23 @@
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Luxurious Wooden Cheese"
-						},
-						{
-							"name": "Oriental Metal Car",
-							"percentageOfTotalRevenue": 0.2119
-						}
-					]
-				}
+				"sites": {},
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 609,
-					"powerFromRenewableSources": "No",
+					"powerConsumptionInMwh": 1287,
 					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 47186806,
 					"naturalHazardsCovered": [
-						"Avalanche",
+						"Flooding",
 						"EarthQuake"
 					]
 				}
@@ -95,36 +76,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "West Jaredcester",
+			"headquarters": "Fort Ashlynn",
+			"headquartersPostalCode": "12586-7992",
+			"sector": "schemas",
 			"identifiers": {
 				"Lei": [
-					"X5iut0eEhfq27Oz2M5Ez"
+					"k4KUiMNoX1BlSLDOndrX"
 				],
-				"Isin": [],
+				"Isin": [
+					"hK9W0v4Ut9Cz",
+					"C7PM57xuyFM4"
+				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"Ticker": [
+					"Z87PrA1"
+				],
+				"Duns": [
+					"6ABR13uRE"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"x4jqpYzc9IhGsaN"
+				]
 			},
-			"countryCode": "MH",
+			"countryCode": "MT",
 			"companyAlternativeNames": [
-				"Daugherty, Cruickshank and Heathcote",
-				"Feeney LLC",
-				"Funk - Stanton",
-				"Jacobi and Sons"
+				"Glover Group",
+				"O'Connell, Collins and Kihn",
+				"Predovic LLC",
+				"Weber, Romaguera and Cummerata"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://scented-warrant.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"F",
-						"H",
-						"K"
+						"H"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -133,65 +121,82 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7715,
-					"fiscalYearStart": "2024-05-10"
+					"numberOfEmployees": 169,
+					"fiscalYearStart": "2023-11-08"
 				},
 				"companyFinancials": {
-					"revenueInEur": 45189783,
-					"operatingCostInEur": 76138923
+					"revenueInEur": 65060516,
+					"capitalAssetsInEur": 53289660
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Deckow - Casper",
+							"nameOfProductionSite": "Hudson, Gibson and Ledner",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Minnie Underpass 454",
-								"city": "North Renee",
-								"state": "Hawaii",
-								"postalCode": "41075",
-								"country": "AQ"
+								"city": "Ambroseberg",
+								"country": "ST"
+							},
+							"percentageOfTotalRevenue": 0.3429
+						},
+						{
+							"nameOfProductionSite": "Weber - Hammes",
+							"addressOfProductionSite": {
+								"city": "South Russell",
+								"postalCode": "27303",
+								"country": "SO"
 							}
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "McGlynn Roads 64441",
-								"city": "Fort Marcelino",
-								"state": "Utah",
-								"country": "FR"
-							},
-							"percentageOfTotalRevenue": 0.7679
-						},
-						{
-							"nameOfProductionSite": "Collins - Upton",
-							"addressOfProductionSite": {
-								"city": "Gibsonville",
-								"state": "New Mexico",
-								"country": "NZ"
-							},
-							"percentageOfTotalRevenue": 0.6639
+								"city": "Hermistonfield",
+								"state": "Nevada",
+								"postalCode": "22846",
+								"country": "TN"
+							}
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Diego Club 271",
-								"city": "Nienowworth",
-								"postalCode": "89630-9344",
-								"country": "NO"
+								"city": "Fort Raymundo",
+								"state": "Florida",
+								"country": "NR"
 							}
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Refined Frozen Sausages"
+						},
+						{
+							"name": "Rustic Fresh Shoes",
+							"percentageOfTotalRevenue": 0.0321
+						}
+					]
+				}
 			},
 			"power": {
-				"investments": {},
-				"consumption": {}
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+				},
+				"consumption": {
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 490,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 33072897
+					"insuranceAgainstNaturalHazards": "Yes",
+					"naturalHazardsCovered": [
+						"Flooding",
+						"Snow",
+						"Hail",
+						"EarthQuake"
+					]
 				}
 			}
 		},
@@ -200,76 +205,130 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Skylarport",
-			"sector": "paradigms",
+			"headquarters": "North Maritzaport",
+			"headquartersPostalCode": "46538-1634",
+			"sector": "interfaces",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"g4fO7h1pQnIX"
+				"Lei": [
+					"ijKXiMkTyvmkdq5wo5xs"
 				],
-				"PermId": [],
-				"Ticker": [],
+				"Isin": [
+					"xuWJlaeBwEfN"
+				],
+				"PermId": [
+					"Ifx7t0mFIW"
+				],
+				"Ticker": [
+					"SqFTD2y"
+				],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"dgvJu4C5mGQtJcB"
-				]
+				"VatNumber": [
+					"iO8waFV5z"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SC",
+			"countryCode": "IQ",
 			"companyAlternativeNames": [
-				"Runolfsson, Quigley and Durgan",
-				"Wiegand LLC"
+				"Bayer, Herzog and Feil",
+				"Hagenes - Waters",
+				"Kutch, Christiansen and Rau",
+				"Prohaska - Fadel"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
+						"E",
 						"H",
-						"L",
-						"M"
+						"K"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 3289,
-					"fiscalYearStart": "2023-11-29"
+					"numberOfEmployees": 2438,
+					"fiscalYearStart": "2023-12-15"
 				},
 				"companyFinancials": {
-					"revenueInEur": 54656771,
-					"operatingCostInEur": 69146132
+					"revenueInEur": 47728063,
+					"operatingCostInEur": 29966332
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Ariel Knoll 72375",
+								"city": "Lynchworth",
+								"country": "VC"
+							},
+							"percentageOfTotalRevenue": 0.3144
+						},
+						{
+							"addressOfProductionSite": {
+								"city": "Grand Prairie",
+								"country": "CZ"
+							},
+							"percentageOfTotalRevenue": 0.7468
+						},
+						{
+							"nameOfProductionSite": "Kiehn, Block and Connelly",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Lesch Green 6032",
+								"city": "Boscotown",
+								"state": "Missouri",
+								"postalCode": "81763-3664",
+								"country": "JM"
+							},
+							"percentageOfTotalRevenue": 0.1162
+						},
+						{
+							"nameOfProductionSite": "Cremin - Kling",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Ken Fork 8958",
+								"city": "Murrayburgh",
+								"state": "Florida",
+								"country": "AD"
+							}
+						}
+					]
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Luxurious Plastic Car"
+							"name": "Elegant Bronze Hat"
 						},
 						{
-							"name": "Unbranded Steel Bacon"
+							"name": "Licensed Plastic Tuna"
+						},
+						{
+							"name": "Refined Cotton Fish"
+						},
+						{
+							"name": "Practical Steel Shoes",
+							"percentageOfTotalRevenue": 0.8397
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 219,
-					"energyConsumptionHeatingAndHotWater": 177,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
+					"powerConsumptionInMwh": 79,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 954,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Snow"
-					]
+					"insuranceAgainstNaturalHazards": "Yes"
 				}
 			}
 		},
