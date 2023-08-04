@@ -9,7 +9,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   function pickDate(): void {
     cy.get('div[data-test="dataDate"]').find("button").click();
     cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
-    cy.get("div.p-datepicker").find('span:contains("13")').click();
+    cy.get("div.p-datepicker").find('span:contains("133")').click();
   }
 
   /**
