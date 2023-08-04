@@ -23,7 +23,7 @@ describe("Component test for LksgPanel", () => {
   it("Should display the total revenue kpi in the correct format", () => {
     const pseudoLksgData = {
       general: { masterData: { dataDate: "2023-01-01", totalRevenueCurrency: 1234567.89 } },
-    } as LksgData;
+    } as unknown;
 
     cy.mountWithPlugins(LksgPanel, {
       data() {
