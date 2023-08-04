@@ -196,11 +196,9 @@ export default defineComponent({
       },
     },
     visibleCategories(): Category[] {
-      const a = this.p2pDataModel.filter(
+      return this.p2pDataModel.filter(
         (category) => category.showIf(this.companyAssociatedP2pData.data) || category.name === "general",
       );
-      console.log(a);
-      return a;
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(this.p2pDataModel, this.companyAssociatedP2pData.data);
