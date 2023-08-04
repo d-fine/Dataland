@@ -292,7 +292,8 @@ export default defineComponent({
   provide() {
     return {
       productsServicesCategoriesPurchased: computed(() => {
-        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations?.productsServicesCategoriesPurchased;
+        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations
+          ?.productsServicesCategoriesPurchased;
       }),
     };
   },
