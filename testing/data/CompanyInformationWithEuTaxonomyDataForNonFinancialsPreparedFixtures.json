@@ -2,69 +2,72 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "South Burdette",
-			"sector": "action-items",
+			"headquarters": "West Rickietown",
+			"sector": "users",
 			"identifiers": {
-				"Lei": [
-					"hfn6evWLhe0WLqyF2UWj"
-				],
+				"Lei": [],
 				"Isin": [
-					"1aEqK9tR48VS"
+					"Br9BNuVICgx5"
 				],
-				"PermId": [
-					"lH86IdV0zZ"
+				"PermId": [],
+				"Ticker": [
+					"15KBcca"
 				],
-				"Ticker": [],
 				"Duns": [
-					"s9jgkVKXZ"
+					"Lr90oZQue"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"EJfsaXPC5"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IE",
+			"countryCode": "GG",
 			"companyAlternativeNames": [
-				"Donnelly - Predovic",
-				"Torphy - Rice"
+				"Lemke, Ernser and Altenwerth",
+				"Sporer - Rogahn"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://naive-capital.biz",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://scaly-airforce.net",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2023-05-30",
+			"numberOfEmployees": 13167,
 			"referencedReports": {
-				"SustainabilityReport": {
+				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "Yes",
-					"currency": "MGA"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "BSD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-09-23",
-					"currency": "CUP"
+					"reportDate": "2023-03-05",
+					"currency": "DJF"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 297,
+					"report": "ESEFReport",
+					"tagName": "synergies"
+				}
 			},
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.7045,
+					"valueAsPercentage": 0.304,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.8758,
+					"valueAsPercentage": 0.3164,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.3205,
+					"valueAsPercentage": 0.3105,
 					"quality": "NA"
 				}
 			}
@@ -74,115 +77,113 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Port Efrainfurt",
-			"headquartersPostalCode": "00131-8089",
-			"sector": "schemas",
+			"headquarters": "North Columbus",
 			"identifiers": {
 				"Lei": [
-					"4YAtZXQ6UJg1zat4nYXi"
+					"PAFNWdd5fAFO3Vub6Gwy"
 				],
 				"Isin": [
-					"F7hvZzkh2Fuo"
+					"m6LbRwJpwmLe",
+					"7fxd2MmJCdhH"
 				],
-				"PermId": [
-					"knYhrr972b"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"CQe7aaHMi"
 				],
-				"Ticker": [
-					"nkNztLS"
-				],
-				"Duns": [
-					"bIrMg4vIz"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"FW9PxTvMwkZFIcH"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PL",
+			"countryCode": "MH",
 			"companyAlternativeNames": [
-				"Feeney - Johnston",
-				"Gleason, Sauer and Kertzmann",
-				"McGlynn, Bernier and Dickens",
-				"Schuppe, Beer and Gerlach"
+				"Leuschke and Sons",
+				"O'Reilly - Heller",
+				"Predovic, Ratke and Stanton"
 			],
+			"website": "https://wrathful-cube.org",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-10-09",
-			"numberOfEmployees": 95116,
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-10-06",
-					"currency": "IQD"
-				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-01-04",
-					"currency": "PKR"
+					"currency": "IQD"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "PGK"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-11-06",
+					"currency": "TRY"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Kulas, Shanahan and Bartoletti",
+				"dataSource": {
+					"page": 584,
+					"report": "AnnualReport",
+					"tagName": "systems"
+				}
 			},
-			"scopeOfEntities": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 834142.2916739248,
-					"dataSource": {
-						"page": 960,
-						"report": "SustainabilityReport",
-						"tagName": "markets"
-					},
-					"quality": "Reported",
-					"comment": "calculate auxiliary port"
+					"value": 423322.5211617537,
+					"quality": "Incomplete"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.8987,
-					"quality": "Incomplete",
-					"valueAsAbsolute": 255612.6789539121
+					"valueAsPercentage": 0.4536,
+					"dataSource": {
+						"page": 390,
+						"report": "IntegratedReport",
+						"tagName": "experiences"
+					},
+					"quality": "Reported",
+					"comment": "calculate cross-platform driver",
+					"valueAsAbsolute": 587851.5040269122
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 414881.79315347224,
+					"value": 412434.7545672208,
 					"dataSource": {
-						"page": 285,
-						"report": "SustainabilityReport",
-						"tagName": "initiatives"
+						"page": 541,
+						"report": "AnnualReport",
+						"tagName": "mindshare"
 					},
 					"quality": "Reported",
-					"comment": "generate bluetooth monitor"
+					"comment": "back up primary capacitor"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.1639,
+					"valueAsPercentage": 0.1741,
 					"dataSource": {
-						"page": 203,
-						"report": "SustainabilityReport",
-						"tagName": "supply-chains"
+						"page": 641,
+						"report": "AnnualReport",
+						"tagName": "action-items"
 					},
-					"quality": "Audited",
-					"comment": "input online application",
-					"valueAsAbsolute": 445258.84113973007
+					"quality": "Estimated",
+					"comment": "program multi-byte pixel",
+					"valueAsAbsolute": 252234.68171898276
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 793546.1766785011,
+					"value": 801692.9722274654,
 					"dataSource": {
-						"page": 747,
+						"page": 105,
 						"report": "AnnualReport",
-						"tagName": "metrics"
+						"tagName": "experiences"
 					},
 					"quality": "Reported",
-					"comment": "copy bluetooth alarm"
+					"comment": "synthesize haptic array"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.2942,
+					"valueAsPercentage": 0.3064,
 					"quality": "Estimated",
-					"valueAsAbsolute": 471188.25496872887
+					"valueAsAbsolute": 354304.79887872934
 				}
 			}
 		},
@@ -191,98 +192,114 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "West Abdiel",
-			"headquartersPostalCode": "40507",
-			"sector": "niches",
+			"headquarters": "Fort Shad",
+			"headquartersPostalCode": "24028",
 			"identifiers": {
 				"Lei": [
-					"advY7GRcuftLUjwJCxx4"
+					"XgPHCpa2C1kAKrMBAiQt"
 				],
 				"Isin": [
-					"tdB0jmi4uVyU"
+					"2CTyZJbA6G2O",
+					"boz4ClDDAhtr"
 				],
 				"PermId": [
-					"x8dvQUuan1"
+					"Fk5enSJZhC"
 				],
-				"Ticker": [
-					"2tkZ1CL"
-				],
+				"Ticker": [],
 				"Duns": [
-					"QndYeTgKB"
+					"wTb2M0oOL"
 				],
 				"VatNumber": [
-					"Ro3T0LxkJ"
+					"6vnkK3glk"
 				],
-				"CompanyRegistrationNumber": [
-					"ZYtWSSXNswiVist"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CV",
+			"countryCode": "AM",
 			"companyAlternativeNames": [
-				"Shields LLC"
+				"Fritsch - Schulist",
+				"Lebsack - Glover",
+				"Lindgren, Fahey and Gislason"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://treasured-zombie.name/",
+			"website": "https://personal-tackle.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-01-21",
+			"fiscalYearDeviation": "NoDeviation",
+			"numberOfEmployees": 22827,
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Effertz - Hilpert",
+				"assurance": "LimitedAssurance",
+				"provider": "Macejkovic and Sons",
 				"dataSource": {
-					"page": 34,
-					"report": "AnnualReport",
-					"tagName": "mindshare"
+					"page": 801,
+					"report": "SustainabilityReport",
+					"tagName": "e-markets"
 				}
 			},
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 829614.3804676831,
 					"dataSource": {
-						"page": 945,
-						"report": "IntegratedReport",
-						"tagName": "methodologies"
+						"page": 399,
+						"report": "AnnualReport",
+						"tagName": "technologies"
 					},
 					"quality": "Audited",
-					"comment": "navigate optical circuit"
+					"comment": "connect wireless monitor"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.3056,
+					"dataSource": {
+						"page": 858,
+						"report": "SustainabilityReport",
+						"tagName": "users"
+					},
+					"quality": "Estimated",
+					"comment": "input bluetooth panel"
 				}
 			},
 			"capex": {
 				"alignedData": {
-					"quality": "Incomplete"
+					"valueAsPercentage": 0.733,
+					"dataSource": {
+						"page": 478,
+						"report": "AnnualReport",
+						"tagName": "markets"
+					},
+					"quality": "Audited",
+					"comment": "copy back-end bus",
+					"valueAsAbsolute": 861624.3261029013
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.6607,
 					"dataSource": {
-						"page": 1066,
+						"page": 204,
 						"report": "AnnualReport",
-						"tagName": "e-markets"
+						"tagName": "models"
 					},
-					"quality": "Reported",
-					"comment": "parse solid state bandwidth",
-					"valueAsAbsolute": 832957.0208443329
+					"quality": "Estimated",
+					"comment": "reboot solid state card"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 861208.1373343244,
 					"quality": "Estimated"
 				},
-				"eligibleData": {
+				"alignedData": {
 					"dataSource": {
-						"page": 386,
-						"report": "ESEFReport",
-						"tagName": "applications"
+						"page": 221,
+						"report": "AnnualReport",
+						"tagName": "models"
 					},
-					"quality": "Reported",
-					"comment": "transmit redundant system",
-					"valueAsAbsolute": 500626.5531410463
+					"quality": "Audited",
+					"comment": "calculate optical bus",
+					"valueAsAbsolute": 481031.7813535221
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.948,
+					"quality": "Incomplete"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021"
 	}
 ]

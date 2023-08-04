@@ -292,7 +292,7 @@ export default defineComponent({
   provide() {
     return {
       procurementCategories: computed(() => {
-        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations?.productsServicesCategoriesPurchased;
+        return this.companyAssociatedLksgData.data?.general?.productionSpecific?.specificProcurement;
       }),
     };
   },

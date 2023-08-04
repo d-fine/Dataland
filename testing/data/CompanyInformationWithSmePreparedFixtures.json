@@ -2,45 +2,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Jeffersonville",
-			"headquartersPostalCode": "35420",
-			"sector": "content",
+			"headquarters": "Shreveport",
+			"headquartersPostalCode": "17400",
+			"sector": "convergence",
 			"identifiers": {
-				"Lei": [
-					"CJejuLSamLVp0PvGqyNl"
-				],
+				"Lei": [],
 				"Isin": [],
-				"PermId": [],
+				"PermId": [
+					"fB4F778JgR"
+				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"eau9K9xUI"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CW",
+			"countryCode": "NR",
 			"companyAlternativeNames": [
-				"Klein - Robel",
-				"Kozey - Swift",
-				"Kunze, Muller and Waters",
-				"Wuckert - Ryan"
+				"Franecki Inc",
+				"Hilpert, Krajcik and Prosacco",
+				"Rice - Schmidt"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://punctual-muffin.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"C"
+						"H",
+						"K"
 					],
 					"addressOfHeadquarters": {
-						"city": "Schillerview",
-						"country": "SJ"
+						"streetAndHouseNumber": "Enos Shoals 6695",
+						"city": "Brentwood",
+						"postalCode": "76140-6503",
+						"country": "ES"
 					},
-					"numberOfEmployees": 2821,
-					"fiscalYearStart": "2023-11-10"
+					"numberOfEmployees": 416,
+					"fiscalYearStart": "2024-07-10"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -49,23 +47,93 @@
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {}
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"city": "Fort Taylorburgh",
+								"country": "SA"
+							},
+							"percentageOfTotalRevenue": 0.6509
+						},
+						{
+							"nameOfProductionSite": "Lang LLC",
+							"addressOfProductionSite": {
+								"city": "Weymouth Town",
+								"country": "HM"
+							}
+						},
+						{
+							"nameOfProductionSite": "Schmidt, Kuhic and Stamm",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Collins Greens 4471",
+								"city": "Euclid",
+								"country": "BA"
+							},
+							"percentageOfTotalRevenue": 0.0664
+						},
+						{
+							"nameOfProductionSite": "Murazik, Parisian and Abbott",
+							"addressOfProductionSite": {
+								"city": "Bergefurt",
+								"state": "North Carolina",
+								"country": "VU"
+							},
+							"percentageOfTotalRevenue": 0.2525
+						},
+						{
+							"nameOfProductionSite": "Hauck - Cruickshank",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Stephanie Fort 59324",
+								"city": "Robertoview",
+								"country": "GY"
+							}
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Rustic Plastic Pizza",
+							"percentageOfTotalRevenue": 0.8734
+						},
+						{
+							"name": "Rustic Cotton Fish",
+							"percentageOfTotalRevenue": 0.9841
+						},
+						{
+							"name": "Handcrafted Bronze Bike",
+							"percentageOfTotalRevenue": 0.0627
+						},
+						{
+							"name": "Ergonomic Plastic Keyboard"
+						},
+						{
+							"name": "Luxurious Bronze Shoes",
+							"percentageOfTotalRevenue": 0.3698
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1287,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerFromRenewableSources": "Yes",
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
 					"naturalHazardsCovered": [
+						"Snow",
+						"Avalanche",
 						"Flooding",
+						"Wind",
+						"Hail",
 						"EarthQuake"
 					]
 				}
@@ -76,44 +144,36 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Ashlynn",
-			"headquartersPostalCode": "12586-7992",
-			"sector": "schemas",
+			"headquarters": "North Darrylstead",
+			"sector": "synergies",
 			"identifiers": {
-				"Lei": [
-					"k4KUiMNoX1BlSLDOndrX"
-				],
+				"Lei": [],
 				"Isin": [
-					"hK9W0v4Ut9Cz",
-					"C7PM57xuyFM4"
+					"hG38llKjMI93",
+					"obxAkoq9tq7W"
 				],
 				"PermId": [],
 				"Ticker": [
-					"Z87PrA1"
+					"H5jmxf4"
 				],
 				"Duns": [
-					"6ABR13uRE"
+					"AZ4oPRoKT"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"x4jqpYzc9IhGsaN"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MT",
+			"countryCode": "PS",
 			"companyAlternativeNames": [
-				"Glover Group",
-				"O'Connell, Collins and Kihn",
-				"Predovic LLC",
-				"Weber, Romaguera and Cummerata"
+				"Gerhold Inc",
+				"Ullrich LLC"
 			],
+			"companyLegalForm": "AG",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [
-						"H"
-					],
+					"sector": [],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
 						"postalCode": "12345",
@@ -121,80 +181,35 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 169,
-					"fiscalYearStart": "2023-11-08"
+					"numberOfEmployees": 4055,
+					"fiscalYearStart": "2023-09-18"
 				},
 				"companyFinancials": {
-					"revenueInEur": 65060516,
-					"capitalAssetsInEur": 53289660
+					"operatingCostInEur": 54568485,
+					"capitalAssetsInEur": 18968903
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Hudson, Gibson and Ledner",
-							"addressOfProductionSite": {
-								"city": "Ambroseberg",
-								"country": "ST"
-							},
-							"percentageOfTotalRevenue": 0.3429
-						},
-						{
-							"nameOfProductionSite": "Weber - Hammes",
-							"addressOfProductionSite": {
-								"city": "South Russell",
-								"postalCode": "27303",
-								"country": "SO"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "Hermistonfield",
-								"state": "Nevada",
-								"postalCode": "22846",
-								"country": "TN"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "Fort Raymundo",
-								"state": "Florida",
-								"country": "NR"
-							}
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Refined Frozen Sausages"
-						},
-						{
-							"name": "Rustic Fresh Shoes",
-							"percentageOfTotalRevenue": 0.0321
-						}
-					]
-				}
+				"sites": {},
+				"products": {}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
-				},
+				"investments": {},
 				"consumption": {
+					"powerConsumptionInMwh": 399,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 490,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 3
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
+					"insuranceAgainstNaturalHazards": "No",
 					"naturalHazardsCovered": [
 						"Flooding",
+						"Avalanche",
 						"Snow",
 						"Hail",
+						"Wind",
 						"EarthQuake"
 					]
 				}
@@ -205,130 +220,72 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "North Maritzaport",
-			"headquartersPostalCode": "46538-1634",
-			"sector": "interfaces",
+			"headquarters": "Miguelcester",
+			"headquartersPostalCode": "24200",
 			"identifiers": {
-				"Lei": [
-					"ijKXiMkTyvmkdq5wo5xs"
-				],
+				"Lei": [],
 				"Isin": [
-					"xuWJlaeBwEfN"
+					"FQbkHQjZ03FE"
 				],
 				"PermId": [
-					"Ifx7t0mFIW"
+					"oJv6eViLG1"
 				],
 				"Ticker": [
-					"SqFTD2y"
+					"jd0CLyN"
 				],
 				"Duns": [],
 				"VatNumber": [
-					"iO8waFV5z"
+					"Zpd0Rw7Qk"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"0qi7uyXH1aLqprb"
+				]
 			},
-			"countryCode": "IQ",
-			"companyAlternativeNames": [
-				"Bayer, Herzog and Feil",
-				"Hagenes - Waters",
-				"Kutch, Christiansen and Rau",
-				"Prohaska - Fadel"
-			],
+			"countryCode": "GB",
+			"companyAlternativeNames": [],
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"E",
-						"H",
-						"K"
+						"G",
+						"L",
+						"M"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2438,
-					"fiscalYearStart": "2023-12-15"
+					"numberOfEmployees": 7431,
+					"fiscalYearStart": "2024-06-20"
 				},
 				"companyFinancials": {
-					"revenueInEur": 47728063,
-					"operatingCostInEur": 29966332
+					"revenueInEur": 72760383
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ariel Knoll 72375",
-								"city": "Lynchworth",
-								"country": "VC"
-							},
-							"percentageOfTotalRevenue": 0.3144
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "Grand Prairie",
-								"country": "CZ"
-							},
-							"percentageOfTotalRevenue": 0.7468
-						},
-						{
-							"nameOfProductionSite": "Kiehn, Block and Connelly",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lesch Green 6032",
-								"city": "Boscotown",
-								"state": "Missouri",
-								"postalCode": "81763-3664",
-								"country": "JM"
-							},
-							"percentageOfTotalRevenue": 0.1162
-						},
-						{
-							"nameOfProductionSite": "Cremin - Kling",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ken Fork 8958",
-								"city": "Murrayburgh",
-								"state": "Florida",
-								"country": "AD"
-							}
-						}
-					]
-				},
+				"sites": {},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Elegant Bronze Hat"
-						},
-						{
-							"name": "Licensed Plastic Tuna"
-						},
-						{
-							"name": "Refined Cotton Fish"
-						},
-						{
-							"name": "Practical Steel Shoes",
-							"percentageOfTotalRevenue": 0.8397
+							"name": "Oriental Metal Ball"
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 79,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 954,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 695,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes"
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},
