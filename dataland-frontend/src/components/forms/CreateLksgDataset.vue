@@ -228,12 +228,9 @@ export default defineComponent({
         assertDefined(this.getKeycloakPromise)(),
       ).getLksgDataControllerApi();
 
-      const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
-      const lksgDataset = dataResponse.data;
+      const lksgDataset = (await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId)).data;
       const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
-      if (dataDateFromDataset) {
-        this.dataDate = new Date(dataDateFromDataset);
-      }
+      this.dataDate = dataDateFromDataset ? new Date(dataDateFromDataset) : this.dataDate;
       this.companyAssociatedLksgData = objectDropNull(lksgDataset as ObjectType) as CompanyAssociatedDataLksgData;
       this.waitingForData = false;
     },

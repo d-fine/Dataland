@@ -232,12 +232,9 @@ export default defineComponent({
         assertDefined(this.getKeycloakPromise)(),
       ).getP2pDataControllerApi();
 
-      const dataResponse = await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId);
-      const p2pDataset = dataResponse.data;
+      const p2pDataset = (await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId)).data;
       const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
-      if (dataDateFromDataset) {
-        this.dataDate = new Date(dataDateFromDataset);
-      }
+      this.dataDate = dataDateFromDataset ? new Date(dataDateFromDataset) : this.dataDate;
       this.companyAssociatedP2pData = objectDropNull(
         p2pDataset as ObjectType,
       ) as CompanyAssociatedDataPathwaysToParisData;
