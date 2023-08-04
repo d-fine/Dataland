@@ -10,12 +10,13 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 data class DataPointAbsoluteAndPercentage<T> (
     val valueAsPercentage: T? = null,
 
-    override val quality: QualityOptions,
+    @field:JsonProperty(required = true)
+    val quality: QualityOptions,
 
-    override val dataSource: CompanyReportReference? = null,
+    val dataSource: CompanyReportReference? = null,
 
-    override val comment: String? = null,
+    val comment: String? = null,
 
     val valueAsAbsolute: T? = null,
 
-) : DataPointBaseInformation(quality, dataSource, comment)
+)

@@ -29,6 +29,9 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
       generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0],
     ),
   );
+  preparedFixtures.push(
+    manipulateFixtureForOneFilledSubcategory(generateFixtureDataset<SfdrData>(generateSfdrData, 1)[0]),
+  );
 
   return preparedFixtures;
 }
@@ -44,6 +47,58 @@ function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<
   return input;
 }
 
+/**
+ * Sets the company name and the date in the fixture data to a specific string
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "CompanyInformationWithSfdrData";
+  input.t.general.general.fiscalYearEnd = "2020-01-03";
+  input.t.environmental!.energyPerformance = undefined;
+  input.t.environmental!.waste = undefined;
+  input.t.environmental!.water = undefined;
+  input.t.environmental!.emissions = undefined;
+  input.t.environmental!.greenhouseGasEmissions = undefined;
+  input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure = {
+    quality: "Audited",
+    dataSource: {
+      report: "string",
+      page: 0,
+      tagName: "string",
+    },
+    comment: "string",
+    value: "Yes",
+  };
+  input.t.environmental!.biodiversity!.protectedAreasExposure = {
+    quality: "Audited",
+    dataSource: {
+      report: "string",
+      page: 0,
+      tagName: "string",
+    },
+    comment: "string",
+    value: "No",
+  };
+  input.t.environmental!.biodiversity!.rareOrEndangeredEcosystemsExposure = {
+    quality: "Audited",
+    dataSource: {
+      report: "string",
+      page: 0,
+      tagName: "string",
+    },
+    comment: "string",
+    value: "Yes",
+  };
+
+  input.t.social = {
+    antiCorruptionAndAntiBribery: undefined,
+    greenSecurities: undefined,
+    humanRights: undefined,
+    socialAndEmployeeMatters: undefined,
+  };
+  return input;
+}
 /**
  * Sets the company name and the date in the fixture data to a specific string
  * @param input Fixture data to be manipulated

@@ -149,17 +149,21 @@ export default defineComponent({
           }
         }
 
-        // Reverse the duplicates array before processing to make sure
-        // the removal does not affect the remaining indexes.
-        duplicatesWithIndex.reverse().forEach(({ report, index }) => {
-          this.openModalToDisplayDuplicateNameError(report.fileNameWithoutSuffix);
-          (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(index);
-        });
+        this.handleReportDuplicates([...duplicatesWithIndex].reverse());
       } else {
         this.emitReferenceableReportNamesChangedEvent();
       }
     },
-
+    /**
+     * Scan list of file names and show modal if duplicate
+     * @param duplicatesWithIndex a list of reports to upload
+     */
+    handleReportDuplicates(duplicatesWithIndex: { report: ReportToUpload; index: number }[]) {
+      duplicatesWithIndex.forEach(({ report, index }) => {
+        this.openModalToDisplayDuplicateNameError(report.fileNameWithoutSuffix);
+        (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(index);
+      });
+    },
     /**
      * When the X besides existing reports is clicked this function should be called and
      * removes the corresponding report from the list

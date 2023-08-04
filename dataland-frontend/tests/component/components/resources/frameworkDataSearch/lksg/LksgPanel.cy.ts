@@ -10,6 +10,7 @@ import {
   QaStatus,
 } from "@clients/backend";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -72,14 +73,6 @@ describe("Component test for LksgPanel", () => {
     cy.get("em").its("length").should("equal", 11);
     cy.get("tr").its("length").should("equal", 13);
   });
-
-  /**
-   * Toggles the data-table row group with the given key
-   * @param groupKey the key of the row group to expand
-   */
-  function toggleRowGroup(groupKey: string): void {
-    cy.get(`span[id=${groupKey}]`).siblings("button").last().click();
-  }
 
   it("Check Lksg view page for company with one Lksg data set", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);

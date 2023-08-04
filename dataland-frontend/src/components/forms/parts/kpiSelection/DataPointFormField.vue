@@ -28,7 +28,6 @@
           />
         </div>
       </div>
-      <!-- //TODO make the label and description modular instead of being hardcoded -->
       <div>
         <FormKit type="group" name="dataSource">
           <div class="next-to-each-other">

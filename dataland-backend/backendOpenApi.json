@@ -2846,6 +2846,9 @@
         }
       },
       "DataPointOneValueYesNo": {
+        "required": [
+          "quality"
+        ],
         "type": "object",
         "properties": {
           "quality": {
@@ -2863,6 +2866,9 @@
         }
       },
       "DataPointWithUnitBigDecimal": {
+        "required": [
+          "quality"
+        ],
         "type": "object",
         "properties": {
           "quality": {
@@ -4964,8 +4970,14 @@
         }
       },
       "DataPointAbsoluteAndPercentageBigDecimal": {
+        "required": [
+          "quality"
+        ],
         "type": "object",
         "properties": {
+          "valueAsPercentage": {
+            "type": "number"
+          },
           "quality": {
             "$ref": "#/components/schemas/QualityOptions"
           },
@@ -4975,15 +4987,15 @@
           "comment": {
             "type": "string"
           },
-          "valueAsPercentage": {
-            "type": "number"
-          },
           "valueAsAbsolute": {
             "type": "number"
           }
         }
       },
       "DataPointOneValueBigDecimal": {
+        "required": [
+          "quality"
+        ],
         "type": "object",
         "properties": {
           "quality": {
@@ -5447,10 +5459,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
