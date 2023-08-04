@@ -179,6 +179,7 @@ export default defineComponent({
       }
     },
   },
+    //TODO rename this file to DataPointFormWithToggle once all other work is finished
   props: {
     name: {
       type: String,
