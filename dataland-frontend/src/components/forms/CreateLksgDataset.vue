@@ -96,7 +96,6 @@ import Card from "primevue/card";
 import { defineComponent, inject, computed } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
@@ -227,7 +226,9 @@ export default defineComponent({
 
       const lksgDataset = (await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId)).data;
       const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
-      this.dataDate = dataDateFromDataset ? new Date(dataDateFromDataset) : this.dataDate;
+      if (dataDateFromDataset) {
+        this.dataDate = new Date(dataDateFromDataset);
+      }
       this.companyAssociatedLksgData = objectDropNull(lksgDataset as ObjectType) as CompanyAssociatedDataLksgData;
       this.waitingForData = false;
     },

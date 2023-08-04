@@ -229,7 +229,9 @@ export default defineComponent({
 
       const p2pDataset = (await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId)).data;
       const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
-      this.dataDate = dataDateFromDataset ? new Date(dataDateFromDataset) : this.dataDate;
+      if (dataDateFromDataset) {
+        this.dataDate = new Date(dataDateFromDataset);
+      }
       this.companyAssociatedP2pData = objectDropNull(
         p2pDataset as ObjectType,
       ) as CompanyAssociatedDataPathwaysToParisData;
