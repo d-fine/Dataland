@@ -15,5 +15,5 @@ data class LksgGeneralProductionSpecificOwnOperations(
     val mostImportantProducts: List<LksgProduct>? = null,
 
     @field:Schema(example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE)
-    val productsServicesCategoriesPurchased: Map<ProcurementCategoryType, LksgProcurementCategory>? = null,
+    val productsServicesCategoriesPurchased: Map<ProcurementCategoryType, LksgProcurementCategory>?,
 )
