@@ -90,43 +90,34 @@
 </template>
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
-import { ApiClientProvider } from "@/services/ApiClients";
-import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Tooltip from "primevue/tooltip";
-import PrimeButton from "primevue/button";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import Calendar from "primevue/calendar";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
-import { AxiosError } from "axios";
-import { CompanyAssociatedDataPathwaysToParisData } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
-import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
-import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
-import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
+import { ApiClientProvider } from "@/services/ApiClients";
+import Card from "primevue/card";
+import Calendar from "primevue/calendar";
+import Keycloak from "keycloak-js";
+import PrimeButton from "primevue/button";
+import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { AxiosError } from "axios";
+import { CompanyAssociatedDataPathwaysToParisData } from "@clients/backend";
+import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
+import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
+import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
+import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
+import SuccessMessage from "@/components/messages/SuccessMessage.vue";
+import FailMessage from "@/components/messages/FailMessage.vue";
+import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
+import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -136,30 +127,22 @@ export default defineComponent({
   },
   name: "CreateP2pDataset",
   components: {
-    SubmitButton,
-    SubmitSideBar,
-    UploadFormHeader,
-    SuccessMessage,
-    FailMessage,
     FormKit,
+    UploadFormHeader,
+    InputTextFormField,
+    MultiSelectFormField,
+    NumberFormField,
+    YesNoFormField,
+    PercentageFormField,
     Card,
     PrimeButton,
     Calendar,
-    YesNoFormField,
-    InputTextFormField,
-    FreeTextFormField,
-    NumberFormField,
+    SuccessMessage,
+    FailMessage,
+    SubmitButton,
+    SubmitSideBar,
     DateFormField,
     SingleSelectFormField,
-    MultiSelectFormField,
-    NaceCodeFormField,
-    AddressFormField,
-    RadioButtonsFormField,
-    YesNoNaFormField,
-    PercentageFormField,
-    ProductionSitesFormField,
-    MostImportantProductsFormField,
-    ProcurementCategoriesFormField,
   },
   emits: ["datasetCreated"],
   data() {
