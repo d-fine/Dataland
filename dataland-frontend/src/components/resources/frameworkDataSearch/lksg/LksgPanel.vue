@@ -233,7 +233,7 @@ export default defineComponent({
           ),
           percentageOfTotalProcurement:
             lksgProcurementCategory.percentageOfTotalProcurement != null
-              ? String(lksgProcurementCategory.percentageOfTotalProcurement)
+              ? String(lksgProcurementCategory.percentageOfTotalProcurement).concat(" %")
               : null,
         };
       });

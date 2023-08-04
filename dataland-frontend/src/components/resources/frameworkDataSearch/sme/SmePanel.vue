@@ -124,7 +124,7 @@ export default defineComponent({
           nameOfProductionSite: productionSite.nameOfProductionSite,
           addressOfProductionSite: productionSite.addressOfProductionSite,
           percentageOfTotalRevenue: productionSite.percentageOfTotalRevenue
-            ? `${productionSite.percentageOfTotalRevenue}%`
+            ? `${productionSite.percentageOfTotalRevenue} %`
             : undefined,
         }));
       } else if (field.name == "sector") {
@@ -134,7 +134,7 @@ export default defineComponent({
         return listOfProducts.map((product) => ({
           name: product.name,
           percentageOfTotalRevenue: product.percentageOfTotalRevenue
-            ? `${product.percentageOfTotalRevenue}%`
+            ? `${product.percentageOfTotalRevenue} %`
             : undefined,
         }));
       } else if (fieldsToConvertToMillions.includes(field.name)) {
