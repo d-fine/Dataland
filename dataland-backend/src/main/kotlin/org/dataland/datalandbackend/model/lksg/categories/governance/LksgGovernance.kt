@@ -1,24 +1,24 @@
 package org.dataland.datalandbackend.model.lksg.categories.governance
 
 import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
-      .LksgGovernanceRiskManagementOwnOperations
+    .LksgGovernanceCertificationsPoliciesAndResponsibilities
 import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
-      .LksgGovernanceGrievanceMechanismOwnOperations
+    .LksgGovernanceGeneralViolations
 import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
-      .LksgGovernanceCertificationsPoliciesAndResponsibilities
+    .LksgGovernanceGrievanceMechanismOwnOperations
 import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
-      .LksgGovernanceGeneralViolations
+    .LksgGovernanceRiskManagementOwnOperations
 
 /**
  * --- API model ---
  * Fields of the category "Governance" of the lksg framework.
 */
 data class LksgGovernance(
-      val riskManagementOwnOperations: LksgGovernanceRiskManagementOwnOperations? = null,
+    val riskManagementOwnOperations: LksgGovernanceRiskManagementOwnOperations? = null,
 
-      val grievanceMechanismOwnOperations: LksgGovernanceGrievanceMechanismOwnOperations? = null,
+    val grievanceMechanismOwnOperations: LksgGovernanceGrievanceMechanismOwnOperations? = null,
 
-      val certificationsPoliciesAndResponsibilities: LksgGovernanceCertificationsPoliciesAndResponsibilities? = null,
+    val certificationsPoliciesAndResponsibilities: LksgGovernanceCertificationsPoliciesAndResponsibilities? = null,
 
-      val generalViolations: LksgGovernanceGeneralViolations? = null,
+    val generalViolations: LksgGovernanceGeneralViolations? = null,
 )

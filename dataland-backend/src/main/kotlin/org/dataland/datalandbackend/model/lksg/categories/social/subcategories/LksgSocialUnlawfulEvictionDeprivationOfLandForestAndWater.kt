@@ -8,13 +8,13 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * "Social" of the Lksg framework.
 */
 data class LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater(
-      val unlawfulEvictionAndTakingOfLand: YesNo? = null,
+    val unlawfulEvictionAndTakingOfLand: YesNo? = null,
 
-      val unlawfulEvictionAndTakingOfLandRisk: String? = null,
+    val unlawfulEvictionAndTakingOfLandRisk: String? = null,
 
-      val unlawfulEvictionAndTakingOfLandStrategies: YesNo? = null,
+    val unlawfulEvictionAndTakingOfLandStrategies: YesNo? = null,
 
-      val unlawfulEvictionAndTakingOfLandStrategiesName: String? = null,
+    val unlawfulEvictionAndTakingOfLandStrategiesName: String? = null,
 
-      val voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: YesNo? = null,
+    val voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: YesNo? = null,
 )

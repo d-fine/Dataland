@@ -9,15 +9,15 @@ import java.math.BigDecimal
  * Lksg framework.
 */
 data class LksgSocialDisregardForFreedomOfAssociation(
-      val freedomOfAssociation: YesNo? = null,
+    val freedomOfAssociation: YesNo? = null,
 
-      val employeeRepresentation: BigDecimal? = null,
+    val employeeRepresentation: BigDecimal? = null,
 
-      val discriminationForTradeUnionMembers: YesNo? = null,
+    val discriminationForTradeUnionMembers: YesNo? = null,
 
-      val freedomOfOperationForTradeUnion: YesNo? = null,
+    val freedomOfOperationForTradeUnion: YesNo? = null,
 
-      val freedomOfAssociationTraining: YesNo? = null,
+    val freedomOfAssociationTraining: YesNo? = null,
 
-      val worksCouncil: YesNo? = null,
+    val worksCouncil: YesNo? = null,
 )

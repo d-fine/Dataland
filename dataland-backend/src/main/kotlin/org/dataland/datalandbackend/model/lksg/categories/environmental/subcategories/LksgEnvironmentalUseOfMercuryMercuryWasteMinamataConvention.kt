@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
 
-import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.BaseDataPoint
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
@@ -9,17 +9,17 @@ import org.dataland.datalandbackend.model.BaseDataPoint
  * "Environmental" of the lksg framework.
 */
 data class LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention(
-      val mercuryAndMercuryWasteHandling: YesNo? = null,
+    val mercuryAndMercuryWasteHandling: YesNo? = null,
 
-      val mercuryAndMercuryWasteHandlingPolicy: BaseDataPoint<YesNo>? = null,
+    val mercuryAndMercuryWasteHandlingPolicy: BaseDataPoint<YesNo>? = null,
 
-      val mercuryAddedProductsHandling: YesNo? = null,
+    val mercuryAddedProductsHandling: YesNo? = null,
 
-      val mercuryAddedProductsHandlingRiskOfExposure: YesNo? = null,
+    val mercuryAddedProductsHandlingRiskOfExposure: YesNo? = null,
 
-      val mercuryAddedProductsHandlingRiskOfDisposal: YesNo? = null,
+    val mercuryAddedProductsHandlingRiskOfDisposal: YesNo? = null,
 
-      val mercuryAndMercuryCompoundsProductionAndUse: YesNo? = null,
+    val mercuryAndMercuryCompoundsProductionAndUse: YesNo? = null,
 
-      val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo? = null,
+    val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo? = null,
 )

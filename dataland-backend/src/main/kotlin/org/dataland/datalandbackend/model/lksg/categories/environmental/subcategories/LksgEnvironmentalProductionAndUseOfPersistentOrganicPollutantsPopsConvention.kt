@@ -8,13 +8,13 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * category "Environmental" of the lksg framework.
 */
 data class LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention(
-      val persistentOrganicPollutantsProductionAndUse: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUse: YesNo? = null,
 
-      val persistentOrganicPollutantsUsed: String? = null,
+    val persistentOrganicPollutantsUsed: String? = null,
 
-      val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo? = null,
 
-      val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo? = null,
+    val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo? = null,
 
-      val legalRestrictedWasteProcesses: YesNo? = null,
+    val legalRestrictedWasteProcesses: YesNo? = null,
 )

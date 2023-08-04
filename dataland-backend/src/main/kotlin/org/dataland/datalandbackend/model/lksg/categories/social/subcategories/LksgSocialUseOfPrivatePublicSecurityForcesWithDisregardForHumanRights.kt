@@ -9,17 +9,17 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  * category "Social" of the Lksg framework.
 */
 data class LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights(
-      val useOfPrivatePublicSecurityForces: YesNo? = null,
+    val useOfPrivatePublicSecurityForces: YesNo? = null,
 
-      val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo? = null,
+    val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo? = null,
 
-      val instructionOfSecurityForces: YesNo? = null,
+    val instructionOfSecurityForces: YesNo? = null,
 
-      val humanRightsTraining: YesNo? = null,
+    val humanRightsTraining: YesNo? = null,
 
-      val stateSecurityForces: YesNoNa? = null,
+    val stateSecurityForces: YesNoNa? = null,
 
-      val privateSecurityForces: YesNoNa? = null,
+    val privateSecurityForces: YesNoNa? = null,
 
-      val useOfPrivatePublicSecurityForcesMeasures: String? = null,
+    val useOfPrivatePublicSecurityForcesMeasures: String? = null,
 )
