@@ -102,7 +102,12 @@ export default defineComponent({
      * @returns the formatted value
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
-      const fieldsToConvertToMillions = ["revenueInEur", "operatingCostInEur", "capitalAssetsInEur", "amountCoveredByInsuranceAgainstNaturalHazards"];
+      const fieldsToConvertToMillions = [
+        "revenueInEur",
+        "operatingCostInEur",
+        "capitalAssetsInEur",
+        "amountCoveredByInsuranceAgainstNaturalHazards",
+      ];
       const optionFields = [
         "percentageOfInvestmentsInEnhancingEnergyEfficiency",
         "energyConsumptionCoveredByOwnRenewablePowerGeneration",
@@ -122,7 +127,7 @@ export default defineComponent({
             ? `${productionSite.percentageOfTotalRevenue}%`
             : undefined,
         }));
-      } else if (field.name == "sector"){
+      } else if (field.name == "sector") {
         return convertNace(value);
       } else if (field.name == "listOfProducts") {
         const listOfProducts = value as SmeProduct[];
