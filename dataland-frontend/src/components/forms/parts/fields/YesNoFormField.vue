@@ -27,6 +27,7 @@
         <div class="mb-3">
           <RadioButtonsFormElement
             name="value"
+            v-model="currentValue"
             :validation="validation"
             :validation-label="validationLabel ?? label"
             :options="yesNoOptions"
@@ -70,14 +71,14 @@
           <UploadFormHeader
             :label="`${label} Quality`"
             description="The level of confidence associated to the value."
-            :is-required="true"
+            :is-required="isDataQualityRequired"
           />
           <div class="md:col-6 col-12 p-0">
             <FormKit
               type="select"
-              v-model="currentQualityValue"
+              :modelValue="!isDataQualityRequired ? 'NA' : currentQualityValue"
               name="quality"
-              :validation="'required'"
+              :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
               placeholder="Data quality"
               :options="qualityOptions"
@@ -146,6 +147,7 @@ export default defineComponent({
         label: qualityOption,
         value: qualityOption,
       })),
+      currentValue: undefined,
       currentReportValue: "",
       currentPageValue: "",
       currentQualityValue: "",
@@ -154,6 +156,9 @@ export default defineComponent({
   computed: {
     displayreportsName(): string[] {
       return this.reportsName ?? this.injectReportsName;
+    },
+    isDataQualityRequired(): boolean {
+      return this.currentValue
     },
   },
   emits: ["documentUpdated"],

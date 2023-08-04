@@ -11,16 +11,20 @@
             :validation-label="validationLabel ?? label"
             :validation="`number|${validation}`"
             placeholder="Value"
+            outer-class="short"
           />
-          <span v-if="unit" class="form-field-label pb-3">in {{ unit }}</span>
+          <div v-if="unit" class="form-field-label pb-3">
+            <FormKit type="hidden" name="unit" :modelValue="unit" />
+            <span>in {{ unit }}</span>
+          </div>
           <FormKit
-            v-if="options"
+            v-else-if="options"
             type="select"
             name="unit"
             v-model="currentUnit"
             placeholder="Unit"
             :options="options"
-            inner-class="medium"
+            outer-class="short"
           />
         </div>
       </div>
@@ -62,15 +66,15 @@
         <UploadFormHeader
           :label="`${label} Quality`"
           description="The level of confidence associated to the value."
-          :is-required="true"
+          :is-required="isDataQualityRequired"
         />
         <div class="md:col-6 col-12 p-0">
           <FormKit
             data-test="dataQuality"
             type="select"
-            v-model="currentQualityValue"
+            :modelValue="!isDataQualityRequired ? 'NA' : currentQualityValue"
             name="quality"
-            :validation="'required'"
+            :validation="isDataQualityRequired ? 'required' : ''"
             validation-label="Data quality"
             placeholder="Data quality"
             :options="qualityOptions"
@@ -124,9 +128,9 @@ export default defineComponent({
     displayreportsName(): string[] {
       return (this.reportsName ?? this.injectReportsName) as string[];
     },
-    // isUnit(): boolean {
-    //   return
-    // }
+    isDataQualityRequired(): boolean {
+      return this.currentValue !== "";
+    },
   },
   data() {
     return {
