@@ -2,16 +2,13 @@ import {
   CompanyInformation,
   Configuration,
   DataMetaInformation,
-  DataTypeEnum,
   SfdrData,
   SfdrDataControllerApi,
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
-import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
-import { recursivelySelectYesOnAllFields } from "@e2e/utils/LksgUpload";
 
 /**
  * Uploads a single SFDR data entry for a company
@@ -65,60 +62,10 @@ export function uploadCompanyAndSfdrDataViaApi(
   );
 }
 /**
- * Fills the Sfdr upload form with the given dataset
- * @param companyId comany id stored in database
+ * Adds reports to the dataset via the Sfdr upload form for the given dataset
  */
-export function uploadSfdrDataViaForm(companyId: string): void {
-  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}/upload`);
-  submitButton.buttonIsAddDataButton();
-  submitButton.buttonAppearsDisabled();
+export function addsReportsToSfdrDataViaForm(): void {
   uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
   uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
   uploadDocuments.fillAllReportsToUploadForms(1);
-
-  fillAndValidateSfdrUploadForm();
-  submitButton.clickButton();
-
-  cy.get("div.p-message-success").should("be.visible");
-}
-
-/**
- * Fills all the fields of the Sfdr upload form for non-financial companies
- */
-function fillAndValidateSfdrUploadForm(): void {
-  Cypress.Keyboard.defaults({
-    keystrokeDelay: 0,
-  });
-
-  submitButton.buttonIsAddDataButton();
-  submitButton.buttonAppearsDisabled();
-  selectDummyDates("dataDate");
-  cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
-  selectDummyDates("fiscalYearEnd");
-
-  recursivelySelectYesOnAllFields(15);
-  selectReportedQualityForAllFields();
-}
-
-/**
- * Selects a dummy year in the Sfdr upload form date picker.
- * @param fieldName name of the test element labeled with dataTest and the fieldName
- */
-function selectDummyDates(fieldName = "dataDate"): void {
-  cy.get(`[data-test="${fieldName}"]`).find("button.p-datepicker-trigger").click();
-  cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
-  cy.get("div.p-datepicker").find('span:contains("13")').click();
-  cy.get(`input[name="${fieldName}"]`).should(($input) => {
-    const val = $input.val();
-    expect(val).to.include("-13");
-  });
-}
-
-/**
- * Opens the Reported Quality Fields and selects the first option
- */
-export function selectReportedQualityForAllFields(): void {
-  cy.get(`select[name="quality"]`).each(($element) => {
-    cy.wrap($element).select(3);
-  });
 }

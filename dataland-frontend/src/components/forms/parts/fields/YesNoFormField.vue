@@ -157,7 +157,7 @@ export default defineComponent({
       return this.reportsName ?? this.injectReportsName;
     },
     isDataQualityRequired(): boolean {
-      return this.currentValue
+      return this.currentValue;
     },
   },
   emits: ["documentUpdated"],
