@@ -28,6 +28,7 @@ import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObje
 import { Field } from "@/utils/GenericFrameworkTypes";
 import { smeModalColumnHeaders } from "@/components/resources/frameworkDataSearch/sme/SmeModalColumnHeaders";
 import { convertToMillions } from "@/utils/NumberConversionUtils";
+import { convertNace } from "@/utils/NaceCodeConverter";
 
 export default defineComponent({
   name: "SmePanel",
