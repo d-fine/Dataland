@@ -1,5 +1,5 @@
 /**
- * Module to convert single letter Nace to full sector name
+ * Module to convert single letter Nace code to full sector name
  */
 
 import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
