@@ -22,7 +22,7 @@
             type="select"
             name="unit"
             v-model="currentUnit"
-            placeholder="Unit"
+            placeholder="Currency"
             :options="options"
             outer-class="short"
           />
