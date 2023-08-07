@@ -16,7 +16,6 @@ describe("Component test for ApiKeyCard.vue", () => {
         };
       },
     });
-
     cy.get('[data-test="apiKeyInfo"]').find("textarea").should("have.attr", "readonly");
     cy.get('[data-test="apiKeyInfo"]').find("textarea").invoke("val").should("eq", "abcdefghijklmnoprstwxyz123456789");
   });
