@@ -172,7 +172,7 @@
                           type="group"
                         >
                           <div class="form-field">
-                            <DataPointForm
+                            <DataPointFormEuTaxonomy
                               :name="`${detailCashFlowType}CapEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -206,7 +206,7 @@
                           type="group"
                         >
                           <div class="form-field">
-                            <DataPointForm
+                            <DataPointFormEuTaxonomy
                               :name="`${detailCashFlowType}OpEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -240,7 +240,7 @@
                           type="group"
                         >
                           <div class="form-field">
-                            <DataPointForm
+                            <DataPointFormEuTaxonomy
                               :name="`${detailCashFlowType}Revenue`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -316,7 +316,7 @@ import {
 } from "@/utils/UpdateObjectUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { AxiosResponse } from "axios";
-import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointFormEuTaxonomy.vue";
+import DataPointFormEuTaxonomy from "@/components/forms/parts/kpiSelection/DataPointFormEuTaxonomy.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
@@ -328,7 +328,7 @@ export default defineComponent({
   components: {
     JumpLinksSection,
     SubmitButton,
-    DataPointForm,
+    DataPointFormEuTaxonomy,
     Calendar,
     UploadFormHeader,
     UploadReports,
