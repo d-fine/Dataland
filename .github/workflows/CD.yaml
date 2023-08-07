@@ -206,13 +206,10 @@ jobs:
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
-      - name: Install 7Zip
-        if: always()
-        run: apt-get update && apt-get install -y p7zip-full p7zip-rar
       - name: Move Cypress Results
         if: always()
         run: |
-          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypressresult/${{ matrix.testGroup }} ./dataland-frontend/cypress && 7z a -t7z -mhe=on -p"${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}" /dataland-frontend/cypressresult/${{ matrix.testGroup }}/out.7z /dataland-frontend/cypress/
+          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypressresult/${{ matrix.testGroup }} ./dataland-frontend/cypress && 7z a -t7z -mhe=on -p"${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}" ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/out.7z ./dataland-frontend/cypress/
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
