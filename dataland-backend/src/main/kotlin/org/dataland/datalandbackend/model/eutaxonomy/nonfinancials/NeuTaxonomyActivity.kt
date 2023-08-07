@@ -7,7 +7,7 @@ import java.math.BigDecimal
 
 // TODO for which of these fields is actual evidence required?
 open class NeuTaxonomyActivity(
-    val naceCodes: List<String>, // TODO evidence required? is this field optional? must this be a complete list?
+    val naceCodes: List<String>,
     val share: DataPointAbsoluteAndPercentage<BigDecimal>?,
 )
 
@@ -16,10 +16,10 @@ class NeuTaxonomyAlignedActivity(
     naceCodes: List<String>,
     share: DataPointAbsoluteAndPercentage<BigDecimal>?,
     val substantialContributionCriteria: Map<NeuTaxonomyCriterion, DataPoint<BigDecimal>>?,
-    val dnshCriteria: Map<NeuTaxonomyCriterion, YesNo?>?,
+    val dnshCriteria: Map<NeuTaxonomyCriterion, YesNo>?,
     val minimumSafeguards: YesNo?,
-    val alignedShareForThisYear: DataPoint<BigDecimal>?, // TODO redundant to field "share"?
-    val alignedShareForLastYear: DataPoint<BigDecimal>?, // TODO neccessary?
+//    val alignedShareForThisYear: DataPoint<BigDecimal>?, // TODO redundant to field "share"?
+//    val alignedShareForLastYear: DataPoint<BigDecimal>?, // TODO neccessary?
     // TODO enabling or transitional flags must not be provided
     //  because they can be obtained from the provided json
 ) : NeuTaxonomyActivity(naceCodes, share)
