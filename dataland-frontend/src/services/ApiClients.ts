@@ -21,19 +21,97 @@ import {
 import { DocumentControllerApi } from "@clients/documentmanager";
 import { QaControllerApi } from "@clients/qaservice";
 import Keycloak from "keycloak-js";
+import axios, { AxiosInstance } from "axios";
+import * as backendApis from "@clients/backend/api";
+import * as documentApis from "@clients/documentmanager";
+import * as qaApis from "@clients/qaservice";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
+
+interface BackendClients {
+  actuator: backendApis.ActuatorApiInterface;
+  companyDataController: backendApis.CompanyDataControllerApiInterface;
+  euTaxonomyDataForFinancialsController: backendApis.EuTaxonomyDataForFinancialsControllerApiInterface;
+  euTaxonomyDataForNonFinancialsController: backendApis.EuTaxonomyDataForNonFinancialsControllerApiInterface;
+  inviteController: backendApis.InviteControllerApiInterface;
+  lksgDataController: backendApis.LksgDataControllerApiInterface;
+  metaDataController: backendApis.MetaDataControllerApiInterface;
+  p2pDataController: backendApis.P2pDataControllerApiInterface;
+  sfdrDataController: backendApis.SfdrDataControllerApiInterface;
+  smeDataController: backendApis.SmeDataControllerApiInterface;
+}
+
+type ApiClientConstructor<T> = new (
+  configuration: Configuration | undefined,
+  basePath: string,
+  axios: AxiosInstance,
+) => T;
+type ApiClientFactory = <T>(constructor: ApiClientConstructor<T>) => T;
+
 export class ApiClientProvider {
-  keycloakPromise: Promise<Keycloak>;
+  private readonly keycloakPromise: Promise<Keycloak>;
+  private readonly axiosInstance: AxiosInstance;
+
+  readonly backend: BackendClients;
 
   constructor(keycloakPromise: Promise<Keycloak>) {
     this.keycloakPromise = keycloakPromise;
+    this.axiosInstance = axios.create({});
+    this.registerAutoAuthenticatingAxiosInterceptor();
+
+    this.backend = this.constructBackendClients();
+  }
+
+  private registerAutoAuthenticatingAxiosInterceptor(): void {
+    this.axiosInstance.interceptors.request.use(
+      async (config) => {
+        const bearerToken = await this.getBearerToken();
+        if (bearerToken) {
+          config.headers["Authorization"] = `Bearer ${bearerToken}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error),
+    );
+  }
+
+  private constructBackendClients(): BackendClients {
+    const factory = this.getClientFactory("/api");
+    return {
+      actuator: factory(backendApis.ActuatorApi),
+      companyDataController: factory(backendApis.CompanyDataControllerApi),
+      euTaxonomyDataForFinancialsController: factory(backendApis.EuTaxonomyDataForFinancialsControllerApi),
+      euTaxonomyDataForNonFinancialsController: factory(backendApis.EuTaxonomyDataForNonFinancialsControllerApi),
+      inviteController: factory(backendApis.InviteControllerApi),
+      lksgDataController: factory(backendApis.LksgDataControllerApi),
+      metaDataController: factory(backendApis.MetaDataControllerApi),
+      p2pDataController: factory(backendApis.P2pDataControllerApi),
+      sfdrDataController: factory(backendApis.SfdrDataControllerApi),
+      smeDataController: factory(backendApis.SmeDataControllerApi),
+    };
+  }
+
+  private async getBearerToken(): Promise<string | undefined> {
+    console.log("Obtaining Bearer Token");
+    const keycloak = await this.keycloakPromise;
+    if (keycloak.authenticated) {
+      await updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
+      return keycloak.token;
+    } else {
+      return undefined;
+    }
+  }
+
+  private getClientFactory(basePath: string): ApiClientFactory {
+    return (constructor) => {
+      return new constructor(undefined, basePath, this.axiosInstance);
+    };
   }
 
   async getConfiguration(): Promise<Configuration | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
+      await updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
       return new Configuration({ accessToken: keycloak.token });
     } else {
       return undefined;

@@ -16,6 +16,7 @@ import {
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/Stores";
+import { ApiClientProvider } from "@/services/ApiClients";
 
 export default defineComponent({
   name: "app",
@@ -24,6 +25,7 @@ export default defineComponent({
   data() {
     return {
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
+      apiClientProvider: undefined as ApiClientProvider | undefined,
       resolvedKeycloakPromise: undefined as undefined | Keycloak,
       keycloakAuthenticated: false,
       functionIdOfSessionSetInterval: undefined as number | undefined,
@@ -60,6 +62,8 @@ export default defineComponent({
         }
       })
       .catch((e) => console.log(e));
+
+    this.apiClientProvider = new ApiClientProvider(this.keycloakPromise);
   },
 
   provide() {
@@ -70,6 +74,9 @@ export default defineComponent({
       },
       authenticated: computed(() => {
         return this.keycloakAuthenticated;
+      }),
+      apiClientProvider: computed(() => {
+        return this.apiClientProvider;
       }),
     };
   },
