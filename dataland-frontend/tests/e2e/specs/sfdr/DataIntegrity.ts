@@ -3,7 +3,7 @@ import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { DataTypeEnum, SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { addsReportsToSfdrDataViaForm, uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
+import { selectsReportsToSfdrDataViaForm, uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
@@ -87,7 +87,7 @@ describeIf(
                   dataMetaInformation.dataId,
               );
               cy.get("h1").should("contain", testCompanyName);
-              addsReportsToSfdrDataViaForm();
+              selectsReportsToSfdrDataViaForm();
               setQualityInSfdrUploadForm();
               submitButton.clickButton();
               cy.url().should("eq", getBaseUrl() + "/datasets");
