@@ -64,7 +64,7 @@ export function uploadCompanyAndSfdrDataViaApi(
 /**
  * Adds reports to the dataset via the Sfdr upload form for the given dataset
  */
-export function selectsReportsToSfdrDataViaForm(): void {
+export function selectsReportsForUploadInSfdrForm(): void {
   uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
   uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
   uploadDocuments.fillAllReportsToUploadForms(1);
