@@ -84,7 +84,7 @@ function fillSingleProductionSite(): void {
  * This action needs to be recursive as clicking yes on some fields will result in other fields getting visible
  * @param maxCounter the maximum recursion depth before an error is thrown
  */
-export function recursivelySelectYesOnAllFields(maxCounter: number): void {
+function recursivelySelectYesOnAllFields(maxCounter: number): void {
   if (maxCounter <= 0) {
     throw new Error("Recursion depth exceeded selecting yes on all input fields");
   }
