@@ -8,12 +8,11 @@ import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
 
-let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
   cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
-    companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
-    testSfdrCompany = getPreparedFixture("CompanyInformationWithSfdrData", companiesWithSfdrData);
+    const sfdrPreparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
+    testSfdrCompany = getPreparedFixture("CompanyInformationWithSfdrData", sfdrPreparedFixtures);
   });
 });
 describeIf(
@@ -63,7 +62,7 @@ describeIf(
     }
     it("Create a company via api and upload a SFDR dataset via the api", () => {
       const uniqueCompanyMarker = Date.now().toString();
-      const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
+      const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           return uploadOneSfdrDataset(token, storedCompany.companyId, "2021", testSfdrCompany.t).then(
