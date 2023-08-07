@@ -5,7 +5,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the subcategory "Risk management - Own Operations" belonging to the category "Governance" of the lksg framework.
+ * Fields of the subcategory "Risk management - Own Operations" belonging to the category "Governance" of the
+ * lksg framework.
 */
 data class LksgGovernanceRiskManagementOwnOperations(
     val riskManagementSystem: YesNo? = null,

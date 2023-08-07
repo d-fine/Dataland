@@ -6,7 +6,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 
 /**
  * --- API model ---
- * Fields of the subcategory "Certifications, policies and responsibilities" belonging to the category "Governance" of the lksg framework.
+ * Fields of the subcategory "Certifications, policies and responsibilities" belonging to the category "Governance" of
+ * the lksg framework.
 */
 data class LksgGovernanceCertificationsPoliciesAndResponsibilities(
     val sa8000Certification: BaseDataPoint<YesNo>? = null,

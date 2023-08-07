@@ -5,7 +5,8 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the subcategory "Grievance mechanism - Own Operations" belonging to the category "Governance" of the lksg framework.
+ * Fields of the subcategory "Grievance mechanism - Own Operations" belonging to the category "Governance" of the
+ * lksg framework.
 */
 data class LksgGovernanceGrievanceMechanismOwnOperations(
     val grievanceHandlingMechanism: YesNo? = null,
