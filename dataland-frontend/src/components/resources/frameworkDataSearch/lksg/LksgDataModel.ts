@@ -782,7 +782,7 @@ export const lksgDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
-              dataModel?.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct === "Yes",
+              dataModel?.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct?.value === "Yes",
             certificateRequiredIfYes: false,
           },
           {
@@ -819,7 +819,7 @@ export const lksgDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
-              dataModel?.governance?.certificationsPoliciesAndResponsibilities?.policyStatement === "Yes",
+              dataModel?.governance?.certificationsPoliciesAndResponsibilities?.policyStatement?.value === "Yes",
           },
           {
             name: "environmentalImpactPolicy",
