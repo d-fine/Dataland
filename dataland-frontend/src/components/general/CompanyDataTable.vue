@@ -76,8 +76,7 @@ import {
   mountRowHeaderClickEventListeners,
   unmountRowHeaderClickEventListeners,
 } from "@/utils/DataTableDisplay";
-
-type SfdrKpiObject = { [index: string]: string | object; subAreaKey: string; kpiKey: string };
+import { SfdrKpiObject } from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 
 export default defineComponent({
   name: "CompanyDataTable",

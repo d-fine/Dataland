@@ -36,6 +36,8 @@ import {
 } from "@/components/resources/frameworkDataSearch/sfdr/DataModelsTranslations";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 
+export type SfdrKpiObject = { [index: string]: string | object; subAreaKey: string; kpiKey: string };
+
 export default defineComponent({
   name: "SfdrPanel",
   components: { CompanyDataTable },
@@ -45,7 +47,7 @@ export default defineComponent({
       waitingForData: true,
       sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
       listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
-      kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
+      kpiDataObjects: [] as SfdrKpiObject[],
       sfdrKpisNameMappings,
       sfdrKpisInfoMappings,
       sfdrSubAreasNameMappings,
