@@ -50,7 +50,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Frontend component testing
-        run: timeout 15m ./testing/execute_frontend_component_test.sh
+        run: timeout 1m ./testing/execute_frontend_component_test.sh
         if: always()
       - name: Upload Cypress Component Test Logs
         if: always()
