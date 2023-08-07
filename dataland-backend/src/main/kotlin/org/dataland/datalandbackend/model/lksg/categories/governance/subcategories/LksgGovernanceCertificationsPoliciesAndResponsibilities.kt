@@ -6,13 +6,12 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 
 /**
  * --- API model ---
- * Fields of the subcategory "Certifications, policies and responsibilities" belonging to the category "Governance"
- * of the lksg framework.
+ * Fields of the subcategory "Certifications, policies and responsibilities" belonging to the category "Governance" of the lksg framework.
 */
 data class LksgGovernanceCertificationsPoliciesAndResponsibilities(
     val sa8000Certification: BaseDataPoint<YesNo>? = null,
 
-    val smetaSocialAuditConcept: YesNo? = null,
+    val smetaSocialAuditConcept: BaseDataPoint<YesNo>? = null,
 
     val betterWorkProgramCertificate: BaseDataPoint<YesNoNa>? = null,
 
@@ -36,13 +35,13 @@ data class LksgGovernanceCertificationsPoliciesAndResponsibilities(
 
     val additionalAudits: String? = null,
 
-    val codeOfConduct: YesNo? = null,
+    val codeOfConduct: BaseDataPoint<YesNo>? = null,
 
     val codeOfConductTraining: YesNo? = null,
 
     val supplierCodeOfConduct: BaseDataPoint<YesNo>? = null,
 
-    val policyStatement: YesNo? = null,
+    val policyStatement: BaseDataPoint<YesNo>? = null,
 
     val humanRightsStrategy: String? = null,
 

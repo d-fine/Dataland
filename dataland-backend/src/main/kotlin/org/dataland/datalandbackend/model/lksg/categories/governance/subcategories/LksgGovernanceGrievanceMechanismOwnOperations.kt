@@ -5,33 +5,32 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the subcategory "Grievance mechanism - Own Operations" belonging to the category "Governance" of the
- * lksg framework.
+ * Fields of the subcategory "Grievance mechanism - Own Operations" belonging to the category "Governance" of the lksg framework.
 */
 data class LksgGovernanceGrievanceMechanismOwnOperations(
     val grievanceHandlingMechanism: YesNo? = null,
 
-    val grievanceHandlingMechanismUsedForReporting: YesNo? = null,
+    val grievanceHandlingReportingAccessible: YesNo? = null,
 
-    val grievanceMechanismInformationProvided: YesNo? = null,
+    val appropriateGrievanceHandlingInformation: YesNo? = null,
 
-    val grievanceMechanismSupportProvided: YesNo? = null,
+    val appropriateGrievanceHandlingSupport: YesNo? = null,
 
-    val grievanceMechanismAccessToExpertise: YesNo? = null,
+    val accessToExpertiseForGrievanceHandling: YesNo? = null,
 
-    val grievanceMechanismComplaints: YesNo? = null,
+    val grievanceComplaints: YesNo? = null,
 
-    val grievanceMechanismComplaintsNumber: BigDecimal? = null,
+    val complaintsNumber: BigDecimal? = null,
 
-    val grievanceMechanismComplaintsReason: String? = null,
+    val complaintsReason: String? = null,
 
-    val grievanceMechanismComplaintsAction: YesNo? = null,
+    val actionsForComplaintsUndertaken: YesNo? = null,
 
-    val grievanceMechanismComplaintsActionUndertaken: String? = null,
+    val whichActionsForComplaintsUndertaken: String? = null,
 
-    val grievanceMechanismPublicAccess: YesNo? = null,
+    val publicAccessToGrievanceHandling: YesNo? = null,
 
-    val grievanceMechanismProtection: YesNo? = null,
+    val whistleblowerProtection: YesNo? = null,
 
-    val grievanceMechanismDueDiligenceProcess: YesNo? = null,
+    val dueDiligenceProcessForGrievanceHandling: YesNo? = null,
 )

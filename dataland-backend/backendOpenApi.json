@@ -4306,7 +4306,7 @@
             "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "smetaSocialAuditConcept": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "betterWorkProgramCertificate": {
             "$ref": "#/components/schemas/BaseDataPointYesNoNa"
@@ -4342,7 +4342,7 @@
             "type": "string"
           },
           "codeOfConduct": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "codeOfConductTraining": {
             "$ref": "#/components/schemas/YesNo"
@@ -4351,7 +4351,7 @@
             "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "policyStatement": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "humanRightsStrategy": {
             "type": "string"
@@ -4426,40 +4426,40 @@
           "grievanceHandlingMechanism": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "grievanceHandlingMechanismUsedForReporting": {
+          "grievanceHandlingReportingAccessible": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "grievanceMechanismInformationProvided": {
+          "appropriateGrievanceHandlingInformation": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "grievanceMechanismSupportProvided": {
+          "appropriateGrievanceHandlingSupport": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "grievanceMechanismAccessToExpertise": {
+          "accessToExpertiseForGrievanceHandling": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "grievanceMechanismComplaints": {
+          "grievanceComplaints": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "grievanceMechanismComplaintsNumber": {
+          "complaintsNumber": {
             "type": "number"
           },
-          "grievanceMechanismComplaintsReason": {
+          "complaintsReason": {
             "type": "string"
           },
-          "grievanceMechanismComplaintsAction": {
+          "actionsForComplaintsUndertaken": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "grievanceMechanismComplaintsActionUndertaken": {
+          "whichActionsForComplaintsUndertaken": {
             "type": "string"
           },
-          "grievanceMechanismPublicAccess": {
+          "publicAccessToGrievanceHandling": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "grievanceMechanismProtection": {
+          "whistleblowerProtection": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "grievanceMechanismDueDiligenceProcess": {
+          "dueDiligenceProcessForGrievanceHandling": {
             "$ref": "#/components/schemas/YesNo"
           }
         }
@@ -4470,22 +4470,22 @@
           "riskManagementSystem": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "riskManagementSystemFiscalYear": {
+          "riskAnalysisInFiscalYear": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "riskManagementSystemRisks": {
+          "risksIdentified": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "riskManagementSystemIdentifiedRisks": {
+          "identifiedRisks": {
             "type": "string"
           },
-          "riskManagementSystemCounteract": {
+          "counteractingMeasures": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "riskManagementSystemMeasures": {
+          "whichCounteractingMeasures": {
             "type": "string"
           },
-          "riskManagementSystemResponsibility": {
+          "regulatedRiskManagementResponsibility": {
             "$ref": "#/components/schemas/YesNo"
           },
           "environmentalManagementSystem": {
