@@ -50,10 +50,6 @@ describeIf(
      * Set the quality for the sfdr test dataset
      */
     function setQualityInSfdrUploadForm(): void {
-      Cypress.Keyboard.defaults({
-        keystrokeDelay: 0,
-      });
-
       cy.get('[data-test="primaryForestAndWoodedLandOfNativeSpeciesExposure"]')
         .find('select[name="quality"]')
         .select(3);
