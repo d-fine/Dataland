@@ -25,14 +25,6 @@ export function valueOrNull<T>(value: T): T | null {
 }
 
 /**
- * Generates a random link to a pdf document
- * @returns random link to a pdf document
- */
-export function generateLinkToPdf(): string {
-  return new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href;
-}
-
-/**
  * Generates a random non-empty set of reports that can be referenced
  * @returns a random non-empty set of reports
  */
