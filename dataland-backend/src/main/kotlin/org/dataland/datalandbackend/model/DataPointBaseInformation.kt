@@ -5,10 +5,9 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 
 /**
  * --- API model ---
- * Fields of a generic data point and its source
+ * Fields of a generic basic data point with the minimal necessary information
  */
 open class DataPointBaseInformation(
-    @field:JsonProperty(required = true)
     open val quality: QualityOptions,
 
     open val dataSource: CompanyReportReference? = null,
