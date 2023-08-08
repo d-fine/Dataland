@@ -160,7 +160,6 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
  */
 function safeLogout(): void {
   cy.visitAndCheckAppMount("/")
-    .wait(1000)
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-logout-anchor']")
