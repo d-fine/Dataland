@@ -2,276 +2,260 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Melbourne",
-			"sector": "technologies",
+			"headquarters": "Reillyshire",
+			"sector": "methodologies",
 			"identifiers": {
-				"Lei": [
-					"BQiYdnKOEhjTh96k6PXf"
-				],
+				"Lei": [],
 				"Isin": [
-					"vYWnzFwPpkx8",
-					"MlLUHFoIcY4R"
+					"9FqoSlN4LKUR",
+					"7FsvDwn2JNNK"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"7axbaWDi7"
+				"PermId": [
+					"1AxT526zjr"
 				],
+				"Ticker": [
+					"7rAHMXZ"
+				],
+				"Duns": [],
 				"VatNumber": [
-					"7TjLqvqQL"
+					"A4VSkgv7Y"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"UnDfwPoPebmMU2a"
+				]
 			},
-			"countryCode": "DZ",
-			"companyAlternativeNames": [
-				"Botsford - Stracke",
-				"Ondricka - Koch",
-				"Schulist - Littel"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://dismal-diadem.com",
+			"countryCode": "NE",
+			"companyAlternativeNames": [],
+			"website": "https://discrete-normal.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-12-29",
+			"fiscalYearEnd": "2022-11-01",
 			"referencedReports": {
-				"IntegratedReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-04-13",
-					"currency": "EGP"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-04-16",
-					"currency": "PKR"
+					"currency": "LRD"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 59,
+					"report": "SustainabilityReport",
+					"tagName": "experiences"
+				}
 			},
-			"reportingObligation": "No",
+			"scopeOfEntities": "Yes",
 			"opex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.8246,
+					"valueAsPercentage": 0.0862,
 					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"valueAsPercentage": 0.0601,
+					"valueAsPercentage": 0.4292,
 					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"valueAsPercentage": 0.1283,
+					"valueAsPercentage": 0.428,
 					"quality": "NA"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "East Kaci",
-			"headquartersPostalCode": "34531-4037",
+			"headquarters": "New Kayla",
+			"headquartersPostalCode": "30614-3085",
 			"identifiers": {
 				"Lei": [
-					"dpApEeHoiCrxCJ497eZD"
+					"dGjxusZ7sUuTN7GarMY1"
 				],
-				"Isin": [
-					"wK6i8zX3J5ro",
-					"THPzB9OAyJSr"
-				],
+				"Isin": [],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"Qxcf5P9"
+				],
 				"Duns": [
-					"Ehm23Q7Xg"
+					"igt1sm6NQ"
 				],
 				"VatNumber": [
-					"9Cnrr5U4j"
+					"JVSFdrvBW"
 				],
-				"CompanyRegistrationNumber": [
-					"2W1vQO9P6bLRZ4B"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "UM",
+			"countryCode": "RO",
 			"companyAlternativeNames": [
-				"Hegmann, Volkman and Okuneva",
-				"Weimann - Streich"
+				"Gottlieb - Paucek",
+				"Leannon - Turner",
+				"Pagac, Feil and Romaguera"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://black-monitoring.org/",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://feisty-embossing.org",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearEnd": "2023-06-01",
+			"numberOfEmployees": 94834,
 			"referencedReports": {
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-10-15",
+					"currency": "ZWL"
+				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2023-04-27",
-					"currency": "CRC"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "TND"
+					"currency": "SGD"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-30",
-					"currency": "CLP"
+					"isGroupLevel": "Yes",
+					"currency": "YER"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"reportDate": "2023-05-20",
+					"currency": "COP"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"provider": "Zemlak - Stoltenberg"
 			},
 			"scopeOfEntities": "NA",
 			"opex": {
 				"totalAmount": {
-					"value": 812222.1934841946,
+					"value": 766970.5478008837,
 					"dataSource": {
-						"page": 795,
+						"page": 65,
 						"report": "ESEFReport",
-						"tagName": "relationships"
+						"tagName": "networks"
 					},
 					"quality": "Reported",
-					"comment": "reboot back-end application"
+					"comment": "bypass auxiliary microchip"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.9783,
+					"valueAsPercentage": 0.2545,
 					"dataSource": {
-						"page": 533,
-						"report": "IntegratedReport",
-						"tagName": "architectures"
+						"page": 678,
+						"report": "ESEFReport",
+						"tagName": "solutions"
 					},
-					"quality": "Audited",
-					"comment": "hack online alarm",
-					"valueAsAbsolute": 637603.8469141349
+					"quality": "Incomplete",
+					"comment": "transmit cross-platform capacitor",
+					"valueAsAbsolute": 534735.8718747273
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 390442.7161673084,
+					"value": 433376.112615224,
 					"dataSource": {
-						"page": 90,
-						"report": "ESEFReport",
-						"tagName": "communities"
+						"page": 799,
+						"report": "SustainabilityReport",
+						"tagName": "systems"
 					},
 					"quality": "Reported",
-					"comment": "generate open-source feed"
+					"comment": "input redundant array"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.4771,
+					"valueAsPercentage": 0.6203,
 					"dataSource": {
-						"page": 822,
-						"report": "IntegratedReport",
-						"tagName": "platforms"
+						"page": 85,
+						"report": "ESEFReport",
+						"tagName": "functionalities"
 					},
 					"quality": "Audited",
-					"comment": "compress bluetooth alarm",
-					"valueAsAbsolute": 702358.3815433085
+					"comment": "bypass primary matrix",
+					"valueAsAbsolute": 138971.03277267888
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 513794.37691066414,
-					"dataSource": {
-						"page": 738,
-						"report": "SustainabilityReport",
-						"tagName": "initiatives"
-					},
-					"quality": "Incomplete",
-					"comment": "copy online pixel"
+					"value": 575369.2253842019,
+					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.8328,
+					"valueAsPercentage": 0.555,
 					"dataSource": {
-						"page": 633,
-						"report": "SustainabilityReport",
-						"tagName": "supply-chains"
+						"page": 824,
+						"report": "ESEFReport",
+						"tagName": "infrastructures"
 					},
-					"quality": "Audited",
-					"comment": "reboot solid state feed",
-					"valueAsAbsolute": 777712.5961147249
+					"quality": "Reported",
+					"comment": "back up virtual capacitor",
+					"valueAsAbsolute": 352963.7443367392
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "East Christineport",
+			"headquarters": "North Braden",
+			"sector": "action-items",
 			"identifiers": {
 				"Lei": [
-					"pQJyCwpOcBUX9s4LDfmt"
+					"YyMJZ1TuFMptjBhFAOpt"
 				],
 				"Isin": [
-					"qhgnTEdBA0Fj"
+					"YJCoErYxUHIO"
 				],
 				"PermId": [
-					"TIeBlxJ8Of"
+					"VpJFvzgAEi"
 				],
-				"Ticker": [
-					"RmAGaTG"
-				],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"P79rrBdO290XAg5"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SM",
+			"countryCode": "VG",
 			"companyAlternativeNames": [
-				"Bergstrom - Beahan",
-				"Zulauf - Harris"
+				"Hayes - Quigley",
+				"Lind Inc"
 			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 52625,
+			"fiscalYearDeviation": "NoDeviation",
+			"numberOfEmployees": 81657,
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"dataSource": {
-					"page": 93,
-					"report": "AnnualReport",
-					"tagName": "synergies"
-				}
+				"assurance": "None"
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
-			"opex": {
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
+			"opex": {},
+			"capex": {},
+			"revenue": {
 				"totalAmount": {
+					"value": 744857.2935652919,
 					"dataSource": {
-						"page": 662,
-						"report": "AnnualReport",
-						"tagName": "applications"
+						"page": 663,
+						"report": "SustainabilityReport",
+						"tagName": "initiatives"
 					},
-					"quality": "Estimated",
-					"comment": "transmit virtual alarm"
+					"quality": "Reported",
+					"comment": "calculate optical system"
 				},
-				"eligibleData": {
-					"quality": "Incomplete",
-					"valueAsAbsolute": 744922.955322545
-				}
-			},
-			"capex": {
-				"eligibleData": {
+				"alignedData": {
 					"dataSource": {
-						"page": 543,
-						"report": "AnnualReport",
-						"tagName": "schemas"
+						"page": 496,
+						"report": "IntegratedReport",
+						"tagName": "ROI"
 					},
-					"quality": "Estimated",
-					"comment": "quantify optical interface"
+					"quality": "Reported",
+					"comment": "generate cross-platform port"
 				}
-			},
-			"revenue": {}
+			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2019"
 	}
 ]
