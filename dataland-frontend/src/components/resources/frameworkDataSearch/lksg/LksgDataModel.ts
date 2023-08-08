@@ -82,19 +82,19 @@ export const lksgDataModel = [
             component: "RadioButtonsFormField",
             options: [
               {
-                label: "<10%",
+                label: "< 10 %",
                 value: "Smaller10",
               },
               {
-                label: "10-25%",
+                label: "10-25 %",
                 value: "Between10And25",
               },
               {
-                label: "25-50%",
+                label: "25-50 %",
                 value: "Between25And50",
               },
               {
-                label: ">50%",
+                label: "> 50 %",
                 value: "Greater50",
               },
             ],
