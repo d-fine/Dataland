@@ -283,7 +283,6 @@ export default defineComponent({
         this.postSfdrDataProcessed = true;
       }
     },
-    //TODO refactor the name of this file to CreateSfdrDataset
     /**
      * updates the list of documents that were uploaded
      * @param reportsNames repots names
