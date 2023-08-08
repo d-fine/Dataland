@@ -57,51 +57,47 @@ export function mountRowHeaderClickEventListeners(
   const handlerMap: Map<Element | HTMLButtonElement, EventListener> = new Map();
   let expandedRowGroups: string[] = [];
 
-  const t = setTimeout(() => {
-    const buttonAttributeName = "data-parent-id";
-    const rows = Array.from(document.querySelectorAll("[data-row-header-click]")).filter((el) => el);
-    const rowButtons = rows
-      .map((el: Element) => {
-        const button = el.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');
-        if (button) {
-          button.setAttribute(buttonAttributeName, el.id);
-          return button;
-        }
-        return void 0;
-      })
-      .filter((button): button is HTMLButtonElement => !!button);
+  const buttonAttributeName = "data-parent-id";
+  const rows = Array.from(document.querySelectorAll("[data-row-header-click]")).filter((el) => el);
+  const rowButtons = rows
+    .map((el: Element) => {
+      const button = el.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');
+      if (button) {
+        button.setAttribute(buttonAttributeName, el.id);
+        return button;
+      }
+      return void 0;
+    })
+    .filter((button): button is HTMLButtonElement => !!button);
+  console.log({ rows, rowButtons });
+  [...rows, ...rowButtons].forEach((el: Element | HTMLButtonElement) => {
+    let clickHandler: EventListener | null = (evt): void => {
+      if (!el.id) {
+        evt.stopImmediatePropagation();
+      }
 
-    [...rows, ...rowButtons].forEach((el: Element | HTMLButtonElement) => {
-      let clickHandler: EventListener | null = (evt): void => {
-        if (!el.id) {
-          evt.stopImmediatePropagation();
-        }
-
-        expandedRowGroups = expandedRowsOnClick();
-        if (!expandedRowGroups.includes(el.id)) {
-          expandedRowGroups.push(el.id);
-        } else {
-          expandedRowGroups = expandedRowGroups.filter((id: string) => id !== el.id);
-        }
-        newExpandedRowsCallback(expandedRowGroups);
-      };
-
-      let target;
-      if (el?.getAttribute(buttonAttributeName)) {
-        target = el;
+      expandedRowGroups = expandedRowsOnClick();
+      if (!expandedRowGroups.includes(el.id)) {
+        expandedRowGroups.push(el.id);
       } else {
-        target = el.parentNode;
+        expandedRowGroups = expandedRowGroups.filter((id: string) => id !== el.id);
       }
+      newExpandedRowsCallback(expandedRowGroups);
+    };
 
-      if (target) {
-        handlerMap.set(target as Element, clickHandler);
-        target.addEventListener("click", clickHandler);
-      }
+    let target;
+    if (el?.getAttribute(buttonAttributeName)) {
+      target = el;
+    } else {
+      target = el.parentNode;
+    }
 
-      clickHandler = null;
-    });
+    if (target) {
+      handlerMap.set(target as Element, clickHandler);
+      target.addEventListener("click", clickHandler);
+    }
 
-    clearTimeout(t);
+    clickHandler = null;
   });
 
   return handlerMap;

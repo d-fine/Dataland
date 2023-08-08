@@ -184,10 +184,12 @@ export default defineComponent({
     },
   },
   created() {
-    this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
-      () => this.expandedRowGroups,
-      (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
-    );
+    setTimeout(() => {
+      this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+        () => this.expandedRowGroups,
+        (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
+      );
+    });
   },
   unmounted() {
     unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
