@@ -6,7 +6,7 @@
   <!-- Select company reports -->
   <div :class="isEuTaxonomy ? 'col-9 formFields' : 'formField'">
     <h3 class="mt-0">Select company reports</h3>
-    <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="name" />
+    <UploadDocumentsForm ref="uploadDocumentsForm" @referenceChanged="updateSelectedReports" :name="name" />
   </div>
 
   <FormKit name="referencedReports" type="group">

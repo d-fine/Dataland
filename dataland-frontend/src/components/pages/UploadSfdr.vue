@@ -13,7 +13,7 @@
 <script lang="ts">
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import CreateSFDRDataset from "@/components/forms/CreateSFDRDataset.vue";
+import CreateSFDRDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
@@ -38,7 +38,6 @@ export default defineComponent({
       KEYCLOAK_ROLE_UPLOADER,
     };
   },
-  //TODO rename this file to UploadSfdr.vue
   props: {
     companyID: {
       type: String,
