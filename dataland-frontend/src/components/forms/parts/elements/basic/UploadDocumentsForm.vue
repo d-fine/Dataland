@@ -68,7 +68,7 @@ export default defineComponent({
     PrimeButton,
     FileUpload,
   },
-  emits: ["documentsChanged", "referenceUpdated"],
+  emits: ["documentsChanged", "reportsUpdated"],
   data() {
     return {
       formatBytesUserFriendly,
@@ -127,7 +127,7 @@ export default defineComponent({
      * Emits event that selected documents changed
      */
     emitDocumentsChangedEvent() {
-      this.$emit("referenceUpdated", this.documentsToUpload);
+      this.$emit("reportsUpdated", this.documentsToUpload);
       this.$emit("documentsChanged", this.documentsToUpload);
     },
 

@@ -52,7 +52,7 @@
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
-                          @referenceUpdated="updateDocumentList"
+                          @reportsUpdated="updateDocumentList"
                           :ref="field.name"
                         />
                       </FormKit>
