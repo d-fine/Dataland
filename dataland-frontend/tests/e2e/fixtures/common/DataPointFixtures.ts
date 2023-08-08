@@ -29,7 +29,7 @@ export function valueOrNull<T>(value: T): T | null {
  * @returns a random non-empty set of reports
  */
 export function generateReferencedReports(): ReferencedDocuments {
-  const availableReportNames = faker.helpers.arrayElements(possibleReports, { min: 1, max:possibleReports.length });
+  const availableReportNames = faker.helpers.arrayElements(possibleReports, { min: 1, max: possibleReports.length });
 
   const referencedReports: ReferencedDocuments = {};
   for (const reportName of availableReportNames) {

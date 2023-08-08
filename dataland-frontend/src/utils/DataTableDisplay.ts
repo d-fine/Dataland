@@ -30,12 +30,10 @@ export function compareReportingPeriods(firstReportingPeriod: string, secondRepo
     return -1;
   } else if (!isNaN(Number(secondReportingPeriod))) {
     return 1;
+  } else if (firstReportingPeriod > secondReportingPeriod) {
+    return 1;
   } else {
-    if (firstReportingPeriod > secondReportingPeriod) {
-      return 1;
-    } else {
-      return -1;
-    }
+    return -1;
   }
 }
 
