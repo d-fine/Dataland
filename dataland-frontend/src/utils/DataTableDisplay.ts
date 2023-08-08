@@ -54,7 +54,7 @@ export function mountRowHeaderClickEventListeners(
   expandedRowsOnClick: () => string[],
   newExpandedRowsCallback: (newExpandedRows: string[]) => void,
 ): Map<Element, EventListener> {
-  const handlerMap: Map<Element | HTMLButtonElement, EventListener> = new Map();
+  const handlerMap: Map<Element, EventListener> = new Map();
   let expandedRowGroups: string[] = [];
 
   const buttonAttributeName = "data-parent-id";
@@ -70,7 +70,7 @@ export function mountRowHeaderClickEventListeners(
     })
     .filter((button): button is HTMLButtonElement => !!button);
   console.log({ rows, rowButtons });
-  [...rows, ...rowButtons].forEach((el: Element | HTMLButtonElement) => {
+  [...rows, ...rowButtons].forEach((el: Element) => {
     let clickHandler: EventListener | null = (evt): void => {
       if (!el.id) {
         evt.stopImmediatePropagation();
