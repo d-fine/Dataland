@@ -3,7 +3,7 @@
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit v-if="certificateRequiredIfYes" v-model="baseDataPointYesNoNa" type="group" :name="name">
     <RadioButtonsFormElement
-      :name="name"
+      name="value"
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :options="yesNoNaOptions"
