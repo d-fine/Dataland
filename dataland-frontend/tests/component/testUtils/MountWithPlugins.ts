@@ -124,7 +124,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
 /**
  * Mounts a component in a wrapper also containing a DynamicDialog. Manipulating the component is only possible through the properties.
  * @param component the component you want to mount
- * @param options general mounting options
+ * @param options general mounting options, stubs are ignored
  * @param props properties to set for the component
  * @returns a cypress chainable for the mounted wrapper and the wrapper of the Vue component
  */
@@ -141,8 +141,7 @@ function mountWithDialog<T extends DefineComponent<any, any, any, any, any>>(
   });
   const wrapperOptions = options as ComponentMountingOptions<typeof componentWrapper>;
   wrapperOptions.global ??= {};
-  wrapperOptions.global.stubs ??= {};
-  wrapperOptions.global.stubs.transition = false;
+  wrapperOptions.global.stubs ??= { transition: false};
   return mountWithPlugins(componentWrapper, wrapperOptions);
 }
 
