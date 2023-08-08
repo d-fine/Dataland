@@ -269,7 +269,7 @@ function checkIfUploadFieldDependenciesAreRespected(): void {
 /**
  *  Verify that selected documents are referenced in the actual dataset
  */
-function checkIfUploadFieldAreReferencedInTheDataset(): void {
+function checkIfUploadedFilesAreReferencedInTheDataset(): void {
   cy.intercept("POST", "**/api/data/lksg", (request) => {
     request.reply(200, {});
   }).as("postLksgData");
@@ -280,7 +280,7 @@ function checkIfUploadFieldAreReferencedInTheDataset(): void {
     const referencedReports =
       assertDefined(postedLksgDataset).data.governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!
         .dataSource!.reference;
-    expect(referencedReports).to.not.empty;
+    expect(referencedReports).to.be.not.empty;
   });
 }
 
@@ -308,8 +308,7 @@ export function uploadLksgDataViaForm(): void {
   fillRequiredLksgFieldsWithDummyData();
 
   testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
-  checkIfUploadFieldAreReferencedInTheDataset();
-  submitButton.clickButton();
+  checkIfUploadedFilesAreReferencedInTheDataset();
 
   cy.get("div.p-message-success").should("be.visible");
 }
