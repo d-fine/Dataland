@@ -116,7 +116,7 @@ export default defineComponent({
     },
   },
   created() {
-    mountRowHeaderClickEventListeners(
+    this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
       () => this.expandedRowGroups,
       (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
     );
