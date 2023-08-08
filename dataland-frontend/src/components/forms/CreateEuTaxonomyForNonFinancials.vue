@@ -492,7 +492,6 @@ export default defineComponent({
      * @param reportNames new list of the referenceable reports' names
      */
     handleChangeOfReferenceableReportNames(reportNames: string[]) {
-      console.log(reportNames);
       this.namesOfAllCompanyReportsForTheDataset = reportNames;
     },
   },

@@ -282,7 +282,6 @@ export default defineComponent({
      * @param document the certificate as combined object of reference id and file content
      */
     updateDocumentList(fieldName: string, document: DocumentToUpload) {
-      console.log("createLksgDataset", { fieldName, document });
       if (document) {
         this.documents.set(fieldName, document);
       } else {
