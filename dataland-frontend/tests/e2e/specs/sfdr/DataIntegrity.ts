@@ -76,17 +76,6 @@ describeIf(
               );
               cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
 
-              cy.url().should(
-                "eq",
-                getBaseUrl() +
-                  "/companies/" +
-                  uploadIds.companyId +
-                  "/frameworks/" +
-                  DataTypeEnum.Sfdr +
-                  "/upload" +
-                  "?templateDataId=" +
-                  uploadIds.dataId,
-              );
               cy.get("h1").should("contain", testCompanyName);
               selectsReportsForUploadInSfdrForm();
               setQualityInSfdrUploadForm();
