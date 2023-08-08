@@ -34,18 +34,19 @@ describe("Component tests for SmePanel", () => {
       reportingPeriod: preparedFixture.reportingPeriod,
       data: smeData,
     } as CompanyAssociatedDataSmeData);
-    cy.mountWithPlugins(SmePanel, {
-      keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyId: companyId,
-          singleDataMetaInfoToDisplay: {
-            dataId: "mock-data-id",
-            reportingPeriod: preparedFixture.reportingPeriod,
-          } as DataMetaInformation,
-        };
+    cy.mountWithDialog(
+      SmePanel,
+      {
+        keycloak: minimalKeycloakMock({}),
       },
-    });
+      {
+        companyId: companyId,
+        singleDataMetaInfoToDisplay: {
+          dataId: "mock-data-id",
+          reportingPeriod: preparedFixture.reportingPeriod,
+        } as DataMetaInformation,
+      },
+    );
     cy.get(
       threeLayerTable.getFieldByContentSelector(smeData.general.basicInformation.numberOfEmployees.toString()),
     ).should("exist");
@@ -59,6 +60,9 @@ describe("Component tests for SmePanel", () => {
     cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("not.exist");
     threeLayerTable.toggleSubcategory("Consumption");
     cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("exist");
+
+    threeLayerTable.getFieldByTestIdentifier("sector").find("a").eq(0).click();
+    cy.get(".p-dialog-header-close").trigger("click");
 
     threeLayerTable.toggleSubcategory("Company Financials");
     threeLayerTable.getFieldByTestIdentifier("revenueInEur").should("contain.text", "0 MM");
