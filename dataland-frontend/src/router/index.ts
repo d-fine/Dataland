@@ -73,7 +73,7 @@ const routes = [
     path: `/companies/:companyID/frameworks/${DataTypeEnum.Sfdr}/upload`,
     props: true,
     name: "Upload SFDR Data",
-    component: UploadSFDR,
+    component: UploadSfdr,
   },
   {
     path: "/companies",
