@@ -1,12 +1,11 @@
 <template>
   <div class="form-field" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <FormKit v-if="certificateRequiredIfYes" v-model="baseDataPointYesNo" type="group" :name="name">
-    <RadioButtonsFormField
+    <FormKit v-if="certificateRequiredIfYes" v-model="baseDataPointYesNoNa" type="group" :name="name">
+    <RadioButtonsFormElement
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
-      :label="label"
       :options="yesNoNaOptions"
     />
     <UploadDocumentsForm
@@ -35,7 +34,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
