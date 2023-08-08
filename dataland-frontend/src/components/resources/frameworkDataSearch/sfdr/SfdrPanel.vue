@@ -4,7 +4,7 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="kpiDataObjects.length && !waitingForData">
-    <CompanyDataTable
+    <SfdrDataTable
       data-test="sfdrCompanyTable"
       :kpiDataObjects="kpiDataObjects"
       :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
@@ -28,7 +28,7 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
+import SfdrDataTable from "@/components/general/SfdrDataTable.vue";
 import {
   sfdrKpisInfoMappings,
   sfdrKpisNameMappings,
@@ -40,7 +40,7 @@ export type SfdrKpiObject = { [index: string]: string | object; subAreaKey: stri
 
 export default defineComponent({
   name: "SfdrPanel",
-  components: { CompanyDataTable },
+  components: { SfdrDataTable },
   data() {
     return {
       firstRender: true,

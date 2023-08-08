@@ -79,7 +79,7 @@ import {
 import { SfdrKpiObject } from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 
 export default defineComponent({
-  name: "CompanyDataTable",
+  name: "SfdrDataTable",
   components: { DataTable, Column },
   directives: {
     tooltip: Tooltip,
