@@ -112,7 +112,9 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 
   testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, "REJECTED");
 
+  cy.intercept(`**/api/data/lksg/${dataset.dataId}`).as("getLksgDataset");
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataset.dataId}`);
+  cy.wait("@getLksgDataset");
   cy.get('[data-test="datasetDisplayStatusContainer"]').should("exist");
   cy.get('button[data-test="editDatasetButton"]').should("exist").click();
 
@@ -143,7 +145,9 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
+  cy.intercept("**/api/companies*").as("getMyDatasets");
   cy.visitAndCheckAppMount("/datasets");
+  cy.wait("@getMyDatasets");
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
     timeout: Cypress.env("medium_timeout_in_ms") as number,
@@ -159,7 +163,9 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
  * Logs the user out without testing the url
  */
 function safeLogout(): void {
+  cy.intercept("**/api/companies*").as("searchRequest");
   cy.visitAndCheckAppMount("/")
+    .wait("@searchRequest")
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-logout-anchor']")
