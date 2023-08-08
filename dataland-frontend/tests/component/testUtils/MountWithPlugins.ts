@@ -141,7 +141,8 @@ function mountWithDialog<T extends DefineComponent<any, any, any, any, any>>(
   });
   const wrapperOptions = options as ComponentMountingOptions<typeof componentWrapper>;
   wrapperOptions.global ??= {};
-  wrapperOptions.global.stubs = { transition: false};
+  wrapperOptions.global.stubs ??= {};
+  (wrapperOptions.global.stubs as Record<string, boolean>).transition = false
   return mountWithPlugins(componentWrapper, wrapperOptions);
 }
 
