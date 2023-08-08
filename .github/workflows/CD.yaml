@@ -209,10 +209,11 @@ jobs:
       - name: Move Cypress Results
         if: always()
         run: |
-          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypressresult/${{ matrix.testGroup }} ./dataland-frontend/cypress && 7z a -t7z -mhe=on -p"${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}" ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/out.7z ./dataland-frontend/cypress/
+          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypressresult/${{ matrix.testGroup }} ./dataland-frontend/cypress && 7z a -t7z -mhe=on -p"${{ secrets.SENSITIVE_ARTIFACT_ENCRYPTION_KEY }}" ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/out.7z ./dataland-frontend/cypress/
       - name: Upload FE E2E Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: cypress
           path: ./dataland-frontend/cypressresult/
+          retention-days: 1
