@@ -2,32 +2,32 @@
   <div class="form-field" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit v-if="certificateRequiredIfYes" v-model="baseDataPointYesNoNa" type="group" :name="name">
-    <RadioButtonsFormElement
-      name="value"
-      :validation="validation"
-      :validation-label="validationLabel ?? label"
-      :options="yesNoNaOptions"
-    />
-    <UploadDocumentsForm
+      <RadioButtonsFormElement
+        name="value"
+        :validation="validation"
+        :validation-label="validationLabel ?? label"
+        :options="yesNoNaOptions"
+      />
+      <UploadDocumentsForm
         v-show="baseDataPointYesNoNa.value === 'Yes'"
         @documentsChanged="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
         :name="name"
         :more-than-one-document-allowed="false"
         :file-names-for-prefill="fileNamesForPrefill"
-    />
-    <FormKit v-if="baseDataPointYesNoNa.value === 'Yes'" type="group" name="dataSource">
-      <FormKit type="hidden" name="name" v-model="documentName" />
-      <FormKit type="text" name="reference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
-    </FormKit>
+      />
+      <FormKit v-if="baseDataPointYesNoNa.value === 'Yes'" type="group" name="dataSource">
+        <FormKit type="hidden" name="name" v-model="documentName" />
+        <FormKit type="text" name="reference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
+      </FormKit>
     </FormKit>
 
     <RadioButtonsFormElement
-        v-else
-        :name="name"
-        :validation="validation"
-        :validation-label="validationLabel ?? label"
-        :options="yesNoNaOptions"
+      v-else
+      :name="name"
+      :validation="validation"
+      :validation-label="validationLabel ?? label"
+      :options="yesNoNaOptions"
     />
   </div>
 </template>
@@ -38,14 +38,14 @@ import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldPr
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import {BaseDataPointYesNoNa} from "@clients/backend";
-import {DocumentToUpload} from "@/utils/FileUploadUtils";
+import { BaseDataPointYesNoNa } from "@clients/backend";
+import { DocumentToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "YesNoNaFormField",
   components: { RadioButtonsFormElement, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
-  props: { ...YesNoFormFieldProps, dataTest: String },
+  props: { ...YesNoFormFieldProps },
   data() {
     return {
       baseDataPointYesNoNa: {} as BaseDataPointYesNoNa,
@@ -56,7 +56,7 @@ export default defineComponent({
       yesNoNaOptions: {
         Yes: "Yes",
         No: "No",
-        NA: "N/A"
+        NA: "N/A",
       },
       isMounted: false,
     };
