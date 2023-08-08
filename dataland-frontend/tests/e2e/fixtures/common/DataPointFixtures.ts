@@ -62,6 +62,19 @@ export function generateNumericOrEmptyDatapoint(
 }
 
 /**
+ * Randomly returns a datapoint with the specified value (chosen at random between 0 and 99999 if not specified)
+ * @param reports the reports that can be referenced as data sources
+ * @param value the value of the datapoint to generate (chosen at random between 0 and 99999 if not specified)
+ * @returns the generated datapoint
+ */
+export function generateNumericDatapoint(
+    value: number | null = valueOrNull(faker.number.int()),
+    reports: ReferencedDocuments,
+): DataPointBigDecimal {
+  return generateDatapoint(value, reports);
+}
+
+/**
  * Randomly generates a Yes / No / Na / undefined datapoint
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint or undefined
