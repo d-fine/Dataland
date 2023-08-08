@@ -4,7 +4,7 @@
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <BackButton id="backButton" class="mt-2 pl-3" />
       <CompanyInformation :companyID="companyID" />
-      <CreateSFDRDataset :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
+      <CreateSfdrDataset :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
     </AuthorizationWrapper>
     <TheFooter />
   </AuthenticationWrapper>
@@ -13,7 +13,7 @@
 <script lang="ts">
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import CreateSFDRDataset from "@/components/forms/CreateSfdrDataset.vue";
+import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
@@ -26,7 +26,7 @@ export default defineComponent({
   name: "UploadSFDR",
   components: {
     AuthorizationWrapper,
-    CreateSFDRDataset,
+    CreateSfdrDataset,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
