@@ -30,7 +30,6 @@ export function valueOrNull<T>(value: T): T | null {
  */
 export function generateReferencedReports(): ReferencedDocuments {
   const availableReports = faker.helpers.arrayElements(possibleReports, {min: 1, max: 10});
-  //if (availableReports.length == 0) availableReports.push(possibleReports[0]);
 
   const referencedReports: ReferencedDocuments = {};
   for (const reportName of availableReports) {
