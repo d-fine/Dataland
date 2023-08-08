@@ -32,21 +32,25 @@ describeIf(
       });
     });
 
+    beforeEach(() => {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+    });
+
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
       const data = getPreparedFixture("company-for-all-types", preparedEuTaxonomyFixtures);
-      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
-        await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany.companyInformation.companyName);
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then(
+          () => testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany.companyInformation.companyName),
+        );
       });
     });
 
     it("Check whether newly added dataset has Rejected status and can be edited", () => {
       const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
-      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
-        const dataMetaInfo = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then((dataMetaInfo) =>
+          testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo),
+        );
       });
     });
   },
