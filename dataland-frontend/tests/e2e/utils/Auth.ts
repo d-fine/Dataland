@@ -71,21 +71,15 @@ export function ensureLoggedIn(username?: string, password?: string): void {
     },
     {
       validate: () => {
-        // cy.visit("/keycloak/realms/datala\ndsecurity/protocol/openid-connect/3p-cookies/step1.html")
-        //   .url()
-        //   .should(
-        //     "eq",
-        //     getBaseUrl() + "/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step2.html",
-        //   );
-        // cy.window()
-        //   .then((window): boolean => {
-        //     if ("hasAccess" in window) {
-        //       return window.hasAccess as boolean;
-        //     } else {
-        //       return false;
-        //     }
-        //   })
-        //   .should("be.true");
+        cy.visit("/keycloak/realms/datala\ndsecurity/protocol/openid-connect/3p-cookies/step1.html")
+          .url().should("eq",
+            getBaseUrl() + "/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step2.html",
+        );
+        cy.window().then((window): boolean => {
+            if ("hasAccess" in window) {return window.hasAccess as boolean;
+            } else {return false;
+            }
+        }).should("be.true");
       },
       cacheAcrossSpecs: true,
     },
