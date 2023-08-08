@@ -8,7 +8,7 @@
       :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
-      :multiple="true"
+      :multiple="moreThanOneDocumentAllowed"
       @select="handleFilesSelected"
     >
       <template #header="{ files, chooseCallback }">
