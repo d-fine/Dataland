@@ -104,7 +104,6 @@ export default defineComponent({
      * @param event.files files
      */
     handleFilesSelected(event: FileUploadSelectEvent) {
-      console.log({event});
       const selectedFilesByUser = event.files as File[];
       if (isThereActuallyANewFileSelected(selectedFilesByUser, this.documentsToUpload)) {
         const documentsToUpload = Promise.all(
@@ -127,6 +126,7 @@ export default defineComponent({
      * Emits event that selected documents changed
      */
     emitDocumentsChangedEvent() {
+      console.log("emitting", this.documentsToUpload);
       this.$emit("reportsUpdated", this.documentsToUpload);
       this.$emit("documentsChanged", this.documentsToUpload);
     },
