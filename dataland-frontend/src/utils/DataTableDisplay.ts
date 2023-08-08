@@ -48,11 +48,12 @@ export type ReportingPeriodOfDataSetWithId = {
  * Adds click event listeners on DataTable row headers to expand and collapse row
  * @param expandedRowsOnClick function passes the latest list of expanded row id's
  * @param newExpandedRowsCallback function that returns the updated (after click) list of expanded row id's
+ * @returns the map of rows and their click handlers needed for unmounting
  */
 export function mountRowHeaderClickEventListeners(
   expandedRowsOnClick: () => string[],
   newExpandedRowsCallback: (newExpandedRows: string[]) => void,
-): void {
+): Map<Element, EventListener> {
   const handlerMap: Map<Element | HTMLButtonElement, EventListener> = new Map();
   let expandedRowGroups: string[] = [];
 
@@ -102,6 +103,8 @@ export function mountRowHeaderClickEventListeners(
 
     clearTimeout(t);
   });
+
+  return handlerMap;
 }
 
 /**
