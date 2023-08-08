@@ -25,7 +25,6 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
-    //TODO Rename file to DataIntegrity after everything is finished
     /**
      * validates that the data uploaded via the function `uploadSfdrDataViaForm` is displayed correctly for a company
      * @param companyId the company associated to the data uploaded via form
