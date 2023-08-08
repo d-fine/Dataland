@@ -1,6 +1,5 @@
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { deepCopyObject, ObjectType } from "@/utils/UpdateObjectUtils";
-import { CompanyReport } from "@clients/backend";
 import { ComponentPropsOptions } from "vue";
 
 export const BaseFormFieldProps = {
@@ -30,6 +29,9 @@ export const BaseFormFieldProps = {
   innerClass: {
     type: String,
     default: "short",
+  },
+  dataTest: {
+    type: String,
   },
 };
 
@@ -91,30 +93,8 @@ export const MultiSelectFormProps = Object.assign(deepCopyObject(FormFieldPropsW
 }) as Readonly<ComponentPropsOptions>;
 
 export const DataPointFormFieldProps = Object.assign(deepCopyObject(YesNoFormFieldProps as ObjectType), {
-  dataTest: {
-    type: String,
-  },
   reportsName: {
     type: Array<string>,
-  },
-  placeholder: {
-    type: String,
-  },
-  options: {
-    type: Array,
-  },
-}) as Readonly<ComponentPropsOptions>;
-
-export const UploadReportsProps = Object.assign(deepCopyObject(YesNoFormFieldProps as ObjectType), {
-  referencedReportsForPrefill: {
-    type: Object as () => { [key: string]: CompanyReport },
-  },
-  isEuTaxonomy: {
-    type: Boolean,
-    default: false,
-  },
-  dataTest: {
-    type: String,
   },
   placeholder: {
     type: String,

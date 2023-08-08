@@ -68,12 +68,13 @@ import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
 import { ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { UploadReportsProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { CompanyReport } from "@clients/backend";
 import { ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "UploadReports",
+  inheritAttrs: false,
   inject: {
     injectReferencedReportsForPrefill: {
       from: "referencedReportsForPrefill",
@@ -93,7 +94,14 @@ export default defineComponent({
     };
   },
   props: {
-    ...UploadReportsProps,
+    ...YesNoFormFieldProps,
+    referencedReportsForPrefill: {
+      type: Object as () => { [key: string]: CompanyReport },
+    },
+    isEuTaxonomy: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     referencedReportsForPrefill() {
