@@ -28,6 +28,7 @@ import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObje
 import { Field } from "@/utils/GenericFrameworkTypes";
 import { smeModalColumnHeaders } from "@/components/resources/frameworkDataSearch/sme/SmeModalColumnHeaders";
 import { convertToMillions } from "@/utils/NumberConversionUtils";
+import { convertNace } from "@/utils/NaceCodeConverter";
 
 export default defineComponent({
   name: "SmePanel",
@@ -101,7 +102,12 @@ export default defineComponent({
      * @returns the formatted value
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
-      const fieldsToConvertToMillions = ["revenueInEur", "operatingCostInEur", "capitalAssetsInEur"];
+      const fieldsToConvertToMillions = [
+        "revenueInEur",
+        "operatingCostInEur",
+        "capitalAssetsInEur",
+        "amountCoveredByInsuranceAgainstNaturalHazards",
+      ];
       const optionFields = [
         "percentageOfInvestmentsInEnhancingEnergyEfficiency",
         "energyConsumptionCoveredByOwnRenewablePowerGeneration",
@@ -118,15 +124,17 @@ export default defineComponent({
           nameOfProductionSite: productionSite.nameOfProductionSite,
           addressOfProductionSite: productionSite.addressOfProductionSite,
           percentageOfTotalRevenue: productionSite.percentageOfTotalRevenue
-            ? `${productionSite.percentageOfTotalRevenue}%`
+            ? `${productionSite.percentageOfTotalRevenue} %`
             : undefined,
         }));
+      } else if (field.name == "sector") {
+        return convertNace(value);
       } else if (field.name == "listOfProducts") {
         const listOfProducts = value as SmeProduct[];
         return listOfProducts.map((product) => ({
           name: product.name,
           percentageOfTotalRevenue: product.percentageOfTotalRevenue
-            ? `${product.percentageOfTotalRevenue}%`
+            ? `${product.percentageOfTotalRevenue} %`
             : undefined,
         }));
       } else if (fieldsToConvertToMillions.includes(field.name)) {
