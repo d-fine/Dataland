@@ -32,7 +32,7 @@
         <FormKit type="group" name="dataSource">
           <div class="next-to-each-other">
             <div class="flex-1">
-              <UploadFormHeader :label="`${label} Report`" :description="'Upload Report'" />
+              <UploadFormHeader :label="`${label} Report`" :description="'Select a report as a reference for this data point.'" />
               <FormKit
                 type="select"
                 name="report"
