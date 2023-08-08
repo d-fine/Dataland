@@ -119,8 +119,8 @@
       <template #groupheader="slotProps">
         <span
           :data-test="slotProps.data.subcategoryKey"
-          :data-row-header-click="slotProps.data.subcategoryKey"
           :id="slotProps.data.subcategoryKey"
+          data-row-header-click
           style="cursor: pointer"
         >
           {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
