@@ -38,7 +38,6 @@ export default defineComponent({
       KEYCLOAK_ROLE_UPLOADER,
     };
   },
-  //TODO rename this file to UploadSfdr.vue
   props: {
     companyID: {
       type: String,
