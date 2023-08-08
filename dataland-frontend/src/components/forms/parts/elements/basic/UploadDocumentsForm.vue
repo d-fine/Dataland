@@ -126,7 +126,6 @@ export default defineComponent({
      * Emits event that selected documents changed
      */
     emitReportsUpdatedEvent() {
-      console.log("emitting", this.documentsToUpload);
       this.$emit("reportsUpdated", this.documentsToUpload);
     },
 

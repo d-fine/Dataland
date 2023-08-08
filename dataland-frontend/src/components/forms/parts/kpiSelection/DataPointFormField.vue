@@ -38,7 +38,7 @@
                 name="report"
                 v-model="currentReportValue"
                 placeholder="Select a report"
-                :options="['None...', ...displayreportsName]"
+                :options="['None...', ...referenceableReportNames]"
                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
               />
             </div>
@@ -123,7 +123,7 @@ export default defineComponent({
     },
   },
   computed: {
-    displayreportsName(): string[] {
+    referenceableReportNames(): string[] {
       return (this.reportsName ?? this.injectReportsName) as string[];
     },
     isDataQualityRequired(): boolean {
