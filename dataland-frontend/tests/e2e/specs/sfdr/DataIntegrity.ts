@@ -3,7 +3,10 @@ import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { DataTypeEnum, SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { selectsReportsForUploadInSfdrForm, uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
+import {
+    selectsReportsForUploadInSfdrForm,
+    uploadCompanyAndSfdrDataViaApi,
+} from "@e2e/utils/SfdrUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
@@ -59,18 +62,17 @@ describeIf(
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          return uploadOneSfdrDataset(token, storedCompany.companyId, "2021", testSfdrCompany.t).then(
-            (dataMetaInformation) => {
-              cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+          return uploadCompanyAndSfdrDataViaApi(token, generateDummyCompanyInformation(testCompanyName), testSfdrCompany.t, "2021" ).then(
+            (uploadIds) => {
+              cy.intercept("**/api/companies/" + uploadIds.companyId).as("getCompanyInformation");
               cy.visitAndCheckAppMount(
                 "/companies/" +
-                  storedCompany.companyId +
+                  uploadIds.companyId +
                   "/frameworks/" +
                   DataTypeEnum.Sfdr +
                   "/upload" +
                   "?templateDataId=" +
-                  dataMetaInformation.dataId,
+                  uploadIds.dataId,
               );
               cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
 
@@ -78,23 +80,22 @@ describeIf(
                 "eq",
                 getBaseUrl() +
                   "/companies/" +
-                  storedCompany.companyId +
+                  uploadIds.companyId +
                   "/frameworks/" +
                   DataTypeEnum.Sfdr +
                   "/upload" +
                   "?templateDataId=" +
-                  dataMetaInformation.dataId,
+                  uploadIds.dataId,
               );
               cy.get("h1").should("contain", testCompanyName);
               selectsReportsForUploadInSfdrForm();
               setQualityInSfdrUploadForm();
               submitButton.clickButton();
               cy.url().should("eq", getBaseUrl() + "/datasets");
-              validateFormUploadedData(storedCompany.companyId);
+              validateFormUploadedData(uploadIds.companyId);
             },
           );
         });
       });
-    });
   },
 );
