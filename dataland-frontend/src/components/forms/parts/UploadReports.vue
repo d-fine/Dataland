@@ -85,7 +85,7 @@ export default defineComponent({
     ReportFormElement,
     PrimeButton,
   },
-  emits: ["documentUpdated"],
+  emits: ["referenceUpdated"],
   data() {
     return {
       reportsToUpload: [] as ReportToUpload[] | undefined,
@@ -120,9 +120,9 @@ export default defineComponent({
      */
     emitReferenceableReportNamesChangedEvent() {
       if (this.isEuTaxonomy) {
-        this.$emit("documentUpdated", this.allReferenceableReportNames);
+        this.$emit("referenceUpdated", this.allReferenceableReportNames);
       } else {
-        this.$emit("documentUpdated", this.allReferenceableReportNames, this.reportsToUpload);
+        this.$emit("referenceUpdated", this.allReferenceableReportNames, this.reportsToUpload);
       }
     },
     /**

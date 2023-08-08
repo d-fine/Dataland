@@ -143,7 +143,7 @@ export default defineComponent({
       currentQualityValue: "",
     };
   },
-  emits: ["documentUpdated"],
+  emits: ["referenceUpdated"],
   props: {
     ...DataPointFormFieldProps,
   },

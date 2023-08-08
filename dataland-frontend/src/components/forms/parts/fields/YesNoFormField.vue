@@ -11,7 +11,7 @@
       />
       <UploadDocumentsForm
         v-show="baseDataPointYesNo.value === 'Yes'"
-        @documentsChanged="handleDocumentUpdatedEvent"
+        @referenceChanged="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
         :name="name"
         :more-than-one-document-allowed="false"
@@ -160,7 +160,7 @@ export default defineComponent({
       return this.currentValue;
     },
   },
-  emits: ["documentUpdated"],
+  emits: ["referenceUpdated"],
   mounted() {
     this.updateFileUploadFiles();
     this.isMounted = true;
@@ -186,7 +186,7 @@ export default defineComponent({
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
       this.documentReference = this.referencedDocument?.reference ?? "";
-      this.$emit("documentUpdated", this.documentName, this.referencedDocument);
+      this.$emit("referenceUpdated", this.documentName, this.referencedDocument);
     },
 
     /**

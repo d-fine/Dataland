@@ -54,7 +54,7 @@
                           :evidenceDesired="field.evidenceDesired"
                           :data-test="field.name"
                           :unit="field.unit"
-                          @documentUpdated="updateDocumentsList"
+                          @referenceUpdated="updateDocumentsList"
                           :ref="field.name"
                         />
                       </FormKit>

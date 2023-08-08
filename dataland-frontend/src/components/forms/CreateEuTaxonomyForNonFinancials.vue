@@ -61,7 +61,7 @@
                   ref="UploadReports"
                   :isEuTaxonomy="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports"
-                  @documentUpdated="handleChangeOfReferenceableReportNames"
+                  @referenceUpdated="handleChangeOfReferenceableReportNames"
                 />
 
                 <EuTaxonomyBasicInformation
