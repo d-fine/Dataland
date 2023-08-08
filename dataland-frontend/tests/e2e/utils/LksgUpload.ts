@@ -1,4 +1,5 @@
 import {
+  CompanyAssociatedDataLksgData,
   CompanyInformation,
   Configuration,
   DataMetaInformation,
@@ -9,6 +10,7 @@ import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
  * Uploads a single LKSG data entry for a company
@@ -265,6 +267,24 @@ function checkIfUploadFieldDependenciesAreRespected(): void {
 }
 
 /**
+ *  Verify that selected documents are referenced in the actual dataset
+ */
+function checkIfUploadFieldAreReferencedInTheDataset(): void {
+  cy.intercept("POST", "**/api/data/lksg", (request) => {
+    request.reply(200, {});
+  }).as("postLksgData");
+  cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled").click();
+  cy.wait("@postLksgData").then((interception) => {
+    const postedObject = interception.request.body as CompanyAssociatedDataLksgData;
+    const postedLksgDataset = postedObject;
+    const referencedReports =
+      assertDefined(postedLksgDataset).data.governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!
+        .dataSource!.reference;
+    expect(referencedReports).to.not.empty;
+  });
+}
+
+/**
  * Uploads a single LKSG data entry for a company via form
  */
 export function uploadLksgDataViaForm(): void {
@@ -288,6 +308,7 @@ export function uploadLksgDataViaForm(): void {
   fillRequiredLksgFieldsWithDummyData();
 
   testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
+  checkIfUploadFieldAreReferencedInTheDataset();
   submitButton.clickButton();
 
   cy.get("div.p-message-success").should("be.visible");
