@@ -64,7 +64,7 @@ export function mountRowHeaderClickEventListeners(
       .map((el: Element) => {
         const button = el.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');
         if (button) {
-          button?.setAttribute(buttonAttributeName, el.id);
+          button.setAttribute(buttonAttributeName, el.id);
           return button;
         }
         return void 0;
