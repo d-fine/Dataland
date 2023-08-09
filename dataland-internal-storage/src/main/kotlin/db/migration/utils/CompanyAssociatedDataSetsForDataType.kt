@@ -9,7 +9,7 @@ fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: DataTyp
     val objectMapper = ObjectMapper()
     val getQueryResultSet = context!!.connection.createStatement().executeQuery(
         "SELECT * from data_items " +
-                "WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"${dataType.value}\\\\\\\"%'",
+            "WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"${dataType.value}\\\\\\\"%'",
     )
     val companyAssociatedDatasets = mutableListOf<DataTableEntity>()
     while (getQueryResultSet.next()) {
@@ -26,7 +26,7 @@ fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: DataTyp
     }
 
     return companyAssociatedDatasets.filter {
-            dataTableEntity ->
-            dataTableEntity.companyAssociatedData.getString("dataType") == dataType.value
+        dataTableEntity ->
+        dataTableEntity.companyAssociatedData.getString("dataType") == dataType.value
     }
 }

@@ -9,7 +9,7 @@ import org.json.JSONObject
 /**
  * This migration script updates the existing LkSG datasets to be in line again with the dataDictionary
  */
-class V3__MigrateLksg: BaseJavaMigration() {
+class V3__MigrateLksg : BaseJavaMigration() {
 
     private val mapOfOldToNewFieldNames = mapOf(
         "totalRevenue" to "annualTotalRevenue",
@@ -52,7 +52,7 @@ class V3__MigrateLksg: BaseJavaMigration() {
         "fertilisersOrPollutants" to "fertilizersOrPollutants",
         "hazardousWasteTransboundaryMovementsOutsideOecdEuLiechtenstein" to
             "hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein",
-        "hazardousAndOtherWasteImport" to "hazardousWasteDisposalOtherWasteImport"
+        "hazardousAndOtherWasteImport" to "hazardousWasteDisposalOtherWasteImport",
     )
 
     private val newFieldsWithUploadButtonIfYes = listOf("smetaSocialAuditConcept", "codeOfConduct", "policyStatement")
@@ -76,7 +76,8 @@ class V3__MigrateLksg: BaseJavaMigration() {
         }
         if (categoryKey == "social" &&
             subcategoryKey == "childLabor" &&
-            fieldKey == "worstFormsOfChildLaborProhibition") {
+            fieldKey == "worstFormsOfChildLaborProhibition"
+        ) {
             subcategoryObjectTmp.put("worstFormsOfChildLabor", "Yes")
         }
     }
@@ -99,7 +100,7 @@ class V3__MigrateLksg: BaseJavaMigration() {
                     fields.forEach { field ->
                         val dataToMigrate = subcategoryObject.opt(field)
                         writeToTemporarySubcategoryObject(
-                            subcategoryObjectTmp, category, subcategory, field, dataToMigrate
+                            subcategoryObjectTmp, category, subcategory, field, dataToMigrate,
                         )
                     }
                     categoryObjectTmp.put(subcategory, subcategoryObjectTmp)

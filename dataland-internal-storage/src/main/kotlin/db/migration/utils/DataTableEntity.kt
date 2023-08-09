@@ -8,6 +8,6 @@ data class DataTableEntity(
     val companyAssociatedData: JSONObject,
 ) {
     fun getWriteQuery(): String = "UPDATE data_items " +
-            "SET data = '${ObjectMapper().writeValueAsString(companyAssociatedData.toString())}' " +
-            "WHERE data_id = '$dataId'"
+        "SET data = '${ObjectMapper().writeValueAsString(companyAssociatedData.toString())}' " +
+        "WHERE data_id = '$dataId'"
 }

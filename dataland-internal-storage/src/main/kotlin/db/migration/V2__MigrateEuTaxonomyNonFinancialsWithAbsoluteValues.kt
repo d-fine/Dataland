@@ -18,7 +18,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
     override fun migrate(context: Context?) {
         val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(
             context,
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
         )
         companyAssociatedDatasets.forEach {
             val dataset = JSONObject(it.companyAssociatedData.getString("data"))
