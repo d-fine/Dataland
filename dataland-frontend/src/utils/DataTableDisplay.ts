@@ -56,8 +56,8 @@ export function mountRowHeaderClickEventListeners(
   let expandedRowGroups: string[] = [];
 
   const buttonAttributeName = "data-parent-id";
-  const rows = Array.from(document.querySelectorAll("[data-row-header-click]")).filter((el) => !!el);
-  const rowButtons = rows
+  const rowHeaders = Array.from(document.querySelectorAll("[data-row-header-click]")).filter((el) => !!el);
+  const rowButtons = rowHeaders
     .map((el: Element) => {
       const button = el.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');
       if (button) {
@@ -68,7 +68,7 @@ export function mountRowHeaderClickEventListeners(
     })
     .filter((button): button is HTMLButtonElement => !!button);
 
-  [...rows, ...rowButtons].forEach((el: Element) => {
+  [...rowHeaders, ...rowButtons].forEach((el: Element) => {
     let clickHandler: EventListener | null = (evt): void => {
       if (!el.id) {
         evt.stopImmediatePropagation();
