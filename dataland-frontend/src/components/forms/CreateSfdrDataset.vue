@@ -289,7 +289,6 @@ export default defineComponent({
      * @param reportsToUpload reports to upload
      */
     updateDocumentsList(reportsNames: string[], reportsToUpload: DocumentToUpload[]) {
-      console.log("createSfdrDataset", { reportsNames, reportsToUpload });
       this.namesOfAllCompanyReportsForTheDataset = reportsNames;
       this.documents = new Map();
       reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
