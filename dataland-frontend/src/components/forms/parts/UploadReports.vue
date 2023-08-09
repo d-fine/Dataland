@@ -68,7 +68,6 @@ import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
 import { ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { CompanyReport } from "@clients/backend";
 import { ObjectType } from "@/utils/UpdateObjectUtils";
 
@@ -94,7 +93,10 @@ export default defineComponent({
     };
   },
   props: {
-    ...YesNoFormFieldProps,
+    name: {
+      type: String,
+      required: true,
+    },
     referencedReportsForPrefill: {
       type: Object as () => { [key: string]: CompanyReport },
     },
