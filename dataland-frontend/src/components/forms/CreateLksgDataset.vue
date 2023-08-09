@@ -216,7 +216,7 @@ export default defineComponent({
       required: true,
     },
   },
-  mounted() {
+  created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
       void this.loadLKSGData(dataId);

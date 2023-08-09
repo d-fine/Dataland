@@ -391,7 +391,7 @@ export default defineComponent({
       type: String,
     },
   },
-  mounted() {
+  created() {
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
