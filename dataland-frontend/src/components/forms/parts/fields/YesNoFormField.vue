@@ -124,6 +124,7 @@ export default defineComponent({
   },
   props: {
     ...YesNoFormFieldProps,
+    dataTest: String,
     reportsName: {
       type: Array<string>,
     },

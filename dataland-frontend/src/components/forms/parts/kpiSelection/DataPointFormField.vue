@@ -112,7 +112,7 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import { DataPointFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "DataPointFormField",
@@ -145,7 +145,16 @@ export default defineComponent({
     };
   },
   props: {
-    ...DataPointFormFieldProps,
+    ...YesNoFormFieldProps,
+    reportsName: {
+      type: Array<string>,
+    },
+    options: {
+      type: Array,
+    },
+    placeholder: {
+      type: String,
+    },
   },
   methods: {
     selectNothingIfNotExistsFormKitPlugin,
