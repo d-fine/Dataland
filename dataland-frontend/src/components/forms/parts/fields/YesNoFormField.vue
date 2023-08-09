@@ -44,7 +44,7 @@
                   name="report"
                   v-model="currentReportValue"
                   placeholder="Select a report"
-                  :options="['None...', ...referenceableReportNames]"
+                  :options="['None...', ...injectReportsName]"
                 />
               </div>
               <div>
@@ -125,9 +125,6 @@ export default defineComponent({
   props: {
     ...YesNoFormFieldProps,
     dataTest: String,
-    reportsName: {
-      type: Array<string>,
-    },
   },
 
   data() {
@@ -153,9 +150,6 @@ export default defineComponent({
     };
   },
   computed: {
-    referenceableReportNames(): string[] {
-      return this.reportsName ?? this.injectReportsName;
-    },
     isDataQualityRequired(): boolean {
       return this.currentValue;
     },

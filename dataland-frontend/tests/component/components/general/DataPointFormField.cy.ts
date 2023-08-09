@@ -2,11 +2,7 @@ import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointF
 
 describe("Component test for DataPointFormField", () => {
   it("Unit field should be visible when options are defined and Quality field should be NA if the value field has no value", () => {
-    cy.mountWithPlugins(DataPointFormField, {
-      data() {
-        return {};
-      },
-    }).then((mounted) => {
+    cy.mountWithPlugins(DataPointFormField, {}).then((mounted) => {
       void mounted.wrapper.setProps({
         evidenceDesired: true,
         unit: "",
