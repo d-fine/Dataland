@@ -56,7 +56,7 @@ export function mountRowHeaderClickEventListeners(
   let expandedRowGroups: string[] = [];
 
   const buttonAttributeName = "data-parent-id";
-  const rowHeaders = Array.from(document.querySelectorAll("[data-row-header-click]")).filter((el) => !!el);
+  const rowHeaders = Array.from(document.querySelectorAll("[data-row-header-click]"));
   const rowButtons = rowHeaders
     .map((el: Element) => {
       const button = el.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');
