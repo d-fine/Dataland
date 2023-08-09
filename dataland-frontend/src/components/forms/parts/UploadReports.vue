@@ -186,7 +186,7 @@ export default defineComponent({
      * Initializes the already uploaded reports from provided reports
      */
     prefillAlreadyUploadedReports() {
-      const sourceOfReferencedReportsForPrefill = (this.referencedReportsForPrefill ||
+      const sourceOfReferencedReportsForPrefill = (this.referencedReportsForPrefill ??
         this.injectReferencedReportsForPrefill) as ObjectType;
 
       if (sourceOfReferencedReportsForPrefill) {
