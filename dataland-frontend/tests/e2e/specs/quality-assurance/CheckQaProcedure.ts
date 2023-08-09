@@ -89,38 +89,38 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(companyName: string): voi
 /**
  * Tests that the dataset is visible on the QA list and reject it and if the edit button is present on the view page
  * @param storedCompany the stored company owning the dataset
- * @param dataset the data meta information that was uploaded
+ * @param dataMetaInfo the data meta information of the dataset that that was uploaded before
  */
 function testSubmittedDatasetIsInReviewListAndRejectIt(
   storedCompany: StoredCompany,
-  dataset: DataMetaInformation,
+  dataMetaInfo: DataMetaInformation,
 ): void {
   login(reviewer_name, reviewer_pw);
 
-  cy.intercept(`**/api/metadata/${dataset.dataId}`).as("getMetadata");
+  cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadata");
   cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformation");
 
   viewRecentlyUploadedDatasetsInQaTable();
 
   cy.wait("@getMetadata").wait("@getCompanyInformation");
 
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
-  cy.get(".p-dialog").get('button[id="reject-button"]').should("exist").click();
+  cy.contains("td", dataMetaInfo.dataId).click();
+  cy.get('button[id="reject-button"]').should("exist").click();
 
   safeLogout();
   login(uploader_name, uploader_pw);
 
   testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, "REJECTED");
 
-  cy.intercept(`**/api/data/lksg/${dataset.dataId}`).as("getLksgDataset");
-  cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataset.dataId}`);
+  cy.intercept(`**/api/data/lksg/${dataMetaInfo.dataId}`).as("getLksgDataset");
+  cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
   cy.wait("@getLksgDataset");
   cy.get('[data-test="datasetDisplayStatusContainer"]').should("exist");
   cy.get('button[data-test="editDatasetButton"]').should("exist").click();
 
   cy.url().should(
     "eq",
-    getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${dataset.dataId}`,
+    getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${dataMetaInfo.dataId}`,
   );
 }
 
