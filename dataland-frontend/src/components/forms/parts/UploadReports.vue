@@ -124,7 +124,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Emits event that referenceable reports changed
+     * Emits event when referenceable reports changed
      */
     emitReportsChangedEvent() {
       if (this.isEuTaxonomy) {
