@@ -54,32 +54,47 @@ class V3__MigrateLksg: BaseJavaMigration() {
         "hazardousAndOtherWasteImport" to "hazardousWasteDisposalOtherWasteImport"
     )
 
+    private val newFieldsWithUploadButtonIfYes = listOf("smetaSocialAuditConcept", "codeOfConduct", "policyStatement")
+
     override fun migrate(context: Context?) {
         val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, DataTypeEnum.lksg)
 
         companyAssociatedDatasets.forEach {
-            val dataset = JSONObject(it.companyAssociatedData.getString("data"))
+            var dataset = JSONObject(it.companyAssociatedData.getString("data"))
+            val datasetTmp = JSONObject()
             val categories = dataset.keys()
             categories.forEach { category ->
                 val categoryObject = dataset.opt(category) as JSONObject
+                val categoryObjectTmp = JSONObject()
                 val subcategories = categoryObject.keys()
                 subcategories.forEach { subcategory ->
                     val subcategoryObject = categoryObject.opt(subcategory) as JSONObject
+                    val subcategoryObjectTmp = JSONObject()
                     val fields = subcategoryObject.keys()
                     fields.forEach { field ->
+                        subcategoryObjectTmp.put(field, subcategoryObject.opt(field))
                         if (field in mapOfOldToNewFieldNames.keys) {
                             val dataToMigrate = subcategoryObject.opt(field)
-                            subcategoryObject.put(mapOfOldToNewFieldNames.getValue(field), dataToMigrate)
-                            subcategoryObject.remove(field)
+                            subcategoryObjectTmp.put(mapOfOldToNewFieldNames.getValue(field), dataToMigrate)
+                            subcategoryObjectTmp.remove(field)
+                        }
+                        if (field in newFieldsWithUploadButtonIfYes) {
+                            val dataToMigrate = subcategoryObjectTmp.opt(field)
+                            val newBaseDataPointObject = JSONObject("{\"value\":$dataToMigrate}")
+                            subcategoryObjectTmp.remove(field)
+                            subcategoryObjectTmp.put(field, newBaseDataPointObject)
                         }
                         if (category == "social" &&
                             subcategory == "childLabor" &&
                             field == "worstFormsOfChildLaborProhibition") {
-                            subcategoryObject.put("worstFormsOfChildLabor", "Yes")
+                            subcategoryObjectTmp.put("worstFormsOfChildLabor", "Yes")
                         }
                     }
+                    categoryObjectTmp.put(subcategory, subcategoryObjectTmp)
                 }
+                datasetTmp.put(category, categoryObjectTmp)
             }
+            dataset = datasetTmp
             it.companyAssociatedData.put("data", dataset.toString())
             context!!.connection.createStatement().execute(it.getWriteQuery())
         }
