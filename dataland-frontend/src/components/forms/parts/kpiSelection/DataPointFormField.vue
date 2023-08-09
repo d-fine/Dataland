@@ -146,7 +146,6 @@ export default defineComponent({
       currentQualityValue: "",
     };
   },
-  emits: ["reportsUpdated"],
   props: {
     ...DataPointFormFieldProps,
   },
