@@ -273,7 +273,7 @@ function checkIfUploadedFilesAreReferencedInTheDataset(): void {
   cy.intercept("POST", "**/api/data/lksg", (request) => {
     request.reply(200, {});
   }).as("postLksgData");
-  cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled").click();
+  submitButton.clickButton()
   cy.wait("@postLksgData").then((interception) => {
     const postedObject = interception.request.body as CompanyAssociatedDataLksgData;
     const postedLksgDataset = postedObject;
