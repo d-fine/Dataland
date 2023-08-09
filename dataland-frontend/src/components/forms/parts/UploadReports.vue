@@ -109,14 +109,14 @@ export default defineComponent({
     },
   },
   computed: {
-    namesOfFilesToUpload() {
+    namesOfReportsToUpload() {
       return this.reportsToUpload.map((reportToUpload) => reportToUpload.fileNameWithoutSuffix);
     },
     namesOfStoredReports() {
       return this.storedReports.map((storedReport) => storedReport.reportName);
     },
     allReferenceableReportNames(): string[] {
-      return this.namesOfFilesToUpload.concat(this.namesOfStoredReports);
+      return this.namesOfReportsToUpload.concat(this.namesOfStoredReports);
     },
   },
   mounted() {
