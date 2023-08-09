@@ -57,6 +57,30 @@ class V3__MigrateLksg: BaseJavaMigration() {
 
     private val newFieldsWithUploadButtonIfYes = listOf("smetaSocialAuditConcept", "codeOfConduct", "policyStatement")
 
+    private fun writeToTemporarySubcategoryObject(
+        subcategoryObjectTmp: JSONObject,
+        categoryKey: String,
+        subcategoryKey: String,
+        fieldKey: String,
+        fieldValue: Any,
+    ) {
+        subcategoryObjectTmp.put(fieldKey, fieldValue)
+        if (fieldKey in mapOfOldToNewFieldNames.keys) {
+            subcategoryObjectTmp.put(mapOfOldToNewFieldNames.getValue(fieldKey), fieldValue)
+            subcategoryObjectTmp.remove(fieldKey)
+        }
+        if (fieldKey in newFieldsWithUploadButtonIfYes) {
+            val newBaseDataPointObject = JSONObject("{\"value\":$fieldValue}")
+            subcategoryObjectTmp.remove(fieldKey)
+            subcategoryObjectTmp.put(fieldKey, newBaseDataPointObject)
+        }
+        if (categoryKey == "social" &&
+            subcategoryKey == "childLabor" &&
+            fieldKey == "worstFormsOfChildLaborProhibition") {
+            subcategoryObjectTmp.put("worstFormsOfChildLabor", "Yes")
+        }
+    }
+
     override fun migrate(context: Context?) {
         val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, DataTypeEnum.lksg)
 
@@ -73,23 +97,10 @@ class V3__MigrateLksg: BaseJavaMigration() {
                     val subcategoryObjectTmp = JSONObject()
                     val fields = subcategoryObject.keys()
                     fields.forEach { field ->
-                        subcategoryObjectTmp.put(field, subcategoryObject.opt(field))
-                        if (field in mapOfOldToNewFieldNames.keys) {
-                            val dataToMigrate = subcategoryObject.opt(field)
-                            subcategoryObjectTmp.put(mapOfOldToNewFieldNames.getValue(field), dataToMigrate)
-                            subcategoryObjectTmp.remove(field)
-                        }
-                        if (field in newFieldsWithUploadButtonIfYes) {
-                            val dataToMigrate = subcategoryObjectTmp.opt(field)
-                            val newBaseDataPointObject = JSONObject("{\"value\":$dataToMigrate}")
-                            subcategoryObjectTmp.remove(field)
-                            subcategoryObjectTmp.put(field, newBaseDataPointObject)
-                        }
-                        if (category == "social" &&
-                            subcategory == "childLabor" &&
-                            field == "worstFormsOfChildLaborProhibition") {
-                            subcategoryObjectTmp.put("worstFormsOfChildLabor", "Yes")
-                        }
+                        val dataToMigrate = subcategoryObject.opt(field)
+                        writeToTemporarySubcategoryObject(
+                            subcategoryObjectTmp, category, subcategory, field, dataToMigrate
+                        )
                     }
                     categoryObjectTmp.put(subcategory, subcategoryObjectTmp)
                 }
