@@ -56,20 +56,20 @@ export function generateReferencedReports(): ReferencedDocuments {
  */
 export function generateNumericOrEmptyDatapoint(
   reports: ReferencedDocuments,
-  value: number | null = valueOrNull(faker.number.int())
+  value: number | null = valueOrNull(faker.number.int()),
 ): DataPointBigDecimal | undefined {
   return valueOrUndefined(generateDatapoint(value, reports));
 }
 
 /**
  * Randomly returns a datapoint with the specified value (chosen at random between 0 and 99999 if not specified)
- * @param reports the reports that can be referenced as data sources
  * @param value the value of the datapoint to generate (chosen at random between 0 and 99999 if not specified)
+ * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint
  */
 export function generateNumericDatapoint(
   value: number | null = valueOrNull(faker.number.int()),
-  reports: ReferencedDocuments
+  reports: ReferencedDocuments,
 ): DataPointBigDecimal {
   return generateDatapoint(value, reports);
 }
@@ -91,7 +91,7 @@ export function generateYesNoOrEmptyDatapoint(reports: ReferencedDocuments): Dat
  */
 export function generateDatapointOrNotReportedAtRandom(
   value: number | undefined,
-  reports: ReferencedDocuments
+  reports: ReferencedDocuments,
 ): DataPointBigDecimal | undefined {
   if (value === undefined) return undefined;
   return generateDatapoint(valueOrNull(value), reports);
@@ -127,7 +127,7 @@ export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedDocu
  */
 function createQualityAndDataSourceAndComment(
   reports: ReferencedDocuments,
-  qualityBucket: QualityOptions
+  qualityBucket: QualityOptions,
 ): { dataSource: CompanyReportReference | undefined; comment: string | undefined } {
   let dataSource: CompanyReportReference | undefined = undefined;
   let comment: string | undefined = undefined;
@@ -153,7 +153,7 @@ function createQualityAndDataSourceAndComment(
 export function generateDatapointAbsoluteAndPercentage<T, Y>(
   valueAsAbsolute: T | null,
   valueAsPercentage: T | null,
-  reports: ReferencedDocuments
+  reports: ReferencedDocuments,
 ): Y {
   const qualityBucket =
     valueAsAbsolute === null
