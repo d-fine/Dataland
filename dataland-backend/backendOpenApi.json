@@ -3631,7 +3631,7 @@
       "P2pGeneralGeneral": {
         "required": [
           "dataDate",
-          "sector"
+          "sectors"
         ],
         "type": "object",
         "properties": {
@@ -3639,7 +3639,7 @@
             "type": "string",
             "format": "date"
           },
-          "sector": {
+          "sectors": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/P2pSector"

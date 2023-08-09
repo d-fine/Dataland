@@ -24,7 +24,7 @@ describe("Component test for P2pPanel", () => {
 
   it("Should display the correct categories in the sector field", () => {
     const pseudoP2pData = {
-      general: { general: { dataDate: "2023-01-01", sector: [P2pSector.Ammonia] } },
+      general: { general: { dataDate: "2023-01-01", sectors: [P2pSector.Ammonia] } },
     } as PathwaysToParisData;
 
     cy.intercept("/api/data/p2p/mock-data-id", {
