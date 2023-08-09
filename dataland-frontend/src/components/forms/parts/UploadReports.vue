@@ -143,7 +143,7 @@ export default defineComponent({
     updateSelectedReports(reports: ReportToUpload[]) {
       this.reportsToUpload = reports;
 
-      if (this.duplicatesAmongReferenceableReportNames()) {
+      if (this.areDuplicatesAmongReferenceableReportNames()) {
         const foundExistingRecords = new Set<string>();
         const duplicatesWithIndex = [];
 
@@ -229,7 +229,7 @@ export default defineComponent({
      * Checks if there is a report name twice in the list of referencable report names
      * @returns a boolean stating if any file name is duplicated among the reference report names
      */
-    duplicatesAmongReferenceableReportNames(): boolean {
+    areDuplicatesAmongReferenceableReportNames(): boolean {
       return this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size;
     },
   },
