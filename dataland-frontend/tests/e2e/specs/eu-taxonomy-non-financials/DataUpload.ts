@@ -260,9 +260,11 @@ describeIf(
       cy.get(".p-dialog-content").should("not.exist");
       cy.get("input[type=file]").selectFile(`../testing/data/documents/test-report.pdf`, { force: true });
       uploadDocuments.fillAllReportsToUploadForms();
+      cy.get('[data-test="assuranceSection"] select[name="report"]').select(2);
+      cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "test-report");
       cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
       cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
-      cy.wait(100);
+      cy.wait(2000);
       cy.get('button[data-test="submitButton"]').click();
       cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "test-report");
     }

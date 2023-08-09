@@ -246,7 +246,7 @@ export function getSectorGeneral(undefinedProbability: number, sectors: Array<P2
   return {
     general: {
       dataDate: randomFutureDate(),
-      sector: sectors,
+      sectors: sectors,
     },
     governance: {
       organisationalResponsibilityForParisCompatibility: valueOrUndefined(randomYesNo(), undefinedProbability),
