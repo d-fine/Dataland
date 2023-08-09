@@ -32,21 +32,25 @@ describeIf(
       });
     });
 
+    beforeEach(() => {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+    });
+
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
       const data = getPreparedFixture("company-for-all-types", preparedEuTaxonomyFixtures);
-      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
-        await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany.companyInformation.companyName);
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then(
+          () => testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany.companyInformation.companyName),
+        );
       });
     });
 
     it("Check whether newly added dataset has Rejected status and can be edited", () => {
       const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
-      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
-        const dataMetaInfo = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then((dataMetaInfo) =>
+          testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo),
+        );
       });
     });
   },
@@ -108,7 +112,9 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 
   testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, "REJECTED");
 
+  cy.intercept(`**/api/data/lksg/${dataset.dataId}`).as("getLksgDataset");
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataset.dataId}`);
+  cy.wait("@getLksgDataset");
   cy.get('[data-test="datasetDisplayStatusContainer"]').should("exist");
   cy.get('button[data-test="editDatasetButton"]').should("exist").click();
 
@@ -139,7 +145,9 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
+  cy.intercept("**/api/companies*").as("getMyDatasets");
   cy.visitAndCheckAppMount("/datasets");
+  cy.wait("@getMyDatasets");
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
     timeout: Cypress.env("medium_timeout_in_ms") as number,
@@ -155,8 +163,9 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
  * Logs the user out without testing the url
  */
 function safeLogout(): void {
+  cy.intercept("**/api/companies*").as("searchRequest");
   cy.visitAndCheckAppMount("/")
-    .wait(1000)
+    .wait("@searchRequest")
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-logout-anchor']")
