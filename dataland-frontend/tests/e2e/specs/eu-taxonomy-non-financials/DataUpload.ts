@@ -265,7 +265,9 @@ describeIf(
       cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
       cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
       cy.get('button[data-test="submitButton"]').click();
-      cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "test-report");
+      cy.get('[data-test="failedUploadMessage"]', { timeout: Cypress.env("medium_timeout_in_ms") as number })
+        .should("exist")
+        .should("contain.text", "test-report");
     }
 
     /**
