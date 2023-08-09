@@ -93,18 +93,16 @@
   </template>
 
   <template v-else>
-    <FormKit type="group" :name="name">
-      <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
-      <FormKit
-        type="text"
-        :name="name"
-        v-model="currentValue"
-        :validation-label="validationLabel ?? label"
-        :validation="`number|${validation}`"
-        :placeholder="placeholder"
-        :inner-class="innerClass"
-      />
-    </FormKit>
+    <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
+    <FormKit
+      type="text"
+      :name="name"
+      v-model="currentValue"
+      :validation-label="validationLabel ?? label"
+      :validation="`number|${validation}`"
+      :placeholder="placeholder"
+      :inner-class="innerClass"
+    />
   </template>
 </template>
 
