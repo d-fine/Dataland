@@ -51,7 +51,7 @@ class V3__MigrateLksgTest {
             "{\"general\":{" +
                         "\"masterData\":{" +
                             "\"dataDate\":\"2023\"," +
-                            "\"annualTotalRevenue\":1000" +
+                            "\"totalRevenue\":1000" +
                         "}" +
                     "}," +
                     "\"governance\":{" +
