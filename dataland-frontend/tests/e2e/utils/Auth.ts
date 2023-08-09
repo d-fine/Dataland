@@ -1,5 +1,5 @@
 import Chainable = Cypress.Chainable;
-import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
+import {getBaseUrl, reader_name, reader_pw} from "@e2e/utils/Cypress";
 
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
@@ -19,6 +19,8 @@ export function logout(): void {
     .should("be.visible");
 }
 
+let globalJwt: string = ""
+
 /**
  * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.
  * @param username the username to use (defaults to data_reader)
@@ -26,17 +28,18 @@ export function logout(): void {
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
-  cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
+  cy.intercept("https://www.youtube-nocookie.com/**", {forceNetworkError: false}).as("youtube");
+  cy.intercept({times: 1, url: "/api/companies*"}).as("asdf")
   cy.visitAndCheckAppMount("/")
-    .wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+    .wait("@youtube", {timeout: Cypress.env("medium_timeout_in_ms") as number})
     .get("button[name='login_dataland_button']")
     .click()
     .get("#username")
     .should("exist")
-    .type(username, { force: true })
+    .type(username, {force: true})
     .get("#password")
     .should("exist")
-    .type(password, { force: true })
+    .type(password, {force: true})
 
     .get("#kc-login")
     .should("exist")
@@ -54,6 +57,22 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .click();
   }
   cy.url().should("eq", getBaseUrl() + "/companies");
+  cy.wait("@asdf").then((interception) => {
+    globalJwt = interception.request.headers["authorization"] as string
+  })
+}
+
+function createUUID() {
+  var s = [];
+  var hexDigits = '0123456789abcdef';
+  for (var i = 0; i < 36; i++) {
+    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+  }
+  s[14] = '4';
+  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+  s[8] = s[13] = s[18] = s[23] = '-';
+  var uuid = s.join('');
+  return uuid;
 }
 
 /**
@@ -71,21 +90,59 @@ export function ensureLoggedIn(username?: string, password?: string): void {
     },
     {
       validate: () => {
-          cy.visit("/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step1.html")
-              .url()
-              .should(
-                  "eq",
-                  getBaseUrl() + "/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step2.html",
-              );
-          cy.window()
-              .then((window): boolean => {
-                  if ("hasAccess" in window) {
-                      return window.hasAccess as boolean;
-                  } else {
-                      return false;
-                  }
-              })
-              .should("be.true");
+        // const kcRoot = 'https://local-dev.dataland.com';
+        // const kcRealm = 'datalandsecurity';
+        // const kcClient = 'dataland-public';
+        // const kcRedirectUri = 'https://local-dev.dataland.com/';
+        // const loginPageRequest = {
+        //   url: `${kcRoot}/auth/realms/${kcRealm}/protocol/openid-connect/auth`,
+        //   qs: {
+        //     client_id: kcClient,
+        //     redirect_uri: kcRedirectUri,
+        //     nonce: createUUID(),
+        //     response_mode: 'fragment',
+        //     response_type: 'code',
+        //     scope: 'openid',
+        //     code_challenge: "L4ex8hTvHo-vYBbPDwvKCr3hmGsPj1V3iKHLTJEfibM",
+        //     code_challenge_method: "S256"
+        //   }
+        // };
+        // // Open the KC login page, fill in the form with username and password and submit.
+        // cy.visit(loginPageRequest)
+        // cy.url().should("contain", "/companies")
+
+        cy.request({
+          // url: '/api/companies',
+          url: '/realms/datalandsecurity/protocol/openid-connect/userinfo',
+          headers: {
+            Authorization: globalJwt,
+          }
+        }).its('status').should('eq', 200)
+
+        // cy.visit("/companies")
+        // cy.contains("AVAILABLE DATASETS").should("exist")
+        // cy.wait(10000)
+
+        // console.log("step 1")
+        // cy.visit("/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step1.html")
+        //   .url()
+        //   .should(
+        //     "eq",
+        //     getBaseUrl() + "/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step2.html",
+        //   ).then(() => {
+        //   console.log("step 2")
+        // })
+        // cy.window()
+        //   .then((window): boolean => {
+        //     if ("hasAccess" in window) {
+        //       console.log("maybe true")
+        //       return window.hasAccess as boolean;
+        //     } else {
+        //       console.log("false")
+        //       return false;
+        //     }
+        //   })
+        //   .should("be.true");
       },
       cacheAcrossSpecs: true,
     },
