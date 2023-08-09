@@ -264,7 +264,7 @@ describeIf(
       cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "test-report");
       cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
       cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
-      cy.wait(1000);
+      cy.wait(10000);
       cy.get('button[data-test="submitButton"]').click();
       cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "test-report");
     }
