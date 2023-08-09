@@ -16,7 +16,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
         mockAndWhenConfigurationForFrameworkMigration(
             mockContext,
             buildOriginalDatabaseEntry(),
-            buildExpectedTransformedDatabaseEntry()
+            buildExpectedTransformedDatabaseEntry(),
         )
         val migration = V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues()
         migration.migrate(mockContext)

@@ -13,7 +13,7 @@ import java.sql.Statement
 fun mockAndWhenConfigurationForFrameworkMigration(
     context: Context,
     originalDatabaseEntry: String,
-    expectedTransformedDatabaseEntry: String
+    expectedTransformedDatabaseEntry: String,
 ) {
     val objectMapper = ObjectMapper()
     val mockConnection = Mockito.mock(Connection::class.java)

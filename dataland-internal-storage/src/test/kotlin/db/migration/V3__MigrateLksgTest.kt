@@ -16,7 +16,7 @@ class V3__MigrateLksgTest {
         mockAndWhenConfigurationForFrameworkMigration(
             mockContext,
             buildOriginalDatabaseEntry(),
-            buildExpectedTransformedDatabaseEntry()
+            buildExpectedTransformedDatabaseEntry(),
         )
         val migration = V3__MigrateLksg()
         migration.migrate(mockContext)
@@ -25,23 +25,23 @@ class V3__MigrateLksgTest {
     private fun buildOriginalDatabaseEntry(): String {
         val simplifiedLksgDataset = JSONObject(
             "{\"general\":{" +
-                        "\"masterData\":{" +
-                            "\"dataDate\":\"2023\"," +
-                            "\"totalRevenue\":1000" +
-                        "}" +
-                    "}," +
-                    "\"governance\":{" +
-                        "\"certificationsPoliciesAndResponsibilities\":{" +
-                            "\"codeOfConduct\":\"Yes\"," +
-                            "\"codeOfConductTraining\":\"Yes\"" +
-                        "}" +
-                    "}," +
-                    "\"social\":{" +
-                        "\"childLabor\":{" +
-                            "\"worstFormsOfChildLaborProhibition\":\"Yes\"" +
-                        "}" +
-                    "}" +
-            "}"
+                "\"masterData\":{" +
+                "\"dataDate\":\"2023\"," +
+                "\"totalRevenue\":1000" +
+                "}" +
+                "}," +
+                "\"governance\":{" +
+                "\"certificationsPoliciesAndResponsibilities\":{" +
+                "\"codeOfConduct\":\"Yes\"," +
+                "\"codeOfConductTraining\":\"Yes\"" +
+                "}" +
+                "}," +
+                "\"social\":{" +
+                "\"childLabor\":{" +
+                "\"worstFormsOfChildLaborProhibition\":\"Yes\"" +
+                "}" +
+                "}" +
+                "}",
         )
         return buildDatabaseEntry(simplifiedLksgDataset, DataTypeEnum.lksg)
     }
@@ -49,28 +49,27 @@ class V3__MigrateLksgTest {
     private fun buildExpectedTransformedDatabaseEntry(): String {
         val simplifiedLksgDataset = JSONObject(
             "{\"general\":{" +
-                        "\"masterData\":{" +
-                            "\"dataDate\":\"2023\"," +
-                            "\"totalRevenue\":1000" +
-                        "}" +
-                    "}," +
-                    "\"governance\":{" +
-                        "\"certificationsPoliciesAndResponsibilities\":{" +
-                            "\"codeOfConduct\":{" +
-                                "\"value\":\"Yes\"" +
-                            "}," +
-                            "\"codeOfConductTraining\":\"Yes\"" +
-                        "}" +
-                    "}," +
-                    "\"social\":{" +
-                        "\"childLabor\":{" +
-                            "\"worstFormsOfChildLaborProhibition\":\"Yes\"," +
-                            "\"worstFormsOfChildLabor\":\"Yes\"" +
-                        "}" +
-                    "}" +
-            "}"
+                "\"masterData\":{" +
+                "\"dataDate\":\"2023\"," +
+                "\"annualTotalRevenue\":1000" +
+                "}" +
+                "}," +
+                "\"governance\":{" +
+                "\"certificationsPoliciesAndResponsibilities\":{" +
+                "\"codeOfConduct\":{" +
+                "\"value\":\"Yes\"" +
+                "}," +
+                "\"codeOfConductTraining\":\"Yes\"" +
+                "}" +
+                "}," +
+                "\"social\":{" +
+                "\"childLabor\":{" +
+                "\"worstFormsOfChildLaborProhibition\":\"Yes\"," +
+                "\"worstFormsOfChildLabor\":\"Yes\"" +
+                "}" +
+                "}" +
+                "}",
         )
         return buildDatabaseEntry(simplifiedLksgDataset, DataTypeEnum.lksg)
     }
-
 }

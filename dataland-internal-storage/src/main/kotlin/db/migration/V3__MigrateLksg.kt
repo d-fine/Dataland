@@ -71,7 +71,6 @@ class V3__MigrateLksg : BaseJavaMigration() {
         }
         if (fieldKey in newFieldsWithUploadButtonIfYes) {
             val newBaseDataPointObject = JSONObject("{\"value\":$fieldValue}")
-            subcategoryObjectTmp.remove(fieldKey)
             subcategoryObjectTmp.put(fieldKey, newBaseDataPointObject)
         }
         if (categoryKey == "social" &&
@@ -80,6 +79,28 @@ class V3__MigrateLksg : BaseJavaMigration() {
         ) {
             subcategoryObjectTmp.put("worstFormsOfChildLabor", "Yes")
         }
+    }
+
+    private fun writeToTemporaryDataset(
+        datasetTmp: JSONObject,
+        categoryKey: String,
+        categoryObject: JSONObject,
+    ) {
+        val categoryObjectTmp = JSONObject()
+        val subcategories = categoryObject.keys()
+        subcategories.forEach { subcategory ->
+            val subcategoryObject = categoryObject.opt(subcategory) as JSONObject
+            val subcategoryObjectTmp = JSONObject()
+            val fields = subcategoryObject.keys()
+            fields.forEach { field ->
+                val dataToMigrate = subcategoryObject.opt(field)
+                writeToTemporarySubcategoryObject(
+                    subcategoryObjectTmp, categoryKey, subcategory, field, dataToMigrate,
+                )
+            }
+            categoryObjectTmp.put(subcategory, subcategoryObjectTmp)
+        }
+        datasetTmp.put(categoryKey, categoryObjectTmp)
     }
 
     override fun migrate(context: Context?) {
@@ -91,21 +112,7 @@ class V3__MigrateLksg : BaseJavaMigration() {
             val categories = dataset.keys()
             categories.forEach { category ->
                 val categoryObject = dataset.opt(category) as JSONObject
-                val categoryObjectTmp = JSONObject()
-                val subcategories = categoryObject.keys()
-                subcategories.forEach { subcategory ->
-                    val subcategoryObject = categoryObject.opt(subcategory) as JSONObject
-                    val subcategoryObjectTmp = JSONObject()
-                    val fields = subcategoryObject.keys()
-                    fields.forEach { field ->
-                        val dataToMigrate = subcategoryObject.opt(field)
-                        writeToTemporarySubcategoryObject(
-                            subcategoryObjectTmp, category, subcategory, field, dataToMigrate,
-                        )
-                    }
-                    categoryObjectTmp.put(subcategory, subcategoryObjectTmp)
-                }
-                datasetTmp.put(category, categoryObjectTmp)
+                writeToTemporaryDataset(datasetTmp, category, categoryObject)
             }
             dataset = datasetTmp
             it.companyAssociatedData.put("data", dataset.toString())

@@ -15,6 +15,16 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
     private val cashFlowTypes = listOf("capex", "opex", "revenue")
     private val fieldsToMigrate = mapOf("alignedPercentage" to "alignedData", "eligiblePercentage" to "eligibleData")
 
+    private fun migrateFieldForCashFlow(fieldToMigrate: String, cashFlow: JSONObject) {
+        val dataToMigrate = cashFlow.opt(fieldToMigrate) ?: return
+        if (dataToMigrate != JSONObject.NULL && dataToMigrate is JSONObject) {
+            dataToMigrate.put("valueAsPercentage", dataToMigrate.opt("value"))
+            dataToMigrate.remove("value")
+        }
+        cashFlow.put(fieldsToMigrate.getValue(fieldToMigrate), dataToMigrate)
+        cashFlow.remove(fieldToMigrate)
+    }
+
     override fun migrate(context: Context?) {
         val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(
             context,
@@ -25,13 +35,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
             cashFlowTypes.forEach { cashflowType ->
                 val cashFlow = (dataset.opt(cashflowType) ?: return@forEach) as JSONObject
                 fieldsToMigrate.keys.forEach { fieldToMigrate ->
-                    val dataToMigrate = cashFlow.opt(fieldToMigrate) ?: return@forEach
-                    if (dataToMigrate != JSONObject.NULL && dataToMigrate is JSONObject) {
-                        dataToMigrate.put("valueAsPercentage", dataToMigrate.opt("value"))
-                        dataToMigrate.remove("value")
-                    }
-                    cashFlow.put(fieldsToMigrate.getValue(fieldToMigrate), dataToMigrate)
-                    cashFlow.remove(fieldToMigrate)
+                    migrateFieldForCashFlow(fieldToMigrate, cashFlow)
                 }
             }
             it.companyAssociatedData.put("data", dataset.toString())

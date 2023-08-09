@@ -5,6 +5,9 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
+/**
+ * Method to get the company associated dataset for a given data type
+ */
 fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: DataTypeEnum): List<DataTableEntity> {
     val objectMapper = ObjectMapper()
     val getQueryResultSet = context!!.connection.createStatement().executeQuery(
@@ -26,7 +29,7 @@ fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: DataTyp
     }
 
     return companyAssociatedDatasets.filter {
-        dataTableEntity ->
+            dataTableEntity ->
         dataTableEntity.companyAssociatedData.getString("dataType") == dataType.value
     }
 }
