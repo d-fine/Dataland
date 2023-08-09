@@ -39,6 +39,7 @@ describeIf(
      */
     function validateFormUploadedData(companyId: string): void {
       cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg);
+      cy.wait(2000)
       cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
       cy.contains('Show "Most Important Products"').click();
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Most Important Products");
