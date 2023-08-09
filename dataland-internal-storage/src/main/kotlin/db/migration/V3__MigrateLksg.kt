@@ -50,7 +50,8 @@ class V3__MigrateLksg: BaseJavaMigration() {
         "soilBornDiseases" to "soilBorneDiseases",
         "soilSalinisation" to "soilSalinization",
         "fertilisersOrPollutants" to "fertilizersOrPollutants",
-        "hazardousWasteTransboundaryMovementsOutsideOecdEuLiechtenstein" to "hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein",
+        "hazardousWasteTransboundaryMovementsOutsideOecdEuLiechtenstein" to
+            "hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein",
         "hazardousAndOtherWasteImport" to "hazardousWasteDisposalOtherWasteImport"
     )
 
