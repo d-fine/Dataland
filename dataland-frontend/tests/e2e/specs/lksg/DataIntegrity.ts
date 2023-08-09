@@ -38,9 +38,10 @@ describeIf(
      * @param companyId the company associated to the data uploaded via form
      */
     function validateFormUploadedData(companyId: string): void {
+      cy.wait(5000)
       cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg);
-      cy.wait(2000)
-      cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
+      cy.wait(20000)
+      cy.wait("@postLksgData").then((interception) => { cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
       cy.contains('Show "Most Important Products"').click();
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Most Important Products");
       cy.get(".p-dialog th").eq(0).should("have.text", "Product Name");
@@ -53,7 +54,7 @@ describeIf(
       cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(1).should("have.text", "second");
       cy.get(".p-dialog tr").eq(1).find("td").eq(2).should("have.text", "Description of something");
       cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
-    }
+    }}
 
     it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
       const uniqueCompanyMarker = Date.now().toString();
