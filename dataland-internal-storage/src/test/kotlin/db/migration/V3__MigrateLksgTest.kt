@@ -11,7 +11,7 @@ import org.mockito.Mockito
 class V3__MigrateLksgTest {
 
     @Test
-    fun `Test that LkSG migration script works as expected`() {
+    fun `test that lksg migration script works as expected`() {
         val mockContext = Mockito.mock(Context::class.java)
         mockAndWhenConfigurationForFrameworkMigration(
             mockContext,
