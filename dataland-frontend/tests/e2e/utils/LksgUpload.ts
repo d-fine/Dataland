@@ -270,9 +270,7 @@ function checkIfUploadFieldDependenciesAreRespected(): void {
  *  Verify that selected documents are referenced in the actual dataset
  */
 function checkIfUploadedFilesAreReferencedInTheDataset(): void {
-  cy.intercept("POST", "**/api/data/lksg", (request) => {
-    request.reply(200, {});
-  }).as("postLksgData");
+  cy.intercept("POST", "**/api/data/lksg", (request) => {}).as("postLksgData");
   submitButton.clickButton();
   cy.wait("@postLksgData").then((interception) => {
     const postedObject = interception.request.body as CompanyAssociatedDataLksgData;
