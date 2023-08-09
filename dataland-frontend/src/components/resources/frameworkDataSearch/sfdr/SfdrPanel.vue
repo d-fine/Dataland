@@ -117,7 +117,7 @@ export default defineComponent({
       dataIdOfSfdrDataset: string,
     ): void {
       let indexOfExistingItem = -1;
-      const kpiDataObject = {
+      const kpiDataObject: SfdrKpiObject = {
         subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
         kpiKey: kpiKey,
         [dataIdOfSfdrDataset]: kpiValue,
