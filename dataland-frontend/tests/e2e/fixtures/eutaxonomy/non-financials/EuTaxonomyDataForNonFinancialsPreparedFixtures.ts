@@ -1,10 +1,12 @@
-import {generateFixtureDataset, ReferencedDocuments} from "@e2e/fixtures/FixtureUtils";
+import { generateFixtureDataset, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
-import {EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType} from "@clients/backend";
-import {generateEuTaxonomyDataForNonFinancials, generateFinancialShare} from "./EuTaxonomyDataForNonFinancialsFixtures";
-import { generateDatapoint, generateDatapointAbsoluteAndPercentage } from "@e2e/fixtures/common/DataPointFixtures";
-import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import {generate} from "@faker-js/faker/modules/internet/user-agent";
+import { EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
+import {
+  generateEuTaxonomyDataForNonFinancials,
+  generateFinancialShare,
+} from "./EuTaxonomyDataForNonFinancialsFixtures";
+import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
+import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
@@ -41,16 +43,20 @@ export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
 function createOnlyEglibileNumbers(
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
+  /**
+   * Generates a details per cash flow object with only the total eligible share defined
+   * @returns the details object
+   */
   function generateCashFlowWithOnlyEligibleNumbers(): EuTaxonomyDetailsPerCashFlowType {
-    let share = generateFinancialShare()
-    share.absoluteShare = undefined
-    return { totalEligibleShare: share }
+    const share = generateFinancialShare();
+    share.absoluteShare = undefined;
+    return { totalEligibleShare: share };
   }
 
   input.companyInformation.companyName = "only-eligible-numbers";
-  input.t.opex = generateCashFlowWithOnlyEligibleNumbers()
-  input.t.capex = generateCashFlowWithOnlyEligibleNumbers()
-  input.t.revenue = generateCashFlowWithOnlyEligibleNumbers()
+  input.t.opex = generateCashFlowWithOnlyEligibleNumbers();
+  input.t.capex = generateCashFlowWithOnlyEligibleNumbers();
+  input.t.revenue = generateCashFlowWithOnlyEligibleNumbers();
   return input;
 }
 
@@ -62,17 +68,24 @@ function createOnlyEglibileNumbers(
 function createOnlyEligibleAndTotalNumbers(
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
-  function generateCashFlowWithOnlyEligibleAndTotalNumbers(referencedReports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
+  /**
+   * Generates a details per cash flow object with only the total eligible share and total amount defined
+   * @param referencedReports the ports to be referenced in a data point
+   * @returns the details object
+   */
+  function generateCashFlowWithOnlyEligibleAndTotalNumbers(
+    referencedReports: ReferencedDocuments,
+  ): EuTaxonomyDetailsPerCashFlowType {
     return {
       totalAmount: generateDatapoint(randomEuroValue(), referencedReports),
-      totalEligibleShare: generateFinancialShare()
-    }
+      totalEligibleShare: generateFinancialShare(),
+    };
   }
 
   input.companyInformation.companyName = "only-eligible-and-total-numbers";
-  input.t.opex = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!)
-  input.t.capex = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!)
-  input.t.revenue = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!)
+  input.t.opex = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!);
+  input.t.capex = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!);
+  input.t.revenue = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!);
   return input;
 }
 
