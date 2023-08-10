@@ -234,7 +234,7 @@ export default defineComponent({
     async loadSfdrData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const sfdrDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getSfdrDataControllerApi();
 
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
@@ -255,7 +255,7 @@ export default defineComponent({
         }
 
         const sfdrDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getSfdrDataControllerApi();
         await sfdrDataControllerApi.postCompanyAssociatedSfdrData(this.companyAssociatedSfdrData);
         this.$emit("datasetCreated");
