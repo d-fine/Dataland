@@ -169,8 +169,17 @@ export default defineComponent({
      * @param duplicatesWithIndex a list of reports to upload
      */
     handleReportDuplicates(duplicatesWithIndex: { report: ReportToUpload; index: number }[]) {
-      duplicatesWithIndex.forEach(({ report, index }) => {
-        this.openModalToDisplayDuplicateNameError(report.fileNameWithoutSuffix);
+      const duplicateReportNamesList = [
+        ...new Set(
+          duplicatesWithIndex.map(
+            (item: { report: ReportToUpload; index: number }) => item.report.fileNameWithoutSuffix,
+          ),
+        ),
+      ].join(", ");
+
+      this.openModalToDisplayDuplicateNameError(duplicateReportNamesList);
+
+      duplicatesWithIndex.forEach(({ index }) => {
         (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(index);
       });
     },
