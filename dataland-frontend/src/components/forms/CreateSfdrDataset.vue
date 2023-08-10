@@ -126,7 +126,7 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull } from "@/utils/UpdateObjectUtils";
+import {objectDropNull, ObjectType} from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
@@ -240,7 +240,7 @@ export default defineComponent({
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports;
-      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData) as CompanyAssociatedDataSfdrData;
+      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
 
       this.waitingForData = false;
     },
