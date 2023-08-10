@@ -178,7 +178,7 @@ export default defineComponent({
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedSfdrData: {} as CompanyAssociatedDataSfdrData,
-      sfdrDataModel: sfdrDataModel,
+      sfdrDataModel,
       route: useRoute(),
       message: "",
       smoothScroll: smoothScroll,
