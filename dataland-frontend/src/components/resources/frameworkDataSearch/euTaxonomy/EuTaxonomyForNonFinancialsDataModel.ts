@@ -7,11 +7,6 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
     label : "General",
     color : "orange",
     showIf : (): boolean => true,
-    categories: [ {
-     name: general
-    }, {
-
-    }],
     subcategories : [ {
         name : "general",
         label : "General",
