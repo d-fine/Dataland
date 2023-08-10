@@ -8,7 +8,7 @@ import {
   InvestmentFirmKpis,
 } from "@clients/backend";
 import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/DataPointFixtures";
-import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
+import { generateEuTaxonomyBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -78,7 +78,7 @@ export function generateInvestmentFirmKpis(referencedReports: ReferencedDocument
 export function generateEuTaxonomyDataForFinancialsWithTypes(
   financialServicesTypes: Array<EuTaxonomyDataForFinancialsFinancialServicesTypesEnum>,
 ): EuTaxonomyDataForFinancials {
-  const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields();
+  const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyBaseFields();
   const eligibilityKpis = Object.fromEntries(
     financialServicesTypes.map((it) => [it, generateEligibilityKpis(assertDefined(returnBase.referencedReports))]),
   );

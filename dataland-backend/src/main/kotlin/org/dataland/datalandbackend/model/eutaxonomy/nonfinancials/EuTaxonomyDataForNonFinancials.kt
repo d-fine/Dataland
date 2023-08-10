@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.annotations.DataType
 @DataType("eutaxonomy-non-financials")
 data class EuTaxonomyDataForNonFinancials(
     @JsonProperty(required = true)
-    val generalThings: EuTaxonomyGeneral,
+    val general: EuTaxonomyGeneral,
 
     val revenue: EuTaxonomyDetailsPerCashFlowType?, // TODO should we rename "revenue" to "turnover"?
     val capex: EuTaxonomyDetailsPerCashFlowType?,

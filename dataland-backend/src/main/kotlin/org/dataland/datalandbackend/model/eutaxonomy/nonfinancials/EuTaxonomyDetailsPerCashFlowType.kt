@@ -8,7 +8,7 @@ import java.math.BigDecimal
  * Fields for each cashflow type in the EuTaxonomyForNonFinancials framework
  */
 data class EuTaxonomyDetailsPerCashFlowType(
-    val totalShare: DataPoint<BigDecimal>,
+    val totalAmount: DataPoint<BigDecimal>,
     val totalNonEligibleShare: FinancialShare,
     val totalEligibleShare: FinancialShare,
     val totalEligibleNonAlignedShare: FinancialShare,

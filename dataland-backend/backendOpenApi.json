@@ -5159,7 +5159,7 @@
       "EuTaxonomyDataForNonFinancials": {
         "type": "object",
         "properties": {
-          "generalThings": {
+          "general": {
             "$ref": "#/components/schemas/EuTaxonomyGeneral"
           },
           "revenue": {
@@ -5176,7 +5176,7 @@
       "EuTaxonomyDetailsPerCashFlowType": {
         "type": "object",
         "properties": {
-          "totalShare": {
+          "totalAmount": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
           },
           "totalNonEligibleShare": {
