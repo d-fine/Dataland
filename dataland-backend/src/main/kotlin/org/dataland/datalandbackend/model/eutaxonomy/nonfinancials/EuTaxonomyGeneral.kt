@@ -12,20 +12,20 @@ import java.math.BigDecimal
 import java.time.LocalDate
 
 data class EuTaxonomyGeneral(
-        override val fiscalYearDeviation: FiscalYearDeviation?,
+    override val fiscalYearDeviation: FiscalYearDeviation?,
 
-        @JsonProperty(required = true)
-        override val fiscalYearEnd: LocalDate,
+    @JsonProperty(required = true)
+    override val fiscalYearEnd: LocalDate,
 
-        override val scopeOfEntities: YesNoNa?,
+    override val scopeOfEntities: YesNoNa?,
 
-        override val reportingObligation: YesNo?,
+    override val reportingObligation: YesNo?,
 
-        override val activityLevelReporting: YesNo?,
+    override val activityLevelReporting: YesNo?,
 
-        override val assurance: AssuranceData?,
+    override val assurance: AssuranceData?,
 
-        override val numberOfEmployees: BigDecimal?,
+    override val numberOfEmployees: BigDecimal?,
 
-        override val referencedReports: Map<String, CompanyReport>?,
+    override val referencedReports: Map<String, CompanyReport>?,
 ) : EuTaxonomyCommonFields, FrameworkBase
