@@ -132,6 +132,7 @@ import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
+import {createSubcategoryVisibilityMap} from "@/utils/UploadFormUtils";
 
 export default defineComponent({
   setup() {
@@ -206,18 +207,9 @@ export default defineComponent({
         // IGNORED
       },
     },
-    subcategoryVisibility(): Map<Subcategory, boolean> {
-      const map = new Map<Subcategory, boolean>();
-      for (const category of this.sfdrDataModel) {
-        for (const subcategory of category.subcategories) {
-          map.set(
-            subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedSfdrData.data)),
-          );
-        }
-      }
-      return map;
-    },
+      subcategoryVisibility(): Map<Subcategory, boolean> {
+          return createSubcategoryVisibilityMap(this.sfdrDataModel, this.companyAssociatedSfdrData.data);
+      },
   },
   props: {
     companyID: {
