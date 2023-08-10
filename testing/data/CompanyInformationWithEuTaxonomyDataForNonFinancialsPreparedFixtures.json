@@ -2,190 +2,76 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Loveland",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"0vOjKHdY9AEm"
-				],
-				"PermId": [
-					"shkwvY9gy5"
-				],
-				"Ticker": [
-					"zZH2QM4"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"E5qvHxCFa"
-				],
-				"CompanyRegistrationNumber": [
-					"54taKslyodZwVpP"
-				]
-			},
-			"countryCode": "SX",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://vivid-item.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2022-12-19",
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-08-23",
-					"currency": "AMD"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "RSD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "TZS"
-				}
-			},
-			"assurance": {
-				"assurance": "None"
-			},
-			"activityLevelReporting": "No",
-			"opex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.8985,
-					"quality": "NA"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.5434,
-					"quality": "NA"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.8988,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Fort Dane",
-			"headquartersPostalCode": "27154",
-			"sector": "initiatives",
+			"headquarters": "South Mariebury",
+			"headquartersPostalCode": "57282-7078",
+			"sector": "models",
 			"identifiers": {
 				"Lei": [
-					"XXL4HR70OGRiwFQHHx8T"
+					"XM5DOdbmAwOiaFhL3YaE"
 				],
 				"Isin": [
-					"pECfzjfHhkIz",
-					"TiUrZ2U86CI3"
+					"gX1BKPry1T3l"
 				],
-				"PermId": [
-					"JxeqZbxaVU"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"XNbffDPXA"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"EwQspOJQE"
+					"7rF6cE8MP"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CI",
+			"countryCode": "BG",
 			"companyAlternativeNames": [
-				"Green Group",
-				"Tremblay, Green and Koepp",
-				"Zboncak, Bode and Smitham"
+				"McDermott - White",
+				"Stoltenberg - Purdy"
 			],
-			"website": "https://incredible-strand.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"numberOfEmployees": 88604,
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-02-18",
-					"currency": "BIF"
+			"general": {
+				"referencedReports": {
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "NA",
+						"currency": "SDG"
+					},
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "NA",
+						"currency": "IDR"
+					},
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "HKD"
+					},
+					"AnnualReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"reportDate": "2022-10-11",
+						"currency": "RUB"
+					}
 				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "UZS"
+				"assurance": {
+					"assurance": "ReasonableAssurance"
 				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-11-01",
-					"currency": "VND"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Kihn Group"
+				"scopeOfEntities": "Yes",
+				"activityLevelReporting": "Yes"
 			},
 			"opex": {
-				"totalAmount": {
-					"value": 602868.0489514954,
-					"quality": "Estimated"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.4691,
-					"dataSource": {
-						"page": 804,
-						"report": "SustainabilityReport",
-						"tagName": "methodologies"
-					},
-					"quality": "Estimated",
-					"comment": "bypass solid state feed",
-					"valueAsAbsolute": 400715.2689155191
+				"totalEligibleShare": {
+					"percentage": 57.37853541504592,
+					"currency": "USD"
 				}
 			},
 			"capex": {
-				"totalAmount": {
-					"value": 707755.4719522595,
-					"dataSource": {
-						"page": 940,
-						"report": "SustainabilityReport",
-						"tagName": "synergies"
-					},
-					"quality": "Audited",
-					"comment": "copy neural interface"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.2587,
-					"dataSource": {
-						"page": 1056,
-						"report": "AnnualReport",
-						"tagName": "solutions"
-					},
-					"quality": "Audited",
-					"comment": "synthesize digital microchip",
-					"valueAsAbsolute": 278317.8042853251
+				"totalEligibleShare": {
+					"percentage": 66.4954689797014,
+					"currency": "EUR"
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"value": 58021.84803178534,
-					"dataSource": {
-						"page": 771,
-						"report": "AnnualReport",
-						"tagName": "networks"
-					},
-					"quality": "Audited",
-					"comment": "reboot mobile capacitor"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.173,
-					"quality": "Incomplete",
-					"valueAsAbsolute": 730204.514041543
+				"totalEligibleShare": {
+					"percentage": 42.80704488046467,
+					"currency": "EUR"
 				}
 			}
 		},
@@ -193,99 +79,292 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "East Neal",
-			"headquartersPostalCode": "63517",
-			"sector": "e-business",
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "North Winifred",
 			"identifiers": {
 				"Lei": [
-					"jYgnfLMqKy3oBatIlcPG"
+					"TPHzbs6L81EeQf09qjQJ"
 				],
 				"Isin": [
-					"5Pcv7bEsmlQ7"
+					"NoF5UQfGdKjm",
+					"dJqXHlUKGeZE"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"278VR3yJI"
+					"etdlgPCBU"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FK",
+			"countryCode": "MX",
 			"companyAlternativeNames": [
-				"Miller Inc",
-				"Rodriguez, Pagac and Brakus",
-				"Shields - Hane"
+				"Stehr, Schmeler and Bode",
+				"Williamson LLC"
 			],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 43482,
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 768,
-					"report": "SustainabilityReport",
-					"tagName": "initiatives"
-				}
+			"general": {
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2023-04-30",
+				"numberOfEmployees": 76184,
+				"referencedReports": {
+					"AnnualReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"reportDate": "2022-11-22",
+						"currency": "GEL"
+					},
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "GNF"
+					}
+				},
+				"assurance": {
+					"assurance": "None"
+				},
+				"scopeOfEntities": "Yes",
+				"activityLevelReporting": "Yes"
 			},
-			"scopeOfEntities": "NA",
-			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 974340.7507543452,
-					"quality": "Estimated"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.1408,
+					"value": 519173.1922328472,
 					"dataSource": {
-						"page": 1,
-						"report": "ESEFReport",
-						"tagName": "users"
+						"page": 1143,
+						"report": "AnnualReport",
+						"tagName": "lifetime value"
 					},
-					"quality": "Estimated",
-					"comment": "connect solid state system"
+					"quality": "Reported",
+					"comment": "override bluetooth monitor"
+				},
+				"totalEligibleShare": {
+					"percentage": 59.42986961454153,
+					"absoluteShare": 0.10149283125065267,
+					"currency": "CHF"
 				}
 			},
 			"capex": {
 				"totalAmount": {
+					"value": 790369.742445182,
 					"dataSource": {
-						"page": 713,
-						"report": "SustainabilityReport",
-						"tagName": "platforms"
-					},
-					"quality": "Incomplete",
-					"comment": "parse cross-platform panel"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.1814,
-					"dataSource": {
-						"page": 459,
-						"report": "IntegratedReport",
-						"tagName": "mindshare"
+						"page": 1018,
+						"report": "AnnualReport",
+						"tagName": "e-commerce"
 					},
 					"quality": "Audited",
-					"comment": "connect neural interface",
-					"valueAsAbsolute": 451046.22460203245
+					"comment": "connect mobile transmitter"
+				},
+				"totalEligibleShare": {
+					"percentage": 95.5800165887922,
+					"absoluteShare": 0.8554907771758735,
+					"currency": "CAD"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 123060.03933772445,
+					"value": 832184.048066847,
+					"dataSource": {
+						"page": 31,
+						"report": "AnnualReport",
+						"tagName": "convergence"
+					},
+					"quality": "Reported",
+					"comment": "calculate auxiliary capacitor"
+				},
+				"totalEligibleShare": {
+					"percentage": 93.76494265161455,
+					"absoluteShare": 0.9473395524546504,
+					"currency": "EUR"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "New Evangeline",
+			"sector": "architectures",
+			"identifiers": {
+				"Lei": [
+					"swnU5NuvSsrwkI0wMTV6"
+				],
+				"Isin": [
+					"peTul94bA4su"
+				],
+				"PermId": [],
+				"Ticker": [
+					"jWpALaT"
+				],
+				"Duns": [
+					"Bi7YTtLll"
+				],
+				"VatNumber": [
+					"rOYr1OzDI"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "HR",
+			"companyAlternativeNames": [
+				"Considine - Kiehn",
+				"Ferry - Franey",
+				"Schimmel, Little and Wyman",
+				"Zemlak - Goodwin"
+			],
+			"website": "https://jumpy-cone.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearEnd": "2022-12-24",
+				"numberOfEmployees": 56570,
+				"assurance": {
+					"assurance": "LimitedAssurance",
+					"dataSource": {
+						"page": 336,
+						"report": "ESEFReport",
+						"tagName": "niches"
+					}
+				}
+			},
+			"opex": {
+				"totalAmount": {
 					"quality": "Estimated"
 				},
-				"eligibleData": {
-					"valueAsPercentage": 0.6769,
-					"dataSource": {
-						"page": 120,
-						"report": "IntegratedReport",
-						"tagName": "lifetime value"
-					},
-					"quality": "Estimated",
-					"comment": "synthesize bluetooth matrix",
-					"valueAsAbsolute": 528089.6641779691
+				"totalNonEligibleShare": {
+					"percentage": 37.861656793393195,
+					"absoluteShare": 0.39867536700330675,
+					"currency": "EUR"
+				},
+				"totalEligibleNonAlignedShare": {
+					"percentage": 95.37729877047241,
+					"absoluteShare": 0.20642879069782794,
+					"currency": "AUD"
+				},
+				"totalAlignedShare": {
+					"percentage": 91.18461962789297,
+					"absoluteShare": 0.44088127417489886,
+					"currency": "EUR"
 				}
+			},
+			"capex": {
+				"totalNonEligibleShare": {
+					"percentage": 50.52869038190693,
+					"absoluteShare": 0.2707516613882035,
+					"currency": "CAD"
+				},
+				"totalEligibleShare": {
+					"percentage": 61.697630933485925,
+					"absoluteShare": 0.8909502278547734,
+					"currency": "CAD"
+				},
+				"totalEligibleNonAlignedShare": {
+					"percentage": 94.95245446451008,
+					"absoluteShare": 0.8702165994327515,
+					"currency": "CHF"
+				},
+				"totalAlignedShare": {
+					"percentage": 90.31620712485164,
+					"absoluteShare": 0.08926742244511843,
+					"currency": "CAD"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 646,
+						"report": "AnnualReport",
+						"tagName": "action-items"
+					},
+					"quality": "Audited",
+					"comment": "program haptic protocol"
+				},
+				"totalNonEligibleShare": {
+					"percentage": 83.45384818967432,
+					"absoluteShare": 0.9114984394982457,
+					"currency": "USD"
+				},
+				"totalEligibleShare": {
+					"percentage": 90.64442331437021,
+					"absoluteShare": 0.3021886476781219,
+					"currency": "CHF"
+				},
+				"totalEligibleNonAlignedShare": {
+					"percentage": 50.74795335531235,
+					"absoluteShare": 0.06970042618922889,
+					"currency": "USD"
+				},
+				"totalAlignedShare": {
+					"percentage": 69.00397755671293,
+					"absoluteShare": 0.43536706641316414,
+					"currency": "AUD"
+				},
+				"alignedActivities": [
+					{
+						"activityName": "InfrastructureEnablingRoadTransportAndPublicTransport",
+						"naceCodes": [
+							"C",
+							"E",
+							"M"
+						],
+						"substantialContributionCriteria": {
+							"Biodiversity": 44.44238217547536,
+							"ClimateMitigation": 32.02611291781068,
+							"Water": 40.78899738378823,
+							"PollutionPrevention": 27.351666032336652,
+							"ClimateAdaptation": 72.9930775007233
+						},
+						"dnshCriteria": {
+							"Water": "Yes",
+							"CircularEconomy": "Yes",
+							"ClimateAdaptation": "Yes",
+							"Biodiversity": "Yes",
+							"ClimateMitigation": "No"
+						},
+						"minimumSafeguards": "Yes"
+					},
+					{
+						"activityName": "CloseToMarketResearchDevelopmentAndInnovation",
+						"naceCodes": [
+							"D",
+							"I"
+						],
+						"substantialContributionCriteria": {
+							"Biodiversity": 25.91390705201775,
+							"CircularEconomy": 31.669129361398518,
+							"PollutionPrevention": 36.791602172888815,
+							"Water": 60.39723332505673,
+							"ClimateAdaptation": 73.4972913749516,
+							"ClimateMitigation": 73.79194963723421
+						},
+						"dnshCriteria": {
+							"Water": "No",
+							"Biodiversity": "No",
+							"PollutionPrevention": "Yes",
+							"ClimateAdaptation": "Yes"
+						}
+					},
+					{
+						"activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+						"share": {
+							"percentage": 50.71014098357409,
+							"absoluteShare": 0.9388976057525724,
+							"currency": "CAD"
+						},
+						"substantialContributionCriteria": {
+							"ClimateMitigation": 0.012506451457738876,
+							"ClimateAdaptation": 98.10524203348905,
+							"Biodiversity": 61.541305598802865
+						},
+						"dnshCriteria": {
+							"PollutionPrevention": "No",
+							"ClimateAdaptation": "Yes",
+							"CircularEconomy": "No",
+							"Water": "No"
+						},
+						"minimumSafeguards": "No"
+					}
+				]
 			}
 		},
 		"reportingPeriod": "2021"

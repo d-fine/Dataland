@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.CompanyReport
 import org.dataland.datalandbackend.model.FrameworkBase
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
@@ -14,8 +13,7 @@ import java.time.LocalDate
 data class EuTaxonomyGeneral(
     override val fiscalYearDeviation: FiscalYearDeviation?,
 
-    @JsonProperty(required = true)
-    override val fiscalYearEnd: LocalDate,
+    override val fiscalYearEnd: LocalDate?,
 
     override val scopeOfEntities: YesNoNa?,
 

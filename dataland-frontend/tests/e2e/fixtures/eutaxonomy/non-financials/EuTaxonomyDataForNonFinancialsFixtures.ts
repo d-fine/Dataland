@@ -24,7 +24,7 @@ function generatePercentage(): number {
   return faker.number.float({ min: 0, max: 100 })
 }
 
-function generateFinancialShare(): FinancialShare {
+export function generateFinancialShare(): FinancialShare {
   return {
     percentage: generatePercentage(),
     absoluteShare: faker.number.float(),
