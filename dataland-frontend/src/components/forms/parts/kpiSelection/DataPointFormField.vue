@@ -73,7 +73,7 @@
         <div class="md:col-6 col-12 p-0">
           <FormKit
             type="select"
-            :modelValue="!isDataQualityRequired ? 'NA' : currentQualityValue"
+            :modelValue="!isDataQualityRequired ? 'NA' : ''"
             name="quality"
             :validation="isDataQualityRequired ? 'required' : ''"
             validation-label="Data quality"
@@ -135,10 +135,6 @@ export default defineComponent({
         value: qualityOption,
       })),
       currentValue: "",
-      currentUnit: "",
-      currentReportValue: "",
-      currentPageValue: "",
-      currentQualityValue: "",
     };
   },
   props: {
