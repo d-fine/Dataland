@@ -306,7 +306,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2019",
-                getPreparedFixture("company-with-one-sfdr-data-set", sfdrPreparedFixtures).t,
+                getPreparedFixture("companyWithOneFilledSfdrSubcategory", sfdrPreparedFixtures).t,
               );
             })
             .then(() => {

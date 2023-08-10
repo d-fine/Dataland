@@ -12,7 +12,6 @@ type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>
  */
 export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   const manipulatorFunctions: Array<generatorFunction> = [
-    manipulateFixtureForOneSfdr,
     manipulateFixtureForTwoSfdrDataSetsInDifferentYears,
     manipulateFixtureForOneFilledSubcategory,
   ];
@@ -39,11 +38,6 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "company-with-one-sfdr-data-set";
-  input.t.general.general.referencedReports = undefined;
-  return input;
-}
 
 /**
  * Sets the company name and the date in the fixture data to a specific string

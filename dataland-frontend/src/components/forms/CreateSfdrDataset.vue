@@ -126,12 +126,13 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull } from "@/utils/UpdateObjectUtils";
+import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
+import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 
 export default defineComponent({
   setup() {
@@ -178,7 +179,7 @@ export default defineComponent({
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedSfdrData: {} as CompanyAssociatedDataSfdrData,
-      sfdrDataModel: sfdrDataModel,
+      sfdrDataModel,
       route: useRoute(),
       message: "",
       smoothScroll: smoothScroll,
@@ -207,16 +208,7 @@ export default defineComponent({
       },
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      const map = new Map<Subcategory, boolean>();
-      for (const category of this.sfdrDataModel) {
-        for (const subcategory of category.subcategories) {
-          map.set(
-            subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedSfdrData.data)),
-          );
-        }
-      }
-      return map;
+      return createSubcategoryVisibilityMap(this.sfdrDataModel, this.companyAssociatedSfdrData.data);
     },
   },
   props: {
@@ -248,7 +240,7 @@ export default defineComponent({
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports;
-      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData) as CompanyAssociatedDataSfdrData;
+      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
 
       this.waitingForData = false;
     },

@@ -19,7 +19,7 @@ describe("Component tests for SfdrPanel", () => {
   });
 
   it("Check Sfdr view page for company with one Sfdr data set", () => {
-    const preparedFixture = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
+    const preparedFixture = getPreparedFixture("companyWithOneFilledSfdrSubcategory", preparedFixtures);
     const sfdrData = preparedFixture.t;
 
     cy.intercept("/api/data/sfdr/mock-data-id", {
@@ -84,7 +84,7 @@ describe("Component tests for SfdrPanel", () => {
   }
 
   it("Check Sfdr view page for company with six Sfdr datasets reported in different years", () => {
-    const preparedFixture = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
+    const preparedFixture = getPreparedFixture("companyWithOneFilledSfdrSubcategory", preparedFixtures);
     const mockedData = constructCompanyApiResponseForSfdrSixYears(preparedFixture.t);
     cy.intercept("/api/data/sfdr/companies/mock-company-id", mockedData);
 
