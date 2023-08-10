@@ -128,7 +128,7 @@ export default defineComponent({
     /**
      * Emits event when referenceable reports changed
      */
-    emitReportsChangedEvent() {
+    emitReportsUpdatedEvent() {
       if (this.isEuTaxonomy) {
         this.$emit("reportsUpdated", this.allReferenceableReportNames);
       } else {
@@ -161,7 +161,7 @@ export default defineComponent({
 
         this.handleReportDuplicates([...duplicatesWithIndex].reverse());
       } else {
-        this.emitReportsChangedEvent();
+        this.emitReportsUpdatedEvent();
       }
     },
     /**
@@ -181,7 +181,7 @@ export default defineComponent({
      */
     removeReportFromStoredReports(indexOfFileToRemove: number) {
       this.storedReports.splice(indexOfFileToRemove, 1);
-      this.emitReportsChangedEvent();
+      this.emitReportsUpdatedEvent();
     },
 
     /**
@@ -202,7 +202,7 @@ export default defineComponent({
             isGroupLevel: referencedReport.isGroupLevel,
           });
         }
-        this.emitReportsChangedEvent();
+        this.emitReportsUpdatedEvent();
       }
     },
 
