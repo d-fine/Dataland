@@ -124,9 +124,6 @@ export default defineComponent({
     options: {
       type: Array,
     },
-    placeholder: {
-      type: String,
-    },
   },
   methods: {
     selectNothingIfNotExistsFormKitPlugin,
