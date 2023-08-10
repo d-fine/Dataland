@@ -71,6 +71,8 @@ import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadD
 import { CompanyReport } from "@clients/backend";
 import { ObjectType } from "@/utils/UpdateObjectUtils";
 
+type DuplicatesWithIndexList = { report: ReportToUpload; index: number }[];
+
 export default defineComponent({
   name: "UploadReports",
   inheritAttrs: false,
@@ -90,6 +92,7 @@ export default defineComponent({
     return {
       reportsToUpload: [] as ReportToUpload[],
       storedReports: [] as StoredReport[],
+      foundDuplicates: [] as ReportToUpload[],
     };
   },
   props: {
@@ -129,6 +132,10 @@ export default defineComponent({
      * Emits event when referenceable reports changed
      */
     emitReportsUpdatedEvent() {
+      if (this.foundDuplicates?.length) {
+        this.openModalToDisplayDuplicateNameError();
+      }
+
       if (this.isEuTaxonomy) {
         this.$emit("reportsUpdated", this.allReferenceableReportNames);
       } else {
@@ -144,10 +151,10 @@ export default defineComponent({
      */
     updateSelectedReports(reports: ReportToUpload[]) {
       this.reportsToUpload = reports;
+      const duplicatesWithIndex: DuplicatesWithIndexList = [];
 
       if (this.areDuplicatesAmongReferenceableReportNames()) {
         const foundExistingRecords = new Set<string>();
-        const duplicatesWithIndex = [];
 
         for (let i = 0; i < this.reportsToUpload.length; i++) {
           const currentName = this.reportsToUpload[i].fileNameWithoutSuffix;
@@ -168,11 +175,12 @@ export default defineComponent({
      * Scan list of file names and show modal if duplicate
      * @param duplicatesWithIndex a list of reports to upload
      */
-    handleReportDuplicates(duplicatesWithIndex: { report: ReportToUpload; index: number }[]) {
-      duplicatesWithIndex.forEach(({ report, index }) => {
-        this.openModalToDisplayDuplicateNameError(report.fileNameWithoutSuffix);
-        (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(index);
-      });
+    handleReportDuplicates(duplicatesWithIndex: DuplicatesWithIndexList) {
+      const reports = duplicatesWithIndex.map(({ report }) => report);
+      const indexes = duplicatesWithIndex.map(({ index }) => index);
+
+      this.foundDuplicates = reports;
+      (this.$refs.uploadDocumentsForm.removeDocumentsFromDocumentsToUpload as (indexes: number[]) => void)(indexes);
     },
     /**
      * When the X besides existing reports is clicked this function should be called and
@@ -208,9 +216,12 @@ export default defineComponent({
 
     /**
      * Opens a modal and explains the user that the selected file has a name for which a report already exists.
-     * @param nameOfFileThatHasDuplicate contains the file name which caused the error
      */
-    openModalToDisplayDuplicateNameError(nameOfFileThatHasDuplicate: string) {
+    openModalToDisplayDuplicateNameError() {
+      const duplicateReportNamesList = [
+        ...new Set(this.foundDuplicates.map((report: ReportToUpload) => report.fileNameWithoutSuffix)),
+      ].join(", ");
+
       this.$dialog.open(ElementsDialog, {
         props: {
           modal: true,
@@ -222,9 +233,10 @@ export default defineComponent({
           message:
             "The following file cannot be selected because a report with its name is already selected " +
             "for upload or even already uploaded:",
-          listOfElementNames: [nameOfFileThatHasDuplicate],
+          listOfElementNames: [duplicateReportNamesList],
         },
       });
+      this.foundDuplicates = [];
     },
 
     /**

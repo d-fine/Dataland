@@ -39,7 +39,7 @@
             <PrimeButton
               data-test="files-to-upload-remove"
               icon="pi pi-times"
-              @click="removeDocumentFromDocumentsToUpload(index)"
+              @click="removeDocumentsFromDocumentsToUpload([index])"
               class="p-button-rounded"
             />
           </div>
@@ -130,12 +130,15 @@ export default defineComponent({
     },
 
     /**
-     * Remove document from files uploaded
-     * @param indexOfFileToRemove index number of the file to remove
+     * Remove documents from files uploaded
+     * @param indexesOfFilesToRemove index list of numbers of the files to remove
      */
-    removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number) {
-      ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
-      this.documentsToUpload.splice(indexOfFileToRemove, 1);
+    removeDocumentsFromDocumentsToUpload(indexesOfFilesToRemove: number[]) {
+      const sortedAndUniqueIndexes = [...new Set(indexesOfFilesToRemove.sort((a, b) => b - a))];
+      sortedAndUniqueIndexes.forEach((indexOfFileToRemove) => {
+        ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
+        this.documentsToUpload.splice(indexOfFileToRemove, 1);
+      });
       this.emitReportsUpdatedEvent();
     },
 
