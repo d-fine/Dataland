@@ -148,7 +148,7 @@ export default defineComponent({
   },
   computed: {
     isDataQualityRequired(): boolean {
-      return this.currentValue ? true : false;
+      return this.currentValue ?? false;
     },
   },
   emits: ["reportsUpdated"],
