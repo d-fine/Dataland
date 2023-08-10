@@ -88,7 +88,7 @@ export default defineComponent({
   emits: ["reportsUpdated"],
   data() {
     return {
-      reportsToUpload: [] as ReportToUpload[] | undefined,
+      reportsToUpload: [] as ReportToUpload[],
       storedReports: [] as StoredReport[],
     };
   },
