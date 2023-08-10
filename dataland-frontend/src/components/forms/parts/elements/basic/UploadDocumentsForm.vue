@@ -134,7 +134,8 @@ export default defineComponent({
      * @param indexesOfFilesToRemove index list of numbers of the files to remove
      */
     removeDocumentsFromDocumentsToUpload(indexesOfFilesToRemove: number[]) {
-      indexesOfFilesToRemove.forEach((indexOfFileToRemove) => {
+      const sortedAndUniqueIndexes = [...new Set(indexesOfFilesToRemove.sort((a, b) => b - a))];
+      sortedAndUniqueIndexes.forEach((indexOfFileToRemove) => {
         ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
         this.documentsToUpload.splice(indexOfFileToRemove, 1);
       });
