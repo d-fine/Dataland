@@ -23,6 +23,7 @@ const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
 import { DataTypeEnum } from "@clients/backend";
+import UploadP2p from "@/components/pages/UploadP2p.vue";
 
 const routes = [
   {
@@ -67,6 +68,12 @@ const routes = [
     props: true,
     name: "Upload lkSG Data",
     component: UploadLkSG,
+  },
+  {
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.P2p}/upload`,
+    props: true,
+    name: "Upload P2p Data",
+    component: UploadP2p,
   },
   {
     path: "/companies",

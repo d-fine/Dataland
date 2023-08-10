@@ -13,7 +13,6 @@
 </template>
 
 <script lang="ts">
-import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
@@ -30,6 +29,7 @@ import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import { convertToMillions } from "@/utils/NumberConversionUtils";
+import { convertNace } from "@/utils/NaceCodeConverter";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -169,17 +169,6 @@ export default defineComponent({
     },
 
     /**
-     * Converts a nace code to a human readable value
-     * @param kpiValue the value that should be reformated corresponding to its field
-     * @returns the reformatted Country value ready for display
-     */
-    reformatIndustriesValue(kpiValue: KpiValue) {
-      return Array.isArray(kpiValue)
-        ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
-        : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
-    },
-
-    /**
      * Converts a country code to a human readable value
      * @param kpiValue the value that should be reformated corresponding to its field
      * @returns the reformatted Country value ready for display
@@ -244,7 +233,7 @@ export default defineComponent({
           ),
           percentageOfTotalProcurement:
             lksgProcurementCategory.percentageOfTotalProcurement != null
-              ? String(lksgProcurementCategory.percentageOfTotalProcurement)
+              ? String(lksgProcurementCategory.percentageOfTotalProcurement).concat(" %")
               : null,
         };
       });
@@ -261,7 +250,7 @@ export default defineComponent({
         kpiValue = convertToMillions(kpiValue);
       }
       if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
-        kpiValue = this.reformatIndustriesValue(kpiValue);
+        kpiValue = convertNace(kpiValue);
       }
       if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
         kpiValue = this.reformatCountriesValue(kpiValue);
