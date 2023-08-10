@@ -274,11 +274,11 @@ function checkIfUploadedFilesAreReferencedInTheDataset(): void {
   submitButton.clickButton();
   cy.wait("@postLksgData").then((interception) => {
     const postedObject = interception.request.body as CompanyAssociatedDataLksgData;
-    const postedLksgDataset = postedObject;
-    const referencedReports =
-      assertDefined(postedLksgDataset).data.governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!
+    const postedLksgDataset = postedObject.data;
+    const referencedReportHash =
+      assertDefined(postedLksgDataset).governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!
         .dataSource!.reference;
-    expect(referencedReports).to.be.not.empty;
+    expect(referencedReportHash).to.be.not.empty;
   });
 }
 
