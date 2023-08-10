@@ -21,7 +21,6 @@
             v-else-if="options"
             type="select"
             name="unit"
-            v-model="currentUnit"
             placeholder="Currency"
             :options="options"
             outer-class="short"
@@ -39,7 +38,6 @@
               <FormKit
                 type="select"
                 name="report"
-                v-model="currentReportValue"
                 placeholder="Select a report"
                 :options="['None...', ...injectReportsName]"
                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
@@ -49,7 +47,6 @@
               <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
               <FormKit
                 outer-class="w-100"
-                v-model="currentPageValue"
                 type="number"
                 name="page"
                 placeholder="Page"
