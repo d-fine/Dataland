@@ -231,7 +231,7 @@ export default defineComponent({
         },
         data: {
           message:
-            "The following file cannot be selected because a report with its name is already selected " +
+            "The following file(s) cannot be selected because a report with its name is already selected " +
             "for upload or even already uploaded:",
           listOfElementNames: [duplicateReportNamesList],
         },
