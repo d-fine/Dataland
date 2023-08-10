@@ -3,6 +3,11 @@ export const uploadDocuments = {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
   },
+  selectMultipleFiles(filenames: string[], fieldName = "UploadReports"): void {
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
+    const filenamePaths = filenames.map((filename) => `../testing/data/documents/${filename}.PDF`);
+    cy.get("input[type=file]").selectFile(filenamePaths, { force: true });
+  },
   selectDummyFile(filename: string, contentSize: number, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(
