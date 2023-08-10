@@ -216,7 +216,6 @@ export default defineComponent({
 
     /**
      * Opens a modal and explains the user that the selected file has a name for which a report already exists.
-     * @param nameOfFileThatHasDuplicate contains the file name which caused the error
      */
     openModalToDisplayDuplicateNameError() {
       const duplicateReportNamesList = [
