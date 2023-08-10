@@ -41,8 +41,8 @@ export default defineComponent({
 
   data() {
     return {
-      singleViewFrameworks: [DataTypeEnum.EutaxonomyNonFinancials, DataTypeEnum.EutaxonomyFinancials] as string[],
-      multiViewFrameworks: [DataTypeEnum.Lksg, DataTypeEnum.Sfdr, DataTypeEnum.P2p, DataTypeEnum.Sme] as string[],
+      singleViewFrameworks: [DataTypeEnum.EutaxonomyFinancials] as string[],
+      multiViewFrameworks: [DataTypeEnum.EutaxonomyNonFinancials, DataTypeEnum.Lksg, DataTypeEnum.Sfdr, DataTypeEnum.P2p, DataTypeEnum.Sme] as string[],
     };
   },
 });
