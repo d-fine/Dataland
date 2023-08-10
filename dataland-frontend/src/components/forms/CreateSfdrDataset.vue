@@ -188,7 +188,7 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       documents: new Map() as Map<string, DocumentToUpload>,
-      referencedReportsForPrefill: {} as { [key: string]: CompanyReport } | undefined,
+      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       namesOfAllCompanyReportsForTheDataset: [] as string[],
     };
   },
@@ -234,12 +234,12 @@ export default defineComponent({
     async loadSfdrData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const sfdrDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       ).getSfdrDataControllerApi();
 
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
       const sfdrResponseData = dataResponse.data;
-      this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports;
+      this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
       this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
 
       this.waitingForData = false;
@@ -255,7 +255,7 @@ export default defineComponent({
         }
 
         const sfdrDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
         await sfdrDataControllerApi.postCompanyAssociatedSfdrData(this.companyAssociatedSfdrData);
         this.$emit("datasetCreated");
