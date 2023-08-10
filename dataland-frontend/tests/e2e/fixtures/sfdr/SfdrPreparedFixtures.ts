@@ -14,6 +14,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   const manipulatorFunctions: Array<generatorFunction> = [
     manipulateFixtureForOneSfdr,
     manipulateFixtureForTwoSfdrDataSetsInDifferentYears,
+    manipulateFixtureForOneFilledSubcategory,
   ];
   const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
@@ -28,9 +29,6 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     manipulateFixtureForSfdrDatasetWithLotsOfNulls(
       generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0],
     ),
-  );
-  preparedFixtures.push(
-    manipulateFixtureForOneFilledSubcategory(generateFixtureDataset<SfdrData>(generateSfdrData, 1)[0]),
   );
 
   return preparedFixtures;
@@ -53,7 +51,7 @@ function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "CompanyInformationWithSfdrData";
+  input.companyInformation.companyName = "companyWithOneFilledSfdrSubcategory";
   input.t.general.general.fiscalYearEnd = "2020-01-03";
   input.t.environmental!.energyPerformance = undefined;
   input.t.environmental!.waste = undefined;
@@ -91,12 +89,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
     value: "Yes",
   };
 
-  input.t.social = {
-    antiCorruptionAndAntiBribery: undefined,
-    greenSecurities: undefined,
-    humanRights: undefined,
-    socialAndEmployeeMatters: undefined,
-  };
+  input.t.social = undefined;
   return input;
 }
 /**

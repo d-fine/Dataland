@@ -12,7 +12,7 @@ let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
   cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
     const sfdrPreparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
-    testSfdrCompany = getPreparedFixture("CompanyInformationWithSfdrData", sfdrPreparedFixtures);
+    testSfdrCompany = getPreparedFixture("companyWithOneFilledSfdrSubcategory", sfdrPreparedFixtures);
   });
 });
 describeIf(

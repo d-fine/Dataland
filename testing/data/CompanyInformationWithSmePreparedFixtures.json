@@ -2,55 +2,52 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "South Kelli",
-			"headquartersPostalCode": "87776-3906",
-			"sector": "models",
+			"headquarters": "Rosettashire",
 			"identifiers": {
-				"Lei": [
-					"jmXGvJIrPHpLhRLtYIoy"
-				],
+				"Lei": [],
 				"Isin": [
-					"pEHYT7MFQoun",
-					"DPgyMj68CdhV"
+					"nKbuCUMAiUrF",
+					"bgosHkXJqxVA"
 				],
 				"PermId": [
-					"TYxvoWR5gb"
+					"NnLKR7J9Tt"
 				],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"aytWeXqMg"
+				],
 				"VatNumber": [
-					"V2cB4nzfE"
+					"OQ8QQ9STc"
 				],
 				"CompanyRegistrationNumber": [
-					"ABtHNiDaIY2mUCL"
+					"3gmLlJ40RBooioK"
 				]
 			},
-			"countryCode": "BW",
+			"countryCode": "TW",
 			"companyAlternativeNames": [
-				"Cruickshank - O'Connell",
-				"Hilll and Sons",
-				"Kutch - Runte"
+				"Bayer - Hoppe",
+				"Gerlach - Boehm",
+				"Gerlach, Cronin and Reinger",
+				"O'Kon, Hudson and Ernser"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"E",
 						"H",
-						"I"
+						"I",
+						"J",
+						"M"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Elisabeth Rest 5449",
-						"city": "West Beaulahbury",
-						"state": "Connecticut",
-						"postalCode": "75597",
-						"country": "NI"
+						"city": "South Alyson",
+						"state": "New Hampshire",
+						"country": "AD"
 					},
-					"numberOfEmployees": 5499,
-					"fiscalYearStart": "2023-11-30"
+					"numberOfEmployees": 5941,
+					"fiscalYearStart": "2023-11-01"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -59,7 +56,18 @@
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Oberbrunner, Farrell and Collins",
+							"addressOfProductionSite": {
+								"city": "Catherinecester",
+								"state": "Utah",
+								"country": "UY"
+							}
+						}
+					]
+				},
 				"products": {}
 			},
 			"power": {
@@ -67,19 +75,18 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 19,
+					"powerConsumptionInMwh": 238,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 192,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 11849225,
 					"naturalHazardsCovered": [
-						"Snow",
-						"Hail"
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}
@@ -89,38 +96,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Walterview",
-			"sector": "infrastructures",
+			"headquarters": "Abagailstead",
+			"headquartersPostalCode": "72132",
+			"sector": "e-commerce",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"CgnWNLKSWt2jt25t1h5e"
+				],
 				"Isin": [
-					"cpvHEkXBSPlw",
-					"2yklsENukDcq"
+					"BR8XZ8oztm7O"
 				],
-				"PermId": [
-					"fNCANv10MY"
+				"PermId": [],
+				"Ticker": [
+					"GzkWaqi"
 				],
-				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"cvvQ5KDoM6xrPYl"
-				]
+				"VatNumber": [
+					"Rp3CLh4rV"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AO",
+			"countryCode": "NU",
 			"companyAlternativeNames": [
-				"Anderson and Sons",
-				"Ankunding, Prohaska and Kuvalis",
-				"Nicolas, Metz and Collier",
-				"Reichert - Terry"
+				"Considine, Simonis and Hessel"
 			],
-			"website": "https://old-fashioned-stylus.name/",
+			"website": "https://sour-affinity.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [],
+					"sector": [
+						"G",
+						"H",
+						"I",
+						"K"
+					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
 						"postalCode": "12345",
@@ -128,78 +139,40 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 4826,
-					"fiscalYearStart": "2024-06-04"
+					"numberOfEmployees": 3209,
+					"fiscalYearStart": "2024-02-18"
 				},
-				"companyFinancials": {
-					"operatingCostInEur": 55199293,
-					"capitalAssetsInEur": 974397
-				}
+				"companyFinancials": {}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
+				"sites": {},
+				"products": {
+					"listOfProducts": [
 						{
-							"addressOfProductionSite": {
-								"city": "Connburgh",
-								"postalCode": "75258-9546",
-								"country": "BE"
-							},
-							"percentageOfTotalRevenue": 0.7054
+							"name": "Practical Wooden Mouse"
 						},
 						{
-							"nameOfProductionSite": "Stehr, Schiller and Dare",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Carolanne Vista 13216",
-								"city": "Oraside",
-								"country": "TD"
-							}
-						},
-						{
-							"nameOfProductionSite": "Gusikowski LLC",
-							"addressOfProductionSite": {
-								"city": "Jenkinsmouth",
-								"postalCode": "00880",
-								"country": "ZW"
-							},
-							"percentageOfTotalRevenue": 0.4256
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "Fort Newtonside",
-								"country": "IR"
-							},
-							"percentageOfTotalRevenue": 0.0681
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "Mariliefield",
-								"state": "Kentucky",
-								"postalCode": "82463-3837",
-								"country": "FK"
-							}
+							"name": "Modern Wooden Gloves",
+							"percentageOfTotalRevenue": 0.6358
 						}
 					]
-				},
-				"products": {}
+				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
-				},
+				"investments": {},
 				"consumption": {
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"energyConsumptionHeatingAndHotWater": 558,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
+					"amountCoveredByInsuranceAgainstNaturalHazards": 37153613,
 					"naturalHazardsCovered": [
-						"Avalanche",
 						"EarthQuake",
-						"Flooding",
-						"Snow",
 						"Wind",
+						"Snow",
+						"Avalanche",
 						"Hail"
 					]
 				}
@@ -210,82 +183,75 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "New Oswaldmouth",
-			"sector": "partnerships",
+			"headquarters": "West Cletus",
+			"headquartersPostalCode": "88624-7914",
+			"sector": "eyeballs",
 			"identifiers": {
 				"Lei": [
-					"pjvR8idrTsoPBmAr86qU"
+					"pwDWtJ8nBD0RhOq2FrQL"
 				],
-				"Isin": [],
+				"Isin": [
+					"kmols4wt08bI",
+					"zlocKZixx1F6"
+				],
 				"PermId": [
-					"2rc1cewKXG"
+					"olVhTJIO4f"
 				],
 				"Ticker": [],
 				"Duns": [
-					"w0H4GFL6J"
+					"ALwly19N1"
 				],
 				"VatNumber": [
-					"KJST6vILs"
+					"fRRh8DAPV"
 				],
-				"CompanyRegistrationNumber": [
-					"J4F4O9MqIz9wvgb"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BJ",
+			"countryCode": "BA",
 			"companyAlternativeNames": [
-				"Cartwright, Cassin and Howell",
-				"Huel - Parisian",
-				"Pfeffer, Abbott and Stracke"
+				"Bruen LLC",
+				"D'Amore - Considine"
 			],
-			"companyLegalForm": "Sole Trader",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B"
+						"E"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 128,
-					"fiscalYearStart": "2024-03-31"
+					"numberOfEmployees": 6515,
+					"fiscalYearStart": "2023-12-30"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 9579705,
-					"capitalAssetsInEur": 39358054
+					"capitalAssetsInEur": 57613818
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Hettinger - Jerde",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bergstrom Village 89234",
-								"city": "Katheryncester",
-								"country": "DJ"
-							},
-							"percentageOfTotalRevenue": 0.3746
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Refined Soft Bacon"
+							"name": "Electronic Soft Towels",
+							"percentageOfTotalRevenue": 0.7605
 						},
 						{
-							"name": "Rustic Concrete Tuna",
-							"percentageOfTotalRevenue": 0.9416
+							"name": "Bespoke Steel Car"
 						},
 						{
-							"name": "Small Bronze Bacon"
+							"name": "Incredible Wooden Bacon"
 						},
 						{
-							"name": "Awesome Fresh Car"
+							"name": "Generic Bronze Pizza",
+							"percentageOfTotalRevenue": 0.9656
+						},
+						{
+							"name": "Luxurious Cotton Pizza"
 						}
 					]
 				}
@@ -293,19 +259,18 @@
 			"power": {
 				"investments": {},
 				"consumption": {
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 676,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 30941367,
 					"naturalHazardsCovered": [
+						"Avalanche",
 						"EarthQuake",
 						"Flooding",
-						"Hail",
-						"Wind",
-						"Avalanche"
+						"Hail"
 					]
 				}
 			}
