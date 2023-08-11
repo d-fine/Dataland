@@ -85,7 +85,7 @@ export function mountRowHeaderClickEventListeners(
     };
 
     let target;
-    if (el?.getAttribute(buttonRowHeaderId)) {
+    if (el.getAttribute(buttonRowHeaderId)) {
       target = el;
     } else {
       target = el.parentNode;
