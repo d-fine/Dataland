@@ -7,10 +7,7 @@ import {
     EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType,
     EuTaxonomyGeneral, FinancialShare
 } from "@clients/backend";
-import {
-    DataAndMetaInformationViewModel,
-    FrameworkViewModel
-} from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
+import {DataAndMetaInformationViewModel, FrameworkViewModel} from "@/components/resources/ViewModel";
 
 export interface MoneyAmount {
     absoluteAmount?: number;
@@ -60,7 +57,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
             totalEligibleShare: this.convertFinancialShareApiModelToViewModel(apiModel.totalEligibleShare),
             totalEligibleNotAlignedShare: {
                 ...(EuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalEligibleNonAlignedShare) ?? {}),
-                alignedActivities: apiModel.alignedActivities,
+                activities: apiModel.alignedActivities,
             },
             totalAlignedShare: {
                 ...(EuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalAlignedShare) ?? {}),
@@ -88,8 +85,8 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
             totalAmount: details.totalAmount,
             totalNonEligibleShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalNonEligibleShare),
             totalEligibleShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalEligibleShare),
-            totalEligibleNotAligendShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalEligibleNotAlignedShare),
-            totalAligendShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalAlignedShare),
+            totalEligibleNonAlignedShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalEligibleNotAlignedShare),
+            totalAlignedShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalAlignedShare),
             eligibleNotAlignedActivities: details.totalEligibleNotAlignedShare?.activities,
             alignedActivities: details.totalAlignedShare?.alignedActivities,
             enablingAlignedShare: details.enablingAlignedShare,

@@ -8,106 +8,89 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
     color : "orange",
     showIf : (): boolean => true,
     subcategories : [ {
-        name : "fiscalYearDeviation",
-        label : "Fiscal Year Deviation",
+        name : "general",
+        label : "General",
         fields : [ {
             name : "fiscalYearDeviation",
             label : "Fiscal Year Deviation",
             description : "Fiscal Year (Deviation/ No Deviation)",
             unit : "",
-            component : "UndefinedFormField",
+            component : "RadioButtonsFormField",
             evidenceDesired : false,
+            options : [ {
+                label : "Deviation",
+                value : "Deviation"
+            }, {
+                label : "No Deviation",
+                value : "NoDeviation"
+            } ],
             required : false,
             showIf : (): boolean => true
-        } ]
-    }, {
-        name : "fiscalYearEnd",
-        label : "Fiscal Year End",
-        fields : [ {
+        }, {
             name : "fiscalYearEnd",
             label : "Fiscal Year End",
             description : "The date the fiscal year ends",
             unit : "",
-            component : "UndefinedFormField",
+            component : "DateFormField",
             evidenceDesired : false,
-            required : false,
-            showIf : (): boolean => true
-        } ]
-    }, {
-        name : "referencedReports",
-        label : "Referenced Reports",
-        fields : [ {
+            required : true,
+            showIf : (): boolean => true,
+            validation : "required"
+        }, {
             name : "referencedReports",
             label : "Referenced Reports",
             description : "Does your company have a current annual report, sustainability report, integrated report or ESEF report? If yes, please share the information with us.",
             unit : "",
-            component : "UndefinedFormField",
+            component : "UploadReports",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
-        } ]
-    }, {
-        name : "scopeOfEntities",
-        label : "Scope Of Entities",
-        fields : [ {
+        }, {
             name : "scopeOfEntities",
             label : "Scope Of Entities",
             description : "Does a list of legal entities covered by Sust./Annual/Integrated/ESEF report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
             unit : "",
-            component : "UndefinedFormField",
+            component : "YesNoNaFormField",
             evidenceDesired : false,
             required : false,
-            showIf : (): boolean => true
-        } ]
-    }, {
-        name : "euTaxonomyActivityLevelReporting",
-        label : "EU Taxonomy Activity Level Reporting",
-        fields : [ {
+            showIf : (): boolean => true,
+            certificateRequiredIfYes : false
+        }, {
             name : "euTaxonomyActivityLevelReporting",
             label : "EU Taxonomy Activity Level Reporting",
             description : "Activity Level disclosure",
             unit : "",
-            component : "UndefinedFormField",
+            component : "YesNoFormField",
             evidenceDesired : false,
             required : false,
-            showIf : (): boolean => true
-        } ]
-    }, {
-        name : "numberOfEmployees",
-        label : "Number Of Employees",
-        fields : [ {
+            showIf : (): boolean => true,
+            certificateRequiredIfYes : false
+        }, {
             name : "numberOfEmployees",
             label : "Number Of Employees",
             description : "Total number of employees (including temporary workers)",
             unit : "",
-            component : "UndefinedFormField",
+            component : "NumberFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
-        } ]
-    }, {
-        name : "nfrdMandatory",
-        label : "NFRD Mandatory",
-        fields : [ {
+        }, {
             name : "nfrdMandatory",
             label : "NFRD Mandatory",
             description : "The reporting obligation for companies whose number of employees is greater or equal to 500",
             unit : "",
-            component : "UndefinedFormField",
+            component : "YesNoFormField",
             evidenceDesired : false,
             required : false,
-            showIf : (): boolean => true
-        } ]
-    }, {
-        name : "assurance",
-        label : "Assurance",
-        fields : [ {
+            showIf : (): boolean => true,
+            certificateRequiredIfYes : false
+        }, {
             name : "assurance",
             label : "Assurance",
             description : "",
             unit : "",
-            component : "UndefinedFormField",
-            evidenceDesired : false,
+            component : "AssuranceFormField",
+            evidenceDesired : true,
             required : false,
             showIf : (): boolean => true
         } ]
@@ -147,7 +130,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -169,7 +152,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -191,7 +174,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -226,7 +209,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -315,7 +298,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -337,7 +320,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -359,7 +342,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -394,7 +377,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -483,7 +466,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -505,7 +488,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -527,7 +510,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
@@ -562,7 +545,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             label : "Percentage",
             description : "The relative share on the financial asset",
             unit : "",
-            component : "PercentageFormField",
+            component : "UndefinedFormField",
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
