@@ -69,7 +69,7 @@ export function mountRowHeaderClickEventListeners(
     .filter((button): button is HTMLButtonElement => !!button);
 
   [...rowHeaders, ...rowButtons].forEach((el: Element) => {
-    let clickHandler: EventListener | null = (evt): void => {
+    const clickHandler: EventListener | null = (evt): void => {
       if (!el.id) {
         evt.stopImmediatePropagation();
         return;
