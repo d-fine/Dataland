@@ -52,7 +52,7 @@ jobs:
       - name: Frontend component testing
         run: timeout -v 15m ./testing/execute_frontend_component_tests.sh
         if: always()
-      - name: Upload Cypress Component Test Logs
+      - name: Upload Cypress Component Testing Logs
         if: always()
         uses: actions/upload-artifact@v3
         with:
