@@ -5,7 +5,7 @@
     </div>
     <div v-show="!waitingForData">
         <ThreeLayerTable
-            :data-model="euTaxonomyForNonFinancialsDataModel"
+            :data-model="euTaxonomyForNonFinancialsDisplayDataModel"
             :data-and-meta-info="convertedDataAndMetaInfo"
             @data-converted="handleFinishedDataConversion"
             :format-value-for-display="formatValueForDisplay"
@@ -16,53 +16,40 @@
 
 <script lang="ts">
 import {PanelProps} from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
-import {smeDataModel} from "@/components/resources/frameworkDataSearch/sme/SmeDataModel";
 import {ApiClientProvider} from "@/services/ApiClients";
 import {assertDefined} from "@/utils/TypeScriptUtils";
 import {
     DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-    DataAndMetaInformationSmeData,
-    DataMetaInformation,
     DataTypeEnum,
-    EuTaxonomyActivity,
-    EuTaxonomyAlignedActivity,
-    EuTaxonomyDataForNonFinancials,
-    EuTaxonomyDetailsPerCashFlowType,
-    EuTaxonomyGeneral, FinancialShare,
-    SmeProduct,
-    SmeProductionSite
 } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import {defineComponent, inject} from "vue";
 import {humanizeString} from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import {KpiValue} from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import {Field} from "@/utils/GenericFrameworkTypes";
-import {smeModalColumnHeaders} from "@/components/resources/frameworkDataSearch/sme/SmeModalColumnHeaders";
-import {convertToMillions} from "@/utils/NumberConversionUtils";
-import {
-    euTaxonomyForNonFinancialsDataModel
-} from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDataModel";
+import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import {
     euTaxonomyForNonFinancialsModalColumnHeaders
 } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
+import {
+    euTaxonomyForNonFinancialsDisplayDataModel
+} from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
+import {
+    DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel,
+    MoneyAmount
+} from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
 
 export default defineComponent({
     name: "EuTaxonomyForNonFinancialsPanel",
-    computed: {
-        euTaxonomyForNonFinancialsDataModel() {
-            return euTaxonomyForNonFinancialsDataModel
-        }
-    },
     components: {ThreeLayerTable},
     data() {
         return {
             DataTypeEnum,
-            euTaxonomyForNonFinancialsDataModel,
             firstRender: true,
             waitingForData: true,
             convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
             euTaxonomyForNonFinancialsModalColumnHeaders,
+            euTaxonomyForNonFinancialsDisplayDataModel,
         };
     },
     props: PanelProps,
@@ -108,7 +95,9 @@ export default defineComponent({
                         await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(assertDefined(this.companyId))
                     ).data;
                 }
-                this.convertedDataAndMetaInfo = this.convertApiModelToViewModel(fetchedData);
+                this.convertedDataAndMetaInfo = fetchedData.map((dataAndMetaInfo) => (
+                    new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfo)
+                ));
             } catch (error) {
                 console.error(error);
             }
@@ -137,80 +126,6 @@ export default defineComponent({
             }
             return value;
         },
-
-        convertApiModelToViewModel(dataAndMetaInfos: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]): DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel[] {
-            return dataAndMetaInfos.map((dataAndMetaInfo) => {
-                const apiModel = dataAndMetaInfo.data
-                let convertedModel = { general: { general: apiModel.general! }} as EuTaxonomyForNonFinancialsViewModel // TODO must be split into basic information and assurance
-                convertedModel.revenue = this.convertDetailsPerCashFlowApiModelToViewModel(apiModel.revenue)
-                convertedModel.capEx = this.convertDetailsPerCashFlowApiModelToViewModel(apiModel.capex)
-                convertedModel.opEx = this.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex)
-                return { metaInfo: dataAndMetaInfo.metaInfo, data: convertedModel };
-            });
-        },
-
-        convertDetailsPerCashFlowApiModelToViewModel(apiModel?: EuTaxonomyDetailsPerCashFlowType): DetailsPerCashFlowViewModel | undefined {
-            if(apiModel == undefined) { return undefined; }
-            return {
-                totalAmount: apiModel.totalAmount,
-                totalNonEligibleShare: this.convertFinancialShareApiModelToViewModel(apiModel.totalNonEligibleShare),
-                totalEligibleShare: this.convertFinancialShareApiModelToViewModel(apiModel.totalEligibleShare),
-                totalEligibleNotAlignedShare: {
-                    ...(this.convertFinancialShareApiModelToViewModel(apiModel.totalEligibleNonAlignedShare) ?? {}),
-                    alignedActivities: apiModel.alignedActivities,
-                },
-                totalAlignedShare: {
-                    ...(this.convertFinancialShareApiModelToViewModel(apiModel.totalAlignedShare) ?? {}),
-                    alignedActivities: apiModel.alignedActivities,
-                },
-                enablingAlignedShare: apiModel.enablingAlignedShare,
-                transitionalAlignedShare: apiModel.transitionalAlignedShare,
-            }
-        },
-
-        convertFinancialShareApiModelToViewModel(financialShare?: FinancialShare): FinancialShareViewModel | undefined {
-            if(financialShare == undefined) { return undefined; }
-            return {
-                percentage: financialShare.percentage,
-                absoluteShare: {
-                    absoluteAmount: financialShare?.absoluteShare,
-                    currency: financialShare?.currency,
-                },
-            };
-        },
     },
 });
-
-interface MoneyAmount {
-    absoluteAmount?: number;
-    currency?: string;
-}
-
-interface FinancialShareViewModel {
-    percentage?: number;
-    absoluteShare?: MoneyAmount;
-}
-
-interface DetailsPerCashFlowViewModel {
-    totalAmount?: { value?: number };
-    totalNonEligibleShare?: FinancialShareViewModel;
-    totalEligibleShare?: FinancialShareViewModel;
-    totalEligibleNotAlignedShare?: FinancialShareViewModel & { activities?: EuTaxonomyActivity[] };
-    totalAlignedShare?: FinancialShareViewModel & { alignedActivities?: EuTaxonomyAlignedActivity[] };
-    enablingAlignedShare?: number;
-    transitionalAlignedShare?: number;
-}
-
-interface EuTaxonomyForNonFinancialsViewModel {
-    general: { general: EuTaxonomyGeneral };
-    revenue?: DetailsPerCashFlowViewModel;
-    capEx?: DetailsPerCashFlowViewModel;
-    opEx?: DetailsPerCashFlowViewModel;
-}
-
-interface DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel {
-    metaInfo: DataMetaInformation;
-    data: EuTaxonomyForNonFinancialsViewModel;
-}
-
 </script>
