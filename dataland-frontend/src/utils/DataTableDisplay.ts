@@ -72,6 +72,7 @@ export function mountRowHeaderClickEventListeners(
     let clickHandler: EventListener | null = (evt): void => {
       if (!el.id) {
         evt.stopImmediatePropagation();
+        return;
       }
 
       expandedRowGroups = expandedRowsOnClick();
