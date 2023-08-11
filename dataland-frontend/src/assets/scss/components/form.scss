@@ -524,7 +524,7 @@ input[type="checkbox"], input[type="radio"]{
   }
   .form-field-label {
     display: flex;
-    align-items: center;
+    align-self: center;
     .info-icon {
       margin-left: .5rem;
     }
@@ -632,7 +632,7 @@ input[type="checkbox"], input[type="radio"]{
     .p-fileupload {
       .p-fileupload-content {
         border: none;
-        padding: 0;
+        padding: 1rem;
         align-items: center;
         .file-upload-item {
           margin: 2rem 0;
@@ -683,4 +683,10 @@ input[type="checkbox"], input[type="radio"]{
   opacity: 0.4;
   background: $btn-primary-bg !important;
   border: 0 !important;
+}
+
+.bordered-box {
+  border: 2px dotted $input-separator;
+  border-radius: $upload-form-radius;
+  padding: 16px;
 }

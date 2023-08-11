@@ -4,7 +4,8 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="kpiDataObjects.length && !waitingForData">
-    <CompanyDataTable
+    <SfdrDataTable
+      data-test="sfdrDataTable"
       :kpiDataObjects="kpiDataObjects"
       :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
       :kpiNameMappings="sfdrKpisNameMappings"
@@ -27,7 +28,7 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
+import SfdrDataTable from "@/components/general/SfdrDataTable.vue";
 import {
   sfdrKpisInfoMappings,
   sfdrKpisNameMappings,
@@ -35,16 +36,18 @@ import {
 } from "@/components/resources/frameworkDataSearch/sfdr/DataModelsTranslations";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 
+export type SfdrKpiObject = { [index: string]: string | object; subAreaKey: string; kpiKey: string };
+
 export default defineComponent({
   name: "SfdrPanel",
-  components: { CompanyDataTable },
+  components: { SfdrDataTable },
   data() {
     return {
       firstRender: true,
       waitingForData: true,
       sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
       listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
-      kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
+      kpiDataObjects: [] as SfdrKpiObject[],
       sfdrKpisNameMappings,
       sfdrKpisInfoMappings,
       sfdrSubAreasNameMappings,
@@ -114,7 +117,7 @@ export default defineComponent({
       dataIdOfSfdrDataset: string,
     ): void {
       let indexOfExistingItem = -1;
-      const kpiDataObject = {
+      const kpiDataObject: SfdrKpiObject = {
         subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
         kpiKey: kpiKey,
         [dataIdOfSfdrDataset]: kpiValue,

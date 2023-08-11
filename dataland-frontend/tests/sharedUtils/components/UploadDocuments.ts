@@ -1,9 +1,14 @@
 export const uploadDocuments = {
-  selectFile(filename: string, fieldName = "undefined"): void {
+  selectFile(filename: string, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
   },
-  selectDummyFile(filename: string, contentSize: number, fieldName = "undefined"): void {
+  selectMultipleFiles(filenames: string[], fieldName = "UploadReports"): void {
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
+    const filenamePaths = filenames.map((filename) => `../testing/data/documents/${filename}.PDF`);
+    cy.get("input[type=file]").selectFile(filenamePaths, { force: true });
+  },
+  selectDummyFile(filename: string, contentSize: number, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(
       {
@@ -15,7 +20,6 @@ export const uploadDocuments = {
     );
   },
   numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload: number): void {
-    cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
     cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
   },
   fillAllReportsToUploadForms(expectedNumberOfReportsToUpload?: number): void {

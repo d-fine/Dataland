@@ -2,25 +2,33 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Shreveport",
-			"headquartersPostalCode": "17400",
-			"sector": "convergence",
+			"headquarters": "Rosettashire",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [],
+				"Isin": [
+					"nKbuCUMAiUrF",
+					"bgosHkXJqxVA"
+				],
 				"PermId": [
-					"fB4F778JgR"
+					"NnLKR7J9Tt"
 				],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"Duns": [
+					"aytWeXqMg"
+				],
+				"VatNumber": [
+					"OQ8QQ9STc"
+				],
+				"CompanyRegistrationNumber": [
+					"3gmLlJ40RBooioK"
+				]
 			},
-			"countryCode": "NR",
+			"countryCode": "TW",
 			"companyAlternativeNames": [
-				"Franecki Inc",
-				"Hilpert, Krajcik and Prosacco",
-				"Rice - Schmidt"
+				"Bayer - Hoppe",
+				"Gerlach - Boehm",
+				"Gerlach, Cronin and Reinger",
+				"O'Kon, Hudson and Ernser"
 			],
 			"isTeaserCompany": false
 		},
@@ -29,16 +37,17 @@
 				"basicInformation": {
 					"sector": [
 						"H",
-						"K"
+						"I",
+						"J",
+						"M"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Enos Shoals 6695",
-						"city": "Brentwood",
-						"postalCode": "76140-6503",
-						"country": "ES"
+						"city": "South Alyson",
+						"state": "New Hampshire",
+						"country": "AD"
 					},
-					"numberOfEmployees": 416,
-					"fiscalYearStart": "2024-07-10"
+					"numberOfEmployees": 5941,
+					"fiscalYearStart": "2023-11-01"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -50,76 +59,23 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Oberbrunner, Farrell and Collins",
 							"addressOfProductionSite": {
-								"city": "Fort Taylorburgh",
-								"country": "SA"
-							},
-							"percentageOfTotalRevenue": 0.6509
-						},
-						{
-							"nameOfProductionSite": "Lang LLC",
-							"addressOfProductionSite": {
-								"city": "Weymouth Town",
-								"country": "HM"
-							}
-						},
-						{
-							"nameOfProductionSite": "Schmidt, Kuhic and Stamm",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Collins Greens 4471",
-								"city": "Euclid",
-								"country": "BA"
-							},
-							"percentageOfTotalRevenue": 0.0664
-						},
-						{
-							"nameOfProductionSite": "Murazik, Parisian and Abbott",
-							"addressOfProductionSite": {
-								"city": "Bergefurt",
-								"state": "North Carolina",
-								"country": "VU"
-							},
-							"percentageOfTotalRevenue": 0.2525
-						},
-						{
-							"nameOfProductionSite": "Hauck - Cruickshank",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Stephanie Fort 59324",
-								"city": "Robertoview",
-								"country": "GY"
+								"city": "Catherinecester",
+								"state": "Utah",
+								"country": "UY"
 							}
 						}
 					]
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Rustic Plastic Pizza",
-							"percentageOfTotalRevenue": 0.8734
-						},
-						{
-							"name": "Rustic Cotton Fish",
-							"percentageOfTotalRevenue": 0.9841
-						},
-						{
-							"name": "Handcrafted Bronze Bike",
-							"percentageOfTotalRevenue": 0.0627
-						},
-						{
-							"name": "Ergonomic Plastic Keyboard"
-						},
-						{
-							"name": "Luxurious Bronze Shoes",
-							"percentageOfTotalRevenue": 0.3698
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
+					"powerConsumptionInMwh": 238,
 					"powerFromRenewableSources": "Yes",
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
@@ -129,12 +85,8 @@
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
 					"naturalHazardsCovered": [
-						"Snow",
 						"Avalanche",
-						"Flooding",
-						"Wind",
-						"Hail",
-						"EarthQuake"
+						"Wind"
 					]
 				}
 			}
@@ -144,36 +96,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "North Darrylstead",
-			"sector": "synergies",
+			"headquarters": "Abagailstead",
+			"headquartersPostalCode": "72132",
+			"sector": "e-commerce",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"CgnWNLKSWt2jt25t1h5e"
+				],
 				"Isin": [
-					"hG38llKjMI93",
-					"obxAkoq9tq7W"
+					"BR8XZ8oztm7O"
 				],
 				"PermId": [],
 				"Ticker": [
-					"H5jmxf4"
+					"GzkWaqi"
 				],
-				"Duns": [
-					"AZ4oPRoKT"
+				"Duns": [],
+				"VatNumber": [
+					"Rp3CLh4rV"
 				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PS",
+			"countryCode": "NU",
 			"companyAlternativeNames": [
-				"Gerhold Inc",
-				"Ullrich LLC"
+				"Considine, Simonis and Hessel"
 			],
-			"companyLegalForm": "AG",
+			"website": "https://sour-affinity.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [],
+					"sector": [
+						"G",
+						"H",
+						"I",
+						"K"
+					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
 						"postalCode": "12345",
@@ -181,36 +139,41 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 4055,
-					"fiscalYearStart": "2023-09-18"
+					"numberOfEmployees": 3209,
+					"fiscalYearStart": "2024-02-18"
 				},
-				"companyFinancials": {
-					"operatingCostInEur": 54568485,
-					"capitalAssetsInEur": 18968903
-				}
+				"companyFinancials": {}
 			},
 			"production": {
 				"sites": {},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Practical Wooden Mouse"
+						},
+						{
+							"name": "Modern Wooden Gloves",
+							"percentageOfTotalRevenue": 0.6358
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 399,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 3
+					"energyConsumptionHeatingAndHotWater": 558,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 37153613,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Avalanche",
-						"Snow",
-						"Hail",
+						"EarthQuake",
 						"Wind",
-						"EarthQuake"
+						"Snow",
+						"Avalanche",
+						"Hail"
 					]
 				}
 			}
@@ -220,72 +183,95 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Miguelcester",
-			"headquartersPostalCode": "24200",
+			"headquarters": "West Cletus",
+			"headquartersPostalCode": "88624-7914",
+			"sector": "eyeballs",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"pwDWtJ8nBD0RhOq2FrQL"
+				],
 				"Isin": [
-					"FQbkHQjZ03FE"
+					"kmols4wt08bI",
+					"zlocKZixx1F6"
 				],
 				"PermId": [
-					"oJv6eViLG1"
+					"olVhTJIO4f"
 				],
-				"Ticker": [
-					"jd0CLyN"
+				"Ticker": [],
+				"Duns": [
+					"ALwly19N1"
 				],
-				"Duns": [],
 				"VatNumber": [
-					"Zpd0Rw7Qk"
+					"fRRh8DAPV"
 				],
-				"CompanyRegistrationNumber": [
-					"0qi7uyXH1aLqprb"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GB",
-			"companyAlternativeNames": [],
+			"countryCode": "BA",
+			"companyAlternativeNames": [
+				"Bruen LLC",
+				"D'Amore - Considine"
+			],
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"G",
-						"L",
-						"M"
+						"E"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 7431,
-					"fiscalYearStart": "2024-06-20"
+					"numberOfEmployees": 6515,
+					"fiscalYearStart": "2023-12-30"
 				},
 				"companyFinancials": {
-					"revenueInEur": 72760383
+					"capitalAssetsInEur": 57613818
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": []
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Oriental Metal Ball"
+							"name": "Electronic Soft Towels",
+							"percentageOfTotalRevenue": 0.7605
+						},
+						{
+							"name": "Bespoke Steel Car"
+						},
+						{
+							"name": "Incredible Wooden Bacon"
+						},
+						{
+							"name": "Generic Bronze Pizza",
+							"percentageOfTotalRevenue": 0.9656
+						},
+						{
+							"name": "Luxurious Cotton Pizza"
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
-				},
+				"investments": {},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 695,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 676,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"EarthQuake",
+						"Flooding",
+						"Hail"
+					]
 				}
 			}
 		},

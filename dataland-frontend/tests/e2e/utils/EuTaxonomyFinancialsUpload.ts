@@ -4,7 +4,7 @@ import {
   CompanyInformation,
   Configuration,
   DataMetaInformation,
-  DataPointBigDecimal,
+  DataPointOneValueBigDecimal,
   DataTypeEnum,
   EligibilityKpis,
   EuTaxonomyDataForFinancials,
@@ -156,7 +156,7 @@ export function fillEligibilityKpis(divTag: string, data: EligibilityKpis | unde
  * @param inputsTag value of the parent div data-test attribute to fill in
  * @param value the value to fill in
  */
-export function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
+export function fillField(divTag: string, inputsTag: string, value?: DataPointOneValueBigDecimal): void {
   if (value?.value) {
     const valueAsString = value.value.toString();
     if (divTag === "") {

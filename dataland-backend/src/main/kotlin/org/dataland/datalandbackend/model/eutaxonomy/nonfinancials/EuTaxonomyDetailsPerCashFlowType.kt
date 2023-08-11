@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
-import org.dataland.datalandbackend.model.DataPoint
 import org.dataland.datalandbackend.model.DataPointAbsoluteAndPercentage
+import org.dataland.datalandbackend.model.DataPointOneValue
 import java.math.BigDecimal
 
 /**
@@ -9,7 +9,7 @@ import java.math.BigDecimal
  * Fields for each cashflow type in the EuTaxonomyForNonFinancials framework
  */
 data class EuTaxonomyDetailsPerCashFlowType(
-    val totalAmount: DataPoint<BigDecimal>? = null,
+    val totalAmount: DataPointOneValue<BigDecimal>? = null,
 
     val alignedData: DataPointAbsoluteAndPercentage<BigDecimal>? = null,
 

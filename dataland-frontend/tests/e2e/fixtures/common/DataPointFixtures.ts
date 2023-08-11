@@ -1,5 +1,10 @@
 import { faker } from "@faker-js/faker";
-import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
+import {
+  CompanyReportReference,
+  DataPointOneValueBigDecimal,
+  DataPointOneValueYesNo,
+  QualityOptions,
+} from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNo, randomYesNoNa } from "./YesNoFixtures";
@@ -20,23 +25,14 @@ export function valueOrNull<T>(value: T): T | null {
 }
 
 /**
- * Generates a random link to a pdf document
- * @returns random link to a pdf document
- */
-export function generateLinkToPdf(): string {
-  return new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href;
-}
-
-/**
  * Generates a random non-empty set of reports that can be referenced
  * @returns a random non-empty set of reports
  */
 export function generateReferencedReports(): ReferencedDocuments {
-  const availableReports = faker.helpers.arrayElements(possibleReports);
-  if (availableReports.length == 0) availableReports.push(possibleReports[0]);
+  const availableReportNames = faker.helpers.arrayElements(possibleReports, { min: 1, max: possibleReports.length });
 
   const referencedReports: ReferencedDocuments = {};
-  for (const reportName of availableReports) {
+  for (const reportName of availableReportNames) {
     referencedReports[reportName] = {
       reference: getReferencedDocumentId(),
       isGroupLevel: valueOrUndefined(randomYesNoNa()),
@@ -57,7 +53,7 @@ export function generateReferencedReports(): ReferencedDocuments {
 export function generateNumericOrEmptyDatapoint(
   reports: ReferencedDocuments,
   value: number | null = valueOrNull(faker.number.int()),
-): DataPointBigDecimal | undefined {
+): DataPointOneValueBigDecimal | undefined {
   return valueOrUndefined(generateDatapoint(value, reports));
 }
 
@@ -79,7 +75,7 @@ export function generateNumericDatapoint(
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint or undefined
  */
-export function generateYesNoOrEmptyDatapoint(reports: ReferencedDocuments): DataPointYesNo | undefined {
+export function generateYesNoOrEmptyDatapoint(reports: ReferencedDocuments): DataPointOneValueYesNo | undefined {
   return valueOrUndefined(generateDatapoint(randomYesNo(), reports));
 }
 
@@ -92,7 +88,7 @@ export function generateYesNoOrEmptyDatapoint(reports: ReferencedDocuments): Dat
 export function generateDatapointOrNotReportedAtRandom(
   value: number | undefined,
   reports: ReferencedDocuments,
-): DataPointBigDecimal | undefined {
+): DataPointOneValueBigDecimal | undefined {
   if (value === undefined) return undefined;
   return generateDatapoint(valueOrNull(value), reports);
 }

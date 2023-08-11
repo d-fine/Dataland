@@ -1,8 +1,8 @@
-import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
+import SfdrDataTable from "@/components/general/SfdrDataTable.vue";
 import { shallowMount } from "@vue/test-utils";
 
-describe("Component test for CompanyDataTable", () => {
-  const wrapper = shallowMount(CompanyDataTable);
+describe("Component test for SfdrDataTable", () => {
+  const wrapper = shallowMount(SfdrDataTable);
 
   it("Check that the initial values are correct", () => {
     expect(wrapper.vm.kpiDataObjects).to.be.an("array").that.is.empty;
