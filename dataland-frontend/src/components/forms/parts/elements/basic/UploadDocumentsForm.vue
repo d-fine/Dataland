@@ -8,6 +8,7 @@
       :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
+      :multiple="moreThanOneDocumentAllowed"
       @select="handleFilesSelected"
     >
       <template #header="{ files, chooseCallback }">
@@ -38,7 +39,7 @@
             <PrimeButton
               data-test="files-to-upload-remove"
               icon="pi pi-times"
-              @click="removeDocumentFromDocumentsToUpload(index)"
+              @click="removeDocumentsFromDocumentsToUpload([index])"
               class="p-button-rounded"
             />
           </div>
@@ -67,7 +68,7 @@ export default defineComponent({
     PrimeButton,
     FileUpload,
   },
-  emits: ["documentsChanged"],
+  emits: ["reportsUpdated"],
   data() {
     return {
       formatBytesUserFriendly,
@@ -102,32 +103,44 @@ export default defineComponent({
      * @param event full event object containing the files
      * @param event.files files
      */
-    async handleFilesSelected(event: FileUploadSelectEvent): Promise<void> {
+    handleFilesSelected(event: FileUploadSelectEvent) {
       const selectedFilesByUser = event.files as File[];
       if (isThereActuallyANewFileSelected(selectedFilesByUser, this.documentsToUpload)) {
-        const lastSelectedFile = selectedFilesByUser[selectedFilesByUser.length - 1];
-        const documentToUpload = { file: lastSelectedFile } as DocumentToUpload;
-        documentToUpload.reference = await calculateSha256HashFromFile(documentToUpload.file);
-        documentToUpload.fileNameWithoutSuffix = removeFileTypeExtension(documentToUpload.file.name);
-        this.documentsToUpload.push(documentToUpload);
-        this.emitDocumentsChangedEvent();
+        const documentsToUpload = Promise.all(
+          selectedFilesByUser.map(async (file) => {
+            return {
+              file: file,
+              reference: await calculateSha256HashFromFile(file),
+              fileNameWithoutSuffix: removeFileTypeExtension(file.name),
+            };
+          }),
+        ) as Promise<DocumentToUpload[]>;
+
+        void documentsToUpload.then((documentsToUpload) => {
+          this.documentsToUpload = documentsToUpload;
+          this.emitReportsUpdatedEvent();
+        });
       }
     },
     /**
      * Emits event that selected documents changed
      */
-    emitDocumentsChangedEvent() {
-      this.$emit("documentsChanged", this.documentsToUpload);
+    emitReportsUpdatedEvent() {
+      this.$emit("reportsUpdated", this.documentsToUpload);
     },
 
     /**
-     * Remove document from files uploaded
-     * @param indexOfFileToRemove index number of the file to remove
+     * Remove documents from files uploaded
+     * @param indexesOfFilesToRemove index list of numbers of the files to remove
      */
-    removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number) {
-      ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
-      this.documentsToUpload.splice(indexOfFileToRemove, 1);
-      this.emitDocumentsChangedEvent();
+    removeDocumentsFromDocumentsToUpload(indexesOfFilesToRemove: number[]) {
+      indexesOfFilesToRemove.sort((a, b) => b - a);
+      const sortedIndexes = [...indexesOfFilesToRemove];
+      [...new Set(sortedIndexes)].forEach((indexOfFileToRemove) => {
+        ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
+        this.documentsToUpload.splice(indexOfFileToRemove, 1);
+      });
+      this.emitReportsUpdatedEvent();
     },
 
     /**
@@ -138,7 +151,7 @@ export default defineComponent({
     removeAllDocuments() {
       (this.$refs.fileUpload as FileUpload).files = [];
       this.documentsToUpload = [];
-      this.emitDocumentsChangedEvent();
+      this.emitReportsUpdatedEvent();
     },
 
     /**

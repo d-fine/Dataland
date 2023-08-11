@@ -7,6 +7,7 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] The code has been manually inspected by someone who did not implement the feature
 - [ ] The PR actually implements what is described in the JIRA-Issue
 - [ ] At least one test exists testing the new feature
+  - [ ] If you have created new test files, make sure that they are included in a test container and actually run in the CI
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
 - [ ] If there was a database entity class added, there must also be a migration script for creating the corresponding database if flyway is already used by the service

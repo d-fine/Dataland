@@ -1,20 +1,21 @@
 <template>
-  <div class="col-3 p-3 topicLabel">
+  <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
     <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
   <!-- Select company reports -->
-  <div class="col-9 formFields">
+  <div :class="isEuTaxonomy ? 'col-9 formFields' : 'formField'">
     <h3 class="mt-0">Select company reports</h3>
-    <UploadDocumentsForm ref="uploadDocumentsForm" @documentsChanged="updateSelectedReports" :name="fileUpload" />
+    <UploadDocumentsForm ref="uploadDocumentsForm" @reportsUpdated="updateSelectedReports" :name="name" />
   </div>
+
   <FormKit name="referencedReports" type="group">
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div
         v-for="reportToUpload of reportsToUpload"
         :key="reportToUpload.file.name"
-        class="col-9 formFields"
+        :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
         data-test="report-to-upload-form"
       >
         <div :data-test="reportToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
@@ -27,13 +28,16 @@
     </div>
     <div v-if="storedReports.length > 0" class="uploadFormSection">
       <!-- List of company reports -->
-      <div class="col-3 p-3 topicLabel">
+      <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
+      </div>
+      <div v-else class="col-12">
+        <h3 class="mt-0">Uploaded company reports</h3>
       </div>
       <div
         v-for="(storedReport, index) of storedReports"
         :key="storedReport.reportName"
-        class="col-9 formFields"
+        :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
         data-test="report-uploaded-form"
       >
         <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
@@ -60,36 +64,48 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
-import { CompanyReport } from "@clients/backend";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
 import { ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
+import { CompanyReport } from "@clients/backend";
+import { ObjectType } from "@/utils/UpdateObjectUtils";
+
+type DuplicatesWithIndexList = { report: ReportToUpload; index: number }[];
 
 export default defineComponent({
   name: "UploadReports",
+  inheritAttrs: false,
+  inject: {
+    injectReferencedReportsForPrefill: {
+      from: "referencedReportsForPrefill",
+      default: {},
+    },
+  },
   components: {
     UploadDocumentsForm,
     ReportFormElement,
     PrimeButton,
   },
-  emits: ["referenceableReportNamesChanged"],
+  emits: ["reportsUpdated"],
   data() {
     return {
-      reportsToUpload: [] as ReportToUpload[] | undefined,
+      reportsToUpload: [] as ReportToUpload[],
       storedReports: [] as StoredReport[],
+      foundDuplicates: [] as ReportToUpload[],
     };
   },
   props: {
+    name: {
+      type: String,
+      required: true,
+    },
     referencedReportsForPrefill: {
       type: Object as () => { [key: string]: CompanyReport },
     },
-  },
-  computed: {
-    allReferenceableReportNames(): string[] {
-      const namesOfFilesToUpload = this.reportsToUpload.map((reportToUpload) => reportToUpload.fileNameWithoutSuffix);
-      const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName);
-      return namesOfFilesToUpload.concat(namesOfStoredReports);
+    isEuTaxonomy: {
+      type: Boolean,
+      default: false,
     },
   },
   watch: {
@@ -97,12 +113,34 @@ export default defineComponent({
       this.prefillAlreadyUploadedReports();
     },
   },
+  computed: {
+    namesOfReportsToUpload() {
+      return this.reportsToUpload.map((reportToUpload) => reportToUpload.fileNameWithoutSuffix);
+    },
+    namesOfStoredReports() {
+      return this.storedReports.map((storedReport) => storedReport.reportName);
+    },
+    allReferenceableReportNames(): string[] {
+      return this.namesOfReportsToUpload.concat(this.namesOfStoredReports);
+    },
+  },
+  mounted() {
+    this.prefillAlreadyUploadedReports();
+  },
   methods: {
     /**
-     * Emits event that referenceable files changed
+     * Emits event when referenceable reports changed
      */
-    emitReferenceableReportNamesChangedEvent() {
-      this.$emit("referenceableReportNamesChanged", this.allReferenceableReportNames);
+    emitReportsUpdatedEvent() {
+      if (this.foundDuplicates?.length) {
+        this.openModalToDisplayDuplicateNameError();
+      }
+
+      if (this.isEuTaxonomy) {
+        this.$emit("reportsUpdated", this.allReferenceableReportNames);
+      } else {
+        this.$emit("reportsUpdated", this.allReferenceableReportNames, this.reportsToUpload);
+      }
     },
     /**
      * Handles selection of a file by the user. First it checks if the file name is already taken.
@@ -113,16 +151,36 @@ export default defineComponent({
      */
     updateSelectedReports(reports: ReportToUpload[]) {
       this.reportsToUpload = reports;
-      if (this.duplicatesAmongReferenceableReportNames()) {
-        const indexOfLastSelectedFile = reports.length - 1;
-        const lastSelectedFile = reports[indexOfLastSelectedFile].file;
-        this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
-        (this.$refs.uploadDocumentsForm.removeDocumentFromDocumentsToUpload as (index: number) => void)(
-          indexOfLastSelectedFile,
-        );
+      const duplicatesWithIndex: DuplicatesWithIndexList = [];
+
+      if (this.areDuplicatesAmongReferenceableReportNames()) {
+        const foundExistingRecords = new Set<string>();
+
+        for (let i = 0; i < this.reportsToUpload.length; i++) {
+          const currentName = this.reportsToUpload[i].fileNameWithoutSuffix;
+
+          if (foundExistingRecords.has(currentName) || this.namesOfStoredReports.indexOf(currentName) !== -1) {
+            duplicatesWithIndex.push({ report: this.reportsToUpload[i], index: i });
+          } else {
+            foundExistingRecords.add(currentName);
+          }
+        }
+
+        this.handleReportDuplicates([...duplicatesWithIndex].reverse());
       } else {
-        this.emitReferenceableReportNamesChangedEvent();
+        this.emitReportsUpdatedEvent();
       }
+    },
+    /**
+     * Scan list of file names and show modal if duplicate
+     * @param duplicatesWithIndex a list of reports to upload
+     */
+    handleReportDuplicates(duplicatesWithIndex: DuplicatesWithIndexList) {
+      const reports = duplicatesWithIndex.map(({ report }) => report);
+      const indexes = duplicatesWithIndex.map(({ index }) => index);
+
+      this.foundDuplicates = reports;
+      (this.$refs.uploadDocumentsForm.removeDocumentsFromDocumentsToUpload as (indexes: number[]) => void)(indexes);
     },
     /**
      * When the X besides existing reports is clicked this function should be called and
@@ -131,32 +189,39 @@ export default defineComponent({
      */
     removeReportFromStoredReports(indexOfFileToRemove: number) {
       this.storedReports.splice(indexOfFileToRemove, 1);
-      this.emitReferenceableReportNamesChangedEvent();
+      this.emitReportsUpdatedEvent();
     },
 
     /**
      * Initializes the already uploaded reports from provided reports
      */
     prefillAlreadyUploadedReports() {
-      if (this.referencedReportsForPrefill) {
-        for (const key in this.referencedReportsForPrefill) {
+      const sourceOfReferencedReportsForPrefill = (this.referencedReportsForPrefill ??
+        this.injectReferencedReportsForPrefill) as ObjectType;
+
+      if (sourceOfReferencedReportsForPrefill) {
+        for (const key in sourceOfReferencedReportsForPrefill) {
+          const referencedReport = (sourceOfReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
           this.storedReports.push({
             reportName: key,
-            reference: this.referencedReportsForPrefill[key].reference,
-            currency: this.referencedReportsForPrefill[key].currency,
-            reportDate: this.referencedReportsForPrefill[key].reportDate,
-            isGroupLevel: this.referencedReportsForPrefill[key].isGroupLevel,
+            reference: referencedReport.reference,
+            currency: referencedReport.currency,
+            reportDate: referencedReport.reportDate,
+            isGroupLevel: referencedReport.isGroupLevel,
           });
         }
-        this.emitReferenceableReportNamesChangedEvent();
+        this.emitReportsUpdatedEvent();
       }
     },
 
     /**
      * Opens a modal and explains the user that the selected file has a name for which a report already exists.
-     * @param nameOfFileThatHasDuplicate contains the file name which caused the error
      */
-    openModalToDisplayDuplicateNameError(nameOfFileThatHasDuplicate: string) {
+    openModalToDisplayDuplicateNameError() {
+      const duplicateReportNamesList = [
+        ...new Set(this.foundDuplicates.map((report: ReportToUpload) => report.fileNameWithoutSuffix)),
+      ].join(", ");
+
       this.$dialog.open(ElementsDialog, {
         props: {
           modal: true,
@@ -166,18 +231,19 @@ export default defineComponent({
         },
         data: {
           message:
-            "The following file cannot be selected because a report with its name is already selected " +
+            "The following file(s) cannot be selected because a report with its name is already selected " +
             "for upload or even already uploaded:",
-          listOfElementNames: [nameOfFileThatHasDuplicate],
+          listOfElementNames: [duplicateReportNamesList],
         },
       });
+      this.foundDuplicates = [];
     },
 
     /**
      * Checks if there is a report name twice in the list of referencable report names
      * @returns a boolean stating if any file name is duplicated among the reference report names
      */
-    duplicatesAmongReferenceableReportNames(): boolean {
+    areDuplicatesAmongReferenceableReportNames(): boolean {
       return this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size;
     },
   },

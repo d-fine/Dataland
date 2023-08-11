@@ -34,6 +34,7 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./swagger-ui");
   require("./user-api-key");
   require("./framework-view-and-upload-journey");
+  require("./sfdr");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {

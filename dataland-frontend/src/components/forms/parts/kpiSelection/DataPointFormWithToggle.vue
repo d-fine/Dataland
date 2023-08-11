@@ -153,7 +153,7 @@ import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHead
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 
 export default defineComponent({
-  name: "DataPointForm",
+  name: "DataPointFormWithToggle",
   components: { DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({

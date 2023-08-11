@@ -2845,15 +2845,12 @@
           }
         }
       },
-      "DataPointBigDecimal": {
+      "DataPointOneValueYesNo": {
         "required": [
           "quality"
         ],
         "type": "object",
         "properties": {
-          "value": {
-            "type": "number"
-          },
           "quality": {
             "$ref": "#/components/schemas/QualityOptions"
           },
@@ -2862,18 +2859,18 @@
           },
           "comment": {
             "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/YesNo"
           }
         }
       },
-      "DataPointYesNo": {
+      "DataPointWithUnitBigDecimal": {
         "required": [
           "quality"
         ],
         "type": "object",
         "properties": {
-          "value": {
-            "$ref": "#/components/schemas/YesNo"
-          },
           "quality": {
             "$ref": "#/components/schemas/QualityOptions"
           },
@@ -2881,6 +2878,12 @@
             "$ref": "#/components/schemas/CompanyReportReference"
           },
           "comment": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          },
+          "unit": {
             "type": "string"
           }
         }
@@ -2902,133 +2905,20 @@
           "NA"
         ]
       },
-      "SfdrAnticorruptionAndAntibribery": {
-        "type": "object",
-        "properties": {
-          "reportedCasesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "reportedConvictionsOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "reportedFinesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          }
-        }
-      },
-      "SfdrBiodiversity": {
-        "type": "object",
-        "properties": {
-          "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "protectedAreasExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "rareOrEndangeredEcosystemsExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          }
-        }
-      },
       "SfdrData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
-          "social": {
-            "$ref": "#/components/schemas/SfdrSocial"
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneral"
           },
           "environmental": {
             "$ref": "#/components/schemas/SfdrEnvironmental"
           },
-          "referencedReports": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            }
-          }
-        }
-      },
-      "SfdrEmissions": {
-        "type": "object",
-        "properties": {
-          "inorganicPollutants": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "airPollutants": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "ozoneDepletionSubstances": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "carbonReductionInitiatives": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          }
-        }
-      },
-      "SfdrEnergyPerformance": {
-        "type": "object",
-        "properties": {
-          "renewableEnergyProduction": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "renewableEnergyConsumption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "nonRenewableEnergyConsumption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "nonRenewableEnergyProduction": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceA": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceB": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceC": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceD": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceE": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceF": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceG": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceH": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceL": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "totalHighImpactClimateSectorEnergyConsumption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "nonRenewableEnergyConsumptionFossilFuels": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "nonRenewableEnergyConsumptionCrudeOil": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "nonRenewableEnergyConsumptionNaturalGas": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "nonRenewableEnergyConsumptionLignite": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "nonRenewableEnergyConsumptionCoal": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "nonRenewableEnergyConsumptionNuclearEnergy": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "nonRenewableEnergyConsumptionOther": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+          "social": {
+            "$ref": "#/components/schemas/SfdrSocial"
           }
         }
       },
@@ -3036,307 +2926,391 @@
         "type": "object",
         "properties": {
           "greenhouseGasEmissions": {
-            "$ref": "#/components/schemas/SfdrGreenhouseGasEmissions"
+            "$ref": "#/components/schemas/SfdrEnvironmentalGreenhouseGasEmissions"
           },
           "energyPerformance": {
-            "$ref": "#/components/schemas/SfdrEnergyPerformance"
+            "$ref": "#/components/schemas/SfdrEnvironmentalEnergyPerformance"
           },
           "biodiversity": {
-            "$ref": "#/components/schemas/SfdrBiodiversity"
+            "$ref": "#/components/schemas/SfdrEnvironmentalBiodiversity"
           },
           "water": {
-            "$ref": "#/components/schemas/SfdrWater"
+            "$ref": "#/components/schemas/SfdrEnvironmentalWater"
           },
           "waste": {
-            "$ref": "#/components/schemas/SfdrWaste"
+            "$ref": "#/components/schemas/SfdrEnvironmentalWaste"
           },
           "emissions": {
-            "$ref": "#/components/schemas/SfdrEmissions"
+            "$ref": "#/components/schemas/SfdrEnvironmentalEmissions"
+          }
+        }
+      },
+      "SfdrEnvironmentalBiodiversity": {
+        "type": "object",
+        "properties": {
+          "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "protectedAreasExposure": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "rareOrEndangeredEcosystemsExposure": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          }
+        }
+      },
+      "SfdrEnvironmentalEmissions": {
+        "type": "object",
+        "properties": {
+          "inorganicPollutants": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "airPollutants": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "ozoneDepletionSubstances": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "carbonReductionInitiatives": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          }
+        }
+      },
+      "SfdrEnvironmentalEnergyPerformance": {
+        "type": "object",
+        "properties": {
+          "renewableEnergyProduction": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "renewableEnergyConsumption": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "nonRenewableEnergyConsumption": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "nonRenewableEnergyProduction": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceA": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceB": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceC": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceD": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceE": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceF": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceG": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceH": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceL": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "totalHighImpactClimateSectorEnergyConsumption": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionFossilFuels": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionCrudeOil": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionNaturalGas": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionLignite": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionCoal": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionNuclearEnergy": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionOther": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          }
+        }
+      },
+      "SfdrEnvironmentalGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "scope2": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "scope3": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "enterpriseValue": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "totalRevenue": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "fossilFuelSectorExposure": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          }
+        }
+      },
+      "SfdrEnvironmentalWaste": {
+        "type": "object",
+        "properties": {
+          "hazardousWaste": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "manufactureOfAgrochemicalPesticidesProducts": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "landDegradationDesertificationSoilSealingExposure": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "sustainableAgriculturePolicy": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "sustainableOceansAndSeasPolicy": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "wasteNonRecycled": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "threatenedSpeciesExposure": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "biodiversityProtectionPolicy": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "deforestationPolicy": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          }
+        }
+      },
+      "SfdrEnvironmentalWater": {
+        "type": "object",
+        "properties": {
+          "emissionsToWater": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "waterConsumption": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "waterReused": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "waterManagementPolicy": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "waterStressAreaExposure": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           }
         }
       },
       "SfdrGeneral": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
-          "fiscalYear": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+          }
+        }
+      },
+      "SfdrGeneralGeneral": {
+        "required": [
+          "dataDate",
+          "fiscalYearDeviation",
+          "fiscalYearEnd"
+        ],
+        "type": "object",
+        "properties": {
+          "dataDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "fiscalYearDeviation": {
             "$ref": "#/components/schemas/FiscalYearDeviation"
           },
           "fiscalYearEnd": {
             "type": "string",
             "format": "date"
           },
-          "annualReport": {
-            "type": "string"
-          },
-          "groupLevelAnnualReport": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "annualReportDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "annualReportCurrency": {
-            "type": "string"
-          },
-          "sustainabilityReport": {
-            "type": "string"
-          },
-          "groupLevelSustainabilityReport": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "sustainabilityReportDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "sustainabilityReportCurrency": {
-            "type": "string"
-          },
-          "integratedReport": {
-            "type": "string"
-          },
-          "groupLevelIntegratedReport": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "integratedReportDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "integratedReportCurrency": {
-            "type": "string"
-          },
-          "esefReport": {
-            "type": "string"
-          },
-          "groupLevelEsefReport": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "esefReportDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "esefReportCurrency": {
-            "type": "string"
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
           },
           "scopeOfEntities": {
             "$ref": "#/components/schemas/YesNoNa"
           }
         }
       },
-      "SfdrGreenSecurities": {
-        "type": "object",
-        "properties": {
-          "securitiesNotCertifiedAsGreen": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          }
-        }
-      },
-      "SfdrGreenhouseGasEmissions": {
-        "type": "object",
-        "properties": {
-          "scope1": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "scope2": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "scope3": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "enterpriseValue": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "totalRevenue": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "fossilFuelSectorExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          }
-        }
-      },
-      "SfdrHumanRights": {
-        "type": "object",
-        "properties": {
-          "humanRightsPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "humanRightsDueDiligence": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "traffickingInHumanBeingsPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "reportedChildLabourIncidents": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "reportedForcedOrCompulsoryLabourIncidents": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "reportedIncidentsOfHumanRights": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          }
-        }
-      },
       "SfdrSocial": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SfdrGeneral"
-          },
           "socialAndEmployeeMatters": {
-            "$ref": "#/components/schemas/SfdrSocialAndEmployeeMatters"
+            "$ref": "#/components/schemas/SfdrSocialSocialAndEmployeeMatters"
           },
           "greenSecurities": {
-            "$ref": "#/components/schemas/SfdrGreenSecurities"
+            "$ref": "#/components/schemas/SfdrSocialGreenSecurities"
           },
           "humanRights": {
-            "$ref": "#/components/schemas/SfdrHumanRights"
+            "$ref": "#/components/schemas/SfdrSocialHumanRights"
           },
-          "anticorruptionAndAntibribery": {
-            "$ref": "#/components/schemas/SfdrAnticorruptionAndAntibribery"
+          "antiCorruptionAndAntiBribery": {
+            "$ref": "#/components/schemas/SfdrSocialAntiCorruptionAndAntiBribery"
           }
         }
       },
-      "SfdrSocialAndEmployeeMatters": {
+      "SfdrSocialAntiCorruptionAndAntiBribery": {
+        "type": "object",
+        "properties": {
+          "reportedCasesOfBriberyCorruption": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "reportedConvictionsOfBriberyCorruption": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          },
+          "reportedFinesOfBriberyCorruption": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          }
+        }
+      },
+      "SfdrSocialGreenSecurities": {
+        "type": "object",
+        "properties": {
+          "securitiesNotCertifiedAsGreen": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          }
+        }
+      },
+      "SfdrSocialHumanRights": {
+        "type": "object",
+        "properties": {
+          "humanRightsPolicy": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "humanRightsDueDiligence": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "traffickingInHumanBeingsPolicy": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "reportedChildLabourIncidents": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "reportedForcedOrCompulsoryLabourIncidents": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+          },
+          "reportedIncidentsOfHumanRights": {
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          }
+        }
+      },
+      "SfdrSocialSocialAndEmployeeMatters": {
         "type": "object",
         "properties": {
           "humanRightsLegalProceedings": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "iloCoreLabourStandards": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "environmentalPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "corruptionLegalProceedings": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "transparencyDisclosurePolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "humanRightsDueDiligencePolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "childForcedDiscriminationPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
-          "iso14001": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+          "iso14001Certificate": {
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "briberyCorruptionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "fairBusinessMarketingAdvertisingPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "technologiesExpertiseTransferPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "fairCompetitionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "violationOfTaxRulesAndRegulation": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "unGlobalCompactPrinciplesCompliancePolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "oecdGuidelinesForMultinationalEnterprisesPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "averageGrossHourlyEarningsMaleEmployees": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "averageGrossHourlyEarningsFemaleEmployees": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "femaleBoardMembers": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "maleBoardMembers": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "controversialWeaponsExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "workplaceAccidentPreventionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "rateOfAccidents": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "workdaysLost": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "supplierCodeOfConduct": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "grievanceHandlingMechanism": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "whistleblowerProtectionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointOneValueYesNo"
           },
           "reportedIncidentsOfDiscrimination": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "sanctionsIncidentsOfDiscrimination": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "ceoToEmployeePayGap": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          }
-        }
-      },
-      "SfdrWaste": {
-        "type": "object",
-        "properties": {
-          "hazardousWaste": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "manufactureOfAgrochemicalPesticidesProducts": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "landDegradationDesertificationSoilSealingExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "sustainableAgriculturePolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "sustainableOceansAndSeasPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "wasteNonRecycled": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "threatenedSpeciesExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "biodiversityProtectionPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "deforestationPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          }
-        }
-      },
-      "SfdrWater": {
-        "type": "object",
-        "properties": {
-          "emissionsToWater": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "waterConsumption": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "waterReused": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "waterManagementPolicy": {
-            "$ref": "#/components/schemas/DataPointYesNo"
-          },
-          "waterStressAreaExposure": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           }
         }
       },
@@ -5018,6 +4992,26 @@
           }
         }
       },
+      "DataPointOneValueBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        }
+      },
       "EuTaxonomyDataForNonFinancials": {
         "type": "object",
         "properties": {
@@ -5064,7 +5058,7 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "alignedData": {
             "$ref": "#/components/schemas/DataPointAbsoluteAndPercentageBigDecimal"
@@ -5097,16 +5091,16 @@
         "type": "object",
         "properties": {
           "tradingPortfolio": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "interbankLoans": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "tradingPortfolioAndInterbankLoans": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "greenAssetRatio": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         }
       },
@@ -5114,19 +5108,19 @@
         "type": "object",
         "properties": {
           "taxonomyEligibleActivity": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "taxonomyNonEligibleActivity": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "derivatives": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "banksAndIssuers": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
           "investmentNonNfrd": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         },
         "example": {
@@ -5286,7 +5280,7 @@
         "type": "object",
         "properties": {
           "taxonomyEligibleNonLifeInsuranceActivities": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         }
       },
@@ -5294,7 +5288,7 @@
         "type": "object",
         "properties": {
           "greenAssetRatio": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         }
       },

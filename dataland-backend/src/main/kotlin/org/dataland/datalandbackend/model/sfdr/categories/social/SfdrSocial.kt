@@ -1,23 +1,20 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social
 
-import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrAnticorruptionAndAntibribery
-import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrGeneral
-import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrGreenSecurities
-import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrHumanRights
-import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialAndEmployeeMatters
+import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialAntiCorruptionAndAntiBribery
+import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialGreenSecurities
+import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialHumanRights
+import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.SfdrSocialSocialAndEmployeeMatters
 
 /**
  * --- API model ---
- * Impact topics for the "Social" impact area of the SFDR framework
+ * Fields of the category "Social" of the sfdr framework.
  */
 data class SfdrSocial(
-    val general: SfdrGeneral?,
+    val socialAndEmployeeMatters: SfdrSocialSocialAndEmployeeMatters? = null,
 
-    val socialAndEmployeeMatters: SfdrSocialAndEmployeeMatters?,
+    val greenSecurities: SfdrSocialGreenSecurities? = null,
 
-    val greenSecurities: SfdrGreenSecurities?,
+    val humanRights: SfdrSocialHumanRights? = null,
 
-    val humanRights: SfdrHumanRights?,
-
-    val anticorruptionAndAntibribery: SfdrAnticorruptionAndAntibribery?,
+    val antiCorruptionAndAntiBribery: SfdrSocialAntiCorruptionAndAntiBribery? = null,
 )

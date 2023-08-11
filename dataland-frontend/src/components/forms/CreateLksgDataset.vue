@@ -52,7 +52,7 @@
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
-                          @documentUpdated="updateDocumentList"
+                          @reportsUpdated="updateDocumentList"
                           :ref="field.name"
                         />
                       </FormKit>
@@ -204,7 +204,7 @@ export default defineComponent({
       required: true,
     },
   },
-  mounted() {
+  created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
       void this.loadLKSGData(dataId);

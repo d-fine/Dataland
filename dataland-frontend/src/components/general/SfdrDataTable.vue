@@ -13,7 +13,7 @@
     >
       <Column bodyClass="headers-bg" headerClass="horizontal-headers-size" field="kpiKey" header="KPIs">
         <template #body="slotProps">
-          <span class="table-left-label">{{
+          <span :data-test="slotProps.data.kpiKey" class="table-left-label">{{
             kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : slotProps.data.kpiKey
           }}</span>
           <em
@@ -54,7 +54,7 @@
 
       <Column field="subAreaKey" header="Impact Area"></Column>
       <template #groupheader="slotProps">
-        <span>{{
+        <span :id="slotProps.data.subAreaKey" data-row-header-click>{{
           subAreaNameMappings[slotProps.data.subAreaKey]
             ? subAreaNameMappings[slotProps.data.subAreaKey]
             : slotProps.data.subAreaKey
@@ -71,24 +71,30 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
-import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
+import {
+  ReportingPeriodOfDataSetWithId,
+  mountRowHeaderClickEventListeners,
+  unmountRowHeaderClickEventListeners,
+} from "@/utils/DataTableDisplay";
+import { SfdrKpiObject } from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 
 export default defineComponent({
-  name: "CompanyDataTable",
+  name: "SfdrDataTable",
   components: { DataTable, Column },
   directives: {
     tooltip: Tooltip,
   },
   data() {
     return {
-      kpiDataObjectsToDisplay: [],
+      kpiDataObjectsToDisplay: [] as SfdrKpiObject[],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames: lksgModalColumnHeaders.listOfProductionSites,
+      rowClickHandlersMap: new Map() as Map<Element, EventListener>,
     };
   },
   props: {
     kpiDataObjects: {
-      type: Array,
+      type: Array as PropType<Array<SfdrKpiObject>>,
       default: () => [],
       required: true,
     },
@@ -108,6 +114,18 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+  },
+  created() {
+    setTimeout(() => {
+      this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+        () => this.expandedRowGroups,
+        (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
+      );
+    });
+  },
+  unmounted() {
+    unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
+    this.rowClickHandlersMap = new Map();
   },
   mounted() {
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;

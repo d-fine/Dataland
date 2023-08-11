@@ -17,6 +17,7 @@ const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/Ap
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
 const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
+const UploadSfdr = (): Promise<RouteComponent> => import("@/components/pages/UploadSfdr.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
@@ -68,6 +69,12 @@ const routes = [
     props: true,
     name: "Upload lkSG Data",
     component: UploadLkSG,
+  },
+  {
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.Sfdr}/upload`,
+    props: true,
+    name: "Upload SFDR Data",
+    component: UploadSfdr,
   },
   {
     path: `/companies/:companyID/frameworks/${DataTypeEnum.P2p}/upload`,

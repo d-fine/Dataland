@@ -19,7 +19,7 @@ describe("Component tests for SfdrPanel", () => {
   });
 
   it("Check Sfdr view page for company with one Sfdr data set", () => {
-    const preparedFixture = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
+    const preparedFixture = getPreparedFixture("companyWithOneFilledSfdrSubcategory", preparedFixtures);
     const sfdrData = preparedFixture.t;
 
     cy.intercept("/api/data/sfdr/mock-data-id", {
@@ -39,19 +39,15 @@ describe("Component tests for SfdrPanel", () => {
         };
       },
     });
-    cy.get("table.p-datatable-table")
-      .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
-      .should("exist");
+    cy.get("table.p-datatable-table").find(`span:contains(${sfdrData.general.general.fiscalYearEnd})`).should("exist");
 
     cy.get("button.p-row-toggler").eq(0).click();
     cy.get("table.p-datatable-table")
-      .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
+      .find(`span:contains(${sfdrData.general.general.fiscalYearEnd})`)
       .should("not.exist");
 
     cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("table.p-datatable-table")
-      .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
-      .should("exist");
+    cy.get("table.p-datatable-table").find(`span:contains(${sfdrData.general.general.fiscalYearEnd})`).should("exist");
   });
 
   /**
@@ -67,7 +63,7 @@ describe("Component tests for SfdrPanel", () => {
       const reportingYear = 2023 + i;
       const fiscalYearEnd = `${reportingYear}-01-01`;
       const sfdrData = structuredClone(baseDataset);
-      sfdrData.social!.general!.fiscalYearEnd = fiscalYearEnd;
+      sfdrData.general.general.fiscalYearEnd = fiscalYearEnd;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
         reportingPeriod: reportingYear.toString(),
@@ -88,7 +84,7 @@ describe("Component tests for SfdrPanel", () => {
   }
 
   it("Check Sfdr view page for company with six Sfdr datasets reported in different years", () => {
-    const preparedFixture = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
+    const preparedFixture = getPreparedFixture("companyWithOneFilledSfdrSubcategory", preparedFixtures);
     const mockedData = constructCompanyApiResponseForSfdrSixYears(preparedFixture.t);
     cy.intercept("/api/data/sfdr/companies/mock-company-id", mockedData);
 
@@ -130,8 +126,8 @@ describe("Component tests for SfdrPanel", () => {
       },
     });
     cy.contains("span", "marker-for-test").should("exist");
-    cy.contains("td.headers-bg", "Group Level Annual Report").should("exist");
-    cy.get("em").its("length").should("equal", 2);
-    cy.get("tr").its("length").should("equal", 4);
+    cy.contains("td.headers-bg", "Data Date").should("exist");
+    cy.get("em").its("length").should("equal", 5);
+    cy.get("tr").its("length").should("equal", 7);
   });
 });

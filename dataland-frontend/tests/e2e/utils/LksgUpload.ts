@@ -1,4 +1,5 @@
 import {
+  CompanyAssociatedDataLksgData,
   CompanyInformation,
   Configuration,
   DataMetaInformation,
@@ -9,6 +10,7 @@ import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
  * Uploads a single LKSG data entry for a company
@@ -227,7 +229,7 @@ function fillInMostImportantProducts(): void {
 /**
  * Fills out Procurement Categories
  */
-export function fillInProcurementCategories(): void {
+function fillInProcurementCategories(): void {
   cy.get('[data-test="dataPointToggleButton"]').first().click();
   cy.get('[data-test="suppliersPerCountryCode"] .p-multiselect').should("exist").click();
 
@@ -265,6 +267,22 @@ function checkIfUploadFieldDependenciesAreRespected(): void {
 }
 
 /**
+ *  Verify that selected documents are referenced in the actual dataset
+ */
+function checkIfUploadedFilesAreReferencedInTheDataset(): void {
+  cy.intercept("POST", "**/api/data/lksg").as("postLksgData");
+  submitButton.clickButton();
+  cy.wait("@postLksgData").then((interception) => {
+    const postedObject = interception.request.body as CompanyAssociatedDataLksgData;
+    const postedLksgDataset = postedObject.data;
+    const referencedReportHash =
+      assertDefined(postedLksgDataset).governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!
+        .dataSource!.reference;
+    expect(referencedReportHash).to.be.not.empty;
+  });
+}
+
+/**
  * Uploads a single LKSG data entry for a company via form
  */
 export function uploadLksgDataViaForm(): void {
@@ -288,7 +306,7 @@ export function uploadLksgDataViaForm(): void {
   fillRequiredLksgFieldsWithDummyData();
 
   testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
-  submitButton.clickButton();
+  checkIfUploadedFilesAreReferencedInTheDataset();
 
   cy.get("div.p-message-success").should("be.visible");
 }
