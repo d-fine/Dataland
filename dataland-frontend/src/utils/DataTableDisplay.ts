@@ -42,6 +42,8 @@ export type ReportingPeriodOfDataSetWithId = {
   reportingPeriod: string;
 };
 
+const buttonRowHeaderId = "row-header-id";
+
 /**
  * Adds click event listeners on DataTable row headers to expand and collapse row
  * @param expandedRowsOnClick function passes the latest list of expanded row id's
@@ -55,13 +57,12 @@ export function mountRowHeaderClickEventListeners(
   const handlerMap: Map<Element, EventListener> = new Map();
   let expandedRowGroups: string[] = [];
 
-  const buttonAttributeName = "data-parent-id";
   const rowHeaders = Array.from(document.querySelectorAll("[data-row-header-click]"));
   const rowButtons = rowHeaders
-    .map((el: Element) => {
-      const button = el.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');
+    .map((rowHeader: Element) => {
+      const button = rowHeader.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');
       if (button) {
-        button.setAttribute(buttonAttributeName, el.id);
+        button.setAttribute(buttonRowHeaderId, rowHeader.id);
         return button;
       }
       return void 0;
@@ -69,12 +70,11 @@ export function mountRowHeaderClickEventListeners(
     .filter((button): button is HTMLButtonElement => !!button);
 
   [...rowHeaders, ...rowButtons].forEach((el: Element) => {
-    let clickHandler: EventListener | null = (evt): void => {
-      if (!el.id) {
+    const clickHandler: EventListener | null = (evt): void => {
+      if (el.getAttribute(buttonRowHeaderId)) {
         evt.stopImmediatePropagation();
         return;
       }
-
       expandedRowGroups = expandedRowsOnClick();
       if (!expandedRowGroups.includes(el.id)) {
         expandedRowGroups.push(el.id);
@@ -85,18 +85,16 @@ export function mountRowHeaderClickEventListeners(
     };
 
     let target;
-    if (el?.getAttribute(buttonAttributeName)) {
+    if (el?.getAttribute(buttonRowHeaderId)) {
       target = el;
     } else {
       target = el.parentNode;
     }
-
     if (target) {
       handlerMap.set(target as Element, clickHandler);
       target.addEventListener("click", clickHandler);
     }
   });
-
   return handlerMap;
 }
 
@@ -112,7 +110,6 @@ export function unmountRowHeaderClickEventListeners(handlerMap: Map<Element, Eve
     } else {
       el.parentNode?.removeEventListener("click", clickHandler);
     }
-    clickHandler = null;
     handlerMap.delete(el);
   });
 }
