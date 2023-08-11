@@ -95,8 +95,6 @@ export function mountRowHeaderClickEventListeners(
       handlerMap.set(target as Element, clickHandler);
       target.addEventListener("click", clickHandler);
     }
-
-    clickHandler = null;
   });
 
   return handlerMap;
