@@ -121,6 +121,24 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
+        }, {
+            name : "dataSource",
+            label : "Data Source",
+            description : "",
+            unit : "",
+            component : "UndefinedFormField",
+            evidenceDesired : false,
+            required : false,
+            showIf : (): boolean => false
+        }, {
+            name : "comment",
+            label : "Comment",
+            description : "",
+            unit : "",
+            component : "UndefinedFormField",
+            evidenceDesired : false,
+            required : false,
+            showIf : (): boolean => false
         } ]
     }, {
         name : "totalNonEligibleShare",
@@ -289,6 +307,24 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
+        }, {
+            name : "dataSource",
+            label : "Data Source",
+            description : "",
+            unit : "",
+            component : "UndefinedFormField",
+            evidenceDesired : false,
+            required : false,
+            showIf : (): boolean => false
+        }, {
+            name : "comment",
+            label : "Comment",
+            description : "",
+            unit : "",
+            component : "UndefinedFormField",
+            evidenceDesired : false,
+            required : false,
+            showIf : (): boolean => false
         } ]
     }, {
         name : "totalNonEligibleShare",
@@ -457,6 +493,24 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
+        }, {
+            name : "dataSource",
+            label : "Data Source",
+            description : "",
+            unit : "",
+            component : "UndefinedFormField",
+            evidenceDesired : false,
+            required : false,
+            showIf : (): boolean => false
+        }, {
+            name : "comment",
+            label : "Comment",
+            description : "",
+            unit : "",
+            component : "UndefinedFormField",
+            evidenceDesired : false,
+            required : false,
+            showIf : (): boolean => false
         } ]
     }, {
         name : "totalNonEligibleShare",
