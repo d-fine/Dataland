@@ -1,4 +1,5 @@
 import {
+  CompanyAssociatedDataLksgData,
   CompanyInformation,
   Configuration,
   DataMetaInformation,
@@ -9,6 +10,7 @@ import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
  * Uploads a single LKSG data entry for a company
@@ -227,7 +229,7 @@ function fillInMostImportantProducts(): void {
 /**
  * Fills out Procurement Categories
  */
-export function fillInProcurementCategories(): void {
+function fillInProcurementCategories(): void {
   cy.get('[data-test="dataPointToggleButton"]').first().click();
   cy.get('[data-test="suppliersPerCountryCode"] .p-multiselect').should("exist").click();
 
@@ -254,6 +256,33 @@ export function fillInProcurementCategories(): void {
 }
 
 /**
+ * Test if the showIf-functionality works by using one example from the LKSG Framework.
+ */
+function checkIfUploadFieldDependenciesAreRespected(): void {
+  cy.get("input[name=capacity]").should("not.exist");
+  cy.get("input[id=manufacturingCompany-option-yes]").click();
+  cy.get("input[name=capacity]").should("be.visible").type("5000");
+  cy.get("input[id=manufacturingCompany-option-no]").click();
+  cy.get("input[name=capacity]").should("not.exist");
+}
+
+/**
+ *  Verify that selected documents are referenced in the actual dataset
+ */
+function checkIfUploadedFilesAreReferencedInTheDataset(): void {
+  cy.intercept("POST", "**/api/data/lksg").as("postLksgData");
+  submitButton.clickButton();
+  cy.wait("@postLksgData").then((interception) => {
+    const postedObject = interception.request.body as CompanyAssociatedDataLksgData;
+    const postedLksgDataset = postedObject.data;
+    const referencedReportHash =
+      assertDefined(postedLksgDataset).governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!
+        .dataSource!.reference;
+    expect(referencedReportHash).to.be.not.empty;
+  });
+}
+
+/**
  * Uploads a single LKSG data entry for a company via form
  */
 export function uploadLksgDataViaForm(): void {
@@ -265,6 +294,8 @@ export function uploadLksgDataViaForm(): void {
   submitButton.buttonAppearsDisabled();
   selectDummyDateInDataPicker();
 
+  checkIfUploadFieldDependenciesAreRespected();
+
   recursivelySelectYesOnAllFields(15);
   fillInMostImportantProducts();
   fillInProcurementCategories();
@@ -275,7 +306,7 @@ export function uploadLksgDataViaForm(): void {
   fillRequiredLksgFieldsWithDummyData();
 
   testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
-  submitButton.clickButton();
+  checkIfUploadedFilesAreReferencedInTheDataset();
 
   cy.get("div.p-message-success").should("be.visible");
 }

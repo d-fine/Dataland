@@ -131,7 +131,7 @@ describe("Component test for ViewFrameworkBase", () => {
         },
       }).then((mounted) => {
         void mounted.wrapper.setProps({
-          dataType: DataTypeEnum.Sfdr,
+          dataType: DataTypeEnum.Sme,
           companyID: "mock-company-id",
         });
         cy.get("a[data-test=gotoNewDatasetButton] > button").should("exist");

@@ -27,7 +27,7 @@ export default defineComponent({
   components: { FormKit },
   data() {
     return {
-      allCountry: getDataset(DropdownDatasetIdentifier.CountryCodes),
+      allCountry: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
     };
   },
   computed: {

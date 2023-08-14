@@ -55,10 +55,11 @@
               </div>
               <FormKit type="group" name="data" label="data" validation-label="data" validation="required">
                 <UploadReports
+                  name="UploadReports"
                   ref="UploadReports"
-                  :editMode="editMode"
+                  :isEuTaxonomy="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports"
-                  @referenceableReportNamesChanged="handleChangeOfReferenceableReportNames"
+                  @reportsUpdated="handleChangeOfReferenceableReportNames"
                 />
 
                 <EuTaxonomyBasicInformation
@@ -236,7 +237,7 @@
                           <div class="col-9 formFields">
                             <FormKit :name="kpiType" type="group">
                               <div class="form-field">
-                                <DataPointForm
+                                <DataPointFormWithToggle
                                   :name="kpiType ?? ''"
                                   :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                   :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -260,7 +261,7 @@
                           <div class="col-9 formFields">
                             <FormKit :name="kpiTypeEligibility" type="group">
                               <div class="form-field">
-                                <DataPointForm
+                                <DataPointFormWithToggle
                                   :name="kpiTypeEligibility ?? ''"
                                   :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                   :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -342,7 +343,7 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
+import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { uploadFiles, ReportToUpload } from "@/utils/FileUploadUtils";
 
@@ -367,7 +368,7 @@ export default defineComponent({
     PrimeButton,
     Calendar,
     MultiSelect,
-    DataPointForm,
+    DataPointFormWithToggle,
   },
   emits: ["datasetCreated"],
   data() {
@@ -458,7 +459,7 @@ export default defineComponent({
     },
   },
 
-  mounted() {
+  created() {
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
