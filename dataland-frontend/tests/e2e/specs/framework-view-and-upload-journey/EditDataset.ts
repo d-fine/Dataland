@@ -107,8 +107,8 @@ describeIf(
             .click();
           cy.get(
             `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(
-                dataTest,
-            )}]`
+              dataTest,
+            )}]`,
           ).should("be.visible");
           cy.get(`div[data-test=${assertDefined(dataTest)}]`)
             .find("input[type=file]")
