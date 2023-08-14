@@ -19,6 +19,8 @@ export function logout(): void {
     .should("be.visible");
 }
 
+let globalJwt = "";
+
 /**
  * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.
  * @param username the username to use (defaults to data_reader)
@@ -27,6 +29,7 @@ export function logout(): void {
  */
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
   cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
+  cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
   cy.visitAndCheckAppMount("/")
     .wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
     .get("button[name='login_dataland_button']")
@@ -54,6 +57,9 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .click();
   }
   cy.url().should("eq", getBaseUrl() + "/companies");
+  cy.wait("@getCompanies").then((interception) => {
+    globalJwt = interception.request.headers["authorization"] as string;
+  });
 }
 
 /**
@@ -71,21 +77,14 @@ export function ensureLoggedIn(username?: string, password?: string): void {
     },
     {
       validate: () => {
-        cy.visit("/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step1.html")
-          .url()
-          .should(
-            "eq",
-            getBaseUrl() + "/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step2.html",
-          );
-        cy.window()
-          .then((window): boolean => {
-            if ("hasAccess" in window) {
-              return window.hasAccess as boolean;
-            } else {
-              return false;
-            }
-          })
-          .should("be.true");
+        cy.request({
+          url: "/api/token",
+          headers: {
+            Authorization: globalJwt,
+          },
+        })
+          .its("status")
+          .should("eq", 200);
       },
       cacheAcrossSpecs: true,
     },

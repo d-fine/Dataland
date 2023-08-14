@@ -935,6 +935,49 @@
         ]
       }
     },
+    "/token": {
+      "get": {
+        "tags": [
+          "token-validity-controller"
+        ],
+        "summary": "Validates if a token is valid",
+        "description": "Validates if a token is valid",
+        "operationId": "validateToken",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/metadata": {
       "get": {
         "tags": [
