@@ -41,17 +41,17 @@ describeIf(
         fillAndValidateEuTaxonomyForFinancialsUploadForm,
         () => {
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
-          uploadDocuments.validateReportToUploadIsListedInTheFileSelectorList(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
           cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
           uploadDocuments.removeReportFromSelectionForUpload(TEST_PDF_FILE_NAME);
           cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
-          uploadDocuments.checkNoReportAreSelectedForUploadOrAlreadyUploaded();
+          uploadDocuments.validateNoReportsAreAlreadyUploadedOrSelectedForUpload();
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
           cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
-          uploadDocuments.validateReportToUploadIsListedInTheFileSelectorList(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
           uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
           cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
-          uploadDocuments.validateReportToUploadIsListedInTheFileSelectorList(`${TEST_PDF_FILE_NAME}2`);
+          uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}2`);
           uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="banksAndIssuers"]`)

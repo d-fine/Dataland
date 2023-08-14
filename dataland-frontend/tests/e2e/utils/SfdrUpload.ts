@@ -66,6 +66,6 @@ export function uploadCompanyAndSfdrDataViaApi(
  */
 export function selectsReportsForUploadInSfdrForm(): void {
   uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
-  uploadDocuments.validateReportToUploadIsListedInTheFileSelectorList(TEST_PDF_FILE_NAME);
+  uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
   uploadDocuments.fillAllFormsOfReportsSelectedForUpload(1);
 }

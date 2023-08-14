@@ -21,12 +21,10 @@ export const uploadDocuments = {
       { force: true },
     );
   },
-  numberOfReportsSelectedForUploadShouldBe(expectedNumberOfReportsToUpload: number): void {
-    cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
-  },
+
   fillAllFormsOfReportsSelectedForUpload(expectedNumberOfReportsToUpload?: number): void {
     if (expectedNumberOfReportsToUpload) {
-      this.numberOfReportsSelectedForUploadShouldBe(expectedNumberOfReportsToUpload);
+      this.validateNumberOfReportsSelectedForUpload(expectedNumberOfReportsToUpload);
     }
     cy.get('[data-test="report-to-upload-form"]').each((element) => {
       cy.wrap(element).find(`[data-test="reportDate"] button`).should("have.class", "p-datepicker-trigger").click();
@@ -36,7 +34,12 @@ export const uploadDocuments = {
       cy.wrap(element).find(`input[value="No"]`).click();
     });
   },
-  validateReportToUploadIsListedInTheFileSelectorList(reportName: string): void {
+
+  validateNumberOfReportsSelectedForUpload(expectedNumberOfReportsToUpload: number): void {
+    cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
+  },
+
+  validateReportToUploadHasContainerInTheFileSelector(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
   },
 
@@ -45,25 +48,36 @@ export const uploadDocuments = {
   },
 
   validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportName: string): void {
-    this.validateReportToUploadIsListedInTheFileSelectorList(reportName);
+    this.validateReportToUploadHasContainerInTheFileSelector(reportName);
     this.validateReportToUploadHasContainerWithInfoForm(reportName);
   },
 
-  validateReportToUploadIsNotListedInTheFileSelectorList(reportName: string): void {
+  validateReportIsNotInFileSelector(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
   },
 
-  validateReportToUploadHasNoContainerWithInfoForm(reportName: string): void {
+  validateReportHasNoContainerWithInfoForm(reportName: string): void {
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
   },
 
-  validateReportToUploadIsNotListedInFileSelectorAndHasNoInfoForm(reportName: string): void {
-    this.validateReportToUploadIsNotListedInTheFileSelectorList(reportName);
-    this.validateReportToUploadHasNoContainerWithInfoForm(reportName);
+  validateReportIsNotInFileSelectorAndHasNoInfoForm(reportName: string): void {
+    this.validateReportIsNotInFileSelector(reportName);
+    this.validateReportHasNoContainerWithInfoForm(reportName);
   },
 
   validateReportIsListedAsAlreadyUploaded(reportName: string): void {
     cy.get(`[data-test="${reportName}AlreadyUploadedContainer`).should("exist");
+  },
+
+  validateNoReportsAreAlreadyUploadedOrSelectedForUpload(): void {
+    cy.get('[data-test="files-to-upload"]').should("not.be.visible");
+    cy.get('[data-test="report-to-upload-form"]').should("not.exist");
+    cy.get('[data-test="report-uploaded-form"]').should("not.exist");
+  },
+  validateReportIsNotAlreadyUploadedOrSelectedForUpload(reportName: string): void {
+    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
+    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
+    cy.get(`[data-test="${reportName}AlreadyUploadedContainer"]`).should("not.exist");
   },
 
   removeReportFromSelectionForUpload(reportName: string): void {
@@ -76,16 +90,6 @@ export const uploadDocuments = {
   },
   removeAlreadyUploadedReport(reportName: string): Cypress.Chainable {
     return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
-  },
-  checkNoReportAreSelectedForUploadOrAlreadyUploaded(): void {
-    cy.get('[data-test="files-to-upload"]').should("not.be.visible");
-    cy.get('[data-test="report-to-upload-form"]').should("not.exist");
-    cy.get('[data-test="report-uploaded-form"]').should("not.exist");
-  },
-  reportIsNotListedInFileSelectorAndHasNoInfoForm(reportName: string): void {
-    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
-    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
-    cy.get(`[data-test="${reportName}AlreadyUploadedContainer"]`).should("not.exist");
   },
 
   selectDocumentAtEachFileSelector(filename: string): void {

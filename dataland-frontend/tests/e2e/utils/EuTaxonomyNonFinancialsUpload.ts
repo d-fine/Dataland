@@ -22,7 +22,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
   uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
-  uploadDocuments.validateReportToUploadIsListedInTheFileSelectorList(TEST_PDF_FILE_NAME);
+  uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
   uploadDocuments.fillAllFormsOfReportsSelectedForUpload(1);
 
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);

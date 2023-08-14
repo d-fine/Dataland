@@ -89,17 +89,17 @@ describeIf(
             undefined,
             () => {
               uploadDocuments.selectDummyFile("dummy_1", 1);
-              uploadDocuments.numberOfReportsSelectedForUploadShouldBe(1);
+              uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
               validateFileCanNotBeUploadedDialogIsClosed();
               uploadDocuments.selectDummyFile("dummy_1", 1);
-              uploadDocuments.numberOfReportsSelectedForUploadShouldBe(1);
+              uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
               validateFileCanNotBeUploadedDialogIsClosed();
               uploadDocuments.selectDummyFile("dummy_1", 2);
               validateFileCanNotBeUploadedDialogIsOpenAndClose();
-              uploadDocuments.numberOfReportsSelectedForUploadShouldBe(1);
+              uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
               uploadDocuments.removeAllReportsFromSelectionForUpload();
 
-              uploadDocuments.numberOfReportsSelectedForUploadShouldBe(0);
+              uploadDocuments.validateNumberOfReportsSelectedForUpload(0);
               uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
               uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
               uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
