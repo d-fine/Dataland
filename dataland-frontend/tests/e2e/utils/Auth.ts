@@ -113,7 +113,7 @@ export function ensureLoggedIn(username?: string, password?: string): void {
 
         cy.request({
           // url: '/api/companies',
-          url: '/realms/datalandsecurity/protocol/openid-connect/userinfo',
+          url: '/api/token',
           headers: {
             Authorization: globalJwt,
           }
