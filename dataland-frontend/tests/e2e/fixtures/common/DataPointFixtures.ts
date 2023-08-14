@@ -66,7 +66,7 @@ export function generateNumericOrEmptyDatapoint(
 export function generateNumericDatapoint(
   reports: ReferencedDocuments,
   value: number | null = valueOrNull(faker.number.int()),
-): DataPointBigDecimal {
+): DataPointOneValueBigDecimal {
   return generateDatapoint(value, reports);
 }
 
