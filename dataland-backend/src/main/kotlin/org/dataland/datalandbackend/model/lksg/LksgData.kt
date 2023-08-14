@@ -9,13 +9,16 @@ import org.dataland.datalandbackend.model.lksg.categories.social.LksgSocial
 
 /**
  * --- API model ---
- * Fields of the questionnaire for the LKSG framework
- */
+ * Fields of the lksg framework.
+*/
 @DataType("lksg")
 data class LksgData(
     @field:JsonProperty(required = true)
     val general: LksgGeneral,
-    val governance: LksgGovernance?,
-    val social: LksgSocial?,
-    val environmental: LksgEnvironmental?,
+
+    val governance: LksgGovernance? = null,
+
+    val social: LksgSocial? = null,
+
+    val environmental: LksgEnvironmental? = null,
 )
