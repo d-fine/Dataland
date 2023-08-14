@@ -52,7 +52,7 @@
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
-                          @documentUpdated="updateDocumentList"
+                          @reportsUpdated="updateDocumentList"
                           :ref="field.name"
                         />
                       </FormKit>
@@ -96,7 +96,6 @@ import Card from "primevue/card";
 import { defineComponent, inject, computed } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
@@ -128,6 +127,7 @@ import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
+import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 
 export default defineComponent({
   setup() {
@@ -162,9 +162,6 @@ export default defineComponent({
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
   },
-  directives: {
-    tooltip: Tooltip,
-  },
   emits: ["datasetCreated"],
   data() {
     return {
@@ -198,16 +195,7 @@ export default defineComponent({
       },
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      const map = new Map<Subcategory, boolean>();
-      for (const category of this.lksgDataModel) {
-        for (const subcategory of category.subcategories) {
-          map.set(
-            subcategory,
-            subcategory.fields.some((field) => field.showIf(this.companyAssociatedLksgData.data)),
-          );
-        }
-      }
-      return map;
+      return createSubcategoryVisibilityMap(this.lksgDataModel, this.companyAssociatedLksgData.data);
     },
   },
   props: {
@@ -216,7 +204,7 @@ export default defineComponent({
       required: true,
     },
   },
-  mounted() {
+  created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
       void this.loadLKSGData(dataId);
@@ -236,8 +224,7 @@ export default defineComponent({
         assertDefined(this.getKeycloakPromise)(),
       ).getLksgDataControllerApi();
 
-      const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
-      const lksgDataset = dataResponse.data;
+      const lksgDataset = (await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId)).data;
       const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);

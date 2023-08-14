@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field">
+  <div class="form-field" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit
       type="text"

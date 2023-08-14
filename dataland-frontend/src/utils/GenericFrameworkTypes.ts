@@ -33,13 +33,13 @@ export interface Field {
   name: string;
   label: string;
   description: string;
+  unit?: string;
   component: string;
   dependency?: string;
   certificateRequiredIfYes?: boolean;
   validation?: string;
   validationLabel?: string;
   required?: boolean;
-  unit?: string;
   evidenceDesired?: boolean;
 
   // input field specific values
