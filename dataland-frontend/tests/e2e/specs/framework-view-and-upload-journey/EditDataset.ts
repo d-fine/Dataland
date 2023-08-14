@@ -22,7 +22,7 @@ describeIf(
     before(() => {
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-        preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
+        preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
         getKeycloakToken(admin_name, admin_pw)
           .then(async (token: string) =>
             uploadCompanyAndLksgDataViaApi(
