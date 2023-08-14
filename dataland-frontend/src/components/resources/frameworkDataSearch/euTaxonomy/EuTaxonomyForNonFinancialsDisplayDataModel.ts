@@ -56,7 +56,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             showIf : (): boolean => true,
             certificateRequiredIfYes : false
         }, {
-            name : "euTaxonomyActivityLevelReporting",
+            name : "activityLevelReporting",
             label : "EU Taxonomy Activity Level Reporting",
             description : "Activity Level disclosure",
             unit : "",
@@ -75,8 +75,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             required : false,
             showIf : (): boolean => true
         }, {
-            name : "nfrdMandatory",
-            label : "NFRD Mandatory",
+            name : "reportingObligation",
+            label : "Reporting Obligation",
             description : "The reporting obligation for companies whose number of employees is greater or equal to 500",
             unit : "",
             component : "YesNoFormField",
@@ -185,7 +185,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             showIf : (): boolean => true
         } ]
     }, {
-        name : "totalEligibleNonAlignedShare",
+        name : "totalNonAlignedShare",
         label : "Total Eligible Non-Aligned Share",
         fields : [ {
             name : "percentage",
@@ -205,12 +205,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
-        } ]
-    }, {
-        name : "eligibleNonAlignedActivities",
-        label : "Eligible Non-Aligned Activities",
-        fields : [ {
-            name : "eligibleNonAlignedActivities",
+        }, {
+            name : "activities",
             label : "Eligible Non-Aligned Activities",
             description : "",
             unit : "",
@@ -240,11 +236,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
-        } ]
-    }, {
-        name : "alignedActivities",
-        label : "Aligned Activities",
-        fields : [ {
+        }, {
             name : "alignedActivities",
             label : "Aligned Activities",
             description : "",
@@ -371,7 +363,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             showIf : (): boolean => true
         } ]
     }, {
-        name : "totalEligibleNonAlignedShare",
+        name : "totalNonAlignedShare",
         label : "Total Eligible Non-Aligned Share",
         fields : [ {
             name : "percentage",
@@ -391,12 +383,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
-        } ]
-    }, {
-        name : "eligibleNonAlignedActivities",
-        label : "Eligible Non-Aligned Activities",
-        fields : [ {
-            name : "eligibleNonAlignedActivities",
+        }, {
+            name : "activities",
             label : "Eligible Non-Aligned Activities",
             description : "",
             unit : "",
@@ -426,11 +414,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
-        } ]
-    }, {
-        name : "alignedActivities",
-        label : "Aligned Activities",
-        fields : [ {
+        }, {
             name : "alignedActivities",
             label : "Aligned Activities",
             description : "",
@@ -557,7 +541,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             showIf : (): boolean => true
         } ]
     }, {
-        name : "totalEligibleNonAlignedShare",
+        name : "totalNonAlignedShare",
         label : "Total Eligible Non-Aligned Share",
         fields : [ {
             name : "percentage",
@@ -577,12 +561,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
-        } ]
-    }, {
-        name : "eligibleNonAlignedActivities",
-        label : "Eligible Non-Aligned Activities",
-        fields : [ {
-            name : "eligibleNonAlignedActivities",
+        }, {
+            name : "activities",
             label : "Eligible Non-Aligned Activities",
             description : "",
             unit : "",
@@ -612,11 +592,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             evidenceDesired : false,
             required : false,
             showIf : (): boolean => true
-        } ]
-    }, {
-        name : "alignedActivities",
-        label : "Aligned Activities",
-        fields : [ {
+        }, {
             name : "alignedActivities",
             label : "Aligned Activities",
             description : "",
