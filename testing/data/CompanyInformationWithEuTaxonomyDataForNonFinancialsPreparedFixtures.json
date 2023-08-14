@@ -2,76 +2,68 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "South Mariebury",
-			"headquartersPostalCode": "57282-7078",
-			"sector": "models",
+			"headquarters": "Irondequoit",
+			"headquartersPostalCode": "51570-6554",
 			"identifiers": {
-				"Lei": [
-					"XM5DOdbmAwOiaFhL3YaE"
-				],
+				"Lei": [],
 				"Isin": [
-					"gX1BKPry1T3l"
+					"FXE1MsGXELcY"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"1IhJdkMWL"
+				],
 				"VatNumber": [
-					"7rF6cE8MP"
+					"WYw8rMTTX"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BG",
+			"countryCode": "MY",
 			"companyAlternativeNames": [
-				"McDermott - White",
-				"Stoltenberg - Purdy"
+				"Abshire, Bednar and Blick",
+				"Ernser Inc",
+				"Kihn and Sons",
+				"Muller and Sons"
 			],
+			"website": "https://pale-cornet.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
+				"numberOfEmployees": 11603,
 				"referencedReports": {
-					"IntegratedReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "NA",
-						"currency": "SDG"
-					},
-					"SustainabilityReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "NA",
-						"currency": "IDR"
-					},
 					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "HKD"
+						"isGroupLevel": "Yes",
+						"currency": "BOB"
 					},
-					"AnnualReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2022-10-11",
-						"currency": "RUB"
+						"reportDate": "2022-09-06",
+						"currency": "MYR"
 					}
 				},
 				"assurance": {
-					"assurance": "ReasonableAssurance"
-				},
-				"scopeOfEntities": "Yes",
-				"activityLevelReporting": "Yes"
+					"assurance": "None"
+				}
 			},
 			"opex": {
 				"totalEligibleShare": {
-					"percentage": 57.37853541504592,
-					"currency": "USD"
+					"percentage": 73.83558852598071,
+					"currency": "AUD"
 				}
 			},
 			"capex": {
 				"totalEligibleShare": {
-					"percentage": 66.4954689797014,
-					"currency": "EUR"
+					"percentage": 80.17849405296147,
+					"currency": "CHF"
 				}
 			},
 			"revenue": {
 				"totalEligibleShare": {
-					"percentage": 42.80704488046467,
-					"currency": "EUR"
+					"percentage": 39.69219774007797,
+					"currency": "CAD"
 				}
 			}
 		},
@@ -80,293 +72,386 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "North Winifred",
+			"headquarters": "North Bettye",
+			"sector": "experiences",
 			"identifiers": {
 				"Lei": [
-					"TPHzbs6L81EeQf09qjQJ"
+					"vI1zeB7qSXkit3G5pvFc"
 				],
 				"Isin": [
-					"NoF5UQfGdKjm",
-					"dJqXHlUKGeZE"
+					"iJUThePy0E5L",
+					"gbrFv1VR4nxi"
 				],
-				"PermId": [],
+				"PermId": [
+					"7wtFL1aXtZ"
+				],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"etdlgPCBU"
+					"jAsHNbnOm"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"eG7Ck4KK84HdWhG"
+				]
 			},
-			"countryCode": "MX",
+			"countryCode": "TH",
 			"companyAlternativeNames": [
-				"Stehr, Schmeler and Bode",
-				"Williamson LLC"
+				"Hermann LLC",
+				"Langosh - Haag",
+				"Nader LLC"
 			],
+			"website": "https://flowery-infiltration.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2023-04-30",
-				"numberOfEmployees": 76184,
+				"fiscalYearEnd": "2023-06-17",
 				"referencedReports": {
 					"AnnualReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2022-11-22",
-						"currency": "GEL"
+						"reportDate": "2023-06-06",
+						"currency": "ALL"
 					},
-					"ESEFReport": {
+					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "GNF"
+						"isGroupLevel": "Yes",
+						"reportDate": "2022-09-05",
+						"currency": "GHS"
 					}
 				},
-				"assurance": {
-					"assurance": "None"
-				},
-				"scopeOfEntities": "Yes",
-				"activityLevelReporting": "Yes"
-			},
-			"opex": {
-				"totalAmount": {
-					"value": 519173.1922328472,
-					"dataSource": {
-						"page": 1143,
-						"report": "AnnualReport",
-						"tagName": "lifetime value"
-					},
-					"quality": "Reported",
-					"comment": "override bluetooth monitor"
-				},
-				"totalEligibleShare": {
-					"percentage": 59.42986961454153,
-					"absoluteShare": 0.10149283125065267,
-					"currency": "CHF"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 790369.742445182,
-					"dataSource": {
-						"page": 1018,
-						"report": "AnnualReport",
-						"tagName": "e-commerce"
-					},
-					"quality": "Audited",
-					"comment": "connect mobile transmitter"
-				},
-				"totalEligibleShare": {
-					"percentage": 95.5800165887922,
-					"absoluteShare": 0.8554907771758735,
-					"currency": "CAD"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 832184.048066847,
-					"dataSource": {
-						"page": 31,
-						"report": "AnnualReport",
-						"tagName": "convergence"
-					},
-					"quality": "Reported",
-					"comment": "calculate auxiliary capacitor"
-				},
-				"totalEligibleShare": {
-					"percentage": 93.76494265161455,
-					"absoluteShare": 0.9473395524546504,
-					"currency": "EUR"
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "New Evangeline",
-			"sector": "architectures",
-			"identifiers": {
-				"Lei": [
-					"swnU5NuvSsrwkI0wMTV6"
-				],
-				"Isin": [
-					"peTul94bA4su"
-				],
-				"PermId": [],
-				"Ticker": [
-					"jWpALaT"
-				],
-				"Duns": [
-					"Bi7YTtLll"
-				],
-				"VatNumber": [
-					"rOYr1OzDI"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "HR",
-			"companyAlternativeNames": [
-				"Considine - Kiehn",
-				"Ferry - Franey",
-				"Schimmel, Little and Wyman",
-				"Zemlak - Goodwin"
-			],
-			"website": "https://jumpy-cone.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"fiscalYearEnd": "2022-12-24",
-				"numberOfEmployees": 56570,
 				"assurance": {
 					"assurance": "LimitedAssurance",
 					"dataSource": {
-						"page": 336,
-						"report": "ESEFReport",
-						"tagName": "niches"
+						"page": 968,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
 					}
-				}
+				},
+				"scopeOfEntities": "Yes",
+				"reportingObligation": "Yes"
 			},
 			"opex": {
 				"totalAmount": {
-					"quality": "Estimated"
+					"value": 135716.2712723948,
+					"dataSource": {
+						"page": 601,
+						"report": "AnnualReport",
+						"tagName": "portals"
+					},
+					"quality": "Incomplete",
+					"comment": "copy solid state sensor"
 				},
-				"totalNonEligibleShare": {
-					"percentage": 37.861656793393195,
-					"absoluteShare": 0.39867536700330675,
-					"currency": "EUR"
-				},
-				"totalEligibleNonAlignedShare": {
-					"percentage": 95.37729877047241,
-					"absoluteShare": 0.20642879069782794,
+				"totalEligibleShare": {
+					"percentage": 11.31540508940816,
+					"absoluteShare": 0.5096440762281418,
 					"currency": "AUD"
-				},
-				"totalAlignedShare": {
-					"percentage": 91.18461962789297,
-					"absoluteShare": 0.44088127417489886,
-					"currency": "EUR"
 				}
 			},
 			"capex": {
-				"totalNonEligibleShare": {
-					"percentage": 50.52869038190693,
-					"absoluteShare": 0.2707516613882035,
-					"currency": "CAD"
-				},
-				"totalEligibleShare": {
-					"percentage": 61.697630933485925,
-					"absoluteShare": 0.8909502278547734,
-					"currency": "CAD"
-				},
-				"totalEligibleNonAlignedShare": {
-					"percentage": 94.95245446451008,
-					"absoluteShare": 0.8702165994327515,
-					"currency": "CHF"
-				},
-				"totalAlignedShare": {
-					"percentage": 90.31620712485164,
-					"absoluteShare": 0.08926742244511843,
-					"currency": "CAD"
-				}
-			},
-			"revenue": {
 				"totalAmount": {
+					"value": 536942.7811470814,
 					"dataSource": {
-						"page": 646,
+						"page": 791,
 						"report": "AnnualReport",
 						"tagName": "action-items"
 					},
 					"quality": "Audited",
-					"comment": "program haptic protocol"
-				},
-				"totalNonEligibleShare": {
-					"percentage": 83.45384818967432,
-					"absoluteShare": 0.9114984394982457,
-					"currency": "USD"
+					"comment": "generate online driver"
 				},
 				"totalEligibleShare": {
-					"percentage": 90.64442331437021,
-					"absoluteShare": 0.3021886476781219,
-					"currency": "CHF"
-				},
-				"totalEligibleNonAlignedShare": {
-					"percentage": 50.74795335531235,
-					"absoluteShare": 0.06970042618922889,
+					"percentage": 12.045937241055071,
+					"absoluteShare": 0.4407249363139272,
 					"currency": "USD"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 456616.8772405945,
+					"dataSource": {
+						"page": 809,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
+					},
+					"quality": "Reported",
+					"comment": "generate online card"
+				},
+				"totalEligibleShare": {
+					"percentage": 76.92771728616208,
+					"absoluteShare": 0.5777390867006034,
+					"currency": "AUD"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Melyssatown",
+			"identifiers": {
+				"Lei": [
+					"mgiyjhgSPCIv70WLtfHw"
+				],
+				"Isin": [
+					"kl5jsnDreNm2",
+					"8YrMmBqxbitA"
+				],
+				"PermId": [
+					"3YpF4TMLoo"
+				],
+				"Ticker": [
+					"8MzhruH"
+				],
+				"Duns": [
+					"C872PsvDY"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IT",
+			"companyAlternativeNames": [
+				"Jaskolski - Spencer",
+				"Lowe - Farrell",
+				"Medhurst, Hessel and Hintz"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearDeviation": "Deviation",
+				"assurance": {
+					"assurance": "ReasonableAssurance",
+					"dataSource": {
+						"page": 870,
+						"report": "AnnualReport",
+						"tagName": "convergence"
+					}
+				},
+				"scopeOfEntities": "No",
+				"activityLevelReporting": "Yes"
+			},
+			"opex": {
+				"totalNonEligibleShare": {
+					"percentage": 75.72915630880743,
+					"absoluteShare": 0.4945713870692998,
+					"currency": "CAD"
+				},
+				"totalNonAlignedShare": {
+					"percentage": 3.2602300634607673,
+					"absoluteShare": 0.7976172391790897,
+					"currency": "EUR"
 				},
 				"totalAlignedShare": {
-					"percentage": 69.00397755671293,
-					"absoluteShare": 0.43536706641316414,
+					"percentage": 96.06862829532474,
+					"absoluteShare": 0.04235353507101536,
+					"currency": "CHF"
+				},
+				"nonAlignedActivities": [],
+				"alignedActivities": [
+					{
+						"activityName": "Reinsurance",
+						"share": {
+							"percentage": 9.474803018383682,
+							"absoluteShare": 0.6058558411896229,
+							"currency": "CHF"
+						},
+						"substantialContributionCriteria": {
+							"Water": 71.41779663506895,
+							"CircularEconomy": 12.840573117136955,
+							"PollutionPrevention": 61.5861433558166,
+							"ClimateMitigation": 19.95048294775188
+						},
+						"dnshCriteria": {
+							"Water": "Yes",
+							"ClimateMitigation": "Yes",
+							"ClimateAdaptation": "No"
+						},
+						"minimumSafeguards": "No"
+					},
+					{
+						"activityName": "RenovationOfExistingBuildings",
+						"naceCodes": [
+							"A"
+						],
+						"substantialContributionCriteria": {
+							"PollutionPrevention": 47.03144496306777,
+							"Biodiversity": 3.909996268339455
+						},
+						"dnshCriteria": {
+							"Water": "No",
+							"PollutionPrevention": "Yes",
+							"ClimateAdaptation": "Yes",
+							"Biodiversity": "No",
+							"CircularEconomy": "Yes"
+						}
+					}
+				]
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 909163.4839191101,
+					"dataSource": {
+						"page": 695,
+						"report": "AnnualReport",
+						"tagName": "solutions"
+					},
+					"quality": "Incomplete",
+					"comment": "synthesize 1080p port"
+				},
+				"totalNonEligibleShare": {
+					"percentage": 35.39799882564694,
+					"absoluteShare": 0.6708237240090966,
+					"currency": "CHF"
+				},
+				"totalAlignedShare": {
+					"percentage": 83.30877048429102,
+					"absoluteShare": 0.047544114757329226,
 					"currency": "AUD"
 				},
 				"alignedActivities": [
 					{
-						"activityName": "InfrastructureEnablingRoadTransportAndPublicTransport",
+						"activityName": "ManufactureOfHydrogen",
 						"naceCodes": [
-							"C",
-							"E",
-							"M"
-						],
-						"substantialContributionCriteria": {
-							"Biodiversity": 44.44238217547536,
-							"ClimateMitigation": 32.02611291781068,
-							"Water": 40.78899738378823,
-							"PollutionPrevention": 27.351666032336652,
-							"ClimateAdaptation": 72.9930775007233
-						},
-						"dnshCriteria": {
-							"Water": "Yes",
-							"CircularEconomy": "Yes",
-							"ClimateAdaptation": "Yes",
-							"Biodiversity": "Yes",
-							"ClimateMitigation": "No"
-						},
-						"minimumSafeguards": "Yes"
-					},
-					{
-						"activityName": "CloseToMarketResearchDevelopmentAndInnovation",
-						"naceCodes": [
+							"B",
 							"D",
-							"I"
+							"F",
+							"I",
+							"J"
 						],
 						"substantialContributionCriteria": {
-							"Biodiversity": 25.91390705201775,
-							"CircularEconomy": 31.669129361398518,
-							"PollutionPrevention": 36.791602172888815,
-							"Water": 60.39723332505673,
-							"ClimateAdaptation": 73.4972913749516,
-							"ClimateMitigation": 73.79194963723421
+							"Biodiversity": 22.866215091198683,
+							"CircularEconomy": 58.22789359372109,
+							"Water": 83.01391240675002,
+							"ClimateMitigation": 51.04022913146764,
+							"PollutionPrevention": 82.13780373334885,
+							"ClimateAdaptation": 20.75984152033925
 						},
 						"dnshCriteria": {
-							"Water": "No",
-							"Biodiversity": "No",
-							"PollutionPrevention": "Yes",
-							"ClimateAdaptation": "Yes"
+							"Biodiversity": "Yes",
+							"CircularEconomy": "Yes",
+							"PollutionPrevention": "No",
+							"ClimateMitigation": "Yes"
 						}
 					},
 					{
-						"activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+						"activityName": "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
 						"share": {
-							"percentage": 50.71014098357409,
-							"absoluteShare": 0.9388976057525724,
+							"percentage": 35.19932853523642,
+							"absoluteShare": 0.18694569449871778,
+							"currency": "USD"
+						},
+						"substantialContributionCriteria": {
+							"ClimateAdaptation": 41.02003490552306,
+							"PollutionPrevention": 25.096035818569362,
+							"Water": 38.22558836545795,
+							"ClimateMitigation": 29.13015028461814
+						},
+						"dnshCriteria": {
+							"CircularEconomy": "Yes",
+							"ClimateAdaptation": "Yes",
+							"PollutionPrevention": "Yes",
+							"Biodiversity": "No"
+						},
+						"minimumSafeguards": "No"
+					},
+					{
+						"activityName": "AirportInfrastructure",
+						"share": {
+							"percentage": 12.16570062097162,
+							"absoluteShare": 0.23884590761736035,
 							"currency": "CAD"
 						},
 						"substantialContributionCriteria": {
-							"ClimateMitigation": 0.012506451457738876,
-							"ClimateAdaptation": 98.10524203348905,
-							"Biodiversity": 61.541305598802865
+							"ClimateMitigation": 17.249849112704396,
+							"Biodiversity": 89.24932258669287,
+							"PollutionPrevention": 83.35016740020365,
+							"Water": 95.77011475339532,
+							"CircularEconomy": 49.09057093318552
 						},
 						"dnshCriteria": {
-							"PollutionPrevention": "No",
-							"ClimateAdaptation": "Yes",
-							"CircularEconomy": "No",
-							"Water": "No"
+							"ClimateMitigation": "Yes",
+							"ClimateAdaptation": "Yes"
+						}
+					}
+				]
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 824336.0223830678,
+					"dataSource": {
+						"page": 540,
+						"report": "AnnualReport",
+						"tagName": "functionalities"
+					},
+					"quality": "Reported",
+					"comment": "navigate mobile program"
+				},
+				"totalNonEligibleShare": {
+					"percentage": 51.75220319069922,
+					"absoluteShare": 0.12339128623716533,
+					"currency": "CAD"
+				},
+				"totalNonAlignedShare": {
+					"percentage": 61.08205139171332,
+					"absoluteShare": 0.5650613748002797,
+					"currency": "AUD"
+				},
+				"nonAlignedActivities": [
+					{
+						"activityName": "UrbanAndSuburbanTransportRoadPassengerTransport",
+						"naceCodes": [
+							"B",
+							"C",
+							"J"
+						]
+					},
+					{
+						"activityName": "ProductionOfHeatCoolFromBioenergy",
+						"share": {
+							"percentage": 66.51785396970809,
+							"absoluteShare": 0.4574915221892297,
+							"currency": "EUR"
+						}
+					},
+					{
+						"activityName": "StorageOfElectricity",
+						"naceCodes": [
+							"G",
+							"M"
+						]
+					},
+					{
+						"activityName": "ManufactureOfLowCarbonTechnologiesForTransport"
+					},
+					{
+						"activityName": "ManufactureOfIronAndSteel",
+						"share": {
+							"percentage": 89.0442633535713,
+							"absoluteShare": 0.9197774289641529,
+							"currency": "CHF"
+						}
+					}
+				],
+				"alignedActivities": [
+					{
+						"activityName": "AnaerobicDigestionOfSewageSludge",
+						"substantialContributionCriteria": {
+							"Biodiversity": 79.72644253168255,
+							"CircularEconomy": 56.45864789839834,
+							"Water": 71.20419293642044
 						},
-						"minimumSafeguards": "No"
+						"dnshCriteria": {
+							"ClimateAdaptation": "Yes",
+							"Water": "Yes",
+							"Biodiversity": "No",
+							"ClimateMitigation": "Yes"
+						},
+						"minimumSafeguards": "Yes"
 					}
 				]
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
 	}
 ]

@@ -5185,10 +5185,10 @@
           "totalEligibleShare": {
             "$ref": "#/components/schemas/FinancialShare"
           },
-          "totalEligibleNonAlignedShare": {
+          "totalNonAlignedShare": {
             "$ref": "#/components/schemas/FinancialShare"
           },
-          "eligibleNotAlignedActivities": {
+          "nonAlignedActivities": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/EuTaxonomyActivity"

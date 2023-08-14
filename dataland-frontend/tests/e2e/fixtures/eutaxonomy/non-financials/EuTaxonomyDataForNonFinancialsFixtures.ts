@@ -100,9 +100,9 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments):
     totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
     totalNonEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalEligibleShare: valueOrUndefined(generateFinancialShare()),
-    totalEligibleNonAlignedShare: valueOrUndefined(generateFinancialShare()),
+    totalNonAlignedShare: valueOrUndefined(generateFinancialShare()),
     totalAlignedShare: valueOrUndefined(generateFinancialShare()),
-    eligibleNotAlignedActivities: valueOrUndefined(generateArray(generateActivity)),
+    nonAlignedActivities: valueOrUndefined(generateArray(generateActivity)),
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity)),
   };
 }

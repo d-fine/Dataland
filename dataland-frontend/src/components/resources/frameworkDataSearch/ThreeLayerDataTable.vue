@@ -57,6 +57,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
+import {FrameworkViewModel} from "@/components/resources/ViewModel";
 
 export default defineComponent({
   name: "ThreeLayerTable",
@@ -151,9 +152,12 @@ export default defineComponent({
           for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
+            console.log("E", categoryKey)
+            console.log("E1", this.dataModel)
             const frameworkCategoryData = assertDefined(
               this.dataModel.find((category) => category.name === categoryKey),
             );
+            console.log("F")
             this.iterateThroughSubcategories(
               categoryObject,
               categoryKey,
@@ -201,7 +205,7 @@ export default defineComponent({
           frameworkCategoryData,
           dataId,
           listOfDataObjects,
-          currentDataset.toApiModel(),
+          currentDataset,
         );
       }
     },
@@ -222,7 +226,7 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkData,
+      currentDataset: FrameworkViewModel,
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
         console.log("A", subCategoryKey)
@@ -235,7 +239,7 @@ export default defineComponent({
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
         console.log("C")
 
-        if (field.showIf(currentDataset)) {
+        if (field.showIf(currentDataset.toApiModel())) {
           this.createKpiDataObjects(kpiKey as string, kpiValue as KpiValue, subcategory, frameworkCategoryData, dataId);
           listOfDataObjects.push(this.resultKpiData);
         }
