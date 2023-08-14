@@ -2,7 +2,7 @@ import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { Category } from "@/utils/GenericFrameworkTypes";
 
 
-export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
+export const euTaxonomyForNonFinancialsDataModel = [ {
     name : "general",
     label : "General",
     color : "orange",
@@ -56,7 +56,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             showIf : (): boolean => true,
             certificateRequiredIfYes : false
         }, {
-            name : "activityLevelReporting",
+            name : "euTaxonomyActivityLevelReporting",
             label : "EU Taxonomy Activity Level Reporting",
             description : "Activity Level disclosure",
             unit : "",
@@ -75,8 +75,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             required : false,
             showIf : (): boolean => true
         }, {
-            name : "reportingObligation",
-            label : "Reporting Obligation",
+            name : "nfrdMandatory",
+            label : "NFRD Mandatory",
             description : "The reporting obligation for companies whose number of employees is greater or equal to 500",
             unit : "",
             component : "YesNoFormField",
@@ -186,7 +186,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
         } ]
     }, {
         name : "totalNonAlignedShare",
-        label : "Total Eligible Non-Aligned Share",
+        label : "Total Non-Aligned Share",
         fields : [ {
             name : "percentage",
             label : "Percentage",
@@ -206,8 +206,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             required : false,
             showIf : (): boolean => true
         }, {
-            name : "activities",
-            label : "Eligible Non-Aligned Activities",
+            name : "nonAlignedActivities",
+            label : "Non-Aligned Activities",
             description : "",
             unit : "",
             component : "UndefinedFormField",
@@ -364,7 +364,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
         } ]
     }, {
         name : "totalNonAlignedShare",
-        label : "Total Eligible Non-Aligned Share",
+        label : "Total Non-Aligned Share",
         fields : [ {
             name : "percentage",
             label : "Percentage",
@@ -384,8 +384,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             required : false,
             showIf : (): boolean => true
         }, {
-            name : "activities",
-            label : "Eligible Non-Aligned Activities",
+            name : "nonAlignedActivities",
+            label : "Non-Aligned Activities",
             description : "",
             unit : "",
             component : "UndefinedFormField",
@@ -542,7 +542,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
         } ]
     }, {
         name : "totalNonAlignedShare",
-        label : "Total Eligible Non-Aligned Share",
+        label : "Total Non-Aligned Share",
         fields : [ {
             name : "percentage",
             label : "Percentage",
@@ -562,8 +562,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
             required : false,
             showIf : (): boolean => true
         }, {
-            name : "activities",
-            label : "Eligible Non-Aligned Activities",
+            name : "nonAlignedActivities",
+            label : "Non-Aligned Activities",
             description : "",
             unit : "",
             component : "UndefinedFormField",

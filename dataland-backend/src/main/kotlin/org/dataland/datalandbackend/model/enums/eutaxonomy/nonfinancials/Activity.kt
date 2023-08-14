@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class Activity(val value: String) {
+enum class Activity(val value: String) { // TODO How robust are these names against changes in the JSON? Are there better identifiers than the names in regard minimzing future data migration
     Afforestation("Afforestation"),
     RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent("Rehabilitation and restoration of forests, including reforestation and natural forest regeneration after an extreme event"),
     ForestManagement("Forest management"),
