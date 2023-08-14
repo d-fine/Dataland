@@ -2,7 +2,7 @@ import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { Category } from "@/utils/GenericFrameworkTypes";
 
 
-export const euTaxonomyForNonFinancialsDataModel = [ {
+export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
     name : "general",
     label : "General",
     color : "orange",
@@ -56,7 +56,7 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
             showIf : (): boolean => true,
             certificateRequiredIfYes : false
         }, {
-            name : "euTaxonomyActivityLevelReporting",
+            name : "activityLevelReporting",
             label : "EU Taxonomy Activity Level Reporting",
             description : "Activity Level disclosure",
             unit : "",
@@ -75,7 +75,7 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
             required : false,
             showIf : (): boolean => true
         }, {
-            name : "nfrdMandatory",
+            name : "reportingObligation",
             label : "NFRD Mandatory",
             description : "The reporting obligation for companies whose number of employees is greater or equal to 500",
             unit : "",

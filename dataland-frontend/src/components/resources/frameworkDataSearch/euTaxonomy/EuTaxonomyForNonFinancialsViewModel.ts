@@ -23,7 +23,7 @@ interface DetailsPerCashFlowViewModel {
     totalAmount?: DataPointBigDecimal;
     totalNonEligibleShare?: FinancialShareViewModel;
     totalEligibleShare?: FinancialShareViewModel;
-    totalNonAlignedShare?: FinancialShareViewModel & { activities?: EuTaxonomyActivity[] };
+    totalNonAlignedShare?: FinancialShareViewModel & { nonAlignedActivities?: EuTaxonomyActivity[] };
     totalAlignedShare?: FinancialShareViewModel & { alignedActivities?: EuTaxonomyAlignedActivity[] };
     enablingAlignedShare?: number;
     transitionalAlignedShare?: number;
@@ -57,7 +57,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
             totalEligibleShare: this.convertFinancialShareApiModelToViewModel(apiModel.totalEligibleShare),
             totalNonAlignedShare: {
                 ...(EuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalNonAlignedShare) ?? {}),
-                activities: apiModel.alignedActivities,
+                nonAlignedActivities: apiModel.nonAlignedActivities,
             },
             totalAlignedShare: {
                 ...(EuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalAlignedShare) ?? {}),
@@ -87,7 +87,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
             totalEligibleShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalEligibleShare),
             totalNonAlignedShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalNonAlignedShare),
             totalAlignedShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalAlignedShare),
-            nonAlignedActivities: details.totalNonAlignedShare?.activities,
+            nonAlignedActivities: details.totalNonAlignedShare?.nonAlignedActivities,
             alignedActivities: details.totalAlignedShare?.alignedActivities,
             enablingAlignedShare: details.enablingAlignedShare,
             transitionalAlignedShare: details.transitionalAlignedShare,
