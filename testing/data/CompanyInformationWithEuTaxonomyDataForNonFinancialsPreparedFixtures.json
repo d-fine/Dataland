@@ -2,183 +2,85 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Irondequoit",
-			"headquartersPostalCode": "51570-6554",
+			"headquarters": "Rosenbaumberg",
+			"headquartersPostalCode": "28619",
+			"sector": "initiatives",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"FXE1MsGXELcY"
+					"6NzEmYq425z3"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"PorAw20"
+				],
 				"Duns": [
-					"1IhJdkMWL"
+					"mwDNsoq4b"
 				],
-				"VatNumber": [
-					"WYw8rMTTX"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "MY",
-			"companyAlternativeNames": [
-				"Abshire, Bednar and Blick",
-				"Ernser Inc",
-				"Kihn and Sons",
-				"Muller and Sons"
-			],
-			"website": "https://pale-cornet.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"numberOfEmployees": 11603,
-				"referencedReports": {
-					"ESEFReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "Yes",
-						"currency": "BOB"
-					},
-					"IntegratedReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2022-09-06",
-						"currency": "MYR"
-					}
-				},
-				"assurance": {
-					"assurance": "None"
-				}
-			},
-			"opex": {
-				"totalEligibleShare": {
-					"percentage": 73.83558852598071,
-					"currency": "AUD"
-				}
-			},
-			"capex": {
-				"totalEligibleShare": {
-					"percentage": 80.17849405296147,
-					"currency": "CHF"
-				}
-			},
-			"revenue": {
-				"totalEligibleShare": {
-					"percentage": 39.69219774007797,
-					"currency": "CAD"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "North Bettye",
-			"sector": "experiences",
-			"identifiers": {
-				"Lei": [
-					"vI1zeB7qSXkit3G5pvFc"
-				],
-				"Isin": [
-					"iJUThePy0E5L",
-					"gbrFv1VR4nxi"
-				],
-				"PermId": [
-					"7wtFL1aXtZ"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"jAsHNbnOm"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"eG7Ck4KK84HdWhG"
+					"iWnMKCK29TNRVnX"
 				]
 			},
-			"countryCode": "TH",
+			"countryCode": "MR",
 			"companyAlternativeNames": [
-				"Hermann LLC",
-				"Langosh - Haag",
-				"Nader LLC"
+				"Braun LLC",
+				"Wilkinson, Hane and Stiedemann",
+				"Ziemann - Stracke"
 			],
-			"website": "https://flowery-infiltration.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"fiscalYearEnd": "2023-06-17",
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2022-08-26",
 				"referencedReports": {
 					"AnnualReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2023-06-06",
-						"currency": "ALL"
+						"reportDate": "2022-09-11",
+						"currency": "JPY"
 					},
 					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "Yes",
-						"reportDate": "2022-09-05",
-						"currency": "GHS"
+						"currency": "ARS"
+					},
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "NA",
+						"reportDate": "2022-12-14",
+						"currency": "AWG"
+					},
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "BRL"
 					}
 				},
 				"assurance": {
 					"assurance": "LimitedAssurance",
 					"dataSource": {
-						"page": 968,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
+						"page": 329,
+						"report": "IntegratedReport",
+						"tagName": "e-markets"
 					}
 				},
-				"scopeOfEntities": "Yes",
-				"reportingObligation": "Yes"
+				"scopeOfEntities": "No"
 			},
 			"opex": {
-				"totalAmount": {
-					"value": 135716.2712723948,
-					"dataSource": {
-						"page": 601,
-						"report": "AnnualReport",
-						"tagName": "portals"
-					},
-					"quality": "Incomplete",
-					"comment": "copy solid state sensor"
-				},
 				"totalEligibleShare": {
-					"percentage": 11.31540508940816,
-					"absoluteShare": 0.5096440762281418,
-					"currency": "AUD"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 536942.7811470814,
-					"dataSource": {
-						"page": 791,
-						"report": "AnnualReport",
-						"tagName": "action-items"
-					},
-					"quality": "Audited",
-					"comment": "generate online driver"
-				},
-				"totalEligibleShare": {
-					"percentage": 12.045937241055071,
-					"absoluteShare": 0.4407249363139272,
+					"percentage": 38.621039502322674,
 					"currency": "USD"
 				}
 			},
-			"revenue": {
-				"totalAmount": {
-					"value": 456616.8772405945,
-					"dataSource": {
-						"page": 809,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
-					},
-					"quality": "Reported",
-					"comment": "generate online card"
-				},
+			"capex": {
 				"totalEligibleShare": {
-					"percentage": 76.92771728616208,
-					"absoluteShare": 0.5777390867006034,
-					"currency": "AUD"
+					"percentage": 15.090546966530383,
+					"currency": "CAD"
+				}
+			},
+			"revenue": {
+				"totalEligibleShare": {
+					"percentage": 17.038486409001052,
+					"currency": "CAD"
 				}
 			}
 		},
@@ -186,191 +88,195 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Melyssatown",
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Fritschland",
+			"headquartersPostalCode": "55019",
 			"identifiers": {
-				"Lei": [
-					"mgiyjhgSPCIv70WLtfHw"
-				],
+				"Lei": [],
 				"Isin": [
-					"kl5jsnDreNm2",
-					"8YrMmBqxbitA"
+					"LiXO7Om7xyqN"
 				],
-				"PermId": [
-					"3YpF4TMLoo"
-				],
+				"PermId": [],
 				"Ticker": [
-					"8MzhruH"
+					"JPC5lRQ"
 				],
-				"Duns": [
-					"C872PsvDY"
+				"Duns": [],
+				"VatNumber": [
+					"gGAAZdYUq"
 				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IT",
-			"companyAlternativeNames": [
-				"Jaskolski - Spencer",
-				"Lowe - Farrell",
-				"Medhurst, Hessel and Hintz"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"countryCode": "BA",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"fiscalYearDeviation": "Deviation",
+				"referencedReports": {
+					"AnnualReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"reportDate": "2023-06-25",
+						"currency": "GEL"
+					},
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "No",
+						"reportDate": "2023-05-14",
+						"currency": "DZD"
+					}
+				},
 				"assurance": {
 					"assurance": "ReasonableAssurance",
+					"provider": "Feil Inc",
 					"dataSource": {
-						"page": 870,
+						"page": 750,
 						"report": "AnnualReport",
-						"tagName": "convergence"
+						"tagName": "applications"
 					}
 				},
-				"scopeOfEntities": "No",
-				"activityLevelReporting": "Yes"
+				"scopeOfEntities": "No"
 			},
 			"opex": {
-				"totalNonEligibleShare": {
-					"percentage": 75.72915630880743,
-					"absoluteShare": 0.4945713870692998,
-					"currency": "CAD"
+				"totalAmount": {
+					"value": 551579.8673033714,
+					"quality": "Incomplete"
 				},
-				"totalNonAlignedShare": {
-					"percentage": 3.2602300634607673,
-					"absoluteShare": 0.7976172391790897,
-					"currency": "EUR"
-				},
-				"totalAlignedShare": {
-					"percentage": 96.06862829532474,
-					"absoluteShare": 0.04235353507101536,
-					"currency": "CHF"
-				},
-				"nonAlignedActivities": [],
-				"alignedActivities": [
-					{
-						"activityName": "Reinsurance",
-						"share": {
-							"percentage": 9.474803018383682,
-							"absoluteShare": 0.6058558411896229,
-							"currency": "CHF"
-						},
-						"substantialContributionCriteria": {
-							"Water": 71.41779663506895,
-							"CircularEconomy": 12.840573117136955,
-							"PollutionPrevention": 61.5861433558166,
-							"ClimateMitigation": 19.95048294775188
-						},
-						"dnshCriteria": {
-							"Water": "Yes",
-							"ClimateMitigation": "Yes",
-							"ClimateAdaptation": "No"
-						},
-						"minimumSafeguards": "No"
-					},
-					{
-						"activityName": "RenovationOfExistingBuildings",
-						"naceCodes": [
-							"A"
-						],
-						"substantialContributionCriteria": {
-							"PollutionPrevention": 47.03144496306777,
-							"Biodiversity": 3.909996268339455
-						},
-						"dnshCriteria": {
-							"Water": "No",
-							"PollutionPrevention": "Yes",
-							"ClimateAdaptation": "Yes",
-							"Biodiversity": "No",
-							"CircularEconomy": "Yes"
-						}
-					}
-				]
+				"totalEligibleShare": {
+					"percentage": 78.98015002720058,
+					"absoluteShare": 0.20179498894140124,
+					"currency": "AUD"
+				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 909163.4839191101,
+					"value": 815576.923172921,
 					"dataSource": {
-						"page": 695,
-						"report": "AnnualReport",
-						"tagName": "solutions"
+						"page": 276,
+						"report": "IntegratedReport",
+						"tagName": "infrastructures"
 					},
-					"quality": "Incomplete",
-					"comment": "synthesize 1080p port"
+					"quality": "Estimated",
+					"comment": "compress neural interface"
 				},
+				"totalEligibleShare": {
+					"percentage": 46.35127722285688,
+					"absoluteShare": 0.9525114877615124,
+					"currency": "EUR"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 333493.8618936576,
+					"quality": "Incomplete"
+				},
+				"totalEligibleShare": {
+					"percentage": 71.11987438984215,
+					"absoluteShare": 0.5204461191315204,
+					"currency": "AUD"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "West Emmettworth",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [
+					"4FojWxOGNL3eWfxOCKOT"
+				],
+				"Isin": [],
+				"PermId": [
+					"YZKL40qML9"
+				],
+				"Ticker": [],
+				"Duns": [
+					"kJMubXcPy"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"pyJ9fKIaRAXxruA"
+				]
+			},
+			"countryCode": "TO",
+			"companyAlternativeNames": [
+				"Kessler - Baumbach",
+				"Kilback - Dickens"
+			],
+			"companyLegalForm": "GmbH",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearDeviation": "NoDeviation",
+				"numberOfEmployees": 47959,
+				"assurance": {
+					"assurance": "None"
+				},
+				"activityLevelReporting": "No"
+			},
+			"opex": {
 				"totalNonEligibleShare": {
-					"percentage": 35.39799882564694,
-					"absoluteShare": 0.6708237240090966,
+					"percentage": 12.313720025122166,
+					"absoluteShare": 0.04316269210539758,
+					"currency": "CHF"
+				},
+				"totalNonAlignedShare": {
+					"percentage": 7.050243369303644,
+					"absoluteShare": 0.5735091017559171,
+					"currency": "USD"
+				},
+				"totalAlignedShare": {
+					"percentage": 19.52112230937928,
+					"absoluteShare": 0.5351164930034429,
+					"currency": "CHF"
+				}
+			},
+			"capex": {
+				"totalNonEligibleShare": {
+					"percentage": 4.283277946524322,
+					"absoluteShare": 0.5856033056043088,
 					"currency": "CHF"
 				},
 				"totalAlignedShare": {
-					"percentage": 83.30877048429102,
-					"absoluteShare": 0.047544114757329226,
+					"percentage": 75.45558949932456,
+					"absoluteShare": 0.6150751034729183,
 					"currency": "AUD"
 				},
+				"nonAlignedActivities": [
+					{
+						"activityName": "LowCarbonAirportInfrastructure",
+						"naceCodes": [
+							"F",
+							"K"
+						],
+						"share": {
+							"percentage": 89.2253945581615,
+							"absoluteShare": 0.7659534642007202,
+							"currency": "USD"
+						}
+					}
+				],
 				"alignedActivities": [
 					{
-						"activityName": "ManufactureOfHydrogen",
-						"naceCodes": [
-							"B",
-							"D",
-							"F",
-							"I",
-							"J"
-						],
+						"activityName": "ElectricityGenerationFromOceanEnergyTechnologies",
+						"share": {
+							"percentage": 88.8815940823406,
+							"absoluteShare": 0.6965711081866175,
+							"currency": "EUR"
+						},
 						"substantialContributionCriteria": {
-							"Biodiversity": 22.866215091198683,
-							"CircularEconomy": 58.22789359372109,
-							"Water": 83.01391240675002,
-							"ClimateMitigation": 51.04022913146764,
-							"PollutionPrevention": 82.13780373334885,
-							"ClimateAdaptation": 20.75984152033925
+							"Biodiversity": 31.79441918618977,
+							"ClimateMitigation": 44.468624773435295,
+							"Water": 88.10535005759448,
+							"ClimateAdaptation": 35.73688832111657
 						},
 						"dnshCriteria": {
-							"Biodiversity": "Yes",
-							"CircularEconomy": "Yes",
 							"PollutionPrevention": "No",
-							"ClimateMitigation": "Yes"
-						}
-					},
-					{
-						"activityName": "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
-						"share": {
-							"percentage": 35.19932853523642,
-							"absoluteShare": 0.18694569449871778,
-							"currency": "USD"
-						},
-						"substantialContributionCriteria": {
-							"ClimateAdaptation": 41.02003490552306,
-							"PollutionPrevention": 25.096035818569362,
-							"Water": 38.22558836545795,
-							"ClimateMitigation": 29.13015028461814
-						},
-						"dnshCriteria": {
 							"CircularEconomy": "Yes",
-							"ClimateAdaptation": "Yes",
-							"PollutionPrevention": "Yes",
-							"Biodiversity": "No"
-						},
-						"minimumSafeguards": "No"
-					},
-					{
-						"activityName": "AirportInfrastructure",
-						"share": {
-							"percentage": 12.16570062097162,
-							"absoluteShare": 0.23884590761736035,
-							"currency": "CAD"
-						},
-						"substantialContributionCriteria": {
-							"ClimateMitigation": 17.249849112704396,
-							"Biodiversity": 89.24932258669287,
-							"PollutionPrevention": 83.35016740020365,
-							"Water": 95.77011475339532,
-							"CircularEconomy": 49.09057093318552
-						},
-						"dnshCriteria": {
-							"ClimateMitigation": "Yes",
 							"ClimateAdaptation": "Yes"
 						}
 					}
@@ -378,80 +284,26 @@
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 824336.0223830678,
 					"dataSource": {
-						"page": 540,
-						"report": "AnnualReport",
-						"tagName": "functionalities"
+						"page": 460,
+						"report": "ESEFReport",
+						"tagName": "supply-chains"
 					},
 					"quality": "Reported",
-					"comment": "navigate mobile program"
+					"comment": "input multi-byte driver"
 				},
 				"totalNonEligibleShare": {
-					"percentage": 51.75220319069922,
-					"absoluteShare": 0.12339128623716533,
-					"currency": "CAD"
+					"percentage": 9.260376868769526,
+					"absoluteShare": 0.17707127099856734,
+					"currency": "USD"
 				},
-				"totalNonAlignedShare": {
-					"percentage": 61.08205139171332,
-					"absoluteShare": 0.5650613748002797,
-					"currency": "AUD"
-				},
-				"nonAlignedActivities": [
-					{
-						"activityName": "UrbanAndSuburbanTransportRoadPassengerTransport",
-						"naceCodes": [
-							"B",
-							"C",
-							"J"
-						]
-					},
-					{
-						"activityName": "ProductionOfHeatCoolFromBioenergy",
-						"share": {
-							"percentage": 66.51785396970809,
-							"absoluteShare": 0.4574915221892297,
-							"currency": "EUR"
-						}
-					},
-					{
-						"activityName": "StorageOfElectricity",
-						"naceCodes": [
-							"G",
-							"M"
-						]
-					},
-					{
-						"activityName": "ManufactureOfLowCarbonTechnologiesForTransport"
-					},
-					{
-						"activityName": "ManufactureOfIronAndSteel",
-						"share": {
-							"percentage": 89.0442633535713,
-							"absoluteShare": 0.9197774289641529,
-							"currency": "CHF"
-						}
-					}
-				],
-				"alignedActivities": [
-					{
-						"activityName": "AnaerobicDigestionOfSewageSludge",
-						"substantialContributionCriteria": {
-							"Biodiversity": 79.72644253168255,
-							"CircularEconomy": 56.45864789839834,
-							"Water": 71.20419293642044
-						},
-						"dnshCriteria": {
-							"ClimateAdaptation": "Yes",
-							"Water": "Yes",
-							"Biodiversity": "No",
-							"ClimateMitigation": "Yes"
-						},
-						"minimumSafeguards": "Yes"
-					}
-				]
+				"totalAlignedShare": {
+					"percentage": 24.8461700277403,
+					"absoluteShare": 0.4410293383989483,
+					"currency": "USD"
+				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	}
 ]
