@@ -1,5 +1,5 @@
 import Chainable = Cypress.Chainable;
-import {getBaseUrl, reader_name, reader_pw} from "@e2e/utils/Cypress";
+import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
 
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
@@ -19,7 +19,7 @@ export function logout(): void {
     .should("be.visible");
 }
 
-let globalJwt: string = ""
+let globalJwt = "";
 
 /**
  * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.
@@ -28,18 +28,18 @@ let globalJwt: string = ""
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
-  cy.intercept("https://www.youtube-nocookie.com/**", {forceNetworkError: false}).as("youtube");
-  cy.intercept({times: 1, url: "/api/companies*"}).as("getCompanies")
+  cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
+  cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
   cy.visitAndCheckAppMount("/")
-    .wait("@youtube", {timeout: Cypress.env("medium_timeout_in_ms") as number})
+    .wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
     .get("button[name='login_dataland_button']")
     .click()
     .get("#username")
     .should("exist")
-    .type(username, {force: true})
+    .type(username, { force: true })
     .get("#password")
     .should("exist")
-    .type(password, {force: true})
+    .type(password, { force: true })
 
     .get("#kc-login")
     .should("exist")
@@ -58,8 +58,8 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
   }
   cy.url().should("eq", getBaseUrl() + "/companies");
   cy.wait("@getCompanies").then((interception) => {
-    globalJwt = interception.request.headers["authorization"] as string
-  })
+    globalJwt = interception.request.headers["authorization"] as string;
+  });
 }
 
 /**
@@ -78,11 +78,13 @@ export function ensureLoggedIn(username?: string, password?: string): void {
     {
       validate: () => {
         cy.request({
-          url: '/api/token',
+          url: "/api/token",
           headers: {
             Authorization: globalJwt,
-          }
-        }).its('status').should('eq', 200)
+          },
+        })
+          .its("status")
+          .should("eq", 200);
       },
       cacheAcrossSpecs: true,
     },
