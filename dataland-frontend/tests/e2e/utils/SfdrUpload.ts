@@ -8,7 +8,7 @@ import {
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
-import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/Constants";
 
 /**
  * Uploads a single SFDR data entry for a company
@@ -66,6 +66,6 @@ export function uploadCompanyAndSfdrDataViaApi(
  */
 export function selectsReportsForUploadInSfdrForm(): void {
   uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
-  uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
-  uploadDocuments.fillAllReportsToUploadForms(1);
+  uploadDocuments.validateReportToUploadIsListedInTheFileSelectorList(TEST_PDF_FILE_NAME);
+  uploadDocuments.fillAllFormsOfReportsSelectedForUpload(1);
 }

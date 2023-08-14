@@ -9,7 +9,7 @@ import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/Constants";
 
 describeIf(
   "As a user, I want to add and link documents to the EU Taxonomy form",
@@ -41,18 +41,18 @@ describeIf(
         fillAndValidateEuTaxonomyForFinancialsUploadForm,
         () => {
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
-          uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadIsListedInTheFileSelectorList(TEST_PDF_FILE_NAME);
           cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
-          uploadDocuments.removeReportToUpload(TEST_PDF_FILE_NAME);
+          uploadDocuments.removeReportFromSelectionForUpload(TEST_PDF_FILE_NAME);
           cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
-          uploadDocuments.checkNoReportIsListed();
+          uploadDocuments.checkNoReportAreSelectedForUploadOrAlreadyUploaded();
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
           cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
-          uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadIsListedInTheFileSelectorList(TEST_PDF_FILE_NAME);
           uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
           cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
-          uploadDocuments.validateReportToUploadIsListed(`${TEST_PDF_FILE_NAME}2`);
-          uploadDocuments.fillAllReportsToUploadForms(2);
+          uploadDocuments.validateReportToUploadIsListedInTheFileSelectorList(`${TEST_PDF_FILE_NAME}2`);
+          uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="banksAndIssuers"]`)
             .find('select[name="report"]')
@@ -70,11 +70,11 @@ describeIf(
         (companyId) => {
           gotoEditForm(companyId, true);
 
-          uploadDocuments.selectMultipleFiles([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
+          uploadDocuments.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
           cy.get(".p-dialog.p-component").should("exist").get('[data-pc-section="closebutton"]').click();
           cy.get(".p-dialog.p-component").should("not.exist");
 
-          uploadDocuments.removeUploadedReport(TEST_PDF_FILE_NAME).then(() => {
+          uploadDocuments.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {
             areBothDocumentsStillUploaded = false;
           });
           const postRequestAlias = "postData";
