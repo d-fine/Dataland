@@ -16,7 +16,7 @@ class P2p {
         return dataset.copy(
             general = dataset.general.copy(
                 general = dataset.general.general.copy(
-                    sector = dataset.general.general.sector.sorted(),
+                    sectors = dataset.general.general.sectors.sorted(),
                 ),
             ),
         )

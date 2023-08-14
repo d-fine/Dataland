@@ -6,7 +6,7 @@ export interface DropdownOption {
   value: string;
 }
 export enum DropdownDatasetIdentifier {
-  CountryCodes = "ISO 2 Codes",
+  CountryCodesIso2 = "ISO 2 Codes",
   CurrencyCodes = "ISO 4217 Codes",
 }
 
@@ -19,7 +19,7 @@ export type DropdownDataset = Array<DropdownOption>;
  */
 export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): DropdownDataset {
   switch (datasetIdentifier) {
-    case DropdownDatasetIdentifier.CountryCodes:
+    case DropdownDatasetIdentifier.CountryCodesIso2:
       return getCountryCodeDropdownDataset();
     case DropdownDatasetIdentifier.CurrencyCodes:
       return getCurrencyCodeDropdownDataset();

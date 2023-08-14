@@ -117,7 +117,12 @@
 
       <Column field="subcategoryKey"></Column>
       <template #groupheader="slotProps">
-        <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
+        <span
+          :data-test="slotProps.data.subcategoryKey"
+          :id="slotProps.data.subcategoryKey"
+          data-row-header-click
+          style="cursor: pointer"
+        >
           {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
         </span>
       </template>
@@ -129,7 +134,11 @@
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
+import {
+  ReportingPeriodOfDataSetWithId,
+  mountRowHeaderClickEventListeners,
+  unmountRowHeaderClickEventListeners,
+} from "@/utils/DataTableDisplay";
 import { BaseDataPointYesNo, YesNo } from "@clients/backend";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
@@ -154,6 +163,7 @@ export default defineComponent({
         [false, "No"],
       ]),
       YesNo,
+      rowClickHandlersMap: new Map() as Map<Element, EventListener>,
     };
   },
   props: {
@@ -173,8 +183,17 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  mounted() {
-    document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
+  created() {
+    setTimeout(() => {
+      this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+        () => this.expandedRowGroups,
+        (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
+      );
+    });
+  },
+  unmounted() {
+    unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
+    this.rowClickHandlersMap = new Map();
   },
   methods: {
     /**
@@ -225,23 +244,6 @@ export default defineComponent({
           columnHeaders: this.modalColumnHeaders,
         },
       });
-    },
-    /**
-     * Enables groupRowExpansion (and collapse) when clicking on the whole header row
-     * @param event a click event
-     */
-    expandRowGroupOnHeaderClick(event: Event) {
-      const id = (event.target as Element).id;
-
-      const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-        this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === child.id),
-      )[0];
-
-      if (matchingChild || this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === id)) {
-        const index = this.expandedRowGroups.indexOf(matchingChild?.id ?? id);
-        if (index === -1) this.expandedRowGroups.push(matchingChild?.id ?? id);
-        else this.expandedRowGroups.splice(index, 1);
-      }
     },
   },
 });

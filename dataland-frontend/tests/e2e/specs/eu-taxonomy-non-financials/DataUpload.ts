@@ -63,7 +63,7 @@ describeIf(
      * Checks that dialog for "file can not be selected" is open and closes it
      */
     function validateFileCanNotBeUploadedDialogIsOpenAndClose(): void {
-      cy.contains(".p-dialog-content", "file cannot be selected").should("exist");
+      cy.contains(".p-dialog-content", "file(s) cannot be selected").should("exist");
       cy.get(".p-dialog-header-close").click();
     }
 
@@ -71,7 +71,7 @@ describeIf(
      * Checks that dialog for "file can not be selected" is closed
      */
     function validateFileCanNotBeUploadedDialogIsClosed(): void {
-      cy.contains(".p-dialog-content", "file cannot be selected").should("not.exist");
+      cy.contains(".p-dialog-content", "file(s) cannot be selected").should("not.exist");
     }
 
     it(

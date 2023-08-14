@@ -2,292 +2,260 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Loveland",
+			"headquarters": "Reillyshire",
+			"sector": "methodologies",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"0vOjKHdY9AEm"
+					"9FqoSlN4LKUR",
+					"7FsvDwn2JNNK"
 				],
 				"PermId": [
-					"shkwvY9gy5"
+					"1AxT526zjr"
 				],
 				"Ticker": [
-					"zZH2QM4"
+					"7rAHMXZ"
 				],
 				"Duns": [],
 				"VatNumber": [
-					"E5qvHxCFa"
+					"A4VSkgv7Y"
 				],
 				"CompanyRegistrationNumber": [
-					"54taKslyodZwVpP"
+					"UnDfwPoPebmMU2a"
 				]
 			},
-			"countryCode": "SX",
+			"countryCode": "NE",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://vivid-item.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2022-12-19",
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-08-23",
-					"currency": "AMD"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "RSD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "TZS"
-				}
-			},
-			"assurance": {
-				"assurance": "None"
-			},
-			"activityLevelReporting": "No",
-			"opex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.8985,
-					"quality": "NA"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.5434,
-					"quality": "NA"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.8988,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Fort Dane",
-			"headquartersPostalCode": "27154",
-			"sector": "initiatives",
-			"identifiers": {
-				"Lei": [
-					"XXL4HR70OGRiwFQHHx8T"
-				],
-				"Isin": [
-					"pECfzjfHhkIz",
-					"TiUrZ2U86CI3"
-				],
-				"PermId": [
-					"JxeqZbxaVU"
-				],
-				"Ticker": [],
-				"Duns": [
-					"XNbffDPXA"
-				],
-				"VatNumber": [
-					"EwQspOJQE"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "CI",
-			"companyAlternativeNames": [
-				"Green Group",
-				"Tremblay, Green and Koepp",
-				"Zboncak, Bode and Smitham"
-			],
-			"website": "https://incredible-strand.biz",
+			"website": "https://discrete-normal.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"numberOfEmployees": 88604,
+			"fiscalYearEnd": "2022-11-01",
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-02-18",
-					"currency": "BIF"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "UZS"
-				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-11-01",
-					"currency": "VND"
+					"currency": "LRD"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Kihn Group"
+				"dataSource": {
+					"page": 59,
+					"report": "SustainabilityReport",
+					"tagName": "experiences"
+				}
 			},
+			"scopeOfEntities": "Yes",
+			"opex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.0862,
+					"quality": "NA"
+				}
+			},
+			"capex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.4292,
+					"quality": "NA"
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"valueAsPercentage": 0.428,
+					"quality": "NA"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "New Kayla",
+			"headquartersPostalCode": "30614-3085",
+			"identifiers": {
+				"Lei": [
+					"dGjxusZ7sUuTN7GarMY1"
+				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [
+					"Qxcf5P9"
+				],
+				"Duns": [
+					"igt1sm6NQ"
+				],
+				"VatNumber": [
+					"JVSFdrvBW"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "RO",
+			"companyAlternativeNames": [
+				"Gottlieb - Paucek",
+				"Leannon - Turner",
+				"Pagac, Feil and Romaguera"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://feisty-embossing.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearEnd": "2023-06-01",
+			"numberOfEmployees": 94834,
+			"referencedReports": {
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-10-15",
+					"currency": "ZWL"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "SGD"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "YER"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"reportDate": "2023-05-20",
+					"currency": "COP"
+				}
+			},
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Zemlak - Stoltenberg"
+			},
+			"scopeOfEntities": "NA",
 			"opex": {
 				"totalAmount": {
-					"value": 602868.0489514954,
-					"quality": "Estimated"
+					"value": 766970.5478008837,
+					"dataSource": {
+						"page": 65,
+						"report": "ESEFReport",
+						"tagName": "networks"
+					},
+					"quality": "Reported",
+					"comment": "bypass auxiliary microchip"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.4691,
+					"valueAsPercentage": 0.2545,
 					"dataSource": {
-						"page": 804,
-						"report": "SustainabilityReport",
-						"tagName": "methodologies"
+						"page": 678,
+						"report": "ESEFReport",
+						"tagName": "solutions"
 					},
-					"quality": "Estimated",
-					"comment": "bypass solid state feed",
-					"valueAsAbsolute": 400715.2689155191
+					"quality": "Incomplete",
+					"comment": "transmit cross-platform capacitor",
+					"valueAsAbsolute": 534735.8718747273
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 707755.4719522595,
+					"value": 433376.112615224,
 					"dataSource": {
-						"page": 940,
+						"page": 799,
 						"report": "SustainabilityReport",
-						"tagName": "synergies"
+						"tagName": "systems"
 					},
-					"quality": "Audited",
-					"comment": "copy neural interface"
+					"quality": "Reported",
+					"comment": "input redundant array"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.2587,
+					"valueAsPercentage": 0.6203,
 					"dataSource": {
-						"page": 1056,
-						"report": "AnnualReport",
-						"tagName": "solutions"
+						"page": 85,
+						"report": "ESEFReport",
+						"tagName": "functionalities"
 					},
 					"quality": "Audited",
-					"comment": "synthesize digital microchip",
-					"valueAsAbsolute": 278317.8042853251
+					"comment": "bypass primary matrix",
+					"valueAsAbsolute": 138971.03277267888
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 58021.84803178534,
-					"dataSource": {
-						"page": 771,
-						"report": "AnnualReport",
-						"tagName": "networks"
-					},
-					"quality": "Audited",
-					"comment": "reboot mobile capacitor"
+					"value": 575369.2253842019,
+					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.173,
-					"quality": "Incomplete",
-					"valueAsAbsolute": 730204.514041543
+					"valueAsPercentage": 0.555,
+					"dataSource": {
+						"page": 824,
+						"report": "ESEFReport",
+						"tagName": "infrastructures"
+					},
+					"quality": "Reported",
+					"comment": "back up virtual capacitor",
+					"valueAsAbsolute": 352963.7443367392
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "East Neal",
-			"headquartersPostalCode": "63517",
-			"sector": "e-business",
+			"headquarters": "North Braden",
+			"sector": "action-items",
 			"identifiers": {
 				"Lei": [
-					"jYgnfLMqKy3oBatIlcPG"
+					"YyMJZ1TuFMptjBhFAOpt"
 				],
 				"Isin": [
-					"5Pcv7bEsmlQ7"
+					"YJCoErYxUHIO"
 				],
-				"PermId": [],
+				"PermId": [
+					"VpJFvzgAEi"
+				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"278VR3yJI"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FK",
+			"countryCode": "VG",
 			"companyAlternativeNames": [
-				"Miller Inc",
-				"Rodriguez, Pagac and Brakus",
-				"Shields - Hane"
+				"Hayes - Quigley",
+				"Lind Inc"
 			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 43482,
+			"fiscalYearDeviation": "NoDeviation",
+			"numberOfEmployees": 81657,
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 768,
-					"report": "SustainabilityReport",
-					"tagName": "initiatives"
-				}
+				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
-			"activityLevelReporting": "No",
-			"opex": {
-				"totalAmount": {
-					"value": 974340.7507543452,
-					"quality": "Estimated"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.1408,
-					"dataSource": {
-						"page": 1,
-						"report": "ESEFReport",
-						"tagName": "users"
-					},
-					"quality": "Estimated",
-					"comment": "connect solid state system"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 713,
-						"report": "SustainabilityReport",
-						"tagName": "platforms"
-					},
-					"quality": "Incomplete",
-					"comment": "parse cross-platform panel"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.1814,
-					"dataSource": {
-						"page": 459,
-						"report": "IntegratedReport",
-						"tagName": "mindshare"
-					},
-					"quality": "Audited",
-					"comment": "connect neural interface",
-					"valueAsAbsolute": 451046.22460203245
-				}
-			},
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
+			"opex": {},
+			"capex": {},
 			"revenue": {
 				"totalAmount": {
-					"value": 123060.03933772445,
-					"quality": "Estimated"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.6769,
+					"value": 744857.2935652919,
 					"dataSource": {
-						"page": 120,
-						"report": "IntegratedReport",
-						"tagName": "lifetime value"
+						"page": 663,
+						"report": "SustainabilityReport",
+						"tagName": "initiatives"
 					},
-					"quality": "Estimated",
-					"comment": "synthesize bluetooth matrix",
-					"valueAsAbsolute": 528089.6641779691
+					"quality": "Reported",
+					"comment": "calculate optical system"
+				},
+				"alignedData": {
+					"dataSource": {
+						"page": 496,
+						"report": "IntegratedReport",
+						"tagName": "ROI"
+					},
+					"quality": "Reported",
+					"comment": "generate cross-platform port"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2019"
 	}
 ]

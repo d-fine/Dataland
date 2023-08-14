@@ -37,6 +37,13 @@ export const YesNoFormFieldProps = Object.assign(deepCopyObject(BaseFormFieldPro
     type: Boolean,
     default: false,
   },
+  evidenceDesired: {
+    type: Boolean,
+    default: false,
+  },
+  unit: {
+    type: String,
+  },
 }) as Readonly<ComponentPropsOptions>;
 
 export const FormFieldPropsWithPlaceholder = Object.assign(deepCopyObject(BaseFormFieldProps), {

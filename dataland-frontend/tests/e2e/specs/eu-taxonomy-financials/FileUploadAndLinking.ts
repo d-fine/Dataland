@@ -69,6 +69,11 @@ describeIf(
         },
         (companyId) => {
           gotoEditForm(companyId, true);
+
+          uploadDocuments.selectMultipleFiles([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
+          cy.get(".p-dialog.p-component").should("exist").get('[data-pc-section="closebutton"]').click();
+          cy.get(".p-dialog.p-component").should("not.exist");
+
           uploadDocuments.removeUploadedReport(TEST_PDF_FILE_NAME).then(() => {
             areBothDocumentsStillUploaded = false;
           });

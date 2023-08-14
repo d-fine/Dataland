@@ -35,10 +35,13 @@ describeIf(
 
     /**
      * validates that the data uploaded via the function `uploadLksgDataViaForm` is displayed correctly for a company
-     * @param companyId the company associated to the data uploaded via form
+     * @param storedCompany the company associated to the data uploaded via form
      */
-    function validateFormUploadedData(companyId: string): void {
-      cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg);
+    function validateFormUploadedData(storedCompany: StoredCompany): void {
+      cy.intercept("**/api/data/lksg/**").as("fetchLksgData");
+      cy.visit("/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg);
+      cy.wait("@fetchLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+      cy.get("h1").should("contain", storedCompany.companyInformation.companyName);
       cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
       cy.contains('Show "Most Important Products"').click();
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Most Important Products");
@@ -73,7 +76,7 @@ describeIf(
           );
           cy.get("h1").should("contain", testCompanyName);
           uploadLksgDataViaForm();
-          validateFormUploadedData(storedCompany.companyId);
+          validateFormUploadedData(storedCompany);
         });
     });
 

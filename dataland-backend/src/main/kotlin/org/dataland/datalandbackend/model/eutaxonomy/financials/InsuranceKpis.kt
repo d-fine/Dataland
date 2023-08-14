@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
-import org.dataland.datalandbackend.model.DataPoint
+import org.dataland.datalandbackend.model.DataPointOneValue
 import java.math.BigDecimal
 
 /**
@@ -8,5 +8,5 @@ import java.math.BigDecimal
  * KPIs for Insurance / Reinsurance companies for the EuTaxonomyForFinancials framework
  */
 data class InsuranceKpis(
-    val taxonomyEligibleNonLifeInsuranceActivities: DataPoint<BigDecimal>? = null,
+    val taxonomyEligibleNonLifeInsuranceActivities: DataPointOneValue<BigDecimal>? = null,
 )
