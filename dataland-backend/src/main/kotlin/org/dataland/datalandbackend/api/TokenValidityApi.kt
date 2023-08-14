@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
  */
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface TokenValidityApi {
+fun interface TokenValidityApi {
     /**
      * Returns 200 if called with a valid token
      */
