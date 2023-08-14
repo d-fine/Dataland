@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
-import org.dataland.datalandbackend.model.DataPoint
+import org.dataland.datalandbackend.model.DataPointOneValue
 import java.math.BigDecimal
 
 /**
@@ -8,7 +8,7 @@ import java.math.BigDecimal
  * Fields for each cashflow type in the EuTaxonomyForNonFinancials framework
  */
 data class EuTaxonomyDetailsPerCashFlowType(
-    val totalAmount: DataPoint<BigDecimal>?,
+    val totalAmount: DataPointOneValue<BigDecimal>?,
     val totalNonEligibleShare: FinancialShare?,
     val totalEligibleShare: FinancialShare?,
     val totalNonAlignedShare: FinancialShare?,
