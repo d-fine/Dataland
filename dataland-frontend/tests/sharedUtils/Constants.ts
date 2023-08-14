@@ -2,7 +2,7 @@
  * Contains global constants for tests
  */
 
-export const TEST_PDF_FILE_NAME = "pdf_Test (1)";
+export const TEST_PDF_FILE_NAME = "pdf_Test(1)";
 
 export const TEST_PDF_FILE_BASEPATH = "testing/data/documents";
 
