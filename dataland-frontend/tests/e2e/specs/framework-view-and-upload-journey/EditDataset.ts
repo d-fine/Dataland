@@ -1,6 +1,11 @@
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
+import {
+  Configuration,
+  DataTypeEnum,
+  LksgData,
+  LksgDataControllerApi
+} from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { checkStickynessOfSubmitSideBar, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -8,6 +13,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import {objectDropNull, ObjectType} from "@/utils/UpdateObjectUtils";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -21,7 +27,7 @@ describeIf(
     before(() => {
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-        preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
+        preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
         getKeycloakToken(admin_name, admin_pw)
           .then(async (token: string) =>
             uploadCompanyAndLksgDataViaApi(
@@ -58,11 +64,13 @@ describeIf(
         .should("exist")
         .then(() => {
           return getKeycloakToken(admin_name, admin_pw).then(async (token) => {
-            const data = await new LksgDataControllerApi(
+            const listOfLksgDatasetsForCompany = await new LksgDataControllerApi(
               new Configuration({ accessToken: token }),
             ).getAllCompanyLksgData(uploadIds.companyId, false);
-            expect(data.data).to.have.length(2);
-            expect(data.data[0].data).to.deep.equal(data.data[1].data);
+            expect(listOfLksgDatasetsForCompany.data).to.have.length(2);
+            const firstLksgDataset = objectDropNull(listOfLksgDatasetsForCompany.data[0].data as ObjectType) as LksgData;
+            const secondLksgDataset = objectDropNull(listOfLksgDatasetsForCompany.data[1].data as ObjectType) as LksgData;
+            expect(firstLksgDataset).to.deep.equal(secondLksgDataset);
           });
         });
     });
