@@ -227,7 +227,7 @@ export default defineComponent({
 
         return {
           procurementCategory: procurementCategoryType,
-          definitionsOfProductTypeOrService,
+          procuredProductTypesAndServicesNaceCodes: convertNace(definitionsOfProductTypeOrService),
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
             new Map(Object.entries(lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {})),
           ),
