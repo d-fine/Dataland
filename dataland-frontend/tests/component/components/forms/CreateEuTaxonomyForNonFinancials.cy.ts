@@ -79,7 +79,8 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   }
 
   /**
-   * This method returns a dataset for eu taxo non financials with all fields filled.
+   * This method returns a mocked dataset for eu taxo non financials with all fields filled.
+   * @returns the dataset
    */
   function createMockCompanyAssociatedDataEuTaxoNonFinancials(): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
     return {
