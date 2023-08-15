@@ -21,7 +21,7 @@ fun mockAndWhenConfigurationForFrameworkMigration(
     val mockResultSet = Mockito.mock(ResultSet::class.java)
     Mockito.`when`(mockResultSet.getString("data_id")).thenReturn("data-id")
     Mockito.`when`(mockResultSet.getString("data")).thenReturn(originalDatabaseEntry)
-    Mockito.`when`(mockResultSet.next()).thenReturn(true, false)
+    Mockito.`when`(mockResultSet.next()).thenReturn(true, false, true, false)
     Mockito.`when`(mockStatement.executeQuery(ArgumentMatchers.any())).thenReturn(mockResultSet)
     Mockito.`when`(mockStatement.execute(ArgumentMatchers.any())).then {
         val databaseUpdateQuery = it.arguments[0] as String
