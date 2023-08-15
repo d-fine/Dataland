@@ -1,23 +1,26 @@
 import {
   Activity,
   EuTaxonomyActivity,
-  EuTaxonomyAlignedActivity, FinancialShare,
-  NewEuTaxonomyDataForNonFinancials, NewEuTaxonomyDetailsPerCashFlowType, YesNo
+  EuTaxonomyAlignedActivity,
+  FinancialShare,
+  NewEuTaxonomyDataForNonFinancials,
+  NewEuTaxonomyDetailsPerCashFlowType,
+  YesNo,
 } from "@clients/backend";
 import {
   generateArray,
   getRandomNumberOfDistinctElementsFromArray,
-  ReferencedDocuments
+  ReferencedDocuments,
 } from "@e2e/fixtures/FixtureUtils";
 import { generateDatapoint, generateDatapointAbsoluteAndPercentage } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-import {faker} from "@faker-js/faker";
-import {generateListOfNaceCodes} from "@e2e/fixtures/common/NaceCodeFixtures";
-import {generateIso4217CurrencyCode} from "@e2e/fixtures/common/CurrencyFixtures";
-import {EnvironmentalObjective} from "@/api-models/EnvironmentalObjective";
+import { faker } from "@faker-js/faker";
+import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
 /**
  * Generates a random percentage between 0 and 100
@@ -81,7 +84,7 @@ function generateAlignedActivity(): EuTaxonomyAlignedActivity {
     ...generateActivity(),
     substantialContributionCriteria: generateObject(Object.values(EnvironmentalObjective), generatePercentage),
     dnshCriteria: generateObject(Object.values(EnvironmentalObjective), () =>
-        faker.helpers.arrayElement(Object.values(YesNo)),
+      faker.helpers.arrayElement(Object.values(YesNo)),
     ),
     minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
   };
@@ -92,7 +95,9 @@ function generateAlignedActivity(): EuTaxonomyAlignedActivity {
  * @param reports a list of reports that can be referenced
  * @returns the generated data
  */
-export function generateNewEuTaxonomyPerCashflowType(reports: ReferencedDocuments): NewEuTaxonomyDetailsPerCashFlowType {
+export function generateNewEuTaxonomyPerCashflowType(
+  reports: ReferencedDocuments,
+): NewEuTaxonomyDetailsPerCashFlowType {
   return {
     totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
     totalNonEligibleShare: valueOrUndefined(generateFinancialShare()),
