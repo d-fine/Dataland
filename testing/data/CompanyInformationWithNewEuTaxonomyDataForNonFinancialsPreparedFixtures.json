@@ -1,0 +1,430 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-numbers",
+			"headquarters": "Fort Mathewfurt",
+			"headquartersPostalCode": "96302-9256",
+			"sector": "systems",
+			"identifiers": {
+				"Lei": [
+					"XWN5e0I1ye6KMNmzyH8R"
+				],
+				"Isin": [
+					"A463mV6GuOUJ"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"KoTdiNXlf"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CR",
+			"companyAlternativeNames": [
+				"Thiel Inc",
+				"Turner LLC"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://experienced-boost.net/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"referencedReports": {
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"reportDate": "2023-05-31",
+						"currency": "HNL"
+					}
+				},
+				"assurance": {
+					"assurance": "None"
+				},
+				"nfrdMandatory": "Yes",
+				"euTaxonomyActivityLevelReporting": "No"
+			},
+			"opex": {
+				"totalEligibleShare": {
+					"percentage": 46.09342045150697,
+					"currency": "CAD"
+				}
+			},
+			"capex": {
+				"totalEligibleShare": {
+					"percentage": 91.67316218372434,
+					"currency": "CAD"
+				}
+			},
+			"revenue": {
+				"totalEligibleShare": {
+					"percentage": 67.5393478712067,
+					"currency": "AUD"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "East Russelborough",
+			"headquartersPostalCode": "31680-8093",
+			"identifiers": {
+				"Lei": [
+					"ZtwC5vsdwFnsd6ARJyI3"
+				],
+				"Isin": [
+					"meitGWC7yiDM"
+				],
+				"PermId": [
+					"IDwQTsuShv"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"gcSjS6SR7dAZnjk"
+				]
+			},
+			"countryCode": "AG",
+			"companyAlternativeNames": [
+				"Bernier - Anderson",
+				"Boyle - Hahn",
+				"Considine - Waelchi",
+				"Kuvalis Inc"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearDeviation": "Deviation",
+				"fiscalYearEnd": "2022-08-26",
+				"referencedReports": {
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "NA",
+						"currency": "NZD"
+					},
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "YER"
+					}
+				},
+				"assurance": {
+					"assurance": "ReasonableAssurance",
+					"provider": "Glover - McDermott",
+					"dataSource": {
+						"page": 649,
+						"report": "SustainabilityReport",
+						"tagName": "architectures"
+					}
+				},
+				"nfrdMandatory": "Yes"
+			},
+			"opex": {
+				"totalAmount": {
+					"value": 802347.5763155147,
+					"dataSource": {
+						"page": 463,
+						"report": "ESEFReport",
+						"tagName": "lifetime value"
+					},
+					"quality": "Audited",
+					"comment": "index optical card"
+				},
+				"totalEligibleShare": {
+					"percentage": 38.93783101812005,
+					"absoluteShare": 0.8506567410659045,
+					"currency": "AUD"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 167476.87042225152,
+					"quality": "Incomplete"
+				},
+				"totalEligibleShare": {
+					"percentage": 93.34972589276731,
+					"absoluteShare": 0.9886661355849355,
+					"currency": "CAD"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 416700.3823793493,
+					"dataSource": {
+						"page": 615,
+						"report": "SustainabilityReport",
+						"tagName": "blockchains"
+					},
+					"quality": "Estimated",
+					"comment": "quantify virtual system"
+				},
+				"totalEligibleShare": {
+					"percentage": 36.004728148691356,
+					"absoluteShare": 0.4634860835503787,
+					"currency": "AUD"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Opheliashire",
+			"sector": "solutions",
+			"identifiers": {
+				"Lei": [
+					"d1uOCGvRaAZMLwLKf21l"
+				],
+				"Isin": [
+					"wAw6ec4EYsee"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"zd06s6IcL"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"EIRQH83DnRWaaNy"
+				]
+			},
+			"countryCode": "LC",
+			"companyAlternativeNames": [
+				"Beier, Nienow and Johnson",
+				"Sauer Inc",
+				"Schowalter, Spinka and Effertz",
+				"Yundt and Sons"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearDeviation": "Deviation",
+				"fiscalYearEnd": "2023-05-19",
+				"numberOfEmployees": 30790,
+				"assurance": {
+					"assurance": "ReasonableAssurance",
+					"provider": "Cremin Inc",
+					"dataSource": {
+						"page": 810,
+						"report": "AnnualReport",
+						"tagName": "systems"
+					}
+				},
+				"scopeOfEntities": "No",
+				"nfrdMandatory": "Yes",
+				"euTaxonomyActivityLevelReporting": "Yes"
+			},
+			"opex": {
+				"totalNonEligibleShare": {
+					"percentage": 11.30948148202151,
+					"absoluteShare": 0.6910443257074803,
+					"currency": "EUR"
+				},
+				"totalEligibleShare": {
+					"percentage": 24.92823638021946,
+					"absoluteShare": 0.9114381717517972,
+					"currency": "CHF"
+				},
+				"totalNonAlignedShare": {
+					"percentage": 74.71930051688105,
+					"absoluteShare": 0.4919793482404202,
+					"currency": "CHF"
+				},
+				"nonAlignedActivities": [
+					{
+						"activityName": "DataDrivenSolutionsForGhgEmissionsReductions",
+						"naceCodes": [
+							"A",
+							"L"
+						]
+					},
+					{
+						"activityName": "ProductionOfHeatCoolFromSolarThermalHeating"
+					}
+				],
+				"substantialContributionCriteria": {
+					"Water": 70.24508980102837,
+					"CircularEconomy": 80.62352878041565,
+					"PollutionPrevention": 10.614134790375829,
+					"ClimateAdaptation": 99.12041004281491,
+					"Biodiversity": 33.172348560765386,
+					"ClimateMitigation": 36.40934266149998
+				},
+				"alignedActivities": [],
+				"enablingAlignedShare": 53.55324300471693
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 150954.3393040076,
+					"dataSource": {
+						"page": 796,
+						"report": "AnnualReport",
+						"tagName": "blockchains"
+					},
+					"quality": "Estimated",
+					"comment": "connect digital application"
+				},
+				"totalEligibleShare": {
+					"percentage": 41.79116585291922,
+					"absoluteShare": 0.5386727617587894,
+					"currency": "AUD"
+				},
+				"totalAlignedShare": {
+					"percentage": 2.9752629809081554,
+					"absoluteShare": 0.44845010014250875,
+					"currency": "USD"
+				},
+				"substantialContributionCriteria": {
+					"ClimateAdaptation": 69.90376298781484,
+					"PollutionPrevention": 31.56004841439426,
+					"ClimateMitigation": 97.00736526865512
+				},
+				"alignedActivities": [
+					{
+						"activityName": "AirportInfrastructure",
+						"naceCodes": [
+							"C",
+							"J",
+							"K",
+							"M"
+						],
+						"share": {
+							"percentage": 96.79064708761871,
+							"absoluteShare": 0.15145419398322701,
+							"currency": "CAD"
+						},
+						"substantialContributionCriteria": {
+							"Water": 57.95664801262319,
+							"CircularEconomy": 4.902374278753996,
+							"PollutionPrevention": 66.04238080326468,
+							"ClimateAdaptation": 63.207192183472216
+						},
+						"dnshCriteria": {
+							"ClimateAdaptation": "Yes",
+							"CircularEconomy": "No"
+						}
+					},
+					{
+						"activityName": "DataProcessingHostingAndRelatedActivities",
+						"naceCodes": [],
+						"substantialContributionCriteria": {
+							"Water": 64.13736219983548,
+							"ClimateAdaptation": 48.61074679065496,
+							"ClimateMitigation": 83.18831673823297,
+							"CircularEconomy": 6.00047989282757
+						},
+						"dnshCriteria": {
+							"PollutionPrevention": "No",
+							"ClimateAdaptation": "No",
+							"Water": "Yes",
+							"Biodiversity": "No",
+							"CircularEconomy": "No"
+						},
+						"minimumSafeguards": "Yes"
+					},
+					{
+						"activityName": "SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
+						"naceCodes": [
+							"A",
+							"E",
+							"M"
+						],
+						"substantialContributionCriteria": {
+							"Biodiversity": 27.509902114979923
+						},
+						"dnshCriteria": {
+							"Biodiversity": "No",
+							"Water": "Yes",
+							"CircularEconomy": "No",
+							"PollutionPrevention": "Yes"
+						}
+					},
+					{
+						"activityName": "TransportOfCo2",
+						"share": {
+							"percentage": 49.18576239142567,
+							"absoluteShare": 0.028005807660520077,
+							"currency": "EUR"
+						},
+						"substantialContributionCriteria": {
+							"Water": 84.74155159201473,
+							"CircularEconomy": 95.43636278249323,
+							"PollutionPrevention": 66.7892339406535
+						},
+						"dnshCriteria": {
+							"ClimateAdaptation": "Yes",
+							"CircularEconomy": "No",
+							"Biodiversity": "Yes",
+							"Water": "No",
+							"PollutionPrevention": "Yes"
+						}
+					},
+					{
+						"activityName": "MaterialRecoveryFromNonHazardousWaste",
+						"substantialContributionCriteria": {
+							"PollutionPrevention": 12.034848262555897,
+							"Water": 51.44379094708711,
+							"ClimateMitigation": 32.5757160782814
+						},
+						"dnshCriteria": {
+							"CircularEconomy": "No",
+							"ClimateMitigation": "Yes",
+							"Biodiversity": "No",
+							"ClimateAdaptation": "No",
+							"PollutionPrevention": "No",
+							"Water": "Yes"
+						}
+					}
+				]
+			},
+			"revenue": {
+				"totalNonEligibleShare": {
+					"percentage": 8.52319544646889,
+					"absoluteShare": 0.9300827607512474,
+					"currency": "USD"
+				},
+				"totalNonAlignedShare": {
+					"percentage": 82.27438244502991,
+					"absoluteShare": 0.7651463467627764,
+					"currency": "CHF"
+				},
+				"nonAlignedActivities": [
+					{
+						"activityName": "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids"
+					},
+					{
+						"activityName": "UrbanAndSuburbanTransportRoadPassengerTransport",
+						"share": {
+							"percentage": 73.34264093078673,
+							"absoluteShare": 0.45487410319037735,
+							"currency": "USD"
+						}
+					},
+					{
+						"activityName": "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport"
+					},
+					{
+						"activityName": "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+						"naceCodes": [
+							"A",
+							"B"
+						]
+					}
+				],
+				"substantialContributionCriteria": {
+					"CircularEconomy": 21.778383222408593,
+					"Biodiversity": 42.927500256337225,
+					"PollutionPrevention": 68.41272013261914
+				},
+				"alignedActivities": [],
+				"transitionalAlignedShare": 85.25907879229635
+			}
+		},
+		"reportingPeriod": "2022"
+	}
+]
