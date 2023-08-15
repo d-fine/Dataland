@@ -12,7 +12,7 @@ import {
 } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { TEST_PDF_FILE_NAME } from "@sharedUtils/Constants";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";

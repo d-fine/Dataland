@@ -8,7 +8,7 @@ import {
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
-import { TEST_PDF_FILE_NAME } from "@sharedUtils/Constants";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 
 /**
  * Uploads a single SFDR data entry for a company

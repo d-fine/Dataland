@@ -9,7 +9,7 @@ import {
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@sharedUtils/Constants";
+import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@sharedUtils/ConstantsForPdfs";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
 import {

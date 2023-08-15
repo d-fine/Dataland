@@ -9,7 +9,7 @@ import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { TEST_PDF_FILE_NAME } from "@sharedUtils/Constants";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 
 describeIf(
   "As a user, I want to add and link documents to the EU Taxonomy form",

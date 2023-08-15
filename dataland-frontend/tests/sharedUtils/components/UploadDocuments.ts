@@ -1,4 +1,4 @@
-import { TEST_PDF_FILE_BASEPATH } from "@sharedUtils/Constants";
+import { TEST_PDF_FILE_BASEPATH } from "@sharedUtils/ConstantsForPdfs";
 
 export const uploadDocuments = {
   selectFile(filename: string, fieldName = "UploadReports"): void {

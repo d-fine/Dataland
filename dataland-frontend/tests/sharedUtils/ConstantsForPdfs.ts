@@ -1,5 +1,5 @@
 /**
- * Contains global constants for tests
+ * Contains global constants to reference our test pdf files
  */
 
 export const TEST_PDF_FILE_NAME = "some-document";
