@@ -189,7 +189,7 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("input[name=humanRightsViolationActionMeasures]").type("Dummy answer");
   cy.get("input[name=humanRightsViolations]").type("Dummy answer");
   cy.get("input[name=numberOfEmployees]").type("7999");
-  cy.get("input[name=totalRevenue]").type("10043000");
+  cy.get("input[name=annualTotalRevenue]").type("10043000");
   cy.get("input[name=groupOfCompaniesName]").type("TestCompanyGroup");
   cy.get("input[name=capacity]").type("123");
 
