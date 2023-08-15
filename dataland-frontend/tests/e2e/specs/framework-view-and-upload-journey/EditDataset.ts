@@ -8,6 +8,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -58,11 +59,17 @@ describeIf(
         .should("exist")
         .then(() => {
           return getKeycloakToken(admin_name, admin_pw).then(async (token) => {
-            const data = await new LksgDataControllerApi(
+            const listOfLksgDatasetsForCompany = await new LksgDataControllerApi(
               new Configuration({ accessToken: token }),
             ).getAllCompanyLksgData(uploadIds.companyId, false);
-            expect(data.data).to.have.length(2);
-            expect(data.data[0].data).to.deep.equal(data.data[1].data);
+            expect(listOfLksgDatasetsForCompany.data).to.have.length(2);
+            const firstLksgDataset = objectDropNull(
+              listOfLksgDatasetsForCompany.data[0].data as unknown as ObjectType,
+            ) as unknown as LksgData;
+            const secondLksgDataset = objectDropNull(
+              listOfLksgDatasetsForCompany.data[1].data as unknown as ObjectType,
+            ) as unknown as LksgData;
+            expect(firstLksgDataset).to.deep.equal(secondLksgDataset);
           });
         });
     });

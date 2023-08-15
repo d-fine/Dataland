@@ -227,7 +227,7 @@ export default defineComponent({
 
         return {
           procurementCategory: procurementCategoryType,
-          definitionsOfProductTypeOrService,
+          procuredProductTypesAndServicesNaceCodes: convertNace(definitionsOfProductTypeOrService),
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
             new Map(Object.entries(lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {})),
           ),
@@ -255,7 +255,7 @@ export default defineComponent({
       if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
         kpiValue = this.reformatCountriesValue(kpiValue);
       }
-      if (kpiField.name === "procurementCategories") {
+      if (kpiField.name === "productsServicesCategoriesPurchased") {
         kpiValue = this.reformatProcurementCategoriesValue(
           kpiValue as Map<ProcurementCategoryType, LksgProcurementCategory> | null,
         );

@@ -19,3 +19,21 @@ export function generateBaseDataPointOrUndefined<T, Y>(value: T | null, undefine
 
   return valueOrUndefined(baseDataPoint, undefinedProbability);
 }
+
+/**
+ * Generates a base data point with the given value, choosing a random (possibly undefined) report
+ * @param value the type for which the base data point shall be generated
+ * @param undefinedProbability the probability with which the referenced report is undefined
+ * @returns the generated base data point
+ */
+export function generateBaseDataPoint<T, Y>(value: T | null, undefinedProbability: number): Y | undefined {
+  const documents = generateReferencedDocuments();
+  const chosenReport = valueOrUndefined(faker.helpers.arrayElement(Object.values(documents)), undefinedProbability);
+
+  const baseDataPoint = {
+    value: value ?? undefined,
+    dataSource: chosenReport,
+  } as Y;
+
+  return baseDataPoint;
+}
