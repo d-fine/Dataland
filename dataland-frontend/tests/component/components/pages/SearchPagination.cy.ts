@@ -1,10 +1,15 @@
+import { SearchCompaniesForFrameworkData } from "@/components/pages/SearchCompaniesForFrameworkData.vue";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", () => {
-    beforeEach(() => {
-        cy.ensureLoggedIn();
-    });
 
     it("Do a search with 0 matches, then assure that the paginator is gone and the page text says no results", () => {
-        cy.visitAndCheckAppMount("/companies");
+        cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+            keycloak: minimalKeycloakMock({}),
+        }).then((mounted) => {
+            void mounted.wrapper.setProps({
+                isMobile: false,
+            });
+        });
         const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
         cy.get("input[id=search_bar_top]")
             .should("exist")
@@ -16,7 +21,7 @@ describe("As a user, I expect there to be multiple result pages if there are man
     });
 
     it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
-        cy.visitAndCheckAppMount("/companies");
+        cy.visit("/companies");
         const inputValue = "a";
         cy.get("input[id=search_bar_top]")
             .should("not.be.disabled")
