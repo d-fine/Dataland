@@ -26,14 +26,18 @@ export function prepareSimpleDataSearchStoredCompanyArray(): DataSearchStoredCom
     currentlyActive: true,
     qaStatus: QaStatus.Accepted,
   } as DataMetaInformation;
+  const oneMockCompany =     {
+    companyName: mockCompanyInformation.companyName,
+    companyInformation: mockCompanyInformation,
+    companyId: mockDataMetaInformation.companyId,
+    permId: mockCompanyInformation.identifiers[IdentifierType.PermId][0],
+    dataRegisteredByDataland: [mockDataMetaInformation],
+  }
+  let result = [];
+  const N = 100;
+  for (let i = 0; i < N; i++) {
+    result.push(oneMockCompany);
+  }
 
-  return [
-    {
-      companyName: mockCompanyInformation.companyName,
-      companyInformation: mockCompanyInformation,
-      companyId: mockDataMetaInformation.companyId,
-      permId: mockCompanyInformation.identifiers[IdentifierType.PermId][0],
-      dataRegisteredByDataland: [mockDataMetaInformation],
-    },
-  ];
+  return result;
 }

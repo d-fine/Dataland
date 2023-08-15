@@ -1,9 +1,17 @@
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
+import { prepareSimpleDataSeasrchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
 import Keycloak from "keycloak-js";
+import {beforeEach} from "node:test";
 describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", () => {
-    function verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock: Keycloak): void {
+    const mockDataSearchStoredCompanyArray = prepareSimpleDataSeasrchStoredCompanyArray();
+    before(() => {
+        cy.intercept("**/api/companies?**", mockDataSearchStoredCompanyArray);
+        cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
+        const keycloakMock = minimalKeycloakMock({
+            roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
+        });
+
         cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
             keycloak: keycloakMock,
         }).then((mounted) => {
@@ -11,37 +19,24 @@ describe("As a user, I expect there to be multiple result pages if there are man
                 resultArray: mockDataSearchStoredCompanyArray,
             });
             cy.wait(500);
-            cy.get("button").contains("Request Data").should("exist").click({ force: true });
-            cy.wrap(mounted.component).its("$route.path").should("eq", "/requests");
         });
-    }
-
-
-    const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray();
-    beforeEach(() => {
-        cy.intercept("**/api/companies?**", mockDataSearchStoredCompanyArray);
-        cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
     });
 
-    it.only("Do a search with 0 matches, then assure that the paginator is gone and the page text says no results", () => {
-        const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
-        const keycloakMock = minimalKeycloakMock({
-            roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
-        });
-        verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock);
 
-        const inputValue = "a";
+    it("Do a search with 0 matches, then assure that the paginator is gone and the page text says no results", () => {
+        const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
         cy.get("input[id=search_bar_top]")
-            .should("not.be.disabled")
-            .click({ force: true })
-            .type(inputValue)
+            .should("exist")
+            .type(inputValueThatWillResultInZeroMatches)
             .type("{enter}")
-            .should("have.value", inputValue);
+            .should("have.value", inputValueThatWillResultInZeroMatches);
+        cy.get("div.p-paginator").should("not.exist");
+        cy.contains("span", "No results");
     });
 
     it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
-        cy.visit("/companies");
         const inputValue = "a";
+
         cy.get("input[id=search_bar_top]")
             .should("not.be.disabled")
             .click({ force: true })
