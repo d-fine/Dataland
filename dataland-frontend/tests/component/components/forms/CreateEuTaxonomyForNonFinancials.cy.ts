@@ -214,6 +214,8 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     };
   }
 
+  const companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
+
   it("Check that warning appears if two pdf files with same name are selected for upload", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithDialog(
@@ -233,7 +235,6 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
       data() {
-        const companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
         return {
           formInputsModel: companyAssociatedEuTaxoFinancialsData,
           templateDataset: companyAssociatedEuTaxoFinancialsData.data,
