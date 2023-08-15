@@ -1,6 +1,5 @@
 package db.migration
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import db.migration.utils.getCompanyAssociatedDatasetsForDataType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.flywaydb.core.api.migration.BaseJavaMigration
@@ -13,11 +12,14 @@ import org.json.JSONObject
 class V4__MigrateEuTaxonomyNames : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         val mapOfOldToNewFieldNames = mapOf(
-                "reportingObligation" to "nfrdMandatory",
-                "activityLevelReporting" to "euTaxonomyActivityLevelReporting",
+            "reportingObligation" to "nfrdMandatory",
+            "activityLevelReporting" to "euTaxonomyActivityLevelReporting",
         )
 
-        val dataTypesToMigrate = listOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials, DataTypeEnum.eutaxonomyMinusFinancials)
+        val dataTypesToMigrate = listOf(
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+            DataTypeEnum.eutaxonomyMinusFinancials,
+        )
         dataTypesToMigrate.forEach { dataType: DataTypeEnum ->
             val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, dataType)
             companyAssociatedDatasets.forEach {

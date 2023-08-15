@@ -14,8 +14,8 @@ class V4__MigrateEuTaxonomyNamesTest {
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected`() {
         testIfDataIsMaintained(YesNo.yes, YesNo.no, DataTypeEnum.eutaxonomyMinusNonMinusFinancials)
-
     }
+
     @Test
     fun `test that eu taxonomy for financials migration script works as expected`() {
         testIfDataIsMaintained(YesNo.yes, YesNo.no, DataTypeEnum.eutaxonomyMinusFinancials)
@@ -26,39 +26,50 @@ class V4__MigrateEuTaxonomyNamesTest {
         testIfDataIsMaintained(YesNo.yes, null, DataTypeEnum.eutaxonomyMinusNonMinusFinancials)
     }
 
-    private fun testIfDataIsMaintained(activityLevelReporting: YesNo?, reportingObligation: YesNo?, dataType: DataTypeEnum) {
+    private fun testIfDataIsMaintained(
+        activityLevelReporting: YesNo?,
+        reportingObligation: YesNo?,
+        dataType: DataTypeEnum,
+    ) {
         val mockContext = Mockito.mock(Context::class.java)
         mockAndWhenConfigurationForFrameworkMigration(
-                mockContext,
-                buildOriginalDatabaseEntry(activityLevelReporting, reportingObligation, dataType),
-                buildExpectedTransformedDatabaseEntry(activityLevelReporting, reportingObligation, dataType),
+            mockContext,
+            buildOriginalDatabaseEntry(activityLevelReporting, reportingObligation, dataType),
+            buildExpectedTransformedDatabaseEntry(activityLevelReporting, reportingObligation, dataType),
         )
         val migration = V4__MigrateEuTaxonomyNames()
         migration.migrate(mockContext)
-
     }
 
-    private fun buildOriginalDatabaseEntry(activityLevelReporting: YesNo?, reportingObligation: YesNo?, dataType: DataTypeEnum): String {
+    private fun buildOriginalDatabaseEntry(
+        activityLevelReporting: YesNo?,
+        reportingObligation: YesNo?,
+        dataType: DataTypeEnum,
+    ): String {
         val simplifiedDataset = JSONObject(
             "{" +
-                    "\"activityLevelReporting\": ${convertYesNoToJsonValue(activityLevelReporting)}," +
-                    "\"reportingObligation\": ${convertYesNoToJsonValue(reportingObligation)}," +
-                    "\"somethingElse\": \"No\"" +
-                    "}",
+                "\"activityLevelReporting\": ${convertYesNoToJsonValue(activityLevelReporting)}," +
+                "\"reportingObligation\": ${convertYesNoToJsonValue(reportingObligation)}," +
+                "\"somethingElse\": \"No\"" +
+                "}",
         )
         return buildDatabaseEntry(simplifiedDataset, dataType)
     }
 
-    private fun buildExpectedTransformedDatabaseEntry(euTaxonomyActivityLevelReporting: YesNo?, nfrdMandatory: YesNo?, dataType: DataTypeEnum): String {
+    private fun buildExpectedTransformedDatabaseEntry(
+        euTaxonomyActivityLevelReporting: YesNo?,
+        nfrdMandatory: YesNo?,
+        dataType: DataTypeEnum,
+    ): String {
         val simplifiedDataset = JSONObject(
-                "{" +
-                        "\"euTaxonomyActivityLevelReporting\": ${convertYesNoToJsonValue(euTaxonomyActivityLevelReporting)}," +
-                        "\"nfrdMandatory\": ${convertYesNoToJsonValue(nfrdMandatory)}," +
-                        "\"somethingElse\": \"No\"" +
-                        "}",
+            "{" +
+                "\"euTaxonomyActivityLevelReporting\": ${convertYesNoToJsonValue(euTaxonomyActivityLevelReporting)}," +
+                "\"nfrdMandatory\": ${convertYesNoToJsonValue(nfrdMandatory)}," +
+                "\"somethingElse\": \"No\"" +
+                "}",
         )
         return buildDatabaseEntry(simplifiedDataset, dataType)
     }
 
-    private fun convertYesNoToJsonValue(yesNo: YesNo?): String = if(yesNo != null) "\"$yesNo\"" else "null"
+    private fun convertYesNoToJsonValue(yesNo: YesNo?): String = if (yesNo != null) "\"$yesNo\"" else "null"
 }

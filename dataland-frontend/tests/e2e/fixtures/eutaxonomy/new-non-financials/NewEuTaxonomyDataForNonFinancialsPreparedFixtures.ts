@@ -1,17 +1,15 @@
 import { generateFixtureDataset, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
-import {
-  NewEuTaxonomyDataForNonFinancials, NewEuTaxonomyDetailsPerCashFlowType
-} from "@clients/backend";
+import { NewEuTaxonomyDataForNonFinancials, NewEuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
 import {
   generateFinancialShare,
-  generateNewEuTaxonomyDataForNonFinancials
+  generateNewEuTaxonomyDataForNonFinancials,
 } from "@e2e/fixtures/eutaxonomy/new-non-financials/NewEuTaxonomyDataForNonFinancialsFixtures";
 
 type generatorFunction = (
-    input: FixtureData<NewEuTaxonomyDataForNonFinancials>,
+  input: FixtureData<NewEuTaxonomyDataForNonFinancials>,
 ) => FixtureData<NewEuTaxonomyDataForNonFinancials>;
 
 /**
@@ -19,7 +17,7 @@ type generatorFunction = (
  * @returns the generated prepared fixtures
  */
 export function generateNewEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
-    FixtureData<NewEuTaxonomyDataForNonFinancials>
+  FixtureData<NewEuTaxonomyDataForNonFinancials>
 > {
   const creationFunctions: Array<generatorFunction> = [
     createOnlyEglibileNumbers,
@@ -27,8 +25,8 @@ export function generateNewEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
     createDatasetWithoutReferencedReports,
   ];
   const fixtureBase = generateFixtureDataset<NewEuTaxonomyDataForNonFinancials>(
-      generateNewEuTaxonomyDataForNonFinancials,
-      creationFunctions.length,
+    generateNewEuTaxonomyDataForNonFinancials,
+    creationFunctions.length,
   );
   const preparedFixtures = [];
   for (let i = 0; i < creationFunctions.length; i++) {
@@ -43,7 +41,7 @@ export function generateNewEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
  * @returns the modified fixture
  */
 function createOnlyEglibileNumbers(
-    input: FixtureData<NewEuTaxonomyDataForNonFinancials>,
+  input: FixtureData<NewEuTaxonomyDataForNonFinancials>,
 ): FixtureData<NewEuTaxonomyDataForNonFinancials> {
   /**
    * Generates a details per cash flow object with only the total eligible share defined
@@ -68,7 +66,7 @@ function createOnlyEglibileNumbers(
  * @returns the modified fixture
  */
 function createOnlyEligibleAndTotalNumbers(
-    input: FixtureData<NewEuTaxonomyDataForNonFinancials>,
+  input: FixtureData<NewEuTaxonomyDataForNonFinancials>,
 ): FixtureData<NewEuTaxonomyDataForNonFinancials> {
   /**
    * Generates a details per cash flow object with only the total eligible share and total amount defined
@@ -76,7 +74,7 @@ function createOnlyEligibleAndTotalNumbers(
    * @returns the details object
    */
   function generateCashFlowWithOnlyEligibleAndTotalNumbers(
-      referencedReports: ReferencedDocuments,
+    referencedReports: ReferencedDocuments,
   ): NewEuTaxonomyDetailsPerCashFlowType {
     return {
       totalAmount: generateDatapoint(randomEuroValue(), referencedReports),
@@ -97,7 +95,7 @@ function createOnlyEligibleAndTotalNumbers(
  * @returns the modified fixture
  */
 function createDatasetWithoutReferencedReports(
-    input: FixtureData<NewEuTaxonomyDataForNonFinancials>,
+  input: FixtureData<NewEuTaxonomyDataForNonFinancials>,
 ): FixtureData<NewEuTaxonomyDataForNonFinancials> {
   input.companyInformation.companyName = "company_without_reports";
   input.t.general!.referencedReports = undefined;

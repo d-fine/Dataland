@@ -4,7 +4,7 @@ import { exportFixturesLksg } from "./lksg";
 import { exportFixturesSfdrData } from "./sfdr";
 import { exportFixturesSme } from "./sme";
 import { exportFixturesP2p } from "@e2e/fixtures/p2p";
-import {exportFixturesNewEuTaxonomyForNonFinancials} from "@e2e/fixtures/eutaxonomy/new-non-financials";
+import { exportFixturesNewEuTaxonomyForNonFinancials } from "@e2e/fixtures/eutaxonomy/new-non-financials";
 
 /**
  * The main entrypoint of the fake fixture generator
