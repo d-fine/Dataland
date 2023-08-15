@@ -2,12 +2,12 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, PathwaysToParisData } from "@clients/backend";
-import { uploadOneP2pDatasetViaApi } from "@e2e/utils/P2pUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
 before(function () {
@@ -54,7 +54,7 @@ describeIf(
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          return uploadOneP2pDatasetViaApi(token, storedCompany.companyId, "2021", p2pFixtureForTest.t).then(
+          return uploadFrameworkData("p2p", token, storedCompany.companyId, "2021", p2pFixtureForTest.t).then(
             (dataMetaInformation) => {
               cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
               cy.visitAndCheckAppMount(

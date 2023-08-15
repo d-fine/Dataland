@@ -1,70 +1,7 @@
-import {
-  CompanyAssociatedDataLksgData,
-  CompanyInformation,
-  Configuration,
-  DataMetaInformation,
-  LksgData,
-  LksgDataControllerApi,
-} from "@clients/backend";
-import { UploadIds } from "./GeneralApiUtils";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
+import { CompanyAssociatedDataLksgData } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-
-/**
- * Uploads a single LKSG data entry for a company
- * @param token The API bearer token to use
- * @param companyId The Id of the company to upload the dataset for
- * @param reportingPeriod The reporting period to use for the upload
- * @param data The Dataset to upload
- * @param bypassQa (optional) should the entry be automatically Approved. Default: true
- * @returns a promise on the created data meta information
- */
-export async function uploadOneLksgDatasetViaApi(
-  token: string,
-  companyId: string,
-  reportingPeriod: string,
-  data: LksgData,
-  bypassQa = true,
-): Promise<DataMetaInformation> {
-  const response = await new LksgDataControllerApi(
-    new Configuration({ accessToken: token }),
-  ).postCompanyAssociatedLksgData(
-    {
-      companyId,
-      reportingPeriod,
-      data,
-    },
-    bypassQa,
-  );
-  return response.data;
-}
-
-/**
- * Uploads a company and single LkSG data entry for a company
- * @param token The API bearer token to use
- * @param companyInformation The company information to use for the company upload
- * @param testData The Dataset to upload
- * @param reportingPeriod The reporting period to use for the upload
- * @returns an object which contains the companyId from the company upload and the dataId from the data upload
- */
-export function uploadCompanyAndLksgDataViaApi(
-  token: string,
-  companyInformation: CompanyInformation,
-  testData: LksgData,
-  reportingPeriod: string,
-): Promise<UploadIds> {
-  return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
-    (storedCompany) => {
-      return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, reportingPeriod, testData).then(
-        (dataMetaInformation) => {
-          return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
-        },
-      );
-    },
-  );
-}
 
 /**
  * Fills in dummy data for a single production site. Use this in a cy.within context of a production site container div
