@@ -214,8 +214,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     };
   }
 
-
-  let companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
+  const companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
 
   it("Check that warning appears if two pdf files with same name are selected for upload", () => {
     cy.stub(DataPointFormWithToggle);
