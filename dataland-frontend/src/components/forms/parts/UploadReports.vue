@@ -70,7 +70,7 @@ import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
-import { DocumentToUpload, ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
+import { DocumentToUpload, StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { CompanyReport } from "@clients/backend";
 import { ObjectType } from "@/utils/UpdateObjectUtils";
