@@ -4,6 +4,8 @@ import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/Constan
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
+
 describe("Component tests for the CreateP2pDataset that test dependent fields", () => {
   /**
    * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
@@ -213,6 +215,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   }
 
   it("Check that warning appears if two pdf files with same name are selected for upload", () => {
+    cy.stub(DataPointFormWithToggle);
     cy.mountWithDialog(
       CreateEuTaxonomyForNonFinancials,
       {
@@ -226,11 +229,15 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   });
 
   it("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
+    cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
       data() {
-        const a = createMockCompanyAssociatedDataEuTaxoNonFinancials();
-        return { formInputsModel: a, templateDataset: a.data };
+        const companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
+        return {
+          formInputsModel: companyAssociatedEuTaxoFinancialsData,
+          templateDataset: companyAssociatedEuTaxoFinancialsData.data,
+        };
       },
     }).then(() => {
       checkFileWithExistingFilenameIsNotBeingAdded();
