@@ -10,6 +10,10 @@ import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
 import java.math.BigDecimal
 import java.time.LocalDate
 
+/**
+ * --- API model ---
+ * This class holds general information of EU taxonomy data
+ */
 data class EuTaxonomyGeneral(
     override val fiscalYearDeviation: FiscalYearDeviation?,
 
