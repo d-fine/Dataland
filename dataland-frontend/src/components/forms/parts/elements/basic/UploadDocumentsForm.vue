@@ -68,7 +68,7 @@ export default defineComponent({
     PrimeButton,
     FileUpload,
   },
-  emits: ["reportsUpdated"],
+  emits: ["updatedDocumentsSelectedForUpload"],
   data() {
     return {
       formatBytesUserFriendly,
@@ -118,15 +118,15 @@ export default defineComponent({
 
         void documentsToUpload.then((documentsToUpload) => {
           this.documentsToUpload = documentsToUpload;
-          this.emitReportsUpdatedEvent();
+          this.emitUpdatedDocumentsSelectionEvent();
         });
       }
     },
     /**
      * Emits event that selected documents changed
      */
-    emitReportsUpdatedEvent() {
-      this.$emit("reportsUpdated", this.documentsToUpload);
+    emitUpdatedDocumentsSelectionEvent() {
+      this.$emit("updatedDocumentsSelectedForUpload", this.documentsToUpload);
     },
 
     /**
@@ -140,7 +140,7 @@ export default defineComponent({
         ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
         this.documentsToUpload.splice(indexOfFileToRemove, 1);
       });
-      this.emitReportsUpdatedEvent();
+      this.emitUpdatedDocumentsSelectionEvent();
     },
 
     /**
@@ -151,7 +151,7 @@ export default defineComponent({
     removeAllDocuments() {
       (this.$refs.fileUpload as FileUpload).files = [];
       this.documentsToUpload = [];
-      this.emitReportsUpdatedEvent();
+      this.emitUpdatedDocumentsSelectionEvent();
     },
 
     /**

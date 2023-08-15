@@ -11,7 +11,7 @@
       />
       <UploadDocumentsForm
         v-show="baseDataPointYesNo.value === 'Yes'"
-        @reportsUpdated="handleDocumentUpdatedEvent"
+        @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
         :name="name"
         :more-than-one-document-allowed="false"

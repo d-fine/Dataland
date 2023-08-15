@@ -26,7 +26,7 @@ export interface ReportToUpload extends CompanyReport {
  * @param getKeycloakPromise getter for a keycloak promise
  */
 export async function uploadFiles(
-  files: ReportToUpload[] | DocumentToUpload[],
+  files: DocumentToUpload[],
   getKeycloakPromise: () => Promise<Keycloak>,
 ): Promise<void> {
   const documentControllerApi = await new ApiClientProvider(getKeycloakPromise()).getDocumentControllerApi();
