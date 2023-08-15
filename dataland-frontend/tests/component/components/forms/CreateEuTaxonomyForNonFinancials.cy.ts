@@ -30,7 +30,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
     cy.get(`button[data-test='upload-files-button-UploadReports']`).click();
     cy.get("input[type=file]").selectFile(
-      `../${TEST_PDF_FILE_BASEPATH}/more-pdfs-in-seperate-directory/${TEST_PDF_FILE_NAME}.PDF`,
+      `../${TEST_PDF_FILE_BASEPATH}/more-pdfs-in-seperate-directory/${TEST_PDF_FILE_NAME}.pdf`,
       { force: true },
     );
     cy.get(".p-dialog-content").should("contain.text", "already uploaded");
