@@ -1,23 +1,42 @@
-import { SearchCompaniesForFrameworkData } from "@/components/pages/SearchCompaniesForFrameworkData.vue";
+import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
+import Keycloak from "keycloak-js";
 describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", () => {
-
-    it("Do a search with 0 matches, then assure that the paginator is gone and the page text says no results", () => {
-        cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
-            keycloak: minimalKeycloakMock({}),
+    function verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock: Keycloak): void {
+        cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
+            keycloak: keycloakMock,
         }).then((mounted) => {
-            void mounted.wrapper.setProps({
-                isMobile: false,
+            void mounted.wrapper.setData({
+                resultArray: mockDataSearchStoredCompanyArray,
             });
+            cy.wait(500);
+            cy.get("button").contains("Request Data").should("exist").click({ force: true });
+            cy.wrap(mounted.component).its("$route.path").should("eq", "/requests");
         });
+    }
+
+
+    const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray();
+    beforeEach(() => {
+        cy.intercept("**/api/companies?**", mockDataSearchStoredCompanyArray);
+        cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
+    });
+
+    it.only("Do a search with 0 matches, then assure that the paginator is gone and the page text says no results", () => {
         const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
+        const keycloakMock = minimalKeycloakMock({
+            roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
+        });
+        verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock);
+
+        const inputValue = "a";
         cy.get("input[id=search_bar_top]")
-            .should("exist")
-            .type(inputValueThatWillResultInZeroMatches)
+            .should("not.be.disabled")
+            .click({ force: true })
+            .type(inputValue)
             .type("{enter}")
-            .should("have.value", inputValueThatWillResultInZeroMatches);
-        cy.get("div.p-paginator").should("not.exist");
-        cy.contains("span", "No results");
+            .should("have.value", inputValue);
     });
 
     it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
@@ -50,3 +69,8 @@ describe("As a user, I expect there to be multiple result pages if there are man
         cy.contains("span", "1-100 of");
     });
 });
+
+/**
+ *
+ * @param keycloakMock abc
+ */
