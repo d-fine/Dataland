@@ -321,7 +321,7 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import { ReportToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -447,7 +447,7 @@ export default defineComponent({
         );
 
         await uploadFiles(
-          (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
+          (this.$refs.UploadReports.$data as { documentsToUpload: DocumentToUpload[] }).documentsToUpload,
           assertDefined(this.getKeycloakPromise),
         );
 

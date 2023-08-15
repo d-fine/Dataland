@@ -345,7 +345,7 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import { uploadFiles, ReportToUpload } from "@/utils/FileUploadUtils";
+import { uploadFiles, DocumentToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -636,7 +636,7 @@ export default defineComponent({
         );
 
         await uploadFiles(
-          (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
+          (this.$refs.UploadReports.$data as { documentsToUpload: DocumentToUpload[] }).documentsToUpload,
           assertDefined(this.getKeycloakPromise),
         );
 
