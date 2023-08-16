@@ -26,9 +26,9 @@ dependencyResolutionManagement {
 
             library("okhttp", "com.squareup.okhttp3:okhttp:4.11.0")
 
-            library("log4j", "org.apache.logging.log4j:log4j:3.0.0")
-            library("log4j-api", "org.apache.logging.log4j:log4j-api:3.0.0")
-            library("log4j-to-slf4j", "org.apache.logging.log4j:log4j-to-slf4j:3.0.0")
+            library("log4j", "org.apache.logging.log4j:log4j:2.20.0")
+            library("log4j-api", "org.apache.logging.log4j:log4j-api:2.20.0")
+            library("log4j-to-slf4j", "org.apache.logging.log4j:log4j-to-slf4j:2.20.0")
 
             library("logback-classic", "ch.qos.logback:logback-classic:1.4.11")
             library("logback-core", "ch.qos.logback:logback-core:1.4.11")
