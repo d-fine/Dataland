@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-8">
+  <div class="pb-8 d-content">
     <div class="m-0">
       <div class="grid align-items-center m-0">
         <div class="col-6 text-left">

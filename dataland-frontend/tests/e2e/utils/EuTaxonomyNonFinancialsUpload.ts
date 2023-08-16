@@ -42,7 +42,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
  */
 export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
   valueFieldNotFilled: boolean,
-  assuranceReportName: string,
+  assuranceReportName: string
 ): void {
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
@@ -58,12 +58,12 @@ export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
   cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
 
-  cy.get('input[name="activityLevelReporting"][value="Yes"]').check();
+  cy.get('input[name="euTaxonomyActivityLevelReporting"][value="Yes"]').check();
   cy.get('input[name="numberOfEmployees"]').type("-13");
   cy.get('em[title="Number Of Employees"]').click();
   cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
   cy.get('input[name="numberOfEmployees"]').clear().type("333");
-  cy.get('input[name="reportingObligation"][value="Yes"]').check();
+  cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
 
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
@@ -126,17 +126,17 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: EuTaxonomyDataForFinancials,
+  data: EuTaxonomyDataForFinancials
 ): Promise<DataMetaInformation> {
   const dataMetaInformation = await new EuTaxonomyDataForNonFinancialsControllerApi(
-    new Configuration({ accessToken: token }),
+    new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForNonFinancials(
     {
       companyId,
       reportingPeriod,
       data,
     },
-    true,
+    true
   );
   return dataMetaInformation.data;
 }

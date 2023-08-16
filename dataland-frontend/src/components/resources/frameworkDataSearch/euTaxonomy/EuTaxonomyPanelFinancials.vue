@@ -13,7 +13,7 @@
       <div class="col-6">
         <TaxoInfoCard
           title="NFRD required"
-          :value="dataSet.reportingObligation"
+          :value="dataSet.nfrdMandatory"
           tooltipText="The NFRD (Non financial disclosure directive) applies to companies with more than 500 employees with a > €20M balance or > €40M net turnover."
         />
       </div>
@@ -200,11 +200,11 @@ export default defineComponent({
         this.waitingForData = true;
         if (this.dataID != "loading") {
           const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
+            assertDefined(this.getKeycloakPromise)()
           ).getEuTaxonomyDataForFinancialsControllerApi();
           const companyAssociatedData =
             await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-              assertDefined(this.dataID),
+              assertDefined(this.dataID)
             );
           this.dataSet = companyAssociatedData.data.data;
           this.waitingForData = false;

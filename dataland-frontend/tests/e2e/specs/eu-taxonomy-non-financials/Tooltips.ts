@@ -16,14 +16,14 @@ before(function () {
 
 /**
  * Retrieves the first company from the fake fixture dataset that has values for both
- * reportingObligation and assurance
+ * nfrdMandatory and assurance
  * @returns the found dataset
  */
-function getCompanyWithReportingObligationAndAssurance(): FixtureData<EuTaxonomyDataForNonFinancials> {
+function getCompanyWithNfrdMandatoryAndAssurance(): FixtureData<EuTaxonomyDataForNonFinancials> {
   return assertDefined(
     companiesWithEuTaxonomyDataForNonFinancials.find((it) => {
       return it.t.nfrdMandatory !== undefined && it.t.assurance !== undefined;
-    }),
+    })
   );
 }
 
@@ -38,11 +38,11 @@ describeIf(
       getKeycloakToken(reader_name, reader_pw).then((token) => {
         cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
           (storedCompanies) => {
-            const testCompany = getCompanyWithReportingObligationAndAssurance();
+            const testCompany = getCompanyWithNfrdMandatoryAndAssurance();
             const companyId = assertDefined(
               storedCompanies.find((storedCompany) => {
                 return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
-              })?.companyId,
+              })?.companyId
             );
             cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveData");
             cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
@@ -55,9 +55,9 @@ describeIf(
             cy.get(".p-card-content .text-left strong").contains("Level of Assurance");
             cy.get('.material-icons[title="Level of Assurance"]').trigger("mouseenter", "center");
             cy.get(".p-tooltip").should("be.visible").contains(AssuranceText);
-          },
+          }
         );
       });
     });
-  },
+  }
 );
