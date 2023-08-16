@@ -8,8 +8,9 @@ class NewEuTaxonomyNonFinancials {
 
     private val apiAccessor = ApiAccessor()
 
-    private val listOfOneNewEuTaxonomyNonFinancialsDataSet = apiAccessor.testDataProviderForNewEuTaxonomyDataForNonFinancials
-        .getTData(1)
+    private val listOfOneNewEuTaxonomyNonFinancialsDataSet =
+        apiAccessor.testDataProviderForNewEuTaxonomyDataForNonFinancials
+            .getTData(1)
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForNewEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1)
 
