@@ -5,7 +5,7 @@ import {
   generateYesNoOrEmptyDatapoint,
   generateReferencedReports,
 } from "@e2e/fixtures/common/DataPointFixtures";
-import { SfdrData } from "@clients/backend";
+import { type SfdrData } from "@clients/backend";
 import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";

@@ -1,11 +1,11 @@
 import {
-  CompanyInformation,
+  type CompanyInformation,
   Configuration,
-  DataMetaInformation,
-  SfdrData,
+  type DataMetaInformation,
+  type SfdrData,
   SfdrDataControllerApi,
 } from "@clients/backend";
-import { UploadIds } from "./GeneralApiUtils";
+import { type UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";

@@ -1,4 +1,4 @@
-import { ApiKeyAndMetaInfo } from "@clients/apikeymanager";
+import { type ApiKeyAndMetaInfo } from "@clients/apikeymanager";
 describe("As a user I expect my api key will be generated correctly", () => {
   /**
    * Verifies that creating an api key works as expected, and also assures that the copy-to-clipboard button works if

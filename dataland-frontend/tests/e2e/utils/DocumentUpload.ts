@@ -1,5 +1,5 @@
 import { Configuration } from "@clients/backend";
-import { DocumentControllerApi, DocumentUploadResponse } from "@clients/documentmanager";
+import { DocumentControllerApi, type DocumentUploadResponse } from "@clients/documentmanager";
 
 /**
  * Uploads all documents provided in the documentDirectory folder

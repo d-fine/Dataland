@@ -69,7 +69,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
 import {
-  DataSearchStoredCompany,
+  type DataSearchStoredCompany,
   getRouterLinkTargetFramework,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent } from "vue";

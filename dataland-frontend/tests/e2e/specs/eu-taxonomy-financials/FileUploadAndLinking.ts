@@ -4,8 +4,11 @@ import {
   gotoEditForm,
   uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { EuTaxonomyDataForFinancials, CompanyAssociatedDataEuTaxonomyDataForFinancials } from "@clients/backend";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import {
+  type EuTaxonomyDataForFinancials,
+  type CompanyAssociatedDataEuTaxonomyDataForFinancials,
+} from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";

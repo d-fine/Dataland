@@ -52,12 +52,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
-import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
+import FileUpload, { type FileUploadSelectEvent } from "primevue/fileupload";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import {
   calculateSha256HashFromFile,
-  DocumentToUpload,
+  type DocumentToUpload,
   isThereActuallyANewFileSelected,
   removeFileTypeExtension,
 } from "@/utils/FileUploadUtils";

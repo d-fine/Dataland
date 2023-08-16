@@ -1,7 +1,7 @@
-import { CompanyReport, DocumentReference } from "@clients/backend";
+import { type CompanyReport, type DocumentReference } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { faker } from "@faker-js/faker";
 
 export type ReferencedDocuments = { [key: string]: CompanyReport | DocumentReference };

@@ -20,8 +20,8 @@
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
-import { AxiosRequestConfig } from "axios";
+import type Keycloak from "keycloak-js";
+import { type AxiosRequestConfig } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 

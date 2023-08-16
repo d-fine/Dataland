@@ -1,9 +1,9 @@
 import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
-import { DataTypeEnum, EuTaxonomyDataForNonFinancials, StoredCompany } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForNonFinancials, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import {

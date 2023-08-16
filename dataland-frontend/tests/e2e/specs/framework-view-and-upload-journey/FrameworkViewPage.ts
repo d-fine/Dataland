@@ -1,13 +1,13 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
   DataTypeEnum,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
-  LksgData,
-  SfdrData,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
+  type LksgData,
+  type SfdrData,
 } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";

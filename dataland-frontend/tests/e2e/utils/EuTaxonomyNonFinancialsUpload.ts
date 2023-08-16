@@ -1,12 +1,12 @@
 import {
   Configuration,
-  DataMetaInformation,
+  type DataMetaInformation,
   DataTypeEnum,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsControllerApi,
 } from "@clients/backend";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { submitButton } from "@sharedUtils/components/SubmitButton";

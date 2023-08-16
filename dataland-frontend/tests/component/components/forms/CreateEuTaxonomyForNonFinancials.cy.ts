@@ -2,7 +2,7 @@ import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonom
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
-import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 

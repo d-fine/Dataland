@@ -1,6 +1,6 @@
-import { CompanyReport } from "@clients/backend";
+import { type CompanyReport } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { AxiosError } from "axios";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 

@@ -1,4 +1,4 @@
-import { EuTaxonomyDataForFinancials, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type EuTaxonomyDataForFinancials, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomYesNoNa, randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";

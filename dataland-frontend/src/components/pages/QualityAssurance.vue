@@ -74,26 +74,26 @@ import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import {
-  CompanyDataControllerApiInterface,
-  CompanyInformation,
-  DataMetaInformation,
+  type CompanyDataControllerApiInterface,
+  type CompanyInformation,
+  type DataMetaInformation,
   DataTypeEnum,
-  MetaDataControllerApiInterface,
+  type MetaDataControllerApiInterface,
 } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
-import DataTable, { DataTablePageEvent, DataTableRowClickEvent } from "primevue/datatable";
+import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
 import QADatasetModal from "@/components/general/QaDatasetModal.vue";
 import { AxiosError } from "axios";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import { QaControllerApi } from "@clients/qaservice";
+import { type QaControllerApi } from "@clients/qaservice";
 
 export default defineComponent({
   name: "QualityAssurance",

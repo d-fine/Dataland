@@ -1,7 +1,7 @@
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import DatasetOverview from "@/components/pages/DatasetOverview.vue";
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 
 describe("Component tests for the DatasetOverview page", () => {
   it("Should not display the New Dataset button to non-uploader users", () => {

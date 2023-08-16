@@ -1,7 +1,7 @@
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { DocumentReference, YesNo } from "@clients/backend";
-import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { type DocumentReference, YesNo } from "@clients/backend";
+import { type KpiDataObject, type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 describe("Component test for TwoLayerDataTable", () => {
   const dataId = "dummyId";

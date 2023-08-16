@@ -1,16 +1,16 @@
 import { doThingsInChunks, admin_name, admin_pw, wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
 import {
-  DataMetaInformation,
+  type DataMetaInformation,
   DataTypeEnum,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
-  LksgData,
-  PathwaysToParisData,
-  SfdrData,
-  SmeData,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
+  type LksgData,
+  type PathwaysToParisData,
+  type SfdrData,
+  type SmeData,
 } from "@clients/backend";
 import { countCompaniesAndDataSetsForDataType } from "@e2e//utils/GeneralApiUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";

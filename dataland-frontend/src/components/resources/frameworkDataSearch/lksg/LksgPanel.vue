@@ -13,20 +13,20 @@
 </template>
 
 <script lang="ts">
-import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { type KpiDataObject, type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { Subcategory, Field } from "@/utils/GenericFrameworkTypes";
+import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { type Subcategory, type Field } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationLksgData, LksgData, LksgProcurementCategory } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import { type DataAndMetaInformationLksgData, type LksgData, type LksgProcurementCategory } from "@clients/backend";
+import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
+import { type ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import { convertToMillions } from "@/utils/NumberConversionUtils";
 import { convertNace } from "@/utils/NaceCodeConverter";

@@ -1,5 +1,5 @@
-import { FixtureData } from "@sharedUtils/Fixtures";
-import { SmeData } from "@clients/backend";
+import { type FixtureData } from "@sharedUtils/Fixtures";
+import { type SmeData } from "@clients/backend";
 import { generateSmeFixtures } from "@e2e/fixtures/sme/SmeDataFixtures";
 
 /**

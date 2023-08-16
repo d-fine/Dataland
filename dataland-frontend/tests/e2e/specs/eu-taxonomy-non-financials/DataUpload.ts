@@ -1,10 +1,10 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
-  CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-  DataMetaInformation,
+  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  type DataMetaInformation,
   DataTypeEnum,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
@@ -17,7 +17,7 @@ import {
   uploadEuTaxonomyDataForNonFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { goToEditFormOfMostRecentDataset, uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralUtils";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import Chainable = Cypress.Chainable;
 

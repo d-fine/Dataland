@@ -96,7 +96,7 @@ import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import PrimeButton from "primevue/button";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { LksgProcurementCategory } from "@clients/backend";
+import { type LksgProcurementCategory } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 
 export default defineComponent({

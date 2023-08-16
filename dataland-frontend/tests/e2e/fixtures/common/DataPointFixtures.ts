@@ -1,12 +1,12 @@
 import { faker } from "@faker-js/faker";
 import {
-  CompanyReportReference,
-  DataPointOneValueBigDecimal,
-  DataPointOneValueYesNo,
+  type CompanyReportReference,
+  type DataPointOneValueBigDecimal,
+  type DataPointOneValueYesNo,
   QualityOptions,
 } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
-import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNo, randomYesNoNa } from "./YesNoFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";

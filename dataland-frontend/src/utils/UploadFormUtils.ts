@@ -1,4 +1,4 @@
-import { Category, FrameworkData, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { type Category, type FrameworkData, type Subcategory } from "@/utils/GenericFrameworkTypes";
 
 /**
  * Creates a map of all subcategories of a framework and associates a boolean with it to decide if the

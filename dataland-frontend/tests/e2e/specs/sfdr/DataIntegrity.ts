@@ -1,10 +1,10 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
-import { DataTypeEnum, SfdrData } from "@clients/backend";
+import { DataTypeEnum, type SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { selectsReportsForUploadInSfdrForm, uploadCompanyAndSfdrDataViaApi } from "@e2e/utils/SfdrUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
 

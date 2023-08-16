@@ -1,10 +1,10 @@
-import { DataMetaInformation, DataTypeEnum, LksgData, StoredCompany } from "@clients/backend";
+import { type DataMetaInformation, DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describeIf(
   "As a user, I expect to be able to edit datasets with multiple reporting periods",

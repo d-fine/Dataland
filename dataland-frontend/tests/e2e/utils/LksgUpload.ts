@@ -1,12 +1,12 @@
 import {
-  CompanyAssociatedDataLksgData,
-  CompanyInformation,
+  type CompanyAssociatedDataLksgData,
+  type CompanyInformation,
   Configuration,
-  DataMetaInformation,
-  LksgData,
+  type DataMetaInformation,
+  type LksgData,
   LksgDataControllerApi,
 } from "@clients/backend";
-import { UploadIds } from "./GeneralApiUtils";
+import { type UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
