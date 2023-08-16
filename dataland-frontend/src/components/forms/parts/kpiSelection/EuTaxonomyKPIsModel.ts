@@ -62,7 +62,6 @@ export const euTaxonomyKpiNameMappings = {
   interbankLoans: "On-demand Interbank Loans",
   reportDate: "Report Date",
   reportingPeriod: "Reporting Period",
-  nfrdMandatory: "NFRD Mandatory",
   totalAmount: "Total Amount",
   alignedPercentage: "Aligned Percentage",
   alignedAmount: "Aligned Amount",
@@ -180,7 +179,6 @@ export const euTaxonomyKpiInfoMappings = {
   groupLevelEsefReport: "Is the ESEF Report on a Group level?",
   esefReportDate: "The date until which the information presented in the report is valid.",
   esefReportCurrency: "The 3-letter alpha code that represents the currency used in the report.",
-  nfrdMandatory: "Does the company fall under NFRD?",
 
   quality: "The level of confidence associated to the value.",
   page: "The page number of the document from where the information was sourced.",
