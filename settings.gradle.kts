@@ -17,7 +17,7 @@ include(
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
             library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.10.0")
 
@@ -44,12 +44,12 @@ dependencyResolutionManagement {
             library("cloudevents-api", "io.cloudevents:cloudevents-api:2.5.0")
             library("cloudevents-json-jackson", "io.cloudevents:cloudevents-json-jackson:2.5.0")
             library("cloudevents-core", "io.cloudevents:cloudevents-core:2.5.0")
-            library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.4")
+            library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.5")
             library("mailjet-client", "com.mailjet:mailjet-client:5.2.3")
 
             library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.29")
 
-            library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:5.0.0")
+            library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:5.1.0")
             library("mockito-inline", "org.mockito:mockito-inline:5.2.0")
 
             library("json", "org.json:json:20230618")
