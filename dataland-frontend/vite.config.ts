@@ -72,5 +72,23 @@ export default defineConfig({
             ignored: ["**/coverage/**"],
             usePolling: process.env.POLLING === "true",
         },
+        proxy: {
+            'api': {
+                target: 'https://test.dataland.com',
+                changeOrigin: true,
+                headers: {
+                    authorization: "Bearer <yourToken>",
+                },
+            },
+        },
+        proxy: {
+            'api': {
+                target: 'https://test.dataland.com',
+                changeOrigin: true,
+                headers: {
+                    authorization: "Bearer NjUzNDM1NjAtMzEwOC00ZjBjLWFmM2YtZDk2MjcwZGQyNjQ2_8cc88f2f833f89155fe62e3182a918014d13e584cd4cf7877482e98990408768335ae5307c2c65df_3402257606",
+                },
+            },
+        },
     },
 });

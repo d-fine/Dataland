@@ -1,4 +1,4 @@
-import Keycloak, { KeycloakError, KeycloakInitOptions, KeycloakPromise } from "keycloak-js";
+import Keycloak from "keycloak-js";
 
 export interface KeycloakMockConfiguration {
   userId?: string;
