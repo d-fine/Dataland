@@ -6,7 +6,7 @@ import { IdentifierType, CompanyInformation, DataMetaInformation, DataTypeEnum, 
  * DATASETS" page
  * @returns The dummy dataSearchStoredCompany instance as an array with one entry
  */
-export function prepareSimpleDataSearchStoredCompanyArray(): DataSearchStoredCompany[] {
+export function prepareSimpleDataSearchStoredCompanyArray(no_iterations= 1): DataSearchStoredCompany[] {
   const mockCompanyInformation: CompanyInformation = {
     companyName: "testCompany",
     headquarters: "testHeadquarters",
@@ -33,9 +33,8 @@ export function prepareSimpleDataSearchStoredCompanyArray(): DataSearchStoredCom
     permId: mockCompanyInformation.identifiers[IdentifierType.PermId][0],
     dataRegisteredByDataland: [mockDataMetaInformation],
   }
-  let result = [];
-  const N = 100;
-  for (let i = 0; i < N; i++) {
+  const result = [];
+  for (let i = 0; i < no_iterations; i++) {
     result.push(oneMockCompany);
   }
 

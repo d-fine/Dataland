@@ -1,10 +1,9 @@
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { prepareSimpleDataSeasrchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
-import Keycloak from "keycloak-js";
-import {beforeEach} from "node:test";
+import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
+
 describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", () => {
-    const mockDataSearchStoredCompanyArray = prepareSimpleDataSeasrchStoredCompanyArray();
+    const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray(200);
     before(() => {
         cy.intercept("**/api/companies?**", mockDataSearchStoredCompanyArray);
         cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
@@ -25,18 +24,20 @@ describe("As a user, I expect there to be multiple result pages if there are man
 
     it("Do a search with 0 matches, then assure that the paginator is gone and the page text says no results", () => {
         const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
+        cy.wait(5000);
         cy.get("input[id=search_bar_top]")
             .should("exist")
             .type(inputValueThatWillResultInZeroMatches)
             .type("{enter}")
-            .should("have.value", inputValueThatWillResultInZeroMatches);
+            .should("have.value", inputValueThatWillResultInZeroMatches)
+            .clear();
         cy.get("div.p-paginator").should("not.exist");
         cy.contains("span", "No results");
     });
 
     it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
         const inputValue = "a";
-
+        cy.wait(5000);
         cy.get("input[id=search_bar_top]")
             .should("not.be.disabled")
             .click({ force: true })
