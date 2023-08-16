@@ -91,7 +91,8 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sfdr/SfdrDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
-                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt",
+                "dataland-backend/src/main/kotlin/" +
+                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt",
         )
     }
 }
