@@ -4425,12 +4425,22 @@
             "type": "object",
             "additionalProperties": {
               "type": "number"
+            },
+            "example": {
+              "ClimateMitigation": 20.0,
+              "ClimateAdaptation": 20.0,
+              "Water": 20.0
             }
           },
           "dnshCriteria": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/YesNo"
+            },
+            "example": {
+              "ClimateMitigation": "Yes",
+              "ClimateAdaptation": "Yes",
+              "Water": "No"
             }
           },
           "minimumSafeguards": {
@@ -4530,6 +4540,11 @@
             "type": "object",
             "additionalProperties": {
               "type": "number"
+            },
+            "example": {
+              "ClimateMitigation": 20.0,
+              "ClimateAdaptation": 20.0,
+              "Water": 20.0
             }
           },
           "alignedActivities": {
@@ -4537,6 +4552,12 @@
             "items": {
               "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
             }
+          },
+          "totalEnablingShare": {
+            "type": "number"
+          },
+          "totalTransitionalShare": {
+            "type": "number"
           }
         }
       },

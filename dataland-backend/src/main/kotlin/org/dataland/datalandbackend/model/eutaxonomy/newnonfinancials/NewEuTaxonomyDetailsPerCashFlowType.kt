@@ -1,7 +1,9 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataPointOneValue
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.EnvironmentalObjective
+import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
 
 /**
@@ -15,6 +17,9 @@ data class NewEuTaxonomyDetailsPerCashFlowType(
     val totalNonAlignedShare: FinancialShare?,
     val nonAlignedActivities: List<EuTaxonomyActivity>?,
     val totalAlignedShare: FinancialShare?,
+    @field:Schema(example = JsonExampleFormattingConstants.SUBSTANTIAL_CONTRIBUTION_CRITIREA)
     val substantialContributionCriteria: Map<EnvironmentalObjective, BigDecimal>?,
     val alignedActivities: List<EuTaxonomyAlignedActivity>?,
+    val totalEnablingShare: BigDecimal?,
+    val totalTransitionalShare: BigDecimal?,
 )
