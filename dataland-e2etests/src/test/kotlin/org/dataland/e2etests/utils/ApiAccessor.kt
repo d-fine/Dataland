@@ -5,12 +5,14 @@ import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancial
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.NewEuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
@@ -20,6 +22,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.NewEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
@@ -66,6 +69,28 @@ class ApiAccessor {
             )
         return dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             companyAssociatedEuTaxonomyNonFinancialsData, bypassQa,
+        )
+    }
+
+    val dataControllerApiForNewEuTaxonomyNonFinancials =
+        NewEuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForNewEuTaxonomyDataForNonFinancials =
+        FrameworkTestDataProvider(NewEuTaxonomyDataForNonFinancials::class.java)
+    fun newEuTaxonomyNonFinancialsUploaderFunction(
+        companyId: String,
+        newEuTaxonomyNonFinancialsData: NewEuTaxonomyDataForNonFinancials,
+        reportingPeriod: String,
+        bypassQa: Boolean = true,
+    ): DataMetaInformation {
+        val companyAssociatedNewEuTaxonomyNonFinancialsData =
+            CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials(
+                companyId,
+                reportingPeriod,
+                newEuTaxonomyNonFinancialsData,
+            )
+        println(companyAssociatedNewEuTaxonomyNonFinancialsData)
+        return dataControllerApiForNewEuTaxonomyNonFinancials.postCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
+            companyAssociatedNewEuTaxonomyNonFinancialsData, bypassQa,
         )
     }
 
@@ -234,6 +259,16 @@ class ApiAccessor {
                 listOfFrameworkData = testDataProviderForEuTaxonomyDataForNonFinancials
                     .getTData(numberOfDataSetsPerCompany),
                 frameworkDataUploadFunction = this::euTaxonomyNonFinancialsUploaderFunction,
+                uploadConfig = uploadConfig,
+                reportingPeriod = reportingPeriod,
+                ensureQaPassed = ensureQaPassed,
+            )
+
+            DataTypeEnum.newMinusEutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
+                listOfCompanyInformation = listOfCompanyInformation,
+                listOfFrameworkData = testDataProviderForNewEuTaxonomyDataForNonFinancials
+                    .getTData(numberOfDataSetsPerCompany),
+                frameworkDataUploadFunction = this::newEuTaxonomyNonFinancialsUploaderFunction,
                 uploadConfig = uploadConfig,
                 reportingPeriod = reportingPeriod,
                 ensureQaPassed = ensureQaPassed,
