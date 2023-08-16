@@ -48,6 +48,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
       const reportingPeriodDropdownSelector = "div#chooseReportingPeriodDropdown";
       const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
+      const dropdownPanelSelector = "div.p-dropdown-panel";
       const searchBarSelectorForViewPage = "input#framework_data_search_bar_standard";
 
       const nonExistingDataId = "abcd123123123123123-non-existing";
@@ -138,6 +139,10 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param expectedDropdownOptions The expected options for this dropdown
        */
       function validateDropdownOptions(dropdownSelector: string, expectedDropdownOptions: Set<string>): void {
+        // Click anywhere and assert that there is no currently open dropdown modal (fix for flakyness)
+        cy.get("body").click(0, 0);
+        cy.get(dropdownPanelSelector).should("not.exist");
+
         cy.get(dropdownSelector).click();
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector).should("exist");
