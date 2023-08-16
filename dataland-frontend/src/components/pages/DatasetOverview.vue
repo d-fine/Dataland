@@ -1,8 +1,8 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="1">
-      <TheContent class="p-3 min-h-screen paper-section relative">
+    <TheContent class="paper-section relative">
+      <DatasetsTabMenu :initial-tab-index="1">
         <div class="col-12 flex flex-row justify-content-between align-items-end">
           <NewDatasetButton v-if="hasUserUploaderRights" />
         </div>
@@ -18,8 +18,8 @@
         <div v-else-if="datasetTableInfos.length === 0">
           <h1 class="mb-0" data-test="noDatasetUploadedText">No datasets uploaded</h1>
         </div>
-      </TheContent>
-    </DatasetsTabMenu>
+      </DatasetsTabMenu>
+    </TheContent>
     <TheFooter />
   </AuthenticationWrapper>
 </template>

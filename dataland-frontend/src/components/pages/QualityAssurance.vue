@@ -1,10 +1,10 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="2">
-      <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
-        <TheContent class="paper-section flex">
-          <div class="col-12 text-left pb-0">
+    <TheContent class="paper-section flex">
+      <DatasetsTabMenu :initial-tab-index="2">
+        <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
+          <div class="col-12 text-left p-3">
             <h1>Quality Assurance</h1>
             <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
               <p class="font-medium text-xl">Loading data to be reviewed...</p>
@@ -61,9 +61,9 @@
               </DataTable>
             </div>
           </div>
-        </TheContent>
-      </AuthorizationWrapper>
-    </DatasetsTabMenu>
+        </AuthorizationWrapper>
+      </DatasetsTabMenu>
+    </TheContent>
     <TheFooter />
   </AuthenticationWrapper>
 </template>

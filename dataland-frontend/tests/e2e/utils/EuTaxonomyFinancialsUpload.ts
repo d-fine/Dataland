@@ -78,7 +78,7 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     .find('[data-test="dataPointToggleTitle"]')
     .should("contain.text", "Data point is available");
   if (data.nfrdMandatory !== undefined) {
-    cy.get(`input[name="reportingObligation"][value=${data.nfrdMandatory.toString()}]`).check();
+    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory.toString()}]`).check();
   }
   cy.get(
     `input[name="fiscalYearDeviation"][value=${
@@ -97,7 +97,7 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     expect(scrollPosition).to.be.greaterThan(0);
   });
   cy.get(
-    `input[name="activityLevelReporting"][value=${
+    `input[name="euTaxonomyActivityLevelReporting"][value=${
       data.euTaxonomyActivityLevelReporting ? data.euTaxonomyActivityLevelReporting.toString() : "No"
     }]`,
   ).check();
@@ -289,7 +289,7 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   dateFormElement.validateDay("fiscalYearEnd", 12);
 
   if (data.nfrdMandatory !== undefined) {
-    cy.get(`input[name="reportingObligation"][value=${data.nfrdMandatory.toString()}]`).check();
+    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory.toString()}]`).check();
   }
 
   cy.get(
