@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataPointOneValue
-import org.dataland.datalandbackend.model.DataPointWithUnit
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.EnvironmentalObjective
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
