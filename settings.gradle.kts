@@ -47,7 +47,7 @@ dependencyResolutionManagement {
             library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.4")
             library("mailjet-client", "com.mailjet:mailjet-client:5.2.3")
 
-            library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.29")
+            library("pdfbox", "org.apache.pdfbox:pdfbox:3.0.0")
 
             library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:5.0.0")
             library("mockito-inline", "org.mockito:mockito-inline:5.2.0")
