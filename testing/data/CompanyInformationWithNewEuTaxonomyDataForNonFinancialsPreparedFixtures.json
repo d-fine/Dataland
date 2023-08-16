@@ -2,296 +2,423 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Roycetown",
-			"headquartersPostalCode": "78320",
+			"headquarters": "Ellicott City",
+			"headquartersPostalCode": "75080",
 			"identifiers": {
 				"Lei": [
-					"3SOyH8FV49a2FoCcnEeq"
+					"EuucDddHg8pnAa01Bs3a"
 				],
 				"Isin": [],
 				"PermId": [
-					"263AwpaQk7"
+					"skpMxEgSAC"
 				],
 				"Ticker": [
-					"Rzk2Dkp"
-				],
-				"Duns": [
-					"iVhQIcKlL"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "NO",
-			"companyAlternativeNames": [
-				"Ernser - Reilly",
-				"Lueilwitz - Cummings"
-			],
-			"website": "https://bogus-bank.name",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"referencedReports": {
-					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "Yes",
-						"currency": "VES"
-					},
-					"SustainabilityReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "Yes",
-						"currency": "LAK"
-					}
-				},
-				"assurance": {
-					"assurance": "ReasonableAssurance"
-				},
-				"scopeOfEntities": "Yes",
-				"euTaxonomyActivityLevelReporting": "No"
-			},
-			"opex": {
-				"totalEligibleShare": {
-					"percentage": 16.565190465189517,
-					"currency": "USD"
-				}
-			},
-			"capex": {
-				"totalEligibleShare": {
-					"percentage": 4.650815366767347,
-					"currency": "CHF"
-				}
-			},
-			"revenue": {
-				"totalEligibleShare": {
-					"percentage": 68.83621769957244,
-					"currency": "AUD"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Charlotte",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"9jYcAGk5cVxO"
-				],
-				"PermId": [
-					"VAo0xGOpMG"
-				],
-				"Ticker": [],
-				"Duns": [
-					"qzU7Mux6l"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"TgtzLLlzoDfWXfU"
-				]
-			},
-			"countryCode": "KH",
-			"companyAlternativeNames": [
-				"Kautzer - Reilly",
-				"Koss - Mosciski"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"fiscalYearDeviation": "NoDeviation",
-				"numberOfEmployees": 43838,
-				"referencedReports": {
-					"ESEFReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "No",
-						"currency": "SYP"
-					}
-				},
-				"assurance": {
-					"assurance": "LimitedAssurance",
-					"provider": "Luettgen - Ryan",
-					"dataSource": {
-						"page": 1076,
-						"report": "ESEFReport",
-						"tagName": "mindshare"
-					}
-				},
-				"euTaxonomyActivityLevelReporting": "Yes"
-			},
-			"opex": {
-				"totalAmount": {
-					"value": 72352.35855914652,
-					"dataSource": {
-						"page": 1191,
-						"report": "ESEFReport",
-						"tagName": "technologies"
-					},
-					"quality": "Reported",
-					"comment": "copy virtual feed"
-				},
-				"totalEligibleShare": {
-					"percentage": 49.089666130021214,
-					"absoluteShare": 0.09666826296597719,
-					"currency": "EUR"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 220967.6629747264,
-					"dataSource": {
-						"page": 1081,
-						"report": "ESEFReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Audited",
-					"comment": "compress solid state transmitter"
-				},
-				"totalEligibleShare": {
-					"percentage": 39.10520630888641,
-					"absoluteShare": 0.8752125650644302,
-					"currency": "USD"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 349044.97334500775,
-					"quality": "Incomplete"
-				},
-				"totalEligibleShare": {
-					"percentage": 31.923995655961335,
-					"absoluteShare": 0.689121397677809,
-					"currency": "AUD"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Alishire",
-			"sector": "blockchains",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"xj8pDswI51fb"
-				],
-				"PermId": [],
-				"Ticker": [
-					"Y1Qlua8"
+					"UbFxxJg"
 				],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"2JHA7cMQZ"
+				],
 				"CompanyRegistrationNumber": [
-					"QapAo23jKHEhhgR"
+					"zCEEfPql3DZMJ30"
 				]
 			},
-			"countryCode": "NZ",
+			"countryCode": "ST",
 			"companyAlternativeNames": [
-				"Cartwright - Goodwin",
-				"Kling - VonRueden",
-				"Kozey, Brekke and Boyle"
+				"Casper Group",
+				"Glover Group",
+				"Mertz LLC",
+				"O'Conner - Bartoletti"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://nervous-begonia.biz",
+			"companyLegalForm": "GmbH",
+			"website": "https://standard-paperback.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"fiscalYearDeviation": "Deviation",
-				"numberOfEmployees": 48100,
-				"assurance": {
-					"assurance": "None"
+				"fiscalYearEnd": "2022-09-13",
+				"referencedReports": {
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "Yes",
+						"currency": "ZWL"
+					},
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "NA",
+						"currency": "PLN"
+					},
+					"AnnualReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "UAH"
+					}
 				},
-				"scopeOfEntities": "NA"
+				"assurance": {
+					"assurance": "LimitedAssurance",
+					"provider": "Cartwright - Koch",
+					"dataSource": {
+						"page": 158,
+						"report": "ESEFReport",
+						"tagName": "channels"
+					}
+				},
+				"scopeOfEntities": "Yes"
 			},
 			"opex": {
-				"totalNonEligibleShare": {
-					"percentage": 39.819888840429485,
-					"absoluteShare": 0.7587733902037144,
-					"currency": "USD"
+				"totalEligibleShare": {
+					"percentage": 20.044552395120263
+				}
+			},
+			"capex": {
+				"totalEligibleShare": {}
+			},
+			"revenue": {
+				"totalEligibleShare": {}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Kilbackstad",
+			"sector": "models",
+			"identifiers": {
+				"Lei": [
+					"0JnQGJyP5Qw1RFUdTWKh"
+				],
+				"Isin": [],
+				"PermId": [
+					"9tByOhSy0u"
+				],
+				"Ticker": [
+					"mzRjdBv"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"5uyyDMfXP"
+				],
+				"CompanyRegistrationNumber": [
+					"kF8yScYbbmg8upm"
+				]
+			},
+			"countryCode": "TJ",
+			"companyAlternativeNames": [
+				"Paucek - King"
+			],
+			"website": "https://dishonest-lipstick.biz/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearEnd": "2022-12-19",
+				"numberOfEmployees": 98184,
+				"referencedReports": {
+					"AnnualReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "FJD"
+					},
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "No",
+						"currency": "IDR"
+					}
+				},
+				"assurance": {
+					"assurance": "LimitedAssurance",
+					"provider": "Dibbert Group"
+				},
+				"scopeOfEntities": "No"
+			},
+			"opex": {
+				"totalAmount": {
+					"value": 699465.131748002,
+					"quality": "Incomplete"
 				},
 				"totalEligibleShare": {
-					"percentage": 30.690138461068273,
-					"absoluteShare": 0.9448938781861216,
-					"currency": "USD"
-				},
-				"substantialContributionCriteria": {
-					"ClimateAdaptation": 15.241280500777066,
-					"CircularEconomy": 44.189461204223335,
-					"ClimateMitigation": 69.16498644277453,
-					"PollutionPrevention": 74.39466323703527,
-					"Water": 44.85628358088434
+					"absoluteShare": {}
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 313737.1785705909,
+					"value": 516955.98284713924,
+					"dataSource": {
+						"page": 517,
+						"report": "AnnualReport",
+						"tagName": "lifetime value"
+					},
+					"quality": "Estimated",
+					"comment": "calculate multi-byte bus"
+				},
+				"totalEligibleShare": {
+					"percentage": 87.8472451120615,
+					"absoluteShare": {
+						"amount": 241026.6713355668
+					}
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 73699.63492965326,
+					"quality": "Incomplete"
+				},
+				"totalEligibleShare": {
+					"absoluteShare": {}
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "West Dante",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [],
+				"PermId": [
+					"aqI11bWTNI"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"g090D81Jz"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "VU",
+			"companyAlternativeNames": [
+				"Kutch Group",
+				"Labadie Inc",
+				"Schowalter - Schneider",
+				"Zulauf and Sons"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearDeviation": "Deviation",
+				"assurance": {
+					"assurance": "ReasonableAssurance",
+					"dataSource": {
+						"page": 151,
+						"report": "ESEFReport",
+						"tagName": "partnerships"
+					}
+				},
+				"scopeOfEntities": "Yes",
+				"euTaxonomyActivityLevelReporting": "Yes"
+			},
+			"opex": {
+				"totalEligibleShare": {
+					"percentage": 26.288838894106448,
+					"absoluteShare": {}
+				},
+				"nonAlignedActivities": [],
+				"totalAlignedShare": {
+					"absoluteShare": {}
+				},
+				"substantialContributionCriteria": {
+					"ClimateMitigation": 44.379355176351964,
+					"CircularEconomy": 8.658866118639708,
+					"ClimateAdaptation": 2.2029767278581858,
+					"Water": 26.437849598005414,
+					"Biodiversity": 4.679756239056587
+				},
+				"alignedActivities": [
+					{
+						"activityName": "AnaerobicDigestionOfSewageSludge",
+						"naceCodes": [
+							"E",
+							"H",
+							"K",
+							"M"
+						],
+						"substantialContributionCriteria": {
+							"Water": 1.8996603786945343,
+							"ClimateAdaptation": 28.280952596105635
+						},
+						"dnshCriteria": {
+							"PollutionPrevention": "Yes",
+							"ClimateAdaptation": "Yes",
+							"CircularEconomy": "Yes",
+							"Biodiversity": "Yes",
+							"Water": "Yes",
+							"ClimateMitigation": "No"
+						},
+						"minimumSafeguards": "Yes"
+					}
+				],
+				"totalEnablingShare": 14.618206955492496,
+				"totalTransitionalShare": 6.468936405144632
+			},
+			"capex": {
+				"totalAmount": {
 					"quality": "Incomplete"
 				},
 				"totalNonEligibleShare": {
-					"percentage": 95.91880107764155,
-					"absoluteShare": 0.2587744640186429,
-					"currency": "CHF"
-				},
-				"totalEligibleShare": {
-					"percentage": 59.51667602639645,
-					"absoluteShare": 0.849539055256173,
-					"currency": "USD"
+					"percentage": 85.46760701574385,
+					"absoluteShare": {
+						"currency": "EUR"
+					}
 				},
 				"nonAlignedActivities": [
 					{
-						"activityName": "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
-						"naceCodes": [
-							"B"
-						],
+						"activityName": "Education",
 						"share": {
-							"percentage": 6.131672882474959,
-							"absoluteShare": 0.2554387766867876,
-							"currency": "CHF"
+							"percentage": 73.0158094316721,
+							"absoluteShare": {}
+						}
+					},
+					{
+						"activityName": "InstallationAndOperationOfElectricHeatPumps"
+					},
+					{
+						"activityName": "TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+						"naceCodes": [
+							"A",
+							"C",
+							"H",
+							"J"
+						]
+					}
+				],
+				"totalAlignedShare": {},
+				"substantialContributionCriteria": {
+					"ClimateMitigation": 68.51839425507933,
+					"PollutionPrevention": 12.080301414243877,
+					"Water": 68.98936110083014,
+					"Biodiversity": 75.30057048425078
+				},
+				"alignedActivities": [],
+				"totalTransitionalShare": 67.55884962622076
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": {},
+					"dataSource": {
+						"page": 40,
+						"report": "SustainabilityReport",
+						"tagName": "web services"
+					},
+					"quality": "Audited",
+					"comment": "generate auxiliary interface"
+				},
+				"totalNonEligibleShare": {},
+				"totalEligibleShare": {
+					"percentage": 21.361895371228456,
+					"absoluteShare": {
+						"currency": "USD"
+					}
+				},
+				"nonAlignedActivities": [
+					{
+						"activityName": "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+						"naceCodes": [
+							"A",
+							"D",
+							"I"
+						]
+					},
+					{
+						"activityName": "RenewalOfWaterCollectionTreatmentAndSupplySystems",
+						"naceCodes": [
+							"E",
+							"H",
+							"M"
+						]
+					},
+					{
+						"activityName": "AnaerobicDigestionOfBioWaste",
+						"share": {
+							"percentage": 86.07817683368921,
+							"absoluteShare": {}
+						}
+					},
+					{
+						"activityName": "Education"
+					},
+					{
+						"activityName": "Education",
+						"naceCodes": [],
+						"share": {
+							"absoluteShare": {
+								"currency": "CAD"
+							}
 						}
 					}
 				],
 				"substantialContributionCriteria": {
-					"ClimateMitigation": 26.706658117473125,
-					"ClimateAdaptation": 13.246856397017837,
-					"PollutionPrevention": 39.27808760199696
-				}
-			},
-			"revenue": {
-				"totalNonEligibleShare": {
-					"percentage": 26.9074383424595,
-					"absoluteShare": 0.10585135710425675,
-					"currency": "CAD"
+					"ClimateAdaptation": 83.74138297513127,
+					"CircularEconomy": 62.20314931124449,
+					"PollutionPrevention": 24.72001265268773,
+					"Water": 26.25862613786012,
+					"ClimateMitigation": 29.73689439240843
 				},
-				"totalNonAlignedShare": {
-					"percentage": 96.78689111024141,
-					"absoluteShare": 0.8138211669865996,
-					"currency": "CHF"
-				},
-				"nonAlignedActivities": [
+				"alignedActivities": [
 					{
-						"activityName": "ManufactureOfCement",
-						"naceCodes": [
-							"E",
-							"F",
-							"K"
-						]
+						"activityName": "SeaAndCoastalPassengerWaterTransport",
+						"share": {
+							"percentage": 31.24834392219782,
+							"absoluteShare": {
+								"currency": "CHF"
+							}
+						},
+						"substantialContributionCriteria": {
+							"PollutionPrevention": 42.50830803066492,
+							"CircularEconomy": 14.633108885027468,
+							"ClimateMitigation": 26.05172924231738
+						},
+						"dnshCriteria": {
+							"Biodiversity": "Yes",
+							"ClimateAdaptation": "No",
+							"Water": "No",
+							"CircularEconomy": "No",
+							"ClimateMitigation": "Yes",
+							"PollutionPrevention": "Yes"
+						},
+						"minimumSafeguards": "Yes"
+					},
+					{
+						"activityName": "PassengerInterurbanRailTransport",
+						"substantialContributionCriteria": {
+							"PollutionPrevention": 97.32276299037039,
+							"CircularEconomy": 41.98488185647875,
+							"ClimateAdaptation": 74.73259028047323
+						},
+						"dnshCriteria": {
+							"Water": "No",
+							"ClimateMitigation": "Yes",
+							"Biodiversity": "Yes",
+							"CircularEconomy": "No",
+							"ClimateAdaptation": "Yes"
+						}
+					},
+					{
+						"activityName": "StorageOfHydrogen",
+						"share": {
+							"percentage": 93.35167172830552,
+							"absoluteShare": {}
+						},
+						"substantialContributionCriteria": {
+							"PollutionPrevention": 0.7149177370592952,
+							"CircularEconomy": 47.25964849349111,
+							"ClimateAdaptation": 27.750566275790334
+						},
+						"dnshCriteria": {
+							"CircularEconomy": "No",
+							"ClimateAdaptation": "No",
+							"Biodiversity": "Yes",
+							"Water": "No",
+							"PollutionPrevention": "Yes"
+						}
 					}
 				],
-				"totalAlignedShare": {
-					"percentage": 52.36286190338433,
-					"absoluteShare": 0.0045262486673891544,
-					"currency": "EUR"
-				},
-				"substantialContributionCriteria": {
-					"Biodiversity": 45.683754701167345
-				}
+				"totalEnablingShare": 66.45729036536068
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2023"
 	}
 ]

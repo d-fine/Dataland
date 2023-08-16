@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataPointOneValue
+import org.dataland.datalandbackend.model.DataPointWithUnit
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.EnvironmentalObjective
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
@@ -11,7 +12,7 @@ import java.math.BigDecimal
  * Fields for each cashflow type in the EuTaxonomyForNonFinancials framework
  */
 data class NewEuTaxonomyDetailsPerCashFlowType(
-    val totalAmount: DataPointOneValue<BigDecimal>?,
+    val totalAmount: DataPointOneValue<MoneyAmount>?,
     val totalNonEligibleShare: FinancialShare?,
     val totalEligibleShare: FinancialShare?,
     val totalNonAlignedShare: FinancialShare?,

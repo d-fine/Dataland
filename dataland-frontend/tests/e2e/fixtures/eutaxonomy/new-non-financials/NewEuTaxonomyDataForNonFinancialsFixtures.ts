@@ -2,7 +2,7 @@ import {
   Activity,
   EuTaxonomyActivity,
   EuTaxonomyAlignedActivity,
-  FinancialShare,
+  FinancialShare, MoneyAmount,
   NewEuTaxonomyDataForNonFinancials,
   NewEuTaxonomyDetailsPerCashFlowType,
   YesNo,
@@ -31,14 +31,24 @@ function generatePercentage(): number {
 }
 
 /**
+ * Generates a random amount of money
+ * @returns an amount of money
+ */
+export function generateMoneyAmount(): MoneyAmount {
+  return {
+    amount: valueOrUndefined(randomEuroValue()),
+    currency: valueOrUndefined(generateIso4217CurrencyCode()),
+  };
+}
+
+/**
  * Generates a random financial share
  * @returns a financial share
  */
 export function generateFinancialShare(): FinancialShare {
   return {
-    percentage: generatePercentage(),
-    absoluteShare: faker.number.float(),
-    currency: generateIso4217CurrencyCode(),
+    percentage: valueOrUndefined(generatePercentage()),
+    absoluteShare: valueOrUndefined(generateMoneyAmount()),
   };
 }
 
@@ -99,7 +109,7 @@ export function generateNewEuTaxonomyPerCashflowType(
   reports: ReferencedDocuments,
 ): NewEuTaxonomyDetailsPerCashFlowType {
   return {
-    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
+    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(generateMoneyAmount()), reports)),
     totalNonEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalNonAlignedShare: valueOrUndefined(generateFinancialShare()),
@@ -107,6 +117,8 @@ export function generateNewEuTaxonomyPerCashflowType(
     totalAlignedShare: valueOrUndefined(generateFinancialShare()),
     substantialContributionCriteria: generateObject(Object.values(EnvironmentalObjective), generatePercentage),
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity)),
+    totalEnablingShare: valueOrUndefined(generatePercentage()),
+    totalTransitionalShare: valueOrUndefined(generatePercentage()),
   };
 }
 

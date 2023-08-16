@@ -4369,7 +4369,7 @@
           }
         }
       },
-      "DataPointOneValueBigDecimal": {
+      "DataPointOneValueMoneyAmount": {
         "required": [
           "quality"
         ],
@@ -4385,7 +4385,7 @@
             "type": "string"
           },
           "value": {
-            "type": "number"
+            "$ref": "#/components/schemas/MoneyAmount"
           }
         }
       },
@@ -4488,6 +4488,14 @@
             "type": "number"
           },
           "absoluteShare": {
+            "$ref": "#/components/schemas/MoneyAmount"
+          }
+        }
+      },
+      "MoneyAmount": {
+        "type": "object",
+        "properties": {
+          "amount": {
             "type": "number"
           },
           "currency": {
@@ -4516,7 +4524,7 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "$ref": "#/components/schemas/DataPointOneValueMoneyAmount"
           },
           "totalNonEligibleShare": {
             "$ref": "#/components/schemas/FinancialShare"
@@ -5576,6 +5584,26 @@
             "type": "string"
           },
           "valueAsAbsolute": {
+            "type": "number"
+          }
+        }
+      },
+      "DataPointOneValueBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "value": {
             "type": "number"
           }
         }
