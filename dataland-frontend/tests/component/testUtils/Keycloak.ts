@@ -1,4 +1,4 @@
-import Keycloak from "keycloak-js";
+import Keycloak, { KeycloakError, KeycloakInitOptions, KeycloakPromise } from "keycloak-js";
 
 export interface KeycloakMockConfiguration {
   userId?: string;
@@ -32,6 +32,9 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
     },
     hasRealmRole(role: string): boolean {
       return this.realmAccess.roles.includes(role);
+    },
+    init(initOptions: KeycloakInitOptions): KeycloakPromise<boolean, KeycloakError> {
+      return Promise.resolve(true) as KeycloakPromise<boolean, KeycloakError>;
     },
   };
   return mock as Keycloak;
