@@ -3,10 +3,11 @@ import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { DataTypeEnum, SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { selectsReportsForUploadInSfdrForm, uploadCompanyAndSfdrDataViaApi } from "@e2e/utils/SfdrUpload";
+import { selectsReportsForUploadInSfdrForm } from "@e2e/utils/SfdrUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
+import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -59,7 +60,8 @@ describeIf(
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyAndSfdrDataViaApi(
+        return uploadCompanyAndFrameworkData(
+          "sfdr",
           token,
           generateDummyCompanyInformation(testCompanyName),
           testSfdrCompany.t,

@@ -9,12 +9,9 @@ import {
   LksgData,
   SfdrData,
 } from "@clients/backend";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -272,7 +269,8 @@ describe("The shared header of the framework pages should act as expected", { sc
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
             .then((storedCompany) => {
               companyIdOfAlpha = storedCompany.companyId;
-              return uploadOneLksgDatasetViaApi(
+              return uploadFrameworkData(
+                "lksg",
                 token,
                 companyIdOfAlpha,
                 "2023",
@@ -283,7 +281,8 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-                return uploadOneLksgDatasetViaApi(
+                return uploadFrameworkData(
+                  "lksg",
                   token,
                   companyIdOfAlpha,
                   "2023",
@@ -293,7 +292,8 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-                return uploadOneLksgDatasetViaApi(
+                return uploadFrameworkData(
+                  "lksg",
                   token,
                   companyIdOfAlpha,
                   "2022",
@@ -302,7 +302,8 @@ describe("The shared header of the framework pages should act as expected", { sc
               });
             })
             .then(() => {
-              return uploadOneSfdrDataset(
+              return uploadFrameworkData(
+                "sfdr",
                 token,
                 companyIdOfAlpha,
                 "2019",
@@ -310,7 +311,8 @@ describe("The shared header of the framework pages should act as expected", { sc
               );
             })
             .then(() => {
-              return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+              return uploadFrameworkData(
+                "eutaxonomy-financials",
                 token,
                 companyIdOfAlpha,
                 "2019",
@@ -321,7 +323,8 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-                return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                return uploadFrameworkData(
+                  "eutaxonomy-financials",
                   token,
                   companyIdOfAlpha,
                   "2019",
@@ -331,7 +334,8 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-                return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                return uploadFrameworkData(
+                  "eutaxonomy-financials",
                   token,
                   companyIdOfAlpha,
                   "2016",
@@ -340,7 +344,8 @@ describe("The shared header of the framework pages should act as expected", { sc
               });
             })
             .then(() => {
-              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+              return uploadFrameworkData(
+                "eutaxonomy-non-financials",
                 token,
                 companyIdOfAlpha,
                 "2015",
@@ -359,7 +364,8 @@ describe("The shared header of the framework pages should act as expected", { sc
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
             .then(async (storedCompany) => {
               companyIdOfBeta = storedCompany.companyId;
-              return uploadOneLksgDatasetViaApi(
+              return uploadFrameworkData(
+                "lksg",
                 token,
                 companyIdOfBeta,
                 "2015",
@@ -367,7 +373,8 @@ describe("The shared header of the framework pages should act as expected", { sc
               );
             })
             .then(async () => {
-              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+              return uploadFrameworkData(
+                "eutaxonomy-non-financials",
                 token,
                 companyIdOfBeta,
                 "2014",
@@ -407,7 +414,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
-      let euTaxoNonFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+      let euTaxoNonFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
       let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
       let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
