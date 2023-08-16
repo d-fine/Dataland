@@ -24,7 +24,7 @@ dependencyResolutionManagement {
             library("moshi-kotlin", "com.squareup.moshi:moshi-kotlin:1.15.0")
             library("moshi-adapters", "com.squareup.moshi:moshi-adapters:1.15.0")
 
-            library("okhttp", "com.squareup.okhttp3:okhttp:5.0.0")
+            library("okhttp", "com.squareup.okhttp3:okhttp:4.11.0")
 
             library("log4j", "org.apache.logging.log4j:log4j:2.20.0")
             library("log4j-api", "org.apache.logging.log4j:log4j-api:2.20.0")
