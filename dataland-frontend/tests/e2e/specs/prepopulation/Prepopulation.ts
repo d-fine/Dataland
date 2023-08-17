@@ -29,11 +29,11 @@ describe(
     /**
      * A meta-programming function that allows the registration of a new framework for prepopulation
      * @param framework The framework to prepopulate
-     * @param fixtureJson The name of the Json file containing the fixtures
+     * @param nameOfFixtureJson The name of the Json file containing the fixtures
      */
     function registerFrameworkFakeFixtureUpload<K extends keyof FrameworkDataTypes>(
       framework: K,
-      fixtureJson: string,
+      nameOfFixtureJson: string,
     ): void {
       describeIf(
         `Upload and validate data for framework ${framework}`,
@@ -44,7 +44,7 @@ describe(
           let fixtureData: Array<FixtureData<FrameworkDataTypes[K]["data"]>>;
 
           before(function () {
-            cy.fixture(fixtureJson).then(function (jsonContent) {
+            cy.fixture(nameOfFixtureJson).then(function (jsonContent) {
               fixtureData = jsonContent as typeof fixtureData;
             });
           });
