@@ -177,6 +177,6 @@ function safeLogout(): void {
     .click()
     .get("a[id='profile-picture-dropdown-logout-anchor']")
     .click();
-  cy.contains("span", "Login");
+  cy.contains("span", "Login to preview account");
   cy.url().should("eq", getBaseUrl() + "/");
 }
