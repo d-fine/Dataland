@@ -55,7 +55,7 @@ jobs:
 #        env:
 #          DEBUG: cypress:*
         if: always()
-      - name: Upload Cypress Component Testing Logs
+      - name: Upload Cypress Component Testing Logss
         if: always()
         uses: actions/upload-artifact@v3
         with:
