@@ -12,7 +12,7 @@ data class NewEuTaxonomyDataForNonFinancials(
     @JsonProperty(required = true)
     val general: EuTaxonomyGeneral,
 
-    val revenue: NewEuTaxonomyDetailsPerCashFlowType?, // TODO should we rename "revenue" to "turnover"?
+    val revenue: NewEuTaxonomyDetailsPerCashFlowType?,
     val capex: NewEuTaxonomyDetailsPerCashFlowType?,
     val opex: NewEuTaxonomyDetailsPerCashFlowType?,
 )

@@ -13,19 +13,16 @@ class V4__MigrateEuTaxonomyNamesTest {
 
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected`() {
-        println("----------------------------RUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNS") // TODO
         testIfDataIsMaintained(YesNo.yes, YesNo.no, DataTypeEnum.eutaxonomyMinusNonMinusFinancials)
     }
 
     @Test
     fun `test that eu taxonomy for financials migration script works as expected`() {
-        println("----------------------------RUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNS")
         testIfDataIsMaintained(YesNo.yes, YesNo.no, DataTypeEnum.eutaxonomyMinusFinancials)
     }
 
     @Test
     fun `test that eu taxonomy migration script works as expected with unprovided values`() {
-        println("----------------------------RUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNSRUNS")
         testIfDataIsMaintained(YesNo.yes, null, DataTypeEnum.eutaxonomyMinusNonMinusFinancials)
     }
 
