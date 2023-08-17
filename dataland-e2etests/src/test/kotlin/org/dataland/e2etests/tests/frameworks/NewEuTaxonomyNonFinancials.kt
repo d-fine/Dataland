@@ -16,13 +16,11 @@ class NewEuTaxonomyNonFinancials {
 
     @Test
     fun `post a company with NewEuTaxonomyForNonFinancials data and check if the data can be retrieved correctly`() {
-        println(listOfOneNewEuTaxonomyNonFinancialsDataSet)
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneNewEuTaxonomyNonFinancialsDataSet,
             apiAccessor::newEuTaxonomyNonFinancialsUploaderFunction,
         )
-        println(listOfUploadInfo)
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForNewEuTaxonomyNonFinancials
             .getCompanyAssociatedNewEuTaxonomyDataForNonFinancials(receivedDataMetaInformation!!.dataId)

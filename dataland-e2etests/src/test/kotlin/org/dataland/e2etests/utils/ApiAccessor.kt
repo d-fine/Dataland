@@ -88,7 +88,6 @@ class ApiAccessor {
                 reportingPeriod,
                 newEuTaxonomyNonFinancialsData,
             )
-        println(companyAssociatedNewEuTaxonomyNonFinancialsData)
         return dataControllerApiForNewEuTaxonomyNonFinancials.postCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
             companyAssociatedNewEuTaxonomyNonFinancialsData, bypassQa,
         )
