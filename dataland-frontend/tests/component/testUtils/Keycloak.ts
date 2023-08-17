@@ -4,7 +4,7 @@ export interface KeycloakMockConfiguration {
   userId?: string;
   roles?: Array<string>;
   idTokenParsed?: { picture: string };
-  authenticated: boolean;
+  authenticated?: boolean;
 }
 
 /**
