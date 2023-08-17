@@ -16,8 +16,6 @@ import {
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/Stores";
-// eslint-disable-next-line no-restricted-imports
-import { minimalKeycloakMock } from "../tests/component/testUtils/Keycloak";
 
 export default defineComponent({
   name: "app",
@@ -82,7 +80,7 @@ export default defineComponent({
      * @returns a promise which resolves to the Keycloak adaptor object
      */
     initKeycloak(): Promise<Keycloak> {
-      const keycloak = minimalKeycloakMock({ userId: "dummyUser", roles: ["ROLE_USER"] });
+      const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
       keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
       return keycloak
         .init({

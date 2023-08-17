@@ -4,17 +4,18 @@ export interface KeycloakMockConfiguration {
   userId?: string;
   roles?: Array<string>;
   idTokenParsed?: { picture: string };
+  authenticated: boolean;
 }
 
 /**
- * A function returning a minmal keycloak mock sufficient for tricking the dataland frontend.
+ * A function returning a minimal keycloak mock sufficient for tricking the dataland frontend.
  * @param config some configuration options that specify the user you want to imitate
  * @returns a mocked keycloak object sufficient to trick the dataland frontend
  */
 export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak {
   const mock = {
     token: "mocked-token",
-    authenticated: true,
+    authenticated: config.authenticated ?? true,
     idTokenParsed: config.idTokenParsed ?? {
       sub: config.userId ?? "mock-user-id",
     },
