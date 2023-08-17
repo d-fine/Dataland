@@ -1,4 +1,4 @@
-import Keycloak, { KeycloakError, KeycloakInitOptions } from "keycloak-js";
+import Keycloak, { KeycloakInitOptions } from "keycloak-js";
 
 export interface KeycloakMockConfiguration {
   userId?: string;
@@ -39,8 +39,8 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
       the usage of this function ==> ESlint-Disable
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    init(initOptions: KeycloakInitOptions): KeycloakPromise<boolean, KeycloakError> {
-      return Promise.resolve(true) as KeycloakPromise<boolean, KeycloakError>;
+    init(initOptions: KeycloakInitOptions): Promise<boolean> {
+      return Promise.resolve(true);
     },
   };
   return mock as Keycloak;
