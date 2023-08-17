@@ -45,7 +45,7 @@ describeIf(
       const data = getPreparedFixture("company-for-all-types", preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then(
-          () => testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany.companyInformation.companyName),
+          (dataMetaInfo) => testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany, dataMetaInfo),
         );
       });
     });
@@ -63,15 +63,25 @@ describeIf(
 
 /**
  * Tests that the item was added and is visible on the QA list
- * @param companyName The name of the company
+ * @param storedCompany The company for which a dataset has been uploaded
+ * @param dataMetaInfo The meta info of the dataset that has been uploaded
  */
-function testSubmittedDatasetIsInReviewListAndAcceptIt(companyName: string): void {
+function testSubmittedDatasetIsInReviewListAndAcceptIt(
+  storedCompany: StoredCompany,
+  dataMetaInfo: DataMetaInformation,
+): void {
+  const companyName = storedCompany.companyInformation.companyName;
   testDatasetPresentWithCorrectStatus(companyName, "PENDING");
 
   safeLogout();
   login(reviewer_name, reviewer_pw);
 
+  cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadata");
+  cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformation");
+
   viewRecentlyUploadedDatasetsInQaTable();
+
+  cy.wait("@getMetadata").wait("@getCompanyInformation");
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
