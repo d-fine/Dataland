@@ -1,4 +1,4 @@
-import Keycloak from "keycloak-js";
+import Keycloak, { KeycloakError, KeycloakInitOptions } from "keycloak-js";
 
 export interface KeycloakMockConfiguration {
   userId?: string;
@@ -34,6 +34,11 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
     hasRealmRole(role: string): boolean {
       return this.realmAccess.roles.includes(role);
     },
+    /*
+      The init is required when developing locally against a remote backend. ESLint, however, does not recognize
+      the usage of this function ==> ESlint-Disable
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     init(initOptions: KeycloakInitOptions): KeycloakPromise<boolean, KeycloakError> {
       return Promise.resolve(true) as KeycloakPromise<boolean, KeycloakError>;
     },
