@@ -86,7 +86,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
     .get(".qa-review-company-name")
     .should("contain", companyName);
 
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click(); // TODO direkt click?
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
 
   cy.get(".p-dialog").should("exist").get(".p-dialog-header").should("contain", companyName);
   cy.get(".p-dialog").get('.p-dialog-content pre[id="dataset-container"]').should("not.be.empty");
