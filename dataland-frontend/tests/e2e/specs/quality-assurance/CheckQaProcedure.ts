@@ -44,7 +44,7 @@ describeIf(
           (dataMetaInfo) => {
             cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
             cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
-            testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany, dataMetaInfo);
+            testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
           },
         );
       });
@@ -68,12 +68,8 @@ describeIf(
 /**
  * Tests that the item was added and is visible on the QA list
  * @param storedCompany The company for which a dataset has been uploaded
- * @param dataMetaInfo The meta info of the dataset that has been uploaded
  */
-function testSubmittedDatasetIsInReviewListAndAcceptIt(
-  storedCompany: StoredCompany,
-  dataMetaInfo: DataMetaInformation,
-): void {
+function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredCompany): void {
   const companyName = storedCompany.companyInformation.companyName;
   login(uploader_name, uploader_pw);
 
