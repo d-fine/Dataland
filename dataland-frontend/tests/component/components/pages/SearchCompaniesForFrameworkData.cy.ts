@@ -1,7 +1,7 @@
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 
 describe("Component tests for 'Request Data' button on the level of company search", function (): void {
   const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray();

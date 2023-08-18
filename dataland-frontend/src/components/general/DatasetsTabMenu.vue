@@ -21,7 +21,7 @@ import { defineComponent, inject } from "vue";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "DatasetsTabMenu",

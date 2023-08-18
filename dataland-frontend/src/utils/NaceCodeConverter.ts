@@ -2,7 +2,7 @@
  * Module to convert single letter Nace code to full sector name
  */
 
-import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 
 /**

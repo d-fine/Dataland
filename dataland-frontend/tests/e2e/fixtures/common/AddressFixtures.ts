@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
-import { Address } from "@clients/backend";
+import { type Address } from "@clients/backend";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**

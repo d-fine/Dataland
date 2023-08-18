@@ -154,12 +154,12 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { EuTaxonomyDataForFinancials } from "@clients/backend";
+import { type EuTaxonomyDataForFinancials } from "@clients/backend";
 import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
 import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
 import ShowReportsBanner from "@/components/resources/frameworkDataSearch/ShowReportsBanner.vue";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({

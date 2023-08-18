@@ -133,17 +133,17 @@
 <script lang="ts">
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { type KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import {
-  ReportingPeriodOfDataSetWithId,
+  type ReportingPeriodOfDataSetWithId,
   mountRowHeaderClickEventListeners,
   unmountRowHeaderClickEventListeners,
 } from "@/utils/DataTableDisplay";
-import { BaseDataPointYesNo, YesNo } from "@clients/backend";
+import { type BaseDataPointYesNo, YesNo } from "@clients/backend";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Tooltip from "primevue/tooltip";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
   name: "TwoLayerDataTable",

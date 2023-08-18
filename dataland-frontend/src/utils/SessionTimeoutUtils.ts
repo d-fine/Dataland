@@ -1,6 +1,6 @@
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { loginAndRedirectToSearchPage, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { useSharedSessionStateStore } from "@/stores/Stores";
 
 export enum SessionDialogMode {

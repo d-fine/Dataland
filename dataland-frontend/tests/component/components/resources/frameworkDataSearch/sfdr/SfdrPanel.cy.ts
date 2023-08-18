@@ -1,12 +1,12 @@
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 import {
-  CompanyAssociatedDataSfdrData,
-  DataMetaInformation,
-  DataAndMetaInformationSfdrData,
+  type CompanyAssociatedDataSfdrData,
+  type DataMetaInformation,
+  type DataAndMetaInformationSfdrData,
   DataTypeEnum,
   QaStatus,
-  SfdrData,
+  type SfdrData,
 } from "@clients/backend";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 describe("Component tests for SfdrPanel", () => {

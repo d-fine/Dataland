@@ -18,13 +18,13 @@ import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComp
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationPathwaysToParisData, DataTypeEnum } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import { type DataAndMetaInformationPathwaysToParisData, DataTypeEnum } from "@clients/backend";
+import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
-import { Field } from "@/utils/GenericFrameworkTypes";
-import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 export default defineComponent({
   name: "P2pPanel",

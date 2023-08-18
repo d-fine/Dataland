@@ -1,16 +1,16 @@
 import {
   Configuration,
-  DataMetaInformation,
+  type DataMetaInformation,
   DataTypeEnum,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsControllerApi,
 } from "@clients/backend";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
@@ -22,8 +22,8 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
   uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
-  uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
-  uploadDocuments.fillAllReportsToUploadForms(1);
+  uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
+  uploadDocuments.fillAllFormsOfReportsSelectedForUpload(1);
 
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();

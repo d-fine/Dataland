@@ -51,12 +51,15 @@ jobs:
           cache: gradle
       - name: Frontend component testing
         run: timeout -v 15m ./testing/execute_frontend_component_tests.sh
+# Uncomment the lines below to enable debug logging for investigating flaky component tests.
+#        env:
+#          DEBUG: cypress:*
         if: always()
       - name: Upload Cypress Component Testing Logs
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: componentTestCypressLogs
+          name: componentTestCypressLogss
           path: cypress-component-test-logs.log
       - name: Upload lcov Exec Results
         if: always()

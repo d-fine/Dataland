@@ -1,5 +1,5 @@
-import { CompanyDataControllerApi, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
-import { RouteHandler } from "cypress/types/net-stubbing";
+import { CompanyDataControllerApi, Configuration, type DataTypeEnum, type StoredCompany } from "@clients/backend";
+import { type RouteHandler } from "cypress/types/net-stubbing";
 
 export interface UploadIds {
   companyId: string;

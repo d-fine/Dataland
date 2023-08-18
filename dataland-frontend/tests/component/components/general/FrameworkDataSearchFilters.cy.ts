@@ -1,6 +1,6 @@
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { VueWrapper } from "@vue/test-utils";
+import { type VueWrapper } from "@vue/test-utils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describe("Component test for FrameworkDataSearchFilters", () => {

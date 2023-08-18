@@ -1,5 +1,5 @@
 import { Configuration } from "@clients/backend";
-import { DocumentControllerApi, DocumentUploadResponse } from "@clients/documentmanager";
+import { DocumentControllerApi, type DocumentUploadResponse } from "@clients/documentmanager";
 
 /**
  * Uploads all documents provided in the documentDirectory folder
@@ -8,7 +8,9 @@ import { DocumentControllerApi, DocumentUploadResponse } from "@clients/document
 export function uploadAllDocuments(token: string): void {
   const documentDirectory = "../testing/data/documents/";
   cy.task("readdir", documentDirectory).then((fileNames) => {
-    (fileNames as string[]).forEach((name: string) => {
+    const allFileNames = fileNames as string[];
+    const pdfFileNames = allFileNames.filter((name: string) => name.endsWith(".pdf"));
+    pdfFileNames.forEach((name: string) => {
       cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
         uploadDocumentViaApi(token, bufferObject.data, name).catch((error) => console.log(error));
       });
