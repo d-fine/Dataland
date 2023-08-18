@@ -91,7 +91,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                   dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
                   const preparedFixture = getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures);
                   return uploadFrameworkData(
-                    "lksg",
+                    DataTypeEnum.Lksg,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     getRandomReportingPeriod(),

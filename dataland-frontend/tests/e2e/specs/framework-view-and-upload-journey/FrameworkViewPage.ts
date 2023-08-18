@@ -275,7 +275,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             .then((storedCompany) => {
               companyIdOfAlpha = storedCompany.companyId;
               return uploadFrameworkData(
-                "lksg",
+                DataTypeEnum.Lksg,
                 token,
                 companyIdOfAlpha,
                 "2023",
@@ -287,7 +287,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
                 return uploadFrameworkData(
-                  "lksg",
+                  DataTypeEnum.Lksg,
                   token,
                   companyIdOfAlpha,
                   "2023",
@@ -298,7 +298,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
                 return uploadFrameworkData(
-                  "lksg",
+                  DataTypeEnum.Lksg,
                   token,
                   companyIdOfAlpha,
                   "2022",
@@ -308,7 +308,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return uploadFrameworkData(
-                "sfdr",
+                DataTypeEnum.Sfdr,
                 token,
                 companyIdOfAlpha,
                 "2019",
@@ -317,7 +317,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return uploadFrameworkData(
-                "eutaxonomy-financials",
+                DataTypeEnum.EutaxonomyFinancials,
                 token,
                 companyIdOfAlpha,
                 "2019",
@@ -329,7 +329,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
                 return uploadFrameworkData(
-                  "eutaxonomy-financials",
+                  DataTypeEnum.EutaxonomyFinancials,
                   token,
                   companyIdOfAlpha,
                   "2019",
@@ -340,7 +340,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
                 return uploadFrameworkData(
-                  "eutaxonomy-financials",
+                  DataTypeEnum.EutaxonomyFinancials,
                   token,
                   companyIdOfAlpha,
                   "2016",
@@ -350,7 +350,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return uploadFrameworkData(
-                "eutaxonomy-non-financials",
+                DataTypeEnum.EutaxonomyFinancials,
                 token,
                 companyIdOfAlpha,
                 "2015",
@@ -370,7 +370,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             .then(async (storedCompany) => {
               companyIdOfBeta = storedCompany.companyId;
               return uploadFrameworkData(
-                "lksg",
+                DataTypeEnum.Lksg,
                 token,
                 companyIdOfBeta,
                 "2015",
@@ -379,7 +379,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(async () => {
               return uploadFrameworkData(
-                "eutaxonomy-non-financials",
+                DataTypeEnum.EutaxonomyNonFinancials,
                 token,
                 companyIdOfBeta,
                 "2014",

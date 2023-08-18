@@ -54,24 +54,28 @@ describeIf(
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          return uploadFrameworkData("p2p", token, storedCompany.companyId, "2021", p2pFixtureForTest.t).then(
-            (dataMetaInformation) => {
-              cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
-              cy.visitAndCheckAppMount(
-                "/companies/" +
-                  storedCompany.companyId +
-                  "/frameworks/" +
-                  DataTypeEnum.P2p +
-                  "/upload?templateDataId=" +
-                  dataMetaInformation.dataId,
-              );
-              cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-              cy.get("h1").should("contain", testCompanyName);
-              submitButton.clickButton();
-              cy.url().should("eq", getBaseUrl() + "/datasets");
-              validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
-            },
-          );
+          return uploadFrameworkData(
+            DataTypeEnum.P2p,
+            token,
+            storedCompany.companyId,
+            "2021",
+            p2pFixtureForTest.t,
+          ).then((dataMetaInformation) => {
+            cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+            cy.visitAndCheckAppMount(
+              "/companies/" +
+                storedCompany.companyId +
+                "/frameworks/" +
+                DataTypeEnum.P2p +
+                "/upload?templateDataId=" +
+                dataMetaInformation.dataId,
+            );
+            cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+            cy.get("h1").should("contain", testCompanyName);
+            submitButton.clickButton();
+            cy.url().should("eq", getBaseUrl() + "/datasets");
+            validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
+          });
         });
       });
     });

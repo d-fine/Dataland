@@ -57,9 +57,9 @@ describeIf(
         const testCompany = generateDummyCompanyInformation(`company-for-testing-edit-button-${new Date().getTime()}`);
         return uploadCompanyViaApi(token, testCompany).then(async (storedCompany) => {
           cy.ensureLoggedIn(admin_name, admin_pw);
-          await uploadFrameworkData("lksg", token, storedCompany.companyId, "2022", testData.t);
+          await uploadFrameworkData(DataTypeEnum.Lksg, token, storedCompany.companyId, "2022", testData.t);
           const lksgDatasetFor2021 = await uploadFrameworkData(
-            "lksg",
+            DataTypeEnum.Lksg,
             token,
             storedCompany.companyId,
             "2021",
