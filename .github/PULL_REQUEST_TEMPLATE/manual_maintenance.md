@@ -139,7 +139,7 @@ check that all ssh-keys are set and erased from people that have left
 - [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual
   maintenance. If new messages have appeared this does need to be investigated. The dead letter queue can be accessed
   and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then
-  accessing the GUI at `6789`. After login, the dead letter queue can be found at Queues &rarr;
+  accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
 
 ## Check that links to external webpages are working
