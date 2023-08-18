@@ -2,13 +2,10 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type CompanyAssociatedDataEuTaxonomyDataForFinancials,
   type CompanyInformation,
-  Configuration,
-  type DataMetaInformation,
   type DataPointOneValueBigDecimal,
   DataTypeEnum,
   type EligibilityKpis,
   type EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsControllerApi,
 } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -16,7 +13,6 @@ import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
-import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { type CyHttpMessages } from "cypress/types/net-stubbing";
 import { goToEditFormOfMostRecentDataset } from "./GeneralUtils";
 import Chainable = Cypress.Chainable;
@@ -181,35 +177,6 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable
     const companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
     return companiesWithEuTaxonomyDataForFinancials[0];
   });
-}
-
-/**
- * Uploads a single eutaxonomy-financials data entry for a company via the Dataland API
- * @param token The API bearer token to use
- * @param companyId The Id of the company to upload the dataset for
- * @param reportingPeriod The reporting period to use for the upload
- * @param data The Dataset to upload
- * @param bypassQa (optional) should the entry be automatically Approved. Default: true
- * @returns a promise on the created data meta information
- */
-export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
-  token: string,
-  companyId: string,
-  reportingPeriod: string,
-  data: EuTaxonomyDataForFinancials,
-  bypassQa = true,
-): Promise<DataMetaInformation> {
-  const response = await new EuTaxonomyDataForFinancialsControllerApi(
-    new Configuration({ accessToken: token }),
-  ).postCompanyAssociatedEuTaxonomyDataForFinancials(
-    {
-      companyId,
-      reportingPeriod,
-      data,
-    },
-    bypassQa,
-  );
-  return response.data;
 }
 
 /**
