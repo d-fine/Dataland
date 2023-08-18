@@ -1,5 +1,6 @@
 import {
   type DataMetaInformation,
+  DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   type LksgData,
   type StoredCompany,
@@ -54,7 +55,7 @@ describeIf(
     it("Check whether newly added dataset has Rejected status and can be edited", () => {
       const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadFrameworkData("lksg", token, storedCompany.companyId, "2022", data.t, false).then(
+        return uploadFrameworkData(DataTypeEnum.Lksg, token, storedCompany.companyId, "2022", data.t, false).then(
           (dataMetaInfo) => {
             cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
             cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
