@@ -63,7 +63,7 @@ describeIf(
         const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyAndFrameworkData(
-            "sfdr",
+            DataTypeEnum.Sfdr,
             token,
             generateDummyCompanyInformation(testCompanyName),
             testSfdrCompany.t,

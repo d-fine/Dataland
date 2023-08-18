@@ -1,6 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { type LksgData } from "@clients/backend";
+import { DataTypeEnum, type LksgData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
@@ -30,7 +30,7 @@ describeIf(
       });
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyAndFrameworkData(
-          "lksg",
+          DataTypeEnum.Lksg,
           token,
           preparedFixture.companyInformation,
           preparedFixture.t,

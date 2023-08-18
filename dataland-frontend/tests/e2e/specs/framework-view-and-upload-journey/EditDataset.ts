@@ -27,7 +27,7 @@ describeIf(
         getKeycloakToken(admin_name, admin_pw)
           .then(async (token: string) =>
             uploadCompanyAndFrameworkData(
-              "lksg",
+              DataTypeEnum.Lksg,
               token,
               preparedFixture.companyInformation,
               preparedFixture.t,
