@@ -22,22 +22,6 @@ import { goToEditFormOfMostRecentDataset } from "./GeneralUtils";
 import Chainable = Cypress.Chainable;
 
 /**
- * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
- * @returns the resulting cypress chainable
- */
-export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
-  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
-  submitButton.clickButton();
-  cy.on("uncaught:exception", (err) => {
-    expect(err.message).to.include("unhandled promise rejection");
-    return false;
-  });
-  return cy.wait("@postCompanyAssociatedData").then((interception) => {
-    expect(interception.response?.statusCode).to.eq(200);
-  });
-}
-
-/**
  * Fills the eutaxonomy-financials upload form with the given dataset
  * @param data the data to fill the form with
  */
