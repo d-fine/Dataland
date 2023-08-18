@@ -8,5 +8,5 @@ import java.math.BigDecimal
  */
 data class FinancialShare(
     val percentage: BigDecimal?,
-    val absoluteShare: MoneyAmount?,
+    val absoluteShare: AmountWithCurrency?,
 )
