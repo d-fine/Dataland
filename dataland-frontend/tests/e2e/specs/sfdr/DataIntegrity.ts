@@ -5,8 +5,6 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { selectsReportsForUploadInSfdrForm } from "@e2e/utils/SfdrUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { selectsReportsForUploadInSfdrForm } from "@e2e/utils/SfdrUpload";
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
