@@ -1,4 +1,4 @@
-import { CompanyAssociatedDataLksgData } from "@clients/backend";
+import { type CompanyAssociatedDataLksgData } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";

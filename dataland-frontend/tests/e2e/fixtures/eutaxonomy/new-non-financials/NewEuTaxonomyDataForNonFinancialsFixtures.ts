@@ -1,17 +1,17 @@
 import {
   Activity,
-  EuTaxonomyActivity,
-  EuTaxonomyAlignedActivity,
-  FinancialShare,
-  MoneyAmount,
-  NewEuTaxonomyDataForNonFinancials,
-  NewEuTaxonomyDetailsPerCashFlowType,
+  type EuTaxonomyActivity,
+  type EuTaxonomyAlignedActivity,
+  type FinancialShare,
+  type MoneyAmount,
+  type NewEuTaxonomyDataForNonFinancials,
+  type NewEuTaxonomyDetailsPerCashFlowType,
   YesNo,
 } from "@clients/backend";
 import {
   generateArray,
   getRandomNumberOfDistinctElementsFromArray,
-  ReferencedDocuments,
+  type ReferencedDocuments,
 } from "@e2e/fixtures/FixtureUtils";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";

@@ -1,9 +1,9 @@
-import { DataMetaInformation, DataTypeEnum, LksgData, StoredCompany } from "@clients/backend";
+import { type DataMetaInformation, DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(

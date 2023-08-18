@@ -1,4 +1,4 @@
-import { NewEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type NewEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { generateNewEuTaxonomyDataForNonFinancials } from "./NewEuTaxonomyDataForNonFinancialsFixtures";
 import fs from "fs";

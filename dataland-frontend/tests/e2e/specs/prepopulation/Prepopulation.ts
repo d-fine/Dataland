@@ -1,10 +1,10 @@
 import { doThingsInChunks, admin_name, admin_pw, wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
 import { countCompaniesAndDataSetsForDataType } from "@e2e//utils/GeneralApiUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
-import { FrameworkDataTypes, uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { type FrameworkDataTypes, uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { frameworkFixtureMap } from "@e2e/utils/FixtureMap";
 
 const chunkSize = 15;

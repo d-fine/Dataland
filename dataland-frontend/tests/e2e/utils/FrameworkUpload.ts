@@ -1,25 +1,25 @@
 import {
   Configuration,
-  DataMetaInformation,
+  type DataMetaInformation,
   NewEuTaxonomyDataForNonFinancialsControllerApi,
-  NewEuTaxonomyDataForNonFinancials,
+  type NewEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
-  PathwaysToParisData,
+  type PathwaysToParisData,
   P2pDataControllerApi,
-  SmeData,
+  type SmeData,
   SmeDataControllerApi,
-  LksgData,
+  type LksgData,
   LksgDataControllerApi,
-  SfdrData,
+  type SfdrData,
   SfdrDataControllerApi,
-  EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsControllerApi,
-  EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsControllerApi,
-  CompanyInformation,
+  type CompanyInformation,
 } from "@clients/backend";
-import { AxiosPromise } from "axios";
-import { UploadIds } from "@e2e/utils/GeneralApiUtils";
+import { type AxiosPromise } from "axios";
+import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 
 interface CompanyAssociatedFrameworkData<FrameworkDataType> {

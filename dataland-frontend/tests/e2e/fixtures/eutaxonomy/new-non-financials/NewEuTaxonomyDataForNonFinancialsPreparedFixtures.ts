@@ -1,6 +1,6 @@
-import { generateFixtureDataset, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
-import { NewEuTaxonomyDataForNonFinancials, NewEuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
+import { generateFixtureDataset, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { type FixtureData } from "@sharedUtils/Fixtures";
+import { type NewEuTaxonomyDataForNonFinancials, type NewEuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
 import {
