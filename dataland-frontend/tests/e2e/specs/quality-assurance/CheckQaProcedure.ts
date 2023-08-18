@@ -41,14 +41,19 @@ describeIf(
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
       const data = getPreparedFixture("company-for-all-types", preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then(
-          (dataMetaInfo) => {
-            // TODO use same as down there?
-            cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
-            cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
-            testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
-          },
-        );
+        return uploadFrameworkData(
+          DataTypeEnum.EutaxonomyFinancials,
+          token,
+          storedCompany.companyId,
+          "2022",
+          data.t,
+          false,
+        ).then((dataMetaInfo) => {
+          // TODO use everywhere!
+          cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
+          cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
+          testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
+        });
       });
     });
 
