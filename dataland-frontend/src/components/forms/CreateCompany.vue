@@ -208,8 +208,8 @@
 import { FormKit } from "@formkit/vue";
 import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
-import { CompanyInformation, IdentifierType } from "@clients/backend";
+import type Keycloak from "keycloak-js";
+import { type CompanyInformation, IdentifierType } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
 import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
@@ -225,7 +225,7 @@ import {
 } from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { AxiosError } from "axios";
-import { FormKitNode } from "@formkit/core";
+import { type FormKitNode } from "@formkit/core";
 
 export default defineComponent({
   name: "CreateCompany",

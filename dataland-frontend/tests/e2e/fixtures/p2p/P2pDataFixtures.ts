@@ -1,18 +1,18 @@
 import {
-  P2pAmmonia,
-  P2pAutomotive,
-  P2pCement,
-  P2pElectricityGeneration,
-  P2pFreightTransportByRoad,
-  P2pGeneral,
-  P2pHvcPlastics,
-  P2pLivestockFarming,
-  P2pRealEstate,
+  type P2pAmmonia,
+  type P2pAutomotive,
+  type P2pCement,
+  type P2pElectricityGeneration,
+  type P2pFreightTransportByRoad,
+  type P2pGeneral,
+  type P2pHvcPlastics,
+  type P2pLivestockFarming,
+  type P2pRealEstate,
   P2pSector,
-  P2pSteel,
-  PathwaysToParisData,
+  type P2pSteel,
+  type PathwaysToParisData,
 } from "@clients/backend";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { faker } from "@faker-js/faker";

@@ -1,10 +1,10 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataTypeEnum, PathwaysToParisData } from "@clients/backend";
+import { DataTypeEnum, type PathwaysToParisData } from "@clients/backend";
 import { uploadOneP2pDatasetViaApi } from "@e2e/utils/P2pUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { humanizeString } from "@/utils/StringHumanizer";

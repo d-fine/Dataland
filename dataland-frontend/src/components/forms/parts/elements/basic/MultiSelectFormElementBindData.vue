@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts">
-import { ComponentPropsOptions, defineComponent } from "vue";
+import { type ComponentPropsOptions, defineComponent } from "vue";
 import MultiSelect from "primevue/multiselect";
 import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "MultiSelectFormElementBindData",

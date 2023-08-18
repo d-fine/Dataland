@@ -1,15 +1,15 @@
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
-  CompanyAssociatedDataLksgData,
-  DataAndMetaInformationLksgData,
-  DataMetaInformation,
+  type CompanyAssociatedDataLksgData,
+  type DataAndMetaInformationLksgData,
+  type DataMetaInformation,
   DataTypeEnum,
-  LksgData,
+  type LksgData,
   QaStatus,
 } from "@clients/backend";
-import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
 
 describe("Component test for LksgPanel", () => {

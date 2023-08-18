@@ -2,16 +2,16 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import {
-  DataMetaInformation,
+  type DataMetaInformation,
   DataTypeEnum,
-  LksgData,
-  LksgProductionSite,
+  type LksgData,
+  type LksgProductionSite,
   QaStatus,
-  StoredCompany,
+  type StoredCompany,
 } from "@clients/backend";
 import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { generateProductionSite } from "@e2e/fixtures/lksg/LksgDataFixtures";
 
 describeIf(

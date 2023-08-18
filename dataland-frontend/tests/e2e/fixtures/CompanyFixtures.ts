@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CompanyInformation } from "@clients/backend";
+import { type CompanyInformation } from "@clients/backend";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 const legalForms = [

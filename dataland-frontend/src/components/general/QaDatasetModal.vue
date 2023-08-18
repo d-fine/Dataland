@@ -17,10 +17,10 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
-import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";

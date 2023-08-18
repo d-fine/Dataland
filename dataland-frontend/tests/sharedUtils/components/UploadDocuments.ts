@@ -1,11 +1,13 @@
+import { TEST_PDF_FILE_BASEPATH } from "@sharedUtils/ConstantsForPdfs";
+
 export const uploadDocuments = {
   selectFile(filename: string, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
-    cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
+    cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_BASEPATH}/${filename}.pdf`, { force: true });
   },
-  selectMultipleFiles(filenames: string[], fieldName = "UploadReports"): void {
+  selectMultipleFilesAtOnce(filenames: string[], fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
-    const filenamePaths = filenames.map((filename) => `../testing/data/documents/${filename}.PDF`);
+    const filenamePaths = filenames.map((filename) => `../testing/data/documents/${filename}.pdf`);
     cy.get("input[type=file]").selectFile(filenamePaths, { force: true });
   },
   selectDummyFile(filename: string, contentSize: number, fieldName = "UploadReports"): void {
@@ -19,12 +21,10 @@ export const uploadDocuments = {
       { force: true },
     );
   },
-  numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload: number): void {
-    cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
-  },
-  fillAllReportsToUploadForms(expectedNumberOfReportsToUpload?: number): void {
+
+  fillAllFormsOfReportsSelectedForUpload(expectedNumberOfReportsToUpload?: number): void {
     if (expectedNumberOfReportsToUpload) {
-      this.numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload);
+      this.validateNumberOfReportsSelectedForUpload(expectedNumberOfReportsToUpload);
     }
     cy.get('[data-test="report-to-upload-form"]').each((element) => {
       cy.wrap(element).find(`[data-test="reportDate"] button`).should("have.class", "p-datepicker-trigger").click();
@@ -34,29 +34,62 @@ export const uploadDocuments = {
       cy.wrap(element).find(`input[value="No"]`).click();
     });
   },
-  validateReportToUploadIsListed(reportName: string): void {
+
+  validateNumberOfReportsSelectedForUpload(expectedNumberOfReportsToUpload: number): void {
+    cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
+  },
+
+  validateReportToUploadHasContainerInTheFileSelector(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
   },
-  removeReportToUpload(reportName: string): void {
-    cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
+
+  validateReportToUploadHasContainerWithInfoForm(reportName: string): void {
+    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
+  },
+
+  validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportName: string): void {
+    this.validateReportToUploadHasContainerInTheFileSelector(reportName);
+    this.validateReportToUploadHasContainerWithInfoForm(reportName);
+  },
+
+  validateReportIsNotInFileSelector(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
   },
-  removeAllReportsToUpload(): void {
-    cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
-    cy.get('button[data-test="files-to-upload-remove"]').should("not.exist");
+
+  validateReportHasNoContainerWithInfoForm(reportName: string): void {
+    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
   },
-  removeUploadedReport(reportName: string): Cypress.Chainable {
-    return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
+
+  validateReportIsNotInFileSelectorAndHasNoInfoForm(reportName: string): void {
+    this.validateReportIsNotInFileSelector(reportName);
+    this.validateReportHasNoContainerWithInfoForm(reportName);
   },
-  checkNoReportIsListed(): void {
+
+  validateReportIsListedAsAlreadyUploaded(reportName: string): void {
+    cy.get(`[data-test="${reportName}AlreadyUploadedContainer`).should("exist");
+  },
+
+  validateNoReportsAreAlreadyUploadedOrSelectedForUpload(): void {
     cy.get('[data-test="files-to-upload"]').should("not.be.visible");
     cy.get('[data-test="report-to-upload-form"]').should("not.exist");
     cy.get('[data-test="report-uploaded-form"]').should("not.exist");
   },
-  reportIsNotListed(reportName: string): void {
+  validateReportIsNotAlreadyUploadedOrSelectedForUpload(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}AlreadyUploadedContainer"]`).should("not.exist");
+  },
+
+  removeReportFromSelectionForUpload(reportName: string): void {
+    cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
+    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
+  },
+  removeAllReportsFromSelectionForUpload(): void {
+    cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
+    cy.get('button[data-test="files-to-upload-remove"]').should("not.exist");
+  },
+  removeAlreadyUploadedReport(reportName: string): Cypress.Chainable {
+    return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
   },
 
   selectDocumentAtEachFileSelector(filename: string): void {

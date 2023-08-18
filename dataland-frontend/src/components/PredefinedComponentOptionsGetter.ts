@@ -1,6 +1,6 @@
 import Card from "primevue/card";
 import Tooltip from "primevue/tooltip";
-import { ComponentOptionsWithObjectProps, PropType } from "vue";
+import { type ComponentOptionsWithObjectProps, type PropType } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 
 /**

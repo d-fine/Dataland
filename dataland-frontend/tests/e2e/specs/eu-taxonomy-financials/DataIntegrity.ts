@@ -2,13 +2,13 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
-  CompanyInformation,
-  DataPointOneValueBigDecimal,
+  type CompanyInformation,
+  type DataPointOneValueBigDecimal,
   DataTypeEnum,
-  EligibilityKpis,
-  EuTaxonomyDataForFinancials,
+  type EligibilityKpis,
+  type EuTaxonomyDataForFinancials,
 } from "@clients/backend";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 

@@ -1,14 +1,20 @@
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi, uploadCompanyViaForm } from "@e2e/utils/CompanyUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { IdentifierType, DataTypeEnum, EuTaxonomyDataForFinancials, LksgData, StoredCompany } from "@clients/backend";
+import {
+  IdentifierType,
+  DataTypeEnum,
+  type EuTaxonomyDataForFinancials,
+  type LksgData,
+  type StoredCompany,
+} from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   describeIf(

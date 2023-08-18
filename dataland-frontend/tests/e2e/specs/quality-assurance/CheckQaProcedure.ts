@@ -1,11 +1,16 @@
-import { DataMetaInformation, EuTaxonomyDataForFinancials, LksgData, StoredCompany } from "@clients/backend";
+import {
+  type DataMetaInformation,
+  type EuTaxonomyDataForFinancials,
+  type LksgData,
+  type StoredCompany,
+} from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken, login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { getBaseUrl, reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describeIf(
   "As a user, I expect to be able to add a new dataset and see it as pending",
@@ -32,15 +37,15 @@ describeIf(
       });
     });
 
-    beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
-    });
-
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
       const data = getPreparedFixture("company-for-all-types", preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then(
-          () => testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany.companyInformation.companyName),
+          (dataMetaInfo) => {
+            cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
+            cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
+            testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
+          },
         );
       });
     });
@@ -48,8 +53,12 @@ describeIf(
     it("Check whether newly added dataset has Rejected status and can be edited", () => {
       const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then((dataMetaInfo) =>
-          testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo),
+        return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then(
+          (dataMetaInfo) => {
+            cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
+            cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
+            testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
+          },
         );
       });
     });
@@ -58,9 +67,12 @@ describeIf(
 
 /**
  * Tests that the item was added and is visible on the QA list
- * @param companyName The name of the company
+ * @param storedCompany The company for which a dataset has been uploaded
  */
-function testSubmittedDatasetIsInReviewListAndAcceptIt(companyName: string): void {
+function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredCompany): void {
+  const companyName = storedCompany.companyInformation.companyName;
+  login(uploader_name, uploader_pw);
+
   testDatasetPresentWithCorrectStatus(companyName, "PENDING");
 
   safeLogout();
@@ -79,7 +91,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(companyName: string): voi
   cy.get(".p-dialog").should("exist").get(".p-dialog-header").should("contain", companyName);
   cy.get(".p-dialog").get('.p-dialog-content pre[id="dataset-container"]').should("not.be.empty");
   cy.get(".p-dialog").get('button[id="accept-button"]').should("exist").click();
-
+  cy.contains("span", "REVIEW");
   safeLogout();
   login(uploader_name, uploader_pw);
 
@@ -97,24 +109,19 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 ): void {
   login(reviewer_name, reviewer_pw);
 
-  cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadata");
-  cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformation");
-
   viewRecentlyUploadedDatasetsInQaTable();
-
-  cy.wait("@getMetadata").wait("@getCompanyInformation");
 
   cy.contains("td", dataMetaInfo.dataId).click();
   cy.get('button[id="reject-button"]').should("exist").click();
-
+  cy.contains("span", "REVIEW");
   safeLogout();
   login(uploader_name, uploader_pw);
 
   testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, "REJECTED");
 
-  cy.intercept(`**/api/data/lksg/${dataMetaInfo.dataId}`).as("getLksgDataset");
+  cy.intercept(`**/api/data/lksg/${dataMetaInfo.dataId}`).as("getUploadedDataset");
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
-  cy.wait("@getLksgDataset");
+  cy.wait("@getUploadedDataset");
   cy.get('[data-test="datasetDisplayStatusContainer"]').should("exist");
   cy.get('button[data-test="editDatasetButton"]').should("exist").click();
 
@@ -128,15 +135,15 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
  * Visits the quality assurance page and switches to the last table page
  */
 function viewRecentlyUploadedDatasetsInQaTable(): void {
-  cy.intercept("**/qa/datasets").as("getQaQueue");
   cy.visitAndCheckAppMount("/qualityassurance");
-  cy.wait("@getQaQueue");
+  cy.contains("span", "REVIEW");
   cy.get(".p-paginator-last", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then((element) => {
     if (element.prop("disabled")) {
       return;
     }
     element.trigger("click");
   });
+  cy.wait("@getMetadataOfUploadedDataset").wait("@getCompanyInformationOfUploadedCompany");
 }
 
 /**
@@ -145,7 +152,7 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
-  cy.intercept("**/api/companies*").as("getMyDatasets");
+  cy.intercept("**/api/companies?dataTypes=*").as("getMyDatasets");
   cy.visitAndCheckAppMount("/datasets");
   cy.wait("@getMyDatasets");
 
@@ -163,11 +170,13 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
  * Logs the user out without testing the url
  */
 function safeLogout(): void {
-  cy.intercept("**/api/companies*").as("searchRequest");
+  cy.intercept("**/api/companies?searchString=&*", { body: [] }).as("searchRequest");
   cy.visitAndCheckAppMount("/")
     .wait("@searchRequest")
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-logout-anchor']")
     .click();
+  cy.url().should("eq", getBaseUrl() + "/");
+  cy.contains("span", "Login to preview account");
 }

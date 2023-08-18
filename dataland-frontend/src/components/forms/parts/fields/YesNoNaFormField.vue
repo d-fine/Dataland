@@ -38,8 +38,8 @@ import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldPr
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { BaseDataPointYesNoNa } from "@clients/backend";
-import { DocumentToUpload } from "@/utils/FileUploadUtils";
+import { type BaseDataPointYesNoNa } from "@clients/backend";
+import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "YesNoNaFormField",

@@ -1,15 +1,15 @@
 import { faker } from "@faker-js/faker";
 import {
-  CreditInstitutionKpis,
-  EligibilityKpis,
-  EuTaxonomyDataForFinancials,
+  type CreditInstitutionKpis,
+  type EligibilityKpis,
+  type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  InsuranceKpis,
-  InvestmentFirmKpis,
+  type InsuranceKpis,
+  type InvestmentFirmKpis,
 } from "@clients/backend";
 import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 

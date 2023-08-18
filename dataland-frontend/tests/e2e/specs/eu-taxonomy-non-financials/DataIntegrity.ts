@@ -2,8 +2,8 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import {
   uploadEuTaxonomyDataForNonFinancialsViaForm,
   uploadOneEuTaxonomyNonFinancialsDatasetViaApi,

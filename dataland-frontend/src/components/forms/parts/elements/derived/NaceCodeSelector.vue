@@ -42,14 +42,14 @@
 </template>
 
 <script lang="ts">
-import Tree, { TreeNode } from "primevue/tree";
+import Tree, { type TreeNode } from "primevue/tree";
 import InputText from "primevue/inputtext";
 import OverlayPanel from "primevue/overlaypanel";
 import Checkbox from "primevue/checkbox";
 
 import { filterNodes, naceCodeMap, naceCodeTree } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import Tooltip from "primevue/tooltip";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, type PropType, ref } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
