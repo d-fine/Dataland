@@ -48,7 +48,6 @@ describeIf(
           data.t,
           false,
         ).then((dataMetaInfo) => {
-          // TODO use everywhere!
           cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
           cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
           testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
@@ -70,8 +69,6 @@ describeIf(
     });
   },
 );
-
-// TODO dont use literal datatypes!
 
 /**
  * Tests that the item was added and is visible on the QA list
