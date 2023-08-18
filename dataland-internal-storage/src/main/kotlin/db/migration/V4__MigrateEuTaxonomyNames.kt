@@ -29,7 +29,7 @@ class V4__MigrateEuTaxonomyNames : BaseJavaMigration() {
                     JSONObject(companyAssociatedDatasetAsString.replace("'", "''"))
                 var euTaxoDataset = JSONObject(companyAssociatedDatasetWithEscapedSingleQuotes.getString("data"))
                 mapOfOldToNewFieldNames.forEach {
-                    euTaxoDataset.put(it.value, euTaxoDataset)
+                    euTaxoDataset.put(it.value, euTaxoDataset.get(it.key))
                     euTaxoDataset.remove(it.key)
                 }
                 it.companyAssociatedData.put("data", euTaxoDataset.toString())
