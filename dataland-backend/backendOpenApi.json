@@ -4328,6 +4328,17 @@
           "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities"
         ]
       },
+      "AmountWithCurrency": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
       "AssuranceData": {
         "required": [
           "assurance"
@@ -4369,7 +4380,7 @@
           }
         }
       },
-      "DataPointOneValueMoneyAmount": {
+      "DataPointOneValueAmountWithCurrency": {
         "required": [
           "quality"
         ],
@@ -4385,7 +4396,7 @@
             "type": "string"
           },
           "value": {
-            "$ref": "#/components/schemas/MoneyAmount"
+            "$ref": "#/components/schemas/AmountWithCurrency"
           }
         }
       },
@@ -4402,7 +4413,7 @@
             }
           },
           "share": {
-            "$ref": "#/components/schemas/FinancialShare"
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           }
         }
       },
@@ -4419,7 +4430,7 @@
             }
           },
           "share": {
-            "$ref": "#/components/schemas/FinancialShare"
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "substantialContributionCriteria": {
             "type": "object",
@@ -4481,28 +4492,6 @@
           }
         }
       },
-      "FinancialShare": {
-        "type": "object",
-        "properties": {
-          "percentage": {
-            "type": "number"
-          },
-          "absoluteShare": {
-            "$ref": "#/components/schemas/MoneyAmount"
-          }
-        }
-      },
-      "MoneyAmount": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number"
-          },
-          "currency": {
-            "type": "string"
-          }
-        }
-      },
       "NewEuTaxonomyDataForNonFinancials": {
         "type": "object",
         "properties": {
@@ -4524,16 +4513,16 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/DataPointOneValueMoneyAmount"
+            "$ref": "#/components/schemas/DataPointOneValueAmountWithCurrency"
           },
           "totalNonEligibleShare": {
-            "$ref": "#/components/schemas/FinancialShare"
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "totalEligibleShare": {
-            "$ref": "#/components/schemas/FinancialShare"
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "totalNonAlignedShare": {
-            "$ref": "#/components/schemas/FinancialShare"
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "nonAlignedActivities": {
             "type": "array",
@@ -4542,7 +4531,7 @@
             }
           },
           "totalAlignedShare": {
-            "$ref": "#/components/schemas/FinancialShare"
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "substantialContributionCriteria": {
             "type": "object",
@@ -4566,6 +4555,17 @@
           },
           "totalTransitionalShare": {
             "type": "number"
+          }
+        }
+      },
+      "RelativeAndAbsoluteFinancialShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/AmountWithCurrency"
           }
         }
       },
