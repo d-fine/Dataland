@@ -152,7 +152,7 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
-  cy.intercept("**/api/companies*").as("getMyDatasets");
+  cy.intercept("**/api/companies?dataTypes=*").as("getMyDatasets");
   cy.visitAndCheckAppMount("/datasets");
   cy.wait("@getMyDatasets");
 
@@ -170,7 +170,7 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
  * Logs the user out without testing the url
  */
 function safeLogout(): void {
-  cy.intercept("**/api/companies*").as("searchRequest");
+  cy.intercept("**/api/companies?searchString=&*", { body: [] }).as("searchRequest");
   cy.visitAndCheckAppMount("/")
     .wait("@searchRequest")
     .get("div[id='profile-picture-dropdown-toggle']")
