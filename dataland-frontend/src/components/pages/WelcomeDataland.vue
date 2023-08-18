@@ -13,8 +13,8 @@ import MarketingSection from "@/components/resources/landing/MarketingSection.vu
 import SampleSection from "@/components/resources/landing/SampleSection.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { defineComponent, inject } from "vue";
-import { NavigationFailure, useRoute } from "vue-router";
-import Keycloak from "keycloak-js";
+import { type NavigationFailure, useRoute } from "vue-router";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { useSharedSessionStateStore } from "@/stores/Stores";

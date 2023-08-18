@@ -53,13 +53,13 @@
 import AutoComplete from "primevue/autocomplete";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import {
-  DataSearchStoredCompany,
+  type DataSearchStoredCompany,
   getCompanyDataForFrameworkDataSearchPage,
   getRouterLinkTargetFramework,
-  FrameworkDataSearchFilterInterface,
+  type FrameworkDataSearchFilterInterface,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent, inject, ref } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";

@@ -1,9 +1,9 @@
 import { faker } from "@faker-js/faker";
 import {
-  LksgData,
-  LksgProcurementCategory,
-  LksgProduct,
-  LksgProductionSite,
+  type LksgData,
+  type LksgProcurementCategory,
+  type LksgProduct,
+  type LksgProductionSite,
   NationalOrInternationalMarket,
   ShareOfTemporaryWorkers,
 } from "@clients/backend";
@@ -12,7 +12,7 @@ import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtur
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";

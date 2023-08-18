@@ -1,4 +1,9 @@
-import { Configuration, DataMetaInformation, P2pDataControllerApi, PathwaysToParisData } from "@clients/backend";
+import {
+  Configuration,
+  type DataMetaInformation,
+  P2pDataControllerApi,
+  type PathwaysToParisData,
+} from "@clients/backend";
 
 /**
  * Uploads a single P2p data entry for a company

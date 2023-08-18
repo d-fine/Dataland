@@ -1,6 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { LksgData } from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type LksgData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";

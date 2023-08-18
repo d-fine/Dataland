@@ -21,6 +21,10 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'jsdoc'],
   rules: {
+    "@typescript-eslint/consistent-type-imports": ["error", {
+      "prefer": "type-imports",
+      "fixStyle": "inline-type-imports"
+    }],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
     'semi-spacing': 'error',

@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { CompanyReportReference } from "@clients/backend";
-import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { type CompanyReportReference } from "@clients/backend";
+import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a random data source referencing a random report from the provided referencedReports

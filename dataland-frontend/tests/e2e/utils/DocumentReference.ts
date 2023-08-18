@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { createHash } from "crypto";
-import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { faker } from "@faker-js/faker";
 
 const possibleDocuments = ["Certification", "Policy"];
