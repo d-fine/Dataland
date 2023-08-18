@@ -2,8 +2,8 @@ import {
   Activity,
   type EuTaxonomyActivity,
   type EuTaxonomyAlignedActivity,
-  type FinancialShare,
-  type MoneyAmount,
+  type RelativeAndAbsoluteFinancialShare,
+  type AmountWithCurrency,
   type NewEuTaxonomyDataForNonFinancials,
   type NewEuTaxonomyDetailsPerCashFlowType,
   YesNo,
@@ -35,7 +35,7 @@ function generatePercentage(): number {
  * Generates a random amount of money
  * @returns an amount of money
  */
-export function generateMoneyAmount(): MoneyAmount {
+export function generateAmountWithCurrency(): AmountWithCurrency {
   return {
     amount: valueOrUndefined(randomEuroValue()),
     currency: valueOrUndefined(generateIso4217CurrencyCode()),
@@ -46,10 +46,10 @@ export function generateMoneyAmount(): MoneyAmount {
  * Generates a random financial share
  * @returns a financial share
  */
-export function generateFinancialShare(): FinancialShare {
+export function generateFinancialShare(): RelativeAndAbsoluteFinancialShare {
   return {
-    percentage: valueOrUndefined(generatePercentage()),
-    absoluteShare: valueOrUndefined(generateMoneyAmount()),
+    relativeShareInPercent: valueOrUndefined(generatePercentage()),
+    absoluteShare: valueOrUndefined(generateAmountWithCurrency()),
   };
 }
 
@@ -110,7 +110,7 @@ export function generateNewEuTaxonomyPerCashflowType(
   reports: ReferencedDocuments,
 ): NewEuTaxonomyDetailsPerCashFlowType {
   return {
-    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(generateMoneyAmount()), reports)),
+    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(generateAmountWithCurrency()), reports)),
     totalNonEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalNonAlignedShare: valueOrUndefined(generateFinancialShare()),
