@@ -350,7 +350,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return uploadFrameworkData(
-                DataTypeEnum.EutaxonomyFinancials,
+                DataTypeEnum.EutaxonomyNonFinancials,
                 token,
                 companyIdOfAlpha,
                 "2015",
