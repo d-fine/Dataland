@@ -1,7 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -332,7 +331,8 @@ describe("As a user, I expect the search functionality on the /companies page to
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
               (storedCompany) => {
                 const firstFixtureDataForEuTaxonomyNonFinancials = companiesWithEuTaxonomyDataForNonFinancials[0];
-                return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+                return uploadFrameworkData(
+                  DataTypeEnum.EutaxonomyNonFinancials,
                   token,
                   storedCompany.companyId,
                   firstFixtureDataForEuTaxonomyNonFinancials.reportingPeriod,

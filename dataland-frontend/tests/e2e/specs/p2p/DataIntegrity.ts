@@ -29,7 +29,7 @@ describeIf(
     });
 
     /**
-     * validates that the data uploaded via the function `uploadOneP2pDatasetViaApi` is displayed correctly for a company
+     * validates that the data uploaded via api is displayed correctly for a company
      * @param companyId the company associated to the data uploaded via form
      * @param dataId the company p2p id for accessing its view page
      */

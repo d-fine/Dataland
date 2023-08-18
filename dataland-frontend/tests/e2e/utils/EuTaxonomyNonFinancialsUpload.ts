@@ -1,11 +1,4 @@
-import {
-  Configuration,
-  type DataMetaInformation,
-  DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
-  type EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForNonFinancialsControllerApi,
-} from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
@@ -112,31 +105,4 @@ export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chaina
     >;
     return companiesWithEuTaxonomyDataForNonFinancials[0];
   });
-}
-
-/**
- * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland API
- * @param token The API bearer token to use
- * @param companyId The Id of the company to upload the dataset for
- * @param reportingPeriod The reporting period to use for the upload
- * @param data The Dataset to upload
- * @returns a promise on the created data meta information
- */
-export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
-  token: string,
-  companyId: string,
-  reportingPeriod: string,
-  data: EuTaxonomyDataForFinancials,
-): Promise<DataMetaInformation> {
-  const dataMetaInformation = await new EuTaxonomyDataForNonFinancialsControllerApi(
-    new Configuration({ accessToken: token }),
-  ).postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-    {
-      companyId,
-      reportingPeriod,
-      data,
-    },
-    true,
-  );
-  return dataMetaInformation.data;
 }

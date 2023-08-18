@@ -6,11 +6,9 @@ import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cyp
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import {
-  getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures,
-  uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
-} from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -257,7 +255,8 @@ describe("As a user, I expect the search functionality on the /companies page to
         getKeycloakToken(admin_name, admin_pw).then((token) => {
           getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures().then((fixtureData) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+              return uploadFrameworkData(
+                DataTypeEnum.EutaxonomyNonFinancials,
                 token,
                 storedCompany.companyId,
                 fixtureData.reportingPeriod,
