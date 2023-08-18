@@ -26,7 +26,8 @@ class V4__MigrateEuTaxonomyNames : BaseJavaMigration() {
             companyAssociatedDatasets.forEach {
                 var dataset = JSONObject(it.companyAssociatedData.getString("data"))
                 mapOfOldToNewFieldNames.forEach {
-                    dataset.put(it.value, dataset.get(it.key))
+                    val datasetWithoutSingleQuotes = dataset.get(it.key).toString().replace("'", "''")
+                    dataset.put(it.value, datasetWithoutSingleQuotes)
                     dataset.remove(it.key)
                 }
                 it.companyAssociatedData.put("data", dataset.toString())
