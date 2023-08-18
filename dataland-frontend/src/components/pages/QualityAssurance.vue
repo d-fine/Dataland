@@ -209,7 +209,6 @@ export default defineComponent({
         const filteredData = data.metaInformation.dataType;
         const dataId = data.dataId;
         this.dataId = dataId;
-        //return datasetForFrameworkAndDataId(filteredData, dataId)
         if (filteredData === DataTypeEnum.EutaxonomyNonFinancials) {
           const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)(),
