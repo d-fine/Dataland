@@ -16,7 +16,7 @@ open class EuTaxonomyActivity(
     @JsonProperty(required = true)
     val activityName: Activity,
     val naceCodes: List<String>?,
-    val share: FinancialShare?,
+    val share: RelativeAndAbsoluteFinancialShare?,
 )
 
 /**
@@ -28,7 +28,7 @@ class EuTaxonomyAlignedActivity(
     @JsonProperty(required = true)
     activityName: Activity,
     naceCodes: List<String>?,
-    share: FinancialShare?,
+    share: RelativeAndAbsoluteFinancialShare?,
     @field:Schema(example = JsonExampleFormattingConstants.SUBSTANTIAL_CONTRIBUTION_CRITIREA)
     val substantialContributionCriteria: Map<EnvironmentalObjective, BigDecimal>?,
     @field:Schema(example = JsonExampleFormattingConstants.DNSH_CRITIREA)

@@ -12,11 +12,11 @@ import java.math.BigDecimal
  */
 data class NewEuTaxonomyDetailsPerCashFlowType(
     val totalAmount: DataPointOneValue<AmountWithCurrency>?,
-    val totalNonEligibleShare: FinancialShare?,
-    val totalEligibleShare: FinancialShare?,
-    val totalNonAlignedShare: FinancialShare?,
+    val totalNonEligibleShare: RelativeAndAbsoluteFinancialShare?,
+    val totalEligibleShare: RelativeAndAbsoluteFinancialShare?,
+    val totalNonAlignedShare: RelativeAndAbsoluteFinancialShare?,
     val nonAlignedActivities: List<EuTaxonomyActivity>?,
-    val totalAlignedShare: FinancialShare?,
+    val totalAlignedShare: RelativeAndAbsoluteFinancialShare?,
     @field:Schema(example = JsonExampleFormattingConstants.SUBSTANTIAL_CONTRIBUTION_CRITIREA)
     val substantialContributionCriteria: Map<EnvironmentalObjective, BigDecimal>?,
     val alignedActivities: List<EuTaxonomyAlignedActivity>?,
