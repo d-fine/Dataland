@@ -7,7 +7,8 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
- * This migration script updates the existing LkSG datasets to be in line again with the dataDictionary
+ * This migration script updates the existing eutaxonomy datasets to be in line again with the dataDictionary after
+ * two fields have been renamed
  */
 class V4__MigrateEuTaxonomyNames : BaseJavaMigration() {
     override fun migrate(context: Context?) {
