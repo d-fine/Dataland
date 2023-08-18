@@ -67,7 +67,7 @@ import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "LandingLogin",

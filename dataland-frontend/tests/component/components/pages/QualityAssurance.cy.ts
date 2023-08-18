@@ -1,7 +1,7 @@
 import QualityAssurance from "@/components/pages/QualityAssurance.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { DataMetaInformation, DataTypeEnum, PathwaysToParisData, SmeData } from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type DataMetaInformation, DataTypeEnum, type PathwaysToParisData, type SmeData } from "@clients/backend";
 import { QaStatus } from "@clients/qaservice";
 
 describe("Component tests for the Quality Assurance page", () => {

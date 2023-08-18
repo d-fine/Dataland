@@ -11,7 +11,7 @@
       />
       <UploadDocumentsForm
         v-show="baseDataPointYesNo.value === 'Yes'"
-        @reportsUpdated="handleDocumentUpdatedEvent"
+        @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
         :name="name"
         :more-than-one-document-allowed="false"
@@ -108,8 +108,8 @@ import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldPr
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { DocumentToUpload } from "@/utils/FileUploadUtils";
-import { BaseDataPointYesNo, QualityOptions } from "@clients/backend";
+import { type DocumentToUpload } from "@/utils/FileUploadUtils";
+import { type BaseDataPointYesNo, QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "YesNoFormField",

@@ -1,5 +1,5 @@
-import { FixtureData } from "@sharedUtils/Fixtures";
-import { LksgData } from "@clients/backend";
+import { type FixtureData } from "@sharedUtils/Fixtures";
+import { type LksgData } from "@clients/backend";
 import { generateLksgFixture, generateOneLksgFixtureWithManyNulls, generateProductionSite } from "./LksgDataFixtures";
 
 /**

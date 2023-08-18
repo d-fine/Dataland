@@ -12,7 +12,7 @@ import { plugin, defaultConfig } from "@formkit/vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
-import { createPinia, PiniaPlugin } from "pinia";
+import { createPinia, type PiniaPlugin } from "pinia";
 import { PiniaSharedState } from "pinia-shared-state";
 
 /**

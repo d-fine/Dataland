@@ -1,4 +1,4 @@
-import { Configuration, DataMetaInformation, SmeData, SmeDataControllerApi } from "@clients/backend";
+import { Configuration, type DataMetaInformation, type SmeData, SmeDataControllerApi } from "@clients/backend";
 
 /**
  * Uploads a single SME data entry for a company

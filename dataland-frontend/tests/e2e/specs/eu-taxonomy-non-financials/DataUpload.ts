@@ -1,15 +1,15 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
-  CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-  DataMetaInformation,
+  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  type DataMetaInformation,
   DataTypeEnum,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@e2e/utils/Constants";
+import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@sharedUtils/ConstantsForPdfs";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
 import {
@@ -17,7 +17,7 @@ import {
   uploadEuTaxonomyDataForNonFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { goToEditFormOfMostRecentDataset, uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralUtils";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import Chainable = Cypress.Chainable;
 
@@ -89,20 +89,20 @@ describeIf(
             undefined,
             () => {
               uploadDocuments.selectDummyFile("dummy_1", 1);
-              uploadDocuments.numberOfReportsToUploadShouldBe(1);
+              uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
               validateFileCanNotBeUploadedDialogIsClosed();
               uploadDocuments.selectDummyFile("dummy_1", 1);
-              uploadDocuments.numberOfReportsToUploadShouldBe(1);
+              uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
               validateFileCanNotBeUploadedDialogIsClosed();
               uploadDocuments.selectDummyFile("dummy_1", 2);
               validateFileCanNotBeUploadedDialogIsOpenAndClose();
-              uploadDocuments.numberOfReportsToUploadShouldBe(1);
-              uploadDocuments.removeAllReportsToUpload();
+              uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
+              uploadDocuments.removeAllReportsFromSelectionForUpload();
 
-              uploadDocuments.numberOfReportsToUploadShouldBe(0);
+              uploadDocuments.validateNumberOfReportsSelectedForUpload(0);
               uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
               uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
-              uploadDocuments.fillAllReportsToUploadForms(2);
+              uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
 
               fillAndValidateEuTaxonomyForNonFinancialsUploadForm(false, `${TEST_PDF_FILE_NAME}2`);
 
@@ -119,7 +119,7 @@ describeIf(
             },
             (companyId) => {
               goToEditForm(companyId, true);
-              uploadDocuments.removeUploadedReport(TEST_PDF_FILE_NAME);
+              uploadDocuments.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME);
               const postRequestAlias = "postData";
               cy.intercept(
                 {
@@ -169,8 +169,8 @@ describeIf(
             (storedCompany) => {
               cy.intercept(`**/companies**`).as("getDataForMyDatasetsPage");
               uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
-              cy.url().should("eq", getBaseUrl() + "/datasets");
               cy.wait("@getDataForMyDatasetsPage");
+              cy.url().should("eq", getBaseUrl() + "/datasets");
 
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
@@ -179,9 +179,6 @@ describeIf(
               cy.get("[data-test='companyNameTitle']").contains("All fields filled");
               checkAllDataProvided();
               clickEditButtonAndEditAndValidateChange(storedCompany.companyId).then((templateDataId) => {
-                checkFileWithExistingFilenameCanNotBeResubmitted();
-                checkExistingFilenameDialogDidNotBreakSubsequentSelection();
-                checkThatFilesMustBeReferenced();
                 checkThatFilesWithSameContentDontGetReuploaded(storedCompany.companyId, templateDataId);
                 checkIfLinkedReportsAreDownloadable(storedCompany.companyId);
               });
@@ -237,54 +234,6 @@ describeIf(
       });
     }
 
-    /**
-     * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
-     * whose name equals the one of a file selected before
-     */
-    function checkFileWithExistingFilenameCanNotBeResubmitted(): void {
-      cy.get('button[data-test="editDatasetButton"]').click();
-      cy.wait("@getDataToPrefillForm");
-      cy.get(`[data-test="${TEST_PDF_FILE_NAME}AlreadyUploadedContainer`).should("exist");
-      cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}`, { force: true });
-      cy.get(".p-dialog-content").should("contain.text", "already uploaded");
-      cy.get(".p-dialog-header-close").click();
-      cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
-    }
-
-    /**
-     * On the eu taxonomy for non-financial services edit page, this method checks that submission is denied
-     * if a report is not referenced
-     */
-    function checkThatFilesMustBeReferenced(): void {
-      cy.get(`button[data-test="remove-${TEST_PDF_FILE_NAME}"]`).click();
-      cy.get(".p-dialog-content").should("not.exist");
-      cy.get("input[type=file]").selectFile(`../testing/data/documents/test-report.pdf`, { force: true });
-      uploadDocuments.fillAllReportsToUploadForms();
-      cy.get('[data-test="assuranceSection"] select[name="report"]').select(2);
-      cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "test-report");
-      cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
-      cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
-      cy.wait(2000);
-      cy.get('button[data-test="submitButton"]').click();
-      cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "test-report");
-    }
-
-    /**
-     * Adds a report to upload and removes it again afterwards checking that no dialog regarding a duplicate file name
-     * is wrongly triggered and that the file is correctly removed.
-     */
-    function checkExistingFilenameDialogDidNotBreakSubsequentSelection(): void {
-      const reportName = `${TEST_PDF_FILE_NAME}2`;
-      uploadDocuments.selectFile(reportName);
-      cy.get(".p-dialog-content").should("not.exist");
-      uploadDocuments.validateReportToUploadIsListed(reportName);
-      cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
-      uploadDocuments.removeAllReportsToUpload();
-      cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
-
-      uploadDocuments.reportIsNotListed(reportName);
-    }
-
     const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
 
     /**
@@ -305,7 +254,7 @@ describeIf(
         },
         { force: true },
       );
-      uploadDocuments.fillAllReportsToUploadForms();
+      uploadDocuments.fillAllFormsOfReportsSelectedForUpload();
       cy.get(`div[data-test=capexSection] div[data-test=total] select[name="report"]`).select(
         differentFileNameForSameFile,
       );

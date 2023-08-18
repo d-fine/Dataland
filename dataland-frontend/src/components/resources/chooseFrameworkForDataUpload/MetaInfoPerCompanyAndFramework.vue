@@ -50,7 +50,7 @@
 import { defineComponent } from "vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import PrimeButton from "primevue/button";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getDatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";

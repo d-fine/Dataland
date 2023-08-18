@@ -77,7 +77,7 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -85,7 +85,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import Card from "primevue/card";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import TheFooter from "@/components/general/TheFooter.vue";

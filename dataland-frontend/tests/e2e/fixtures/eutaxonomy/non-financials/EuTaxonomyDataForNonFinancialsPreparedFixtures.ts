@@ -1,6 +1,6 @@
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
-import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type FixtureData } from "@sharedUtils/Fixtures";
+import { type EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { generateEuTaxonomyDataForNonFinancials } from "./EuTaxonomyDataForNonFinancialsFixtures";
 import { generateDatapoint, generateDatapointAbsoluteAndPercentage } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";

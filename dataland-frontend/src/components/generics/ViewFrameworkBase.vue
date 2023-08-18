@@ -83,16 +83,16 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
-import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
+import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
 import { defineComponent, inject, ref } from "vue";
 
 import TheFooter from "@/components/general/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";

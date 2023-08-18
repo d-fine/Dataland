@@ -27,6 +27,7 @@ export default defineConfig({
             "primevue/tabview",
             "primevue/tabpanel",
             "primevue/inputtext",
+            "primevue/inputswitch",
             "primevue/dynamicdialog",
             "primevue/dialog",
             "primevue/textarea",

@@ -1,4 +1,4 @@
-import { SfdrData } from "@clients/backend";
+import { type SfdrData } from "@clients/backend";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import fs from "fs";
 import { generateSfdrData } from "./SfdrDataFixtures";

@@ -14,7 +14,7 @@
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({

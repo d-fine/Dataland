@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 
 export default defineComponent({
   inject: ["dialogRef"],

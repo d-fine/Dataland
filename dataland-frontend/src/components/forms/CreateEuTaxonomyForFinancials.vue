@@ -313,7 +313,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { useRoute } from "vue-router";
 import { defineComponent, inject, nextTick } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/ValidationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
@@ -325,27 +325,27 @@ import {
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
   AssuranceDataAssuranceEnum,
-  CompanyAssociatedDataEuTaxonomyDataForFinancials,
-  DataMetaInformation,
-  EuTaxonomyDataForFinancials,
+  type CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  type DataMetaInformation,
+  type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
-import { AxiosResponse } from "axios";
+import { type AxiosResponse } from "axios";
 import {
   convertValuesFromDecimalsToPercentages,
   convertValuesFromPercentagesToDecimals,
-  ObjectType,
+  type ObjectType,
   updateObject,
 } from "@/utils/UpdateObjectUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import { FormKitNode } from "@formkit/core";
+import { type FormKitNode } from "@formkit/core";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import { uploadFiles, ReportToUpload } from "@/utils/FileUploadUtils";
+import { uploadFiles, type DocumentToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -636,7 +636,7 @@ export default defineComponent({
         );
 
         await uploadFiles(
-          (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
+          (this.$refs.UploadReports.$data as { documentsToUpload: DocumentToUpload[] }).documentsToUpload,
           assertDefined(this.getKeycloakPromise),
         );
 
