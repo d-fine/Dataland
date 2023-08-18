@@ -12,6 +12,7 @@ creation URL (or simply copy this md file into the description)
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
+- [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update keycloak 22.0.0 is skipped due to issues in the realm.json, the new docker image, account console
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
@@ -86,7 +87,7 @@ Update versions in the following dockerfiles
 
 ## Dataland Monitoring
 
-- [ ] Go to the monitoring repository and execute the tasks described in the manual maintenance template there
+- [x] Go to the monitoring repository and execute the tasks described in the manual maintenance template there
 
 ## Server updates
 
@@ -138,7 +139,7 @@ check that all ssh-keys are set and erased from people that have left
 - [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual
   maintenance. If new messages have appeared this does need to be investigated. The dead letter queue can be accessed
   and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then
-  accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
+  accessing the GUI at `6789`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
 
 ## Check that links to external webpages are working
