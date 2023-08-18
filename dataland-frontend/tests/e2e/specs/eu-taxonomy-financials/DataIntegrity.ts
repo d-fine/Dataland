@@ -1,6 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   type CompanyInformation,
   type DataPointOneValueBigDecimal,
@@ -11,6 +10,7 @@ import {
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -45,7 +45,8 @@ describeIf(
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany) => {
-            return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+            return uploadFrameworkData(
+              DataTypeEnum.EutaxonomyFinancials,
               token,
               storedCompany.companyId,
               reportingPeriod,
