@@ -1,4 +1,4 @@
-# Manual Maintenance Sprint [NR]
+# Manual Maintenance Sprint [NR] a
 
 Note: To create a PR using this template add the query parameter `template=manual_maintenance.md` to the merge request
 creation URL (or simply copy this md file into the description)
