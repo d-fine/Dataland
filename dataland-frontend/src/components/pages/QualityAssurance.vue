@@ -209,6 +209,7 @@ export default defineComponent({
         const filteredData = data.metaInformation.dataType;
         const dataId = data.dataId;
         this.dataId = dataId;
+        //return datasetForFrameworkAndDataId(filteredData, dataId)
         if (filteredData === DataTypeEnum.EutaxonomyNonFinancials) {
           const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)(),
@@ -253,6 +254,15 @@ export default defineComponent({
             assertDefined(this.getKeycloakPromise)(),
           ).getSmeDataControllerApi();
           const companyAssociatedDataResponse = await smeDataControllerApi.getCompanyAssociatedSmeData(dataId);
+          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
+        } else if (filteredData === DataTypeEnum.NewEutaxonomyNonFinancials) {
+          const newEutaxonomyNonFinancialsDataControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)(),
+          ).getNewEutaxonomyDataForNonFinancialsControllerApi();
+          const companyAssociatedDataResponse =
+            await newEutaxonomyNonFinancialsDataControllerApi.getCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
+              dataId,
+            );
           this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
         } else {
           throw new Error("The data type of the selected dataset is not supported by the QA frontend.");
