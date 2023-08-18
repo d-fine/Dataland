@@ -2,195 +2,70 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Reillyshire",
-			"sector": "methodologies",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"9FqoSlN4LKUR",
-					"7FsvDwn2JNNK"
-				],
-				"PermId": [
-					"1AxT526zjr"
-				],
-				"Ticker": [
-					"7rAHMXZ"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"A4VSkgv7Y"
-				],
-				"CompanyRegistrationNumber": [
-					"UnDfwPoPebmMU2a"
-				]
-			},
-			"countryCode": "NE",
-			"companyAlternativeNames": [],
-			"website": "https://discrete-normal.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-11-01",
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "LRD"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 59,
-					"report": "SustainabilityReport",
-					"tagName": "experiences"
-				}
-			},
-			"scopeOfEntities": "Yes",
-			"opex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.0862,
-					"quality": "NA"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.4292,
-					"quality": "NA"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.428,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "New Kayla",
-			"headquartersPostalCode": "30614-3085",
+			"headquarters": "Collierville",
+			"headquartersPostalCode": "72096",
+			"sector": "portals",
 			"identifiers": {
 				"Lei": [
-					"dGjxusZ7sUuTN7GarMY1"
+					"AZfsj9bdA3edKhqYZ3C5"
 				],
 				"Isin": [],
 				"PermId": [],
 				"Ticker": [
-					"Qxcf5P9"
+					"ib0qB03"
 				],
 				"Duns": [
-					"igt1sm6NQ"
+					"p2DcfYSmq"
 				],
 				"VatNumber": [
-					"JVSFdrvBW"
+					"MBeqB55sT"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"YSZbgZjxwNF6TZ3"
+				]
 			},
-			"countryCode": "RO",
-			"companyAlternativeNames": [
-				"Gottlieb - Paucek",
-				"Leannon - Turner",
-				"Pagac, Feil and Romaguera"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://feisty-embossing.org",
+			"countryCode": "KR",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://strong-chili.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2023-06-01",
-			"numberOfEmployees": 94834,
+			"numberOfEmployees": 35317,
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-10-15",
-					"currency": "ZWL"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "SGD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "YER"
-				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-05-20",
-					"currency": "COP"
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-04-30",
+					"currency": "FKP"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-09-12",
+					"currency": "TND"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Zemlak - Stoltenberg"
+				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "NA",
+			"nfrdMandatory": "No",
+			"euTaxonomyActivityLevelReporting": "Yes",
 			"opex": {
-				"totalAmount": {
-					"value": 766970.5478008837,
-					"dataSource": {
-						"page": 65,
-						"report": "ESEFReport",
-						"tagName": "networks"
-					},
-					"quality": "Reported",
-					"comment": "bypass auxiliary microchip"
-				},
 				"eligibleData": {
-					"valueAsPercentage": 0.2545,
-					"dataSource": {
-						"page": 678,
-						"report": "ESEFReport",
-						"tagName": "solutions"
-					},
-					"quality": "Incomplete",
-					"comment": "transmit cross-platform capacitor",
-					"valueAsAbsolute": 534735.8718747273
+					"valueAsPercentage": 0.2493,
+					"quality": "NA"
 				}
 			},
 			"capex": {
-				"totalAmount": {
-					"value": 433376.112615224,
-					"dataSource": {
-						"page": 799,
-						"report": "SustainabilityReport",
-						"tagName": "systems"
-					},
-					"quality": "Reported",
-					"comment": "input redundant array"
-				},
 				"eligibleData": {
-					"valueAsPercentage": 0.6203,
-					"dataSource": {
-						"page": 85,
-						"report": "ESEFReport",
-						"tagName": "functionalities"
-					},
-					"quality": "Audited",
-					"comment": "bypass primary matrix",
-					"valueAsAbsolute": 138971.03277267888
+					"valueAsPercentage": 0.385,
+					"quality": "NA"
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"value": 575369.2253842019,
-					"quality": "Estimated"
-				},
 				"eligibleData": {
-					"valueAsPercentage": 0.555,
-					"dataSource": {
-						"page": 824,
-						"report": "ESEFReport",
-						"tagName": "infrastructures"
-					},
-					"quality": "Reported",
-					"comment": "back up virtual capacitor",
-					"valueAsAbsolute": 352963.7443367392
+					"valueAsPercentage": 0.8903,
+					"quality": "NA"
 				}
 			}
 		},
@@ -198,64 +73,212 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "North Braden",
-			"sector": "action-items",
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Jacobsville",
+			"headquartersPostalCode": "11378-5628",
+			"sector": "e-business",
 			"identifiers": {
-				"Lei": [
-					"YyMJZ1TuFMptjBhFAOpt"
-				],
+				"Lei": [],
 				"Isin": [
-					"YJCoErYxUHIO"
+					"1CejOLRDOM3T"
 				],
 				"PermId": [
-					"VpJFvzgAEi"
+					"k96pcnkEin"
 				],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "VG",
+			"countryCode": "WF",
 			"companyAlternativeNames": [
-				"Hayes - Quigley",
-				"Lind Inc"
+				"Cole - Reichel",
+				"Terry, Wilkinson and Braun"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "NoDeviation",
-			"numberOfEmployees": 81657,
-			"assurance": {
-				"assurance": "None"
+			"fiscalYearEnd": "2022-12-25",
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2022-09-11",
+					"currency": "TRY"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-04-13",
+					"currency": "CUP"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "BGN"
+				}
 			},
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
-			"opex": {},
-			"capex": {},
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Homenick LLC",
+				"dataSource": {
+					"page": 834,
+					"report": "IntegratedReport",
+					"tagName": "platforms"
+				}
+			},
+			"scopeOfEntities": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 124533.17563049495,
+					"dataSource": {
+						"page": 359,
+						"report": "AnnualReport",
+						"tagName": "bandwidth"
+					},
+					"quality": "Reported",
+					"comment": "index bluetooth bandwidth"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.6728,
+					"dataSource": {
+						"page": 106,
+						"report": "SustainabilityReport",
+						"tagName": "e-business"
+					},
+					"quality": "Reported",
+					"comment": "generate multi-byte monitor",
+					"valueAsAbsolute": 700600.6956333295
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 485803.9364335127,
+					"dataSource": {
+						"page": 770,
+						"report": "AnnualReport",
+						"tagName": "bandwidth"
+					},
+					"quality": "Reported",
+					"comment": "connect bluetooth interface"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.8289,
+					"dataSource": {
+						"page": 1127,
+						"report": "IntegratedReport",
+						"tagName": "experiences"
+					},
+					"quality": "Incomplete",
+					"comment": "input multi-byte protocol",
+					"valueAsAbsolute": 353728.02526690066
+				}
+			},
 			"revenue": {
 				"totalAmount": {
-					"value": 744857.2935652919,
+					"value": 634395.6187367439,
 					"dataSource": {
-						"page": 663,
-						"report": "SustainabilityReport",
-						"tagName": "initiatives"
-					},
-					"quality": "Reported",
-					"comment": "calculate optical system"
-				},
-				"alignedData": {
-					"dataSource": {
-						"page": 496,
+						"page": 1170,
 						"report": "IntegratedReport",
-						"tagName": "ROI"
+						"tagName": "technologies"
 					},
 					"quality": "Reported",
-					"comment": "generate cross-platform port"
+					"comment": "reboot haptic pixel"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.6168,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 584482.3705032468
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Fort Selenachester",
+			"identifiers": {
+				"Lei": [
+					"sEsF70k8lwzY3lduJFmf"
+				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"zDNkNizWm"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GI",
+			"companyAlternativeNames": [
+				"Barton - Pfannerstill",
+				"Klocko LLC"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "No",
+			"opex": {
+				"alignedData": {
+					"dataSource": {
+						"page": 345,
+						"report": "AnnualReport",
+						"tagName": "convergence"
+					},
+					"quality": "Reported",
+					"comment": "connect neural feed",
+					"valueAsAbsolute": 105675.2365315333
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 767,
+						"report": "SustainabilityReport",
+						"tagName": "synergies"
+					},
+					"quality": "Incomplete",
+					"comment": "override primary port"
+				},
+				"alignedData": {
+					"valueAsPercentage": 0.5365,
+					"dataSource": {
+						"page": 168,
+						"report": "IntegratedReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Reported",
+					"comment": "back up open-source alarm"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 635,
+						"report": "IntegratedReport",
+						"tagName": "portals"
+					},
+					"quality": "Reported",
+					"comment": "transmit solid state protocol"
+				},
+				"alignedData": {
+					"valueAsPercentage": 0.269,
+					"dataSource": {
+						"page": 304,
+						"report": "SustainabilityReport",
+						"tagName": "experiences"
+					},
+					"quality": "Estimated",
+					"comment": "transmit mobile port",
+					"valueAsAbsolute": 432322.05271488056
+				}
+			}
+		},
+		"reportingPeriod": "2022"
 	}
 ]

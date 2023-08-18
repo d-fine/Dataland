@@ -1,5 +1,6 @@
 import {
   type DataMetaInformation,
+  DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   type LksgData,
   type StoredCompany,
@@ -8,9 +9,8 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken, login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { getBaseUrl, reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(
   "As a user, I expect to be able to add a new dataset and see it as pending",
@@ -40,20 +40,25 @@ describeIf(
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
       const data = getPreparedFixture("company-for-all-types", preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then(
-          (dataMetaInfo) => {
-            cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
-            cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
-            testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
-          },
-        );
+        return uploadFrameworkData(
+          DataTypeEnum.EutaxonomyFinancials,
+          token,
+          storedCompany.companyId,
+          "2022",
+          data.t,
+          false,
+        ).then((dataMetaInfo) => {
+          cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
+          cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
+          testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
+        });
       });
     });
 
     it("Check whether newly added dataset has Rejected status and can be edited", () => {
       const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false).then(
+        return uploadFrameworkData(DataTypeEnum.Lksg, token, storedCompany.companyId, "2022", data.t, false).then(
           (dataMetaInfo) => {
             cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
             cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");

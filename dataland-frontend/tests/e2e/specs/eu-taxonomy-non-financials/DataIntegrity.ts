@@ -4,10 +4,8 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
-import {
-  uploadEuTaxonomyDataForNonFinancialsViaForm,
-  uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
-} from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { uploadEuTaxonomyDataForNonFinancialsViaForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(
   "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
@@ -51,7 +49,8 @@ describeIf(
           token,
           generateDummyCompanyInformation(fixtureData.companyInformation.companyName),
         ).then((storedCompany) => {
-          return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+          return uploadFrameworkData(
+            DataTypeEnum.EutaxonomyNonFinancials,
             token,
             storedCompany.companyId,
             fixtureData.reportingPeriod,
