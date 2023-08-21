@@ -26,10 +26,18 @@ fun mockAndWhenConfigurationForFrameworkMigration(
     Mockito.`when`(mockStatement.execute(ArgumentMatchers.any())).then {
         val databaseUpdateQuery = it.arguments[0] as String
         val newDatabaseEntryString = databaseUpdateQuery.split("'")[1] // TODO this is problematic
-        val newDatabaseEntry = JSONObject(objectMapper.readValue(newDatabaseEntryString, String::class.java))
+        val actualCompanyAssociatedData = JSONObject(objectMapper.readValue(newDatabaseEntryString, String::class.java))
+        val expectedCompanyAssociatedData = JSONObject(objectMapper.readValue(expectedTransformedDatabaseEntry, String::class.java))
         Assertions.assertTrue(
-            JSONObject(objectMapper.readValue(expectedTransformedDatabaseEntry, String::class.java)).similar(
-                newDatabaseEntry,
+                JSONObject(expectedCompanyAssociatedData.getString("data")).similar(
+                        JSONObject(actualCompanyAssociatedData.getString("data")),
+                ),
+        )
+        expectedCompanyAssociatedData.remove("data")
+        actualCompanyAssociatedData.remove("data")
+        Assertions.assertTrue(
+            expectedCompanyAssociatedData.similar(
+                actualCompanyAssociatedData,
             ),
         )
         return@then false

@@ -131,13 +131,11 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                    "    }\n" +
                    "  }"
         )
-        println("E")
-        println(dataObject.toString())
         return buildDatabaseEntry(dataObject, "eutaxonomy-non-financials")
     }
 
     private fun buildOldExpectedTransformedDatabaseEntry(): String {
-        val dataString =
+        val dataObject = JSONObject(
                 "{" +
                         "\"general\": {" +
                         "\"fiscalYearDeviation\": \"Deviation\"," +
@@ -211,14 +209,14 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
 
                         "\"revenue\": {" +
                         "\"totalAmount\": {" +
-                        "\"value\": {" +
-                        "\"amount\": 470269.4387175143," +
-                        "\"currency\": null " +
-                        "}," +
                         "\"dataSource\": {" +
                         "\"page\": 536," +
                         "\"report\": \"SustainabilityReport\"," +
                         "\"tagName\": \"supply-chains\"" +
+                        "}," +
+                        "\"value\": {" +
+                        "\"amount\": 470269.4387175143," +
+                        "\"currency\": null " +
                         "}," +
                         "\"quality\": \"Reported\"," +
                         "\"comment\": \"synthesize multi-byte matrix\"" +
@@ -245,9 +243,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                         "\"totalEnablingShare\": null," +
                         "\"totalTransitionalShare\": null," +
                         "}" +
-                        "}"
-        println(dataString)
-        val dataObject = JSONObject(dataString)
+                        "}")
         return buildDatabaseEntry(dataObject, "eutaxonomy-non-financials")
     }
 }
