@@ -9,6 +9,3 @@ export enum EnvironmentalObjective {
   PollutionPrevention = "PollutionPrevention",
   Biodiversity = "Biodiversity",
 }
-
-
-// TODO double check if lkike devtools
