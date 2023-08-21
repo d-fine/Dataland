@@ -163,7 +163,7 @@ class PathwaysToParisDataViewModel implements FrameworkViewModel, PathwaysToPari
     this.cement = apiModel.cement;
   }
 
-  toApiModel() {
+  toApiModel(): PathwaysToParisData {
     return this;
   }
 }

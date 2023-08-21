@@ -19,9 +19,9 @@ import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComp
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
-    AmountWithCurrency,
-    type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
-    DataTypeEnum
+  type AmountWithCurrency,
+  type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
+  DataTypeEnum,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
@@ -31,9 +31,7 @@ import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDat
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { newEuTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
-import {
-  DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel,
-} from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
+import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -122,11 +120,13 @@ export default defineComponent({
       } else if (field.name == "percentage") {
         return `${value} %`;
       } else if (field.name == "absoluteShare") {
-        const moneyAmount = value as AmountWithCurrency;
-        if (moneyAmount.amount == undefined) {
+        const amountWithCurrency = value as AmountWithCurrency;
+        if (amountWithCurrency.amount == undefined) {
           return null;
         }
-        return `${moneyAmount.amount}` + moneyAmount.currency ? ` ${moneyAmount.currency}` : "";
+        return `${amountWithCurrency.amount.toString()}` + amountWithCurrency.currency
+          ? ` ${amountWithCurrency.currency}`
+          : "";
       }
       return value;
     },

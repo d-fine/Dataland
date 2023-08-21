@@ -150,7 +150,7 @@ export default defineComponent({
   components: { DataTable, Column, DocumentLink, AlignedActivitiesDataTable },
   directives: {
     tooltip: Tooltip,
-  },
+  }, // TODO we import a eu taxo specific thing here (AlignedActivitiesDataTable) => a little strange since it is ageneric component
   data() {
     return {
       expandedRowGroups: ["_masterData", "_general", "_basicInformation"],
