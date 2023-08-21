@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
+import { createWebHistory, createRouter, type RouteComponent, type RouteLocationNormalized } from "vue-router";
 const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
@@ -22,8 +22,6 @@ const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
-const UploadNewEutaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
-  import("@/components/pages/UploadNewEutaxonomyDataForNonFinancials.vue");
 import { DataTypeEnum } from "@clients/backend";
 
 const routes = [
@@ -59,18 +57,12 @@ const routes = [
     component: UploadEuTaxonomyDataForNonFinancials,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.NewEutaxonomyNonFinancials}/upload`,
-    props: true,
-    name: "Upload New Eu Taxonomy Data For Non-Financials",
-    component: UploadNewEutaxonomyDataForNonFinancials,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload/new`,
-    props: true,
-    props: {
-      frameworkType: `new-${DataTypeEnum.EutaxonomyNonFinancials}`,
-    },
-    name: "Upload Eu Taxonomy Data For Non-Financials",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.NewEutaxonomyNonFinancials}/upload/`,
+    props: (route: RouteLocationNormalized): object => ({
+      companyID: route.params.companyID,
+      frameworkType: DataTypeEnum.NewEutaxonomyNonFinancials,
+    }),
+    name: "Upload new Eu Taxonomy Data For Non-Financials",
     component: UploadFormWrapper,
   },
   {
@@ -81,28 +73,28 @@ const routes = [
   },
   {
     path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}/upload`,
-    props: true,
-    props: {
+    props: (route: RouteLocationNormalized): object => ({
+      companyID: route.params.companyID,
       frameworkType: DataTypeEnum.Lksg,
-    },
+    }),
     name: "Upload lkSG Data",
     component: UploadFormWrapper,
   },
   {
     path: `/companies/:companyID/frameworks/${DataTypeEnum.Sfdr}/upload`,
-    props: true,
-    props: {
+    props: (route: RouteLocationNormalized): object => ({
+      companyID: route.params.companyID,
       frameworkType: DataTypeEnum.Sfdr,
-    },
+    }),
     name: "Upload SFDR Data",
     component: UploadFormWrapper,
   },
   {
     path: `/companies/:companyID/frameworks/${DataTypeEnum.P2p}/upload`,
-    props: true,
-    props: {
+    props: (route: RouteLocationNormalized): object => ({
+      companyID: route.params.companyID,
       frameworkType: DataTypeEnum.P2p,
-    },
+    }),
     name: "Upload P2p Data",
     component: UploadFormWrapper,
   },

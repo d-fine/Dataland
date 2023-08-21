@@ -5,7 +5,6 @@
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
         <BackButton id="backButton" class="mt-2 pl-3" />
         <CompanyInformation :companyID="companyID" />
-        <h1>{{ frameworkType }}</h1>
         <component
           :is="frameworkToUploadComponent"
           :companyID="companyID"
@@ -64,17 +63,14 @@ export default defineComponent({
   computed: {
     frameworkToUploadComponent() {
       switch (this.frameworkType) {
-        case "new-eutaxonomy-non-financials":
+        case `${DataTypeEnum.NewEutaxonomyNonFinancials}`:
           return CreateNewEuTaxonomyForNonFinancials;
-        case "lksg":
+        case `${DataTypeEnum.Lksg}`:
           return CreateLksgDataset;
-          break;
-        case "p2p":
+        case `${DataTypeEnum.P2p}`:
           return CreateP2pDataset;
-          break;
-        case "sfdr":
+        case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
-          break;
         default:
           return null;
       }
