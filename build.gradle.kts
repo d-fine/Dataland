@@ -38,7 +38,7 @@ tasks.dependencyUpdates.configure {
 }
 
 dependencies {
-    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.23.0")
+    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.23.1")
     detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.21")
 }
 
@@ -54,7 +54,7 @@ plugins {
     kotlin("plugin.spring") version "1.9.0" apply false
     id("org.sonarqube") version "4.3.0.3225"
     jacoco
-    id("org.springdoc.openapi-gradle-plugin") version "1.6.0" apply false
+    id("org.springdoc.openapi-gradle-plugin") version "1.7.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
     id("org.openapi.generator") version "6.6.0" apply false
     id("com.github.ben-manes.versions") version "0.47.0"
