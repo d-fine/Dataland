@@ -2,13 +2,14 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { Configuration, DataTypeEnum, type LksgData, LksgDataControllerApi } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { checkStickynessOfSubmitSideBar, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
+import { checkStickynessOfSubmitSideBar } from "@e2e/utils/LksgUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
+import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -25,7 +26,8 @@ describeIf(
         preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
         getKeycloakToken(admin_name, admin_pw)
           .then(async (token: string) =>
-            uploadCompanyAndLksgDataViaApi(
+            uploadCompanyAndFrameworkData(
+              DataTypeEnum.Lksg,
               token,
               preparedFixture.companyInformation,
               preparedFixture.t,

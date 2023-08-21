@@ -1,0 +1,284 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-numbers",
+			"headquarters": "North Derrick",
+			"headquartersPostalCode": "61589-8418",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"1hmhTYmdvnAt"
+				],
+				"PermId": [],
+				"Ticker": [
+					"QnAR7vi"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"0jNGPs4J4"
+				],
+				"CompanyRegistrationNumber": [
+					"Djg60vKRD21Sy1w"
+				]
+			},
+			"countryCode": "TK",
+			"companyAlternativeNames": [
+				"Zemlak Inc"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://cylindrical-calcification.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearDeviation": "NoDeviation",
+				"numberOfEmployees": 60703,
+				"referencedReports": {
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-02-21",
+						"currency": "VES"
+					},
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "NGN"
+					}
+				},
+				"assurance": {
+					"assurance": "LimitedAssurance",
+					"provider": "Goodwin - Fahey",
+					"dataSource": {
+						"page": 1132,
+						"report": "IntegratedReport",
+						"tagName": "solutions"
+					}
+				},
+				"nfrdMandatory": "No"
+			},
+			"opex": {
+				"totalEligibleShare": {
+					"relativeShareInPercent": 48.66509612184018
+				}
+			},
+			"capex": {
+				"totalEligibleShare": {}
+			},
+			"revenue": {
+				"totalEligibleShare": {
+					"relativeShareInPercent": 26.53775515500456
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Milfordfield",
+			"headquartersPostalCode": "99618",
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [
+					"bX5XKC1gvZQb580WZadJ"
+				],
+				"Isin": [
+					"vux1H1o81E7c",
+					"7jTp6PJMJymS"
+				],
+				"PermId": [],
+				"Ticker": [
+					"OUQRvfl"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TZ",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearDeviation": "Deviation",
+				"numberOfEmployees": 70812,
+				"referencedReports": {
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"reportDate": "2023-07-08",
+						"currency": "BZD"
+					}
+				},
+				"assurance": {
+					"assurance": "None"
+				},
+				"nfrdMandatory": "Yes"
+			},
+			"opex": {
+				"totalAmount": {
+					"value": 609615.7932886854,
+					"dataSource": {
+						"page": 503,
+						"report": "IntegratedReport",
+						"tagName": "experiences"
+					},
+					"quality": "Reported",
+					"comment": "bypass mobile bus"
+				},
+				"totalEligibleShare": {
+					"absoluteShare": {
+						"currency": "CHF"
+					}
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 465959.8544356413,
+					"dataSource": {
+						"page": 704,
+						"report": "IntegratedReport",
+						"tagName": "convergence"
+					},
+					"quality": "Reported",
+					"comment": "compress wireless interface"
+				},
+				"totalEligibleShare": {
+					"relativeShareInPercent": 11.563881346955895,
+					"absoluteShare": {
+						"currency": "EUR"
+					}
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 267375.69351680577,
+					"dataSource": {
+						"page": 560,
+						"report": "IntegratedReport",
+						"tagName": "lifetime value"
+					},
+					"quality": "Reported",
+					"comment": "back up back-end program"
+				},
+				"totalEligibleShare": {
+					"relativeShareInPercent": 27.87261763587594
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Broken Arrow",
+			"sector": "e-markets",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [],
+				"PermId": [
+					"icV3GxBZpp"
+				],
+				"Ticker": [],
+				"Duns": [
+					"g42JWKrKC"
+				],
+				"VatNumber": [
+					"kDBhTTuWg"
+				],
+				"CompanyRegistrationNumber": [
+					"J68qpnAVGHOtPB9"
+				]
+			},
+			"countryCode": "KZ",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearDeviation": "Deviation",
+				"assurance": {
+					"assurance": "None"
+				}
+			},
+			"opex": {
+				"totalAmount": {
+					"value": {},
+					"dataSource": {
+						"page": 99,
+						"report": "SustainabilityReport",
+						"tagName": "interfaces"
+					},
+					"quality": "Incomplete",
+					"comment": "reboot virtual card"
+				},
+				"totalAlignedShare": {},
+				"substantialContributionCriteria": {
+					"ClimateAdaptation": 83.07446744292974,
+					"Biodiversity": 7.838184153661132,
+					"PollutionPrevention": 43.29850806389004
+				},
+				"totalEnablingShare": 28.161616949364543,
+				"totalTransitionalShare": 76.39917971100658
+			},
+			"capex": {
+				"totalAmount": {
+					"value": {
+						"currency": "AUD"
+					},
+					"dataSource": {
+						"page": 226,
+						"report": "AnnualReport",
+						"tagName": "e-commerce"
+					},
+					"quality": "Reported",
+					"comment": "program back-end alarm"
+				},
+				"totalEligibleShare": {},
+				"totalNonAlignedShare": {
+					"relativeShareInPercent": 79.3087009806186
+				},
+				"nonAlignedActivities": [
+					{
+						"activityName": "ProductionOfHeatCoolFromBioenergy",
+						"naceCodes": [
+							"D"
+						]
+					},
+					{
+						"activityName": "ProductionOfHeatCoolFromBioenergy"
+					}
+				],
+				"totalAlignedShare": {
+					"absoluteShare": {
+						"amount": 73236.0462192446,
+						"currency": "CAD"
+					}
+				},
+				"substantialContributionCriteria": {
+					"ClimateMitigation": 5.351839330978692
+				},
+				"totalEnablingShare": 61.29600955173373
+			},
+			"revenue": {
+				"totalAmount": {
+					"quality": "Incomplete"
+				},
+				"totalNonEligibleShare": {
+					"absoluteShare": {
+						"amount": 803261.2255890854,
+						"currency": "USD"
+					}
+				},
+				"totalAlignedShare": {},
+				"substantialContributionCriteria": {
+					"Water": 79.36742468737066
+				},
+				"totalEnablingShare": 27.085840608924627,
+				"totalTransitionalShare": 78.80302930716425
+			}
+		},
+		"reportingPeriod": "2023"
+	}
+]

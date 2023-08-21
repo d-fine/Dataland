@@ -8,13 +8,12 @@ import {
   type LksgData,
   type StoredCompany,
 } from "@clients/backend";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   describeIf(
@@ -62,7 +61,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                 euTaxoFinancialPreparedFixtures,
               );
               storedCompanyForManyDatasetsCompany = storedCompany;
-              return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+              return uploadFrameworkData(
+                DataTypeEnum.EutaxonomyFinancials,
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
                 "2023",
@@ -79,7 +79,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                     "eligible-activity-Point-0.26",
                     euTaxoFinancialPreparedFixtures,
                   );
-                  return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                  return uploadFrameworkData(
+                    DataTypeEnum.EutaxonomyFinancials,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     "2022",
@@ -89,7 +90,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                 .then((dataMetaInformationOfSecondUpload) => {
                   dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
                   const preparedFixture = getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures);
-                  return uploadOneLksgDatasetViaApi(
+                  return uploadFrameworkData(
+                    DataTypeEnum.Lksg,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     getRandomReportingPeriod(),

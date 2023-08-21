@@ -5,12 +5,14 @@ import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancial
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.NewEuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
@@ -20,6 +22,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.NewEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
@@ -66,6 +69,27 @@ class ApiAccessor {
             )
         return dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             companyAssociatedEuTaxonomyNonFinancialsData, bypassQa,
+        )
+    }
+
+    val dataControllerApiForNewEuTaxonomyNonFinancials =
+        NewEuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForNewEuTaxonomyDataForNonFinancials =
+        FrameworkTestDataProvider(NewEuTaxonomyDataForNonFinancials::class.java)
+    fun newEuTaxonomyNonFinancialsUploaderFunction(
+        companyId: String,
+        newEuTaxonomyNonFinancialsData: NewEuTaxonomyDataForNonFinancials,
+        reportingPeriod: String,
+        bypassQa: Boolean = true,
+    ): DataMetaInformation {
+        val companyAssociatedNewEuTaxonomyNonFinancialsData =
+            CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials(
+                companyId,
+                reportingPeriod,
+                newEuTaxonomyNonFinancialsData,
+            )
+        return dataControllerApiForNewEuTaxonomyNonFinancials.postCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
+            companyAssociatedNewEuTaxonomyNonFinancialsData, bypassQa,
         )
     }
 
@@ -201,60 +225,50 @@ class ApiAccessor {
         reportingPeriod: String,
         ensureQaPassed: Boolean,
     ): List<UploadInfo> {
+        fun <T> uploadCompaniesAndDatasets(
+            testDataProvider: FrameworkTestDataProvider<T>,
+            frameworkDataUploadFunction: (
+                companyId: String,
+                frameworkData: T,
+                reportingPeriod: String,
+                bypassQa: Boolean,
+            ) -> DataMetaInformation,
+        ) = uploadCompanyAndFrameworkDataForOneFramework(
+            listOfCompanyInformation = listOfCompanyInformation,
+            listOfFrameworkData = testDataProvider.getTData(numberOfDataSetsPerCompany),
+            frameworkDataUploadFunction = frameworkDataUploadFunction,
+            uploadConfig = uploadConfig,
+            reportingPeriod = reportingPeriod,
+            ensureQaPassed = ensureQaPassed,
+        )
         return when (dataType) {
-            DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.lksg -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForLksgData,
                 frameworkDataUploadFunction = this::lksgUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.sfdr -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForSfdrData,
                 frameworkDataUploadFunction = this::sfdrUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.sme -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForSmeData,
                 frameworkDataUploadFunction = this::smeUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForEuTaxonomyDataForNonFinancials
-                    .getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForEuTaxonomyDataForNonFinancials,
                 frameworkDataUploadFunction = this::euTaxonomyNonFinancialsUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.newMinusEutaxonomyMinusNonMinusFinancials -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForNewEuTaxonomyDataForNonFinancials,
+                frameworkDataUploadFunction = this::newEuTaxonomyNonFinancialsUploaderFunction,
+            )
+            DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderEuTaxonomyForFinancials,
                 frameworkDataUploadFunction = this::euTaxonomyFinancialsUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.p2p -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForP2pData.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.p2p -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForP2pData,
                 frameworkDataUploadFunction = this::p2pUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
         }
     }
