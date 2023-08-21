@@ -131,7 +131,6 @@
 </template>
 
 <script lang="ts">
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { type KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import {
@@ -144,10 +143,11 @@ import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Tooltip from "primevue/tooltip";
 import { defineComponent, type PropType } from "vue";
+import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
-  components: { DataTable, Column, DocumentLink },
+  components: { DataTable, Column, DocumentLink, AlignedActivitiesDataTable },
   directives: {
     tooltip: Tooltip,
   },
@@ -232,7 +232,7 @@ export default defineComponent({
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
      */
     openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, kpiKey: string) {
-      this.$dialog.open(DetailsCompanyDataTable, {
+      this.$dialog.open(AlignedActivitiesDataTable, {
         props: {
           header: modalTitle,
           modal: true,
