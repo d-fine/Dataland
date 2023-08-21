@@ -125,13 +125,10 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
-import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
-import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
-import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 
 export default defineComponent({
@@ -164,9 +161,6 @@ export default defineComponent({
     RadioButtonsFormField,
     YesNoNaFormField,
     PercentageFormField,
-    ProductionSitesFormField,
-    MostImportantProductsFormField,
-    ProcurementCategoriesFormField,
     UploadReports,
   },
   directives: {
