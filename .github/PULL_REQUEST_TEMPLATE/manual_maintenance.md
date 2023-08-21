@@ -161,7 +161,7 @@ check that all ssh-keys are set and erased from people that have left
 
 # Review (to be completed by the reviewer)
 
-- [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
+- [ ] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
 - [ ] A peer-review has been executed
   - [ ] The code has been manually inspected by someone who did not implement the feature
 - [ ] The PR actually implements what is described above
