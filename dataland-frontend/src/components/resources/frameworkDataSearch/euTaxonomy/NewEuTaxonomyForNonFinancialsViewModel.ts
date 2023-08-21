@@ -92,7 +92,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
   }
 }
 
-export class DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel
+export class DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel
   implements DataAndMetaInformationViewModel<NewEuTaxonomyForNonFinancialsViewModel>
 {
   metaInfo: DataMetaInformation;

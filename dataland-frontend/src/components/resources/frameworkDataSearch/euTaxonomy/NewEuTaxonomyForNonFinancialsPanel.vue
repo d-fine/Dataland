@@ -18,18 +18,21 @@
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
+import {
+    AmountWithCurrency,
+    type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
+    DataTypeEnum
+} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { type Field, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { type Field } from "@/utils/GenericFrameworkTypes";
 import { newEuTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import {
-  DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel,
-  type MoneyAmount,
+  DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel,
 } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 
 export default defineComponent({
@@ -40,7 +43,7 @@ export default defineComponent({
       DataTypeEnum,
       firstRender: true,
       waitingForData: true,
-      convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
+      convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders: newEuTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
     };
@@ -73,29 +76,29 @@ export default defineComponent({
      */
     async fetchSmeData() {
       try {
-        let fetchedData: DataAndMetaInformationEuTaxonomyDataForNonFinancials[];
+        let fetchedData: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials[];
         this.waitingForData = true;
-        const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
+        const newEuTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getEuTaxonomyDataForNonFinancialsControllerApi();
+        ).getNewEutaxonomyDataForNonFinancialsControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
-          const singleeuTaxonomyForNonFinancialsDataData = (
-            await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
+          const singleNewEuTaxonomyForNonFinancialsDataData = (
+            await newEuTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
               this.singleDataMetaInfoToDisplay.dataId,
             )
           ).data.data;
           fetchedData = [
-            { metaInfo: this.singleDataMetaInfoToDisplay, data: singleeuTaxonomyForNonFinancialsDataData },
+            { metaInfo: this.singleDataMetaInfoToDisplay, data: singleNewEuTaxonomyForNonFinancialsDataData },
           ];
         } else {
           fetchedData = (
-            await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(
+            await newEuTaxonomyForNonFinancialsDataControllerApi.getAllCompanyNewEuTaxonomyDataForNonFinancials(
               assertDefined(this.companyId),
             )
           ).data;
         }
         this.convertedDataAndMetaInfo = fetchedData.map(
-          (dataAndMetaInfo) => new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfo),
+          (dataAndMetaInfo) => new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfo),
         );
       } catch (error) {
         console.error(error);
@@ -119,11 +122,11 @@ export default defineComponent({
       } else if (field.name == "percentage") {
         return `${value} %`;
       } else if (field.name == "absoluteShare") {
-        const moneyAmount = value as MoneyAmount;
-        if (moneyAmount.absoluteAmount == undefined) {
+        const moneyAmount = value as AmountWithCurrency;
+        if (moneyAmount.amount == undefined) {
           return null;
         }
-        return `${moneyAmount.absoluteAmount}` + moneyAmount.currency ? ` ${moneyAmount.currency}` : "";
+        return `${moneyAmount.amount}` + moneyAmount.currency ? ` ${moneyAmount.currency}` : "";
       }
       return value;
     },
