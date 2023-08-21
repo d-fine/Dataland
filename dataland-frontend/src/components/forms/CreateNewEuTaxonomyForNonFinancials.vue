@@ -21,10 +21,8 @@
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
 
             <FormKit type="group" name="data" label="data">
-              <FormKit
-                type="group"
+              <div
                 v-for="category in euTaxonomyForNonFinancialsDataModel"
-                :key="category"
                 :label="category.label"
                 :name="category.name"
               >
@@ -61,7 +59,7 @@
                     </div>
                   </template>
                 </div>
-              </FormKit>
+              </div>
             </FormKit>
           </FormKit>
         </div>

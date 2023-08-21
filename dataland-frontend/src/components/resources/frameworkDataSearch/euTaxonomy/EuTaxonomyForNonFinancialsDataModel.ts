@@ -1,4 +1,5 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
+import {DropdownDatasetIdentifier, getDataset} from "@/utils/PremadeDropdownDatasets";
 
 export const euTaxonomyForNonFinancialsDataModel = [
   {
@@ -122,6 +123,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
+            options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
             required: false,
             showIf: (): boolean => true,
           },
@@ -281,6 +283,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
+            options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
             required: false,
             showIf: (): boolean => true,
           },
@@ -440,6 +443,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
+            options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
             required: false,
             showIf: (): boolean => true,
           },
