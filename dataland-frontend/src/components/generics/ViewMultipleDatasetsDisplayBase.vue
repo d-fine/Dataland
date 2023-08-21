@@ -89,7 +89,7 @@ import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataS
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
 import EuTaxonomyForNonFinancialsPanel
-  from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
+  from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
