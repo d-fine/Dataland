@@ -1,4 +1,5 @@
-import type Keycloak, { KeycloakInitOptions } from "keycloak-js";
+import type Keycloak from "keycloak-js";
+import { type KeycloakInitOptions } from "keycloak-js";
 
 export interface KeycloakMockConfiguration {
   userId?: string;
