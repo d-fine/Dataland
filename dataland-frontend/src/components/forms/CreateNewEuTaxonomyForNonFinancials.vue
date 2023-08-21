@@ -107,7 +107,7 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/eutaxonomy/EuTaxonomyForNonFinancialsDataModel.ts";
+import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDataModel.ts";
 import { AxiosError } from "axios";
 import { type CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials, type CompanyReport } from "@clients/backend";
 import { useRoute } from "vue-router";
