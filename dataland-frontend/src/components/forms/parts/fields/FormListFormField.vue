@@ -31,6 +31,7 @@ import { FormKit } from "@formkit/vue";
 import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 import ProductFormElement from "@/components/forms/parts/elements/derived/ProductFormElement.vue";
+import AlignedActivitiesFormElements from "@/components/forms/parts/elements/derived/AlignedActivitiesFormElements.vue";
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
@@ -43,6 +44,7 @@ export default defineComponent({
     ProductionSiteFormElement,
     FormKit,
     PrimeButton,
+    AlignedActivitiesFormElements,
   },
   data() {
     return {
