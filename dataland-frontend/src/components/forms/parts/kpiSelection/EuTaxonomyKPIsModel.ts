@@ -62,7 +62,6 @@ export const euTaxonomyKpiNameMappings = {
   interbankLoans: "On-demand Interbank Loans",
   reportDate: "Report Date",
   reportingPeriod: "Reporting Period",
-  reportingObligation: "NFRD Mandatory",
   totalAmount: "Total Amount",
   alignedPercentage: "Aligned Percentage",
   alignedAmount: "Aligned Amount",
@@ -78,7 +77,7 @@ export const euTaxonomyKpiNameMappings = {
   annualReportDate: "Annual Report Date",
   annualReportCurrency: "Annual Report Currency",
 
-  activityLevelReporting: "EU Taxonomy Activity Level Reporting",
+  euTaxonomyActivityLevelReporting: "EU Taxonomy Activity Level Reporting",
   fiscalYearDeviation: "Fiscal Year is deviating",
   numberOfEmployees: "Number Of Employees",
   scopeOfEntities: "Scope Of Entities",
@@ -143,7 +142,7 @@ export const euTaxonomyKpiInfoMappings = {
   interbankLoans: "For Credit Institutions, the on demand interbank loans as a percentage of total assets.",
   reportDate: "The date until which the information presented in the report is valid.",
   reportingPeriod: "The reporting period the dataset belongs to (e.g. a fiscal year).",
-  reportingObligation: "The reporting obligation for companies whose number of employees is greater or equal to 500.",
+  nfrdMandatory: "The reporting obligation for companies whose number of employees is greater or equal to 500.",
   totalAmount: "Total Amount",
   alignedPercentage: "Aligned Percentage",
   alignedAmount: "Aligned Amount",
@@ -163,7 +162,7 @@ export const euTaxonomyKpiInfoMappings = {
   annualReportDate: "The date until which the information presented in the report is valid.",
   annualReportCurrency: "The 3-letter alpha code that represents the currency used in the report.",
 
-  activityLevelReporting: "Does the company report on the EU Taxonomy?",
+  euTaxonomyActivityLevelReporting: "Does the company report on the EU Taxonomy?",
   numberOfEmployees: "Total number of employees (including temporary workers)",
   scopeOfEntities: "Are all Group legal entities covered in the report?",
   currency: "The 3-letter alpha code that represents the currency used in the report.",
@@ -180,7 +179,6 @@ export const euTaxonomyKpiInfoMappings = {
   groupLevelEsefReport: "Is the ESEF Report on a Group level?",
   esefReportDate: "The date until which the information presented in the report is valid.",
   esefReportCurrency: "The 3-letter alpha code that represents the currency used in the report.",
-  nfrdMandatory: "Does the company fall under NFRD?",
 
   quality: "The level of confidence associated to the value.",
   page: "The page number of the document from where the information was sourced.",

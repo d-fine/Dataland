@@ -38,9 +38,9 @@ data class EuTaxonomyDataForFinancials(
 
     override val scopeOfEntities: YesNoNa? = null,
 
-    override val reportingObligation: YesNo? = null,
+    override val nfrdMandatory: YesNo? = null,
 
-    override val activityLevelReporting: YesNo? = null,
+    override val euTaxonomyActivityLevelReporting: YesNo? = null,
 
     override val assurance: AssuranceData? = null,
 

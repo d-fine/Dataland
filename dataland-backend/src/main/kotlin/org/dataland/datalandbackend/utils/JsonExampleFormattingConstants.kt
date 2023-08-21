@@ -44,4 +44,16 @@ object JsonExampleFormattingConstants {
         "\"Services\": $procurementCategory," +
         "\"RawMaterials\": $procurementCategory" +
         "}"
+
+    const val SUBSTANTIAL_CONTRIBUTION_CRITIREA = "{" +
+        "\"ClimateMitigation\": 20.0," +
+        "\"ClimateAdaptation\": 20.0," +
+        "\"Water\": 20.0" +
+        "}"
+
+    const val DNSH_CRITIREA = "{" +
+        "\"ClimateMitigation\": \"Yes\"," +
+        "\"ClimateAdaptation\": \"Yes\"," +
+        "\"Water\": \"No\"" +
+        "}"
 }
