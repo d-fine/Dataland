@@ -1,7 +1,6 @@
 package db.migration
 
 import db.migration.utils.getCompanyAssociatedDatasetsForDataType
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -18,10 +17,10 @@ class V4__MigrateEuTaxonomyNames : BaseJavaMigration() {
         )
 
         val dataTypesToMigrate = listOf(
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-            DataTypeEnum.eutaxonomyMinusFinancials,
+            "eutaxonomy-non-financials",
+            "eutaxonomy-financials",
         )
-        dataTypesToMigrate.forEach { dataType: DataTypeEnum ->
+        dataTypesToMigrate.forEach { dataType: String ->
             val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, dataType)
             companyAssociatedDatasets.forEach {
                 val companyAssociatedDatasetAsString = it.companyAssociatedData.toString()

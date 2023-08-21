@@ -1,7 +1,6 @@
 package db.migration
 
 import db.migration.utils.getCompanyAssociatedDatasetsForDataType
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -104,7 +103,7 @@ class V3__MigrateLksg : BaseJavaMigration() {
     }
 
     override fun migrate(context: Context?) {
-        val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, DataTypeEnum.lksg)
+        val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, "lksg")
 
         companyAssociatedDatasets.forEach {
             var dataset = JSONObject(it.companyAssociatedData.getString("data"))
