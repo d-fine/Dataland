@@ -12,6 +12,7 @@ creation URL (or simply copy this md file into the description)
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
+- [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update keycloak 22.0.0 is skipped due to issues in the realm.json, the new docker image, account console
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
@@ -160,7 +161,7 @@ check that all ssh-keys are set and erased from people that have left
 
 # Review (to be completed by the reviewer)
 
-- [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
+- [ ] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
 - [ ] A peer-review has been executed
   - [ ] The code has been manually inspected by someone who did not implement the feature
 - [ ] The PR actually implements what is described above
