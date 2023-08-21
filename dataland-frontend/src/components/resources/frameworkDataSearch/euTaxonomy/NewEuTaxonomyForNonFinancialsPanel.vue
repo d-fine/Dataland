@@ -37,7 +37,7 @@ import {
 import {
     DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel,
     MoneyAmount
-} from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
+} from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 
 export default defineComponent({
     name: "EuTaxonomyForNonFinancialsPanel",

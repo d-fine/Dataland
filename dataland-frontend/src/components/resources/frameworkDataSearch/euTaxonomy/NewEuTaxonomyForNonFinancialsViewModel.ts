@@ -29,7 +29,7 @@ interface DetailsPerCashFlowViewModel {
     transitionalAlignedShare?: number;
 }
 
-export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
+export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
     general: { general: EuTaxonomyGeneral };
     revenue?: DetailsPerCashFlowViewModel;
     capex?: DetailsPerCashFlowViewModel;
@@ -37,15 +37,15 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
 
     constructor(apiModel: EuTaxonomyDataForNonFinancials) {
         this.general = { general: apiModel.general! }; // TODO must be split into basic information and assurance
-        this.revenue = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.revenue)
-        this.capex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.capex)
-        this.opex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex)
+        this.revenue = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.revenue)
+        this.capex = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.capex)
+        this.opex = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex)
     }
 
     toApiModel(): EuTaxonomyDataForNonFinancials {
         return {
             general: this.general.general,
-            revenue: EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel()
+            revenue: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel()
         }
     }
 
@@ -56,11 +56,11 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
             totalNonEligibleShare: this.convertFinancialShareApiModelToViewModel(apiModel.totalNonEligibleShare),
             totalEligibleShare: this.convertFinancialShareApiModelToViewModel(apiModel.totalEligibleShare),
             totalNonAlignedShare: {
-                ...(EuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalNonAlignedShare) ?? {}),
+                ...(NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalNonAlignedShare) ?? {}),
                 nonAlignedActivities: apiModel.nonAlignedActivities,
             },
             totalAlignedShare: {
-                ...(EuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalAlignedShare) ?? {}),
+                ...(NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalAlignedShare) ?? {}),
                 alignedActivities: apiModel.alignedActivities,
             },
             enablingAlignedShare: apiModel.enablingAlignedShare,
@@ -83,10 +83,10 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
         if(details == undefined) { return undefined; }
         return {
             totalAmount: details.totalAmount,
-            totalNonEligibleShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalNonEligibleShare),
-            totalEligibleShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalEligibleShare),
-            totalNonAlignedShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalNonAlignedShare),
-            totalAlignedShare: EuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalAlignedShare),
+            totalNonEligibleShare: NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalNonEligibleShare),
+            totalEligibleShare: NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalEligibleShare),
+            totalNonAlignedShare: NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalNonAlignedShare),
+            totalAlignedShare: NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalAlignedShare),
             nonAlignedActivities: details.totalNonAlignedShare?.nonAlignedActivities,
             alignedActivities: details.totalAlignedShare?.alignedActivities,
             enablingAlignedShare: details.enablingAlignedShare,
@@ -106,11 +106,11 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
 
 export class DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel implements DataAndMetaInformationViewModel {
     metaInfo: DataMetaInformation;
-    data: EuTaxonomyForNonFinancialsViewModel;
+    data: NewEuTaxonomyForNonFinancialsViewModel;
 
     constructor(dataAndMetaInfoApiModel: DataAndMetaInformationEuTaxonomyDataForNonFinancials) {
         this.metaInfo = dataAndMetaInfoApiModel.metaInfo;
-        this.data = new EuTaxonomyForNonFinancialsViewModel(dataAndMetaInfoApiModel.data)
+        this.data = new NewEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfoApiModel.data)
     }
 
     toApiModel(): DataAndMetaInformationEuTaxonomyDataForNonFinancials {
