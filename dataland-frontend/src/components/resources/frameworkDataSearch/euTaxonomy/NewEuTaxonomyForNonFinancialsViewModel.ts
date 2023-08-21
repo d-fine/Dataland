@@ -59,11 +59,11 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
       totalNonEligibleShare: apiModel.totalNonEligibleShare,
       totalEligibleShare: apiModel.totalEligibleShare,
       totalNonAlignedShare: {
-        ...(apiModel.totalNonAlignedShare ?? {}), // TODO investigate:  Waspassiert bei ... von undefined
+        ...(apiModel.totalNonAlignedShare ?? {}),
         nonAlignedActivities: apiModel.nonAlignedActivities,
       },
       totalAlignedShare: {
-        ...(apiModel.totalAlignedShare ?? {}), // TODO investigate:  Waspassiert bei ... von undefined
+        ...(apiModel.totalAlignedShare ?? {}),
         alignedActivities: apiModel.alignedActivities,
         substantialContributionCriteria: apiModel.substantialContributionCriteria,
       },
