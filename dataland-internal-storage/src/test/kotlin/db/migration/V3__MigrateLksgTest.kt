@@ -43,7 +43,7 @@ class V3__MigrateLksgTest {
                 "}" +
                 "}",
         )
-        return buildDatabaseEntry(simplifiedLksgDataset, DataTypeEnum.lksg)
+        return buildDatabaseEntry(simplifiedLksgDataset, "lksg")
     }
 
     private fun buildExpectedTransformedDatabaseEntry(): String {
@@ -70,6 +70,6 @@ class V3__MigrateLksgTest {
                 "}" +
                 "}",
         )
-        return buildDatabaseEntry(simplifiedLksgDataset, DataTypeEnum.lksg)
+        return buildDatabaseEntry(simplifiedLksgDataset, "lksg")
     }
 }

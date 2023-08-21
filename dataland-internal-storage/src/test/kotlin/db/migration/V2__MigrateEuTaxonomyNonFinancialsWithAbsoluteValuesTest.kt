@@ -29,7 +29,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
         (affectedFields + unaffectedFields).forEach {
             dataset.put(it, buildOldDetailsPerCashFlowType())
         }
-        return buildDatabaseEntry(dataset, DataTypeEnum.eutaxonomyMinusNonMinusFinancials)
+        return buildDatabaseEntry(dataset, "eutaxonomy-non-financials")
     }
     private fun buildExpectedTransformedDatabaseEntry(): String {
         val dataset = JSONObject()
@@ -39,7 +39,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
         (unaffectedFields).forEach {
             dataset.put(it, buildOldDetailsPerCashFlowType())
         }
-        return buildDatabaseEntry(dataset, DataTypeEnum.eutaxonomyMinusNonMinusFinancials)
+        return buildDatabaseEntry(dataset, "eutaxonomy-non-financials")
     }
 
     private val unaffectedDetail = "totalAmount"

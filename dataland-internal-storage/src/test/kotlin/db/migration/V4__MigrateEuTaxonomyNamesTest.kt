@@ -13,23 +13,23 @@ class V4__MigrateEuTaxonomyNamesTest {
 
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected`() {
-        testIfDataIsMaintained(YesNo.yes, YesNo.no, DataTypeEnum.eutaxonomyMinusNonMinusFinancials)
+        testIfDataIsMaintained(YesNo.yes, YesNo.no, "eutaxonomy-non-financials")
     }
 
     @Test
     fun `test that eu taxonomy for financials migration script works as expected`() {
-        testIfDataIsMaintained(YesNo.yes, YesNo.no, DataTypeEnum.eutaxonomyMinusFinancials)
+        testIfDataIsMaintained(YesNo.yes, YesNo.no, "eutaxonomy-financials")
     }
 
     @Test
     fun `test that eu taxonomy migration script works as expected with unprovided values`() {
-        testIfDataIsMaintained(YesNo.yes, null, DataTypeEnum.eutaxonomyMinusNonMinusFinancials)
+        testIfDataIsMaintained(YesNo.yes, null, "eutaxonomy-non-financials")
     }
 
     private fun testIfDataIsMaintained(
         activityLevelReporting: YesNo?,
         reportingObligation: YesNo?,
-        dataType: DataTypeEnum,
+        dataType: String,
     ) {
         val mockContext = Mockito.mock(Context::class.java)
         mockAndWhenConfigurationForFrameworkMigration(
@@ -44,7 +44,7 @@ class V4__MigrateEuTaxonomyNamesTest {
     private fun buildOriginalDatabaseEntry(
         activityLevelReporting: YesNo?,
         reportingObligation: YesNo?,
-        dataType: DataTypeEnum,
+        dataType: String,
     ): String {
         val simplifiedDataset = JSONObject(
             "{" +
@@ -59,7 +59,7 @@ class V4__MigrateEuTaxonomyNamesTest {
     private fun buildExpectedTransformedDatabaseEntry(
         euTaxonomyActivityLevelReporting: YesNo?,
         nfrdMandatory: YesNo?,
-        dataType: DataTypeEnum,
+        dataType: String,
     ): String {
         val simplifiedDataset = JSONObject(
             "{" +
