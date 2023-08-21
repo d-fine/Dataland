@@ -418,8 +418,8 @@ export default defineComponent({
       const dataResponse =
         await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId);
       const companyAssociatedEuTaxonomyData = dataResponse.data;
-      if (companyAssociatedEuTaxonomyData.data?.general?.fiscalYearEnd) {
-        this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.general.fiscalYearEnd);
+      if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
+        this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
       }
       if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
         this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
