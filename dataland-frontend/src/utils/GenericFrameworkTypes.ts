@@ -3,12 +3,14 @@ import {
   type DataAndMetaInformationEuTaxonomyDataForFinancials,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataAndMetaInformationLksgData,
+  type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
   type DataAndMetaInformationPathwaysToParisData,
   type DataAndMetaInformationSfdrData,
   type DataAndMetaInformationSmeData,
   type EuTaxonomyDataForFinancials,
   type EuTaxonomyDataForNonFinancials,
   type LksgData,
+  type NewEuTaxonomyDataForNonFinancials,
   type PathwaysToParisData,
   type SfdrData,
   type SmeData,
@@ -57,7 +59,8 @@ export type FrameworkData =
   | LksgData
   | SfdrData
   | SmeData
-  | PathwaysToParisData;
+  | PathwaysToParisData
+  | NewEuTaxonomyDataForNonFinancials;
 
 export type DataAndMetaInformation =
   | DataAndMetaInformationEuTaxonomyDataForFinancials
@@ -65,4 +68,5 @@ export type DataAndMetaInformation =
   | DataAndMetaInformationLksgData
   | DataAndMetaInformationSfdrData
   | DataAndMetaInformationSmeData
-  | DataAndMetaInformationPathwaysToParisData;
+  | DataAndMetaInformationPathwaysToParisData
+  | DataAndMetaInformationNewEuTaxonomyDataForNonFinancials;

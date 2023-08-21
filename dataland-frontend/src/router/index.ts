@@ -22,6 +22,8 @@ const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
+const UploadNewEutaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
+  import("@/components/pages/UploadNewEutaxonomyDataForNonFinancials.vue");
 import { DataTypeEnum } from "@clients/backend";
 
 const routes = [
@@ -55,6 +57,12 @@ const routes = [
     props: true,
     name: "Upload Eu Taxonomy Data For Non-Financials",
     component: UploadEuTaxonomyDataForNonFinancials,
+  },
+  {
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.NewEutaxonomyNonFinancials}/upload`,
+    props: true,
+    name: "Upload New Eu Taxonomy Data For Non-Financials",
+    component: UploadNewEutaxonomyDataForNonFinancials,
   },
   {
     path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload/new`,

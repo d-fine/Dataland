@@ -1,15 +1,15 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3">
-    <template #title>New Dataset - SFDR</template>
+    <template #title>New Dataset - New Eu Taxonomy For Non Financials</template>
     <template #content>
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading SFDR data...</p>
+        <p class="font-medium text-xl">Loading New Eu Taxonomy For Non Financials data...</p>
         <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="companyAssociatedSfdrData"
+            v-model="companyAssociatedNewEuTaxonomyDataForNonFinancials"
             :actions="false"
             type="form"
             :id="formId"
@@ -23,7 +23,7 @@
             <FormKit type="group" name="data" label="data">
               <FormKit
                 type="group"
-                v-for="category in sfdrDataModel"
+                v-for="category in euTaxonomyForNonFinancialsDataModel"
                 :key="category"
                 :label="category.label"
                 :name="category.name"
@@ -40,7 +40,7 @@
                     <div class="col-9 formFields">
                       <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                         <component
-                          v-if="field.showIf(companyAssociatedSfdrData.data)"
+                          v-if="field.showIf(companyAssociatedNewEuTaxonomyDataForNonFinancials.data)"
                           :is="field.component"
                           :label="field.label"
                           :placeholder="field.placeholder"
@@ -74,7 +74,7 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in sfdrDataModel" :key="category">
+            <li v-for="category in euTaxonomyForNonFinancialsDataModel" :key="category">
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
                   <a
@@ -96,7 +96,7 @@ import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { defineComponent, inject, computed } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
@@ -105,9 +105,9 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
+import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/eutaxonomy/EuTaxonomyForNonFinancialsDataModel.ts";
 import { AxiosError } from "axios";
-import { CompanyAssociatedDataSfdrData, CompanyReport } from "@clients/backend";
+import { type CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials, type CompanyReport } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -126,11 +126,11 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
+import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import { Subcategory } from "@/utils/GenericFrameworkTypes";
+import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 
@@ -175,11 +175,11 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
-      formId: "createSFDRForm",
+      formId: "createNewEuTaxonomyForNonFinancialsForm",
       waitingForData: true,
       dataDate: undefined as Date | undefined,
-      companyAssociatedSfdrData: {} as CompanyAssociatedDataSfdrData,
-      sfdrDataModel,
+      companyAssociatedNewEuTaxonomyDataForNonFinancials: {} as CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials,
+      euTaxonomyForNonFinancialsDataModel,
       route: useRoute(),
       message: "",
       smoothScroll: smoothScroll,
@@ -195,7 +195,8 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd;
+        const currentDate =
+          this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data?.general?.general?.fiscalYearEnd;
         if (currentDate === undefined) {
           return "";
         } else {
@@ -208,7 +209,10 @@ export default defineComponent({
       },
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      return createSubcategoryVisibilityMap(this.sfdrDataModel, this.companyAssociatedSfdrData.data);
+      return createSubcategoryVisibilityMap(
+        this.euTaxonomyForNonFinancialsDataModel,
+        this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data,
+      );
     },
   },
   props: {
@@ -240,7 +244,9 @@ export default defineComponent({
       const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
-      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
+      this.companyAssociatedNewEuTaxonomyDataForNonFinancials = objectDropNull(
+        sfdrResponseData as ObjectType,
+      ) as CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials;
 
       this.waitingForData = false;
     },
@@ -257,7 +263,9 @@ export default defineComponent({
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getSfdrDataControllerApi();
-        await sfdrDataControllerApi.postCompanyAssociatedSfdrData(this.companyAssociatedSfdrData);
+        await sfdrDataControllerApi.postCompanyAssociatedSfdrData(
+          this.companyAssociatedNewEuTaxonomyDataForNonFinancials,
+        );
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
