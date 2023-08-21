@@ -1,2 +1,1 @@
-export const newEuTaxonomyForNonFinancialsModalColumnHeaders = {
-};
+export const newEuTaxonomyForNonFinancialsModalColumnHeaders = {};

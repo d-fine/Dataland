@@ -121,7 +121,7 @@ export default defineComponent({
         label: string;
         content: string | string[] | number | number[];
       }>,
-      mainColumnData: [] as Array<unknown>
+      mainColumnData: [] as Array<unknown>,
     };
   },
   mounted() {
@@ -178,9 +178,7 @@ export default defineComponent({
       { activity: "InfrastructureForRailTransport", label: "Infrastructure For Rail Transport", content: [] },
     ];
 
-    this.mainColumnData = [
-      { activity: "", group: "", field: "" }
-    ];
+    this.mainColumnData = [{ activity: "", group: "", field: "" }];
   },
   methods: {
     /**

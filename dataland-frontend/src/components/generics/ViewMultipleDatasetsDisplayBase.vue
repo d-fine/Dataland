@@ -88,12 +88,19 @@ import type Keycloak from "keycloak-js";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
-import NewEuTaxonomyForNonFinancialsPanel
-  from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue";
+import NewEuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { NewEuTaxonomyForNonFinancialsPanel, P2pPanel, DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase, SmePanel },
+  components: {
+    NewEuTaxonomyForNonFinancialsPanel,
+    P2pPanel,
+    DatasetDisplayStatusIndicator,
+    SfdrPanel,
+    LksgPanel,
+    ViewFrameworkBase,
+    SmePanel,
+  },
   props: {
     companyId: {
       type: String,

@@ -2,13 +2,15 @@ import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import {
   type DataAndMetaInformationEuTaxonomyDataForFinancials,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-  type DataAndMetaInformationLksgData, DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
+  type DataAndMetaInformationLksgData,
+  type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
   type DataAndMetaInformationPathwaysToParisData,
   type DataAndMetaInformationSfdrData,
   type DataAndMetaInformationSmeData,
   type EuTaxonomyDataForFinancials,
   type EuTaxonomyDataForNonFinancials,
-  type LksgData, NewEuTaxonomyDataForNonFinancials,
+  type LksgData,
+  type NewEuTaxonomyDataForNonFinancials,
   type PathwaysToParisData,
   type SfdrData,
   type SmeData,
@@ -54,7 +56,7 @@ export interface Field {
 export type FrameworkData =
   | EuTaxonomyDataForFinancials
   | EuTaxonomyDataForNonFinancials
-    | NewEuTaxonomyDataForNonFinancials
+  | NewEuTaxonomyDataForNonFinancials
   | LksgData
   | SfdrData
   | SmeData
@@ -63,7 +65,7 @@ export type FrameworkData =
 export type DataAndMetaInformation =
   | DataAndMetaInformationEuTaxonomyDataForFinancials
   | DataAndMetaInformationEuTaxonomyDataForNonFinancials
-    | DataAndMetaInformationNewEuTaxonomyDataForNonFinancials
+  | DataAndMetaInformationNewEuTaxonomyDataForNonFinancials
   | DataAndMetaInformationLksgData
   | DataAndMetaInformationSfdrData
   | DataAndMetaInformationSmeData
