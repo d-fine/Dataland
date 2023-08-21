@@ -1,15 +1,15 @@
 import { faker } from "@faker-js/faker";
 import {
-  CreditInstitutionKpis,
-  EligibilityKpis,
-  EuTaxonomyDataForFinancials,
+  type CreditInstitutionKpis,
+  type EligibilityKpis,
+  type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type InsuranceKpis,
   type InvestmentFirmKpis,
 } from "@clients/backend";
 import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/DataPointFixtures";
-import { generateEuTaxonomyBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
+import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -78,7 +78,7 @@ export function generateInvestmentFirmKpis(referencedReports: ReferencedDocument
 export function generateEuTaxonomyDataForFinancialsWithTypes(
   financialServicesTypes: Array<EuTaxonomyDataForFinancialsFinancialServicesTypesEnum>,
 ): EuTaxonomyDataForFinancials {
-  const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyBaseFields();
+  const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields();
   const eligibilityKpis = Object.fromEntries(
     financialServicesTypes.map((it) => [it, generateEligibilityKpis(assertDefined(returnBase.referencedReports))]),
   );
