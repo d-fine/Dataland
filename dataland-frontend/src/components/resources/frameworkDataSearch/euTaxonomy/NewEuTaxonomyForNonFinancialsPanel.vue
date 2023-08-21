@@ -29,8 +29,8 @@ import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLay
 import {KpiValue} from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import {
-    euTaxonomyForNonFinancialsModalColumnHeaders
-} from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
+    newEuTaxonomyForNonFinancialsModalColumnHeaders
+} from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
 import {
     newEuTaxonomyForNonFinancialsDisplayDataModel
 } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
@@ -48,7 +48,7 @@ export default defineComponent({
             firstRender: true,
             waitingForData: true,
             convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
-            euTaxonomyForNonFinancialsModalColumnHeaders,
+            euTaxonomyForNonFinancialsModalColumnHeaders: newEuTaxonomyForNonFinancialsModalColumnHeaders,
             euTaxonomyForNonFinancialsDisplayDataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
         };
     },
