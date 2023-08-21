@@ -38,26 +38,28 @@
                     </div>
 
                     <div class="col-9 formFields">
-                      <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
-                        <component
-                          v-if="field.showIf(companyAssociatedNewEuTaxonomyDataForNonFinancials.data)"
-                          :is="field.component"
-                          :label="field.label"
-                          :placeholder="field.placeholder"
-                          :description="field.description"
-                          :name="field.name"
-                          :options="field.options"
-                          :required="field.required"
-                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
-                          :validation="field.validation"
-                          :validation-label="field.validationLabel"
-                          :evidenceDesired="field.evidenceDesired"
-                          :data-test="field.name"
-                          :unit="field.unit"
-                          @reportsUpdated="updateDocumentsList"
-                          :ref="field.name"
-                        />
-                      </FormKit>
+                      <SubcategoryToggleWrapper :subcategoryName="subcategory.name">
+                        <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                          <component
+                            v-if="field.showIf(companyAssociatedNewEuTaxonomyDataForNonFinancials.data)"
+                            :is="field.component"
+                            :label="field.label"
+                            :placeholder="field.placeholder"
+                            :description="field.description"
+                            :name="field.name"
+                            :options="field.options"
+                            :required="field.required"
+                            :certificateRequiredIfYes="field.certificateRequiredIfYes"
+                            :validation="field.validation"
+                            :validation-label="field.validationLabel"
+                            :evidenceDesired="field.evidenceDesired"
+                            :data-test="field.name"
+                            :unit="field.unit"
+                            @reportsUpdated="updateDocumentsList"
+                            :ref="field.name"
+                          />
+                        </FormKit>
+                      </SubcategoryToggleWrapper>
                     </div>
                   </template>
                 </div>
@@ -114,6 +116,7 @@ import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import SubcategoryToggleWrapper from "@/components/forms/parts/kpiSelection/SubcategoryToggleWrapper.vue";
 import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
@@ -124,7 +127,9 @@ import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
+import FinancialShareFormField from "@/components/forms/parts/kpiSelection/FinancialShareFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
+import InputSwitch from "primevue/inputswitch";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
@@ -148,6 +153,7 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
+    InputSwitch,
     YesNoFormField,
     InputTextFormField,
     FreeTextFormField,
@@ -162,6 +168,8 @@ export default defineComponent({
     YesNoNaFormField,
     PercentageFormField,
     UploadReports,
+    SubcategoryToggleWrapper,
+    FinancialShareFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -189,8 +197,7 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate =
-          this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data?.general?.fiscalYearEnd;
+        const currentDate = this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data?.general?.fiscalYearEnd;
         if (currentDate === undefined) {
           return "";
         } else {
@@ -233,13 +240,17 @@ export default defineComponent({
       this.waitingForData = true;
       const newEuTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getNewEutaxonomyDataForNonFinancialsControllerApi() ;
+      ).getNewEutaxonomyDataForNonFinancialsControllerApi();
 
-      const dataResponse = await newEuTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedNewEuTaxonomyDataForNonFinancials(dataId);
+      const dataResponse =
+        await newEuTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
+          dataId,
+        );
       const newEuTaxonomyForNonFinancialsResponseData = dataResponse.data;
-      this.referencedReportsForPrefill = newEuTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
+      this.referencedReportsForPrefill =
+        newEuTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedNewEuTaxonomyDataForNonFinancials = objectDropNull(
-          newEuTaxonomyForNonFinancialsResponseData as ObjectType,
+        newEuTaxonomyForNonFinancialsResponseData as ObjectType,
       ) as CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials;
 
       this.waitingForData = false;
@@ -256,7 +267,7 @@ export default defineComponent({
 
         const newEuTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getNewEutaxonomyDataForNonFinancialsControllerApi() ;
+        ).getNewEutaxonomyDataForNonFinancialsControllerApi();
         await newEuTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
           this.companyAssociatedNewEuTaxonomyDataForNonFinancials,
         );
