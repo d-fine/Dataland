@@ -62,7 +62,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataTypeEnum } from "@clients/backend";
 import TheFooter from "@/components/general/TheFooter.vue";

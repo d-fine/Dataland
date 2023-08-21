@@ -1,5 +1,5 @@
-import { PathwaysToParisData, P2pSector } from "@clients/backend";
-import { Category } from "@/utils/GenericFrameworkTypes";
+import { type PathwaysToParisData, P2pSector } from "@clients/backend";
+import { type Category } from "@/utils/GenericFrameworkTypes";
 
 export const p2pDataModel = [
   {

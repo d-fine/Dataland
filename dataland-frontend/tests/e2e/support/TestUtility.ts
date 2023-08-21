@@ -1,4 +1,4 @@
-import { Suite } from "mocha";
+import { type Suite } from "mocha";
 
 export interface ExecutionConfig {
   executionEnvironments: Array<ExecutionEnvironment>;

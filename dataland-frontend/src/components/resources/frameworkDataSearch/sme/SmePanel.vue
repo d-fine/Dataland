@@ -19,13 +19,18 @@ import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComp
 import { smeDataModel } from "@/components/resources/frameworkDataSearch/sme/SmeDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationSmeData, DataTypeEnum, SmeProduct, SmeProductionSite } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import {
+  type DataAndMetaInformationSmeData,
+  DataTypeEnum,
+  type SmeProduct,
+  type SmeProductionSite,
+} from "@clients/backend";
+import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
-import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { Field } from "@/utils/GenericFrameworkTypes";
+import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { type Field } from "@/utils/GenericFrameworkTypes";
 import { smeModalColumnHeaders } from "@/components/resources/frameworkDataSearch/sme/SmeModalColumnHeaders";
 import { convertToMillions } from "@/utils/NumberConversionUtils";
 import { convertNace } from "@/utils/NaceCodeConverter";

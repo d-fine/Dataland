@@ -4,8 +4,8 @@ import {
   EligibilityKpis,
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  InsuranceKpis,
-  InvestmentFirmKpis,
+  type InsuranceKpis,
+  type InvestmentFirmKpis,
 } from "@clients/backend";
 import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";

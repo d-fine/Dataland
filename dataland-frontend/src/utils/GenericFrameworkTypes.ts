@@ -1,17 +1,17 @@
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import {
-  DataAndMetaInformationEuTaxonomyDataForFinancials,
-  DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-  DataAndMetaInformationLksgData,
-  DataAndMetaInformationPathwaysToParisData,
-  DataAndMetaInformationSfdrData,
-  DataAndMetaInformationSmeData,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
-  LksgData,
-  PathwaysToParisData,
-  SfdrData,
-  SmeData,
+  type DataAndMetaInformationEuTaxonomyDataForFinancials,
+  type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
+  type DataAndMetaInformationLksgData,
+  type DataAndMetaInformationPathwaysToParisData,
+  type DataAndMetaInformationSfdrData,
+  type DataAndMetaInformationSmeData,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
+  type LksgData,
+  type PathwaysToParisData,
+  type SfdrData,
+  type SmeData,
 } from "@clients/backend";
 
 export interface Category {

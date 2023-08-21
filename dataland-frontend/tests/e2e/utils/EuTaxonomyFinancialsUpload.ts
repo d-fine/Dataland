@@ -1,41 +1,21 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
-  CompanyAssociatedDataEuTaxonomyDataForFinancials,
-  CompanyInformation,
-  Configuration,
-  DataMetaInformation,
-  DataPointOneValueBigDecimal,
+  type CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  type CompanyInformation,
+  type DataPointOneValueBigDecimal,
   DataTypeEnum,
-  EligibilityKpis,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsControllerApi,
+  type EligibilityKpis,
+  type EuTaxonomyDataForFinancials,
 } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
-import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { CyHttpMessages } from "cypress/types/net-stubbing";
+import { type CyHttpMessages } from "cypress/types/net-stubbing";
 import { goToEditFormOfMostRecentDataset } from "./GeneralUtils";
 import Chainable = Cypress.Chainable;
-
-/**
- * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
- * @returns the resulting cypress chainable
- */
-export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
-  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
-  submitButton.clickButton();
-  cy.on("uncaught:exception", (err) => {
-    expect(err.message).to.include("unhandled promise rejection");
-    return false;
-  });
-  return cy.wait("@postCompanyAssociatedData").then((interception) => {
-    expect(interception.response?.statusCode).to.eq(200);
-  });
-}
 
 /**
  * Fills the eutaxonomy-financials upload form with the given dataset
@@ -77,8 +57,8 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     .eq(1)
     .find('[data-test="dataPointToggleTitle"]')
     .should("contain.text", "Data point is available");
-  if (data.reportingObligation !== undefined) {
-    cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
+  if (data.nfrdMandatory !== undefined) {
+    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory.toString()}]`).check();
   }
   cy.get(
     `input[name="fiscalYearDeviation"][value=${
@@ -97,8 +77,8 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     expect(scrollPosition).to.be.greaterThan(0);
   });
   cy.get(
-    `input[name="activityLevelReporting"][value=${
-      data.activityLevelReporting ? data.activityLevelReporting.toString() : "No"
+    `input[name="euTaxonomyActivityLevelReporting"][value=${
+      data.euTaxonomyActivityLevelReporting ? data.euTaxonomyActivityLevelReporting.toString() : "No"
     }]`,
   ).check();
   cy.get('input[name="numberOfEmployees"]').type("-13");
@@ -200,35 +180,6 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable
 }
 
 /**
- * Uploads a single eutaxonomy-financials data entry for a company via the Dataland API
- * @param token The API bearer token to use
- * @param companyId The Id of the company to upload the dataset for
- * @param reportingPeriod The reporting period to use for the upload
- * @param data The Dataset to upload
- * @param bypassQa (optional) should the entry be automatically Approved. Default: true
- * @returns a promise on the created data meta information
- */
-export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
-  token: string,
-  companyId: string,
-  reportingPeriod: string,
-  data: EuTaxonomyDataForFinancials,
-  bypassQa = true,
-): Promise<DataMetaInformation> {
-  const response = await new EuTaxonomyDataForFinancialsControllerApi(
-    new Configuration({ accessToken: token }),
-  ).postCompanyAssociatedEuTaxonomyDataForFinancials(
-    {
-      companyId,
-      reportingPeriod,
-      data,
-    },
-    bypassQa,
-  );
-  return response.data;
-}
-
-/**
  * Visits the edit page for the eu taxonomy dataset for financial companies via navigation.
  * @param companyId the id of the company for which to edit a dataset
  * @param expectIncludedFile specifies if the test file is expected to be in the server response
@@ -288,8 +239,8 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
   dateFormElement.validateDay("fiscalYearEnd", 12);
 
-  if (data.reportingObligation !== undefined) {
-    cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
+  if (data.nfrdMandatory !== undefined) {
+    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory.toString()}]`).check();
   }
 
   cy.get(

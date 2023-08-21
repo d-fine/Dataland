@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { ComponentPropsOptions, defineComponent } from "vue";
+import { type ComponentPropsOptions, defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 

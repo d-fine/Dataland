@@ -69,7 +69,7 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import { type DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";

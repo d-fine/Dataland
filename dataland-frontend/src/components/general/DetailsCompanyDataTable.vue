@@ -30,7 +30,7 @@
 import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({

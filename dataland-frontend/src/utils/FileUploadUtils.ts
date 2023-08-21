@@ -1,6 +1,6 @@
-import { CompanyReport } from "@clients/backend";
+import { type CompanyReport } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { AxiosError } from "axios";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -26,7 +26,7 @@ export interface ReportToUpload extends CompanyReport {
  * @param getKeycloakPromise getter for a keycloak promise
  */
 export async function uploadFiles(
-  files: ReportToUpload[] | DocumentToUpload[],
+  files: DocumentToUpload[],
   getKeycloakPromise: () => Promise<Keycloak>,
 ): Promise<void> {
   const documentControllerApi = await new ApiClientProvider(getKeycloakPromise()).getDocumentControllerApi();

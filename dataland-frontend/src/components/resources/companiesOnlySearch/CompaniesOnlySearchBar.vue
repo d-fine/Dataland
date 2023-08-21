@@ -27,11 +27,11 @@
 </template>
 
 <script lang="ts">
-import AutoComplete, { AutoCompleteCompleteEvent, AutoCompleteItemSelectEvent } from "primevue/autocomplete";
-import { CompanyIdAndName } from "@clients/backend";
+import AutoComplete, { type AutoCompleteCompleteEvent, type AutoCompleteItemSelectEvent } from "primevue/autocomplete";
+import { type CompanyIdAndName } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
 

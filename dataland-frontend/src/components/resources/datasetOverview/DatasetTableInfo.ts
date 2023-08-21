@@ -1,5 +1,5 @@
-import { DataMetaInformation, DataTypeEnum, QaStatus, StoredCompany } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import { type DataMetaInformation, type DataTypeEnum, QaStatus, type StoredCompany } from "@clients/backend";
+import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 

@@ -2,10 +2,10 @@ import FrameworkDataSearchResults from "@/components/resources/frameworkDataSear
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
 import {
-  DataSearchStoredCompany,
+  type DataSearchStoredCompany,
   getRouterLinkTargetFramework,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 describe("Component tests for 'Request Data' button on the level of company search results", () => {

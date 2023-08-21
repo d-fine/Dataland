@@ -1,13 +1,13 @@
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
-  CompanyAssociatedDataPathwaysToParisData,
-  DataAndMetaInformationPathwaysToParisData,
-  DataMetaInformation,
+  type CompanyAssociatedDataPathwaysToParisData,
+  type DataAndMetaInformationPathwaysToParisData,
+  type DataMetaInformation,
   DataTypeEnum,
   P2pSector,
-  PathwaysToParisData,
+  type PathwaysToParisData,
   QaStatus,
 } from "@clients/backend";
 import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";

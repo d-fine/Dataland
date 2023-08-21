@@ -1,20 +1,17 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
   DataTypeEnum,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
-  LksgData,
-  SfdrData,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
+  type LksgData,
+  type SfdrData,
 } from "@clients/backend";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -48,6 +45,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
       const reportingPeriodDropdownSelector = "div#chooseReportingPeriodDropdown";
       const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
+      const dropdownPanelSelector = "div.p-dropdown-panel";
       const searchBarSelectorForViewPage = "input#framework_data_search_bar_standard";
 
       const nonExistingDataId = "abcd123123123123123-non-existing";
@@ -138,6 +136,10 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param expectedDropdownOptions The expected options for this dropdown
        */
       function validateDropdownOptions(dropdownSelector: string, expectedDropdownOptions: Set<string>): void {
+        // Click anywhere and assert that there is no currently open dropdown modal (fix for flakyness)
+        cy.get("body").click(0, 0);
+        cy.get(dropdownPanelSelector).should("not.exist");
+
         cy.get(dropdownSelector).click();
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector).should("exist");
@@ -272,7 +274,8 @@ describe("The shared header of the framework pages should act as expected", { sc
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
             .then((storedCompany) => {
               companyIdOfAlpha = storedCompany.companyId;
-              return uploadOneLksgDatasetViaApi(
+              return uploadFrameworkData(
+                DataTypeEnum.Lksg,
                 token,
                 companyIdOfAlpha,
                 "2023",
@@ -283,7 +286,8 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-                return uploadOneLksgDatasetViaApi(
+                return uploadFrameworkData(
+                  DataTypeEnum.Lksg,
                   token,
                   companyIdOfAlpha,
                   "2023",
@@ -293,7 +297,8 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-                return uploadOneLksgDatasetViaApi(
+                return uploadFrameworkData(
+                  DataTypeEnum.Lksg,
                   token,
                   companyIdOfAlpha,
                   "2022",
@@ -302,7 +307,8 @@ describe("The shared header of the framework pages should act as expected", { sc
               });
             })
             .then(() => {
-              return uploadOneSfdrDataset(
+              return uploadFrameworkData(
+                DataTypeEnum.Sfdr,
                 token,
                 companyIdOfAlpha,
                 "2019",
@@ -310,7 +316,8 @@ describe("The shared header of the framework pages should act as expected", { sc
               );
             })
             .then(() => {
-              return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+              return uploadFrameworkData(
+                DataTypeEnum.EutaxonomyFinancials,
                 token,
                 companyIdOfAlpha,
                 "2019",
@@ -321,7 +328,8 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-                return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                return uploadFrameworkData(
+                  DataTypeEnum.EutaxonomyFinancials,
                   token,
                   companyIdOfAlpha,
                   "2019",
@@ -331,7 +339,8 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-                return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                return uploadFrameworkData(
+                  DataTypeEnum.EutaxonomyFinancials,
                   token,
                   companyIdOfAlpha,
                   "2016",
@@ -340,7 +349,8 @@ describe("The shared header of the framework pages should act as expected", { sc
               });
             })
             .then(() => {
-              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+              return uploadFrameworkData(
+                DataTypeEnum.EutaxonomyNonFinancials,
                 token,
                 companyIdOfAlpha,
                 "2015",
@@ -359,7 +369,8 @@ describe("The shared header of the framework pages should act as expected", { sc
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
             .then(async (storedCompany) => {
               companyIdOfBeta = storedCompany.companyId;
-              return uploadOneLksgDatasetViaApi(
+              return uploadFrameworkData(
+                DataTypeEnum.Lksg,
                 token,
                 companyIdOfBeta,
                 "2015",
@@ -367,7 +378,8 @@ describe("The shared header of the framework pages should act as expected", { sc
               );
             })
             .then(async () => {
-              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+              return uploadFrameworkData(
+                DataTypeEnum.EutaxonomyNonFinancials,
                 token,
                 companyIdOfBeta,
                 "2014",
@@ -407,7 +419,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
-      let euTaxoNonFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+      let euTaxoNonFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
       let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
       let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 

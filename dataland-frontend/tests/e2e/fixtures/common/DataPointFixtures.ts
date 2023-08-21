@@ -1,12 +1,12 @@
 import { faker } from "@faker-js/faker";
 import {
-  CompanyReportReference,
-  DataPointOneValueBigDecimal,
-  DataPointOneValueYesNo,
+  type CompanyReportReference,
+  type DataPointOneValueBigDecimal,
+  type DataPointOneValueYesNo,
   QualityOptions,
 } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
-import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNo, randomYesNoNa } from "./YesNoFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
@@ -55,6 +55,19 @@ export function generateNumericOrEmptyDatapoint(
   value: number | null = valueOrNull(faker.number.int()),
 ): DataPointOneValueBigDecimal | undefined {
   return valueOrUndefined(generateDatapoint(value, reports));
+}
+
+/**
+ * Randomly returns a datapoint with the specified value (chosen at random between 0 and 99999 if not specified)
+ * @param reports the reports that can be referenced as data sources
+ * @param value the value of the datapoint to generate (chosen at random between 0 and 99999 if not specified)
+ * @returns the generated datapoint
+ */
+export function generateNumericDatapoint(
+  reports: ReferencedDocuments,
+  value: number | null = valueOrNull(faker.number.int()),
+): DataPointOneValueBigDecimal {
+  return generateDatapoint(value, reports);
 }
 
 /**

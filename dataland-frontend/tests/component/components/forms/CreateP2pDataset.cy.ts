@@ -1,6 +1,6 @@
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { CompanyAssociatedDataPathwaysToParisData } from "@clients/backend";
+import { type CompanyAssociatedDataPathwaysToParisData } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 describe("Component tests for the CreateP2pDataset that test dependent fields", () => {
   /**

@@ -65,18 +65,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, type PropType } from "vue";
 import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import {
-  ReportingPeriodOfDataSetWithId,
+  type ReportingPeriodOfDataSetWithId,
   mountRowHeaderClickEventListeners,
   unmountRowHeaderClickEventListeners,
 } from "@/utils/DataTableDisplay";
-import { SfdrKpiObject } from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
+import { type SfdrKpiObject } from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 
 export default defineComponent({
   name: "SfdrDataTable",

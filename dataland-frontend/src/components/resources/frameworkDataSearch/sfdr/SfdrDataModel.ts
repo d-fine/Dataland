@@ -1,5 +1,5 @@
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { Category } from "@/utils/GenericFrameworkTypes";
+import { type Category } from "@/utils/GenericFrameworkTypes";
 
 export const sfdrDataModel = [
   {

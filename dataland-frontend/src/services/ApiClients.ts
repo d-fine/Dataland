@@ -1,27 +1,29 @@
 import { Configuration } from "@clients/backend/configuration";
 import {
   CompanyDataControllerApi,
-  CompanyDataControllerApiInterface,
+  type CompanyDataControllerApiInterface,
   EuTaxonomyDataForNonFinancialsControllerApi,
-  EuTaxonomyDataForNonFinancialsControllerApiInterface,
+  type EuTaxonomyDataForNonFinancialsControllerApiInterface,
   EuTaxonomyDataForFinancialsControllerApi,
-  EuTaxonomyDataForFinancialsControllerApiInterface,
+  type EuTaxonomyDataForFinancialsControllerApiInterface,
+  NewEuTaxonomyDataForNonFinancialsControllerApi,
+  type NewEuTaxonomyDataForNonFinancialsControllerApiInterface,
   MetaDataControllerApi,
-  MetaDataControllerApiInterface,
+  type MetaDataControllerApiInterface,
   LksgDataControllerApi,
-  LksgDataControllerApiInterface,
+  type LksgDataControllerApiInterface,
   SfdrDataControllerApi,
-  SfdrDataControllerApiInterface,
-  P2pDataControllerApiInterface,
+  type SfdrDataControllerApiInterface,
+  type P2pDataControllerApiInterface,
   P2pDataControllerApi,
-  SmeDataControllerApiInterface,
+  type SmeDataControllerApiInterface,
   SmeDataControllerApi,
   InviteControllerApi,
 } from "@clients/backend/api";
 import { DocumentControllerApi } from "@clients/documentmanager";
 import { QaControllerApi } from "@clients/qaservice";
-import Keycloak from "keycloak-js";
-import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import type Keycloak from "keycloak-js";
+import { ApiKeyControllerApi, type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
@@ -65,6 +67,10 @@ export class ApiClientProvider {
 
   async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
+  }
+
+  async getNewEutaxonomyDataForNonFinancialsControllerApi(): Promise<NewEuTaxonomyDataForNonFinancialsControllerApiInterface> {
+    return this.getConstructedApi(NewEuTaxonomyDataForNonFinancialsControllerApi);
   }
 
   async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {

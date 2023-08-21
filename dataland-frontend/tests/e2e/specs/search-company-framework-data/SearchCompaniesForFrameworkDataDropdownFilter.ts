@@ -1,18 +1,15 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import {
-  getFirstEuTaxonomyFinancialsFixtureDataFromFixtures,
-  uploadOneEuTaxonomyFinancialsDatasetViaApi,
-} from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -249,7 +246,8 @@ describe("As a user, I expect the search functionality on the /companies page to
           getKeycloakToken(admin_name, admin_pw).then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-                return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                return uploadFrameworkData(
+                  DataTypeEnum.EutaxonomyFinancials,
                   token,
                   storedCompany.companyId,
                   fixtureData.reportingPeriod,
@@ -313,7 +311,8 @@ describe("As a user, I expect the search functionality on the /companies page to
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
                 (storedCompany) => {
-                  return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                  return uploadFrameworkData(
+                    DataTypeEnum.EutaxonomyFinancials,
                     token,
                     storedCompany.companyId,
                     fixtureData.reportingPeriod,
@@ -332,7 +331,8 @@ describe("As a user, I expect the search functionality on the /companies page to
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
               (storedCompany) => {
                 const firstFixtureDataForEuTaxonomyNonFinancials = companiesWithEuTaxonomyDataForNonFinancials[0];
-                return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+                return uploadFrameworkData(
+                  DataTypeEnum.EutaxonomyNonFinancials,
                   token,
                   storedCompany.companyId,
                   firstFixtureDataForEuTaxonomyNonFinancials.reportingPeriod,

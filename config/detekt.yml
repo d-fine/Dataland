@@ -562,6 +562,7 @@ style:
     active: false
   MaxLineLength:
     active: true
+    excludes: ['**/Activity.kt']
     maxLineLength: 120
     excludePackageStatements: true
     excludeImportStatements: true

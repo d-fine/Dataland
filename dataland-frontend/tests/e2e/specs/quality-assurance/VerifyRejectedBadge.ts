@@ -1,9 +1,9 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { LksgData } from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { DataTypeEnum, type LksgData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
+import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(
   "Validation for correct display of 'Rejected' badge",
@@ -29,7 +29,8 @@ describeIf(
         req.headers["REQUIRE-QA"] = "true";
       });
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyAndLksgDataViaApi(
+        return uploadCompanyAndFrameworkData(
+          DataTypeEnum.Lksg,
           token,
           preparedFixture.companyInformation,
           preparedFixture.t,
