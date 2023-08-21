@@ -17,7 +17,6 @@ import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
  */
 export function generateEuTaxonomyWithBaseFields():
   | EuTaxonomyDataForFinancials
-  | EuTaxonomyDataForNonFinancials
   | EuTaxonomyGeneral {
   const referencedReports = generateReferencedReports();
   return {
