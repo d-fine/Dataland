@@ -23,7 +23,7 @@ import {
     P2pSteel,
     PathwaysToParisData,
     SfdrData,
-    SfdrEnvironmental,
+    SfdrEnvironmental, SfdrGeneral,
     SfdrSocial,
     SmeData,
     SmeGeneral,
@@ -53,8 +53,8 @@ class EuTaxonomyDataForFinancialsViewModel implements FrameworkViewModel, EuTaxo
     fiscalYearDeviation?: FiscalYearDeviation;
     fiscalYearEnd?: string;
     scopeOfEntities?: YesNoNa;
-    reportingObligation?: YesNo;
-    activityLevelReporting?: YesNo;
+    nfrdMandatory?: YesNo;
+    euTaxonomyActivityLevelReporting?: YesNo;
     assurance?: AssuranceData;
     numberOfEmployees?: number;
     referencedReports?: { [key: string]: CompanyReport; };
@@ -99,14 +99,14 @@ class LksgDataViewModel implements FrameworkViewModel, LksgData {
 }
 
 class SfdrDataViewModel implements FrameworkViewModel, SfdrData {
-    social?: SfdrSocial;
+    general: SfdrGeneral
     environmental?: SfdrEnvironmental;
-    referencedReports?: { [key: string]: CompanyReport; };
+    social?: SfdrSocial;
 
     constructor(apiModel: SfdrData) {
-        this.social = apiModel.social;
+        this.general = apiModel.general
         this.environmental = apiModel.environmental;
-        this.referencedReports = apiModel.referencedReports;
+        this.social = apiModel.social;
     }
 
     toApiModel(): SfdrData {
