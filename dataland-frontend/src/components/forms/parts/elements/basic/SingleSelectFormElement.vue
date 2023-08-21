@@ -6,7 +6,7 @@
     :placeholder="placeholder"
     :name="name"
     :options="options"
-    :inner-class="innerClass"
+    outer-class="short"
   />
 </template>
 

@@ -5,20 +5,26 @@
       <div class="next-to-each-other">
         <FormKit
           type="text"
-          name="value"
-          :validation-label="validationLabel ?? label"
-          :validation="`number|${validation}`"
-          placeholder="Value"
+          name="relativeValue"
+          validation-label="Relative Value"
+          validation="number|between:0,100"
+          placeholder="Relative Value in %"
           outer-class="short"
         />
-        <SingleSelectFormField
-          validation="length:2,3"
-          validation-label="Currency used in the report"
-          placeholder="Currency used in the report"
-          :options="countryCodeOptions"
+        <FormKit
+          type="text"
+          name="absoluteValue"
+          validation-label="Absolute Value"
+          validation="number|between:0,100"
+          placeholder="Absolute Value in %"
+          outer-class="short"
+        />
+        <SingleSelectFormElement
           name="currency"
-          label="Currency"
-          description="The 3-letter alpha code that represents the currency used in the report."
+          validation="length:2,3"
+          validation-label="Currency"
+          placeholder="Currency"
+          :options="countryCodeOptions"
         />
       </div>
     </div>
@@ -28,14 +34,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
   name: "FinancialShareFormField",
-  components: { SingleSelectFormField, FormKit, UploadFormHeader },
+  components: { SingleSelectFormElement, FormKit, UploadFormHeader },
   data() {
     return {
       countryCodeOptions: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
