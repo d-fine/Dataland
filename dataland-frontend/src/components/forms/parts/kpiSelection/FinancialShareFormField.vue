@@ -5,7 +5,7 @@
       <div class="next-to-each-other">
         <FormKit
           type="text"
-          name="relativeValue"
+          name="relativeShareInPercent"
           validation-label="Relative Value"
           validation="number|between:0,100"
           placeholder="Relative Value in %"
@@ -13,9 +13,9 @@
         />
         <FormKit
           type="text"
-          name="absoluteValue"
+          name="absoluteShare"
           validation-label="Absolute Value"
-          validation="number|between:0,100"
+          validation="number"
           placeholder="Absolute Value in %"
           outer-class="short"
         />
@@ -49,4 +49,5 @@ export default defineComponent({
   },
   props: DropdownOptionFormFieldProps,
 });
+//TODO check if we really need the currency information in the backend. If not then this part could be removed here
 </script>
