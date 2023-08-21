@@ -2,308 +2,283 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Rosenbaumberg",
-			"headquartersPostalCode": "28619",
-			"sector": "initiatives",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"6NzEmYq425z3"
-				],
-				"PermId": [],
-				"Ticker": [
-					"PorAw20"
-				],
-				"Duns": [
-					"mwDNsoq4b"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"iWnMKCK29TNRVnX"
-				]
-			},
-			"countryCode": "MR",
-			"companyAlternativeNames": [
-				"Braun LLC",
-				"Wilkinson, Hane and Stiedemann",
-				"Ziemann - Stracke"
-			],
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2022-08-26",
-				"referencedReports": {
-					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2022-09-11",
-						"currency": "JPY"
-					},
-					"SustainabilityReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "ARS"
-					},
-					"IntegratedReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "NA",
-						"reportDate": "2022-12-14",
-						"currency": "AWG"
-					},
-					"ESEFReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "BRL"
-					}
-				},
-				"assurance": {
-					"assurance": "LimitedAssurance",
-					"dataSource": {
-						"page": 329,
-						"report": "IntegratedReport",
-						"tagName": "e-markets"
-					}
-				},
-				"scopeOfEntities": "No"
-			},
-			"opex": {
-				"totalEligibleShare": {
-					"percentage": 38.621039502322674,
-					"currency": "USD"
-				}
-			},
-			"capex": {
-				"totalEligibleShare": {
-					"percentage": 15.090546966530383,
-					"currency": "CAD"
-				}
-			},
-			"revenue": {
-				"totalEligibleShare": {
-					"percentage": 17.038486409001052,
-					"currency": "CAD"
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Fritschland",
-			"headquartersPostalCode": "55019",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"LiXO7Om7xyqN"
-				],
-				"PermId": [],
-				"Ticker": [
-					"JPC5lRQ"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"gGAAZdYUq"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "BA",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"referencedReports": {
-					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2023-06-25",
-						"currency": "GEL"
-					},
-					"IntegratedReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "No",
-						"reportDate": "2023-05-14",
-						"currency": "DZD"
-					}
-				},
-				"assurance": {
-					"assurance": "ReasonableAssurance",
-					"provider": "Feil Inc",
-					"dataSource": {
-						"page": 750,
-						"report": "AnnualReport",
-						"tagName": "applications"
-					}
-				},
-				"scopeOfEntities": "No"
-			},
-			"opex": {
-				"totalAmount": {
-					"value": 551579.8673033714,
-					"quality": "Incomplete"
-				},
-				"totalEligibleShare": {
-					"percentage": 78.98015002720058,
-					"absoluteShare": 0.20179498894140124,
-					"currency": "AUD"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 815576.923172921,
-					"dataSource": {
-						"page": 276,
-						"report": "IntegratedReport",
-						"tagName": "infrastructures"
-					},
-					"quality": "Estimated",
-					"comment": "compress neural interface"
-				},
-				"totalEligibleShare": {
-					"percentage": 46.35127722285688,
-					"absoluteShare": 0.9525114877615124,
-					"currency": "EUR"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 333493.8618936576,
-					"quality": "Incomplete"
-				},
-				"totalEligibleShare": {
-					"percentage": 71.11987438984215,
-					"absoluteShare": 0.5204461191315204,
-					"currency": "AUD"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "West Emmettworth",
-			"sector": "functionalities",
+			"headquarters": "Collierville",
+			"headquartersPostalCode": "72096",
+			"sector": "portals",
 			"identifiers": {
 				"Lei": [
-					"4FojWxOGNL3eWfxOCKOT"
+					"AZfsj9bdA3edKhqYZ3C5"
 				],
 				"Isin": [],
-				"PermId": [
-					"YZKL40qML9"
+				"PermId": [],
+				"Ticker": [
+					"ib0qB03"
 				],
-				"Ticker": [],
 				"Duns": [
-					"kJMubXcPy"
+					"p2DcfYSmq"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"MBeqB55sT"
+				],
 				"CompanyRegistrationNumber": [
-					"pyJ9fKIaRAXxruA"
+					"YSZbgZjxwNF6TZ3"
 				]
 			},
-			"countryCode": "TO",
-			"companyAlternativeNames": [
-				"Kessler - Baumbach",
-				"Kilback - Dickens"
-			],
+			"countryCode": "KR",
+			"companyAlternativeNames": [],
 			"companyLegalForm": "GmbH",
+			"website": "https://strong-chili.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"general": {
-				"fiscalYearDeviation": "NoDeviation",
-				"numberOfEmployees": 47959,
-				"assurance": {
-					"assurance": "None"
+			"numberOfEmployees": 35317,
+			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-04-30",
+					"currency": "FKP"
 				},
-				"activityLevelReporting": "No"
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-09-12",
+					"currency": "TND"
+				}
 			},
+			"assurance": {
+				"assurance": "ReasonableAssurance"
+			},
+			"nfrdMandatory": "No",
+			"euTaxonomyActivityLevelReporting": "Yes",
 			"opex": {
-				"totalNonEligibleShare": {
-					"percentage": 12.313720025122166,
-					"absoluteShare": 0.04316269210539758,
-					"currency": "CHF"
-				},
-				"totalNonAlignedShare": {
-					"percentage": 7.050243369303644,
-					"absoluteShare": 0.5735091017559171,
-					"currency": "USD"
-				},
-				"totalAlignedShare": {
-					"percentage": 19.52112230937928,
-					"absoluteShare": 0.5351164930034429,
-					"currency": "CHF"
+				"eligibleData": {
+					"valueAsPercentage": 0.2493,
+					"quality": "NA"
 				}
 			},
 			"capex": {
-				"totalNonEligibleShare": {
-					"percentage": 4.283277946524322,
-					"absoluteShare": 0.5856033056043088,
-					"currency": "CHF"
-				},
-				"totalAlignedShare": {
-					"percentage": 75.45558949932456,
-					"absoluteShare": 0.6150751034729183,
-					"currency": "AUD"
-				},
-				"nonAlignedActivities": [
-					{
-						"activityName": "LowCarbonAirportInfrastructure",
-						"naceCodes": [
-							"F",
-							"K"
-						],
-						"share": {
-							"percentage": 89.2253945581615,
-							"absoluteShare": 0.7659534642007202,
-							"currency": "USD"
-						}
-					}
-				],
-				"alignedActivities": [
-					{
-						"activityName": "ElectricityGenerationFromOceanEnergyTechnologies",
-						"share": {
-							"percentage": 88.8815940823406,
-							"absoluteShare": 0.6965711081866175,
-							"currency": "EUR"
-						},
-						"substantialContributionCriteria": {
-							"Biodiversity": 31.79441918618977,
-							"ClimateMitigation": 44.468624773435295,
-							"Water": 88.10535005759448,
-							"ClimateAdaptation": 35.73688832111657
-						},
-						"dnshCriteria": {
-							"PollutionPrevention": "No",
-							"CircularEconomy": "Yes",
-							"ClimateAdaptation": "Yes"
-						}
-					}
-				]
+				"eligibleData": {
+					"valueAsPercentage": 0.385,
+					"quality": "NA"
+				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 460,
-						"report": "ESEFReport",
-						"tagName": "supply-chains"
-					},
-					"quality": "Reported",
-					"comment": "input multi-byte driver"
-				},
-				"totalNonEligibleShare": {
-					"percentage": 9.260376868769526,
-					"absoluteShare": 0.17707127099856734,
-					"currency": "USD"
-				},
-				"totalAlignedShare": {
-					"percentage": 24.8461700277403,
-					"absoluteShare": 0.4410293383989483,
-					"currency": "USD"
+				"eligibleData": {
+					"valueAsPercentage": 0.8903,
+					"quality": "NA"
 				}
 			}
 		},
 		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Jacobsville",
+			"headquartersPostalCode": "11378-5628",
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"1CejOLRDOM3T"
+				],
+				"PermId": [
+					"k96pcnkEin"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "WF",
+			"companyAlternativeNames": [
+				"Cole - Reichel",
+				"Terry, Wilkinson and Braun"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-12-25",
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2022-09-11",
+					"currency": "TRY"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-04-13",
+					"currency": "CUP"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "BGN"
+				}
+			},
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Homenick LLC",
+				"dataSource": {
+					"page": 834,
+					"report": "IntegratedReport",
+					"tagName": "platforms"
+				}
+			},
+			"scopeOfEntities": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 124533.17563049495,
+					"dataSource": {
+						"page": 359,
+						"report": "AnnualReport",
+						"tagName": "bandwidth"
+					},
+					"quality": "Reported",
+					"comment": "index bluetooth bandwidth"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.6728,
+					"dataSource": {
+						"page": 106,
+						"report": "SustainabilityReport",
+						"tagName": "e-business"
+					},
+					"quality": "Reported",
+					"comment": "generate multi-byte monitor",
+					"valueAsAbsolute": 700600.6956333295
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 485803.9364335127,
+					"dataSource": {
+						"page": 770,
+						"report": "AnnualReport",
+						"tagName": "bandwidth"
+					},
+					"quality": "Reported",
+					"comment": "connect bluetooth interface"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.8289,
+					"dataSource": {
+						"page": 1127,
+						"report": "IntegratedReport",
+						"tagName": "experiences"
+					},
+					"quality": "Incomplete",
+					"comment": "input multi-byte protocol",
+					"valueAsAbsolute": 353728.02526690066
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 634395.6187367439,
+					"dataSource": {
+						"page": 1170,
+						"report": "IntegratedReport",
+						"tagName": "technologies"
+					},
+					"quality": "Reported",
+					"comment": "reboot haptic pixel"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.6168,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 584482.3705032468
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Fort Selenachester",
+			"identifiers": {
+				"Lei": [
+					"sEsF70k8lwzY3lduJFmf"
+				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"zDNkNizWm"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GI",
+			"companyAlternativeNames": [
+				"Barton - Pfannerstill",
+				"Klocko LLC"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "No",
+			"opex": {
+				"alignedData": {
+					"dataSource": {
+						"page": 345,
+						"report": "AnnualReport",
+						"tagName": "convergence"
+					},
+					"quality": "Reported",
+					"comment": "connect neural feed",
+					"valueAsAbsolute": 105675.2365315333
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 767,
+						"report": "SustainabilityReport",
+						"tagName": "synergies"
+					},
+					"quality": "Incomplete",
+					"comment": "override primary port"
+				},
+				"alignedData": {
+					"valueAsPercentage": 0.5365,
+					"dataSource": {
+						"page": 168,
+						"report": "IntegratedReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Reported",
+					"comment": "back up open-source alarm"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"dataSource": {
+						"page": 635,
+						"report": "IntegratedReport",
+						"tagName": "portals"
+					},
+					"quality": "Reported",
+					"comment": "transmit solid state protocol"
+				},
+				"alignedData": {
+					"valueAsPercentage": 0.269,
+					"dataSource": {
+						"page": 304,
+						"report": "SustainabilityReport",
+						"tagName": "experiences"
+					},
+					"quality": "Estimated",
+					"comment": "transmit mobile port",
+					"valueAsAbsolute": 432322.05271488056
+				}
+			}
+		},
+		"reportingPeriod": "2022"
 	}
 ]

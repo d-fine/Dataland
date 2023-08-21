@@ -1,6 +1,6 @@
 import ChooseFrameworkForDataUpload from "@/components/pages/ChooseFrameworkForDataUpload.vue";
 import { shallowMount } from "@vue/test-utils";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 describe("Component tests for the ChooseFrameworkForDataUpload page", () => {

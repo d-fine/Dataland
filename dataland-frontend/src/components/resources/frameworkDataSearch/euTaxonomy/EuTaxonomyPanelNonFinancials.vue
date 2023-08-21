@@ -13,7 +13,7 @@
       <div class="col-6">
         <TaxoInfoCard
           title="NFRD required"
-          :value="dataSet.reportingObligation"
+          :value="dataSet.nfrdMandatory"
           tooltipText="The NFRD (Non financial disclosure directive) applies to companies with more than 500 employees with a > €20M balance or > €40M net turnover."
         />
       </div>
@@ -94,11 +94,11 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
 import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ShowReportsBanner from "@/components/resources/frameworkDataSearch/ShowReportsBanner.vue";
 

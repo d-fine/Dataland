@@ -1,9 +1,9 @@
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
-  DataMetaInformation,
-  SmeData,
-  CompanyAssociatedDataSmeData,
-  DataAndMetaInformationSmeData,
+  type DataMetaInformation,
+  type SmeData,
+  type CompanyAssociatedDataSmeData,
+  type DataAndMetaInformationSmeData,
   DataTypeEnum,
   PercentRangeForInvestmentsInEnergyEfficiency,
   PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower,

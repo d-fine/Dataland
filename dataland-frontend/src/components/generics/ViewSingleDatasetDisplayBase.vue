@@ -72,13 +72,13 @@
 
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { defineComponent, inject } from "vue";
-import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
-import Keycloak from "keycloak-js";
+import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
+import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { AxiosError } from "axios";
+import { type AxiosError } from "axios";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";

@@ -1,5 +1,5 @@
-import { CompanyInformation, DataTypeEnum } from "@clients/backend";
-import { CyHttpMessages, Interception } from "cypress/types/net-stubbing";
+import { type CompanyInformation, type DataTypeEnum } from "@clients/backend";
+import { type CyHttpMessages, type Interception } from "cypress/types/net-stubbing";
 import Chainable = Cypress.Chainable;
 import { getKeycloakToken } from "./Auth";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "./Cypress";

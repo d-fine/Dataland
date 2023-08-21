@@ -14,8 +14,8 @@ interface EuTaxonomyCommonFields {
     val fiscalYearDeviation: FiscalYearDeviation?
     val fiscalYearEnd: LocalDate?
     val scopeOfEntities: YesNoNa?
-    val reportingObligation: YesNo?
-    val activityLevelReporting: YesNo?
+    val nfrdMandatory: YesNo?
+    val euTaxonomyActivityLevelReporting: YesNo?
     val assurance: AssuranceData?
     val numberOfEmployees: BigDecimal?
 }

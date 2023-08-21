@@ -1,5 +1,5 @@
-import { FixtureData } from "@sharedUtils/Fixtures";
-import { PathwaysToParisData } from "@clients/backend";
+import { type FixtureData } from "@sharedUtils/Fixtures";
+import { type PathwaysToParisData } from "@clients/backend";
 import { generateP2pFixtures } from "./P2pDataFixtures";
 
 /**

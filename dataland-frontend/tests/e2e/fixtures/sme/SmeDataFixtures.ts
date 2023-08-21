@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { SmeData, SmeProduct, SmeProductionSite } from "@clients/backend";
+import { type SmeData, type SmeProduct, type SmeProductionSite } from "@clients/backend";
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
@@ -13,7 +13,7 @@ import {
   getRandomPercentageRangeInvestmentEnergyEfficiency,
 } from "@e2e/fixtures/sme/SmeEnumFixtures";
 import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 
 /**
  * Generates a set number of SME fixtures

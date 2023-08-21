@@ -1,13 +1,13 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataTypeEnum, PathwaysToParisData } from "@clients/backend";
-import { uploadOneP2pDatasetViaApi } from "@e2e/utils/P2pUpload";
+import { DataTypeEnum, type PathwaysToParisData } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
 before(function () {
@@ -29,7 +29,7 @@ describeIf(
     });
 
     /**
-     * validates that the data uploaded via the function `uploadOneP2pDatasetViaApi` is displayed correctly for a company
+     * validates that the data uploaded via api is displayed correctly for a company
      * @param companyId the company associated to the data uploaded via form
      * @param dataId the company p2p id for accessing its view page
      */
@@ -54,24 +54,28 @@ describeIf(
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          return uploadOneP2pDatasetViaApi(token, storedCompany.companyId, "2021", p2pFixtureForTest.t).then(
-            (dataMetaInformation) => {
-              cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
-              cy.visitAndCheckAppMount(
-                "/companies/" +
-                  storedCompany.companyId +
-                  "/frameworks/" +
-                  DataTypeEnum.P2p +
-                  "/upload?templateDataId=" +
-                  dataMetaInformation.dataId,
-              );
-              cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-              cy.get("h1").should("contain", testCompanyName);
-              submitButton.clickButton();
-              cy.url().should("eq", getBaseUrl() + "/datasets");
-              validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
-            },
-          );
+          return uploadFrameworkData(
+            DataTypeEnum.P2p,
+            token,
+            storedCompany.companyId,
+            "2021",
+            p2pFixtureForTest.t,
+          ).then((dataMetaInformation) => {
+            cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+            cy.visitAndCheckAppMount(
+              "/companies/" +
+                storedCompany.companyId +
+                "/frameworks/" +
+                DataTypeEnum.P2p +
+                "/upload?templateDataId=" +
+                dataMetaInformation.dataId,
+            );
+            cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+            cy.get("h1").should("contain", testCompanyName);
+            submitButton.clickButton();
+            cy.url().should("eq", getBaseUrl() + "/datasets");
+            validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
+          });
         });
       });
     });

@@ -49,15 +49,20 @@
 </template>
 
 <script lang="ts">
-import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { type KpiDataObject, type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
-import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import {Category, DataAndMetaInformation, Field, FrameworkData, Subcategory} from "@/utils/GenericFrameworkTypes";
+import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import {
+  type Category,
+  type DataAndMetaInformation,
+  type Field,
+  type FrameworkData,
+  type Subcategory,
+} from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
-import {FrameworkViewModel} from "@/components/resources/ViewModel";
 
 export default defineComponent({
   name: "ThreeLayerTable",
@@ -80,7 +85,7 @@ export default defineComponent({
       required: true,
     },
     dataAndMetaInfo: {
-      type: Array as () => Array<DataAndMetaInformationViewModel>,
+      type: Array as () => Array<DataAndMetaInformation>,
       required: true,
     },
     formatValueForDisplay: {
@@ -152,12 +157,9 @@ export default defineComponent({
           for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data) as [string, object] | null) {
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
-            console.log("E", categoryKey)
-            console.log("E1", this.dataModel)
             const frameworkCategoryData = assertDefined(
               this.dataModel.find((category) => category.name === categoryKey),
             );
-            console.log("F")
             this.iterateThroughSubcategories(
               categoryObject,
               categoryKey,
@@ -191,7 +193,7 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkViewModel,
+      currentDataset: FrameworkData,
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
         string,
@@ -226,20 +228,15 @@ export default defineComponent({
       frameworkCategoryData: Category,
       dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkViewModel,
+      currentDataset: FrameworkData,
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
-        console.log("A", subCategoryKey)
-        console.log("A1", frameworkCategoryData)
         const subcategory = assertDefined(
           frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
         );
-        console.log("B", kpiKey)
-        console.log(subcategory)
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
-        console.log("C")
 
-        if (field.showIf(currentDataset.toApiModel())) {
+        if (field.showIf(currentDataset)) {
           this.createKpiDataObjects(kpiKey as string, kpiValue as KpiValue, subcategory, frameworkCategoryData, dataId);
           listOfDataObjects.push(this.resultKpiData);
         }
@@ -252,7 +249,7 @@ export default defineComponent({
      */
     shouldCategoryBeRendered(categoryName: string): boolean {
       const category = assertDefined(this.dataModel.find((category) => category.label === categoryName));
-      return this.dataAndMetaInfo.some((dataAndMetaInfo) => category.showIf(dataAndMetaInfo.data.toApiModel()));
+      return this.dataAndMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.data).some((data) => category.showIf(data));
     },
     /**
      * Retrieves the color for a given category from Data Model

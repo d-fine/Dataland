@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { checkIfUserHasRole } from "@/utils/KeycloakUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";

@@ -84,22 +84,22 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import {
-  FrameworkDataSearchFilterInterface,
-  DataSearchStoredCompany,
+  type FrameworkDataSearchFilterInterface,
+  type DataSearchStoredCompany,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
-import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
+import { type RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import { defineComponent, inject, ref } from "vue";
-import { DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum } from "@clients/backend";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { useFrameworkFiltersStore } from "@/stores/Stores";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";

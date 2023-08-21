@@ -1,6 +1,6 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import type Keycloak from "keycloak-js";
 import { shallowMount } from "@vue/test-utils";
 import { nextTick } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";

@@ -491,6 +491,75 @@
         ]
       }
     },
+    "/data/new-eutaxonomy-non-financials": {
+      "post": {
+        "tags": [
+          "new-eu-taxonomy-data-for-non-financials-controller"
+        ],
+        "operationId": "postCompanyAssociatedNewEuTaxonomyDataForNonFinancials",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/lksg": {
       "post": {
         "tags": [
@@ -1550,6 +1619,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationPathwaysToParisData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/new-eutaxonomy-non-financials/{dataId}": {
+      "get": {
+        "tags": [
+          "new-eu-taxonomy-data-for-non-financials-controller"
+        ],
+        "operationId": "getCompanyAssociatedNewEuTaxonomyDataForNonFinancials",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/new-eutaxonomy-non-financials/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "new-eu-taxonomy-data-for-non-financials-controller"
+        ],
+        "operationId": "getAllCompanyNewEuTaxonomyDataForNonFinancials",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationNewEuTaxonomyDataForNonFinancials"
                   }
                 }
               }
@@ -4011,966 +4216,6 @@
           }
         }
       },
-      "CompanyAssociatedDataLksgData": {
-        "required": [
-          "companyId",
-          "data",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/LksgData"
-          }
-        }
-      },
-      "LksgCertificationsPoliciesAndResponsibilities": {
-        "type": "object",
-        "properties": {
-          "sa8000Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "smetaSocialAuditConcept": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "betterWorkProgramCertificate": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "iso45001Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "iso14000Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "emasCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "iso37001Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "iso37301Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "riskManagementSystemCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "amforiBsciAuditReport": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "responsibleBusinessAssociationCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "fairLaborAssociationCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "additionalAudits": {
-            "type": "string"
-          },
-          "codeOfConduct": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "codeOfConductTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "supplierCodeOfConduct": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "policyStatement": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "humanRightsStrategy": {
-            "type": "string"
-          },
-          "environmentalImpactPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "fairWorkingConditionsPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          }
-        }
-      },
-      "LksgChildLabor": {
-        "type": "object",
-        "properties": {
-          "employeeUnder18": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "employeeUnder15": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "employeeUnder18Apprentices": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "worstFormsOfChildLaborProhibition": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "worstFormsOfChildLaborForms": {
-            "type": "string"
-          },
-          "employmentUnderLocalMinimumAgePrevention": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "employmentUnderLocalMinimumAgePreventionEmploymentContracts": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "employmentUnderLocalMinimumAgePreventionJobDescription": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "employmentUnderLocalMinimumAgePreventionIdentityDocuments": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "employmentUnderLocalMinimumAgePreventionTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "childLaborMeasures": {
-            "type": "string"
-          },
-          "childLaborPreventionPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          }
-        }
-      },
-      "LksgContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
-        "type": "object",
-        "properties": {
-          "harmfulSoilChange": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "soilDegradation": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "soilErosion": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "soilBornDiseases": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "soilContamination": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "soilSalinisation": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "harmfulWaterPollution": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "fertilisersOrPollutants": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "wasteWaterFiltration": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "harmfulAirPollution": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "airFiltration": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "harmfulNoiseEmission": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "reduceNoiseEmissions": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "excessiveWaterConsumption": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "waterSavingMeasures": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "waterSavingMeasuresName": {
-            "type": "string"
-          },
-          "pipeMaintaining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "waterSources": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "contaminationMeasures": {
-            "type": "string"
-          }
-        }
-      },
-      "LksgData": {
-        "required": [
-          "general"
-        ],
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/LksgGeneral"
-          },
-          "governance": {
-            "$ref": "#/components/schemas/LksgGovernance"
-          },
-          "social": {
-            "$ref": "#/components/schemas/LksgSocial"
-          },
-          "environmental": {
-            "$ref": "#/components/schemas/LksgEnvironmental"
-          }
-        }
-      },
-      "LksgDisregardForFreedomOfAssociation": {
-        "type": "object",
-        "properties": {
-          "freedomOfAssociation": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "representedEmployees": {
-            "type": "number"
-          },
-          "discriminationForTradeUnionMembers": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "freedomOfOperationForTradeUnion": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "freedomOfAssociationTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "worksCouncil": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgDisregardForOccupationalHealthSafety": {
-        "type": "object",
-        "properties": {
-          "lowSkillWork": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "hazardousMachines": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicy": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyPersonalProtectiveEquipment": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "oshPolicyMachineSafety": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "oshPolicyDisasterBehaviouralResponse": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyAccidentsBehaviouralResponse": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyWorkplaceErgonomics": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyAccessToWork": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "oshPolicyFireProtection": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyWorkingHours": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyTrainingAddressed": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshPolicyTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshManagementSystem": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshManagementSystemInternationalCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "oshManagementSystemNationalCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "workplaceAccidentsUnder10": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "oshTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "healthAndSafetyPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          }
-        }
-      },
-      "LksgEnvironmental": {
-        "type": "object",
-        "properties": {
-          "useOfMercuryMercuryWasteMinamataConvention": {
-            "$ref": "#/components/schemas/LksgUseOfMercuryMercuryWasteMinamataConvention"
-          },
-          "productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
-            "$ref": "#/components/schemas/LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention"
-          },
-          "exportImportOfHazardousWasteBaselConvention": {
-            "$ref": "#/components/schemas/LksgExportImportOfHazardousWasteBaselConvention"
-          }
-        }
-      },
-      "LksgExportImportOfHazardousWasteBaselConvention": {
-        "type": "object",
-        "properties": {
-          "persistentOrganicPollutantsProductionAndUseTransboundaryMovements": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "persistentOrganicPollutantsProductionAndUseRiskForImportingState": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "hazardousWasteTransboundaryMovementsOutsideOecdEuLiechtenstein": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "hazardousWasteDisposal": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "hazardousWasteDisposalRiskOfImport": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "hazardousAndOtherWasteImport": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgForcedLaborSlavery": {
-        "type": "object",
-        "properties": {
-          "forcedLaborAndSlaveryPrevention": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "forcedLaborAndSlaveryPreventionPractices": {
-            "type": "string"
-          },
-          "forcedLaborAndSlaveryPreventionMeasures": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "forcedLaborAndSlaveryPreventionEmploymentContracts": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "forcedLaborAndSlaveryPreventionIdentityDocuments": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "forcedLaborAndSlaveryPreventionFreeMovement": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "forcedLaborAndSlaveryPreventionTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "forcedLaborAndSlaveryPreventionMeasuresOther": {
-            "type": "string"
-          },
-          "forcedLaborPreventionPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          }
-        }
-      },
-      "LksgGeneral": {
-        "required": [
-          "masterData"
-        ],
-        "type": "object",
-        "properties": {
-          "masterData": {
-            "$ref": "#/components/schemas/LksgMasterData"
-          },
-          "productionSpecific": {
-            "$ref": "#/components/schemas/LksgProductionSpecific"
-          },
-          "productionSpecificOwnOperations": {
-            "$ref": "#/components/schemas/LksgProductionSpecificOwnOperations"
-          }
-        }
-      },
-      "LksgGeneralViolations": {
-        "type": "object",
-        "properties": {
-          "responsibilitiesForFairWorkingConditions": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "responsibilitiesForTheEnvironment": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "responsibilitiesForOccupationalSafety": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "legalProceedings": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "humanRightsViolation": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "humanRightsViolations": {
-            "type": "string"
-          },
-          "humanRightsViolationAction": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "humanRightsViolationActionMeasures": {
-            "type": "string"
-          },
-          "highRiskCountriesRawMaterials": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "highRiskCountriesRawMaterialsLocation": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "highRiskCountriesActivity": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "highRiskCountries": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "highRiskCountriesProcurement": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "highRiskCountriesProcurementName": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "LksgGovernance": {
-        "type": "object",
-        "properties": {
-          "certificationsPoliciesAndResponsibilities": {
-            "$ref": "#/components/schemas/LksgCertificationsPoliciesAndResponsibilities"
-          },
-          "generalViolations": {
-            "$ref": "#/components/schemas/LksgGeneralViolations"
-          },
-          "riskManagementOwnOperations": {
-            "$ref": "#/components/schemas/LksgRiskManagementOwnOperations"
-          },
-          "grievanceMechanismOwnOperations": {
-            "$ref": "#/components/schemas/LksgGrievanceMechanismOwnOperations"
-          }
-        }
-      },
-      "LksgGrievanceMechanismOwnOperations": {
-        "type": "object",
-        "properties": {
-          "grievanceHandlingMechanism": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceHandlingMechanismUsedForReporting": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismInformationProvided": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismSupportProvided": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismAccessToExpertise": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismComplaints": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismComplaintsNumber": {
-            "type": "number"
-          },
-          "grievanceMechanismComplaintsReason": {
-            "type": "string"
-          },
-          "grievanceMechanismComplaintsAction": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismComplaintsActionUndertaken": {
-            "type": "string"
-          },
-          "grievanceMechanismPublicAccess": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismProtection": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismDueDiligenceProcess": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgMasterData": {
-        "required": [
-          "dataDate"
-        ],
-        "type": "object",
-        "properties": {
-          "dataDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "headOfficeInGermany": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "groupOfCompanies": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "groupOfCompaniesName": {
-            "type": "string"
-          },
-          "industry": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "numberOfEmployees": {
-            "type": "number"
-          },
-          "seasonalOrMigrantWorkers": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "shareOfTemporaryWorkers": {
-            "$ref": "#/components/schemas/ShareOfTemporaryWorkers"
-          },
-          "totalRevenueCurrency": {
-            "type": "string"
-          },
-          "totalRevenue": {
-            "type": "number"
-          },
-          "fixedAndWorkingCapital": {
-            "type": "number"
-          }
-        }
-      },
-      "LksgProcurementCategory": {
-        "required": [
-          "procuredProductTypesAndServicesNaceCodes"
-        ],
-        "type": "object",
-        "properties": {
-          "procuredProductTypesAndServicesNaceCodes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "numberOfSuppliersPerCountryCode": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          "percentageOfTotalProcurement": {
-            "type": "number"
-          }
-        },
-        "example": {
-          "Products": {
-            "procuredProductTypesAndServicesNaceCodes": [
-              "string"
-            ],
-            "numberOfSuppliersPerCountryCode": {
-              "GB": 2
-            },
-            "percentageOfTotalProcurement": 0
-          },
-          "Services": {
-            "procuredProductTypesAndServicesNaceCodes": [
-              "string"
-            ],
-            "numberOfSuppliersPerCountryCode": {
-              "GB": 2
-            },
-            "percentageOfTotalProcurement": 0
-          },
-          "RawMaterials": {
-            "procuredProductTypesAndServicesNaceCodes": [
-              "string"
-            ],
-            "numberOfSuppliersPerCountryCode": {
-              "GB": 2
-            },
-            "percentageOfTotalProcurement": 0
-          }
-        }
-      },
-      "LksgProduct": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "productionSteps": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "relatedCorporateSupplyChain": {
-            "type": "string"
-          }
-        }
-      },
-      "LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention": {
-        "type": "object",
-        "properties": {
-          "persistentOrganicPollutantsProductionAndUse": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "persistentOrganicPollutantsUsed": {
-            "type": "string"
-          },
-          "persistentOrganicPollutantsProductionAndUseRiskOfExposure": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "persistentOrganicPollutantsProductionAndUseRiskOfDisposal": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "legalRestrictedWasteProcesses": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgProductionSite": {
-        "required": [
-          "addressOfProductionSite"
-        ],
-        "type": "object",
-        "properties": {
-          "nameOfProductionSite": {
-            "type": "string"
-          },
-          "addressOfProductionSite": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "listOfGoodsOrServices": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "LksgProductionSpecific": {
-        "type": "object",
-        "properties": {
-          "manufacturingCompany": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "capacity": {
-            "type": "string"
-          },
-          "isContractProcessing": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "subcontractingCompaniesCountries": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "subcontractingCompaniesIndustries": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "productionSites": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "listOfProductionSites": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LksgProductionSite"
-            }
-          },
-          "market": {
-            "$ref": "#/components/schemas/NationalOrInternationalMarket"
-          },
-          "specificProcurement": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgProductionSpecificOwnOperations": {
-        "type": "object",
-        "properties": {
-          "mostImportantProducts": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LksgProduct"
-            }
-          },
-          "procurementCategories": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/LksgProcurementCategory"
-            },
-            "example": {
-              "Products": {
-                "procuredProductTypesAndServicesNaceCodes": [
-                  "string"
-                ],
-                "numberOfSuppliersPerCountryCode": {
-                  "GB": 2
-                },
-                "percentageOfTotalProcurement": 0
-              },
-              "Services": {
-                "procuredProductTypesAndServicesNaceCodes": [
-                  "string"
-                ],
-                "numberOfSuppliersPerCountryCode": {
-                  "GB": 2
-                },
-                "percentageOfTotalProcurement": 0
-              },
-              "RawMaterials": {
-                "procuredProductTypesAndServicesNaceCodes": [
-                  "string"
-                ],
-                "numberOfSuppliersPerCountryCode": {
-                  "GB": 2
-                },
-                "percentageOfTotalProcurement": 0
-              }
-            }
-          }
-        }
-      },
-      "LksgRiskManagementOwnOperations": {
-        "type": "object",
-        "properties": {
-          "adequateAndEffectiveRiskManagementSystem": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "riskManagementSystemFiscalYear": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "riskManagementSystemRisks": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "riskManagementSystemIdentifiedRisks": {
-            "type": "string"
-          },
-          "riskManagementSystemCounteract": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "riskManagementSystemMeasures": {
-            "type": "string"
-          },
-          "riskManagementSystemResponsibility": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "environmentalManagementSystem": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "environmentalManagementSystemInternationalCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "environmentalManagementSystemNationalCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          }
-        }
-      },
-      "LksgSocial": {
-        "type": "object",
-        "properties": {
-          "childLabor": {
-            "$ref": "#/components/schemas/LksgChildLabor"
-          },
-          "forcedLaborSlavery": {
-            "$ref": "#/components/schemas/LksgForcedLaborSlavery"
-          },
-          "withholdingAdequateWages": {
-            "$ref": "#/components/schemas/LksgWithholdingAdequateWages"
-          },
-          "disregardForOccupationalHealthSafety": {
-            "$ref": "#/components/schemas/LksgDisregardForOccupationalHealthSafety"
-          },
-          "disregardForFreedomOfAssociation": {
-            "$ref": "#/components/schemas/LksgDisregardForFreedomOfAssociation"
-          },
-          "unequalTreatmentOfEmployment": {
-            "$ref": "#/components/schemas/LksgUnequalTreatmentOfEmployment"
-          },
-          "contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
-            "$ref": "#/components/schemas/LksgContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption"
-          },
-          "unlawfulEvictionDeprivationOfLandForestAndWater": {
-            "$ref": "#/components/schemas/LksgUnlawfulEvictionDeprivationOfLandForestAndWater"
-          },
-          "useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
-            "$ref": "#/components/schemas/LksgUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights"
-          }
-        }
-      },
-      "LksgUnequalTreatmentOfEmployment": {
-        "type": "object",
-        "properties": {
-          "unequalTreatmentOfEmployment": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "diversityAndInclusionRole": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "preventionOfMistreatments": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "equalOpportunitiesOfficer": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "fairAndEthicalRecruitmentPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "equalOpportunitiesAndNonDiscriminationPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          }
-        }
-      },
-      "LksgUnlawfulEvictionDeprivationOfLandForestAndWater": {
-        "type": "object",
-        "properties": {
-          "unlawfulEvictionAndTakingOfLand": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "unlawfulEvictionAndTakingOfLandRisk": {
-            "type": "string"
-          },
-          "unlawfulEvictionAndTakingOfLandStrategies": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "unlawfulEvictionAndTakingOfLandStrategiesName": {
-            "type": "string"
-          },
-          "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgUseOfMercuryMercuryWasteMinamataConvention": {
-        "type": "object",
-        "properties": {
-          "mercuryAndMercuryWasteHandling": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "mercuryAndMercuryWasteHandlingPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
-          },
-          "mercuryAddedProductsHandling": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "mercuryAddedProductsHandlingRiskOfExposure": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "mercuryAddedProductsHandlingRiskOfDisposal": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "mercuryAndMercuryCompoundsProductionAndUse": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
-        "type": "object",
-        "properties": {
-          "useOfPrivatePublicSecurityForces": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "instructionOfSecurityForces": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "humanRightsTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "stateSecurityForces": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "privateSecurityForces": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "useOfPrivatePublicSecurityForcesMeasures": {
-            "type": "string"
-          }
-        }
-      },
-      "LksgWithholdingAdequateWages": {
-        "type": "object",
-        "properties": {
-          "adequateWage": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "adequateWageBeingWithheld": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "documentedWorkingHoursAndWages": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "adequateLivingWage": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "regularWagesProcessFlow": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "fixedHourlyWages": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "fixedPieceworkWages": {
-            "$ref": "#/components/schemas/YesNoNa"
-          },
-          "adequateWageMeasures": {
-            "type": "string"
-          }
-        }
-      },
-      "NationalOrInternationalMarket": {
-        "type": "string",
-        "enum": [
-          "National",
-          "International",
-          "Both"
-        ]
-      },
-      "ShareOfTemporaryWorkers": {
-        "type": "string",
-        "enum": [
-          "Smaller10",
-          "Between10And25",
-          "Between25And50",
-          "Greater50"
-        ]
-      },
       "Activity": {
         "type": "string",
         "enum": [
@@ -5083,6 +4328,17 @@
           "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities"
         ]
       },
+      "AmountWithCurrency": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
       "AssuranceData": {
         "required": [
           "assurance"
@@ -5105,6 +4361,1191 @@
           }
         }
       },
+      "CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NewEuTaxonomyDataForNonFinancials"
+          }
+        }
+      },
+      "DataPointOneValueAmountWithCurrency": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/AmountWithCurrency"
+          }
+        }
+      },
+      "EuTaxonomyActivity": {
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "$ref": "#/components/schemas/Activity"
+          },
+          "naceCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          }
+        }
+      },
+      "EuTaxonomyAlignedActivity": {
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "$ref": "#/components/schemas/Activity"
+          },
+          "naceCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          },
+          "substantialContributionCriteria": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            },
+            "example": {
+              "ClimateMitigation": 20.0,
+              "ClimateAdaptation": 20.0,
+              "Water": 20.0
+            }
+          },
+          "dnshCriteria": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/YesNo"
+            },
+            "example": {
+              "ClimateMitigation": "Yes",
+              "ClimateAdaptation": "Yes",
+              "Water": "No"
+            }
+          },
+          "minimumSafeguards": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "EuTaxonomyGeneral": {
+        "type": "object",
+        "properties": {
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/FiscalYearDeviation"
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "scopeOfEntities": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "nfrdMandatory": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "euTaxonomyActivityLevelReporting": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "assurance": {
+            "$ref": "#/components/schemas/AssuranceData"
+          },
+          "numberOfEmployees": {
+            "type": "number"
+          },
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
+          }
+        }
+      },
+      "NewEuTaxonomyDataForNonFinancials": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/EuTaxonomyGeneral"
+          },
+          "revenue": {
+            "$ref": "#/components/schemas/NewEuTaxonomyDetailsPerCashFlowType"
+          },
+          "capex": {
+            "$ref": "#/components/schemas/NewEuTaxonomyDetailsPerCashFlowType"
+          },
+          "opex": {
+            "$ref": "#/components/schemas/NewEuTaxonomyDetailsPerCashFlowType"
+          }
+        }
+      },
+      "NewEuTaxonomyDetailsPerCashFlowType": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "$ref": "#/components/schemas/DataPointOneValueAmountWithCurrency"
+          },
+          "totalNonEligibleShare": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          },
+          "totalEligibleShare": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          },
+          "totalNonAlignedShare": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          },
+          "nonAlignedActivities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
+            }
+          },
+          "totalAlignedShare": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          },
+          "substantialContributionCriteria": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            },
+            "example": {
+              "ClimateMitigation": 20.0,
+              "ClimateAdaptation": 20.0,
+              "Water": 20.0
+            }
+          },
+          "alignedActivities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
+          },
+          "totalEnablingShare": {
+            "type": "number"
+          },
+          "totalTransitionalShare": {
+            "type": "number"
+          }
+        }
+      },
+      "RelativeAndAbsoluteFinancialShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/AmountWithCurrency"
+          }
+        }
+      },
+      "BaseDataPointYesNoNa": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/DocumentReference"
+          }
+        }
+      },
+      "CompanyAssociatedDataLksgData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LksgData"
+          }
+        }
+      },
+      "LksgData": {
+        "required": [
+          "general"
+        ],
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/LksgGeneral"
+          },
+          "governance": {
+            "$ref": "#/components/schemas/LksgGovernance"
+          },
+          "social": {
+            "$ref": "#/components/schemas/LksgSocial"
+          },
+          "environmental": {
+            "$ref": "#/components/schemas/LksgEnvironmental"
+          }
+        }
+      },
+      "LksgEnvironmental": {
+        "type": "object",
+        "properties": {
+          "useOfMercuryMercuryWasteMinamataConvention": {
+            "$ref": "#/components/schemas/LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention"
+          },
+          "productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
+            "$ref": "#/components/schemas/LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention"
+          },
+          "exportImportOfHazardousWasteBaselConvention": {
+            "$ref": "#/components/schemas/LksgEnvironmentalExportImportOfHazardousWasteBaselConvention"
+          }
+        }
+      },
+      "LksgEnvironmentalExportImportOfHazardousWasteBaselConvention": {
+        "type": "object",
+        "properties": {
+          "persistentOrganicPollutantsProductionAndUseTransboundaryMovements": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "persistentOrganicPollutantsProductionAndUseRiskForImportingState": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousWasteDisposal": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousWasteDisposalRiskOfImport": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousWasteDisposalOtherWasteImport": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention": {
+        "type": "object",
+        "properties": {
+          "persistentOrganicPollutantsProductionAndUse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "persistentOrganicPollutantsUsed": {
+            "type": "string"
+          },
+          "persistentOrganicPollutantsProductionAndUseRiskOfExposure": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "persistentOrganicPollutantsProductionAndUseRiskOfDisposal": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "legalRestrictedWasteProcesses": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention": {
+        "type": "object",
+        "properties": {
+          "mercuryAndMercuryWasteHandling": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAndMercuryWasteHandlingPolicy": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "mercuryAddedProductsHandling": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAddedProductsHandlingRiskOfExposure": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAddedProductsHandlingRiskOfDisposal": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAndMercuryCompoundsProductionAndUse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "LksgGeneral": {
+        "required": [
+          "masterData"
+        ],
+        "type": "object",
+        "properties": {
+          "masterData": {
+            "$ref": "#/components/schemas/LksgGeneralMasterData"
+          },
+          "productionSpecific": {
+            "$ref": "#/components/schemas/LksgGeneralProductionSpecific"
+          },
+          "productionSpecificOwnOperations": {
+            "$ref": "#/components/schemas/LksgGeneralProductionSpecificOwnOperations"
+          }
+        }
+      },
+      "LksgGeneralMasterData": {
+        "required": [
+          "dataDate"
+        ],
+        "type": "object",
+        "properties": {
+          "dataDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "headOfficeInGermany": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "groupOfCompanies": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "groupOfCompaniesName": {
+            "type": "string"
+          },
+          "industry": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numberOfEmployees": {
+            "type": "number"
+          },
+          "seasonalOrMigrantWorkers": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "shareOfTemporaryWorkers": {
+            "$ref": "#/components/schemas/ShareOfTemporaryWorkers"
+          },
+          "annualTotalRevenue": {
+            "type": "number"
+          },
+          "totalRevenueCurrency": {
+            "type": "string"
+          },
+          "fixedAndWorkingCapital": {
+            "type": "number"
+          }
+        }
+      },
+      "LksgGeneralProductionSpecific": {
+        "type": "object",
+        "properties": {
+          "manufacturingCompany": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "capacity": {
+            "type": "string"
+          },
+          "productionViaSubcontracting": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "subcontractingCompaniesCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subcontractingCompaniesIndustries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "productionSites": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "listOfProductionSites": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LksgProductionSite"
+            }
+          },
+          "market": {
+            "$ref": "#/components/schemas/NationalOrInternationalMarket"
+          },
+          "specificProcurement": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "LksgGeneralProductionSpecificOwnOperations": {
+        "type": "object",
+        "properties": {
+          "mostImportantProducts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LksgProduct"
+            }
+          },
+          "productsServicesCategoriesPurchased": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LksgProcurementCategory"
+            },
+            "example": {
+              "Products": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "percentageOfTotalProcurement": 0
+              },
+              "Services": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "percentageOfTotalProcurement": 0
+              },
+              "RawMaterials": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "percentageOfTotalProcurement": 0
+              }
+            }
+          }
+        }
+      },
+      "LksgGovernance": {
+        "type": "object",
+        "properties": {
+          "riskManagementOwnOperations": {
+            "$ref": "#/components/schemas/LksgGovernanceRiskManagementOwnOperations"
+          },
+          "grievanceMechanismOwnOperations": {
+            "$ref": "#/components/schemas/LksgGovernanceGrievanceMechanismOwnOperations"
+          },
+          "certificationsPoliciesAndResponsibilities": {
+            "$ref": "#/components/schemas/LksgGovernanceCertificationsPoliciesAndResponsibilities"
+          },
+          "generalViolations": {
+            "$ref": "#/components/schemas/LksgGovernanceGeneralViolations"
+          }
+        }
+      },
+      "LksgGovernanceCertificationsPoliciesAndResponsibilities": {
+        "type": "object",
+        "properties": {
+          "sa8000Certification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "smetaSocialAuditConcept": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "betterWorkProgramCertificate": {
+            "$ref": "#/components/schemas/BaseDataPointYesNoNa"
+          },
+          "iso45001Certification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "iso14001Certification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "emasCertification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "iso37001Certification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "iso37301Certification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "riskManagementSystemCertification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "amforiBsciAuditReport": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "responsibleBusinessAssociationCertification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "fairLaborAssociationCertification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "additionalAudits": {
+            "type": "string"
+          },
+          "codeOfConduct": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "codeOfConductTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "supplierCodeOfConduct": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "policyStatement": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "humanRightsStrategy": {
+            "type": "string"
+          },
+          "environmentalImpactPolicy": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "fairWorkingConditionsPolicy": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          }
+        }
+      },
+      "LksgGovernanceGeneralViolations": {
+        "type": "object",
+        "properties": {
+          "responsibilitiesForFairWorkingConditions": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "responsibilitiesForTheEnvironment": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "responsibilitiesForOccupationalSafety": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "legalProceedings": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "humanRightsViolationS": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "humanRightsViolations": {
+            "type": "string"
+          },
+          "humanRightsViolationAction": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "humanRightsViolationActionMeasures": {
+            "type": "string"
+          },
+          "highRiskCountriesRawMaterials": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "highRiskCountriesRawMaterialsLocation": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "highRiskCountriesActivity": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "highRiskCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "highRiskCountriesProcurement": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "highRiskCountriesProcurementName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "LksgGovernanceGrievanceMechanismOwnOperations": {
+        "type": "object",
+        "properties": {
+          "grievanceHandlingMechanism": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceHandlingReportingAccessible": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "appropriateGrievanceHandlingInformation": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "appropriateGrievanceHandlingSupport": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "accessToExpertiseForGrievanceHandling": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceComplaints": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "complaintsNumber": {
+            "type": "number"
+          },
+          "complaintsReason": {
+            "type": "string"
+          },
+          "actionsForComplaintsUndertaken": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "whichActionsForComplaintsUndertaken": {
+            "type": "string"
+          },
+          "publicAccessToGrievanceHandling": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "whistleblowerProtection": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "dueDiligenceProcessForGrievanceHandling": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "LksgGovernanceRiskManagementOwnOperations": {
+        "type": "object",
+        "properties": {
+          "riskManagementSystem": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "riskAnalysisInFiscalYear": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "risksIdentified": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "identifiedRisks": {
+            "type": "string"
+          },
+          "counteractingMeasures": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "whichCounteractingMeasures": {
+            "type": "string"
+          },
+          "regulatedRiskManagementResponsibility": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "environmentalManagementSystem": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "environmentalManagementSystemInternationalCertification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "environmentalManagementSystemNationalCertification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          }
+        }
+      },
+      "LksgProcurementCategory": {
+        "required": [
+          "procuredProductTypesAndServicesNaceCodes"
+        ],
+        "type": "object",
+        "properties": {
+          "procuredProductTypesAndServicesNaceCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numberOfSuppliersPerCountryCode": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "percentageOfTotalProcurement": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "Products": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "percentageOfTotalProcurement": 0
+          },
+          "Services": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "percentageOfTotalProcurement": 0
+          },
+          "RawMaterials": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "percentageOfTotalProcurement": 0
+          }
+        }
+      },
+      "LksgProduct": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "productionSteps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "relatedCorporateSupplyChain": {
+            "type": "string"
+          }
+        }
+      },
+      "LksgProductionSite": {
+        "required": [
+          "addressOfProductionSite"
+        ],
+        "type": "object",
+        "properties": {
+          "nameOfProductionSite": {
+            "type": "string"
+          },
+          "addressOfProductionSite": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "listOfGoodsOrServices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "LksgSocial": {
+        "type": "object",
+        "properties": {
+          "childLabor": {
+            "$ref": "#/components/schemas/LksgSocialChildLabor"
+          },
+          "forcedLaborSlavery": {
+            "$ref": "#/components/schemas/LksgSocialForcedLaborSlavery"
+          },
+          "withholdingAdequateWages": {
+            "$ref": "#/components/schemas/LksgSocialWithholdingAdequateWages"
+          },
+          "disregardForOccupationalHealthSafety": {
+            "$ref": "#/components/schemas/LksgSocialDisregardForOccupationalHealthSafety"
+          },
+          "disregardForFreedomOfAssociation": {
+            "$ref": "#/components/schemas/LksgSocialDisregardForFreedomOfAssociation"
+          },
+          "unequalTreatmentOfEmployment": {
+            "$ref": "#/components/schemas/LksgSocialUnequalTreatmentOfEmployment"
+          },
+          "contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
+            "$ref": "#/components/schemas/LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption"
+          },
+          "unlawfulEvictionDeprivationOfLandForestAndWater": {
+            "$ref": "#/components/schemas/LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater"
+          },
+          "useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
+            "$ref": "#/components/schemas/LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights"
+          }
+        }
+      },
+      "LksgSocialChildLabor": {
+        "type": "object",
+        "properties": {
+          "childLaborPreventionPolicy": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "employeeSUnder18": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employeeSUnder15": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employeeSUnder18InApprenticeship": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "worstFormsOfChildLaborProhibition": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "worstFormsOfChildLabor": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "worstFormsOfChildLaborForms": {
+            "type": "string"
+          },
+          "measuresForPreventionOfEmploymentUnderLocalMinimumAge": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionEmploymentContracts": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionJobDescription": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionIdentityDocuments": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "additionalChildLaborMeasures": {
+            "type": "string"
+          }
+        }
+      },
+      "LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
+        "type": "object",
+        "properties": {
+          "harmfulSoilImpact": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "soilDegradation": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "soilErosion": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "soilBorneDiseases": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "soilContamination": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "soilSalinization": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "harmfulWaterPollution": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "fertilizersOrPollutants": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "wasteWaterFiltration": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "harmfulAirPollution": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "airFiltration": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "harmfulNoiseEmission": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "reduceNoiseEmissions": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "excessiveWaterConsumption": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "waterSavingMeasures": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "waterSavingMeasuresName": {
+            "type": "string"
+          },
+          "pipeMaintaining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "waterSources": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "contaminationMeasures": {
+            "type": "string"
+          }
+        }
+      },
+      "LksgSocialDisregardForFreedomOfAssociation": {
+        "type": "object",
+        "properties": {
+          "freedomOfAssociation": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "employeeRepresentation": {
+            "type": "number"
+          },
+          "discriminationForTradeUnionMembers": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "freedomOfOperationForTradeUnion": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "freedomOfAssociationTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "worksCouncil": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "LksgSocialDisregardForOccupationalHealthSafety": {
+        "type": "object",
+        "properties": {
+          "lowSkillWork": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "hazardousMachines": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyPersonalProtectiveEquipment": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "oshPolicyMachineSafety": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "oshPolicyDisasterBehavioralResponse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyAccidentsBehavioralResponse": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyWorkplaceErgonomics": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyAccessToWork": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "oshPolicyFireProtection": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyWorkingHours": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyTrainingAddressed": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshPolicyTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshManagementSystem": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshManagementSystemInternationalCertification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "oshManagementSystemNationalCertification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "under10WorkplaceAccidents": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "oshTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "healthAndSafetyPolicy": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          }
+        }
+      },
+      "LksgSocialForcedLaborSlavery": {
+        "type": "object",
+        "properties": {
+          "forcedLaborAndSlaveryPrevention": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLaborAndSlaveryPreventionPractices": {
+            "type": "string"
+          },
+          "forcedLaborPreventionPolicy": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "forcedLaborAndSlaveryPreventionMeasures": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLaborAndSlaveryPreventionEmploymentContracts": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLaborAndSlaveryPreventionIdentityDocuments": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLaborAndSlaveryPreventionFreeMovement": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLaborAndSlaveryPreventionTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "forcedLaborAndSlaveryPreventionMeasuresOther": {
+            "type": "string"
+          }
+        }
+      },
+      "LksgSocialUnequalTreatmentOfEmployment": {
+        "type": "object",
+        "properties": {
+          "unequalTreatmentOfEmployment": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "diversityAndInclusionRole": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "preventionOfMistreatments": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "equalOpportunitiesOfficer": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "fairAndEthicalRecruitmentPolicy": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "equalOpportunitiesAndNonDiscriminationPolicy": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          }
+        }
+      },
+      "LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater": {
+        "type": "object",
+        "properties": {
+          "unlawfulEvictionAndTakingOfLand": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "unlawfulEvictionAndTakingOfLandRisk": {
+            "type": "string"
+          },
+          "unlawfulEvictionAndTakingOfLandStrategies": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "unlawfulEvictionAndTakingOfLandStrategiesName": {
+            "type": "string"
+          },
+          "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
+        "type": "object",
+        "properties": {
+          "useOfPrivatePublicSecurityForces": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "instructionOfSecurityForces": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "humanRightsTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "stateSecurityForces": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "privateSecurityForces": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "useOfPrivatePublicSecurityForcesMeasures": {
+            "type": "string"
+          }
+        }
+      },
+      "LksgSocialWithholdingAdequateWages": {
+        "type": "object",
+        "properties": {
+          "adequateWage": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "adequateWagesMeasures": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "documentedWorkingHoursAndWages": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "adequateLivingWage": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "regularWagesProcessFlow": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "fixedHourlyWages": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "fixedPieceworkWages": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
+          "adequateWageMeasures": {
+            "type": "string"
+          }
+        }
+      },
+      "NationalOrInternationalMarket": {
+        "type": "string",
+        "enum": [
+          "National",
+          "International",
+          "Both"
+        ]
+      },
+      "ShareOfTemporaryWorkers": {
+        "type": "string",
+        "enum": [
+          "Smaller10",
+          "Between10And25",
+          "Between25And50",
+          "Greater50"
+        ]
+      },
       "CompanyAssociatedDataEuTaxonomyDataForNonFinancials": {
         "required": [
           "companyId",
@@ -5121,6 +5562,29 @@
           },
           "data": {
             "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
+          }
+        }
+      },
+      "DataPointAbsoluteAndPercentageBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "valueAsPercentage": {
+            "type": "number"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "valueAsAbsolute": {
+            "type": "number"
           }
         }
       },
@@ -5144,113 +5608,18 @@
           }
         }
       },
-      "EuTaxonomyActivity": {
-        "type": "object",
-        "properties": {
-          "activityName": {
-            "$ref": "#/components/schemas/Activity"
-          },
-          "naceCodes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "share": {
-            "$ref": "#/components/schemas/FinancialShare"
-          }
-        }
-      },
-      "EuTaxonomyAlignedActivity": {
-        "type": "object",
-        "properties": {
-          "activityName": {
-            "$ref": "#/components/schemas/Activity"
-          },
-          "naceCodes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "share": {
-            "$ref": "#/components/schemas/FinancialShare"
-          },
-          "substantialContributionCriteria": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "number"
-            }
-          },
-          "dnshCriteria": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/YesNo"
-            }
-          },
-          "minimumSafeguards": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
       "EuTaxonomyDataForNonFinancials": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/EuTaxonomyGeneral"
-          },
-          "revenue": {
-            "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
-          },
           "capex": {
             "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
           },
           "opex": {
             "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
-          }
-        }
-      },
-      "EuTaxonomyDetailsPerCashFlowType": {
-        "type": "object",
-        "properties": {
-          "totalAmount": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
-          "totalNonEligibleShare": {
-            "$ref": "#/components/schemas/FinancialShare"
+          "revenue": {
+            "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
           },
-          "totalEligibleShare": {
-            "$ref": "#/components/schemas/FinancialShare"
-          },
-          "totalNonAlignedShare": {
-            "$ref": "#/components/schemas/FinancialShare"
-          },
-          "nonAlignedActivities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyActivity"
-            }
-          },
-          "totalAlignedShare": {
-            "$ref": "#/components/schemas/FinancialShare"
-          },
-          "alignedActivities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
-            }
-          },
-          "enablingAlignedShare": {
-            "type": "number"
-          },
-          "transitionalAlignedShare": {
-            "type": "number"
-          }
-        }
-      },
-      "EuTaxonomyGeneral": {
-        "type": "object",
-        "properties": {
           "fiscalYearDeviation": {
             "$ref": "#/components/schemas/FiscalYearDeviation"
           },
@@ -5261,10 +5630,10 @@
           "scopeOfEntities": {
             "$ref": "#/components/schemas/YesNoNa"
           },
-          "reportingObligation": {
+          "nfrdMandatory": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "activityLevelReporting": {
+          "euTaxonomyActivityLevelReporting": {
             "$ref": "#/components/schemas/YesNo"
           },
           "assurance": {
@@ -5281,17 +5650,17 @@
           }
         }
       },
-      "FinancialShare": {
+      "EuTaxonomyDetailsPerCashFlowType": {
         "type": "object",
         "properties": {
-          "percentage": {
-            "type": "number"
+          "totalAmount": {
+            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
-          "absoluteShare": {
-            "type": "number"
+          "alignedData": {
+            "$ref": "#/components/schemas/DataPointAbsoluteAndPercentageBigDecimal"
           },
-          "currency": {
-            "type": "string"
+          "eligibleData": {
+            "$ref": "#/components/schemas/DataPointAbsoluteAndPercentageBigDecimal"
           }
         }
       },
@@ -5483,10 +5852,10 @@
           "scopeOfEntities": {
             "$ref": "#/components/schemas/YesNoNa"
           },
-          "reportingObligation": {
+          "nfrdMandatory": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "activityLevelReporting": {
+          "euTaxonomyActivityLevelReporting": {
             "$ref": "#/components/schemas/YesNo"
           },
           "assurance": {
@@ -5634,6 +6003,21 @@
           }
         }
       },
+      "DataAndMetaInformationNewEuTaxonomyDataForNonFinancials": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NewEuTaxonomyDataForNonFinancials"
+          }
+        }
+      },
       "DataAndMetaInformationLksgData": {
         "required": [
           "data",
@@ -5686,10 +6070,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -5733,6 +6117,7 @@
         "enum": [
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
+          "new-eutaxonomy-non-financials",
           "lksg",
           "p2p",
           "sfdr",

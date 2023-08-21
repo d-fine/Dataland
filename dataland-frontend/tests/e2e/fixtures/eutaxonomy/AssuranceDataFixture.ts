@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { generateDataSource } from "@e2e/fixtures/common/DataSourceFixtures";
-import { AssuranceData, AssuranceDataAssuranceEnum } from "@clients/backend";
-import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { type AssuranceData, AssuranceDataAssuranceEnum } from "@clients/backend";
+import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates random assurance data

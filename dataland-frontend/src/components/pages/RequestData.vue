@@ -120,14 +120,14 @@
 </template>
 
 <script lang="ts">
-import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
+import FileUpload, { type FileUploadSelectEvent } from "primevue/fileupload";
 import Message from "primevue/message";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject, ref } from "vue";
-import { AxiosResponse } from "axios";
-import Keycloak from "keycloak-js";
+import { type AxiosResponse } from "axios";
+import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { InviteMetaInfoEntity } from "@clients/backend";
+import { type InviteMetaInfoEntity } from "@clients/backend";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";

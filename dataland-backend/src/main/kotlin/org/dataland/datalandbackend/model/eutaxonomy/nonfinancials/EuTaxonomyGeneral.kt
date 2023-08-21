@@ -10,6 +10,9 @@ import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
 import java.math.BigDecimal
 import java.time.LocalDate
 
+/**
+ * TODO
+ */
 data class EuTaxonomyGeneral(
     override val fiscalYearDeviation: FiscalYearDeviation?,
 

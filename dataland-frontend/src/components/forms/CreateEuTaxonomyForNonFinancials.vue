@@ -292,7 +292,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { defineComponent, inject } from "vue";
 import { useRoute } from "vue-router";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 
@@ -303,25 +303,25 @@ import {
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
   AssuranceDataAssuranceEnum,
-  CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-  DataMetaInformation,
-  EuTaxonomyDataForNonFinancials,
+  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  type DataMetaInformation,
+  type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import {
   convertValuesFromDecimalsToPercentages,
   convertValuesFromPercentagesToDecimals,
-  ObjectType,
+  type ObjectType,
   updateObject,
 } from "@/utils/UpdateObjectUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
-import { AxiosResponse } from "axios";
+import { type AxiosResponse } from "axios";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import { FormKitNode } from "@formkit/core";
+import { type FormKitNode } from "@formkit/core";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import { ReportToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -447,7 +447,7 @@ export default defineComponent({
         );
 
         await uploadFiles(
-          (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
+          (this.$refs.UploadReports.$data as { documentsToUpload: DocumentToUpload[] }).documentsToUpload,
           assertDefined(this.getKeycloakPromise),
         );
 

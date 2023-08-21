@@ -136,7 +136,7 @@
 
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import { ComponentPublicInstance, defineComponent, inject, ref } from "vue";
+import { type ComponentPublicInstance, defineComponent, inject, ref } from "vue";
 import PrimeButton from "primevue/button";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
@@ -149,8 +149,8 @@ import PrimeDialog from "primevue/dialog";
 import PrimeTextarea from "primevue/textarea";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
-import { ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import type Keycloak from "keycloak-js";
+import { type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 import TheFooter from "@/components/general/TheFooter.vue";
 
 export default defineComponent({

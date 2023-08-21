@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter, RouteComponent } from "vue-router";
+import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
 const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");

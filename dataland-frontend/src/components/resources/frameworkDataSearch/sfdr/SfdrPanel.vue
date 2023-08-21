@@ -18,14 +18,14 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import {
-  CompanyReport,
-  DataAndMetaInformationSfdrData,
-  SfdrData,
-  SfdrEnvironmental,
-  SfdrSocial,
+  type CompanyReport,
+  type DataAndMetaInformationSfdrData,
+  type SfdrData,
+  type SfdrEnvironmental,
+  type SfdrSocial,
 } from "@clients/backend";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import SfdrDataTable from "@/components/general/SfdrDataTable.vue";

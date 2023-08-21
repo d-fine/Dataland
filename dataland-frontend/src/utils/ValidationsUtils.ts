@@ -1,5 +1,5 @@
-import { FormKitNode } from "@formkit/core";
-import { findAllValuesForKey, ObjectType } from "@/utils/UpdateObjectUtils";
+import { type FormKitNode } from "@formkit/core";
+import { findAllValuesForKey, type ObjectType } from "@/utils/UpdateObjectUtils";
 
 /**
  * Checks which inputs are not filled correctly

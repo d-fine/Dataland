@@ -27,8 +27,8 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject } from "vue";
-import { CompanyInformation } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import { type CompanyInformation } from "@clients/backend";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum } from "@clients/backend";
 import { TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS } from "@/utils/Constants";
 
 export const useFrameworkFiltersStore = defineStore("frameworkFilters", {

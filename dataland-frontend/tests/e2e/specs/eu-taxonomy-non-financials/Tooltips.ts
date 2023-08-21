@@ -1,9 +1,9 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
@@ -16,13 +16,13 @@ before(function () {
 
 /**
  * Retrieves the first company from the fake fixture dataset that has values for both
- * reportingObligation and assurance
+ * nfrdMandatory and assurance
  * @returns the found dataset
  */
-function getCompanyWithReportingObligationAndAssurance(): FixtureData<EuTaxonomyDataForNonFinancials> {
+function getCompanyWithNfrdMandatoryAndAssurance(): FixtureData<EuTaxonomyDataForNonFinancials> {
   return assertDefined(
     companiesWithEuTaxonomyDataForNonFinancials.find((it) => {
-      return it.t.reportingObligation !== undefined && it.t.assurance !== undefined;
+      return it.t.nfrdMandatory !== undefined && it.t.assurance !== undefined;
     }),
   );
 }
@@ -38,7 +38,7 @@ describeIf(
       getKeycloakToken(reader_name, reader_pw).then((token) => {
         cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
           (storedCompanies) => {
-            const testCompany = getCompanyWithReportingObligationAndAssurance();
+            const testCompany = getCompanyWithNfrdMandatoryAndAssurance();
             const companyId = assertDefined(
               storedCompanies.find((storedCompany) => {
                 return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;

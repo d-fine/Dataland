@@ -1,5 +1,5 @@
-import { SmeData } from "@clients/backend";
-import { Category } from "@/utils/GenericFrameworkTypes";
+import { type SmeData } from "@clients/backend";
+import { type Category } from "@/utils/GenericFrameworkTypes";
 
 export const smeDataModel = [
   {
