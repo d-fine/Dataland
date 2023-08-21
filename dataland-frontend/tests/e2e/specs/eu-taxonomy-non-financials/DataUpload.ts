@@ -51,8 +51,8 @@ describeIf(
     function goToEditForm(companyId: string, expectPdfTest: boolean): void {
       goToEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyNonFinancials).then((interception) => {
         const referencedReports = assertDefined(
-          (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data.general!
-            .referencedReports,
+          (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data
+            ?.referencedReports,
         );
         expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectPdfTest);
         expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
@@ -113,9 +113,9 @@ describeIf(
             },
             (request) => {
               const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data);
-              frontendDocumentHash = assertDefined(data.general!.referencedReports)[TEST_PDF_FILE_NAME].reference;
-              expect(TEST_PDF_FILE_NAME in assertDefined(data.general!.referencedReports)).to.equal(true);
-              expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general!.referencedReports)).to.equal(true);
+              frontendDocumentHash = assertDefined(data.referencedReports)[TEST_PDF_FILE_NAME].reference;
+              expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(true);
+              expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
             },
             (companyId) => {
               goToEditForm(companyId, true);
