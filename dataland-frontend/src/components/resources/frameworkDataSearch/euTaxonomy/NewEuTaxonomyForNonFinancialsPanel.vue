@@ -34,7 +34,7 @@ import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/reso
 import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 
 export default defineComponent({
-  name: "EuTaxonomyForNonFinancialsPanel",
+  name: "NewEuTaxonomyForNonFinancialsPanel",
   components: { ThreeLayerTable },
   data() {
     return {
