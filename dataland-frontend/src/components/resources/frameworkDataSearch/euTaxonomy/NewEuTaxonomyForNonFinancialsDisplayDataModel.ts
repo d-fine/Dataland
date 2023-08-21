@@ -1,6 +1,6 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 
-export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
+export const euTaxonomyForNonFinancialsDataModel = [
   {
     name: "general",
     label: "General",
@@ -66,7 +66,7 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
             certificateRequiredIfYes: false,
           },
           {
-            name: "activityLevelReporting",
+            name: "euTaxonomyActivityLevelReporting",
             label: "EU Taxonomy Activity Level Reporting",
             description: "Activity Level disclosure",
             unit: "",
@@ -87,7 +87,7 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "reportingObligation",
+            name: "nfrdMandatory",
             label: "NFRD Mandatory",
             description: "The reporting obligation for companies whose number of employees is greater or equal to 500",
             unit: "",
@@ -100,7 +100,8 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "assurance",
             label: "Assurance",
-            description: "",
+            description:
+              "Level of Assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
             unit: "",
             component: "AssuranceFormField",
             evidenceDesired: true,
@@ -114,12 +115,12 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
   {
     name: "revenue",
     label: "Revenue",
-    color: "orange",
+    color: "yellow",
     showIf: (): boolean => true,
     subcategories: [
       {
         name: "totalAmount",
-        label: "Total Amount",
+        label: "Total Revenue",
         fields: [
           {
             name: "quality",
@@ -164,34 +165,8 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalNonEligibleShare",
-        label: "Total Non-Eligible Share",
-        fields: [
-          {
-            name: "percentage",
-            label: "Percentage",
-            description: "The relative share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute share",
-            description: "The absolute share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-        ],
-      },
-      {
         name: "totalEligibleShare",
-        label: "Total Eligible Share",
+        label: "Total Eligible Revenue",
         fields: [
           {
             name: "percentage",
@@ -207,42 +182,6 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
             name: "absoluteShare",
             label: "Absolute share",
             description: "The absolute share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-        ],
-      },
-      {
-        name: "totalNonAlignedShare",
-        label: "Total Non-Aligned Share",
-        fields: [
-          {
-            name: "percentage",
-            label: "Percentage",
-            description: "The relative share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute share",
-            description: "The absolute share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "nonAlignedActivities",
-            label: "Non-Aligned Activities",
-            description: "",
             unit: "",
             component: "UndefinedFormField",
             evidenceDesired: false,
@@ -253,7 +192,7 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
       },
       {
         name: "totalAlignedShare",
-        label: "Total Aligned Share",
+        label: "Total Aligned Revenue",
         fields: [
           {
             name: "percentage",
@@ -277,7 +216,7 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
           },
           {
             name: "alignedActivities",
-            label: "Aligned Activities",
+            label: "Aligned Revenue per Activity",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -288,12 +227,170 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
+        name: "substantialContributionToClimateChangeMitigation",
+        label: "Substantial Contribution to Climate Change Mitigation",
+        fields: [
+          {
+            name: "substantialContributionToClimateChangeMitigation",
+            label: "Substantial Contribution to Climate Change Mitigation",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToClimateChangeAdaption",
+        label: "Substantial Contribution to Climate Change Adaption",
+        fields: [
+          {
+            name: "substantialContributionToClimateChangeAdaption",
+            label: "Substantial Contribution to Climate Change Adaption",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+        fields: [
+          {
+            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+            label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToTransitionToACircularEconomy",
+        label: "Substantial Contribution to Transition to a Circular Economy",
+        fields: [
+          {
+            name: "substantialContributionToTransitionToACircularEconomy",
+            label: "Substantial Contribution to Transition to a Circular Economy",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToPollutionPreventionAndControl",
+        label: "Substantial Contribution to Pollution Prevention and Control",
+        fields: [
+          {
+            name: "substantialContributionToPollutionPreventionAndControl",
+            label: "Substantial Contribution to Pollution Prevention and Control",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+        fields: [
+          {
+            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+            label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "totalNonAlignedShare",
+        label: "Total Non-Aligned Revenue",
+        fields: [
+          {
+            name: "percentage",
+            label: "Percentage",
+            description: "The relative share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute share",
+            description: "The absolute share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "nonAlignedActivities",
+            label: "Non-Aligned Revenue per Activity",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "totalNonEligibleShare",
+        label: "Total Non-Eligible Revenue",
+        fields: [
+          {
+            name: "percentage",
+            label: "Percentage",
+            description: "The relative share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute share",
+            description: "The absolute share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
         name: "totalEnablingShare",
-        label: "Total Enabling Share",
+        label: "Total Enabling Revenue",
         fields: [
           {
             name: "totalEnablingShare",
-            label: "Total Enabling Share",
+            label: "Total Enabling Revenue",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -305,11 +402,11 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
       },
       {
         name: "totalTransitionalShare",
-        label: "Total Transitional Share",
+        label: "Total Transitional Revenue",
         fields: [
           {
             name: "totalTransitionalShare",
-            label: "Total Transitional Share",
+            label: "Total Transitional Revenue",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -324,12 +421,12 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
   {
     name: "capex",
     label: "CapEx",
-    color: "orange",
+    color: "green",
     showIf: (): boolean => true,
     subcategories: [
       {
         name: "totalAmount",
-        label: "Total Amount",
+        label: "Total CapEx",
         fields: [
           {
             name: "quality",
@@ -374,34 +471,8 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalNonEligibleShare",
-        label: "Total Non-Eligible Share",
-        fields: [
-          {
-            name: "percentage",
-            label: "Percentage",
-            description: "The relative share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute share",
-            description: "The absolute share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-        ],
-      },
-      {
         name: "totalEligibleShare",
-        label: "Total Eligible Share",
+        label: "Total Eligible CapEx",
         fields: [
           {
             name: "percentage",
@@ -417,42 +488,6 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
             name: "absoluteShare",
             label: "Absolute share",
             description: "The absolute share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-        ],
-      },
-      {
-        name: "totalNonAlignedShare",
-        label: "Total Non-Aligned Share",
-        fields: [
-          {
-            name: "percentage",
-            label: "Percentage",
-            description: "The relative share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute share",
-            description: "The absolute share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "nonAlignedActivities",
-            label: "Non-Aligned Activities",
-            description: "",
             unit: "",
             component: "UndefinedFormField",
             evidenceDesired: false,
@@ -463,7 +498,7 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
       },
       {
         name: "totalAlignedShare",
-        label: "Total Aligned Share",
+        label: "Total Aligned CapEx",
         fields: [
           {
             name: "percentage",
@@ -487,7 +522,7 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
           },
           {
             name: "alignedActivities",
-            label: "Aligned Activities",
+            label: "Aligned CapEx per Activity",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -498,12 +533,170 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
+        name: "substantialContributionToClimateChangeMitigation",
+        label: "Substantial Contribution to Climate Change Mitigation",
+        fields: [
+          {
+            name: "substantialContributionToClimateChangeMitigation",
+            label: "Substantial Contribution to Climate Change Mitigation",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToClimateChangeAdaption",
+        label: "Substantial Contribution to Climate Change Adaption",
+        fields: [
+          {
+            name: "substantialContributionToClimateChangeAdaption",
+            label: "Substantial Contribution to Climate Change Adaption",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+        fields: [
+          {
+            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+            label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToTransitionToACircularEconomy",
+        label: "Substantial Contribution to Transition to a Circular Economy",
+        fields: [
+          {
+            name: "substantialContributionToTransitionToACircularEconomy",
+            label: "Substantial Contribution to Transition to a Circular Economy",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToPollutionPreventionAndControl",
+        label: "Substantial Contribution to Pollution Prevention and Control",
+        fields: [
+          {
+            name: "substantialContributionToPollutionPreventionAndControl",
+            label: "Substantial Contribution to Pollution Prevention and Control",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+        fields: [
+          {
+            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+            label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "totalNonAlignedShare",
+        label: "Total Non-Aligned CapEx",
+        fields: [
+          {
+            name: "percentage",
+            label: "Percentage",
+            description: "The relative share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute share",
+            description: "The absolute share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "nonAlignedActivities",
+            label: "Non-Aligned CapEx per Activity",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "totalNonEligibleShare",
+        label: "Total Non-Eligible CapEx",
+        fields: [
+          {
+            name: "percentage",
+            label: "Percentage",
+            description: "The relative share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute share",
+            description: "The absolute share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
         name: "totalEnablingShare",
-        label: "Total Enabling Share",
+        label: "Total Enabling CapEx",
         fields: [
           {
             name: "totalEnablingShare",
-            label: "Total Enabling Share",
+            label: "Total Enabling CapEx",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -515,11 +708,11 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
       },
       {
         name: "totalTransitionalShare",
-        label: "Total Transitional Share",
+        label: "Total Transitional CapEx",
         fields: [
           {
             name: "totalTransitionalShare",
-            label: "Total Transitional Share",
+            label: "Total Transitional CapEx",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -534,12 +727,12 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
   {
     name: "opex",
     label: "OpEx",
-    color: "orange",
+    color: "blue",
     showIf: (): boolean => true,
     subcategories: [
       {
         name: "totalAmount",
-        label: "Total Amount",
+        label: "Total OpEx",
         fields: [
           {
             name: "quality",
@@ -584,34 +777,8 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalNonEligibleShare",
-        label: "Total Non-Eligible Share",
-        fields: [
-          {
-            name: "percentage",
-            label: "Percentage",
-            description: "The relative share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute share",
-            description: "The absolute share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-        ],
-      },
-      {
         name: "totalEligibleShare",
-        label: "Total Eligible Share",
+        label: "Total Eligible OpEx",
         fields: [
           {
             name: "percentage",
@@ -627,42 +794,6 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
             name: "absoluteShare",
             label: "Absolute share",
             description: "The absolute share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-        ],
-      },
-      {
-        name: "totalNonAlignedShare",
-        label: "Total Non-Aligned Share",
-        fields: [
-          {
-            name: "percentage",
-            label: "Percentage",
-            description: "The relative share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute share",
-            description: "The absolute share on the financial asset",
-            unit: "",
-            component: "UndefinedFormField",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "nonAlignedActivities",
-            label: "Non-Aligned Activities",
-            description: "",
             unit: "",
             component: "UndefinedFormField",
             evidenceDesired: false,
@@ -673,7 +804,7 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
       },
       {
         name: "totalAlignedShare",
-        label: "Total Aligned Share",
+        label: "Total Aligned OpEx",
         fields: [
           {
             name: "percentage",
@@ -697,7 +828,7 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
           },
           {
             name: "alignedActivities",
-            label: "Aligned Activities",
+            label: "Aligned OpEx per Activity",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -708,12 +839,170 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
+        name: "substantialContributionToClimateChangeMitigation",
+        label: "Substantial Contribution to Climate Change Mitigation",
+        fields: [
+          {
+            name: "substantialContributionToClimateChangeMitigation",
+            label: "Substantial Contribution to Climate Change Mitigation",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToClimateChangeAdaption",
+        label: "Substantial Contribution to Climate Change Adaption",
+        fields: [
+          {
+            name: "substantialContributionToClimateChangeAdaption",
+            label: "Substantial Contribution to Climate Change Adaption",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+        fields: [
+          {
+            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+            label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToTransitionToACircularEconomy",
+        label: "Substantial Contribution to Transition to a Circular Economy",
+        fields: [
+          {
+            name: "substantialContributionToTransitionToACircularEconomy",
+            label: "Substantial Contribution to Transition to a Circular Economy",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToPollutionPreventionAndControl",
+        label: "Substantial Contribution to Pollution Prevention and Control",
+        fields: [
+          {
+            name: "substantialContributionToPollutionPreventionAndControl",
+            label: "Substantial Contribution to Pollution Prevention and Control",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+        fields: [
+          {
+            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+            label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "totalNonAlignedShare",
+        label: "Total Non-Aligned OpEx",
+        fields: [
+          {
+            name: "percentage",
+            label: "Percentage",
+            description: "The relative share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute share",
+            description: "The absolute share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "nonAlignedActivities",
+            label: "Non-Aligned OpEx per Activity",
+            description: "",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "totalNonEligibleShare",
+        label: "Total Non-Eligible OpEx",
+        fields: [
+          {
+            name: "percentage",
+            label: "Percentage",
+            description: "The relative share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute share",
+            description: "The absolute share on the financial asset",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: false,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
         name: "totalEnablingShare",
-        label: "Total Enabling Share",
+        label: "Total Enabling OpEx",
         fields: [
           {
             name: "totalEnablingShare",
-            label: "Total Enabling Share",
+            label: "Total Enabling OpEx",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -725,11 +1014,11 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
       },
       {
         name: "totalTransitionalShare",
-        label: "Total Transitional Share",
+        label: "Total Transitional OpEx",
         fields: [
           {
             name: "totalTransitionalShare",
-            label: "Total Transitional Share",
+            label: "Total Transitional OpEx",
             description: "",
             unit: "",
             component: "UndefinedFormField",
