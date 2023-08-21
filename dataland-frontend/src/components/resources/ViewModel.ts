@@ -35,9 +35,9 @@ import {
 } from "@clients/backend";
 import {FrameworkData} from "@/utils/GenericFrameworkTypes";
 
-export interface DataAndMetaInformationViewModel {
+export interface DataAndMetaInformationViewModel<T extends FrameworkViewModel> {
     metaInfo: DataMetaInformation;
-    data: FrameworkViewModel;
+    data: T ;
 }
 
 export interface FrameworkViewModel {
@@ -68,8 +68,8 @@ class EuTaxonomyDataForFinancialsViewModel implements FrameworkViewModel, EuTaxo
         this.fiscalYearDeviation = apiModel.fiscalYearDeviation;
         this.fiscalYearEnd = apiModel.fiscalYearEnd;
         this.scopeOfEntities = apiModel.scopeOfEntities;
-        this.reportingObligation = apiModel.reportingObligation;
-        this.activityLevelReporting = apiModel.activityLevelReporting;
+        this.nfrdMandatory = apiModel.nfrdMandatory;
+        this.euTaxonomyActivityLevelReporting = apiModel.euTaxonomyActivityLevelReporting;
         this.assurance = apiModel.assurance;
         this.numberOfEmployees = apiModel.numberOfEmployees;
         this.referencedReports = apiModel.referencedReports;
@@ -163,3 +163,5 @@ class PathwaysToParisDataViewModel implements FrameworkViewModel, PathwaysToPari
         return this;
     }
 }
+
+// TODO think about this file in the end, since lots of boilerplate code

@@ -1,119 +1,93 @@
 import {
-    DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-    DataMetaInformation,
-    DataPointBigDecimal,
+    DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
+    DataMetaInformation, DataPointOneValueAmountWithCurrency,
     EuTaxonomyActivity,
     EuTaxonomyAlignedActivity,
-    EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType,
-    EuTaxonomyGeneral, FinancialShare
+    EuTaxonomyGeneral,
+    NewEuTaxonomyDataForNonFinancials,
+    NewEuTaxonomyDetailsPerCashFlowType,
+    RelativeAndAbsoluteFinancialShare
 } from "@clients/backend";
 import {DataAndMetaInformationViewModel, FrameworkViewModel} from "@/components/resources/ViewModel";
 
-export interface MoneyAmount {
-    absoluteAmount?: number;
-    currency?: string;
-}
-
-interface FinancialShareViewModel {
-    percentage?: number;
-    absoluteShare?: MoneyAmount;
-}
-
-interface DetailsPerCashFlowViewModel {
-    totalAmount?: DataPointBigDecimal;
-    totalNonEligibleShare?: FinancialShareViewModel;
-    totalEligibleShare?: FinancialShareViewModel;
-    totalNonAlignedShare?: FinancialShareViewModel & { nonAlignedActivities?: EuTaxonomyActivity[] };
-    totalAlignedShare?: FinancialShareViewModel & { alignedActivities?: EuTaxonomyAlignedActivity[] };
-    enablingAlignedShare?: number;
-    transitionalAlignedShare?: number;
+interface DetailsPerCashFlowViewModel { // TODO
+    totalAmount?: DataPointOneValueAmountWithCurrency;
+    totalNonEligibleShare?: RelativeAndAbsoluteFinancialShare;
+    totalEligibleShare?: RelativeAndAbsoluteFinancialShare;
+    totalNonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };
+    totalAlignedShare?: RelativeAndAbsoluteFinancialShare & { alignedActivities?: EuTaxonomyAlignedActivity[], substantialContributionCriteria?: { [key: string]: number; } };
+    totalEnablingShare?: number;
+    totalTransitionalShare?: number;
 }
 
 export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
-    general: { general: EuTaxonomyGeneral };
+    general?: { general?: EuTaxonomyGeneral };
     revenue?: DetailsPerCashFlowViewModel;
     capex?: DetailsPerCashFlowViewModel;
     opex?: DetailsPerCashFlowViewModel;
 
-    constructor(apiModel: EuTaxonomyDataForNonFinancials) {
+    constructor(apiModel: NewEuTaxonomyDataForNonFinancials) {
         this.general = { general: apiModel.general! }; // TODO must be split into basic information and assurance
         this.revenue = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.revenue)
         this.capex = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.capex)
         this.opex = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex)
     }
 
-    toApiModel(): EuTaxonomyDataForNonFinancials {
+    toApiModel(): NewEuTaxonomyDataForNonFinancials {
         return {
-            general: this.general.general,
-            revenue: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel()
+            general: this.general?.general,
+            revenue: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.revenue),
+            capex: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.capex),
+            opex: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.opex),
         }
     }
 
-    private static convertDetailsPerCashFlowApiModelToViewModel(apiModel?: EuTaxonomyDetailsPerCashFlowType): DetailsPerCashFlowViewModel | undefined {
+    private static convertDetailsPerCashFlowApiModelToViewModel(apiModel?: NewEuTaxonomyDetailsPerCashFlowType): DetailsPerCashFlowViewModel | undefined {
         if(apiModel == undefined) { return undefined; }
         return {
             totalAmount: apiModel.totalAmount,
-            totalNonEligibleShare: this.convertFinancialShareApiModelToViewModel(apiModel.totalNonEligibleShare),
-            totalEligibleShare: this.convertFinancialShareApiModelToViewModel(apiModel.totalEligibleShare),
+            totalNonEligibleShare: apiModel.totalNonEligibleShare,
+            totalEligibleShare: apiModel.totalEligibleShare,
             totalNonAlignedShare: {
-                ...(NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalNonAlignedShare) ?? {}),
+                ...apiModel.totalNonAlignedShare ?? {},   // TODO investigate:  Waspassiert bei ... von undefined
                 nonAlignedActivities: apiModel.nonAlignedActivities,
             },
             totalAlignedShare: {
-                ...(NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareApiModelToViewModel(apiModel.totalAlignedShare) ?? {}),
+                ...apiModel.totalAlignedShare ?? {},  // TODO investigate:  Waspassiert bei ... von undefined
                 alignedActivities: apiModel.alignedActivities,
+                substantialContributionCriteria: apiModel.substantialContributionCriteria
             },
-            enablingAlignedShare: apiModel.enablingAlignedShare,
-            transitionalAlignedShare: apiModel.transitionalAlignedShare,
+            totalEnablingShare: apiModel.totalEnablingShare,
+            totalTransitionalShare: apiModel.totalTransitionalShare,
         }
     };
 
-    private static convertFinancialShareApiModelToViewModel(financialShare?: FinancialShare): FinancialShareViewModel | undefined {
-        if(financialShare == undefined) { return undefined; }
-        return {
-            percentage: financialShare.percentage,
-            absoluteShare: {
-                absoluteAmount: financialShare?.absoluteShare,
-                currency: financialShare?.currency,
-            },
-        };
-    };
-
-    private static convertDetailsPerCashFlowViewModelToApiModel(details?: DetailsPerCashFlowViewModel): EuTaxonomyDetailsPerCashFlowType | undefined {
+    private static convertDetailsPerCashFlowViewModelToApiModel(details?: DetailsPerCashFlowViewModel): NewEuTaxonomyDetailsPerCashFlowType | undefined {
         if(details == undefined) { return undefined; }
         return {
             totalAmount: details.totalAmount,
-            totalNonEligibleShare: NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalNonEligibleShare),
-            totalEligibleShare: NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalEligibleShare),
-            totalNonAlignedShare: NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalNonAlignedShare),
-            totalAlignedShare: NewEuTaxonomyForNonFinancialsViewModel.convertFinancialShareViewModelToApiModel(details.totalAlignedShare),
+            totalNonEligibleShare: details.totalNonEligibleShare,
+            totalEligibleShare: details.totalEligibleShare,
+            totalNonAlignedShare: details.totalNonAlignedShare,
+            totalAlignedShare: details.totalAlignedShare,
             nonAlignedActivities: details.totalNonAlignedShare?.nonAlignedActivities,
             alignedActivities: details.totalAlignedShare?.alignedActivities,
-            enablingAlignedShare: details.enablingAlignedShare,
-            transitionalAlignedShare: details.transitionalAlignedShare,
+            totalEnablingShare: details.totalEnablingShare,
+            totalTransitionalShare: details.totalTransitionalShare,
         };
     }
-
-    private static convertFinancialShareViewModelToApiModel(financialShare?: FinancialShareViewModel): FinancialShare | undefined {
-        if(financialShare == undefined) { return undefined; }
-        return {
-            percentage: financialShare.percentage,
-            absoluteShare: financialShare.absoluteShare?.absoluteAmount,
-            currency: financialShare.absoluteShare?.currency,
-        };
-    };
 }
 
-export class DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel implements DataAndMetaInformationViewModel {
+export class DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel implements DataAndMetaInformationViewModel<NewEuTaxonomyForNonFinancialsViewModel> {
     metaInfo: DataMetaInformation;
     data: NewEuTaxonomyForNonFinancialsViewModel;
 
-    constructor(dataAndMetaInfoApiModel: DataAndMetaInformationEuTaxonomyDataForNonFinancials) {
+    constructor(dataAndMetaInfoApiModel: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials) {
         this.metaInfo = dataAndMetaInfoApiModel.metaInfo;
         this.data = new NewEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfoApiModel.data)
     }
 
-    toApiModel(): DataAndMetaInformationEuTaxonomyDataForNonFinancials {
+    toApiModel(): DataAndMetaInformationNewEuTaxonomyDataForNonFinancials {
         return {
             metaInfo: this.metaInfo,
             data: this.data.toApiModel(),
