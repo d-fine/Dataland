@@ -5212,7 +5212,10 @@
             "example": {
               "ClimateMitigation": 20.0,
               "ClimateAdaptation": 20.0,
-              "Water": 20.0
+              "Water": 20.0,
+              "CircularEconomy": 20.0,
+              "PollutionPrevention": 20.0,
+              "Biodiversity": 20.0
             }
           },
           "dnshCriteria": {
@@ -5223,7 +5226,10 @@
             "example": {
               "ClimateMitigation": "Yes",
               "ClimateAdaptation": "Yes",
-              "Water": "No"
+              "Water": "No",
+              "CircularEconomy": "Yes",
+              "PollutionPrevention": "Yes",
+              "Biodiversity": "No"
             }
           },
           "minimumSafeguards": {
@@ -5280,7 +5286,10 @@
             "example": {
               "ClimateMitigation": 20.0,
               "ClimateAdaptation": 20.0,
-              "Water": 20.0
+              "Water": 20.0,
+              "CircularEconomy": 20.0,
+              "PollutionPrevention": 20.0,
+              "Biodiversity": 20.0
             }
           },
           "alignedActivities": {
