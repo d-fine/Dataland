@@ -28,7 +28,6 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
             it.companyAssociatedData.put("data", dataObject.toString())
             context!!.connection.createStatement().execute(it.getWriteQuery())
         }
-
     }
 
     private fun migrateGeneralFields(dataObject: JSONObject) {
@@ -52,15 +51,18 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
 
     private fun migrateOldCashFlowDetails(cashFlowDetails: JSONObject) {
         val totalAmountObject = cashFlowDetails.opt("totalAmount")
-        if(totalAmountObject != null && totalAmountObject != JSONObject.NULL && totalAmountObject is JSONObject) {
+        if (totalAmountObject != null && totalAmountObject != JSONObject.NULL && totalAmountObject is JSONObject) {
             val oldTotalAmountValue = totalAmountObject.opt("value")
-            totalAmountObject.put("value", if(oldTotalAmountValue is BigDecimal) {
-                val newTotalAmountValue = JSONObject()
-                newTotalAmountValue.put("amount", oldTotalAmountValue)
-                newTotalAmountValue.put("currency", JSONObject.NULL)
-            } else {
-                JSONObject.NULL
-            })
+            totalAmountObject.put(
+                "value",
+                if (oldTotalAmountValue is BigDecimal) {
+                    val newTotalAmountValue = JSONObject()
+                    newTotalAmountValue.put("amount", oldTotalAmountValue)
+                    newTotalAmountValue.put("currency", JSONObject.NULL)
+                } else {
+                    JSONObject.NULL
+                },
+            )
         } else {
             cashFlowDetails.put("totalAmount", JSONObject.NULL)
         }
@@ -84,10 +86,13 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
     private fun migrateDataPointToFinancialShare(cashFlowDetails: JSONObject, fromKey: String, toKey: String) {
         val financialShareObject = JSONObject()
         with(cashFlowDetails.opt(fromKey) ?: JSONObject.NULL) {
-            if(this == JSONObject.NULL) {
+            if (this == JSONObject.NULL) {
                 JSONObject.NULL
             } else {
-                financialShareObject.put("relativeShareInPercent", (this as JSONObject).opt("valueAsPercentage") ?: JSONObject.NULL)
+                financialShareObject.put(
+                    "relativeShareInPercent",
+                    (this as JSONObject).opt("valueAsPercentage") ?: JSONObject.NULL,
+                )
                 val absoluteShareObject = JSONObject()
                 financialShareObject.put("absoluteShare", absoluteShareObject)
                 absoluteShareObject.put("amount", this.opt("valueAsAbsolute") ?: JSONObject.NULL)
@@ -99,7 +104,10 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
     }
 
     private fun migrateNewData(context: Context?) {
-        val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, "new-eutaxonomy-non-financials")
+        val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(
+            context,
+            "new-eutaxonomy-non-financials",
+        )
         companyAssociatedDatasets.forEach {
             it.companyAssociatedData.put("dataType", "eutaxonomy-non-financials")
             context!!.connection.createStatement().execute(it.getWriteQuery())

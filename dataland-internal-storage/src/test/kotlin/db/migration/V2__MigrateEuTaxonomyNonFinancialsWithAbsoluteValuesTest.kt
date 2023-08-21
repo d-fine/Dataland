@@ -2,7 +2,6 @@ package db.migration
 
 import db.migration.utils.buildDatabaseEntry
 import db.migration.utils.mockAndWhenConfigurationForFrameworkMigration
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 import org.junit.jupiter.api.Test

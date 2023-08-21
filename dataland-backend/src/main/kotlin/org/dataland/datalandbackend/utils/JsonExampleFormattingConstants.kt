@@ -46,20 +46,20 @@ object JsonExampleFormattingConstants {
         "}"
 
     const val SUBSTANTIAL_CONTRIBUTION_CRITIREA = "{" +
-            "\"ClimateMitigation\": 20.0," +
-            "\"ClimateAdaptation\": 20.0," +
-            "\"Water\": 20.0," +
-            "\"CircularEconomy\": 20.0," +
-            "\"PollutionPrevention\": 20.0," +
-            "\"Biodiversity\": 20.0" +
+        "\"ClimateMitigation\": 20.0," +
+        "\"ClimateAdaptation\": 20.0," +
+        "\"Water\": 20.0," +
+        "\"CircularEconomy\": 20.0," +
+        "\"PollutionPrevention\": 20.0," +
+        "\"Biodiversity\": 20.0" +
         "}"
 
     const val DNSH_CRITIREA = "{" +
-            "\"ClimateMitigation\": \"Yes\"," +
-            "\"ClimateAdaptation\": \"Yes\"," +
-            "\"Water\": \"No\"," +
-            "\"CircularEconomy\": \"Yes\"," +
-            "\"PollutionPrevention\": \"Yes\"," +
-            "\"Biodiversity\": \"No\"" +
+        "\"ClimateMitigation\": \"Yes\"," +
+        "\"ClimateAdaptation\": \"Yes\"," +
+        "\"Water\": \"No\"," +
+        "\"CircularEconomy\": \"Yes\"," +
+        "\"PollutionPrevention\": \"Yes\"," +
+        "\"Biodiversity\": \"No\"" +
         "}"
 }

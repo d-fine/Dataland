@@ -27,11 +27,13 @@ fun mockAndWhenConfigurationForFrameworkMigration(
         val databaseUpdateQuery = it.arguments[0] as String
         val newDatabaseEntryString = databaseUpdateQuery.split("'")[1] // TODO this is problematic
         val actualCompanyAssociatedData = JSONObject(objectMapper.readValue(newDatabaseEntryString, String::class.java))
-        val expectedCompanyAssociatedData = JSONObject(objectMapper.readValue(expectedTransformedDatabaseEntry, String::class.java))
+        val expectedCompanyAssociatedData = JSONObject(
+            objectMapper.readValue(expectedTransformedDatabaseEntry, String::class.java),
+        )
         Assertions.assertTrue(
-                JSONObject(expectedCompanyAssociatedData.getString("data")).similar(
-                        JSONObject(actualCompanyAssociatedData.getString("data")),
-                ),
+            JSONObject(expectedCompanyAssociatedData.getString("data")).similar(
+                JSONObject(actualCompanyAssociatedData.getString("data")),
+            ),
         )
         expectedCompanyAssociatedData.remove("data")
         actualCompanyAssociatedData.remove("data")
