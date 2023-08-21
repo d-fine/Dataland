@@ -58,7 +58,7 @@ jobs:
         with:
           name: componentTestCypressLogs
           path: cypress-component-test-logs.log
-      - name: Upload lcov Exec Resultss
+      - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
