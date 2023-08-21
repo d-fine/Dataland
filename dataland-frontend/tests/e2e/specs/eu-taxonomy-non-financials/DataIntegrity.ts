@@ -76,7 +76,7 @@ describeIf(
           .should("contain", "Eligible Revenue")
           .should(
             "contain",
-            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.totalEligibleShare!.percentage!)}%`,
+            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligibleData!.valueAsPercentage!)}%`,
           );
         cy.get(".font-medium.text-3xl").should("contain", "€");
       });
@@ -89,7 +89,7 @@ describeIf(
           .should("contain", "Eligible OpEx")
           .should(
             "contain",
-            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.totalEligibleShare!.percentage!)}%`,
+            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligibleData!.valueAsPercentage!)}%`,
           );
         cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `With a total of`);
         cy.get(".font-medium.text-3xl").should("not.contain", "€");
