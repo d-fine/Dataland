@@ -2,7 +2,7 @@ import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { Category } from "@/utils/GenericFrameworkTypes";
 
 
-export const euTaxonomyForNonFinancialsDisplayDataModel = [ {
+export const newEuTaxonomyForNonFinancialsDisplayDataModel = [ {
     name : "general",
     label : "General",
     color : "orange",

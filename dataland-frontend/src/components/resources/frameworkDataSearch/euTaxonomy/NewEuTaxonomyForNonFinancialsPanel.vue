@@ -32,8 +32,8 @@ import {
     euTaxonomyForNonFinancialsModalColumnHeaders
 } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import {
-    euTaxonomyForNonFinancialsDisplayDataModel
-} from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
+    newEuTaxonomyForNonFinancialsDisplayDataModel
+} from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import {
     DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel,
     MoneyAmount
@@ -49,7 +49,7 @@ export default defineComponent({
             waitingForData: true,
             convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
             euTaxonomyForNonFinancialsModalColumnHeaders,
-            euTaxonomyForNonFinancialsDisplayDataModel,
+            euTaxonomyForNonFinancialsDisplayDataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
         };
     },
     props: PanelProps,
