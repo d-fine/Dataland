@@ -14,7 +14,7 @@
             type="form"
             :id="formId"
             :name="formId"
-            @submit="postSfdrData"
+            @submit="postNewEuTaxonomyForNonFinancialsData"
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
@@ -67,7 +67,7 @@
         </div>
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
-          <div v-if="postSfdrDataProcessed">
+          <div v-if="postNewEuTaxonomyForNonFinancialsDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
             <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
@@ -178,7 +178,7 @@ export default defineComponent({
       message: "",
       smoothScroll: smoothScroll,
       uploadSucceded: false,
-      postSfdrDataProcessed: false,
+      postNewEuTaxonomyForNonFinancialsDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
       documents: new Map() as Map<string, DocumentToUpload>,
@@ -190,7 +190,7 @@ export default defineComponent({
     yearOfDataDate: {
       get(): string {
         const currentDate =
-          this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data?.general?.general?.fiscalYearEnd;
+          this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data?.general?.fiscalYearEnd;
         if (currentDate === undefined) {
           return "";
         } else {
@@ -218,46 +218,46 @@ export default defineComponent({
   created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
-      void this.loadSfdrData(dataId);
+      void this.loadNewEuTaxonomyForNonFinancialsData(dataId);
     } else {
       this.waitingForData = false;
     }
   },
   methods: {
     /**
-     * Loads the SFDR-Dataset identified by the provided dataId and pre-configures the form to contain the data
+     * Loads the NewEuTaxonomyForNonFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      * @param dataId the id of the dataset to load
      */
-    async loadSfdrData(dataId: string): Promise<void> {
+    async loadNewEuTaxonomyForNonFinancialsData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const sfdrDataControllerApi = await new ApiClientProvider(
+      const newEuTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getSfdrDataControllerApi();
+      ).getNewEutaxonomyDataForNonFinancialsControllerApi() ;
 
-      const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
-      const sfdrResponseData = dataResponse.data;
-      this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
+      const dataResponse = await newEuTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedNewEuTaxonomyDataForNonFinancials(dataId);
+      const newEuTaxonomyForNonFinancialsResponseData = dataResponse.data;
+      this.referencedReportsForPrefill = newEuTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedNewEuTaxonomyDataForNonFinancials = objectDropNull(
-        sfdrResponseData as ObjectType,
+          newEuTaxonomyForNonFinancialsResponseData as ObjectType,
       ) as CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials;
 
       this.waitingForData = false;
     },
     /**
-     * Sends data to add SFDR data
+     * Sends data to add NewEuTaxonomyForNonFinancials data
      */
-    async postSfdrData(): Promise<void> {
+    async postNewEuTaxonomyForNonFinancialsData(): Promise<void> {
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
-        const sfdrDataControllerApi = await new ApiClientProvider(
+        const newEuTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getSfdrDataControllerApi();
-        await sfdrDataControllerApi.postCompanyAssociatedSfdrData(
+        ).getNewEutaxonomyDataForNonFinancialsControllerApi() ;
+        await newEuTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
           this.companyAssociatedNewEuTaxonomyDataForNonFinancials,
         );
         this.$emit("datasetCreated");
@@ -274,7 +274,7 @@ export default defineComponent({
         }
         this.uploadSucceded = false;
       } finally {
-        this.postSfdrDataProcessed = true;
+        this.postNewEuTaxonomyForNonFinancialsDataProcessed = true;
       }
     },
     /**
