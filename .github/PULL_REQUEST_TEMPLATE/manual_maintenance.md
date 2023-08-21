@@ -151,7 +151,7 @@ check that all ssh-keys are set and erased from people that have left
 
 ## Conclusion
 
-- [ ] After updating all components check if everything still works
+- [x] After updating all components check if everything still works
 - [ ] The new version is deployed to a dev server using this branch
     - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
     - [ ] It's verified that everything seems to be working fine by manually using the website
