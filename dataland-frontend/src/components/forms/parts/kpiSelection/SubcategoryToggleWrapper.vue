@@ -25,7 +25,6 @@ export default defineComponent({
   emits: ["dataPointAvailableToggle"],
   data: () => ({
     dataPointIsAvailable: true,
-
   }),
   props: {
     subcategoryName: {
