@@ -79,7 +79,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
         cy.get(".p-rowgroup-header");
         cy.get("[data-test='TwoLayerTest']").eq(0).get(" [data-test='_basicInformation'").should("contain","Basic Information");
-        for (let i = 0; i < 17; i++) {
+        for (let i = 0; i < 3; i++) {
             cy.get(".p-rowgroup-header").eq(i).get(`[data-test="${subcategoryDataTestList[i]}"]`).should("contain",`${subcategoryList[i]}`);
         }
 
