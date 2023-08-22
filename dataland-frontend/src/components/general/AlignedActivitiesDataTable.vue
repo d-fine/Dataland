@@ -1,24 +1,20 @@
 <template>
-  <!-- <div class="p-datatable">
-    <div class="aligned-activities-container">
-      <div class="aligned-activities-column">
-        <div v-for="col of frozenColumnDefinitions" class="aligned-activities-row">{{ col.field }}</div>
-        <div class="aligned-activities-row">1</div>
-        <div class="aligned-activities-row">1</div>
-      </div>
-      <div class="aligned-activities-column">2</div>
-      <div class="aligned-activities-column aligned-activities-scrolled-column">3</div>
-    </div>
-  </div> -->
-
   <DataTable scrollable :value="frozenColumnData">
     <ColumnGroup type="header">
       <Row>
         <Column header="" :rowspan="2" />
       </Row>
       <Row>
+        <Column
+          v-for="group of mainColumnGroups"
+          :key="group.key"
+          :header="group.label"
+          :colspan="group.colspan"
+        ></Column>
+      </Row>
+      <Row>
         <Column header="" :colspan="2"></Column>
-        <Column header="Test"></Column>
+        <Column v-for="col of mainColumnDefinitions" :key="col.field" :header="col.header" :field="col.field"> </Column>
       </Row>
     </ColumnGroup>
     <Column
@@ -27,6 +23,7 @@
       :key="col.field"
       :header="col.header"
       :frozen="col.frozen"
+      :style="columnCss(col.field)"
       bodyClass="headers-bg"
       headerClass="horizontal-headers-size"
     >
@@ -102,19 +99,43 @@ import Row from "primevue/row";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { humanizeString } from "@/utils/StringHumanizer";
 
+export type ActivityObject = {
+  activityName: string;
+  naceCodes: string[];
+  share: {
+    relativeShareInPercent: number;
+    absoluteShare: {
+      amount: number;
+      currency: string;
+    };
+  };
+  substantialContributionCriteria: {
+    ClimateMitigation: number;
+    ClimateAdaptation: number;
+    Water: number;
+  };
+  dnshCriteria: {
+    ClimateMitigation: "Yes" | "No";
+    ClimateAdaptation: "Yes" | "No";
+    Water: "Yes" | "No";
+  };
+  minimumSafeguards: "Yes" | "No";
+};
+
 export default defineComponent({
   inject: ["dialogRef"],
   name: "AlignedActivitiesDataTable",
   components: { DataTable, Column, ColumnGroup, Row },
   data() {
     return {
-      listOfRowContents: [] as Array<object | string>,
+      listOfRowContents: [] as Array<ActivityObject>,
       kpiKeyOfTable: "" as string,
       keysOfValuesForColumnDisplay: [] as string[],
       keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing", "sectors"] as string[],
       humanizeString,
       columnHeaders: {},
       frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean }>,
+      mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
       mainColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean }>,
       frozenColumnData: [] as Array<{
         activity: string;
@@ -141,46 +162,60 @@ export default defineComponent({
       this.generateColsNames();
     }
 
-    console.log(this.listOfRowContents);
+    this.frozenColumnData = this.listOfRowContents.map((activity) => ({
+      activity: activity.activityName,
+      label: this.camelCaseToWords(activity.activityName),
+      content: activity.naceCodes,
+    }));
+    console.log({ frozenColumnData: this.frozenColumnData, listOfRowContents: this.listOfRowContents });
 
     this.frozenColumnDefinitions = [
       { field: "activity", header: "Activity", frozen: true },
-      { field: "content", header: "Code(s)", frozen: true },
+      { field: "naceCodes", header: "Code(s)", frozen: true },
     ];
 
     this.mainColumnDefinitions = [
       { field: "revenue", header: "Revenue" },
       { field: "revenuePercent", header: "Revenue (%)" },
-      { field: "climateChangeMitigation", header: "Climate change mitigation" },
-      { field: "climateChangeAdaptation", header: "Climate change adaptation" },
-      { field: "waterAndMarineResources", header: "Water and marine resources" },
-      { field: "circularEconomy", header: "Circular economy" },
-      { field: "pollution", header: "Pollution" },
+
+      ...this.makeGroupColumns("substantialContributionCriteria"),
+      ...this.makeGroupColumns("dnshCriteria"),
+
+      { field: "minimumSafeguards", header: "Minimum Safeguards" },
     ];
 
-    this.frozenColumnData = [
-      {
-        activity: "UrbanAndSuburbanTransportRoadPassengerTransport",
-        label: "Urban And Suburban Transport Road Passenger Transport",
-        content: ["E"],
-      },
-      {
-        activity: "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
-        label: "Electricity Generation From Renewable Non Fossil Gaseous And Liquid Fuels",
-        content: [],
-      },
-      {
-        activity: "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
-        label: "Infrastructure Enabling Low Carbon Road Transport And Public Transport",
-        content: ["F", "I"],
-      },
-      { activity: "ManufactureOfCement", label: "Manufacture Of Cement", content: ["I"] },
-      { activity: "InfrastructureForRailTransport", label: "Infrastructure For Rail Transport", content: [] },
+    this.mainColumnData = this.frozenColumnData.map((col) => [
+      ...mock_revenue_group(col.activity),
+      ...mock_substantialContributionCriteria_group(col.activity),
+      ...mock_dnshCriteria_group(col.activity),
+      ...mock_minimumSafeguards_group(col.activity),
+    ]);
+
+    this.mainColumnGroups = [
+      { key: "_revenue", label: "", colspan: 2 },
+      { key: "substantialContributionCriteria", label: "Substantial Contribution Criteria", colspan: 6 },
+      { key: "dnshCriteria", label: "DNSH Criteria", colspan: 6 },
+      { key: "_minimumSafeguards", label: "", colspan: 1 },
     ];
 
-    this.mainColumnData = [{ activity: "", group: "", field: "" }];
+    console.log("mainColumnData");
+    console.log(this.mainColumnData);
   },
   methods: {
+    /**
+     * @param groupName the name of the group to which columns will be assigned
+     * @returns column definitions for group
+     */
+    makeGroupColumns(groupName: string) {
+      return [
+        { field: `${groupName}_climateChangeMitigation`, header: "Climate change mitigation" },
+        { field: `${groupName}_climateChangeAdaptation`, header: "Climate change adaptation" },
+        { field: `${groupName}_waterAndMarineResources`, header: "Water and marine resources" },
+        { field: `${groupName}_circularEconomy`, header: "Circular economy" },
+        { field: `${groupName}_pollution`, header: "Pollution" },
+        { field: `${groupName}_biodiversityAndEcosystems`, header: "Biodiversity And Ecosystems" },
+      ];
+    },
     /**
      * Gets the keys from a production site type to define the columns that the displayed table in this vue component
      * should have.
@@ -216,62 +251,103 @@ export default defineComponent({
     camelCaseToWords(target: string): string {
       return target.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, " $1");
     },
+    /**
+     * @param key Define the column's CSS class
+     * @returns CSS class name
+     */
+    columnCss(key: string): string {
+      switch (key) {
+        case "activity":
+          return "width: 20vw; min-width: 300px";
+        case "naceCodes":
+          return "width: 100px; max-width: 100px";
+        default:
+          return "";
+      }
+    },
   },
 });
+
+function randomValue(limit = 10): number {
+  return Math.ceil(Math.random() * limit);
+}
+
+function mock_revenue_group(activity: string) {
+  return [
+    {
+      activity,
+      group: "_revenue",
+      field: "revenue",
+      content: randomValue(3000),
+    },
+    {
+      activity,
+      group: "_revenue",
+      field: "revenuePercent",
+      content: `${randomValue()}%`,
+    },
+  ];
+}
+
+function mock_substantialContributionCriteria_group(activity: string) {
+  const fields = [
+    "climateChangeMitigation",
+    "climateChangeAdaptation",
+    "waterAndMarineResources",
+    "circularEconomy",
+    "pollution",
+    "biodiversityAndEcosystems",
+  ];
+
+  return fields.map((field) => ({
+    activity,
+    group: "substantialContributionCriteria",
+    field,
+    content: `${randomValue()}%`,
+  }));
+}
+
+function mock_dnshCriteria_group(activity: string) {
+  const fields = [
+    "climateChangeMitigation",
+    "climateChangeAdaptation",
+    "waterAndMarineResources",
+    "circularEconomy",
+    "pollution",
+    "biodiversityAndEcosystems",
+  ];
+
+  return fields.map((field) => ({
+    activity,
+    group: "dnshCriteria",
+    field,
+    content: randomValue() > 3 ? "Yes" : "No",
+  }));
+}
+
+function mock_minimumSafeguards_group(activity: string) {
+  return [
+    {
+      activity,
+      group: "_minimumSafeguards",
+      field: "minimumSafeguards",
+      content: randomValue() > 3 ? "Yes" : "No",
+    },
+  ];
+}
 </script>
 
 <style lang="scss" scoped>
-.aligned-activities-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  align-content: stretch;
-  width: calc(80vw - 3rem); // p-dialog element has CSS to take 80% of vieport width and p-content has 1.5rem margins
-  min-height: 400px;
+.col-lg {
+  $w: 300px;
+  min-width: $w;
+  max-width: $w;
+  width: $w;
 }
-
-.aligned-activities-column {
-  display: block;
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: auto;
-  align-self: auto;
-  order: 0;
-  min-width: 100px;
-  max-width: 300px;
-  border-right: 1px solid red;
-
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  align-content: stretch;
-}
-
-.aligned-activities-column.aligned-activities-scrolled-column {
-  flex-grow: 1;
-  border-right: 0 none;
-}
-
-.aligned-activities-rows {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  align-content: stretch;
-}
-
-.aligned-activities-row {
-  display: block;
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: auto;
-  align-self: auto;
-  order: 0;
-  height: 60px;
-  border: 1px solid green;
+.col-sm {
+  $w: 50px;
+  min-width: $w;
+  max-width: $w;
+  width: $w;
 }
 </style>

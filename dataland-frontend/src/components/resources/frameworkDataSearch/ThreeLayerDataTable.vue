@@ -66,6 +66,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
+import {DataAndMetaInformationViewModel, FrameworkViewModel} from "@/components/resources/ViewModel";
 
 export default defineComponent({
   name: "ThreeLayerTable",
@@ -88,7 +89,7 @@ export default defineComponent({
       required: true,
     },
     dataAndMetaInfo: {
-      type: Array as () => Array<DataAndMetaInformation>,
+      type: Array as () => Array<DataAndMetaInformationViewModel<FrameworkViewModel>>,
       required: true,
     },
     formatValueForDisplay: {
@@ -157,7 +158,7 @@ export default defineComponent({
             dataId: dataId,
             reportingPeriod: reportingPeriod,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data) as [string, object] | null) { // TODO Emanuel: type doch die category und subcateory als solche!
+          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data)) { // TODO Emanuel: type doch die category und subcateory als solche!
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
             const frameworkCategoryData = assertDefined(
@@ -191,17 +192,14 @@ export default defineComponent({
      * @param currentDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategories(
-      categoryObject,
+      categoryObject: Category,
       categoryKey,
       frameworkCategoryData: Category,
       dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkData,
+      currentDataset: FrameworkViewModel,
     ) {
-      for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
-        string,
-        object | null,
-      ][]) {
+      for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject)) {
         if (subCategoryObject == null) continue;
         this.iterateThroughSubcategoryKpis(
           subCategoryObject,
@@ -225,22 +223,22 @@ export default defineComponent({
      * @param currentDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategoryKpis(
-      subCategoryObject: object,
+      subCategoryObject: Subcategory,
       categoryKey,
       subCategoryKey: string,
       frameworkCategoryData: Category,
       dataId: string,
       listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkData,
+      currentDataset: FrameworkViewModel,
     ) {
-      for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
+      for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
         const subcategory = assertDefined(
           frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
-        if (field.showIf(currentDataset)) {
-          this.createKpiDataObjects(kpiKey as string, kpiValue as KpiValue, subcategory, frameworkCategoryData, dataId);
+        if (field.showIf(currentDataset.toApiModel())) {
+          this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, frameworkCategoryData, dataId);
           listOfDataObjects.push(this.resultKpiData);
         }
       }
@@ -252,7 +250,7 @@ export default defineComponent({
      */
     shouldCategoryBeRendered(categoryName: string): boolean {
       const category = assertDefined(this.dataModel.find((category) => category.label === categoryName));
-      return this.dataAndMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.data).some((data) => category.showIf(data));
+      return this.dataAndMetaInfo.some((dataAndMetaInfo) => category.showIf(dataAndMetaInfo.data.toApiModel()));
     },
     /**
      * Retrieves the color for a given category from Data Model
