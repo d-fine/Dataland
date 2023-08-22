@@ -5,11 +5,14 @@
 }
 form {
   text-align: left;
-  [data-type="text"], [data-type="select"], [data-type="number"], [data-type="textarea"] {
+  [data-type="text"],
+  [data-type="select"],
+  [data-type="number"],
+  [data-type="textarea"] {
     .formkit-inner {
       font-size: $input-text-fs;
       border-radius: 0;
-      background:$input-text-bg;
+      background: $input-text-bg;
       border-style: solid;
       border-width: 0 0 1px 0;
       border-color: $input-text-border;
@@ -23,18 +26,22 @@ form {
       }
     }
   }
-  .formkit-decorator {display: none;}
+  .formkit-decorator {
+    display: none;
+  }
 }
 
 input {
   font-family: $ibm-plex-sans;
   font-size: $input-text-fs;
-  &[type="submit"], &[type="reset"] {
-    border-radius: $radius-none
+  &[type="submit"],
+  &[type="reset"] {
+    border-radius: $radius-none;
   }
 }
 
-input[type="checkbox"], input[type="radio"]{
+input[type="checkbox"],
+input[type="radio"] {
   display: grid;
   place-content: center;
   -webkit-appearance: none;
@@ -42,7 +49,7 @@ input[type="checkbox"], input[type="radio"]{
   margin: 0;
   height: 25px;
   width: 25px;
-  margin-right: .5rem;
+  margin-right: 0.5rem;
   background-color: $input-text-bg;
   border: 3px solid $input-text-border-hover;
   border-radius: 50%;
@@ -63,7 +70,7 @@ input[type="checkbox"], input[type="radio"]{
 }
 
 .checkbox-error {
-  color: #EE1A1A;
+  color: #ee1a1a;
 }
 
 .p-inputtext {
@@ -73,28 +80,32 @@ input[type="checkbox"], input[type="radio"]{
   padding: $spacing-xs;
   border: 0;
   margin: 0;
-  transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
   appearance: none;
   border-radius: $radius-none;
   &:enabled:hover {
-    border-color: $input-text-border-hover
+    border-color: $input-text-border-hover;
   }
   &:enabled:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 .2rem #bfd1f6;
-    border-color: $input-text-border-hover
+    box-shadow: 0 0 0 0.2rem #bfd1f6;
+    border-color: $input-text-border-hover;
   }
   &.p-invalid.p-component {
-    border-color: #ced4da #ced4da #ced4da #e4677e
+    border-color: #ced4da #ced4da #ced4da #e4677e;
   }
   &.p-inputtext-sm {
     font-size: $fs-sm;
-    padding: $spacing-xxs
+    padding: $spacing-xxs;
   }
   &.p-inputtext-lg {
     font-size: $fs-lg;
-    padding: $spacing-xs
+    padding: $spacing-xs;
   }
 }
 
@@ -106,12 +117,12 @@ input[type="checkbox"], input[type="radio"]{
   width: 20px;
   height: 20px;
   &:enabled:focus {
-    outline: 0 none
+    outline: 0 none;
   }
 }
 
 .p-dropdown {
-  background:$input-text-bg;
+  background: $input-text-bg;
   .p-dropdown-trigger {
     background: transparent;
     color: $brown-dark;
@@ -172,7 +183,7 @@ input[type="checkbox"], input[type="radio"]{
   }
   .p-inputtext {
     background: transparent;
-    padding: .5rem .75rem;
+    padding: 0.5rem 0.75rem;
     color: $fill-dropdown-hover-text;
   }
   .p-dropdown-trigger {
@@ -181,7 +192,7 @@ input[type="checkbox"], input[type="radio"]{
 }
 
 .p-dropdown-panel {
-  background:$white;
+  background: $white;
   .p-dropdown-items {
     .p-dropdown-item {
       margin: 0;
@@ -189,7 +200,10 @@ input[type="checkbox"], input[type="radio"]{
       border: 0.1em solid $dropdown-options-bg;
       color: $input-text-color;
       background: transparent;
-      transition: background-color .2s,border-color .2s,box-shadow .2s;
+      transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
       border-radius: 0;
       &:not(.p-highlight):not(.p-disabled):hover {
         background: $dropdown-options-bg;
@@ -203,53 +217,60 @@ input[type="checkbox"], input[type="radio"]{
 }
 
 .p-datepicker {
-  padding: .5rem;
+  padding: 0.5rem;
   background: $card-background;
   color: $card-text;
   border-radius: 0;
   &:not(.p-datepicker-inline) {
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1)
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
   }
   .p-datepicker-header {
-    padding: .5rem;
+    padding: 0.5rem;
     font-weight: $semi-bold-weight;
     margin: 0;
     border-bottom: 1px solid #dee2e6;
-    .p-datepicker-prev, .p-datepicker-next {
+    .p-datepicker-prev,
+    .p-datepicker-next {
       width: 2rem;
       height: 2rem;
       color: #6c757d;
       border: 0 none;
       background: transparent;
       border-radius: 50%;
-      transition: background-color .2s, color .2s, box-shadow .2s;
+      transition:
+        background-color 0.2s,
+        color 0.2s,
+        box-shadow 0.2s;
       &:enabled:hover {
-        background: #e9ecef
+        background: #e9ecef;
       }
       &:focus {
         outline: 0 none;
         outline-offset: 0;
-        box-shadow: 0 0 0 .2rem #bfd1f6
+        box-shadow: 0 0 0 0.2rem #bfd1f6;
       }
     }
     .p-datepicker-title {
       line-height: 2rem;
-      .p-datepicker-year, .p-datepicker-month {
+      .p-datepicker-year,
+      .p-datepicker-month {
         font-size: $input-text-fs;
         font-weight: $light-bold-weight;
         &:enabled:hover {
-          color: $main-color
+          color: $main-color;
         }
       }
       .p-datepicker-month {
-        margin-right: .5rem
+        margin-right: 0.5rem;
       }
     }
   }
-  .p-yearpicker, .p-monthpicker {
+  .p-yearpicker,
+  .p-monthpicker {
     margin: 1rem 0;
-    .p-yearpicker-year, .p-monthpicker-month {
-      padding: .5rem;
+    .p-yearpicker-year,
+    .p-monthpicker-month {
+      padding: 0.5rem;
       &.p-highlight {
         color: $btn-primary-color;
         background: $btn-primary-bg;
@@ -260,21 +281,24 @@ input[type="checkbox"], input[type="radio"]{
     }
   }
   table {
-    margin: .5rem 0;
+    margin: 0.5rem 0;
     th {
-      padding: .5rem;
+      padding: 0.5rem;
       span {
         width: 2.5rem;
-        height: 2.5rem
+        height: 2.5rem;
       }
     }
     td {
-      padding: .5rem;
+      padding: 0.5rem;
       span {
         width: 2.5rem;
         height: 2.5rem;
         border-radius: 50%;
-        transition: background-color .2s, border-color .2s, box-shadow .2s;
+        transition:
+          background-color 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
         border: 1px solid transparent;
         &.p-highlight {
           color: $btn-primary-color;
@@ -288,7 +312,7 @@ input[type="checkbox"], input[type="radio"]{
           background: $gray-light;
         }
         &.p-disabled {
-          opacity: .3;
+          opacity: 0.3;
         }
       }
       &.p-datepicker-today > span {
@@ -299,22 +323,21 @@ input[type="checkbox"], input[type="radio"]{
   }
   .p-datepicker-buttonbar {
     padding: 1rem 0;
-    border-top: 1px solid #dee2e6
+    border-top: 1px solid #dee2e6;
   }
 }
-
 
 .p-multiselect-panel {
   background: $bg-text-primary;
   color: $main-text-color;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1);
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
   .p-multiselect-header {
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     .p-multiselect-filter-icon {
-      right: .5rem;
+      right: 0.5rem;
     }
     .p-checkbox {
-      margin-right: .5rem;
+      margin-right: 0.5rem;
       &::after {
         content: "Select All";
         margin-left: 0.5rem;
@@ -329,21 +352,21 @@ input[type="checkbox"], input[type="radio"]{
     }
   }
   .p-multiselect-items {
-    padding: .5rem 0;
+    padding: 0.5rem 0;
     .p-multiselect-empty-message {
-      margin-left:1.25rem;
+      margin-left: 1.25rem;
     }
     .p-multiselect-item {
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
       &.p-highlight {
         color: $bg-text-primary;
-        background: $main-color
+        background: $main-color;
       }
       &:not(.p-highlight):not(.p-disabled):hover {
-        background: $input-text-bg
+        background: $input-text-bg;
       }
       .p-checkbox {
-        margin-right: .5rem
+        margin-right: 0.5rem;
       }
     }
   }
@@ -354,7 +377,11 @@ input[type="checkbox"], input[type="radio"]{
   height: 1.2rem;
   .p-inputswitch-slider {
     background: $inputswitch-slider-bg-off;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s;
     border-radius: 30px;
     &::before {
       background: $bg-text-primary;
@@ -376,40 +403,40 @@ input[type="checkbox"], input[type="radio"]{
   }
 }
 
-
 .p-tooltip {
   .p-tooltip-text {
     background: $input-label-color;
     color: $bg-text-primary;
-    padding: .5rem;
+    padding: 0.5rem;
     border-radius: 0;
     width: max-content;
     max-width: 300px;
   }
   &.p-tooltip-right .p-tooltip-arrow {
-    border-right-color: $input-label-color
+    border-right-color: $input-label-color;
   }
   &.p-tooltip-left .p-tooltip-arrow {
-    border-left-color: $input-label-color
+    border-left-color: $input-label-color;
   }
   &.p-tooltip-top .p-tooltip-arrow {
-    border-top-color: $input-label-color
+    border-top-color: $input-label-color;
   }
   &.p-tooltip-bottom .p-tooltip-arrow {
-    border-bottom-color: $input-label-color
+    border-bottom-color: $input-label-color;
   }
 }
 .d-nace-textinput {
   width: 33%;
   border-radius: 0;
-  background:$input-text-bg;
+  background: $input-text-bg;
   border-style: solid;
   border-width: 0 0 1px 0;
   border-color: $input-text-border;
   box-shadow: none;
 }
 .uploadFormWrapper {
-  input[type=checkbox], input[type=radio] {
+  input[type="checkbox"],
+  input[type="radio"] {
     display: grid;
     place-content: center;
     margin: 0;
@@ -418,22 +445,23 @@ input[type="checkbox"], input[type="radio"]{
     cursor: pointer;
     margin-right: 10px;
   }
-  input[type=checkbox] {
+  input[type="checkbox"] {
     background-color: $input-text-bg;
     border: 2px solid $input-checked-color;
     border-radius: 2px;
   }
-  input[type=checkbox]:checked {
+  input[type="checkbox"]:checked {
     background-color: $input-checked-color;
   }
-  input[type=radio] {
+  input[type="radio"] {
     background-color: white;
     border: 2px solid $input-label-color;
     border-radius: 15px;
     cursor: pointer;
     margin-right: 10px;
   }
-  input[type=checkbox]::before, input[type=radio]::before {
+  input[type="checkbox"]::before,
+  input[type="radio"]::before {
     content: "";
     width: 5px;
     height: 7px;
@@ -442,26 +470,27 @@ input[type="checkbox"], input[type="radio"]{
     margin-top: -2px;
     display: none;
   }
-  input[type=checkbox]::before {
+  input[type="checkbox"]::before {
     border-style: solid;
     border-color: $input-text-bg;
   }
-  input[type=radio]::before {
+  input[type="radio"]::before {
     border-style: solid;
     border-color: $input-label-color;
   }
-  input[type=checkbox]:checked::before, input[type=radio]:checked::before {
+  input[type="checkbox"]:checked::before,
+  input[type="radio"]:checked::before {
     display: block;
   }
   label[data-checked="true"] {
-    input[type=radio]::before {
+    input[type="radio"]::before {
       display: block;
     }
   }
   .p-multiselect {
     font-size: $input-text-fs;
     border-radius: 0;
-    background:$input-text-bg;
+    background: $input-text-bg;
     border-style: solid;
     border-width: 0 0 1px 0;
     border-color: $input-text-border;
@@ -473,26 +502,30 @@ input[type="checkbox"], input[type="radio"]{
       border-bottom: 1px solid $input-text-border-hover;
     }
     .p-multiselect-label {
-      padding: .75rem;
+      padding: 0.75rem;
       &.p-placeholder {
-        color: $text-color-secondary
+        color: $text-color-secondary;
       }
     }
     .p-multiselect-trigger {
       width: 2.5rem;
       .p-multiselect-trigger-icon {
         color: $text-color-secondary;
-        font-size: .75rem;
+        font-size: 0.75rem;
       }
     }
   }
-  .w-100 { width: 100px; }
-  .short { width: 33.333%; }
-  .medium { width: 66%; }
-  .long { width: 100%; }
-  .next-to-each-other {
-    display: flex;
-    gap: 1rem;
+  .w-100 {
+    width: 100px;
+  }
+  .short {
+    width: 33.333%;
+  }
+  .medium {
+    width: 66%;
+  }
+  .long {
+    width: 100%;
   }
   .yes-no-radio {
     fieldset.formkit-fieldset {
@@ -501,17 +534,18 @@ input[type="checkbox"], input[type="radio"]{
     }
     .formkit-options {
       display: flex;
-      padding: .5rem 0 0 0;
-      .formkit-option:nth-child(n+2) {
+      padding: 0.5rem 0 0 0;
+      .formkit-option:nth-child(n + 2) {
         margin-left: 10%;
       }
     }
   }
-  .formkit-wrapper, .formkit-fieldset {
+  .formkit-wrapper,
+  .formkit-fieldset {
     max-width: 100%;
   }
   .title {
-    margin: .25rem 0;
+    margin: 0.25rem 0;
   }
   .subtitle {
     display: block;
@@ -526,16 +560,16 @@ input[type="checkbox"], input[type="radio"]{
     display: flex;
     align-self: center;
     .info-icon {
-      margin-left: .5rem;
+      margin-left: 0.5rem;
     }
     button {
       margin-left: auto;
     }
     h5 {
-      margin: .5rem 0;
+      margin: 0.5rem 0;
     }
     .asterisk {
-      color: #EE1A1A;
+      color: #ee1a1a;
     }
     .asterisk:before {
       content: " ";
@@ -544,7 +578,7 @@ input[type="checkbox"], input[type="radio"]{
     }
   }
   p {
-    margin: .25rem;
+    margin: 0.25rem;
   }
   .p-calendar {
     width: 100%;
@@ -555,7 +589,7 @@ input[type="checkbox"], input[type="radio"]{
   .formListSection {
     border: 1px solid $input-text-border;
     padding: 1rem;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     margin: 2rem 0;
     position: relative;
     .close-section {
@@ -602,12 +636,12 @@ input[type="checkbox"], input[type="radio"]{
     text-align: center;
     min-width: 1.5rem;
     border-radius: 1rem;
-    padding: .25rem 1rem;
+    padding: 0.25rem 1rem;
     border: 1px solid $input-label-color;
     display: inline-flex;
     align-items: center;
     em {
-      margin-left: .5rem;
+      margin-left: 0.5rem;
       cursor: pointer;
       &:hover {
         color: darken($input-label-color, 20%);
@@ -655,28 +689,32 @@ input[type="checkbox"], input[type="radio"]{
   height: 20px;
   color: #1b1b1b;
   border-radius: 0;
-  transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
-  transition-duration: .2s;
+  transition-duration: 0.2s;
   color: #fff;
-  font-size: 14px
+  font-size: 14px;
 }
 
 .p-checkbox .p-checkbox-box.p-highlight {
   border-color: #e67f3f;
-  background: #e67f3f
+  background: #e67f3f;
 }
 
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
-  border-color: #e67f3f
+  border-color: #e67f3f;
 }
 
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
   border-color: #cb6b29;
   background: #cb6b29;
-  color: #fff
+  color: #fff;
 }
 
 .button-disabled {
@@ -689,4 +727,57 @@ input[type="checkbox"], input[type="radio"]{
   border: 2px dotted $input-separator;
   border-radius: $upload-form-radius;
   padding: 16px;
+}
+
+.p-radiobutton-box {
+  border: 2px solid #ced4da;
+  background: #f6f5ef;
+  width: 20px;
+  height: 20px;
+  color: #1b1b1b;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+  &:not(.p-disabled) {
+    &.p-focus {
+      border-color: $btn-primary-bg;
+    }
+    &:not(.p-highlight) {
+      &:hover {
+        border-color: $btn-primary-bg;
+      }
+    }
+  }
+  &.p-radiobutton-icon {
+    width: 12px;
+    height: 12px;
+    transition-duration: 0.2s;
+    background-color: #fff;
+  }
+}
+.p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color: #e67f3f;
+  background: #e67f3f;
+}
+.p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
+  border-color: #cb6b29;
+  background: #cb6b29;
+  color: #fff;
+}
+.p-radiobutton.p-invalid > .p-radiobutton-box {
+  border-color: #ced4da #ced4da #ced4da #e4677e;
+}
+.p-radiobutton:focus {
+  outline: 0 none;
+}
+.p-input-filled .p-radiobutton .p-radiobutton-box {
+  background-color: #f8f9fa;
+}
+.p-input-filled .p-radiobutton .p-radiobutton-box:not(.p-disabled):hover {
+  background-color: #f8f9fa;
+}
+.p-input-filled .p-radiobutton .p-radiobutton-box.p-highlight {
+  background: #e67f3f;
 }

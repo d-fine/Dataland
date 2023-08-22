@@ -36,7 +36,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import {
+  BaseFormFieldProps,
+  DropdownOptionFormFieldProps,
+  FormFieldPropsWithPlaceholder
+} from "@/components/forms/parts/fields/FormFieldProps";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
@@ -49,7 +53,15 @@ export default defineComponent({
       countryCodeOptions: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
     };
   },
-  props: DropdownOptionFormFieldProps,
+  props: {
+    ...BaseFormFieldProps,
+    evidenceDesired: {
+      type: Boolean,
+      default: false,
+    },
+    unit: {
+      type: String,
+    },
+  },
 });
-//TODO check if we really need the currency information in the backend. If not then this part could be removed here
 </script>

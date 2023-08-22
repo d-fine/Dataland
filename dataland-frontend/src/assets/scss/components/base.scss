@@ -245,3 +245,8 @@ body {
 .d-cursor-pointer {
   cursor: pointer;
 }
+
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}

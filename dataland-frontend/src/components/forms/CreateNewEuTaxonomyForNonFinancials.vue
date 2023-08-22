@@ -136,7 +136,6 @@ import { smoothScroll } from "@/utils/SmoothScroll";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
-
 export default defineComponent({
   setup() {
     return {

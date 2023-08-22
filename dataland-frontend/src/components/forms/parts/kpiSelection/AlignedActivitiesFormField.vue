@@ -8,7 +8,7 @@
     :validation-label="validationLabel"
     sub-form-component="AlignedActivitiesFormElements"
     data-test-add-button="addNewProductButton"
-    label-add-button="ADD NEW Product"
+    label-add-button="ADD NEW Activity"
     data-test-sub-form="alignedActivitiesSection"
   />
 </template>

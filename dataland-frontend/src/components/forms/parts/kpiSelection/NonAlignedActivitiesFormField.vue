@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
@@ -25,6 +25,6 @@ export default defineComponent({
       countryCodeOptions: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
     };
   },
-  props: DropdownOptionFormFieldProps,
+  props: BaseFormFieldProps,
 });
 </script>
