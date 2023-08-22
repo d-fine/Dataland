@@ -49,11 +49,11 @@ export default defineComponent({
   props: PanelProps,
   watch: {
     companyId() {
-      this.fetchSmeData().catch((error) => console.log(error));
+      this.fetchNewEuTaxonomyData().catch((error) => console.log(error));
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
-        this.fetchSmeData().catch((error) => console.log(error));
+        this.fetchNewEuTaxonomyData().catch((error) => console.log(error));
       }
     },
   },
@@ -63,7 +63,7 @@ export default defineComponent({
     };
   },
   created() {
-    this.fetchSmeData().catch((error) => console.log(error));
+    this.fetchNewEuTaxonomyData().catch((error) => console.log(error));
     this.firstRender = false;
   },
 
@@ -72,7 +72,7 @@ export default defineComponent({
     /**
      * Fetches all accepted SME datasets for the current company and converts them to the required frontend format.
      */
-    async fetchSmeData() {
+    async fetchNewEuTaxonomyData() {
       try {
         let fetchedData: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials[];
         this.waitingForData = true;

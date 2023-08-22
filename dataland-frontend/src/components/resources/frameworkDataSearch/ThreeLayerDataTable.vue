@@ -154,7 +154,7 @@ export default defineComponent({
             dataId: dataId,
             reportingPeriod: reportingPeriod,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data) as [string, object] | null) {
+          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data) as [string, object] | null) { // TODO Emanuel: type doch die category und subcateory als solche!
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
             const frameworkCategoryData = assertDefined(

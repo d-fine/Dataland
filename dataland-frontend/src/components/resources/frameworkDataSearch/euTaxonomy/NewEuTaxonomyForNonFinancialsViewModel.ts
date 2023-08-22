@@ -65,13 +65,13 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
       totalAlignedShare: {
         ...(apiModel.totalAlignedShare ?? {}),
         alignedActivities: apiModel.alignedActivities,
-        substantialContributionCriteria: apiModel.substantialContributionCriteria,
+        ...apiModel.substantialContributionCriteria,
       },
       totalEnablingShare: apiModel.totalEnablingShare,
       totalTransitionalShare: apiModel.totalTransitionalShare,
     };
   }
-
+// TODO EManuel: Addconversion from viemodel to backend model for subsantial stuff
   private static convertDetailsPerCashFlowViewModelToApiModel(
     details?: NewEuTaxonomyDetailsPerCashFlowViewModel,
   ): NewEuTaxonomyDetailsPerCashFlowType | undefined {
