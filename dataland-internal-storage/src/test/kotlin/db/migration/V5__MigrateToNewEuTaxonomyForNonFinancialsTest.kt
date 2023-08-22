@@ -76,13 +76,13 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                 "    },\n" +
                 "    \"revenue\": {\n" +
                 "      \"totalAmount\": {\n" +
-                "        \"quality\": \"Reported\",\n" +
+                "        \"quality\": null,\n" +
                 "        \"dataSource\": {\n" +
-                "          \"report\": \"SustainabilityReport\",\n" +
-                "          \"page\": 536,\n" +
-                "          \"tagName\": \"supply-chains\"\n" +
+                "          \"report\": null,\n" +
+                "          \"page\": null,\n" +
+                "          \"tagName\": null\n" +
                 "        },\n" +
-                "        \"comment\": \"synthesize multi-byte matrix\",\n" +
+                "        \"comment\": null,\n" +
                 "        \"value\": 470269.4387175143\n" +
                 "      },\n" +
                 "      \"alignedData\": {\n" +
@@ -99,7 +99,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                 "      \"eligibleData\": {\n" +
                 "        \"valueAsPercentage\": null,\n" +
                 "        \"quality\": \"Incomplete\",\n" +
-                "        \"dataSource\": null,\n" +
+                "        \"dataSource\": {},\n" +
                 "        \"comment\": null,\n" +
                 "        \"valueAsAbsolute\": 917185.3733132593\n" +
                 "      }\n" +
@@ -200,7 +200,16 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                 "\"currency\": null" +
                 "}" +
                 "}," +
-                "\"totalAmount\": null," +
+                "\"totalAmount\": {\n" +
+                    "        \"value\": null,\n" +
+                    "        \"quality\": \"Audited\",\n" +
+                    "        \"dataSource\": {\n" +
+                    "          \"report\": \"SustainabilityReport\",\n" +
+                    "          \"page\": 1017,\n" +
+                    "          \"tagName\": \"platforms\"\n" +
+                    "        },\n" +
+                    "        \"comment\": \"quantify 1080p driver\"" +
+                    "      },\n" +
                 "\"totalEligibleShare\": {}," +
                 "\"totalNonEligibleShare\": null," +
                 "\"totalNonAlignedShare\": null," +
@@ -212,17 +221,13 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                 "}," +
                 "\"revenue\": {" +
                 "\"totalAmount\": {" +
-                "\"dataSource\": {" +
-                "\"page\": 536," +
-                "\"report\": \"SustainabilityReport\"," +
-                "\"tagName\": \"supply-chains\"" +
-                "}," +
+                "\"dataSource\": {}," +
                 "\"value\": {" +
                 "\"amount\": 470269.4387175143," +
                 "\"currency\": null " +
                 "}," +
-                "\"quality\": \"Reported\"," +
-                "\"comment\": \"synthesize multi-byte matrix\"" +
+                "\"quality\": \"Incomplete\"," +
+                "\"comment\": null" +
                 "}," +
                 "\"totalAlignedShare\": {" +
                 "\"relativeShareInPercent\": 0.4347," +

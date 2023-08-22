@@ -11,6 +11,8 @@ import java.math.BigDecimal
  * and the new version is integrated into the old datatype
  */
 class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
+    private val invalidSet = setOf(null, JSONObject.NULL)
+
     override fun migrate(context: Context?) {
         migrateOldData(context)
         migrateNewData(context)
@@ -51,7 +53,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
 
     private fun migrateOldCashFlowDetails(cashFlowDetails: JSONObject) {
         val totalAmountObject = cashFlowDetails.opt("totalAmount")
-        if (totalAmountObject != null && totalAmountObject != JSONObject.NULL && totalAmountObject is JSONObject) {
+        if (!invalidSet.contains(totalAmountObject) && totalAmountObject is JSONObject) {
             val oldTotalAmountValue = totalAmountObject.opt("value")
             totalAmountObject.put(
                 "value",
@@ -63,6 +65,10 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
                     JSONObject.NULL
                 },
             )
+            if(!isDataPointProvidingSourceInfo(totalAmountObject)) {
+                setAlternativeSourceInfoIfPossible(cashFlowDetails)
+            }
+        } else if (setAlternativeSourceInfoIfPossible(cashFlowDetails)) {
         } else {
             cashFlowDetails.put("totalAmount", JSONObject.NULL)
         }
@@ -81,6 +87,46 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
             "totalTransitionalShare",
         )
         unprovidedFields.forEach { cashFlowDetails.put(it, JSONObject.NULL) }
+    }
+
+    private fun setAlternativeSourceInfoIfPossible(cashFlowDetails: JSONObject): Boolean {
+        listOf("eligibleData", "alignedData").forEach {
+            val dataPointObject = cashFlowDetails.opt(it) ?: JSONObject.NULL
+            if(dataPointObject != JSONObject.NULL && isDataPointProvidingSourceInfo(dataPointObject as JSONObject)) {
+                applyAlternativeSourceInfo(cashFlowDetails, dataPointObject)
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun isDataPointProvidingSourceInfo(dataPoint: JSONObject): Boolean {
+        // TODO does this selection make sense?
+        listOf("comment", "quality", "comment").forEach {
+            if(!invalidSet.contains(dataPoint.opt(it))) {
+                return true
+            }
+        }
+        val dataSourceObject = dataPoint.getJSONObject("dataSource")
+        return dataSourceObject.keySet().any {
+            !invalidSet.contains(dataSourceObject.opt(it))
+        }
+    }
+
+    private fun applyAlternativeSourceInfo(cashFlowDetails: JSONObject, dataPoint: JSONObject) {
+        val newTotalAmountObject = JSONObject()
+        listOf("comment", "quality", "comment", "dataSource").forEach {
+            newTotalAmountObject.put(it, dataPoint.opt(it) ?: JSONObject.NULL)
+        }
+        val totalAmountValueObject = with(cashFlowDetails.opt("totalAmount")) {
+            if(invalidSet.contains(this)) {
+                JSONObject.NULL
+            } else {
+                (this as JSONObject).opt("value") ?: JSONObject.NULL
+            }
+        }
+        newTotalAmountObject.put("value", totalAmountValueObject)
+        cashFlowDetails.put("totalAmount", newTotalAmountObject)
     }
 
     private fun migrateDataPointToFinancialShare(cashFlowDetails: JSONObject, fromKey: String, toKey: String) {
