@@ -33,11 +33,7 @@
     />
     <!-- Integrated report is on a group level -->
     <div class="form-field">
-      <YesNoFormField
-        name="isGroupLevel"
-        description="Is the report on a group level?"
-        label="Group Level Report"
-      />
+      <YesNoFormField name="isGroupLevel" description="Is the report on a group level?" label="Group Level Report" />
     </div>
   </FormKit>
 </template>
