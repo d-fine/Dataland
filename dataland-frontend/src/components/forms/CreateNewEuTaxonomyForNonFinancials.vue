@@ -126,6 +126,9 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import FinancialShareFormField from "@/components/forms/parts/kpiSelection/FinancialShareFormField.vue";
+import AlignedActivitiesFormField from "@/components/forms/parts/kpiSelection/AlignedActivitiesFormField.vue";
+import NonAlignedActivitiesFormField from "@/components/forms/parts/kpiSelection/NonAlignedActivitiesFormField.vue";
+import AssuranceFormField from "@/components/forms/parts/kpiSelection/AssuranceFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import InputSwitch from "primevue/inputswitch";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
@@ -168,6 +171,9 @@ export default defineComponent({
     UploadReports,
     SubcategoryToggleWrapper,
     FinancialShareFormField,
+    AlignedActivitiesFormField,
+    AssuranceFormField,
+    NonAlignedActivitiesFormField,
   },
   directives: {
     tooltip: Tooltip,
