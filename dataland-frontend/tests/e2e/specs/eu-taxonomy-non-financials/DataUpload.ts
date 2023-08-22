@@ -34,6 +34,7 @@
 //     let testData: FixtureData<EuTaxonomyDataForNonFinancials>;
 //
 //     before(function () {
+//     // TODO why for financials??? how did that work before
 //       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
 //         const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
 //         testData = getPreparedFixture("company-for-all-types", preparedFixtures);
