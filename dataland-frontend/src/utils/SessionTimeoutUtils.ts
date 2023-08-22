@@ -52,8 +52,8 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
     if (!sessionWarningTimestamp) {
       logoutAndRedirectToUri(keycloak, "");
     } else if (currentTimestampInMs >= sessionWarningTimestamp) {
-        clearInterval(functionIdOfSetInterval);
-        onSurpassingExpiredSessionTimestampCallback();
+      clearInterval(functionIdOfSetInterval);
+      onSurpassingExpiredSessionTimestampCallback();
     }
   }, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS);
   return functionIdOfSetInterval;
