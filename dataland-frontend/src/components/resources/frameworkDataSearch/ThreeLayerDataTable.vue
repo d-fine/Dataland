@@ -1,7 +1,6 @@
 <template>
   <div v-show="mapOfCategoryKeysToDataObjectArrays.size > 0">
     <DataTable tableClass="onlyHeaders">
-
       <Column
         headerStyle="width: 30vw;"
         headerClass="horizontal-headers-size first-horizontal-headers-size"
@@ -14,11 +13,10 @@
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
       />
-    </DataTable >
+    </DataTable>
     <div
       v-for="(arrayOfKpiDataObjectsMapItem, index) in mapOfCategoryKeysToDataObjectArrays"
       :key="index"
-
       class="d-table-style"
     >
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObjectsMapItem[0])">
@@ -39,7 +37,7 @@
         </div>
         <div v-show="isExpanded(index)">
           <TwoLayerDataTable
-              data-test="TwoLayerTest"
+            data-test="TwoLayerTest"
             :arrayOfKpiDataObjects="arrayOfKpiDataObjectsMapItem[1]"
             :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
             headerInputStyle="display: none;"
@@ -66,7 +64,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
-import {DataAndMetaInformationViewModel, FrameworkViewModel} from "@/components/resources/ViewModel";
+import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
 export default defineComponent({
   name: "ThreeLayerTable",
@@ -158,7 +156,9 @@ export default defineComponent({
             dataId: dataId,
             reportingPeriod: reportingPeriod,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data)) { // TODO Emanuel: type doch die category und subcateory als solche!
+          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data)) {
+            if (categoryKey == "toApiModel") continue; // ignore toApiModel() Function as it is not a KPI
+            // TODO Emanuel: type doch die category und subcateory als solche!
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
             const frameworkCategoryData = assertDefined(
