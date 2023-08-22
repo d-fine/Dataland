@@ -23,8 +23,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
 
   it(
-    "The framework filter should contain SFDR even though it is not yet implemented, and synchronise " +
-      "between the search bar and the URL",
+    "Check that the framework filter synchronizes between the selection and the URL",
     { scrollBehavior: false },
     () => {
       cy.ensureLoggedIn();
@@ -42,6 +41,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           "eq",
           getBaseUrl() +
             `/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
+            `&framework=${DataTypeEnum.NewEutaxonomyNonFinancials}` +
             `&framework=${DataTypeEnum.Lksg}` +
             `&framework=${DataTypeEnum.P2p}` +
             `&framework=${DataTypeEnum.Sfdr}` +
@@ -61,6 +61,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         "eq",
         getBaseUrl() +
           `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}` +
+          `&framework=${DataTypeEnum.NewEutaxonomyNonFinancials}` +
           `&framework=${DataTypeEnum.Lksg}` +
           `&framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sfdr}` +
