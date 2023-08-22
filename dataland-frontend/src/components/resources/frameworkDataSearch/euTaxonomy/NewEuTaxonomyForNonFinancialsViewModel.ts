@@ -1,14 +1,19 @@
 import {
-  AssuranceData, AssuranceDataAssuranceEnum, CompanyReport,
+  AssuranceData,
+  type AssuranceDataAssuranceEnum,
+  CompanyReport,
   type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
   type DataPointOneValueAmountWithCurrency,
   type EuTaxonomyActivity,
   type EuTaxonomyAlignedActivity,
-  type EuTaxonomyGeneral, FiscalYearDeviation,
+  type EuTaxonomyGeneral,
+  type FiscalYearDeviation,
   type NewEuTaxonomyDataForNonFinancials,
   type NewEuTaxonomyDetailsPerCashFlowType,
-  type RelativeAndAbsoluteFinancialShare, YesNo, YesNoNa,
+  type RelativeAndAbsoluteFinancialShare,
+  type YesNo,
+  type YesNoNa,
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
@@ -26,38 +31,42 @@ interface NewEuTaxonomyDetailsPerCashFlowViewModel {
 }
 
 export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
-  basicInformation?: { basicInformation: {
-      fiscalYearDeviation?: FiscalYearDeviation
-      fiscalYearEnd?: string
-      scopeOfEntities?: YesNoNa
-      nfrdMandatory?: YesNo
-      euTaxonomyActivityLevelReporting?: YesNo
-      numberOfEmployees?: number
-    }
+  basicInformation?: {
+    basicInformation: {
+      fiscalYearDeviation?: FiscalYearDeviation;
+      fiscalYearEnd?: string;
+      scopeOfEntities?: YesNoNa;
+      nfrdMandatory?: YesNo;
+      euTaxonomyActivityLevelReporting?: YesNo;
+      numberOfEmployees?: number;
+    };
   };
-  assurance: { assurance: {
-      levelOfAssurance: AssuranceDataAssuranceEnum
-      assuranceProvider?: string
-    }
+  assurance: {
+    assurance: {
+      levelOfAssurance: AssuranceDataAssuranceEnum;
+      assuranceProvider?: string;
+    };
   }; // TODO type this properly later
   revenue?: NewEuTaxonomyDetailsPerCashFlowViewModel;
   capex?: NewEuTaxonomyDetailsPerCashFlowViewModel;
   opex?: NewEuTaxonomyDetailsPerCashFlowViewModel;
 
   constructor(apiModel: NewEuTaxonomyDataForNonFinancials) {
-    this.basicInformation = { basicInformation: {
+    this.basicInformation = {
+      basicInformation: {
         fiscalYearDeviation: apiModel.general?.fiscalYearDeviation,
         fiscalYearEnd: apiModel.general?.fiscalYearEnd,
         scopeOfEntities: apiModel.general?.scopeOfEntities,
         euTaxonomyActivityLevelReporting: apiModel.general?.euTaxonomyActivityLevelReporting,
         numberOfEmployees: apiModel.general?.numberOfEmployees,
         nfrdMandatory: apiModel.general?.nfrdMandatory,
-      }
+      },
     };
-    this.assurance = { assurance: {
-        levelOfAssurance: apiModel.general!.assurance!.assurance,  // TODO undefined safety
-        assuranceProvider: apiModel.general?.assurance?.provider
-      }
+    this.assurance = {
+      assurance: {
+        levelOfAssurance: apiModel.general!.assurance!.assurance, // TODO undefined safety
+        assuranceProvider: apiModel.general?.assurance?.provider,
+      },
     };
     this.revenue = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(
       apiModel.revenue,
@@ -74,12 +83,12 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
         scopeOfEntities: this.basicInformation?.basicInformation?.scopeOfEntities,
         nfrdMandatory: this.basicInformation?.basicInformation?.nfrdMandatory,
         euTaxonomyActivityLevelReporting: this.basicInformation?.basicInformation?.euTaxonomyActivityLevelReporting,
-       assurance: {
+        assurance: {
           assurance: this.assurance.assurance.levelOfAssurance,
-          provider: this.assurance.assurance.assuranceProvider
-       },
-        numberOfEmployees: this.basicInformation?.basicInformation.numberOfEmployees,
+          provider: this.assurance.assurance.assuranceProvider,
         },
+        numberOfEmployees: this.basicInformation?.basicInformation.numberOfEmployees,
+      },
       revenue: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.revenue),
       capex: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.capex),
       opex: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.opex),
@@ -109,7 +118,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
       totalTransitionalShare: apiModel.totalTransitionalShare,
     };
   }
-// TODO EManuel: Addconversion from viemodel to backend model for subsantial stuff
+  // TODO EManuel: Addconversion from viemodel to backend model for subsantial stuff
   private static convertDetailsPerCashFlowViewModelToApiModel(
     details?: NewEuTaxonomyDetailsPerCashFlowViewModel,
   ): NewEuTaxonomyDetailsPerCashFlowType | undefined {

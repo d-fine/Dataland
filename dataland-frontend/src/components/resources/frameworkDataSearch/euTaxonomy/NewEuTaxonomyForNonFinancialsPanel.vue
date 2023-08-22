@@ -5,7 +5,7 @@
   </div>
   <div v-show="!waitingForData">
     <ThreeLayerTable
-        data-test="ThreeLayerTableTest"
+      data-test="ThreeLayerTableTest"
       :data-model="euTaxonomyForNonFinancialsDisplayDataModel"
       :data-and-meta-info="convertedDataAndMetaInfo"
       @data-converted="handleFinishedDataConversion"
