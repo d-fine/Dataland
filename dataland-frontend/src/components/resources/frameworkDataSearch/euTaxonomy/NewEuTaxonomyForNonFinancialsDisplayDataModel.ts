@@ -7,14 +7,14 @@ import {EnvironmentalObjective} from "@/api-models/EnvironmentalObjective";
 
 export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
   {
-    name: "general",
-    label: "General",
+    name: "basicInformation",
+    label: "Basic Information",
     color: "orange",
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: "general",
-        label: "General",
+        name: "basicInformation",
+        label: "Basic Information",
         fields: [
           {
             name: "fiscalYearDeviation",
@@ -46,17 +46,6 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
             required: true,
             showIf: (): boolean => true,
             validation: "required",
-          },
-          {
-            name: "referencedReports",
-            label: "Referenced Reports",
-            description:
-              "Does your company have a current annual report, sustainability report, integrated report or ESEF report? If yes, please share the information with us.",
-            unit: "",
-            component: "UploadReports",
-            evidenceDesired: false,
-            required: false,
-            showIf: (): boolean => true,
           },
           {
             name: "scopeOfEntities",
@@ -102,20 +91,43 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
             showIf: (): boolean => true,
             certificateRequiredIfYes: false,
           },
+        ],
+      },
+    ],
+  },
+  {
+    name: "assurance",
+    label: "Assurance",
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: "assurance",
+        label: "Assurance",
+        fields: [
           {
-            name: "assurance",
-            label: "Assurance",
+            name: "levelOfAssurance",
+            label: "Level of Assurance",
             description:
-              "Level of Assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
+                "Level of Assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
             unit: "",
-            component: "AssuranceFormField",
+            component: "UndefinedFormField",
             evidenceDesired: true,
             required: false,
             showIf: (): boolean => true,
           },
-        ],
-      },
-    ],
+          {
+            name: "assuranceProvider",
+            label: "Assurance Provider",
+            description:
+                "Provider of the Assurance",
+            unit: "",
+            component: "UndefinedFormField",
+            evidenceDesired: true,
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ]
+      }, ]
   },
   {
     name: "revenue",
