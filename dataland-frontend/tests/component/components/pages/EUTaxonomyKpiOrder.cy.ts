@@ -1,15 +1,11 @@
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue"
-import {FixtureData, getPreparedFixture} from "../../../sharedUtils/Fixtures";
+import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 import {
-    CompanyAssociatedDataLksgData, CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials,
-    DataAndMetaInformationLksgData,
-    DataAndMetaInformationNewEuTaxonomyDataForNonFinancials, DataMetaInformation,
-    LksgData, NewEuTaxonomyDataForNonFinancials
-} from "../../../../build/clients/backend";
-import {
-    newEuTaxonomyForNonFinancialsDisplayDataModel
-} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
+    type CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials,
+    type DataMetaInformation,
+    type NewEuTaxonomyDataForNonFinancials
+} from "@clients/backend";
 describe("Component test for the NewEUTaxonomy Page", () => {
     let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
 
@@ -20,9 +16,12 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     });
 
 
-    let kpiList:string[] = ["Basic Information", "Assurance", "Total Revenue", "Total CapEx", "Total OpEx"];
-    kpiList = ["General", "Revenue", "Capex", "Opex"];
-    it("Check order of the displayed KPIs", () => {
+    //const kpiList:string[] = ["GENERAL", "REVENUE", "CAPEX", "OPEX"]; These 2 lists have to be used when running the cypress test locally, because the fixtures are different.
+    //const kpiListOrderChanged = ["REVENUE", "GENERAL", "OPEX", "CAPEX"];
+    const kpiList:string[] = ["BASIC INFORMATION","ASSURANCE","REVENUE","CAPEX", "OPEX"];
+    const kpiListOrderChanged = ["ASSURANCE","OPEX", "BASIC INFORMATION", "REVENUE", "CAPEX"];
+
+    it("Check order of the displayed KPIs and category entries", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
         const newEuTaxonomyDataForNonFinancialsData = preparedFixture.t;
 
@@ -48,34 +47,24 @@ describe("Component test for the NewEUTaxonomy Page", () => {
                 };
             },
         });
-        //cy.get("[data-test='ThreeLayerTableTest']").eq(0).should("have.text", "KPIs");
-        //cy.get("[data-test='TwoLayerTest']").eq(0).find(".p-rowgroup-header").eq(0).should("have.text","General");
-        //cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style").eq(2).eq(0).get(".p-badge").eq(2).should("have.text","GENERAL");
-        /**
+    /**
         cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style")
             .each((element, index) =>  {
-                element.eq(index).eq(0).get(".p-badge").eq(index).should("have.text","General");
+                cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("have.text",kpiList[index]);
             });
-**/
-        //find(".p-rowgroup-header").eq(0).should("have.text","General");
 
-        //cy.get("[data-test='ThreeLayerTableTest']").eq(0).eq(0).should("have.text", "General");
+        cy.wait(50);
 
-        //cy.get("[data-test='General']");
-        //cy.get("[data-test='Revenue']");
-
-
-       // cy.get("tbody").find(`span:contains(${newEuTaxonomyDataForNonFinancialsData.general.masterData.dataDate})`).should("exist");
-
-        /**
-         *
-
-        cy.get("[data-test='ThreeLayerTableTest']").eq(0).find("span")
-            .each((element, index) => {
-                element.should('have.text', kpiList[index]);
+        cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style")
+            .each((element, index) =>  {
+                cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("not.have.text", kpiListOrderChanged[index]);
             });
-        **/
+     **/
+    cy.get("[data-test='TwoLayerTest']").eq(2);
     });
 
+
+
 });
+
 

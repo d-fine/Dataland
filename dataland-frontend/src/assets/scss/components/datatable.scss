@@ -1,10 +1,16 @@
-.p-datatable {
+.p-datatable, .p-datatable.p-datatable-scrollable {
   border-radius: 0;
   background: $table-background-color;
   color: $main-text-color;
   .horizontal-headers-size {
+    background-color: #fff;
+
     &:first-of-type {
       width: $first-table-column-width;
+    }
+     
+    &.border-right {
+      border-right: 1px solid $table-border;
     }
   }
   .onlyHeaders {
