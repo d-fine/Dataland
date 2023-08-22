@@ -1,8 +1,6 @@
 import {
   Configuration,
   type DataMetaInformation,
-  NewEuTaxonomyDataForNonFinancialsControllerApi,
-  type NewEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
   type PathwaysToParisData,
   P2pDataControllerApi,
@@ -39,10 +37,7 @@ interface FrameworkUploadConfiguration<ApiClientType, FrameworkDataType> {
 }
 
 export type FrameworkDataTypes = {
-  [DataTypeEnum.NewEutaxonomyNonFinancials]: {
-    data: NewEuTaxonomyDataForNonFinancials;
-    api: NewEuTaxonomyDataForNonFinancialsControllerApi;
-  };
+
   [DataTypeEnum.P2p]: {
     data: PathwaysToParisData;
     api: P2pDataControllerApi;
@@ -75,10 +70,6 @@ const frameworkUploadConfigurations: {
     FrameworkDataTypes[Key]["data"]
   >;
 } = {
-  [DataTypeEnum.NewEutaxonomyNonFinancials]: {
-    apiConstructor: NewEuTaxonomyDataForNonFinancialsControllerApi,
-    uploaderFactory: (client) => client.postCompanyAssociatedNewEuTaxonomyDataForNonFinancials.bind(client),
-  },
   [DataTypeEnum.P2p]: {
     apiConstructor: P2pDataControllerApi,
     uploaderFactory: (client) => client.postCompanyAssociatedP2pData.bind(client),
