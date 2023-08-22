@@ -40,6 +40,7 @@ function humanizeViaMapping(rawText: string): string {
     na: "N/A",
     "eutaxonomy-financials": "EU Taxonomy for financial companies",
     "eutaxonomy-non-financials": "EU Taxonomy for non-financial companies",
+    "new-eutaxonomy-non-financials": "New EU Taxonomy for non-financial companies",
     lksg: "LkSG",
     sfdr: "SFDR",
     sme: "SME",

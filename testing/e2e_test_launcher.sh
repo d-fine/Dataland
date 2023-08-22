@@ -3,6 +3,8 @@ mkdir -p ~/.docker/cli-plugins/
 curl -SL https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
 chmod +x ~/.docker/cli-plugins/docker-compose
 
+# TODO remove docker compose stuff later and add shebang
+
 set -ex
 
 if [[ $TEST_EXECUTOR = "CYPRESS" ]]; then
