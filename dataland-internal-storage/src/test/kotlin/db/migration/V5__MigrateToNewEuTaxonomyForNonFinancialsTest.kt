@@ -39,107 +39,107 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
         val mockContext = Mockito.mock(Context::class.java)
         mockAndWhenConfigurationForFrameworkMigration(
             mockContext,
-            buildOldOriginalDatabaseEntry(),
-            buildOldExpectedTransformedDatabaseEntry(),
+            oldOriginalDatabaseEntry,
+            oldExpectedTransformedDataBaseEntry,
         )
         val migration = V5__MigrateToNewEuTaxonomyForNonFinancials()
         migration.migrate(mockContext)
     }
 
-    private fun buildOldOriginalDatabaseEntry(): String {
-        val dataObject = JSONObject(
-            "{\n" +
-                "    \"capex\": {\n" +
-                "      \"totalAmount\": null,\n" +
-                "      \"alignedData\": {\n" +
-                "        \"valueAsPercentage\": 0.1965,\n" +
-                "        \"quality\": \"Audited\",\n" +
-                "        \"dataSource\": {\n" +
-                "          \"report\": \"SustainabilityReport\",\n" +
-                "          \"page\": 1017,\n" +
-                "          \"tagName\": \"platforms\"\n" +
-                "        },\n" +
-                "        \"comment\": \"quantify 1080p driver\",\n" +
-                "        \"valueAsAbsolute\": 396564.95871022344\n" +
-                "      },\n" +
-                "      \"eligibleData\": null\n" +
-                "    },\n" +
-                "    \"opex\": {\n" +
-                "      \"totalAmount\": {\n" +
-                "        \"quality\": \"Estimated\",\n" +
-                "        \"dataSource\": null,\n" +
-                "        \"comment\": null,\n" +
-                "        \"value\": 940716.1856535822\n" +
-                "      },\n" +
-                "      \"alignedData\": null,\n" +
-                "      \"eligibleData\": null\n" +
-                "    },\n" +
-                "    \"revenue\": {\n" +
-                "      \"totalAmount\": {\n" +
-                "        \"quality\": null,\n" +
-                "        \"dataSource\": {\n" +
-                "          \"report\": null,\n" +
-                "          \"page\": null,\n" +
-                "          \"tagName\": null\n" +
-                "        },\n" +
-                "        \"comment\": null,\n" +
-                "        \"value\": 470269.4387175143\n" +
-                "      },\n" +
-                "      \"alignedData\": {\n" +
-                "        \"valueAsPercentage\": 0.4347,\n" +
-                "        \"quality\": \"Reported\",\n" +
-                "        \"dataSource\": {\n" +
-                "          \"report\": \"SustainabilityReport\",\n" +
-                "          \"page\": 246,\n" +
-                "          \"tagName\": \"communities\"\n" +
-                "        },\n" +
-                "        \"comment\": \"transmit online pixel\",\n" +
-                "        \"valueAsAbsolute\": 840897.8063846007\n" +
-                "      },\n" +
-                "      \"eligibleData\": {\n" +
-                "        \"valueAsPercentage\": null,\n" +
-                "        \"quality\": \"Incomplete\",\n" +
-                "        \"dataSource\": {},\n" +
-                "        \"comment\": null,\n" +
-                "        \"valueAsAbsolute\": 917185.3733132593\n" +
-                "      }\n" +
-                "    },\n" +
-                "    \"fiscalYearDeviation\": \"Deviation\",\n" +
-                "    \"fiscalYearEnd\": \"2022-10-05\",\n" +
-                "    \"scopeOfEntities\": \"NA\",\n" +
-                "    \"nfrdMandatory\": null,\n" +
-                "    \"euTaxonomyActivityLevelReporting\": \"No\",\n" +
-                "    \"assurance\": {\n" +
-                "      \"assurance\": \"LimitedAssurance\",\n" +
-                "      \"provider\": null,\n" +
-                "      \"dataSource\": {\n" +
-                "        \"report\": \"SustainabilityReport\",\n" +
-                "        \"page\": 91,\n" +
-                "        \"tagName\": \"initiatives\"\n" +
-                "      }\n" +
-                "    },\n" +
-                "    \"numberOfEmployees\": null,\n" +
-                "    \"referencedReports\": {\n" +
-                "      \"ESEFReport\": {\n" +
-                "        \"reference\": \"50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63\",\n" +
-                "        \"isGroupLevel\": null,\n" +
-                "        \"reportDate\": null,\n" +
-                "        \"currency\": \"BSD\"\n" +
-                "      },\n" +
-                "      \"SustainabilityReport\": {\n" +
-                "        \"reference\": \"50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63\",\n" +
-                "        \"isGroupLevel\": null,\n" +
-                "        \"reportDate\": null,\n" +
-                "        \"currency\": \"THB\"\n" +
-                "      }\n" +
-                "    }\n" +
-                "  }",
-        )
-        return buildDatabaseEntry(dataObject, "eutaxonomy-non-financials")
-    }
+    val oldOriginalDatabaseEntry = buildDatabaseEntry(
+        JSONObject(
+            "{" +
+                "\"capex\": {" +
+                "\"totalAmount\": null," +
+                "\"alignedData\": {" +
+                "\"valueAsPercentage\": 0.1965," +
+                "\"quality\": \"Audited\"," +
+                "\"dataSource\": {" +
+                "\"report\": \"SustainabilityReport\"," +
+                "\"page\": 1017," +
+                "\"tagName\": \"platforms\"" +
+                "}," +
+                "\"comment\": \"quantify 1080p driver\"," +
+                "\"valueAsAbsolute\": 396564.95871022344" +
+                "}," +
+                "\"eligibleData\": null" +
+                "}," +
+                "\"opex\": {" +
+                "\"totalAmount\": {" +
+                "\"quality\": \"Estimated\"," +
+                "\"dataSource\": null," +
+                "\"comment\": null," +
+                "\"value\": 940716.1856535822" +
+                "}," +
+                "\"alignedData\": null," +
+                "\"eligibleData\": null" +
+                "}," +
+                "\"revenue\": {" +
+                "\"totalAmount\": {" +
+                "\"quality\": null," +
+                "\"dataSource\": {" +
+                "\"report\": null," +
+                "\"page\": null," +
+                "\"tagName\": null" +
+                "}," +
+                "\"comment\": null," +
+                "\"value\": 470269.4387175143" +
+                "}," +
+                "\"alignedData\": {" +
+                "\"valueAsPercentage\": 0.4347," +
+                "\"quality\": \"Reported\"," +
+                "\"dataSource\": {" +
+                "\"report\": \"SustainabilityReport\"," +
+                "\"page\": 246," +
+                "\"tagName\": \"communities\"" +
+                "}," +
+                "\"comment\": \"transmit online pixel\"," +
+                "\"valueAsAbsolute\": 840897.8063846007" +
+                "}," +
+                "\"eligibleData\": {" +
+                "\"valueAsPercentage\": null," +
+                "\"quality\": \"Incomplete\"," +
+                "\"dataSource\": {}," +
+                "\"comment\": null," +
+                "\"valueAsAbsolute\": 917185.3733132593" +
+                "}" +
+                "}," +
+                "\"fiscalYearDeviation\": \"Deviation\"," +
+                "\"fiscalYearEnd\": \"2022-10-05\"," +
+                "\"scopeOfEntities\": \"NA\"," +
+                "\"nfrdMandatory\": null," +
+                "\"euTaxonomyActivityLevelReporting\": \"No\"," +
+                "\"assurance\": {" +
+                "\"assurance\": \"LimitedAssurance\"," +
+                "\"provider\": null," +
+                "\"dataSource\": {" +
+                "\"report\": \"SustainabilityReport\"," +
+                "\"page\": 91," +
+                "\"tagName\": \"initiatives\"" +
+                "}" +
+                "}," +
+                "\"numberOfEmployees\": null," +
+                "\"referencedReports\": {" +
+                "\"ESEFReport\": {" +
+                "\"reference\": \"50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63\"," +
+                "\"isGroupLevel\": null," +
+                "\"reportDate\": null," +
+                "\"currency\": \"BSD\"" +
+                "}," +
+                "\"SustainabilityReport\": {" +
+                "\"reference\": \"50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63\"," +
+                "\"isGroupLevel\": null," +
+                "\"reportDate\": null," +
+                "\"currency\": \"THB\"" +
+                "}" +
+                "}" +
+                "}",
+        ),
+        "eutaxonomy-non-financials",
+    )
 
-    private fun buildOldExpectedTransformedDatabaseEntry(): String {
-        val dataObject = JSONObject(
+    val oldExpectedTransformedDataBaseEntry = buildDatabaseEntry(
+        JSONObject(
             "{" +
                 "\"general\": {" +
                 "\"fiscalYearDeviation\": \"Deviation\"," +
@@ -200,16 +200,16 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                 "\"currency\": null" +
                 "}" +
                 "}," +
-                "\"totalAmount\": {\n" +
-                "        \"value\": null,\n" +
-                "        \"quality\": \"Audited\",\n" +
-                "        \"dataSource\": {\n" +
-                "          \"report\": \"SustainabilityReport\",\n" +
-                "          \"page\": 1017,\n" +
-                "          \"tagName\": \"platforms\"\n" +
-                "        },\n" +
-                "        \"comment\": \"quantify 1080p driver\"" +
-                "      },\n" +
+                "\"totalAmount\": {" +
+                "\"value\": null," +
+                "\"quality\": \"Audited\"," +
+                "\"dataSource\": {" +
+                "\"report\": \"SustainabilityReport\"," +
+                "\"page\": 1017," +
+                "\"tagName\": \"platforms\"" +
+                "}," +
+                "\"comment\": \"quantify 1080p driver\"" +
+                "}," +
                 "\"totalEligibleShare\": {}," +
                 "\"totalNonEligibleShare\": null," +
                 "\"totalNonAlignedShare\": null," +
@@ -252,7 +252,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                 "\"totalTransitionalShare\": null," +
                 "}" +
                 "}",
-        )
-        return buildDatabaseEntry(dataObject, "eutaxonomy-non-financials")
-    }
+        ),
+        "eutaxonomy-non-financials",
+    )
 }
