@@ -26,8 +26,6 @@ export default defineComponent({
   data: () => ({
     dataPointIsAvailable: true,
 
-    currentQualityValue: "",
-    qualityValueBeforeDataPointWasDisabled: "",
   }),
   props: {
     subcategoryName: {

@@ -11,4 +11,5 @@ data class RelativeAndAbsoluteFinancialShare(
     val absoluteShare: AmountWithCurrency?,
 )
 
-//TODO is it necessary to give a currency here? The information here kind of depends on the total amount which already has a currency.
+// TODO is it necessary to give a currency here? The information here kind of depends on the total amount which already
+//  has a currency.

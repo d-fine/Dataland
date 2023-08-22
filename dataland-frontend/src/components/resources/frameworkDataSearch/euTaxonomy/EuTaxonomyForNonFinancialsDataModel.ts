@@ -1,5 +1,5 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
-import {DropdownDatasetIdentifier, getDataset} from "@/utils/PremadeDropdownDatasets";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 
 export const euTaxonomyForNonFinancialsDataModel = [
   {

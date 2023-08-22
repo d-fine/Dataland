@@ -11,25 +11,23 @@
           placeholder="Relative Value in %"
           outer-class="short"
         />
+        <FormKit type="group" name="absoluteShare">
           <FormKit
-          type="group"
-          name="absoluteShare">
-        <FormKit
-          type="text"
-          name="amount"
-          validation-label="Absolute Value"
-          validation="number"
-          placeholder="Absolute Value in %"
-          outer-class="short"
-        />
-        <SingleSelectFormElement
-          name="currency"
-          validation="length:2,3"
-          validation-label="Currency"
-          placeholder="Currency"
-          :options="countryCodeOptions"
-        />
-          </FormKit>
+            type="text"
+            name="amount"
+            validation-label="Absolute Value"
+            validation="number"
+            placeholder="Absolute Value in %"
+            outer-class="short"
+          />
+          <SingleSelectFormElement
+            name="currency"
+            validation="length:2,3"
+            validation-label="Currency"
+            placeholder="Currency"
+            :options="countryCodeOptions"
+          />
+        </FormKit>
       </div>
     </div>
   </FormKit>

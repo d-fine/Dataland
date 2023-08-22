@@ -5,7 +5,12 @@
         <b>{{ slotProps.node.label }}</b>
       </template>
       <template #check="slotProps">
-        <Checkbox v-model="selectedActivities" :inputId="slotProps.node.key" name="selectedActivities" :value="slotProps.node.data" />
+        <Checkbox
+          v-model="selectedActivities"
+          :inputId="slotProps.node.key"
+          name="selectedActivities"
+          :value="slotProps.node.data"
+        />
         <label :for="slotProps.node.key" class="ml-2">{{ slotProps.node.label }}</label>
       </template>
     </Tree>
@@ -45,7 +50,8 @@ export default defineComponent({
           },
           {
             key: "0-1",
-            label: "Rehabilitation and restoration of forests, including reforestation and natural forest regeneration after an extreme event",
+            label:
+              "Rehabilitation and restoration of forests, including reforestation and natural forest regeneration after an extreme event",
             data: "11",
             type: "check",
           },
@@ -77,7 +83,7 @@ export default defineComponent({
             key: "1-1",
             label: "Manufacture of equipment for the production and use of hydrogen",
             data: "17",
-            type: "url"
+            type: "url",
           },
           {
             key: "1-2",
@@ -89,7 +95,7 @@ export default defineComponent({
             key: "1-3",
             label: "Manufacture of batteries",
             data: "18",
-            type: "url"
+            type: "url",
           },
         ],
       },
