@@ -20,8 +20,7 @@ describe("As a user, I expect the footer section to be present and contain relev
     });
 
     const frameworksToCheck = Object.values(DataTypeEnum).filter(
-      (frameworkName) =>
-        ([DataTypeEnum.Sme] as DataTypeEnum[]).indexOf(frameworkName) === -1,
+      (frameworkName) => ([DataTypeEnum.Sme] as DataTypeEnum[]).indexOf(frameworkName) === -1,
     );
     frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on ${framework}`, () => {

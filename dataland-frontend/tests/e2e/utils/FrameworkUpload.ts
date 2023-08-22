@@ -37,7 +37,6 @@ interface FrameworkUploadConfiguration<ApiClientType, FrameworkDataType> {
 }
 
 export type FrameworkDataTypes = {
-
   [DataTypeEnum.P2p]: {
     data: PathwaysToParisData;
     api: P2pDataControllerApi;

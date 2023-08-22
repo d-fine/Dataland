@@ -95,7 +95,7 @@ function generateAlignedActivity(): EuTaxonomyAlignedActivity {
     ...generateActivity(),
     substantialContributionCriteria: generateObject(Object.values(EnvironmentalObjective), generatePercentage),
     dnshCriteria: generateObject(Object.values(EnvironmentalObjective), () =>
-        faker.helpers.arrayElement(Object.values(YesNo)),
+      faker.helpers.arrayElement(Object.values(YesNo)),
     ),
     minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
   };
@@ -106,9 +106,7 @@ function generateAlignedActivity(): EuTaxonomyAlignedActivity {
  * @param reports a list of reports that can be referenced
  * @returns the generated data
  */
-export function generateEuTaxonomyPerCashflowType(
-    reports: ReferencedDocuments,
-): EuTaxonomyDetailsPerCashFlowType {
+export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
   return {
     totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(generateAmountWithCurrency()), reports)),
     totalNonEligibleShare: valueOrUndefined(generateFinancialShare()),
