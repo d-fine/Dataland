@@ -42,6 +42,6 @@ fun migrateCompanyAssociatedDataOfDatatype(
     val dataTableEntities = getCompanyAssociatedDatasetsForDataType(context, dataType)
     dataTableEntities.forEach {
         migrate(it)
-        context!!.connection.createStatement().execute(it.getWriteQuery())
+        it.executeUpdateQuery(context!!)
     }
 }

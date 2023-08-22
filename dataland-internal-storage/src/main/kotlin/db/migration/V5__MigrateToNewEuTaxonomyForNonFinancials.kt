@@ -67,6 +67,9 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
                 setAlternativeSourceInfoIfPossible(cashFlowDetails)
             }
         } else if (setAlternativeSourceInfoIfPossible(cashFlowDetails)) {
+            // this is empty on purpose
+            // to prevent executing code multiple times
+            // the execution of the logic of this branch happens in the else if header
         } else {
             cashFlowDetails.put("totalAmount", JSONObject.NULL)
         }

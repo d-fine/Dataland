@@ -1,6 +1,7 @@
 package db.migration.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
@@ -14,7 +15,14 @@ data class DataTableEntity(
     /**
      * Method to get a query that writes the company associated data to the corresponding table entry
      */
-    fun getWriteQuery(): String = "UPDATE data_items " +
-        "SET data = '${ObjectMapper().writeValueAsString(companyAssociatedData.toString())}' " +
-        "WHERE data_id = '$dataId'"
+    fun executeUpdateQuery(context: Context) {
+        val queryStatement = context.connection.prepareStatement(
+            "UPDATE data_items " +
+                "SET data = ? " +
+                "WHERE data_id = '$dataId'",
+        )
+        queryStatement.setString(1, ObjectMapper().writeValueAsString(companyAssociatedData.toString()))
+        queryStatement.executeUpdate()
+        println(queryStatement.toString())
+    }
 }
