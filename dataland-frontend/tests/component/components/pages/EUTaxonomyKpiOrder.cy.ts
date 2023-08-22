@@ -16,8 +16,14 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     });
 
 
-    const kpiList:string[] = ["GENERAL", "REVENUE", "CAPEX", "OPEX"];
-    const kpiList2 = ["REVENUE", "GENERAL", "OPEX", "CAPEX"];
+    //const kpiList:string[] = ["GENERAL", "REVENUE", "CAPEX", "OPEX"]; These 2 lists have to be used when running the cypress test locally, because the fixtures are different.
+    //const kpiList2 = ["REVENUE", "GENERAL", "OPEX", "CAPEX"];
+    const kpiList:string[] = ["BASIC INFORMATION","ASSURANCE","TOTAL REVENUE","TOTAL CAPEX", "TOTAL OPEX"];
+    const kpiList2 = ["ASSURANCE","TOTAL OPEX", "BASIC INFORMATION", "TOTAL CAPEX","TOTAL REVENUE"];
+
+
+
+
     it("Check order of the displayed KPIs", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
         const newEuTaxonomyDataForNonFinancialsData = preparedFixture.t;
