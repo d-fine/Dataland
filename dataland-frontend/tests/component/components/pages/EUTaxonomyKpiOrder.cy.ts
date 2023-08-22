@@ -50,14 +50,6 @@ describe("Component test for the NewEUTaxonomy Page", () => {
                 };
             },
         });
-        //cy.get("[data-test='ThreeLayerTableTest']").eq(0).should("have.text", "KPIs");
-        //cy.get("[data-test='TwoLayerTest']").eq(0).find(".p-rowgroup-header").eq(0).should("have.text","General");
-        /**
-        cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style").eq(0).eq(0).get(".p-badge").eq(0).should("have.text","GENERAL");
-        cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style").eq(0).eq(0).get(".p-badge").eq(1).should("have.text","REVENUE");
-        cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style").eq(0).eq(0).get(".p-badge").eq(2).should("have.text","CAPEX");
-        cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style").eq(0).eq(0).get(".p-badge").eq(3).should("have.text","OPEX");
-         **/
 
         cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style")
             .each((element, index) =>  {
