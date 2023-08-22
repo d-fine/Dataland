@@ -2,168 +2,164 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "North Derrick",
-			"headquartersPostalCode": "61589-8418",
+			"headquarters": "Ratkefield",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"1hmhTYmdvnAt"
+					"fF6tQJPfMf6J",
+					"c07DbCmQjYHz"
 				],
 				"PermId": [],
 				"Ticker": [
-					"QnAR7vi"
+					"IpIrC5h"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"0jNGPs4J4"
+				"Duns": [
+					"QsYAjfz6h"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"Djg60vKRD21Sy1w"
+					"sYYM5QosHwQwMe0"
 				]
 			},
-			"countryCode": "TK",
+			"countryCode": "PW",
 			"companyAlternativeNames": [
-				"Zemlak Inc"
+				"Hilpert, Heaney and Huel",
+				"Runolfsdottir - Ondricka"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://cylindrical-calcification.name/",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://tasty-founder.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"fiscalYearDeviation": "NoDeviation",
-				"numberOfEmployees": 60703,
+				"fiscalYearEnd": "2023-07-23",
+				"numberOfEmployees": 77373,
 				"referencedReports": {
+					"AnnualReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "PKR"
+					},
 					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "Yes",
-						"reportDate": "2023-02-21",
-						"currency": "VES"
-					},
-					"IntegratedReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "NGN"
-					}
-				},
-				"assurance": {
-					"assurance": "LimitedAssurance",
-					"provider": "Goodwin - Fahey",
-					"dataSource": {
-						"page": 1132,
-						"report": "IntegratedReport",
-						"tagName": "solutions"
-					}
-				},
-				"nfrdMandatory": "No"
-			},
-			"opex": {
-				"totalEligibleShare": {
-					"relativeShareInPercent": 48.66509612184018
-				}
-			},
-			"capex": {
-				"totalEligibleShare": {}
-			},
-			"revenue": {
-				"totalEligibleShare": {
-					"relativeShareInPercent": 26.53775515500456
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Milfordfield",
-			"headquartersPostalCode": "99618",
-			"sector": "e-commerce",
-			"identifiers": {
-				"Lei": [
-					"bX5XKC1gvZQb580WZadJ"
-				],
-				"Isin": [
-					"vux1H1o81E7c",
-					"7jTp6PJMJymS"
-				],
-				"PermId": [],
-				"Ticker": [
-					"OUQRvfl"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "TZ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"fiscalYearDeviation": "Deviation",
-				"numberOfEmployees": 70812,
-				"referencedReports": {
-					"IntegratedReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2023-07-08",
-						"currency": "BZD"
+						"reportDate": "2023-06-19",
+						"currency": "BHD"
 					}
 				},
 				"assurance": {
 					"assurance": "None"
 				},
-				"nfrdMandatory": "Yes"
+				"scopeOfEntities": "NA",
+				"euTaxonomyActivityLevelReporting": "No"
+			},
+			"opex": {
+				"totalEligibleShare": {}
+			},
+			"capex": {
+				"totalEligibleShare": {}
+			},
+			"revenue": {
+				"totalEligibleShare": {}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Lawton",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [
+					"kDWRTHlLs0K0BGAz7nxc"
+				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"1JpUJCriu"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BT",
+			"companyAlternativeNames": [
+				"Flatley LLC",
+				"Kihn LLC",
+				"Koch, Conroy and Johnson",
+				"Robel - Monahan"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://stale-twitter.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearDeviation": "NoDeviation",
+				"referencedReports": {
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "RWF"
+					},
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"reportDate": "2023-08-21",
+						"currency": "MRU"
+					},
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "PGK"
+					},
+					"AnnualReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "No",
+						"currency": "TRY"
+					}
+				},
+				"assurance": {
+					"assurance": "ReasonableAssurance",
+					"provider": "Hoeger Inc",
+					"dataSource": {
+						"page": 525,
+						"report": "AnnualReport",
+						"tagName": "platforms"
+					}
+				},
+				"scopeOfEntities": "Yes",
+				"euTaxonomyActivityLevelReporting": "Yes"
 			},
 			"opex": {
 				"totalAmount": {
-					"value": 609615.7932886854,
-					"dataSource": {
-						"page": 503,
-						"report": "IntegratedReport",
-						"tagName": "experiences"
-					},
-					"quality": "Reported",
-					"comment": "bypass mobile bus"
+					"value": 338387.60507060215,
+					"quality": "Estimated"
 				},
 				"totalEligibleShare": {
+					"relativeShareInPercent": 12.371778162196279,
 					"absoluteShare": {
-						"currency": "CHF"
+						"amount": 107152.63182064518
 					}
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 465959.8544356413,
-					"dataSource": {
-						"page": 704,
-						"report": "IntegratedReport",
-						"tagName": "convergence"
-					},
-					"quality": "Reported",
-					"comment": "compress wireless interface"
+					"value": 722702.3602230474,
+					"quality": "Incomplete"
 				},
-				"totalEligibleShare": {
-					"relativeShareInPercent": 11.563881346955895,
-					"absoluteShare": {
-						"currency": "EUR"
-					}
-				}
+				"totalEligibleShare": {}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 267375.69351680577,
+					"value": 702431.4093403518,
 					"dataSource": {
-						"page": 560,
-						"report": "IntegratedReport",
-						"tagName": "lifetime value"
+						"page": 845,
+						"report": "AnnualReport",
+						"tagName": "blockchains"
 					},
-					"quality": "Reported",
-					"comment": "back up back-end program"
+					"quality": "Estimated",
+					"comment": "reboot neural protocol"
 				},
-				"totalEligibleShare": {
-					"relativeShareInPercent": 27.87261763587594
-				}
+				"totalEligibleShare": {}
 			}
 		},
 		"reportingPeriod": "2019"
@@ -171,114 +167,239 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Broken Arrow",
-			"sector": "e-markets",
+			"headquarters": "South Hyman",
+			"sector": "platforms",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [],
+				"Isin": [
+					"p8zWzu77g7GM",
+					"pOMENvEE1gFL"
+				],
 				"PermId": [
-					"icV3GxBZpp"
+					"YKxjU45Z3Q"
 				],
 				"Ticker": [],
 				"Duns": [
-					"g42JWKrKC"
+					"iqDiDWwdR"
 				],
-				"VatNumber": [
-					"kDBhTTuWg"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"J68qpnAVGHOtPB9"
+					"B3sM8ec8sbKWq0k"
 				]
 			},
-			"countryCode": "KZ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
+			"countryCode": "SM",
+			"companyAlternativeNames": [
+				"Heathcote - Crooks",
+				"Rogahn Group"
+			],
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"fiscalYearDeviation": "Deviation",
+				"numberOfEmployees": 37062,
 				"assurance": {
 					"assurance": "None"
-				}
+				},
+				"nfrdMandatory": "Yes"
 			},
 			"opex": {
 				"totalAmount": {
-					"value": {},
+					"value": 75.43796291574836,
 					"dataSource": {
-						"page": 99,
-						"report": "SustainabilityReport",
-						"tagName": "interfaces"
-					},
-					"quality": "Incomplete",
-					"comment": "reboot virtual card"
-				},
-				"totalAlignedShare": {},
-				"substantialContributionCriteria": {
-					"ClimateAdaptation": 83.07446744292974,
-					"Biodiversity": 7.838184153661132,
-					"PollutionPrevention": 43.29850806389004
-				},
-				"totalEnablingShare": 28.161616949364543,
-				"totalTransitionalShare": 76.39917971100658
-			},
-			"capex": {
-				"totalAmount": {
-					"value": {
-						"currency": "AUD"
-					},
-					"dataSource": {
-						"page": 226,
+						"page": 276,
 						"report": "AnnualReport",
-						"tagName": "e-commerce"
+						"tagName": "paradigms"
 					},
-					"quality": "Reported",
-					"comment": "program back-end alarm"
+					"quality": "Audited",
+					"comment": "generate wireless protocol"
 				},
-				"totalEligibleShare": {},
-				"totalNonAlignedShare": {
-					"relativeShareInPercent": 79.3087009806186
+				"totalNonEligibleShare": {},
+				"totalEligibleShare": {
+					"relativeShareInPercent": 32.691862201318145
 				},
-				"nonAlignedActivities": [
+				"totalNonAlignedShare": {},
+				"totalAlignedShare": {
+					"relativeShareInPercent": 18.452149536460638,
+					"absoluteShare": {}
+				},
+				"substantialContributionCriteria": {
+					"CircularEconomy": 24.471713788807392
+				},
+				"alignedActivities": [
 					{
-						"activityName": "ProductionOfHeatCoolFromBioenergy",
+						"activityName": "AnaerobicDigestionOfSewageSludge",
+						"share": {
+							"absoluteShare": {
+								"amount": 778552.0025994629
+							}
+						},
+						"substantialContributionCriteria": {
+							"ClimateMitigation": 16.504765884019434,
+							"Biodiversity": 28.896294021978974
+						},
+						"dnshCriteria": {
+							"PollutionPrevention": "Yes"
+						},
+						"minimumSafeguards": "No"
+					},
+					{
+						"activityName": "LandfillGasCaptureAndUtilisation",
 						"naceCodes": [
-							"D"
-						]
-					},
-					{
-						"activityName": "ProductionOfHeatCoolFromBioenergy"
+							"C",
+							"D",
+							"G",
+							"K",
+							"M"
+						],
+						"substantialContributionCriteria": {
+							"Water": 28.452378162182868,
+							"Biodiversity": 10.255504329688847,
+							"ClimateMitigation": 6.959681282751262,
+							"ClimateAdaptation": 29.582036822102964
+						},
+						"dnshCriteria": {
+							"Water": "Yes",
+							"Biodiversity": "No",
+							"ClimateMitigation": "No",
+							"ClimateAdaptation": "No"
+						}
 					}
 				],
-				"totalAlignedShare": {
+				"totalTransitionalShare": 69.61668459698558
+			},
+			"capex": {
+				"totalNonEligibleShare": {
+					"relativeShareInPercent": 22.49741202685982,
 					"absoluteShare": {
-						"amount": 73236.0462192446,
+						"amount": 793931.2297618017,
 						"currency": "CAD"
 					}
 				},
-				"substantialContributionCriteria": {
-					"ClimateMitigation": 5.351839330978692
-				},
-				"totalEnablingShare": 61.29600955173373
-			},
-			"revenue": {
-				"totalAmount": {
-					"quality": "Incomplete"
-				},
-				"totalNonEligibleShare": {
+				"totalEligibleShare": {
+					"relativeShareInPercent": 32.18656238168478,
 					"absoluteShare": {
-						"amount": 803261.2255890854,
-						"currency": "USD"
+						"amount": 596661.5289333276
 					}
 				},
-				"totalAlignedShare": {},
-				"substantialContributionCriteria": {
-					"Water": 79.36742468737066
+				"totalNonAlignedShare": {},
+				"nonAlignedActivities": [],
+				"totalAlignedShare": {
+					"relativeShareInPercent": 65.14213038608432,
+					"absoluteShare": {
+						"currency": "AUD"
+					}
 				},
-				"totalEnablingShare": 27.085840608924627,
-				"totalTransitionalShare": 78.80302930716425
+				"substantialContributionCriteria": {
+					"ClimateMitigation": 79.79049149435014
+				},
+				"alignedActivities": [
+					{
+						"activityName": "ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
+						"naceCodes": [
+							"B",
+							"H",
+							"K"
+						],
+						"share": {},
+						"substantialContributionCriteria": {
+							"CircularEconomy": 28.767461725510657,
+							"PollutionPrevention": 39.39044752623886,
+							"ClimateMitigation": 3.6877030041068792
+						},
+						"dnshCriteria": {
+							"Water": "No",
+							"ClimateAdaptation": "Yes",
+							"PollutionPrevention": "Yes",
+							"Biodiversity": "No",
+							"ClimateMitigation": "No"
+						},
+						"minimumSafeguards": "No"
+					},
+					{
+						"activityName": "ManufactureOfNitricAcid",
+						"naceCodes": [
+							"D",
+							"E",
+							"G",
+							"I"
+						],
+						"share": {},
+						"substantialContributionCriteria": {
+							"PollutionPrevention": 33.391488646157086,
+							"CircularEconomy": 78.8292536046356,
+							"ClimateMitigation": 36.049427348189056
+						},
+						"dnshCriteria": {
+							"Water": "Yes",
+							"ClimateMitigation": "No",
+							"CircularEconomy": "No",
+							"ClimateAdaptation": "Yes"
+						},
+						"minimumSafeguards": "No"
+					},
+					{
+						"activityName": "SeaAndCoastalPassengerWaterTransport",
+						"naceCodes": [
+							"A",
+							"E",
+							"G",
+							"H",
+							"L"
+						],
+						"substantialContributionCriteria": {
+							"Biodiversity": 9.199294587597251
+						},
+						"dnshCriteria": {
+							"CircularEconomy": "Yes",
+							"PollutionPrevention": "No",
+							"ClimateAdaptation": "No"
+						}
+					},
+					{
+						"activityName": "ManufactureOfNitricAcid",
+						"naceCodes": [
+							"A",
+							"C",
+							"G",
+							"I",
+							"M"
+						],
+						"share": {
+							"absoluteShare": {
+								"currency": "EUR"
+							}
+						},
+						"substantialContributionCriteria": {
+							"CircularEconomy": 6.39829277060926
+						},
+						"dnshCriteria": {
+							"ClimateMitigation": "No",
+							"PollutionPrevention": "No"
+						},
+						"minimumSafeguards": "Yes"
+					}
+				],
+				"totalEnablingShare": 59.76813230663538
+			},
+			"revenue": {
+				"totalEligibleShare": {},
+				"nonAlignedActivities": [],
+				"totalAlignedShare": {
+					"relativeShareInPercent": 31.542022828944027,
+					"absoluteShare": {}
+				},
+				"substantialContributionCriteria": {
+					"Biodiversity": 81.3834271626547,
+					"PollutionPrevention": 22.722149058245122,
+					"CircularEconomy": 78.08602442964911,
+					"ClimateAdaptation": 43.22421466931701,
+					"ClimateMitigation": 50.0006410991773,
+					"Water": 40.055605373345315
+				},
+				"alignedActivities": []
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2019"
 	}
 ]
