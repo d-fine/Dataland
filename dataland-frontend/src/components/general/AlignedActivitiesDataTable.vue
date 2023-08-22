@@ -1,8 +1,8 @@
 <template>
-  <DataTable scrollable :value="frozenColumnData">
+  <DataTable scrollable :value="frozenColumnData" class="aligned-activities-data-table">
     <ColumnGroup type="header">
       <Row>
-        <Column header="" :rowspan="2" />
+        <Column header="" :rowspan="2" :colspan="2" />
       </Row>
       <Row>
         <Column
@@ -17,13 +17,14 @@
         <Column v-for="col of mainColumnDefinitions" :key="col.field" :header="col.header" :field="col.field"> </Column>
       </Row>
     </ColumnGroup>
+    <div class="table-group-row-cover"></div>
     <Column
       v-for="col of frozenColumnDefinitions"
       :field="col.field"
       :key="col.field"
       :header="col.header"
       :frozen="col.frozen"
-      :style="columnCss(col.field)"
+      :class="columnCss(col.field)"
       bodyClass="headers-bg"
       headerClass="horizontal-headers-size"
     >
@@ -38,7 +39,12 @@
       :key="col.field"
       :header="col.header"
       headerClass="horizontal-headers-size"
-    ></Column>
+    >
+      <template #body="{ data }">
+        <div>data.activity: {{ data.activity }}</div>
+        <div>col.field: {{ col.field }}</div>
+      </template>
+    </Column>
   </DataTable>
 
   <!-- <DataTable :value="frozenData">
@@ -258,9 +264,9 @@ export default defineComponent({
     columnCss(key: string): string {
       switch (key) {
         case "activity":
-          return "width: 20vw; min-width: 300px";
+          return "col-activity";
         case "naceCodes":
-          return "width: 100px; max-width: 100px";
+          return "col-nace-codes";
         default:
           return "";
       }
