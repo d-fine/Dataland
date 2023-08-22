@@ -122,8 +122,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
               "Total Revenue for the financial year. I.e. income arising in the course of an entity's ordinary activities., the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
             unit: "",
             component: "DataPointFormField",
-            evidenceDesired: true,
             options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
+            evidenceDesired: true,
             required: false,
             showIf: (): boolean => true,
           },
@@ -152,7 +152,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToClimateChangeMitigation",
             label: "Substantial Contribution to Climate Change Mitigation",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -162,7 +162,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToClimateChangeAdaption",
             label: "Substantial Contribution to Climate Change Adaption",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -172,7 +172,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
             label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -182,7 +182,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToTransitionToACircularEconomy",
             label: "Substantial Contribution to Transition to a Circular Economy",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -192,7 +192,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToPollutionPreventionAndControl",
             label: "Substantial Contribution to Pollution Prevention and Control",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -202,7 +202,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
             label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -282,8 +282,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
               "Total CapEx for the financial year. A capital expenditure (CapEx) is a payment for goods or services recorded, or capitalized, on the balance sheet instead of expensed on the income statement",
             unit: "",
             component: "DataPointFormField",
-            evidenceDesired: true,
             options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
+            evidenceDesired: true,
             required: false,
             showIf: (): boolean => true,
           },
@@ -312,7 +312,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToClimateChangeMitigation",
             label: "Substantial Contribution to Climate Change Mitigation",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -322,7 +322,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToClimateChangeAdaption",
             label: "Substantial Contribution to Climate Change Adaption",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -332,7 +332,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
             label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -342,7 +342,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToTransitionToACircularEconomy",
             label: "Substantial Contribution to Transition to a Circular Economy",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -352,7 +352,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToPollutionPreventionAndControl",
             label: "Substantial Contribution to Pollution Prevention and Control",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -362,7 +362,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
             label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -442,8 +442,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
               "Total OpEx for the financial year. Operating expenses (OpEx) are shorter term expenses required to meet the ongoing operational costs of running a business",
             unit: "",
             component: "DataPointFormField",
-            evidenceDesired: true,
             options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
+            evidenceDesired: true,
             required: false,
             showIf: (): boolean => true,
           },
@@ -472,7 +472,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToClimateChangeMitigation",
             label: "Substantial Contribution to Climate Change Mitigation",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -482,7 +482,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToClimateChangeAdaption",
             label: "Substantial Contribution to Climate Change Adaption",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -492,7 +492,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
             label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -502,7 +502,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToTransitionToACircularEconomy",
             label: "Substantial Contribution to Transition to a Circular Economy",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -512,7 +512,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToPollutionPreventionAndControl",
             label: "Substantial Contribution to Pollution Prevention and Control",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -522,7 +522,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
             label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-            description: "",
+            description: "Grade of the substantial contribution criterias fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
