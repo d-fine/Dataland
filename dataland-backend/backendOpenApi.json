@@ -4328,17 +4328,6 @@
           "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities"
         ]
       },
-      "AmountWithCurrency": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number"
-          },
-          "currency": {
-            "type": "string"
-          }
-        }
-      },
       "AssuranceData": {
         "required": [
           "assurance"
@@ -4377,26 +4366,6 @@
           },
           "data": {
             "$ref": "#/components/schemas/NewEuTaxonomyDataForNonFinancials"
-          }
-        }
-      },
-      "DataPointOneValueAmountWithCurrency": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/CompanyReportReference"
-          },
-          "comment": {
-            "type": "string"
-          },
-          "value": {
-            "$ref": "#/components/schemas/AmountWithCurrency"
           }
         }
       },
@@ -4513,7 +4482,7 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/DataPointOneValueAmountWithCurrency"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "totalNonEligibleShare": {
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
@@ -4565,7 +4534,7 @@
             "type": "number"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/AmountWithCurrency"
+            "type": "number"
           }
         }
       },

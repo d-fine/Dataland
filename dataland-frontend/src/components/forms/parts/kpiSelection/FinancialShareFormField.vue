@@ -11,9 +11,12 @@
           placeholder="Relative Value in %"
           outer-class="short"
         />
+          <FormKit
+          type="group"
+          name="absoluteShare">
         <FormKit
           type="text"
-          name="absoluteShare"
+          name="amount"
           validation-label="Absolute Value"
           validation="number"
           placeholder="Absolute Value in %"
@@ -26,6 +29,7 @@
           placeholder="Currency"
           :options="countryCodeOptions"
         />
+          </FormKit>
       </div>
     </div>
   </FormKit>

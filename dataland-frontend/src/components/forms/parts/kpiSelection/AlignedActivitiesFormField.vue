@@ -19,7 +19,7 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import FormListFormField from "@/components/forms/parts/fields/FormListFormField.vue";
 
 export default defineComponent({
-  name: "MostImportantProductsFormField",
+  name: "AlignedActivitiesFormField",
   props: BaseFormFieldProps,
   components: {
     FormListFormField,
