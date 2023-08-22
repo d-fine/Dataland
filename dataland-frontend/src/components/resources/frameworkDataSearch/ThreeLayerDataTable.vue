@@ -1,6 +1,7 @@
 <template>
   <div v-show="mapOfCategoryKeysToDataObjectArrays.size > 0">
     <DataTable tableClass="onlyHeaders">
+
       <Column
         headerStyle="width: 30vw;"
         headerClass="horizontal-headers-size first-horizontal-headers-size"
@@ -13,10 +14,11 @@
         :header="reportingPeriodWithDataId.reportingPeriod"
         :key="reportingPeriodWithDataId.dataId"
       />
-    </DataTable>
+    </DataTable >
     <div
       v-for="(arrayOfKpiDataObjectsMapItem, index) in mapOfCategoryKeysToDataObjectArrays"
       :key="index"
+
       class="d-table-style"
     >
       <div v-if="shouldCategoryBeRendered(arrayOfKpiDataObjectsMapItem[0])">
@@ -37,6 +39,7 @@
         </div>
         <div v-show="isExpanded(index)">
           <TwoLayerDataTable
+              data-test="TwoLayerTest"
             :arrayOfKpiDataObjects="arrayOfKpiDataObjectsMapItem[1]"
             :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
             headerInputStyle="display: none;"
