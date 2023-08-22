@@ -22,7 +22,7 @@ before(function () {
 function getCompanyWithNfrdMandatoryAndAssurance(): FixtureData<EuTaxonomyDataForNonFinancials> {
   return assertDefined(
     companiesWithEuTaxonomyDataForNonFinancials.find((it) => {
-      return it.t.nfrdMandatory !== undefined && it.t.assurance !== undefined;
+      return it.t.general?.nfrdMandatory !== undefined && it.t.general?.assurance !== undefined;
     }),
   );
 }
