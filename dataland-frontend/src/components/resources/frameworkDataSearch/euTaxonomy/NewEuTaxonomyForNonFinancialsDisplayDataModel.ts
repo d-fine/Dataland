@@ -1,9 +1,7 @@
-import {type Category} from "@/utils/GenericFrameworkTypes";
-import {EnvironmentalObjective} from "@/api-models/EnvironmentalObjective";
-
+import { type Category } from "@/utils/GenericFrameworkTypes";
+import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
 // TODO Emanuel: add comment at the end, describing the manual adjustments that have been done here
-
 
 export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
   {
@@ -108,7 +106,7 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
             name: "levelOfAssurance",
             label: "Level of Assurance",
             description:
-                "Level of Assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
+              "Level of Assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
             unit: "",
             component: "UndefinedFormField",
             evidenceDesired: true,
@@ -118,16 +116,16 @@ export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "assuranceProvider",
             label: "Assurance Provider",
-            description:
-                "Provider of the Assurance",
+            description: "Provider of the Assurance",
             unit: "",
             component: "UndefinedFormField",
             evidenceDesired: true,
             required: false,
             showIf: (): boolean => true,
           },
-        ]
-      }, ]
+        ],
+      },
+    ],
   },
   {
     name: "revenue",
