@@ -1,13 +1,13 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
-const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
-  import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
+// const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> => // TODO reenable
+//   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
 
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
-const ViewEuTaxonomyNonFinancialsSample = (): Promise<RouteComponent> =>
-  import("@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue");
+// const ViewEuTaxonomyNonFinancialsSample = (): Promise<RouteComponent> => // TODO reenable
+//   import("@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue");
 const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/TheImprint.vue");
 const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
@@ -35,12 +35,12 @@ const routes = [
       isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
     },
   },
-  {
-    path: `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
-
-    name: "Eu Taxonomy For Non-Financials Sample",
-    component: ViewEuTaxonomyNonFinancialsSample,
-  },
+  // { // TODO reenable
+  //   path: `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
+  //
+  //   name: "Eu Taxonomy For Non-Financials Sample",
+  //   component: ViewEuTaxonomyNonFinancialsSample,
+  // },
   {
     path: "/companies/choose",
     name: "Choose Company",
@@ -52,12 +52,12 @@ const routes = [
     name: "Choose Framework",
     component: ChooseFrameworkForDataUpload,
   },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
-    props: true,
-    name: "Upload Eu Taxonomy Data For Non-Financials",
-    component: UploadEuTaxonomyDataForNonFinancials,
-  },
+  // { // TODO reenable
+  //   path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
+  //   props: true,
+  //   name: "Upload Eu Taxonomy Data For Non-Financials",
+  //   component: UploadEuTaxonomyDataForNonFinancials,
+  // },
   {
     path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
     props: true,

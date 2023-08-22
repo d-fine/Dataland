@@ -34,10 +34,6 @@
         </div>
         <div class="grid">
           <div class="col-7">
-            <EuTaxonomyPanelNonFinancials
-              v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
-              :dataID="dataIdForPanelWithValidType"
-            />
             <EuTaxonomyPanelFinancials
               v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
               :dataID="dataIdForPanelWithValidType"
