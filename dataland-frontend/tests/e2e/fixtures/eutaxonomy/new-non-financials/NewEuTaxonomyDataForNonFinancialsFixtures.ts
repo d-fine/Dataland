@@ -13,7 +13,7 @@ import {
   getRandomNumberOfDistinctElementsFromArray,
   type ReferencedDocuments,
 } from "@e2e/fixtures/FixtureUtils";
-import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
+import {generateNumericOrEmptyDatapoint} from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -110,7 +110,8 @@ export function generateNewEuTaxonomyPerCashflowType(
   reports: ReferencedDocuments,
 ): NewEuTaxonomyDetailsPerCashFlowType {
   return {
-    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(generateAmountWithCurrency()), reports)),
+    totalAmount: valueOrUndefined(
+        generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),),
     totalNonEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalNonAlignedShare: valueOrUndefined(generateFinancialShare()),
