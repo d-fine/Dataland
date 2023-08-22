@@ -1,6 +1,6 @@
 package db.migration
 
-import db.migration.utils.getCompanyAssociatedDatasetsForDataType
+import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -21,8 +21,7 @@ class V4__MigrateEuTaxonomyNames : BaseJavaMigration() {
             "eutaxonomy-financials",
         )
         dataTypesToMigrate.forEach { dataType: String ->
-            val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, dataType)
-            companyAssociatedDatasets.forEach {
+            migrateCompanyAssociatedDataOfDatatype(context, dataType) {
                 val companyAssociatedDatasetAsString = it.companyAssociatedData.toString()
                 val companyAssociatedDatasetWithEscapedSingleQuotes =
                     JSONObject(companyAssociatedDatasetAsString.replace("'", "''"))
@@ -32,7 +31,6 @@ class V4__MigrateEuTaxonomyNames : BaseJavaMigration() {
                     euTaxoDataset.remove(it.key)
                 }
                 it.companyAssociatedData.put("data", euTaxoDataset.toString())
-                context!!.connection.createStatement().execute(it.getWriteQuery())
             }
         }
     }

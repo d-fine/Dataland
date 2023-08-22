@@ -1,6 +1,6 @@
 package db.migration
 
-import db.migration.utils.getCompanyAssociatedDatasetsForDataType
+import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -25,11 +25,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
     }
 
     override fun migrate(context: Context?) {
-        val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(
-            context,
-            "eutaxonomy-non-financials",
-        )
-        companyAssociatedDatasets.forEach {
+        migrateCompanyAssociatedDataOfDatatype(context, "eutaxonomy-non-financials") {
             val dataset = JSONObject(it.companyAssociatedData.getString("data"))
             cashFlowTypes.forEach { cashflowType ->
                 val cashFlow = (dataset.opt(cashflowType) ?: return@forEach) as JSONObject
@@ -38,7 +34,6 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
                 }
             }
             it.companyAssociatedData.put("data", dataset.toString())
-            context!!.connection.createStatement().execute(it.getWriteQuery())
         }
     }
 }

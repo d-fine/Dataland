@@ -1,6 +1,6 @@
 package db.migration
 
-import db.migration.utils.getCompanyAssociatedDatasetsForDataType
+import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -19,8 +19,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
     }
 
     private fun migrateOldData(context: Context?) {
-        val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, "eutaxonomy-non-financials")
-        companyAssociatedDatasets.forEach {
+        migrateCompanyAssociatedDataOfDatatype(context, "eutaxonomy-non-financials") {
             val dataObject = JSONObject(it.companyAssociatedData.getString("data"))
             migrateGeneralFields(dataObject)
             listOf("revenue", "capex", "opex").forEach { cashFlowType ->
@@ -28,7 +27,6 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
                 migrateOldCashFlowDetails(cashFlowObject)
             }
             it.companyAssociatedData.put("data", dataObject.toString())
-            context!!.connection.createStatement().execute(it.getWriteQuery())
         }
     }
 
@@ -65,7 +63,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
                     JSONObject.NULL
                 },
             )
-            if(!isDataPointProvidingSourceInfo(totalAmountObject)) {
+            if (!isDataPointProvidingSourceInfo(totalAmountObject)) {
                 setAlternativeSourceInfoIfPossible(cashFlowDetails)
             }
         } else if (setAlternativeSourceInfoIfPossible(cashFlowDetails)) {
@@ -92,7 +90,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
     private fun setAlternativeSourceInfoIfPossible(cashFlowDetails: JSONObject): Boolean {
         listOf("eligibleData", "alignedData").forEach {
             val dataPointObject = cashFlowDetails.opt(it) ?: JSONObject.NULL
-            if(dataPointObject != JSONObject.NULL && isDataPointProvidingSourceInfo(dataPointObject as JSONObject)) {
+            if (dataPointObject != JSONObject.NULL && isDataPointProvidingSourceInfo(dataPointObject as JSONObject)) {
                 applyAlternativeSourceInfo(cashFlowDetails, dataPointObject)
                 return true
             }
@@ -103,7 +101,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
     private fun isDataPointProvidingSourceInfo(dataPoint: JSONObject): Boolean {
         // TODO does this selection make sense?
         listOf("comment", "quality", "comment").forEach {
-            if(!invalidSet.contains(dataPoint.opt(it))) {
+            if (!invalidSet.contains(dataPoint.opt(it))) {
                 return true
             }
         }
@@ -119,7 +117,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
             newTotalAmountObject.put(it, dataPoint.opt(it) ?: JSONObject.NULL)
         }
         val totalAmountValueObject = with(cashFlowDetails.opt("totalAmount")) {
-            if(invalidSet.contains(this)) {
+            if (invalidSet.contains(this)) {
                 JSONObject.NULL
             } else {
                 (this as JSONObject).opt("value") ?: JSONObject.NULL
@@ -150,13 +148,8 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
     }
 
     private fun migrateNewData(context: Context?) {
-        val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(
-            context,
-            "new-eutaxonomy-non-financials",
-        )
-        companyAssociatedDatasets.forEach {
+        migrateCompanyAssociatedDataOfDatatype(context, "new-eutaxonomy-non-financials") {
             it.companyAssociatedData.put("dataType", "eutaxonomy-non-financials")
-            context!!.connection.createStatement().execute(it.getWriteQuery())
         }
     }
 }

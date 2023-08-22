@@ -1,6 +1,6 @@
 package db.migration
 
-import db.migration.utils.getCompanyAssociatedDatasetsForDataType
+import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -9,7 +9,6 @@ import org.json.JSONObject
  * This migration script updates the existing LkSG datasets to be in line again with the dataDictionary
  */
 class V3__MigrateLksg : BaseJavaMigration() {
-
     private val mapOfOldToNewFieldNames = mapOf(
         "totalRevenue" to "annualTotalRevenue",
         "isContractProcessing" to "productionViaSubcontracting",
@@ -103,9 +102,7 @@ class V3__MigrateLksg : BaseJavaMigration() {
     }
 
     override fun migrate(context: Context?) {
-        val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, "lksg")
-
-        companyAssociatedDatasets.forEach {
+        migrateCompanyAssociatedDataOfDatatype(context, "lksg") {
             var dataset = JSONObject(it.companyAssociatedData.getString("data"))
             val datasetTmp = JSONObject()
             val categories = dataset.keys()
@@ -115,7 +112,6 @@ class V3__MigrateLksg : BaseJavaMigration() {
             }
             dataset = datasetTmp
             it.companyAssociatedData.put("data", dataset.toString())
-            context!!.connection.createStatement().execute(it.getWriteQuery())
         }
     }
 }

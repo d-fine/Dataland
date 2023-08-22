@@ -201,15 +201,15 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                 "}" +
                 "}," +
                 "\"totalAmount\": {\n" +
-                    "        \"value\": null,\n" +
-                    "        \"quality\": \"Audited\",\n" +
-                    "        \"dataSource\": {\n" +
-                    "          \"report\": \"SustainabilityReport\",\n" +
-                    "          \"page\": 1017,\n" +
-                    "          \"tagName\": \"platforms\"\n" +
-                    "        },\n" +
-                    "        \"comment\": \"quantify 1080p driver\"" +
-                    "      },\n" +
+                "        \"value\": null,\n" +
+                "        \"quality\": \"Audited\",\n" +
+                "        \"dataSource\": {\n" +
+                "          \"report\": \"SustainabilityReport\",\n" +
+                "          \"page\": 1017,\n" +
+                "          \"tagName\": \"platforms\"\n" +
+                "        },\n" +
+                "        \"comment\": \"quantify 1080p driver\"" +
+                "      },\n" +
                 "\"totalEligibleShare\": {}," +
                 "\"totalNonEligibleShare\": null," +
                 "\"totalNonAlignedShare\": null," +
