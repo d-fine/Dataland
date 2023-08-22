@@ -172,7 +172,7 @@ export const euTaxonomyKpiInfoMappings = {
   sustainabilityReportDate: "The date until which the information presented in the report is valid.",
   sustainabilityReportCurrency: "The 3-letter alpha code that represents the currency used in the report.",
   integratedReport: "Link to Integrated Report.",
-  groupLevelIntegratedReport: "Is the Integrated Report on a Group level?",
+  groupLevelIntegratedReport: "Is the report on a group level?",
   integratedReportDate: "The date until which the information presented in the report is valid.",
   integratedReportCurrency: "The 3-letter alpha code that represents the currency used in the report.",
   esefReport: "Link to ESEF Report.",

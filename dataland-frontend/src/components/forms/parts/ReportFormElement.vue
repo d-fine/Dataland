@@ -35,8 +35,8 @@
     <div class="form-field">
       <YesNoFormField
         name="isGroupLevel"
-        description="Is the Integrated Report on a Group level?"
-        label="Group Level Integrated Report"
+        description="Is the report on a group level?"
+        label="Group Level Report"
       />
     </div>
   </FormKit>
