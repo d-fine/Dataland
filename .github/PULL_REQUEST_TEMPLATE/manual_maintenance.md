@@ -13,7 +13,6 @@ The following known issues need to be reviewed in case a compatible version is a
 appear.
 
 - [ ] Update e2etests/Dockerfile update breaks the build
-- [ ] Update keycloak 22.0.0 is skipped due to issues in the realm.json, the new docker image, account console
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
 - [ ] Update Cypress to >= 12.12.0 introduces an issue with the usage of `$route` in component test 

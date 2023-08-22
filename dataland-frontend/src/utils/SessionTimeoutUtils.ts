@@ -51,11 +51,9 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
       logoutAndRedirectToUri(keycloak, "");
-    } else {
-      if (currentTimestampInMs >= sessionWarningTimestamp) {
-        clearInterval(functionIdOfSetInterval);
-        onSurpassingExpiredSessionTimestampCallback();
-      }
+    } else if (currentTimestampInMs >= sessionWarningTimestamp) {
+      clearInterval(functionIdOfSetInterval);
+      onSurpassingExpiredSessionTimestampCallback();
     }
   }, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS);
   return functionIdOfSetInterval;
