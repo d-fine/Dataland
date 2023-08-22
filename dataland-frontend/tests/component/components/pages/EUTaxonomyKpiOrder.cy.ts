@@ -1,8 +1,11 @@
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue"
-import {FixtureData, getPreparedFixture} from "../../../sharedUtils/Fixtures";
-import { CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials, DataMetaInformation, NewEuTaxonomyDataForNonFinancials
-} from "../../../../build/clients/backend";
+import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
+import {
+    type CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials,
+    type DataMetaInformation,
+    type NewEuTaxonomyDataForNonFinancials
+} from "@clients/backend";
 describe("Component test for the NewEUTaxonomy Page", () => {
     let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
 
@@ -14,7 +17,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
 
     const kpiList:string[] = ["GENERAL", "REVENUE", "CAPEX", "OPEX"];
-    let kpiList2 = ["REVENUE", "GENERAL", "OPEX", "CAPEX"];
+    const kpiList2 = ["REVENUE", "GENERAL", "OPEX", "CAPEX"];
     it("Check order of the displayed KPIs", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
         const newEuTaxonomyDataForNonFinancialsData = preparedFixture.t;
