@@ -42,7 +42,12 @@ export default defineComponent({
   data() {
     return {
       singleViewFrameworks: [DataTypeEnum.EutaxonomyFinancials] as string[],
-      multiViewFrameworks: [/* TODO DataTypeEnum.EutaxonomyNonFinancials, */DataTypeEnum.Lksg, DataTypeEnum.Sfdr, DataTypeEnum.P2p, DataTypeEnum.Sme] as string[],
+      multiViewFrameworks: [
+        /* TODO DataTypeEnum.EutaxonomyNonFinancials, */ DataTypeEnum.Lksg,
+        DataTypeEnum.Sfdr,
+        DataTypeEnum.P2p,
+        DataTypeEnum.Sme,
+      ] as string[],
     };
   },
 });
