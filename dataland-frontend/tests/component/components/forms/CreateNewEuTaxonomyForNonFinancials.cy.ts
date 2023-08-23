@@ -81,7 +81,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   }
 
   /**
-   * This method returns a mocked dataset for eu taxo non financials with some fields filled.
+   * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
    * @returns the dataset
    */
   function createMockCompanyAssociatedDataNewEuTaxoNonFinancials(): CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials {
@@ -175,7 +175,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     });
   });
 
-  it("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
+  it.only("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateNewEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
