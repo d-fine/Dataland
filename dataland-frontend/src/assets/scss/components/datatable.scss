@@ -110,7 +110,11 @@
         justify-content: center;
       }
     }
+    .non-frozen-header{
+      vertical-align: top;
+    }
     .frozen-row-header {
+      vertical-align: top;
       background-color: $tables-headers-bg;
       border-right: 1px solid $table-border;
     }

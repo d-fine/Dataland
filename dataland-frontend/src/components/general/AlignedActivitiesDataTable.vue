@@ -21,7 +21,14 @@
       <Row>
         <Column header="Activity" :frozen="true" alignFrozen="left" class="frozen-row-header"></Column>
         <Column header="Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header"></Column>
-        <Column v-for="col of mainColumnDefinitions" :key="col.field" :header="col.header" :field="col.field"> </Column>
+        <Column
+          v-for="col of mainColumnDefinitions"
+          :key="col.field"
+          :header="col.header"
+          :field="col.field"
+          class="non-frozen-header"
+        >
+        </Column>
       </Row>
     </ColumnGroup>
     <Column
@@ -36,7 +43,11 @@
     >
       <template #body="{ data }">
         <template v-if="col.field === 'activity'">{{ camelCaseToWords(data.activity) }}</template>
-        <template v-else>{{ data.naceCodes }}</template>
+        <template v-else>
+          <ul class="unstyled-ul-list">
+            <li v-for="code of data.naceCodes" :key="code">{{ code }}</li>
+          </ul>
+        </template>
       </template>
     </Column>
     <Column
@@ -222,13 +233,13 @@ function createRevenueGroupData(activity: ActivityObject): ActivityFieldValueObj
   return [
     {
       activity: activity.activityName,
-      group: "",
+      group: "_revenue",
       field: "revenue",
       content: `${activity.share.absoluteShare.amount} ${activity.share.absoluteShare.currency}`,
     },
     {
       activity: activity.activityName,
-      group: "",
+      group: "_revenue",
       field: "revenuePercent",
       content: `${activity.share.relativeShareInPercent}%`,
     },
