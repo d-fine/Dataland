@@ -53,13 +53,7 @@
 import { type KpiDataObject, type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import {
-  type Category,
-  type DataAndMetaInformation,
-  type Field,
-  type FrameworkData,
-  type Subcategory,
-} from "@/utils/GenericFrameworkTypes";
+import { type Category, type Field, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { defineComponent } from "vue";
 import Column from "primevue/column";
@@ -191,7 +185,7 @@ export default defineComponent({
      * @param currentDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategories(
-      categoryObject: Category,
+      categoryObject,
       categoryKey,
       frameworkCategoryData: Category,
       dataId: string,
@@ -222,7 +216,7 @@ export default defineComponent({
      * @param currentDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategoryKpis(
-      subCategoryObject: Subcategory,
+      subCategoryObject,
       categoryKey,
       subCategoryKey: string,
       frameworkCategoryData: Category,
