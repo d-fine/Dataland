@@ -2,12 +2,11 @@ package db.migration
 
 import db.migration.utils.buildDatabaseEntry
 import db.migration.utils.mockAndWhenConfigurationForFrameworkMigration
+import db.migration.utils.readJsonFromResourcesFile
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
-import kotlin.io.path.Path
-import kotlin.io.path.div
 
 class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
     val newEuTaxonomyForNonFinancials = "new-eutaxonomy-non-financials"
@@ -32,7 +31,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
                         "\"something\": \"something\"" +
                         "}",
                 ),
-                newEuTaxonomyForNonFinancials,
+                euTaxonomyForNonFinancials,
             ),
         )
         val migration = V5__MigrateToNewEuTaxonomyForNonFinancials()
@@ -51,15 +50,13 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
         migration.migrate(mockContext)
     }
 
-    val jsonBasePath = Path("./src/test/resources/db/migration/V5")
-
     val oldOriginalDatabaseEntry = buildDatabaseEntry(
-        JSONObject((jsonBasePath / "oldOriginalDatabaseEntry.json").toFile().readText()),
+        readJsonFromResourcesFile("V5", "oldOriginalDatabaseEntry.json"),
         euTaxonomyForNonFinancials,
     )
 
     val oldExpectedTransformedDataBaseEntry = buildDatabaseEntry(
-        JSONObject((jsonBasePath / "oldExpectedTransformedDataBaseEntry.json").toFile().readText()),
+        readJsonFromResourcesFile("V5", "oldExpectedTransformedDataBaseEntry.json"),
         euTaxonomyForNonFinancials,
     )
 }
