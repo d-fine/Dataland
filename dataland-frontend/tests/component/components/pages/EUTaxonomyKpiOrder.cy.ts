@@ -1,13 +1,9 @@
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue"
 import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 import {
-    type CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials,
-    type DataMetaInformation,
     type NewEuTaxonomyDataForNonFinancials
 } from "@clients/backend";
-import {length} from "mocha";
-import {mount} from "cypress/vue";
+import mount from "cypress/vue";
 describe("Component test for the NewEUTaxonomy Page", () => {
     let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
 
