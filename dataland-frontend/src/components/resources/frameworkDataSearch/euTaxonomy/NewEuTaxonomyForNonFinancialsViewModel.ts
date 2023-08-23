@@ -23,8 +23,8 @@ interface NewEuTaxonomyDetailsPerCashFlowViewModel {
     alignedActivities?: EuTaxonomyAlignedActivity[];
     substantialContributionCriteria?: { [key: string]: number };
   };
-  totalEnablingShare?: { totalEnablingShare?: number }
-  totalTransitionalShare?: { totalTransitionalShare?: number }
+  totalEnablingShare?: { totalEnablingShare?: number };
+  totalTransitionalShare?: { totalTransitionalShare?: number };
 }
 
 export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
@@ -111,8 +111,8 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
         nonAlignedActivities: apiModel.nonAlignedActivities,
       },
       totalNonEligibleShare: apiModel.totalNonEligibleShare,
-      totalEnablingShare: {totalEnablingShare: apiModel.totalEnablingShare},
-      totalTransitionalShare: {totalTransitionalShare: apiModel.totalTransitionalShare},
+      totalEnablingShare: { totalEnablingShare: apiModel.totalEnablingShare },
+      totalTransitionalShare: { totalTransitionalShare: apiModel.totalTransitionalShare },
     };
   }
 

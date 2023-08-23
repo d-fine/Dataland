@@ -94,16 +94,12 @@ export default defineComponent({
     },
   },
   mounted() {
-      if (this.dataAndMetaInfo.length > 0) {
-          this.convertDataToFrontendFormat(); // TODO trigger function
-      }
+      this.triggerConversionOfDataForDisplay()
   },
   watch: {
     dataAndMetaInfo() {
-      if (this.dataAndMetaInfo.length > 0) {
-        this.convertDataToFrontendFormat();
+        this.triggerConversionOfDataForDisplay()
       }
-    },
   },
   emits: ["dataConverted"],
   methods: {
@@ -136,7 +132,7 @@ export default defineComponent({
         kpiFormFieldComponent: kpiField?.component ?? "",
         content: { [dataId]: this.formatValueForDisplay(kpiField, kpiValue) ?? "" },
       };
-      const uniqueIdentiferOfKpi = `${kpiKey}+${subcategory.name}+${category.name}`
+      const uniqueIdentiferOfKpi = `${kpiKey}+${subcategory.name}+${category.name}`;
       if (this.mapOfKpiKeysToDataObjects.has(uniqueIdentiferOfKpi)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(uniqueIdentiferOfKpi)?.content);
       }
@@ -275,6 +271,12 @@ export default defineComponent({
       if (this.isExpanded(key)) this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
       else this.expandedGroup.push(key);
     },
+
+      triggerConversionOfDataForDisplay() {
+          if (this.dataAndMetaInfo.length > 0) {
+              this.convertDataToFrontendFormat();
+          }
+      }
   },
 });
 </script>
