@@ -242,8 +242,8 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          formInputsModel: companyAssociatedNewEuTaxoFinancialsData,
-          templateDataset: companyAssociatedNewEuTaxoFinancialsData.data,
+          referencedReportsForPrefill: companyAssociatedNewEuTaxoFinancialsData?.data?.general?.referencedReports,
+          companyAssociatedNewEuTaxonomyDataForNonFinancials: companyAssociatedNewEuTaxoFinancialsData,
         };
       },
     }).then(() => {
