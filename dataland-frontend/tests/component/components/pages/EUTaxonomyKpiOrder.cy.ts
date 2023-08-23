@@ -7,6 +7,7 @@ import {
     type NewEuTaxonomyDataForNonFinancials
 } from "@clients/backend";
 import {length} from "mocha";
+import {mount} from "cypress/vue";
 describe("Component test for the NewEUTaxonomy Page", () => {
     let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
 
@@ -37,23 +38,11 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
     it("Check order of the displayed KPIs and category entries", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
-        const newEuTaxonomyDataForNonFinancialsData = preparedFixture.t;
-
-        cy.mountWithPlugins(ThreeLayerTable, {
-            keycloak: minimalKeycloakMock({}),
-            global: {
-                stubs: {
-                    transition: false,
-                },
-            },
-            data() {
-                return {
-                    companyId: "mock-company-id",
-                    singleDataMetaInfoToDisplay: {
-                        dataId: "mock-data-id",
-                        reportingPeriod: preparedFixture.reportingPeriod,
-                    } as DataMetaInformation,
-                };
+        mount(ThreeLayerTable, {
+            props: {
+                userRoles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_ADMIN", "ROLE_REVIEWER"],
+                companyId: "mock-company-id",
+                dataID: "mock-data-id"
             },
         });
 
