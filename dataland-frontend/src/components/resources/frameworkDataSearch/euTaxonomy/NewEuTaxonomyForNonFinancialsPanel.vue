@@ -126,9 +126,7 @@ export default defineComponent({
     },
 
     isFieldNameAmongEnvironmentalObjectives(fieldName: string): boolean {
-      console.log("checking: " + fieldName);
       if (Object.values(EnvironmentalObjective).includes(fieldName)) {
-        console.log("ENVIRONMENTAL!");
       }
       return Object.values(EnvironmentalObjective).includes(fieldName);
     },
