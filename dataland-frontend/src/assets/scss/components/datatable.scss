@@ -90,11 +90,38 @@
     }
   }
   .p-datatable-thead {
+    z-index: 1;
     tr {
       box-shadow: none;
       &:hover {
         background: $table-background-color;
       }
+    }
+  }
+
+  &.aligned-activities-data-table {
+    $col-activity-width: 400px;
+    $col-nace-codes-width: 100px;
+    $col-cover-width: ($col-activity-width + $col-nace-codes-width);
+
+    .p-datatable-wrapper {
+      z-index: 1;
+    }
+    .table-group-row-cover {
+      background-color: #fff;
+      height: 107px;
+      position: absolute;
+      z-index: 2;
+      width: $col-cover-width;
+      border-right: 1px solid $table-border;
+    }
+    .col-activity {
+      width: $col-activity-width;
+      min-width: $col-activity-width;
+    }
+    .col-nace-codes {
+      width: $col-nace-codes-width;
+      min-width: $col-nace-codes-width;
     }
   }
 }
