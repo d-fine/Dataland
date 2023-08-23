@@ -136,10 +136,11 @@ export default defineComponent({
         kpiFormFieldComponent: kpiField?.component ?? "",
         content: { [dataId]: this.formatValueForDisplay(kpiField, kpiValue) ?? "" },
       };
-      if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
-        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
+      const uniqueIdentiferOfKpi = `${kpiKey}+${subcategory.name}+${category.name}`
+      if (this.mapOfKpiKeysToDataObjects.has(uniqueIdentiferOfKpi)) {
+        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(uniqueIdentiferOfKpi)?.content);
       }
-      this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
+      this.mapOfKpiKeysToDataObjects.set(uniqueIdentiferOfKpi, kpiData);
       this.resultKpiData = kpiData;
     },
     /**
