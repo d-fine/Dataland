@@ -45,13 +45,13 @@
               :description="euTaxonomyKpiInfoMappings.report ?? ''"
               :is-required="true"
             />
-            <!--              <FormKit-->
-            <!--                  type="select"-->
-            <!--                  name="report"-->
-            <!--                  placeholder="Select a report"-->
-            <!--                  :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"-->
-            <!--                  :plugins="[selectNothingIfNotExistsFormKitPlugin]"-->
-            <!--              />-->
+            <FormKit
+              type="select"
+              name="report"
+              placeholder="Select a report"
+              :options="['None...', ...injectReportsName]"
+              :plugins="[selectNothingIfNotExistsFormKitPlugin]"
+            />
           </div>
           <div>
             <UploadFormHeader
@@ -82,6 +82,7 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
@@ -92,6 +93,12 @@ import { AssuranceDataAssuranceEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "AssuranceFormField",
+  inject: {
+    injectReportsName: {
+      from: "namesOfAllCompanyReportsForTheDataset",
+      default: [] as string[],
+    },
+  },
   components: { SingleSelectFormElement, FormKit, UploadFormHeader },
   data() {
     return {
@@ -107,5 +114,8 @@ export default defineComponent({
     };
   },
   props: BaseFormFieldProps,
+  methods: {
+    selectNothingIfNotExistsFormKitPlugin,
+  },
 });
 </script>

@@ -36,7 +36,6 @@
                     </div>
 
                     <div class="col-9 formFields">
-                      <SubcategoryToggleWrapper :subcategoryName="subcategory.name">
                         <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                           <component
                             v-if="field.showIf(companyAssociatedNewEuTaxonomyDataForNonFinancials.data)"
@@ -57,7 +56,6 @@
                             :ref="field.name"
                           />
                         </FormKit>
-                      </SubcategoryToggleWrapper>
                     </div>
                   </template>
                 </div>
@@ -114,7 +112,6 @@ import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import SubcategoryToggleWrapper from "@/components/forms/parts/kpiSelection/SubcategoryToggleWrapper.vue";
 import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
@@ -168,7 +165,6 @@ export default defineComponent({
     YesNoNaFormField,
     PercentageFormField,
     UploadReports,
-    SubcategoryToggleWrapper,
     FinancialShareFormField,
     AlignedActivitiesFormField,
     AssuranceFormField,

@@ -1,12 +1,8 @@
 <template>
   <div data-test="AddressFormElement">
     <ActivitySelector />
-    <FinancialShareFormField name="share" />
-
-    <ObjectivesFormField />
-    <p class="header-separator">Minimum Social Safeguards</p>
     <div class="form-field">
-      <YesNoFormField name="minimumSafeguards" description="" label="Are minimum social safeguards fulfilled?" />
+      <FinancialShareFormField name="share" />
     </div>
   </div>
 </template>
@@ -14,17 +10,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import FinancialShareFormField from "@/components/forms/parts/kpiSelection/FinancialShareFormField.vue";
-import ObjectivesFormField from "@/components/forms/parts/kpiSelection/ObjectivesFormField.vue";
 import ActivitySelector from "@/components/forms/parts/elements/derived/ActivitySelector.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 
 export default defineComponent({
-  name: "AlignedActivitiesFormElements",
+  name: "NonAlignedActivitiesFormElement",
   components: {
-    YesNoFormField,
     ActivitySelector,
     FinancialShareFormField,
-    ObjectivesFormField,
   },
 });
 </script>

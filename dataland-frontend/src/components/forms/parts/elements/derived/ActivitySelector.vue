@@ -36,7 +36,7 @@
     </div>
   </OverlayPanel>
 
-  <div class="form-field">
+  <div class="mt-2">
     <MultiSelectFormElement
       name="naceCodesForActivity"
       validation="required"
