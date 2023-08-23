@@ -1,10 +1,20 @@
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue"
 import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 import {
+    AssuranceDataAssuranceEnum,
     type NewEuTaxonomyDataForNonFinancials
 } from "@clients/backend";
 import mount from "cypress/vue";
 import {minimalKeycloakMock} from "../../testUtils/Keycloak";
+import {
+    DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel, NewEuTaxonomyForNonFinancialsViewModel
+} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
+import {
+    newEuTaxonomyForNonFinancialsModalColumnHeaders
+} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
+import {
+    newEuTaxonomyForNonFinancialsDisplayDataModel
+} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 describe("Component test for the NewEUTaxonomy Page", () => {
     let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
 
@@ -35,13 +45,28 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
     it("Check order of the displayed KPIs and category entries", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
+        const newEuTaxonomyForNonFinancialsViewModel = NewEuTaxonomyForNonFinancialsViewModel(preparedFixture.t);
         mount(ThreeLayerTable, {
             keycloak: minimalKeycloakMock({}),
             props: {
                 userRoles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_ADMIN", "ROLE_REVIEWER"],
-                companyId: "mock-company-id",
-                dataID: "mock-data-id"
+                data: newEuTaxonomyForNonFinancialsViewModel
             },
+            data() {
+                return {
+                    DataTypeEnum: 'new-eutaxonomy-non-financials',
+                    firstRender: true,
+                    waitingForData: true,
+                    convertedDataAndMetaInfo: [{
+                        assurance: {
+                            assurance: {
+                                levelOfAssurance: 'LimitedAssurance',
+                                assuranceProvider: 'abc',
+                            }
+                        },
+                  }]
+                };
+            }
         });
 
         cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style")
