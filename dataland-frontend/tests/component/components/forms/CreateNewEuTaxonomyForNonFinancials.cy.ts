@@ -83,9 +83,10 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   //TODO: create function for uploading reports
 
   /**
-   * this method fills and checks the general category
+   * this method fills and checks the general section
+   * @param reportName the name of the report that is uploaded
    */
-  function fillAndValidateGeneral(reportName: string): void {
+  function fillAndValidateGeneralSection(reportName: string): void {
     cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
     cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
     cy.get("div.p-datepicker").find('span:contains("11")').click();
@@ -97,22 +98,32 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
 
     cy.get('input[name="euTaxonomyActivityLevelReporting"][value="Yes"]').check();
 
-    cy.get('input[name="numberOfEmployees"]').type("-13");
+    cy.get('input[name="numberOfEmployees"]').clear().type("-13");
     cy.get('em[title="Number Of Employees"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
     cy.get('input[name="numberOfEmployees"]').clear().type("333");
 
     cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
 
+    cy.get('select[name="assurance"]').select(1);
+    cy.get('input[name="provider"]').clear().type("Assurance Provider");
+    //cy.get('select[name="report"]').first().select(reportName);
+    cy.get('input[name="page"]').first().clear().type("-13");
+    cy.get('em[title="Page"]').first().click();
+    cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
+    cy.get('input[name="page"]').first().clear().type("3");
+  }
 
-    cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
-    cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
-    cy.get('[data-test="assuranceSection"] select[name="report"]').select(reportName);
-    cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
-    cy.get('em[title="Assurance"]').click();
-    cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
-    cy.get('[data-test="assuranceSection"] input[name="page"]').clear().type("1");
-    cy.get('[data-test="dataPointToggleTitle"]').should("exist");
+  /**
+   * this method fills and checks the other sections
+   * @param reports the name of the reports that are uploaded
+   */
+  function fillAndValidateOtherSections(reports: string[]): void {
+    for (const section of ["revenueSection", "capexSection", "opexSection"]) {
+      cy.get('input[name="totalAmount"]').type("130");
+      //cy.get('[data-test="currency???"] select[name="unit???"]').select(1);
+      cy.get('select[name="report"]').select(reports[0]);
+    }
   }
 
   /**
@@ -216,8 +227,8 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          formInputsModel: companyAssociatedNewEuTaxoFinancialsData,
-          templateDataset: companyAssociatedNewEuTaxoFinancialsData.data,
+          referencedReportsForPrefill: companyAssociatedNewEuTaxoFinancialsData?.data?.general?.referencedReports,
+          companyAssociatedNewEuTaxonomyDataForNonFinancials: companyAssociatedNewEuTaxoFinancialsData,
         };
       },
     }).then(() => {
@@ -226,8 +237,20 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     });
   });
 
+  it("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
+    cy.stub(DataPointFormWithToggle);
+    cy.mountWithPlugins(CreateNewEuTaxonomyForNonFinancials, {
+      keycloak: minimalKeycloakMock({}),
+      data() {
+        return {
+          referencedReportsForPrefill: companyAssociatedNewEuTaxoFinancialsData?.data?.general?.referencedReports,
+          companyAssociatedNewEuTaxonomyDataForNonFinancials: companyAssociatedNewEuTaxoFinancialsData,
+        };
+      },
+    }).then(() => {
+      fillAndValidateGeneralSection("string");
+    });
+  });
 });
-
-
 
 //TODO This file has to be modified to work

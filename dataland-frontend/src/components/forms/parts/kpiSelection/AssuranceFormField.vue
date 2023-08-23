@@ -80,13 +80,10 @@ import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-  euTaxonomyKPIsModel,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { AssuranceDataAssuranceEnum } from "@clients/backend";
@@ -99,11 +96,9 @@ export default defineComponent({
       default: [] as string[],
     },
   },
-  components: { SingleSelectFormElement, FormKit, UploadFormHeader },
+  components: { FormKit, UploadFormHeader },
   data() {
     return {
-      countryCodeOptions: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
-      euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       assuranceData: {
