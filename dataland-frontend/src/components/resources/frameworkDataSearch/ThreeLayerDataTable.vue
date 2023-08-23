@@ -93,6 +93,11 @@ export default defineComponent({
       default: () => ({}),
     },
   },
+  mounted() {
+      if (this.dataAndMetaInfo.length > 0) {
+          this.convertDataToFrontendFormat(); // TODO trigger function
+      }
+  },
   watch: {
     dataAndMetaInfo() {
       if (this.dataAndMetaInfo.length > 0) {

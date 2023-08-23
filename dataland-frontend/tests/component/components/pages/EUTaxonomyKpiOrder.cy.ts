@@ -1,8 +1,13 @@
-import ThreeLayerTable from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue"
+import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue"
 import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 import {
     AssuranceDataAssuranceEnum,
-    type NewEuTaxonomyDataForNonFinancials
+    DataPointOneValueAmountWithCurrency,
+    EuTaxonomyActivity,
+    EuTaxonomyAlignedActivity,
+    FiscalYearDeviation,
+    type NewEuTaxonomyDataForNonFinancials,
+    RelativeAndAbsoluteFinancialShare, YesNo, YesNoNa
 } from "@clients/backend";
 import mount from "cypress/vue";
 import {minimalKeycloakMock} from "../../testUtils/Keycloak";
@@ -45,63 +50,55 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
     it("Check order of the displayed KPIs and category entries", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
-        const newEuTaxonomyForNonFinancialsViewModel = NewEuTaxonomyForNonFinancialsViewModel(preparedFixture.t);
-        mount(ThreeLayerTable, {
+        const newEuTaxonomyForNonFinancialsViewModel = new NewEuTaxonomyForNonFinancialsViewModel(preparedFixture.t);
+        const dataAndMetaInfo: Array<NewEuTaxonomyForNonFinancialsViewModel> = [
+
+           ]
+
+        cy.mountWithPlugins(ThreeLayerTable, {
             keycloak: minimalKeycloakMock({}),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             props: {
-                userRoles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_ADMIN", "ROLE_REVIEWER"],
-                data: newEuTaxonomyForNonFinancialsViewModel
+                dataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
+                dataAndMetaInfo: dataAndMetaInfo
             },
-            data() {
-                return {
-                    DataTypeEnum: 'new-eutaxonomy-non-financials',
-                    firstRender: true,
-                    waitingForData: true,
-                    convertedDataAndMetaInfo: [{
-                        assurance: {
-                            assurance: {
-                                levelOfAssurance: 'LimitedAssurance',
-                                assuranceProvider: 'abc',
-                            }
-                        },
-                  }]
-                };
+        }).then(() => {
+
+
+            cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style")
+                .each((element, index) => {
+                    cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("have.text", kpiList[index]);
+                });
+
+            cy.wait(50);
+
+            cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style")
+                .each((element, index) => {
+                    cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("not.have.text", kpiListOrderChanged[index]);
+                });
+
+            cy.get("[data-test='TwoLayerTest']").eq(0).get(" [data-test='_basicInformation'").should("contain", "Basic Information");
+            cy.get(`[data-test='${dataTestList[0]}']`).click();
+
+            //cy.get(".p-rowgroup-header").filter(':visible').eq(index).get(`span[data-test="${subcategoryDataTestList[index]}"]`).should("contain",`${subcategoryList[index]}`);
+
+            cy.wait(3000);
+            let row;
+            for (let i = 1; i < dataTestList.length; i++) {
+                row = subcategoryDataTestList[i];
+                cy.get(`[data-test='${dataTestList[i]}']`).click();
+                for (let j = 0; j < row.length; j++) {
+                    cy.get(".p-rowgroup-header").filter(':visible').eq(j)
+                        .get(`span[id="${row[j]}"]`)
+                        .should("contain", `${subcategoryList[i][j]}`);
+
+                }
+                cy.get(`[data-test='${dataTestList[i]}']`).click();
+                cy.wait(3000);
             }
         });
-
-        cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style")
-            .each((element, index) =>  {
-                cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("have.text",kpiList[index]);
-            });
-
-        cy.wait(50);
-
-        cy.get("[data-test='ThreeLayerTableTest']").get(".d-table-style")
-            .each((element, index) =>  {
-                cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("not.have.text", kpiListOrderChanged[index]);
-            });
-
-        cy.get("[data-test='TwoLayerTest']").eq(0).get(" [data-test='_basicInformation'").should("contain","Basic Information");
-        cy.get(`[data-test='${dataTestList[0]}']`).click();
-
-        //cy.get(".p-rowgroup-header").filter(':visible').eq(index).get(`span[data-test="${subcategoryDataTestList[index]}"]`).should("contain",`${subcategoryList[index]}`);
-
-        cy.wait(3000);
-        let row;
-        for (let i = 1; i < dataTestList.length; i++) {
-            row = subcategoryDataTestList[i];
-            cy.get(`[data-test='${dataTestList[i]}']`).click();
-            for (let j = 0; j < row.length; j++) {
-                cy.get(".p-rowgroup-header").filter(':visible').eq(j)
-                    .get(`span[id="${row[j]}"]`)
-                        .should("contain",`${subcategoryList[i][j]}`);
-
-            }
-            cy.get(`[data-test='${dataTestList[i]}']`).click();
-            cy.wait(3000);
-        }
-    });
-
+    })
 
 
 });
