@@ -29,7 +29,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         humanizeString(DataTypeEnum.Sfdr),
       ]);
       const expectedReportingPeriodsForEuTaxoFinancialsForAlpha = new Set<string>(["2019", "2016"]);
-      const expectedReportingPeriodsForSmeForAlpha = new Set<string>(["2023"]);
+      const expectedReportingPeriodsForSmeForAlpha = new Set<string>(["2015"]);
       let companyIdOfAlpha: string;
 
       let dataIdOfSupersededLksg2023ForAlpha: string;
@@ -538,7 +538,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.Sme);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-        validateChosenReportingPeriod("2015");
+        validateChosenReportingPeriod(Array.from(expectedReportingPeriodsForSmeForAlpha)[0]);
         validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForSmeForAlpha);
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
@@ -553,7 +553,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.Sme);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-        validateChosenReportingPeriod("2015");
+        validateChosenReportingPeriod(Array.from(expectedReportingPeriodsForSmeForAlpha)[0]);
         validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForSmeForAlpha);
 
         clickBackButton();
