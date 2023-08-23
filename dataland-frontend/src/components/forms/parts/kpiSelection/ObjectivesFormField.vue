@@ -2,7 +2,7 @@
   <p class="p-0 mx-0 mt-0 mb-3">Substantial Contribution</p>
   <FormKit type="group" name="substantialContributionCriteria">
     <div v-for="field in objectives" :key="field.long_name">
-      <UploadFormHeader :label="field.long_name" description="" :is-required="required" />
+      <UploadFormHeader :label="field.long_name" description="" :is-required="false" />
       <FormKit
         type="text"
         :name="field.key"
