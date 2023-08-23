@@ -1,9 +1,17 @@
 <template>
   <div class="form-field next-to-each-other">
     <div class="form-field-label">
+      <p>Activity:</p>
+      <p>
+        <b> {{ selectedActivities ? selectedActivities.name : "" }}</b>
+      </p>
 
-        <p>Activity:</p> <p><b> {{ selectedActivities ? selectedActivities.name : "" }}</b></p>
-
+      <FormKit
+        type="hidden"
+        name="activityName"
+        :modelValue="selectedActivities ? selectedActivities.name : ''"
+        disabled="true"
+      />
     </div>
 
     <PrimeButton
@@ -38,7 +46,7 @@
 
   <div class="mt-2">
     <MultiSelectFormElement
-      name="naceCodesForActivity"
+      name="naceCodes"
       validation="required"
       validation-label="Nace Codes for Activity"
       placeholder="Chose Nace Codes for Activity"
