@@ -5,9 +5,8 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
-  type EuTaxonomyDataForNonFinancials,
   type LksgData,
-  type SfdrData,
+  type SfdrData, SmeData,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { humanizeString } from "@/utils/StringHumanizer";
@@ -24,12 +23,12 @@ describe("The shared header of the framework pages should act as expected", { sc
       const nameOfCompanyAlpha = "company-alpha-with-four-different-framework-types";
       const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
         humanizeString(DataTypeEnum.EutaxonomyFinancials),
-        humanizeString(DataTypeEnum.EutaxonomyNonFinancials),
+        humanizeString(DataTypeEnum.Sme),
         humanizeString(DataTypeEnum.Lksg),
         humanizeString(DataTypeEnum.Sfdr),
       ]);
       const expectedReportingPeriodsForEuTaxoFinancialsForAlpha = new Set<string>(["2019", "2016"]);
-      const expectedReportingPeriodsForEuTaxoNonFinancialsForAlpha = new Set<string>(["2015"]);
+      const expectedReportingPeriodsForSmeForAlpha = new Set<string>(["2023"]);
       let companyIdOfAlpha: string;
 
       let dataIdOfSupersededLksg2023ForAlpha: string;
@@ -37,7 +36,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data";
       const expectedFrameworkDropdownItemsForBeta = new Set<string>([
-        humanizeString(DataTypeEnum.EutaxonomyNonFinancials),
+        humanizeString(DataTypeEnum.Sme),
         humanizeString(DataTypeEnum.Lksg),
       ]);
       let companyIdOfBeta: string;
@@ -104,7 +103,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           .find(".p-dropdown-label")
           .should("have.text", humanizeString(expectedChosenFramework));
         if (
-          ([DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyNonFinancials] as string[]).indexOf(
+          ([DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyFinancials] as string[]).indexOf(
             expectedChosenFramework,
           ) >= 0
         ) {
@@ -350,11 +349,11 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(() => {
               return uploadFrameworkData(
-                DataTypeEnum.EutaxonomyNonFinancials,
+                DataTypeEnum.Sme,
                 token,
                 companyIdOfAlpha,
                 "2015",
-                getPreparedFixture("only-eligible-and-total-numbers", euTaxoNonFinancialPreparedFixtures).t,
+                getPreparedFixture("SME-year-2023", smePreparedFixtures).t,
               );
             });
         });
@@ -379,11 +378,11 @@ describe("The shared header of the framework pages should act as expected", { sc
             })
             .then(async () => {
               return uploadFrameworkData(
-                DataTypeEnum.EutaxonomyNonFinancials,
+                DataTypeEnum.Sme,
                 token,
                 companyIdOfBeta,
                 "2014",
-                getPreparedFixture("only-eligible-and-total-numbers", euTaxoNonFinancialPreparedFixtures).t,
+                getPreparedFixture("SME-year-2023", smePreparedFixtures).t,
               );
             });
         });
@@ -419,7 +418,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
-      let euTaxoNonFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+      let smePreparedFixtures: Array<FixtureData<SmeData>>;
       let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
       let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
@@ -427,8 +426,8 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
           euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
         });
-        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-          euTaxoNonFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+        cy.fixture("CompanyInformationWithSmePreparedFixtures").then(function (jsonContent) {
+          smePreparedFixtures = jsonContent as Array<FixtureData<SmeData>>;
         });
         cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
           lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
@@ -444,16 +443,16 @@ describe("The shared header of the framework pages should act as expected", { sc
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.intercept("/api/companies?searchString=&dataTypes=*").as("firstLoadOfSearchPage");
-        cy.visit(`/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}`);
+        cy.visit(`/companies?framework=${DataTypeEnum.Sme}`);
         cy.wait("@firstLoadOfSearchPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
         typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
-        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
+        validateChosenFramework(DataTypeEnum.Sme);
 
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
-          DataTypeEnum.EutaxonomyNonFinancials,
+          DataTypeEnum.Sme,
           nameOfCompanyAlpha,
         );
-        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
+        validateChosenFramework(DataTypeEnum.Sme);
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
         validateChosenFramework(DataTypeEnum.Lksg);
@@ -536,15 +535,15 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
         validateEUTaxonomyFinancialsTable("26");
 
-        selectFrameworkInDropdown(DataTypeEnum.EutaxonomyNonFinancials);
+        selectFrameworkInDropdown(DataTypeEnum.Sme);
 
         validateNoErrorMessagesAreShown();
-        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
+        validateChosenFramework(DataTypeEnum.Sme);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2015");
         validateDropdownOptions(
           reportingPeriodDropdownSelector,
-          expectedReportingPeriodsForEuTaxoNonFinancialsForAlpha,
+          expectedReportingPeriodsForSmeForAlpha,
         );
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
@@ -557,12 +556,12 @@ describe("The shared header of the framework pages should act as expected", { sc
         clickBackButton();
 
         validateNoErrorMessagesAreShown();
-        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
+        validateChosenFramework(DataTypeEnum.Sme);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2015");
         validateDropdownOptions(
           reportingPeriodDropdownSelector,
-          expectedReportingPeriodsForEuTaxoNonFinancialsForAlpha,
+          expectedReportingPeriodsForSmeForAlpha,
         );
 
         clickBackButton();
@@ -612,7 +611,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateEUTaxonomyFinancialsTable("26");
 
         cy.visit(
-          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/reportingPeriods/${nonExistingReportingPeriod}`,
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sme}/reportingPeriods/${nonExistingReportingPeriod}`,
         );
 
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");

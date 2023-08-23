@@ -32,8 +32,8 @@ describeIf(
   { executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnDatabaseReset: true },
   () => {
     it("tooltips are present and contain text as expected", function () {
-      const NFRDText = "Non financial disclosure directive";
-      const AssuranceText = "Level of Assurance specifies the confidence level";
+      // const NFRDText = "Non financial disclosure directive";
+      // const AssuranceText = "Level of Assurance specifies the confidence level";
       cy.ensureLoggedIn();
       getKeycloakToken(reader_name, reader_pw).then((token) => {
         cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(

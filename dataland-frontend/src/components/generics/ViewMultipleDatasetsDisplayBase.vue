@@ -126,10 +126,8 @@ export default defineComponent({
       if (newDataId) {
         this.setFlagsToDataNotFoundState();
         void this.getMetaDataForDataId(newDataId);
-      } else {
-        if (!this.reportingPeriod) {
-          this.setSingleDataMetaInfoToDisplay(null);
-        }
+      } else if (!this.reportingPeriod) {
+        this.setSingleDataMetaInfoToDisplay(null);
       }
     },
     reportingPeriod(newReportingPeriod: string) {
@@ -148,10 +146,8 @@ export default defineComponent({
         } else {
           this.isReportingPeriodInUrlInvalid = true;
         }
-      } else {
-        if (!this.dataId) {
-          this.setSingleDataMetaInfoToDisplay(null);
-        }
+      } else if (!this.dataId) {
+        this.setSingleDataMetaInfoToDisplay(null);
       }
     },
   },

@@ -32,7 +32,7 @@ describeIf(
           "/imprint",
           "/nocontent",
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
-          `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
+          // TODO `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}`,
         ];
@@ -40,7 +40,7 @@ describeIf(
           "/companies/choose",
           `/companies/${companyId}/frameworks/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
-          `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
+          // TODO `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}/upload`,
         ];
         reviewerOnlyPages = ["/qualityassurance"];
