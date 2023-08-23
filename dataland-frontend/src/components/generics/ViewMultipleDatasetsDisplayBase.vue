@@ -84,8 +84,6 @@ import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataS
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
 
-// TODO add eu taxonomy for non financials
-
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
   components: { P2pPanel, DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase, SmePanel },

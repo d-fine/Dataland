@@ -1,7 +1,6 @@
 package db.migration.utils
 
 import org.json.JSONObject
-import kotlin.io.path.div
 
 object JsonUtils {
     /**

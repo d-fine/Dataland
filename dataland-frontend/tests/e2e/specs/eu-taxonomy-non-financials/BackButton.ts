@@ -8,13 +8,14 @@ describe("As a user, I expect the back button to work properly", () => {
     cy.ensureLoggedIn();
     cy.visitAndCheckAppMount("/companies");
     getKeycloakToken(reader_name, reader_pw).then((token) => {
-      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
         (storedCompanies) => {
           cy.visitAndCheckAppMount(
-            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
+            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
           );
-          // cy.get("[data-test='taxocard']").should("exist"); // TODO replace with something that exists after load
-          // cy.contains("span", "BACK").click().url().should("include", "/companies");
+          cy.get("[data-test='frameworkDataTableTitle']").should("exist");
+          cy.contains("span", "BACK").click();
+          cy.url().then((url) => url.endsWith("/companies"));
         },
       );
     });

@@ -45,8 +45,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
         val expectedDataEntity = DataTableEntity.fromJsonObject(
             "mock-data-id",
             euTaxonomyForNonFinancials,
-            JsonUtils.readJsonFromResourcesFile("V5/oldOriginalDatabaseEntry.json"),
-
+            JsonUtils.readJsonFromResourcesFile("V5/oldExpectedTransformedDatabaseEntry.json"),
         )
         val migration = V5__MigrateToNewEuTaxonomyForNonFinancials()
         migration.migrateEuTaxonomyData(originalDataEntity)

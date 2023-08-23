@@ -45,7 +45,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           `framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sme}` +
           `&framework=${DataTypeEnum.Sfdr}` +
-          `&framework=${DataTypeEnum.Lksg}`
+          `&framework=${DataTypeEnum.Lksg}`,
       )
       .get("div.p-multiselect-panel")
       .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
@@ -63,7 +63,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         `/companies?framework=${DataTypeEnum.P2p}` +
         `&framework=${DataTypeEnum.EutaxonomyFinancials}` +
         `&framework=${DataTypeEnum.Sme}` +
-        `&framework=${DataTypeEnum.Lksg}`
+        `&framework=${DataTypeEnum.Lksg}`,
     );
   });
 
