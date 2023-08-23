@@ -54,14 +54,14 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
         if (!invalidSet.contains(totalAmountObject) && totalAmountObject is JSONObject) {
             val oldTotalAmountValue = totalAmountObject.opt("value")
             totalAmountObject.put(
-                    "value",
-                    if (oldTotalAmountValue is BigDecimal) {
-                        val newTotalAmountValue = JSONObject()
-                        newTotalAmountValue.put("amount", oldTotalAmountValue)
-                        newTotalAmountValue.put("currency", JSONObject.NULL)
-                    } else {
-                        JSONObject.NULL
-                    },
+                "value",
+                if (oldTotalAmountValue is BigDecimal) {
+                    val newTotalAmountValue = JSONObject()
+                    newTotalAmountValue.put("amount", oldTotalAmountValue)
+                    newTotalAmountValue.put("currency", JSONObject.NULL)
+                } else {
+                    JSONObject.NULL
+                },
             )
             if (!isDataPointProvidingSourceInfo(totalAmountObject)) {
                 setAlternativeSourceInfoIfPossible(cashFlowDetails)

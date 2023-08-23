@@ -25,7 +25,12 @@ export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this:
     });
   }
 
-  if (execConfig.onlyExecuteOnDatabaseReset && !isDatabaseReset && executionEnvironment != "ci") {
+  if (
+    execConfig.onlyExecuteOnDatabaseReset &&
+    !isDatabaseReset &&
+    executionEnvironment != "ci" &&
+    executionEnvironment != "developmentLocal"
+  ) {
     return describe(`${name} - Disabled`, () => {
       it(`Has been disabled because the tests are only run when the databases are reset`, () => {
         // Stub-Test just so its displayed why test suit wasn't executed
