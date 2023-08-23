@@ -80,8 +80,6 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       });
   }
 
-  //TODO: create function for uploading reports
-
   /**
    * this method fills and checks the general category
    */
