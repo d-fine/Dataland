@@ -1,6 +1,7 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
+import db.migration.utils.getOrJavaNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -88,11 +89,11 @@ class V3__MigrateLksg : BaseJavaMigration() {
         val categoryObjectTmp = JSONObject()
         val subcategories = categoryObject.keys()
         subcategories.forEach { subcategory ->
-            val subcategoryObject = categoryObject.opt(subcategory) as JSONObject
+            val subcategoryObject = (categoryObject.getOrJavaNull(subcategory) ?: return@forEach) as JSONObject
             val subcategoryObjectTmp = JSONObject()
             val fields = subcategoryObject.keys()
             fields.forEach { field ->
-                val dataToMigrate = subcategoryObject.opt(field)
+                val dataToMigrate = subcategoryObject.getOrJavaNull(field) ?: return@forEach
                 writeToTemporarySubcategoryObject(
                     subcategoryObjectTmp, categoryKey, subcategory, field, dataToMigrate,
                 )
@@ -110,7 +111,7 @@ class V3__MigrateLksg : BaseJavaMigration() {
         val datasetTmp = JSONObject()
         val categories = dataset.keys()
         categories.forEach { category ->
-            val categoryObject = dataset.opt(category) as JSONObject
+            val categoryObject = (dataset.getOrJavaNull(category) ?: return@forEach) as JSONObject
             writeToTemporaryDataset(datasetTmp, category, categoryObject)
         }
         dataset = datasetTmp
