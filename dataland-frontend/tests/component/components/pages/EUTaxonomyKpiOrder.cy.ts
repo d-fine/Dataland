@@ -14,13 +14,6 @@ import {
 } from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 import {DataAndMetaInformationViewModel, FrameworkViewModel} from "../../../../src/components/resources/ViewModel";
 describe("Component test for the NewEUTaxonomy Page", () => {
-    let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
-
-    before(() => {
-        cy.fixture("CompanyInformationWithNewEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-            preparedFixtures = jsonContent as Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
-        });
-    });
 
 
     //const kpiList:string[] = ["GENERAL", "REVENUE", "CAPEX", "OPEX"]; These 2 lists have to be used when running the cypress test locally, because the fixtures are different.
@@ -42,7 +35,6 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         ["totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare"]];
 
     it("Check order of the displayed KPIs and category entries", () => {
-        const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
 
         const mockData: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials = {
             metaInfo: {
