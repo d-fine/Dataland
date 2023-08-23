@@ -1,25 +1,14 @@
-import NewEuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/NewEuTaxonomyForNonFinancialsPanel.vue"
+import NewEuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue"
 import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 import {
-    AssuranceDataAssuranceEnum,
-    DataPointOneValueAmountWithCurrency,
-    EuTaxonomyActivity,
-    EuTaxonomyAlignedActivity,
-    FiscalYearDeviation,
-    type NewEuTaxonomyDataForNonFinancials,
-    RelativeAndAbsoluteFinancialShare, YesNo, YesNoNa
+    type NewEuTaxonomyDataForNonFinancials
 } from "@clients/backend";
-import mount from "cypress/vue";
-import {minimalKeycloakMock} from "../../testUtils/Keycloak";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { NewEuTaxonomyForNonFinancialsViewModel
+} from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 import {
-    DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel, NewEuTaxonomyForNonFinancialsViewModel
-} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
-import {
-    newEuTaxonomyForNonFinancialsModalColumnHeaders
-} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
-import {
-    newEuTaxonomyForNonFinancialsDisplayDataModel
-} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
+    type newEuTaxonomyForNonFinancialsDisplayDataModel
+} from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 describe("Component test for the NewEUTaxonomy Page", () => {
     let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
 
