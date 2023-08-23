@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Test
 class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
     private val newEuTaxonomyForNonFinancials = "new-eutaxonomy-non-financials"
     private val euTaxonomyForNonFinancials = "eutaxonomy-non-financials"
+    private val mockDataId = "mock-data-id"
 
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected for migrating new data`() {
         val originalDataEntity = DataTableEntity.fromJsonObject(
-            "mock-data-id", newEuTaxonomyForNonFinancials,
+            mockDataId, newEuTaxonomyForNonFinancials,
             JSONObject(
                 "{" +
                     "\"something\": \"something\"" +
@@ -21,7 +22,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
             ),
         )
         val expectedDataEntity = DataTableEntity.fromJsonObject(
-            "mock-data-id", euTaxonomyForNonFinancials,
+            mockDataId, euTaxonomyForNonFinancials,
             JSONObject(
                 "{" +
                     "\"something\": \"something\"" +
@@ -36,14 +37,14 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected for migrating old data`() {
         val originalDataEntity = DataTableEntity.fromJsonObject(
-            "mock-data-id",
+            mockDataId,
             euTaxonomyForNonFinancials,
             JsonUtils.readJsonFromResourcesFile("V5/oldOriginalDatabaseEntry.json"),
 
         )
 
         val expectedDataEntity = DataTableEntity.fromJsonObject(
-            "mock-data-id",
+            mockDataId,
             euTaxonomyForNonFinancials,
             JsonUtils.readJsonFromResourcesFile("V5/oldExpectedTransformedDatabaseEntry.json"),
         )

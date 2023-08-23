@@ -56,7 +56,7 @@ data class DataTableEntity(
         if (dataId != other.dataId) return false
 
         return dataJsonObject.similar(other.dataJsonObject) &&
-                jsonObjectWithoutData.similar(other.jsonObjectWithoutData)
+            jsonObjectWithoutData.similar(other.jsonObjectWithoutData)
     }
 
     override fun hashCode(): Int {
