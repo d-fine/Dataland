@@ -1,9 +1,10 @@
 <template>
   <div class="form-field next-to-each-other">
     <div class="form-field-label">
-
-        <p>Activity:</p> <p><b> {{ selectedActivities ? selectedActivities.name : "" }}</b></p>
-
+      <p>Activity:</p>
+      <p>
+        <b> {{ selectedActivities ? selectedActivities.name : "" }}</b>
+      </p>
     </div>
 
     <PrimeButton
