@@ -7,7 +7,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { NewEuTaxonomyForNonFinancialsViewModel
 } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 import {
-    type newEuTaxonomyForNonFinancialsDisplayDataModel
+    newEuTaxonomyForNonFinancialsDisplayDataModel
 } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 describe("Component test for the NewEUTaxonomy Page", () => {
     let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
