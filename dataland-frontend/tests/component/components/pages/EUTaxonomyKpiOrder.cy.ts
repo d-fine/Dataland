@@ -62,9 +62,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
             cy.get(`[data-test='${dataTestList[0]}']`).click();
 
-            //cy.get(".p-rowgroup-header").filter(':visible').eq(index).get(`span[data-test="${subcategoryDataTestList[index]}"]`).should("contain",`${subcategoryList[index]}`);
-
-            cy.wait(3000);
+            cy.wait(300);
             let row;
             for (let i = 1; i < dataTestList.length; i++) {
                 row = subcategoryDataTestList[i];
@@ -76,7 +74,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
                 }
                 cy.get(`[data-test='${dataTestList[i]}']`).click();
-                cy.wait(3000);
+                cy.wait(50);
             }
         });
     })
