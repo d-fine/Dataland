@@ -17,7 +17,7 @@
             name="amount"
             validation-label="Absolute Value"
             validation="number"
-            placeholder="Absolute Value in %"
+            placeholder="Absolute Value"
             outer-class="short"
           />
           <SingleSelectFormElement
