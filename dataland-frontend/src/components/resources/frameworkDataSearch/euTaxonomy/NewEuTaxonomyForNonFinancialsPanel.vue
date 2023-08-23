@@ -120,8 +120,8 @@ export default defineComponent({
     hasKpiObjectAmountOrCurrency(kpiValue: KpiValue): boolean {
       return (
         typeof kpiValue === "object" &&
-        (("amount" in kpiValue && typeof kpiValue.amount === "number") ||
-          ("currency" in kpiValue && typeof kpiValue.currency === "string"))
+        (("amount" in kpiValue && (typeof kpiValue.amount === "number" || kpiValue.amount === null)) ||
+          ("currency" in kpiValue && (typeof kpiValue.currency === "string" || kpiValue.currency === null)))
       );
     },
 
