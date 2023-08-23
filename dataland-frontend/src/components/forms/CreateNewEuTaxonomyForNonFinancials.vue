@@ -47,6 +47,7 @@
             <FormKit type="group" name="data" label="data">
               <div
                 v-for="category in euTaxonomyForNonFinancialsDataModel"
+                :key="category"
                 :label="category.label"
                 :name="category.name"
               >

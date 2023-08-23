@@ -36,11 +36,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import {
-  BaseFormFieldProps,
-  DropdownOptionFormFieldProps,
-  FormFieldPropsWithPlaceholder,
-} from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
@@ -55,13 +51,6 @@ export default defineComponent({
   },
   props: {
     ...BaseFormFieldProps,
-    evidenceDesired: {
-      type: Boolean,
-      default: false,
-    },
-    unit: {
-      type: String,
-    },
   },
 });
 </script>

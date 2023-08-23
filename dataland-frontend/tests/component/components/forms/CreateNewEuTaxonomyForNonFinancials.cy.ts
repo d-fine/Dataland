@@ -112,7 +112,6 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('em[title="Page"]').first().click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
     cy.get('input[name="page"]').first().clear().type("3");
-
   }
 
   /**
@@ -252,9 +251,6 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       fillAndValidateGeneralSection("string");
     });
   });
-
 });
-
-
 
 //TODO This file has to be modified to work
