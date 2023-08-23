@@ -18,7 +18,31 @@
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
+            <div class="uploadFormSection grid">
+              <div class="col-3 p-3 topicLabel">
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
+              </div>
+              <div class="col-9 form-field uploaded-files">
+                <UploadFormHeader
+                  :label="'Reporting Period'"
+                  :description="'The reporting period the dataset belongs to (e.g. a fiscal year).'"
+                  :is-required="true"
+                />
+                <div class="lg:col-4 md:col-6 col-12 pl-0">
+                  <Calendar
+                    data-test="reportingPeriod"
+                    v-model="reportingPeriod"
+                    inputId="icon"
+                    :showIcon="true"
+                    view="year"
+                    dateFormat="yy"
+                    validation="required"
+                  />
+                </div>
+
+                <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
+              </div>
+            </div>
 
             <FormKit type="group" name="data" label="data">
               <div
@@ -191,22 +215,15 @@ export default defineComponent({
       documents: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       namesOfAllCompanyReportsForTheDataset: [] as string[],
+      reportingPeriod: undefined as undefined | Date,
     };
   },
   computed: {
-    yearOfDataDate: {
-      get(): string {
-        const currentDate = this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data?.general?.fiscalYearEnd;
-        if (currentDate === undefined) {
-          return "";
-        } else {
-          const currentDateSegments = currentDate.split("-");
-          return currentDateSegments[0] ?? new Date().getFullYear();
-        }
-      },
-      set() {
-        // IGNORED
-      },
+    reportingPeriodYear(): number {
+      if (this.reportingPeriod) {
+        return this.reportingPeriod.getFullYear();
+      }
+      return 0;
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
@@ -228,6 +245,9 @@ export default defineComponent({
     } else {
       this.waitingForData = false;
     }
+    if (this.reportingPeriod === undefined) {
+      this.reportingPeriod = new Date();
+    }
   },
   methods: {
     /**
@@ -246,6 +266,9 @@ export default defineComponent({
           dataId,
         );
       const newEuTaxonomyForNonFinancialsResponseData = dataResponse.data;
+      if (newEuTaxonomyForNonFinancialsResponseData?.reportingPeriod) {
+        this.reportingPeriod = new Date(newEuTaxonomyForNonFinancialsResponseData.reportingPeriod);
+      }
       this.referencedReportsForPrefill =
         newEuTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedNewEuTaxonomyDataForNonFinancials = objectDropNull(
