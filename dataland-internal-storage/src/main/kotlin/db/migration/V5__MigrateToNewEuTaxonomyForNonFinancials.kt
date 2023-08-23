@@ -50,7 +50,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
         dataObject.put("general", generalObject)
     }
 
-    private fun migrateOldCashFlowDetails(cashFlowDetails: JSONObject) {
+    private fun migrateTotalAmount(cashFlowDetails: JSONObject) {
         val totalAmountObject = cashFlowDetails.getOrJavaNull("totalAmount")
         if (totalAmountObject != null) {
             totalAmountObject as JSONObject
@@ -72,7 +72,10 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
         } else if (!setAlternativeSourceInfoIfPossible(cashFlowDetails)) {
             cashFlowDetails.put("totalAmount", JSONObject.NULL)
         }
+    }
 
+    private fun migrateOldCashFlowDetails(cashFlowDetails: JSONObject) {
+        migrateTotalAmount(cashFlowDetails)
         migrateDataPointToFinancialShare(cashFlowDetails, "eligibleData", "totalEligibleShare")
         migrateDataPointToFinancialShare(cashFlowDetails, "alignedData", "totalAlignedShare")
     }
