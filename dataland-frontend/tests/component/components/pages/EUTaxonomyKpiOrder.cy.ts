@@ -1,4 +1,4 @@
-import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue"
+import NewEuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/NewEuTaxonomyForNonFinancialsPanel.vue"
 import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 import {
     AssuranceDataAssuranceEnum,
@@ -51,7 +51,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     it("Check order of the displayed KPIs and category entries", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
 
-        const mockData = {
+        const mockData:NewEuTaxonomyDataForNonFinancials = {
             "general": {
                 "fiscalYearDeviation": "Deviation",
                 "fiscalYearEnd": "2023-08-23",
@@ -362,11 +362,11 @@ describe("Component test for the NewEUTaxonomy Page", () => {
                 "totalEnablingShare": 0,
                 "totalTransitionalShare": 0
             }
-        }
+        };
 
         const newEuTaxonomyForNonFinancialsViewModel = new NewEuTaxonomyForNonFinancialsViewModel(mockData);
         const dataAndMetaInfo: Array<NewEuTaxonomyForNonFinancialsViewModel> = [newEuTaxonomyForNonFinancialsViewModel];
-        cy.mountWithPlugins(ThreeLayerTable, {
+        cy.mountWithPlugins(NewEuTaxonomyForNonFinancialsPanel, {
             keycloak: minimalKeycloakMock({}),
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
