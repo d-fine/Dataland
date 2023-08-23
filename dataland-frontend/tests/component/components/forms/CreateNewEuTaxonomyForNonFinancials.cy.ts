@@ -85,7 +85,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   /**
    * this method fills and checks the general category
    */
-  function fillAndValidateGeneral(reportName: string): void {
+  function fillAndValidateGeneralSection(reportName: string): void {
     cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
     cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
     cy.get("div.p-datepicker").find('span:contains("11")').click();
@@ -104,15 +104,41 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
 
     cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
 
-
-    cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
-    cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
-    cy.get('[data-test="assuranceSection"] select[name="report"]').select(reportName);
-    cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
+    cy.get('select[name="assurance"]').select(1);
+    cy.get('input[name="provider"]').type("Assurance Provider");
+    cy.get('select[name="report"]').select(reportName);
+    cy.get('input[name="page"]').type("-13");
     cy.get('em[title="Assurance"]').click();
     cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
     cy.get('[data-test="assuranceSection"] input[name="page"]').clear().type("1");
-    cy.get('[data-test="dataPointToggleTitle"]').should("exist");
+  }
+
+  /**
+   * this method fills and checks the general category
+   */
+  function fillAndValidateOtherSections(): void {
+    for (const section of ["revenueSection", "capexSection", "opexSection"]) {
+      cy.get('input[name="totalAmount"]').type("130");
+      //cy.get('[data-test="currency???"] select[name="idk???"]').select(1);
+
+
+        cy.get(`div[data-test=${section}] input[name="valueAsPercentage"]`).each(($element, index) => {
+          const inputNumber = 10 * index + 7;
+          cy.wrap($element).type(inputNumber.toString());
+        });
+      cy.get(`div[data-test=${section}] select[name="report"]`).each(($element) => {
+        cy.wrap($element).select(1);
+      });
+      cy.get(`div[data-test=${section}] input[name="page"]`).each(($element) => {
+        cy.wrap($element).type("12");
+      });
+      cy.get(`div[data-test=${section}] select[name="quality"]`).each(($element) => {
+        cy.wrap($element).select(3);
+      });
+      cy.get(`div[data-test=${section}] textarea[name="comment"]`).each(($element) => {
+        cy.wrap($element).type("test");
+      });
+    }
   }
 
   /**
