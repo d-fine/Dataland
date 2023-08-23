@@ -23,7 +23,11 @@
                 <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
               </div>
               <div class="col-9 form-field uploaded-files">
-                <UploadFormHeader :label="'reportingPeriod'" :description="'reportingPeriod'" :is-required="true" />
+                <UploadFormHeader
+                  :label="'Reporting Period'"
+                  :description="'The reporting period the dataset belongs to (e.g. a fiscal year).'"
+                  :is-required="true"
+                />
                 <div class="lg:col-4 md:col-6 col-12 pl-0">
                   <Calendar
                     data-test="reportingPeriod"
