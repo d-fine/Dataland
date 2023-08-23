@@ -2,22 +2,28 @@
   <DataTable scrollable :value="frozenColumnData" class="aligned-activities-data-table">
     <ColumnGroup type="header">
       <Row>
-        <Column header="" :rowspan="2" :colspan="2" />
-      </Row>
-      <Row>
+        <Column
+          header=""
+          :frozen="true"
+          alignFrozen="left"
+          :colspan="2"
+          class="frozen-row-header"
+          style="background-color: #fff"
+        ></Column>
         <Column
           v-for="group of mainColumnGroups"
           :key="group.key"
           :header="group.label"
           :colspan="group.colspan"
+          class="group-row-header"
         ></Column>
       </Row>
       <Row>
-        <Column header="" :colspan="2"></Column>
+        <Column header="Activity" :frozen="true" alignFrozen="left" class="frozen-row-header"></Column>
+        <Column header="Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header"></Column>
         <Column v-for="col of mainColumnDefinitions" :key="col.field" :header="col.header" :field="col.field"> </Column>
       </Row>
     </ColumnGroup>
-    <div class="table-group-row-cover"></div>
     <Column
       v-for="col of frozenColumnDefinitions"
       :field="col.field"
@@ -38,6 +44,7 @@
       :field="col.field"
       :key="col.field"
       :header="col.header"
+      bodyClass="col-value"
       headerClass="horizontal-headers-size"
     >
       <template #body="{ data }">
@@ -93,13 +100,14 @@ export default defineComponent({
     return {
       listOfRowContents: [] as Array<ActivityObject>,
       kpiKeyOfTable: "" as string,
-      frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen: boolean }>,
+      frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
       mainColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       frozenColumnData: [] as Array<{
         activity: string;
         naceCodes: string | string[] | number | number[];
       }>,
+      defs: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnData: [] as Array<ActivityFieldValueObject>,
     };
   },
@@ -117,8 +125,8 @@ export default defineComponent({
     }
 
     this.frozenColumnDefinitions = [
-      { field: "activity", header: "Activity", frozen: true },
-      { field: "naceCodes", header: "Code(s)", frozen: true },
+      { field: "activity", header: "Activity", frozen: true, group: "_frozen" },
+      { field: "naceCodes", header: "Code(s)", frozen: true, group: "_frozen" },
     ];
 
     this.mainColumnDefinitions = [
@@ -130,6 +138,8 @@ export default defineComponent({
 
       { field: "minimumSafeguards", header: "Minimum Safeguards", group: "_minimumSafeguards" },
     ];
+
+    this.defs = [...this.frozenColumnDefinitions, ...this.mainColumnDefinitions];
 
     this.frozenColumnData = this.listOfRowContents.map((activity) => ({
       activity: activity.activityName,
@@ -264,7 +274,6 @@ function createDnshCriteriaGroupData(activity: ActivityObject): ActivityFieldVal
  * @returns list of minimum safeguards data items
  */
 function createMinimumSafeguardsGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
-  console.log("create", { activity });
   return [
     {
       activity: activity.activityName,

@@ -102,17 +102,16 @@
   &.aligned-activities-data-table {
     $col-activity-width: 400px;
     $col-nace-codes-width: 100px;
-    $col-cover-width: ($col-activity-width + $col-nace-codes-width);
-
-    .p-datatable-wrapper {
-      z-index: 1;
+    .group-row-header {
+      background-color: $tables-headers-bg;
+      border-right: 1px solid $table-border;
+      border-bottom: 1px solid $table-border;
+      .p-column-header-content {
+        justify-content: center;
+      }
     }
-    .table-group-row-cover {
-      background-color: #fff;
-      height: 107px;
-      position: absolute;
-      z-index: 2;
-      width: $col-cover-width;
+    .frozen-row-header {
+      background-color: $tables-headers-bg;
       border-right: 1px solid $table-border;
     }
     .col-activity {
@@ -122,6 +121,10 @@
     .col-nace-codes {
       width: $col-nace-codes-width;
       min-width: $col-nace-codes-width;
+    }
+    .col-value {
+      width: 200px;
+      min-width: 200px;
     }
   }
 }

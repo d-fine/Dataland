@@ -56,6 +56,11 @@
                     slotProps.data.content[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
                     slotProps.data.kpiKey,
+                    {
+                      dataId: reportingPeriodWithDataId.dataId,
+                      reportingPeriodWithDataId,
+                      slotContent: slotProps.data.content,
+                    },
                   )
                 "
                 class="link"
@@ -229,7 +234,8 @@ export default defineComponent({
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
      */
-    openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, kpiKey: string) {
+    openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, kpiKey: string, test: any) {
+      console.log(test);
       this.$dialog.open(AlignedActivitiesDataTable, {
         props: {
           header: modalTitle,
