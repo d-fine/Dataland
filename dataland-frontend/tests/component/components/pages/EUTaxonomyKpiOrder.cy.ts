@@ -6,6 +6,7 @@ import {
     type DataMetaInformation,
     type NewEuTaxonomyDataForNonFinancials
 } from "@clients/backend";
+import {length} from "mocha";
 describe("Component test for the NewEUTaxonomy Page", () => {
     let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
 
@@ -22,17 +23,17 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     const dataTestList:string[] = ["Basic Information","Assurance","Revenue","CapEx", "OpEx"];
     const kpiListOrderChanged = ["ASSURANCE","OPEX", "BASIC INFORMATION", "REVENUE", "CAPEX"];
 
-    const subcategoryList:string[] = ["Basic Information",
-        "Assurance",
-        "Total Aligned Revenue", "Total Revenue", "Total Eligible Revenue", "Total Non-Aligned Revenue", "Total Non-Eligible Revenue",
-        "Total Aligned CapEx", "Total CapEx", "Total Eligible CapEx", "Total Non-Aligned CapEx", "Total Non-Eligible CapEx",
-        "Total Aligned OpEx", "Total OpEx", "Total Eligible OpEx", "Total Non-Aligned OpEx", "Total Non-Eligible OpEx"];
+    const subcategoryList:string[][] = [["Basic Information"],
+        ["Assurance"],
+        ["Total Aligned Revenue", "Total Revenue", "Total Eligible Revenue", "Total Non-Aligned Revenue", "Total Non-Eligible Revenue"],
+        ["Total Aligned CapEx", "Total CapEx", "Total Eligible CapEx", "Total Non-Aligned CapEx", "Total Non-Eligible CapEx"],
+        ["Total Aligned OpEx", "Total OpEx", "Total Eligible OpEx", "Total Non-Aligned OpEx", "Total Non-Eligible OpEx"]];
 
-    const subcategoryDataTestList:string[] = ["_basicInformation",
-        "assurance",
-        "totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare",
-        "totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare",
-        "totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare"];
+    const subcategoryDataTestList:string[][] = [["_basicInformation"],
+        ["assurance"],
+        ["totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare"],
+        ["totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare"],
+        ["totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare"]];
 
     it("Check order of the displayed KPIs and category entries", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
@@ -73,17 +74,25 @@ describe("Component test for the NewEUTaxonomy Page", () => {
                 cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("not.have.text", kpiListOrderChanged[index]);
             });
 
-        for (let i = 1; i < 5; i++) {
-            cy.get(`[data-test='${dataTestList[i]}']`).click();
-        }
-
-        cy.get(".p-rowgroup-header");
         cy.get("[data-test='TwoLayerTest']").eq(0).get(" [data-test='_basicInformation'").should("contain","Basic Information");
-        for (let i = 0; i < 17; i++) {
-            cy.get(".p-rowgroup-header").eq(i).get(`[data-test="${subcategoryDataTestList[i]}"]`).should("contain",`${subcategoryList[i]}`);
+        cy.get(`[data-test='${dataTestList[0]}']`).click();
+
+        //cy.get(".p-rowgroup-header").filter(':visible').eq(index).get(`span[data-test="${subcategoryDataTestList[index]}"]`).should("contain",`${subcategoryList[index]}`);
+
+        cy.wait(3000);
+        let row;
+        for (let i = 1; i < dataTestList.length; i++) {
+            row = subcategoryDataTestList[i];
+            cy.get(`[data-test='${dataTestList[i]}']`).click();
+            for (let j = 0; j < row.length; j++) {
+                cy.get(".p-rowgroup-header").filter(':visible').eq(j)
+                    .get(`span[id="${row[j]}"]`)
+                        .should("contain",`${subcategoryList[i][j]}`);
+
+            }
+            cy.get(`[data-test='${dataTestList[i]}']`).click();
+            cy.wait(3000);
         }
-
-
     });
 
 
