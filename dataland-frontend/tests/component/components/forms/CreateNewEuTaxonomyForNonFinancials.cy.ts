@@ -83,7 +83,8 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   //TODO: create function for uploading reports
 
   /**
-   * this method fills and checks the general category
+   * this method fills and checks the general section
+   * @param reportName the name of the report that is uploaded
    */
   function fillAndValidateGeneralSection(reportName: string): void {
     cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
@@ -114,30 +115,14 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   }
 
   /**
-   * this method fills and checks the general category
+   * this method fills and checks the other sections
+   * @param reports the name of the reports that are uploaded
    */
-  function fillAndValidateOtherSections(): void {
+  function fillAndValidateOtherSections(reports: string[]): void {
     for (const section of ["revenueSection", "capexSection", "opexSection"]) {
       cy.get('input[name="totalAmount"]').type("130");
-      //cy.get('[data-test="currency???"] select[name="idk???"]').select(1);
-
-
-        cy.get(`div[data-test=${section}] input[name="valueAsPercentage"]`).each(($element, index) => {
-          const inputNumber = 10 * index + 7;
-          cy.wrap($element).type(inputNumber.toString());
-        });
-      cy.get(`div[data-test=${section}] select[name="report"]`).each(($element) => {
-        cy.wrap($element).select(1);
-      });
-      cy.get(`div[data-test=${section}] input[name="page"]`).each(($element) => {
-        cy.wrap($element).type("12");
-      });
-      cy.get(`div[data-test=${section}] select[name="quality"]`).each(($element) => {
-        cy.wrap($element).select(3);
-      });
-      cy.get(`div[data-test=${section}] textarea[name="comment"]`).each(($element) => {
-        cy.wrap($element).type("test");
-      });
+      //cy.get('[data-test="currency???"] select[name="unit???"]').select(1);
+      cy.get('select[name="report"]').select(reports[0]);
     }
   }
 
