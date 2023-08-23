@@ -1,5 +1,6 @@
 package db.migration
 
+import db.migration.utils.DataTableEntity
 import db.migration.utils.getOrJavaNull
 import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
@@ -19,16 +20,21 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
         migrateNewData(context)
     }
 
-    private fun migrateOldData(context: Context?) {
-        migrateCompanyAssociatedDataOfDatatype(context, "eutaxonomy-non-financials") {
-            val dataObject = JSONObject(it.companyAssociatedData.getString("data"))
-            migrateGeneralFields(dataObject)
-            listOf("revenue", "capex", "opex").forEach { cashFlowType ->
-                val cashFlowObject = dataObject.getJSONObject(cashFlowType)
-                migrateOldCashFlowDetails(cashFlowObject)
-            }
-            it.companyAssociatedData.put("data", dataObject.toString())
+    /**
+     * Migrates an old eu taxonomy non financials dataset to the new format
+     */
+    fun migrateEuTaxonomyData(dataTableEntity: DataTableEntity) {
+        val dataObject = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
+        migrateGeneralFields(dataObject)
+        listOf("revenue", "capex", "opex").forEach { cashFlowType ->
+            val cashFlowObject = dataObject.getJSONObject(cashFlowType)
+            migrateOldCashFlowDetails(cashFlowObject)
         }
+        dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
+    }
+
+    private fun migrateOldData(context: Context?) {
+        migrateCompanyAssociatedDataOfDatatype(context, "eutaxonomy-non-financials", this::migrateEuTaxonomyData)
     }
 
     private fun migrateGeneralFields(dataObject: JSONObject) {

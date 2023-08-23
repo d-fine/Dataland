@@ -1,36 +1,32 @@
 package db.migration
 
-import db.migration.utils.buildDatabaseEntry
-import db.migration.utils.mockAndWhenConfigurationForFrameworkMigration
-import org.flywaydb.core.api.migration.Context
+import db.migration.utils.DataTableEntity
 import org.json.JSONObject
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
 
 class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
 
     @Test
     fun `test that migration writes the expected results into the datatable`() {
-        val mockContext = mock(Context::class.java)
-        mockAndWhenConfigurationForFrameworkMigration(
-            mockContext,
-            buildOriginalDatabaseEntry(),
-            buildExpectedTransformedDatabaseEntry(),
-        )
+        val origDatabaseEntry = buildOriginalDatabaseEntry()
+        val expectedDataBaseEntry = buildExpectedTransformedDatabaseEntry()
         val migration = V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues()
-        migration.migrate(mockContext)
+        migration.migrateEuTaxonomyNonFinancialsData(origDatabaseEntry)
+
+        Assertions.assertEquals(expectedDataBaseEntry, origDatabaseEntry)
     }
 
     private val affectedFields = listOf("capex", "opex", "revenue")
     private val unaffectedFields = listOf("something")
-    private fun buildOriginalDatabaseEntry(): String {
+    private fun buildOriginalDatabaseEntry(): DataTableEntity {
         val dataset = JSONObject()
         (affectedFields + unaffectedFields).forEach {
             dataset.put(it, buildOldDetailsPerCashFlowType())
         }
-        return buildDatabaseEntry(dataset, "eutaxonomy-non-financials")
+        return DataTableEntity.fromJsonObject("mock-data-id", "eutaxonomy-non-financials", dataset)
     }
-    private fun buildExpectedTransformedDatabaseEntry(): String {
+    private fun buildExpectedTransformedDatabaseEntry(): DataTableEntity {
         val dataset = JSONObject()
         (affectedFields).forEach {
             dataset.put(it, buildNewDetailsPerCashFlowType())
@@ -38,7 +34,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
         (unaffectedFields).forEach {
             dataset.put(it, buildOldDetailsPerCashFlowType())
         }
-        return buildDatabaseEntry(dataset, "eutaxonomy-non-financials")
+        return DataTableEntity.fromJsonObject("mock-data-id", "eutaxonomy-non-financials", dataset)
     }
 
     private val unaffectedDetail = "totalAmount"

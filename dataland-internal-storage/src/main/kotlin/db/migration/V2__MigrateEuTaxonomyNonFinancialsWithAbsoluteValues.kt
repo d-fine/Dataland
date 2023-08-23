@@ -1,5 +1,6 @@
 package db.migration
 
+import db.migration.utils.DataTableEntity
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -24,16 +25,24 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
         cashFlow.remove(fieldToMigrate)
     }
 
-    override fun migrate(context: Context?) {
-        migrateCompanyAssociatedDataOfDatatype(context, "eutaxonomy-non-financials") {
-            val dataset = JSONObject(it.companyAssociatedData.getString("data"))
-            cashFlowTypes.forEach { cashflowType ->
-                val cashFlow = (dataset.opt(cashflowType) ?: return@forEach) as JSONObject
-                fieldsToMigrate.keys.forEach { fieldToMigrate ->
-                    migrateFieldForCashFlow(fieldToMigrate, cashFlow)
-                }
+    /**
+     * Migrates an old eu taxonomy non financials dataset to the new format
+     */
+    fun migrateEuTaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
+        val dataset = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
+        cashFlowTypes.forEach { cashflowType ->
+            val cashFlow = (dataset.opt(cashflowType) ?: return@forEach) as JSONObject
+            fieldsToMigrate.keys.forEach { fieldToMigrate ->
+                migrateFieldForCashFlow(fieldToMigrate, cashFlow)
             }
-            it.companyAssociatedData.put("data", dataset.toString())
         }
+        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
+    }
+
+    override fun migrate(context: Context?) {
+        migrateCompanyAssociatedDataOfDatatype(
+            context,
+            "eutaxonomy-non-financials", this::migrateEuTaxonomyNonFinancialsData,
+        )
     }
 }

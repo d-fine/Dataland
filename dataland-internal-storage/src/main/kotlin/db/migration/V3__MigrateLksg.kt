@@ -1,5 +1,6 @@
 package db.migration
 
+import db.migration.utils.DataTableEntity
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -101,17 +102,22 @@ class V3__MigrateLksg : BaseJavaMigration() {
         datasetTmp.put(categoryKey, categoryObjectTmp)
     }
 
-    override fun migrate(context: Context?) {
-        migrateCompanyAssociatedDataOfDatatype(context, "lksg") {
-            var dataset = JSONObject(it.companyAssociatedData.getString("data"))
-            val datasetTmp = JSONObject()
-            val categories = dataset.keys()
-            categories.forEach { category ->
-                val categoryObject = dataset.opt(category) as JSONObject
-                writeToTemporaryDataset(datasetTmp, category, categoryObject)
-            }
-            dataset = datasetTmp
-            it.companyAssociatedData.put("data", dataset.toString())
+    /**
+     * Migrates an old lksg dataset to the new format
+     */
+    fun migrateLksgData(dataTableEntity: DataTableEntity) {
+        var dataset = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
+        val datasetTmp = JSONObject()
+        val categories = dataset.keys()
+        categories.forEach { category ->
+            val categoryObject = dataset.opt(category) as JSONObject
+            writeToTemporaryDataset(datasetTmp, category, categoryObject)
         }
+        dataset = datasetTmp
+        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
+    }
+
+    override fun migrate(context: Context?) {
+        migrateCompanyAssociatedDataOfDatatype(context, "lksg", this::migrateLksgData)
     }
 }

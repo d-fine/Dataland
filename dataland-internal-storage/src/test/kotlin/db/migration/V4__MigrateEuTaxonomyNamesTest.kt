@@ -1,12 +1,10 @@
 package db.migration
 
-import db.migration.utils.buildDatabaseEntry
-import db.migration.utils.mockAndWhenConfigurationForFrameworkMigration
+import db.migration.utils.DataTableEntity
 import org.dataland.datalandbackend.openApiClient.model.YesNo
-import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 
 class V4__MigrateEuTaxonomyNamesTest {
 
@@ -30,21 +28,21 @@ class V4__MigrateEuTaxonomyNamesTest {
         reportingObligation: YesNo?,
         dataType: String,
     ) {
-        val mockContext = Mockito.mock(Context::class.java)
-        mockAndWhenConfigurationForFrameworkMigration(
-            mockContext,
-            buildOriginalDatabaseEntry(activityLevelReporting, reportingObligation, dataType),
-            buildExpectedTransformedDatabaseEntry(activityLevelReporting, reportingObligation, dataType),
+        val originalDataTableEntity = buildOriginalDatabaseEntry(activityLevelReporting, reportingObligation, dataType)
+        val expectedDataTableEntity = buildExpectedTransformedDatabaseEntry(
+            activityLevelReporting, reportingObligation, dataType,
         )
         val migration = V4__MigrateEuTaxonomyNames()
-        migration.migrate(mockContext)
+        migration.migrateEuTaxonomyNames(originalDataTableEntity)
+
+        Assertions.assertEquals(originalDataTableEntity, expectedDataTableEntity)
     }
 
     private fun buildOriginalDatabaseEntry(
         activityLevelReporting: YesNo?,
         reportingObligation: YesNo?,
         dataType: String,
-    ): String {
+    ): DataTableEntity {
         val simplifiedDataset = JSONObject(
             "{" +
                 "\"activityLevelReporting\": ${convertYesNoToJsonValue(activityLevelReporting)}," +
@@ -52,14 +50,14 @@ class V4__MigrateEuTaxonomyNamesTest {
                 "\"somethingElse\": \"No\"" +
                 "}",
         )
-        return buildDatabaseEntry(simplifiedDataset, dataType)
+        return DataTableEntity.fromJsonObject("mock-data-id", dataType, simplifiedDataset)
     }
 
     private fun buildExpectedTransformedDatabaseEntry(
         euTaxonomyActivityLevelReporting: YesNo?,
         nfrdMandatory: YesNo?,
         dataType: String,
-    ): String {
+    ): DataTableEntity {
         val simplifiedDataset = JSONObject(
             "{" +
                 "\"euTaxonomyActivityLevelReporting\": ${convertYesNoToJsonValue(euTaxonomyActivityLevelReporting)}," +
@@ -67,7 +65,7 @@ class V4__MigrateEuTaxonomyNamesTest {
                 "\"somethingElse\": \"No\"" +
                 "}",
         )
-        return buildDatabaseEntry(simplifiedDataset, dataType)
+        return DataTableEntity.fromJsonObject("mock-data-id", dataType, simplifiedDataset)
     }
 
     private fun convertYesNoToJsonValue(yesNo: YesNo?): String = if (yesNo != null) "\"$yesNo\"" else "null"

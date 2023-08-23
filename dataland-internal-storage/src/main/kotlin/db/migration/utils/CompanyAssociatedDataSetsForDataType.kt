@@ -3,8 +3,8 @@ package db.migration.utils
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
-import kotlin.io.path.Path
-import kotlin.io.path.div
+
+typealias CompanyAssociatedDataMigration = (dataTableEntity: DataTableEntity) -> Unit
 
 /**
  * Method to get the company associated dataset for a given data type
@@ -43,21 +43,11 @@ fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String)
 fun migrateCompanyAssociatedDataOfDatatype(
     context: Context?,
     dataType: String,
-    migrate: (dataTableEntity: DataTableEntity) -> Unit,
+    migrate: CompanyAssociatedDataMigration,
 ) {
     val dataTableEntities = getCompanyAssociatedDatasetsForDataType(context, dataType)
     dataTableEntities.forEach {
         migrate(it)
         it.executeUpdateQuery(context!!)
     }
-}
-
-/**
- * Loads a json object from a json file in the resources path corresponding the migration script
- * @param version the version string prefix of the migrations class name
- * @param filename the name of the json file to load
- */
-fun readJsonFromResourcesFile(version: String, filename: String): JSONObject {
-    val jsonBasePath = Path("./src/test/resources/db/migration") / version
-    return JSONObject((jsonBasePath / filename).toFile().readText())
 }

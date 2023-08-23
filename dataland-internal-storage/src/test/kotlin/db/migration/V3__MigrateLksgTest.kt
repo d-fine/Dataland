@@ -1,27 +1,23 @@
 package db.migration
 
-import db.migration.utils.buildDatabaseEntry
-import db.migration.utils.mockAndWhenConfigurationForFrameworkMigration
-import org.flywaydb.core.api.migration.Context
+import db.migration.utils.DataTableEntity
 import org.json.JSONObject
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 
 class V3__MigrateLksgTest {
 
     @Test
     fun `test that lksg migration script works as expected`() {
-        val mockContext = Mockito.mock(Context::class.java)
-        mockAndWhenConfigurationForFrameworkMigration(
-            mockContext,
-            buildOriginalDatabaseEntry(),
-            buildExpectedTransformedDatabaseEntry(),
-        )
+        val origDatabaseEntry = buildOriginalDatabaseEntry()
+        val expectedDataBaseEntry = buildExpectedTransformedDatabaseEntry()
         val migration = V3__MigrateLksg()
-        migration.migrate(mockContext)
+        migration.migrateLksgData(origDatabaseEntry)
+
+        Assertions.assertEquals(expectedDataBaseEntry, origDatabaseEntry)
     }
 
-    private fun buildOriginalDatabaseEntry(): String {
+    private fun buildOriginalDatabaseEntry(): DataTableEntity {
         val simplifiedLksgDataset = JSONObject(
             "{\"general\":{" +
                 "\"masterData\":{" +
@@ -42,10 +38,10 @@ class V3__MigrateLksgTest {
                 "}" +
                 "}",
         )
-        return buildDatabaseEntry(simplifiedLksgDataset, "lksg")
+        return DataTableEntity.fromJsonObject("mock-data-id", "lksg", simplifiedLksgDataset)
     }
 
-    private fun buildExpectedTransformedDatabaseEntry(): String {
+    private fun buildExpectedTransformedDatabaseEntry(): DataTableEntity {
         val simplifiedLksgDataset = JSONObject(
             "{\"general\":{" +
                 "\"masterData\":{" +
@@ -69,6 +65,6 @@ class V3__MigrateLksgTest {
                 "}" +
                 "}",
         )
-        return buildDatabaseEntry(simplifiedLksgDataset, "lksg")
+        return DataTableEntity.fromJsonObject("mock-data-id", "lksg", simplifiedLksgDataset)
     }
 }

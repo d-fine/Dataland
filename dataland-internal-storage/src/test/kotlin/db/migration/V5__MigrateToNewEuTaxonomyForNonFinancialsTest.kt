@@ -1,62 +1,55 @@
 package db.migration
 
-import db.migration.utils.buildDatabaseEntry
-import db.migration.utils.mockAndWhenConfigurationForFrameworkMigration
-import db.migration.utils.readJsonFromResourcesFile
-import org.flywaydb.core.api.migration.Context
+import db.migration.utils.DataTableEntity
+import db.migration.utils.JsonUtils
 import org.json.JSONObject
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 
 class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
-    val newEuTaxonomyForNonFinancials = "new-eutaxonomy-non-financials"
-    val euTaxonomyForNonFinancials = "eutaxonomy-non-financials"
+    private val newEuTaxonomyForNonFinancials = "new-eutaxonomy-non-financials"
+    private val euTaxonomyForNonFinancials = "eutaxonomy-non-financials"
 
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected for migrating new data`() {
-        val mockContext = Mockito.mock(Context::class.java)
-        mockAndWhenConfigurationForFrameworkMigration(
-            mockContext,
-            buildDatabaseEntry(
-                JSONObject(
-                    "{" +
-                        "\"something\": \"something\"" +
-                        "}",
-                ),
-                newEuTaxonomyForNonFinancials,
+        val originalDataEntity = DataTableEntity.fromJsonObject(
+            "mock-data-id", newEuTaxonomyForNonFinancials,
+            JSONObject(
+                "{" +
+                    "\"something\": \"something\"" +
+                    "}",
             ),
-            buildDatabaseEntry(
-                JSONObject(
-                    "{" +
-                        "\"something\": \"something\"" +
-                        "}",
-                ),
-                euTaxonomyForNonFinancials,
+        )
+        val expectedDataEntity = DataTableEntity.fromJsonObject(
+            "mock-data-id", euTaxonomyForNonFinancials,
+            JSONObject(
+                "{" +
+                    "\"something\": \"something\"" +
+                    "}",
             ),
         )
         val migration = V5__MigrateToNewEuTaxonomyForNonFinancials()
-        migration.migrate(mockContext)
+        migration.migrateEuTaxonomyData(originalDataEntity)
+        Assertions.assertEquals(originalDataEntity, expectedDataEntity)
     }
 
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected for migrating old data`() {
-        val mockContext = Mockito.mock(Context::class.java)
-        mockAndWhenConfigurationForFrameworkMigration(
-            mockContext,
-            oldOriginalDatabaseEntry,
-            oldExpectedTransformedDataBaseEntry,
+        val originalDataEntity = DataTableEntity.fromJsonObject(
+            "mock-data-id",
+            euTaxonomyForNonFinancials,
+            JsonUtils.readJsonFromResourcesFile("V5/oldOriginalDatabaseEntry.json"),
+
+        )
+
+        val expectedDataEntity = DataTableEntity.fromJsonObject(
+            "mock-data-id",
+            euTaxonomyForNonFinancials,
+            JsonUtils.readJsonFromResourcesFile("V5/oldOriginalDatabaseEntry.json"),
+
         )
         val migration = V5__MigrateToNewEuTaxonomyForNonFinancials()
-        migration.migrate(mockContext)
+        migration.migrateEuTaxonomyData(originalDataEntity)
+        Assertions.assertEquals(originalDataEntity, expectedDataEntity)
     }
-
-    val oldOriginalDatabaseEntry = buildDatabaseEntry(
-        readJsonFromResourcesFile("V5", "oldOriginalDatabaseEntry.json"),
-        euTaxonomyForNonFinancials,
-    )
-
-    val oldExpectedTransformedDataBaseEntry = buildDatabaseEntry(
-        readJsonFromResourcesFile("V5", "oldExpectedTransformedDataBaseEntry.json"),
-        euTaxonomyForNonFinancials,
-    )
 }
