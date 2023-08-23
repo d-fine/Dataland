@@ -272,6 +272,9 @@ export default defineComponent({
       else this.expandedGroup.push(key);
     },
 
+    /**
+     * Checks if data to display is there. If yes, it starts converting it to the frondet format for display.
+     */
     triggerConversionOfDataForDisplay() {
       if (this.dataAndMetaInfo.length > 0) {
         this.convertDataToFrontendFormat();

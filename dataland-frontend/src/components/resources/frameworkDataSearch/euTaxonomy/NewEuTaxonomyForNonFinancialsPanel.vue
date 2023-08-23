@@ -125,9 +125,12 @@ export default defineComponent({
       );
     },
 
+    /**
+     * Checks if a field name is included in the EnvironmentalObjectives enum.
+     * @param fieldName is the field name to check for
+     * @returns a boolean based on the result of the check
+     */
     isFieldNameAmongEnvironmentalObjectives(fieldName: string): boolean {
-      if (Object.values(EnvironmentalObjective).includes(fieldName)) {
-      }
       return Object.values(EnvironmentalObjective).includes(fieldName);
     },
 
@@ -153,6 +156,11 @@ export default defineComponent({
       return kpiValueToFormat;
     },
 
+    /**
+     * Formats an AmountWithCurrency object by concatenating the amount and the currency.
+     * @param amountWithCurrency the object that holds the amount and currency
+     * @returns the resulting string from the concatenation
+     */
     formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency) {
       if (amountWithCurrency.amount == undefined) {
         return null;
@@ -160,6 +168,12 @@ export default defineComponent({
       return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
     },
 
+    /**
+     * Formats a percentage number by rounding it to two decimals and afterward making it a string with a percent
+     * symbol at the end.
+     * @param relativeShareInPercent is the percentage number to round
+     * @returns the resulting string
+     */
     formatPercentageNumber(relativeShareInPercent: number) {
       return `${relativeShareInPercent.toFixed(2).toString()} %`;
     },
