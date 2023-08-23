@@ -160,7 +160,7 @@ export default defineComponent({
               this.dataModel.find((category) => category.name === categoryKey),
             );
             this.iterateThroughSubcategories(
-              categoryObject,
+              categoryObject as object,
               categoryKey,
               frameworkCategoryData,
               dataId,
@@ -179,62 +179,62 @@ export default defineComponent({
     },
     /**
      * Iterates through all subcategories of a category
-     * @param categoryObject the data object of the framework's category
+     * @param categoryDataObject the data object of the framework's category
      * @param categoryKey the key of the corresponding framework's category
-     * @param frameworkCategoryData  the category object of the framework's category
+     * @param category  the category object of the framework's category
      * @param dataId  the ID of the dataset
-     * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param currentDataset dataset for which the show if conditions should be checked
+     * @param listOfKpiDataObjects collector for the kpi data objects
+     * @param currentViewModelDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategories(
-      categoryObject,
-      categoryKey,
-      frameworkCategoryData: Category,
+      categoryDataObject: object,
+      categoryKey: string,
+      category: Category,
       dataId: string,
-      listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkViewModel,
+      listOfKpiDataObjects: Array<KpiDataObject>,
+      currentViewModelDataset: FrameworkViewModel,
     ) {
-      for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject)) {
+      for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryDataObject)) {
         if (subCategoryObject == null) continue;
         this.iterateThroughSubcategoryKpis(
-          subCategoryObject,
+          subCategoryObject as object,
           categoryKey,
           subCategoryKey,
-          frameworkCategoryData,
+          category,
           dataId,
-          listOfDataObjects,
-          currentDataset,
+          listOfKpiDataObjects,
+          currentViewModelDataset,
         );
       }
     },
     /**
      * Builds the result Kpi Data Object and adds it to the result list
-     * @param subCategoryObject the data object of the framework's subcategory
+     * @param subCategoryDataObject the data object of the framework's subcategory
      * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
-     * @param frameworkCategoryData the category object of the framework's category
+     * @param catgory the category object of the framework's category
      * @param dataId the ID of the dataset
-     * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param currentDataset dataset for which the show if conditions should be checked
+     * @param listOfKpiDataObjects collector for the kpi data objects
+     * @param currentViewModelDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategoryKpis(
-      subCategoryObject,
-      categoryKey,
+      subCategoryDataObject: object,
+      categoryKey: string,
       subCategoryKey: string,
-      frameworkCategoryData: Category,
+      catgory: Category,
       dataId: string,
-      listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkViewModel,
+      listOfKpiDataObjects: Array<KpiDataObject>,
+      currentViewModelDataset: FrameworkViewModel,
     ) {
-      for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
+      for (const [kpiKey, kpiValue] of Object.entries(subCategoryDataObject)) {
         const subcategory = assertDefined(
-          frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
+          catgory.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
-        if (field.showIf(currentDataset.toApiModel())) {
-          this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, frameworkCategoryData, dataId);
-          listOfDataObjects.push(this.resultKpiData);
+        if (field.showIf(currentViewModelDataset.toApiModel())) {
+          this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, catgory, dataId);
+          listOfKpiDataObjects.push(this.resultKpiData);
         }
       }
     },
