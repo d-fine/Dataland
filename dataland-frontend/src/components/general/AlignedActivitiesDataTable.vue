@@ -138,10 +138,10 @@ export default defineComponent({
 
     this.mainColumnData = this.listOfRowContents
       .map((col) => [
-        ...createRevenueGroup(col),
-        ...createSubstantialContributionCriteriaGroup(col),
-        ...createDnshCriteriaGroup(col),
-        ...createMinimumSafeguardsGroup(col),
+        ...createRevenueGroupData(col),
+        ...createSubstantialContributionCriteriaGroupData(col),
+        ...createDnshCriteriaGroupData(col),
+        ...createMinimumSafeguardsGroupData(col),
       ])
       .flat();
 
@@ -208,7 +208,7 @@ export default defineComponent({
  * @param activity targeted activity object
  * @returns list of revenue data items
  */
-function createRevenueGroup(activity: ActivityObject): ActivityFieldValueObject[] {
+function createRevenueGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
   return [
     {
       activity: activity.activityName,
@@ -229,7 +229,7 @@ function createRevenueGroup(activity: ActivityObject): ActivityFieldValueObject[
  * @param activity targeted activity object
  * @returns list of substantial contribution criteria data items
  */
-function createSubstantialContributionCriteriaGroup(activity: ActivityObject): ActivityFieldValueObject[] {
+function createSubstantialContributionCriteriaGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
   const fields = Object.entries(activity.substantialContributionCriteria);
   return fields.map(([field, value]) => {
     const content = value ? `${value}%` : "";
@@ -246,7 +246,7 @@ function createSubstantialContributionCriteriaGroup(activity: ActivityObject): A
  * @param activity targeted activity object
  * @returns list of DNSH criteria data items
  */
-function createDnshCriteriaGroup(activity: ActivityObject): ActivityFieldValueObject[] {
+function createDnshCriteriaGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
   const fields = Object.entries(activity.dnshCriteria);
   return fields.map(([field, value]) => {
     const content = value ? `${value}` : "";
@@ -263,11 +263,12 @@ function createDnshCriteriaGroup(activity: ActivityObject): ActivityFieldValueOb
  * @param activity targeted activity object
  * @returns list of minimum safeguards data items
  */
-function createMinimumSafeguardsGroup(activity: ActivityObject): ActivityFieldValueObject[] {
+function createMinimumSafeguardsGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
+  console.log("create", { activity });
   return [
     {
       activity: activity.activityName,
-      group: "",
+      group: "_minimumSafeguards",
       field: "minimumSafeguards",
       content: activity.minimumSafeguards ?? "",
     },
