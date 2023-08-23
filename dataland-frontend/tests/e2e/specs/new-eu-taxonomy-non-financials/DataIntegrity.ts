@@ -12,9 +12,10 @@ import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 let newEuTaxonomyForNonFinancialsFixtureForTest: FixtureData<NewEuTaxonomyDataForNonFinancials>;
 before(function () {
     cy.fixture("CompanyInformationWithNewEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-        const preparedFixturesEutnf = jsonContent as Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
-        newEuTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture("only-eligible-and-total-numbers", preparedFixturesEutnf);
+        const preparedFixtures = jsonContent as Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
+        newEuTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
         // "only-eligible-and-total-numbers" should be replaced later with a more suitable fake fixture
+        // or manually add field values here like newEuTaxonomyForNonFinancialsFixtureForTest.t.fieldX = {...}
     });
 });
 
