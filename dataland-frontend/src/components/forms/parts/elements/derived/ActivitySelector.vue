@@ -5,6 +5,13 @@
       <p>
         <b> {{ selectedActivities ? selectedActivities.name : "" }}</b>
       </p>
+
+      <FormKit
+        type="hidden"
+        name="activityName"
+        :modelValue="selectedActivities ? selectedActivities.name : ''"
+        disabled="true"
+      />
     </div>
 
     <PrimeButton
