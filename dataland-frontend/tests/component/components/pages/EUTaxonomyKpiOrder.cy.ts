@@ -1,25 +1,18 @@
-import NewEuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/NewEuTaxonomyForNonFinancialsPanel.vue"
+import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue"
 import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 import {
-    AssuranceDataAssuranceEnum,
-    DataPointOneValueAmountWithCurrency,
-    EuTaxonomyActivity,
-    EuTaxonomyAlignedActivity,
-    FiscalYearDeviation,
+    DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
     type NewEuTaxonomyDataForNonFinancials,
-    RelativeAndAbsoluteFinancialShare, YesNo, YesNoNa
 } from "@clients/backend";
-import mount from "cypress/vue";
 import {minimalKeycloakMock} from "../../testUtils/Keycloak";
-import {
-    DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel, NewEuTaxonomyForNonFinancialsViewModel
-} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
-import {
-    newEuTaxonomyForNonFinancialsModalColumnHeaders
-} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
 import {
     newEuTaxonomyForNonFinancialsDisplayDataModel
 } from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
+import {
+    DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel,
+    NewEuTaxonomyForNonFinancialsViewModel
+} from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
+import {DataAndMetaInformationViewModel, FrameworkViewModel} from "../../../../src/components/resources/ViewModel";
 describe("Component test for the NewEUTaxonomy Page", () => {
     let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
 
@@ -51,322 +44,337 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     it("Check order of the displayed KPIs and category entries", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
 
-        const mockData:NewEuTaxonomyDataForNonFinancials = {
-            "general": {
-                "fiscalYearDeviation": "Deviation",
-                "fiscalYearEnd": "2023-08-23",
-                "scopeOfEntities": "Yes",
-                "nfrdMandatory": "Yes",
-                "euTaxonomyActivityLevelReporting": "Yes",
-                "assurance": {
-                    "assurance": "None",
-                    "provider": "string",
-                    "dataSource": {
-                        "report": "string",
-                        "page": 0,
-                        "tagName": "string"
+        const mockData: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials = {
+            metaInfo: {
+                "dataId":"a9d75a0a-some-fake-dataId-549632b19782",
+                "companyId":"1e946cac-some-fake-ID-762f40e",
+                "dataType":"eutaxonomy-financials",
+                "uploaderUserId":"c5ef10b1-some-fake-uploaderUserId-e62ea226ee83",
+                "uploadTime":1678194542,
+                "reportingPeriod":"2019",
+                "currentlyActive":true,
+                "qaStatus":"Accepted"
+            },
+            data: {
+                "general": {
+                    "fiscalYearDeviation": "Deviation",
+                    "fiscalYearEnd": "2023-08-23",
+                    "scopeOfEntities": "Yes",
+                    "nfrdMandatory": "Yes",
+                    "euTaxonomyActivityLevelReporting": "Yes",
+                    "assurance": {
+                        "assurance": "None",
+                        "provider": "string",
+                        "dataSource": {
+                            "report": "string",
+                            "page": 0,
+                            "tagName": "string"
+                        }
+                    },
+                    "numberOfEmployees": 0,
+                    "referencedReports": {
+                        "additionalProp1": {
+                            "reference": "string",
+                            "isGroupLevel": "Yes",
+                            "reportDate": "2023-08-23",
+                            "currency": "string"
+                        },
+                        "additionalProp2": {
+                            "reference": "string",
+                            "isGroupLevel": "Yes",
+                            "reportDate": "2023-08-23",
+                            "currency": "string"
+                        },
+                        "additionalProp3": {
+                            "reference": "string",
+                            "isGroupLevel": "Yes",
+                            "reportDate": "2023-08-23",
+                            "currency": "string"
+                        }
                     }
                 },
-                "numberOfEmployees": 0,
-                "referencedReports": {
-                    "additionalProp1": {
-                        "reference": "string",
-                        "isGroupLevel": "Yes",
-                        "reportDate": "2023-08-23",
-                        "currency": "string"
+                "revenue": {
+                    "totalAmount": {
+                        "quality": "Audited",
+                        "dataSource": {
+                            "report": "string",
+                            "page": 0,
+                            "tagName": "string"
+                        },
+                        "comment": "string",
+                        "value": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
                     },
-                    "additionalProp2": {
-                        "reference": "string",
-                        "isGroupLevel": "Yes",
-                        "reportDate": "2023-08-23",
-                        "currency": "string"
+                    "totalNonEligibleShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
                     },
-                    "additionalProp3": {
-                        "reference": "string",
-                        "isGroupLevel": "Yes",
-                        "reportDate": "2023-08-23",
-                        "currency": "string"
-                    }
+                    "totalEligibleShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "totalNonAlignedShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "nonAlignedActivities": [
+                        {
+                            "activityName": "Afforestation",
+                            "naceCodes": [
+                                "string"
+                            ],
+                            "share": {
+                                "relativeShareInPercent": 0,
+                                "absoluteShare": {
+                                    "amount": 0,
+                                    "currency": "string"
+                                }
+                            }
+                        }
+                    ],
+                    "totalAlignedShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "substantialContributionCriteria": {
+                        "ClimateMitigation": 20,
+                        "ClimateAdaptation": 20,
+                        "Water": 20
+                    },
+                    "alignedActivities": [
+                        {
+                            "activityName": "Afforestation",
+                            "naceCodes": [
+                                "string"
+                            ],
+                            "share": {
+                                "relativeShareInPercent": 0,
+                                "absoluteShare": {
+                                    "amount": 0,
+                                    "currency": "string"
+                                }
+                            },
+                            "substantialContributionCriteria": {
+                                "ClimateMitigation": 20,
+                                "ClimateAdaptation": 20,
+                                "Water": 20
+                            },
+                            "dnshCriteria": {
+                                "ClimateMitigation": "Yes",
+                                "ClimateAdaptation": "Yes",
+                                "Water": "No"
+                            },
+                            "minimumSafeguards": "Yes"
+                        }
+                    ],
+                    "totalEnablingShare": 0,
+                    "totalTransitionalShare": 0
+                },
+                "capex": {
+                    "totalAmount": {
+                        "quality": "Audited",
+                        "dataSource": {
+                            "report": "string",
+                            "page": 0,
+                            "tagName": "string"
+                        },
+                        "comment": "string",
+                        "value": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "totalNonEligibleShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "totalEligibleShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "totalNonAlignedShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "nonAlignedActivities": [
+                        {
+                            "activityName": "Afforestation",
+                            "naceCodes": [
+                                "string"
+                            ],
+                            "share": {
+                                "relativeShareInPercent": 0,
+                                "absoluteShare": {
+                                    "amount": 0,
+                                    "currency": "string"
+                                }
+                            }
+                        }
+                    ],
+                    "totalAlignedShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "substantialContributionCriteria": {
+                        "ClimateMitigation": 20,
+                        "ClimateAdaptation": 20,
+                        "Water": 20
+                    },
+                    "alignedActivities": [
+                        {
+                            "activityName": "Afforestation",
+                            "naceCodes": [
+                                "string"
+                            ],
+                            "share": {
+                                "relativeShareInPercent": 0,
+                                "absoluteShare": {
+                                    "amount": 0,
+                                    "currency": "string"
+                                }
+                            },
+                            "substantialContributionCriteria": {
+                                "ClimateMitigation": 20,
+                                "ClimateAdaptation": 20,
+                                "Water": 20
+                            },
+                            "dnshCriteria": {
+                                "ClimateMitigation": "Yes",
+                                "ClimateAdaptation": "Yes",
+                                "Water": "No"
+                            },
+                            "minimumSafeguards": "Yes"
+                        }
+                    ],
+                    "totalEnablingShare": 0,
+                    "totalTransitionalShare": 0
+                },
+                "opex": {
+                    "totalAmount": {
+                        "quality": "Audited",
+                        "dataSource": {
+                            "report": "string",
+                            "page": 0,
+                            "tagName": "string"
+                        },
+                        "comment": "string",
+                        "value": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "totalNonEligibleShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "totalEligibleShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "totalNonAlignedShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "nonAlignedActivities": [
+                        {
+                            "activityName": "Afforestation",
+                            "naceCodes": [
+                                "string"
+                            ],
+                            "share": {
+                                "relativeShareInPercent": 0,
+                                "absoluteShare": {
+                                    "amount": 0,
+                                    "currency": "string"
+                                }
+                            }
+                        }
+                    ],
+                    "totalAlignedShare": {
+                        "relativeShareInPercent": 0,
+                        "absoluteShare": {
+                            "amount": 0,
+                            "currency": "string"
+                        }
+                    },
+                    "substantialContributionCriteria": {
+                        "ClimateMitigation": 20,
+                        "ClimateAdaptation": 20,
+                        "Water": 20
+                    },
+                    "alignedActivities": [
+                        {
+                            "activityName": "Afforestation",
+                            "naceCodes": [
+                                "string"
+                            ],
+                            "share": {
+                                "relativeShareInPercent": 0,
+                                "absoluteShare": {
+                                    "amount": 0,
+                                    "currency": "string"
+                                }
+                            },
+                            "substantialContributionCriteria": {
+                                "ClimateMitigation": 20,
+                                "ClimateAdaptation": 20,
+                                "Water": 20
+                            },
+                            "dnshCriteria": {
+                                "ClimateMitigation": "Yes",
+                                "ClimateAdaptation": "Yes",
+                                "Water": "No"
+                            },
+                            "minimumSafeguards": "Yes"
+                        }
+                    ],
+                    "totalEnablingShare": 0,
+                    "totalTransitionalShare": 0
                 }
-            },
-            "revenue": {
-                "totalAmount": {
-                    "quality": "Audited",
-                    "dataSource": {
-                        "report": "string",
-                        "page": 0,
-                        "tagName": "string"
-                    },
-                    "comment": "string",
-                    "value": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "totalNonEligibleShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "totalEligibleShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "totalNonAlignedShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "nonAlignedActivities": [
-                    {
-                        "activityName": "Afforestation",
-                        "naceCodes": [
-                            "string"
-                        ],
-                        "share": {
-                            "relativeShareInPercent": 0,
-                            "absoluteShare": {
-                                "amount": 0,
-                                "currency": "string"
-                            }
-                        }
-                    }
-                ],
-                "totalAlignedShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "substantialContributionCriteria": {
-                    "ClimateMitigation": 20,
-                    "ClimateAdaptation": 20,
-                    "Water": 20
-                },
-                "alignedActivities": [
-                    {
-                        "activityName": "Afforestation",
-                        "naceCodes": [
-                            "string"
-                        ],
-                        "share": {
-                            "relativeShareInPercent": 0,
-                            "absoluteShare": {
-                                "amount": 0,
-                                "currency": "string"
-                            }
-                        },
-                        "substantialContributionCriteria": {
-                            "ClimateMitigation": 20,
-                            "ClimateAdaptation": 20,
-                            "Water": 20
-                        },
-                        "dnshCriteria": {
-                            "ClimateMitigation": "Yes",
-                            "ClimateAdaptation": "Yes",
-                            "Water": "No"
-                        },
-                        "minimumSafeguards": "Yes"
-                    }
-                ],
-                "totalEnablingShare": 0,
-                "totalTransitionalShare": 0
-            },
-            "capex": {
-                "totalAmount": {
-                    "quality": "Audited",
-                    "dataSource": {
-                        "report": "string",
-                        "page": 0,
-                        "tagName": "string"
-                    },
-                    "comment": "string",
-                    "value": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "totalNonEligibleShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "totalEligibleShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "totalNonAlignedShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "nonAlignedActivities": [
-                    {
-                        "activityName": "Afforestation",
-                        "naceCodes": [
-                            "string"
-                        ],
-                        "share": {
-                            "relativeShareInPercent": 0,
-                            "absoluteShare": {
-                                "amount": 0,
-                                "currency": "string"
-                            }
-                        }
-                    }
-                ],
-                "totalAlignedShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "substantialContributionCriteria": {
-                    "ClimateMitigation": 20,
-                    "ClimateAdaptation": 20,
-                    "Water": 20
-                },
-                "alignedActivities": [
-                    {
-                        "activityName": "Afforestation",
-                        "naceCodes": [
-                            "string"
-                        ],
-                        "share": {
-                            "relativeShareInPercent": 0,
-                            "absoluteShare": {
-                                "amount": 0,
-                                "currency": "string"
-                            }
-                        },
-                        "substantialContributionCriteria": {
-                            "ClimateMitigation": 20,
-                            "ClimateAdaptation": 20,
-                            "Water": 20
-                        },
-                        "dnshCriteria": {
-                            "ClimateMitigation": "Yes",
-                            "ClimateAdaptation": "Yes",
-                            "Water": "No"
-                        },
-                        "minimumSafeguards": "Yes"
-                    }
-                ],
-                "totalEnablingShare": 0,
-                "totalTransitionalShare": 0
-            },
-            "opex": {
-                "totalAmount": {
-                    "quality": "Audited",
-                    "dataSource": {
-                        "report": "string",
-                        "page": 0,
-                        "tagName": "string"
-                    },
-                    "comment": "string",
-                    "value": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "totalNonEligibleShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "totalEligibleShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "totalNonAlignedShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "nonAlignedActivities": [
-                    {
-                        "activityName": "Afforestation",
-                        "naceCodes": [
-                            "string"
-                        ],
-                        "share": {
-                            "relativeShareInPercent": 0,
-                            "absoluteShare": {
-                                "amount": 0,
-                                "currency": "string"
-                            }
-                        }
-                    }
-                ],
-                "totalAlignedShare": {
-                    "relativeShareInPercent": 0,
-                    "absoluteShare": {
-                        "amount": 0,
-                        "currency": "string"
-                    }
-                },
-                "substantialContributionCriteria": {
-                    "ClimateMitigation": 20,
-                    "ClimateAdaptation": 20,
-                    "Water": 20
-                },
-                "alignedActivities": [
-                    {
-                        "activityName": "Afforestation",
-                        "naceCodes": [
-                            "string"
-                        ],
-                        "share": {
-                            "relativeShareInPercent": 0,
-                            "absoluteShare": {
-                                "amount": 0,
-                                "currency": "string"
-                            }
-                        },
-                        "substantialContributionCriteria": {
-                            "ClimateMitigation": 20,
-                            "ClimateAdaptation": 20,
-                            "Water": 20
-                        },
-                        "dnshCriteria": {
-                            "ClimateMitigation": "Yes",
-                            "ClimateAdaptation": "Yes",
-                            "Water": "No"
-                        },
-                        "minimumSafeguards": "Yes"
-                    }
-                ],
-                "totalEnablingShare": 0,
-                "totalTransitionalShare": 0
             }
-        };
+            }
 
-        const newEuTaxonomyForNonFinancialsViewModel = new NewEuTaxonomyForNonFinancialsViewModel(mockData);
-        const dataAndMetaInfo: Array<NewEuTaxonomyForNonFinancialsViewModel> = [newEuTaxonomyForNonFinancialsViewModel];
-        cy.mountWithPlugins(NewEuTaxonomyForNonFinancialsPanel, {
+
+        const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(mockData);
+        const dataAndMetaInfo: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel>
+            = [singleMockDataAndMetaInfo];
+
+        cy.mountWithPlugins(ThreeLayerDataTable, {
             keycloak: minimalKeycloakMock({}),
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
