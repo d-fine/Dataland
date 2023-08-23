@@ -39,11 +39,6 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
         const newEuTaxonomyDataForNonFinancialsData = preparedFixture.t;
 
-        cy.intercept("/api/data/new-eutaxonomy-non-financials/mock-data-id", {
-            companyId: "mock-company-id",
-            reportingPeriod: preparedFixture.reportingPeriod,
-            data: newEuTaxonomyDataForNonFinancialsData,
-        } as CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials);
         cy.mountWithPlugins(ThreeLayerTable, {
             keycloak: minimalKeycloakMock({}),
             global: {
