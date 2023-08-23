@@ -1,5 +1,7 @@
 package db.migration
 
+import db.migration.utils.getOrJavaNull
+import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -11,7 +13,6 @@ import java.math.BigDecimal
  * and the new version is integrated into the old datatype
  */
 class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
-    private val invalidSet = setOf(null, JSONObject.NULL)
 
     override fun migrate(context: Context?) {
         migrateOldData(context)
@@ -43,15 +44,17 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
             "referencedReports",
         )
         keysToMove.forEach {
-            generalObject.put(it, dataObject.opt(it) ?: JSONObject.NULL)
+            generalObject.put(it, dataObject.getOrJsonNull(it))
             dataObject.remove(it)
         }
         dataObject.put("general", generalObject)
     }
 
     private fun migrateOldCashFlowDetails(cashFlowDetails: JSONObject) {
-        val totalAmountObject = cashFlowDetails.opt("totalAmount")
-        if (!invalidSet.contains(totalAmountObject) && totalAmountObject is JSONObject) {
+        val totalAmountObject = cashFlowDetails.getOrJavaNull("totalAmount")
+        if (totalAmountObject != null) {
+            totalAmountObject as JSONObject
+
             val oldTotalAmountValue = totalAmountObject.opt("value")
             totalAmountObject.put(
                 "value",
@@ -66,85 +69,60 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
             if (!isDataPointProvidingSourceInfo(totalAmountObject)) {
                 setAlternativeSourceInfoIfPossible(cashFlowDetails)
             }
-        } else if (setAlternativeSourceInfoIfPossible(cashFlowDetails)) {
-            // this is empty on purpose
-            // to prevent executing code multiple times
-            // the execution of the logic of this branch happens in the else if header
-        } else {
+        } else if (!setAlternativeSourceInfoIfPossible(cashFlowDetails)) {
             cashFlowDetails.put("totalAmount", JSONObject.NULL)
         }
 
         migrateDataPointToFinancialShare(cashFlowDetails, "eligibleData", "totalEligibleShare")
         migrateDataPointToFinancialShare(cashFlowDetails, "alignedData", "totalAlignedShare")
-
-        cashFlowDetails.remove("alignedData")
-        val unprovidedFields = listOf(
-            "totalNonEligibleShare",
-            "totalNonAlignedShare",
-            "nonAlignedActivities",
-            "substantialContributionCriteria",
-            "alignedActivities",
-            "totalEnablingShare",
-            "totalTransitionalShare",
-        )
-        unprovidedFields.forEach { cashFlowDetails.put(it, JSONObject.NULL) }
     }
 
     private fun setAlternativeSourceInfoIfPossible(cashFlowDetails: JSONObject): Boolean {
         listOf("eligibleData", "alignedData").forEach {
-            val dataPointObject = cashFlowDetails.opt(it) ?: JSONObject.NULL
-            if (dataPointObject != JSONObject.NULL && isDataPointProvidingSourceInfo(dataPointObject as JSONObject)) {
-                applyAlternativeSourceInfo(cashFlowDetails, dataPointObject)
-                return true
+            cashFlowDetails.getOrJavaNull(it)?.let { obj ->
+                if (isDataPointProvidingSourceInfo(obj as JSONObject)) {
+                    applyAlternativeSourceInfo(cashFlowDetails, obj)
+                    return true
+                }
             }
         }
         return false
     }
 
     private fun isDataPointProvidingSourceInfo(dataPoint: JSONObject): Boolean {
-        // TODO does this selection make sense?
-        listOf("comment", "quality", "comment").forEach {
-            if (!invalidSet.contains(dataPoint.opt(it))) {
-                return true
-            }
-        }
-        val dataSourceObject = dataPoint.getJSONObject("dataSource")
-        return dataSourceObject.keySet().any {
-            !invalidSet.contains(dataSourceObject.opt(it))
-        }
+        val hasCommentOrQuality = listOf("comment", "quality").any { dataPoint.getOrJavaNull(it) != null }
+        val hasPopulatedDataSource = dataPoint.getOrJavaNull("dataSource")?.let {
+            val itObject = it as JSONObject
+            itObject.keySet().any { itObject.getOrJavaNull(it) != null }
+        } ?: false
+
+        return hasCommentOrQuality || hasPopulatedDataSource
     }
 
     private fun applyAlternativeSourceInfo(cashFlowDetails: JSONObject, dataPoint: JSONObject) {
         val newTotalAmountObject = JSONObject()
         listOf("comment", "quality", "comment", "dataSource").forEach {
-            newTotalAmountObject.put(it, dataPoint.opt(it) ?: JSONObject.NULL)
+            newTotalAmountObject.put(it, dataPoint.getOrJsonNull(it))
         }
-        val totalAmountValueObject = with(cashFlowDetails.opt("totalAmount")) {
-            if (invalidSet.contains(this)) {
-                JSONObject.NULL
-            } else {
-                (this as JSONObject).opt("value") ?: JSONObject.NULL
-            }
-        }
+        val totalAmountValueObject = cashFlowDetails
+            .getOrJavaNull("totalAmount")
+            ?.let { (it as JSONObject).getOrJsonNull("value") } ?: JSONObject.NULL
+
         newTotalAmountObject.put("value", totalAmountValueObject)
         cashFlowDetails.put("totalAmount", newTotalAmountObject)
     }
 
     private fun migrateDataPointToFinancialShare(cashFlowDetails: JSONObject, fromKey: String, toKey: String) {
         val financialShareObject = JSONObject()
-        with(cashFlowDetails.opt(fromKey) ?: JSONObject.NULL) {
-            if (this == JSONObject.NULL) {
-                JSONObject.NULL
-            } else {
-                financialShareObject.put(
-                    "relativeShareInPercent",
-                    (this as JSONObject).opt("valueAsPercentage") ?: JSONObject.NULL,
-                )
-                val absoluteShareObject = JSONObject()
-                financialShareObject.put("absoluteShare", absoluteShareObject)
-                absoluteShareObject.put("amount", this.opt("valueAsAbsolute") ?: JSONObject.NULL)
-                absoluteShareObject.put("currency", JSONObject.NULL)
-            }
+        cashFlowDetails.getOrJavaNull(fromKey)?.also {
+            financialShareObject.put(
+                "relativeShareInPercent",
+                (it as JSONObject).opt("valueAsPercentage") ?: JSONObject.NULL,
+            )
+            val absoluteShareObject = JSONObject()
+            financialShareObject.put("absoluteShare", absoluteShareObject)
+            absoluteShareObject.put("amount", it.opt("valueAsAbsolute") ?: JSONObject.NULL)
+            absoluteShareObject.put("currency", JSONObject.NULL)
         }
         cashFlowDetails.put(toKey, financialShareObject)
         cashFlowDetails.remove(fromKey)
