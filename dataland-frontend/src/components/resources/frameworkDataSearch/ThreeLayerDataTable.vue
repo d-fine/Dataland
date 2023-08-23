@@ -94,12 +94,12 @@ export default defineComponent({
     },
   },
   mounted() {
-      this.triggerConversionOfDataForDisplay()
+    this.triggerConversionOfDataForDisplay();
   },
   watch: {
     dataAndMetaInfo() {
-        this.triggerConversionOfDataForDisplay()
-      }
+      this.triggerConversionOfDataForDisplay();
+    },
   },
   emits: ["dataConverted"],
   methods: {
@@ -272,11 +272,11 @@ export default defineComponent({
       else this.expandedGroup.push(key);
     },
 
-      triggerConversionOfDataForDisplay() {
-          if (this.dataAndMetaInfo.length > 0) {
-              this.convertDataToFrontendFormat();
-          }
+    triggerConversionOfDataForDisplay() {
+      if (this.dataAndMetaInfo.length > 0) {
+        this.convertDataToFrontendFormat();
       }
+    },
   },
 });
 </script>

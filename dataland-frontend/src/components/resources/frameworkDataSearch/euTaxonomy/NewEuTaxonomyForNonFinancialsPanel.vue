@@ -33,6 +33,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { newEuTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
+import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
 export default defineComponent({
   name: "NewEuTaxonomyForNonFinancialsPanel",
@@ -45,6 +46,7 @@ export default defineComponent({
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders: newEuTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
+      namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "totalEnablingShare", "totalTransitionalShare"],
     };
   },
   props: PanelProps,
@@ -110,20 +112,25 @@ export default defineComponent({
       this.waitingForData = false;
     },
 
-      /**
-       * Checks if a KpiValue is an object with amount and currency and
-       * @param kpiValue the kpiValue that shall be checked
-       * @returns a boolean based on the result of the check
-       */
-    hasAmountOrCurrency(kpiValue: KpiValue): boolean {
-          return (
-              typeof kpiValue === 'object' &&
-              (
-                  ('amount' in kpiValue && typeof kpiValue.amount === 'number')
-                  ||
-                  ('currency' in kpiValue && typeof kpiValue.currency === 'string')
-              )
-          );
+    /**
+     * Checks if a KpiValue is an object with amount and/or currency
+     * @param kpiValue the kpiValue that shall be checked
+     * @returns a boolean based on the result of the check
+     */
+    hasKpiObjectAmountOrCurrency(kpiValue: KpiValue): boolean {
+      return (
+        typeof kpiValue === "object" &&
+        (("amount" in kpiValue && typeof kpiValue.amount === "number") ||
+          ("currency" in kpiValue && typeof kpiValue.currency === "string"))
+      );
+    },
+
+    isFieldNameAmongEnvironmentalObjectives(fieldName: string): boolean {
+      console.log("checking: " + fieldName);
+      if (Object.values(EnvironmentalObjective).includes(fieldName)) {
+        console.log("ENVIRONMENTAL!");
+      }
+      return Object.values(EnvironmentalObjective).includes(fieldName);
     },
 
     /**
@@ -135,17 +142,28 @@ export default defineComponent({
     formatValueForDisplay(field: Field, kpiValueToFormat: KpiValue): KpiValue {
       if (kpiValueToFormat == null) {
         return kpiValueToFormat;
-      } else if (field.name == "relativeShareInPercent") {
-        const relativeShareInPercent = kpiValueToFormat as number;
-        return `${relativeShareInPercent.toFixed(2).toString()} %`;
-      } else if (this.hasAmountOrCurrency(kpiValueToFormat)) {
-        const amountWithCurrency = kpiValueToFormat as AmountWithCurrency;
-        if (amountWithCurrency.amount == undefined) {
-          return null;
-        }
-        return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
+      }
+      if (
+        this.namesOfFieldsToFormatAsPercentages.includes(field.name) ||
+        this.isFieldNameAmongEnvironmentalObjectives(field.name)
+      ) {
+        return this.formatPercentageNumber(kpiValueToFormat as number);
+      }
+      if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
+        return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
       }
       return kpiValueToFormat;
+    },
+
+    formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency) {
+      if (amountWithCurrency.amount == undefined) {
+        return null;
+      }
+      return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
+    },
+
+    formatPercentageNumber(relativeShareInPercent: number) {
+      return `${relativeShareInPercent.toFixed(2).toString()} %`;
     },
   },
 });
