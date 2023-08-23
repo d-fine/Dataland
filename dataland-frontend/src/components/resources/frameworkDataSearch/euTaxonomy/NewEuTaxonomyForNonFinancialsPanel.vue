@@ -110,13 +110,9 @@ export default defineComponent({
       this.waitingForData = false;
     },
 
-      hasAmountOrCurrency(value: KpiValue): boolean {
-    return (
-        typeof value === 'object' &&
-        ('amount' in value || 'currency' in value)
-    );
-},
-
+    hasAmountOrCurrency(value: KpiValue): boolean {
+      return typeof value === "object" && ("amount" in value || "currency" in value);
+    },
 
     /**
      * Formats KPI values for display
