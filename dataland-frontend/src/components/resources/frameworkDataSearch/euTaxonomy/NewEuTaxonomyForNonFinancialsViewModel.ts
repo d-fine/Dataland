@@ -40,7 +40,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
   };
   assurance: {
     assurance: {
-      levelOfAssurance: AssuranceDataAssuranceEnum;
+      levelOfAssurance?: AssuranceDataAssuranceEnum;
       assuranceProvider?: string;
     };
   }; // TODO type this properly later
@@ -61,7 +61,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
     };
     this.assurance = {
       assurance: {
-        levelOfAssurance: apiModel.general!.assurance!.assurance, // TODO undefined safety
+        levelOfAssurance: apiModel.general?.assurance?.assurance,
         assuranceProvider: apiModel.general?.assurance?.provider,
       },
     };
