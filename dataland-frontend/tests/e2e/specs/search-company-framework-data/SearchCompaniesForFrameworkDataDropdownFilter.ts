@@ -1,11 +1,7 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import {
-  DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
-  type SmeData,
-} from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForFinancials, type SmeData } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
