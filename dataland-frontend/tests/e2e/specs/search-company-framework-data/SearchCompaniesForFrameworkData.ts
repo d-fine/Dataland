@@ -13,7 +13,7 @@ import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from "@e2e/utils/
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
 before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
     companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
   });
 });
