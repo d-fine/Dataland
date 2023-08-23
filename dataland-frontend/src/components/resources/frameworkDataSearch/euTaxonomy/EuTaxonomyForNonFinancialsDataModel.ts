@@ -86,6 +86,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nfrdMandatory",
