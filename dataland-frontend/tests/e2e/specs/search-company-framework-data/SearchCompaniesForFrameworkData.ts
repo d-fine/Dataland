@@ -1,20 +1,20 @@
 import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
-import { DataTypeEnum, type EuTaxonomyDataForNonFinancials, type StoredCompany } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForFinancials, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 
-let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
-    companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+    companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
   });
 });
 
@@ -126,7 +126,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
           cy.visitAndCheckAppMount("/companies");
           verifySearchResultTable();
-          const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
+          const inputValue = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
           const permIdText = "Permanent Identifier (PermID)";
           checkPermIdToolTip(permIdText);
           executeCompanySearchWithStandardSearchBar(inputValue);
@@ -142,10 +142,10 @@ describe("As a user, I expect the search functionality on the /companies page to
 
       it("Execute a company Search by identifier and assure that the company is found", () => {
         cy.visitAndCheckAppMount("/companies");
-        const allIdentifiers = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.identifiers;
+        const allIdentifiers = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.identifiers;
         const anyIdentifierKey = assertDefined(Object.keys(allIdentifiers).find((it) => allIdentifiers[it].length > 0));
         const anyIdentifier = allIdentifiers[anyIdentifierKey][0];
-        const expectedCompanyName = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
+        const expectedCompanyName = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
         executeCompanySearchWithStandardSearchBar(anyIdentifier);
         cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
       });
@@ -154,9 +154,9 @@ describe("As a user, I expect the search functionality on the /companies page to
        * Returns the first company from the fake fixture that has at least one alternative name
        * @returns the matching company from the fake fixtures
        */
-      function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForNonFinancials> {
+      function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForFinancials> {
         return assertDefined(
-          companiesWithEuTaxonomyDataForNonFinancials.find((it) => {
+          companiesWithEuTaxonomyDataForFinancials.find((it) => {
             return (
               it.companyInformation.companyAlternativeNames !== undefined &&
               it.companyInformation.companyAlternativeNames.length > 0
@@ -197,7 +197,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           const primevueHighlightedSuggestionClass = "p-focus";
           const searchString = storedCompanies[0].companyInformation.companyName;
@@ -253,10 +253,10 @@ describe("As a user, I expect the search functionality on the /companies page to
         const highlightedSubString = "this_is_highlighted";
         const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
         getKeycloakToken(admin_name, admin_pw).then((token) => {
-          getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures().then((fixtureData) => {
+          getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
               return uploadFrameworkData(
-                DataTypeEnum.EutaxonomyNonFinancials,
+                DataTypeEnum.EutaxonomyFinancials,
                 token,
                 storedCompany.companyId,
                 fixtureData.reportingPeriod,
