@@ -9,7 +9,7 @@
       <FormKit
         type="hidden"
         name="activityName"
-        :modelValue="selectedActivities ? selectedActivities.name : ''"
+        :modelValue="selectedActivities ? selectedActivities.value : ''"
         disabled="true"
       />
     </div>
@@ -57,12 +57,10 @@
 </template>
 
 <script lang="ts">
-import Tree, { type TreeNode } from "primevue/tree";
-import InputText from "primevue/inputtext";
+import Tree from "primevue/tree";
 import OverlayPanel from "primevue/overlaypanel";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import RadioButton from "primevue/radiobutton";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
 import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
@@ -72,10 +70,8 @@ export default defineComponent({
   components: {
     MultiSelectFormElement,
     PrimeButton,
-    UploadFormHeader,
     Tree,
     OverlayPanel,
-    InputText,
     RadioButton,
   },
   setup() {

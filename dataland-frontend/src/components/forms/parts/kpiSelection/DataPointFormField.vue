@@ -11,6 +11,7 @@
           :validation="`number|${validation}`"
           placeholder="Value"
           outer-class="short"
+          @blur="handleBlurValue"
         />
         <div v-if="unit" class="form-field-label pb-3">
           <FormKit type="hidden" name="unit" :modelValue="unit" />
@@ -69,7 +70,7 @@
       <div class="md:col-6 col-12 p-0">
         <FormKit
           type="select"
-          :modelValue="!isDataQualityRequired ? 'NA' : ''"
+          v-model="qualityValue"
           name="quality"
           :validation="isDataQualityRequired ? 'required' : ''"
           validation-label="Data quality"
@@ -116,6 +117,7 @@ export default defineComponent({
         label: qualityOption,
         value: qualityOption,
       })),
+      qualityValue: "",
       currentValue: "",
     };
   },
@@ -127,6 +129,16 @@ export default defineComponent({
   },
   methods: {
     selectNothingIfNotExistsFormKitPlugin,
+    /**
+     * Handle blur event on value input.
+     */
+    handleBlurValue() {
+      if (this.currentValue === "") {
+        this.qualityValue = "NA";
+      } else if (this.currentValue !== "" && this.qualityValue == "NA") {
+        this.qualityValue = "";
+      }
+    },
   },
 });
 </script>
