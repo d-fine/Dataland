@@ -1,5 +1,5 @@
 import {
-  type AssuranceDataAssuranceEnum,
+  AssuranceDataAssuranceEnum,
   type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
   type DataPointOneValueAmountWithCurrency,
@@ -40,7 +40,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
   };
   assurance: {
     assurance: {
-      levelOfAssurance?: AssuranceDataAssuranceEnum;
+      levelOfAssurance: AssuranceDataAssuranceEnum;
       assuranceProvider?: string;
     };
   }; // TODO type this properly later
@@ -61,7 +61,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
     };
     this.assurance = {
       assurance: {
-        levelOfAssurance: apiModel.general?.assurance?.assurance,
+        levelOfAssurance: apiModel.general?.assurance?.assurance ?? AssuranceDataAssuranceEnum.None,
         assuranceProvider: apiModel.general?.assurance?.provider,
       },
     };
