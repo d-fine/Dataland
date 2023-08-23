@@ -29,7 +29,7 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
             ),
         )
         val migration = V5__MigrateToNewEuTaxonomyForNonFinancials()
-        migration.migrateEuTaxonomyData(originalDataEntity)
+        migration.migrateNewEuTaxonomyData(originalDataEntity)
         Assertions.assertEquals(originalDataEntity, expectedDataEntity)
     }
 

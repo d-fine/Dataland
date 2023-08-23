@@ -35,8 +35,17 @@ data class DataTableEntity(
         queryStatement.setString(1, ObjectMapper().writeValueAsString(companyAssociatedData.toString()))
         queryStatement.setString(2, dataId)
         queryStatement.executeUpdate()
-        println(queryStatement.toString())
     }
+
+    val dataJsonObject: JSONObject
+        get() = JSONObject(companyAssociatedData.getString("data"))
+
+    val jsonObjectWithoutData: JSONObject
+        get() {
+            val companyAssociatedDataWithoutData = JSONObject(companyAssociatedData.toString())
+            companyAssociatedDataWithoutData.remove("data")
+            return companyAssociatedDataWithoutData
+        }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -45,7 +54,9 @@ data class DataTableEntity(
         other as DataTableEntity
 
         if (dataId != other.dataId) return false
-        return companyAssociatedData.toString() == other.companyAssociatedData.toString()
+
+        return dataJsonObject.similar(other.dataJsonObject) &&
+                jsonObjectWithoutData.similar(other.jsonObjectWithoutData)
     }
 
     override fun hashCode(): Int {

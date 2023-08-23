@@ -1,6 +1,8 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
+import db.migration.utils.getOrJavaNull
+import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -18,7 +20,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
     private fun migrateFieldForCashFlow(fieldToMigrate: String, cashFlow: JSONObject) {
         val dataToMigrate = cashFlow.opt(fieldToMigrate) ?: return
         if (dataToMigrate != JSONObject.NULL && dataToMigrate is JSONObject) {
-            dataToMigrate.put("valueAsPercentage", dataToMigrate.opt("value"))
+            dataToMigrate.put("valueAsPercentage", dataToMigrate.getOrJsonNull("value"))
             dataToMigrate.remove("value")
         }
         cashFlow.put(fieldsToMigrate.getValue(fieldToMigrate), dataToMigrate)
@@ -31,7 +33,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration()
     fun migrateEuTaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
         val dataset = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
         cashFlowTypes.forEach { cashflowType ->
-            val cashFlow = (dataset.opt(cashflowType) ?: return@forEach) as JSONObject
+            val cashFlow = (dataset.getOrJavaNull(cashflowType) ?: return@forEach) as JSONObject
             fieldsToMigrate.keys.forEach { fieldToMigrate ->
                 migrateFieldForCashFlow(fieldToMigrate, cashFlow)
             }

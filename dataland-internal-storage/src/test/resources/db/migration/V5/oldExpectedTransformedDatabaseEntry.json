@@ -42,13 +42,6 @@
     },
     "totalAlignedShare": {},
     "totalEligibleShare": {},
-    "totalNonEligibleShare": null,
-    "totalNonAlignedShare": null,
-    "nonAlignedActivities": null,
-    "substantialContributionCriteria": null,
-    "alignedActivities": null,
-    "totalEnablingShare": null,
-    "totalTransitionalShare": null
   },
   "capex": {
     "totalAlignedShare": {
@@ -69,13 +62,6 @@
       "comment": "quantify 1080p driver"
     },
     "totalEligibleShare": {},
-    "totalNonEligibleShare": null,
-    "totalNonAlignedShare": null,
-    "nonAlignedActivities": null,
-    "substantialContributionCriteria": null,
-    "alignedActivities": null,
-    "totalEnablingShare": null,
-    "totalTransitionalShare": null
   },
   "revenue": {
     "totalAmount": {
@@ -101,12 +87,5 @@
         "currency": null
       }
     },
-    "totalNonEligibleShare": null,
-    "totalNonAlignedShare": null,
-    "nonAlignedActivities": null,
-    "substantialContributionCriteria": null,
-    "alignedActivities": null,
-    "totalEnablingShare": null,
-    "totalTransitionalShare": null
   }
 }

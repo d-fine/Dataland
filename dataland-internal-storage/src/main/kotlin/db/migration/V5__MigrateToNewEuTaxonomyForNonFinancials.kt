@@ -138,8 +138,13 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
     }
 
     private fun migrateNewData(context: Context?) {
-        migrateCompanyAssociatedDataOfDatatype(context, "new-eutaxonomy-non-financials") {
-            it.companyAssociatedData.put("dataType", "eutaxonomy-non-financials")
-        }
+        migrateCompanyAssociatedDataOfDatatype(context, "new-eutaxonomy-non-financials", this::migrateNewEuTaxonomyData)
+    }
+
+    /**
+     * Migrates an old eu taxonomy non financials dataset to the new format
+     */
+    fun migrateNewEuTaxonomyData(dataTableEntity: DataTableEntity) {
+        dataTableEntity.companyAssociatedData.put("dataType", "eutaxonomy-non-financials")
     }
 }
