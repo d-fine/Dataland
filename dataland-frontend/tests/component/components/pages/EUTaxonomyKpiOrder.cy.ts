@@ -1,5 +1,4 @@
 import NewEuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue"
-import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 import {
     type NewEuTaxonomyDataForNonFinancials
 } from "@clients/backend";
@@ -10,15 +9,6 @@ import {
     newEuTaxonomyForNonFinancialsDisplayDataModel
 } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 describe("Component test for the NewEUTaxonomy Page", () => {
-    let preparedFixtures: Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
-
-    before(() => {
-        cy.fixture("CompanyInformationWithNewEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-            preparedFixtures = jsonContent as Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
-        });
-    });
-
-
     //const kpiList:string[] = ["GENERAL", "REVENUE", "CAPEX", "OPEX"]; These 2 lists have to be used when running the cypress test locally, because the fixtures are different.
     //const kpiListOrderChanged = ["REVENUE", "GENERAL", "OPEX", "CAPEX"];
     const kpiList:string[] = ["BASIC INFORMATION","ASSURANCE","REVENUE","CAPEX", "OPEX"];
@@ -38,8 +28,6 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         ["totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare"]];
 
     it("Check order of the displayed KPIs and category entries", () => {
-        const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
-
         const mockData:NewEuTaxonomyDataForNonFinancials = {
             "general": {
                 "fiscalYearDeviation": "Deviation",
@@ -360,7 +348,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             props: {
-                dataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
+                dataModel: newEuTaxonomyForNonFinancialsViewModel,
                 dataAndMetaInfo: dataAndMetaInfo,
             }
         }).then(() => {
