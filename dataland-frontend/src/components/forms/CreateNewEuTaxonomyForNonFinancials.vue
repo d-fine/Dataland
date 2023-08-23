@@ -36,26 +36,26 @@
                     </div>
 
                     <div class="col-9 formFields">
-                        <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
-                          <component
-                            v-if="field.showIf(companyAssociatedNewEuTaxonomyDataForNonFinancials.data)"
-                            :is="field.component"
-                            :label="field.label"
-                            :placeholder="field.placeholder"
-                            :description="field.description"
-                            :name="field.name"
-                            :options="field.options"
-                            :required="field.required"
-                            :certificateRequiredIfYes="field.certificateRequiredIfYes"
-                            :validation="field.validation"
-                            :validation-label="field.validationLabel"
-                            :evidenceDesired="field.evidenceDesired"
-                            :data-test="field.name"
-                            :unit="field.unit"
-                            @reportsUpdated="updateDocumentsList"
-                            :ref="field.name"
-                          />
-                        </FormKit>
+                      <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                        <component
+                          v-if="field.showIf(companyAssociatedNewEuTaxonomyDataForNonFinancials.data)"
+                          :is="field.component"
+                          :label="field.label"
+                          :placeholder="field.placeholder"
+                          :description="field.description"
+                          :name="field.name"
+                          :options="field.options"
+                          :required="field.required"
+                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
+                          :validation="field.validation"
+                          :validation-label="field.validationLabel"
+                          :evidenceDesired="field.evidenceDesired"
+                          :data-test="field.name"
+                          :unit="field.unit"
+                          @reportsUpdated="updateDocumentsList"
+                          :ref="field.name"
+                        />
+                      </FormKit>
                     </div>
                   </template>
                 </div>
