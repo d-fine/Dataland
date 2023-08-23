@@ -6,7 +6,8 @@ import {
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   type LksgData,
-  type SfdrData, SmeData,
+  type SfdrData,
+  type SmeData,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { humanizeString } from "@/utils/StringHumanizer";
@@ -448,10 +449,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
         validateChosenFramework(DataTypeEnum.Sme);
 
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
-          DataTypeEnum.Sme,
-          nameOfCompanyAlpha,
-        );
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Sme, nameOfCompanyAlpha);
         validateChosenFramework(DataTypeEnum.Sme);
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
@@ -541,10 +539,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenFramework(DataTypeEnum.Sme);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2015");
-        validateDropdownOptions(
-          reportingPeriodDropdownSelector,
-          expectedReportingPeriodsForSmeForAlpha,
-        );
+        validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForSmeForAlpha);
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
 
@@ -559,10 +554,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenFramework(DataTypeEnum.Sme);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2015");
-        validateDropdownOptions(
-          reportingPeriodDropdownSelector,
-          expectedReportingPeriodsForSmeForAlpha,
-        );
+        validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForSmeForAlpha);
 
         clickBackButton();
 
