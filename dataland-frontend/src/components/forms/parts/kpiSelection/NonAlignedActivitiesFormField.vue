@@ -1,30 +1,28 @@
 <template>
-  <FormKit type="group" :name="name">
-    <div class="mb-3 form-field">
-      <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
-      <div>
-        <h2 style="color: #10463b">NonAlignedActivitiesFormField.vue</h2>
-      </div>
-    </div>
-  </FormKit>
+  <FormListFormField
+    :name="name"
+    :label="label"
+    :description="description"
+    :required="required"
+    :validation="validation"
+    :validation-label="validationLabel"
+    sub-form-component="NonAlignedActivitiesFormElement"
+    data-test-add-button="addNewProductButton"
+    label-add-button="ADD NEW Activity"
+    data-test-sub-form="alignedActivitiesSection"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+import FormListFormField from "@/components/forms/parts/fields/FormListFormField.vue";
 
 export default defineComponent({
   name: "NonAlignedActivitiesFormField",
-  components: { SingleSelectFormElement, FormKit, UploadFormHeader },
-  data() {
-    return {
-      countryCodeOptions: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
-    };
-  },
   props: BaseFormFieldProps,
+  components: {
+    FormListFormField,
+  },
 });
 </script>
