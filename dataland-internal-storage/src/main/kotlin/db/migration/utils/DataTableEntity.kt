@@ -19,9 +19,10 @@ data class DataTableEntity(
         val queryStatement = context.connection.prepareStatement(
             "UPDATE data_items " +
                 "SET data = ? " +
-                "WHERE data_id = '$dataId'",
+                "WHERE data_id = ?",
         )
         queryStatement.setString(1, ObjectMapper().writeValueAsString(companyAssociatedData.toString()))
+        queryStatement.setString(2, dataId)
         queryStatement.executeUpdate()
         println(queryStatement.toString())
     }

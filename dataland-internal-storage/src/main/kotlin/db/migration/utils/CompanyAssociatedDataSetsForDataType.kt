@@ -11,10 +11,14 @@ import kotlin.io.path.div
  */
 fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String): Sequence<DataTableEntity> = sequence {
     val objectMapper = ObjectMapper()
-    val getQueryResultSet = context!!.connection.createStatement().executeQuery(
+    val preparedStatement = context!!.connection.prepareStatement(
         "SELECT * from data_items " +
-            "WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"${dataType}\\\\\\\"%'",
+            "WHERE data LIKE ?",
     )
+    val unescapedSearchPattern = "%\"dataType\":\"$dataType\"%"
+    val escapedSearchPattern = objectMapper.writeValueAsString(objectMapper.writeValueAsString(unescapedSearchPattern))
+    preparedStatement.setString(1, escapedSearchPattern)
+    val getQueryResultSet = preparedStatement.executeQuery()
     while (getQueryResultSet.next()) {
         val dataTableEntity = DataTableEntity(
             getQueryResultSet.getString("data_id"),
