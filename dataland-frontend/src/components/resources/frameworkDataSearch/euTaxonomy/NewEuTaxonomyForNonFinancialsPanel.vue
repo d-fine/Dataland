@@ -109,26 +109,35 @@ export default defineComponent({
     handleFinishedDataConversion() {
       this.waitingForData = false;
     },
+
+      hasAmountOrCurrency(value: KpiValue): boolean {
+    return (
+        typeof value === 'object' &&
+        ('amount' in value || 'currency' in value)
+    );
+},
+
+
     /**
      * Formats KPI values for display
      * @param field the considered KPI field
-     * @param value the value to be formatted
+     * @param kpiValueToFormat the value to be formatted
      * @returns the formatted value
      */
-    formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
-      if (value == null) {
-        return value;
+    formatValueForDisplay(field: Field, kpiValueToFormat: KpiValue): KpiValue {
+      if (kpiValueToFormat == null) {
+        return kpiValueToFormat;
       } else if (field.name == "relativeShareInPercent") {
-        const relativeShareInPercent = value as number;
-        return `${relativeShareInPercent.toString()} %`;
-      } else if (field.name == "absoluteShare") {
-        const amountWithCurrency = value as AmountWithCurrency;
+        const relativeShareInPercent = kpiValueToFormat as number;
+        return `${relativeShareInPercent.toFixed(2).toString()} %`;
+      } else if (this.hasAmountOrCurrency(kpiValueToFormat)) {
+        const amountWithCurrency = kpiValueToFormat as AmountWithCurrency;
         if (amountWithCurrency.amount == undefined) {
           return null;
         }
-        return `${amountWithCurrency.amount.toString()} ${amountWithCurrency.currency ?? ""}`;
+        return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
       }
-      return value;
+      return kpiValueToFormat;
     },
   },
 });
