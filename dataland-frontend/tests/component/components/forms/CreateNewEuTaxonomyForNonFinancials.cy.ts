@@ -98,7 +98,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
 
     cy.get('input[name="euTaxonomyActivityLevelReporting"][value="Yes"]').check();
 
-    cy.get('input[name="numberOfEmployees"]').type("-13");
+    cy.get('input[name="numberOfEmployees"]').clear().type("-13");
     cy.get('em[title="Number Of Employees"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
     cy.get('input[name="numberOfEmployees"]').clear().type("333");
@@ -106,12 +106,13 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
 
     cy.get('select[name="assurance"]').select(1);
-    cy.get('input[name="provider"]').type("Assurance Provider");
-    cy.get('select[name="report"]').select(reportName);
-    cy.get('input[name="page"]').type("-13");
-    cy.get('em[title="Assurance"]').click();
-    cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
-    cy.get('[data-test="assuranceSection"] input[name="page"]').clear().type("1");
+    cy.get('input[name="provider"]').clear().type("Assurance Provider");
+    //cy.get('select[name="report"]').first().select(reportName);
+    cy.get('input[name="page"]').first().clear().type("-13");
+    cy.get('em[title="Page"]').first().click();
+    cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
+    cy.get('input[name="page"]').first().clear().type("3");
+
   }
 
   /**
@@ -234,6 +235,21 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     }).then(() => {
       checkFileWithExistingFilenameIsNotBeingAdded();
       checkThatFilesMustBeReferenced();
+    });
+  });
+
+  it("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
+    cy.stub(DataPointFormWithToggle);
+    cy.mountWithPlugins(CreateNewEuTaxonomyForNonFinancials, {
+      keycloak: minimalKeycloakMock({}),
+      data() {
+        return {
+          referencedReportsForPrefill: companyAssociatedNewEuTaxoFinancialsData?.data?.general?.referencedReports,
+          companyAssociatedNewEuTaxonomyDataForNonFinancials: companyAssociatedNewEuTaxoFinancialsData,
+        };
+      },
+    }).then(() => {
+      fillAndValidateGeneralSection("string");
     });
   });
 
