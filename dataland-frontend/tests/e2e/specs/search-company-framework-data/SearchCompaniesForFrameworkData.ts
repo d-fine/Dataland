@@ -179,10 +179,10 @@ describe("As a user, I expect the search functionality on the /companies page to
     const inputValue = "A company name";
 
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           cy.visitAndCheckAppMount(
-            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
+            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
           );
           cy.get("input[id=framework_data_search_bar_standard]")
             .should("not.be.disabled")
