@@ -239,7 +239,6 @@ export default defineComponent({
         data: {
           listOfRowContents: listOfValues,
           kpiKeyOfTable: kpiKey,
-          columnHeaders: this.modalColumnHeaders,
         },
       });
     },
