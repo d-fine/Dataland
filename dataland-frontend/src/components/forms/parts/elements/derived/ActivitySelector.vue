@@ -50,7 +50,7 @@
       validation="required"
       validation-label="Nace Codes for Activity"
       placeholder="Chose Nace Codes for Activity"
-      :options="NaceCodesForActivitie"
+      :options="NaceCodesForActivities"
       innerClass="long"
     />
   </div>
@@ -88,7 +88,7 @@ export default defineComponent({
     allActivities: activityTree,
   }),
   computed: {
-    NaceCodesForActivitie() {
+    NaceCodesForActivities() {
       if (this.selectedActivities && this.selectedActivities.nace_codes) {
         return this.selectedActivities.nace_codes.split(", ").map((nace_code: string) => {
           return { label: nace_code, value: nace_code };
