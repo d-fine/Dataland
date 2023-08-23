@@ -538,8 +538,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.Sme);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-        validateChosenReportingPeriod(Array.from(expectedReportingPeriodsForSmeForAlpha)[0]);
-        validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForSmeForAlpha);
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
 
@@ -553,8 +551,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.Sme);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-        validateChosenReportingPeriod(Array.from(expectedReportingPeriodsForSmeForAlpha)[0]);
-        validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForSmeForAlpha);
 
         clickBackButton();
 
@@ -603,16 +599,16 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateEUTaxonomyFinancialsTable("26");
 
         cy.visit(
-          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sme}/reportingPeriods/${nonExistingReportingPeriod}`,
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`,
         );
 
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
         validateChosenReportingPeriod("Select...", true);
 
-        selectReportingPeriodInDropdown("2015");
+        selectReportingPeriodInDropdown("2016");
 
         validateNoErrorMessagesAreShown();
-        validateChosenReportingPeriod("2015");
+        validateChosenReportingPeriod("2016");
 
         clickBackButton();
 
