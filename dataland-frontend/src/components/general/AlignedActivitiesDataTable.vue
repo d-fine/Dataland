@@ -235,13 +235,13 @@ function createRevenueGroupData(activity: ActivityObject): ActivityFieldValueObj
       activity: activity.activityName,
       group: "_revenue",
       field: "revenue",
-      content: `${activity.share.absoluteShare.amount} ${activity.share.absoluteShare.currency}`,
+      content: `${activity.share?.absoluteShare?.amount ?? ""} ${activity.share?.absoluteShare?.currency ?? ""}`,
     },
     {
       activity: activity.activityName,
       group: "_revenue",
       field: "revenuePercent",
-      content: `${activity.share.relativeShareInPercent}%`,
+      content: `${activity.share?.relativeShareInPercent ?? ""}%`,
     },
   ];
 }
