@@ -1,7 +1,7 @@
-import ThreeLayerDataTable from "@components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
+import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
-import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
+import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
+import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 import { mockData } from "@ct/utils/mockDataNewEuTaxonomyForNonFinancials";
 
 describe("Component test for the NewEUTaxonomy Page", () => {
@@ -75,14 +75,11 @@ describe("Component test for the NewEUTaxonomy Page", () => {
           cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("have.text", expectedOrderOfCategories[index]);
         });
 
-      cy.wait(50); // TODO we should try to avoid waits with hardcoded times
-
       toggleCategoryByClick(dataTestTagsOfCategories[0])
 
       /**
        * The goal for the loop is to expand one KPI at a time and check the order of the entries.
        */
-      cy.wait(300); // TODO we should try to avoid waits with hardcoded times
 
       let subcategoriesForCurrentCategory;
       for (let categoryIndex = 1; categoryIndex < dataTestTagsOfCategories.length; categoryIndex++) {
@@ -98,8 +95,6 @@ describe("Component test for the NewEUTaxonomy Page", () => {
             .should("contain", `${expectedOrderOfSubcategoriesGroupedByCategories[categoryIndex][subCategoryIndex]}`);
         }
         toggleCategoryByClick(dataTestTagsOfCategories[categoryIndex])
-
-        cy.wait(50); // TODO we should try to avoid waits with hardcoded times
       }
     });
   });
