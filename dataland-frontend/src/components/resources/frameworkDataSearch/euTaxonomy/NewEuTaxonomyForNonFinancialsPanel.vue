@@ -110,8 +110,20 @@ export default defineComponent({
       this.waitingForData = false;
     },
 
-    hasAmountOrCurrency(value: KpiValue): boolean {
-      return typeof value === "object" && ("amount" in value || "currency" in value);
+      /**
+       * Checks if a KpiValue is an object with amount and currency and
+       * @param kpiValue the kpiValue that shall be checked
+       * @returns a boolean based on the result of the check
+       */
+    hasAmountOrCurrency(kpiValue: KpiValue): boolean {
+          return (
+              typeof kpiValue === 'object' &&
+              (
+                  ('amount' in kpiValue && typeof kpiValue.amount === 'number')
+                  ||
+                  ('currency' in kpiValue && typeof kpiValue.currency === 'string')
+              )
+          );
     },
 
     /**
