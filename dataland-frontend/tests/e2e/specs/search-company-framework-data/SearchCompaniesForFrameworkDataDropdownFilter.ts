@@ -42,10 +42,10 @@ describe("As a user, I expect the search functionality on the /companies page to
         "eq",
         getBaseUrl() +
           "/companies?" +
-          `framework=${DataTypeEnum.Lksg}` +
-          `&framework=${DataTypeEnum.P2p}` +
+          `framework=${DataTypeEnum.P2p}` +
+          `&framework=${DataTypeEnum.Sme}` +
           `&framework=${DataTypeEnum.Sfdr}` +
-          `&framework=${DataTypeEnum.Sme}`,
+          `&framework=${DataTypeEnum.Lksg}`
       )
       .get("div.p-multiselect-panel")
       .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
@@ -60,10 +60,10 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.url().should(
       "eq",
       getBaseUrl() +
-        `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}` +
-        `&framework=${DataTypeEnum.Lksg}` +
-        `&framework=${DataTypeEnum.P2p}` +
-        `&framework=${DataTypeEnum.Sme}`,
+        `/companies?framework=${DataTypeEnum.P2p}` +
+        `&framework=${DataTypeEnum.EutaxonomyFinancials}` +
+        `&framework=${DataTypeEnum.Sme}` +
+        `&framework=${DataTypeEnum.Lksg}`
     );
   });
 
