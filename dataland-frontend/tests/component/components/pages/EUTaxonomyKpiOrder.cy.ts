@@ -1,8 +1,6 @@
 import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue"
-import {type FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 import {
     DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
-    type NewEuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import {minimalKeycloakMock} from "../../testUtils/Keycloak";
 import {
@@ -12,7 +10,6 @@ import {
     DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel,
     NewEuTaxonomyForNonFinancialsViewModel
 } from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
-import {DataAndMetaInformationViewModel, FrameworkViewModel} from "../../../../src/components/resources/ViewModel";
 describe("Component test for the NewEUTaxonomy Page", () => {
 
 
