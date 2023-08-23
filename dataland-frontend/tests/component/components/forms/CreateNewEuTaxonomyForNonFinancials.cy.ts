@@ -80,6 +80,41 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       });
   }
 
+  //TODO: create function for uploading reports
+
+  /**
+   * this method fills and checks the general category
+   */
+  function fillAndValidateGeneral(reportName: string): void {
+    cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
+    cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
+    cy.get("div.p-datepicker").find('span:contains("11")').click();
+    cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
+    cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
+    cy.get('div[data-test="submitSideBar"] li:last a').click();
+
+    cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
+
+    cy.get('input[name="euTaxonomyActivityLevelReporting"][value="Yes"]').check();
+
+    cy.get('input[name="numberOfEmployees"]').type("-13");
+    cy.get('em[title="Number Of Employees"]').click();
+    cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
+    cy.get('input[name="numberOfEmployees"]').clear().type("333");
+
+    cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
+
+
+    cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
+    cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
+    cy.get('[data-test="assuranceSection"] select[name="report"]').select(reportName);
+    cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
+    cy.get('em[title="Assurance"]').click();
+    cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
+    cy.get('[data-test="assuranceSection"] input[name="page"]').clear().type("1");
+    cy.get('[data-test="dataPointToggleTitle"]').should("exist");
+  }
+
   /**
    * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
    * @returns the dataset
@@ -175,7 +210,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     });
   });
 
-  it.only("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
+  it("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateNewEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
@@ -190,5 +225,9 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       checkThatFilesMustBeReferenced();
     });
   });
+
 });
+
+
+
 //TODO This file has to be modified to work
