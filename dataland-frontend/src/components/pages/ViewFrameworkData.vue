@@ -38,7 +38,11 @@ export default defineComponent({
       type: String,
     },
   },
-
+  mounted() {
+    if (!this.dataType || !this.singleViewFrameworks.includes(this.dataType) && !this.multiViewFrameworks.includes(this.dataType)) {
+      this.$router.push("/nocontent")
+    }
+  },
   data() {
     return {
       singleViewFrameworks: [DataTypeEnum.EutaxonomyFinancials] as string[],
