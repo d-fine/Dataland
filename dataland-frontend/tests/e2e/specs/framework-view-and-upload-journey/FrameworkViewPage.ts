@@ -29,7 +29,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         humanizeString(DataTypeEnum.Sfdr),
       ]);
       const expectedReportingPeriodsForEuTaxoFinancialsForAlpha = new Set<string>(["2019", "2016"]);
-      const expectedReportingPeriodsForSmeForAlpha = new Set<string>(["2015"]);
       let companyIdOfAlpha: string;
 
       let dataIdOfSupersededLksg2023ForAlpha: string;
