@@ -5,8 +5,6 @@
       rowGroupMode="subheader"
       groupRowsBy="subcategoryKey"
       dataKey="subcategoryKey"
-      sortField="subcategoryKey"
-      :sortOrder="1"
       sortMode="single"
       :expandableRowGroups="true"
       :headerInputStyle="headerInputStyle"

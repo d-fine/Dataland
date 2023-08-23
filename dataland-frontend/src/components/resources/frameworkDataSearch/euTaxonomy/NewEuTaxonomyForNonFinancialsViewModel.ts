@@ -1,13 +1,10 @@
 import {
-  AssuranceData,
   type AssuranceDataAssuranceEnum,
-  CompanyReport,
   type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
   type DataPointOneValueAmountWithCurrency,
   type EuTaxonomyActivity,
   type EuTaxonomyAlignedActivity,
-  type EuTaxonomyGeneral,
   type FiscalYearDeviation,
   type NewEuTaxonomyDataForNonFinancials,
   type NewEuTaxonomyDetailsPerCashFlowType,
@@ -103,22 +100,22 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
     }
     return {
       totalAmount: apiModel.totalAmount,
-      totalNonEligibleShare: apiModel.totalNonEligibleShare,
       totalEligibleShare: apiModel.totalEligibleShare,
+      totalAlignedShare: {
+        ...(apiModel.totalAlignedShare ?? {}),
+        ...apiModel.substantialContributionCriteria,
+        alignedActivities: apiModel.alignedActivities,
+      },
       totalNonAlignedShare: {
         ...(apiModel.totalNonAlignedShare ?? {}),
         nonAlignedActivities: apiModel.nonAlignedActivities,
       },
-      totalAlignedShare: {
-        ...(apiModel.totalAlignedShare ?? {}),
-        alignedActivities: apiModel.alignedActivities,
-        ...apiModel.substantialContributionCriteria,
-      },
+      totalNonEligibleShare: apiModel.totalNonEligibleShare,
       totalEnablingShare: apiModel.totalEnablingShare,
       totalTransitionalShare: apiModel.totalTransitionalShare,
     };
   }
-  // TODO EManuel: Addconversion from viemodel to backend model for subsantial stuff
+
   private static convertDetailsPerCashFlowViewModelToApiModel(
     details?: NewEuTaxonomyDetailsPerCashFlowViewModel,
   ): NewEuTaxonomyDetailsPerCashFlowType | undefined {

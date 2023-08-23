@@ -124,7 +124,7 @@ export default defineComponent({
       dataId: string,
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
-      const kpiData = {
+      const kpiData: KpiDataObject = {
         categoryKey: this.importantCategoryKeys.includes(category.name) ? `_${category.name}` : category.name,
         categoryLabel: category.label ? category.label : category.name,
         subcategoryKey: this.importantSubcategoryKeys.includes(subcategory.name)
@@ -136,7 +136,7 @@ export default defineComponent({
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
         content: { [dataId]: this.formatValueForDisplay(kpiField, kpiValue) ?? "" },
-      } as KpiDataObject;
+      };
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
       }
@@ -158,7 +158,6 @@ export default defineComponent({
           });
           for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data)) {
             if (categoryKey == "toApiModel") continue; // ignore toApiModel() Function as it is not a KPI
-            // TODO Emanuel: type doch die category und subcateory als solche!
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
             const frameworkCategoryData = assertDefined(
