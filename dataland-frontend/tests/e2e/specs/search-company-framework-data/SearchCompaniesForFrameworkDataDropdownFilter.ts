@@ -10,6 +10,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import {humanizeString} from "@/utils/StringHumanizer";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -33,37 +34,37 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.get("#framework-filter")
         .click()
         .get("div.p-multiselect-panel")
-        .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
+        .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.Lksg)})`)
         .click();
       verifySearchResultTable();
       cy.url()
         .should(
           "eq",
           getBaseUrl() +
-            `/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
+            `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}` +
+            `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
             `&framework=${DataTypeEnum.NewEutaxonomyNonFinancials}` +
-            `&framework=${DataTypeEnum.Lksg}` +
             `&framework=${DataTypeEnum.P2p}` +
             `&framework=${DataTypeEnum.Sfdr}` +
             `&framework=${DataTypeEnum.Sme}`,
         )
         .get("div.p-multiselect-panel")
-        .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
+        .find(`li.p-multiselect-item:contains(${humanizeString(DataTypeEnum.Lksg)})`)
         .click();
       verifySearchResultTable();
       cy.url()
         .should("eq", getBaseUrl() + "/companies")
         .get("div.p-multiselect-panel")
-        .find("li.p-highlight:contains('EU Taxonomy for non-financial companies')")
+        .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.P2p)})`)
         .click();
       verifySearchResultTable();
       cy.url().should(
         "eq",
         getBaseUrl() +
           `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}` +
+          `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
           `&framework=${DataTypeEnum.NewEutaxonomyNonFinancials}` +
           `&framework=${DataTypeEnum.Lksg}` +
-          `&framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sfdr}` +
           `&framework=${DataTypeEnum.Sme}`,
       );
