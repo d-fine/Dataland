@@ -49,19 +49,19 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
         dataObject.put("general", generalObject)
     }
 
-    private fun migrateOldCashFlowDetails(cashFlowDetails: JSONObject) {
+    private fun migrateTotalAmount(cashFlowDetails: JSONObject) {
         val totalAmountObject = cashFlowDetails.opt("totalAmount")
         if (!invalidSet.contains(totalAmountObject) && totalAmountObject is JSONObject) {
             val oldTotalAmountValue = totalAmountObject.opt("value")
             totalAmountObject.put(
-                "value",
-                if (oldTotalAmountValue is BigDecimal) {
-                    val newTotalAmountValue = JSONObject()
-                    newTotalAmountValue.put("amount", oldTotalAmountValue)
-                    newTotalAmountValue.put("currency", JSONObject.NULL)
-                } else {
-                    JSONObject.NULL
-                },
+                    "value",
+                    if (oldTotalAmountValue is BigDecimal) {
+                        val newTotalAmountValue = JSONObject()
+                        newTotalAmountValue.put("amount", oldTotalAmountValue)
+                        newTotalAmountValue.put("currency", JSONObject.NULL)
+                    } else {
+                        JSONObject.NULL
+                    },
             )
             if (!isDataPointProvidingSourceInfo(totalAmountObject)) {
                 setAlternativeSourceInfoIfPossible(cashFlowDetails)
@@ -73,7 +73,10 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
         } else {
             cashFlowDetails.put("totalAmount", JSONObject.NULL)
         }
+    }
 
+    private fun migrateOldCashFlowDetails(cashFlowDetails: JSONObject) {
+        migrateTotalAmount(cashFlowDetails)
         migrateDataPointToFinancialShare(cashFlowDetails, "eligibleData", "totalEligibleShare")
         migrateDataPointToFinancialShare(cashFlowDetails, "alignedData", "totalAlignedShare")
 
