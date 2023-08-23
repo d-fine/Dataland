@@ -118,16 +118,15 @@ export default defineComponent({
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
       if (value == null) {
         return value;
-      } else if (field.name == "percentage") {
-        return `${value} %`;
+      } else if (field.name == "relativeShareInPercent") {
+        const relativeShareInPercent = value as number;
+        return `${relativeShareInPercent.toString()} %`;
       } else if (field.name == "absoluteShare") {
         const amountWithCurrency = value as AmountWithCurrency;
         if (amountWithCurrency.amount == undefined) {
           return null;
         }
-        return `${amountWithCurrency.amount.toString()}` + amountWithCurrency.currency
-          ? ` ${amountWithCurrency.currency}`
-          : "";
+        return `${amountWithCurrency.amount.toString()} ${amountWithCurrency.currency ?? ""}`;
       }
       return value;
     },
