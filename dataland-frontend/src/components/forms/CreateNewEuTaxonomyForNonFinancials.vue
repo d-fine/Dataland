@@ -22,7 +22,7 @@
               <div class="col-3 p-3 topicLabel">
                 <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
               </div>
-              <div class="col-9 form-field uploaded-files">
+              <div class="col-9 form-field formFields uploaded-files">
                 <UploadFormHeader
                   :label="'Reporting Period'"
                   :description="'The reporting period the dataset belongs to (e.g. a fiscal year).'"
