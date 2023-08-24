@@ -73,41 +73,16 @@ import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
-
-type ActivityObject = {
-  activityName: string;
-  naceCodes: string[];
-  share: {
-    relativeShareInPercent: number;
-    absoluteShare: {
-      amount: number;
-      currency: string;
-    };
-  };
-  substantialContributionCriteria: {
-    ClimateMitigation: number;
-    ClimateAdaptation: number;
-    Water: number;
-    CircularEconomy: number;
-    PollutionPrevention: number;
-    Biodiversity: number;
-  };
-  dnshCriteria: {
-    ClimateMitigation: "Yes" | "No";
-    ClimateAdaptation: "Yes" | "No";
-    Water: "Yes" | "No";
-    CircularEconomy: "Yes" | "No";
-    PollutionPrevention: "Yes" | "No";
-    Biodiversity: "Yes" | "No";
-  };
-  minimumSafeguards: "Yes" | "No";
-};
+import {
+  type Activity,
+  type EuTaxonomyAlignedActivity,
+} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 
 type ActivityFieldValueObject = {
   activity: string;
   group: string;
   field: string;
-  content: string | string[] | number | number[];
+  content: string;
 };
 
 export default defineComponent({
@@ -116,15 +91,15 @@ export default defineComponent({
   components: { DataTable, Column, ColumnGroup, Row },
   data() {
     return {
-      listOfRowContents: [] as Array<ActivityObject>,
+      listOfRowContents: [] as Array<EuTaxonomyAlignedActivity>,
       kpiKeyOfTable: "" as string,
       columnHeaders: {} as { [kpiKeyOfTable: string]: { [columnName: string]: string } },
       frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
       mainColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       frozenColumnData: [] as Array<{
-        activity: string;
-        naceCodes: string | string[] | number | number[];
+        activity: Activity | undefined;
+        naceCodes: string[] | undefined;
       }>,
       mainColumnData: [] as Array<ActivityFieldValueObject>,
     };
@@ -142,7 +117,7 @@ export default defineComponent({
     if (typeof dialogRefData.listOfRowContents[0] === "string") {
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {
-      this.listOfRowContents = dialogRefData.listOfRowContents;
+      this.listOfRowContents = dialogRefData.listOfRowContents as Array<EuTaxonomyAlignedActivity>;
     }
 
     this.frozenColumnDefinitions = [
@@ -246,16 +221,16 @@ export default defineComponent({
  * @param activity targeted activity object
  * @returns list of revenue data items
  */
-function createRevenueGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
+function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
   return [
     {
-      activity: activity.activityName,
+      activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenue",
       content: `${activity.share?.absoluteShare?.amount ?? ""} ${activity.share?.absoluteShare?.currency ?? ""}`,
     },
     {
-      activity: activity.activityName,
+      activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenuePercent",
       content: `${activity.share?.relativeShareInPercent ?? ""}%`,
@@ -267,12 +242,14 @@ function createRevenueGroupData(activity: ActivityObject): ActivityFieldValueObj
  * @param activity targeted activity object
  * @returns list of substantial contribution criteria data items
  */
-function createSubstantialContributionCriteriaGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
-  const fields = Object.entries(activity.substantialContributionCriteria);
+function createSubstantialContributionCriteriaGroupData(
+  activity: EuTaxonomyAlignedActivity,
+): ActivityFieldValueObject[] {
+  const fields = Object.entries(activity.substantialContributionCriteria ?? {});
   return fields.map(([field, value]) => {
     const content = value ? `${value}%` : "";
     return {
-      activity: activity.activityName,
+      activity: activity.activityName as string,
       group: "substantialContributionCriteria",
       field,
       content,
@@ -284,12 +261,12 @@ function createSubstantialContributionCriteriaGroupData(activity: ActivityObject
  * @param activity targeted activity object
  * @returns list of DNSH criteria data items
  */
-function createDnshCriteriaGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
-  const fields = Object.entries(activity.dnshCriteria);
+function createDnshCriteriaGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
+  const fields = Object.entries(activity.dnshCriteria ?? {});
   return fields.map(([field, value]) => {
     const content = value ? `${value}` : "";
     return {
-      activity: activity.activityName,
+      activity: activity.activityName as string,
       group: "dnshCriteria",
       field,
       content,
@@ -301,10 +278,10 @@ function createDnshCriteriaGroupData(activity: ActivityObject): ActivityFieldVal
  * @param activity targeted activity object
  * @returns list of minimum safeguards data items
  */
-function createMinimumSafeguardsGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
+function createMinimumSafeguardsGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
   return [
     {
-      activity: activity.activityName,
+      activity: activity.activityName as string,
       group: "_minimumSafeguards",
       field: "minimumSafeguards",
       content: activity.minimumSafeguards ?? "",
@@ -312,18 +289,3 @@ function createMinimumSafeguardsGroupData(activity: ActivityObject): ActivityFie
   ];
 }
 </script>
-
-<style lang="scss" scoped>
-.col-lg {
-  $w: 300px;
-  min-width: $w;
-  max-width: $w;
-  width: $w;
-}
-.col-sm {
-  $w: 50px;
-  min-width: $w;
-  max-width: $w;
-  width: $w;
-}
-</style>
