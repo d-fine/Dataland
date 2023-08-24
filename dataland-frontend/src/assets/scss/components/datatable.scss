@@ -2,6 +2,15 @@
   border-radius: 0;
   background: $table-background-color;
   color: $main-text-color;
+
+  .border-left {
+    border-left: 1px solid $table-border;
+  }
+
+  .border-right {
+    border-right: 1px solid $table-border;
+  }
+
   .horizontal-headers-size {
     background-color: #fff;
 
@@ -9,9 +18,9 @@
       width: $first-table-column-width;
     }
      
-    &.border-right {
-      border-right: 1px solid $table-border;
-    }
+    // &.border-right {
+    //   border-right: 1px solid $table-border;
+    // }
   }
   .onlyHeaders {
     tr {
@@ -104,11 +113,16 @@
     $col-nace-codes-width: 100px;
     .group-row-header {
       background-color: $tables-headers-bg;
-      border-right: 1px solid $table-border;
       border-bottom: 1px solid $table-border;
       .p-column-header-content {
         justify-content: center;
       }
+      &:not(:first-of-type){
+        border-left: 1px solid $table-border;
+      }
+    }
+    .first-group-column:not(:first-of-type) {
+      border-left: 1px solid $table-border;
     }
     .non-frozen-header{
       vertical-align: top;
@@ -116,7 +130,6 @@
     .frozen-row-header {
       vertical-align: top;
       background-color: $tables-headers-bg;
-      border-right: 1px solid $table-border;
     }
     .col-activity {
       width: $col-activity-width;
@@ -125,10 +138,11 @@
     .col-nace-codes {
       width: $col-nace-codes-width;
       min-width: $col-nace-codes-width;
+      border-right: 1px solid $table-border;
     }
     .col-value {
-      width: 200px;
-      min-width: 200px;
+      width: 160px;
+      min-width: 160px;
     }
   }
 }

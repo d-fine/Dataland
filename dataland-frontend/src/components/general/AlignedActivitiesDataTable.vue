@@ -7,7 +7,7 @@
           :frozen="true"
           alignFrozen="left"
           :colspan="2"
-          class="frozen-row-header"
+          class="frozen-row-header border-right"
           style="background-color: #fff"
         ></Column>
         <Column
@@ -27,13 +27,13 @@
           alignFrozen="left"
           class="frozen-row-header"
         ></Column>
-        <Column header="Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header"></Column>
+        <Column header="Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right"></Column>
         <Column
           v-for="col of mainColumnDefinitions"
           :key="col.field"
           :header="col.header"
           :field="col.field"
-          class="non-frozen-header"
+          :class="groupColumnCssClasses(col, 'non-frozen-header')"
         >
         </Column>
       </Row>
@@ -64,6 +64,7 @@
       :header="col.header"
       bodyClass="col-value"
       headerClass="horizontal-headers-size"
+      :class="groupColumnCssClasses(col)"
     >
       <template #body="{ data }">
         {{ findContentFromActivityGroupAndField(data.activity, col.group, col.field) }}
@@ -92,6 +93,14 @@ type ActivityFieldValueObject = {
   content: string;
 };
 
+type MainColumnDefinition = {
+  field: string;
+  header: string;
+  frozen?: boolean;
+  group: string;
+  groupIndex: number;
+};
+
 export default defineComponent({
   inject: ["dialogRef"],
   name: "AlignedActivitiesDataTable",
@@ -103,7 +112,7 @@ export default defineComponent({
       columnHeaders: {} as { [kpiKeyOfTable: string]: { [columnName: string]: string } },
       frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
-      mainColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
+      mainColumnDefinitions: [] as Array<MainColumnDefinition>,
       frozenColumnData: [] as Array<{
         activity: Activity | undefined;
         naceCodes: string[] | undefined;
@@ -133,13 +142,18 @@ export default defineComponent({
     ];
 
     this.mainColumnDefinitions = [
-      { field: "revenue", header: this.humanizeHeaderName("revenue"), group: "_revenue" },
-      { field: "revenuePercent", header: this.humanizeHeaderName("revenuePercent"), group: "_revenue" },
+      { field: "revenue", header: this.humanizeHeaderName("revenue"), group: "_revenue", groupIndex: 0 },
+      { field: "revenuePercent", header: this.humanizeHeaderName("revenuePercent"), group: "_revenue", groupIndex: 1 },
 
       ...this.makeGroupColumns("substantialContributionCriteria"),
       ...this.makeGroupColumns("dnshCriteria"),
 
-      { field: "minimumSafeguards", header: this.humanizeHeaderName("minimumSafeguards"), group: "_minimumSafeguards" },
+      {
+        field: "minimumSafeguards",
+        header: this.humanizeHeaderName("minimumSafeguards"),
+        group: "_minimumSafeguards",
+        groupIndex: 0,
+      },
     ];
 
     this.frozenColumnData = this.listOfRowContents.map((activity) => ({
@@ -187,10 +201,11 @@ export default defineComponent({
      */
     makeGroupColumns(groupName: string) {
       const EnvironmentalObjectiveKeys = Object.keys(EnvironmentalObjective).filter((v) => isNaN(Number(v)));
-      return EnvironmentalObjectiveKeys.map((enviromentalObjectiveKey: string) => ({
+      return EnvironmentalObjectiveKeys.map((enviromentalObjectiveKey: string, index: number) => ({
         field: enviromentalObjectiveKey,
         header: this.humanizeHeaderName(enviromentalObjectiveKey),
         group: groupName,
+        groupIndex: index,
       }));
     },
     /**
@@ -213,6 +228,15 @@ export default defineComponent({
         default:
           return "";
       }
+    },
+    /**
+     * @param columnDefinition column definition we check against
+     * @param additionalClasses (optional) any additional classes to be added
+     * @returns classes for specific columns
+     */
+    groupColumnCssClasses(columnDefinition: MainColumnDefinition, additionalClasses = ""): string {
+      if (columnDefinition.groupIndex === 0) return `first-group-column ${additionalClasses}`;
+      return additionalClasses;
     },
     /**
      * @param key the item to lookup
