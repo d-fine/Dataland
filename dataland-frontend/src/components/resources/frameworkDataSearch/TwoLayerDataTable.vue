@@ -5,6 +5,8 @@
       rowGroupMode="subheader"
       groupRowsBy="subcategoryKey"
       dataKey="subcategoryKey"
+      :sortField="sortBySubcategoryKey ? 'subcategoryKey' : undefined"
+      :sortOrder="sortBySubcategoryKey ? 1 : undefined"
       sortMode="single"
       :expandableRowGroups="true"
       :headerInputStyle="headerInputStyle"
@@ -185,6 +187,10 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    sortBySubcategoryKey: {
+        type: Boolean,
+        default: true,
+    }
   },
   created() {
     setTimeout(() => {
