@@ -859,7 +859,6 @@ export const activityTree: Array<TreeNode> = [
         key: "9.2",
         sector: "Professional, scientific and technical activities",
         type: "child",
-        value: "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
         nace_codes: "M71.1.2, M72.1",
       },
       {
