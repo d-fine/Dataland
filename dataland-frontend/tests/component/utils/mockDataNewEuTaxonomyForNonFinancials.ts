@@ -1,4 +1,4 @@
-import { type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials } from "../../../build/clients/backend";
+import { type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials } from "@clients/backend";
 
 export const mockData: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials = {
   metaInfo: {

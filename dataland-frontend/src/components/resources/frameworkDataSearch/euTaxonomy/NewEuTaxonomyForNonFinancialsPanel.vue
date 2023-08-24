@@ -11,6 +11,7 @@
       @data-converted="handleFinishedDataConversion"
       :format-value-for-display="formatValueForDisplay"
       :modal-column-headers="euTaxonomyForNonFinancialsModalColumnHeaders"
+      :sort-by-subcategory-key="false"
     />
   </div>
 </template>
