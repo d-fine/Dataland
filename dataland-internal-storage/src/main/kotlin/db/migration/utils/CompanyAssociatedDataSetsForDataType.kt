@@ -9,7 +9,8 @@ typealias CompanyAssociatedDataMigration = (dataTableEntity: DataTableEntity) ->
 /**
  * Method to get the company associated dataset for a given data type
  */
-fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String): Sequence<DataTableEntity> = sequence {
+fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String): List<DataTableEntity>
+{
     val objectMapper = ObjectMapper()
     val preparedStatement = context!!.connection.prepareStatement(
         "SELECT * from data_items " +
@@ -19,18 +20,23 @@ fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String)
     val escapedSearchPattern = objectMapper.writeValueAsString(objectMapper.writeValueAsString(unescapedSearchPattern))
     preparedStatement.setString(1, escapedSearchPattern)
     val getQueryResultSet = preparedStatement.executeQuery()
+
+    val companyAssociatedDatasets = mutableListOf<DataTableEntity>()
     while (getQueryResultSet.next()) {
-        val dataTableEntity = DataTableEntity(
-            getQueryResultSet.getString("data_id"),
-            JSONObject(
-                objectMapper.readValue(
-                    getQueryResultSet.getString("data"), String::class.java,
+        companyAssociatedDatasets.add(
+            DataTableEntity(
+                getQueryResultSet.getString("data_id"),
+                JSONObject(
+                    objectMapper.readValue(
+                        getQueryResultSet.getString("data"), String::class.java,
+                    ),
                 ),
             ),
         )
-        if (dataTableEntity.companyAssociatedData.getString("dataType") == dataType) {
-            yield(dataTableEntity)
-        }
+    }
+
+    return companyAssociatedDatasets.filter { dataTableEntity ->
+        dataTableEntity.companyAssociatedData.getString("dataType") == dataType
     }
 }
 
