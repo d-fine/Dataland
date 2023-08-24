@@ -241,18 +241,19 @@ export default defineComponent({
       kpiKey: string,
       kpiFormFieldComponent = "DetailsCompanyDataTable",
     ) {
-      let dialogData = {
-        listOfRowContents: listOfValues,
-        kpiKeyOfTable: kpiKey,
-      };
-
       let kpiDataComponent: typeof DetailsCompanyDataTable | typeof AlignedActivitiesDataTable;
       if (kpiFormFieldComponent === "AlignedActivitiesDataTable") {
         kpiDataComponent = AlignedActivitiesDataTable;
       } else {
         kpiDataComponent = DetailsCompanyDataTable;
-        dialogData = { ...dialogData, ...{ columnHeaders: this.modalColumnHeaders } };
       }
+
+      const dialogData = {
+        listOfRowContents: listOfValues,
+        kpiKeyOfTable: kpiKey,
+        columnHeaders: this.modalColumnHeaders,
+      };
+
       this.$dialog.open(kpiDataComponent, {
         props: {
           header: modalTitle,
