@@ -149,6 +149,7 @@ import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDa
 
 export default defineComponent({
   name: "TwoLayerDataTable",
+  // eslint-disable-next-line vue/no-unused-components
   components: { DataTable, Column, DocumentLink, DetailsCompanyDataTable, AlignedActivitiesDataTable },
   directives: {
     tooltip: Tooltip,
