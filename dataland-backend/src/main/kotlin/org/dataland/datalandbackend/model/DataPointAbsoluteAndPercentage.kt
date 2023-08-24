@@ -20,4 +20,4 @@ data class DataPointAbsoluteAndPercentage<T> (
     val valueAsAbsolute: T? = null,
 
 )
-// TODO why not use the classic DataPoint<X> instead where X is a class holding to BigDecimals?
+// TODO DISCUSS AT VERY END: why not use the classic DataPoint<X> instead where X is a class holding two BigDecimals?
