@@ -2,11 +2,7 @@ import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/Thre
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
-import {
-  type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
-  LksgData,
-  NewEuTaxonomyDataForNonFinancials,
-} from "@clients/backend";
+import { type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials } from "@clients/backend";
 
 describe("Component test for the NewEUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel>;
