@@ -146,12 +146,6 @@ export default defineComponent({
       this.listOfRowContents = dialogRefData.listOfRowContents;
     }
 
-    console.log({
-      listOfRowContents: this.listOfRowContents,
-      columnHeaders: this.columnHeaders,
-      kpiKeyOfTable: this.kpiKeyOfTable,
-    });
-
     this.frozenColumnDefinitions = [
       { field: "activity", header: this.humanizeHeaderName("activity"), frozen: true, group: "_frozen" },
       { field: "naceCodes", header: this.humanizeHeaderName("naceCodes"), frozen: true, group: "_frozen" },
