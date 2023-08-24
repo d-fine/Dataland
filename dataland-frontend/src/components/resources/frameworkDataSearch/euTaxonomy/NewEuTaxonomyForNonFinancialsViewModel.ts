@@ -43,7 +43,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
       levelOfAssurance: AssuranceDataAssuranceEnum;
       assuranceProvider?: string;
     };
-  }; // TODO type this properly later
+  };
   revenue?: NewEuTaxonomyDetailsPerCashFlowViewModel;
   capex?: NewEuTaxonomyDetailsPerCashFlowViewModel;
   opex?: NewEuTaxonomyDetailsPerCashFlowViewModel;
