@@ -2,9 +2,27 @@ import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/Thre
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
-import { mockData } from "@ct/utils/mockDataNewEuTaxonomyForNonFinancials";
+import {
+  type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
+  LksgData,
+  NewEuTaxonomyDataForNonFinancials,
+} from "@clients/backend";
 
 describe("Component test for the NewEUTaxonomy Page", () => {
+  let mockedDataForTest: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel>;
+
+  before(function () {
+    cy.fixture("NewEuTaxonomyForNonFinancialsMock.json").then(
+      (fixtureData: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials) => {
+        const mockBackendResponse: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials = fixtureData;
+        const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(
+          mockBackendResponse,
+        );
+        mockedDataForTest = [singleMockDataAndMetaInfo];
+      },
+    );
+  });
+
   const expectedOrderOfCategories: string[] = ["BASIC INFORMATION", "ASSURANCE", "REVENUE", "CAPEX", "OPEX"];
   const dataTestTagsOfCategories: string[] = ["Basic Information", "Assurance", "Revenue", "CapEx", "OpEx"];
 
@@ -56,18 +74,13 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   }
 
   it("Check order of the displayed KPIs and its entries", () => {
-    const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(mockData); // TODO Can't we put mockData to the testing folder as json?
-    const dataAndMetaInfo: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel> = [
-      singleMockDataAndMetaInfo,
-    ];
-
     cy.mountWithPlugins(ThreeLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
         dataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
-        dataAndMetaInfo: dataAndMetaInfo,
+        dataAndMetaInfo: mockedDataForTest,
       },
     }).then(() => {
       cy.get("[data-test='TwoLayerTest']")
@@ -101,11 +114,6 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   });
 
   it("Opens the aligned activities modal and checks that it works as intended", () => {
-    const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(mockData); // TODO Can't we put mockData to the testing folder as json?
-    const dataAndMetaInfo: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel> = [
-      singleMockDataAndMetaInfo,
-    ];
-
     cy.mountWithDialog(
       ThreeLayerDataTable,
       {
@@ -113,7 +121,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       },
       {
         dataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
-        dataAndMetaInfo: dataAndMetaInfo,
+        dataAndMetaInfo: mockedDataForTest,
       },
     ).then(() => {
       toggleCategoryByClick("CapEx");
