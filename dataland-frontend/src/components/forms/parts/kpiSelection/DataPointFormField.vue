@@ -117,7 +117,7 @@ export default defineComponent({
         label: qualityOption,
         value: qualityOption,
       })),
-      qualityValue: "",
+      qualityValue: "NA",
       currentValue: "",
     };
   },
