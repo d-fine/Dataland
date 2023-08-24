@@ -3,6 +3,7 @@ import { minimalKeycloakMock } from "../../testUtils/Keycloak";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "../../../../src/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 import { mockData } from "@ct/utils/mockDataNewEuTaxonomyForNonFinancials";
+
 describe("Component test for the NewEUTaxonomy Page", () => {
   const kpiList: string[] = ["BASIC INFORMATION", "ASSURANCE", "REVENUE", "CAPEX", "OPEX"];
   const dataTestList: string[] = ["Basic Information", "Assurance", "Revenue", "CapEx", "OpEx"];
@@ -36,7 +37,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     ["totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare"],
   ];
 
-  it("Check order of the displayed KPIs and category entries", () => {
+  it("Check order of the displayed KPIs and its entries", () => {
     const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(mockData);
     const dataAndMetaInfo: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel> = [
       singleMockDataAndMetaInfo,
@@ -70,8 +71,11 @@ describe("Component test for the NewEUTaxonomy Page", () => {
           cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("not.have.text", kpiListOrderChanged[index]);
         });
 
-      cy.get(`[data-test='${dataTestList[0]}']`).click();
+      cy.get(`[data-test='${dataTestList[0]}']`).click(); //Close the already opened category
 
+      /**
+       * The goal for the loop is to expand one KPI at a time and check the order of the entries.
+       */
       cy.wait(300);
       let row;
       for (let i = 1; i < dataTestList.length; i++) {
