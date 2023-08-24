@@ -1,6 +1,6 @@
 <template>
-  <DataTable scrollable :value="frozenColumnData" class="aligned-activities-data-table">
-    <ColumnGroup type="header">
+  <DataTable data-test="dataTableTest" scrollable :value="frozenColumnData" class="aligned-activities-data-table">
+    <ColumnGroup data-test="columnGroupTest" type="header">
       <Row>
         <Column
           header=""
@@ -11,6 +11,7 @@
           style="background-color: #fff"
         ></Column>
         <Column
+          data-test="mainColumnTest"
           v-for="group of mainColumnGroups"
           :key="group.key"
           :header="group.label"
@@ -19,7 +20,13 @@
         ></Column>
       </Row>
       <Row>
-        <Column header="Activity" :frozen="true" alignFrozen="left" class="frozen-row-header"></Column>
+        <Column
+          data-test="headerActivity"
+          header="Activity"
+          :frozen="true"
+          alignFrozen="left"
+          class="frozen-row-header"
+        ></Column>
         <Column header="Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header"></Column>
         <Column
           v-for="col of mainColumnDefinitions"

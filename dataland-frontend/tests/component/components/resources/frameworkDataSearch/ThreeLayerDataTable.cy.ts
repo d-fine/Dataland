@@ -1,4 +1,5 @@
 import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
+import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
@@ -55,7 +56,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     cy.get(`[data-test='${dataTestTagOfCategory}']`).click();
   }
 
-  it("Check order of the displayed KPIs and its entries", () => {
+  it.only("Check order of the displayed KPIs and its entries", () => {
     const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(mockData); // TODO Can't we put mockData to the testing folder as json?
     const dataAndMetaInfo: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel> = [
       singleMockDataAndMetaInfo,
@@ -100,13 +101,13 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     });
   });
 
-  it.only("Checks that the modal page works as intended", () => {
+  it("Checks that the modal page works as intended", () => {
     const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(mockData); // TODO Can't we put mockData to the testing folder as json?
     const dataAndMetaInfo: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel> = [
       singleMockDataAndMetaInfo,
     ];
-/**
-    cy.mountWithDialog(ThreeLayerDataTable, {
+
+    cy.mountWithDialog(AlignedActivitiesDataTable, {
       keycloak: minimalKeycloakMock({}),
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -116,6 +117,13 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       },
     }).then(() => {
       cy.get("span[data_id='pv_id_61_header']");
-    }); **/
+      cy.get("table").find(`tr:contains("Activity")`);
+      cy.get("table").find(`tr:contains("Code(s)")`);
+      cy.get("table").find(`tr:contains("Revenue")`);
+      cy.get("table").find(`tr:contains("Climate change mitigation")`);
+      cy.get("table").find(`tr:contains("Climate change adaptation")`);
+      cy.get("table").find(`tr:contains("Water and marine resources")`);
+      cy.get("table").find(`tr:contains("Circular economy")`);
+    });
   });
 });
