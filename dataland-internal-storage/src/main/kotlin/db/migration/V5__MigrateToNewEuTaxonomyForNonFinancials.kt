@@ -77,8 +77,6 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
             }
         } else if (!setAlternativeSourceInfoIfPossible(cashFlowDetails)) {
             cashFlowDetails.put("totalAmount", JSONObject.NULL)
-        } else {
-            // this else clause only exists to satisfy sonar
         }
     }
 
