@@ -150,9 +150,6 @@ import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDa
 export default defineComponent({
   name: "TwoLayerDataTable",
   components: { DataTable, Column, DocumentLink, DetailsCompanyDataTable, AlignedActivitiesDataTable },
-  // TODO we import a eu taxo specific thing here (AlignedActivitiesDataTable) => a little strange since it is ageneric component
-  // TODO yes, previously we imported DetailsCompanyDataTable (which I now had to add again to to fix a bug when opening non-aligned modals)
-  // TODO I understand the problem. Discussion needed how to fix.
   directives: {
     tooltip: Tooltip,
   },
