@@ -1,5 +1,4 @@
 import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
-import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
@@ -56,7 +55,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     cy.get(`[data-test='${dataTestTagOfCategory}']`).click();
   }
 
-  it.only("Check order of the displayed KPIs and its entries", () => {
+  it("Check order of the displayed KPIs and its entries", () => {
     const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(mockData); // TODO Can't we put mockData to the testing folder as json?
     const dataAndMetaInfo: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel> = [
       singleMockDataAndMetaInfo,
@@ -101,13 +100,13 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     });
   });
 
-  it("Checks that the modal page works as intended", () => {
+  it("Opens the aligned activities modal and checks that it works as intended", () => {
     const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(mockData); // TODO Can't we put mockData to the testing folder as json?
     const dataAndMetaInfo: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel> = [
       singleMockDataAndMetaInfo,
     ];
 
-    cy.mountWithDialog(AlignedActivitiesDataTable, {
+    cy.mountWithDialog(ThreeLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -116,6 +115,13 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         dataAndMetaInfo: dataAndMetaInfo,
       },
     }).then(() => {
+      toggleCategoryByClick("CapEx");
+      cy.get(`[data-test='totalAlignedShare']`).filter(":visible").click();
+      cy.get(`[data-test='totalAlignedShare']`)
+        .filter(":visible")
+        .find(`a:contains('Show "Aligned CapEx per Activity" ')`)
+        .click();
+
       cy.get("span[data_id='pv_id_61_header']");
       cy.get("table").find(`tr:contains("Activity")`);
       cy.get("table").find(`tr:contains("Code(s)")`);
