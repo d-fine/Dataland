@@ -14,11 +14,8 @@ fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String)
     val objectMapper = ObjectMapper()
     val preparedStatement = context!!.connection.prepareStatement(
         "SELECT * from data_items " +
-            "WHERE data LIKE ?",
+            "WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"${dataType}\\\\\\\"%'",
     )
-    val unescapedSearchPattern = "%\"dataType\":\"$dataType\"%"
-    val escapedSearchPattern = objectMapper.writeValueAsString(objectMapper.writeValueAsString(unescapedSearchPattern))
-    preparedStatement.setString(1, escapedSearchPattern)
     val getQueryResultSet = preparedStatement.executeQuery()
 
     val companyAssociatedDatasets = mutableListOf<DataTableEntity>()
