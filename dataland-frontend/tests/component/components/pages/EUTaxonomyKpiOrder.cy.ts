@@ -9,7 +9,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   const dataTestList: string[] = ["Basic Information", "Assurance", "Revenue", "CapEx", "OpEx"];
   const kpiListOrderChanged = ["ASSURANCE", "OPEX", "BASIC INFORMATION", "REVENUE", "CAPEX"];
 
-  const subcategoryList: string[][] = [
+  const subcategoryList: string[][] = [ //Hardcoded list of entries on the view page.
     ["Basic Information"],
     ["Assurance"],
     [
@@ -29,7 +29,8 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     ["Total Aligned OpEx", "Total OpEx", "Total Eligible OpEx", "Total Non-Aligned OpEx", "Total Non-Eligible OpEx"],
   ];
 
-  const subcategoryDataTestList: string[][] = [
+  const subcategoryDataTestList: string[][] = [ //Names of the "data-test=''" labels in the forntend-code,
+                                                // which call the entries of the KPI lists.
     ["_basicInformation"],
     ["assurance"],
     ["totalAlignedShare", "totalAmount", "totalEligibleShare", "totalNonAlignedShare", "totalNonEligibleShare"],
