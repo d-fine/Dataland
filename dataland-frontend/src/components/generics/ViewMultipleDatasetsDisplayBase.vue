@@ -138,10 +138,8 @@ export default defineComponent({
       if (newDataId) {
         this.setFlagsToDataNotFoundState();
         void this.getMetaDataForDataId(newDataId);
-      } else {
-        if (!this.reportingPeriod) {
-          this.setSingleDataMetaInfoToDisplay(null);
-        }
+      } else if (!this.reportingPeriod) {
+        this.setSingleDataMetaInfoToDisplay(null);
       }
     },
     reportingPeriod(newReportingPeriod: string) {
