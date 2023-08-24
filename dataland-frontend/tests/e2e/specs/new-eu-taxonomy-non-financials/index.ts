@@ -1,6 +1,6 @@
 /**
- * As a user, I want the Lksg company page to exist and behave like I expect
+ * As a user, I want the EU Taxonomy company page for non-financials to exist and behave like I expect
  */
-describe("Tests for view page of Lksg-Framework data", () => {
-    require("./DataIntegrity");
+describe("EU Taxonomy for non-financials Company Page tests", () => {
+  require("./DataUpload");
 });
