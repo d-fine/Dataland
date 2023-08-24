@@ -142,7 +142,7 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
       required : false,
       showIf : (): boolean => true
     }, {
-      name : "ClimateAdaptatio",
+      name : "ClimateAdaptation",
       label : "Substantial Contribution to Climate Change Adaption",
       description : "",
       unit : "Percentage",
