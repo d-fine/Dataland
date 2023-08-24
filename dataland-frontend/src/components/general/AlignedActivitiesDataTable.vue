@@ -72,6 +72,8 @@ import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
+import { Activity } from "@clients/backend";
 
 type ActivityObject = {
   activityName: string;
@@ -87,11 +89,17 @@ type ActivityObject = {
     ClimateMitigation: number;
     ClimateAdaptation: number;
     Water: number;
+    CircularEconomy: number;
+    PollutionPrevention: number;
+    Biodiversity: number;
   };
   dnshCriteria: {
     ClimateMitigation: "Yes" | "No";
     ClimateAdaptation: "Yes" | "No";
     Water: "Yes" | "No";
+    CircularEconomy: "Yes" | "No";
+    PollutionPrevention: "Yes" | "No";
+    Biodiversity: "Yes" | "No";
   };
   minimumSafeguards: "Yes" | "No";
 };
@@ -111,6 +119,7 @@ export default defineComponent({
     return {
       listOfRowContents: [] as Array<ActivityObject>,
       kpiKeyOfTable: "" as string,
+      columnHeaders: {} as { [kpiKeyOfTable: string]: { [columnName: string]: string } },
       frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
       mainColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
@@ -118,7 +127,6 @@ export default defineComponent({
         activity: string;
         naceCodes: string | string[] | number | number[];
       }>,
-      defs: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnData: [] as Array<ActivityFieldValueObject>,
     };
   },
@@ -127,8 +135,11 @@ export default defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       listOfRowContents: Array<object | string>;
       kpiKeyOfTable: string;
+      columnHeaders: { [kpiKeyOfTable: string]: { [columnName: string]: string } };
     };
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
+    this.columnHeaders = dialogRefData.columnHeaders;
+
     if (typeof dialogRefData.listOfRowContents[0] === "string") {
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {
@@ -136,21 +147,19 @@ export default defineComponent({
     }
 
     this.frozenColumnDefinitions = [
-      { field: "activity", header: "Activity", frozen: true, group: "_frozen" },
-      { field: "naceCodes", header: "Code(s)", frozen: true, group: "_frozen" },
+      { field: "activity", header: this.humanizeHeaderName("activity"), frozen: true, group: "_frozen" },
+      { field: "naceCodes", header: this.humanizeHeaderName("naceCodes"), frozen: true, group: "_frozen" },
     ];
 
     this.mainColumnDefinitions = [
-      { field: "revenue", header: "Revenue", group: "_revenue" },
-      { field: "revenuePercent", header: "Revenue (%)", group: "_revenue" },
+      { field: "revenue", header: this.humanizeHeaderName("revenue"), group: "_revenue" },
+      { field: "revenuePercent", header: this.humanizeHeaderName("revenuePercent"), group: "_revenue" },
 
       ...this.makeGroupColumns("substantialContributionCriteria"),
       ...this.makeGroupColumns("dnshCriteria"),
 
-      { field: "minimumSafeguards", header: "Minimum Safeguards", group: "_minimumSafeguards" },
+      { field: "minimumSafeguards", header: this.humanizeHeaderName("minimumSafeguards"), group: "_minimumSafeguards" },
     ];
-
-    this.defs = [...this.frozenColumnDefinitions, ...this.mainColumnDefinitions];
 
     this.frozenColumnData = this.listOfRowContents.map((activity) => ({
       activity: activity.activityName,
@@ -168,8 +177,12 @@ export default defineComponent({
 
     this.mainColumnGroups = [
       { key: "_revenue", label: "", colspan: 2 },
-      { key: "substantialContributionCriteria", label: "Substantial Contribution Criteria", colspan: 6 },
-      { key: "dnshCriteria", label: "DNSH Criteria", colspan: 6 },
+      {
+        key: "substantialContributionCriteria",
+        label: this.humanizeHeaderName("substantialContributionCriteria"),
+        colspan: 6,
+      },
+      { key: "dnshCriteria", label: this.humanizeHeaderName("dnshCriteria"), colspan: 6 },
       { key: "_minimumSafeguards", label: "", colspan: 1 },
     ];
   },
@@ -192,14 +205,12 @@ export default defineComponent({
      * @returns column definitions for group
      */
     makeGroupColumns(groupName: string) {
-      return [
-        { field: `ChangeMitigation`, header: "Climate change mitigation", group: groupName },
-        { field: `ClimateAdaptation`, header: "Climate change adaptation", group: groupName },
-        { field: `Water`, header: "Water and marine resources", group: groupName },
-        { field: `CircularEconomy`, header: "Circular economy", group: groupName },
-        { field: `Pollution`, header: "Pollution", group: groupName },
-        { field: `BiodiversityAndEcosystems`, header: "Biodiversity And Ecosystems", group: groupName },
-      ];
+      const EnvironmentalObjectiveKeys = Object.keys(EnvironmentalObjective).filter((v) => isNaN(Number(v)));
+      return EnvironmentalObjectiveKeys.map((enviromentalObjectiveKey: string) => ({
+        field: enviromentalObjectiveKey,
+        header: this.humanizeHeaderName(enviromentalObjectiveKey),
+        group: groupName,
+      }));
     },
     /**
      * @param target the camel case string we want to format
@@ -221,6 +232,13 @@ export default defineComponent({
         default:
           return "";
       }
+    },
+    /**
+     * @param key the item to lookup
+     * @returns the display version of the column header
+     */
+    humanizeHeaderName(key: string) {
+      return this.columnHeaders[this.kpiKeyOfTable][key];
     },
   },
 });
