@@ -80,50 +80,76 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       });
   }
 
-  //TODO: create function for uploading reports
-
   /**
    * this method fills and checks the general section
-   * @param reportName the name of the report that is uploaded
+   * @param reports the name of the reports that are uploaded
    */
-  function fillAndValidateGeneralSection(reportName: string): void {
+  function fillAndValidateGeneralSection(reports: string[]): void {
     cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
     cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
     cy.get("div.p-datepicker").find('span:contains("11")').click();
     cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
     cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
     cy.get('div[data-test="submitSideBar"] li:last a').click();
-
     cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
-
     cy.get('input[name="euTaxonomyActivityLevelReporting"][value="Yes"]').check();
-
     cy.get('input[name="numberOfEmployees"]').clear().type("-13");
     cy.get('em[title="Number Of Employees"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
     cy.get('input[name="numberOfEmployees"]').clear().type("333");
-
     cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
-
-    cy.get('select[name="assurance"]').select(1);
+    cy.get('select[name="assurance"]').select(2);
     cy.get('input[name="provider"]').clear().type("Assurance Provider");
-    //cy.get('select[name="report"]').first().select(reportName);
-    cy.get('input[name="page"]').first().clear().type("-13");
-    cy.get('em[title="Page"]').first().click();
+    cy.get('div[label="General"] select[name="report"]').select(reports);
+    cy.get('div[label="General"] input[name="page"]').clear().type("-13");
+    cy.get('div[label="General"] em[title="Page"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
-    cy.get('input[name="page"]').first().clear().type("3");
+    cy.get('div[label="General"] input[name="page"]').clear().type("3");
   }
 
   /**
-   * this method fills and checks the other sections
+   * this method fills and checks the Revenue section, excluding the activity component
    * @param reports the name of the reports that are uploaded
    */
   function fillAndValidateOtherSections(reports: string[]): void {
-    for (const section of ["revenueSection", "capexSection", "opexSection"]) {
-      cy.get('input[name="totalAmount"]').type("130");
-      //cy.get('[data-test="currency???"] select[name="unit???"]').select(1);
-      cy.get('select[name="report"]').select(reports[0]);
-    }
+    cy.get('div[label="Revenue"] input[name="value"]').clear().type("130000");
+    cy.get('div[label="Revenue"] select[name="unit"]').select(1);
+    cy.get('div[label="Revenue"] select[name="report"]').select(reports[0]);
+    cy.get('div[label="Revenue"] input[name="page"]').clear().type("5");
+    cy.get('div[label="Revenue"] select[name="quality"]').select(2);
+    cy.get('div[label="Revenue"] textarea[name="comment"]').clear().type("just a comment");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("a");
+    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be a number").should("exist");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("120");
+    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be between 0 and 100").should("exist");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("25");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(0).clear().type("5000");
+    cy.get('div[label="Revenue"] select[name="currency"]').eq(0).select(5);
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type("50");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type("4000");
+    cy.get('div[label="Revenue"] select[name="currency"]').eq(1).select(51);
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("a");
+    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be a number").should("exist");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("-12");
+    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be between 0 and 100").should("exist");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaption"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomy"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControl"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type("12000");
+    cy.get('div[label="Revenue"] select[name="currency"]').eq(2).select(51);
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(3).clear().type("13");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(3).clear().type("13000");
+    cy.get('div[label="Revenue"] select[name="currency"]').eq(3).select(53);
+    cy.get('div[label="Revenue"] input[name="totalEnablingShare"]').clear().type("12");
+    cy.get('div[label="Revenue"] input[name="totalTransitionalShare"]').clear().type("12");
   }
 
   /**
@@ -237,7 +263,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     });
   });
 
-  it("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
+  it.only("Open upload page, fill out and validate the upload form, except for new activities", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateNewEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
@@ -248,7 +274,9 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
         };
       },
     }).then(() => {
-      fillAndValidateGeneralSection("string");
+      uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
+      fillAndValidateGeneralSection([TEST_PDF_FILE_NAME]);
+      fillAndValidateOtherSections([TEST_PDF_FILE_NAME])
     });
   });
 });
