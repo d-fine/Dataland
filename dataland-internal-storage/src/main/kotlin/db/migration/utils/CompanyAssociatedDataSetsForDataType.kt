@@ -12,10 +12,11 @@ typealias CompanyAssociatedDataMigration = (dataTableEntity: DataTableEntity) ->
 fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String): List<DataTableEntity>
 {
     val objectMapper = ObjectMapper()
-    val getQueryResultSet = context!!.connection.createStatement().executeQuery(
+    val preparedStatement = context!!.connection.prepareStatement(
         "SELECT * from data_items " +
             "WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"${dataType}\\\\\\\"%'",
     )
+    val getQueryResultSet = preparedStatement.executeQuery()
 
     val companyAssociatedDatasets = mutableListOf<DataTableEntity>()
     while (getQueryResultSet.next()) {
