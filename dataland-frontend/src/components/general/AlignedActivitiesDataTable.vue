@@ -73,7 +73,6 @@ import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
-import { Activity } from "@clients/backend";
 
 type ActivityObject = {
   activityName: string;
