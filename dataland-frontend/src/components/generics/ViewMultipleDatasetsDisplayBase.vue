@@ -160,10 +160,8 @@ export default defineComponent({
         } else {
           this.isReportingPeriodInUrlInvalid = true;
         }
-      } else {
-        if (!this.dataId) {
-          this.setSingleDataMetaInfoToDisplay(null);
-        }
+      } else if (!this.dataId) {
+        this.setSingleDataMetaInfoToDisplay(null);
       }
     },
   },
