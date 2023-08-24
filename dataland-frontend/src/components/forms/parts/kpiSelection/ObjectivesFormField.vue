@@ -1,5 +1,8 @@
 <template>
-  <p class="p-0 mx-0 mt-0 mb-3">Substantial Contribution</p>
+  <UploadFormSubcategoryHeader
+    label="Substantial Contribution"
+    description="Grade of the substantial contribution criterias fulfillment"
+  />
   <FormKit type="group" name="substantialContributionCriteria">
     <div v-for="field in objectives" :key="field.long_name">
       <UploadFormHeader :label="field.long_name" description="" :is-required="false" />
@@ -13,7 +16,11 @@
       />
     </div>
   </FormKit>
-  <p class="header-separator">DNSH</p>
+  <UploadFormSubcategoryHeader
+    propClass="header-separator"
+    label="DNSH"
+    description="Is no significant harm done to the criterion by this activity."
+  />
   <FormKit type="group" name="dnshCriteria">
     <div v-for="field in objectives" :key="field.long_name">
       <YesNoFormField :name="field.key" description="" :label="field.name" />
@@ -25,10 +32,11 @@
 import { defineComponent } from "vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import UploadFormSubcategoryHeader from "@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue";
 
 export default defineComponent({
   name: "ObjectivesFormField",
-  components: { UploadFormHeader, YesNoFormField },
+  components: { UploadFormHeader, YesNoFormField, UploadFormSubcategoryHeader },
   data() {
     return {
       objectives: [

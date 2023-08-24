@@ -1,12 +1,19 @@
 <template>
   <div data-test="AddressFormElement">
     <ActivitySelector />
-    <FinancialShareFormField name="share" />
+    <FinancialShareFormField
+      name="share"
+      label="Share"
+      description="Relative and absolute share of the underlying cash flow"
+    />
 
     <ObjectivesFormField />
-    <p class="header-separator">Minimum Social Safeguards</p>
-    <div class="form-field">
-      <YesNoFormField name="minimumSafeguards" description="" label="Are minimum social safeguards fulfilled?" />
+    <div class="header-separator">
+      <YesNoFormField
+        name="minimumSafeguards"
+        description="Are minimum social safeguards fulfilled?"
+        label="Minimum Social Safeguards"
+      />
     </div>
   </div>
 </template>
