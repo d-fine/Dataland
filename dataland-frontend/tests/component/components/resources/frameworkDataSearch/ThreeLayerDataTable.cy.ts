@@ -106,15 +106,16 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       singleMockDataAndMetaInfo,
     ];
 
-    cy.mountWithDialog(ThreeLayerDataTable, {
-      keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
+    cy.mountWithDialog(
+      ThreeLayerDataTable,
+      {
+        keycloak: minimalKeycloakMock({}),
+      },
+      {
         dataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
         dataAndMetaInfo: dataAndMetaInfo,
       },
-    }).then(() => {
+    ).then(() => {
       toggleCategoryByClick("CapEx");
       cy.get(`[data-test='totalAlignedShare']`).filter(":visible").click();
       cy.get(`[data-test='totalAlignedShare']`)
