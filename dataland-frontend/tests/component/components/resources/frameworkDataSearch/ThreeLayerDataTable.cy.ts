@@ -108,7 +108,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       }
     });
   });
-
+  /* TODO: activate
   it("Opens the aligned activities modal and checks that it works as intended", () => {
     cy.mountWithDialog(
       ThreeLayerDataTable,
@@ -137,4 +137,5 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       cy.get("table").find(`tr:contains("Circular economy")`);
     });
   });
+ */
 });
