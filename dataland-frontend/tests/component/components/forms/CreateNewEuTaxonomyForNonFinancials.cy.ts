@@ -263,7 +263,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     });
   });
 
-  it.only("Open upload page, fill out and validate the upload form, except for new activities", () => {
+  it("Open upload page, fill out and validate the upload form, except for new activities", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateNewEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
