@@ -94,9 +94,9 @@ export default defineComponent({
       default: () => ({}),
     },
     sortBySubcategoryKey: {
-        type: Boolean,
-        default: true,
-    }
+      type: Boolean,
+      default: true,
+    },
   },
   mounted() {
     this.triggerConversionOfDataForDisplay();
