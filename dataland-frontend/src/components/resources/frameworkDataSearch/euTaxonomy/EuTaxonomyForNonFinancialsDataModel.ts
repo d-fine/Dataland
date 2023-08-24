@@ -133,7 +133,7 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
       required : false,
       showIf : (): boolean => true
     }, {
-      name : "ClimateMitigation",
+      name : "climateMitigation",
       label : "Substantial Contribution to Climate Change Mitigation",
       description : "",
       unit : "Percentage",
@@ -142,7 +142,7 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
       required : false,
       showIf : (): boolean => true
     }, {
-      name : "ClimateAdaptation",
+      name : "climateAdaptation",
       label : "Substantial Contribution to Climate Change Adaption",
       description : "",
       unit : "Percentage",
@@ -151,7 +151,7 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
       required : false,
       showIf : (): boolean => true
     }, {
-      name : "Water",
+      name : "water",
       label : "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
       description : "",
       unit : "Percentage",
@@ -160,7 +160,7 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
       required : false,
       showIf : (): boolean => true
     }, {
-      name : "CircularEconomy",
+      name : "circularEconomy",
       label : "Substantial Contribution to Transition to a Circular Economy",
       description : "",
       unit : "Percentage",
@@ -169,7 +169,7 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
       required : false,
       showIf : (): boolean => true
     }, {
-      name : "PollutionPrevention",
+      name : "pollutionPrevention",
       label : "Substantial Contribution to Pollution Prevention and Control",
       description : "",
       unit : "Percentage",
@@ -178,7 +178,7 @@ export const euTaxonomyForNonFinancialsDataModel = [ {
       required : false,
       showIf : (): boolean => true
     }, {
-      name : "Biodiversity",
+      name : "biodiversity",
       label : "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
       description : "",
       unit : "Percentage",
