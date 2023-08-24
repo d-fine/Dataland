@@ -11,32 +11,35 @@ import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 let newEuTaxonomyForNonFinancialsFixtureForTest: FixtureData<NewEuTaxonomyDataForNonFinancials>;
 before(function () {
-    cy.fixture("CompanyInformationWithNewEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
-        newEuTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
-        // "only-eligible-and-total-numbers" should be replaced later with a more suitable fake fixture
-        // or manually add field values here like newEuTaxonomyForNonFinancialsFixtureForTest.t.fieldX = {...}
-    });
+  cy.fixture("CompanyInformationWithNewEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
+    const preparedFixtures = jsonContent as Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
+    newEuTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
+      "only-eligible-and-total-numbers",
+      preparedFixtures,
+    );
+    // "only-eligible-and-total-numbers" should be replaced later with a more suitable fake fixture
+    // or manually add field values here like newEuTaxonomyForNonFinancialsFixtureForTest.t.fieldX = {...}
+  });
 });
 
 describeIf(
-    "As a user, I expect to be able to upload EU taxonomy data for non-financials via the api, and that the uploaded data is displayed " +
+  "As a user, I expect to be able to upload EU taxonomy data for non-financials via the api, and that the uploaded data is displayed " +
     "correctly in the frontend",
-    {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    },
-    function (): void {
-        beforeEach(() => {
-            cy.ensureLoggedIn(admin_name, admin_pw);
-        });
+  {
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+  },
+  function (): void {
+    beforeEach(() => {
+      cy.ensureLoggedIn(admin_name, admin_pw);
+    });
 
-        /**
-         * validates that the data uploaded via api is displayed correctly for a company
-         * @param companyId the company associated to the data uploaded via form
-         * @param dataId the company data id for accessing its view page
-         */
+    /**
+     * validates that the data uploaded via api is displayed correctly for a company
+     * @param companyId the company associated to the data uploaded via form
+     * @param dataId the company data id for accessing its view page
+     */
 
-        /*
+    /*
          to be implemented after view page is ready
 
         function validateFormUploadedData(companyId: string, dataId: string): void {
@@ -56,35 +59,35 @@ describeIf(
         }
         */
 
-        it("Create a company via api and upload an EU taxonomy data for non-financials dataset via the api", () => {
-            const uniqueCompanyMarker = Date.now().toString();
-            const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
-            getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-                return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-                    return uploadFrameworkData(
-                        DataTypeEnum.NewEutaxonomyNonFinancials,
-                        token,
-                        storedCompany.companyId,
-                        "2021",
-                        newEuTaxonomyForNonFinancialsFixtureForTest.t,
-                    ).then((dataMetaInformation) => {
-                        cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
-                        cy.visitAndCheckAppMount(
-                            "/companies/" +
-                            storedCompany.companyId +
-                            "/frameworks/" +
-                            DataTypeEnum.NewEutaxonomyNonFinancials +
-                            "/upload?templateDataId=" +
-                            dataMetaInformation.dataId,
-                        );
-                        cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-                        cy.get("h1").should("contain", testCompanyName);
-                        submitButton.clickButton();
-                        cy.url().should("eq", getBaseUrl() + "/datasets");
-                        //validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
-                    });
-                });
-            });
+    it("Create a company via api and upload an EU taxonomy data for non-financials dataset via the api", () => {
+      const uniqueCompanyMarker = Date.now().toString();
+      const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+          return uploadFrameworkData(
+            DataTypeEnum.NewEutaxonomyNonFinancials,
+            token,
+            storedCompany.companyId,
+            "2021",
+            newEuTaxonomyForNonFinancialsFixtureForTest.t,
+          ).then((dataMetaInformation) => {
+            cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+            cy.visitAndCheckAppMount(
+              "/companies/" +
+                storedCompany.companyId +
+                "/frameworks/" +
+                DataTypeEnum.NewEutaxonomyNonFinancials +
+                "/upload?templateDataId=" +
+                dataMetaInformation.dataId,
+            );
+            cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+            cy.get("h1").should("contain", testCompanyName);
+            submitButton.clickButton();
+            cy.url().should("eq", getBaseUrl() + "/datasets");
+            //validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
+          });
         });
-    },
+      });
+    });
+  },
 );

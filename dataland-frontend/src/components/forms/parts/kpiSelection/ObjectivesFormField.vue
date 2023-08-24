@@ -35,32 +35,32 @@ export default defineComponent({
         {
           name: "Climate mitigation",
           long_name: "Climate change mitigation",
-          key: "ClimateMitigation",
+          key: "climateMitigation",
         },
         {
           name: "Climate adaptation",
           long_name: "Climate change adaptation",
-          key: "ClimateAdaptation",
+          key: "climateAdaptation",
         },
         {
           name: "Water",
           long_name: "Sustainable use and protection of water and marine resources",
-          key: "Water",
+          key: "water",
         },
         {
           name: "Circular economy",
           long_name: "Transition to a circular economy",
-          key: "CircularEconomy",
+          key: "circularEconomy",
         },
         {
           name: "Pollution prevention",
           long_name: "Pollution prevention and control",
-          key: "PollutionPrevention",
+          key: "pollutionPrevention",
         },
         {
           name: "Biodiversity",
           long_name: "Protection and restoration of biodiversity and ecosystems",
-          key: "Biodiversity",
+          key: "biodiversity",
         },
       ],
     };
