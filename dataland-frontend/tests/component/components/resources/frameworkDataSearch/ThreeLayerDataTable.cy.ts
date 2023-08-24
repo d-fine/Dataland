@@ -10,7 +10,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   before(function () {
     cy.fixture("NewEuTaxonomyForNonFinancialsMock.json").then(
       (fixtureData: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials) => {
-        const mockBackendResponse: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials = fixtureData;
+        const mockBackendResponse = fixtureData;
         const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(
           mockBackendResponse,
         );
@@ -109,7 +109,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     });
   });
 
-  it.only("Opens the aligned activities modal and checks that it works as intended", () => {
+  it("Opens the aligned activities modal and checks that it works as intended", () => {
     cy.mountWithDialog(
       ThreeLayerDataTable,
       {
