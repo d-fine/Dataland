@@ -98,4 +98,23 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       }
     });
   });
+
+  it.only("Checks that the modal page works as intended", () => {
+    const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(mockData); // TODO Can't we put mockData to the testing folder as json?
+    const dataAndMetaInfo: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel> = [
+      singleMockDataAndMetaInfo,
+    ];
+/**
+    cy.mountWithDialog(ThreeLayerDataTable, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        dataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
+        dataAndMetaInfo: dataAndMetaInfo,
+      },
+    }).then(() => {
+      cy.get("span[data_id='pv_id_61_header']");
+    }); **/
+  });
 });
