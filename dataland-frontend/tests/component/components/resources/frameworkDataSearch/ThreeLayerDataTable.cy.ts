@@ -49,8 +49,9 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
   /**
    * Toggle a category by clicking on it via its data-test tag
+   * @param dataTestTagOfCategory the data-test tag of the category
    */
-  function toggleCategoryByClick(dataTestTagOfCategory:string): void{
+  function toggleCategoryByClick(dataTestTagOfCategory: string): void {
     cy.get(`[data-test='${dataTestTagOfCategory}']`).click();
   }
 
@@ -75,7 +76,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
           cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("have.text", expectedOrderOfCategories[index]);
         });
 
-      toggleCategoryByClick(dataTestTagsOfCategories[0])
+      toggleCategoryByClick(dataTestTagsOfCategories[0]);
 
       /**
        * The goal for the loop is to expand one KPI at a time and check the order of the entries.
@@ -85,7 +86,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       for (let categoryIndex = 1; categoryIndex < dataTestTagsOfCategories.length; categoryIndex++) {
         subcategoriesForCurrentCategory = dataTestTagsOfSubcategoriesGroupedByCategories[categoryIndex];
 
-        toggleCategoryByClick(dataTestTagsOfCategories[categoryIndex])
+        toggleCategoryByClick(dataTestTagsOfCategories[categoryIndex]);
 
         for (let subCategoryIndex = 0; subCategoryIndex < subcategoriesForCurrentCategory.length; subCategoryIndex++) {
           cy.get(".p-rowgroup-header")
@@ -94,7 +95,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
             .get(`span[id="${subcategoriesForCurrentCategory[subCategoryIndex]}"]`)
             .should("contain", `${expectedOrderOfSubcategoriesGroupedByCategories[categoryIndex][subCategoryIndex]}`);
         }
-        toggleCategoryByClick(dataTestTagsOfCategories[categoryIndex])
+        toggleCategoryByClick(dataTestTagsOfCategories[categoryIndex]);
       }
     });
   });
