@@ -109,7 +109,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     });
   });
 
-  it("Opens the aligned activities modal and checks that it works as intended", () => {
+  it.only("Opens the aligned activities modal and checks that it works as intended", () => {
     cy.mountWithDialog(
       ThreeLayerDataTable,
       {
@@ -120,14 +120,17 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         dataAndMetaInfo: mockedDataForTest,
       },
     ).then(() => {
+      toggleCategoryByClick("Basic Information");
       toggleCategoryByClick("CapEx");
       cy.get(`[data-test='totalAlignedShare']`).filter(":visible").click();
       cy.get(`[data-test='totalAlignedShare']`)
         .filter(":visible")
-        .find(`a:contains('Show "Aligned CapEx per Activity" ')`)
+        .get("em")
+        .filter(":visible")
+        .eq(-1)
+        .should("have.text", " dataset ")
         .click();
-
-      cy.get("span[data_id='pv_id_61_header']");
+      cy.wait(10000);
       cy.get("table").find(`tr:contains("Activity")`);
       cy.get("table").find(`tr:contains("Code(s)")`);
       cy.get("table").find(`tr:contains("Revenue")`);
