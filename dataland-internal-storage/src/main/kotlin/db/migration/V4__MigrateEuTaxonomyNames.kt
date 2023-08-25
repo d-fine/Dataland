@@ -26,10 +26,8 @@ class V4__MigrateEuTaxonomyNames : BaseJavaMigration() {
      * Migrates an old eu taxonomy  dataset to the new name
      */
     fun migrateEuTaxonomyNames(dataTableEntity: DataTableEntity) {
-        val companyAssociatedDatasetAsString = dataTableEntity.companyAssociatedData.toString()
-        val companyAssociatedDatasetWithEscapedSingleQuotes =
-            JSONObject(companyAssociatedDatasetAsString.replace("'", "''"))
-        var euTaxoDataset = JSONObject(companyAssociatedDatasetWithEscapedSingleQuotes.getString("data"))
+        val companyAssociatedDatasetAsString = dataTableEntity.companyAssociatedData
+        val euTaxoDataset = JSONObject(companyAssociatedDatasetAsString.getString("data"))
         mapOfOldToNewFieldNames.forEach {
             euTaxoDataset.put(it.value, euTaxoDataset.get(it.key))
             euTaxoDataset.remove(it.key)
