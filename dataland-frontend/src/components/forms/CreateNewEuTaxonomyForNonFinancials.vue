@@ -155,7 +155,7 @@ import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/fram
 import { AxiosError } from "axios";
 import { type CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials, type CompanyReport } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
+import {checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel} from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
@@ -308,6 +308,12 @@ export default defineComponent({
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
+
+          checkIfAllUploadedReportsAreReferencedInDataModel(
+              this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data as ObjectType,
+              this.namesOfAllCompanyReportsForTheDataset,
+          );
+
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
