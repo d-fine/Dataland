@@ -1,18 +1,16 @@
 <template>
+  <UploadFormSubcategoryHeader label="Activity Name" description="Name of the activity." />
   <div class="form-field next-to-each-other">
-    <div class="form-field-label">
-      <p>Activity:</p>
-      <p>
-        <b> {{ selectedActivities ? selectedActivities.name : "" }}</b>
-      </p>
+    <p>
+      <b> {{ selectedActivities ? selectedActivities.name : "" }}</b>
+    </p>
 
-      <FormKit
-        type="hidden"
-        name="activityName"
-        :modelValue="selectedActivities ? selectedActivities.value : ''"
-        disabled="true"
-      />
-    </div>
+    <FormKit
+      type="hidden"
+      name="activityName"
+      :modelValue="selectedActivities ? selectedActivities.value : ''"
+      disabled="true"
+    />
 
     <PrimeButton
       data-test="dataTestChooseActivityButton"
@@ -36,6 +34,7 @@
               :inputId="slotProps.node.reference"
               name="selectedActivities"
               :value="slotProps.node"
+              @change="newActivitieSelected"
             />
             <label :for="slotProps.node.key" class="ml-2">{{ slotProps.node.name }}</label>
           </span>
@@ -44,11 +43,13 @@
     </div>
   </OverlayPanel>
 
-  <div class="mt-2">
-    <MultiSelectFormElement
+  <div class="my-4">
+    <MultiSelectFormField
       name="naceCodes"
       validation="required"
       validation-label="Nace Codes for Activity"
+      description="The NACE codes associated with this activity"
+      label="Nace Codes"
       placeholder="Chose Nace Codes for Activity"
       :options="NaceCodesForActivities"
       innerClass="long"
@@ -63,12 +64,14 @@ import { defineComponent, ref } from "vue";
 import RadioButton from "primevue/radiobutton";
 import PrimeButton from "primevue/button";
 import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
-import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
+import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
+import UploadFormSubcategoryHeader from "@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue";
 
 export default defineComponent({
   name: "ActivitySelector",
   components: {
-    MultiSelectFormElement,
+    UploadFormSubcategoryHeader,
+    MultiSelectFormField,
     PrimeButton,
     Tree,
     OverlayPanel,
@@ -96,7 +99,13 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Executed, whenever the search bar input is focused. Opens the Tree Overlay.
+     * Close the Tree Overlay.
+     */
+    newActivitieSelected() {
+      this.overlayPanel?.hide();
+    },
+    /**
+     * Opens the Tree Overlay.
      * @param event the onclick event
      */
     inputFocused(event: Event) {
