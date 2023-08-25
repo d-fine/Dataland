@@ -9,10 +9,9 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
   before(function () {
     cy.fixture("NewEuTaxonomyForNonFinancialsMock.json").then(
-      (fixtureData: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials) => {
-        const mockBackendResponse = fixtureData;
+      (mockedBackendResponse: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials) => {
         const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(
-          mockBackendResponse,
+          mockedBackendResponse,
         );
         mockedDataForTest = [singleMockDataAndMetaInfo];
       },
