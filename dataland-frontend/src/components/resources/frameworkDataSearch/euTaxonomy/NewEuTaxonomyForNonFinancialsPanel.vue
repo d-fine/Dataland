@@ -6,11 +6,11 @@
   <div v-show="!waitingForData">
     <ThreeLayerTable
       data-test="ThreeLayerTableTest"
-      :data-model="euTaxonomyForNonFinancialsDisplayDataModel"
+      :data-model="newEuTaxonomyForNonFinancialsDisplayDataModel"
       :data-and-meta-info="convertedDataAndMetaInfo"
       @data-converted="handleFinishedDataConversion"
       :format-value-for-display="formatValueForDisplay"
-      :modal-column-headers="euTaxonomyForNonFinancialsModalColumnHeaders"
+      :modal-column-headers="newEuTaxonomyForNonFinancialsModalColumnHeaders"
       :sort-by-subcategory-key="false"
     />
   </div>
@@ -45,8 +45,8 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel>,
-      euTaxonomyForNonFinancialsModalColumnHeaders: newEuTaxonomyForNonFinancialsModalColumnHeaders,
-      euTaxonomyForNonFinancialsDisplayDataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
+      newEuTaxonomyForNonFinancialsModalColumnHeaders,
+      newEuTaxonomyForNonFinancialsDisplayDataModel,
       namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "totalEnablingShare", "totalTransitionalShare"],
     };
   },
@@ -136,28 +136,6 @@ export default defineComponent({
     },
 
     /**
-     * Formats KPI values for display
-     * @param field the considered KPI field
-     * @param kpiValueToFormat the value to be formatted
-     * @returns the formatted value
-     */
-    formatValueForDisplay(field: Field, kpiValueToFormat: KpiValue): KpiValue {
-      if (kpiValueToFormat == null) {
-        return kpiValueToFormat;
-      }
-      if (
-        this.namesOfFieldsToFormatAsPercentages.includes(field.name) ||
-        this.isFieldNameAmongEnvironmentalObjectives(field.name)
-      ) {
-        return this.formatPercentageNumber(kpiValueToFormat as number);
-      }
-      if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
-        return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
-      }
-      return kpiValueToFormat;
-    },
-
-    /**
      * Formats an AmountWithCurrency object by concatenating the amount and the currency.
      * @param amountWithCurrency the object that holds the amount and currency
      * @returns the resulting string from the concatenation
@@ -177,6 +155,28 @@ export default defineComponent({
      */
     formatPercentageNumber(relativeShareInPercent: number) {
       return `${relativeShareInPercent.toFixed(2).toString()} %`;
+    },
+
+    /**
+     * Formats KPI values for display
+     * @param field the considered KPI field
+     * @param kpiValueToFormat the value to be formatted
+     * @returns the formatted value
+     */
+    formatValueForDisplay(field: Field, kpiValueToFormat: KpiValue): KpiValue {
+      if (kpiValueToFormat == null) {
+        return kpiValueToFormat;
+      }
+      if (
+        this.namesOfFieldsToFormatAsPercentages.includes(field.name) ||
+        this.isFieldNameAmongEnvironmentalObjectives(field.name)
+      ) {
+        return this.formatPercentageNumber(kpiValueToFormat as number);
+      }
+      if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
+        return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
+      }
+      return kpiValueToFormat;
     },
   },
 });
