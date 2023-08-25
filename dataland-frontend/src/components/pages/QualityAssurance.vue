@@ -242,15 +242,6 @@ export default defineComponent({
           const smeDataControllerApi = await new ApiClientProvider(keycloakPromise).getSmeDataControllerApi();
           const companyAssociatedDataResponse = await smeDataControllerApi.getCompanyAssociatedSmeData(this.dataId);
           this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (dataTypeOfDatasetToReview === DataTypeEnum.NewEutaxonomyNonFinancials) {
-          const newEutaxonomyNonFinancialsDataControllerApi = await new ApiClientProvider(
-            keycloakPromise,
-          ).getNewEutaxonomyDataForNonFinancialsControllerApi();
-          const companyAssociatedDataResponse =
-            await newEutaxonomyNonFinancialsDataControllerApi.getCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
-              this.dataId,
-            );
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
         } else {
           throw new Error("The qaDataObject type of the selected dataset is not supported by the QA frontend.");
         }

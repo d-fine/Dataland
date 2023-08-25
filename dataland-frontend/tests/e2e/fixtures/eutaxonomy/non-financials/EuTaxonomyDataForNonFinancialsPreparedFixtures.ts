@@ -1,9 +1,12 @@
-import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateFixtureDataset, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type EuTaxonomyDataForNonFinancials } from "@clients/backend";
-import { generateEuTaxonomyDataForNonFinancials } from "./EuTaxonomyDataForNonFinancialsFixtures";
-import { generateDatapoint, generateDatapointAbsoluteAndPercentage } from "@e2e/fixtures/common/DataPointFixtures";
-import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { type EuTaxonomyDataForNonFinancials, type EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
+import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
+import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
+import {
+  generateFinancialShare,
+  generateEuTaxonomyDataForNonFinancials,
+} from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
@@ -40,22 +43,20 @@ export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
 function createOnlyEglibileNumbers(
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
+  /**
+   * Generates a details per cash flow object with only the total eligible share defined
+   * @returns the details object
+   */
+  function generateCashFlowWithOnlyEligibleNumbers(): EuTaxonomyDetailsPerCashFlowType {
+    const share = generateFinancialShare();
+    share.absoluteShare = undefined;
+    return { totalEligibleShare: share };
+  }
+
   input.companyInformation.companyName = "only-eligible-numbers";
-  input.t.opex = {
-    alignedData: undefined,
-    totalAmount: undefined,
-    eligibleData: generateDatapointAbsoluteAndPercentage(null, randomPercentageValue(), input.t.referencedReports!),
-  };
-  input.t.capex = {
-    alignedData: undefined,
-    totalAmount: undefined,
-    eligibleData: generateDatapointAbsoluteAndPercentage(null, randomPercentageValue(), input.t.referencedReports!),
-  };
-  input.t.revenue = {
-    alignedData: undefined,
-    totalAmount: undefined,
-    eligibleData: generateDatapointAbsoluteAndPercentage(null, randomPercentageValue(), input.t.referencedReports!),
-  };
+  input.t.opex = generateCashFlowWithOnlyEligibleNumbers();
+  input.t.capex = generateCashFlowWithOnlyEligibleNumbers();
+  input.t.revenue = generateCashFlowWithOnlyEligibleNumbers();
   return input;
 }
 
@@ -67,34 +68,24 @@ function createOnlyEglibileNumbers(
 function createOnlyEligibleAndTotalNumbers(
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
+  /**
+   * Generates a details per cash flow object with only the total eligible share and total amount defined
+   * @param referencedReports the ports to be referenced in a data point
+   * @returns the details object
+   */
+  function generateCashFlowWithOnlyEligibleAndTotalNumbers(
+    referencedReports: ReferencedDocuments,
+  ): EuTaxonomyDetailsPerCashFlowType {
+    return {
+      totalAmount: generateDatapoint(randomEuroValue(), referencedReports),
+      totalEligibleShare: generateFinancialShare(),
+    };
+  }
+
   input.companyInformation.companyName = "only-eligible-and-total-numbers";
-  input.t.opex = {
-    alignedData: undefined,
-    totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
-    eligibleData: generateDatapointAbsoluteAndPercentage(
-      randomEuroValue(),
-      randomPercentageValue(),
-      input.t.referencedReports!,
-    ),
-  };
-  input.t.capex = {
-    alignedData: undefined,
-    totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
-    eligibleData: generateDatapointAbsoluteAndPercentage(
-      randomEuroValue(),
-      randomPercentageValue(),
-      input.t.referencedReports!,
-    ),
-  };
-  input.t.revenue = {
-    alignedData: undefined,
-    totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
-    eligibleData: generateDatapointAbsoluteAndPercentage(
-      randomEuroValue(),
-      randomPercentageValue(),
-      input.t.referencedReports!,
-    ),
-  };
+  input.t.opex = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!);
+  input.t.capex = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!);
+  input.t.revenue = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!);
   return input;
 }
 
@@ -107,7 +98,7 @@ function createDatasetWithoutReferencedReports(
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
   input.companyInformation.companyName = "company_without_reports";
-  input.t.referencedReports = undefined;
+  input.t.general!.referencedReports = undefined;
 
   return input;
 }
