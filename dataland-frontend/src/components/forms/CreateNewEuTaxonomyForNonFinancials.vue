@@ -119,7 +119,7 @@
           <SubmitButton :formId="formId" />
           <div v-if="postNewEuTaxonomyForNonFinancialsDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
-            <FailMessage v-else :message="message" :messageId="messageCounter" />
+            <FailMessage v-else data-test="failedUploadMessage" :message="message" :messageId="messageCounter" />
           </div>
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
