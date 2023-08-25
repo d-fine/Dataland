@@ -17,7 +17,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
   it("Check if the panel fetches, converts and displays data correctly", () => {
     const mockCompanyId = "mock-company-Id";
-    cy.intercept(`/api/data/new-eutaxonomy-non-financials/companies/${mockCompanyId}`, mockedBackendDataForTest); // TODO
+    cy.intercept(`/api/data/new-eutaxonomy-non-financials/companies/${mockCompanyId}`, mockedBackendDataForTest);
     cy.mountWithPlugins(NewEuTaxonomyForNonFinancialsPanel, {
       keycloak: minimalKeycloakMock({}),
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
