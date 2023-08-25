@@ -120,10 +120,14 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('div[label="Revenue"] textarea[name="comment"]').clear().type("just a comment");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("a");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
-    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be a number").should("exist");
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be a number")
+      .should("exist");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("120");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
-    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be between 0 and 100").should("exist");
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be between 0 and 100")
+      .should("exist");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("25");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(0).clear().type("5000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(0).select(5);
@@ -132,10 +136,14 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('div[label="Revenue"] select[name="currency"]').eq(1).select(51);
     cy.get('div[label="Revenue"] input[name="climateMitigation"]').clear().type("a");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
-    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be a number").should("exist");
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be a number")
+      .should("exist");
     cy.get('div[label="Revenue"] input[name="climateMitigation"]').clear().type("-12");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
-    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be between 0 and 100").should("exist");
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be between 0 and 100")
+      .should("exist");
     cy.get('div[label="Revenue"] input[name="climateMitigation"]').clear().type("15");
     cy.get('div[label="Revenue"] input[name="climateAdaptation"]').clear().type("15");
     cy.get('div[label="Revenue"] input[name="water"]').clear().type("15");
@@ -151,7 +159,6 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('div[label="Revenue"] input[name="totalEnablingShare"]').clear().type("12");
     cy.get('div[label="Revenue"] input[name="totalTransitionalShare"]').clear().type("12");
   }
-
 
   /**
    * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
