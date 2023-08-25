@@ -3,6 +3,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
 import { type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { newEuTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
 
 describe("Component test for the NewEUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel>;
@@ -117,6 +118,8 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       {
         dataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
         dataAndMetaInfo: mockedDataForTest,
+        modalColumnHeaders: newEuTaxonomyForNonFinancialsModalColumnHeaders,
+        sortBySubcategoryKey: false,
       },
     ).then(() => {
       /**
