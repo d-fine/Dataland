@@ -152,21 +152,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('div[label="Revenue"] input[name="totalTransitionalShare"]').clear().type("12");
   }
 
-  /**
-   * this method fills and checks the fields in Aligned Activities
-   * several activity fields can be added and removed
-   * only one type of activity per activity field
-   * one or multiple Nace codes ca be selected based on the selected activity
-   */
-  function fillAndValidateAlignedActivities(): void {
-    cy.get('div[label="Revenue"] [data-test="alignedActivities"] button').click();
-    cy.get('div[label="Revenue"] [data-test="dataTestChooseActivityButton"] button').click();
-    cy.get('div[label="Revenue"] em[data-test="removeButton"]').first().click();
-    //cy.get('div[label="Revenue"] [data-test="alignedActivities"] button').click();
-    //TODO: transfer to ActivityFormField.cy.ts
 
-
-  }
   /**
    * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
    * @returns the dataset
@@ -292,7 +278,6 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
       fillAndValidateGeneralSection([TEST_PDF_FILE_NAME]);
       fillAndValidateOtherSections([TEST_PDF_FILE_NAME]);
-      fillAndValidateAlignedActivities();
     });
   });
 });
