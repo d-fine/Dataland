@@ -1,6 +1,10 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3">
-    <template #title>New Dataset - New Eu Taxonomy For Non Financials</template>
+    <template #title
+      ><span data-test="pageWrapperTitle">
+        {{ editMode ? "Edit" : "Create" }} New EU Taxonomy Dataset for a Non-Financial Company/Service</span
+      ></template
+    >
     <template #content>
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading New Eu Taxonomy For Non Financials data...</p>
@@ -152,10 +156,9 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDataModel.ts";
-import { AxiosError } from "axios";
 import { type CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials, type CompanyReport } from "@clients/backend";
 import { useRoute } from "vue-router";
-import {checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel} from "@/utils/ValidationsUtils";
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
@@ -240,6 +243,7 @@ export default defineComponent({
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       namesOfAllCompanyReportsForTheDataset: [] as string[],
       reportingPeriod: undefined as undefined | Date,
+      editMode: false,
     };
   },
   computed: {
@@ -264,7 +268,8 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === "string") {
+    if (dataId && typeof dataId === "string" && dataId !== "") {
+      this.editMode = true;
       void this.loadNewEuTaxonomyForNonFinancialsData(dataId);
     } else {
       this.waitingForData = false;
@@ -308,10 +313,9 @@ export default defineComponent({
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
-
           checkIfAllUploadedReportsAreReferencedInDataModel(
-              this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data as ObjectType,
-              this.namesOfAllCompanyReportsForTheDataset,
+            this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data as ObjectType,
+            this.namesOfAllCompanyReportsForTheDataset,
           );
 
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
@@ -329,8 +333,8 @@ export default defineComponent({
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
+        if (error.message) {
+          this.message = error.message;
         } else {
           this.message =
             "An unexpected error occurred. Please try again or contact the support team if the issue persists.";

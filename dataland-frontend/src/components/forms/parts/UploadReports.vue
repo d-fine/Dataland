@@ -1,6 +1,6 @@
 <template>
   <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
-    <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
+    <h4 class="anchor title">Upload company reports</h4>
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
   <!-- Select company reports -->
@@ -33,7 +33,7 @@
     <div v-if="alreadyStoredReports.length > 0" class="uploadFormSection">
       <!-- List of company reports -->
       <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
-        <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
+        <h4 class="anchor title">Uploaded company reports</h4>
       </div>
       <div v-else class="col-12">
         <h3 class="mt-0">Uploaded company reports</h3>
