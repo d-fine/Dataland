@@ -10,7 +10,7 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * This class represents an activity related to the EU taxonomy famework
+ * This class represents an activity related to the EU taxonomy framework
  */
 data class EuTaxonomyActivity(
     @JsonProperty(required = true)
@@ -21,7 +21,7 @@ data class EuTaxonomyActivity(
 
 /**
  * --- API model ---
- * This class represents an activity related to the EU taxonomy famework
+ * This class represents an activity related to the EU taxonomy framework
  * with fields regarding the fulfillment of criteria regarding the alignment to EU taxonomy regulation
  */
 data class EuTaxonomyAlignedActivity(
