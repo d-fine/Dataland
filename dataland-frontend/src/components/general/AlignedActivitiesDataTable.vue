@@ -27,7 +27,7 @@
           alignFrozen="left"
           class="frozen-row-header"
         ></Column>
-        <Column header="Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right"></Column>
+        <Column header="NACE Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right"></Column>
         <Column
           v-for="col of mainColumnDefinitions"
           :key="col.field"
