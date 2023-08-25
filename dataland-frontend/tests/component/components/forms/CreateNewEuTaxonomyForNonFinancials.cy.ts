@@ -120,28 +120,36 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('div[label="Revenue"] textarea[name="comment"]').clear().type("just a comment");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("a");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
-    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be a number").should("exist");
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be a number")
+      .should("exist");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("120");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
-    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be between 0 and 100").should("exist");
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be between 0 and 100")
+      .should("exist");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("25");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(0).clear().type("5000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(0).select(5);
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type("50");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type("4000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(1).select(51);
-    cy.get('div[label="Revenue"] input[name="climateMitigation"]').clear().type("a");
+    cy.get('div[label="Revenue"] input[name="ClimateMitigation"]').clear().type("a");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
-    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be a number").should("exist");
-    cy.get('div[label="Revenue"] input[name="climateMitigation"]').clear().type("-12");
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be a number")
+      .should("exist");
+    cy.get('div[label="Revenue"] input[name="ClimateMitigation"]').clear().type("-12");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
-    cy.get(`div[label="Revenue"] [data-message-type="validation"]`).should("contain", "must be between 0 and 100").should("exist");
-    cy.get('div[label="Revenue"] input[name="climateMitigation"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="climateAdaptation"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="water"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="circularEconomy"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="pollutionPrevention"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="biodiversity"]').clear().type("15");
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be between 0 and 100")
+      .should("exist");
+    cy.get('div[label="Revenue"] input[name="ClimateMitigation"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="ClimateAdaptation"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="Water"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="CircularEconomy"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="PollutionPrevention"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="Biodiversity"]').clear().type("15");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type("12000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(2).select(51);
@@ -151,7 +159,6 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('div[label="Revenue"] input[name="totalEnablingShare"]').clear().type("12");
     cy.get('div[label="Revenue"] input[name="totalTransitionalShare"]').clear().type("12");
   }
-
 
   /**
    * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
