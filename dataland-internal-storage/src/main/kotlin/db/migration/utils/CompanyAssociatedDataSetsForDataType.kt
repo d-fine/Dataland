@@ -9,8 +9,7 @@ typealias CompanyAssociatedDataMigration = (dataTableEntity: DataTableEntity) ->
 /**
  * Method to get the company associated dataset for a given data type
  */
-fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String): List<DataTableEntity>
-{
+fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String): List<DataTableEntity> {
     val objectMapper = ObjectMapper()
     val preparedStatement = context!!.connection.prepareStatement(
         "SELECT * from data_items " +
