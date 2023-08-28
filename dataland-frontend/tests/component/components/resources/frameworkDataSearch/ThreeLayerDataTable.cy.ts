@@ -77,8 +77,8 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   function expandViewPageAndOpenModal(categoryToExpand = "Revenue", fieldToClick = "totalAlignedShare"): void {
     toggleCategoryByClick("Basic Information");
     toggleCategoryByClick(`${categoryToExpand}`);
-    cy.get(`[data-test='totalAlignedShare']`).filter(":visible").click();
-    cy.get(`[data-test='totalAlignedShare']`)
+    cy.get(`[data-test='${fieldToClick}']`).filter(":visible").click();
+    cy.get(`[data-test='${fieldToClick}']`)
       .filter(":visible")
       .get("em")
       .filter(":visible")
