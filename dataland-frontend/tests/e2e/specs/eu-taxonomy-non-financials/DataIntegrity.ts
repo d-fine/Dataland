@@ -1,7 +1,7 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataTypeEnum, type NewEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
@@ -9,16 +9,16 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
-let newEuTaxonomyForNonFinancialsFixtureForTest: FixtureData<NewEuTaxonomyDataForNonFinancials>;
+let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
 before(function () {
-  cy.fixture("CompanyInformationWithNewEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-    const preparedFixtures = jsonContent as Array<FixtureData<NewEuTaxonomyDataForNonFinancials>>;
-    newEuTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
+    const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+    euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
       "only-eligible-and-total-numbers",
       preparedFixtures,
     );
     // "only-eligible-and-total-numbers" should be replaced later with a more suitable fake fixture
-    // or manually add field values here like newEuTaxonomyForNonFinancialsFixtureForTest.t.fieldX = {...}
+    // or manually add field values here like euTaxonomyForNonFinancialsFixtureForTest.t.fieldX = {...}
   });
 });
 
@@ -43,7 +43,7 @@ describeIf(
          to be implemented after view page is ready
 
         function validateFormUploadedData(companyId: string, dataId: string): void {
-            cy.visit(`/companies/${companyId}/frameworks/${DataTypeEnum.NewEutaxonomyNonFinancials}/${dataId}`);
+            cy.visit(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/${dataId}`);
             cy.contains('Show "Sectors"').click();
             cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
             cy.get(".p-dialog th").eq(0).should("have.text", "Sectors");
@@ -65,18 +65,18 @@ describeIf(
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           return uploadFrameworkData(
-            DataTypeEnum.NewEutaxonomyNonFinancials,
+            DataTypeEnum.EutaxonomyNonFinancials,
             token,
             storedCompany.companyId,
             "2021",
-            newEuTaxonomyForNonFinancialsFixtureForTest.t,
+            euTaxonomyForNonFinancialsFixtureForTest.t,
           ).then((dataMetaInformation) => {
             cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
             cy.visitAndCheckAppMount(
               "/companies/" +
                 storedCompany.companyId +
                 "/frameworks/" +
-                DataTypeEnum.NewEutaxonomyNonFinancials +
+                DataTypeEnum.EutaxonomyNonFinancials +
                 "/upload?templateDataId=" +
                 dataMetaInformation.dataId,
             );

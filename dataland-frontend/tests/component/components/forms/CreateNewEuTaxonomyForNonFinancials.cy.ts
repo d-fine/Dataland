@@ -1,8 +1,9 @@
-import CreateNewEuTaxonomyForNonFinancials from "@/components/forms/CreateNewEuTaxonomyForNonFinancials.vue";
+import CreateEuTaxonomyForNonFinancials from "../../../../src/components/forms/CreateEuTaxonomyForNonFinancials.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
-import { type CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import {type CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+} from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 
@@ -164,7 +165,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
    * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
    * @returns the dataset
    */
-  function createMockCompanyAssociatedDataNewEuTaxoNonFinancials(): CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials {
+  function createMockCompanyAssociatedDataEuTaxoNonFinancials(): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
     return {
       companyId: "abc",
       reportingPeriod: "2020",
@@ -239,12 +240,12 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     };
   }
 
-  const companyAssociatedNewEuTaxoFinancialsData = createMockCompanyAssociatedDataNewEuTaxoNonFinancials();
+  const companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
 
   it("Check that warning appears if two pdf files with same name are selected for upload", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithDialog(
-      CreateNewEuTaxonomyForNonFinancials,
+      CreateEuTaxonomyForNonFinancials,
       {
         keycloak: minimalKeycloakMock({}),
       },
@@ -257,12 +258,12 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
 
   it("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
     cy.stub(DataPointFormWithToggle);
-    cy.mountWithPlugins(CreateNewEuTaxonomyForNonFinancials, {
+    cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          referencedReportsForPrefill: companyAssociatedNewEuTaxoFinancialsData?.data?.general?.referencedReports,
-          companyAssociatedNewEuTaxonomyDataForNonFinancials: companyAssociatedNewEuTaxoFinancialsData,
+          referencedReportsForPrefill: companyAssociatedEuTaxoFinancialsData?.data?.general?.referencedReports,
+          companyAssociatedEuTaxonomyDataForNonFinancials: companyAssociatedEuTaxoFinancialsData,
         };
       },
     }).then(() => {
@@ -273,12 +274,12 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
 
   it("Open upload page, fill out and validate the upload form, except for new activities", () => {
     cy.stub(DataPointFormWithToggle);
-    cy.mountWithPlugins(CreateNewEuTaxonomyForNonFinancials, {
+    cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          referencedReportsForPrefill: companyAssociatedNewEuTaxoFinancialsData?.data?.general?.referencedReports,
-          companyAssociatedNewEuTaxonomyDataForNonFinancials: companyAssociatedNewEuTaxoFinancialsData,
+          referencedReportsForPrefill: companyAssociatedEuTaxoFinancialsData?.data?.general?.referencedReports,
+          companyAssociatedEuTaxonomyDataForNonFinancials: companyAssociatedEuTaxoFinancialsData,
         };
       },
     }).then(() => {

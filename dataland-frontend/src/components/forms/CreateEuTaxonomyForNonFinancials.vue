@@ -2,23 +2,23 @@
   <Card class="col-12 page-wrapper-card p-3">
     <template #title
       ><span data-test="pageWrapperTitle">
-        {{ editMode ? "Edit" : "Create" }} New EU Taxonomy Dataset for a Non-Financial Company/Service</span
+        {{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</span
       ></template
     >
     <template #content>
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading New Eu Taxonomy For Non Financials data...</p>
+        <p class="font-medium text-xl">Loading Eu Taxonomy For Non Financials data...</p>
         <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="companyAssociatedNewEuTaxonomyDataForNonFinancials"
+            v-model="companyAssociatedEuTaxonomyDataForNonFinancials"
             :actions="false"
             type="form"
             :id="formId"
             :name="formId"
-            @submit="postNewEuTaxonomyForNonFinancialsData"
+            @submit="postEuTaxonomyForNonFinancialsData"
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
@@ -69,7 +69,7 @@
                         <template v-if="field.fields">
                           <FormKit v-for="innerField in field.fields" :key="innerField" type="group" :name="field.name">
                             <component
-                              v-if="innerField.showIf(companyAssociatedNewEuTaxonomyDataForNonFinancials.data)"
+                              v-if="innerField.showIf(companyAssociatedEuTaxonomyDataForNonFinancials.data)"
                               :is="innerField.component"
                               :label="innerField.label"
                               :placeholder="innerField.placeholder"
@@ -89,7 +89,7 @@
                         </template>
                         <template v-else>
                           <component
-                            v-if="field.showIf(companyAssociatedNewEuTaxonomyDataForNonFinancials.data)"
+                            v-if="field.showIf(companyAssociatedEuTaxonomyDataForNonFinancials.data)"
                             :is="field.component"
                             :label="field.label"
                             :placeholder="field.placeholder"
@@ -117,7 +117,7 @@
         </div>
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
-          <div v-if="postNewEuTaxonomyForNonFinancialsDataProcessed">
+          <div v-if="postEuTaxonomyForNonFinancialsDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
             <FailMessage v-else data-test="failedUploadMessage" :message="message" :messageId="messageCounter" />
           </div>
@@ -156,7 +156,7 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDataModel.ts";
-import { type CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials, type CompanyReport } from "@clients/backend";
+import { type CompanyAssociatedDataEuTaxonomyDataForNonFinancials, type CompanyReport } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -190,7 +190,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  name: "CreateNewEuTaxonomyForNonFinancials",
+  name: "CreateEuTaxonomyForNonFinancials",
   components: {
     SubmitButton,
     SubmitSideBar,
@@ -227,16 +227,16 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
-      formId: "createNewEuTaxonomyForNonFinancialsForm",
+      formId: "createEuTaxonomyForNonFinancialsForm",
       waitingForData: true,
       dataDate: undefined as Date | undefined,
-      companyAssociatedNewEuTaxonomyDataForNonFinancials: {} as CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials,
+      companyAssociatedEuTaxonomyDataForNonFinancials: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
       euTaxonomyForNonFinancialsDataModel,
       route: useRoute(),
       message: "",
       smoothScroll: smoothScroll,
       uploadSucceded: false,
-      postNewEuTaxonomyForNonFinancialsDataProcessed: false,
+      postEuTaxonomyForNonFinancialsDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
       documents: new Map() as Map<string, DocumentToUpload>,
@@ -256,7 +256,7 @@ export default defineComponent({
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
         this.euTaxonomyForNonFinancialsDataModel,
-        this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data,
+        this.companyAssociatedEuTaxonomyDataForNonFinancials.data,
       );
     },
   },
@@ -270,7 +270,7 @@ export default defineComponent({
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
-      void this.loadNewEuTaxonomyForNonFinancialsData(dataId);
+      void this.loadEuTaxonomyForNonFinancialsData(dataId);
     } else {
       this.waitingForData = false;
     }
@@ -280,52 +280,52 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Loads the NewEuTaxonomyForNonFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
+     * Loads the EuTaxonomyForNonFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      * @param dataId the id of the dataset to load
      */
-    async loadNewEuTaxonomyForNonFinancialsData(dataId: string): Promise<void> {
+    async loadEuTaxonomyForNonFinancialsData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const newEuTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
+      const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getNewEutaxonomyDataForNonFinancialsControllerApi();
+      ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
       const dataResponse =
-        await newEuTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
+        await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
           dataId,
         );
-      const newEuTaxonomyForNonFinancialsResponseData = dataResponse.data;
-      if (newEuTaxonomyForNonFinancialsResponseData?.reportingPeriod) {
-        this.reportingPeriod = new Date(newEuTaxonomyForNonFinancialsResponseData.reportingPeriod);
+      const euTaxonomyForNonFinancialsResponseData = dataResponse.data;
+      if (euTaxonomyForNonFinancialsResponseData?.reportingPeriod) {
+        this.reportingPeriod = new Date(euTaxonomyForNonFinancialsResponseData.reportingPeriod);
       }
       this.referencedReportsForPrefill =
-        newEuTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
-      this.companyAssociatedNewEuTaxonomyDataForNonFinancials = objectDropNull(
-        newEuTaxonomyForNonFinancialsResponseData as ObjectType,
-      ) as CompanyAssociatedDataNewEuTaxonomyDataForNonFinancials;
+        euTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
+      this.companyAssociatedEuTaxonomyDataForNonFinancials = objectDropNull(
+        euTaxonomyForNonFinancialsResponseData as ObjectType,
+      ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
 
       this.waitingForData = false;
     },
     /**
-     * Sends data to add NewEuTaxonomyForNonFinancials data
+     * Sends data to add EuTaxonomyForNonFinancials data
      */
-    async postNewEuTaxonomyForNonFinancialsData(): Promise<void> {
+    async postEuTaxonomyForNonFinancialsData(): Promise<void> {
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
-            this.companyAssociatedNewEuTaxonomyDataForNonFinancials.data as ObjectType,
+            this.companyAssociatedEuTaxonomyDataForNonFinancials.data as ObjectType,
             this.namesOfAllCompanyReportsForTheDataset,
           );
 
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
-        const newEuTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
+        const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getNewEutaxonomyDataForNonFinancialsControllerApi();
-        await newEuTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
-          this.companyAssociatedNewEuTaxonomyDataForNonFinancials,
+        ).getEuTaxonomyDataForNonFinancialsControllerApi();
+        await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+          this.companyAssociatedEuTaxonomyDataForNonFinancials,
         );
         this.$emit("datasetCreated");
         this.dataDate = undefined;
@@ -341,7 +341,7 @@ export default defineComponent({
         }
         this.uploadSucceded = false;
       } finally {
-        this.postNewEuTaxonomyForNonFinancialsDataProcessed = true;
+        this.postEuTaxonomyForNonFinancialsDataProcessed = true;
       }
     },
     /**

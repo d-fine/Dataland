@@ -1,9 +1,5 @@
-import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
 import { createWebHistory, createRouter, type RouteComponent, type RouteLocationNormalized } from "vue-router";
-const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
-  import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
-
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
@@ -44,16 +40,10 @@ const routes = [
     component: ChooseFrameworkForDataUpload,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
-    props: true,
-    name: "Upload Eu Taxonomy Data For Non-Financials",
-    component: UploadEuTaxonomyDataForNonFinancials,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.NewEutaxonomyNonFinancials}/upload/`,
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload/`,
     props: (route: RouteLocationNormalized): object => ({
       companyID: route.params.companyID,
-      frameworkType: DataTypeEnum.NewEutaxonomyNonFinancials,
+      frameworkType: DataTypeEnum.EutaxonomyNonFinancials,
     }),
     name: "Upload new Eu Taxonomy Data For Non-Financials",
     component: UploadFormWrapper,
