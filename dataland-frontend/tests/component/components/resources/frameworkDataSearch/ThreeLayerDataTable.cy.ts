@@ -1,17 +1,17 @@
 import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
-import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
+import { euTaxonomyForNonFinancialsDisplayDataModel } from "../../../../../src/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
+import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "../../../../../src/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
-import { newEuTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
+import { euTaxonomyForNonFinancialsModalColumnHeaders } from "../../../../../src/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 
 describe("Component test for the NewEUTaxonomy Page", () => {
-  let mockedDataForTest: Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel>;
+  let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
 
   before(function () {
-    cy.fixture("NewEuTaxonomyForNonFinancialsMocks.json").then(
+    cy.fixture("EuTaxonomyForNonFinancialsMocks.json").then(
       (mockedBackendResponses: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]) => {
-        const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(
+        const singleMockDataAndMetaInfo = new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(
           mockedBackendResponses[0],
         );
         mockedDataForTest = [singleMockDataAndMetaInfo];
@@ -75,7 +75,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
-        dataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
+        dataModel: euTaxonomyForNonFinancialsDisplayDataModel,
         dataAndMetaInfo: mockedDataForTest,
       },
     }).then(() => {
@@ -116,9 +116,9 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         keycloak: minimalKeycloakMock({}),
       },
       {
-        dataModel: newEuTaxonomyForNonFinancialsDisplayDataModel,
+        dataModel: euTaxonomyForNonFinancialsDisplayDataModel,
         dataAndMetaInfo: mockedDataForTest,
-        modalColumnHeaders: newEuTaxonomyForNonFinancialsModalColumnHeaders,
+        modalColumnHeaders: euTaxonomyForNonFinancialsModalColumnHeaders,
         sortBySubcategoryKey: false,
       },
     ).then(() => {

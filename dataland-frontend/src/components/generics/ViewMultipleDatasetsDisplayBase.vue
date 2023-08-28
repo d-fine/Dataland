@@ -20,8 +20,8 @@
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizeString(dataType) }}</h2>
           </div>
           <div class="col-12">
-            <NewEuTaxonomyForNonFinancialsPanel
-              v-if="dataType === DataTypeEnum.NewEutaxonomyNonFinancials"
+            <EuTaxonomyForNonFinancialsPanel
+              v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
               :companyId="companyId"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
             />
@@ -88,12 +88,12 @@ import type Keycloak from "keycloak-js";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
-import NewEuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue";
+import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
   components: {
-    NewEuTaxonomyForNonFinancialsPanel,
+    EuTaxonomyForNonFinancialsPanel,
     P2pPanel,
     DatasetDisplayStatusIndicator,
     SfdrPanel,

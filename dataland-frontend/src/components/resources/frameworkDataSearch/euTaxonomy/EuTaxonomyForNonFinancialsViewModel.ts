@@ -14,7 +14,7 @@ import {
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
-interface NewEuTaxonomyDetailsPerCashFlowViewModel {
+interface EuTaxonomyDetailsPerCashFlowViewModel {
   totalAmount?: DataPointOneValueAmountWithCurrency;
   totalNonEligibleShare?: RelativeAndAbsoluteFinancialShare;
   totalEligibleShare?: RelativeAndAbsoluteFinancialShare;
@@ -27,7 +27,7 @@ interface NewEuTaxonomyDetailsPerCashFlowViewModel {
   totalTransitionalShare?: { totalTransitionalShare?: number };
 }
 
-export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
+export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   basicInformation?: {
     basicInformation: {
       fiscalYearDeviation?: FiscalYearDeviation;
@@ -44,9 +44,9 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
       assuranceProvider?: string;
     };
   };
-  revenue?: NewEuTaxonomyDetailsPerCashFlowViewModel;
-  capex?: NewEuTaxonomyDetailsPerCashFlowViewModel;
-  opex?: NewEuTaxonomyDetailsPerCashFlowViewModel;
+  revenue?: EuTaxonomyDetailsPerCashFlowViewModel;
+  capex?: EuTaxonomyDetailsPerCashFlowViewModel;
+  opex?: EuTaxonomyDetailsPerCashFlowViewModel;
 
   constructor(apiModel: EuTaxonomyDataForNonFinancials) {
     this.basicInformation = {
@@ -65,11 +65,11 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
         assuranceProvider: apiModel.general?.assurance?.provider,
       },
     };
-    this.revenue = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(
+    this.revenue = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(
       apiModel.revenue,
     );
-    this.capex = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.capex);
-    this.opex = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex);
+    this.capex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.capex);
+    this.opex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex);
   }
 
   toApiModel(): EuTaxonomyDataForNonFinancials {
@@ -86,15 +86,15 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
         },
         numberOfEmployees: this.basicInformation?.basicInformation.numberOfEmployees,
       },
-      revenue: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.revenue),
-      capex: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.capex),
-      opex: NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.opex),
+      revenue: EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.revenue),
+      capex: EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.capex),
+      opex: EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.opex),
     };
   }
 
   private static convertDetailsPerCashFlowApiModelToViewModel(
     apiModel?: EuTaxonomyDetailsPerCashFlowType,
-  ): NewEuTaxonomyDetailsPerCashFlowViewModel | undefined {
+  ): EuTaxonomyDetailsPerCashFlowViewModel | undefined {
     if (apiModel == undefined) {
       return undefined;
     }
@@ -117,7 +117,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
   }
 
   private static convertDetailsPerCashFlowViewModelToApiModel(
-    details?: NewEuTaxonomyDetailsPerCashFlowViewModel,
+    details?: EuTaxonomyDetailsPerCashFlowViewModel,
   ): EuTaxonomyDetailsPerCashFlowType | undefined {
     if (details == undefined) {
       return undefined;
@@ -136,15 +136,15 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
   }
 }
 
-export class DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel
-  implements DataAndMetaInformationViewModel<NewEuTaxonomyForNonFinancialsViewModel>
+export class DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel
+  implements DataAndMetaInformationViewModel<EuTaxonomyForNonFinancialsViewModel>
 {
   metaInfo: DataMetaInformation;
-  data: NewEuTaxonomyForNonFinancialsViewModel;
+  data: EuTaxonomyForNonFinancialsViewModel;
 
   constructor(dataAndMetaInfoApiModel: DataAndMetaInformationEuTaxonomyDataForNonFinancials) {
     this.metaInfo = dataAndMetaInfoApiModel.metaInfo;
-    this.data = new NewEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfoApiModel.data);
+    this.data = new EuTaxonomyForNonFinancialsViewModel(dataAndMetaInfoApiModel.data);
   }
 
   toApiModel(): DataAndMetaInformationEuTaxonomyDataForNonFinancials {

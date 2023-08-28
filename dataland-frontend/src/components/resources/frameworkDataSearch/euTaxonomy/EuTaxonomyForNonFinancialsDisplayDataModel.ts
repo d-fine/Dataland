@@ -8,7 +8,7 @@ Therefore, the view page for new-eu-taxo will break if you replace the current c
 content from the auto-generated file in the devtools repo.
  */
 
-export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
+export const euTaxonomyForNonFinancialsDisplayDataModel = [
   {
     name: "basicInformation",
     label: "Basic Information",
