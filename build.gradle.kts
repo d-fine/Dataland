@@ -92,7 +92,7 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sfdr/SfdrDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
-                "NewEuTaxonomyForNonFinancialsDisplayDataModel.ts",
+                "EuTaxonomyForNonFinancialsDisplayDataModel.ts",
 
         )
         property(
