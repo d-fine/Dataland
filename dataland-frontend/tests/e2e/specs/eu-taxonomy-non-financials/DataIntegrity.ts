@@ -13,10 +13,7 @@ let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFi
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
     const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
-    euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
-      "only-eligible-and-total-numbers",
-      preparedFixtures,
-    );
+    euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
     // "only-eligible-and-total-numbers" should be replaced later with a more suitable fake fixture
     // or manually add field values here like euTaxonomyForNonFinancialsFixtureForTest.t.fieldX = {...}
   });

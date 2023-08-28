@@ -291,15 +291,12 @@ export default defineComponent({
       ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
       const dataResponse =
-        await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-          dataId,
-        );
+        await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId);
       const euTaxonomyForNonFinancialsResponseData = dataResponse.data;
       if (euTaxonomyForNonFinancialsResponseData?.reportingPeriod) {
         this.reportingPeriod = new Date(euTaxonomyForNonFinancialsResponseData.reportingPeriod);
       }
-      this.referencedReportsForPrefill =
-        euTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
+      this.referencedReportsForPrefill = euTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedEuTaxonomyDataForNonFinancials = objectDropNull(
         euTaxonomyForNonFinancialsResponseData as ObjectType,
       ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;

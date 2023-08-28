@@ -57,7 +57,7 @@ export type FrameworkData =
   | LksgData
   | SfdrData
   | SmeData
-  | PathwaysToParisData
+  | PathwaysToParisData;
 
 export type DataAndMetaInformation =
   | DataAndMetaInformationEuTaxonomyDataForFinancials
@@ -65,4 +65,4 @@ export type DataAndMetaInformation =
   | DataAndMetaInformationLksgData
   | DataAndMetaInformationSfdrData
   | DataAndMetaInformationSmeData
-  | DataAndMetaInformationPathwaysToParisData
+  | DataAndMetaInformationPathwaysToParisData;

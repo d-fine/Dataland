@@ -4,10 +4,7 @@
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <BackButton id="backButton" class="mt-2 pl-3" />
       <CompanyInformation :companyID="companyID" />
-      <CreateEuTaxonomyForNonFinancials
-        :companyID="companyID"
-        @datasetCreated="redirectToMyDatasets(this.$router)"
-      />
+      <CreateEuTaxonomyForNonFinancials :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
     </AuthorizationWrapper>
     <TheFooter />
   </AuthenticationWrapper>
