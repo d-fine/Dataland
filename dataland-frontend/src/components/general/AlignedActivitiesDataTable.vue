@@ -1,5 +1,5 @@
 <template>
-  <DataTable data-test="dataTableTest" scrollable :value="frozenColumnData" class="aligned-activities-data-table">
+  <DataTable data-test="dataTableTest" scrollable :value="frozenColumnData" class="activities-data-table">
     <ColumnGroup data-test="columnGroupTest" type="header">
       <Row>
         <Column
