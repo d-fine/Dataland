@@ -15,7 +15,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "fiscalYearDeviation",
             label: "Fiscal Year Deviation",
-            description: "Fiscal Year (Deviation/ No Deviation)",
+            description: "Does the fiscal year deviate from the calender year?",
             unit: "",
             component: "RadioButtonsFormField",
             evidenceDesired: false,
@@ -35,7 +35,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "fiscalYearEnd",
             label: "Fiscal Year End",
-            description: "The date the fiscal year ends",
+            description: "The date at which the fiscal year ends.",
             unit: "",
             component: "DateFormField",
             evidenceDesired: false,
