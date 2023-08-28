@@ -2,192 +2,183 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Collierville",
-			"headquartersPostalCode": "72096",
-			"sector": "portals",
+			"headquarters": "Avondale",
 			"identifiers": {
 				"Lei": [
-					"AZfsj9bdA3edKhqYZ3C5"
+					"snDm5KZYkwYaEkophTr3"
 				],
-				"Isin": [],
-				"PermId": [],
-				"Ticker": [
-					"ib0qB03"
-				],
-				"Duns": [
-					"p2DcfYSmq"
-				],
-				"VatNumber": [
-					"MBeqB55sT"
-				],
-				"CompanyRegistrationNumber": [
-					"YSZbgZjxwNF6TZ3"
-				]
-			},
-			"countryCode": "KR",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH",
-			"website": "https://strong-chili.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"numberOfEmployees": 35317,
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-04-30",
-					"currency": "FKP"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-09-12",
-					"currency": "TND"
-				}
-			},
-			"assurance": {
-				"assurance": "ReasonableAssurance"
-			},
-			"nfrdMandatory": "No",
-			"euTaxonomyActivityLevelReporting": "Yes",
-			"opex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.2493,
-					"quality": "NA"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.385,
-					"quality": "NA"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.8903,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Jacobsville",
-			"headquartersPostalCode": "11378-5628",
-			"sector": "e-business",
-			"identifiers": {
-				"Lei": [],
 				"Isin": [
-					"1CejOLRDOM3T"
+					"x6lWCSEy6v4k"
 				],
 				"PermId": [
-					"k96pcnkEin"
+					"btL1PTs0QO"
 				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"AE1cVciCO"
+				],
+				"CompanyRegistrationNumber": [
+					"yZHrabhLAiA7VFb"
+				]
 			},
-			"countryCode": "WF",
+			"countryCode": "AZ",
 			"companyAlternativeNames": [
-				"Cole - Reichel",
-				"Terry, Wilkinson and Braun"
+				"Harvey - Durgan",
+				"Hessel, Lemke and Hagenes",
+				"Wunsch Group"
 			],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-12-25",
-			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-09-11",
-					"currency": "TRY"
+			"general": {
+				"fiscalYearDeviation": "NoDeviation",
+				"numberOfEmployees": 44748,
+				"referencedReports": {
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "Yes",
+						"currency": "WST"
+					},
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"reportDate": "2023-03-31",
+						"currency": "QAR"
+					}
 				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-04-13",
-					"currency": "CUP"
+				"assurance": {
+					"assurance": "None"
 				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "BGN"
+				"nfrdMandatory": "Yes",
+				"euTaxonomyActivityLevelReporting": "No"
+			},
+			"opex": {
+				"totalEligibleShare": {}
+			},
+			"capex": {
+				"totalEligibleShare": {
+					"relativeShareInPercent": 21.833431557752192
 				}
 			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Homenick LLC",
-				"dataSource": {
-					"page": 834,
-					"report": "IntegratedReport",
-					"tagName": "platforms"
-				}
+			"revenue": {
+				"totalEligibleShare": {}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Krishaven",
+			"identifiers": {
+				"Lei": [
+					"Kk7g6NdNVyTeFQ1GkrzS"
+				],
+				"Isin": [
+					"SLwwZFi03zD7",
+					"uUjpIIuQiDPi"
+				],
+				"PermId": [
+					"YODios2pgv"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"sTE97JUFu"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"scopeOfEntities": "Yes",
+			"countryCode": "CN",
+			"companyAlternativeNames": [
+				"Adams - Crist",
+				"Altenwerth Group",
+				"Klocko, Weimann and Prohaska"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearEnd": "2023-06-23",
+				"referencedReports": {
+					"AnnualReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "SHP"
+					},
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "CZK"
+					},
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "Yes",
+						"currency": "BRL"
+					},
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "NA",
+						"currency": "INR"
+					}
+				},
+				"assurance": {
+					"assurance": "ReasonableAssurance",
+					"provider": "Bartoletti LLC",
+					"dataSource": {
+						"page": 816,
+						"report": "SustainabilityReport",
+						"tagName": "interfaces"
+					}
+				},
+				"scopeOfEntities": "NA",
+				"nfrdMandatory": "No"
+			},
 			"opex": {
 				"totalAmount": {
-					"value": 124533.17563049495,
+					"value": 485212.1084695682,
 					"dataSource": {
-						"page": 359,
-						"report": "AnnualReport",
-						"tagName": "bandwidth"
+						"page": 121,
+						"report": "ESEFReport",
+						"tagName": "infrastructures"
 					},
 					"quality": "Reported",
-					"comment": "index bluetooth bandwidth"
+					"comment": "override multi-byte capacitor"
 				},
-				"eligibleData": {
-					"valueAsPercentage": 0.6728,
-					"dataSource": {
-						"page": 106,
-						"report": "SustainabilityReport",
-						"tagName": "e-business"
-					},
-					"quality": "Reported",
-					"comment": "generate multi-byte monitor",
-					"valueAsAbsolute": 700600.6956333295
+				"totalEligibleShare": {
+					"relativeShareInPercent": 34.075216203927994,
+					"absoluteShare": {}
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 485803.9364335127,
+					"value": 265604.0390720591,
 					"dataSource": {
-						"page": 770,
-						"report": "AnnualReport",
-						"tagName": "bandwidth"
+						"page": 993,
+						"report": "ESEFReport",
+						"tagName": "platforms"
 					},
-					"quality": "Reported",
-					"comment": "connect bluetooth interface"
+					"quality": "Audited",
+					"comment": "copy back-end circuit"
 				},
-				"eligibleData": {
-					"valueAsPercentage": 0.8289,
-					"dataSource": {
-						"page": 1127,
-						"report": "IntegratedReport",
-						"tagName": "experiences"
-					},
-					"quality": "Incomplete",
-					"comment": "input multi-byte protocol",
-					"valueAsAbsolute": 353728.02526690066
+				"totalEligibleShare": {
+					"relativeShareInPercent": 13.001744775101542,
+					"absoluteShare": {
+						"amount": 152719.407400582,
+						"currency": "CHF"
+					}
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 634395.6187367439,
+					"value": 217777.2318944335,
 					"dataSource": {
-						"page": 1170,
+						"page": 1199,
 						"report": "IntegratedReport",
-						"tagName": "technologies"
+						"tagName": "ROI"
 					},
-					"quality": "Reported",
-					"comment": "reboot haptic pixel"
+					"quality": "Estimated",
+					"comment": "transmit neural port"
 				},
-				"eligibleData": {
-					"valueAsPercentage": 0.6168,
-					"quality": "Incomplete",
-					"valueAsAbsolute": 584482.3705032468
+				"totalEligibleShare": {
+					"absoluteShare": {}
 				}
 			}
 		},
@@ -196,89 +187,209 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Fort Selenachester",
+			"headquarters": "Chesterboro",
+			"sector": "users",
 			"identifiers": {
 				"Lei": [
-					"sEsF70k8lwzY3lduJFmf"
+					"zmftE0ylz6cjNzSuGA6o"
 				],
-				"Isin": [],
+				"Isin": [
+					"l8wr67DVLqin",
+					"8rZZbFfZhosi"
+				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"zDNkNizWm"
+				"Ticker": [
+					"zPePClM"
 				],
-				"CompanyRegistrationNumber": []
+				"Duns": [
+					"4fk3yZ7AP"
+				],
+				"VatNumber": [
+					"cizGl4ePA"
+				],
+				"CompanyRegistrationNumber": [
+					"SRphQuLZH0TCVYZ"
+				]
 			},
-			"countryCode": "GI",
+			"countryCode": "SA",
 			"companyAlternativeNames": [
-				"Barton - Pfannerstill",
-				"Klocko LLC"
+				"Douglas Group"
 			],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"assurance": {
-				"assurance": "None"
-			},
-			"scopeOfEntities": "No",
-			"opex": {
-				"alignedData": {
-					"dataSource": {
-						"page": 345,
-						"report": "AnnualReport",
-						"tagName": "convergence"
-					},
-					"quality": "Reported",
-					"comment": "connect neural feed",
-					"valueAsAbsolute": 105675.2365315333
+			"general": {
+				"fiscalYearDeviation": "NoDeviation",
+				"assurance": {
+					"assurance": "None"
 				}
+			},
+			"opex": {
+				"totalNonEligibleShare": {
+					"relativeShareInPercent": 62.33923463150859,
+					"absoluteShare": {
+						"currency": "AUD"
+					}
+				},
+				"totalNonAlignedShare": {},
+				"nonAlignedActivities": [
+					{
+						"activityName": "InlandPassengerWaterTransport"
+					},
+					{
+						"activityName": "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
+						"share": {
+							"relativeShareInPercent": 39.23240208532661
+						}
+					},
+					{
+						"activityName": "ProductionOfHeatCoolFromBioenergy",
+						"naceCodes": [
+							"D",
+							"E",
+							"G",
+							"H"
+						],
+						"share": {
+							"relativeShareInPercent": 98.76783729996532
+						}
+					},
+					{
+						"activityName": "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+						"naceCodes": [
+							"B",
+							"D",
+							"M"
+						],
+						"share": {
+							"relativeShareInPercent": 95.57653705123812,
+							"absoluteShare": {
+								"currency": "USD"
+							}
+						}
+					},
+					{
+						"activityName": "ManufactureOfNitricAcid",
+						"naceCodes": [
+							"F",
+							"J"
+						]
+					}
+				],
+				"substantialContributionCriteria": {
+					"PollutionPrevention": 12.087743286974728,
+					"Water": 95.18006630241871,
+					"Biodiversity": 63.88956953305751,
+					"ClimateMitigation": 62.6347363460809,
+					"ClimateAdaptation": 88.40693098027259
+				},
+				"totalTransitionalShare": 17.996722226962447
 			},
 			"capex": {
 				"totalAmount": {
+					"value": 81.145393056795,
 					"dataSource": {
-						"page": 767,
-						"report": "SustainabilityReport",
-						"tagName": "synergies"
+						"page": 191,
+						"report": "AnnualReport",
+						"tagName": "content"
 					},
-					"quality": "Incomplete",
-					"comment": "override primary port"
+					"quality": "Audited",
+					"comment": "reboot wireless application"
 				},
-				"alignedData": {
-					"valueAsPercentage": 0.5365,
-					"dataSource": {
-						"page": 168,
-						"report": "IntegratedReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Reported",
-					"comment": "back up open-source alarm"
+				"totalAlignedShare": {
+					"absoluteShare": {
+						"amount": 525803.8465748541,
+						"currency": "CHF"
+					}
+				},
+				"substantialContributionCriteria": {
+					"ClimateAdaptation": 17.104397411458194,
+					"Biodiversity": 53.375991294160485,
+					"ClimateMitigation": 2.0130711840465665
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 635,
-						"report": "IntegratedReport",
-						"tagName": "portals"
-					},
-					"quality": "Reported",
-					"comment": "transmit solid state protocol"
+				"totalNonEligibleShare": {},
+				"totalNonAlignedShare": {
+					"relativeShareInPercent": 64.05312707647681,
+					"absoluteShare": {
+						"currency": "CAD"
+					}
 				},
-				"alignedData": {
-					"valueAsPercentage": 0.269,
-					"dataSource": {
-						"page": 304,
-						"report": "SustainabilityReport",
-						"tagName": "experiences"
+				"nonAlignedActivities": [
+					{
+						"activityName": "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem"
 					},
-					"quality": "Estimated",
-					"comment": "transmit mobile port",
-					"valueAsAbsolute": 432322.05271488056
-				}
+					{
+						"activityName": "ProgrammingAndBroadcastingActivities",
+						"naceCodes": [
+							"F",
+							"H",
+							"J",
+							"M"
+						],
+						"share": {
+							"relativeShareInPercent": 57.72356216330081,
+							"absoluteShare": {
+								"currency": "AUD"
+							}
+						}
+					},
+					{
+						"activityName": "LandfillGasCaptureAndUtilisation"
+					},
+					{
+						"activityName": "Education",
+						"share": {
+							"absoluteShare": {
+								"amount": 262148.9202720113
+							}
+						}
+					}
+				],
+				"substantialContributionCriteria": {
+					"ClimateMitigation": 75.23730501998216,
+					"Biodiversity": 20.437108841724694,
+					"ClimateAdaptation": 82.08795215468854,
+					"PollutionPrevention": 23.20641572587192,
+					"CircularEconomy": 56.942735821940005
+				},
+				"alignedActivities": [
+					{
+						"activityName": "PassengerInterurbanRailTransport",
+						"substantialContributionCriteria": {
+							"Biodiversity": 48.850981681607664,
+							"CircularEconomy": 0.5405084462836385,
+							"Water": 39.9455273989588
+						},
+						"dnshCriteria": {
+							"CircularEconomy": "Yes",
+							"ClimateAdaptation": "No",
+							"Biodiversity": "Yes",
+							"PollutionPrevention": "Yes"
+						},
+						"minimumSafeguards": "Yes"
+					},
+					{
+						"activityName": "ManufactureOfChlorine",
+						"share": {
+							"relativeShareInPercent": 0.30603567138314247,
+							"absoluteShare": {
+								"amount": 391952.09009340033
+							}
+						},
+						"substantialContributionCriteria": {
+							"PollutionPrevention": 21.801886754110456
+						},
+						"dnshCriteria": {
+							"Biodiversity": "Yes"
+						},
+						"minimumSafeguards": "Yes"
+					}
+				],
+				"totalEnablingShare": 70.67393213510513
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	}
 ]

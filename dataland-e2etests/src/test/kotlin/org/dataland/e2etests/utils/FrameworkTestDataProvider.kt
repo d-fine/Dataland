@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinanci
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
-import org.dataland.datalandbackend.openApiClient.model.NewEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
@@ -42,8 +41,6 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
     private val jsonFilesForTesting = mapOf(
         EuTaxonomyDataForNonFinancials::class.java to
             File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
-        NewEuTaxonomyDataForNonFinancials::class.java to
-            File("./build/resources/test/CompanyInformationWithNewEuTaxonomyDataForNonFinancials.json"),
         EuTaxonomyDataForFinancials::class.java to
             File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancials.json"),
         LksgData::class.java to

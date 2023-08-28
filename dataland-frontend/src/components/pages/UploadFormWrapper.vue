@@ -24,7 +24,7 @@ import { DataTypeEnum } from "@clients/backend";
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
-import CreateNewEuTaxonomyForNonFinancials from "@/components/forms/CreateNewEuTaxonomyForNonFinancials.vue";
+import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonomyForNonFinancials.vue";
 
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
@@ -43,7 +43,7 @@ export default defineComponent({
     CreateLksgDataset,
     CreateSfdrDataset,
     CreateP2pDataset,
-    CreateNewEuTaxonomyForNonFinancials,
+    CreateEuTaxonomyForNonFinancials,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
@@ -63,8 +63,8 @@ export default defineComponent({
   computed: {
     frameworkToUploadComponent() {
       switch (this.frameworkType) {
-        case `${DataTypeEnum.NewEutaxonomyNonFinancials}`:
-          return CreateNewEuTaxonomyForNonFinancials;
+        case `${DataTypeEnum.EutaxonomyNonFinancials}`:
+          return CreateEuTaxonomyForNonFinancials;
         case `${DataTypeEnum.Lksg}`:
           return CreateLksgDataset;
         case `${DataTypeEnum.P2p}`:

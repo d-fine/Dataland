@@ -14,9 +14,9 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   function checkFileWithExistingFilenameIsNotBeingAdded(): void {
     const reportThatCanBeUploaded = "test-report";
     const reportThatAlreadyExists = TEST_PDF_FILE_NAME;
-    uploadDocuments.selectFile(reportThatCanBeUploaded);
+    uploadDocuments.selectFile(reportThatCanBeUploaded, "referencedReports");
     uploadDocuments.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportThatCanBeUploaded);
-    uploadDocuments.selectFile(reportThatAlreadyExists);
+    uploadDocuments.selectFile(reportThatAlreadyExists, "referencedReports");
     uploadDocuments.validateReportIsListedAsAlreadyUploaded(reportThatAlreadyExists);
     uploadDocuments.validateReportIsNotInFileSelectorAndHasNoInfoForm(reportThatAlreadyExists);
     uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
@@ -27,8 +27,8 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
    * whose name equals the one of a file selected before
    */
   function checkFileWithExistingFilenameOpensDialogWithWarning(): void {
-    uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
-    cy.get(`button[data-test='upload-files-button-UploadReports']`).click();
+    uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
+    cy.get(`button[data-test='upload-files-button-referencedReports']`).click();
     cy.get("input[type=file]").selectFile(
       `../${TEST_PDF_FILE_BASEPATH}/more-pdfs-in-seperate-directory/${TEST_PDF_FILE_NAME}.pdf`,
       { force: true },
@@ -45,7 +45,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   function checkExistingFilenameDialogDidNotBreakSubsequentSelection(): void {
     const reportNameA = TEST_PDF_FILE_NAME;
     const reportNameB = `${TEST_PDF_FILE_NAME}2`;
-    uploadDocuments.selectFile(reportNameB);
+    uploadDocuments.selectFile(reportNameB, "referencedReports");
 
     cy.get(".p-dialog-content").should("not.exist");
     uploadDocuments.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameA);
@@ -81,7 +81,87 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
   }
 
   /**
-   * This method returns a mocked dataset for eu taxo non financials with all fields filled.
+   * this method fills and checks the general section
+   * @param reports the name of the reports that are uploaded
+   */
+  function fillAndValidateGeneralSection(reports: string[]): void {
+    cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
+    cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
+    cy.get("div.p-datepicker").find('span:contains("11")').click();
+    cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
+    cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
+    cy.get('div[data-test="submitSideBar"] li:last a').click();
+    cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
+    cy.get('input[name="euTaxonomyActivityLevelReporting"][value="Yes"]').check();
+    cy.get('input[name="numberOfEmployees"]').clear().type("-13");
+    cy.get('em[title="Number Of Employees"]').click();
+    cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
+    cy.get('input[name="numberOfEmployees"]').clear().type("333");
+    cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
+    cy.get('select[name="assurance"]').select(2);
+    cy.get('input[name="provider"]').clear().type("Assurance Provider");
+    cy.get('div[label="General"] select[name="report"]').select(reports);
+    cy.get('div[label="General"] input[name="page"]').clear().type("-13");
+    cy.get('div[label="General"] em[title="Page"]').click();
+    cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
+    cy.get('div[label="General"] input[name="page"]').clear().type("3");
+  }
+
+  /**
+   * this method fills and checks the Revenue section, excluding the activity component
+   * @param reports the name of the reports that are uploaded
+   */
+  function fillAndValidateOtherSections(reports: string[]): void {
+    cy.get('div[label="Revenue"] input[name="value"]').clear().type("130000");
+    cy.get('div[label="Revenue"] select[name="unit"]').select(1);
+    cy.get('div[label="Revenue"] select[name="report"]').select(reports[0]);
+    cy.get('div[label="Revenue"] input[name="page"]').clear().type("5");
+    cy.get('div[label="Revenue"] select[name="quality"]').select(2);
+    cy.get('div[label="Revenue"] textarea[name="comment"]').clear().type("just a comment");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("a");
+    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be a number")
+      .should("exist");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("120");
+    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be between 0 and 100")
+      .should("exist");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("25");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(0).clear().type("5000");
+    cy.get('div[label="Revenue"] select[name="currency"]').eq(0).select(5);
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type("50");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type("4000");
+    cy.get('div[label="Revenue"] select[name="currency"]').eq(1).select(51);
+    cy.get('div[label="Revenue"] input[name="ClimateMitigation"]').clear().type("a");
+    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be a number")
+      .should("exist");
+    cy.get('div[label="Revenue"] input[name="ClimateMitigation"]').clear().type("-12");
+    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
+      .should("contain", "must be between 0 and 100")
+      .should("exist");
+    cy.get('div[label="Revenue"] input[name="ClimateMitigation"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="ClimateAdaptation"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="Water"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="CircularEconomy"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="PollutionPrevention"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="Biodiversity"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type("12000");
+    cy.get('div[label="Revenue"] select[name="currency"]').eq(2).select(51);
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(3).clear().type("13");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(3).clear().type("13000");
+    cy.get('div[label="Revenue"] select[name="currency"]').eq(3).select(53);
+    cy.get('div[label="Revenue"] input[name="totalEnablingShare"]').clear().type("12");
+    cy.get('div[label="Revenue"] input[name="totalTransitionalShare"]').clear().type("12");
+  }
+
+  /**
+   * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
    * @returns the dataset
    */
   function createMockCompanyAssociatedDataEuTaxoNonFinancials(): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
@@ -98,26 +178,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
             },
             comment: "test",
             value: 12000000,
-          },
-          alignedData: {
-            valueAsPercentage: 0.07,
-            quality: "Estimated",
-            dataSource: {
-              report: "None...",
-              page: 12,
-            },
-            comment: "test",
-            valueAsAbsolute: 7,
-          },
-          eligibleData: {
-            valueAsPercentage: 0.17,
-            quality: "Estimated",
-            dataSource: {
-              report: "None...",
-              page: 12,
-            },
-            comment: "test",
-            valueAsAbsolute: 17,
+            unit: "EUR",
           },
         },
         opex: {
@@ -129,26 +190,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
             },
             comment: "test",
             value: 10000000,
-          },
-          alignedData: {
-            valueAsPercentage: 0.07,
-            quality: "Estimated",
-            dataSource: {
-              report: "None...",
-              page: 12,
-            },
-            comment: "test",
-            valueAsAbsolute: 7,
-          },
-          eligibleData: {
-            valueAsPercentage: 0.17,
-            quality: "Estimated",
-            dataSource: {
-              report: "None...",
-              page: 12,
-            },
-            comment: "test",
-            valueAsAbsolute: 17,
+            unit: "EUR",
           },
         },
         revenue: {
@@ -160,54 +202,37 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
             },
             comment: "test",
             value: 40000000,
-          },
-          alignedData: {
-            valueAsPercentage: 0.07,
-            quality: "Estimated",
-            dataSource: {
-              report: "None...",
-              page: 12,
-            },
-            comment: "test",
-            valueAsAbsolute: 7,
-          },
-          eligibleData: {
-            valueAsPercentage: 0.3,
-            quality: "Estimated",
-            dataSource: {
-              report: "None...",
-              page: 12,
-            },
-            comment: "test",
-            valueAsAbsolute: 30,
+            unit: "EUR",
           },
         },
-        fiscalYearDeviation: "Deviation",
-        fiscalYearEnd: "2023-09-11",
-        scopeOfEntities: "Yes",
-        nfrdMandatory: "Yes",
-        euTaxonomyActivityLevelReporting: "Yes",
-        assurance: {
-          assurance: "None",
-          provider: "Assurance Provider",
-          dataSource: {
-            report: TEST_PDF_FILE_NAME,
-            page: 1,
+        general: {
+          fiscalYearDeviation: "Deviation",
+          fiscalYearEnd: "2023-09-11",
+          scopeOfEntities: "Yes",
+          nfrdMandatory: "Yes",
+          euTaxonomyActivityLevelReporting: "Yes",
+          assurance: {
+            assurance: "None",
+            provider: "Assurance Provider",
+            dataSource: {
+              report: TEST_PDF_FILE_NAME,
+              page: 1,
+            },
           },
-        },
-        numberOfEmployees: 333,
-        referencedReports: {
-          [`${TEST_PDF_FILE_NAME}FileCopy`]: {
-            reference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
-            isGroupLevel: "No",
-            reportDate: "2023-07-12",
-            currency: "EUR",
-          },
-          [TEST_PDF_FILE_NAME]: {
-            reference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
-            isGroupLevel: "No",
-            reportDate: "2023-07-12",
-            currency: "EUR",
+          numberOfEmployees: 333,
+          referencedReports: {
+            [`${TEST_PDF_FILE_NAME}FileCopy`]: {
+              reference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+              isGroupLevel: "No",
+              reportDate: "2023-07-12",
+              currency: "EUR",
+            },
+            [TEST_PDF_FILE_NAME]: {
+              reference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+              isGroupLevel: "No",
+              reportDate: "2023-07-12",
+              currency: "EUR",
+            },
           },
         },
       },
@@ -236,8 +261,8 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          formInputsModel: companyAssociatedEuTaxoFinancialsData,
-          templateDataset: companyAssociatedEuTaxoFinancialsData.data,
+          referencedReportsForPrefill: companyAssociatedEuTaxoFinancialsData?.data?.general?.referencedReports,
+          companyAssociatedEuTaxonomyDataForNonFinancials: companyAssociatedEuTaxoFinancialsData,
         };
       },
     }).then(() => {
@@ -245,4 +270,23 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       checkThatFilesMustBeReferenced();
     });
   });
+
+  it("Open upload page, fill out and validate the upload form, except for new activities", () => {
+    cy.stub(DataPointFormWithToggle);
+    cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
+      keycloak: minimalKeycloakMock({}),
+      data() {
+        return {
+          referencedReportsForPrefill: companyAssociatedEuTaxoFinancialsData?.data?.general?.referencedReports,
+          companyAssociatedEuTaxonomyDataForNonFinancials: companyAssociatedEuTaxoFinancialsData,
+        };
+      },
+    }).then(() => {
+      uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
+      fillAndValidateGeneralSection([TEST_PDF_FILE_NAME]);
+      fillAndValidateOtherSections([TEST_PDF_FILE_NAME]);
+    });
+  });
 });
+
+//TODO This file has to be modified to work
