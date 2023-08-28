@@ -59,7 +59,7 @@ export function mountRowHeaderClickEventListeners(
   const handlerMap: Map<Element, EventListener> = new Map();
   let expandedRowGroups: string[] = [];
   const rowHeaders = Array.from(
-    document.querySelectorAll(`[data-table-id=${dataTableIdentifier}][data-row-header-click]`),
+    document.querySelectorAll(`[data-table-id="${dataTableIdentifier}"][data-row-header-click]`),
   );
   const rowButtons = rowHeaders
     .map((rowHeader: Element) => {
