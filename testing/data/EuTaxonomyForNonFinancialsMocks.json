@@ -177,12 +177,13 @@
         {
           "activityName": "Afforestation",
           "naceCodes": [
-            "string"
+            "string",
+            "abc"
           ],
           "share": {
-            "relativeShareInPercent": 0,
+            "relativeShareInPercent": 0.1,
             "absoluteShare": {
-              "amount": 0,
+              "amount": 1337,
               "currency": "string"
             }
           }

@@ -198,6 +198,10 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesName}")`);
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesShareInPercent}")`);
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesNaceCodes}")`);
+
+      cy.get("table").find(`tr:contains("abc")`);
+      cy.get("table").find(`tr:contains("0.1")`);
+      cy.get("table").find(`tr:contains("1337")`);
     });
   });
 });
