@@ -11,6 +11,10 @@
     border-right: 1px solid $table-border;
   }
 
+  .border-bottom {
+    border-bottom: 1px solid $table-border;
+  }
+
   .horizontal-headers-size {
     background-color: #fff;
 
@@ -104,7 +108,7 @@
     }
   }
 
-  &.aligned-activities-data-table {
+  &.activities-data-table {
     $col-activity-width: 300px;
     $col-nace-codes-width: 70px;
     .group-row-header {

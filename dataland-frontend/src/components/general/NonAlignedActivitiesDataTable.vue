@@ -1,16 +1,16 @@
 <template>
-  <DataTable data-test="dataTableTest" :value="mainColumnData">
+  <DataTable data-test="dataTableTest" :value="mainColumnData" class="activities-data-table">
     <Column
       v-for="col of mainColumnDefinitions"
       :field="col.field"
       :key="col.field"
       :header="col.header"
-      :headerClass="headerClass(col)"
-      headerStyle="width: 15vw;"
+      :headerClass="cellClass(col)"
+      :bodyClass="cellClass(col)"
     >
       <template #body="{ data }">
         <template v-if="col.field === 'activity'">{{ camelCaseToWords(data.activity) }}</template>
-        <template v-if="col.field === 'naceCodes'">
+        <template v-else-if="col.field === 'naceCodes'">
           <ul class="unstyled-ul-list">
             <li v-for="code of data.naceCodes" :key="code">{{ code }}</li>
           </ul>
@@ -120,19 +120,21 @@ export default defineComponent({
      */
     fromatRelativeShareInPercent(relativeShareInPercent: number | undefined): string {
       if (!relativeShareInPercent) return "";
-      return `${relativeShareInPercent}%`;
+      return `${relativeShareInPercent} %`;
     },
     /**
-     * 
+     *
      * @param col definition of column
      * @returns class names determined by column
      */
-    headerClass(col:MainColumnDefinition): string {
-      if(col.field === "activity" || col.field === "naceCodes"){
-        return "headers-bg";
+    cellClass(col: MainColumnDefinition): string {
+      if (col.field === "activity") {
+        return "col-activity headers-bg border-bottom";
+      } else if (col.field === "naceCodes") {
+        return "col-nace-codes headers-bg border-bottom";
       }
-      return "horizontal-headers-size";
-    }
+      return "horizontal-headers-size border-bottom";
+    },
   },
 });
 </script>
