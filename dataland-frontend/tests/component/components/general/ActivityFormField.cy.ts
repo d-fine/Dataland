@@ -24,7 +24,10 @@ describe("Component test for ActivitiesFormField", () => {
     cy.get("li.p-multiselect-item").should("have.length", 2);
     cy.get("li.p-multiselect-item").eq(0).find(".p-checkbox-box").click();
     cy.get("li.p-multiselect-item").eq(1).find(".p-checkbox-box").click();
-    cy.get('div[data-test="selectNaceCodes"]').eq(1).find("div.p-multiselect-label").should("contain", "F41, F43");
+    cy.get('div[data-test="selectNaceCodes"]')
+      .eq(1)
+      .find("div.p-multiselect-label")
+      .should("contain", "41 - Construction of buildings, 43 - Specialised construction activities");
     cy.get('em[data-test="removeButton"]').eq(1).click();
     cy.get('div[data-test="alignedActivitiesSection"]').eq(1).should("not.exist");
   });
