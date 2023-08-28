@@ -20,12 +20,12 @@ export const MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY =
 // ----------------------FRONTEND SETTINGS ONLY----------------------
 
 // - Available frameworks settings
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = Object.values(DataTypeEnum);
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE: DataTypeEnum[] = Object.values(DataTypeEnum);
 
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = Object.values(DataTypeEnum).filter(
-  (frameworkName) =>
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = Object.values(DataTypeEnum).filter(
+  (frameworkName: DataTypeEnum) =>
     [DataTypeEnum.Sme as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(frameworkName) === -1,
-) as Array<DataTypeEnum>;
+);
 
 // - Keycloak and session management related settings
 
