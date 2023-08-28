@@ -20,7 +20,8 @@ describe("As a user, I expect the footer section to be present and contain relev
       });
     });
 
-    ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
+    const frameworksToCheck = Object.values(DataTypeEnum);
+    frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on ${framework}`, () => {
         getKeycloakToken(reader_name, reader_pw).then((token) => {
           cy.browserThen(getStoredCompaniesForDataType(token, framework)).then((storedCompanies) => {
