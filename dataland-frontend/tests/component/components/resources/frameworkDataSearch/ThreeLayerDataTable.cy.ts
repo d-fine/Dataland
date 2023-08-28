@@ -1,9 +1,9 @@
 import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { euTaxonomyForNonFinancialsDisplayDataModel } from "../../../../../src/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
-import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "../../../../../src/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
+import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
+import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
-import { euTaxonomyForNonFinancialsModalColumnHeaders } from "../../../../../src/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
+import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 
 describe("Component test for the NewEUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;

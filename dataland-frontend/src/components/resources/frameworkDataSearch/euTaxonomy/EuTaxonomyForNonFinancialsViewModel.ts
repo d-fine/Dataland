@@ -65,9 +65,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
         assuranceProvider: apiModel.general?.assurance?.provider,
       },
     };
-    this.revenue = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(
-      apiModel.revenue,
-    );
+    this.revenue = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.revenue);
     this.capex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.capex);
     this.opex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex);
   }

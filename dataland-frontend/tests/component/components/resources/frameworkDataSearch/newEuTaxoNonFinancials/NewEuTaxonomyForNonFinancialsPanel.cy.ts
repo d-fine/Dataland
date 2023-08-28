@@ -1,4 +1,4 @@
-import EuTaxonomyForNonFinancialsPanel from "../../../../../../src/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
+import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
