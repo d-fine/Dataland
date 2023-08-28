@@ -80,12 +80,12 @@ export default defineComponent({
       try {
         let fetchedData: DataAndMetaInformationEuTaxonomyDataForNonFinancials[];
         this.waitingForData = true;
-        const newEuTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
+        const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getEutaxonomyDataForNonFinancialsControllerApi();
+        ).getEuTaxonomyDataForNonFinancialsControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
           const singleEuTaxonomyForNonFinancialsDataData = (
-            await newEuTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
               this.singleDataMetaInfoToDisplay.dataId,
             )
           ).data.data;
@@ -94,7 +94,7 @@ export default defineComponent({
           ];
         } else {
           fetchedData = (
-            await newEuTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(
+            await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(
               assertDefined(this.companyId),
             )
           ).data;
