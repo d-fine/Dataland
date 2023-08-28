@@ -288,5 +288,3 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     });
   });
 });
-
-//TODO This file has to be modified to work
