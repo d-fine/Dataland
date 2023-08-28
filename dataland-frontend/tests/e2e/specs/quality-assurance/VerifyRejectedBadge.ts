@@ -8,7 +8,7 @@ import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 describeIf(
   "Validation for correct display of 'Rejected' badge",
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    executionEnvironments: ["developmentLocal", "ci"],
   },
   () => {
     beforeEach(() => {

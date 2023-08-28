@@ -1,7 +1,7 @@
 package db.migration
 
-import db.migration.utils.getCompanyAssociatedDatasetsForDataType
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import db.migration.utils.DataTableEntity
+import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -11,30 +11,32 @@ import org.json.JSONObject
  * two fields have been renamed
  */
 class V4__MigrateEuTaxonomyNames : BaseJavaMigration() {
-    override fun migrate(context: Context?) {
-        val mapOfOldToNewFieldNames = mapOf(
-            "reportingObligation" to "nfrdMandatory",
-            "activityLevelReporting" to "euTaxonomyActivityLevelReporting",
-        )
 
-        val dataTypesToMigrate = listOf(
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-            DataTypeEnum.eutaxonomyMinusFinancials,
-        )
-        dataTypesToMigrate.forEach { dataType: DataTypeEnum ->
-            val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, dataType)
-            companyAssociatedDatasets.forEach {
-                val companyAssociatedDatasetAsString = it.companyAssociatedData.toString()
-                val companyAssociatedDatasetWithEscapedSingleQuotes =
-                    JSONObject(companyAssociatedDatasetAsString.replace("'", "''"))
-                var euTaxoDataset = JSONObject(companyAssociatedDatasetWithEscapedSingleQuotes.getString("data"))
-                mapOfOldToNewFieldNames.forEach {
-                    euTaxoDataset.put(it.value, euTaxoDataset.get(it.key))
-                    euTaxoDataset.remove(it.key)
-                }
-                it.companyAssociatedData.put("data", euTaxoDataset.toString())
-                context!!.connection.createStatement().execute(it.getWriteQuery())
-            }
+    private val mapOfOldToNewFieldNames = mapOf(
+        "reportingObligation" to "nfrdMandatory",
+        "activityLevelReporting" to "euTaxonomyActivityLevelReporting",
+    )
+
+    private val dataTypesToMigrate = listOf(
+        "eutaxonomy-non-financials",
+        "eutaxonomy-financials",
+    )
+
+    /**
+     * Migrates an old eu taxonomy  dataset to the new name
+     */
+    fun migrateEuTaxonomyNames(dataTableEntity: DataTableEntity) {
+        val companyAssociatedDatasetAsString = dataTableEntity.companyAssociatedData
+        val euTaxoDataset = JSONObject(companyAssociatedDatasetAsString.getString("data"))
+        mapOfOldToNewFieldNames.forEach {
+            euTaxoDataset.put(it.value, euTaxoDataset.get(it.key))
+            euTaxoDataset.remove(it.key)
+        }
+        dataTableEntity.companyAssociatedData.put("data", euTaxoDataset.toString())
+    }
+    override fun migrate(context: Context?) {
+        dataTypesToMigrate.forEach { dataType: String ->
+            migrateCompanyAssociatedDataOfDatatype(context, dataType, this::migrateEuTaxonomyNames)
         }
     }
 }

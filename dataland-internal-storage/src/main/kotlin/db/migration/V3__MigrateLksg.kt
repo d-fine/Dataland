@@ -1,7 +1,8 @@
 package db.migration
 
-import db.migration.utils.getCompanyAssociatedDatasetsForDataType
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import db.migration.utils.DataTableEntity
+import db.migration.utils.getOrJavaNull
+import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -10,7 +11,6 @@ import org.json.JSONObject
  * This migration script updates the existing LkSG datasets to be in line again with the dataDictionary
  */
 class V3__MigrateLksg : BaseJavaMigration() {
-
     private val mapOfOldToNewFieldNames = mapOf(
         "totalRevenue" to "annualTotalRevenue",
         "isContractProcessing" to "productionViaSubcontracting",
@@ -89,11 +89,11 @@ class V3__MigrateLksg : BaseJavaMigration() {
         val categoryObjectTmp = JSONObject()
         val subcategories = categoryObject.keys()
         subcategories.forEach { subcategory ->
-            val subcategoryObject = categoryObject.opt(subcategory) as JSONObject
+            val subcategoryObject = (categoryObject.getOrJavaNull(subcategory) ?: return@forEach) as JSONObject
             val subcategoryObjectTmp = JSONObject()
             val fields = subcategoryObject.keys()
             fields.forEach { field ->
-                val dataToMigrate = subcategoryObject.opt(field)
+                val dataToMigrate = subcategoryObject.getOrJavaNull(field) ?: return@forEach
                 writeToTemporarySubcategoryObject(
                     subcategoryObjectTmp, categoryKey, subcategory, field, dataToMigrate,
                 )
@@ -103,20 +103,22 @@ class V3__MigrateLksg : BaseJavaMigration() {
         datasetTmp.put(categoryKey, categoryObjectTmp)
     }
 
-    override fun migrate(context: Context?) {
-        val companyAssociatedDatasets = getCompanyAssociatedDatasetsForDataType(context, DataTypeEnum.lksg)
-
-        companyAssociatedDatasets.forEach {
-            var dataset = JSONObject(it.companyAssociatedData.getString("data"))
-            val datasetTmp = JSONObject()
-            val categories = dataset.keys()
-            categories.forEach { category ->
-                val categoryObject = dataset.opt(category) as JSONObject
-                writeToTemporaryDataset(datasetTmp, category, categoryObject)
-            }
-            dataset = datasetTmp
-            it.companyAssociatedData.put("data", dataset.toString())
-            context!!.connection.createStatement().execute(it.getWriteQuery())
+    /**
+     * Migrates an old lksg dataset to the new format
+     */
+    fun migrateLksgData(dataTableEntity: DataTableEntity) {
+        var dataset = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
+        val datasetTmp = JSONObject()
+        val categories = dataset.keys()
+        categories.forEach { category ->
+            val categoryObject = (dataset.getOrJavaNull(category) ?: return@forEach) as JSONObject
+            writeToTemporaryDataset(datasetTmp, category, categoryObject)
         }
+        dataset = datasetTmp
+        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
+    }
+
+    override fun migrate(context: Context?) {
+        migrateCompanyAssociatedDataOfDatatype(context, "lksg", this::migrateLksgData)
     }
 }
