@@ -82,6 +82,7 @@ import Row from "primevue/row";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 import {
+  type YesNo,
   type Activity,
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
@@ -164,8 +165,18 @@ export default defineComponent({
     this.mainColumnData = this.listOfRowContents
       .map((col) => [
         ...createRevenueGroupData(col),
-        ...createSubstantialContributionCriteriaGroupData(col),
-        ...createDnshCriteriaGroupData(col),
+        ...createActivityGroupData<number>(
+          col.activityName as string,
+          "substantialContributionCriteria",
+          col.substantialContributionCriteria,
+          (value: number) => (value ? `${value}%` : ""),
+        ),
+        ...createActivityGroupData<YesNo>(
+          col.activityName as string,
+          "dnshCriteria",
+          col.dnshCriteria,
+          (value: YesNo) => (value ? `${value}` : ""),
+        ),
         ...createMinimumSafeguardsGroupData(col),
       ])
       .flat();
@@ -270,37 +281,25 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
 }
 
 /**
- * @param activity targeted activity object
- * @returns list of substantial contribution criteria data items
+ * @param activityName name of the activity
+ * @param groupName the name of the group to which the fields will be assigned to
+ * @param fields collection of fields and their values
+ * @param valueFormatter function which formats the final look of the value
+ * @returns grouped list of data items
  */
-function createSubstantialContributionCriteriaGroupData(
-  activity: EuTaxonomyAlignedActivity,
+function createActivityGroupData<T>(
+  activityName: string,
+  groupName: string,
+  fields: { [key: string]: T } | undefined,
+  valueFormatter: (value: T) => string,
 ): ActivityFieldValueObject[] {
-  const fields = Object.entries(activity.substantialContributionCriteria ?? {});
-  return fields.map(([field, value]) => {
-    const content = value ? `${value}%` : "";
+  const fieldsEntries = Object.entries(fields ?? {});
+  return fieldsEntries.map(([field, value]) => {
     return {
-      activity: activity.activityName as string,
-      group: "substantialContributionCriteria",
+      activity: activityName,
+      group: groupName,
       field,
-      content,
-    };
-  });
-}
-
-/**
- * @param activity targeted activity object
- * @returns list of DNSH criteria data items
- */
-function createDnshCriteriaGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
-  const fields = Object.entries(activity.dnshCriteria ?? {});
-  return fields.map(([field, value]) => {
-    const content = value ? `${value}` : "";
-    return {
-      activity: activity.activityName as string,
-      group: "dnshCriteria",
-      field,
-      content,
+      content: valueFormatter(value) ?? "",
     };
   });
 }

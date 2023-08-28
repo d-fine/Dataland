@@ -326,7 +326,7 @@
       "metaInfo": {
         "dataId": "03f730b1-388f-4b2a-908f-c6ca7848b852",
         "companyId": "bbaf1cf1-f9e4-4896-be88-5187c7240910",
-        "dataType": "new-eutaxonomy-non-financials",
+        "dataType": "eutaxonomy-non-financials",
         "uploaderUserId": null,
         "uploadTime": 1692950616083,
         "reportingPeriod": "2020",
@@ -583,7 +583,7 @@
       "metaInfo": {
         "dataId": "5f59b978-0c36-4c2e-b4ac-d6bb5c388c4f",
         "companyId": "cbb2e572-a15f-4284-9454-edd716778d9e",
-        "dataType": "new-eutaxonomy-non-financials",
+        "dataType": "eutaxonomy-non-financials",
         "uploaderUserId": null,
         "uploadTime": 1692950609305,
         "reportingPeriod": "2021",
