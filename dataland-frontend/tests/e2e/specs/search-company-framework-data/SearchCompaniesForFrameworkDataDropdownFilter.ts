@@ -49,7 +49,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           `&framework=${DataTypeEnum.Lksg}`,
       )
       .get("div.p-multiselect-panel")
-      .find(`li.p-multiselect-item:contains(${DataTypeEnum.Financial})`)
+      .find(`li.p-multiselect-item:contains(${DataTypeEnum.EutaxonomyFinancials})`)
       .click();
     verifySearchResultTable();
     cy.url()
