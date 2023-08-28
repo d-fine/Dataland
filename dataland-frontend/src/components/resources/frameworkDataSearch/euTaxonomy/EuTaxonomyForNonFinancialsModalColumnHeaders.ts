@@ -17,7 +17,9 @@ export const euTaxonomyForNonFinancialsModalColumnHeaders = {
   },
   nonAlignedActivities: {
     activityName: "Activity",
-    naceCodes: "Code(s)",
+    naceCodes: "NACE Code(s)",
     share: "Share",
+    revenue: "Revenue",
+    revenuePercent: "Revenue (%)",
   },
 };
