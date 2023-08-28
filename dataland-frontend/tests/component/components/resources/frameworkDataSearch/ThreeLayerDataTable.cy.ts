@@ -72,7 +72,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   /**
    * Expands the view page and opens the modal page.
    * @param categoryToExpand name of the category that has to be expanded, since there are multiple modal pages.
-   * @param fieldToClick
+   * @param fieldToClick field to click
    */
   function expandViewPageAndOpenModal(categoryToExpand = "Revenue", fieldToClick = "totalAlignedShare"): void {
     toggleCategoryByClick("Basic Information");
