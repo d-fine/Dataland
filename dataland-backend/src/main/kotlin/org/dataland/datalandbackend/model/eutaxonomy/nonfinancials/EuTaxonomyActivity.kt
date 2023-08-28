@@ -36,11 +36,11 @@ data class EuTaxonomyAlignedActivity(
     val substantialContributionToBiodiversity: BigDecimal?,
     // TODO these names differ from the ones specified in the data dictionary due to length.
     //  However, their purpose is clear from the names here.
-    val dnshToClimateChangeMitigation: BigDecimal?,
-    val dnshToClimateChangeAdaption: BigDecimal?,
-    val dnshToSustainableWaterUse: BigDecimal?,
-    val dnshToCircularEconomy: BigDecimal?,
-    val dnshToPollutionPreventionAndControl: BigDecimal?,
-    val dnshToBiodiversity: BigDecimal?,
+    val dnshToClimateChangeMitigation: YesNo?,
+    val dnshToClimateChangeAdaption: YesNo?,
+    val dnshToSustainableWaterUse: YesNo?,
+    val dnshToCircularEconomy: YesNo?,
+    val dnshToPollutionPreventionAndControl: YesNo?,
+    val dnshToBiodiversity: YesNo?,
     val minimumSafeguards: YesNo?,
 )

@@ -188,8 +188,15 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    unfoldOnLoad: {
+      type: Boolean,
+      default: false,
+    },
   },
   created() {
+    if (this.unfoldOnLoad) {
+      this.expandedRowGroups = this.arrayOfKpiDataObjects?.map((kpiDataObject) => kpiDataObject.subcategoryKey) ? [];
+    }
     setTimeout(() => {
       this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
         () => this.expandedRowGroups,

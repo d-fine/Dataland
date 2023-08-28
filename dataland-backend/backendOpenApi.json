@@ -5223,22 +5223,22 @@
             "type": "number"
           },
           "dnshToClimateChangeMitigation": {
-            "type": "number"
+            "$ref": "#/components/schemas/YesNo"
           },
           "dnshToClimateChangeAdaption": {
-            "type": "number"
+            "$ref": "#/components/schemas/YesNo"
           },
           "dnshToSustainableWaterUse": {
-            "type": "number"
+            "$ref": "#/components/schemas/YesNo"
           },
           "dnshToCircularEconomy": {
-            "type": "number"
+            "$ref": "#/components/schemas/YesNo"
           },
           "dnshToPollutionPreventionAndControl": {
-            "type": "number"
+            "$ref": "#/components/schemas/YesNo"
           },
           "dnshToBiodiversity": {
-            "type": "number"
+            "$ref": "#/components/schemas/YesNo"
           },
           "minimumSafeguards": {
             "$ref": "#/components/schemas/YesNo"
@@ -5773,10 +5773,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

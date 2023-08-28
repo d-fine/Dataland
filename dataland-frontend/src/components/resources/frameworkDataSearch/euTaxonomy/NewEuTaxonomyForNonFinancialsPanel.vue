@@ -12,6 +12,7 @@
       :format-value-for-display="formatValueForDisplay"
       :modal-column-headers="newEuTaxonomyForNonFinancialsModalColumnHeaders"
       :sort-by-subcategory-key="false"
+      unfold-on-load
     />
   </div>
 </template>
@@ -22,7 +23,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type AmountWithCurrency,
-  type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
+  type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
@@ -78,14 +79,14 @@ export default defineComponent({
      */
     async fetchNewEuTaxonomyData() {
       try {
-        let fetchedData: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials[];
+        let fetchedData: DataAndMetaInformationEuTaxonomyDataForNonFinancials[];
         this.waitingForData = true;
-        const newEuTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
+        const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getNewEutaxonomyDataForNonFinancialsControllerApi();
+        ).getEuTaxonomyDataForNonFinancialsControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
           const singleNewEuTaxonomyForNonFinancialsDataData = (
-            await newEuTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedNewEuTaxonomyDataForNonFinancials(
+            await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
               this.singleDataMetaInfoToDisplay.dataId,
             )
           ).data.data;
@@ -94,7 +95,7 @@ export default defineComponent({
           ];
         } else {
           fetchedData = (
-            await newEuTaxonomyForNonFinancialsDataControllerApi.getAllCompanyNewEuTaxonomyDataForNonFinancials(
+            await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(
               assertDefined(this.companyId),
             )
           ).data;

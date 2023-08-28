@@ -13,6 +13,7 @@ import {
   type YesNoNa,
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
+import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
 interface NewEuTaxonomyDetailsPerCashFlowViewModel {
   totalAmount?: DataPointOneValueAmountWithCurrency;
@@ -21,7 +22,12 @@ interface NewEuTaxonomyDetailsPerCashFlowViewModel {
   totalNonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };
   totalAlignedShare?: RelativeAndAbsoluteFinancialShare & {
     alignedActivities?: EuTaxonomyAlignedActivity[];
-    substantialContributionCriteria?: { [key: string]: number };
+    [EnvironmentalObjective.ClimateMitigation]?: number;
+    [EnvironmentalObjective.ClimateAdaptation]?: number;
+    [EnvironmentalObjective.Water]?: number;
+    [EnvironmentalObjective.CircularEconomy]?: number;
+    [EnvironmentalObjective.PollutionPrevention]?: number;
+    [EnvironmentalObjective.Biodiversity]?: number;
   };
   totalEnablingShare?: { totalEnablingShare?: number };
   totalTransitionalShare?: { totalTransitionalShare?: number };
@@ -103,7 +109,12 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
       totalEligibleShare: apiModel.totalEligibleShare,
       totalAlignedShare: {
         ...(apiModel.totalAlignedShare ?? {}),
-        ...apiModel.substantialContributionCriteria,
+        [EnvironmentalObjective.ClimateMitigation]: apiModel.substantialContributionToClimateChangeMitigation,
+        [EnvironmentalObjective.ClimateAdaptation]: apiModel.substantialContributionToClimateChangeAdaption,
+        [EnvironmentalObjective.Water]: apiModel.substantialContributionToSustainableWaterUse,
+        [EnvironmentalObjective.CircularEconomy]: apiModel.substantialContributionToCircularEconomy,
+        [EnvironmentalObjective.PollutionPrevention]: apiModel.substantialContributionToPollutionPreventionAndControl,
+        [EnvironmentalObjective.Biodiversity]: apiModel.substantialContributionToBiodiversity,
         alignedActivities: apiModel.alignedActivities,
       },
       totalNonAlignedShare: {
@@ -130,6 +141,15 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
       totalAlignedShare: details.totalAlignedShare,
       nonAlignedActivities: details.totalNonAlignedShare?.nonAlignedActivities,
       alignedActivities: details.totalAlignedShare?.alignedActivities,
+      substantialContributionToClimateChangeMitigation:
+        details.totalAlignedShare?.[EnvironmentalObjective.ClimateMitigation],
+      substantialContributionToClimateChangeAdaption:
+        details.totalAlignedShare?.[EnvironmentalObjective.ClimateAdaptation],
+      substantialContributionToSustainableWaterUse: details.totalAlignedShare?.[EnvironmentalObjective.Water],
+      substantialContributionToCircularEconomy: details.totalAlignedShare?.[EnvironmentalObjective.CircularEconomy],
+      substantialContributionToPollutionPreventionAndControl:
+        details.totalAlignedShare?.[EnvironmentalObjective.PollutionPrevention],
+      substantialContributionToBiodiversity: details.totalAlignedShare?.[EnvironmentalObjective.Biodiversity],
       totalEnablingShare: details.totalEnablingShare?.totalEnablingShare,
       totalTransitionalShare: details.totalTransitionalShare?.totalTransitionalShare,
     };

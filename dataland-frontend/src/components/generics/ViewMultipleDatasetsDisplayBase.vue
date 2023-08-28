@@ -21,7 +21,7 @@
           </div>
           <div class="col-12">
             <NewEuTaxonomyForNonFinancialsPanel
-              v-if="dataType === DataTypeEnum.NewEutaxonomyNonFinancials"
+              v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
               :companyId="companyId"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
             />
