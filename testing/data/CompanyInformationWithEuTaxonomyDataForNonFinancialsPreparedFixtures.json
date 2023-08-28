@@ -2,436 +2,394 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "New Lilian",
-			"headquartersPostalCode": "81044-6016",
-			"sector": "experiences",
+			"headquarters": "Avondale",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [],
-				"PermId": [],
+				"Lei": [
+					"snDm5KZYkwYaEkophTr3"
+				],
+				"Isin": [
+					"x6lWCSEy6v4k"
+				],
+				"PermId": [
+					"btL1PTs0QO"
+				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"AE1cVciCO"
+				],
 				"CompanyRegistrationNumber": [
-					"xLZVfyHbFYwbDy1"
+					"yZHrabhLAiA7VFb"
 				]
 			},
-			"countryCode": "TJ",
+			"countryCode": "AZ",
 			"companyAlternativeNames": [
-				"Fadel - Parker",
-				"Kessler Group",
-				"Mann Inc",
-				"Pfeffer LLC"
+				"Harvey - Durgan",
+				"Hessel, Lemke and Hagenes",
+				"Wunsch Group"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://pleased-waste.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"fiscalYearDeviation": "Deviation",
-				"numberOfEmployees": 62306,
+				"fiscalYearDeviation": "NoDeviation",
+				"numberOfEmployees": 44748,
 				"referencedReports": {
-					"SustainabilityReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "Yes",
-						"reportDate": "2023-01-29",
-						"currency": "SDG"
-					},
 					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "TTD"
+						"isGroupLevel": "Yes",
+						"currency": "WST"
 					},
-					"AnnualReport": {
+					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "SHP"
+						"reportDate": "2023-03-31",
+						"currency": "QAR"
 					}
 				},
 				"assurance": {
-					"assurance": "ReasonableAssurance"
+					"assurance": "None"
+				},
+				"nfrdMandatory": "Yes",
+				"euTaxonomyActivityLevelReporting": "No"
+			},
+			"opex": {
+				"totalEligibleShare": {}
+			},
+			"capex": {
+				"totalEligibleShare": {
+					"relativeShareInPercent": 21.833431557752192
+				}
+			},
+			"revenue": {
+				"totalEligibleShare": {}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Krishaven",
+			"identifiers": {
+				"Lei": [
+					"Kk7g6NdNVyTeFQ1GkrzS"
+				],
+				"Isin": [
+					"SLwwZFi03zD7",
+					"uUjpIIuQiDPi"
+				],
+				"PermId": [
+					"YODios2pgv"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"sTE97JUFu"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CN",
+			"companyAlternativeNames": [
+				"Adams - Crist",
+				"Altenwerth Group",
+				"Klocko, Weimann and Prohaska"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"fiscalYearEnd": "2023-06-23",
+				"referencedReports": {
+					"AnnualReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "SHP"
+					},
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "CZK"
+					},
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "Yes",
+						"currency": "BRL"
+					},
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "NA",
+						"currency": "INR"
+					}
+				},
+				"assurance": {
+					"assurance": "ReasonableAssurance",
+					"provider": "Bartoletti LLC",
+					"dataSource": {
+						"page": 816,
+						"report": "SustainabilityReport",
+						"tagName": "interfaces"
+					}
 				},
 				"scopeOfEntities": "NA",
 				"nfrdMandatory": "No"
 			},
 			"opex": {
+				"totalAmount": {
+					"value": 485212.1084695682,
+					"dataSource": {
+						"page": 121,
+						"report": "ESEFReport",
+						"tagName": "infrastructures"
+					},
+					"quality": "Reported",
+					"comment": "override multi-byte capacitor"
+				},
 				"totalEligibleShare": {
-					"relativeShareInPercent": 11.489864601753652
+					"relativeShareInPercent": 34.075216203927994,
+					"absoluteShare": {}
 				}
 			},
 			"capex": {
-				"totalEligibleShare": {
-					"relativeShareInPercent": 83.36844218429178
-				}
-			},
-			"revenue": {
-				"totalEligibleShare": {
-					"relativeShareInPercent": 68.4087649686262
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Lake Destanystead",
-			"sector": "e-business",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"HYiZBJoGMLmU",
-					"y4jAVH6wbM5F"
-				],
-				"PermId": [
-					"tV4qOXOAKI"
-				],
-				"Ticker": [
-					"SRUtVQz"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"G0wWBd7sy"
-				],
-				"CompanyRegistrationNumber": [
-					"COW440OFruTG1Ic"
-				]
-			},
-			"countryCode": "SE",
-			"companyAlternativeNames": [
-				"Walter - Harvey"
-			],
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"fiscalYearEnd": "2022-08-23",
-				"numberOfEmployees": 90084,
-				"referencedReports": {
-					"IntegratedReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "NA",
-						"reportDate": "2023-07-09",
-						"currency": "QAR"
-					},
-					"SustainabilityReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "ANG"
-					},
-					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "ALL"
-					},
-					"ESEFReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "NA",
-						"reportDate": "2023-02-18",
-						"currency": "SCR"
-					}
-				},
-				"assurance": {
-					"assurance": "ReasonableAssurance",
-					"provider": "Grady LLC",
-					"dataSource": {
-						"page": 378,
-						"report": "SustainabilityReport",
-						"tagName": "markets"
-					}
-				}
-			},
-			"opex": {
 				"totalAmount": {
-					"value": 133200.1066650264,
+					"value": 265604.0390720591,
 					"dataSource": {
-						"page": 260,
-						"report": "SustainabilityReport",
-						"tagName": "systems"
+						"page": 993,
+						"report": "ESEFReport",
+						"tagName": "platforms"
 					},
 					"quality": "Audited",
-					"comment": "hack bluetooth port"
+					"comment": "copy back-end circuit"
 				},
 				"totalEligibleShare": {
-					"relativeShareInPercent": 32.53307961858809,
-					"absoluteShare": {}
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 931427.9620535672,
-					"dataSource": {
-						"page": 1150,
-						"report": "IntegratedReport",
-						"tagName": "bandwidth"
-					},
-					"quality": "Estimated",
-					"comment": "reboot online array"
-				},
-				"totalEligibleShare": {
-					"relativeShareInPercent": 25.379447848536074,
-					"absoluteShare": {}
+					"relativeShareInPercent": 13.001744775101542,
+					"absoluteShare": {
+						"amount": 152719.407400582,
+						"currency": "CHF"
+					}
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 128716.70025633648,
+					"value": 217777.2318944335,
 					"dataSource": {
-						"page": 107,
-						"report": "ESEFReport",
-						"tagName": "models"
+						"page": 1199,
+						"report": "IntegratedReport",
+						"tagName": "ROI"
 					},
 					"quality": "Estimated",
-					"comment": "copy multi-byte alarm"
+					"comment": "transmit neural port"
 				},
 				"totalEligibleShare": {
 					"absoluteShare": {}
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Murray",
-			"headquartersPostalCode": "56612",
-			"sector": "action-items",
+			"headquarters": "Chesterboro",
+			"sector": "users",
 			"identifiers": {
 				"Lei": [
-					"iSwBlQiwFLQamUgZwOgG"
+					"zmftE0ylz6cjNzSuGA6o"
 				],
 				"Isin": [
-					"NpFlz4uPFhi0",
-					"TMRTa6ppzv1D"
+					"l8wr67DVLqin",
+					"8rZZbFfZhosi"
 				],
-				"PermId": [
-					"clmmLz8hEG"
-				],
+				"PermId": [],
 				"Ticker": [
-					"oAxLAgN"
+					"zPePClM"
 				],
 				"Duns": [
-					"bzCptAFy7"
+					"4fk3yZ7AP"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"cizGl4ePA"
+				],
+				"CompanyRegistrationNumber": [
+					"SRphQuLZH0TCVYZ"
+				]
 			},
-			"countryCode": "LT",
+			"countryCode": "SA",
 			"companyAlternativeNames": [
-				"Miller, Yost and Bergnaum"
+				"Douglas Group"
 			],
-			"website": "https://lawful-wriggler.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
+				"fiscalYearDeviation": "NoDeviation",
 				"assurance": {
-					"assurance": "LimitedAssurance",
-					"provider": "Harvey Group"
-				},
-				"scopeOfEntities": "Yes",
-				"euTaxonomyActivityLevelReporting": "No"
+					"assurance": "None"
+				}
 			},
 			"opex": {
-				"totalAmount": {
-					"value": {
-						"amount": 884750.1798882149,
-						"currency": "CHF"
-					},
-					"dataSource": {
-						"page": 1028,
-						"report": "SustainabilityReport",
-						"tagName": "systems"
-					},
-					"quality": "Reported",
-					"comment": "override online pixel"
+				"totalNonEligibleShare": {
+					"relativeShareInPercent": 62.33923463150859,
+					"absoluteShare": {
+						"currency": "AUD"
+					}
 				},
-				"totalEligibleShare": {
-					"relativeShareInPercent": 5.33200150821358
+				"totalNonAlignedShare": {},
+				"nonAlignedActivities": [
+					{
+						"activityName": "InlandPassengerWaterTransport"
+					},
+					{
+						"activityName": "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
+						"share": {
+							"relativeShareInPercent": 39.23240208532661
+						}
+					},
+					{
+						"activityName": "ProductionOfHeatCoolFromBioenergy",
+						"naceCodes": [
+							"D",
+							"E",
+							"G",
+							"H"
+						],
+						"share": {
+							"relativeShareInPercent": 98.76783729996532
+						}
+					},
+					{
+						"activityName": "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+						"naceCodes": [
+							"B",
+							"D",
+							"M"
+						],
+						"share": {
+							"relativeShareInPercent": 95.57653705123812,
+							"absoluteShare": {
+								"currency": "USD"
+							}
+						}
+					},
+					{
+						"activityName": "ManufactureOfNitricAcid",
+						"naceCodes": [
+							"F",
+							"J"
+						]
+					}
+				],
+				"substantialContributionCriteria": {
+					"PollutionPrevention": 12.087743286974728,
+					"Water": 95.18006630241871,
+					"Biodiversity": 63.88956953305751,
+					"ClimateMitigation": 62.6347363460809,
+					"ClimateAdaptation": 88.40693098027259
+				},
+				"totalTransitionalShare": 17.996722226962447
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 81.145393056795,
+					"dataSource": {
+						"page": 191,
+						"report": "AnnualReport",
+						"tagName": "content"
+					},
+					"quality": "Audited",
+					"comment": "reboot wireless application"
 				},
 				"totalAlignedShare": {
-					"relativeShareInPercent": 32.396159251220524
+					"absoluteShare": {
+						"amount": 525803.8465748541,
+						"currency": "CHF"
+					}
 				},
 				"substantialContributionCriteria": {
-					"ClimateAdaptation": 38.15838957671076
+					"ClimateAdaptation": 17.104397411458194,
+					"Biodiversity": 53.375991294160485,
+					"ClimateMitigation": 2.0130711840465665
+				}
+			},
+			"revenue": {
+				"totalNonEligibleShare": {},
+				"totalNonAlignedShare": {
+					"relativeShareInPercent": 64.05312707647681,
+					"absoluteShare": {
+						"currency": "CAD"
+					}
+				},
+				"nonAlignedActivities": [
+					{
+						"activityName": "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem"
+					},
+					{
+						"activityName": "ProgrammingAndBroadcastingActivities",
+						"naceCodes": [
+							"F",
+							"H",
+							"J",
+							"M"
+						],
+						"share": {
+							"relativeShareInPercent": 57.72356216330081,
+							"absoluteShare": {
+								"currency": "AUD"
+							}
+						}
+					},
+					{
+						"activityName": "LandfillGasCaptureAndUtilisation"
+					},
+					{
+						"activityName": "Education",
+						"share": {
+							"absoluteShare": {
+								"amount": 262148.9202720113
+							}
+						}
+					}
+				],
+				"substantialContributionCriteria": {
+					"ClimateMitigation": 75.23730501998216,
+					"Biodiversity": 20.437108841724694,
+					"ClimateAdaptation": 82.08795215468854,
+					"PollutionPrevention": 23.20641572587192,
+					"CircularEconomy": 56.942735821940005
 				},
 				"alignedActivities": [
 					{
-						"activityName": "ManufactureOfAluminium",
+						"activityName": "PassengerInterurbanRailTransport",
 						"substantialContributionCriteria": {
-							"ClimateMitigation": 30.342546268366277,
-							"Biodiversity": 82.26713268086314,
-							"PollutionPrevention": 51.43163793254644,
-							"ClimateAdaptation": 95.71876835543662
+							"Biodiversity": 48.850981681607664,
+							"CircularEconomy": 0.5405084462836385,
+							"Water": 39.9455273989588
 						},
 						"dnshCriteria": {
-							"PollutionPrevention": "No",
-							"ClimateAdaptation": "No",
-							"Water": "Yes",
 							"CircularEconomy": "Yes",
+							"ClimateAdaptation": "No",
 							"Biodiversity": "Yes",
-							"ClimateMitigation": "Yes"
-						},
-						"minimumSafeguards": "No"
-					},
-					{
-						"activityName": "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
-						"naceCodes": [
-							"B",
-							"E"
-						],
-						"substantialContributionCriteria": {
-							"ClimateMitigation": 53.52653961163014,
-							"PollutionPrevention": 98.37204671930522,
-							"ClimateAdaptation": 97.98132467549294,
-							"Water": 81.00129857193679,
-							"Biodiversity": 16.680983873084188
-						},
-						"dnshCriteria": {
-							"Water": "No",
-							"CircularEconomy": "Yes",
-							"Biodiversity": "No",
-							"ClimateAdaptation": "No",
-							"ClimateMitigation": "No",
 							"PollutionPrevention": "Yes"
 						},
 						"minimumSafeguards": "Yes"
 					},
 					{
-						"activityName": "CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
-						"substantialContributionCriteria": {
-							"ClimateAdaptation": 40.287835779599845,
-							"PollutionPrevention": 84.15659961756319,
-							"ClimateMitigation": 23.33779651671648,
-							"Biodiversity": 57.10019497200847,
-							"CircularEconomy": 59.19657952617854
-						},
-						"dnshCriteria": {
-							"Biodiversity": "Yes",
-							"CircularEconomy": "No",
-							"ClimateAdaptation": "Yes"
-						},
-						"minimumSafeguards": "Yes"
-					}
-				],
-				"totalEnablingShare": 40.7605005428195
-			},
-			"capex": {
-				"totalAmount": {
-					"value": {},
-					"dataSource": {
-						"page": 309,
-						"report": "IntegratedReport",
-						"tagName": "methodologies"
-					},
-					"quality": "Estimated",
-					"comment": "synthesize neural feed"
-				},
-				"totalNonEligibleShare": {
-					"relativeShareInPercent": 20.547855319455266
-				},
-				"totalNonAlignedShare": {
-					"absoluteShare": {}
-				},
-				"nonAlignedActivities": [],
-				"totalAlignedShare": {
-					"relativeShareInPercent": 24.74060752429068,
-					"absoluteShare": {}
-				},
-				"substantialContributionCriteria": {
-					"CircularEconomy": 83.34361852612346,
-					"ClimateAdaptation": 62.52087748143822,
-					"PollutionPrevention": 92.91608487255871
-				},
-				"alignedActivities": [
-					{
-						"activityName": "ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
-						"naceCodes": [
-							"A",
-							"D",
-							"H",
-							"K"
-						],
+						"activityName": "ManufactureOfChlorine",
 						"share": {
-							"relativeShareInPercent": 67.06047407351434,
+							"relativeShareInPercent": 0.30603567138314247,
 							"absoluteShare": {
-								"amount": 834298.8181393594,
-								"currency": "AUD"
+								"amount": 391952.09009340033
 							}
 						},
 						"substantialContributionCriteria": {
-							"PollutionPrevention": 96.35071437805891,
-							"ClimateAdaptation": 78.00823266152292,
-							"ClimateMitigation": 66.70165208633989
+							"PollutionPrevention": 21.801886754110456
 						},
 						"dnshCriteria": {
-							"ClimateAdaptation": "No"
-						}
-					},
-					{
-						"activityName": "DataProcessingHostingAndRelatedActivities",
-						"naceCodes": [
-							"C",
-							"E",
-							"F",
-							"H"
-						],
-						"substantialContributionCriteria": {
-							"PollutionPrevention": 18.11463984195143
-						},
-						"dnshCriteria": {
-							"Biodiversity": "No"
+							"Biodiversity": "Yes"
 						},
 						"minimumSafeguards": "Yes"
 					}
 				],
-				"totalEnablingShare": 77.32143646571785,
-				"totalTransitionalShare": 99.3570540798828
-			},
-			"revenue": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 447,
-						"report": "AnnualReport",
-						"tagName": "architectures"
-					},
-					"quality": "Audited",
-					"comment": "back up online alarm"
-				},
-				"totalNonEligibleShare": {
-					"relativeShareInPercent": 49.04199708253145,
-					"absoluteShare": {
-						"currency": "CAD"
-					}
-				},
-				"totalEligibleShare": {
-					"relativeShareInPercent": 55.47346144448966
-				},
-				"totalNonAlignedShare": {},
-				"nonAlignedActivities": [
-					{
-						"activityName": "ManufactureOfAnhydrousAmmonia"
-					},
-					{
-						"activityName": "ManufactureOfHydrogen",
-						"naceCodes": [
-							"A",
-							"D",
-							"F",
-							"H",
-							"J"
-						],
-						"share": {}
-					}
-				],
-				"totalAlignedShare": {
-					"relativeShareInPercent": 59.43556409329176
-				},
-				"substantialContributionCriteria": {
-					"ClimateAdaptation": 32.01465751044452,
-					"ClimateMitigation": 17.285693110898137,
-					"PollutionPrevention": 26.930263708345592
-				}
+				"totalEnablingShare": 70.67393213510513
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	}
 ]
