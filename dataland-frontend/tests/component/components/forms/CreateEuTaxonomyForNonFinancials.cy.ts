@@ -1,4 +1,4 @@
-import CreateEuTaxonomyForNonFinancials from "../../../../src/components/forms/CreateEuTaxonomyForNonFinancials.vue";
+import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonomyForNonFinancials.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
