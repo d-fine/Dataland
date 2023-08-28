@@ -2,7 +2,7 @@ import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/Thre
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
-import { type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { newEuTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
 
 describe("Component test for the NewEUTaxonomy Page", () => {
@@ -10,7 +10,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
   before(function () {
     cy.fixture("NewEuTaxonomyForNonFinancialsMocks.json").then(
-      (mockedBackendResponses: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials[]) => {
+      (mockedBackendResponses: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]) => {
         const singleMockDataAndMetaInfo = new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(
           mockedBackendResponses[0],
         );

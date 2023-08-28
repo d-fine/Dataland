@@ -1,13 +1,13 @@
 import {
   AssuranceDataAssuranceEnum,
-  type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
+  type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
   type DataPointOneValueAmountWithCurrency,
   type EuTaxonomyActivity,
   type EuTaxonomyAlignedActivity,
   type FiscalYearDeviation,
-  type NewEuTaxonomyDataForNonFinancials,
-  type NewEuTaxonomyDetailsPerCashFlowType,
+  type EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyDetailsPerCashFlowType,
   type RelativeAndAbsoluteFinancialShare,
   type YesNo,
   type YesNoNa,
@@ -48,7 +48,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
   capex?: NewEuTaxonomyDetailsPerCashFlowViewModel;
   opex?: NewEuTaxonomyDetailsPerCashFlowViewModel;
 
-  constructor(apiModel: NewEuTaxonomyDataForNonFinancials) {
+  constructor(apiModel: EuTaxonomyDataForNonFinancials) {
     this.basicInformation = {
       basicInformation: {
         fiscalYearDeviation: apiModel.general?.fiscalYearDeviation,
@@ -72,7 +72,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
     this.opex = NewEuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex);
   }
 
-  toApiModel(): NewEuTaxonomyDataForNonFinancials {
+  toApiModel(): EuTaxonomyDataForNonFinancials {
     return {
       general: {
         fiscalYearDeviation: this.basicInformation?.basicInformation?.fiscalYearDeviation,
@@ -93,7 +93,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
   }
 
   private static convertDetailsPerCashFlowApiModelToViewModel(
-    apiModel?: NewEuTaxonomyDetailsPerCashFlowType,
+    apiModel?: EuTaxonomyDetailsPerCashFlowType,
   ): NewEuTaxonomyDetailsPerCashFlowViewModel | undefined {
     if (apiModel == undefined) {
       return undefined;
@@ -118,7 +118,7 @@ export class NewEuTaxonomyForNonFinancialsViewModel implements FrameworkViewMode
 
   private static convertDetailsPerCashFlowViewModelToApiModel(
     details?: NewEuTaxonomyDetailsPerCashFlowViewModel,
-  ): NewEuTaxonomyDetailsPerCashFlowType | undefined {
+  ): EuTaxonomyDetailsPerCashFlowType | undefined {
     if (details == undefined) {
       return undefined;
     }
@@ -142,12 +142,12 @@ export class DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel
   metaInfo: DataMetaInformation;
   data: NewEuTaxonomyForNonFinancialsViewModel;
 
-  constructor(dataAndMetaInfoApiModel: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials) {
+  constructor(dataAndMetaInfoApiModel: DataAndMetaInformationEuTaxonomyDataForNonFinancials) {
     this.metaInfo = dataAndMetaInfoApiModel.metaInfo;
     this.data = new NewEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfoApiModel.data);
   }
 
-  toApiModel(): DataAndMetaInformationNewEuTaxonomyDataForNonFinancials {
+  toApiModel(): DataAndMetaInformationEuTaxonomyDataForNonFinancials {
     return {
       metaInfo: this.metaInfo,
       data: this.data.toApiModel(),

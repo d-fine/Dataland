@@ -3,14 +3,12 @@ import {
   type DataAndMetaInformationEuTaxonomyDataForFinancials,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataAndMetaInformationLksgData,
-  type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials,
   type DataAndMetaInformationPathwaysToParisData,
   type DataAndMetaInformationSfdrData,
   type DataAndMetaInformationSmeData,
   type EuTaxonomyDataForFinancials,
   type EuTaxonomyDataForNonFinancials,
   type LksgData,
-  type NewEuTaxonomyDataForNonFinancials,
   type PathwaysToParisData,
   type SfdrData,
   type SmeData,
@@ -56,7 +54,6 @@ export interface Field {
 export type FrameworkData =
   | EuTaxonomyDataForFinancials
   | EuTaxonomyDataForNonFinancials
-  | NewEuTaxonomyDataForNonFinancials
   | LksgData
   | SfdrData
   | SmeData
@@ -65,7 +62,6 @@ export type FrameworkData =
 export type DataAndMetaInformation =
   | DataAndMetaInformationEuTaxonomyDataForFinancials
   | DataAndMetaInformationEuTaxonomyDataForNonFinancials
-  | DataAndMetaInformationNewEuTaxonomyDataForNonFinancials
   | DataAndMetaInformationLksgData
   | DataAndMetaInformationSfdrData
   | DataAndMetaInformationSmeData

@@ -1,15 +1,15 @@
 import NewEuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type DataAndMetaInformationNewEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describe("Component test for the NewEUTaxonomy Page", () => {
-  let mockedBackendDataForTest: Array<DataAndMetaInformationNewEuTaxonomyDataForNonFinancials>;
+  let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
 
   before(function () {
     cy.fixture("NewEuTaxonomyForNonFinancialsMocks.json").then(
-      (mockedBackendResponses: DataAndMetaInformationNewEuTaxonomyDataForNonFinancials[]) => {
+      (mockedBackendResponses: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]) => {
         mockedBackendDataForTest = mockedBackendResponses;
       },
     );
