@@ -90,7 +90,7 @@ export default defineComponent({
   }),
   computed: {
     NaceCodesForActivities() {
-      if (this.selectedActivities && this.selectedActivities.nace_codes) {
+      if (this.selectedActivities?.nace_codes) {
         return (this.selectedActivities.nace_codes as string).split(", ").map((naceCode: string) => {
           const naceCodeWithoutLetter = naceCode.substring(1);
           const convertedNaceCode = convertNace(
