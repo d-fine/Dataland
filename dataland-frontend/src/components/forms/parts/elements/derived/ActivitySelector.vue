@@ -21,7 +21,7 @@
     />
   </div>
 
-  <OverlayPanel ref="overlayPanel">
+  <OverlayPanel ref="overlayPanel" data-test="activityOverlayPanel">
     <div>
       <Tree :value="allActivities" class="w-full md:w-30rem" placeholder="Select Activitie">
         <template #default="slotProps">
@@ -45,6 +45,7 @@
 
   <div class="my-4">
     <MultiSelectFormField
+      dataTest="selectNaceCodes"
       name="naceCodes"
       validation="required"
       validation-label="Nace Codes for Activity"
