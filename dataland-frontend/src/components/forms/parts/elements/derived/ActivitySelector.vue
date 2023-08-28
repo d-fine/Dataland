@@ -66,6 +66,7 @@ import PrimeButton from "primevue/button";
 import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 import UploadFormSubcategoryHeader from "@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue";
+import { convertNace } from "@/utils/NaceCodeConverter";
 
 export default defineComponent({
   name: "ActivitySelector",
@@ -89,8 +90,13 @@ export default defineComponent({
   computed: {
     NaceCodesForActivities() {
       if (this.selectedActivities && this.selectedActivities.nace_codes) {
-        return this.selectedActivities.nace_codes.split(", ").map((nace_code: string) => {
-          return { label: nace_code, value: nace_code };
+        return (this.selectedActivities.nace_codes as string).split(", ").map((naceCode: string) => {
+          const naceCodeWithoutLetter = naceCode.substring(1);
+          const convertedNaceCode = convertNace(
+            naceCodeWithoutLetter.length === 1 ? `0${naceCodeWithoutLetter}` : naceCodeWithoutLetter,
+          );
+
+          return { label: convertedNaceCode, value: naceCode };
         });
       } else {
         return [];
