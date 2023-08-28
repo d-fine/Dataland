@@ -147,14 +147,19 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     ).then(() => {
       expandViewPageAndOpenModal("Revenue", "totalAlignedShare");
       checkDuplicateFields();
+      cy.get("table").find(`tr:contains("DNSH Criteria")`);
+
       cy.get("table").find(`tr:contains("Climate change mitigation")`);
       cy.get("table").find(`tr:contains("Climate change adaptation")`);
       cy.get("table").find(`tr:contains("Water and marine resources")`);
       cy.get("table").find(`tr:contains("Circular economy")`);
       cy.get("table").find(`tr:contains("Pollution prevention")`);
       cy.get("table").find(`tr:contains("Biodiversity and ecosystems")`);
+      cy.get("table").find(`tr:contains("Minimum safeguards")`);
 
       cy.get("table").find(`tr:contains("20%")`);
+      cy.get("table").find(`tr:contains("Yes")`);
+      cy.get("table").find(`tr:contains("No")`);
 
       const capexAlignedActivitiesShareInPercent: number = assertDefined(
         capexOfDataset.totalAlignedShare?.relativeShareInPercent,
@@ -204,4 +209,5 @@ function checkDuplicateFields(): void {
   cy.get("table").find(`tr:contains("Activity")`);
   cy.get("table").find(`tr:contains("NACE Code(s)")`);
   cy.get("table").find(`tr:contains("Revenue")`);
+  cy.get("table").find(`tr:contains("Revenue (%)")`);
 }
