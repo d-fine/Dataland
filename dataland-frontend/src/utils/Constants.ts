@@ -7,15 +7,23 @@ import { DataTypeEnum } from "@clients/backend";
 // ----------------------DATALAND SETTINGS----------------------
 export const DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES =
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    // @ts-ignore
   (parseInt(import.meta.env.VITE_DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES) || 2) * 1000000;
 
 export const DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES =
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  (parseInt(import.meta.env.VITE_DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES) || 100) * 1000000;
+    // @ts-ignore
+(parseInt(import.meta.env.VITE_DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES) || 100) * 1000000;
 
 export const MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY =
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  parseInt(import.meta.env.VITE_MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY) || 3650;
+    // @ts-ignore
+parseInt(import.meta.env.VITE_MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY) || 3650;
+
+/* TODO somehow typescript suddenly does not like the import.meta statements here.  If I remove the "ts-ignore", it
+ complains about it.   It really surprises me, that this issue seems not to exist in main, even though no code
+ was changed in these lines.
+ */
 
 // ----------------------FRONTEND SETTINGS ONLY----------------------
 
