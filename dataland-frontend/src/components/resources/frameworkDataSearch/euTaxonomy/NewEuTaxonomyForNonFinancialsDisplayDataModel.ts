@@ -1,7 +1,12 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
-// TODO Emanuel: add comment at the end, describing the manual adjustments that have been done here
+/*
+Note: This file is not in the same state as it is in the devtools repo, where it has been auto-generated.
+Manual adjustments have been made in oder to make the view page work while using this file here.
+Therefore, the view page for new-eu-taxo will break if you replace the current content of this file here with the
+content from the auto-generated file in the devtools repo.
+ */
 
 export const newEuTaxonomyForNonFinancialsDisplayDataModel = [
   {

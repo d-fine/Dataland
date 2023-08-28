@@ -42,6 +42,7 @@
             :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
             headerInputStyle="display: none;"
             :modal-column-headers="modalColumnHeaders"
+            :sort-by-subcategory-key="sortBySubcategoryKey"
           />
         </div>
       </div>
@@ -91,6 +92,10 @@ export default defineComponent({
     modalColumnHeaders: {
       type: Object,
       default: () => ({}),
+    },
+    sortBySubcategoryKey: {
+      type: Boolean,
+      default: true,
     },
   },
   mounted() {

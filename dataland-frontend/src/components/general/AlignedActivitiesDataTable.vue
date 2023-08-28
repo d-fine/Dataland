@@ -1,16 +1,17 @@
 <template>
-  <DataTable scrollable :value="frozenColumnData" class="aligned-activities-data-table">
-    <ColumnGroup type="header">
+  <DataTable data-test="dataTableTest" scrollable :value="frozenColumnData" class="aligned-activities-data-table">
+    <ColumnGroup data-test="columnGroupTest" type="header">
       <Row>
         <Column
           header=""
           :frozen="true"
           alignFrozen="left"
           :colspan="2"
-          class="frozen-row-header"
+          class="frozen-row-header border-right"
           style="background-color: #fff"
         ></Column>
         <Column
+          data-test="mainColumnTest"
           v-for="group of mainColumnGroups"
           :key="group.key"
           :header="group.label"
@@ -19,14 +20,20 @@
         ></Column>
       </Row>
       <Row>
-        <Column header="Activity" :frozen="true" alignFrozen="left" class="frozen-row-header"></Column>
-        <Column header="Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header"></Column>
+        <Column
+          data-test="headerActivity"
+          header="Activity"
+          :frozen="true"
+          alignFrozen="left"
+          class="frozen-row-header"
+        ></Column>
+        <Column header="NACE Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right"></Column>
         <Column
           v-for="col of mainColumnDefinitions"
           :key="col.field"
           :header="col.header"
           :field="col.field"
-          class="non-frozen-header"
+          :class="groupColumnCssClasses(col, 'non-frozen-header')"
         >
         </Column>
       </Row>
@@ -57,6 +64,7 @@
       :header="col.header"
       bodyClass="col-value"
       headerClass="horizontal-headers-size"
+      :class="groupColumnCssClasses(col)"
     >
       <template #body="{ data }">
         {{ findContentFromActivityGroupAndField(data.activity, col.group, col.field) }}
@@ -72,35 +80,25 @@ import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-
-type ActivityObject = {
-  activityName: string;
-  naceCodes: string[];
-  share: {
-    relativeShareInPercent: number;
-    absoluteShare: {
-      amount: number;
-      currency: string;
-    };
-  };
-  substantialContributionCriteria: {
-    ClimateMitigation: number;
-    ClimateAdaptation: number;
-    Water: number;
-  };
-  dnshCriteria: {
-    ClimateMitigation: "Yes" | "No";
-    ClimateAdaptation: "Yes" | "No";
-    Water: "Yes" | "No";
-  };
-  minimumSafeguards: "Yes" | "No";
-};
+import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
+import {
+  type Activity,
+  type EuTaxonomyAlignedActivity,
+} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 
 type ActivityFieldValueObject = {
   activity: string;
   group: string;
   field: string;
-  content: string | string[] | number | number[];
+  content: string;
+};
+
+type MainColumnDefinition = {
+  field: string;
+  header: string;
+  frozen?: boolean;
+  group: string;
+  groupIndex: number;
 };
 
 export default defineComponent({
@@ -109,16 +107,16 @@ export default defineComponent({
   components: { DataTable, Column, ColumnGroup, Row },
   data() {
     return {
-      listOfRowContents: [] as Array<ActivityObject>,
+      listOfRowContents: [] as Array<EuTaxonomyAlignedActivity>,
       kpiKeyOfTable: "" as string,
+      columnHeaders: {} as { [kpiKeyOfTable: string]: { [columnName: string]: string } },
       frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
-      mainColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
+      mainColumnDefinitions: [] as Array<MainColumnDefinition>,
       frozenColumnData: [] as Array<{
-        activity: string;
-        naceCodes: string | string[] | number | number[];
+        activity: Activity | undefined;
+        naceCodes: string[] | undefined;
       }>,
-      defs: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnData: [] as Array<ActivityFieldValueObject>,
     };
   },
@@ -127,30 +125,36 @@ export default defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       listOfRowContents: Array<object | string>;
       kpiKeyOfTable: string;
+      columnHeaders: { [kpiKeyOfTable: string]: { [columnName: string]: string } };
     };
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
+    this.columnHeaders = dialogRefData.columnHeaders;
+
     if (typeof dialogRefData.listOfRowContents[0] === "string") {
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {
-      this.listOfRowContents = dialogRefData.listOfRowContents;
+      this.listOfRowContents = dialogRefData.listOfRowContents as Array<EuTaxonomyAlignedActivity>;
     }
 
     this.frozenColumnDefinitions = [
-      { field: "activity", header: "Activity", frozen: true, group: "_frozen" },
-      { field: "naceCodes", header: "Code(s)", frozen: true, group: "_frozen" },
+      { field: "activity", header: this.humanizeHeaderName("activity"), frozen: true, group: "_frozen" },
+      { field: "naceCodes", header: this.humanizeHeaderName("naceCodes"), frozen: true, group: "_frozen" },
     ];
 
     this.mainColumnDefinitions = [
-      { field: "revenue", header: "Revenue", group: "_revenue" },
-      { field: "revenuePercent", header: "Revenue (%)", group: "_revenue" },
+      { field: "revenue", header: this.humanizeHeaderName("revenue"), group: "_revenue", groupIndex: 0 },
+      { field: "revenuePercent", header: this.humanizeHeaderName("revenuePercent"), group: "_revenue", groupIndex: 1 },
 
       ...this.makeGroupColumns("substantialContributionCriteria"),
       ...this.makeGroupColumns("dnshCriteria"),
 
-      { field: "minimumSafeguards", header: "Minimum Safeguards", group: "_minimumSafeguards" },
+      {
+        field: "minimumSafeguards",
+        header: this.humanizeHeaderName("minimumSafeguards"),
+        group: "_minimumSafeguards",
+        groupIndex: 0,
+      },
     ];
-
-    this.defs = [...this.frozenColumnDefinitions, ...this.mainColumnDefinitions];
 
     this.frozenColumnData = this.listOfRowContents.map((activity) => ({
       activity: activity.activityName,
@@ -168,8 +172,12 @@ export default defineComponent({
 
     this.mainColumnGroups = [
       { key: "_revenue", label: "", colspan: 2 },
-      { key: "substantialContributionCriteria", label: "Substantial Contribution Criteria", colspan: 6 },
-      { key: "dnshCriteria", label: "DNSH Criteria", colspan: 6 },
+      {
+        key: "substantialContributionCriteria",
+        label: this.humanizeHeaderName("substantialContributionCriteria"),
+        colspan: 6,
+      },
+      { key: "dnshCriteria", label: this.humanizeHeaderName("dnshCriteria"), colspan: 6 },
       { key: "_minimumSafeguards", label: "", colspan: 1 },
     ];
   },
@@ -192,14 +200,13 @@ export default defineComponent({
      * @returns column definitions for group
      */
     makeGroupColumns(groupName: string) {
-      return [
-        { field: `ChangeMitigation`, header: "Climate change mitigation", group: groupName },
-        { field: `ClimateAdaptation`, header: "Climate change adaptation", group: groupName },
-        { field: `Water`, header: "Water and marine resources", group: groupName },
-        { field: `CircularEconomy`, header: "Circular economy", group: groupName },
-        { field: `Pollution`, header: "Pollution", group: groupName },
-        { field: `BiodiversityAndEcosystems`, header: "Biodiversity And Ecosystems", group: groupName },
-      ];
+      const EnvironmentalObjectiveKeys = Object.keys(EnvironmentalObjective).filter((v) => isNaN(Number(v)));
+      return EnvironmentalObjectiveKeys.map((enviromentalObjectiveKey: string, index: number) => ({
+        field: enviromentalObjectiveKey,
+        header: this.humanizeHeaderName(enviromentalObjectiveKey),
+        group: groupName,
+        groupIndex: index,
+      }));
     },
     /**
      * @param target the camel case string we want to format
@@ -222,6 +229,22 @@ export default defineComponent({
           return "";
       }
     },
+    /**
+     * @param columnDefinition column definition we check against
+     * @param additionalClasses (optional) any additional classes to be added
+     * @returns classes for specific columns
+     */
+    groupColumnCssClasses(columnDefinition: MainColumnDefinition, additionalClasses = ""): string {
+      if (columnDefinition.groupIndex === 0) return `first-group-column ${additionalClasses}`;
+      return additionalClasses;
+    },
+    /**
+     * @param key the item to lookup
+     * @returns the display version of the column header
+     */
+    humanizeHeaderName(key: string) {
+      return this.columnHeaders[this.kpiKeyOfTable][key];
+    },
   },
 });
 
@@ -229,16 +252,16 @@ export default defineComponent({
  * @param activity targeted activity object
  * @returns list of revenue data items
  */
-function createRevenueGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
+function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
   return [
     {
-      activity: activity.activityName,
+      activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenue",
       content: `${activity.share?.absoluteShare?.amount ?? ""} ${activity.share?.absoluteShare?.currency ?? ""}`,
     },
     {
-      activity: activity.activityName,
+      activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenuePercent",
       content: `${activity.share?.relativeShareInPercent ?? ""}%`,
@@ -250,12 +273,14 @@ function createRevenueGroupData(activity: ActivityObject): ActivityFieldValueObj
  * @param activity targeted activity object
  * @returns list of substantial contribution criteria data items
  */
-function createSubstantialContributionCriteriaGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
-  const fields = Object.entries(activity.substantialContributionCriteria);
+function createSubstantialContributionCriteriaGroupData(
+  activity: EuTaxonomyAlignedActivity,
+): ActivityFieldValueObject[] {
+  const fields = Object.entries(activity.substantialContributionCriteria ?? {});
   return fields.map(([field, value]) => {
     const content = value ? `${value}%` : "";
     return {
-      activity: activity.activityName,
+      activity: activity.activityName as string,
       group: "substantialContributionCriteria",
       field,
       content,
@@ -267,12 +292,12 @@ function createSubstantialContributionCriteriaGroupData(activity: ActivityObject
  * @param activity targeted activity object
  * @returns list of DNSH criteria data items
  */
-function createDnshCriteriaGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
-  const fields = Object.entries(activity.dnshCriteria);
+function createDnshCriteriaGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
+  const fields = Object.entries(activity.dnshCriteria ?? {});
   return fields.map(([field, value]) => {
     const content = value ? `${value}` : "";
     return {
-      activity: activity.activityName,
+      activity: activity.activityName as string,
       group: "dnshCriteria",
       field,
       content,
@@ -284,10 +309,10 @@ function createDnshCriteriaGroupData(activity: ActivityObject): ActivityFieldVal
  * @param activity targeted activity object
  * @returns list of minimum safeguards data items
  */
-function createMinimumSafeguardsGroupData(activity: ActivityObject): ActivityFieldValueObject[] {
+function createMinimumSafeguardsGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
   return [
     {
-      activity: activity.activityName,
+      activity: activity.activityName as string,
       group: "_minimumSafeguards",
       field: "minimumSafeguards",
       content: activity.minimumSafeguards ?? "",
@@ -295,18 +320,3 @@ function createMinimumSafeguardsGroupData(activity: ActivityObject): ActivityFie
   ];
 }
 </script>
-
-<style lang="scss" scoped>
-.col-lg {
-  $w: 300px;
-  min-width: $w;
-  max-width: $w;
-  width: $w;
-}
-.col-sm {
-  $w: 50px;
-  min-width: $w;
-  max-width: $w;
-  width: $w;
-}
-</style>

@@ -5,6 +5,8 @@
       rowGroupMode="subheader"
       groupRowsBy="subcategoryKey"
       dataKey="subcategoryKey"
+      :sortField="sortBySubcategoryKey ? 'subcategoryKey' : undefined"
+      :sortOrder="sortBySubcategoryKey ? 1 : undefined"
       sortMode="single"
       :expandableRowGroups="true"
       :headerInputStyle="headerInputStyle"
@@ -147,10 +149,7 @@ import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDa
 
 export default defineComponent({
   name: "TwoLayerDataTable",
-  components: { DataTable, Column, DocumentLink, DetailsCompanyDataTable, AlignedActivitiesDataTable },
-  // TODO we import a eu taxo specific thing here (AlignedActivitiesDataTable) => a little strange since it is ageneric component
-  // TODO yes, previously we imported DetailsCompanyDataTable (which I now had to add again to to fix a bug when opening non-aligned modals)
-  // TODO I understand the problem. Discussion needed how to fix.
+  components: { DataTable, Column, DocumentLink },
   directives: {
     tooltip: Tooltip,
   },
@@ -184,6 +183,10 @@ export default defineComponent({
     modalColumnHeaders: {
       type: Object,
       default: () => ({}),
+    },
+    sortBySubcategoryKey: {
+      type: Boolean,
+      default: true,
     },
   },
   created() {
@@ -241,18 +244,19 @@ export default defineComponent({
       kpiKey: string,
       kpiFormFieldComponent = "DetailsCompanyDataTable",
     ) {
-      let dialogData = {
-        listOfRowContents: listOfValues,
-        kpiKeyOfTable: kpiKey,
-      };
-
       let kpiDataComponent: typeof DetailsCompanyDataTable | typeof AlignedActivitiesDataTable;
       if (kpiFormFieldComponent === "AlignedActivitiesDataTable") {
         kpiDataComponent = AlignedActivitiesDataTable;
       } else {
         kpiDataComponent = DetailsCompanyDataTable;
-        dialogData = { ...dialogData, ...{ columnHeaders: this.modalColumnHeaders } };
       }
+
+      const dialogData = {
+        listOfRowContents: listOfValues,
+        kpiKeyOfTable: kpiKey,
+        columnHeaders: this.modalColumnHeaders,
+      };
+
       this.$dialog.open(kpiDataComponent, {
         props: {
           header: modalTitle,
