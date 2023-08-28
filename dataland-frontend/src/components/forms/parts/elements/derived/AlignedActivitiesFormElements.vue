@@ -1,5 +1,5 @@
 <template>
-  <div data-test="AddressFormElement">
+  <div data-test="activityFormElement">
     <ActivitySelector />
     <FinancialShareFormField
       name="share"
