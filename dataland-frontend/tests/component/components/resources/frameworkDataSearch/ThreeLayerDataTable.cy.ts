@@ -4,7 +4,7 @@ import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resourc
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
-
+import { assertDefined } from "@/utils/TypeScriptUtils";
 describe("Component test for the NewEUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
 
@@ -110,6 +110,12 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   });
 
   it("Opens the aligned activities modal and checks that it works as intended", () => {
+    const capexOfDataset = assertDefined(mockedDataForTest[0].data.capex);
+    const revenueOfDataset = assertDefined(mockedDataForTest[0].data.revenue);
+    const revenueNonAlignedActivitiesName = assertDefined(
+      revenueOfDataset.totalAlignedShare.alignedActivities[0].activityName,
+    );
+
     cy.mountWithDialog(
       ThreeLayerDataTable,
       {
@@ -122,9 +128,8 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         sortBySubcategoryKey: false,
       },
     ).then(() => {
-      /**
       toggleCategoryByClick("Basic Information");
-      toggleCategoryByClick("CapEx");
+      toggleCategoryByClick("Revenue");
       cy.get(`[data-test='totalAlignedShare']`).filter(":visible").click();
       cy.get(`[data-test='totalAlignedShare']`)
         .filter(":visible")
@@ -133,15 +138,74 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         .eq(-1)
         .should("have.text", " dataset ")
         .click();
-      cy.wait(10000);
+
       cy.get("table").find(`tr:contains("Activity")`);
-      cy.get("table").find(`tr:contains("Code(s)")`);
+      cy.get("table").find(`tr:contains("NACE Code(s)")`);
       cy.get("table").find(`tr:contains("Revenue")`);
       cy.get("table").find(`tr:contains("Climate change mitigation")`);
       cy.get("table").find(`tr:contains("Climate change adaptation")`);
       cy.get("table").find(`tr:contains("Water and marine resources")`);
-      cy.get("table").find(`tr:contains("Circular economy")`); *
-       */
+      cy.get("table").find(`tr:contains("Circular economy")`);
+      cy.get("table").find(`tr:contains("Pollution prevention")`);
+      cy.get("table").find(`tr:contains("Biodiversity and ecosystems")`);
+      cy.get("table").find(`tr:contains("Climate change mitigation")`);
+      cy.get("table").find(`tr:contains("Climate change adaptation")`);
+      cy.get("table").find(`tr:contains("Water and marine resources")`);
+
+      cy.get("table").find(`tr:contains("20%")`);
+
+      const capexAlignedActivitiesShareInPercent = assertDefined(
+        capexOfDataset.totalAlignedShare.relativeShareInPercent,
+      );
+
+      cy.get("table").find(`tr:contains("${revenueNonAlignedActivitiesName}")`);
+      cy.get("table").find(`tr:contains("${capexAlignedActivitiesShareInPercent}")`);
+    });
+  });
+
+  it("Opens the non-aligned activities modal and checks that it works as intended", () => {
+    const capexOfDataset = assertDefined(mockedDataForTest[0].data.capex);
+    const capexNonAlignedActivitiesName = assertDefined(
+      capexOfDataset.totalAlignedShare.alignedActivities[0].activityName,
+    );
+    const capexNonAlignedActivitiesShareInPercent = assertDefined(
+      capexOfDataset.totalNonAlignedShare.relativeShareInPercent,
+    );
+    const capexNonAlignedActivitiesNaceCodes = assertDefined(
+      capexOfDataset.totalNonAlignedShare.nonAlignedActivities[0].naceCodes,
+    );
+
+    cy.mountWithDialog(
+      ThreeLayerDataTable,
+      {
+        keycloak: minimalKeycloakMock({}),
+      },
+      {
+        dataModel: euTaxonomyForNonFinancialsDisplayDataModel,
+        dataAndMetaInfo: mockedDataForTest,
+        modalColumnHeaders: euTaxonomyForNonFinancialsModalColumnHeaders,
+        sortBySubcategoryKey: false,
+      },
+    ).then(() => {
+      toggleCategoryByClick("Basic Information");
+      toggleCategoryByClick("CapEx");
+      cy.get(`[data-test='totalNonAlignedShare']`).filter(":visible").click();
+      cy.get(`[data-test='totalNonAlignedShare']`)
+        .filter(":visible")
+        .get("em")
+        .filter(":visible")
+        .eq(-1)
+        .should("have.text", " dataset ")
+        .click();
+
+      cy.get("table").find(`tr:contains("Activity")`);
+      cy.get("table").find(`tr:contains("NACE Code(s)")`);
+      cy.get("table").find(`tr:contains("Revenue")`);
+
+      cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesName}")`);
+      cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesShareInPercent}")`);
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesNaceCodes}")`);
     });
   });
 });
