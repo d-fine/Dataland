@@ -120,6 +120,7 @@
       <template #groupheader="slotProps">
         <span
           :data-test="slotProps.data.subcategoryKey"
+          :data-table-id="slotProps.data.categoryKey"
           :id="slotProps.data.subcategoryKey"
           data-row-header-click
           style="cursor: pointer"
@@ -193,6 +194,7 @@ export default defineComponent({
   created() {
     setTimeout(() => {
       this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+        this.arrayOfKpiDataObjects[0].categoryKey,
         () => this.expandedRowGroups,
         (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
       );
