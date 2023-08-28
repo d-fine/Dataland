@@ -184,6 +184,7 @@ import { smoothScroll } from "@/utils/SmoothScroll";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
+import { AxiosError } from "axios/index";
 export default defineComponent({
   setup() {
     return {
@@ -330,8 +331,8 @@ export default defineComponent({
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
-          this.message = error.message;
+        if (error instanceof AxiosError) {
+          this.message = "An error occurred: " + error.message;
         } else {
           this.message =
             "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
