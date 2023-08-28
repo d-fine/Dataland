@@ -1,31 +1,12 @@
 import { DataTypeEnum } from "@clients/backend";
 
-/**
- * Contains global constants
- */
-
-// ----------------------DATALAND SETTINGS----------------------
-export const DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES =
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  (parseInt(import.meta.env.VITE_DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES) || 2) * 1000000;
-
-export const DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES =
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  (parseInt(import.meta.env.VITE_DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES) || 100) * 1000000;
-
-export const MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY =
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  parseInt(import.meta.env.VITE_MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY) || 3650;
-
-// ----------------------FRONTEND SETTINGS ONLY----------------------
-
 // - Available frameworks settings
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = Object.values(DataTypeEnum);
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE: DataTypeEnum[] = Object.values(DataTypeEnum);
 
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = Object.values(DataTypeEnum).filter(
-  (frameworkName) =>
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = Object.values(DataTypeEnum).filter(
+  (frameworkName: DataTypeEnum) =>
     [DataTypeEnum.Sme as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(frameworkName) === -1,
-) as Array<DataTypeEnum>;
+);
 
 // - Keycloak and session management related settings
 

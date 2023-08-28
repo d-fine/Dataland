@@ -120,6 +120,7 @@
       <template #groupheader="slotProps">
         <span
           :data-test="slotProps.data.subcategoryKey"
+          :data-table-id="slotProps.data.categoryKey"
           :id="slotProps.data.subcategoryKey"
           data-row-header-click
           style="cursor: pointer"
@@ -146,6 +147,7 @@ import Tooltip from "primevue/tooltip";
 import { defineComponent, type PropType } from "vue";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
+import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
@@ -199,6 +201,7 @@ export default defineComponent({
     }
     setTimeout(() => {
       this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+        this.arrayOfKpiDataObjects[0].categoryKey,
         () => this.expandedRowGroups,
         (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
       );
@@ -251,9 +254,14 @@ export default defineComponent({
       kpiKey: string,
       kpiFormFieldComponent = "DetailsCompanyDataTable",
     ) {
-      let kpiDataComponent: typeof DetailsCompanyDataTable | typeof AlignedActivitiesDataTable;
+      let kpiDataComponent:
+        | typeof DetailsCompanyDataTable
+        | typeof AlignedActivitiesDataTable
+        | typeof NonAlignedActivitiesDataTable;
       if (kpiFormFieldComponent === "AlignedActivitiesDataTable") {
         kpiDataComponent = AlignedActivitiesDataTable;
+      } else if (kpiFormFieldComponent === "NonAlignedActivitiesDataTable") {
+        kpiDataComponent = NonAlignedActivitiesDataTable;
       } else {
         kpiDataComponent = DetailsCompanyDataTable;
       }

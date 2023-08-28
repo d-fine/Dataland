@@ -32,7 +32,7 @@ describeIf(
           "/imprint",
           "/nocontent",
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
-          // TOD O `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
+          `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}`,
         ];

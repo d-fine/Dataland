@@ -75,7 +75,7 @@ export default defineComponent({
   methods: {
     humanizeString,
     /**
-     * Fetches all accepted SME datasets for the current company and converts them to the required frontend format.
+     * Fetches all accepted EU Taxonomy Non-Financial datasets for the current company and converts them to the required frontend format.
      */
     async fetchEuTaxonomyData() {
       try {

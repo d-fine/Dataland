@@ -1,5 +1,5 @@
 <template>
-  <DataTable data-test="dataTableTest" scrollable :value="frozenColumnData" class="aligned-activities-data-table">
+  <DataTable data-test="dataTableTest" scrollable :value="frozenColumnData" class="activities-data-table">
     <ColumnGroup data-test="columnGroupTest" type="header">
       <Row>
         <Column
@@ -182,17 +182,35 @@ export default defineComponent({
       .flat();
 
     this.mainColumnGroups = [
-      { key: "_revenue", label: "", colspan: 2 },
+      { key: "_revenue", label: "", colspan: this.findMaxColspanForGroup("_revenue") },
       {
         key: "substantialContributionCriteria",
         label: this.humanizeHeaderName("substantialContributionCriteria"),
-        colspan: 6,
+        colspan: this.findMaxColspanForGroup("substantialContributionCriteria"),
       },
-      { key: "dnshCriteria", label: this.humanizeHeaderName("dnshCriteria"), colspan: 6 },
-      { key: "_minimumSafeguards", label: "", colspan: 1 },
+      {
+        key: "dnshCriteria",
+        label: this.humanizeHeaderName("dnshCriteria"),
+        colspan: this.findMaxColspanForGroup("dnshCriteria"),
+      },
+      { key: "_minimumSafeguards", label: "", colspan: this.findMaxColspanForGroup("_minimumSafeguards") },
     ];
   },
   methods: {
+    /**
+     * @param groupName name of the group to count number of fields
+     * @returns the maximum value of fields per activity and group
+     */
+    findMaxColspanForGroup(groupName: string): number {
+      const environmentalObjectivesLength = Object.keys(EnvironmentalObjective).length;
+      const colspans: { [groupName: string]: number } = {
+        _revenue: 2,
+        substantialContributionCriteria: environmentalObjectivesLength,
+        dnshCriteria: environmentalObjectivesLength,
+        _minimumSafeguards: 1,
+      };
+      return colspans[groupName];
+    },
     /**
      * Search mainColumnData for specific item and return it's value
      * @param activityName name of the targeted activity
