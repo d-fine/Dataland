@@ -6,8 +6,6 @@ import {
   type EuTaxonomyDataForNonFinancialsControllerApiInterface,
   EuTaxonomyDataForFinancialsControllerApi,
   type EuTaxonomyDataForFinancialsControllerApiInterface,
-  NewEuTaxonomyDataForNonFinancialsControllerApi,
-  type NewEuTaxonomyDataForNonFinancialsControllerApiInterface,
   MetaDataControllerApi,
   type MetaDataControllerApiInterface,
   LksgDataControllerApi,
@@ -67,10 +65,6 @@ export class ApiClientProvider {
 
   async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
-  }
-
-  async getNewEutaxonomyDataForNonFinancialsControllerApi(): Promise<NewEuTaxonomyDataForNonFinancialsControllerApiInterface> {
-    return this.getConstructedApi(NewEuTaxonomyDataForNonFinancialsControllerApi);
   }
 
   async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {

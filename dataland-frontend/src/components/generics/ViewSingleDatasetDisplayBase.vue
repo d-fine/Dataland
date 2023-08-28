@@ -34,10 +34,6 @@
         </div>
         <div class="grid">
           <div class="col-7">
-            <EuTaxonomyPanelNonFinancials
-              v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
-              :dataID="dataIdForPanelWithValidType"
-            />
             <EuTaxonomyPanelFinancials
               v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
               :dataID="dataIdForPanelWithValidType"
@@ -79,7 +75,6 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { type AxiosError } from "axios";
-import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
@@ -91,7 +86,6 @@ export default defineComponent({
     ViewFrameworkBase,
     Dropdown,
     EuTaxonomyPanelFinancials,
-    EuTaxonomyPanelNonFinancials,
   },
   props: {
     companyId: {
@@ -180,10 +174,8 @@ export default defineComponent({
       if (dataMetaInfoForNewlyChosenReportingPeriod) {
         this.processDataMetaInfoForDisplay(dataMetaInfoForNewlyChosenReportingPeriod);
         this.routerPushToReportingPeriod(dataMetaInfoForNewlyChosenReportingPeriod.reportingPeriod);
-      } else {
-        if (newReportingPeriod) {
-          this.handleInvalidReportingPeriodPassedInUrl();
-        }
+      } else if (newReportingPeriod) {
+        this.handleInvalidReportingPeriodPassedInUrl();
       }
     },
 

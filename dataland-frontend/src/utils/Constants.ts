@@ -24,7 +24,7 @@ export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = Object.values(DataTypeEnum);
 
 export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = Object.values(DataTypeEnum).filter(
   (frameworkName) =>
-    [DataTypeEnum.Sme as string, DataTypeEnum.NewEutaxonomyNonFinancials as string].indexOf(frameworkName) === -1,
+    [DataTypeEnum.Sme as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(frameworkName) === -1,
 ) as Array<DataTypeEnum>;
 
 // - Keycloak and session management related settings

@@ -1,7 +1,7 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForFinancials, type SmeData } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
@@ -10,66 +10,63 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import { humanizeString } from "@/utils/StringHumanizer";
+import {humanizeString} from "@/utils/StringHumanizer";
 
-let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+let companiesWithSmeData: Array<FixtureData<SmeData>>;
 
 before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
-    companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
+    companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+  });
+  cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
+    companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
   });
 });
 
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
 
-  it(
-    "Check that the framework filter synchronizes between the selection and the URL",
-    { scrollBehavior: false },
-    () => {
-      cy.ensureLoggedIn();
-      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
-      cy.visit("/companies").wait("@companies-meta-information");
-      verifySearchResultTable();
-      cy.get("#framework-filter")
-        .click()
-        .get("div.p-multiselect-panel")
-        .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.Lksg)})`)
-        .click();
-      verifySearchResultTable();
-      cy.url()
-        .should(
-          "eq",
-          getBaseUrl() +
-            `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}` +
-            `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
-            `&framework=${DataTypeEnum.NewEutaxonomyNonFinancials}` +
-            `&framework=${DataTypeEnum.P2p}` +
-            `&framework=${DataTypeEnum.Sfdr}` +
-            `&framework=${DataTypeEnum.Sme}`,
-        )
-        .get("div.p-multiselect-panel")
-        .find(`li.p-multiselect-item:contains(${humanizeString(DataTypeEnum.Lksg)})`)
-        .click();
-      verifySearchResultTable();
-      cy.url()
-        .should("eq", getBaseUrl() + "/companies")
-        .get("div.p-multiselect-panel")
-        .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.P2p)})`)
-        .click();
-      verifySearchResultTable();
-      cy.url().should(
+  it("The framework filter synchronise between the search bar and the URL", { scrollBehavior: false }, () => {
+    cy.ensureLoggedIn();
+    cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+    cy.visit("/companies").wait("@companies-meta-information");
+    verifySearchResultTable();
+    cy.get("#framework-filter")
+      .click()
+      .get("div.p-multiselect-panel")
+      .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.EutaxonomyFinancials)})`)
+      .click();
+    verifySearchResultTable();
+    cy.url()
+      .should(
         "eq",
         getBaseUrl() +
-          `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}` +
-          `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
-          `&framework=${DataTypeEnum.NewEutaxonomyNonFinancials}` +
-          `&framework=${DataTypeEnum.Lksg}` +
+          "/companies?" +
+          `framework=${DataTypeEnum.P2p}` +
+          `&framework=${DataTypeEnum.Sme}` +
           `&framework=${DataTypeEnum.Sfdr}` +
-          `&framework=${DataTypeEnum.Sme}`,
-      );
-    },
-  );
+          `&framework=${DataTypeEnum.Lksg}`,
+      )
+      .get("div.p-multiselect-panel")
+      .find(`li.p-multiselect-item:contains(${DataTypeEnum.Financial})`)
+      .click();
+    verifySearchResultTable();
+    cy.url()
+      .should("eq", getBaseUrl() + "/companies")
+      .get("div.p-multiselect-panel")
+      .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.Sfdr)})`)
+      .click();
+    verifySearchResultTable();
+    cy.url().should(
+      "eq",
+      getBaseUrl() +
+        `/companies?framework=${DataTypeEnum.P2p}` +
+        `&framework=${DataTypeEnum.EutaxonomyFinancials}` +
+        `&framework=${DataTypeEnum.Sme}` +
+        `&framework=${DataTypeEnum.Lksg}`,
+    );
+  });
 
   describeIf(
     "",
@@ -82,8 +79,8 @@ describe("As a user, I expect the search functionality on the /companies page to
         "Checks that the country-code filter synchronises between the search bar and the drop down and works",
         { scrollBehavior: false },
         () => {
-          const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
-          const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForNonFinancials.find(
+          const demoCompanyToTestFor = companiesWithEuTaxonomyDataForFinancials[0].companyInformation;
+          const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForFinancials.find(
             (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode,
           )!.companyInformation;
 
@@ -117,13 +114,13 @@ describe("As a user, I expect the search functionality on the /companies page to
         { scrollBehavior: false },
         () => {
           const demoCompanyToTestFor = assertDefined(
-            companiesWithEuTaxonomyDataForNonFinancials.find((it) => it.companyInformation?.sector !== undefined)
+            companiesWithEuTaxonomyDataForFinancials.find((it) => it.companyInformation?.sector !== undefined)
               ?.companyInformation,
           );
           expect(demoCompanyToTestFor?.sector).to.not.be.undefined;
 
           const demoCompanyWithDifferentSector = assertDefined(
-            companiesWithEuTaxonomyDataForNonFinancials.find(
+            companiesWithEuTaxonomyDataForFinancials.find(
               (it) =>
                 it.companyInformation?.sector !== demoCompanyToTestFor.sector &&
                 it.companyInformation?.sector !== undefined,
@@ -156,7 +153,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   );
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
-    cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyNonFinancials}`);
+    cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyFinancials}`);
     cy.get("span:contains('RESET')")
       .click()
       .url()
@@ -268,11 +265,11 @@ describe("As a user, I expect the search functionality on the /companies page to
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should("exist");
-          cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}`)
+          cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.Sfdr}`)
             .get("div[class='col-12 text-left']")
             .should("contain.text", failureMessageOnAvailableDatasetsPage);
           cy.visit(
-            `/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}&framework=${DataTypeEnum.EutaxonomyFinancials}`,
+            `/companies?input=${companyName}&framework=${DataTypeEnum.Sfdr}&framework=${DataTypeEnum.EutaxonomyFinancials}`,
           )
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
@@ -303,7 +300,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       }
 
       it(
-        "Upload a company with Eu Taxonomy Data For Financials and one with Eu Taxonomy Data For Non-Financials and " +
+        "Upload a company with Eu Taxonomy Data For Financials and one with SME and " +
           "check if they are displayed in the autocomplete dropdown only if the framework filter is set accordingly",
         () => {
           const companyNameFinancialPrefix = "CompanyWithFinancial";
@@ -326,25 +323,23 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
 
-          const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
-          const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
+          const companyNameSmePrefix = "CompanyWithSme";
+          const companyNameSme = companyNameSmePrefix + companyNameMarker;
 
           getKeycloakToken(admin_name, admin_pw).then((token) => {
-            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
-              (storedCompany) => {
-                const firstFixtureDataForEuTaxonomyNonFinancials = companiesWithEuTaxonomyDataForNonFinancials[0];
-                return uploadFrameworkData(
-                  DataTypeEnum.EutaxonomyNonFinancials,
-                  token,
-                  storedCompany.companyId,
-                  firstFixtureDataForEuTaxonomyNonFinancials.reportingPeriod,
-                  firstFixtureDataForEuTaxonomyNonFinancials.t,
-                );
-              },
-            );
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameSme)).then((storedCompany) => {
+              const smeFixture = companiesWithSmeData[0];
+              return uploadFrameworkData(
+                DataTypeEnum.Sme,
+                token,
+                storedCompany.companyId,
+                smeFixture.reportingPeriod,
+                smeFixture.t,
+              );
+            });
           });
 
-          checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, DataTypeEnum.EutaxonomyNonFinancials);
+          checkFirstAutoCompleteSuggestion(companyNameSmePrefix, DataTypeEnum.Sme);
         },
       );
     },
