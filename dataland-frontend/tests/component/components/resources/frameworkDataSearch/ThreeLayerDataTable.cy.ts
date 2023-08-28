@@ -171,8 +171,8 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     const capexNonAlignedActivitiesShareInPercent = assertDefined(
       capexOfDataset.totalNonAlignedShare.relativeShareInPercent,
     );
-    const capexNonAlignedActivitiesNaceCodes = assertDefined(
-      capexOfDataset.totalNonAlignedShare.nonAlignedActivities[0].naceCodes,
+    const capexNonAlignedActivitiesNaceCodes: string = assertDefined(
+      capexOfDataset.totalNonAlignedShare.nonAlignedActivities[0].naceCodes[0],
     );
 
     cy.mountWithDialog(
@@ -204,7 +204,6 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesName}")`);
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesShareInPercent}")`);
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesNaceCodes}")`);
     });
   });
