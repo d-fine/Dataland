@@ -1,11 +1,8 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
-import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.EnvironmentalObjective
-import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
 
 /**
@@ -29,9 +26,21 @@ data class EuTaxonomyAlignedActivity(
     val activityName: Activity,
     val naceCodes: List<String>?,
     val share: RelativeAndAbsoluteFinancialShare?,
-    @field:Schema(example = JsonExampleFormattingConstants.SUBSTANTIAL_CONTRIBUTION_CRITIREA)
-    val substantialContributionCriteria: Map<EnvironmentalObjective, BigDecimal>?,
-    @field:Schema(example = JsonExampleFormattingConstants.DNSH_CRITIREA)
-    val dnshCriteria: Map<EnvironmentalObjective, YesNo>?,
+    // TODO these names differ from the ones specified in the data dictionary due to length.
+    //  However, their purpose is clear from the names here.
+    val substantialContributionToClimateChangeMitigation: BigDecimal?,
+    val substantialContributionToClimateChangeAdaption: BigDecimal?,
+    val substantialContributionToSustainableWaterUse: BigDecimal?,
+    val substantialContributionToCircularEconomy: BigDecimal?,
+    val substantialContributionToPollutionPreventionAndControl: BigDecimal?,
+    val substantialContributionToBiodiversity: BigDecimal?,
+    // TODO these names differ from the ones specified in the data dictionary due to length.
+    //  However, their purpose is clear from the names here.
+    val dnshToClimateChangeMitigation: BigDecimal?,
+    val dnshToClimateChangeAdaption: BigDecimal?,
+    val dnshToSustainableWaterUse: BigDecimal?,
+    val dnshToCircularEconomy: BigDecimal?,
+    val dnshToPollutionPreventionAndControl: BigDecimal?,
+    val dnshToBiodiversity: BigDecimal?,
     val minimumSafeguards: YesNo?,
 )
