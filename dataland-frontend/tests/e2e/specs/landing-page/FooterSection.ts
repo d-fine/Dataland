@@ -19,10 +19,7 @@ describe("As a user, I expect the footer section to be present and contain relev
       });
     });
 
-    const frameworksToCheck = Object.values(DataTypeEnum).filter(
-      // TOD O remove eutaxonomynonfinancials from the filter list
-      (frameworkName) => ([DataTypeEnum.EutaxonomyNonFinancials] as DataTypeEnum[]).indexOf(frameworkName) === -1,
-    );
+    const frameworksToCheck = Object.values(DataTypeEnum);
     frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on ${framework}`, () => {
         getKeycloakToken(reader_name, reader_pw).then((token) => {

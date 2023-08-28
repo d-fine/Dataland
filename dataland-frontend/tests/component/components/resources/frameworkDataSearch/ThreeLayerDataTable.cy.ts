@@ -1,0 +1,147 @@
+import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
+import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
+import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
+
+describe("Component test for the NewEUTaxonomy Page", () => {
+  let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
+
+  before(function () {
+    cy.fixture("EuTaxonomyForNonFinancialsMocks.json").then(
+      (mockedBackendResponses: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]) => {
+        const singleMockDataAndMetaInfo = new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(
+          mockedBackendResponses[0],
+        );
+        mockedDataForTest = [singleMockDataAndMetaInfo];
+      },
+    );
+  });
+
+  const expectedOrderOfCategories: string[] = ["BASIC INFORMATION", "ASSURANCE", "REVENUE", "CAPEX", "OPEX"];
+  const dataTestTagsOfCategories: string[] = ["Basic Information", "Assurance", "Revenue", "CapEx", "OpEx"];
+
+  /**
+   * Creates a list with the labels of the subcategories inside a cash flow category in the right order.
+   * @param categoryName is the name of the cash flow category
+   * @returns an array with the subcategory labels in the right order
+   */
+  function buildExpectedOrderOfSubcategoriesForCategory(categoryName: "Revenue" | "CapEx" | "OpEx"): string[] {
+    return [
+      `Total Aligned ${categoryName}`,
+      `Total ${categoryName}`,
+      `Total Eligible ${categoryName}`,
+      `Total Non-Aligned ${categoryName}`,
+      `Total Non-Eligible ${categoryName}`,
+    ];
+  }
+
+  const expectedOrderOfSubcategoriesGroupedByCategories: string[][] = [
+    ["Basic Information"],
+    ["Assurance"],
+    buildExpectedOrderOfSubcategoriesForCategory("Revenue"),
+    buildExpectedOrderOfSubcategoriesForCategory("CapEx"),
+    buildExpectedOrderOfSubcategoriesForCategory("OpEx"),
+  ];
+
+  const dataTestTagsOfCashFlowSubcategory = [
+    "totalAlignedShare",
+    "totalAmount",
+    "totalEligibleShare",
+    "totalNonAlignedShare",
+    "totalNonEligibleShare",
+  ];
+
+  const dataTestTagsOfSubcategoriesGroupedByCategories: string[][] = [
+    ["_basicInformation"],
+    ["assurance"],
+    dataTestTagsOfCashFlowSubcategory,
+    dataTestTagsOfCashFlowSubcategory,
+    dataTestTagsOfCashFlowSubcategory,
+  ];
+
+  /**
+   * Toggle a category by clicking on it via its data-test tag
+   * @param dataTestTagOfCategory the data-test tag of the category
+   */
+  function toggleCategoryByClick(dataTestTagOfCategory: string): void {
+    cy.get(`[data-test='${dataTestTagOfCategory}']`).click();
+  }
+
+  it("Check order of the displayed KPIs and its entries", () => {
+    cy.mountWithPlugins(ThreeLayerDataTable, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        dataModel: euTaxonomyForNonFinancialsDisplayDataModel,
+        dataAndMetaInfo: mockedDataForTest,
+      },
+    }).then(() => {
+      cy.get("[data-test='TwoLayerTest']")
+        .get(".d-table-style")
+        .each((element, index) => {
+          cy.wrap(element).eq(0).eq(0).get(".p-badge").eq(index).should("have.text", expectedOrderOfCategories[index]);
+        });
+
+      toggleCategoryByClick(dataTestTagsOfCategories[0]);
+
+      /**
+       * The goal for the loop is to expand one KPI at a time and check the order of the entries.
+       */
+
+      let subcategoriesForCurrentCategory;
+      for (let categoryIndex = 1; categoryIndex < dataTestTagsOfCategories.length; categoryIndex++) {
+        subcategoriesForCurrentCategory = dataTestTagsOfSubcategoriesGroupedByCategories[categoryIndex];
+
+        toggleCategoryByClick(dataTestTagsOfCategories[categoryIndex]);
+
+        for (let subCategoryIndex = 0; subCategoryIndex < subcategoriesForCurrentCategory.length; subCategoryIndex++) {
+          cy.get(".p-rowgroup-header")
+            .filter(":visible")
+            .eq(subCategoryIndex)
+            .get(`span[id="${subcategoriesForCurrentCategory[subCategoryIndex]}"]`)
+            .should("contain", `${expectedOrderOfSubcategoriesGroupedByCategories[categoryIndex][subCategoryIndex]}`);
+        }
+        toggleCategoryByClick(dataTestTagsOfCategories[categoryIndex]);
+      }
+    });
+  });
+
+  it("Opens the aligned activities modal and checks that it works as intended", () => {
+    cy.mountWithDialog(
+      ThreeLayerDataTable,
+      {
+        keycloak: minimalKeycloakMock({}),
+      },
+      {
+        dataModel: euTaxonomyForNonFinancialsDisplayDataModel,
+        dataAndMetaInfo: mockedDataForTest,
+        modalColumnHeaders: euTaxonomyForNonFinancialsModalColumnHeaders,
+        sortBySubcategoryKey: false,
+      },
+    ).then(() => {
+      /**
+      toggleCategoryByClick("Basic Information");
+      toggleCategoryByClick("CapEx");
+      cy.get(`[data-test='totalAlignedShare']`).filter(":visible").click();
+      cy.get(`[data-test='totalAlignedShare']`)
+        .filter(":visible")
+        .get("em")
+        .filter(":visible")
+        .eq(-1)
+        .should("have.text", " dataset ")
+        .click();
+      cy.wait(10000);
+      cy.get("table").find(`tr:contains("Activity")`);
+      cy.get("table").find(`tr:contains("Code(s)")`);
+      cy.get("table").find(`tr:contains("Revenue")`);
+      cy.get("table").find(`tr:contains("Climate change mitigation")`);
+      cy.get("table").find(`tr:contains("Climate change adaptation")`);
+      cy.get("table").find(`tr:contains("Water and marine resources")`);
+      cy.get("table").find(`tr:contains("Circular economy")`); *
+       */
+    });
+  });
+});

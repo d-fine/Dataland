@@ -1,7 +1,4 @@
-#Install docker-compose version 2.20.0, because the version 2.19.1 from the github runner leads to network errors
-mkdir -p ~/.docker/cli-plugins/
-curl -SL https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-chmod +x ~/.docker/cli-plugins/docker-compose
+#!/bin/bash
 
 set -ex
 

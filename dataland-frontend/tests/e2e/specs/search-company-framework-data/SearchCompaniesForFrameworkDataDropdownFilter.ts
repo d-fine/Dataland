@@ -10,6 +10,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 let companiesWithSmeData: Array<FixtureData<SmeData>>;
@@ -34,7 +35,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("#framework-filter")
       .click()
       .get("div.p-multiselect-panel")
-      .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
+      .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.EutaxonomyFinancials)})`)
       .click();
     verifySearchResultTable();
     cy.url()
@@ -42,28 +43,31 @@ describe("As a user, I expect the search functionality on the /companies page to
         "eq",
         getBaseUrl() +
           "/companies?" +
-          `framework=${DataTypeEnum.P2p}` +
-          `&framework=${DataTypeEnum.Sme}` +
+          `framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
+          `&framework=${DataTypeEnum.Lksg}` +
+          `&framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sfdr}` +
-          `&framework=${DataTypeEnum.Lksg}`,
+          `&framework=${DataTypeEnum.Sme}`,
       )
       .get("div.p-multiselect-panel")
-      .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
+      .find(`li.p-multiselect-item:contains(${humanizeString(DataTypeEnum.EutaxonomyFinancials)})`)
       .click();
     verifySearchResultTable();
     cy.url()
       .should("eq", getBaseUrl() + "/companies")
       .get("div.p-multiselect-panel")
-      .find("li.p-highlight:contains('SFDR')")
+      .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.Sfdr)})`)
       .click();
     verifySearchResultTable();
     cy.url().should(
       "eq",
       getBaseUrl() +
-        `/companies?framework=${DataTypeEnum.P2p}` +
-        `&framework=${DataTypeEnum.EutaxonomyFinancials}` +
-        `&framework=${DataTypeEnum.Sme}` +
-        `&framework=${DataTypeEnum.Lksg}`,
+        "/companies?" +
+        `framework=${DataTypeEnum.EutaxonomyFinancials}` +
+        `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
+        `&framework=${DataTypeEnum.Lksg}` +
+        `&framework=${DataTypeEnum.P2p}` +
+        `&framework=${DataTypeEnum.Sme}`,
     );
   });
 

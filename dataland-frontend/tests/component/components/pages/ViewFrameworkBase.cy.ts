@@ -47,6 +47,7 @@ describe("Component test for ViewFrameworkBase", () => {
         expect(wrapper.vm.dataTypesInDropdown).to.be.an("array").that.is.not.empty;
         expect(wrapper.vm.dataTypesInDropdown).to.deep.equal([
           { label: humanizeString(DataTypeEnum.EutaxonomyFinancials), value: DataTypeEnum.EutaxonomyFinancials },
+          { label: humanizeString(DataTypeEnum.EutaxonomyNonFinancials), value: DataTypeEnum.EutaxonomyNonFinancials },
           { label: humanizeString(DataTypeEnum.Lksg), value: DataTypeEnum.Lksg },
           { label: humanizeString(DataTypeEnum.Sfdr), value: DataTypeEnum.Sfdr },
         ]);

@@ -1,0 +1,871 @@
+[{
+  "metaInfo": {
+    "dataId": "a9d75a0a-some-fake-dataId-549632b19782",
+    "companyId": "1e946cac-some-fake-ID-762f40e",
+    "dataType": "eutaxonomy-financials",
+    "uploaderUserId": "c5ef10b1-some-fake-uploaderUserId-e62ea226ee83",
+    "uploadTime": 1678194542,
+    "reportingPeriod": "2019",
+    "currentlyActive": true,
+    "qaStatus": "Accepted"
+  },
+  "data": {
+    "general": {
+      "fiscalYearDeviation": "Deviation",
+      "fiscalYearEnd": "2023-08-23",
+      "scopeOfEntities": "Yes",
+      "nfrdMandatory": "Yes",
+      "euTaxonomyActivityLevelReporting": "Yes",
+      "assurance": {
+        "assurance": "None",
+        "provider": "string",
+        "dataSource": {
+          "report": "string",
+          "page": 0,
+          "tagName": "string"
+        }
+      },
+      "numberOfEmployees": 0,
+      "referencedReports": {
+        "additionalProp1": {
+          "reference": "string",
+          "isGroupLevel": "Yes",
+          "reportDate": "2023-08-23",
+          "currency": "string"
+        },
+        "additionalProp2": {
+          "reference": "string",
+          "isGroupLevel": "Yes",
+          "reportDate": "2023-08-23",
+          "currency": "string"
+        },
+        "additionalProp3": {
+          "reference": "string",
+          "isGroupLevel": "Yes",
+          "reportDate": "2023-08-23",
+          "currency": "string"
+        }
+      }
+    },
+    "revenue": {
+      "totalAmount": {
+        "quality": "Audited",
+        "dataSource": {
+          "report": "string",
+          "page": 0,
+          "tagName": "string"
+        },
+        "comment": "string",
+        "value": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "totalNonEligibleShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "totalEligibleShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "totalNonAlignedShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "nonAlignedActivities": [
+        {
+          "activityName": "Afforestation",
+          "naceCodes": [
+            "string"
+          ],
+          "share": {
+            "relativeShareInPercent": 0,
+            "absoluteShare": {
+              "amount": 0,
+              "currency": "string"
+            }
+          }
+        }
+      ],
+      "totalAlignedShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "substantialContributionCriteria": {
+        "ClimateMitigation": 20,
+        "ClimateAdaptation": 20,
+        "Water": 20
+      },
+      "alignedActivities": [
+        {
+          "activityName": "Afforestation",
+          "naceCodes": [
+            "string"
+          ],
+          "share": {
+            "relativeShareInPercent": 0,
+            "absoluteShare": {
+              "amount": 0,
+              "currency": "string"
+            }
+          },
+          "substantialContributionCriteria": {
+            "ClimateMitigation": 20,
+            "ClimateAdaptation": 20,
+            "Water": 20
+          },
+          "dnshCriteria": {
+            "ClimateMitigation": "Yes",
+            "ClimateAdaptation": "Yes",
+            "Water": "No"
+          },
+          "minimumSafeguards": "Yes"
+        }
+      ],
+      "totalEnablingShare": 0,
+      "totalTransitionalShare": 0
+    },
+    "capex": {
+      "totalAmount": {
+        "quality": "Audited",
+        "dataSource": {
+          "report": "string",
+          "page": 0,
+          "tagName": "string"
+        },
+        "comment": "string",
+        "value": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "totalNonEligibleShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "totalEligibleShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "totalNonAlignedShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "nonAlignedActivities": [
+        {
+          "activityName": "Afforestation",
+          "naceCodes": [
+            "string"
+          ],
+          "share": {
+            "relativeShareInPercent": 0,
+            "absoluteShare": {
+              "amount": 0,
+              "currency": "string"
+            }
+          }
+        }
+      ],
+      "totalAlignedShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "substantialContributionCriteria": {
+        "ClimateMitigation": 20,
+        "ClimateAdaptation": 20,
+        "Water": 20
+      },
+      "alignedActivities": [
+        {
+          "activityName": "Afforestation",
+          "naceCodes": [
+            "string"
+          ],
+          "share": {
+            "relativeShareInPercent": 0,
+            "absoluteShare": {
+              "amount": 0,
+              "currency": "string"
+            }
+          },
+          "substantialContributionCriteria": {
+            "ClimateMitigation": 20,
+            "ClimateAdaptation": 20,
+            "Water": 20
+          },
+          "dnshCriteria": {
+            "ClimateMitigation": "Yes",
+            "ClimateAdaptation": "Yes",
+            "Water": "No"
+          },
+          "minimumSafeguards": "Yes"
+        }
+      ],
+      "totalEnablingShare": 0,
+      "totalTransitionalShare": 0
+    },
+    "opex": {
+      "totalAmount": {
+        "quality": "Audited",
+        "dataSource": {
+          "report": "string",
+          "page": 0,
+          "tagName": "string"
+        },
+        "comment": "string",
+        "value": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "totalNonEligibleShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "totalEligibleShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "totalNonAlignedShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "nonAlignedActivities": [
+        {
+          "activityName": "Afforestation",
+          "naceCodes": [
+            "string"
+          ],
+          "share": {
+            "relativeShareInPercent": 0,
+            "absoluteShare": {
+              "amount": 0,
+              "currency": "string"
+            }
+          }
+        }
+      ],
+      "totalAlignedShare": {
+        "relativeShareInPercent": 0,
+        "absoluteShare": {
+          "amount": 0,
+          "currency": "string"
+        }
+      },
+      "substantialContributionCriteria": {
+        "ClimateMitigation": 20,
+        "ClimateAdaptation": 20,
+        "Water": 20
+      },
+      "alignedActivities": [
+        {
+          "activityName": "Afforestation",
+          "naceCodes": [
+            "string"
+          ],
+          "share": {
+            "relativeShareInPercent": 0,
+            "absoluteShare": {
+              "amount": 0,
+              "currency": "string"
+            }
+          },
+          "substantialContributionCriteria": {
+            "ClimateMitigation": 20,
+            "ClimateAdaptation": 20,
+            "Water": 20
+          },
+          "dnshCriteria": {
+            "ClimateMitigation": "Yes",
+            "ClimateAdaptation": "Yes",
+            "Water": "No"
+          },
+          "minimumSafeguards": "Yes"
+        }
+      ],
+      "totalEnablingShare": 0,
+      "totalTransitionalShare": 0
+    }
+  }
+},
+    {
+      "metaInfo": {
+        "dataId": "03f730b1-388f-4b2a-908f-c6ca7848b852",
+        "companyId": "bbaf1cf1-f9e4-4896-be88-5187c7240910",
+        "dataType": "eutaxonomy-non-financials",
+        "uploaderUserId": null,
+        "uploadTime": 1692950616083,
+        "reportingPeriod": "2020",
+        "currentlyActive": true,
+        "qaStatus": "Accepted"
+      },
+      "data": {
+        "general": {
+          "fiscalYearDeviation": null,
+          "fiscalYearEnd": "2022-11-09",
+          "scopeOfEntities": "NA",
+          "nfrdMandatory": null,
+          "euTaxonomyActivityLevelReporting": "No",
+          "assurance": {
+            "assurance": "None",
+            "provider": null,
+            "dataSource": null
+          },
+          "numberOfEmployees": 56619,
+          "referencedReports": {
+            "SustainabilityReport": {
+              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "isGroupLevel": "No",
+              "reportDate": "2022-11-13",
+              "currency": "CHF"
+            },
+            "AnnualReport": {
+              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "isGroupLevel": "NA",
+              "reportDate": "2022-09-26",
+              "currency": "PLN"
+            },
+            "ESEFReport": {
+              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "isGroupLevel": "No",
+              "reportDate": "2022-09-02",
+              "currency": "KHR"
+            }
+          }
+        },
+        "revenue": {
+          "totalAmount": null,
+          "totalNonEligibleShare": {
+            "relativeShareInPercent": 58.37980839423835,
+            "absoluteShare": {
+              "amount": null,
+              "currency": "CAD"
+            }
+          },
+          "totalEligibleShare": {
+            "relativeShareInPercent": null,
+            "absoluteShare": null
+          },
+          "totalNonAlignedShare": {
+            "relativeShareInPercent": 23.81375681143254,
+            "absoluteShare": null
+          },
+          "nonAlignedActivities": null,
+          "totalAlignedShare": {
+            "relativeShareInPercent": 30.430533969774842,
+            "absoluteShare": null
+          },
+          "substantialContributionCriteria": {
+            "Water": 61.99765824712813,
+            "Biodiversity": 86.46535461302847,
+            "ClimateMitigation": 48.29107217956334
+          },
+          "alignedActivities": null,
+          "totalEnablingShare": null,
+          "totalTransitionalShare": 40.84674471523613
+        },
+        "capex": {
+          "totalAmount": {
+            "quality": "Audited",
+            "dataSource": {
+              "report": "ESEFReport",
+              "page": 287,
+              "tagName": "paradigms"
+            },
+            "comment": "back up optical panel",
+            "value": null
+          },
+          "totalNonEligibleShare": {
+            "relativeShareInPercent": 91.40141336247325,
+            "absoluteShare": null
+          },
+          "totalEligibleShare": {
+            "relativeShareInPercent": null,
+            "absoluteShare": {
+              "amount": null,
+              "currency": "CHF"
+            }
+          },
+          "totalNonAlignedShare": {
+            "relativeShareInPercent": 25.76620045583695,
+            "absoluteShare": null
+          },
+          "nonAlignedActivities": null,
+          "totalAlignedShare": {
+            "relativeShareInPercent": 78.96670501213521,
+            "absoluteShare": {
+              "amount": null,
+              "currency": "USD"
+            }
+          },
+          "substantialContributionCriteria": {
+            "Water": 50.32776421867311,
+            "CircularEconomy": 14.438023883849382
+          },
+          "alignedActivities": null,
+          "totalEnablingShare": null,
+          "totalTransitionalShare": null
+        },
+        "opex": {
+          "totalAmount": null,
+          "totalNonEligibleShare": null,
+          "totalEligibleShare": null,
+          "totalNonAlignedShare": {
+            "relativeShareInPercent": 19.044206547550857,
+            "absoluteShare": {
+              "amount": 675290.3777407482,
+              "currency": null
+            }
+          },
+          "nonAlignedActivities": [],
+          "totalAlignedShare": {
+            "relativeShareInPercent": null,
+            "absoluteShare": {
+              "amount": 372581.3764613122,
+              "currency": null
+            }
+          },
+          "substantialContributionCriteria": {
+            "Biodiversity": 96.48076866287738,
+            "ClimateAdaptation": 85.10380492080003,
+            "PollutionPrevention": 25.198886217549443,
+            "Water": 35.96118635032326,
+            "ClimateMitigation": 89.1137607395649
+          },
+          "alignedActivities": [
+            {
+              "activityName": "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
+              "naceCodes": [],
+              "share": null,
+              "substantialContributionCriteria": {
+                "PollutionPrevention": 26.614451594650745,
+                "ClimateAdaptation": 80.2152968943119,
+                "Biodiversity": 28.850928391329944,
+                "ClimateMitigation": 98.29638677183539,
+                "Water": 46.02551539428532,
+                "CircularEconomy": 52.746265241876245
+              },
+              "dnshCriteria": {
+                "Biodiversity": "Yes",
+                "CircularEconomy": "Yes",
+                "Water": "No",
+                "ClimateMitigation": "No",
+                "PollutionPrevention": "No"
+              },
+              "minimumSafeguards": "No"
+            },
+            {
+              "activityName": "ConstructionOfNewBuildings",
+              "naceCodes": [
+                "D",
+                "I"
+              ],
+              "share": {
+                "relativeShareInPercent": null,
+                "absoluteShare": null
+              },
+              "substantialContributionCriteria": {
+                "Water": 0.4043139284476638
+              },
+              "dnshCriteria": {
+                "Water": "No",
+                "CircularEconomy": "No",
+                "PollutionPrevention": "No",
+                "Biodiversity": "Yes",
+                "ClimateAdaptation": "Yes"
+              },
+              "minimumSafeguards": "No"
+            },
+            {
+              "activityName": "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
+              "naceCodes": [
+                "D",
+                "J",
+                "K"
+              ],
+              "share": {
+                "relativeShareInPercent": null,
+                "absoluteShare": {
+                  "amount": 970701.1164398864,
+                  "currency": "CHF"
+                }
+              },
+              "substantialContributionCriteria": {
+                "ClimateMitigation": 29.096382879652083,
+                "Biodiversity": 43.81107082590461,
+                "ClimateAdaptation": 61.80610351730138
+              },
+              "dnshCriteria": {
+                "ClimateMitigation": "Yes",
+                "PollutionPrevention": "No",
+                "CircularEconomy": "No",
+                "Biodiversity": "Yes"
+              },
+              "minimumSafeguards": "Yes"
+            },
+            {
+              "activityName": "ManufactureOfBatteries",
+              "naceCodes": null,
+              "share": null,
+              "substantialContributionCriteria": {
+                "PollutionPrevention": 59.13905878551304,
+                "Water": 87.27688735816628,
+                "ClimateMitigation": 52.30383260641247
+              },
+              "dnshCriteria": {
+                "Biodiversity": "No",
+                "Water": "Yes",
+                "PollutionPrevention": "Yes",
+                "CircularEconomy": "Yes",
+                "ClimateMitigation": "Yes",
+                "ClimateAdaptation": "No"
+              },
+              "minimumSafeguards": "Yes"
+            },
+            {
+              "activityName": "CreativeArtsAndEntertainmentActivities",
+              "naceCodes": null,
+              "share": null,
+              "substantialContributionCriteria": {
+                "CircularEconomy": 89.24996096175164,
+                "Water": 16.885455138981342,
+                "ClimateMitigation": 14.940313366241753
+              },
+              "dnshCriteria": {
+                "Water": "Yes",
+                "PollutionPrevention": "Yes",
+                "ClimateAdaptation": "No",
+                "Biodiversity": "No"
+              },
+              "minimumSafeguards": null
+            }
+          ],
+          "totalEnablingShare": null,
+          "totalTransitionalShare": 17.597115808166564
+        }
+      }
+    },
+    {
+      "metaInfo": {
+        "dataId": "5f59b978-0c36-4c2e-b4ac-d6bb5c388c4f",
+        "companyId": "cbb2e572-a15f-4284-9454-edd716778d9e",
+        "dataType": "eutaxonomy-non-financials",
+        "uploaderUserId": null,
+        "uploadTime": 1692950609305,
+        "reportingPeriod": "2021",
+        "currentlyActive": true,
+        "qaStatus": "Accepted"
+      },
+      "data": {
+        "general": {
+          "fiscalYearDeviation": "NoDeviation",
+          "fiscalYearEnd": "2022-09-23",
+          "scopeOfEntities": "No",
+          "nfrdMandatory": "Yes",
+          "euTaxonomyActivityLevelReporting": "No",
+          "assurance": {
+            "assurance": "LimitedAssurance",
+            "provider": "Botsford - Moore",
+            "dataSource": null
+          },
+          "numberOfEmployees": 55721,
+          "referencedReports": {
+            "IntegratedReport": {
+              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "isGroupLevel": "Yes",
+              "reportDate": "2022-10-06",
+              "currency": "IDR"
+            },
+            "ESEFReport": {
+              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "isGroupLevel": "NA",
+              "reportDate": null,
+              "currency": "TJS"
+            },
+            "AnnualReport": {
+              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "isGroupLevel": null,
+              "reportDate": "2022-10-24",
+              "currency": "XAF"
+            },
+            "SustainabilityReport": {
+              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "isGroupLevel": "No",
+              "reportDate": "2022-09-18",
+              "currency": "COP"
+            }
+          }
+        },
+        "revenue": {
+          "totalAmount": null,
+          "totalNonEligibleShare": null,
+          "totalEligibleShare": null,
+          "totalNonAlignedShare": null,
+          "nonAlignedActivities": [
+            {
+              "activityName": "InlandFreightWaterTransport",
+              "naceCodes": null,
+              "share": null
+            }
+          ],
+          "totalAlignedShare": null,
+          "substantialContributionCriteria": {
+            "Water": 59.195704641751945
+          },
+          "alignedActivities": [
+            {
+              "activityName": "ComputerProgrammingConsultancyAndRelatedActivities",
+              "naceCodes": null,
+              "share": {
+                "relativeShareInPercent": null,
+                "absoluteShare": {
+                  "amount": null,
+                  "currency": "CAD"
+                }
+              },
+              "substantialContributionCriteria": {
+                "ClimateAdaptation": 13.833112735301256,
+                "Biodiversity": 50.85295811295509,
+                "PollutionPrevention": 83.25901895295829,
+                "CircularEconomy": 44.18038590811193
+              },
+              "dnshCriteria": {
+                "Biodiversity": "No",
+                "ClimateMitigation": "Yes"
+              },
+              "minimumSafeguards": "Yes"
+            },
+            {
+              "activityName": "ManufactureOfSodaAsh",
+              "naceCodes": [
+                "B",
+                "F"
+              ],
+              "share": {
+                "relativeShareInPercent": null,
+                "absoluteShare": null
+              },
+              "substantialContributionCriteria": {
+                "Biodiversity": 99.49542758986354,
+                "ClimateAdaptation": 52.20942315645516,
+                "ClimateMitigation": 61.67115962598473,
+                "CircularEconomy": 68.9505387796089,
+                "Water": 12.303416733630002,
+                "PollutionPrevention": 85.59962355066091
+              },
+              "dnshCriteria": {
+                "ClimateAdaptation": "Yes",
+                "Water": "Yes",
+                "PollutionPrevention": "No",
+                "ClimateMitigation": "Yes",
+                "CircularEconomy": "No",
+                "Biodiversity": "Yes"
+              },
+              "minimumSafeguards": null
+            },
+            {
+              "activityName": "FreightRailTransport",
+              "naceCodes": null,
+              "share": null,
+              "substantialContributionCriteria": {
+                "ClimateAdaptation": 78.03410154301673,
+                "ClimateMitigation": 74.56609937362373,
+                "PollutionPrevention": 41.856675618328154,
+                "Biodiversity": 81.9512891350314,
+                "CircularEconomy": 20.304890139959753,
+                "Water": 19.003812060691416
+              },
+              "dnshCriteria": {
+                "Water": "No",
+                "ClimateMitigation": "Yes",
+                "Biodiversity": "Yes",
+                "PollutionPrevention": "No",
+                "ClimateAdaptation": "No",
+                "CircularEconomy": "No"
+              },
+              "minimumSafeguards": null
+            }
+          ],
+          "totalEnablingShare": null,
+          "totalTransitionalShare": null
+        },
+        "capex": {
+          "totalAmount": {
+            "quality": "Audited",
+            "dataSource": {
+              "report": "SustainabilityReport",
+              "page": 264,
+              "tagName": "platforms"
+            },
+            "comment": "hack neural port",
+            "value": null
+          },
+          "totalNonEligibleShare": {
+            "relativeShareInPercent": 60.241022636182606,
+            "absoluteShare": {
+              "amount": null,
+              "currency": "EUR"
+            }
+          },
+          "totalEligibleShare": {
+            "relativeShareInPercent": 78.75647116452456,
+            "absoluteShare": {
+              "amount": null,
+              "currency": null
+            }
+          },
+          "totalNonAlignedShare": null,
+          "nonAlignedActivities": null,
+          "totalAlignedShare": {
+            "relativeShareInPercent": null,
+            "absoluteShare": {
+              "amount": 53683.34128288552,
+              "currency": "USD"
+            }
+          },
+          "substantialContributionCriteria": {
+            "ClimateMitigation": 33.194495481438935
+          },
+          "alignedActivities": [
+            {
+              "activityName": "PassengerInterurbanRailTransport",
+              "naceCodes": null,
+              "share": null,
+              "substantialContributionCriteria": {
+                "ClimateMitigation": 25.230274139903486,
+                "Water": 67.87490982096642,
+                "ClimateAdaptation": 29.23591947183013,
+                "CircularEconomy": 64.36595695558935,
+                "Biodiversity": 15.326208691112697,
+                "PollutionPrevention": 5.935235600918531
+              },
+              "dnshCriteria": {
+                "Water": "No",
+                "CircularEconomy": "No",
+                "PollutionPrevention": "No",
+                "ClimateAdaptation": "No"
+              },
+              "minimumSafeguards": "Yes"
+            }
+          ],
+          "totalEnablingShare": 75.64300834201276,
+          "totalTransitionalShare": null
+        },
+        "opex": {
+          "totalAmount": null,
+          "totalNonEligibleShare": null,
+          "totalEligibleShare": null,
+          "totalNonAlignedShare": null,
+          "nonAlignedActivities": null,
+          "totalAlignedShare": null,
+          "substantialContributionCriteria": {
+            "PollutionPrevention": 10.533192846924067,
+            "Biodiversity": 38.177631166763604
+          },
+          "alignedActivities": [
+            {
+              "activityName": "OperationOfPersonalMobilityDevicesCycleLogistics",
+              "naceCodes": [
+                "J",
+                "K",
+                "L"
+              ],
+              "share": null,
+              "substantialContributionCriteria": {
+                "Biodiversity": 46.34636358823627,
+                "Water": 68.2721076766029,
+                "ClimateMitigation": 98.50092777051032,
+                "CircularEconomy": 38.62085901200771,
+                "ClimateAdaptation": 89.9567442247644,
+                "PollutionPrevention": 3.61364868003875
+              },
+              "dnshCriteria": {
+                "PollutionPrevention": "No",
+                "Biodiversity": "Yes",
+                "ClimateMitigation": "Yes"
+              },
+              "minimumSafeguards": "Yes"
+            },
+            {
+              "activityName": "InstallationAndOperationOfElectricHeatPumps",
+              "naceCodes": null,
+              "share": {
+                "relativeShareInPercent": 54.98554625082761,
+                "absoluteShare": null
+              },
+              "substantialContributionCriteria": {
+                "CircularEconomy": 6.3356902450323105,
+                "Water": 10.157924867235124,
+                "ClimateAdaptation": 85.99266139790416,
+                "Biodiversity": 46.60598775371909,
+                "ClimateMitigation": 45.43693501036614
+              },
+              "dnshCriteria": {
+                "Water": "Yes",
+                "ClimateAdaptation": "Yes",
+                "CircularEconomy": "No"
+              },
+              "minimumSafeguards": "No"
+            },
+            {
+              "activityName": "ElectricityGenerationFromHydropower",
+              "naceCodes": [
+                "A",
+                "B",
+                "I"
+              ],
+              "share": {
+                "relativeShareInPercent": 57.46005419641733,
+                "absoluteShare": null
+              },
+              "substantialContributionCriteria": {
+                "ClimateMitigation": 96.56402179971337,
+                "ClimateAdaptation": 16.064164880663157,
+                "CircularEconomy": 53.52343993727118
+              },
+              "dnshCriteria": {
+                "ClimateMitigation": "Yes"
+              },
+              "minimumSafeguards": null
+            }
+          ],
+          "totalEnablingShare": 16.559325880371034,
+          "totalTransitionalShare": null
+        }
+      }
+    }
+  ]

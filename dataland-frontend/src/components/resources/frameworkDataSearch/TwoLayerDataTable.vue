@@ -5,8 +5,8 @@
       rowGroupMode="subheader"
       groupRowsBy="subcategoryKey"
       dataKey="subcategoryKey"
-      sortField="subcategoryKey"
-      :sortOrder="1"
+      :sortField="sortBySubcategoryKey ? 'subcategoryKey' : undefined"
+      :sortOrder="sortBySubcategoryKey ? 1 : undefined"
       sortMode="single"
       :expandableRowGroups="true"
       :headerInputStyle="headerInputStyle"
@@ -58,6 +58,7 @@
                     slotProps.data.content[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
                     slotProps.data.kpiKey,
+                    slotProps.data.kpiFormFieldComponent,
                   )
                 "
                 class="link"
@@ -131,7 +132,6 @@
 </template>
 
 <script lang="ts">
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { type KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import {
@@ -144,6 +144,9 @@ import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Tooltip from "primevue/tooltip";
 import { defineComponent, type PropType } from "vue";
+import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
+import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
+import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
@@ -181,6 +184,10 @@ export default defineComponent({
     modalColumnHeaders: {
       type: Object,
       default: () => ({}),
+    },
+    sortBySubcategoryKey: {
+      type: Boolean,
+      default: true,
     },
   },
   created() {
@@ -230,19 +237,39 @@ export default defineComponent({
      * @param listOfValues An array consisting of the data to display
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
+     * @param kpiFormFieldComponent determine whether a specific component should be used to render data
      */
-    openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, kpiKey: string) {
-      this.$dialog.open(DetailsCompanyDataTable, {
+    openModalAndDisplayValuesInSubTable(
+      listOfValues: [],
+      modalTitle: string,
+      kpiKey: string,
+      kpiFormFieldComponent = "DetailsCompanyDataTable",
+    ) {
+      let kpiDataComponent:
+        | typeof DetailsCompanyDataTable
+        | typeof AlignedActivitiesDataTable
+        | typeof NonAlignedActivitiesDataTable;
+      if (kpiFormFieldComponent === "AlignedActivitiesDataTable") {
+        kpiDataComponent = AlignedActivitiesDataTable;
+      } else if (kpiFormFieldComponent === "NonAlignedActivitiesDataTable") {
+        kpiDataComponent = NonAlignedActivitiesDataTable;
+      } else {
+        kpiDataComponent = DetailsCompanyDataTable;
+      }
+
+      const dialogData = {
+        listOfRowContents: listOfValues,
+        kpiKeyOfTable: kpiKey,
+        columnHeaders: this.modalColumnHeaders,
+      };
+
+      this.$dialog.open(kpiDataComponent, {
         props: {
           header: modalTitle,
           modal: true,
           dismissableMask: true,
         },
-        data: {
-          listOfRowContents: listOfValues,
-          kpiKeyOfTable: kpiKey,
-          columnHeaders: this.modalColumnHeaders,
-        },
+        data: dialogData,
       });
     },
   },
