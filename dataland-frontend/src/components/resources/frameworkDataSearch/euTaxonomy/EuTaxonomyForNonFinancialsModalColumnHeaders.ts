@@ -1,4 +1,4 @@
-export const newEuTaxonomyForNonFinancialsModalColumnHeaders = {
+export const euTaxonomyForNonFinancialsModalColumnHeaders = {
   alignedActivities: {
     activityName: "Activity",
     naceCodes: "NACE Code(s)",

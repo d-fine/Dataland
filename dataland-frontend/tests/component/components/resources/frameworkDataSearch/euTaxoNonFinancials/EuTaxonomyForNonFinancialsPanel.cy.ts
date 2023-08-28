@@ -1,6 +1,6 @@
-import NewEuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsPanel.vue";
+import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -8,17 +8,20 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
 
   before(function () {
-    cy.fixture("NewEuTaxonomyForNonFinancialsMocks.json").then(
-      (mockedBackendResponses: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]) => {
-        mockedBackendDataForTest = mockedBackendResponses;
+    cy.fixture("EuTaxonomyForNonFinancialsMocks.json").then(
+      (mockedBackendResponse: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]) => {
+        mockedBackendDataForTest = mockedBackendResponse;
       },
     );
   });
 
   it("Check if the panel fetches, converts and displays data correctly", () => {
     const mockCompanyId = "mock-company-Id";
-    cy.intercept(`/api/data/new-eutaxonomy-non-financials/companies/${mockCompanyId}`, mockedBackendDataForTest);
-    cy.mountWithPlugins(NewEuTaxonomyForNonFinancialsPanel, {
+    cy.intercept(
+      `/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/companies/${mockCompanyId}`,
+      mockedBackendDataForTest,
+    );
+    cy.mountWithPlugins(EuTaxonomyForNonFinancialsPanel, {
       keycloak: minimalKeycloakMock({}),
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

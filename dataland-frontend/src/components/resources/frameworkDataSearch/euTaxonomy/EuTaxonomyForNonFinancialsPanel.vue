@@ -6,11 +6,11 @@
   <div v-show="!waitingForData">
     <ThreeLayerTable
       data-test="ThreeLayerTableTest"
-      :data-model="newEuTaxonomyForNonFinancialsDisplayDataModel"
+      :data-model="euTaxonomyForNonFinancialsDisplayDataModel"
       :data-and-meta-info="convertedDataAndMetaInfo"
       @data-converted="handleFinishedDataConversion"
       :format-value-for-display="formatValueForDisplay"
-      :modal-column-headers="newEuTaxonomyForNonFinancialsModalColumnHeaders"
+      :modal-column-headers="euTaxonomyForNonFinancialsModalColumnHeaders"
       :sort-by-subcategory-key="false"
       unfold-on-load
     />
@@ -32,33 +32,33 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { type Field } from "@/utils/GenericFrameworkTypes";
-import { newEuTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsModalColumnHeaders";
-import { newEuTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsDisplayDataModel";
-import { DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/NewEuTaxonomyForNonFinancialsViewModel";
+import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
+import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
+import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
 export default defineComponent({
-  name: "NewEuTaxonomyForNonFinancialsPanel",
+  name: "EuTaxonomyForNonFinancialsPanel",
   components: { ThreeLayerTable },
   data() {
     return {
       DataTypeEnum,
       firstRender: true,
       waitingForData: true,
-      convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel>,
-      newEuTaxonomyForNonFinancialsModalColumnHeaders,
-      newEuTaxonomyForNonFinancialsDisplayDataModel,
+      convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
+      euTaxonomyForNonFinancialsModalColumnHeaders,
+      euTaxonomyForNonFinancialsDisplayDataModel,
       namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "totalEnablingShare", "totalTransitionalShare"],
     };
   },
   props: PanelProps,
   watch: {
     companyId() {
-      this.fetchNewEuTaxonomyData().catch((error) => console.log(error));
+      this.fetchEuTaxonomyData().catch((error) => console.log(error));
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
-        this.fetchNewEuTaxonomyData().catch((error) => console.log(error));
+        this.fetchEuTaxonomyData().catch((error) => console.log(error));
       }
     },
   },
@@ -68,7 +68,7 @@ export default defineComponent({
     };
   },
   created() {
-    this.fetchNewEuTaxonomyData().catch((error) => console.log(error));
+    this.fetchEuTaxonomyData().catch((error) => console.log(error));
     this.firstRender = false;
   },
 
@@ -77,7 +77,7 @@ export default defineComponent({
     /**
      * Fetches all accepted SME datasets for the current company and converts them to the required frontend format.
      */
-    async fetchNewEuTaxonomyData() {
+    async fetchEuTaxonomyData() {
       try {
         let fetchedData: DataAndMetaInformationEuTaxonomyDataForNonFinancials[];
         this.waitingForData = true;
@@ -85,13 +85,13 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)(),
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
-          const singleNewEuTaxonomyForNonFinancialsDataData = (
+          const singleEuTaxonomyForNonFinancialsDataData = (
             await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
               this.singleDataMetaInfoToDisplay.dataId,
             )
           ).data.data;
           fetchedData = [
-            { metaInfo: this.singleDataMetaInfoToDisplay, data: singleNewEuTaxonomyForNonFinancialsDataData },
+            { metaInfo: this.singleDataMetaInfoToDisplay, data: singleEuTaxonomyForNonFinancialsDataData },
           ];
         } else {
           fetchedData = (
@@ -101,7 +101,7 @@ export default defineComponent({
           ).data;
         }
         this.convertedDataAndMetaInfo = fetchedData.map(
-          (dataAndMetaInfo) => new DataAndMetaInformationNewEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfo),
+          (dataAndMetaInfo) => new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfo),
         );
       } catch (error) {
         console.error(error);
