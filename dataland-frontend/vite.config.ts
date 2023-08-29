@@ -38,6 +38,8 @@ export default defineConfig({
             "primevue/fileupload",
             "primevue/tree",
             "primevue/checkbox",
+            "primevue/row",
+            "primevue/columngroup",
             "@formkit/vue",
             "axios",
             "i18n-iso-countries",

@@ -6,7 +6,7 @@
   <div v-show="!waitingForData">
     <ThreeLayerTable
       :data-model="smeDataModel"
-      :data-and-meta-info="smeDataAndMetaInfo"
+      :data-and-meta-info="smeDataAndMetaInfo.map((it) => getViewModelWithIdentityApiModel(it))"
       @data-converted="handleFinishedDataConversion"
       :format-value-for-display="formatValueForDisplay"
       :modal-column-headers="smeModalColumnHeaders"
@@ -34,6 +34,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { smeModalColumnHeaders } from "@/components/resources/frameworkDataSearch/sme/SmeModalColumnHeaders";
 import { convertToMillions } from "@/utils/NumberConversionUtils";
 import { convertNace } from "@/utils/NaceCodeConverter";
+import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
 
 export default defineComponent({
   name: "SmePanel",
@@ -70,6 +71,7 @@ export default defineComponent({
   },
 
   methods: {
+    getViewModelWithIdentityApiModel,
     humanizeString,
     /**
      * Fetches all accepted SME datasets for the current company and converts them to the required frontend format.
