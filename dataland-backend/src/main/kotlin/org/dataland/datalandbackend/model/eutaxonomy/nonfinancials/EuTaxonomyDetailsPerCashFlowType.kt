@@ -14,8 +14,6 @@ data class EuTaxonomyDetailsPerCashFlowType(
     val nonAlignedShare: RelativeAndAbsoluteFinancialShare?,
     val nonAlignedActivities: List<EuTaxonomyActivity>?,
     val alignedShare: RelativeAndAbsoluteFinancialShare?,
-    // TODO these names differ from the ones specified in the data dictionary due to length.
-    //  However, their purpose is clear from the names here.
     val substantialContributionToClimateChangeMitigation: BigDecimal?,
     val substantialContributionToClimateChangeAdaption: BigDecimal?,
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: BigDecimal?,

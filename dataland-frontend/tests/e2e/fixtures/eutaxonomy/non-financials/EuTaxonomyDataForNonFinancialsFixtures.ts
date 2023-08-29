@@ -84,16 +84,24 @@ function generateAlignedActivity(): EuTaxonomyAlignedActivity {
     ...generateActivity(),
     substantialContributionToClimateChangeMitigation: valueOrUndefined(generatePercentage()),
     substantialContributionToClimateChangeAdaption: valueOrUndefined(generatePercentage()),
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(generatePercentage()),
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+      generatePercentage(),
+    ),
     substantialContributionToTransitionToACircularEconomy: valueOrUndefined(generatePercentage()),
     substantialContributionToPollutionPreventionAndControl: valueOrUndefined(generatePercentage()),
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(generatePercentage()),
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
+      generatePercentage(),
+    ),
     dnshToClimateChangeMitigation: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
     dnshToClimateChangeAdaption: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
-    dnshToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+      faker.helpers.arrayElement(Object.values(YesNo)),
+    ),
     dnshToTransitionToACircularEconomy: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
     dnshToPollutionPreventionAndControl: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
-    dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
+      faker.helpers.arrayElement(Object.values(YesNo)),
+    ),
     minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
   };
 }
@@ -113,10 +121,14 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments):
     alignedShare: valueOrUndefined(generateFinancialShare()),
     substantialContributionToClimateChangeMitigation: valueOrUndefined(generatePercentage()),
     substantialContributionToClimateChangeAdaption: valueOrUndefined(generatePercentage()),
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(generatePercentage()),
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+      generatePercentage(),
+    ),
     substantialContributionToTransitionToACircularEconomy: valueOrUndefined(generatePercentage()),
     substantialContributionToPollutionPreventionAndControl: valueOrUndefined(generatePercentage()),
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(generatePercentage()),
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
+      generatePercentage(),
+    ),
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity)),
     enablingShare: valueOrUndefined(generatePercentage()),
     transitionalShare: valueOrUndefined(generatePercentage()),

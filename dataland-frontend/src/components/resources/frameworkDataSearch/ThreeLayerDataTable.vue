@@ -233,19 +233,19 @@ export default defineComponent({
       subCategoryDataObject: object,
       categoryKey: string,
       subCategoryKey: string,
-      catgory: Category,
+      category: Category,
       dataId: string,
       listOfKpiDataObjects: Array<KpiDataObject>,
       currentViewModelDataset: FrameworkViewModel,
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryDataObject)) {
         const subcategory = assertDefined(
-          catgory.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
+          category.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
         if (field.showIf(currentViewModelDataset.toApiModel())) {
-          this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, catgory, dataId);
+          this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, category, dataId);
           listOfKpiDataObjects.push(this.resultKpiData);
         }
       }

@@ -198,7 +198,7 @@ export default defineComponent({
   },
   created() {
     if (this.unfoldOnLoad) {
-      this.expandedRowGroups = this.arrayOfKpiDataObjects?.map((kpiDataObject) => kpiDataObject.subcategoryKey) ? [];
+      this.expandedRowGroups = this.arrayOfKpiDataObjects?.map((kpiDataObject) => kpiDataObject.subcategoryKey) ?? [];
     }
     this.dataTableIdentifier = (Math.random() + 1).toString(36).substring(2);
     setTimeout(() => {
