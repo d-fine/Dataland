@@ -2,7 +2,6 @@ import {
   AssuranceDataAssuranceEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
-  type DataPointOneValueBigDecimal,
   type EuTaxonomyActivity,
   type EuTaxonomyAlignedActivity,
   type FiscalYearDeviation,
@@ -11,11 +10,12 @@ import {
   type RelativeAndAbsoluteFinancialShare,
   type YesNo,
   type YesNoNa,
+  type DataPointWithUnitBigDecimal,
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
 interface EuTaxonomyDetailsPerCashFlowViewModel {
-  totalAmount?: DataPointOneValueBigDecimal;
+  totalAmount?: DataPointWithUnitBigDecimal;
   totalNonEligibleShare?: RelativeAndAbsoluteFinancialShare;
   totalEligibleShare?: RelativeAndAbsoluteFinancialShare;
   totalNonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };

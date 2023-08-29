@@ -13,7 +13,7 @@ import {
   getRandomNumberOfDistinctElementsFromArray,
   type ReferencedDocuments,
 } from "@e2e/fixtures/FixtureUtils";
-import { generateNumericOrEmptyDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateDatapointWithCurrency } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -108,7 +108,9 @@ function generateAlignedActivity(): EuTaxonomyAlignedActivity {
  */
 export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
   return {
-    totalAmount: valueOrUndefined(generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100))),
+    totalAmount: valueOrUndefined(
+      generateDatapointWithCurrency(randomEuroValue(0, 100), faker.finance.currencyCode(), reports),
+    ),
     totalNonEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalNonAlignedShare: valueOrUndefined(generateFinancialShare()),
@@ -118,6 +120,7 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments):
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity)),
     totalEnablingShare: valueOrUndefined(generatePercentage()),
     totalTransitionalShare: valueOrUndefined(generatePercentage()),
+    //TODO check generation of total amonut, should also have unit
   };
 }
 
