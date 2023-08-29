@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
+const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
 
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
@@ -30,6 +31,19 @@ const routes = [
     props: {
       isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
     },
+  },
+  {    path: "/lp",
+    name: "New Landing Page",
+    component: NewLandingPage,
+    props: {
+      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
+    },
+  },
+  {
+    path: `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
+
+    name: "Eu Taxonomy For Non-Financials Sample",
+    component: ViewEuTaxonomyNonFinancialsSample,
   },
   {
     path: "/companies/choose",
