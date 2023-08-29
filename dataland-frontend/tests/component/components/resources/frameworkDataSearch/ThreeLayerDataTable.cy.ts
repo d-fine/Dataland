@@ -69,6 +69,24 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     cy.get(`[data-test='${dataTestTagOfCategory}']`).click();
   }
 
+  /**
+   * Expands the view page and opens the modal page.
+   * @param categoryToExpand name of the category that has to be expanded, since there are multiple modal pages.
+   * @param fieldToClick field to click
+   */
+  function expandViewPageAndOpenModal(categoryToExpand = "Revenue", fieldToClick = "totalAlignedShare"): void {
+    toggleCategoryByClick("Basic Information");
+    toggleCategoryByClick(`${categoryToExpand}`);
+    cy.get(`[data-test='${fieldToClick}']`).filter(":visible").click();
+    cy.get(`[data-test='${fieldToClick}']`)
+      .filter(":visible")
+      .get("em")
+      .filter(":visible")
+      .eq(-1)
+      .should("have.text", " dataset ")
+      .click();
+  }
+
   it("Check order of the displayed KPIs and its entries", () => {
     cy.mountWithPlugins(ThreeLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
@@ -127,31 +145,21 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         sortBySubcategoryKey: false,
       },
     ).then(() => {
-      toggleCategoryByClick("Basic Information");
-      toggleCategoryByClick("Revenue");
-      cy.get(`[data-test='totalAlignedShare']`).filter(":visible").click();
-      cy.get(`[data-test='totalAlignedShare']`)
-        .filter(":visible")
-        .get("em")
-        .filter(":visible")
-        .eq(-1)
-        .should("have.text", " dataset ")
-        .click();
+      expandViewPageAndOpenModal("Revenue", "totalAlignedShare");
+      checkDuplicateFields();
+      cy.get("table").find(`tr:contains("DNSH Criteria")`);
 
-      cy.get("table").find(`tr:contains("Activity")`);
-      cy.get("table").find(`tr:contains("NACE Code(s)")`);
-      cy.get("table").find(`tr:contains("Revenue")`);
       cy.get("table").find(`tr:contains("Climate change mitigation")`);
       cy.get("table").find(`tr:contains("Climate change adaptation")`);
       cy.get("table").find(`tr:contains("Water and marine resources")`);
       cy.get("table").find(`tr:contains("Circular economy")`);
       cy.get("table").find(`tr:contains("Pollution prevention")`);
       cy.get("table").find(`tr:contains("Biodiversity and ecosystems")`);
-      cy.get("table").find(`tr:contains("Climate change mitigation")`);
-      cy.get("table").find(`tr:contains("Climate change adaptation")`);
-      cy.get("table").find(`tr:contains("Water and marine resources")`);
+      cy.get("table").find(`tr:contains("Minimum safeguards")`);
 
       cy.get("table").find(`tr:contains("20%")`);
+      cy.get("table").find(`tr:contains("Yes")`);
+      cy.get("table").find(`tr:contains("No")`);
 
       const capexAlignedActivitiesShareInPercent: number = assertDefined(
         capexOfDataset.totalAlignedShare?.relativeShareInPercent,
@@ -184,24 +192,26 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         sortBySubcategoryKey: false,
       },
     ).then(() => {
-      toggleCategoryByClick("Basic Information");
-      toggleCategoryByClick("CapEx");
-      cy.get(`[data-test='totalNonAlignedShare']`).filter(":visible").click();
-      cy.get(`[data-test='totalNonAlignedShare']`)
-        .filter(":visible")
-        .get("em")
-        .filter(":visible")
-        .eq(-1)
-        .should("have.text", " dataset ")
-        .click();
-
-      cy.get("table").find(`tr:contains("Activity")`);
-      cy.get("table").find(`tr:contains("NACE Code(s)")`);
-      cy.get("table").find(`tr:contains("Revenue")`);
+      expandViewPageAndOpenModal("CapEx", "totalNonAlignedShare");
+      checkDuplicateFields();
 
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesName}")`);
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesShareInPercent}")`);
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesNaceCodes}")`);
+
+      cy.get("table").find(`tr:contains("abc")`);
+      cy.get("table").find(`tr:contains("0.1")`);
+      cy.get("table").find(`tr:contains("1337")`);
     });
   });
 });
+
+/**
+ * Searches for common fields that appear on multiple modal windows (to avoid code duplicaitons).
+ */
+function checkDuplicateFields(): void {
+  cy.get("table").find(`tr:contains("Activity")`);
+  cy.get("table").find(`tr:contains("NACE Code(s)")`);
+  cy.get("table").find(`tr:contains("Revenue")`);
+  cy.get("table").find(`tr:contains("Revenue (%)")`);
+}
