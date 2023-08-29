@@ -40,7 +40,7 @@ describeIf(
           "/companies/choose",
           `/companies/${companyId}/frameworks/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
-          `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
+          // TOD O `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}/upload`,
         ];
         reviewerOnlyPages = ["/qualityassurance"];

@@ -46,18 +46,21 @@ const buttonRowHeaderId = "row-header-id";
 
 /**
  * Adds click event listeners on DataTable row headers to expand and collapse row
+ * @param dataTableIdentifier id of parent DataTable element from where we are mounting
  * @param expandedRowsOnClick function passes the latest list of expanded row id's
  * @param newExpandedRowsCallback function that returns the updated (after click) list of expanded row id's
  * @returns the map of rows and their click handlers needed for unmounting
  */
 export function mountRowHeaderClickEventListeners(
+  dataTableIdentifier: string,
   expandedRowsOnClick: () => string[],
   newExpandedRowsCallback: (newExpandedRows: string[]) => void,
 ): Map<Element, EventListener> {
   const handlerMap: Map<Element, EventListener> = new Map();
   let expandedRowGroups: string[] = [];
-
-  const rowHeaders = Array.from(document.querySelectorAll("[data-row-header-click]"));
+  const rowHeaders = Array.from(
+    document.querySelectorAll(`[data-table-id="${dataTableIdentifier}"][data-row-header-click]`),
+  );
   const rowButtons = rowHeaders
     .map((rowHeader: Element) => {
       const button = rowHeader.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');

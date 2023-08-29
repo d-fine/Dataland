@@ -37,10 +37,12 @@
         </div>
         <div v-show="isExpanded(index)">
           <TwoLayerDataTable
+            data-test="TwoLayerTest"
             :arrayOfKpiDataObjects="arrayOfKpiDataObjectsMapItem[1]"
             :list-of-reporting-periods-with-data-id="arrayOfReportingPeriodWithDataId"
             headerInputStyle="display: none;"
             :modal-column-headers="modalColumnHeaders"
+            :sort-by-subcategory-key="sortBySubcategoryKey"
           />
         </div>
       </div>
@@ -52,17 +54,12 @@
 import { type KpiDataObject, type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import {
-  type Category,
-  type DataAndMetaInformation,
-  type Field,
-  type FrameworkData,
-  type Subcategory,
-} from "@/utils/GenericFrameworkTypes";
+import { type Category, type Field, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
+import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
 export default defineComponent({
   name: "ThreeLayerTable",
@@ -85,7 +82,7 @@ export default defineComponent({
       required: true,
     },
     dataAndMetaInfo: {
-      type: Array as () => Array<DataAndMetaInformation>,
+      type: Array as () => Array<DataAndMetaInformationViewModel<FrameworkViewModel>>,
       required: true,
     },
     formatValueForDisplay: {
@@ -96,12 +93,17 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    sortBySubcategoryKey: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  mounted() {
+    this.triggerConversionOfDataForDisplay();
   },
   watch: {
     dataAndMetaInfo() {
-      if (this.dataAndMetaInfo.length > 0) {
-        this.convertDataToFrontendFormat();
-      }
+      this.triggerConversionOfDataForDisplay();
     },
   },
   emits: ["dataConverted"],
@@ -122,7 +124,7 @@ export default defineComponent({
       dataId: string,
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
-      const kpiData = {
+      const kpiData: KpiDataObject = {
         categoryKey: this.importantCategoryKeys.includes(category.name) ? `_${category.name}` : category.name,
         categoryLabel: category.label ? category.label : category.name,
         subcategoryKey: this.importantSubcategoryKeys.includes(subcategory.name)
@@ -134,11 +136,12 @@ export default defineComponent({
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
         content: { [dataId]: this.formatValueForDisplay(kpiField, kpiValue) ?? "" },
-      } as KpiDataObject;
-      if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
-        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
+      };
+      const uniqueIdentiferOfKpi = `${kpiKey}+${subcategory.name}+${category.name}`;
+      if (this.mapOfKpiKeysToDataObjects.has(uniqueIdentiferOfKpi)) {
+        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(uniqueIdentiferOfKpi)?.content);
       }
-      this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
+      this.mapOfKpiKeysToDataObjects.set(uniqueIdentiferOfKpi, kpiData);
       this.resultKpiData = kpiData;
     },
     /**
@@ -154,14 +157,15 @@ export default defineComponent({
             dataId: dataId,
             reportingPeriod: reportingPeriod,
           });
-          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data) as [string, object] | null) {
+          for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data)) {
+            if (categoryKey == "toApiModel") continue; // ignore toApiModel() Function as it is not a KPI
             if (categoryObject == null) continue;
             const listOfDataObjects: Array<KpiDataObject> = [];
             const frameworkCategoryData = assertDefined(
               this.dataModel.find((category) => category.name === categoryKey),
             );
             this.iterateThroughSubcategories(
-              categoryObject,
+              categoryObject as object,
               categoryKey,
               frameworkCategoryData,
               dataId,
@@ -180,65 +184,62 @@ export default defineComponent({
     },
     /**
      * Iterates through all subcategories of a category
-     * @param categoryObject the data object of the framework's category
+     * @param categoryDataObject the data object of the framework's category
      * @param categoryKey the key of the corresponding framework's category
-     * @param frameworkCategoryData  the category object of the framework's category
+     * @param category  the category object of the framework's category
      * @param dataId  the ID of the dataset
-     * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param currentDataset dataset for which the show if conditions should be checked
+     * @param listOfKpiDataObjects collector for the kpi data objects
+     * @param currentViewModelDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategories(
-      categoryObject,
-      categoryKey,
-      frameworkCategoryData: Category,
+      categoryDataObject: object,
+      categoryKey: string,
+      category: Category,
       dataId: string,
-      listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkData,
+      listOfKpiDataObjects: Array<KpiDataObject>,
+      currentViewModelDataset: FrameworkViewModel,
     ) {
-      for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
-        string,
-        object | null,
-      ][]) {
+      for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryDataObject)) {
         if (subCategoryObject == null) continue;
         this.iterateThroughSubcategoryKpis(
-          subCategoryObject,
+          subCategoryObject as object,
           categoryKey,
           subCategoryKey,
-          frameworkCategoryData,
+          category,
           dataId,
-          listOfDataObjects,
-          currentDataset,
+          listOfKpiDataObjects,
+          currentViewModelDataset,
         );
       }
     },
     /**
      * Builds the result Kpi Data Object and adds it to the result list
-     * @param subCategoryObject the data object of the framework's subcategory
+     * @param subCategoryDataObject the data object of the framework's subcategory
      * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
-     * @param frameworkCategoryData the category object of the framework's category
+     * @param catgory the category object of the framework's category
      * @param dataId the ID of the dataset
-     * @param listOfDataObjects a map containing the category and it's corresponding Kpis
-     * @param currentDataset dataset for which the show if conditions should be checked
+     * @param listOfKpiDataObjects collector for the kpi data objects
+     * @param currentViewModelDataset dataset for which the show if conditions should be checked
      */
     iterateThroughSubcategoryKpis(
-      subCategoryObject: object,
-      categoryKey,
+      subCategoryDataObject: object,
+      categoryKey: string,
       subCategoryKey: string,
-      frameworkCategoryData: Category,
+      catgory: Category,
       dataId: string,
-      listOfDataObjects: Array<KpiDataObject>,
-      currentDataset: FrameworkData,
+      listOfKpiDataObjects: Array<KpiDataObject>,
+      currentViewModelDataset: FrameworkViewModel,
     ) {
-      for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object] | null) {
+      for (const [kpiKey, kpiValue] of Object.entries(subCategoryDataObject)) {
         const subcategory = assertDefined(
-          frameworkCategoryData.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
+          catgory.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
-        if (field.showIf(currentDataset)) {
-          this.createKpiDataObjects(kpiKey as string, kpiValue as KpiValue, subcategory, frameworkCategoryData, dataId);
-          listOfDataObjects.push(this.resultKpiData);
+        if (field.showIf(currentViewModelDataset.toApiModel())) {
+          this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, catgory, dataId);
+          listOfKpiDataObjects.push(this.resultKpiData);
         }
       }
     },
@@ -249,7 +250,7 @@ export default defineComponent({
      */
     shouldCategoryBeRendered(categoryName: string): boolean {
       const category = assertDefined(this.dataModel.find((category) => category.label === categoryName));
-      return this.dataAndMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.data).some((data) => category.showIf(data));
+      return this.dataAndMetaInfo.some((dataAndMetaInfo) => category.showIf(dataAndMetaInfo.data.toApiModel()));
     },
     /**
      * Retrieves the color for a given category from Data Model
@@ -274,6 +275,15 @@ export default defineComponent({
     toggleExpansion(key: number) {
       if (this.isExpanded(key)) this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
       else this.expandedGroup.push(key);
+    },
+
+    /**
+     * Checks if data to display is there. If yes, it starts converting it to the frondet format for display.
+     */
+    triggerConversionOfDataForDisplay() {
+      if (this.dataAndMetaInfo.length > 0) {
+        this.convertDataToFrontendFormat();
+      }
     },
   },
 });

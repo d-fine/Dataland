@@ -38,11 +38,29 @@ export default defineComponent({
       type: String,
     },
   },
-
+  mounted() {
+    if (!this.dataType) return this.gotoNotFound();
+    if (!this.singleViewFrameworks.includes(this.dataType) && !this.multiViewFrameworks.includes(this.dataType))
+      return this.gotoNotFound();
+  },
+  methods: {
+    /**
+     * Navigate to the not found page.
+     */
+    gotoNotFound() {
+      void this.$router.push("/nocontent");
+    },
+  },
   data() {
     return {
-      singleViewFrameworks: [DataTypeEnum.EutaxonomyNonFinancials, DataTypeEnum.EutaxonomyFinancials] as string[],
-      multiViewFrameworks: [DataTypeEnum.Lksg, DataTypeEnum.Sfdr, DataTypeEnum.P2p, DataTypeEnum.Sme] as string[],
+      singleViewFrameworks: [DataTypeEnum.EutaxonomyFinancials] as string[],
+      multiViewFrameworks: [
+        DataTypeEnum.EutaxonomyNonFinancials,
+        DataTypeEnum.Lksg,
+        DataTypeEnum.Sfdr,
+        DataTypeEnum.P2p,
+        DataTypeEnum.Sme,
+      ] as string[],
     };
   },
 });

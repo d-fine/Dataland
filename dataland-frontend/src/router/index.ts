@@ -1,14 +1,10 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
-const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
-  import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
 const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
 
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
-const ViewEuTaxonomyNonFinancialsSample = (): Promise<RouteComponent> =>
-  import("@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue");
 const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/TheImprint.vue");
 const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
@@ -36,8 +32,7 @@ const routes = [
       isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
     },
   },
-  {
-    path: "/lp",
+  {    path: "/lp",
     name: "New Landing Page",
     component: NewLandingPage,
     props: {
@@ -60,12 +55,6 @@ const routes = [
     props: true,
     name: "Choose Framework",
     component: ChooseFrameworkForDataUpload,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
-    props: true,
-    name: "Upload Eu Taxonomy Data For Non-Financials",
-    component: UploadEuTaxonomyDataForNonFinancials,
   },
   {
     path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
