@@ -2,7 +2,7 @@ import { createWebHistory, createRouter, type RouteComponent } from "vue-router"
 const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
-const LandingPage = (): Promise<RouteComponent> => import("@/components/pages/LandingPage.vue");
+const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
 
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
@@ -38,8 +38,8 @@ const routes = [
   },
   {
     path: "/lp",
-    name: "Landing Page",
-    component: LandingPage,
+    name: "New Landing Page",
+    component: NewLandingPage,
     props: {
       isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
     },
