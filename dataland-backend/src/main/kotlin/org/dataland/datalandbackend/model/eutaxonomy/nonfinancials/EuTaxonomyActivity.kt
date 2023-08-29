@@ -26,21 +26,17 @@ data class EuTaxonomyAlignedActivity(
     val activityName: Activity,
     val naceCodes: List<String>?,
     val share: RelativeAndAbsoluteFinancialShare?,
-    // TODO these names differ from the ones specified in the data dictionary due to length.
-    //  However, their purpose is clear from the names here.
     val substantialContributionToClimateChangeMitigation: BigDecimal?,
     val substantialContributionToClimateChangeAdaption: BigDecimal?,
-    val substantialContributionToSustainableWaterUse: BigDecimal?,
-    val substantialContributionToCircularEconomy: BigDecimal?,
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: BigDecimal?,
+    val substantialContributionToTransitionToACircularEconomy: BigDecimal?,
     val substantialContributionToPollutionPreventionAndControl: BigDecimal?,
-    val substantialContributionToBiodiversity: BigDecimal?,
-    // TODO these names differ from the ones specified in the data dictionary due to length.
-    //  However, their purpose is clear from the names here.
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: BigDecimal?,
     val dnshToClimateChangeMitigation: YesNo?,
     val dnshToClimateChangeAdaption: YesNo?,
-    val dnshToSustainableWaterUse: YesNo?,
-    val dnshToCircularEconomy: YesNo?,
+    val dnshToSustainableUseAndProtectionOfWaterAndMarineResources: YesNo?,
+    val dnshToTransitionToACircularEconomy: YesNo?,
     val dnshToPollutionPreventionAndControl: YesNo?,
-    val dnshToBiodiversity: YesNo?,
+    val dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: YesNo?,
     val minimumSafeguards: YesNo?,
 )

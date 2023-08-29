@@ -5210,16 +5210,16 @@
           "substantialContributionToClimateChangeAdaption": {
             "type": "number"
           },
-          "substantialContributionToSustainableWaterUse": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
             "type": "number"
           },
-          "substantialContributionToCircularEconomy": {
+          "substantialContributionToTransitionToACircularEconomy": {
             "type": "number"
           },
           "substantialContributionToPollutionPreventionAndControl": {
             "type": "number"
           },
-          "substantialContributionToBiodiversity": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
             "type": "number"
           },
           "dnshToClimateChangeMitigation": {
@@ -5228,16 +5228,16 @@
           "dnshToClimateChangeAdaption": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "dnshToSustainableWaterUse": {
+          "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "dnshToCircularEconomy": {
+          "dnshToTransitionToACircularEconomy": {
             "$ref": "#/components/schemas/YesNo"
           },
           "dnshToPollutionPreventionAndControl": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "dnshToBiodiversity": {
+          "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": {
             "$ref": "#/components/schemas/YesNo"
           },
           "minimumSafeguards": {
@@ -5268,13 +5268,13 @@
           "totalAmount": {
             "$ref": "#/components/schemas/DataPointOneValueAmountWithCurrency"
           },
-          "totalNonEligibleShare": {
+          "nonEligibleShare": {
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
-          "totalEligibleShare": {
+          "eligibleShare": {
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
-          "totalNonAlignedShare": {
+          "nonAlignedShare": {
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "nonAlignedActivities": {
@@ -5283,7 +5283,7 @@
               "$ref": "#/components/schemas/EuTaxonomyActivity"
             }
           },
-          "totalAlignedShare": {
+          "alignedShare": {
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "substantialContributionToClimateChangeMitigation": {
@@ -5292,16 +5292,16 @@
           "substantialContributionToClimateChangeAdaption": {
             "type": "number"
           },
-          "substantialContributionToSustainableWaterUse": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
             "type": "number"
           },
-          "substantialContributionToCircularEconomy": {
+          "substantialContributionToTransitionToACircularEconomy": {
             "type": "number"
           },
           "substantialContributionToPollutionPreventionAndControl": {
             "type": "number"
           },
-          "substantialContributionToBiodiversity": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
             "type": "number"
           },
           "alignedActivities": {
@@ -5310,10 +5310,10 @@
               "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
             }
           },
-          "totalEnablingShare": {
+          "enablingShare": {
             "type": "number"
           },
-          "totalTransitionalShare": {
+          "transitionalShare": {
             "type": "number"
           }
         }
