@@ -1,8 +1,23 @@
-.p-datatable {
+.p-datatable, .p-datatable.p-datatable-scrollable {
   border-radius: 0;
   background: $table-background-color;
   color: $main-text-color;
+
+  .border-left {
+    border-left: 1px solid $table-border;
+  }
+
+  .border-right {
+    border-right: 1px solid $table-border;
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid $table-border;
+  }
+
   .horizontal-headers-size {
+    background-color: #fff;
+
     &:first-of-type {
       width: $first-table-column-width;
     }
@@ -84,11 +99,50 @@
     }
   }
   .p-datatable-thead {
+    z-index: 1;
     tr {
       box-shadow: none;
       &:hover {
         background: $table-background-color;
       }
+    }
+  }
+
+  &.activities-data-table {
+    $col-activity-width: 300px;
+    $col-nace-codes-width: 70px;
+    .group-row-header {
+      background-color: $tables-headers-bg;
+      border-bottom: 1px solid $table-border;
+      .p-column-header-content {
+        justify-content: center;
+      }
+      &:not(:first-of-type){
+        border-left: 1px solid $table-border;
+      }
+    }
+    .first-group-column:not(:first-of-type) {
+      border-left: 1px solid $table-border;
+    }
+    .non-frozen-header{
+      vertical-align: top;
+    }
+    .frozen-row-header {
+      vertical-align: top;
+      background-color: $tables-headers-bg;
+    }
+    .col-activity {
+      width: $col-activity-width;
+      min-width: $col-activity-width;
+    }
+    .col-nace-codes {
+      width: $col-nace-codes-width;
+      min-width: $col-nace-codes-width;
+      border-right: 1px solid $table-border;
+    }
+    .col-value {
+      width: 160px;
+      min-width: 160px;
     }
   }
 }

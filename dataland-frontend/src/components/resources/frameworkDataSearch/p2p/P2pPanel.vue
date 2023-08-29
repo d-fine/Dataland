@@ -6,7 +6,7 @@
   <div v-show="!waitingForData">
     <ThreeLayerTable
       :data-model="p2pDataModel"
-      :data-and-meta-info="p2pDataAndMetaInfo"
+      :data-and-meta-info="p2pDataAndMetaInfo.map((it) => getViewModelWithIdentityApiModel(it))"
       @data-converted="handleFinishedDataConversion"
       :format-value-for-display="formatValueForDisplay"
     />
@@ -25,6 +25,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
 
 export default defineComponent({
   name: "P2pPanel",
@@ -61,6 +62,7 @@ export default defineComponent({
   },
 
   methods: {
+    getViewModelWithIdentityApiModel,
     humanizeString,
     /**
      * Fetches all accepted P2P datasets for the current company and converts them to the required frontend format.

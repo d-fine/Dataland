@@ -54,7 +54,7 @@
 
       <Column field="subAreaKey" header="Impact Area"></Column>
       <template #groupheader="slotProps">
-        <span :id="slotProps.data.subAreaKey" data-row-header-click>{{
+        <span :id="slotProps.data.subAreaKey" :data-table-id="'sfdrDataTable'" data-row-header-click>{{
           subAreaNameMappings[slotProps.data.subAreaKey]
             ? subAreaNameMappings[slotProps.data.subAreaKey]
             : slotProps.data.subAreaKey
@@ -118,6 +118,7 @@ export default defineComponent({
   created() {
     setTimeout(() => {
       this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+        "sfdrDataTable",
         () => this.expandedRowGroups,
         (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
       );
