@@ -18,11 +18,3 @@ export function randomYesNoNa(): YesNoNa {
 }
 
 const possibleYesNoNaUndefinedValues = [undefined, ...Object.values(YesNoNa)];
-
-/**
- * Randomly returns Yes, No, N/A or undefined
- * @returns Yes, No, N/A or undefined
- */
-export function randomYesNoNaUndefined(): YesNoNa | undefined {
-  return faker.helpers.arrayElement(possibleYesNoNaUndefinedValues);
-}
