@@ -54,13 +54,13 @@ import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import FileUpload, { type FileUploadSelectEvent } from "primevue/fileupload";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import {
   calculateSha256HashFromFile,
   type DocumentToUpload,
   isThereActuallyANewFileSelected,
   removeFileTypeExtension,
 } from "@/utils/FileUploadUtils";
+import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/DatalandSettings";
 
 export default defineComponent({
   name: "UploadDocumentsForm",
@@ -72,7 +72,7 @@ export default defineComponent({
   data() {
     return {
       formatBytesUserFriendly,
-      DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+      DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       documentsToUpload: [] as DocumentToUpload[],
     };
   },

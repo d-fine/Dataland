@@ -120,6 +120,7 @@
       <template #groupheader="slotProps">
         <span
           :data-test="slotProps.data.subcategoryKey"
+          :data-table-id="dataTableIdentifier"
           :id="slotProps.data.subcategoryKey"
           data-row-header-click
           style="cursor: pointer"
@@ -167,6 +168,7 @@ export default defineComponent({
       ]),
       YesNo,
       rowClickHandlersMap: new Map() as Map<Element, EventListener>,
+      dataTableIdentifier: "" as string,
     };
   },
   props: {
@@ -191,8 +193,10 @@ export default defineComponent({
     },
   },
   created() {
+    this.dataTableIdentifier = (Math.random() + 1).toString(36).substring(2);
     setTimeout(() => {
       this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+        this.dataTableIdentifier,
         () => this.expandedRowGroups,
         (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
       );
