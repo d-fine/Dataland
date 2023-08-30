@@ -109,7 +109,7 @@ function generateAlignedActivity(): EuTaxonomyAlignedActivity {
 export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
   return {
     totalAmount: valueOrUndefined(
-      generateDatapointWithUnit(randomEuroValue(0, 100), faker.finance.currencyCode(), reports),
+      generateDatapointWithUnit(randomEuroValue(0, 10000000000), faker.finance.currencyCode(), reports),
     ),
     totalNonEligibleShare: valueOrUndefined(generateFinancialShare()),
     totalEligibleShare: valueOrUndefined(generateFinancialShare()),
@@ -120,7 +120,6 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments):
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity)),
     totalEnablingShare: valueOrUndefined(generatePercentage()),
     totalTransitionalShare: valueOrUndefined(generatePercentage()),
-    //TODO check generation of total amonut, should also have unit
   };
 }
 

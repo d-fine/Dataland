@@ -11,7 +11,8 @@ const minEuro = 50000;
  * @returns a random number in [min, max]
  */
 export function randomEuroValue(min: number = minEuro, max: number = maxEuro): number {
-  return faker.number.float({ min: min, max: max });
+  // TODO Emanuel not a good name, since this is not only used for euros
+  return faker.number.float({ min: min, max: max, precision: 1 });
 }
 
 /**
