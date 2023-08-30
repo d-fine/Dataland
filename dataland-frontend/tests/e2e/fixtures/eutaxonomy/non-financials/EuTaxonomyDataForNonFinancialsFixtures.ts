@@ -15,7 +15,7 @@ import {
 } from "@e2e/fixtures/FixtureUtils";
 import { generateDatapointWithUnit } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFloat } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
@@ -36,7 +36,7 @@ function generatePercentage(): number {
  */
 export function generateAmountWithCurrency(): AmountWithCurrency {
   return {
-    amount: valueOrUndefined(randomEuroValue()),
+    amount: valueOrUndefined(randomFloat(1000000, 10000000000, 1)),
     currency: valueOrUndefined(generateIso4217CurrencyCode()),
   };
 }
@@ -103,7 +103,7 @@ function generateAlignedActivity(): EuTaxonomyAlignedActivity {
 export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
   return {
     totalAmount: valueOrUndefined(
-      generateDatapointWithUnit(randomEuroValue(0, 10000000000), faker.finance.currencyCode(), reports),
+      generateDatapointWithUnit(randomFloat(1000000, 10000000000, 1), faker.finance.currencyCode(), reports),
     ),
     nonEligibleShare: valueOrUndefined(generateFinancialShare()),
     eligibleShare: valueOrUndefined(generateFinancialShare()),
