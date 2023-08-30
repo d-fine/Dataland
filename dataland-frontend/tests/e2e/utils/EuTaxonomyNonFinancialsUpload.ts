@@ -58,38 +58,23 @@ export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
   cy.get('input[name="numberOfEmployees"]').clear().type("333");
   cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
 
-  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
-  cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(assuranceReportName);
-  cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
+  cy.get('select[name="assurance"]').select(1);
+  cy.get('input[name="provider"]').type("Some Assurance Provider Company");
+  cy.get('select[name="report"]').eq(0).select(assuranceReportName);
+  cy.get('input[name="page"]').eq(0).type("-13");
   cy.get('em[title="Assurance"]').click();
   cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
-  cy.get('[data-test="assuranceSection"] input[name="page"]').clear().type("1");
-  cy.get('[data-test="dataPointToggleTitle"]').should("exist");
-  for (const argument of ["capexSection", "opexSection", "revenueSection"]) {
-    if (!valueFieldNotFilled) {
-      cy.get(`div[data-test=${argument}] input[name="valueAsAbsolute"]`).each(($element, index) => {
-        const inputNumber = 10 * index + 7;
-        cy.wrap($element).type(inputNumber.toString());
-      });
-      cy.get(`div[data-test=${argument}] input[name="valueAsPercentage"]`).each(($element, index) => {
-        const inputNumber = 10 * index + 7;
-        cy.wrap($element).type(inputNumber.toString());
-      });
-    }
-    cy.get(`div[data-test=${argument}] select[name="report"]`).each(($element) => {
-      cy.wrap($element).select(1);
-    });
-    cy.get(`div[data-test=${argument}] input[name="page"]`).each(($element) => {
-      cy.wrap($element).type("12");
-    });
-    cy.get(`div[data-test=${argument}] select[name="quality"]`).each(($element) => {
-      cy.wrap($element).select(3);
-    });
-    cy.get(`div[data-test=${argument}] textarea[name="comment"]`).each(($element) => {
-      cy.wrap($element).type("test");
-    });
-  }
+  cy.get('input[name="page"]').eq(0).clear().type("1");
+  cy.get('div[name="revenue"]').within(() => {
+    cy.get('input[name="value"]').type("250700");
+    cy.get('select[name="unit"]').select(1);
+    cy.get('select[name="quality"]').select(1);
+  });
+  cy.get('div[name="capex"]').within(() => {
+    cy.get('input[name="value"]').type("450700");
+    cy.get('select[name="unit"]').select(10);
+    cy.get('select[name="quality"]').select(1);
+  });
 }
 
 /**

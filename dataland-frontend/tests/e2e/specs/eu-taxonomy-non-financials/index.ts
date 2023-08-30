@@ -3,4 +3,5 @@
  */
 describe("EU Taxonomy for non-financials Company Page tests", () => {
   require("./DataIntegrity");
+  require("./DataUpload");
 });

@@ -14,7 +14,7 @@ import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
 import { type CyHttpMessages } from "cypress/types/net-stubbing";
-import { goToEditFormOfMostRecentDataset } from "./GeneralUtils";
+import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from "./GeneralUtils";
 import Chainable = Cypress.Chainable;
 
 /**
@@ -185,13 +185,15 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable
  * @param expectIncludedFile specifies if the test file is expected to be in the server response
  */
 export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
-  goToEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
-    const referencedReports = assertDefined(
-      (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports,
-    );
-    expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
-    expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
-  });
+  goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyFinancials).then(
+    (interception) => {
+      const referencedReports = assertDefined(
+        (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports,
+      );
+      expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
+      expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
+    },
+  );
 }
 
 /**

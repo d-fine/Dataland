@@ -1,5 +1,4 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
-import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
 /*
 Note: This file is not in the same state as it is in the devtools repo, where it has been auto-generated.
