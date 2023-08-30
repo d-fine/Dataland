@@ -7,7 +7,6 @@ import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
-import java.math.BigDecimal
 
 /**
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
