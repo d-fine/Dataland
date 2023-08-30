@@ -5,7 +5,7 @@ import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/com
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-describe("Component test for the NewEUTaxonomy Page", () => {
+describe("Component test for the EUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
 
   before(function () {
@@ -29,11 +29,11 @@ describe("Component test for the NewEUTaxonomy Page", () => {
    */
   function buildExpectedOrderOfSubcategoriesForCategory(categoryName: "Revenue" | "CapEx" | "OpEx"): string[] {
     return [
-      `Total Aligned ${categoryName}`,
+      `Aligned ${categoryName}`,
       `Total ${categoryName}`,
-      `Total Eligible ${categoryName}`,
-      `Total Non-Aligned ${categoryName}`,
-      `Total Non-Eligible ${categoryName}`,
+      `Eligible ${categoryName}`,
+      `Non-Aligned ${categoryName}`,
+      `Non-Eligible ${categoryName}`,
     ];
   }
 
@@ -46,11 +46,11 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   ];
 
   const dataTestTagsOfCashFlowSubcategory = [
-    "totalAlignedShare",
+    "alignedShare",
     "totalAmount",
-    "totalEligibleShare",
-    "totalNonAlignedShare",
-    "totalNonEligibleShare",
+    "eligibleShare",
+    "nonAlignedShare",
+    "nonEligibleShare",
   ];
 
   const dataTestTagsOfSubcategoriesGroupedByCategories: string[][] = [
@@ -74,7 +74,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
    * @param categoryToExpand name of the category that has to be expanded, since there are multiple modal pages.
    * @param fieldToClick field to click
    */
-  function expandViewPageAndOpenModal(categoryToExpand = "Revenue", fieldToClick = "totalAlignedShare"): void {
+  function expandViewPageAndOpenModal(categoryToExpand = "Revenue", fieldToClick = "alignedShare"): void {
     toggleCategoryByClick("Basic Information");
     toggleCategoryByClick(`${categoryToExpand}`);
     cy.get(`[data-test='${fieldToClick}']`).filter(":visible").click();
@@ -145,7 +145,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         sortBySubcategoryKey: false,
       },
     ).then(() => {
-      expandViewPageAndOpenModal("Revenue", "totalAlignedShare");
+      expandViewPageAndOpenModal("Revenue", "alignedShare");
       checkDuplicateFields();
       cy.get("table").find(`tr:contains("DNSH Criteria")`);
 
@@ -192,7 +192,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         sortBySubcategoryKey: false,
       },
     ).then(() => {
-      expandViewPageAndOpenModal("CapEx", "totalNonAlignedShare");
+      expandViewPageAndOpenModal("CapEx", "nonAlignedShare");
       checkDuplicateFields();
 
       cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesName}")`);

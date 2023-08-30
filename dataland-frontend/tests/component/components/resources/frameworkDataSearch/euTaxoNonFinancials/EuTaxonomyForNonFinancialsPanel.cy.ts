@@ -3,7 +3,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
-describe("Component test for the NewEUTaxonomy Page", () => {
+describe("Component test for the EUTaxonomy Page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
 
   before(function () {
@@ -51,7 +51,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         .toString();
 
       cy.get(`[data-test='CapEx']`).click();
-      cy.contains("span", "Total Aligned CapEx").click();
+      cy.contains("span", "Aligned CapEx").click();
 
       cy.contains("td", "Percentage").siblings("td").find("span").should("contain", betaTotalAlignedCapexPercentage);
 

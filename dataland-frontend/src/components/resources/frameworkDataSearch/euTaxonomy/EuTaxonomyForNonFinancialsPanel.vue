@@ -47,7 +47,17 @@ export default defineComponent({
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel,
-      namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "enablingShare", "transitionalShare"],
+      namesOfFieldsToFormatAsPercentages: [
+        "relativeShareInPercent",
+        "enablingShare",
+        "transitionalShare",
+        "substantialContributionToClimateChangeMitigation",
+        "substantialContributionToClimateChangeAdaption",
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+        "substantialContributionToTransitionToACircularEconomy",
+        "substantialContributionToPollutionPreventionAndControl",
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+      ],
     };
   },
   props: PanelProps,
@@ -135,6 +145,8 @@ export default defineComponent({
      */
     isFieldNameAmongEnvironmentalObjectives(fieldName: string): boolean {
       return Object.values(EnvironmentalObjective).includes(fieldName);
+      //TODO Maybe it is worth to modify this function to reduce the number of hardcoded fields in namesOfFieldsToFormatAsPercentages
+      //TODO  defined in line 50. For now this is synchronous with branch DALA-2307
     },
 
     /**
