@@ -22,6 +22,7 @@
         <template #body="slotProps">
           <span class="table-left-label" :data-test="slotProps.data.kpiKey">{{ slotProps.data.kpiLabel }}</span>
           <em
+            v-if="slotProps.data.kpiDescription"
             class="material-icons info-icon"
             aria-hidden="true"
             :title="slotProps.data.kpiLabel ? slotProps.data.kpiLabel : ''"
