@@ -47,7 +47,23 @@
               slotProps.data.content[reportingPeriodWithDataId.dataId] !== null
             "
           >
-            <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
+            <template
+              v-if="
+                slotProps.data.content[reportingPeriodWithDataId.dataId] &&
+                isModal(slotProps.data.kpiFormFieldComponent)
+              "
+            >
+              <ModalsComponent
+                :component-name="slotProps.data.kpiFormFieldComponent"
+                :data="{
+                  dataId: reportingPeriodWithDataId.dataId,
+                  ...slotProps.data,
+                  columnHeaders: modalColumnHeaders,
+                }"
+              />
+            </template>
+
+            <!-- <template v-else-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
               <a
                 v-if="
                   slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
@@ -67,7 +83,7 @@
               </a>
 
               <span v-else> {{ slotProps.data.content[reportingPeriodWithDataId.dataId][0] }} </span>
-            </template>
+            </template> -->
             <span
               v-else-if="
                 slotProps.data.kpiFormFieldComponent === 'PercentageFormField' &&
@@ -145,13 +161,16 @@ import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Tooltip from "primevue/tooltip";
 import { defineComponent, type PropType } from "vue";
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
-import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
+import ModalsComponent, { isModal } from "@/components/general/ModalsComponent.vue";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
-  components: { DataTable, Column, DocumentLink },
+  components: {
+    DataTable,
+    Column,
+    DocumentLink,
+    ModalsComponent,
+  },
   directives: {
     tooltip: Tooltip,
   },
@@ -237,44 +256,12 @@ export default defineComponent({
       return Object.values(YesNo).includes(value);
     },
     /**
-     * Opens a modal to display a table with the provided list of production sites
-     * @param listOfValues An array consisting of the data to display
-     * @param modalTitle The title for the modal, which is derived from the key of the KPI
-     * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
-     * @param kpiFormFieldComponent determine whether a specific component should be used to render data
+     * @param componentName name of component to be checked
+     * @returns whether passed component is a modal
      */
-    openModalAndDisplayValuesInSubTable(
-      listOfValues: [],
-      modalTitle: string,
-      kpiKey: string,
-      kpiFormFieldComponent = "DetailsCompanyDataTable",
-    ) {
-      let kpiDataComponent:
-        | typeof DetailsCompanyDataTable
-        | typeof AlignedActivitiesDataTable
-        | typeof NonAlignedActivitiesDataTable;
-      if (kpiFormFieldComponent === "AlignedActivitiesDataTable") {
-        kpiDataComponent = AlignedActivitiesDataTable;
-      } else if (kpiFormFieldComponent === "NonAlignedActivitiesDataTable") {
-        kpiDataComponent = NonAlignedActivitiesDataTable;
-      } else {
-        kpiDataComponent = DetailsCompanyDataTable;
-      }
-
-      const dialogData = {
-        listOfRowContents: listOfValues,
-        kpiKeyOfTable: kpiKey,
-        columnHeaders: this.modalColumnHeaders,
-      };
-
-      this.$dialog.open(kpiDataComponent, {
-        props: {
-          header: modalTitle,
-          modal: true,
-          dismissableMask: true,
-        },
-        data: dialogData,
-      });
+    isModal(componentName: string): boolean {
+      console.log(componentName);
+      return isModal(componentName) as boolean;
     },
   },
 });
