@@ -10,7 +10,6 @@ import {
 } from "@clients/backend";
 import {
   generateArray,
-  getRandomNumberOfDistinctElementsFromArray,
   type ReferencedDocuments,
 } from "@e2e/fixtures/FixtureUtils";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";

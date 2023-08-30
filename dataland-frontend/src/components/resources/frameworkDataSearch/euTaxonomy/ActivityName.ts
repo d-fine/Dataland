@@ -5,7 +5,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
  * @returns a human readable version
  */
 export function activityApiNameToHumanizedName(target: string): string {
-  return assertDefined(Object.entries(ActivityName).find(([key, value]) => key == target))[1];
+  return assertDefined(Object.entries(ActivityName).find(([key]) => key == target))[1];
 }
 
 /**

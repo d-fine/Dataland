@@ -86,7 +86,7 @@ import {
   type Activity,
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
-import { activityApiNameToHumanizedName } from "../resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/Formatting";
 
 type ActivityFieldValueObject = {
@@ -339,7 +339,7 @@ function createActivityGroupData<T>(
 ): ActivityFieldValueObject[] {
   const fieldsEntries = Object.entries(fields ?? {});
   return fieldsEntries
-    .filter(([field, value]) => value != null)
+    .filter(([, value]) => value != null)
     .map(([field, value]) => {
       return {
         activity: activityName,
