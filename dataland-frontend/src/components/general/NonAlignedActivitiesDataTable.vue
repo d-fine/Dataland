@@ -35,6 +35,7 @@ import {
 import {
   activityApiNameToHumanizedName,
 } from "../resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { formatPercentageNumber } from "@/utils/Formatting";
 
 type NonAlignedActivityFieldValueObject = {
   activity: string;
@@ -88,7 +89,7 @@ export default defineComponent({
       activity: activity.activityName as string,
       naceCodes: activity.naceCodes as string[],
       revenue: this.formatAbsoluteShare(activity.share?.absoluteShare),
-      revenuePercent: this.fromatRelativeShareInPercent(activity.share?.relativeShareInPercent),
+      revenuePercent: formatPercentageNumber(activity.share?.relativeShareInPercent),
     }));
   },
   methods: {
@@ -109,15 +110,6 @@ export default defineComponent({
       const amount = absoluteShare.amount ?? "";
       const currency = absoluteShare.currency ?? "";
       return `${amount} ${currency}`;
-    },
-    /**
-     *
-     * @param relativeShareInPercent number value of percent
-     * @returns formatted value
-     */
-    fromatRelativeShareInPercent(relativeShareInPercent: number | undefined): string {
-      if (!relativeShareInPercent) return "";
-      return `${relativeShareInPercent} %`;
     },
     /**
      *

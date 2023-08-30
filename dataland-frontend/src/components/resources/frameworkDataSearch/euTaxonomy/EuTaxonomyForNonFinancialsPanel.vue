@@ -35,6 +35,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
+import { formatPercentageNumber } from "@/utils/Formatting";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -149,16 +150,6 @@ export default defineComponent({
     },
 
     /**
-     * Formats a percentage number by rounding it to two decimals and afterward making it a string with a percent
-     * symbol at the end.
-     * @param relativeShareInPercent is the percentage number to round
-     * @returns the resulting string
-     */
-    formatPercentageNumber(relativeShareInPercent: number) {
-      return `${relativeShareInPercent.toFixed(2).toString()} %`;
-    },
-
-    /**
      * Formats KPI values for display
      * @param field the considered KPI field
      * @param kpiValueToFormat the value to be formatted
@@ -169,7 +160,7 @@ export default defineComponent({
         return kpiValueToFormat;
       }
       if (this.namesOfFieldsToFormatAsPercentages.includes(field.name)) {
-        return this.formatPercentageNumber(kpiValueToFormat as number); // TODO make this function globally available
+        return formatPercentageNumber(kpiValueToFormat as number);
       }
       if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
         return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);

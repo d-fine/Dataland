@@ -89,6 +89,7 @@ import {
 import {
   activityApiNameToHumanizedName,
 } from "../resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { formatPercentageNumber } from "@/utils/Formatting";
 
 type ActivityFieldValueObject = {
   activity: string;
@@ -179,7 +180,7 @@ export default defineComponent({
             substantialContributionToPollutionPreventionAndControl: col.substantialContributionToPollutionPreventionAndControl,
             substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
           },
-          (value: number) => (value ? `${value}%` : ""),
+          formatPercentageNumber,
         ),
         ...createActivityGroupData<YesNo>(
           col.activityName as string,
@@ -312,7 +313,7 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
       activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenuePercent",
-      content: `${activity.share?.relativeShareInPercent ?? ""}%`,
+      content: formatPercentageNumber(activity.share?.relativeShareInPercent),
     },
   ];
 }
