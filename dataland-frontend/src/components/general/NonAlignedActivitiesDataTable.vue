@@ -32,9 +32,7 @@ import {
   type AmountWithCurrency,
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
-import {
-  activityApiNameToHumanizedName,
-} from "../resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { formatPercentageNumber } from "@/utils/Formatting";
 
 type NonAlignedActivityFieldValueObject = {
