@@ -115,21 +115,21 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   }
 
   private static convertDetailsPerCashFlowViewModelToApiModel(
-    details?: EuTaxonomyDetailsPerCashFlowViewModel,
+    viewModel?: EuTaxonomyDetailsPerCashFlowViewModel,
   ): EuTaxonomyDetailsPerCashFlowType | undefined {
-    if (details == undefined) {
+    if (viewModel == undefined) {
       return undefined;
     }
     return {
-      totalAmount: details.totalAmount,
-      totalNonEligibleShare: details.totalNonEligibleShare,
-      totalEligibleShare: details.totalEligibleShare,
-      totalNonAlignedShare: details.totalNonAlignedShare,
-      totalAlignedShare: details.totalAlignedShare,
-      nonAlignedActivities: details.totalNonAlignedShare?.nonAlignedActivities,
-      alignedActivities: details.totalAlignedShare?.alignedActivities,
-      totalEnablingShare: details.totalEnablingShare?.totalEnablingShare,
-      totalTransitionalShare: details.totalTransitionalShare?.totalTransitionalShare,
+      totalAmount: viewModel.totalAmount,
+      totalNonEligibleShare: viewModel.totalNonEligibleShare,
+      totalEligibleShare: viewModel.totalEligibleShare,
+      totalNonAlignedShare: viewModel.totalNonAlignedShare,
+      totalAlignedShare: viewModel.totalAlignedShare,
+      nonAlignedActivities: viewModel.totalNonAlignedShare?.nonAlignedActivities,
+      alignedActivities: viewModel.totalAlignedShare?.alignedActivities,
+      totalEnablingShare: viewModel.totalEnablingShare?.totalEnablingShare,
+      totalTransitionalShare: viewModel.totalTransitionalShare?.totalTransitionalShare,
     };
   }
 }

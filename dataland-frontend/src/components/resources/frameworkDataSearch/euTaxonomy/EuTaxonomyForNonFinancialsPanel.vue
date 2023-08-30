@@ -114,15 +114,17 @@ export default defineComponent({
     },
 
     /**
-     * Checks if a KpiValue is an object with amount and/or currency
+     * Checks if a KpiValue is an object with amount and currency
      * @param kpiValue the kpiValue that shall be checked
      * @returns a boolean based on the result of the check
      */
-    hasKpiObjectAmountOrCurrency(kpiValue: KpiValue): boolean {
+    isKpiObjectAmountWithCurrency(kpiValue: KpiValue): boolean {
       return (
         typeof kpiValue === "object" &&
-        (("amount" in kpiValue && (typeof kpiValue.amount === "number" || kpiValue.amount === null)) ||
-          ("currency" in kpiValue && (typeof kpiValue.currency === "string" || kpiValue.currency === null)))
+        "amount" in kpiValue &&
+        (typeof kpiValue.amount === "number" || kpiValue.amount === null) &&
+        "currency" in kpiValue &&
+        (typeof kpiValue.currency === "string" || kpiValue.currency === null)
       );
     },
 
@@ -173,7 +175,7 @@ export default defineComponent({
       ) {
         return this.formatPercentageNumber(kpiValueToFormat as number);
       }
-      if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
+      if (this.isKpiObjectAmountWithCurrency(kpiValueToFormat)) {
         return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
       }
       return kpiValueToFormat;

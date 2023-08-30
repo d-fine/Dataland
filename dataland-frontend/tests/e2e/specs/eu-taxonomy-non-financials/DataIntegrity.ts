@@ -5,8 +5,6 @@ import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/back
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { humanizeString } from "@/utils/StringHumanizer";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
@@ -14,7 +12,7 @@ before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
     const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
     euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
-    // "only-eligible-and-total-numbers" should be replaced later with a more suitable fake fixture
+    // "only-eligible-and-total-numbers" should be replaced later with a more suitable fake fixture TODO
     // or manually add field values here like euTaxonomyForNonFinancialsFixtureForTest.t.fieldX = {...}
   });
 });
