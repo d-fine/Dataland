@@ -47,7 +47,7 @@ export default defineComponent({
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel,
-      namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "totalEnablingShare", "totalTransitionalShare"],
+      namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "enablingShare", "transitionalShare"],
     };
   },
   props: PanelProps,
