@@ -2,11 +2,12 @@ import { generateFixtureDataset, type ReferencedDocuments } from "@e2e/fixtures/
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type EuTaxonomyDataForNonFinancials, type EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
-import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFloat } from "@e2e/fixtures/common/NumberFixtures";
 import {
   generateFinancialShare,
   generateEuTaxonomyDataForNonFinancials,
 } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
+import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
@@ -77,7 +78,7 @@ function createOnlyEligibleAndTotalNumbers(
     referencedReports: ReferencedDocuments,
   ): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: generateDatapoint(randomEuroValue(), referencedReports),
+      totalAmount: generateDatapoint(randomFloat(1000000, 10000000000, 1), referencedReports),
       totalEligibleShare: generateFinancialShare(),
     };
   }

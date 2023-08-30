@@ -18,7 +18,7 @@ import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { faker } from "@faker-js/faker";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
-import { randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomInt, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataPointFixtures";
 
 /**
@@ -66,7 +66,7 @@ export function getSectorAmmonia(undefinedProbability: number): P2pAmmonia {
 export function getSectorAutomotive(undefinedProbability: number): P2pAutomotive {
   return {
     energy: {
-      productionSiteEnergyConsumption: valueOrUndefined(randomNumber(10000), undefinedProbability),
+      productionSiteEnergyConsumption: valueOrUndefined(randomInt(10000), undefinedProbability),
       energyMix: valueOrUndefined(randomPercentageValue(), undefinedProbability),
     },
     technologyValueCreation: {
@@ -116,7 +116,7 @@ export function getSectorRealEstate(undefinedProbability: number): P2pRealEstate
     buildingEfficiency: {
       buildingSpecificReburbishmentRoadmap: valueOrUndefined(randomPercentageValue(), undefinedProbability),
       zeroEmissionBuildingShare: valueOrUndefined(randomPercentageValue(), undefinedProbability),
-      buildingEnergyEfficiency: valueOrUndefined(randomNumber(10000), undefinedProbability),
+      buildingEnergyEfficiency: valueOrUndefined(randomInt(10000), undefinedProbability),
     },
     energySource: {
       renewableHeating: valueOrUndefined(randomPercentageValue(), undefinedProbability),
@@ -136,7 +136,7 @@ export function getSectorRealEstate(undefinedProbability: number): P2pRealEstate
 export function getSectorSteel(undefinedProbability: number): P2pSteel {
   return {
     energy: {
-      emissionIntensityOfElectricity: valueOrUndefined(randomNumber(10000), undefinedProbability),
+      emissionIntensityOfElectricity: valueOrUndefined(randomInt(10000), undefinedProbability),
       greenHydrogenUsage: valueOrUndefined(randomYesNo(), undefinedProbability),
     },
     technology: {
@@ -171,7 +171,7 @@ export function getSectorFreightTransportByRoad(undefinedProbability: number): P
 export function getSectorElectricityGeneration(undefinedProbability: number): P2pElectricityGeneration {
   return {
     technology: {
-      electricityMixEmissions: valueOrUndefined(randomNumber(10000), undefinedProbability),
+      electricityMixEmissions: valueOrUndefined(randomInt(10000), undefinedProbability),
       shareOfRenewableElectricity: valueOrUndefined(randomPercentageValue(), undefinedProbability),
       naturalGasPhaseOut: valueOrUndefined(randomFutureDate(), undefinedProbability),
       coalPhaseOut: valueOrUndefined(randomFutureDate(), undefinedProbability),
@@ -198,8 +198,8 @@ export function getSectorLivestockFarming(undefinedProbability: number): P2pLive
       ownFeedPercentage: valueOrUndefined(randomPercentageValue(), undefinedProbability),
       externalFeedCertification: generateBaseDataPointOrUndefined(randomYesNo(), undefinedProbability),
       originOfExternalFeed: faker.company.buzzPhrase(),
-      excessNitrogen: valueOrUndefined(randomNumber(10000), undefinedProbability),
-      cropRotation: valueOrUndefined(randomNumber(10000), undefinedProbability),
+      excessNitrogen: valueOrUndefined(randomInt(10000), undefinedProbability),
+      cropRotation: valueOrUndefined(randomInt(10000), undefinedProbability),
       climateFriendlyProteinProduction: valueOrUndefined(randomPercentageValue(), undefinedProbability),
       greenFodderPercentage: valueOrUndefined(randomPercentageValue(), undefinedProbability),
     },
@@ -229,7 +229,7 @@ export function getSectorCement(undefinedProbability: number): P2pCement {
       electrificationOfProcessHeat: valueOrUndefined(randomPercentageValue(), undefinedProbability),
     },
     material: {
-      clinkerFactorReduction: valueOrUndefined(randomNumber(10000), undefinedProbability),
+      clinkerFactorReduction: valueOrUndefined(randomInt(10000), undefinedProbability),
       preCalcinedClayUsage: valueOrUndefined(randomPercentageValue(), undefinedProbability),
       circularEconomyContribution: valueOrUndefined(randomYesNo(), undefinedProbability),
     },
@@ -266,9 +266,9 @@ export function getSectorGeneral(undefinedProbability: number, sectors: Array<P2
     },
     emissionsPlanning: {
       reductionOfAbsoluteEmissions: valueOrUndefined(randomPercentageValue(), undefinedProbability),
-      reductionOfRelativeEmissions: valueOrUndefined(randomNumber(10000), undefinedProbability),
-      absoluteEmissions: valueOrUndefined(randomNumber(10000), undefinedProbability),
-      relativeEmissions: valueOrUndefined(randomNumber(10000), undefinedProbability),
+      reductionOfRelativeEmissions: valueOrUndefined(randomInt(10000), undefinedProbability),
+      absoluteEmissions: valueOrUndefined(randomInt(10000), undefinedProbability),
+      relativeEmissions: valueOrUndefined(randomInt(10000), undefinedProbability),
       climateActionPlan: valueOrUndefined(randomYesNo(), undefinedProbability),
       useOfInternalCarbonPrice: valueOrUndefined(randomYesNo(), undefinedProbability),
     },

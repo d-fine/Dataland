@@ -1,18 +1,23 @@
 import { faker } from "@faker-js/faker";
 
-const percentagePrecision = 0.0001;
-const maxEuro = 1000000;
-const minEuro = 50000;
-
 /**
  * Generates a random decimal value in [min, max]
  * @param min the minimum allowed value (inclusive)
  * @param max the maximum allowed value (inclusive)
+ * @param precision the precision of the decimal value
  * @returns a random number in [min, max]
  */
-export function randomEuroValue(min: number = minEuro, max: number = maxEuro): number {
-  // TODO Emanuel not a good name, since this is not only used for euros
-  return faker.number.float({ min: min, max: max, precision: 1 });
+export function randomFloat(min: number, max: number, precision?: number): number {
+  return faker.number.float({ min: min, max: max, precision: precision });
+}
+
+/**
+ * Generates a random decimal value between 0 and 1
+ * @param precision
+ * @returns a random float between 0 and 1
+ */
+export function randomPercentageValue(precision = 0.0001): number {
+  return randomFloat(0, 1, precision);
 }
 
 /**
@@ -20,18 +25,6 @@ export function randomEuroValue(min: number = minEuro, max: number = maxEuro): n
  * @param max the maximum allowed value (inclusive)
  * @returns a random number in [0, max]
  */
-export function randomNumber(max: number): number {
+export function randomInt(max: number): number {
   return faker.number.int(max);
-}
-
-/**
- * Generates a random decimal value between 0 and 1
- * @returns a random float between 0 and 1
- */
-export function randomPercentageValue(): number {
-  return faker.number.float({
-    min: 0,
-    max: 1,
-    precision: percentagePrecision,
-  });
 }
