@@ -9,7 +9,7 @@
       :bodyClass="cellClass(col)"
     >
       <template #body="{ data }">
-        <template v-if="col.field === 'activity'">{{ camelCaseToWords(data.activity) }}</template>
+        <template v-if="col.field === 'activity'">{{ activityApiNameToHumanizedName(data.activity) }}</template>
         <template v-else-if="col.field === 'naceCodes'">
           <ul class="unstyled-ul-list">
             <li v-for="code of data.naceCodes" :key="code">{{ code }}</li>
@@ -32,6 +32,10 @@ import {
   type AmountWithCurrency,
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
+import {
+  activityApiNameToHumanizedName,
+} from "../resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { formatPercentageNumber } from "@/utils/Formatting";
 
 type NonAlignedActivityFieldValueObject = {
   activity: string;
@@ -85,17 +89,11 @@ export default defineComponent({
       activity: activity.activityName as string,
       naceCodes: activity.naceCodes as string[],
       revenue: this.formatAbsoluteShare(activity.share?.absoluteShare),
-      revenuePercent: this.fromatRelativeShareInPercent(activity.share?.relativeShareInPercent),
+      revenuePercent: formatPercentageNumber(activity.share?.relativeShareInPercent),
     }));
   },
   methods: {
-    /**
-     * @param target the camel case string we want to format
-     * @returns a human readable version
-     */
-    camelCaseToWords(target: string): string {
-      return target.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, " $1");
-    },
+    activityApiNameToHumanizedName,
     /**
      * @param key the item to lookup
      * @returns the display version of the column header
@@ -112,15 +110,6 @@ export default defineComponent({
       const amount = absoluteShare.amount ?? "";
       const currency = absoluteShare.currency ?? "";
       return `${amount} ${currency}`;
-    },
-    /**
-     *
-     * @param relativeShareInPercent number value of percent
-     * @returns formatted value
-     */
-    fromatRelativeShareInPercent(relativeShareInPercent: number | undefined): string {
-      if (!relativeShareInPercent) return "";
-      return `${relativeShareInPercent} %`;
     },
     /**
      *

@@ -15,20 +15,12 @@ import {
 } from "@e2e/fixtures/FixtureUtils";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-
-/**
- * Generates a random percentage between 0 and 100
- * @returns a reandom percentage
- */
-function generatePercentage(): number {
-  return faker.number.float({ min: 0, max: 100 });
-}
 
 /**
  * Generates a random amount of money
@@ -47,7 +39,7 @@ export function generateAmountWithCurrency(): AmountWithCurrency {
  */
 export function generateFinancialShare(): RelativeAndAbsoluteFinancialShare {
   return {
-    relativeShareInPercent: valueOrUndefined(generatePercentage()),
+    relativeShareInPercent: valueOrUndefined(randomPercentageValue()),
     absoluteShare: valueOrUndefined(generateAmountWithCurrency()),
   };
 }
@@ -71,15 +63,15 @@ function generateActivity(): EuTaxonomyActivity {
 function generateAlignedActivity(): EuTaxonomyAlignedActivity {
   return {
     ...generateActivity(),
-    substantialContributionToClimateChangeMitigation: valueOrUndefined(generatePercentage()),
-    substantialContributionToClimateChangeAdaption: valueOrUndefined(generatePercentage()),
+    substantialContributionToClimateChangeMitigation: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToClimateChangeAdaption: valueOrUndefined(randomPercentageValue()),
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
     ),
-    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(generatePercentage()),
-    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(generatePercentage()),
+    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(randomPercentageValue()),
     substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
     ),
     dnshToClimateChangeMitigation: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
     dnshToClimateChangeAdaption: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
@@ -108,19 +100,19 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments):
     nonAlignedShare: valueOrUndefined(generateFinancialShare()),
     nonAlignedActivities: valueOrUndefined(generateArray(generateActivity)),
     alignedShare: valueOrUndefined(generateFinancialShare()),
-    substantialContributionToClimateChangeMitigation: valueOrUndefined(generatePercentage()),
-    substantialContributionToClimateChangeAdaption: valueOrUndefined(generatePercentage()),
+    substantialContributionToClimateChangeMitigation: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToClimateChangeAdaption: valueOrUndefined(randomPercentageValue()),
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
     ),
-    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(generatePercentage()),
-    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(generatePercentage()),
+    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(randomPercentageValue()),
     substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
     ),
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity)),
-    enablingShare: valueOrUndefined(generatePercentage()),
-    transitionalShare: valueOrUndefined(generatePercentage()),
+    enablingShare: valueOrUndefined(randomPercentageValue()),
+    transitionalShare: valueOrUndefined(randomPercentageValue()),
   };
 }
 

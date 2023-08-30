@@ -510,7 +510,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
             label: "Aligned CapEx per Activity",
             description: "",
             unit: "",
-            component: "AlignedDataTableModal",
+            component: "AlignedActivitiesDataTable",
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
