@@ -40,15 +40,15 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
 
       const alphaContributionToClimateChangeMitigation = assertDefined(
-        capexOfDatasetAlpha.substantialContributionCriteria,
+        capexOfDatasetAlpha.substantialContributionToClimateChangeMitigation,
       )
-        [EnvironmentalObjective.ClimateMitigation].toFixed(2)
+        .toFixed(2)
         .toString();
 
       const gammaContributionToClimateChangeMitigation = assertDefined(
-        capexOfDatasetGamma.substantialContributionCriteria,
+        capexOfDatasetGamma.substantialContributionToClimateChangeMitigation,
       )
-        [EnvironmentalObjective.ClimateMitigation].toFixed(2)
+        .toFixed(2)
         .toString();
 
       cy.get(`[data-test='CapEx']`).click();
