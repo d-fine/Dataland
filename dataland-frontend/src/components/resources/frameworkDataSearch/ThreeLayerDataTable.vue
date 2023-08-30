@@ -224,7 +224,7 @@ export default defineComponent({
      * @param subCategoryDataObject the data object of the framework's subcategory
      * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
-     * @param catgory the category object of the framework's category
+     * @param category the category object of the framework's category
      * @param dataId the ID of the dataset
      * @param listOfKpiDataObjects collector for the kpi data objects
      * @param currentViewModelDataset dataset for which the show if conditions should be checked

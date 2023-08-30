@@ -65,17 +65,6 @@ function generateActivity(): EuTaxonomyActivity {
 }
 
 /**
- * Generates a map with keys drawn from the provided array and generated values
- * @param possibleKeys the keys that can occur in the resulting map
- * @param valueGenerator the generator function for the values
- * @returns the generated map
- */
-function generateMap<K, V>(possibleKeys: Array<K>, valueGenerator: () => V): Map<K, V> {
-  const keys = getRandomNumberOfDistinctElementsFromArray(Array.from(possibleKeys));
-  return new Map<K, V>(keys.map((key) => [key, valueGenerator()]));
-}
-
-/**
  * Generates a random aligned activity
  * @returns a random aligned activity
  */

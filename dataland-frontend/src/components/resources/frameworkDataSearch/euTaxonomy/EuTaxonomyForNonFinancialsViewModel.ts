@@ -13,7 +13,6 @@ import {
   type YesNoNa,
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
-import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
 interface EuTaxonomyDetailsPerCashFlowViewModel {
   totalAmount?: DataPointOneValueAmountWithCurrency;
@@ -65,12 +64,15 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
         nfrdMandatory: apiModel.general?.nfrdMandatory,
       },
     };
-    this.assurance = apiModel.general?.assurance?.assurance == undefined ? undefined : {
-      assurance: {
-        levelOfAssurance: apiModel.general.assurance.assurance,
-        assuranceProvider: apiModel.general.assurance.provider,
-      },
-    };
+    this.assurance =
+      apiModel.general?.assurance?.assurance == undefined
+        ? undefined
+        : {
+            assurance: {
+              levelOfAssurance: apiModel.general.assurance.assurance,
+              assuranceProvider: apiModel.general.assurance.provider,
+            },
+          };
     this.revenue = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.revenue);
     this.capex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.capex);
     this.opex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex);
