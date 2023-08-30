@@ -128,16 +128,12 @@ function createQualityAndDataSourceAndComment(
 
 /**
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
- * @param value the decimal value of the datapoint to generate
- * @param currency the currency of the datapoint to generate
+ * @param value the value of the datapoint to generate
+ * @param unit the unit of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint
  */
-export function generateDatapointWithCurrency<T, Y>(
-  value: T | null,
-  currency: string | null = faker.finance.currencyCode(),
-  reports: ReferencedDocuments,
-): Y {
+export function generateDatapointWithUnit<T, Y>(value: T | null, unit: string, reports: ReferencedDocuments): Y {
   const qualityBucket =
     value === null
       ? QualityOptions.Na
@@ -149,6 +145,6 @@ export function generateDatapointWithCurrency<T, Y>(
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
-    unit: currency ?? undefined,
+    unit: unit ?? undefined,
   } as Y;
 }
