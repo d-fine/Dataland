@@ -86,10 +86,8 @@ import {
   type Activity,
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
-import {
-  activityApiNameToHumanizedName,
-} from "../resources/frameworkDataSearch/euTaxonomy/ActivityName";
-import { formatPercentageNumber } from "@/utils/Formatting";
+import { activityApiNameToHumanizedName } from "../resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/Formatting";
 
 type ActivityFieldValueObject = {
   activity: string;
@@ -175,10 +173,14 @@ export default defineComponent({
           {
             substantialContributionToClimateChangeMitigation: col.substantialContributionToClimateChangeMitigation,
             substantialContributionToClimateChangeAdaption: col.substantialContributionToClimateChangeAdaption,
-            substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
-            substantialContributionToTransitionToACircularEconomy: col.substantialContributionToTransitionToACircularEconomy,
-            substantialContributionToPollutionPreventionAndControl: col.substantialContributionToPollutionPreventionAndControl,
-            substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
+            substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
+              col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
+            substantialContributionToTransitionToACircularEconomy:
+              col.substantialContributionToTransitionToACircularEconomy,
+            substantialContributionToPollutionPreventionAndControl:
+              col.substantialContributionToPollutionPreventionAndControl,
+            substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
+              col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
           },
           formatPercentageNumber,
         ),
@@ -188,10 +190,12 @@ export default defineComponent({
           {
             dnshToClimateChangeMitigation: col.dnshToClimateChangeMitigation,
             dnshToClimateChangeAdaption: col.dnshToClimateChangeAdaption,
-            dnshToSustainableUseAndProtectionOfWaterAndMarineResources: col.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
+            dnshToSustainableUseAndProtectionOfWaterAndMarineResources:
+              col.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
             dnshToTransitionToACircularEconomy: col.dnshToTransitionToACircularEconomy,
             dnshToPollutionPreventionAndControl: col.dnshToPollutionPreventionAndControl,
-            dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: col.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
+            dnshToProtectionAndRestorationOfBiodiversityAndEcosystems:
+              col.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
           },
           (value: YesNo) => (value ? `${value}` : ""),
         ),
@@ -243,8 +247,10 @@ export default defineComponent({
       );
       return value ? value.content : "";
     },
+
     /**
      * @param groupName the name of the group to which columns will be assigned
+     * @param prefix prefix
      * @returns column definitions for group
      */
     makeGroupColumns(groupName: string, prefix: string) {
@@ -255,7 +261,7 @@ export default defineComponent({
         "TransitionToACircularEconomy",
         "PollutionPreventionAndControl",
         "ProtectionAndRestorationOfBiodiversityAndEcosystems",
-      ].map((suffix) => `${prefix}To${suffix}`)
+      ].map((suffix) => `${prefix}To${suffix}`);
       return environmentalObjectiveKeys.map((enviromentalObjectiveKey: string, index: number) => ({
         field: enviromentalObjectiveKey,
         header: this.humanizeHeaderName(enviromentalObjectiveKey),
@@ -307,7 +313,7 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
       activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenue",
-      content: `${activity.share?.absoluteShare?.amount ?? ""} ${activity.share?.absoluteShare?.currency ?? ""}`,
+      content: formatAmountWithCurrency(activity.share?.absoluteShare),
     },
     {
       activity: activity.activityName as Activity,
@@ -332,7 +338,8 @@ function createActivityGroupData<T>(
   valueFormatter: (value: T) => string,
 ): ActivityFieldValueObject[] {
   const fieldsEntries = Object.entries(fields ?? {});
-  return fieldsEntries.filter(([field, value]) => value != null)
+  return fieldsEntries
+    .filter(([field, value]) => value != null)
     .map(([field, value]) => {
       return {
         activity: activityName,
@@ -340,8 +347,7 @@ function createActivityGroupData<T>(
         field,
         content: valueFormatter(value) ?? "",
       };
-    }
-  );
+    });
 }
 
 /**

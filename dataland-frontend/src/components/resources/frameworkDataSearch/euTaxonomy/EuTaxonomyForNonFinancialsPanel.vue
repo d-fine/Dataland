@@ -35,7 +35,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { formatPercentageNumber } from "@/utils/Formatting";
+import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/Formatting";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -138,18 +138,6 @@ export default defineComponent({
     },
 
     /**
-     * Formats an AmountWithCurrency object by concatenating the amount and the currency.
-     * @param amountWithCurrency the object that holds the amount and currency
-     * @returns the resulting string from the concatenation
-     */
-    formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency) {
-      if (amountWithCurrency.amount == undefined) {
-        return null;
-      }
-      return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
-    },
-
-    /**
      * Formats KPI values for display
      * @param field the considered KPI field
      * @param kpiValueToFormat the value to be formatted
@@ -163,7 +151,7 @@ export default defineComponent({
         return formatPercentageNumber(kpiValueToFormat as number);
       }
       if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
-        return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
+        return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
       }
       return kpiValueToFormat;
     },
