@@ -49,7 +49,7 @@
       headerClass="horizontal-headers-size"
     >
       <template #body="{ data }">
-        <template v-if="col.field === 'activity'">{{ camelCaseToWords(data.activity) }}</template>
+        <template v-if="col.field === 'activity'">{{ activityApiNameToHumanizedName(data.activity) }}</template>
         <template v-else>
           <ul class="unstyled-ul-list">
             <li v-for="code of data.naceCodes" :key="code">{{ code }}</li>
@@ -86,6 +86,9 @@ import {
   type Activity,
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
+import {
+  activityApiNameToHumanizedName,
+} from "../resources/frameworkDataSearch/euTaxonomy/ActivityName";
 
 type ActivityFieldValueObject = {
   activity: string;
@@ -146,8 +149,8 @@ export default defineComponent({
       { field: "revenue", header: this.humanizeHeaderName("revenue"), group: "_revenue", groupIndex: 0 },
       { field: "revenuePercent", header: this.humanizeHeaderName("revenuePercent"), group: "_revenue", groupIndex: 1 },
 
-      ...this.makeGroupColumns("substantialContributionCriteria"),
-      ...this.makeGroupColumns("dnshCriteria"),
+      ...this.makeGroupColumns("substantialContributionCriteria", "substantialContribution"),
+      ...this.makeGroupColumns("dnshCriteria", "dnsh"),
 
       {
         field: "minimumSafeguards",
@@ -168,13 +171,27 @@ export default defineComponent({
         ...createActivityGroupData<number>(
           col.activityName as string,
           "substantialContributionCriteria",
-          col.substantialContributionCriteria,
+          {
+            substantialContributionToClimateChangeMitigation: col.substantialContributionToClimateChangeMitigation,
+            substantialContributionToClimateChangeAdaption: col.substantialContributionToClimateChangeAdaption,
+            substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
+            substantialContributionToTransitionToACircularEconomy: col.substantialContributionToTransitionToACircularEconomy,
+            substantialContributionToPollutionPreventionAndControl: col.substantialContributionToPollutionPreventionAndControl,
+            substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
+          },
           (value: number) => (value ? `${value}%` : ""),
         ),
         ...createActivityGroupData<YesNo>(
           col.activityName as string,
           "dnshCriteria",
-          col.dnshCriteria,
+          {
+            dnshToClimateChangeMitigation: col.dnshToClimateChangeMitigation,
+            dnshToClimateChangeAdaption: col.dnshToClimateChangeAdaption,
+            dnshToSustainableUseAndProtectionOfWaterAndMarineResources: col.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
+            dnshToTransitionToACircularEconomy: col.dnshToTransitionToACircularEconomy,
+            dnshToPollutionPreventionAndControl: col.dnshToPollutionPreventionAndControl,
+            dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: col.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
+          },
           (value: YesNo) => (value ? `${value}` : ""),
         ),
         ...createMinimumSafeguardsGroupData(col),
@@ -197,6 +214,7 @@ export default defineComponent({
     ];
   },
   methods: {
+    activityApiNameToHumanizedName,
     /**
      * @param groupName name of the group to count number of fields
      * @returns the maximum value of fields per activity and group
@@ -228,22 +246,23 @@ export default defineComponent({
      * @param groupName the name of the group to which columns will be assigned
      * @returns column definitions for group
      */
-    makeGroupColumns(groupName: string) {
-      const EnvironmentalObjectiveKeys = Object.keys(EnvironmentalObjective).filter((v) => isNaN(Number(v)));
-      return EnvironmentalObjectiveKeys.map((enviromentalObjectiveKey: string, index: number) => ({
+    makeGroupColumns(groupName: string, prefix: string) {
+      const environmentalObjectiveKeys = [
+        "ClimateChangeMitigation",
+        "ClimateChangeAdaption",
+        "SustainableUseAndProtectionOfWaterAndMarineResources",
+        "TransitionToACircularEconomy",
+        "PollutionPreventionAndControl",
+        "ProtectionAndRestorationOfBiodiversityAndEcosystems",
+      ].map((suffix) => `${prefix}To${suffix}`)
+      return environmentalObjectiveKeys.map((enviromentalObjectiveKey: string, index: number) => ({
         field: enviromentalObjectiveKey,
         header: this.humanizeHeaderName(enviromentalObjectiveKey),
         group: groupName,
         groupIndex: index,
       }));
     },
-    /**
-     * @param target the camel case string we want to format
-     * @returns a human readable version
-     */
-    camelCaseToWords(target: string): string {
-      return target.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, " $1");
-    },
+
     /**
      * @param key Define the column's CSS class
      * @returns CSS class name
@@ -308,18 +327,20 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
 function createActivityGroupData<T>(
   activityName: string,
   groupName: string,
-  fields: { [key: string]: T } | undefined,
+  fields: { [key: string]: T | null | undefined } | undefined,
   valueFormatter: (value: T) => string,
 ): ActivityFieldValueObject[] {
   const fieldsEntries = Object.entries(fields ?? {});
-  return fieldsEntries.map(([field, value]) => {
-    return {
-      activity: activityName,
-      group: groupName,
-      field,
-      content: valueFormatter(value) ?? "",
-    };
-  });
+  return fieldsEntries.filter(([field, value]) => value != null)
+    .map(([field, value]) => {
+      return {
+        activity: activityName,
+        group: groupName,
+        field,
+        content: valueFormatter(value) ?? "",
+      };
+    }
+  );
 }
 
 /**
