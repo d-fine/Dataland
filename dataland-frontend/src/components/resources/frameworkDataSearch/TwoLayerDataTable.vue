@@ -191,13 +191,13 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
-    unfoldOnLoad: {
+    unfoldSubcategories: {
       type: Boolean,
       default: false,
     },
   },
   created() {
-    if (this.unfoldOnLoad) {
+    if (this.unfoldSubcategories) {
       this.expandedRowGroups = this.arrayOfKpiDataObjects?.map((kpiDataObject) => kpiDataObject.subcategoryKey) ?? [];
     }
     this.dataTableIdentifier = (Math.random() + 1).toString(36).substring(2);
