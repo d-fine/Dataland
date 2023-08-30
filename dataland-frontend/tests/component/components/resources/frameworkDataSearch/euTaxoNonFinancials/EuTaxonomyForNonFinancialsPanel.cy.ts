@@ -33,26 +33,22 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       const capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
       const capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
 
-      const betaTotalAlignedCapexPercentage = capexOfDatasetBeta.totalAlignedShare?.relativeShareInPercent?.toFixed(2);
+      const betaTotalAlignedCapexPercentage = capexOfDatasetBeta.alignedShare?.relativeShareInPercent?.toFixed(2);
 
       const gammaTotalAlignedCapexAbsoluteShareString =
-        Math.round(assertDefined(capexOfDatasetGamma.totalAlignedShare?.absoluteShare?.amount)).toString() +
-        ` ${assertDefined(capexOfDatasetGamma.totalAlignedShare?.absoluteShare?.currency)}`;
+        Math.round(assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.amount)).toString() +
+        ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
 
       const alphaContributionToClimateChangeMitigation = assertDefined(
-        capexOfDatasetAlpha.substantialContributionCriteria,
-      )
-        [EnvironmentalObjective.ClimateMitigation].toFixed(2)
-        .toString();
+        capexOfDatasetAlpha.substantialContributionToClimateChangeMitigation,
+      ).toFixed(2);
 
       const gammaContributionToClimateChangeMitigation = assertDefined(
-        capexOfDatasetGamma.substantialContributionCriteria,
-      )
-        [EnvironmentalObjective.ClimateMitigation].toFixed(2)
-        .toString();
+        capexOfDatasetGamma.substantialContributionToClimateChangeMitigation,
+      ).toFixed(2);
 
       cy.get(`[data-test='CapEx']`).click();
-      cy.contains("span", "Total Aligned CapEx").click();
+      cy.contains("span", "Aligned CapEx").click();
 
       cy.contains("td", "Percentage").siblings("td").find("span").should("contain", betaTotalAlignedCapexPercentage);
 

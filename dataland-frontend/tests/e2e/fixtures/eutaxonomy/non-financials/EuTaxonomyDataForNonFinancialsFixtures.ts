@@ -8,10 +8,7 @@ import {
   type EuTaxonomyDetailsPerCashFlowType,
   YesNo,
 } from "@clients/backend";
-import {
-  generateArray,
-  type ReferencedDocuments,
-} from "@e2e/fixtures/FixtureUtils";
+import { generateArray, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
