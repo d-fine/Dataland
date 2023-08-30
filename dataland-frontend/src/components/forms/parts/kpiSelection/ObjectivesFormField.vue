@@ -4,7 +4,7 @@
     description="Grade of the substantial contribution criterias fulfillment"
   />
   <div v-for="field in objectives" :key="field.name">
-    <UploadFormHeader :label="'Substantial Contribution to '+field.name" description="" :is-required="false" />
+    <UploadFormHeader :label="'Substantial Contribution to ' + field.name" description="" :is-required="false" />
     <FormKit
       type="text"
       :name="'substantialContributionTo' + field.key"
@@ -20,7 +20,11 @@
     description="Is no significant harm done to the criterion by this activity."
   />
   <div v-for="field in objectives" :key="field.name">
-    <YesNoFormField :name="'dnshTo' + field.key" description="" :label="'Do no significant harm (dnsh) to '+field.name" />
+    <YesNoFormField
+      :name="'dnshTo' + field.key"
+      description=""
+      :label="'Do no significant harm (dnsh) to ' + field.name"
+    />
   </div>
 </template>
 

@@ -149,17 +149,17 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
       nonAlignedActivities: viewModel.nonAlignedShare?.nonAlignedActivities,
       alignedActivities: viewModel.alignedShare?.alignedActivities,
       substantialContributionToClimateChangeMitigation:
-      viewModel.alignedShare?.substantialContributionToClimateChangeMitigation,
+        viewModel.alignedShare?.substantialContributionToClimateChangeMitigation,
       substantialContributionToClimateChangeAdaption:
-      viewModel.alignedShare?.substantialContributionToClimateChangeAdaption,
+        viewModel.alignedShare?.substantialContributionToClimateChangeAdaption,
       substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
-      viewModel.alignedShare?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
+        viewModel.alignedShare?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
       substantialContributionToTransitionToACircularEconomy:
-      viewModel.alignedShare?.substantialContributionToTransitionToACircularEconomy,
+        viewModel.alignedShare?.substantialContributionToTransitionToACircularEconomy,
       substantialContributionToPollutionPreventionAndControl:
-      viewModel.alignedShare?.substantialContributionToPollutionPreventionAndControl,
+        viewModel.alignedShare?.substantialContributionToPollutionPreventionAndControl,
       substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
-      viewModel.alignedShare?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
+        viewModel.alignedShare?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
       enablingShare: viewModel.enablingShare?.enablingShare,
       transitionalShare: viewModel.transitionalShare?.transitionalShare,
     };
