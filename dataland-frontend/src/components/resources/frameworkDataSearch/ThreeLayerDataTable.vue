@@ -41,7 +41,7 @@
             headerInputStyle="display: none;"
             :modal-column-headers="modalColumnHeaders"
             :sort-by-subcategory-key="sortBySubcategoryKey"
-            :unfold-on-load="unfoldOnLoad"
+            :unfold-subcategories="unfoldSubcategories"
           />
         </div>
       </div>
@@ -96,16 +96,12 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
-    unfoldOnLoad: {
+    unfoldSubcategories: {
       type: Boolean,
       default: false,
     },
   },
   mounted() {
-    if (this.unfoldOnLoad) {
-      this.expandedGroup = new Set(Array.from({ length: this.dataModel.length }, (value, index) => index));
-      console.log(this.expandedGroup);
-    }
     this.triggerConversionOfDataForDisplay();
   },
   watch: {

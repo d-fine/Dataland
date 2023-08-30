@@ -12,7 +12,7 @@
       :format-value-for-display="formatValueForDisplay"
       :modal-column-headers="euTaxonomyForNonFinancialsModalColumnHeaders"
       :sort-by-subcategory-key="false"
-      unfold-on-load
+      :unfold-subcategories="true"
     />
   </div>
 </template>
