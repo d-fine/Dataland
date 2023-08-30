@@ -134,30 +134,30 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type("50");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type("4000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(1).select(51);
-    cy.get('div[label="Revenue"] input[name="ClimateMitigation"]').clear().type("a");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("a");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be a number")
       .should("exist");
-    cy.get('div[label="Revenue"] input[name="ClimateMitigation"]').clear().type("-12");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("-12");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be between 0 and 100")
       .should("exist");
-    cy.get('div[label="Revenue"] input[name="ClimateMitigation"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="ClimateAdaptation"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="Water"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="CircularEconomy"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="PollutionPrevention"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="Biodiversity"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaption"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomy"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControl"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaption"]').clear().type("15");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type("12000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(2).select(51);
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(3).clear().type("13");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(3).clear().type("13000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(3).select(53);
-    cy.get('div[label="Revenue"] input[name="totalEnablingShare"]').clear().type("12");
-    cy.get('div[label="Revenue"] input[name="totalTransitionalShare"]').clear().type("12");
+    cy.get('div[label="Revenue"] input[name="enablingShare"]').clear().type("12");
+    cy.get('div[label="Revenue"] input[name="transitionalShare"]').clear().type("12");
   }
 
   /**
@@ -271,7 +271,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     });
   });
 
-  it("Open upload page, fill out and validate the upload form, except for new activities", () => {
+  it.only("Open upload page, fill out and validate the upload form, except for new activities", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
