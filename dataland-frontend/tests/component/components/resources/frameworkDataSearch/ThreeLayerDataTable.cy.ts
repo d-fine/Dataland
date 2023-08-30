@@ -130,7 +130,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
   it("Opens the aligned activities modal and checks that it works as intended", () => {
     const capexOfDataset = assertDefined(mockedDataForTest[0].data.capex);
     const revenueOfDataset = assertDefined(mockedDataForTest[0].data.revenue);
-    const revenueAlignedActivity = assertDefined(revenueOfDataset.totalAlignedShare?.alignedActivities)[0];
+    const revenueAlignedActivity = assertDefined(revenueOfDataset.alignedShare?.alignedActivities)[0];
     const revenueAlignedActivitiesName = assertDefined(revenueAlignedActivity?.activityName);
 
     cy.mountWithDialog(
@@ -162,7 +162,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       cy.get("table").find(`tr:contains("No")`);
 
       const capexAlignedActivitiesShareInPercent: number = assertDefined(
-        capexOfDataset.totalAlignedShare?.relativeShareInPercent,
+        capexOfDataset.alignedShare?.relativeShareInPercent,
       );
 
       cy.get("table").find(`tr:contains("${revenueAlignedActivitiesName}")`);
@@ -172,11 +172,11 @@ describe("Component test for the NewEUTaxonomy Page", () => {
 
   it("Opens the non-aligned activities modal and checks that it works as intended", () => {
     const capexOfDataset = assertDefined(mockedDataForTest[0].data.capex);
-    const capexNonAlignedActivities = assertDefined(capexOfDataset.totalNonAlignedShare?.nonAlignedActivities)[0];
+    const capexNonAlignedActivities = assertDefined(capexOfDataset.nonAlignedShare?.nonAlignedActivities)[0];
     const capexNonAlignedActivitiesName = assertDefined(capexNonAlignedActivities.activityName);
 
     const capexNonAlignedActivitiesShareInPercent = assertDefined(
-      capexOfDataset.totalNonAlignedShare?.relativeShareInPercent,
+      capexOfDataset.nonAlignedShare?.relativeShareInPercent,
     );
     const capexNonAlignedActivitiesNaceCodes: string = assertDefined(capexNonAlignedActivities.naceCodes)[0];
 

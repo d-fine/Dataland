@@ -63,31 +63,9 @@
                         <span>{{ category.label.toUpperCase() }}</span>
                       </div>
                     </div>
-
+                    <!--//TODO do we need the field.fields -->
                     <div class="col-9 formFields">
                       <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
-                        <template v-if="field.fields">
-                          <FormKit v-for="innerField in field.fields" :key="innerField" type="group" :name="field.name">
-                            <component
-                              v-if="innerField.showIf(companyAssociatedEuTaxonomyDataForNonFinancials.data)"
-                              :is="innerField.component"
-                              :label="innerField.label"
-                              :placeholder="innerField.placeholder"
-                              :description="innerField.description"
-                              :name="innerField.name"
-                              :options="innerField.options"
-                              :required="innerField.required"
-                              :certificateRequiredIfYes="innerField.certificateRequiredIfYes"
-                              :validation="innerField.validation"
-                              :validation-label="innerField.validationLabel"
-                              :evidenceDesired="innerField.evidenceDesired"
-                              :data-test="innerField.name"
-                              :unit="innerField.unit"
-                              :ref="innerField.name"
-                            />
-                          </FormKit>
-                        </template>
-                        <template v-else>
                           <component
                             v-if="field.showIf(companyAssociatedEuTaxonomyDataForNonFinancials.data)"
                             :is="field.component"
@@ -106,7 +84,6 @@
                             @reportsUpdated="updateDocumentsList"
                             :ref="field.name"
                           />
-                        </template>
                       </FormKit>
                     </div>
                   </template>

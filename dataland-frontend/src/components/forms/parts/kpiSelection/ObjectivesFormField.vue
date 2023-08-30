@@ -3,29 +3,25 @@
     label="Substantial Contribution"
     description="Grade of the substantial contribution criterias fulfillment"
   />
-  <FormKit type="group" name="substantialContributionCriteria">
-    <div v-for="field in objectives" :key="field.long_name">
-      <UploadFormHeader :label="field.long_name" description="" :is-required="false" />
-      <FormKit
-        type="text"
-        :name="field.key"
-        :validation-label="field.long_name"
-        validation="number|between:0,100"
-        placeholder="Relative Value in %"
-        outer-class="short"
-      />
-    </div>
-  </FormKit>
+  <div v-for="field in objectives" :key="field.name">
+    <UploadFormHeader :label="'Substantial Contribution to '+field.name" description="" :is-required="false" />
+    <FormKit
+      type="text"
+      :name="'substantialContributionTo' + field.key"
+      :validation-label="field.name"
+      validation="number|between:0,100"
+      placeholder="Relative Value in %"
+      outer-class="short"
+    />
+  </div>
   <UploadFormSubcategoryHeader
     propClass="header-separator"
     label="DNSH"
     description="Is no significant harm done to the criterion by this activity."
   />
-  <FormKit type="group" name="dnshCriteria">
-    <div v-for="field in objectives" :key="field.long_name">
-      <YesNoFormField :name="field.key" description="" :label="field.name" />
-    </div>
-  </FormKit>
+  <div v-for="field in objectives" :key="field.name">
+    <YesNoFormField :name="'dnshTo' + field.key" description="" :label="'Do no significant harm (dnsh) to '+field.name" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -41,34 +37,28 @@ export default defineComponent({
     return {
       objectives: [
         {
-          name: "Climate mitigation",
-          long_name: "Climate change mitigation",
-          key: "ClimateMitigation",
+          name: "Climate mitigation mitigation",
+          key: "ClimateChangeMitigation",
         },
         {
-          name: "Climate adaptation",
-          long_name: "Climate change adaptation",
-          key: "ClimateAdaptation",
+          name: "Climate adaptation adaptation",
+          key: "ClimateChangeAdaption",
         },
         {
-          name: "Water",
-          long_name: "Sustainable use and protection of water and marine resources",
-          key: "Water",
+          name: "Sustainable use and protection of water and marine resources",
+          key: "SustainableUseAndProtectionOfWaterAndMarineResources",
         },
         {
-          name: "Circular economy",
-          long_name: "Transition to a circular economy",
-          key: "CircularEconomy",
+          name: "Transition to a circular economy",
+          key: "TransitionToACircularEconomy",
         },
         {
-          name: "Pollution prevention",
-          long_name: "Pollution prevention and control",
-          key: "PollutionPrevention",
+          name: "Pollution prevention and control",
+          key: "PollutionPreventionAndControl",
         },
         {
-          name: "Biodiversity",
-          long_name: "Protection and restoration of biodiversity and ecosystems",
-          key: "Biodiversity",
+          name: "Protection and restoration of biodiversity and ecosystems",
+          key: "ProtectionAndRestorationOfBiodiversityAndEcosystems",
         },
       ],
     };

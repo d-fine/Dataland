@@ -1,9 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
-import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataPointWithUnit
-import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.EnvironmentalObjective
-import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
 
 /**
@@ -12,14 +9,18 @@ import java.math.BigDecimal
  */
 data class EuTaxonomyDetailsPerCashFlowType(
     val totalAmount: DataPointWithUnit<BigDecimal>?,
-    val totalNonEligibleShare: RelativeAndAbsoluteFinancialShare?,
-    val totalEligibleShare: RelativeAndAbsoluteFinancialShare?,
-    val totalNonAlignedShare: RelativeAndAbsoluteFinancialShare?,
+    val nonEligibleShare: RelativeAndAbsoluteFinancialShare?,
+    val eligibleShare: RelativeAndAbsoluteFinancialShare?,
+    val nonAlignedShare: RelativeAndAbsoluteFinancialShare?,
     val nonAlignedActivities: List<EuTaxonomyActivity>?,
-    val totalAlignedShare: RelativeAndAbsoluteFinancialShare?,
-    @field:Schema(example = JsonExampleFormattingConstants.SUBSTANTIAL_CONTRIBUTION_CRITIREA)
-    val substantialContributionCriteria: Map<EnvironmentalObjective, BigDecimal>?,
+    val alignedShare: RelativeAndAbsoluteFinancialShare?,
+    val substantialContributionToClimateChangeMitigation: BigDecimal?,
+    val substantialContributionToClimateChangeAdaption: BigDecimal?,
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: BigDecimal?,
+    val substantialContributionToTransitionToACircularEconomy: BigDecimal?,
+    val substantialContributionToPollutionPreventionAndControl: BigDecimal?,
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: BigDecimal?,
     val alignedActivities: List<EuTaxonomyAlignedActivity>?,
-    val totalEnablingShare: BigDecimal?,
-    val totalTransitionalShare: BigDecimal?,
+    val enablingShare: BigDecimal?,
+    val transitionalShare: BigDecimal?,
 )

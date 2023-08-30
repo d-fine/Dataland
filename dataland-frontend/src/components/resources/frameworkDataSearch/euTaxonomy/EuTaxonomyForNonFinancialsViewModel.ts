@@ -1,5 +1,5 @@
 import {
-  AssuranceDataAssuranceEnum,
+  type AssuranceDataAssuranceEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
   type EuTaxonomyActivity,
@@ -16,15 +16,20 @@ import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@
 
 interface EuTaxonomyDetailsPerCashFlowViewModel {
   totalAmount?: DataPointWithUnitBigDecimal;
-  totalNonEligibleShare?: RelativeAndAbsoluteFinancialShare;
-  totalEligibleShare?: RelativeAndAbsoluteFinancialShare;
-  totalNonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };
-  totalAlignedShare?: RelativeAndAbsoluteFinancialShare & {
+  nonEligibleShare?: RelativeAndAbsoluteFinancialShare;
+  eligibleShare?: RelativeAndAbsoluteFinancialShare;
+  nonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };
+  alignedShare?: RelativeAndAbsoluteFinancialShare & {
     alignedActivities?: EuTaxonomyAlignedActivity[];
-    substantialContributionCriteria?: { [key: string]: number };
+    substantialContributionToClimateChangeMitigation?: number;
+    substantialContributionToClimateChangeAdaption?: number;
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources?: number;
+    substantialContributionToTransitionToACircularEconomy?: number;
+    substantialContributionToPollutionPreventionAndControl?: number;
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems?: number;
   };
-  totalEnablingShare?: { totalEnablingShare?: number };
-  totalTransitionalShare?: { totalTransitionalShare?: number };
+  enablingShare?: { enablingShare?: number };
+  transitionalShare?: { transitionalShare?: number };
 }
 
 export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
@@ -38,7 +43,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
       numberOfEmployees?: number;
     };
   };
-  assurance: {
+  assurance?: {
     assurance: {
       levelOfAssurance: AssuranceDataAssuranceEnum;
       assuranceProvider?: string;
@@ -59,12 +64,15 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
         nfrdMandatory: apiModel.general?.nfrdMandatory,
       },
     };
-    this.assurance = {
-      assurance: {
-        levelOfAssurance: apiModel.general?.assurance?.assurance ?? AssuranceDataAssuranceEnum.None,
-        assuranceProvider: apiModel.general?.assurance?.provider,
-      },
-    };
+    this.assurance =
+      apiModel.general?.assurance?.assurance == undefined
+        ? undefined
+        : {
+            assurance: {
+              levelOfAssurance: apiModel.general.assurance.assurance,
+              assuranceProvider: apiModel.general.assurance.provider,
+            },
+          };
     this.revenue = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.revenue);
     this.capex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.capex);
     this.opex = EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowApiModelToViewModel(apiModel.opex);
@@ -78,11 +86,14 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
         scopeOfEntities: this.basicInformation?.basicInformation?.scopeOfEntities,
         nfrdMandatory: this.basicInformation?.basicInformation?.nfrdMandatory,
         euTaxonomyActivityLevelReporting: this.basicInformation?.basicInformation?.euTaxonomyActivityLevelReporting,
-        assurance: {
-          assurance: this.assurance.assurance.levelOfAssurance,
-          provider: this.assurance.assurance.assuranceProvider,
-        },
-        numberOfEmployees: this.basicInformation?.basicInformation.numberOfEmployees,
+        assurance:
+          this.assurance == undefined
+            ? undefined
+            : {
+                assurance: this.assurance?.assurance.levelOfAssurance,
+                provider: this.assurance?.assurance.assuranceProvider,
+              },
+        numberOfEmployees: this.basicInformation?.basicInformation?.numberOfEmployees,
       },
       revenue: EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.revenue),
       capex: EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.capex),
@@ -98,19 +109,28 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
     }
     return {
       totalAmount: apiModel.totalAmount,
-      totalEligibleShare: apiModel.totalEligibleShare,
-      totalAlignedShare: {
-        ...(apiModel.totalAlignedShare ?? {}),
-        ...apiModel.substantialContributionCriteria,
+      eligibleShare: apiModel.eligibleShare,
+      alignedShare: {
+        ...(apiModel.alignedShare ?? {}),
+        substantialContributionToClimateChangeMitigation: apiModel.substantialContributionToClimateChangeMitigation,
+        substantialContributionToClimateChangeAdaption: apiModel.substantialContributionToClimateChangeAdaption,
+        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
+          apiModel.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
+        substantialContributionToTransitionToACircularEconomy:
+          apiModel.substantialContributionToTransitionToACircularEconomy,
+        substantialContributionToPollutionPreventionAndControl:
+          apiModel.substantialContributionToPollutionPreventionAndControl,
+        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
+          apiModel.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
         alignedActivities: apiModel.alignedActivities,
       },
-      totalNonAlignedShare: {
-        ...(apiModel.totalNonAlignedShare ?? {}),
+      nonAlignedShare: {
+        ...(apiModel.nonAlignedShare ?? {}),
         nonAlignedActivities: apiModel.nonAlignedActivities,
       },
-      totalNonEligibleShare: apiModel.totalNonEligibleShare,
-      totalEnablingShare: { totalEnablingShare: apiModel.totalEnablingShare },
-      totalTransitionalShare: { totalTransitionalShare: apiModel.totalTransitionalShare },
+      nonEligibleShare: apiModel.nonEligibleShare,
+      enablingShare: { enablingShare: apiModel.enablingShare },
+      transitionalShare: { transitionalShare: apiModel.transitionalShare },
     };
   }
 
@@ -122,14 +142,26 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
     }
     return {
       totalAmount: viewModel.totalAmount,
-      totalNonEligibleShare: viewModel.totalNonEligibleShare,
-      totalEligibleShare: viewModel.totalEligibleShare,
-      totalNonAlignedShare: viewModel.totalNonAlignedShare,
-      totalAlignedShare: viewModel.totalAlignedShare,
-      nonAlignedActivities: viewModel.totalNonAlignedShare?.nonAlignedActivities,
-      alignedActivities: viewModel.totalAlignedShare?.alignedActivities,
-      totalEnablingShare: viewModel.totalEnablingShare?.totalEnablingShare,
-      totalTransitionalShare: viewModel.totalTransitionalShare?.totalTransitionalShare,
+      nonEligibleShare: viewModel.nonEligibleShare,
+      eligibleShare: viewModel.eligibleShare,
+      nonAlignedShare: viewModel.nonAlignedShare,
+      alignedShare: viewModel.alignedShare,
+      nonAlignedActivities: viewModel.nonAlignedShare?.nonAlignedActivities,
+      alignedActivities: viewModel.alignedShare?.alignedActivities,
+      substantialContributionToClimateChangeMitigation:
+      viewModel.alignedShare?.substantialContributionToClimateChangeMitigation,
+      substantialContributionToClimateChangeAdaption:
+      viewModel.alignedShare?.substantialContributionToClimateChangeAdaption,
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
+      viewModel.alignedShare?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
+      substantialContributionToTransitionToACircularEconomy:
+      viewModel.alignedShare?.substantialContributionToTransitionToACircularEconomy,
+      substantialContributionToPollutionPreventionAndControl:
+      viewModel.alignedShare?.substantialContributionToPollutionPreventionAndControl,
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
+      viewModel.alignedShare?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
+      enablingShare: viewModel.enablingShare?.enablingShare,
+      transitionalShare: viewModel.transitionalShare?.transitionalShare,
     };
   }
 }

@@ -33,11 +33,11 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       const capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
       const capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
 
-      const betaTotalAlignedCapexPercentage = capexOfDatasetBeta.totalAlignedShare?.relativeShareInPercent?.toFixed(2);
+      const betaTotalAlignedCapexPercentage = capexOfDatasetBeta.alignedShare?.relativeShareInPercent?.toFixed(2);
 
       const gammaTotalAlignedCapexAbsoluteShareString =
-        Math.round(assertDefined(capexOfDatasetGamma.totalAlignedShare?.absoluteShare?.amount)).toString() +
-        ` ${assertDefined(capexOfDatasetGamma.totalAlignedShare?.absoluteShare?.currency)}`;
+        Math.round(assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.amount)).toString() +
+        ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
 
       const alphaContributionToClimateChangeMitigation = assertDefined(
         capexOfDatasetAlpha.substantialContributionCriteria,
