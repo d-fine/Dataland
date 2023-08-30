@@ -2,52 +2,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Rosettashire",
+			"headquarters": "Theastad",
+			"headquartersPostalCode": "37851",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"nKbuCUMAiUrF",
-					"bgosHkXJqxVA"
+					"X3mgrkp3onvW"
 				],
-				"PermId": [
-					"NnLKR7J9Tt"
+				"PermId": [],
+				"Ticker": [
+					"l233Qb4"
 				],
-				"Ticker": [],
-				"Duns": [
-					"aytWeXqMg"
-				],
-				"VatNumber": [
-					"OQ8QQ9STc"
-				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"3gmLlJ40RBooioK"
+					"81ic7ukN2UXeulK"
 				]
 			},
-			"countryCode": "TW",
+			"countryCode": "VA",
 			"companyAlternativeNames": [
-				"Bayer - Hoppe",
-				"Gerlach - Boehm",
-				"Gerlach, Cronin and Reinger",
-				"O'Kon, Hudson and Ernser"
+				"Flatley, Collins and Rau",
+				"Kohler, Gottlieb and Adams",
+				"Predovic - Abbott"
 			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://excited-competence.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [
-						"H",
-						"I",
-						"J",
-						"M"
-					],
+					"sector": [],
 					"addressOfHeadquarters": {
-						"city": "South Alyson",
-						"state": "New Hampshire",
-						"country": "AD"
+						"city": "Torphystad",
+						"country": "KR"
 					},
-					"numberOfEmployees": 5941,
-					"fiscalYearStart": "2023-11-01"
+					"numberOfEmployees": 7203,
+					"fiscalYearStart": "2023-12-12"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -56,38 +47,32 @@
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
+				"sites": {},
+				"products": {
+					"listOfProducts": [
 						{
-							"nameOfProductionSite": "Oberbrunner, Farrell and Collins",
-							"addressOfProductionSite": {
-								"city": "Catherinecester",
-								"state": "Utah",
-								"country": "UY"
-							}
+							"name": "Intelligent Concrete Bike"
+						},
+						{
+							"name": "Gorgeous Rubber Soap",
+							"percentageOfTotalRevenue": 0.6131
 						}
 					]
-				},
-				"products": {}
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 238,
-					"powerFromRenewableSources": "Yes",
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 1858,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Wind"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 1453402
 				}
 			}
 		},
@@ -96,41 +81,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Abagailstead",
-			"headquartersPostalCode": "72132",
-			"sector": "e-commerce",
+			"headquarters": "West Covina",
+			"sector": "communities",
 			"identifiers": {
 				"Lei": [
-					"CgnWNLKSWt2jt25t1h5e"
+					"2Jli7w3SJfQAMG9TPpUK"
 				],
 				"Isin": [
-					"BR8XZ8oztm7O"
+					"MynsclX78OFz"
 				],
 				"PermId": [],
-				"Ticker": [
-					"GzkWaqi"
+				"Ticker": [],
+				"Duns": [
+					"REFVDeRBA"
 				],
-				"Duns": [],
 				"VatNumber": [
-					"Rp3CLh4rV"
+					"L4Sv6WTnx"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NU",
+			"countryCode": "MK",
 			"companyAlternativeNames": [
-				"Considine, Simonis and Hessel"
+				"Kovacek - Pfeffer"
 			],
-			"website": "https://sour-affinity.org/",
+			"website": "https://spicy-maracas.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"G",
-						"H",
 						"I",
-						"K"
+						"J",
+						"M"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -139,42 +122,29 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3209,
-					"fiscalYearStart": "2024-02-18"
+					"numberOfEmployees": 2932,
+					"fiscalYearStart": "2023-09-19"
 				},
-				"companyFinancials": {}
+				"companyFinancials": {
+					"operatingCostInEur": 17678606
+				}
 			},
 			"production": {
 				"sites": {},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Practical Wooden Mouse"
-						},
-						{
-							"name": "Modern Wooden Gloves",
-							"percentageOfTotalRevenue": 0.6358
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 558,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil"
+					"powerFromRenewableSources": "No",
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 37153613,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Wind",
-						"Snow",
-						"Avalanche",
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 19319278
 				}
 			}
 		},
@@ -183,33 +153,32 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "West Cletus",
-			"headquartersPostalCode": "88624-7914",
-			"sector": "eyeballs",
+			"headquarters": "South Vivianview",
+			"headquartersPostalCode": "11494",
+			"sector": "applications",
 			"identifiers": {
 				"Lei": [
-					"pwDWtJ8nBD0RhOq2FrQL"
+					"mLj4JrUrWjcHQuYKRxub"
 				],
 				"Isin": [
-					"kmols4wt08bI",
-					"zlocKZixx1F6"
+					"PgWikLtuy1OY",
+					"XGeKNDzF3MU0"
 				],
 				"PermId": [
-					"olVhTJIO4f"
+					"PgogtcRud1"
 				],
-				"Ticker": [],
-				"Duns": [
-					"ALwly19N1"
+				"Ticker": [
+					"LXeZet6"
 				],
-				"VatNumber": [
-					"fRRh8DAPV"
-				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BA",
+			"countryCode": "SV",
 			"companyAlternativeNames": [
-				"Bruen LLC",
-				"D'Amore - Considine"
+				"Blick, Gerlach and Mayert",
+				"Bosco Inc",
+				"Mante - Donnelly"
 			],
 			"isTeaserCompany": false
 		},
@@ -217,41 +186,49 @@
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"E"
+						"C",
+						"G",
+						"I"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6515,
-					"fiscalYearStart": "2023-12-30"
+					"numberOfEmployees": 2544,
+					"fiscalYearStart": "2024-03-15"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEur": 57613818
+					"revenueInEur": 62420092,
+					"operatingCostInEur": 13460941,
+					"capitalAssetsInEur": 40458458
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"postalCode": "01727",
+								"city": "Hellerfield",
+								"country": "CX"
+							},
+							"percentageOfTotalRevenue": 0.2882
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Mortimer Cove 30143",
+								"postalCode": "26834",
+								"city": "Stehrburgh",
+								"country": "MM"
+							}
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Electronic Soft Towels",
-							"percentageOfTotalRevenue": 0.7605
-						},
-						{
-							"name": "Bespoke Steel Car"
-						},
-						{
-							"name": "Incredible Wooden Bacon"
-						},
-						{
-							"name": "Generic Bronze Pizza",
-							"percentageOfTotalRevenue": 0.9656
-						},
-						{
-							"name": "Luxurious Cotton Pizza"
+							"name": "Small Concrete Chicken",
+							"percentageOfTotalRevenue": 0.243
 						}
 					]
 				}
@@ -259,18 +236,20 @@
 			"power": {
 				"investments": {},
 				"consumption": {
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 676,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 445,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 48029460,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"EarthQuake",
 						"Flooding",
-						"Hail"
+						"Hail",
+						"EarthQuake",
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}
