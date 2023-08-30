@@ -2,43 +2,45 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Theastad",
-			"headquartersPostalCode": "37851",
+			"headquarters": "North Altastead",
+			"sector": "solutions",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"X3mgrkp3onvW"
+					"BIbdAbHD38y8",
+					"FGs5kowZgQcb"
 				],
-				"PermId": [],
-				"Ticker": [
-					"l233Qb4"
+				"PermId": [
+					"jCoXSJPKFs"
 				],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"81ic7ukN2UXeulK"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "VA",
+			"countryCode": "FI",
 			"companyAlternativeNames": [
-				"Flatley, Collins and Rau",
-				"Kohler, Gottlieb and Adams",
-				"Predovic - Abbott"
+				"Homenick - Gutkowski",
+				"Schamberger, Pollich and Spinka"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://excited-competence.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [],
+					"sector": [
+						"E",
+						"J",
+						"K"
+					],
 					"addressOfHeadquarters": {
-						"city": "Torphystad",
-						"country": "KR"
+						"streetAndHouseNumber": "Liana Trace 5011",
+						"city": "Nitzscheport",
+						"state": "Montana",
+						"country": "BH"
 					},
-					"numberOfEmployees": 7203,
-					"fiscalYearStart": "2023-12-12"
+					"numberOfEmployees": 5520,
+					"fiscalYearStart": "2023-12-05"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -48,31 +50,24 @@
 			},
 			"production": {
 				"sites": {},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Intelligent Concrete Bike"
-						},
-						{
-							"name": "Gorgeous Rubber Soap",
-							"percentageOfTotalRevenue": 0.6131
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1858,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": 1089,
+					"energyConsumptionHeatingAndHotWater": 260,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 1453402
+					"naturalHazardsCovered": [
+						"Snow",
+						"Flooding"
+					]
 				}
 			}
 		},
@@ -81,38 +76,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "West Covina",
-			"sector": "communities",
+			"headquarters": "Aureliofield",
+			"sector": "models",
 			"identifiers": {
-				"Lei": [
-					"2Jli7w3SJfQAMG9TPpUK"
-				],
+				"Lei": [],
 				"Isin": [
-					"MynsclX78OFz"
+					"TnHJFfTtn9jg"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"REFVDeRBA"
+				"PermId": [
+					"i4akzkQxyI"
 				],
-				"VatNumber": [
-					"L4Sv6WTnx"
+				"Ticker": [
+					"dCETxcZ"
 				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MK",
+			"countryCode": "CU",
 			"companyAlternativeNames": [
-				"Kovacek - Pfeffer"
+				"Stanton Inc"
 			],
-			"website": "https://spicy-maracas.biz",
+			"companyLegalForm": "GmbH",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
+						"D",
+						"F",
 						"I",
-						"J",
+						"K",
 						"M"
 					],
 					"addressOfHeadquarters": {
@@ -122,29 +117,67 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 2932,
-					"fiscalYearStart": "2023-09-19"
+					"numberOfEmployees": 8776,
+					"fiscalYearStart": "2024-06-15"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 17678606
+					"revenueInEur": 25850041,
+					"operatingCostInEur": 6862475,
+					"capitalAssetsInEur": 69514817
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"postalCode": "14045-9500",
+								"city": "Colinfurt",
+								"country": "MF"
+							}
+						},
+						{
+							"nameOfProductionSite": "Cormier and Sons",
+							"addressOfProductionSite": {
+								"postalCode": "36649",
+								"city": "Gary",
+								"country": "MC"
+							}
+						},
+						{
+							"nameOfProductionSite": "Christiansen - Hand",
+							"addressOfProductionSite": {
+								"postalCode": "05899-2901",
+								"city": "Lake Adolfo",
+								"state": "Hawaii",
+								"country": "IE"
+							}
+						},
+						{
+							"nameOfProductionSite": "Cruickshank - Champlin",
+							"addressOfProductionSite": {
+								"postalCode": "70349-2450",
+								"city": "West Noble",
+								"country": "VN"
+							},
+							"percentageOfTotalRevenue": 0.7904
+						}
+					]
+				},
 				"products": {}
 			},
 			"power": {
 				"investments": {},
 				"consumption": {
-					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMwh": 1594,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 240,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 19319278
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},
@@ -153,54 +186,46 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "South Vivianview",
-			"headquartersPostalCode": "11494",
-			"sector": "applications",
+			"headquarters": "Edaland",
+			"sector": "infrastructures",
 			"identifiers": {
 				"Lei": [
-					"mLj4JrUrWjcHQuYKRxub"
+					"LoKRzJ4nJKmUcMS2tWKd"
 				],
 				"Isin": [
-					"PgWikLtuy1OY",
-					"XGeKNDzF3MU0"
+					"Wq4G3ZmXwwqU"
 				],
-				"PermId": [
-					"PgogtcRud1"
-				],
-				"Ticker": [
-					"LXeZet6"
-				],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"CftrMBGBv"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SV",
+			"countryCode": "ET",
 			"companyAlternativeNames": [
-				"Blick, Gerlach and Mayert",
-				"Bosco Inc",
-				"Mante - Donnelly"
+				"Jakubowski - Quigley"
 			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://altruistic-pharmacist.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"C",
-						"G",
-						"I"
+						"J"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2544,
-					"fiscalYearStart": "2024-03-15"
+					"numberOfEmployees": 9243,
+					"fiscalYearStart": "2023-11-04"
 				},
 				"companyFinancials": {
-					"revenueInEur": 62420092,
-					"operatingCostInEur": 13460941,
-					"capitalAssetsInEur": 40458458
+					"operatingCostInEur": 29635558
 				}
 			},
 			"production": {
@@ -208,18 +233,41 @@
 					"listOfProductionSites": [
 						{
 							"addressOfProductionSite": {
-								"postalCode": "01727",
-								"city": "Hellerfield",
-								"country": "CX"
+								"streetAndHouseNumber": "Graham Light 26575",
+								"postalCode": "07805-8803",
+								"city": "Waco",
+								"country": "ER"
 							},
-							"percentageOfTotalRevenue": 0.2882
+							"percentageOfTotalRevenue": 0.1014
+						},
+						{
+							"nameOfProductionSite": "Monahan, Gibson and Wiza",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Collins Place 982",
+								"city": "East Iva",
+								"country": "KZ"
+							}
+						},
+						{
+							"nameOfProductionSite": "Bins, Balistreri and Stehr",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Fred Rapid 308",
+								"city": "Ferryboro",
+								"state": "Minnesota",
+								"country": "KG"
+							}
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Mortimer Cove 30143",
-								"postalCode": "26834",
-								"city": "Stehrburgh",
-								"country": "MM"
+								"city": "New Bethworth",
+								"country": "AW"
+							},
+							"percentageOfTotalRevenue": 0.5253
+						},
+						{
+							"addressOfProductionSite": {
+								"city": "Modesto",
+								"country": "CH"
 							}
 						}
 					]
@@ -227,29 +275,36 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Small Concrete Chicken",
-							"percentageOfTotalRevenue": 0.243
+							"name": "Oriental Concrete Tuna"
+						},
+						{
+							"name": "Handmade Metal Pizza"
+						},
+						{
+							"name": "Oriental Wooden Tuna"
+						},
+						{
+							"name": "Sleek Fresh Salad"
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+				},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 445,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas"
+					"energyConsumptionHeatingAndHotWater": 478,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 48029460,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Hail",
-						"EarthQuake",
 						"Avalanche",
-						"Wind"
+						"Snow",
+						"EarthQuake"
 					]
 				}
 			}
