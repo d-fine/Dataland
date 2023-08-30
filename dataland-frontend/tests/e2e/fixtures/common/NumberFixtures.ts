@@ -13,7 +13,7 @@ export function randomFloat(min: number, max: number, precision?: number): numbe
 
 /**
  * Generates a random decimal value between 0 and 1
- * @param precision
+ * @param precision the precision of the decimal value
  * @returns a random float between 0 and 1
  */
 export function randomPercentageValue(precision = 0.0001): number {

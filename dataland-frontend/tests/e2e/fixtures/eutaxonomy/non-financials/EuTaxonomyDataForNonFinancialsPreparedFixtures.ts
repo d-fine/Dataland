@@ -7,7 +7,6 @@ import {
   generateFinancialShare,
   generateEuTaxonomyDataForNonFinancials,
 } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
-import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
