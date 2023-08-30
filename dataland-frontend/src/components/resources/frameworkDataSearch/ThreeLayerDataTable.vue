@@ -217,7 +217,7 @@ export default defineComponent({
      * @param subCategoryDataObject the data object of the framework's subcategory
      * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
-     * @param catgory the category object of the framework's category
+     * @param category the category object of the framework's category
      * @param dataId the ID of the dataset
      * @param listOfKpiDataObjects collector for the kpi data objects
      * @param currentViewModelDataset dataset for which the show if conditions should be checked
@@ -226,19 +226,19 @@ export default defineComponent({
       subCategoryDataObject: object,
       categoryKey: string,
       subCategoryKey: string,
-      catgory: Category,
+      category: Category,
       dataId: string,
       listOfKpiDataObjects: Array<KpiDataObject>,
       currentViewModelDataset: FrameworkViewModel,
     ) {
       for (const [kpiKey, kpiValue] of Object.entries(subCategoryDataObject)) {
         const subcategory = assertDefined(
-          catgory.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
+          category.subcategories.find((subCategory) => subCategory.name === subCategoryKey),
         );
         const field = assertDefined(subcategory.fields.find((field) => field.name == kpiKey));
 
         if (field.showIf(currentViewModelDataset.toApiModel())) {
-          this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, catgory, dataId);
+          this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, category, dataId);
           listOfKpiDataObjects.push(this.resultKpiData);
         }
       }
