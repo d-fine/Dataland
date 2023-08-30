@@ -195,8 +195,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalEligibleShare",
-        label: "Total Eligible Revenue",
+        name: "eligibleShare",
+        label: "Eligible Revenue",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -221,8 +221,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalAlignedShare",
-        label: "Total Aligned Revenue",
+        name: "alignedShare",
+        label: "Aligned Revenue",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -299,8 +299,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalNonAlignedShare",
-        label: "Total Non-Aligned Revenue",
+        name: "nonAlignedShare",
+        label: "Non-Aligned Revenue",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -335,8 +335,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalNonEligibleShare",
-        label: "Total Non-Eligible Revenue",
+        name: "nonEligibleShare",
+        label: "Non-Eligible Revenue",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -361,12 +361,12 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalEnablingShare",
-        label: "Total Enabling Revenue",
+        name: "enablingShare",
+        label: "Enabling Revenue",
         fields: [
           {
-            name: "totalEnablingShare",
-            label: "Total Enabling Revenue",
+            name: "enablingShare",
+            label: "Enabling Revenue",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -377,12 +377,12 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalTransitionalShare",
-        label: "Total Transitional Revenue",
+        name: "transitionalShare",
+        label: "Transitional Revenue",
         fields: [
           {
-            name: "totalTransitionalShare",
-            label: "Total Transitional Revenue",
+            name: "transitionalShare",
+            label: "Transitional Revenue",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -457,8 +457,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalEligibleShare",
-        label: "Total Eligible CapEx",
+        name: "eligibleShare",
+        label: "Eligible CapEx",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -483,8 +483,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalAlignedShare",
-        label: "Total Aligned CapEx",
+        name: "alignedShare",
+        label: "Aligned CapEx",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -561,8 +561,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalNonAlignedShare",
-        label: "Total Non-Aligned CapEx",
+        name: "nonAlignedShare",
+        label: "Non-Aligned CapEx",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -597,8 +597,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalNonEligibleShare",
-        label: "Total Non-Eligible CapEx",
+        name: "nonEligibleShare",
+        label: "Non-Eligible CapEx",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -623,12 +623,12 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalEnablingShare",
-        label: "Total Enabling CapEx",
+        name: "enablingShare",
+        label: "Enabling CapEx",
         fields: [
           {
-            name: "totalEnablingShare",
-            label: "Total Enabling CapEx",
+            name: "enablingShare",
+            label: "Enabling CapEx",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -639,12 +639,12 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalTransitionalShare",
-        label: "Total Transitional CapEx",
+        name: "transitionalShare",
+        label: "Transitional CapEx",
         fields: [
           {
-            name: "totalTransitionalShare",
-            label: "Total Transitional CapEx",
+            name: "transitionalShare",
+            label: "Transitional CapEx",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -719,8 +719,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalEligibleShare",
-        label: "Total Eligible OpEx",
+        name: "eligibleShare",
+        label: "Eligible OpEx",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -745,8 +745,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalAlignedShare",
-        label: "Total Aligned OpEx",
+        name: "alignedShare",
+        label: "Aligned OpEx",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -823,8 +823,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalNonAlignedShare",
-        label: "Total Non-Aligned OpEx",
+        name: "nonAlignedShare",
+        label: "Non-Aligned OpEx",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -859,8 +859,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalNonEligibleShare",
-        label: "Total Non-Eligible OpEx",
+        name: "nonEligibleShare",
+        label: "Non-Eligible OpEx",
         fields: [
           {
             name: "relativeShareInPercent",
@@ -885,12 +885,12 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalEnablingShare",
-        label: "Total Enabling OpEx",
+        name: "enablingShare",
+        label: "Enabling OpEx",
         fields: [
           {
-            name: "totalEnablingShare",
-            label: "Total Enabling OpEx",
+            name: "enablingShare",
+            label: "Enabling OpEx",
             description: "",
             unit: "",
             component: "UndefinedFormField",
@@ -901,12 +901,12 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         ],
       },
       {
-        name: "totalTransitionalShare",
-        label: "Total Transitional OpEx",
+        name: "transitionalShare",
+        label: "Transitional OpEx",
         fields: [
           {
-            name: "totalTransitionalShare",
-            label: "Total Transitional OpEx",
+            name: "transitionalShare",
+            label: "Transitional OpEx",
             description: "",
             unit: "",
             component: "UndefinedFormField",
