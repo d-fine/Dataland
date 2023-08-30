@@ -146,9 +146,17 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       .should("exist");
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("15");
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaption"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomy"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControl"]').clear().type("15");
+    cy.get(
+      'div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources"]',
+    )
+      .clear()
+      .type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomy"]')
+      .clear()
+      .type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControl"]')
+      .clear()
+      .type("15");
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaption"]').clear().type("15");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type("12000");
