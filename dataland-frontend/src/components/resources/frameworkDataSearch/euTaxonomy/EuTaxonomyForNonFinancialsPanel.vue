@@ -34,7 +34,6 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -47,17 +46,6 @@ export default defineComponent({
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel,
-      namesOfFieldsToFormatAsPercentages: [
-        "relativeShareInPercent",
-        "enablingShare",
-        "transitionalShare",
-        "substantialContributionToClimateChangeMitigation",
-        "substantialContributionToClimateChangeAdaption",
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
-        "substantialContributionToTransitionToACircularEconomy",
-        "substantialContributionToPollutionPreventionAndControl",
-        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
-      ],
     };
   },
   props: PanelProps,
@@ -139,17 +127,6 @@ export default defineComponent({
     },
 
     /**
-     * Checks if a field name is included in the EnvironmentalObjectives enum.
-     * @param fieldName is the field name to check for
-     * @returns a boolean based on the result of the check
-     */
-    isFieldNameAmongEnvironmentalObjectives(fieldName: string): boolean {
-      return Object.values(EnvironmentalObjective).includes(fieldName);
-      //TODO Maybe it is worth to modify this function to reduce the number of hardcoded fields in namesOfFieldsToFormatAsPercentages
-      //TODO  defined in line 50. For now this is synchronous with branch DALA-2307
-    },
-
-    /**
      * Formats an AmountWithCurrency object by concatenating the amount and the currency.
      * @param amountWithCurrency the object that holds the amount and currency
      * @returns the resulting string from the concatenation
@@ -168,7 +145,7 @@ export default defineComponent({
      * @returns the resulting string
      */
     formatPercentageNumber(relativeShareInPercent: number) {
-      return `${relativeShareInPercent.toFixed(2).toString()} %`;
+      return `${relativeShareInPercent.toFixed(2).toString()}`;
     },
 
     /**
@@ -181,10 +158,7 @@ export default defineComponent({
       if (kpiValueToFormat == null) {
         return kpiValueToFormat;
       }
-      if (
-        this.namesOfFieldsToFormatAsPercentages.includes(field.name) ||
-        this.isFieldNameAmongEnvironmentalObjectives(field.name)
-      ) {
+      if (field.component == "PercentageFormField") {
         return this.formatPercentageNumber(kpiValueToFormat as number);
       }
       if (this.isKpiObjectAmountWithCurrency(kpiValueToFormat)) {

@@ -1,11 +1,12 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForNonFinancials, type StoredCompany } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
 before(function () {
@@ -30,35 +31,41 @@ describeIf(
 
     /**
      * validates that the data uploaded via api is displayed correctly for a company
-     * @param companyId the company associated to the data uploaded via form
+     * @param company the company associated to the data uploaded via form
      * @param dataId the company data id for accessing its view page
      */
-
-    /*
-         to be implemented after view page is ready
-
-        function validateFormUploadedData(companyId: string, dataId: string): void {
-            cy.visit(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/${dataId}`);
-            cy.contains('Show "Sectors"').click();
-            cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
-            cy.get(".p-dialog th").eq(0).should("have.text", "Sectors");
-            p2pFixtureForTest.t.general.general.sectors.forEach((sector) => {
-                cy.get("span").contains(humanizeString(sector)).should("exist");
-            });
-            cy.get(".p-dialog").find(".p-dialog-header-icon").click();
-            cy.get('td > [data-test="emissionsPlanning"]').click();
-            cy.contains(assertDefined(p2pFixtureForTest.t.general.emissionsPlanning?.relativeEmissions));
-            cy.contains("CEMENT").click();
-            cy.contains("Material").click();
-            cy.contains(assertDefined(p2pFixtureForTest.t.cement?.material?.preCalcinedClayUsage));
-        }
-        */
+    function validateFormUploadedData(company: StoredCompany, dataId: string): void {
+      cy.visit(`/companies/${company.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/${dataId}`);
+      cy.get("h1").should("contain", company.companyInformation.companyName);
+      cy.get('span[data-test="_basicInformation"]').contains("Basic Information").should("exist");
+      ["Assurance", "CapEx", "OpEx"].forEach((category) => {
+        console.log("category", category);
+        cy.get(`span[data-test="${category}"]`).contains(category.toUpperCase()).should("exist");
+      });
+      cy.get('td > [data-test="fiscalYearEnd"]')
+        .parent()
+        .next("td")
+        .contains(assertDefined(euTaxonomyForNonFinancialsFixtureForTest.t.general.fiscalYearEnd))
+        .should("exist");
+      cy.get('div > [data-test="CapEx"]').click();
+      cy.get('span[data-test="eligibleShare"]').filter(":visible").click();
+      cy.get('td > [data-test="relativeShareInPercent"]')
+        .parent()
+        .next("td")
+        .contains(
+          assertDefined(euTaxonomyForNonFinancialsFixtureForTest.t.capex.eligibleShare.relativeShareInPercent).toFixed(
+            2,
+          ),
+        )
+        .should("exist");
+    }
 
     it("Create a company via api and upload an EU taxonomy data for non-financials dataset via the api", () => {
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+          console.log("storedCompany", storedCompany);
           return uploadFrameworkData(
             DataTypeEnum.EutaxonomyNonFinancials,
             token,
@@ -79,7 +86,7 @@ describeIf(
             cy.get("h1").should("contain", testCompanyName);
             submitButton.clickButton();
             cy.url().should("eq", getBaseUrl() + "/datasets");
-            //validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
+            validateFormUploadedData(storedCompany, dataMetaInformation.dataId);
           });
         });
       });
