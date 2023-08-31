@@ -102,6 +102,24 @@ type MainColumnDefinition = {
   groupIndex: number;
 };
 
+const substantialContributionFields = [
+  "substantialContributionToClimateChangeMitigation",
+  "substantialContributionToClimateChangeAdaption",
+  "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+  "substantialContributionToTransitionToACircularEconomy",
+  "substantialContributionToPollutionPreventionAndControl",
+  "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+] as const;
+
+const dnshCriteriaFields = [
+  "dnshToClimateChangeMitigation",
+  "dnshToClimateChangeAdaption",
+  "dnshToSustainableUseAndProtectionOfWaterAndMarineResources",
+  "dnshToTransitionToACircularEconomy",
+  "dnshToPollutionPreventionAndControl",
+  "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems",
+] as const;
+
 export default defineComponent({
   inject: ["dialogRef"],
   name: "AlignedActivitiesDataTable",
@@ -146,8 +164,8 @@ export default defineComponent({
       { field: "revenue", header: this.humanizeHeaderName("revenue"), group: "_revenue", groupIndex: 0 },
       { field: "revenuePercent", header: this.humanizeHeaderName("revenuePercent"), group: "_revenue", groupIndex: 1 },
 
-      ...this.makeGroupColumns("substantialContributionCriteria"),
-      ...this.makeGroupColumns("dnshCriteria"),
+      ...this.createGroupColumnDefinitions([...substantialContributionFields], "substantialContributionCriteria"),
+      ...this.createGroupColumnDefinitions([...dnshCriteriaFields], "dnshCriteria"),
 
       {
         field: "minimumSafeguards",
@@ -165,18 +183,25 @@ export default defineComponent({
     this.mainColumnData = this.listOfRowContents
       .map((col) => [
         ...createRevenueGroupData(col),
-        ...createActivityGroupData<number>(
-          col.activityName as string,
-          "substantialContributionCriteria",
-          col.substantialContributionCriteria,
-          (value: number) => (value ? `${value}%` : ""),
+
+        ...substantialContributionFields.map((field) =>
+          createActivityGroupDataItem(
+            col.activityName as string,
+            "substantialContributionCriteria",
+            field,
+            this.valueFormatterForPercentage(col[field] as number | undefined),
+          ),
         ),
-        ...createActivityGroupData<YesNo>(
-          col.activityName as string,
-          "dnshCriteria",
-          col.dnshCriteria,
-          (value: YesNo) => (value ? `${value}` : ""),
+
+        ...dnshCriteriaFields.map((field) =>
+          createActivityGroupDataItem(
+            col.activityName as string,
+            "dnshCriteria",
+            field,
+            this.valueFormatterForYesNo(col[field] as YesNo),
+          ),
         ),
+
         ...createMinimumSafeguardsGroupData(col),
       ])
       .flat();
@@ -197,6 +222,20 @@ export default defineComponent({
     ];
   },
   methods: {
+    /**
+     * @param value the number to format as a percentage
+     * @returns the new formatted string
+     */
+    valueFormatterForPercentage(value: number | undefined): string {
+      return typeof value !== "undefined" ? `${value}%` : "";
+    },
+    /**
+     * @param value the YesNo value to format as Yes, No or blank
+     * @returns the new formatted string
+     */
+    valueFormatterForYesNo(value: YesNo): string {
+      return value ? value : "";
+    },
     /**
      * @param groupName name of the group to count number of fields
      * @returns the maximum value of fields per activity and group
@@ -223,19 +262,6 @@ export default defineComponent({
         (item) => item.activity === activityName && item.group === groupName && item.field === fieldName,
       );
       return value ? value.content : "";
-    },
-    /**
-     * @param groupName the name of the group to which columns will be assigned
-     * @returns column definitions for group
-     */
-    makeGroupColumns(groupName: string) {
-      const EnvironmentalObjectiveKeys = Object.keys(EnvironmentalObjective).filter((v) => isNaN(Number(v)));
-      return EnvironmentalObjectiveKeys.map((enviromentalObjectiveKey: string, index: number) => ({
-        field: enviromentalObjectiveKey,
-        header: this.humanizeHeaderName(enviromentalObjectiveKey),
-        group: groupName,
-        groupIndex: index,
-      }));
     },
     /**
      * @param target the camel case string we want to format
@@ -274,6 +300,21 @@ export default defineComponent({
     humanizeHeaderName(key: string) {
       return this.columnHeaders[this.kpiKeyOfTable][key];
     },
+
+    /**
+     *
+     * @param groupFields array of field names within the group
+     * @param groupKey the group key or name
+     * @returns column definitions
+     */
+    createGroupColumnDefinitions(groupFields: string[], groupKey: string) {
+      return groupFields.map((field, index) => ({
+        field,
+        header: this.humanizeHeaderName(field),
+        group: groupKey,
+        groupIndex: index,
+      }));
+    },
   },
 });
 
@@ -301,25 +342,22 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
 /**
  * @param activityName name of the activity
  * @param groupName the name of the group to which the fields will be assigned to
- * @param fields collection of fields and their values
- * @param valueFormatter function which formats the final look of the value
- * @returns grouped list of data items
+ * @param field key of field where content will be rendered
+ * @param content formatted value which will be displayed
+ * @returns data item for the field in the group
  */
-function createActivityGroupData<T>(
+function createActivityGroupDataItem(
   activityName: string,
   groupName: string,
-  fields: { [key: string]: T } | undefined,
-  valueFormatter: (value: T) => string,
-): ActivityFieldValueObject[] {
-  const fieldsEntries = Object.entries(fields ?? {});
-  return fieldsEntries.map(([field, value]) => {
-    return {
-      activity: activityName,
-      group: groupName,
-      field,
-      content: valueFormatter(value) ?? "",
-    };
-  });
+  field: string,
+  content: string,
+): ActivityFieldValueObject {
+  return {
+    activity: activityName,
+    group: groupName,
+    field,
+    content,
+  };
 }
 
 /**
