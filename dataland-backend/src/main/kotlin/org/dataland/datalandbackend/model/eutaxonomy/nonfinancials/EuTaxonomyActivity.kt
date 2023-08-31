@@ -1,11 +1,8 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
-import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.EnvironmentalObjective
-import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
 
 /**
@@ -29,9 +26,17 @@ data class EuTaxonomyAlignedActivity(
     val activityName: Activity,
     val naceCodes: List<String>?,
     val share: RelativeAndAbsoluteFinancialShare?,
-    @field:Schema(example = JsonExampleFormattingConstants.SUBSTANTIAL_CONTRIBUTION_CRITIREA)
-    val substantialContributionCriteria: Map<EnvironmentalObjective, BigDecimal>?,
-    @field:Schema(example = JsonExampleFormattingConstants.DNSH_CRITIREA)
-    val dnshCriteria: Map<EnvironmentalObjective, YesNo>?,
+    val substantialContributionToClimateChangeMitigation: BigDecimal?,
+    val substantialContributionToClimateChangeAdaption: BigDecimal?,
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: BigDecimal?,
+    val substantialContributionToTransitionToACircularEconomy: BigDecimal?,
+    val substantialContributionToPollutionPreventionAndControl: BigDecimal?,
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: BigDecimal?,
+    val dnshToClimateChangeMitigation: YesNo?,
+    val dnshToClimateChangeAdaption: YesNo?,
+    val dnshToSustainableUseAndProtectionOfWaterAndMarineResources: YesNo?,
+    val dnshToTransitionToACircularEconomy: YesNo?,
+    val dnshToPollutionPreventionAndControl: YesNo?,
+    val dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: YesNo?,
     val minimumSafeguards: YesNo?,
 )

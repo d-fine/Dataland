@@ -2,33 +2,26 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Rosettashire",
+			"headquarters": "North Altastead",
+			"sector": "solutions",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"nKbuCUMAiUrF",
-					"bgosHkXJqxVA"
+					"BIbdAbHD38y8",
+					"FGs5kowZgQcb"
 				],
 				"PermId": [
-					"NnLKR7J9Tt"
+					"jCoXSJPKFs"
 				],
 				"Ticker": [],
-				"Duns": [
-					"aytWeXqMg"
-				],
-				"VatNumber": [
-					"OQ8QQ9STc"
-				],
-				"CompanyRegistrationNumber": [
-					"3gmLlJ40RBooioK"
-				]
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TW",
+			"countryCode": "FI",
 			"companyAlternativeNames": [
-				"Bayer - Hoppe",
-				"Gerlach - Boehm",
-				"Gerlach, Cronin and Reinger",
-				"O'Kon, Hudson and Ernser"
+				"Homenick - Gutkowski",
+				"Schamberger, Pollich and Spinka"
 			],
 			"isTeaserCompany": false
 		},
@@ -36,18 +29,18 @@
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"H",
-						"I",
+						"E",
 						"J",
-						"M"
+						"K"
 					],
 					"addressOfHeadquarters": {
-						"city": "South Alyson",
-						"state": "New Hampshire",
-						"country": "AD"
+						"streetAndHouseNumber": "Liana Trace 5011",
+						"city": "Nitzscheport",
+						"state": "Montana",
+						"country": "BH"
 					},
-					"numberOfEmployees": 5941,
-					"fiscalYearStart": "2023-11-01"
+					"numberOfEmployees": 5520,
+					"fiscalYearStart": "2023-12-05"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -56,18 +49,7 @@
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Oberbrunner, Farrell and Collins",
-							"addressOfProductionSite": {
-								"city": "Catherinecester",
-								"state": "Utah",
-								"country": "UY"
-							}
-						}
-					]
-				},
+				"sites": {},
 				"products": {}
 			},
 			"power": {
@@ -75,18 +57,16 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 238,
-					"powerFromRenewableSources": "Yes",
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 1089,
+					"energyConsumptionHeatingAndHotWater": 260,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Wind"
+						"Snow",
+						"Flooding"
 					]
 				}
 			}
@@ -96,41 +76,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Abagailstead",
-			"headquartersPostalCode": "72132",
-			"sector": "e-commerce",
+			"headquarters": "Aureliofield",
+			"sector": "models",
 			"identifiers": {
-				"Lei": [
-					"CgnWNLKSWt2jt25t1h5e"
-				],
+				"Lei": [],
 				"Isin": [
-					"BR8XZ8oztm7O"
+					"TnHJFfTtn9jg"
 				],
-				"PermId": [],
+				"PermId": [
+					"i4akzkQxyI"
+				],
 				"Ticker": [
-					"GzkWaqi"
+					"dCETxcZ"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"Rp3CLh4rV"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NU",
+			"countryCode": "CU",
 			"companyAlternativeNames": [
-				"Considine, Simonis and Hessel"
+				"Stanton Inc"
 			],
-			"website": "https://sour-affinity.org/",
+			"companyLegalForm": "GmbH",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"G",
-						"H",
+						"D",
+						"F",
 						"I",
-						"K"
+						"K",
+						"M"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -139,42 +117,67 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3209,
-					"fiscalYearStart": "2024-02-18"
+					"numberOfEmployees": 8776,
+					"fiscalYearStart": "2024-06-15"
 				},
-				"companyFinancials": {}
+				"companyFinancials": {
+					"revenueInEur": 25850041,
+					"operatingCostInEur": 6862475,
+					"capitalAssetsInEur": 69514817
+				}
 			},
 			"production": {
-				"sites": {},
-				"products": {
-					"listOfProducts": [
+				"sites": {
+					"listOfProductionSites": [
 						{
-							"name": "Practical Wooden Mouse"
+							"addressOfProductionSite": {
+								"postalCode": "14045-9500",
+								"city": "Colinfurt",
+								"country": "MF"
+							}
 						},
 						{
-							"name": "Modern Wooden Gloves",
-							"percentageOfTotalRevenue": 0.6358
+							"nameOfProductionSite": "Cormier and Sons",
+							"addressOfProductionSite": {
+								"postalCode": "36649",
+								"city": "Gary",
+								"country": "MC"
+							}
+						},
+						{
+							"nameOfProductionSite": "Christiansen - Hand",
+							"addressOfProductionSite": {
+								"postalCode": "05899-2901",
+								"city": "Lake Adolfo",
+								"state": "Hawaii",
+								"country": "IE"
+							}
+						},
+						{
+							"nameOfProductionSite": "Cruickshank - Champlin",
+							"addressOfProductionSite": {
+								"postalCode": "70349-2450",
+								"city": "West Noble",
+								"country": "VN"
+							},
+							"percentageOfTotalRevenue": 0.7904
 						}
 					]
-				}
+				},
+				"products": {}
 			},
 			"power": {
 				"investments": {},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 558,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil"
+					"powerConsumptionInMwh": 1594,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 240,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 37153613,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Wind",
-						"Snow",
-						"Avalanche",
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},
@@ -183,84 +186,116 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "West Cletus",
-			"headquartersPostalCode": "88624-7914",
-			"sector": "eyeballs",
+			"headquarters": "Edaland",
+			"sector": "infrastructures",
 			"identifiers": {
 				"Lei": [
-					"pwDWtJ8nBD0RhOq2FrQL"
+					"LoKRzJ4nJKmUcMS2tWKd"
 				],
 				"Isin": [
-					"kmols4wt08bI",
-					"zlocKZixx1F6"
+					"Wq4G3ZmXwwqU"
 				],
-				"PermId": [
-					"olVhTJIO4f"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"ALwly19N1"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"fRRh8DAPV"
+					"CftrMBGBv"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BA",
+			"countryCode": "ET",
 			"companyAlternativeNames": [
-				"Bruen LLC",
-				"D'Amore - Considine"
+				"Jakubowski - Quigley"
 			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://altruistic-pharmacist.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"E"
+						"J"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6515,
-					"fiscalYearStart": "2023-12-30"
+					"numberOfEmployees": 9243,
+					"fiscalYearStart": "2023-11-04"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEur": 57613818
+					"operatingCostInEur": 29635558
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Graham Light 26575",
+								"postalCode": "07805-8803",
+								"city": "Waco",
+								"country": "ER"
+							},
+							"percentageOfTotalRevenue": 0.1014
+						},
+						{
+							"nameOfProductionSite": "Monahan, Gibson and Wiza",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Collins Place 982",
+								"city": "East Iva",
+								"country": "KZ"
+							}
+						},
+						{
+							"nameOfProductionSite": "Bins, Balistreri and Stehr",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Fred Rapid 308",
+								"city": "Ferryboro",
+								"state": "Minnesota",
+								"country": "KG"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"city": "New Bethworth",
+								"country": "AW"
+							},
+							"percentageOfTotalRevenue": 0.5253
+						},
+						{
+							"addressOfProductionSite": {
+								"city": "Modesto",
+								"country": "CH"
+							}
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Electronic Soft Towels",
-							"percentageOfTotalRevenue": 0.7605
+							"name": "Oriental Concrete Tuna"
 						},
 						{
-							"name": "Bespoke Steel Car"
+							"name": "Handmade Metal Pizza"
 						},
 						{
-							"name": "Incredible Wooden Bacon"
+							"name": "Oriental Wooden Tuna"
 						},
 						{
-							"name": "Generic Bronze Pizza",
-							"percentageOfTotalRevenue": 0.9656
-						},
-						{
-							"name": "Luxurious Cotton Pizza"
+							"name": "Sleek Fresh Salad"
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+				},
 				"consumption": {
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 676,
+					"energyConsumptionHeatingAndHotWater": 478,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
@@ -268,9 +303,8 @@
 				"naturalHazards": {
 					"naturalHazardsCovered": [
 						"Avalanche",
-						"EarthQuake",
-						"Flooding",
-						"Hail"
+						"Snow",
+						"EarthQuake"
 					]
 				}
 			}

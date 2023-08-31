@@ -3,7 +3,7 @@ import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixture
 import { randomYesNoNa, randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
-import { randomNumber } from "@e2e/fixtures/common/NumberFixtures";
+import { randomInt } from "@e2e/fixtures/common/NumberFixtures";
 import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
@@ -16,7 +16,7 @@ export function generateEuTaxonomyWithBaseFields(): EuTaxonomyDataForFinancials 
   return {
     fiscalYearDeviation: valueOrUndefined(randomFiscalYearDeviation()),
     fiscalYearEnd: valueOrUndefined(randomPastDate()),
-    numberOfEmployees: valueOrUndefined(randomNumber(100000)),
+    numberOfEmployees: valueOrUndefined(randomInt(100000)),
     referencedReports: referencedReports,
     assurance: generateAssuranceData(referencedReports),
     scopeOfEntities: valueOrUndefined(randomYesNoNa()),

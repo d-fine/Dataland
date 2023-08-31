@@ -13,7 +13,7 @@ import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFloat, randomInt, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateBaseDataPoint } from "@e2e/fixtures/common/BaseDataPointFixtures";
@@ -175,17 +175,17 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         groupOfCompanies: valueOrUndefined(randomYesNo(), undefinedProbability),
         groupOfCompaniesName: valueOrUndefined(faker.company.name(), undefinedProbability),
         industry: valueOrUndefined(generateListOfNaceCodes(), undefinedProbability),
-        numberOfEmployees: valueOrUndefined(randomNumber(10000), undefinedProbability),
+        numberOfEmployees: valueOrUndefined(randomInt(10000), undefinedProbability),
         seasonalOrMigrantWorkers: valueOrUndefined(randomYesNo(), undefinedProbability),
         shareOfTemporaryWorkers: valueOrUndefined(randomShareOfTemporaryWorkersInterval(), undefinedProbability),
-        annualTotalRevenue: valueOrUndefined(randomEuroValue(), undefinedProbability),
+        annualTotalRevenue: valueOrUndefined(randomFloat(1000000, 10000000000, 1), undefinedProbability),
         totalRevenueCurrency: valueOrUndefined(generateIso4217CurrencyCode(), undefinedProbability),
-        fixedAndWorkingCapital: valueOrUndefined(randomNumber(10000), undefinedProbability),
+        fixedAndWorkingCapital: valueOrUndefined(randomInt(10000), undefinedProbability),
       },
       productionSpecific: {
         manufacturingCompany: valueOrUndefined(randomYesNo(), undefinedProbability),
         capacity: valueOrUndefined(
-          randomNumber(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
+          randomInt(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
           undefinedProbability,
         ),
         productionViaSubcontracting: valueOrUndefined(randomYesNo(), undefinedProbability),
@@ -233,7 +233,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         appropriateGrievanceHandlingSupport: valueOrUndefined(randomYesNo(), undefinedProbability),
         accessToExpertiseForGrievanceHandling: valueOrUndefined(randomYesNo(), undefinedProbability),
         grievanceComplaints: valueOrUndefined(randomYesNo(), undefinedProbability),
-        complaintsNumber: valueOrUndefined(randomNumber(10000), undefinedProbability),
+        complaintsNumber: valueOrUndefined(randomInt(10000), undefinedProbability),
         complaintsReason: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
         actionsForComplaintsUndertaken: valueOrUndefined(randomYesNo(), undefinedProbability),
         whichActionsForComplaintsUndertaken: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),

@@ -32,6 +32,7 @@
             :validation-label="validationLabel ?? label"
             :options="yesNoOptions"
             :data-test="dataTest"
+            @blur="handleBlurValue"
           />
         </div>
         <div>
@@ -74,7 +75,7 @@
           <div class="md:col-6 col-12 p-0">
             <FormKit
               type="select"
-              :modelValue="!isDataQualityRequired ? 'NA' : ''"
+              v-model="qualityValue"
               name="quality"
               :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
@@ -144,6 +145,7 @@ export default defineComponent({
       })),
       currentValue: undefined,
       currentReportValue: "",
+      qualityValue: "NA",
     };
   },
   computed: {
@@ -187,6 +189,16 @@ export default defineComponent({
     updateFileUploadFiles() {
       if (this.documentName !== "" && this.referencedDocument === undefined) {
         this.fileNamesForPrefill = [this.documentName];
+      }
+    },
+    /**
+     * Handle blur event on value input.
+     */
+    handleBlurValue() {
+      if (this.currentValue === undefined) {
+        this.qualityValue = "NA";
+      } else if (this.currentValue !== "" && this.qualityValue == "NA") {
+        this.qualityValue = "";
       }
     },
   },

@@ -9,10 +9,13 @@ import { submitFilledInEuTaxonomyForm } from "./EuTaxonomyFinancialsUpload";
 /**
  * Visits the edit page for a framework via UI navigation.
  * @param companyId the id of the company for which to edit a dataset
- * @param dataType the framework type
+ * @param dataType the framework
  * @returns a cypress chainable to the interception of the data request on the edit page
  */
-export function goToEditFormOfMostRecentDataset(companyId: string, dataType: DataTypeEnum): Chainable<Interception> {
+export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
+  companyId: string,
+  dataType: DataTypeEnum,
+): Chainable<Interception> {
   const getRequestAlias = "getData";
   cy.intercept({
     method: "GET",
@@ -26,11 +29,11 @@ export function goToEditFormOfMostRecentDataset(companyId: string, dataType: Dat
 }
 
 /**
- * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
- * via the form in the frontend, and then visits the view page where that dataset is displayed
+ * Uploads a company via POST-request, then an EU Taxonomy dataset for the uploaded company via the form in the
+ * frontend, and then visits the view page where that dataset is displayed
  * @param frameworkDataType The EU Taxanomy framework being tested
  * @param companyInformation Company information to be used for the company upload
- * @param testData EU Taxonomy dataset for financial companies to be uploaded
+ * @param testData EU Taxonomy dataset to be uploaded
  * @param formFill Steps involved to fill data of the upload form
  * @param submissionDataIntercept performs checks on the request itself
  * @param afterDatasetSubmission is performed after the data has been submitted

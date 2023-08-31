@@ -2,7 +2,7 @@ import { generateFixtureDataset, type ReferencedDocuments } from "@e2e/fixtures/
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type EuTaxonomyDataForNonFinancials, type EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
-import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFloat } from "@e2e/fixtures/common/NumberFixtures";
 import {
   generateFinancialShare,
   generateEuTaxonomyDataForNonFinancials,
@@ -50,7 +50,7 @@ function createOnlyEglibileNumbers(
   function generateCashFlowWithOnlyEligibleNumbers(): EuTaxonomyDetailsPerCashFlowType {
     const share = generateFinancialShare();
     share.absoluteShare = undefined;
-    return { totalEligibleShare: share };
+    return { eligibleShare: share };
   }
 
   input.companyInformation.companyName = "only-eligible-numbers";
@@ -77,8 +77,8 @@ function createOnlyEligibleAndTotalNumbers(
     referencedReports: ReferencedDocuments,
   ): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: generateDatapoint(randomEuroValue(), referencedReports),
-      totalEligibleShare: generateFinancialShare(),
+      totalAmount: generateDatapoint(randomFloat(1000000, 10000000000, 1), referencedReports),
+      eligibleShare: generateFinancialShare(),
     };
   }
 

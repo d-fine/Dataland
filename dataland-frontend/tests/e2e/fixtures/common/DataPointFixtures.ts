@@ -58,19 +58,6 @@ export function generateNumericOrEmptyDatapoint(
 }
 
 /**
- * Randomly returns a datapoint with the specified value (chosen at random between 0 and 99999 if not specified)
- * @param reports the reports that can be referenced as data sources
- * @param value the value of the datapoint to generate (chosen at random between 0 and 99999 if not specified)
- * @returns the generated datapoint
- */
-export function generateNumericDatapoint(
-  reports: ReferencedDocuments,
-  value: number | null = valueOrNull(faker.number.int()),
-): DataPointOneValueBigDecimal {
-  return generateDatapoint(value, reports);
-}
-
-/**
  * Randomly generates a Yes / No / Na / undefined datapoint
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint or undefined
@@ -141,27 +128,23 @@ function createQualityAndDataSourceAndComment(
 
 /**
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
- * @param valueAsAbsolute the decimal value of the datapoint to generate
- * @param valueAsPercentage the percentage of the datapoint to generate
+ * @param value the value of the datapoint to generate
+ * @param unit the unit of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint
  */
-export function generateDatapointAbsoluteAndPercentage<T, Y>(
-  valueAsAbsolute: T | null,
-  valueAsPercentage: T | null,
-  reports: ReferencedDocuments,
-): Y {
+export function generateDatapointWithUnit<T, Y>(value: T | null, unit: string, reports: ReferencedDocuments): Y {
   const qualityBucket =
-    valueAsAbsolute === null
+    value === null
       ? QualityOptions.Na
       : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
   const { dataSource, comment } = createQualityAndDataSourceAndComment(reports, qualityBucket);
 
   return {
-    valueAsPercentage: valueAsPercentage ?? undefined,
+    value: value ?? undefined,
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
-    valueAsAbsolute: valueAsAbsolute ?? undefined,
+    unit: unit ?? undefined,
   } as Y;
 }

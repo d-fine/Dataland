@@ -8,20 +8,15 @@ import {
   type EuTaxonomyDetailsPerCashFlowType,
   YesNo,
 } from "@clients/backend";
-import {
-  generateArray,
-  getRandomNumberOfDistinctElementsFromArray,
-  type ReferencedDocuments,
-} from "@e2e/fixtures/FixtureUtils";
-import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateArray, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { generateDatapointWithUnit } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFloat } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 
 /**
  * Generates a random percentage between 0 and 100
@@ -37,7 +32,7 @@ function generatePercentage(): number {
  */
 export function generateAmountWithCurrency(): AmountWithCurrency {
   return {
-    amount: valueOrUndefined(randomEuroValue()),
+    amount: valueOrUndefined(randomFloat(1000000, 10000000000, 1)),
     currency: valueOrUndefined(generateIso4217CurrencyCode()),
   };
 }
@@ -66,35 +61,30 @@ function generateActivity(): EuTaxonomyActivity {
 }
 
 /**
- * Generates a map with keys drawn from the provided array and generated values
- * @param possibleKeys the keys that can occur in the resulting map
- * @param valueGenerator the generator function for the values
- * @returns the generated map
- */
-function generateMap<K, V>(possibleKeys: Array<K>, valueGenerator: () => V): Map<K, V> {
-  const keys = getRandomNumberOfDistinctElementsFromArray(Array.from(possibleKeys));
-  return new Map<K, V>(keys.map((key) => [key, valueGenerator()]));
-}
-
-/**
- * Generates an object with keys drawn from the provided objects values and generated values
- * @param possibleKeys the keys that can occur in the resulting map
- * @param valueGenerator the generator function for the values
- * @returns the generated map
- */
-function generateObject<V>(possibleKeys: Array<string>, valueGenerator: () => V): { [p: string]: V } {
-  return Object.fromEntries(generateMap(possibleKeys, () => valueGenerator()));
-}
-
-/**
  * Generates a random aligned activity
  * @returns a random aligned activity
  */
 function generateAlignedActivity(): EuTaxonomyAlignedActivity {
   return {
     ...generateActivity(),
-    substantialContributionCriteria: generateObject(Object.values(EnvironmentalObjective), generatePercentage),
-    dnshCriteria: generateObject(Object.values(EnvironmentalObjective), () =>
+    substantialContributionToClimateChangeMitigation: valueOrUndefined(generatePercentage()),
+    substantialContributionToClimateChangeAdaption: valueOrUndefined(generatePercentage()),
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+      generatePercentage(),
+    ),
+    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(generatePercentage()),
+    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(generatePercentage()),
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
+      generatePercentage(),
+    ),
+    dnshToClimateChangeMitigation: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToClimateChangeAdaption: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+      faker.helpers.arrayElement(Object.values(YesNo)),
+    ),
+    dnshToTransitionToACircularEconomy: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToPollutionPreventionAndControl: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
       faker.helpers.arrayElement(Object.values(YesNo)),
     ),
     minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
@@ -108,16 +98,27 @@ function generateAlignedActivity(): EuTaxonomyAlignedActivity {
  */
 export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
   return {
-    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(generateAmountWithCurrency()), reports)),
-    totalNonEligibleShare: valueOrUndefined(generateFinancialShare()),
-    totalEligibleShare: valueOrUndefined(generateFinancialShare()),
-    totalNonAlignedShare: valueOrUndefined(generateFinancialShare()),
+    totalAmount: valueOrUndefined(
+      generateDatapointWithUnit(randomFloat(1000000, 10000000000, 1), faker.finance.currencyCode(), reports),
+    ),
+    nonEligibleShare: valueOrUndefined(generateFinancialShare()),
+    eligibleShare: valueOrUndefined(generateFinancialShare()),
+    nonAlignedShare: valueOrUndefined(generateFinancialShare()),
     nonAlignedActivities: valueOrUndefined(generateArray(generateActivity)),
-    totalAlignedShare: valueOrUndefined(generateFinancialShare()),
-    substantialContributionCriteria: generateObject(Object.values(EnvironmentalObjective), generatePercentage),
+    alignedShare: valueOrUndefined(generateFinancialShare()),
+    substantialContributionToClimateChangeMitigation: valueOrUndefined(generatePercentage()),
+    substantialContributionToClimateChangeAdaption: valueOrUndefined(generatePercentage()),
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+      generatePercentage(),
+    ),
+    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(generatePercentage()),
+    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(generatePercentage()),
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
+      generatePercentage(),
+    ),
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity)),
-    totalEnablingShare: valueOrUndefined(generatePercentage()),
-    totalTransitionalShare: valueOrUndefined(generatePercentage()),
+    enablingShare: valueOrUndefined(generatePercentage()),
+    transitionalShare: valueOrUndefined(generatePercentage()),
   };
 }
 
