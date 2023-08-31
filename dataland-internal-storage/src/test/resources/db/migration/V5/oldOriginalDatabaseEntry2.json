@@ -1,6 +1,15 @@
 {
   "capex": {
-    "totalAmount": null,
+    "totalAmount": {
+      "quality": null,
+      "dataSource": {
+        "report": null,
+        "page": null,
+        "tagName": null
+      },
+      "comment": "comment",
+      "value": null
+    },
     "alignedData": {
       "valueAsPercentage": 0.1965,
       "quality": "Audited",
@@ -13,46 +22,6 @@
       "valueAsAbsolute": 396564.95871022346
     },
     "eligibleData": null
-  },
-  "opex": {
-    "totalAmount": {
-      "quality": "Estimated",
-      "dataSource": null,
-      "comment": null,
-      "value": 940716.00
-    },
-    "alignedData": null,
-    "eligibleData": null
-  },
-  "revenue": {
-    "totalAmount": {
-      "quality": null,
-      "dataSource": {
-        "report": null,
-        "page": null,
-        "tagName": null
-      },
-      "comment": null,
-      "value": 470269.4387175143
-    },
-    "alignedData": {
-      "valueAsPercentage": 0.4347,
-      "quality": "Reported",
-      "dataSource": {
-        "report": "SustainabilityReport",
-        "page": 246,
-        "tagName": "communities"
-      },
-      "comment": "transmit online pixel",
-      "valueAsAbsolute": 840897.8063846007
-    },
-    "eligibleData": {
-      "valueAsPercentage": null,
-      "quality": "Incomplete",
-      "dataSource": {},
-      "comment": null,
-      "valueAsAbsolute": 917185.3733132593
-    }
   },
   "fiscalYearDeviation": "Deviation",
   "fiscalYearEnd": "2022-10-05",
