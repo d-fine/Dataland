@@ -9,14 +9,14 @@ class TestUtils {
     fun testMigrationOfSingleDataset(
         oldDataFileLocation: String,
         migratedDataFileLocation: String,
-        migration: (input: DataTableEntity) -> Unit
+        migration: (input: DataTableEntity) -> Unit,
     ) {
         val originalDataEntity = DataTableEntity.fromJsonObject(
             mockDataId,
             euTaxonomyForNonFinancials,
             JsonUtils.readJsonFromResourcesFile(oldDataFileLocation),
 
-            )
+        )
         val expectedDataEntity = DataTableEntity.fromJsonObject(
             mockDataId,
             euTaxonomyForNonFinancials,

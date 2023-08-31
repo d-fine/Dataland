@@ -39,12 +39,12 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
         TestUtils().testMigrationOfSingleDataset(
             "V5/oldOriginalDatabaseEntry.json",
             "V5/oldExpectedTransformedDatabaseEntry.json",
-            V5__MigrateToNewEuTaxonomyForNonFinancials()::migrateEuTaxonomyData
+            V5__MigrateToNewEuTaxonomyForNonFinancials()::migrateEuTaxonomyData,
         )
         TestUtils().testMigrationOfSingleDataset(
             "V5/oldOriginalDatabaseEntry2.json",
             "V5/oldExpectedTransformedDatabaseEntry2.json",
-            V5__MigrateToNewEuTaxonomyForNonFinancials()::migrateEuTaxonomyData
+            V5__MigrateToNewEuTaxonomyForNonFinancials()::migrateEuTaxonomyData,
         )
     }
 }

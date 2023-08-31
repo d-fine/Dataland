@@ -10,12 +10,12 @@ class V6__MigrateFromAmountWithCurrencyToUnitTest {
         TestUtils().testMigrationOfSingleDataset(
             "V6/oldOriginalDatabaseEntry.json",
             "V6/expectedTransformedDatabaseEntry.json",
-            V6__MigrateFromAmountWithCurrencyToUnit()::migrateEuTaxonomyAmountWithCurrencyData
+            V6__MigrateFromAmountWithCurrencyToUnit()::migrateEuTaxonomyAmountWithCurrencyData,
         )
         TestUtils().testMigrationOfSingleDataset(
             "V6/oldOriginalDatabaseEntry2.json",
             "V6/expectedTransformedDatabaseEntry2.json",
-            V6__MigrateFromAmountWithCurrencyToUnit()::migrateEuTaxonomyAmountWithCurrencyData
+            V6__MigrateFromAmountWithCurrencyToUnit()::migrateEuTaxonomyAmountWithCurrencyData,
         )
     }
 }

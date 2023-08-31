@@ -15,9 +15,16 @@ import org.json.JSONObject
 class V6__MigrateFromAmountWithCurrencyToUnit : BaseJavaMigration() {
 
     override fun migrate(context: Context?) {
-        migrateCompanyAssociatedDataOfDatatype(context,"eutaxonomy-non-financials", this::migrateEuTaxonomyAmountWithCurrencyData)
+        migrateCompanyAssociatedDataOfDatatype(
+            context,
+            "eutaxonomy-non-financials",
+            this::migrateEuTaxonomyAmountWithCurrencyData,
+        )
     }
 
+    /**
+     * Migrate the value fields of totalAmount to the value/unit format instead of value: amount/currency
+     */
     fun migrateEuTaxonomyAmountWithCurrencyData(dataTableEntity: DataTableEntity) {
         val dataObject = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
         listOf("revenue", "capex", "opex").forEach { cashFlowType ->
