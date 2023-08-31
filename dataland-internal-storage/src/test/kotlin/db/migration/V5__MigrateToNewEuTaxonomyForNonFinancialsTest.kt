@@ -1,7 +1,7 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
-import db.migration.utils.JsonUtils
+import db.migration.utils.TestUtils
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -36,24 +36,15 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
 
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected for migrating old data`() {
-        testMigrationOfSingleDataset("oldOriginalDatabaseEntry.json", "oldExpectedTransformedDatabaseEntry.json")
-        testMigrationOfSingleDataset("oldOriginalDatabaseEntry2.json", "oldExpectedTransformedDatabaseEntry2.json")
-    }
-
-    private fun testMigrationOfSingleDataset(filenameOfOldData: String, filenameOfMigratedData: String) {
-        val originalDataEntity = DataTableEntity.fromJsonObject(
-            mockDataId,
-            euTaxonomyForNonFinancials,
-            JsonUtils.readJsonFromResourcesFile("V5/$filenameOfOldData"),
-
+        TestUtils().testMigrationOfSingleDataset(
+            "V5/oldOriginalDatabaseEntry.json",
+            "V5/oldExpectedTransformedDatabaseEntry.json",
+            V5__MigrateToNewEuTaxonomyForNonFinancials()::migrateEuTaxonomyData
         )
-        val expectedDataEntity = DataTableEntity.fromJsonObject(
-            mockDataId,
-            euTaxonomyForNonFinancials,
-            JsonUtils.readJsonFromResourcesFile("V5/$filenameOfMigratedData"),
+        TestUtils().testMigrationOfSingleDataset(
+            "V5/oldOriginalDatabaseEntry2.json",
+            "V5/oldExpectedTransformedDatabaseEntry2.json",
+            V5__MigrateToNewEuTaxonomyForNonFinancials()::migrateEuTaxonomyData
         )
-        val migration = V5__MigrateToNewEuTaxonomyForNonFinancials()
-        migration.migrateEuTaxonomyData(originalDataEntity)
-        Assertions.assertEquals(originalDataEntity, expectedDataEntity)
     }
 }
