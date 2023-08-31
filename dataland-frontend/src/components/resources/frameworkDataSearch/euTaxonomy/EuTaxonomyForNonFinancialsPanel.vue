@@ -145,7 +145,7 @@ export default defineComponent({
      * @returns the resulting string
      */
     formatPercentageNumber(relativeShareInPercent: number) {
-      return `${relativeShareInPercent.toFixed(2).toString()} %`;
+      return `${relativeShareInPercent.toFixed(2).toString()}`;
     },
 
     /**
