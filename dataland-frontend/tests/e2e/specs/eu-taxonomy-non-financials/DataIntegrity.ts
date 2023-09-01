@@ -45,7 +45,7 @@ describeIf(
       cy.get('td > [data-test="fiscalYearEnd"]')
         .parent()
         .next("td")
-        .contains(assertDefined(euTaxonomyForNonFinancialsFixtureForTest.t.general.fiscalYearEnd))
+        .contains(assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.general?.fiscalYearEnd))
         .should("exist");
       cy.get('div > [data-test="CapEx"]').click();
       cy.get('span[data-test="eligibleShare"]').filter(":visible").click();
@@ -53,9 +53,9 @@ describeIf(
         .parent()
         .next("td")
         .contains(
-          assertDefined(euTaxonomyForNonFinancialsFixtureForTest.t.capex.eligibleShare.relativeShareInPercent).toFixed(
-            2,
-          ),
+          assertDefined(
+            euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent,
+          ).toFixed(2),
         )
         .should("exist");
     }
