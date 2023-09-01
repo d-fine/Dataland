@@ -28,6 +28,11 @@ type FieldTriggerAndDataComponents = {
   dataComponent: AvailableDataComponents;
 };
 
+const genericFieldTriggerAndDataComponent = {
+  triggerComponent: GenericDataTableModalLink,
+  dataComponent: DetailsCompanyDataTable,
+} as const;
+
 const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDataComponents } = {
   AlignedActivitiesDataTable: {
     triggerComponent: GenericDataTableModalLink,
@@ -37,11 +42,10 @@ const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDataComponents 
     triggerComponent: GenericDataTableModalLink,
     dataComponent: NonAlignedActivitiesDataTable,
   },
-  NaceCodeFormField: { triggerComponent: GenericDataTableModalLink, dataComponent: DetailsCompanyDataTable },
-  MostImportantProductsFormField: {
-    triggerComponent: GenericDataTableModalLink,
-    dataComponent: DetailsCompanyDataTable,
-  },
+  NaceCodeFormField: genericFieldTriggerAndDataComponent,
+  MostImportantProductsFormField: genericFieldTriggerAndDataComponent,
+  ProcurementCategoriesFormField: genericFieldTriggerAndDataComponent,
+  ProductionSitesFormField: genericFieldTriggerAndDataComponent,
 } as const;
 
 export type GenericModalData = {
