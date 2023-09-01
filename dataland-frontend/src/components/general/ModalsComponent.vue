@@ -46,6 +46,7 @@ const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDataComponents 
   MostImportantProductsFormField: genericFieldTriggerAndDataComponent,
   ProcurementCategoriesFormField: genericFieldTriggerAndDataComponent,
   ProductionSitesFormField: genericFieldTriggerAndDataComponent,
+  MultiSelectFormField: genericFieldTriggerAndDataComponent,
 } as const;
 
 export type GenericModalData = {
