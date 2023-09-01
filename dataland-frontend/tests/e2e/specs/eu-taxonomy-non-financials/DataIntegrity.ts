@@ -67,11 +67,11 @@ describeIf(
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           console.log("storedCompany", storedCompany);
           return uploadFrameworkData(
-            DataTypeEnum.EutaxonomyNonFinancials,
-            token,
-            storedCompany.companyId,
-            "2021",
-            euTaxonomyForNonFinancialsFixtureForTest.t,
+              DataTypeEnum.EutaxonomyNonFinancials,
+              token,
+              storedCompany.companyId,
+              "2021",
+              euTaxonomyForNonFinancialsFixtureForTest.t,
           ).then((dataMetaInformation) => {
             cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
             cy.visitAndCheckAppMount(

@@ -1,5 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import {
+  checkIfLinkedReportsAreDownloadable,
   fillAndValidateEuTaxonomyForFinancialsUploadForm,
   gotoEditForm,
   uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm,
@@ -45,21 +46,25 @@ describeIf(
         () => {
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
           uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
-          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
+          uploadDocuments.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
           uploadDocuments.removeReportFromSelectionForUpload(TEST_PDF_FILE_NAME);
-          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
+
           uploadDocuments.validateNoReportsAreAlreadyUploadedOrSelectedForUpload();
+
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
-          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
           uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
+
           uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
-          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
           uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}2`);
+          uploadDocuments.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
+
           uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="banksAndIssuers"]`)
             .find('select[name="report"]')
             .select(2);
+
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="investmentNonNfrd"]`)
             .find('select[name="report"]')
@@ -71,6 +76,7 @@ describeIf(
           expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
         },
         (companyId) => {
+          checkIfLinkedReportsAreDownloadable(companyId);
           gotoEditForm(companyId, true);
 
           uploadDocuments.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);

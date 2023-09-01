@@ -189,7 +189,7 @@ export default defineComponent({
             col.activityName as string,
             "substantialContributionCriteria",
             field,
-            this.valueFormatterForPercentage(col[field] as number | undefined),
+            this.valueFormatterForPercentage(col[field]),
           ),
         ),
 

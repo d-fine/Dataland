@@ -1,4 +1,4 @@
-import { TEST_PDF_FILE_BASEPATH } from "@sharedUtils/ConstantsForPdfs";
+import {TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME} from "@sharedUtils/ConstantsForPdfs";
 
 export const uploadDocuments = {
   selectFile(filename: string, fieldName = "UploadReports"): void {
@@ -83,6 +83,7 @@ export const uploadDocuments = {
   removeReportFromSelectionForUpload(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
+    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
   },
   removeAllReportsFromSelectionForUpload(): void {
     cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
