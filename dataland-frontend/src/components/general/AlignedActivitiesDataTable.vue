@@ -189,7 +189,7 @@ export default defineComponent({
             col.activityName as string,
             "substantialContributionCriteria",
             field,
-            this.valueFormatterForPercentage(col[field] as number | undefined),
+            this.valueFormatterForPercentage(col[field]),
           ),
         ),
 
@@ -234,7 +234,7 @@ export default defineComponent({
      * @returns the new formatted string
      */
     valueFormatterForYesNo(value: YesNo): string {
-      return value ? value : "";
+      return typeof value !== "undefined" ? value : "";
     },
     /**
      * @param groupName name of the group to count number of fields
