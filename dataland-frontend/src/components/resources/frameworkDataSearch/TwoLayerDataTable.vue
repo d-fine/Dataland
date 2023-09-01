@@ -63,27 +63,10 @@
               />
             </template>
 
-            <!-- <template v-else-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
-              <a
-                v-if="
-                  slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
-                  slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
-                "
-                @click="
-                  openModalAndDisplayValuesInSubTable(
-                    slotProps.data.content[reportingPeriodWithDataId.dataId],
-                    slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey,
-                    slotProps.data.kpiFormFieldComponent,
-                  )
-                "
-                class="link"
-                >Show "{{ slotProps.data.kpiLabel }}"
-                <em class="material-icons" aria-hidden="true" title=""> dataset </em>
-              </a>
+            <template v-else-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
+              {{ filterStringArray(slotProps.data.content[reportingPeriodWithDataId.dataId]) }}
+            </template>
 
-              <span v-else> {{ slotProps.data.content[reportingPeriodWithDataId.dataId][0] }} </span>
-            </template> -->
             <span
               v-else-if="
                 slotProps.data.kpiFormFieldComponent === 'PercentageFormField' &&
@@ -260,8 +243,17 @@ export default defineComponent({
      * @returns whether passed component is a modal
      */
     isModal(componentName: string): boolean {
-      console.log(componentName);
       return isModal(componentName) as boolean;
+    },
+    /**
+     * @param content the array value from the field
+     * @returns an array with undefined and null values filtered out
+     */
+    filterStringArray(content: unknown[]): string {
+      if (Array.isArray(content) && content.length > 0) {
+        return content.filter((item) => typeof item !== "string").join(", ");
+      }
+      return "";
     },
   },
 });
