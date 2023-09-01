@@ -1,41 +1,59 @@
 <template>
   <template v-if="_isModal()">
-    <component :is="_findModalComponent()" :data="data"></component>
+    <component
+      :is="_findModalComponent().triggerComponent"
+      :component="_findModalComponent().dataComponent"
+      :data="data"
+    ></component>
   </template>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import DetailsCompanyDataTableModal, {
-  type DetailsCompanyDataTableRequiredData,
-} from "@/components/general/DetailsCompanyDataTableModal.vue";
-// import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
-// import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
+import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
+import GenericDataTableModalLink, {
+  type GenericsDataTableRequiredData,
+} from "@/components/general/GenericDataTableModalLink.vue";
+import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
+import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
 
-export type AvailableModals =
-  // | typeof AlignedActivitiesDataTable
-  // | typeof NonAlignedActivitiesDataTable
-   typeof DetailsCompanyDataTableModal;
+type AvailableTriggerComponents = typeof GenericDataTableModalLink;
+type AvailableDataComponents =
+  | typeof AlignedActivitiesDataTable
+  | typeof NonAlignedActivitiesDataTable
+  | typeof DetailsCompanyDataTable;
 
-export type AvailableModalsDataTypes = typeof Object | DetailsCompanyDataTableRequiredData;
+type FieldTriggerAndDataComponents = {
+  triggerComponent: AvailableTriggerComponents;
+  dataComponent: AvailableDataComponents;
+};
 
-export const FieldsWithModalsMap: { [fieldName: keyof AvailableModals]: AvailableModals } = {
-  // AlignedActivitiesDataTable,
-  // NonAlignedActivitiesDataTable,
-  NaceCodeFormField: DetailsCompanyDataTableModal,
-  MostImportantProductsFormField: DetailsCompanyDataTableModal,
+const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDataComponents } = {
+  AlignedActivitiesDataTable: {
+    triggerComponent: GenericDataTableModalLink,
+    dataComponent: AlignedActivitiesDataTable,
+  },
+  NonAlignedActivitiesDataTable: {
+    triggerComponent: GenericDataTableModalLink,
+    dataComponent: NonAlignedActivitiesDataTable,
+  },
+  NaceCodeFormField: { triggerComponent: GenericDataTableModalLink, dataComponent: DetailsCompanyDataTable },
+  MostImportantProductsFormField: {
+    triggerComponent: GenericDataTableModalLink,
+    dataComponent: DetailsCompanyDataTable,
+  },
 } as const;
 
 export type GenericModalData = {
   modalTitle?: string;
-  dataType?: AvailableModalsDataTypes;
+  dataType?: GenericsDataTableRequiredData;
 };
 
 /**
  * @param componentName component name to find
  * @returns defined modal
  */
-export function findModalComponent(componentName: string): AvailableModals | undefined {
+export function findModalComponent(componentName: string): FieldTriggerAndDataComponents | undefined {
   const found = Object.entries(FieldsWithModalsMap).find(([key]) => key === componentName);
   return found ? found[1] : undefined;
 }
@@ -49,11 +67,7 @@ export function isModal(componentName: string): boolean {
 
 export default defineComponent({
   name: "ModalsComponent",
-  components: {
-    // AlignedActivitiesDataTable,
-    // NonAlignedActivitiesDataTable,
-    DetailsCompanyDataTableModal,
-  },
+  components: {},
   inheritAttrs: false,
   inject: {},
   props: {
@@ -75,8 +89,8 @@ export default defineComponent({
      * @private
      * @returns defined modal
      */
-    _findModalComponent(): AvailableModals {
-      return findModalComponent(this.componentName) as AvailableModals;
+    _findModalComponent(): FieldTriggerAndDataComponents {
+      return findModalComponent(this.componentName) as FieldTriggerAndDataComponents;
     },
   },
 });

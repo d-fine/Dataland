@@ -8,8 +8,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
+import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
+import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
 
-export type DetailsCompanyDataTableRequiredData =
+export type GenericsDataTableRequiredData =
   | {
       dataId: string;
       kpiLabel: string;
@@ -19,18 +21,18 @@ export type DetailsCompanyDataTableRequiredData =
     }
   | undefined;
 
-export type DetailsCompanyDataTablePreparedData = {
-  listOfRowContents: Array<object | string>;
-  kpiKeyOfTable: string;
-  columnHeaders: Record<string, unknown>;
-};
-
 export default defineComponent({
-  name: "DetailsCompanyDataTableModal",
-  components: { DetailsCompanyDataTable },
+  name: "GenericDataTableModalLink",
+  components: { DetailsCompanyDataTable, AlignedActivitiesDataTable, NonAlignedActivitiesDataTable },
   props: {
+    component: {
+      type: Object as () =>
+        | typeof DetailsCompanyDataTable
+        | typeof AlignedActivitiesDataTable
+        | typeof NonAlignedActivitiesDataTable,
+    },
     data: {
-      type: Object as () => DetailsCompanyDataTableRequiredData,
+      type: Object as () => GenericsDataTableRequiredData,
     },
   },
   data() {
@@ -59,7 +61,7 @@ export default defineComponent({
      * Opens the modal
      */
     openModal() {
-      if (this.data) {
+      if (this.component && this.data) {
         const dialogData = {
           listOfRowContents: this.data.content[this.data.dataId],
           kpiKeyOfTable: this.data.kpiKey,
@@ -67,7 +69,7 @@ export default defineComponent({
         };
 
         if (dialogData) {
-          this.$dialog.open(DetailsCompanyDataTable, {
+          this.$dialog.open(this.component, {
             props: {
               header: this.modalTitle,
               modal: true,
