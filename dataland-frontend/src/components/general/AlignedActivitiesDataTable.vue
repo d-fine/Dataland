@@ -234,7 +234,7 @@ export default defineComponent({
      * @returns the new formatted string
      */
     valueFormatterForYesNo(value: YesNo): string {
-      return value ? value : "";
+      return typeof value !== "undefined" ? value : "";
     },
     /**
      * @param groupName name of the group to count number of fields
