@@ -39,7 +39,6 @@ describeIf(
       cy.get("h1").should("contain", company.companyInformation.companyName);
       cy.get('span[data-test="_basicInformation"]').contains("Basic Information").should("exist");
       ["Assurance", "CapEx", "OpEx"].forEach((category) => {
-        console.log("category", category);
         cy.get(`span[data-test="${category}"]`).contains(category.toUpperCase()).should("exist");
       });
       cy.get('td > [data-test="fiscalYearEnd"]')
@@ -67,11 +66,11 @@ describeIf(
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           console.log("storedCompany", storedCompany);
           return uploadFrameworkData(
-              DataTypeEnum.EutaxonomyNonFinancials,
-              token,
-              storedCompany.companyId,
-              "2021",
-              euTaxonomyForNonFinancialsFixtureForTest.t,
+            DataTypeEnum.EutaxonomyNonFinancials,
+            token,
+            storedCompany.companyId,
+            "2021",
+            euTaxonomyForNonFinancialsFixtureForTest.t,
           ).then((dataMetaInformation) => {
             cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
             cy.visitAndCheckAppMount(
