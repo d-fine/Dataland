@@ -11,7 +11,7 @@ describe("As a user, I expect the footer section to be present and contain relev
       cy.ensureLoggedIn();
     });
 
-    const pagesToCheck = ["/companies", `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`];
+    const pagesToCheck = ["/companies", `/preview`];
 
     pagesToCheck.forEach((page) => {
       it(`Checks that the footer is present on ${page}`, () => {

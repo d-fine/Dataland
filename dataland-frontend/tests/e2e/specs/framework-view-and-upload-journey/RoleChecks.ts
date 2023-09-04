@@ -23,7 +23,6 @@ describeIf(
         companyId = storedCompany.companyId;
         readerAndUploaderPages = [
           "",
-          `samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
           "companies",
           "datasets",
           "requests",
