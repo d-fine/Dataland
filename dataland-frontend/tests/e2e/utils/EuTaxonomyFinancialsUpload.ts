@@ -9,7 +9,7 @@ import {
 } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
+import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@sharedUtils/ConstantsForPdfs";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
@@ -286,6 +286,32 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
   fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
   fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
+}
+
+/**
+ * This method verifies that uploaded reports are downloadable
+ * @param companyId the ID of the company whose data to view
+ */
+export function checkIfLinkedReportsAreDownloadable(companyId: string): void {
+  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
+  const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
+  const downloadLinkSelector = `span[data-test="Report-Download-${TEST_PDF_FILE_NAME}"]`;
+  cy.readFile(expectedPathToDownloadedReport).should("not.exist");
+  cy.intercept("**/documents/*").as("documentDownload");
+  cy.get(downloadLinkSelector).click();
+  cy.wait("@documentDownload");
+  cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
+    timeout: Cypress.env("medium_timeout_in_ms") as number,
+  }).then((expectedPdfBinary) => {
+    cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
+      cy.readFile(expectedPathToDownloadedReport, "binary", {
+        timeout: Cypress.env("medium_timeout_in_ms") as number,
+      }).then((receivedPdfHash) => {
+        cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
+      });
+      cy.task("deleteFolder", Cypress.config("downloadsFolder"));
+    });
+  });
 }
 
 /**

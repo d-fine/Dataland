@@ -10,6 +10,7 @@
           validation="number|between:0,100"
           placeholder="Relative Value in %"
           outer-class="short"
+          data-test="relativeShareInPercent"
         />
         <FormKit type="group" name="absoluteShare">
           <FormKit
@@ -19,6 +20,7 @@
             validation="number"
             placeholder="Absolute Value"
             outer-class="short"
+            data-test="absoluteShareAmount"
           />
           <SingleSelectFormElement
             name="currency"
@@ -26,6 +28,7 @@
             validation-label="Currency"
             placeholder="Currency"
             :options="countryCodeOptions"
+            data-test="absoluteShareCurrency"
           />
         </FormKit>
       </div>
