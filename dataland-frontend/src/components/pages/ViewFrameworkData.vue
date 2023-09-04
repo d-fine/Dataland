@@ -1,18 +1,22 @@
 <template>
-  <ViewSingleDatasetDisplayBase
-    v-if="singleViewFrameworks.includes(dataType)"
-    :dataType="dataType"
-    :companyId="companyId"
-    :dataId="dataId"
-    :reportingPeriod="reportingPeriod"
-  />
-  <ViewMultipleDatasetsDisplayBase
-    v-if="multiViewFrameworks.includes(dataType)"
-    :dataType="dataType"
-    :companyId="companyId"
-    :dataId="dataId"
-    :reportingPeriod="reportingPeriod"
-  />
+  <AuthenticationWrapper v-if="!viewInPreviewMode">
+    <ViewSingleDatasetDisplayBase
+      v-if="singleViewFrameworks.includes(dataType)"
+      :dataType="dataType"
+      :companyId="companyId"
+      :dataId="dataId"
+      :reportingPeriod="reportingPeriod"
+      :viewInPreviewMode="viewInPreviewMode"
+    />
+    <ViewMultipleDatasetsDisplayBase
+      v-if="multiViewFrameworks.includes(dataType)"
+      :dataType="dataType"
+      :companyId="companyId"
+      :dataId="dataId"
+      :reportingPeriod="reportingPeriod"
+      :viewInPreviewMode="viewInPreviewMode"
+    />
+  </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
@@ -20,10 +24,11 @@ import { defineComponent } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import ViewSingleDatasetDisplayBase from "@/components/generics/ViewSingleDatasetDisplayBase.vue";
 import ViewMultipleDatasetsDisplayBase from "@/components/generics/ViewMultipleDatasetsDisplayBase.vue";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 
 export default defineComponent({
   name: "ViewFrameworkData",
-  components: { ViewSingleDatasetDisplayBase, ViewMultipleDatasetsDisplayBase },
+  components: { AuthenticationWrapper, ViewSingleDatasetDisplayBase, ViewMultipleDatasetsDisplayBase },
   props: {
     companyId: {
       type: String,
@@ -36,6 +41,10 @@ export default defineComponent({
     },
     reportingPeriod: {
       type: String,
+    },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
     },
   },
   mounted() {

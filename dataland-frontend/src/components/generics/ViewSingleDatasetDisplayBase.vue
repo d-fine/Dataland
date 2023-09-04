@@ -4,6 +4,7 @@
     :dataType="dataType"
     :single-data-meta-info-to-display="dataMetaInfoForDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
+    :viewInPreviewMode="viewInPreviewMode"
   >
     <template v-slot:reportingPeriodDropdown>
       <Dropdown
@@ -37,6 +38,7 @@
             <EuTaxonomyPanelFinancials
               v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
               :dataID="dataIdForPanelWithValidType"
+              :viewInPreviewMode="viewInPreviewMode"
             />
           </div>
         </div>
@@ -99,6 +101,10 @@ export default defineComponent({
     },
     dataType: {
       type: String,
+    },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

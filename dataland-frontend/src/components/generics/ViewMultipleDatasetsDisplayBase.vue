@@ -4,6 +4,7 @@
     :dataType="dataType"
     :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
+    :viewInPreviewMode="viewInPreviewMode"
   >
     <template v-slot:content>
       <div v-if="isListOfDataIdsToDisplayFound">
@@ -113,6 +114,10 @@ export default defineComponent({
     },
     reportingPeriod: {
       type: String,
+    },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
