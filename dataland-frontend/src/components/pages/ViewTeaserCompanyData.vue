@@ -89,7 +89,6 @@ export default defineComponent({
           const dataMetaInfoForDisplay = listOfMetaDataInfo[0];
           this.dataId = dataMetaInfoForDisplay.dataId;
           this.dataType = dataMetaInfoForDisplay.dataType;
-          console.log("sample page will go to page for ", this.dataType);
           this.reportingPeriod = dataMetaInfoForDisplay.reportingPeriod;
         }
         this.isMetaInfoFetched = true;
