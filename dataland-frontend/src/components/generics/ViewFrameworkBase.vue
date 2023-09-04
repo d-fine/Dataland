@@ -1,76 +1,75 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <TheContent class="paper-section min-h-screen">
+  <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
+  <TheContent class="paper-section min-h-screen">
+    <MarginWrapper class="text-left surface-0" style="margin-right: 0">
+      <BackButton />
+      <FrameworkDataSearchBar
+        v-if="!viewInPreviewMode"
+        :companyIdIfOnViewPage="companyID"
+        class="mt-2"
+        ref="frameworkDataSearchBar"
+        @search-confirmed="handleSearchConfirm"
+      />
+    </MarginWrapper>
+    <MarginWrapper class="surface-0" style="margin-right: 0">
+      <div class="grid align-items-end">
+        <div class="col-9">
+          <CompanyInformation :companyID="companyID" />
+        </div>
+      </div>
+    </MarginWrapper>
+    <div v-if="isDataProcessedSuccesfully">
       <MarginWrapper class="text-left surface-0" style="margin-right: 0">
-        <BackButton />
-        <FrameworkDataSearchBar
-          :companyIdIfOnViewPage="companyID"
-          class="mt-2"
-          ref="frameworkDataSearchBar"
-          @search-confirmed="handleSearchConfirm"
-        />
-      </MarginWrapper>
-      <MarginWrapper class="surface-0" style="margin-right: 0">
-        <div class="grid align-items-end">
-          <div class="col-9">
-            <CompanyInformation :companyID="companyID" />
+        <div class="flex justify-content-between align-items-center d-search-filters-panel">
+          <div class="flex">
+            <Dropdown
+              id="chooseFrameworkDropdown"
+              v-model="chosenDataTypeInDropdown"
+              :options="dataTypesInDropdown"
+              optionLabel="label"
+              optionValue="value"
+              :placeholder="humanizeString(dataType)"
+              aria-label="Choose framework"
+              class="fill-dropdown always-fill"
+              dropdownIcon="pi pi-angle-down"
+              @change="handleChangeFrameworkEvent"
+            />
+            <slot name="reportingPeriodDropdown"></slot>
           </div>
+          <div v-if="hasUserUploaderRights" class="flex align-content-end align-items-center">
+            <PrimeButton
+              v-if="canEdit"
+              class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
+              aria-label="EDIT DATA"
+              @click="editDataset"
+              data-test="editDatasetButton"
+            >
+              <span class="px-2">EDIT DATA</span>
+              <span
+                v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
+                class="material-icons-outlined"
+                >arrow_drop_down</span
+              >
+            </PrimeButton>
+            <router-link :to="addNewDatasetLinkTarget" class="no-underline" data-test="gotoNewDatasetButton">
+              <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
+                <span class="material-icons-outlined px-2">queue</span>
+                <span class="px-2">NEW DATASET</span>
+              </PrimeButton>
+            </router-link>
+          </div>
+          <OverlayPanel ref="reportingPeriodsOverlayPanel">
+            <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
+          </OverlayPanel>
         </div>
       </MarginWrapper>
-      <div v-if="isDataProcessedSuccesfully">
-        <MarginWrapper class="text-left surface-0" style="margin-right: 0">
-          <div class="flex justify-content-between align-items-center d-search-filters-panel">
-            <div class="flex">
-              <Dropdown
-                id="chooseFrameworkDropdown"
-                v-model="chosenDataTypeInDropdown"
-                :options="dataTypesInDropdown"
-                optionLabel="label"
-                optionValue="value"
-                :placeholder="humanizeString(dataType)"
-                aria-label="Choose framework"
-                class="fill-dropdown always-fill"
-                dropdownIcon="pi pi-angle-down"
-                @change="handleChangeFrameworkEvent"
-              />
-              <slot name="reportingPeriodDropdown"></slot>
-            </div>
-            <div v-if="hasUserUploaderRights" class="flex align-content-end align-items-center">
-              <PrimeButton
-                v-if="canEdit"
-                class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
-                aria-label="EDIT DATA"
-                @click="editDataset"
-                data-test="editDatasetButton"
-              >
-                <span class="px-2">EDIT DATA</span>
-                <span
-                  v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
-                  class="material-icons-outlined"
-                  >arrow_drop_down</span
-                >
-              </PrimeButton>
-              <router-link :to="addNewDatasetLinkTarget" class="no-underline" data-test="gotoNewDatasetButton">
-                <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
-                  <span class="material-icons-outlined px-2">queue</span>
-                  <span class="px-2">NEW DATASET</span>
-                </PrimeButton>
-              </router-link>
-            </div>
-            <OverlayPanel ref="reportingPeriodsOverlayPanel">
-              <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
-            </OverlayPanel>
-          </div>
-        </MarginWrapper>
-        <MarginWrapper style="margin-right: 0">
-          <slot name="content"></slot>
-        </MarginWrapper>
-      </div>
-      <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
-    </TheContent>
-    <TheFooter />
-  </AuthenticationWrapper>
+      <MarginWrapper style="margin-right: 0">
+        <slot name="content"></slot>
+      </MarginWrapper>
+    </div>
+    <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
+  </TheContent>
+  <TheFooter />
 </template>
 
 <script lang="ts">
@@ -79,7 +78,6 @@ import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -106,7 +104,6 @@ export default defineComponent({
     MarginWrapper,
     FrameworkDataSearchBar,
     Dropdown,
-    AuthenticationWrapper,
     CompanyInformation,
     TheFooter,
     PrimeButton,
@@ -124,6 +121,10 @@ export default defineComponent({
     singleDataMetaInfoToDisplay: {
       type: Object as () => DataMetaInformation,
       required: false,
+    },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {
