@@ -9,8 +9,8 @@
           <p class="text-white font-semibold flex justify-content-center">
             <i class="material-icons pr-2 flex align-items-center" aria-hidden="true">check_circle</i>
             <span class="pr-2 flex align-items-center">Try Dataland with other people to access all the data.</span>
-            <JoinDatalandButton />
           </p>
+          <JoinDatalandButton />
           <ViewFrameworkData
             v-if="isMetaInfoFetched"
             :view-in-preview-mode="true"
