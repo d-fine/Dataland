@@ -47,8 +47,8 @@
       },
       "quality": "Estimated"
     },
-    "totalAlignedShare": {},
-    "totalEligibleShare": {},
+    "nonEligibleShare": {},
+    "eligibleShare": {},
     "substantialContributionToSustainableWaterUse": 12,
     "substantialContributionToClimateChangeMitigation": 5,
     "substantialContributionToBiodiversity": 7,
@@ -68,7 +68,8 @@
     ]
   },
   "capex": {
-    "totalAlignedShare": {
+    "nonAlignedShare": {},
+    "alignedShare": {
       "relativeShareInPercent": 0.1965,
       "absoluteShare": {
         "amount": 396564.95871022346,
@@ -85,7 +86,6 @@
       },
       "comment": "quantify 1080p driver"
     },
-    "totalEligibleShare": {},
     "alignedActivities": [
       {
       }
@@ -101,19 +101,21 @@
       "quality": "Incomplete",
       "comment": null
     },
-    "totalAlignedShare": {
+    "alignedShare": {
       "relativeShareInPercent": 0.4347,
       "absoluteShare": {
         "amount": 840897.8063846007,
         "currency": null
       }
     },
-    "totalEligibleShare": {
+    "eligibleShare": {
       "relativeShareInPercent": null,
       "absoluteShare": {
         "amount": 917185.3733132593,
         "currency": null
       }
-    }
+    },
+    "enablingShare": 20,
+    "transitionShare": 4
   }
 }
