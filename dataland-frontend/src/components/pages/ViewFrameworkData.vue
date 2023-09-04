@@ -1,5 +1,5 @@
 <template>
-  <AuthenticationWrapper v-if="!viewInPreviewMode">
+  <AuthenticationWrapper :disable-authentication-wrapper="viewInPreviewMode">
     <ViewSingleDatasetDisplayBase
       v-if="singleViewFrameworks.includes(dataType)"
       :dataType="dataType"
