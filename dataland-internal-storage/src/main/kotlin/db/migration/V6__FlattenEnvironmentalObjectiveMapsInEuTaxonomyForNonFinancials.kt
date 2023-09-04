@@ -51,10 +51,10 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
         val fieldRenamingHelper = mapOf(
             "ClimateMitigation" to "ClimateChangeMitigation",
             "ClimateAdaptation" to "ClimateChangeAdaption",
-            "Water" to "SustainableWaterUse",
-            "CircularEconomy" to "CircularEconomy",
+            "Water" to "SustainableUseAndProtectionOfWaterAndMarineResources",
+            "CircularEconomy" to "TransitionToACircularEconomy",
             "PollutionPrevention" to "PollutionPreventionAndControl",
-            "Biodiversity" to "Biodiversity",
+            "Biodiversity" to "ProtectionAndRestorationOfBiodiversityAndEcosystems",
         )
         val criteriaObject = baseObject.opt("${criteriaType.prefix}Criteria") ?: return
         if (criteriaObject is JSONObject) {

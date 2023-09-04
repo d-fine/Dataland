@@ -49,21 +49,21 @@
     },
     "nonEligibleShare": {},
     "eligibleShare": {},
-    "substantialContributionToSustainableWaterUse": 12,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 12,
     "substantialContributionToClimateChangeMitigation": 5,
-    "substantialContributionToBiodiversity": 7,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 7,
     "alignedActivities": [
       {
         "other": 99,
-        "substantialContributionToSustainableWaterUse": 12,
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 12,
         "substantialContributionToClimateChangeMitigation": 5,
-        "substantialContributionToBiodiversity": 7,
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 7,
         "dnshToClimateChangeMitigation": 9
       }, {
         "substantialContributionToClimateChangeAdaption": 1,
         "substantialContributionToPollutionPreventionAndControl": 51,
-        "substantialContributionToCircularEconomy": 6,
-        "substantialContributionToSustainableWaterUse": 11
+        "substantialContributionToTransitionToACircularEconomy": 6,
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 11
       }
     ]
   },
