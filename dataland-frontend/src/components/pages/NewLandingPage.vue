@@ -1,11 +1,13 @@
 <template>
   <TheHeader :isMobile="isMobile" :landingPage="landingPage" :contentData="content" />
-  <TheIntro :sections="landingPage?.sections" />
-  <TheQuotes />
-  <TheStruggle />
-  <TheClaim />
-  <TheHowItWorks />
-  <TheCampaigns />
+  <main>
+    <TheIntro :sections="landingPage?.sections" />
+    <TheQuotes />
+    <TheStruggle />
+    <TheClaim />
+    <TheHowItWorks />
+    <TheCampaigns />
+  </main>
   <TheFooter :isMobile="isMobile" />
 </template>
 

@@ -32,6 +32,12 @@ function instantiateVueApp(): void {
   app.use(router);
   app.use(PrimeVue);
   app.use(pinia);
+
+  // Listen for route changes
+  router.afterEach((to) => {
+    document.getElementById("app")?.classList.toggle("lp", ["/lp", "/mission", "/community"].includes(to.path));
+  });
+
   app.mount("#app");
 }
 
