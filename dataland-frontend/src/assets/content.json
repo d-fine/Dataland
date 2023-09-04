@@ -10,9 +10,9 @@
                     "image": "/src/assets/images/logos/gfx_logo_dataland_orange_S.svg"
                 },
                 {
-                    "title": "Featured News",
-                    "text": "This preview page is intended to give a first impression of Dataland's goals and has no further functionality. Dataland is currently being founded and has therefore not yet started  operations.",
-                    "image": "/public/static/mstile-150x150.png"
+                    "title": "Intro",
+                    "text": "Liberate Data - Empower Autonomy. Break Monopolies.",
+                    "image": "/src/assets/images/logos/gfx_logo_d_orange_S.svg"
                 }
             ]
         },

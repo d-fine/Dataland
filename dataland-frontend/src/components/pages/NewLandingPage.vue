@@ -1,6 +1,6 @@
 <template>
   <TheHeader :isMobile="isMobile" :landingPage="landingPage" :contentData="content" />
-  <main>
+  <main role="main">
     <TheIntro :sections="landingPage?.sections" />
     <TheQuotes />
     <TheStruggle />
