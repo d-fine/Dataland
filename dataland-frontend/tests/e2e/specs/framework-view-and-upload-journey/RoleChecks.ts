@@ -50,6 +50,7 @@ describeIf(
       cy.ensureLoggedIn(reader_name, reader_pw);
       readerAndUploaderPages.forEach((page) => {
         it(`Non uploader should be able to access ${page}`, () => {
+          cy.visit(page);
           cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should("not.exist");
         });
       });
