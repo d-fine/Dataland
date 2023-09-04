@@ -19,7 +19,6 @@
 </template>
 
 <script lang="ts">
-import TheHeader from "@/components/generics/TheHeader.vue";
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
 import ViewFrameworkData from "@/components/pages/ViewFrameworkData.vue";
