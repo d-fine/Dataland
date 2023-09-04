@@ -1,5 +1,5 @@
 <template>
-  <TheHeader />
+  <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
     <MarginWrapper class="text-left surface-0" style="margin-right: 0">
       <BackButton />
