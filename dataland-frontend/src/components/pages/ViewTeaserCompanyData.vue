@@ -47,7 +47,8 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Uses the dataland API to retrieve the companyId of the first teaser company and TODO explain further
+     * Uses the Dataland API to retrieve all teaser companies, picks the first company and gets the data meta info of
+     * the first dataset for that company to display it on the sample page.
      */
     async queryCompany() {
       try {
