@@ -7,7 +7,7 @@
                 {
                     "title": "Welcome to Dataland",
                     "text": "This is the main introduction of our homepage.",
-                    "image": "/src/assets/images/logos/logo_dataland_long.png"
+                    "image": "/src/assets/images/logos/gfx_logo_dataland_orange_S.svg"
                 },
                 {
                     "title": "Featured News",
@@ -37,18 +37,18 @@
             ]
         },
         {
-            "title": "About Dataland",
-             "url": "/about",
+            "title": "Mission",
+             "url": "/mission",
              "sections": [
                 {
-                    "title": "About",
+                    "title": "Mission",
                     "text": "Soon you will find our data privacy information here."
                 }
             ]
         },
         {
-            "title": "Campaigns",
-            "url": "/campaigns",
+            "title": "Community",
+            "url": "/community",
             "sections": [
                 {
                     "title": "Main",
@@ -57,8 +57,8 @@
             ]
         },
         {
-            "title": "Features",
-            "url": "/features",
+            "title": "Campaigns",
+            "url": "/campaigns",
             "sections": [
                 {
                     "title": "Main",
