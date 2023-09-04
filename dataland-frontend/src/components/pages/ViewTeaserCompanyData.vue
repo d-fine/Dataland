@@ -9,11 +9,7 @@
           <p class="text-white font-semibold flex justify-content-center">
             <i class="material-icons pr-2 flex align-items-center" aria-hidden="true">check_circle</i>
             <span class="pr-2 flex align-items-center">Try Dataland with other people to access all the data.</span>
-            <router-link
-              to="/"
-              class="p-button bg-white border-0 uppercase text-green-500 d-letters flex align-items-center no-underline"
-              >Create a preview account</router-link
-            >
+            <JoinDatalandButton />
           </p>
           <ViewFrameworkData
             v-if="isMetaInfoFetched"
@@ -44,6 +40,7 @@ import TheFooter from "@/components/general/TheFooter.vue";
 import ViewFrameworkData from "@/components/pages/ViewFrameworkData.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import JoinDatalandButton from "@/components/general/JoinDatalandButton.vue";
 
 export default defineComponent({
   name: "ViewTeaserCompanyData",
@@ -54,6 +51,7 @@ export default defineComponent({
     MarginWrapper,
     TheFooter,
     ViewFrameworkData,
+    JoinDatalandButton,
   },
   setup() {
     return {
