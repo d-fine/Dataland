@@ -39,14 +39,15 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
     }
 
     private fun migrateCashFlow(cashFlow: JSONObject) {
-        migrateMap(cashFlow, CriteriaType.SubstantialContribution)
+        migrateFieldNames(cashFlow)
+        migrateMapForCriteria(cashFlow, CriteriaType.SubstantialContribution)
         (cashFlow.getOrJavaNull("alignedActivities") as JSONArray? ?: return).forEach {
-            migrateMap(it as JSONObject, CriteriaType.SubstantialContribution)
-            migrateMap(it, CriteriaType.Dnsh)
+            migrateMapForCriteria(it as JSONObject, CriteriaType.SubstantialContribution)
+            migrateMapForCriteria(it, CriteriaType.Dnsh)
         }
     }
 
-    private fun migrateMap(baseObject: JSONObject, criteriaType: CriteriaType) {
+    private fun migrateMapForCriteria(baseObject: JSONObject, criteriaType: CriteriaType) {
         val fieldRenamingHelper = mapOf(
             "ClimateMitigation" to "ClimateChangeMitigation",
             "ClimateAdaptation" to "ClimateChangeAdaption",
@@ -67,5 +68,21 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
             }
         }
         baseObject.remove("${criteriaType.prefix}Criteria")
+    }
+
+    private fun migrateFieldNames(baseObject: JSONObject) {
+        val fieldsToRename = listOf(
+            "nonEligibleShare", "eligibleShare", "nonAlignedShare", "alignedShare", "enablingShare", "transitionShare"
+        )
+        val fieldNamesWithoutTotalPrefix = fieldsToRename.associateBy({"total${it.replaceFirstChar(Char::titlecase)}"}, {it})
+        println(fieldNamesWithoutTotalPrefix)
+        fieldNamesWithoutTotalPrefix.keys.forEach { oldFieldName ->
+            if (baseObject.has(oldFieldName)) {
+                baseObject.put(
+                    fieldNamesWithoutTotalPrefix.getValue(oldFieldName), baseObject.getOrJsonNull(oldFieldName)
+                )
+                baseObject.remove(oldFieldName)
+            }
+        }
     }
 }

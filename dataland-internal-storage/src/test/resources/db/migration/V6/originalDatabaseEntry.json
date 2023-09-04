@@ -47,7 +47,7 @@
       },
       "quality": "Estimated"
     },
-    "totalAlignedShare": {},
+    "totalNonEligibleShare": {},
     "totalEligibleShare": {},
     "substantialContributionCriteria": {
       "Water": 12,
@@ -76,6 +76,7 @@
     ]
   },
   "capex": {
+    "totalNonAlignedShare": {},
     "totalAlignedShare": {
       "relativeShareInPercent": 0.1965,
       "absoluteShare": {
@@ -93,7 +94,6 @@
       },
       "comment": "quantify 1080p driver"
     },
-    "totalEligibleShare": {},
     "alignedActivities": [
       {
         "substantialContributionCriteria": null
@@ -125,6 +125,8 @@
       }
     },
     "substantialContributionCriteria": {
-    }
+    },
+    "totalEnablingShare": 20,
+    "totalTransitionShare": 4
   }
 }
