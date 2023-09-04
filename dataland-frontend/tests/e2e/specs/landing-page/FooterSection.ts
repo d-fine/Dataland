@@ -1,5 +1,4 @@
 import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
-import { DataTypeEnum } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { checkFooter } from "@sharedUtils/ElementChecks";
