@@ -63,7 +63,6 @@
                         <span>{{ category.label.toUpperCase() }}</span>
                       </div>
                     </div>
-                    <!--//TODO do we need the field.fields -->
                     <div class="col-9 formFields">
                       <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                         <component
