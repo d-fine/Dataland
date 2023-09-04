@@ -12,7 +12,7 @@
       :format-value-for-display="formatValueForDisplay"
       :modal-column-headers="euTaxonomyForNonFinancialsModalColumnHeaders"
       :sort-by-subcategory-key="false"
-      unfold-on-load
+      :unfold-subcategories="true"
     />
   </div>
 </template>
@@ -35,7 +35,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
+import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/Formatting";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -48,7 +48,17 @@ export default defineComponent({
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel,
-      namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "totalEnablingShare", "totalTransitionalShare"],
+      namesOfFieldsToFormatAsPercentages: [
+        "relativeShareInPercent",
+        "enablingShare",
+        "transitionalShare",
+        "substantialContributionToClimateChangeMitigation",
+        "substantialContributionToClimateChangeAdaption",
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+        "substantialContributionToTransitionToACircularEconomy",
+        "substantialContributionToPollutionPreventionAndControl",
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+      ],
     };
   },
   props: PanelProps,
@@ -128,37 +138,6 @@ export default defineComponent({
     },
 
     /**
-     * Checks if a field name is included in the EnvironmentalObjectives enum.
-     * @param fieldName is the field name to check for
-     * @returns a boolean based on the result of the check
-     */
-    isFieldNameAmongEnvironmentalObjectives(fieldName: string): boolean {
-      return Object.values(EnvironmentalObjective).includes(fieldName);
-    },
-
-    /**
-     * Formats an AmountWithCurrency object by concatenating the amount and the currency.
-     * @param amountWithCurrency the object that holds the amount and currency
-     * @returns the resulting string from the concatenation
-     */
-    formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency) {
-      if (amountWithCurrency.amount == undefined) {
-        return null;
-      }
-      return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
-    },
-
-    /**
-     * Formats a percentage number by rounding it to two decimals and afterward making it a string with a percent
-     * symbol at the end.
-     * @param relativeShareInPercent is the percentage number to round
-     * @returns the resulting string
-     */
-    formatPercentageNumber(relativeShareInPercent: number) {
-      return `${relativeShareInPercent.toFixed(2).toString()} %`;
-    },
-
-    /**
      * Formats KPI values for display
      * @param field the considered KPI field
      * @param kpiValueToFormat the value to be formatted
@@ -168,14 +147,11 @@ export default defineComponent({
       if (kpiValueToFormat == null) {
         return kpiValueToFormat;
       }
-      if (
-        this.namesOfFieldsToFormatAsPercentages.includes(field.name) ||
-        this.isFieldNameAmongEnvironmentalObjectives(field.name)
-      ) {
-        return this.formatPercentageNumber(kpiValueToFormat as number);
+      if (this.namesOfFieldsToFormatAsPercentages.includes(field.name)) {
+        return formatPercentageNumber(kpiValueToFormat as number);
       }
       if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
-        return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
+        return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
       }
       return kpiValueToFormat;
     },

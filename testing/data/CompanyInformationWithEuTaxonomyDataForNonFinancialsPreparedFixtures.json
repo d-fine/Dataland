@@ -2,67 +2,73 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "North Isaiahland",
-			"headquartersPostalCode": "35351",
-			"sector": "e-markets",
+			"headquarters": "San Leandro",
+			"headquartersPostalCode": "78898-1382",
+			"sector": "platforms",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"q5cpwVXM4dBX"
+					"5CLjkJk3UTqV",
+					"CIK0z1l2BT1y"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"txO97omII"
+				"PermId": [
+					"w0WGAU3use"
 				],
-				"VatNumber": [
-					"7ndFwEuzw"
+				"Ticker": [
+					"urNeSCs"
 				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"5upjCdeC1GAlyfk"
+					"IgQsyieKebohIxt"
 				]
 			},
-			"countryCode": "GY",
+			"countryCode": "VC",
 			"companyAlternativeNames": [
-				"Dickinson LLC",
-				"Parisian - Roberts",
-				"Rogahn Inc",
-				"Spencer Group"
+				"Beatty - Reynolds",
+				"Nikolaus, Donnelly and Kutch"
 			],
-			"website": "https://everlasting-lollipop.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2022-09-11",
-				"numberOfEmployees": 52971,
+				"numberOfEmployees": 7446,
 				"referencedReports": {
+					"ESEFReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "No",
+						"reportDate": "2023-07-13",
+						"currency": "LKR"
+					},
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "NA",
+						"reportDate": "2022-09-25",
+						"currency": "KRW"
+					},
 					"AnnualReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2023-02-05",
-						"currency": "IRR"
+						"isGroupLevel": "No",
+						"reportDate": "2023-08-18",
+						"currency": "FKP"
 					}
 				},
 				"assurance": {
-					"assurance": "LimitedAssurance",
-					"dataSource": {
-						"page": 674,
-						"report": "AnnualReport",
-						"tagName": "markets"
-					}
-				}
+					"assurance": "None"
+				},
+				"nfrdMandatory": "Yes",
+				"euTaxonomyActivityLevelReporting": "Yes"
 			},
 			"opex": {
-				"totalEligibleShare": {}
-			},
-			"capex": {
-				"totalEligibleShare": {
-					"relativeShareInPercent": 70.22649154532701
+				"eligibleShare": {
+					"relativeShareInPercent": 0.5005
 				}
 			},
+			"capex": {
+				"eligibleShare": {}
+			},
 			"revenue": {
-				"totalEligibleShare": {}
+				"eligibleShare": {}
 			}
 		},
 		"reportingPeriod": "2019"
@@ -70,94 +76,100 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Cronafield",
-			"sector": "content",
+			"headquarters": "West Eliane",
+			"headquartersPostalCode": "11575-5245",
+			"sector": "technologies",
 			"identifiers": {
-				"Lei": [
-					"ISGRDC5mvww6UtO4dg51"
-				],
-				"Isin": [
-					"Ju8NdiKHdKH2"
-				],
+				"Lei": [],
+				"Isin": [],
 				"PermId": [],
 				"Ticker": [
-					"vl2CdLX"
+					"SAXV6Cy"
 				],
 				"Duns": [
-					"zV9b3acBI"
+					"9ldMljtYm"
 				],
-				"VatNumber": [
-					"ERNL2i82t"
-				],
-				"CompanyRegistrationNumber": [
-					"lFl6sYGASxK8WFk"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ZW",
+			"countryCode": "GM",
 			"companyAlternativeNames": [
-				"Romaguera, Jast and Bode",
-				"Schuster and Sons",
-				"Tromp, Schmidt and Kovacek"
+				"Glover and Sons",
+				"O'Reilly and Sons",
+				"Wilderman - Walter"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://tragic-maize.name",
+			"website": "https://petty-paw.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2023-02-23",
+				"fiscalYearEnd": "2023-01-09",
 				"referencedReports": {
+					"IntegratedReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "KPW"
+					},
 					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "ZMW"
+						"currency": "TRY"
+					},
+					"SustainabilityReport": {
+						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"currency": "GNF"
 					}
 				},
 				"assurance": {
-					"assurance": "ReasonableAssurance"
-				}
+					"assurance": "None"
+				},
+				"scopeOfEntities": "Yes",
+				"euTaxonomyActivityLevelReporting": "Yes"
 			},
 			"opex": {
 				"totalAmount": {
-					"value": 340084.69202090055,
+					"value": 561556.7915141582,
 					"dataSource": {
-						"page": 256,
+						"page": 787,
 						"report": "ESEFReport",
-						"tagName": "partnerships"
+						"tagName": "portals"
 					},
 					"quality": "Audited",
-					"comment": "calculate bluetooth hard drive"
+					"comment": "copy auxiliary card"
 				},
-				"totalEligibleShare": {
-					"relativeShareInPercent": 49.93052228819579,
-					"absoluteShare": {
-						"currency": "CHF"
-					}
+				"eligibleShare": {
+					"relativeShareInPercent": 0.0222
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 889870.6135922112,
-					"quality": "Incomplete"
+					"value": 822563.9279931784,
+					"dataSource": {
+						"page": 537,
+						"report": "ESEFReport",
+						"tagName": "action-items"
+					},
+					"quality": "Reported",
+					"comment": "bypass neural interface"
 				},
-				"totalEligibleShare": {
+				"eligibleShare": {
+					"relativeShareInPercent": 0.5501,
 					"absoluteShare": {
-						"currency": "CHF"
+						"amount": 443033.46899105236,
+						"currency": "CAD"
 					}
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 708475.9448305704,
+					"value": 974852.3832880892,
 					"dataSource": {
-						"page": 907,
-						"report": "ESEFReport",
-						"tagName": "partnerships"
+						"page": 856,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
 					},
-					"quality": "Reported",
-					"comment": "navigate auxiliary system"
+					"quality": "Estimated",
+					"comment": "program cross-platform port"
 				},
-				"totalEligibleShare": {}
+				"eligibleShare": {}
 			}
 		},
 		"reportingPeriod": "2021"
@@ -165,189 +177,106 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Flossiefort",
-			"headquartersPostalCode": "09922",
+			"headquarters": "South Modestaton",
+			"headquartersPostalCode": "15243-5435",
+			"sector": "networks",
 			"identifiers": {
-				"Lei": [
-					"ikjTkOLF9U3KW9thwiFl"
-				],
+				"Lei": [],
 				"Isin": [
-					"sEuGjhn9fWYl",
-					"wWYaJNg2wGHw"
+					"PI6MBPG7shMH"
 				],
-				"PermId": [
-					"flGXPlzL9y"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"CtCWSkZH0"
+					"Cr7tb8fCT"
 				],
 				"VatNumber": [
-					"vZressart"
+					"fxhdFPdpa"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"l1T9Q0OkteoUvCT"
+				]
 			},
-			"countryCode": "ZM",
+			"countryCode": "HK",
 			"companyAlternativeNames": [
-				"Considine - Orn",
-				"Klocko - McGlynn",
-				"Sporer, Kertzmann and Feest",
-				"Thompson Group"
+				"Altenwerth, Gerhold and Ondricka",
+				"Kautzer, Oberbrunner and Schmidt"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://phony-grape.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"numberOfEmployees": 34646,
+				"fiscalYearEnd": "2022-09-13",
 				"assurance": {
 					"assurance": "ReasonableAssurance",
-					"provider": "Jast LLC",
-					"dataSource": {
-						"page": 1011,
-						"report": "AnnualReport",
-						"tagName": "e-commerce"
-					}
+					"provider": "Fahey Inc"
 				},
 				"scopeOfEntities": "NA",
-				"nfrdMandatory": "No"
+				"euTaxonomyActivityLevelReporting": "No"
 			},
 			"opex": {
-				"nonAlignedActivities": [
-					{
-						"activityName": "ElectricityGenerationFromBioenergy",
-						"naceCodes": [
-							"D",
-							"I",
-							"K"
-						],
-						"share": {
-							"absoluteShare": {
-								"amount": 791702.0918685012,
-								"currency": "CAD"
-							}
-						}
-					},
-					{
-						"activityName": "InlandFreightWaterTransport",
-						"naceCodes": [
-							"J"
-						],
-						"share": {
-							"absoluteShare": {
-								"amount": 159219.7824618779,
-								"currency": "CAD"
-							}
-						}
-					},
-					{
-						"activityName": "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
-						"naceCodes": [
-							"E",
-							"G",
-							"K"
-						]
+				"nonEligibleShare": {},
+				"nonAlignedShare": {},
+				"nonAlignedActivities": [],
+				"alignedShare": {
+					"relativeShareInPercent": 0.7118,
+					"absoluteShare": {
+						"currency": "CAD"
 					}
-				],
-				"totalAlignedShare": {
-					"absoluteShare": {}
 				},
-				"substantialContributionToSustainableWaterUse": 36.7837984347716,
-				"substantialContributionToCircularEconomy": 54.44786485750228,
-				"substantialContributionToBiodiversity": 82.3920238763094,
-				"totalTransitionalShare": 1.7240465618669987
+				"substantialContributionToClimateChangeAdaption": 0.533,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 0.2467,
+				"substantialContributionToTransitionToACircularEconomy": 0.7491,
+				"alignedActivities": [],
+				"transitionalShare": 0.2894
 			},
 			"capex": {
 				"totalAmount": {
-					"dataSource": {
-						"page": 267,
-						"report": "IntegratedReport",
-						"tagName": "platforms"
+					"value": {
+						"amount": 372068.84059123695
 					},
-					"quality": "Incomplete",
-					"comment": "bypass multi-byte bus"
+					"quality": "Estimated"
 				},
-				"totalNonEligibleShare": {
-					"relativeShareInPercent": 64.36722807120532,
-					"absoluteShare": {
-						"amount": 335206.45818207413
-					}
-				},
-				"substantialContributionToClimateChangeMitigation": 17.672192654572427,
-				"alignedActivities": []
+				"nonEligibleShare": {},
+				"alignedShare": {},
+				"substantialContributionToTransitionToACircularEconomy": 0.7478,
+				"substantialContributionToPollutionPreventionAndControl": 0.9298,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 0.0414
 			},
 			"revenue": {
 				"totalAmount": {
-					"dataSource": {
-						"page": 903,
-						"report": "IntegratedReport",
-						"tagName": "initiatives"
+					"value": {
+						"amount": 228416.50092741475,
+						"currency": "EUR"
 					},
-					"quality": "Audited",
-					"comment": "input neural bus"
-				},
-				"totalEligibleShare": {
-					"relativeShareInPercent": 33.01906187552959,
-					"absoluteShare": {}
+					"dataSource": {
+						"page": 570,
+						"report": "ESEFReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Estimated",
+					"comment": "input 1080p alarm"
 				},
 				"nonAlignedActivities": [
 					{
-						"activityName": "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
-						"share": {
-							"relativeShareInPercent": 23.402273328974843,
-							"absoluteShare": {
-								"amount": 827490.8915627748
-							}
-						}
+						"activityName": "RenewalOfWaterCollectionTreatmentAndSupplySystems"
 					},
 					{
-						"activityName": "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
-						"naceCodes": [
-							"D",
-							"G"
-						],
+						"activityName": "RenovationOfExistingBuildings",
 						"share": {
-							"absoluteShare": {
-								"amount": 617858.0372477882
-							}
-						}
-					},
-					{
-						"activityName": "RestorationOfWetlands",
-						"naceCodes": [
-							"A",
-							"C",
-							"M"
-						],
-						"share": {
-							"relativeShareInPercent": 74.99692228157073,
-							"absoluteShare": {}
-						}
-					},
-					{
-						"activityName": "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
-						"naceCodes": [
-							"G",
-							"J",
-							"M"
-						]
-					},
-					{
-						"activityName": "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
-						"naceCodes": [],
-						"share": {
-							"relativeShareInPercent": 76.74625024665147,
-							"absoluteShare": {
-								"currency": "USD"
-							}
+							"relativeShareInPercent": 0.9023
 						}
 					}
 				],
-				"substantialContributionToClimateChangeMitigation": 81.51561762206256,
-				"substantialContributionToCircularEconomy": 58.73757174704224,
-				"totalEnablingShare": 76.5884100459516
+				"substantialContributionToClimateChangeAdaption": 0.1189,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 0.0277,
+				"substantialContributionToTransitionToACircularEconomy": 0.9678,
+				"substantialContributionToPollutionPreventionAndControl": 0.2713,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 0.3237,
+				"transitionalShare": 0.7372
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	}
 ]

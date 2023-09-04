@@ -9,20 +9,18 @@ import java.math.BigDecimal
  */
 data class EuTaxonomyDetailsPerCashFlowType(
     val totalAmount: DataPointOneValue<AmountWithCurrency>?,
-    val totalNonEligibleShare: RelativeAndAbsoluteFinancialShare?,
-    val totalEligibleShare: RelativeAndAbsoluteFinancialShare?,
-    val totalNonAlignedShare: RelativeAndAbsoluteFinancialShare?,
+    val nonEligibleShare: RelativeAndAbsoluteFinancialShare?,
+    val eligibleShare: RelativeAndAbsoluteFinancialShare?,
+    val nonAlignedShare: RelativeAndAbsoluteFinancialShare?,
     val nonAlignedActivities: List<EuTaxonomyActivity>?,
-    val totalAlignedShare: RelativeAndAbsoluteFinancialShare?,
-    // TODO these names differ from the ones specified in the data dictionary due to length.
-    //  However, their purpose is clear from the names here.
+    val alignedShare: RelativeAndAbsoluteFinancialShare?,
     val substantialContributionToClimateChangeMitigation: BigDecimal?,
     val substantialContributionToClimateChangeAdaption: BigDecimal?,
-    val substantialContributionToSustainableWaterUse: BigDecimal?,
-    val substantialContributionToCircularEconomy: BigDecimal?,
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: BigDecimal?,
+    val substantialContributionToTransitionToACircularEconomy: BigDecimal?,
     val substantialContributionToPollutionPreventionAndControl: BigDecimal?,
-    val substantialContributionToBiodiversity: BigDecimal?,
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: BigDecimal?,
     val alignedActivities: List<EuTaxonomyAlignedActivity>?,
-    val totalEnablingShare: BigDecimal?,
-    val totalTransitionalShare: BigDecimal?,
+    val enablingShare: BigDecimal?,
+    val transitionalShare: BigDecimal?,
 )
