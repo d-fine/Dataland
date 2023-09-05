@@ -72,14 +72,20 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
 
     private fun migrateFieldNames(baseObject: JSONObject) {
         val fieldsToRename = listOf(
-            "nonEligibleShare", "eligibleShare", "nonAlignedShare", "alignedShare", "enablingShare", "transitionShare"
+            "nonEligibleShare",
+            "eligibleShare",
+            "nonAlignedShare",
+            "alignedShare",
+            "enablingShare",
+            "transitionalShare",
         )
-        val fieldNamesWithoutTotalPrefix = fieldsToRename.associateBy({"total${it.replaceFirstChar(Char::titlecase)}"}, {it})
-        println(fieldNamesWithoutTotalPrefix)
+        val fieldNamesWithoutTotalPrefix = fieldsToRename.associateBy(
+            { "total${it.replaceFirstChar(Char::titlecase)}" }, { it },
+        )
         fieldNamesWithoutTotalPrefix.keys.forEach { oldFieldName ->
             if (baseObject.has(oldFieldName)) {
                 baseObject.put(
-                    fieldNamesWithoutTotalPrefix.getValue(oldFieldName), baseObject.getOrJsonNull(oldFieldName)
+                    fieldNamesWithoutTotalPrefix.getValue(oldFieldName), baseObject.getOrJsonNull(oldFieldName),
                 )
                 baseObject.remove(oldFieldName)
             }
