@@ -1,6 +1,13 @@
 <template>
   <section v-if="introSection" class="intro" role="region" aria-label="Introduction">
-    <img :src="introSection.image" :alt="introSection.text" v-if="introSection.image" class="intro__img" />
+    <img
+      v-for="(img, index) in introSection.image"
+      :key="index"
+      :src="img"
+      :alt="introSection.text"
+      class="intro__img"
+    />
+
     <h1 class="intro__text">{{ introSection.text }}</h1>
   </section>
 </template>

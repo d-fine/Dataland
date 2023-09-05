@@ -2,7 +2,11 @@
   <header class="header" role="banner">
     <div class="header__logo">
       <router-link to="/lp" aria-label="Go to the Landing Page" aria-current="page">
-        <img :src="landingPage?.sections[0]?.image" alt="Dataland banner logo" />
+        <img
+          v-if="landingPage?.sections[0]?.image?.[0]"
+          :src="landingPage.sections[0].image[0]"
+          alt="Dataland banner logo"
+        />
       </router-link>
     </div>
     <TheNavi :contentData="contentData" />

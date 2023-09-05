@@ -13,6 +13,17 @@
                     "title": "Intro",
                     "text": "Liberate Data - Empower Autonomy. Break Monopolies.",
                     "image": "/src/assets/images/logos/gfx_logo_d_orange_S.svg"
+                },
+                {
+                    "title": "Brands",
+                    "text": "Already trusted by top companies",
+                    "image": [
+                        "/src/assets/images/logos/brands_deka.svg",
+                        "/src/assets/images/logos/brands_ampega.svg",
+                        "/src/assets/images/logos/brands_chom.png",
+                        "/src/assets/images/logos/brands_fuerstlich.svg",
+                        "/src/assets/images/logos/brands_metzler.svg"
+                    ]
                 }
             ]
         },
@@ -38,8 +49,8 @@
         },
         {
             "title": "Mission",
-             "url": "/mission",
-             "sections": [
+            "url": "/mission",
+            "sections": [
                 {
                     "title": "Mission",
                     "text": "Soon you will find our data privacy information here."

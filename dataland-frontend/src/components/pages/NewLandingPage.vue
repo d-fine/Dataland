@@ -2,6 +2,7 @@
   <TheHeader :isMobile="isMobile" :landingPage="landingPage" :contentData="content" />
   <main role="main">
     <TheIntro :sections="landingPage?.sections" />
+    <TheBrands :sections="landingPage?.sections" />
     <TheQuotes />
     <TheStruggle />
     <TheClaim />
@@ -23,6 +24,7 @@ import { SessionDialogMode } from "@/utils/SessionTimeoutUtils";
 
 import TheHeader from "@/components/layout/TheHeader.vue";
 import TheIntro from "@/components/general/TheIntro.vue";
+import TheBrands from "@/components/general/ThrBrands.vue";
 import TheQuotes from "@/components/general/TheQuotes.vue";
 import TheStruggle from "@/components/general/TheStruggle.vue";
 import TheClaim from "@/components/general/TheClaim.vue";
