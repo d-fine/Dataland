@@ -1,16 +1,17 @@
 import { type AmountWithCurrency } from "@clients/backend";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 
 /**
- * Formats a percentage number by rounding it to two decimals and afterward making it a string with a percent
- * symbol at the end.
- * @param relativeShareInPercent is the percentage number to round
+ * Formats a percentage number by rounding it and afterward making it a string with a percentsymbol at the end.
+ * @param percentageNumber is the percentage number to format
+ * @param precision
  * @returns the resulting string
  */
-export function formatPercentageNumber(relativeShareInPercent?: number): string {
-  if (relativeShareInPercent == undefined) {
+export function formatPercentageNumberAsString(percentageNumber?: number, precision = 2): string {
+  if (percentageNumber == undefined) {
     return "";
   }
-  return `${(relativeShareInPercent * 100).toFixed(2)} %`;
+  return `${roundNumber(percentageNumber, precision)} %`;
 }
 
 /**

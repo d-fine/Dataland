@@ -36,7 +36,8 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/Formatting";
+import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatting";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -165,7 +166,7 @@ export default defineComponent({
         return humanizeStringOrNumber(kpiValueToFormat as string);
       }
       if (this.namesOfFieldsToFormatAsPercentages.includes(field.name)) {
-        return formatPercentageNumber(kpiValueToFormat as number);
+        return formatPercentageNumberAsString(kpiValueToFormat as number);
       }
       if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
         return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);

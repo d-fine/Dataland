@@ -87,7 +87,7 @@ import {
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
-import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/Formatting";
+import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatting";
 
 type ActivityFieldValueObject = {
   activity: string;
@@ -182,7 +182,7 @@ export default defineComponent({
             substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
               col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
           },
-          formatPercentageNumber,
+          formatPercentageNumberAsString,
         ),
         ...createActivityGroupData<YesNo>(
           col.activityName as string,
@@ -319,7 +319,7 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
       activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenuePercent",
-      content: formatPercentageNumber(activity.share?.relativeShareInPercent),
+      content: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
     },
   ];
 }

@@ -33,7 +33,7 @@ import {
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
-import { formatPercentageNumber } from "@/utils/Formatting";
+import { formatPercentageNumberAsString } from "@/utils/Formatting";
 
 type NonAlignedActivityFieldValueObject = {
   activity: string;
@@ -87,7 +87,7 @@ export default defineComponent({
       activity: activity.activityName as string,
       naceCodes: activity.naceCodes as string[],
       revenue: this.formatAbsoluteShare(activity.share?.absoluteShare),
-      revenuePercent: formatPercentageNumber(activity.share?.relativeShareInPercent),
+      revenuePercent: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
     }));
   },
   methods: {
