@@ -157,7 +157,7 @@ describe("Component test for the EUTaxonomy Page", () => {
       cy.get("table").find(`tr:contains("Biodiversity and ecosystems")`);
       cy.get("table").find(`tr:contains("Minimum safeguards")`);
 
-      cy.get("table").find(`tr:contains("20%")`);
+      cy.get("table").find(`tr:contains("20.00 %")`);
       cy.get("table").find(`tr:contains("Yes")`);
       cy.get("table").find(`tr:contains("No")`);
 
@@ -201,7 +201,7 @@ describe("Component test for the EUTaxonomy Page", () => {
 
       cy.get("table").find(`tr:contains("abc")`);
       cy.get("table").find(`tr:contains("0.1")`);
-      cy.get("table").find(`tr:contains("1337")`);
+      cy.get("table").find(`tr:contains("1,337.00")`);
     });
   });
 });
