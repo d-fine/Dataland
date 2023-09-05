@@ -4,7 +4,7 @@ import { roundNumber } from "@/utils/NumberConversionUtils";
 /**
  * Formats a percentage number by rounding it and afterward making it a string with a percentsymbol at the end.
  * @param percentageNumber is the percentage number to format
- * @param precision
+ * @param precision is the precision for the rounding of the percentage number
  * @returns the resulting string
  */
 export function formatPercentageNumberAsString(percentageNumber?: number, precision = 2): string {

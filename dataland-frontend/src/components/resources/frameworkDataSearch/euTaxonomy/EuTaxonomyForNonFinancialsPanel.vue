@@ -37,7 +37,6 @@ import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resou
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
 import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatting";
-import { roundNumber } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",

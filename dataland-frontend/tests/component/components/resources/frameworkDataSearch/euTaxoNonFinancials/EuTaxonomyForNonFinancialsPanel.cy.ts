@@ -32,8 +32,9 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       const capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
       const capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
 
-      const betaTotalAlignedCapexPercentage =
-        (capexOfDatasetBeta.alignedShare?.relativeShareInPercent! * 100).toFixed(2);
+      const betaTotalAlignedCapexPercentage = (
+        assertDefined(capexOfDatasetBeta.alignedShare?.relativeShareInPercent) * 100
+      ).toFixed(2);
 
       const gammaTotalAlignedCapexAbsoluteShareString =
         Math.round(assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.amount)).toString() +
