@@ -111,7 +111,7 @@
               <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}</span>
             </span>
             <span v-else style="white-space: pre-wrap">{{
-              humanizeString(slotProps.data.content[reportingPeriodWithDataId.dataId])
+              slotProps.data.content[reportingPeriodWithDataId.dataId]
             }}</span>
           </template>
         </template>
@@ -149,7 +149,6 @@ import { defineComponent, type PropType } from "vue";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
@@ -216,7 +215,6 @@ export default defineComponent({
     this.rowClickHandlersMap = new Map();
   },
   methods: {
-    humanizeString: humanizeStringOrNumber,
     /**
      * Checks if the BaseDataPoint holds a document reference
      * @param dataPoint the object to check for a reference

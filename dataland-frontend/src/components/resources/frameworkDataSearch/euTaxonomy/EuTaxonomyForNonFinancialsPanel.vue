@@ -25,6 +25,7 @@ import {
   type AmountWithCurrency,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
+  FiscalYearDeviation,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
@@ -138,6 +139,19 @@ export default defineComponent({
     },
 
     /**
+     * Checks if a KpiValue is a string with one of the Enum values of FiscalYearDeviation
+     * @param kpiValue the kpiValue that shall be checked
+     * @returns a boolean based on the result of the check
+     */
+    isKpiObjectFiscalYearDeviation(kpiValue: KpiValue): boolean {
+      if (typeof kpiValue === "string") {
+        return Object.values(FiscalYearDeviation).includes(kpiValue as FiscalYearDeviation);
+      } else {
+        return false;
+      }
+    },
+
+    /**
      * Formats KPI values for display
      * @param field the considered KPI field
      * @param kpiValueToFormat the value to be formatted
@@ -146,6 +160,9 @@ export default defineComponent({
     formatValueForDisplay(field: Field, kpiValueToFormat: KpiValue): KpiValue {
       if (kpiValueToFormat == null) {
         return kpiValueToFormat;
+      }
+      if (this.isKpiObjectFiscalYearDeviation(kpiValueToFormat)) {
+        return humanizeStringOrNumber(kpiValueToFormat as string);
       }
       if (this.namesOfFieldsToFormatAsPercentages.includes(field.name)) {
         return formatPercentageNumber(kpiValueToFormat as number);
