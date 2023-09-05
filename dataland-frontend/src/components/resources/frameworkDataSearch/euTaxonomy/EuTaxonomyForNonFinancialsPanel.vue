@@ -148,7 +148,6 @@ export default defineComponent({
         return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
       }
       if (typeof kpiValueToFormat === "number") {
-        console.log('Liczba', kpiValueToFormat)
         return formatNumberToReadableFormat(kpiValueToFormat);
       }
       return kpiValueToFormat;

@@ -28,10 +28,7 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import {
-  type AmountWithCurrency,
-  type EuTaxonomyAlignedActivity,
-} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
+import { type EuTaxonomyAlignedActivity } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/ValuesConversionUtils";
 
 type NonAlignedActivityFieldValueObject = {
@@ -103,16 +100,6 @@ export default defineComponent({
      */
     humanizeHeaderName(key: string) {
       return this.columnHeaders[this.kpiKeyOfTable][key];
-    },
-    /**
-     * @param absoluteShare object containing amount and currency properties
-     * @returns combined amount and currency
-     */
-    formatAbsoluteShare(absoluteShare: AmountWithCurrency | undefined): string {
-      if (!absoluteShare) return "";
-      const amount = absoluteShare.amount ?? "";
-      const currency = absoluteShare.currency ?? "";
-      return `${amount} ${currency}`;
     },
     /**
      *

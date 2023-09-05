@@ -108,7 +108,6 @@ export default defineComponent({
         return formatPercentageNumber(value as number);
       }
       if (typeof value === "number") {
-        console.log('Liczba', value)
         return formatNumberToReadableFormat(value);
       }
       return value;

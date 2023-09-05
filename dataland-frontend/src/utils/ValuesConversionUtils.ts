@@ -12,7 +12,7 @@ export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency 
   return `${amountWithCurrency.amount.toLocaleString("en-GB", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  })} ${amountWithCurrency.currency ?? ""}`;
+  })}${amountWithCurrency.currency ? ` ${amountWithCurrency.currency}` : ""}`;
 }
 
 /**
@@ -22,10 +22,16 @@ export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency 
  * @returns the resulting string
  */
 export function formatPercentageNumber(value: number | undefined): string {
-  if (!value) {
+  if (value == undefined || value == null) {
     return "";
   }
-  return `${value.toFixed(2).toString()} @&`;
+  if (value == 0) {
+    return "0 %";
+  }
+  if (value == 100) {
+    return "100 %";
+  }
+  return `${value.toFixed(2).toString()} %`;
 }
 
 /**
@@ -34,8 +40,11 @@ export function formatPercentageNumber(value: number | undefined): string {
  * @returns formatted number (e.g. 1500600.0123 --> 1,500,600.01)
  */
 export function formatNumberToReadableFormat(value: number | undefined): string {
-  if (!value) {
+  if (value == undefined || value == null) {
     return "";
+  }
+  if (value == 0) {
+    return "0";
   }
   return value.toLocaleString("en-GB", {
     maximumFractionDigits: 2,
