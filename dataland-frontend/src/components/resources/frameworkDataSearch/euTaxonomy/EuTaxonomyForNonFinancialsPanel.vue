@@ -36,7 +36,8 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatting";
+import { formatAmountWithCurrency } from "@/utils/Formatting";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -49,17 +50,6 @@ export default defineComponent({
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel,
-      namesOfFieldsToFormatAsPercentages: [
-        "relativeShareInPercent",
-        "enablingShare",
-        "transitionalShare",
-        "substantialContributionToClimateChangeMitigation",
-        "substantialContributionToClimateChangeAdaption",
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
-        "substantialContributionToTransitionToACircularEconomy",
-        "substantialContributionToPollutionPreventionAndControl",
-        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
-      ],
     };
   },
   props: PanelProps,
@@ -164,8 +154,8 @@ export default defineComponent({
       if (this.isKpiObjectFiscalYearDeviation(kpiValueToFormat)) {
         return humanizeStringOrNumber(kpiValueToFormat as string);
       }
-      if (this.namesOfFieldsToFormatAsPercentages.includes(field.name)) {
-        return formatPercentageNumberAsString(kpiValueToFormat as number);
+      if (field.component == "PercentageFormField") {
+        return roundNumber(kpiValueToFormat as number, 2);
       }
       if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
         return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);

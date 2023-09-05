@@ -53,7 +53,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
             name: "scopeOfEntities",
             label: "Scope Of Entities",
             description:
-                "Does a list of legal entities covered by Sust./Annual/Integrated/ESEF report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
+              "Does a list of legal entities covered by Sust./Annual/Integrated/ESEF report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
             unit: "",
             component: "YesNoNaFormField",
             evidenceDesired: false,
@@ -110,7 +110,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
             name: "levelOfAssurance",
             label: "Level of Assurance",
             description:
-                "Level of Assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
+              "Level of Assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
             unit: "",
             component: "UndefinedFormField",
             evidenceDesired: true,
