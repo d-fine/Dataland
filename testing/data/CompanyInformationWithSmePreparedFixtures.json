@@ -2,47 +2,45 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Chasitystad",
-			"sector": "communities",
+			"headquarters": "Lake Jaquan",
+			"headquartersPostalCode": "04173",
 			"identifiers": {
 				"Lei": [
-					"fVu8OSKRY8OjcRIdEKfV"
+					"9wOK5oRxrZBWFs5G6BWl"
 				],
-				"Isin": [
-					"fZzuzbdtorGk",
-					"GvPF5o4KMyhE"
-				],
-				"PermId": [
-					"8pb5Kw1aoq"
-				],
-				"Ticker": [
-					"Lwnma9N"
-				],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"En6sUgrmS"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"6EZCFaHoIXlC3Fh"
+					"xigIX6nzA6reGHt"
 				]
 			},
-			"countryCode": "SC",
-			"companyAlternativeNames": [],
+			"countryCode": "NA",
+			"companyAlternativeNames": [
+				"Bins, Jenkins and Rau",
+				"Conn and Sons",
+				"Funk - Goodwin"
+			],
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"K"
+						"G",
+						"H",
+						"K",
+						"L",
+						"M"
 					],
 					"addressOfHeadquarters": {
-						"postalCode": "74326-3043",
-						"city": "Blazefield",
-						"country": "PF"
+						"city": "Meridian",
+						"country": "EE"
 					},
-					"numberOfEmployees": 5309,
-					"fiscalYearStart": "2024-03-29"
+					"numberOfEmployees": 2444,
+					"fiscalYearStart": "2024-02-09"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -54,30 +52,135 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Jacobi, Bergnaum and Jacobi",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Phyllis Glen 393",
-								"postalCode": "52486",
-								"city": "Tigard",
-								"state": "Montana",
-								"country": "AD"
-							}
-						},
-						{
-							"nameOfProductionSite": "Hahn, Satterfield and Emard",
-							"addressOfProductionSite": {
-								"postalCode": "84101",
-								"city": "Watsicaview",
-								"state": "Oregon",
-								"country": "RO"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Gislason Brook 1281",
-								"city": "Tannertown",
-								"country": "GD"
+								"streetAndHouseNumber": "Abshire Fords 9765",
+								"city": "Blickton",
+								"country": "ER"
 							},
-							"percentageOfTotalRevenue": 41.2476
+							"percentageOfTotalRevenue": 72.3258
+						},
+						{
+							"nameOfProductionSite": "Denesik - Langosh",
+							"addressOfProductionSite": {
+								"city": "Visalia",
+								"state": "Montana",
+								"country": "BA"
+							}
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Incredible Frozen Fish"
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": 789,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "East Lolaberg",
+			"headquartersPostalCode": "50298-2754",
+			"sector": "systems",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ljLJs1ClR201"
+				],
+				"PermId": [
+					"SettxftQGN"
+				],
+				"Ticker": [],
+				"Duns": [
+					"oBlfLXzNi"
+				],
+				"VatNumber": [
+					"HV9q8Y8mA"
+				],
+				"CompanyRegistrationNumber": [
+					"D9LK4o1mObGTrpx"
+				]
+			},
+			"countryCode": "SH",
+			"companyAlternativeNames": [],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"G"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
+					},
+					"numberOfEmployees": 3911,
+					"fiscalYearStart": "2024-04-10"
+				},
+				"companyFinancials": {
+					"capitalAssetsInEur": 60878664
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Schmidt, Olson and Kunze",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "McKenzie Drive 44895",
+								"postalCode": "06120",
+								"city": "Moline",
+								"state": "Montana",
+								"country": "LY"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"postalCode": "50442-3662",
+								"city": "Lake Else",
+								"state": "Louisiana",
+								"country": "HM"
+							},
+							"percentageOfTotalRevenue": 13.363
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kelvin Parkways 5972",
+								"postalCode": "21153",
+								"city": "East Columbusland",
+								"country": "BS"
+							},
+							"percentageOfTotalRevenue": 30.5992
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Heaney Walk 57389",
+								"postalCode": "56887",
+								"city": "Lucianochester",
+								"state": "Kansas",
+								"country": "BA"
+							}
 						}
 					]
 				},
@@ -87,134 +190,22 @@
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
+					"powerConsumptionInMwh": 1817,
+					"powerFromRenewableSources": "No",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 7036906,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 34395327,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Flooding",
-						"EarthQuake",
-						"Wind"
+						"Snow",
+						"Flooding"
 					]
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "Hermannburgh",
-			"headquartersPostalCode": "31008-6353",
-			"identifiers": {
-				"Lei": [
-					"m2kuajQSGZWyQwwp6fzk"
-				],
-				"Isin": [],
-				"PermId": [
-					"KMSoN0ViAc"
-				],
-				"Ticker": [],
-				"Duns": [
-					"Wo1MNH9p5"
-				],
-				"VatNumber": [
-					"wTQcSGLjc"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "BR",
-			"companyAlternativeNames": [
-				"Bogisich Inc",
-				"Lakin - Herman"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://coarse-tooth.name",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"K",
-						"L"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 435,
-					"fiscalYearStart": "2023-10-17"
-				},
-				"companyFinancials": {}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"postalCode": "94197",
-								"city": "Borerfurt",
-								"country": "MW"
-							},
-							"percentageOfTotalRevenue": 42.5897
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Una Loaf 8048",
-								"postalCode": "61255-7488",
-								"city": "Bedford",
-								"country": "PM"
-							},
-							"percentageOfTotalRevenue": 15.0965
-						},
-						{
-							"nameOfProductionSite": "Medhurst Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kuvalis Course 48896",
-								"postalCode": "08475",
-								"city": "Nashville-Davidson",
-								"state": "Nebraska",
-								"country": "KM"
-							},
-							"percentageOfTotalRevenue": 98.1053
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Ergonomic Fresh Tuna"
-						},
-						{
-							"name": "Sleek Cotton Mouse"
-						},
-						{
-							"name": "Intelligent Concrete Pizza",
-							"percentageOfTotalRevenue": 74.9615
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {},
-				"consumption": {
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},
@@ -223,30 +214,31 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Jeremyfurt",
-			"sector": "bandwidth",
+			"headquarters": "Candidatown",
+			"headquartersPostalCode": "09656-2718",
+			"sector": "users",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"5MtNf0nzPbPi",
-					"0LW3n8SWxEiU"
+					"f6PGOBx9tviz"
 				],
-				"PermId": [],
-				"Ticker": [
-					"2CU3Zqq"
+				"PermId": [
+					"IJBXybiDyd"
 				],
+				"Ticker": [],
 				"Duns": [
-					"9IJNheqLZ"
+					"rGZzBEMfS"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"sDH0P4SMUWtqrJr"
+				]
 			},
-			"countryCode": "AE",
+			"countryCode": "IS",
 			"companyAlternativeNames": [
-				"Aufderhar, Halvorson and Moen",
-				"Brekke - Stiedemann",
-				"Mante, Stracke and Waelchi"
+				"Fay, Ward and O'Kon"
 			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -257,86 +249,50 @@
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 9556,
-					"fiscalYearStart": "2024-07-13"
+					"numberOfEmployees": 4008,
+					"fiscalYearStart": "2024-07-11"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 28688762,
-					"capitalAssetsInEur": 20752740
+					"revenueInEur": 85007999,
+					"operatingCostInEur": 14978920,
+					"capitalAssetsInEur": 29915674
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "O'Hara - Ziemann",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Sauer Knoll 88102",
-								"postalCode": "96906",
-								"city": "South Elizabethberg",
-								"state": "Georgia",
-								"country": "PW"
-							}
-						},
-						{
-							"nameOfProductionSite": "Bernhard and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Crawford Street 247",
-								"city": "Rylanland",
-								"state": "Ohio",
-								"country": "NZ"
+								"city": "East Magnus",
+								"state": "Wisconsin",
+								"country": "ZM"
 							},
-							"percentageOfTotalRevenue": 57.0772
+							"percentageOfTotalRevenue": 46.4297
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Daisha Coves 46750",
-								"postalCode": "83619-0009",
-								"city": "Port Hailee",
-								"state": "Minnesota",
-								"country": "UZ"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kuhn Shoals 59020",
-								"postalCode": "51753",
-								"city": "Baileystad",
-								"state": "South Dakota",
-								"country": "CF"
-							}
+								"city": "Mosciskiton",
+								"state": "Utah",
+								"country": "AR"
+							},
+							"percentageOfTotalRevenue": 55.3209
 						}
 					]
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Gorgeous Wooden Gloves"
-						},
-						{
-							"name": "Ergonomic Plastic Fish",
-							"percentageOfTotalRevenue": 3.6207
-						},
-						{
-							"name": "Gorgeous Rubber Chicken"
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 328,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 690,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"energyConsumptionHeatingAndHotWater": 31
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
+					"amountCoveredByInsuranceAgainstNaturalHazards": 10028239
 				}
 			}
 		},
