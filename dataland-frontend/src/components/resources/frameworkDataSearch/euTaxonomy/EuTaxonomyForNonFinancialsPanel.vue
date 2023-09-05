@@ -23,6 +23,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type AmountWithCurrency,
+  AssuranceDataAssuranceEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
   FiscalYearDeviation,
@@ -129,6 +130,19 @@ export default defineComponent({
     },
 
     /**
+     * Checks if a KpiValue is a string with one of the Enum values of Assurance
+     * @param kpiValue the kpiValue that shall be checked
+     * @returns a boolean based on the result of the check
+     */
+    isKpiObjectAssuranceLevel(kpiValue: KpiValue): boolean {
+      if (typeof kpiValue === "string") {
+        return Object.values(AssuranceDataAssuranceEnum).includes(kpiValue as AssuranceDataAssuranceEnum);
+      } else {
+        return false;
+      }
+    },
+
+    /**
      * Checks if a KpiValue is a string with one of the Enum values of FiscalYearDeviation
      * @param kpiValue the kpiValue that shall be checked
      * @returns a boolean based on the result of the check
@@ -151,7 +165,7 @@ export default defineComponent({
       if (kpiValueToFormat == null) {
         return kpiValueToFormat;
       }
-      if (this.isKpiObjectFiscalYearDeviation(kpiValueToFormat)) {
+      if (this.isKpiObjectFiscalYearDeviation(kpiValueToFormat) || this.isKpiObjectAssuranceLevel(kpiValueToFormat)) {
         return humanizeStringOrNumber(kpiValueToFormat as string);
       }
       if (field.component == "PercentageFormField") {
