@@ -48,9 +48,7 @@
             {{ data[reportingPeriod.dataId].value ?? "" }}
           </template>
 
-          <span v-else>{{
-            Array.isArray(data[reportingPeriod.dataId]) ? "" : humanizeString(data[reportingPeriod.dataId])
-          }}</span>
+          <span v-else>{{ Array.isArray(data[reportingPeriod.dataId]) ? "" : data[reportingPeriod.dataId] }}</span>
         </template>
       </Column>
 
@@ -79,7 +77,6 @@ import {
   unmountRowHeaderClickEventListeners,
 } from "@/utils/DataTableDisplay";
 import { type SfdrKpiObject } from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "SfdrDataTable",
@@ -135,7 +132,6 @@ export default defineComponent({
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;
   },
   methods: {
-    humanizeString: humanizeStringOrNumber,
     /**
      * Opens a modal to display a table with the provided list of production sites
      * @param listOfProductionSites An array consisting of production sites
