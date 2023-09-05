@@ -1,21 +1,19 @@
 <template>
-  <div class="grid">
-    <div class="col-12 bg-green-500 p-0 mt-3">
-      <p class="text-white font-semibold flex justify-content-center">
-        <i class="material-icons pr-2 flex align-items-center" aria-hidden="true">check_circle</i>
-        <span class="pr-2 flex align-items-center">Try Dataland with other people to access all the data.</span>
-      </p>
+  <div class="mt-8">
+    <h3>COMPANY DATA SAMPLE</h3>
+    <h4>Try Dataland with other people to access all the data.</h4>
+    <div class="col-4 col-offset-4">
       <JoinDatalandButton />
-      <ViewFrameworkData
-        v-if="isMetaInfoFetched"
-        :view-in-preview-mode="true"
-        :company-id="companyId"
-        :data-type="dataType"
-        :data-id="dataId"
-        :reporting-period="reportingPeriod"
-      />
     </div>
   </div>
+  <ViewFrameworkData
+    v-if="isMetaInfoFetched"
+    :view-in-preview-mode="true"
+    :company-id="companyId"
+    :data-type="dataType"
+    :data-id="dataId"
+    :reporting-period="reportingPeriod"
+  />
 </template>
 
 <script lang="ts">
@@ -49,7 +47,8 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Uses the dataland API to retrieve the companyId of the first teaser company and TODO explain further
+     * Uses the Dataland API to retrieve all teaser companies, picks the first company and gets the data meta info of
+     * the first dataset for that company to display it on the sample page.
      */
     async queryCompany() {
       try {
