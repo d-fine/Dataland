@@ -30,7 +30,7 @@ export function randomNumber(max: number): number {
 export function randomPercentageValue(): number {
   return faker.number.float({
     min: 0,
-    max: 1,
+    max: 100,
     precision: percentagePrecision,
   });
 }
