@@ -3,7 +3,12 @@
     <p class="font-medium text-xl">Loading {{ humanizeString(DataTypeEnum.EutaxonomyNonFinancials) }} Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-show="!waitingForData">
+  <div v-show="!waitingForData" data-test="multipleReportsBanner">
+    <ShowMultipleReportsBanner
+      v-if="dataSet?.general?.referencedReports && Object.keys(dataSet?.general?.referencedReports).length > 0"
+      :reporting-period="singleDataMetaInfoToDisplay?.reportingPeriod"
+      :reports="dataSet?.general?.referencedReports"
+    />
     <ThreeLayerTable
       data-test="ThreeLayerTableTest"
       :data-model="euTaxonomyForNonFinancialsDisplayDataModel"
@@ -24,6 +29,7 @@ import {
   type AmountWithCurrency,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
+  type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
@@ -35,10 +41,11 @@ import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resou
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
+import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
-  components: { ThreeLayerTable },
+  components: { ThreeLayerTable, ShowMultipleReportsBanner },
   data() {
     return {
       DataTypeEnum,
@@ -48,6 +55,7 @@ export default defineComponent({
       euTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel,
       namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "totalEnablingShare", "totalTransitionalShare"],
+      dataSet: null as EuTaxonomyDataForNonFinancials | null | undefined,
     };
   },
   props: PanelProps,
@@ -92,6 +100,7 @@ export default defineComponent({
           fetchedData = [
             { metaInfo: this.singleDataMetaInfoToDisplay, data: singleEuTaxonomyForNonFinancialsDataData },
           ];
+          this.dataSet = singleEuTaxonomyForNonFinancialsDataData;
         } else {
           fetchedData = (
             await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(
