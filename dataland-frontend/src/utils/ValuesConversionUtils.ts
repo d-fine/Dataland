@@ -12,7 +12,7 @@ export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency 
   return `${amountWithCurrency.amount.toLocaleString("en-GB", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  })}${amountWithCurrency.currency ? ` ${amountWithCurrency.currency}` : ""}`;
+  })}${amountWithCurrency.currency ? " " + amountWithCurrency.currency : ""}`;
 }
 
 /**

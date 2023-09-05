@@ -26,7 +26,7 @@ import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLay
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
-import {formatNumberToReadableFormat, formatPercentageNumber} from "@/utils/ValuesConversionUtils";
+import { formatNumberToReadableFormat, formatPercentageNumber } from "@/utils/ValuesConversionUtils";
 
 export default defineComponent({
   name: "P2pPanel",

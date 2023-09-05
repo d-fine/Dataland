@@ -190,7 +190,7 @@ export default defineComponent({
             col.activityName as string,
             "substantialContributionCriteria",
             field,
-              formatPercentageNumber(col[field]),
+            formatPercentageNumber(col[field]),
           ),
         ),
 

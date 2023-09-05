@@ -16,14 +16,14 @@ describe("Unit tests for formating data", () => {
   });
   it("Check if numbers are displayed in more readable format", () => {
     const sampleNumbers = [123456, 654321.123, 987654321, 123, 0];
-    const outputArray = sampleNumbers.map((el): string[] => {
+    const outputArray = sampleNumbers.map((el) => {
       return formatNumberToReadableFormat(el);
     });
     expect(outputArray).to.deep.equal(["123,456", "654,321.12", "987,654,321", "123", "0"]);
   });
   it("Check if percentage numbers is displayed in correct format (%)", () => {
     const sampleNumbers = [12, 65.123, 0.9876, 100, 0];
-    const outputArray = sampleNumbers.map((el): string[] => {
+    const outputArray = sampleNumbers.map((el) => {
       return formatPercentageNumber(el);
     });
     expect(outputArray).to.deep.equal(["12.00 %", "65.12 %", "0.99 %", "100 %", "0 %"]);
@@ -32,10 +32,10 @@ describe("Unit tests for formating data", () => {
     const sampleObjects = [
       { amount: 12, currency: "USD" },
       { amount: 132.123, currency: "CHF" },
-      { amount: null, currency: "USD" },
-      { amount: 12, currency: null },
+      { amount: undefined, currency: "USD" },
+      { amount: 12, currency: undefined },
     ];
-    const outputArray = sampleObjects.map((el): string[] => {
+    const outputArray = sampleObjects.map((el) => {
       return formatAmountWithCurrency(el);
     });
     expect(outputArray).to.deep.equal(["12.00 USD", "132.12 CHF", "", "12.00"]);

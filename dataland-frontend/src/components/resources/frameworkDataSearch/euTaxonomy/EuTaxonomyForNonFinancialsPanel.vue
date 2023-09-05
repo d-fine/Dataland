@@ -37,7 +37,7 @@ import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/com
 import {
   formatPercentageNumber,
   formatAmountWithCurrency,
-  formatNumberToReadableFormat
+  formatNumberToReadableFormat,
 } from "@/utils/ValuesConversionUtils";
 
 export default defineComponent({
