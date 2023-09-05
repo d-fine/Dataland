@@ -9,7 +9,7 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancialsTest {
     private val dataType = "eutaxonomy-non-financials"
 
     @Test
-    fun `test that eu taxonomy for non financials migrate to flattened "substantialCriteria" and "dnsh" maps`() {
+    fun `test that eu taxonomy for non financials migrate to flattened substantialCriteria and dnsh maps`() {
         val mockDataId = "mock-data-id"
         val originalDatabaseEntry = DataTableEntity.fromJsonObject(
             mockDataId,
