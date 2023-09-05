@@ -34,6 +34,11 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
+import {
+  formatPercentageNumber,
+  formatAmountWithCurrency,
+  formatNumberToReadableFormat
+} from "@/utils/ValuesConversionUtils";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -127,28 +132,6 @@ export default defineComponent({
     },
 
     /**
-     * Formats an AmountWithCurrency object by concatenating the amount and the currency.
-     * @param amountWithCurrency the object that holds the amount and currency
-     * @returns the resulting string from the concatenation
-     */
-    formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency) {
-      if (amountWithCurrency.amount == undefined) {
-        return null;
-      }
-      return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
-    },
-
-    /**
-     * Formats a percentage number by rounding it to two decimals and afterward making it a string with a percent
-     * symbol at the end.
-     * @param relativeShareInPercent is the percentage number to round
-     * @returns the resulting string
-     */
-    formatPercentageNumber(relativeShareInPercent: number) {
-      return `${relativeShareInPercent.toFixed(2).toString()}`;
-    },
-
-    /**
      * Formats KPI values for display
      * @param field the considered KPI field
      * @param kpiValueToFormat the value to be formatted
@@ -159,10 +142,14 @@ export default defineComponent({
         return kpiValueToFormat;
       }
       if (field.component == "PercentageFormField") {
-        return this.formatPercentageNumber(kpiValueToFormat as number);
+        return formatPercentageNumber(kpiValueToFormat as number);
       }
       if (this.isKpiObjectAmountWithCurrency(kpiValueToFormat)) {
-        return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
+        return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
+      }
+      if (typeof kpiValueToFormat === "number") {
+        console.log('Liczba', kpiValueToFormat)
+        return formatNumberToReadableFormat(kpiValueToFormat);
       }
       return kpiValueToFormat;
     },

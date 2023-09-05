@@ -86,6 +86,7 @@ import {
   type Activity,
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
+import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/ValuesConversionUtils";
 
 type ActivityFieldValueObject = {
   activity: string;
@@ -189,7 +190,7 @@ export default defineComponent({
             col.activityName as string,
             "substantialContributionCriteria",
             field,
-            this.valueFormatterForPercentage(col[field]),
+              formatPercentageNumber(col[field]),
           ),
         ),
 
@@ -222,13 +223,6 @@ export default defineComponent({
     ];
   },
   methods: {
-    /**
-     * @param value the number to format as a percentage
-     * @returns the new formatted string
-     */
-    valueFormatterForPercentage(value: number | undefined): string {
-      return typeof value !== "undefined" ? `${value}%` : "";
-    },
     /**
      * @param value the YesNo value to format as Yes, No or blank
      * @returns the new formatted string
@@ -328,13 +322,13 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
       activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenue",
-      content: `${activity.share?.absoluteShare?.amount ?? ""} ${activity.share?.absoluteShare?.currency ?? ""}`,
+      content: formatAmountWithCurrency(activity.share?.absoluteShare),
     },
     {
       activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenuePercent",
-      content: `${activity.share?.relativeShareInPercent ?? ""}%`,
+      content: formatPercentageNumber(activity.share?.relativeShareInPercent),
     },
   ];
 }

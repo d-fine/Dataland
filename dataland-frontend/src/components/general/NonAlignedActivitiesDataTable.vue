@@ -32,6 +32,7 @@ import {
   type AmountWithCurrency,
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
+import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/ValuesConversionUtils";
 
 type NonAlignedActivityFieldValueObject = {
   activity: string;
@@ -84,8 +85,8 @@ export default defineComponent({
     this.mainColumnData = this.listOfRowContents.map((activity) => ({
       activity: activity.activityName as string,
       naceCodes: activity.naceCodes as string[],
-      revenue: this.formatAbsoluteShare(activity.share?.absoluteShare),
-      revenuePercent: this.fromatRelativeShareInPercent(activity.share?.relativeShareInPercent),
+      revenue: formatAmountWithCurrency(activity.share?.absoluteShare),
+      revenuePercent: formatPercentageNumber(activity.share?.relativeShareInPercent),
     }));
   },
   methods: {
@@ -112,15 +113,6 @@ export default defineComponent({
       const amount = absoluteShare.amount ?? "";
       const currency = absoluteShare.currency ?? "";
       return `${amount} ${currency}`;
-    },
-    /**
-     *
-     * @param relativeShareInPercent number value of percent
-     * @returns formatted value
-     */
-    fromatRelativeShareInPercent(relativeShareInPercent: number | undefined): string {
-      if (!relativeShareInPercent) return "";
-      return `${relativeShareInPercent} %`;
     },
     /**
      *

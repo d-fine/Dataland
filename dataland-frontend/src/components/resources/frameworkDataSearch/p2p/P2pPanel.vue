@@ -26,6 +26,7 @@ import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLay
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
+import {formatNumberToReadableFormat, formatPercentageNumber} from "@/utils/ValuesConversionUtils";
 
 export default defineComponent({
   name: "P2pPanel",
@@ -102,6 +103,13 @@ export default defineComponent({
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
       if (field.name == "sector") {
         return (value as string[]).map((sector) => humanizeString(sector));
+      }
+      if (field.component == "PercentageFormField") {
+        return formatPercentageNumber(value as number);
+      }
+      if (typeof value === "number") {
+        console.log('Liczba', value)
+        return formatNumberToReadableFormat(value);
       }
       return value;
     },
