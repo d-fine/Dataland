@@ -2,6 +2,7 @@ import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDat
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { formatNumberToReadableFormat, formatAmountWithCurrency } from "@/utils/ValuesConversionUtils";
 
 describe("Component test for the EUTaxonomy Page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
@@ -34,21 +35,19 @@ describe("Component test for the EUTaxonomy Page", () => {
 
       const betaTotalAlignedCapexPercentage = capexOfDatasetBeta.alignedShare?.relativeShareInPercent?.toFixed(2);
 
-      const gammaTotalAlignedCapexAbsoluteShareString =
-        Math.round(assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.amount)).toString() +
-        ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
+      const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency(
+        capexOfDatasetGamma.alignedShare?.absoluteShare,
+      );
 
-      const alphaContributionToClimateChangeMitigation = assertDefined(
-        capexOfDatasetAlpha.substantialContributionToClimateChangeMitigation,
-      )
-        .toFixed(2)
-        .toString();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
+      const alphaContributionToClimateChangeMitigation = formatNumberToReadableFormat(
+        assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigation),
+      );
 
-      const gammaContributionToClimateChangeMitigation = assertDefined(
-        capexOfDatasetGamma.substantialContributionToClimateChangeMitigation,
-      )
-        .toFixed(2)
-        .toString();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
+      const gammaContributionToClimateChangeMitigation = formatNumberToReadableFormat(
+        assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigation),
+      );
 
       cy.get(`[data-test='CapEx']`).click();
       cy.contains("span", "Aligned CapEx").click();
