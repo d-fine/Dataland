@@ -264,8 +264,7 @@ export default defineComponent({
           kpiValue as Map<ProcurementCategoryType, LksgProcurementCategory> | null,
         );
       }
-      if (typeof kpiValue === "number") {
-        console.log('liczba', formatNumberToReadableFormat(kpiValue))
+      if (typeof kpiValue === "number" && kpiField.component != "PercentageFormField") {
         kpiValue = formatNumberToReadableFormat(kpiValue);
       }
 
