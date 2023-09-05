@@ -2,52 +2,47 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Rosettashire",
+			"headquarters": "Chasitystad",
+			"sector": "communities",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"fVu8OSKRY8OjcRIdEKfV"
+				],
 				"Isin": [
-					"nKbuCUMAiUrF",
-					"bgosHkXJqxVA"
+					"fZzuzbdtorGk",
+					"GvPF5o4KMyhE"
 				],
 				"PermId": [
-					"NnLKR7J9Tt"
+					"8pb5Kw1aoq"
 				],
-				"Ticker": [],
-				"Duns": [
-					"aytWeXqMg"
+				"Ticker": [
+					"Lwnma9N"
 				],
+				"Duns": [],
 				"VatNumber": [
-					"OQ8QQ9STc"
+					"En6sUgrmS"
 				],
 				"CompanyRegistrationNumber": [
-					"3gmLlJ40RBooioK"
+					"6EZCFaHoIXlC3Fh"
 				]
 			},
-			"countryCode": "TW",
-			"companyAlternativeNames": [
-				"Bayer - Hoppe",
-				"Gerlach - Boehm",
-				"Gerlach, Cronin and Reinger",
-				"O'Kon, Hudson and Ernser"
-			],
+			"countryCode": "SC",
+			"companyAlternativeNames": [],
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"H",
-						"I",
-						"J",
-						"M"
+						"K"
 					],
 					"addressOfHeadquarters": {
-						"city": "South Alyson",
-						"state": "New Hampshire",
-						"country": "AD"
+						"postalCode": "74326-3043",
+						"city": "Blazefield",
+						"country": "PF"
 					},
-					"numberOfEmployees": 5941,
-					"fiscalYearStart": "2023-11-01"
+					"numberOfEmployees": 5309,
+					"fiscalYearStart": "2024-03-29"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -59,33 +54,53 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Oberbrunner, Farrell and Collins",
 							"addressOfProductionSite": {
-								"city": "Catherinecester",
-								"state": "Utah",
-								"country": "UY"
+								"streetAndHouseNumber": "Phyllis Glen 393",
+								"postalCode": "52486",
+								"city": "Tigard",
+								"state": "Montana",
+								"country": "AD"
 							}
+						},
+						{
+							"nameOfProductionSite": "Hahn, Satterfield and Emard",
+							"addressOfProductionSite": {
+								"postalCode": "84101",
+								"city": "Watsicaview",
+								"state": "Oregon",
+								"country": "RO"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Gislason Brook 1281",
+								"city": "Tannertown",
+								"country": "GD"
+							},
+							"percentageOfTotalRevenue": 41.2476
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": []
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 238,
-					"powerFromRenewableSources": "Yes",
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 7036906,
 					"naturalHazardsCovered": [
 						"Avalanche",
+						"Flooding",
+						"EarthQuake",
 						"Wind"
 					]
 				}
@@ -96,41 +111,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Abagailstead",
-			"headquartersPostalCode": "72132",
-			"sector": "e-commerce",
+			"headquarters": "Hermannburgh",
+			"headquartersPostalCode": "31008-6353",
 			"identifiers": {
 				"Lei": [
-					"CgnWNLKSWt2jt25t1h5e"
+					"m2kuajQSGZWyQwwp6fzk"
 				],
-				"Isin": [
-					"BR8XZ8oztm7O"
+				"Isin": [],
+				"PermId": [
+					"KMSoN0ViAc"
 				],
-				"PermId": [],
-				"Ticker": [
-					"GzkWaqi"
+				"Ticker": [],
+				"Duns": [
+					"Wo1MNH9p5"
 				],
-				"Duns": [],
 				"VatNumber": [
-					"Rp3CLh4rV"
+					"wTQcSGLjc"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NU",
+			"countryCode": "BR",
 			"companyAlternativeNames": [
-				"Considine, Simonis and Hessel"
+				"Bogisich Inc",
+				"Lakin - Herman"
 			],
-			"website": "https://sour-affinity.org/",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://coarse-tooth.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"G",
-						"H",
-						"I",
-						"K"
+						"K",
+						"L"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -139,21 +153,55 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3209,
-					"fiscalYearStart": "2024-02-18"
+					"numberOfEmployees": 435,
+					"fiscalYearStart": "2023-10-17"
 				},
 				"companyFinancials": {}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"postalCode": "94197",
+								"city": "Borerfurt",
+								"country": "MW"
+							},
+							"percentageOfTotalRevenue": 42.5897
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Una Loaf 8048",
+								"postalCode": "61255-7488",
+								"city": "Bedford",
+								"country": "PM"
+							},
+							"percentageOfTotalRevenue": 15.0965
+						},
+						{
+							"nameOfProductionSite": "Medhurst Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kuvalis Course 48896",
+								"postalCode": "08475",
+								"city": "Nashville-Davidson",
+								"state": "Nebraska",
+								"country": "KM"
+							},
+							"percentageOfTotalRevenue": 98.1053
+						}
+					]
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Practical Wooden Mouse"
+							"name": "Ergonomic Fresh Tuna"
 						},
 						{
-							"name": "Modern Wooden Gloves",
-							"percentageOfTotalRevenue": 0.6358
+							"name": "Sleek Cotton Mouse"
+						},
+						{
+							"name": "Intelligent Concrete Pizza",
+							"percentageOfTotalRevenue": 74.9615
 						}
 					]
 				}
@@ -161,20 +209,12 @@
 			"power": {
 				"investments": {},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 558,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 37153613,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Wind",
-						"Snow",
-						"Avalanche",
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},
@@ -183,95 +223,120 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "West Cletus",
-			"headquartersPostalCode": "88624-7914",
-			"sector": "eyeballs",
+			"headquarters": "Jeremyfurt",
+			"sector": "bandwidth",
 			"identifiers": {
-				"Lei": [
-					"pwDWtJ8nBD0RhOq2FrQL"
-				],
+				"Lei": [],
 				"Isin": [
-					"kmols4wt08bI",
-					"zlocKZixx1F6"
+					"5MtNf0nzPbPi",
+					"0LW3n8SWxEiU"
 				],
-				"PermId": [
-					"olVhTJIO4f"
+				"PermId": [],
+				"Ticker": [
+					"2CU3Zqq"
 				],
-				"Ticker": [],
 				"Duns": [
-					"ALwly19N1"
+					"9IJNheqLZ"
 				],
-				"VatNumber": [
-					"fRRh8DAPV"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BA",
+			"countryCode": "AE",
 			"companyAlternativeNames": [
-				"Bruen LLC",
-				"D'Amore - Considine"
+				"Aufderhar, Halvorson and Moen",
+				"Brekke - Stiedemann",
+				"Mante, Stracke and Waelchi"
 			],
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [
-						"E"
-					],
+					"sector": [],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6515,
-					"fiscalYearStart": "2023-12-30"
+					"numberOfEmployees": 9556,
+					"fiscalYearStart": "2024-07-13"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEur": 57613818
+					"operatingCostInEur": 28688762,
+					"capitalAssetsInEur": 20752740
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "O'Hara - Ziemann",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Sauer Knoll 88102",
+								"postalCode": "96906",
+								"city": "South Elizabethberg",
+								"state": "Georgia",
+								"country": "PW"
+							}
+						},
+						{
+							"nameOfProductionSite": "Bernhard and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Crawford Street 247",
+								"city": "Rylanland",
+								"state": "Ohio",
+								"country": "NZ"
+							},
+							"percentageOfTotalRevenue": 57.0772
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Daisha Coves 46750",
+								"postalCode": "83619-0009",
+								"city": "Port Hailee",
+								"state": "Minnesota",
+								"country": "UZ"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kuhn Shoals 59020",
+								"postalCode": "51753",
+								"city": "Baileystad",
+								"state": "South Dakota",
+								"country": "CF"
+							}
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Electronic Soft Towels",
-							"percentageOfTotalRevenue": 0.7605
+							"name": "Gorgeous Wooden Gloves"
 						},
 						{
-							"name": "Bespoke Steel Car"
+							"name": "Ergonomic Plastic Fish",
+							"percentageOfTotalRevenue": 3.6207
 						},
 						{
-							"name": "Incredible Wooden Bacon"
-						},
-						{
-							"name": "Generic Bronze Pizza",
-							"percentageOfTotalRevenue": 0.9656
-						},
-						{
-							"name": "Luxurious Cotton Pizza"
+							"name": "Gorgeous Rubber Chicken"
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
 				"consumption": {
+					"powerConsumptionInMwh": 328,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 676,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 690,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"EarthQuake",
-						"Flooding",
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},
