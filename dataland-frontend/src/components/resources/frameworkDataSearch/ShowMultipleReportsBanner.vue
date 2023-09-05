@@ -8,7 +8,9 @@
         <DocumentLink :download-name="name" :reference="report.reference" font-style="font-semibold" />
         <span v-if="index < numberOfReports - 1"> | </span>
       </span>
-      <span> </span>
+      <span class="link" style="text-align: right" @click="openModalAndDisplayPreviousReportsInTable(reportingPeriod)"
+        >Previous years reports
+      </span>
     </span>
   </div>
 </template>
@@ -16,9 +18,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
-import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
+import PreviousReportsModal from "@/components/resources/frameworkDataSearch/PreviousReportsModal.vue";
 
 export default defineComponent({
   name: "ShowMultipleReportsBanner",
@@ -30,6 +30,25 @@ export default defineComponent({
   computed: {
     numberOfReports(): number {
       return Object.keys(this.reports).length;
+    },
+  },
+  methods: {
+    /**
+     * Opens a modal to display a table containing previous referenced reports
+     * @param reportingPeriod States the origin year of the report.
+     */
+    openModalAndDisplayPreviousReportsInTable(reportingPeriod: string) {
+      const passedData = {
+        reportingPeriodForTable: reportingPeriod,
+        referencedReports: this.reports,
+      };
+      this.$dialog.open(PreviousReportsModal, {
+        props: {
+          modal: true,
+          dismissableMask: true,
+        },
+        data: passedData,
+      });
     },
   },
 });
