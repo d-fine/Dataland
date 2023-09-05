@@ -78,7 +78,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { type AxiosError } from "axios";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 
 export default defineComponent({
@@ -139,7 +139,7 @@ export default defineComponent({
 
   computed: {
     humanizedDataDescription() {
-      return humanizeString(this.dataType);
+      return humanizeStringOrNumber(this.dataType);
     },
 
     dataIdForPanelWithValidType() {

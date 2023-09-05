@@ -89,7 +89,7 @@ import { defineComponent, inject, ref } from "vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
@@ -137,7 +137,7 @@ export default defineComponent({
     return {
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
-      humanizeString: humanizeString,
+      humanizeString: humanizeStringOrNumber,
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
@@ -252,7 +252,7 @@ export default defineComponent({
       });
       listOfDistinctAvailableAndViewableFrameworksForCompany.sort((a, b) => a.localeCompare(b));
       listOfDistinctAvailableAndViewableFrameworksForCompany.forEach((dataType) => {
-        this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
+        this.dataTypesInDropdown.push({ label: humanizeStringOrNumber(dataType), value: dataType });
       });
     },
 

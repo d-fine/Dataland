@@ -28,7 +28,7 @@ import {
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { type Field } from "@/utils/GenericFrameworkTypes";
@@ -83,7 +83,7 @@ export default defineComponent({
   },
 
   methods: {
-    humanizeString,
+    humanizeString: humanizeStringOrNumber,
     /**
      * Fetches all accepted EU Taxonomy Non-Financial datasets for the current company and converts them to the required frontend format.
      */

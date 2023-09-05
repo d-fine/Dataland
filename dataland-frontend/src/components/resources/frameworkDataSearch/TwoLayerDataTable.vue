@@ -149,7 +149,7 @@ import { defineComponent, type PropType } from "vue";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
@@ -216,7 +216,7 @@ export default defineComponent({
     this.rowClickHandlersMap = new Map();
   },
   methods: {
-    humanizeString,
+    humanizeString: humanizeStringOrNumber,
     /**
      * Checks if the BaseDataPoint holds a document reference
      * @param dataPoint the object to check for a reference
