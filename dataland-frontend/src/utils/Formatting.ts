@@ -19,7 +19,7 @@ export function formatPercentageNumber(relativeShareInPercent?: number): string 
  * @returns the resulting string from the concatenation
  */
 export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency): string {
-  if (amountWithCurrency && amountWithCurrency.amount) {
+  if (amountWithCurrency?.amount) {
     return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
   }
   return "";
