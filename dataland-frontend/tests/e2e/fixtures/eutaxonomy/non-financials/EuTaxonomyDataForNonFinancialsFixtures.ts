@@ -119,8 +119,8 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments):
 export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
   const data: EuTaxonomyDataForNonFinancials = {};
   data.general = generateEuTaxonomyWithBaseFields();
-  data.opex = generateEuTaxonomyPerCashflowType(assertDefined(data.general!.referencedReports));
-  data.capex = generateEuTaxonomyPerCashflowType(assertDefined(data.general!.referencedReports));
-  data.revenue = generateEuTaxonomyPerCashflowType(assertDefined(data.general!.referencedReports));
+  data.opex = generateEuTaxonomyPerCashflowType(assertDefined(data.general.referencedReports));
+  data.capex = generateEuTaxonomyPerCashflowType(assertDefined(data.general.referencedReports));
+  data.revenue = generateEuTaxonomyPerCashflowType(assertDefined(data.general.referencedReports));
   return data;
 }
