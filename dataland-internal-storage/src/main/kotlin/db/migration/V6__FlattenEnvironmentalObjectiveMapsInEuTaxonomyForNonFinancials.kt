@@ -87,8 +87,10 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
                 baseObject.put(
                     if (additionalFieldsToAddPercentIndication.contains(fieldName)) {
                         "${fieldName}InPercent"
-                    } else fieldName,
-                    baseObject.getOrJsonNull(oldFieldName)
+                    } else {
+                        fieldName
+                    },
+                    baseObject.getOrJsonNull(oldFieldName),
                 )
                 baseObject.remove(oldFieldName)
             }
