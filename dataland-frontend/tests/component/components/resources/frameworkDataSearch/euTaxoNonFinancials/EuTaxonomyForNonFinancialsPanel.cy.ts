@@ -43,12 +43,12 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
 
       const alphaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigation),
+        assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent),
         2,
       );
 
       const gammaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigation),
+        assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigationInPercent),
         2,
       );
 
