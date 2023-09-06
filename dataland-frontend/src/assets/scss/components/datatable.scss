@@ -25,6 +25,7 @@
   .onlyHeaders {
     tr {
       display:flex;
+      width: calc(100vw - 58px);
     }
     tr th:not(.first-horizontal-headers-size) {
       flex: 1;
