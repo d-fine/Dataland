@@ -171,16 +171,17 @@ export default defineComponent({
           col.activityName as string,
           "substantialContributionCriteria",
           {
-            substantialContributionToClimateChangeMitigation: col.substantialContributionToClimateChangeMitigation,
-            substantialContributionToClimateChangeAdaption: col.substantialContributionToClimateChangeAdaption,
+            substantialContributionToClimateChangeMitigation:
+              col.substantialContributionToClimateChangeMitigationInPercent,
+            substantialContributionToClimateChangeAdaption: col.substantialContributionToClimateChangeAdaptionInPercent,
             substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
-              col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
+              col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
             substantialContributionToTransitionToACircularEconomy:
-              col.substantialContributionToTransitionToACircularEconomy,
+              col.substantialContributionToTransitionToACircularEconomyInPercent,
             substantialContributionToPollutionPreventionAndControl:
-              col.substantialContributionToPollutionPreventionAndControl,
+              col.substantialContributionToPollutionPreventionAndControlInPercent,
             substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
-              col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
+              col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
           },
           formatPercentageNumberAsString,
         ),
