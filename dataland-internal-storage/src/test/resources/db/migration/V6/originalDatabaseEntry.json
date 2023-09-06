@@ -28,14 +28,7 @@
       }
     },
     "scopeOfEntities": "NA",
-    "euTaxonomyActivityLevelReporting": "No",
-    "alignedActivities": [
-      {
-        "substantialContributionCriteria": {
-          "Water": 12
-        }
-      }
-    ]
+    "euTaxonomyActivityLevelReporting": "No"
   },
   "opex": {
     "totalAmount": {
@@ -56,7 +49,7 @@
     },
     "alignedActivities": [
       {
-        "other": 99,
+        "activityName": "testActivity",
         "substantialContributionCriteria": {
           "Water": 12,
           "ClimateMitigation": 5,
