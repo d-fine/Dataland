@@ -59,14 +59,14 @@ function generateActivity(): EuTaxonomyActivity {
 function generateAlignedActivity(): EuTaxonomyAlignedActivity {
   return {
     ...generateActivity(),
-    substantialContributionToClimateChangeMitigation: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToClimateChangeAdaption: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+    substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: valueOrUndefined(
       randomPercentageValue(),
     ),
-    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
+    substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: valueOrUndefined(
       randomPercentageValue(),
     ),
     dnshToClimateChangeMitigation: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
@@ -96,19 +96,19 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments):
     nonAlignedShare: valueOrUndefined(generateFinancialShare()),
     nonAlignedActivities: valueOrUndefined(generateArray(generateActivity)),
     alignedShare: valueOrUndefined(generateFinancialShare()),
-    substantialContributionToClimateChangeMitigation: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToClimateChangeAdaption: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+    substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: valueOrUndefined(
       randomPercentageValue(),
     ),
-    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
+    substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: valueOrUndefined(
       randomPercentageValue(),
     ),
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity)),
-    enablingShare: valueOrUndefined(randomPercentageValue()),
-    transitionalShare: valueOrUndefined(randomPercentageValue()),
+    enablingShareInPercent: valueOrUndefined(randomPercentageValue()),
+    transitionalShareInPercent: valueOrUndefined(randomPercentageValue()),
   };
 }
 
@@ -119,8 +119,8 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments):
 export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
   const data: EuTaxonomyDataForNonFinancials = {};
   data.general = generateEuTaxonomyWithBaseFields();
-  data.opex = generateEuTaxonomyPerCashflowType(assertDefined(data.general.referencedReports));
-  data.capex = generateEuTaxonomyPerCashflowType(assertDefined(data.general.referencedReports));
-  data.revenue = generateEuTaxonomyPerCashflowType(assertDefined(data.general.referencedReports));
+  data.opex = generateEuTaxonomyPerCashflowType(assertDefined(data.general!.referencedReports));
+  data.capex = generateEuTaxonomyPerCashflowType(assertDefined(data.general!.referencedReports));
+  data.revenue = generateEuTaxonomyPerCashflowType(assertDefined(data.general!.referencedReports));
   return data;
 }

@@ -49,21 +49,21 @@
     },
     "nonEligibleShare": {},
     "eligibleShare": {},
-    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 12,
-    "substantialContributionToClimateChangeMitigation": 5,
-    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 7,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 12,
+    "substantialContributionToClimateChangeMitigationInPercent": 5,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7,
     "alignedActivities": [
       {
         "other": 99,
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 12,
-        "substantialContributionToClimateChangeMitigation": 5,
-        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 7,
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 12,
+        "substantialContributionToClimateChangeMitigationInPercent": 5,
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7,
         "dnshToClimateChangeMitigation": 9
       }, {
-        "substantialContributionToClimateChangeAdaption": 1,
-        "substantialContributionToPollutionPreventionAndControl": 51,
-        "substantialContributionToTransitionToACircularEconomy": 6,
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 11
+        "substantialContributionToClimateChangeAdaptionInPercent": 1,
+        "substantialContributionToPollutionPreventionAndControlInPercent": 51,
+        "substantialContributionToTransitionToACircularEconomyInPercent": 6,
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 11
       }
     ]
   },
@@ -115,7 +115,7 @@
         "currency": null
       }
     },
-    "enablingShare": 20,
-    "transitionalShare": 4
+    "enablingShareInPercent": 20,
+    "transitionalShareInPercent": 4
   }
 }

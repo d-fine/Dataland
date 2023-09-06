@@ -60,8 +60,9 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
         if (criteriaObject is JSONObject) {
             fieldRenamingHelper.keys.forEach { oldFieldName ->
                 if (criteriaObject.has(oldFieldName)) {
+                    val newKey = "${criteriaType.prefix}To${fieldRenamingHelper[oldFieldName]}"
                     baseObject.put(
-                        "${criteriaType.prefix}To${fieldRenamingHelper[oldFieldName]}",
+                        if (criteriaType == CriteriaType.Dnsh) newKey else "${newKey}InPercent",
                         criteriaObject.getOrJsonNull(oldFieldName),
                     )
                 }
@@ -71,7 +72,7 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
     }
 
     private fun migrateFieldNames(baseObject: JSONObject) {
-        val fieldsToRename = listOf(
+        val fieldsToRemoveTotalPrefix = listOf(
             "nonEligibleShare",
             "eligibleShare",
             "nonAlignedShare",
@@ -79,13 +80,15 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
             "enablingShare",
             "transitionalShare",
         )
-        val fieldNamesWithoutTotalPrefix = fieldsToRename.associateBy(
-            { "total${it.replaceFirstChar(Char::titlecase)}" }, { it },
-        )
-        fieldNamesWithoutTotalPrefix.keys.forEach { oldFieldName ->
+        val additionalFieldsToAddPercentIndication = listOf("enablingShare", "transitionalShare")
+        fieldsToRemoveTotalPrefix.forEach { fieldName ->
+            val oldFieldName = "total${fieldName.replaceFirstChar(Char::titlecase)}"
             if (baseObject.has(oldFieldName)) {
                 baseObject.put(
-                    fieldNamesWithoutTotalPrefix.getValue(oldFieldName), baseObject.getOrJsonNull(oldFieldName),
+                    if (additionalFieldsToAddPercentIndication.contains(fieldName)) {
+                        "${fieldName}InPercent"
+                    } else fieldName,
+                    baseObject.getOrJsonNull(oldFieldName)
                 )
                 baseObject.remove(oldFieldName)
             }
