@@ -6,7 +6,7 @@ import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clie
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { roundNumber } from "@/utils/NumberConversionUtils";
-import { formatAmountWithCurrency } from "@/utils/Formatting";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
 describe("Component test for the NewEUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
 
@@ -144,7 +144,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     const revenueFirstAlignedActivity = assertDefined(revenueOfDataset.alignedShare?.alignedActivities)[0];
     const revenueFirstAlignedActivityName = assertDefined(revenueFirstAlignedActivity?.activityName);
     const revenueFirstAlignedActivityRelativeShare = roundNumber(
-      assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent),
+      assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent) * 100,
       2,
     );
     const revenueFirstAlignedActivityAbsoluteShare = formatAmountWithCurrency(
@@ -188,7 +188,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     const capexNonAlignedShareInPercent = assertDefined(capexOfDataset.nonAlignedShare?.relativeShareInPercent);
     const capexFirstNonAlignedActivityNaceCodes: string = assertDefined(capexFirstNonAlignedActivity.naceCodes)[0];
     const capexFirstNonAlignedActivityRelativeShare = roundNumber(
-      assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent),
+      assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent) * 100,
       2,
     );
     const capexFirstNonAlignedActivityAbsoluteShare = formatAmountWithCurrency(

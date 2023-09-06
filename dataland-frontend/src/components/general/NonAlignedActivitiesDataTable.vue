@@ -33,7 +33,7 @@ import {
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
-import { formatPercentageNumberAsString } from "@/utils/Formatting";
+import { formatPercentageNumberAsString } from "@/utils/Formatter";
 
 type NonAlignedActivityFieldValueObject = {
   activity: string;

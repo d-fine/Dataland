@@ -2,45 +2,52 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Lake Jaquan",
-			"headquartersPostalCode": "04173",
+			"headquarters": "Emardshire",
+			"sector": "networks",
 			"identifiers": {
-				"Lei": [
-					"9wOK5oRxrZBWFs5G6BWl"
-				],
+				"Lei": [],
 				"Isin": [],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
+				"PermId": [
+					"0eX6hgkR2c"
+				],
+				"Ticker": [
+					"SjDAc9w"
+				],
+				"Duns": [
+					"gDLqoPxTG"
+				],
+				"VatNumber": [
+					"3s0EoSMcV"
+				],
 				"CompanyRegistrationNumber": [
-					"xigIX6nzA6reGHt"
+					"mh1TPWz8cfNRLA1"
 				]
 			},
-			"countryCode": "NA",
+			"countryCode": "MV",
 			"companyAlternativeNames": [
-				"Bins, Jenkins and Rau",
-				"Conn and Sons",
-				"Funk - Goodwin"
+				"Gutkowski Inc",
+				"Waters LLC"
 			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://gaseous-misunderstand.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"G",
+						"A",
+						"E",
 						"H",
-						"K",
-						"L",
-						"M"
+						"J"
 					],
 					"addressOfHeadquarters": {
-						"city": "Meridian",
-						"country": "EE"
+						"postalCode": "05804",
+						"city": "Susanmouth",
+						"country": "CM"
 					},
-					"numberOfEmployees": 2444,
-					"fiscalYearStart": "2024-02-09"
+					"numberOfEmployees": 3022,
+					"fiscalYearStart": "2024-07-27"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -52,230 +59,28 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Jacobi, Bergnaum and Jacobi",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Abshire Fords 9765",
-								"city": "Blickton",
-								"country": "ER"
+								"postalCode": "86911-1130",
+								"city": "South Emmieton",
+								"country": "SV"
 							},
-							"percentageOfTotalRevenue": 72.3258
+							"percentageOfTotalRevenue": 0.2403
 						},
 						{
-							"nameOfProductionSite": "Denesik - Langosh",
+							"nameOfProductionSite": "Homenick - Dickinson",
 							"addressOfProductionSite": {
-								"city": "Visalia",
-								"state": "Montana",
-								"country": "BA"
-							}
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Incredible Frozen Fish"
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 789,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "East Lolaberg",
-			"headquartersPostalCode": "50298-2754",
-			"sector": "systems",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"ljLJs1ClR201"
-				],
-				"PermId": [
-					"SettxftQGN"
-				],
-				"Ticker": [],
-				"Duns": [
-					"oBlfLXzNi"
-				],
-				"VatNumber": [
-					"HV9q8Y8mA"
-				],
-				"CompanyRegistrationNumber": [
-					"D9LK4o1mObGTrpx"
-				]
-			},
-			"countryCode": "SH",
-			"companyAlternativeNames": [],
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"G"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 3911,
-					"fiscalYearStart": "2024-04-10"
-				},
-				"companyFinancials": {
-					"capitalAssetsInEur": 60878664
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Schmidt, Olson and Kunze",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "McKenzie Drive 44895",
-								"postalCode": "06120",
-								"city": "Moline",
-								"state": "Montana",
-								"country": "LY"
+								"streetAndHouseNumber": "Feest Turnpike 993",
+								"postalCode": "19357-7690",
+								"city": "Wehnershire",
+								"country": "GE"
 							}
 						},
 						{
 							"addressOfProductionSite": {
-								"postalCode": "50442-3662",
-								"city": "Lake Else",
-								"state": "Louisiana",
-								"country": "HM"
-							},
-							"percentageOfTotalRevenue": 13.363
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kelvin Parkways 5972",
-								"postalCode": "21153",
-								"city": "East Columbusland",
-								"country": "BS"
-							},
-							"percentageOfTotalRevenue": 30.5992
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Heaney Walk 57389",
-								"postalCode": "56887",
-								"city": "Lucianochester",
-								"state": "Kansas",
-								"country": "BA"
+								"postalCode": "13536-0995",
+								"city": "Port Sydni",
+								"country": "BJ"
 							}
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": []
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 1817,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 34395327,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Flooding"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "Candidatown",
-			"headquartersPostalCode": "09656-2718",
-			"sector": "users",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"f6PGOBx9tviz"
-				],
-				"PermId": [
-					"IJBXybiDyd"
-				],
-				"Ticker": [],
-				"Duns": [
-					"rGZzBEMfS"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"sDH0P4SMUWtqrJr"
-				]
-			},
-			"countryCode": "IS",
-			"companyAlternativeNames": [
-				"Fay, Ward and O'Kon"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [],
-					"addressOfHeadquarters": {
-						"city": "City 17",
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 4008,
-					"fiscalYearStart": "2024-07-11"
-				},
-				"companyFinancials": {
-					"revenueInEur": 85007999,
-					"operatingCostInEur": 14978920,
-					"capitalAssetsInEur": 29915674
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"city": "East Magnus",
-								"state": "Wisconsin",
-								"country": "ZM"
-							},
-							"percentageOfTotalRevenue": 46.4297
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "Mosciskiton",
-								"state": "Utah",
-								"country": "AR"
-							},
-							"percentageOfTotalRevenue": 55.3209
 						}
 					]
 				},
@@ -283,16 +88,156 @@
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 31
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 10028239
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 34494207,
+					"naturalHazardsCovered": [
+						"Wind",
+						"EarthQuake",
+						"Flooding"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "Fort Gardnertown",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"q4jLKiBp2KIY"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"2F5BoF3lI"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SM",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
+					},
+					"numberOfEmployees": 1451,
+					"fiscalYearStart": "2024-01-27"
+				},
+				"companyFinancials": {}
+			},
+			"production": {
+				"sites": {},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Intelligent Soft Bike"
+						},
+						{
+							"name": "Fantastic Frozen Chicken",
+							"percentageOfTotalRevenue": 0.7518
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {},
+				"consumption": {
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "South Ofelia",
+			"headquartersPostalCode": "68899",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"S0hS9eOLcxKt"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"QGOEkCkUj"
+				],
+				"VatNumber": [
+					"DgL16ionK"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "ST",
+			"companyAlternativeNames": [],
+			"website": "https://straight-coverall.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"A",
+						"C",
+						"D",
+						"F",
+						"J"
+					],
+					"addressOfHeadquarters": {
+						"city": "City 17",
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 7209,
+					"fiscalYearStart": "2024-03-11"
+				},
+				"companyFinancials": {
+					"revenueInEur": 83425846
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": []
+				},
+				"products": {
+					"listOfProducts": []
+				}
+			},
+			"power": {
+				"investments": {},
+				"consumption": {
+					"powerConsumptionInMwh": 1036,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},

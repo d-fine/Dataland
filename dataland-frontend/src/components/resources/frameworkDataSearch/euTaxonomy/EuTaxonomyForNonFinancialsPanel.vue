@@ -37,7 +37,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { formatAmountWithCurrency } from "@/utils/Formatting";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
 import { roundNumber } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
@@ -169,7 +169,7 @@ export default defineComponent({
         return humanizeStringOrNumber(kpiValueToFormat as string);
       }
       if (field.component == "PercentageFormField") {
-        return roundNumber(kpiValueToFormat as number, 2);
+        return roundNumber((kpiValueToFormat as number) * 100, 2);
       }
       if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
         return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
