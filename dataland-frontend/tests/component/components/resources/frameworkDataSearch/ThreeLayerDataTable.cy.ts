@@ -214,7 +214,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     });
   });
 
-  it.only("Check P2p view page that properties with same name in different KPIs have different values", () => {
+  it("Check P2p view page that properties with same name in different KPIs have different values", () => {
     const metaInfo: DataMetaInformation = {
       companyId: "some-fake-ID-123456789",
       dataId: "some-fake-dataId-123456789",
