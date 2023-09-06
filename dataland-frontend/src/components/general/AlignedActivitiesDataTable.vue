@@ -171,19 +171,20 @@ export default defineComponent({
           col.activityName as string,
           "substantialContributionCriteria",
           {
-            substantialContributionToClimateChangeMitigation:
+            substantialContributionToClimateChangeMitigationInPercent:
               col.substantialContributionToClimateChangeMitigationInPercent,
-            substantialContributionToClimateChangeAdaption: col.substantialContributionToClimateChangeAdaptionInPercent,
-            substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
+            substantialContributionToClimateChangeAdaptionInPercent:
+              col.substantialContributionToClimateChangeAdaptionInPercent,
+            substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
               col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
-            substantialContributionToTransitionToACircularEconomy:
+            substantialContributionToTransitionToACircularEconomyInPercent:
               col.substantialContributionToTransitionToACircularEconomyInPercent,
-            substantialContributionToPollutionPreventionAndControl:
+            substantialContributionToPollutionPreventionAndControlInPercent:
               col.substantialContributionToPollutionPreventionAndControlInPercent,
-            substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
+            substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
               col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
           },
-          formatPercentageNumberAsString,
+          formatPercentageNumberAsString
         ),
         ...createActivityGroupData<YesNo>(
           col.activityName as string,
@@ -198,7 +199,7 @@ export default defineComponent({
             dnshToProtectionAndRestorationOfBiodiversityAndEcosystems:
               col.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
           },
-          (value: YesNo) => (value ? `${value}` : ""),
+          (value: YesNo) => (value ? `${value}` : "")
         ),
         ...createMinimumSafeguardsGroupData(col),
       ])
@@ -244,7 +245,7 @@ export default defineComponent({
      */
     findContentFromActivityGroupAndField(activityName: string, groupName: string, fieldName: string) {
       const value = this.mainColumnData.find(
-        (item) => item.activity === activityName && item.group === groupName && item.field === fieldName,
+        (item) => item.activity === activityName && item.group === groupName && item.field === fieldName
       );
       return value ? value.content : "";
     },
@@ -262,10 +263,17 @@ export default defineComponent({
         "TransitionToACircularEconomy",
         "PollutionPreventionAndControl",
         "ProtectionAndRestorationOfBiodiversityAndEcosystems",
-      ].map((suffix) => `${prefix}To${suffix}`);
-      return environmentalObjectiveKeys.map((enviromentalObjectiveKey: string, index: number) => ({
-        field: enviromentalObjectiveKey,
-        header: this.humanizeHeaderName(enviromentalObjectiveKey),
+      ].map((suffix) => {
+        const extendedKey = `${prefix}To${suffix}`;
+        if (prefix === "dnsh") {
+          return extendedKey;
+        } else {
+          return `${extendedKey}InPercent`;
+        }
+      });
+      return environmentalObjectiveKeys.map((environmentalObjectiveKey: string, index: number) => ({
+        field: environmentalObjectiveKey,
+        header: this.humanizeHeaderName(environmentalObjectiveKey),
         group: groupName,
         groupIndex: index,
       }));
@@ -336,7 +344,7 @@ function createActivityGroupData<T>(
   activityName: string,
   groupName: string,
   fields: { [key: string]: T | null | undefined } | undefined,
-  valueFormatter: (value: T) => string,
+  valueFormatter: (value: T) => string
 ): ActivityFieldValueObject[] {
   const fieldsEntries = Object.entries(fields ?? {});
   return fieldsEntries
