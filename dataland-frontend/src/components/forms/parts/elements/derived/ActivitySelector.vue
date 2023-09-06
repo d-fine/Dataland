@@ -5,7 +5,7 @@
       <b> {{ selectedActivities ? selectedActivities.name : "" }}</b>
     </p>
 
-    <FormKit type="text" name="activityName" v-model="selectedActivityValue" disabled="true" />
+    <FormKit type="hidden" name="activityName" v-model="selectedActivityValue" disabled="true" />
 
     <PrimeButton
       data-test="dataTestChooseActivityButton"
