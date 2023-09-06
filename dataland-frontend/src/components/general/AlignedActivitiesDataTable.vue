@@ -184,7 +184,7 @@ export default defineComponent({
             substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
               col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
           },
-          formatPercentageNumberAsString
+          formatPercentageNumberAsString,
         ),
         ...createActivityGroupData<YesNo>(
           col.activityName as string,
@@ -199,7 +199,7 @@ export default defineComponent({
             dnshToProtectionAndRestorationOfBiodiversityAndEcosystems:
               col.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
           },
-          (value: YesNo) => (value ? `${value}` : "")
+          (value: YesNo) => (value ? `${value}` : ""),
         ),
         ...createMinimumSafeguardsGroupData(col),
       ])
@@ -245,7 +245,7 @@ export default defineComponent({
      */
     findContentFromActivityGroupAndField(activityName: string, groupName: string, fieldName: string) {
       const value = this.mainColumnData.find(
-        (item) => item.activity === activityName && item.group === groupName && item.field === fieldName
+        (item) => item.activity === activityName && item.group === groupName && item.field === fieldName,
       );
       return value ? value.content : "";
     },
@@ -344,7 +344,7 @@ function createActivityGroupData<T>(
   activityName: string,
   groupName: string,
   fields: { [key: string]: T | null | undefined } | undefined,
-  valueFormatter: (value: T) => string
+  valueFormatter: (value: T) => string,
 ): ActivityFieldValueObject[] {
   const fieldsEntries = Object.entries(fields ?? {});
   return fieldsEntries
