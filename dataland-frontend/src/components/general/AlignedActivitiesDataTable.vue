@@ -9,7 +9,7 @@
           :colspan="2"
           class="frozen-row-header border-right"
           style="background-color: #fff"
-        ></Column>
+        />
         <Column
           data-test="mainColumnTest"
           v-for="group of mainColumnGroups"
@@ -17,7 +17,7 @@
           :header="group.label"
           :colspan="group.colspan"
           class="group-row-header"
-        ></Column>
+        />
       </Row>
       <Row>
         <Column
@@ -26,16 +26,15 @@
           :frozen="true"
           alignFrozen="left"
           class="frozen-row-header"
-        ></Column>
-        <Column header="NACE Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right"></Column>
+        />
+        <Column header="NACE Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right" />
         <Column
           v-for="col of mainColumnDefinitions"
           :key="col.field"
           :header="col.header"
           :field="col.field"
           :class="groupColumnCssClasses(col, 'non-frozen-header')"
-        >
-        </Column>
+        />
       </Row>
     </ColumnGroup>
     <Column
@@ -343,7 +342,7 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
 function createActivityGroupData<T>(
   activityName: string,
   groupName: string,
-  fields: { [key: string]: T | null | undefined } | undefined,
+  fields: { [key: string]: T } | undefined,
   valueFormatter: (value: T) => string,
 ): ActivityFieldValueObject[] {
   const fieldsEntries = Object.entries(fields ?? {});
