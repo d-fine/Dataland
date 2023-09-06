@@ -28,14 +28,7 @@
       }
     },
     "scopeOfEntities": "NA",
-    "euTaxonomyActivityLevelReporting": "No",
-    "alignedActivities": [
-      {
-        "substantialContributionCriteria": {
-          "Water": 12
-        }
-      }
-    ]
+    "euTaxonomyActivityLevelReporting": "No"
   },
   "opex": {
     "totalAmount": {
@@ -54,7 +47,7 @@
     "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7,
     "alignedActivities": [
       {
-        "other": 99,
+        "activityName": "testActivity",
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 12,
         "substantialContributionToClimateChangeMitigationInPercent": 5,
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7,
