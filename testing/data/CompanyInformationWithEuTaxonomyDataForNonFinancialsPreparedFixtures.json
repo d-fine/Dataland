@@ -1,358 +1,258 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "only-eligible-numbers",
-			"headquarters": "Dejuanside",
-			"headquartersPostalCode": "47295",
-			"sector": "supply-chains",
+			"companyName": "all-fields-defined-for-eu-taxo-non-financials",
+			"headquarters": "Heloiseboro",
+			"headquartersPostalCode": "63299",
 			"identifiers": {
-				"Lei": [
-					"mnssYwP4hzETkcWAlAU2"
-				],
+				"Lei": [],
 				"Isin": [],
 				"PermId": [
-					"J9pw3w4X1y"
+					"3Ir0v9iFIw"
 				],
-				"Ticker": [
-					"aldFFTX"
-				],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"bqXISTKoB"
+					"HtBR8406h"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"WxHRc1SbAKZVlOy"
+				]
 			},
-			"countryCode": "PR",
-			"companyAlternativeNames": [
-				"Donnelly - Keeling",
-				"Zboncak LLC"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"countryCode": "LI",
+			"companyAlternativeNames": [],
+			"website": "https://whopping-horde.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2023-01-24",
-				"numberOfEmployees": 34831,
+				"fiscalYearEnd": "2023-02-09",
+				"numberOfEmployees": 43515,
 				"referencedReports": {
-					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "RSD"
-					},
-					"IntegratedReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "STN"
-					},
 					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "NA",
-						"reportDate": "2023-08-16",
-						"currency": "GTQ"
+						"currency": "AWG"
 					},
 					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2023-08-02",
-						"currency": "TTD"
-					}
-				},
-				"assurance": {
-					"assurance": "ReasonableAssurance",
-					"provider": "Nader - Gulgowski",
-					"dataSource": {
-						"page": 449,
-						"report": "ESEFReport",
-						"tagName": "web services"
-					}
-				},
-				"scopeOfEntities": "Yes",
-				"nfrdMandatory": "Yes"
-			},
-			"opex": {
-				"eligibleShare": {
-					"relativeShareInPercent": 37.76017923373729
-				}
-			},
-			"capex": {
-				"eligibleShare": {
-					"relativeShareInPercent": 92.08861559163779
-				}
-			},
-			"revenue": {
-				"eligibleShare": {
-					"relativeShareInPercent": 46.158321923576295
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Murray",
-			"headquartersPostalCode": "44008",
-			"sector": "action-items",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"m46aUXFxFNUc"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"9476GGsz4"
-				],
-				"CompanyRegistrationNumber": [
-					"sB6xgztoL6uFQRD"
-				]
-			},
-			"countryCode": "MH",
-			"companyAlternativeNames": [
-				"Daniel and Sons",
-				"Krajcik LLC",
-				"Walker, Torphy and Zieme"
-			],
-			"website": "https://elliptical-facet.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2023-06-09",
-				"referencedReports": {
-					"ESEFReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "No",
-						"reportDate": "2022-11-09",
-						"currency": "XAF"
+						"currency": "CLP"
 					},
 					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "No",
-						"currency": "UGX"
-					},
-					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "Yes",
-						"reportDate": "2022-10-28",
-						"currency": "COP"
-					},
-					"SustainabilityReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2022-10-19",
-						"currency": "VND"
+						"currency": "OMR"
 					}
 				},
-				"assurance": {
-					"assurance": "LimitedAssurance",
-					"dataSource": {
-						"page": 300,
-						"report": "ESEFReport",
-						"tagName": "e-markets"
-					}
-				},
-				"euTaxonomyActivityLevelReporting": "No"
-			},
-			"opex": {
-				"totalAmount": {
-					"value": 9883490772,
-					"quality": "Estimated"
-				},
-				"eligibleShare": {
-					"absoluteShare": {}
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 8168743525,
-					"quality": "Estimated"
-				},
-				"eligibleShare": {
-					"relativeShareInPercent": 28.89156974852085,
-					"absoluteShare": {}
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 7677633702,
-					"quality": "Estimated"
-				},
-				"eligibleShare": {
-					"relativeShareInPercent": 5.222116340883076
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Bauchview",
-			"headquartersPostalCode": "70374-0132",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"S6arTqmM2VhG"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"02qqlcSKV"
-				],
-				"VatNumber": [
-					"9dmjPTInI"
-				],
-				"CompanyRegistrationNumber": [
-					"d3CVfLJlzfwmiDb"
-				]
-			},
-			"countryCode": "MT",
-			"companyAlternativeNames": [
-				"Hickle, Walter and Shanahan",
-				"Jenkins Inc",
-				"Keebler and Sons",
-				"Spencer Group"
-			],
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2023-01-11",
 				"assurance": {
 					"assurance": "None"
 				},
 				"scopeOfEntities": "Yes",
-				"euTaxonomyActivityLevelReporting": "Yes"
+				"nfrdMandatory": "No",
+				"euTaxonomyActivityLevelReporting": "No"
 			},
 			"opex": {
+				"totalAmount": {
+					"value": 1968957987,
+					"dataSource": {
+						"page": 582,
+						"report": "SustainabilityReport",
+						"tagName": "interfaces"
+					},
+					"quality": "Audited",
+					"comment": "program digital pixel",
+					"unit": "STN"
+				},
+				"nonEligibleShare": {
+					"relativeShareInPercent": 82.66425819601864,
+					"absoluteShare": {
+						"amount": 8463091567,
+						"currency": "AUD"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 22.80270957853645,
+					"absoluteShare": {
+						"amount": 1657939911,
+						"currency": "EUR"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 57.49087065923959,
+					"absoluteShare": {
+						"amount": 2491497714,
+						"currency": "CAD"
+					}
+				},
+				"alignedShare": {
+					"relativeShareInPercent": 61.685083829797804,
+					"absoluteShare": {
+						"amount": 7534971351,
+						"currency": "EUR"
+					}
+				},
+				"substantialContributionToClimateChangeMitigation": 35.485327104106545,
+				"substantialContributionToClimateChangeAdaption": 15.3747997013852,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 3.654059348627925,
+				"substantialContributionToTransitionToACircularEconomy": 2.338899625465274,
+				"substantialContributionToPollutionPreventionAndControl": 1.675160019658506,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 16.93335201125592,
+				"enablingShare": 7.8767824452370405,
+				"transitionalShare": 52.80007626861334
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 9215345653,
+					"dataSource": {
+						"page": 1115,
+						"report": "ESEFReport",
+						"tagName": "action-items"
+					},
+					"quality": "Incomplete",
+					"comment": "reboot primary transmitter",
+					"unit": "ANG"
+				},
+				"nonEligibleShare": {
+					"relativeShareInPercent": 84.47594016324729,
+					"absoluteShare": {
+						"amount": 2292418515,
+						"currency": "CHF"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 7.473430247046053,
+					"absoluteShare": {
+						"amount": 9381684091,
+						"currency": "USD"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 77.28423101361841,
+					"absoluteShare": {
+						"amount": 8276055456,
+						"currency": "AUD"
+					}
+				},
 				"nonAlignedActivities": [
 					{
-						"activityName": "RenovationOfExistingBuildings",
+						"activityName": "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
 						"naceCodes": [
-							"E",
-							"F",
+							"B",
 							"H",
-							"M"
-						]
+							"K"
+						],
+						"share": {
+							"relativeShareInPercent": 20.112154888920486,
+							"absoluteShare": {
+								"amount": 6380986236,
+								"currency": "CAD"
+							}
+						}
 					},
 					{
-						"activityName": "ResidentialCareActivities",
+						"activityName": "Reinsurance",
 						"naceCodes": [
-							"D",
-							"E",
-							"G",
-							"J"
-						]
-					},
-					{
-						"activityName": "CreativeArtsAndEntertainmentActivities"
-					},
-					{
-						"activityName": "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
-						"naceCodes": [
-							"A",
-							"F",
+							"H",
+							"I",
 							"M"
 						],
 						"share": {
+							"relativeShareInPercent": 57.65338372439146,
 							"absoluteShare": {
-								"amount": 7604403252
+								"amount": 8497466787,
+								"currency": "CAD"
 							}
 						}
 					}
 				],
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 11.219538259319961,
+				"alignedShare": {
+					"relativeShareInPercent": 90.05114962346852,
+					"absoluteShare": {
+						"amount": 8228059160,
+						"currency": "CAD"
+					}
+				},
+				"substantialContributionToClimateChangeMitigation": 5.298394663259387,
+				"substantialContributionToClimateChangeAdaption": 38.38443108834326,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 65.46335385646671,
+				"substantialContributionToTransitionToACircularEconomy": 94.99330425169319,
+				"substantialContributionToPollutionPreventionAndControl": 86.85630441177636,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 27.5952463503927,
 				"alignedActivities": [
 					{
-						"activityName": "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+						"activityName": "PassengerInterurbanRailTransport",
 						"naceCodes": [
-							"C",
-							"E",
-							"H",
-							"J",
-							"M"
-						],
-						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 46.57095596194267,
-						"dnshToClimateChangeMitigation": "No",
-						"dnshToPollutionPreventionAndControl": "No",
-						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "No",
-						"minimumSafeguards": "Yes"
-					},
-					{
-						"activityName": "UndergroundPermanentGeologicalStorageOfCo2",
-						"naceCodes": [
-							"G"
-						],
-						"share": {},
-						"substantialContributionToClimateChangeMitigation": 58.24007326737046,
-						"dnshToClimateChangeMitigation": "Yes",
-						"dnshToClimateChangeAdaption": "No",
-						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes"
-					},
-					{
-						"activityName": "DataDrivenSolutionsForGhgEmissionsReductions",
-						"naceCodes": [
-							"A",
-							"D",
-							"F",
 							"G",
 							"K"
 						],
 						"share": {
+							"relativeShareInPercent": 19.062762148678303,
 							"absoluteShare": {
-								"amount": 5563470008
+								"amount": 7396411166,
+								"currency": "USD"
 							}
 						},
-						"dnshToClimateChangeMitigation": "No",
-						"dnshToClimateChangeAdaption": "Yes",
-						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
-						"dnshToTransitionToACircularEconomy": "Yes"
+						"substantialContributionToClimateChangeMitigation": 85.1842519827187,
+						"substantialContributionToClimateChangeAdaption": 44.29356227628887,
+						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 13.82454780396074,
+						"substantialContributionToTransitionToACircularEconomy": 78.36396445054561,
+						"substantialContributionToPollutionPreventionAndControl": 82.12732658721507,
+						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 99.59386319387704,
+						"dnshToClimateChangeMitigation": "Yes",
+						"dnshToClimateChangeAdaption": "No",
+						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+						"dnshToTransitionToACircularEconomy": "Yes",
+						"dnshToPollutionPreventionAndControl": "Yes",
+						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "No",
+						"minimumSafeguards": "Yes"
 					}
 				],
-				"enablingShare": 0.917724915780127
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 2157485322,
-					"quality": "Estimated",
-					"unit": "JPY"
-				},
-				"nonEligibleShare": {
-					"relativeShareInPercent": 17.087056790478528,
-					"absoluteShare": {}
-				},
-				"alignedShare": {
-					"relativeShareInPercent": 35.2485912386328,
-					"absoluteShare": {
-						"amount": 5981080375
-					}
-				},
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 45.53876526188105,
-				"substantialContributionToTransitionToACircularEconomy": 58.39592448901385,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 9.840439050458372,
-				"enablingShare": 85.23694181349128
+				"enablingShare": 72.25106754340231,
+				"transitionalShare": 47.78568991459906
 			},
 			"revenue": {
+				"totalAmount": {
+					"value": 1399207886,
+					"quality": "Estimated",
+					"unit": "PKR"
+				},
+				"nonEligibleShare": {
+					"relativeShareInPercent": 43.585786037147045,
+					"absoluteShare": {
+						"amount": 4457750080,
+						"currency": "USD"
+					}
+				},
 				"eligibleShare": {
-					"relativeShareInPercent": 71.91962029319257,
-					"absoluteShare": {}
+					"relativeShareInPercent": 74.9404695816338,
+					"absoluteShare": {
+						"amount": 6404451193,
+						"currency": "CAD"
+					}
 				},
 				"nonAlignedShare": {
-					"relativeShareInPercent": 41.3279362488538,
+					"relativeShareInPercent": 79.79374872520566,
 					"absoluteShare": {
-						"currency": "AUD"
+						"amount": 1509743680,
+						"currency": "CHF"
 					}
 				},
 				"alignedShare": {
-					"relativeShareInPercent": 50.218313094228506
+					"relativeShareInPercent": 13.703611702658236,
+					"absoluteShare": {
+						"amount": 9449146731,
+						"currency": "EUR"
+					}
 				},
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 51.549600972793996,
-				"substantialContributionToTransitionToACircularEconomy": 62.28206483647227,
-				"substantialContributionToPollutionPreventionAndControl": 36.72044426202774
+				"substantialContributionToClimateChangeMitigation": 89.32708885986358,
+				"substantialContributionToClimateChangeAdaption": 41.73949577379972,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 50.6171511253342,
+				"substantialContributionToTransitionToACircularEconomy": 46.1993295699358,
+				"substantialContributionToPollutionPreventionAndControl": 72.10813134443015,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 42.88888410665095,
+				"enablingShare": 77.09866515360773,
+				"transitionalShare": 62.16195481829345
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	}
 ]
