@@ -5,7 +5,7 @@
   </div>
   <div v-if="dataSet && !waitingForData">
     <ShowReportsBanner
-      v-if="dataSet?.referencedReports && Object.keys(dataSet.referencedReports).length > 0"
+      v-if="dataSet?.referencedReports && Object.keys(dataSet.referencedReports).length > 0 && !viewInPreviewMode"
       :reports="dataSet.referencedReports"
     />
     <div v-else class="pb-3"></div>
@@ -174,6 +174,10 @@ export default defineComponent({
     dataID: {
       type: String,
       default: "loading",
+    },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
     },
   },
   mounted() {

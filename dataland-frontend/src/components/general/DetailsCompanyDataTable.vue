@@ -31,7 +31,7 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -43,7 +43,7 @@ export default defineComponent({
       kpiKeyOfTable: "" as string,
       keysOfValuesForColumnDisplay: [] as string[],
       keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing", "sectors"] as string[],
-      humanizeString,
+      humanizeString: humanizeStringOrNumber,
       columnHeaders: {},
     };
   },
@@ -88,7 +88,7 @@ export default defineComponent({
      */
     humanizeStringIfNecessary(key: string, value: string): string {
       if (this.keysWithValuesToBeHumanized.includes(key)) {
-        return humanizeString(value);
+        return humanizeStringOrNumber(value);
       }
       return value;
     },
