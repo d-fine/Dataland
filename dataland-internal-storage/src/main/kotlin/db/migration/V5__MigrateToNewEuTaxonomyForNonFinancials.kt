@@ -7,7 +7,6 @@ import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
-import java.math.BigDecimal
 
 /**
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
@@ -27,8 +26,8 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
         val dataObject = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
         migrateGeneralFields(dataObject)
         listOf("revenue", "capex", "opex").forEach { cashFlowType ->
-            val cashFlowObject = dataObject.getJSONObject(cashFlowType)
-            migrateOldCashFlowDetails(cashFlowObject)
+            val cashFlowObject = dataObject.getOrJavaNull(cashFlowType) ?: return@forEach
+            migrateOldCashFlowDetails(cashFlowObject as JSONObject)
         }
         dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
     }
@@ -61,15 +60,16 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
         if (totalAmountObject != null) {
             totalAmountObject as JSONObject
 
-            val oldTotalAmountValue = totalAmountObject.opt("value")
+            val oldTotalAmountValue = totalAmountObject.getOrJavaNull("value")
             totalAmountObject.put(
                 "value",
-                if (oldTotalAmountValue is BigDecimal) {
+                if (oldTotalAmountValue == null) {
+                    JSONObject.NULL
+                } else {
                     val newTotalAmountValue = JSONObject()
                     newTotalAmountValue.put("amount", oldTotalAmountValue)
                     newTotalAmountValue.put("currency", JSONObject.NULL)
-                } else {
-                    JSONObject.NULL
+                    newTotalAmountValue
                 },
             )
             if (!isDataPointProvidingSourceInfo(totalAmountObject)) {
