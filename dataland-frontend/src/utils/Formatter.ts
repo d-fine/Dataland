@@ -2,7 +2,8 @@ import { type AmountWithCurrency } from "@clients/backend";
 import { roundNumber } from "@/utils/NumberConversionUtils";
 
 /**
- * Formats a percentage number by rounding it and afterward making it a string with a percentsymbol at the end.
+ * Formats a percentage number by multiplying it with 100, rounding it and afterward making it a string with a
+ * percent symbol at the end.
  * @param percentageNumber is the percentage number to format
  * @param precision is the precision for the rounding of the percentage number
  * @returns the resulting string
@@ -11,7 +12,7 @@ export function formatPercentageNumberAsString(percentageNumber?: number, precis
   if (percentageNumber == undefined) {
     return "";
   }
-  return `${roundNumber(percentageNumber, precision)} %`;
+  return `${roundNumber(percentageNumber * 100, precision)} %`;
 }
 
 /**

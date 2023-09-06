@@ -87,7 +87,7 @@ import {
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
-import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatting";
+import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
 
 type ActivityFieldValueObject = {
   activity: string;

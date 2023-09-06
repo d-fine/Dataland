@@ -34,7 +34,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       const capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
 
       const betaTotalAlignedCapexPercentage = roundNumber(
-        assertDefined(capexOfDatasetBeta.alignedShare?.relativeShareInPercent),
+        assertDefined(capexOfDatasetBeta.alignedShare?.relativeShareInPercent) * 100,
         2,
       );
 
@@ -43,12 +43,12 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
 
       const alphaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent),
+        assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent) * 100,
         2,
       );
 
       const gammaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigationInPercent),
+        assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigationInPercent) * 100,
         2,
       );
 
