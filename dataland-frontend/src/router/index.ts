@@ -20,7 +20,6 @@ const ViewTeaserCompanyData = (): Promise<RouteComponent> => import("@/component
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
 import { DataTypeEnum } from "@clients/backend";
-// TODO Upload page von P2p importen
 const routes = [
   {
     path: "/",

@@ -2,9 +2,12 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import {
+  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  Configuration,
   type DataMetaInformation,
   DataTypeEnum,
   type EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDataForNonFinancialsControllerApi,
   type StoredCompany,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -13,6 +16,7 @@ import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { roundNumber } from "@/utils/NumberConversionUtils";
+import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
 before(function () {
@@ -78,8 +82,12 @@ describeIf(
               "2021",
               euTaxonomyForNonFinancialsFixtureForTest.t,
             ).then((dataMetaInformation) => {
+              let dataSetFromPrefillRequest: EuTaxonomyDataForNonFinancials;
               cy.ensureLoggedIn(admin_name, admin_pw);
-              cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+              cy.intercept({
+                url: `api/data/${dataMetaInformation.dataType}/${dataMetaInformation.dataId}`,
+                times: 1,
+              }).as("getDataToPrefillForm");
               cy.visitAndCheckAppMount(
                 "/companies/" +
                   storedCompany.companyId +
@@ -88,19 +96,29 @@ describeIf(
                   "/upload?templateDataId=" +
                   dataMetaInformation.dataId,
               );
-              cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+              cy.wait("@getDataToPrefillForm", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
+                (interception) => {
+                  dataSetFromPrefillRequest = (
+                    interception.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+                  ).data;
+                },
+              );
               cy.get("h1").should("contain", testCompanyName);
               cy.intercept({
                 url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`,
                 times: 1,
               }).as("postCompanyAssociatedData");
               submitButton.clickButton();
-              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
-                (interception) => {
-                  const response = interception.response?.body as DataMetaInformation;
-                  const dataIdOfReuploadedDataset = response.dataId;
+              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then((interception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
-                  validateSomeValuesForTheReuploadedDataset(storedCompany, dataIdOfReuploadedDataset);
+                  const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
+                  return new EuTaxonomyDataForNonFinancialsControllerApi(new Configuration({ accessToken: token }))
+                    .getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataMetaInformationOfReuploadedDataset.dataId)
+                    .then((axiosResponse) => {
+                      const reuploadedDatasetFromBackend = axiosResponse.data.data;
+                      compareObjectKeysAndValuesDeep(dataSetFromPrefillRequest, reuploadedDatasetFromBackend);
+                      validateSomeValuesForTheReuploadedDataset(storedCompany, dataMetaInformationOfReuploadedDataset.dataId);
+                    });
                 },
               );
             });
