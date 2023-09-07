@@ -35,33 +35,15 @@
       "comment": null,
       "dataSource": null,
       "value": {
-        "amount": 940716.1856535822,
-        "currency": null
+        "amount": 940716,
+        "currency": "EUR"
       },
       "quality": "Estimated"
     },
-    "nonEligibleShare": {},
-    "eligibleShare": {},
-    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 12,
-    "substantialContributionToClimateChangeMitigationInPercent": 5,
-    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7,
-    "alignedActivities": [
-      {
-        "activityName": "testActivity",
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 12,
-        "substantialContributionToClimateChangeMitigationInPercent": 5,
-        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7,
-        "dnshToClimateChangeMitigation": 9
-      }, {
-        "substantialContributionToClimateChangeAdaptionInPercent": 1,
-        "substantialContributionToPollutionPreventionAndControlInPercent": 51,
-        "substantialContributionToTransitionToACircularEconomyInPercent": 6,
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 11
-      }
-    ]
+    "alignedShare": {},
+    "eligibleShare": {}
   },
   "capex": {
-    "nonAlignedShare": {},
     "alignedShare": {
       "relativeShareInPercent": 0.1965,
       "absoluteShare": {
@@ -79,16 +61,13 @@
       },
       "comment": "quantify 1080p driver"
     },
-    "alignedActivities": [
-      {
-      }
-    ]
+    "eligibleShare": {}
   },
   "revenue": {
     "totalAmount": {
       "dataSource": {},
       "value": {
-        "amount": 470269.4387175143,
+        "amount": 470269.00,
         "currency": null
       },
       "quality": "Incomplete",
@@ -104,11 +83,9 @@
     "eligibleShare": {
       "relativeShareInPercent": null,
       "absoluteShare": {
-        "amount": 917185.3733132593,
+        "amount": 917185.00,
         "currency": null
       }
-    },
-    "enablingShareInPercent": 20,
-    "transitionalShareInPercent": 4
+    }
   }
 }

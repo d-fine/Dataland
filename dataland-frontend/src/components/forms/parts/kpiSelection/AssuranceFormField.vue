@@ -85,7 +85,7 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { AssuranceDataAssuranceEnum } from "@clients/backend";
 
 export default defineComponent({
@@ -102,9 +102,9 @@ export default defineComponent({
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       assuranceData: {
-        None: humanizeString(AssuranceDataAssuranceEnum.None),
-        LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
-        ReasonableAssurance: humanizeString(AssuranceDataAssuranceEnum.ReasonableAssurance),
+        None: humanizeStringOrNumber(AssuranceDataAssuranceEnum.None),
+        LimitedAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.LimitedAssurance),
+        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.ReasonableAssurance),
       },
     };
   },

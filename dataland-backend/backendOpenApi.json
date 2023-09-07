@@ -5184,22 +5184,22 @@
           "share": {
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
-          "substantialContributionToClimateChangeMitigation": {
+          "substantialContributionToClimateChangeMitigationInPercent": {
             "type": "number"
           },
-          "substantialContributionToClimateChangeAdaption": {
+          "substantialContributionToClimateChangeAdaptionInPercent": {
             "type": "number"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
             "type": "number"
           },
-          "substantialContributionToTransitionToACircularEconomy": {
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
             "type": "number"
           },
-          "substantialContributionToPollutionPreventionAndControl": {
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
             "type": "number"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "type": "number"
           },
           "dnshToClimateChangeMitigation": {
@@ -5266,22 +5266,22 @@
           "alignedShare": {
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
-          "substantialContributionToClimateChangeMitigation": {
+          "substantialContributionToClimateChangeMitigationInPercent": {
             "type": "number"
           },
-          "substantialContributionToClimateChangeAdaption": {
+          "substantialContributionToClimateChangeAdaptionInPercent": {
             "type": "number"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
             "type": "number"
           },
-          "substantialContributionToTransitionToACircularEconomy": {
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
             "type": "number"
           },
-          "substantialContributionToPollutionPreventionAndControl": {
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
             "type": "number"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "type": "number"
           },
           "alignedActivities": {
@@ -5290,10 +5290,10 @@
               "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
             }
           },
-          "enablingShare": {
+          "enablingShareInPercent": {
             "type": "number"
           },
-          "transitionalShare": {
+          "transitionalShareInPercent": {
             "type": "number"
           }
         }

@@ -9,7 +9,7 @@
       :bodyClass="cellClass(col)"
     >
       <template #body="{ data }">
-        <template v-if="col.field === 'activity'">{{ camelCaseToWords(data.activity) }}</template>
+        <template v-if="col.field === 'activity'">{{ activityApiNameToHumanizedName(data.activity) }}</template>
         <template v-else-if="col.field === 'naceCodes'">
           <ul class="unstyled-ul-list">
             <li v-for="code of data.naceCodes" :key="code">{{ code }}</li>
@@ -28,6 +28,12 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import {
+  type AmountWithCurrency,
+  type EuTaxonomyAlignedActivity,
+} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { type EuTaxonomyAlignedActivity } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/ValuesConversionUtils";
 
@@ -83,17 +89,11 @@ export default defineComponent({
       activity: activity.activityName as string,
       naceCodes: activity.naceCodes as string[],
       revenue: formatAmountWithCurrency(activity.share?.absoluteShare),
-      revenuePercent: formatPercentageNumber(activity.share?.relativeShareInPercent),
+      revenuePercent: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
     }));
   },
   methods: {
-    /**
-     * @param target the camel case string we want to format
-     * @returns a human readable version
-     */
-    camelCaseToWords(target: string): string {
-      return target.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, " $1");
-    },
+    activityApiNameToHumanizedName,
     /**
      * @param key the item to lookup
      * @returns the display version of the column header

@@ -1,6 +1,4 @@
-import { DataTypeEnum, type EuTaxonomyDataForNonFinancials } from "@clients/backend";
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import Chainable = Cypress.Chainable;
+import { DataTypeEnum } from "@clients/backend";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
@@ -8,9 +6,8 @@ import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
  * @param companyId The Id of the company to upload the dataset for
- * @param valueFieldNotFilled Value which, if true, disables the value field
  */
-export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, valueFieldNotFilled = false): void {
+export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): void {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
@@ -18,7 +15,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
   uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
   uploadDocuments.fillAllFormsOfReportsSelectedForUpload(1);
 
-  fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
+  fillAndValidateEuTaxonomyForNonFinancialsUploadForm(TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();
   cy.intercept({
     url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`,
@@ -30,14 +27,11 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
 
 /**
  * Fills all the fields of the eu-taxonomy upload form for non-financial companies
- * @param valueFieldNotFilled Value which, if true, disables the value field
  * @param assuranceReportName name of the assurance data source
  */
-export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
-  valueFieldNotFilled: boolean,
-  assuranceReportName: string,
-): void {
+export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(assuranceReportName: string): void {
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
+  cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("11")').click();
   cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
@@ -47,17 +41,13 @@ export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
     const scrollPosition = win.scrollY;
     expect(scrollPosition).to.be.greaterThan(0);
   });
-  cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
-  cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
   cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
-
   cy.get('input[name="euTaxonomyActivityLevelReporting"][value="Yes"]').check();
   cy.get('input[name="numberOfEmployees"]').type("-13");
   cy.get('em[title="Number Of Employees"]').click();
   cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
   cy.get('input[name="numberOfEmployees"]').clear().type("333");
   cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
-
   cy.get('select[name="assurance"]').select(1);
   cy.get('input[name="provider"]').type("Some Assurance Provider Company");
   cy.get('select[name="report"]').eq(0).select(assuranceReportName);
@@ -74,20 +64,5 @@ export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
     cy.get('input[name="value"]').type("450700");
     cy.get('select[name="unit"]').select(10);
     cy.get('select[name="quality"]').select(1);
-  });
-}
-
-/**
- * Extracts the first eutaxonomy-non-financials dataset from the fake fixtures
- * @returns the first eutaxonomy-non-financials dataset from the fake fixtures
- */
-export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chainable<
-  FixtureData<EuTaxonomyDataForNonFinancials>
-> {
-  return cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
-    const companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<
-      FixtureData<EuTaxonomyDataForNonFinancials>
-    >;
-    return companiesWithEuTaxonomyDataForNonFinancials[0];
   });
 }

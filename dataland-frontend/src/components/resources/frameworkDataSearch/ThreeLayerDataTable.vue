@@ -27,15 +27,13 @@
               :data-test="arrayOfKpiDataObjectsMapItem[0]"
               >{{ arrayOfKpiDataObjectsMapItem[0].toUpperCase() }}
             </span>
-            <button v-if="!isExpanded(index)" class="pt-1 pr-3 d-cursor-pointer d-chevron-style">
-              <span class="pr-1 pt-1 pi pi-chevron-right d-chevron-font"></span>
-            </button>
-            <button v-if="isExpanded(index)" class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
-              <span class="pr-1 pi pi-chevron-down d-chevron-font"></span>
+            <button class="pt-2 pr-3 d-cursor-pointer d-chevron-style">
+              <span v-if="expandedGroup.has(index)" class="pr-1 pi pi-chevron-down d-chevron-font" />
+              <span v-else class="pr-1 pt-1 pi pi-chevron-right d-chevron-font" />
             </button>
           </div>
         </div>
-        <div v-show="isExpanded(index)">
+        <div v-show="expandedGroup.has(index)">
           <TwoLayerDataTable
             data-test="TwoLayerTest"
             :arrayOfKpiDataObjects="arrayOfKpiDataObjectsMapItem[1]"
@@ -43,6 +41,7 @@
             headerInputStyle="display: none;"
             :modal-column-headers="modalColumnHeaders"
             :sort-by-subcategory-key="sortBySubcategoryKey"
+            :unfold-subcategories="unfoldSubcategories"
           />
         </div>
       </div>
@@ -67,7 +66,7 @@ export default defineComponent({
   components: { TwoLayerDataTable, DataTable, Column },
   data() {
     return {
-      expandedGroup: [0],
+      expandedGroup: new Set([0]),
       resultKpiData: null as KpiDataObject,
       arrayOfReportingPeriodWithDataId: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
@@ -97,6 +96,10 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    unfoldSubcategories: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
     this.triggerConversionOfDataForDisplay();
@@ -114,7 +117,7 @@ export default defineComponent({
      * @param kpiValue The corresponding value to the kpiKey
      * @param subcategory The sub category to which the kpi belongs
      * @param category category to which the kpi belongs to
-     * @param dataId The value of the date kpi of an LkSG dataset
+     * @param dataId The value of the date kpi
      */
     createKpiDataObjects(
       kpiKey: string,
@@ -261,20 +264,12 @@ export default defineComponent({
       return assertDefined(this.dataModel.find((category) => category.label === categoryName)).color;
     },
     /**
-     * Checks whether an element is expanded or not
-     * @param key element for which the check should be run
-     * @returns if the element is expanded or not
-     */
-    isExpanded(key: number) {
-      return this.expandedGroup.indexOf(key) !== -1;
-    },
-    /**
      * Expands and collapses an item
      * @param key element for which the check should be run
      */
     toggleExpansion(key: number) {
-      if (this.isExpanded(key)) this.expandedGroup.splice(this.expandedGroup.indexOf(key), 1);
-      else this.expandedGroup.push(key);
+      if (this.expandedGroup.has(key)) this.expandedGroup.delete(key);
+      else this.expandedGroup.add(key);
     },
 
     /**

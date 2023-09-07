@@ -12,6 +12,7 @@
       :format-value-for-display="formatValueForDisplay"
       :modal-column-headers="euTaxonomyForNonFinancialsModalColumnHeaders"
       :sort-by-subcategory-key="false"
+      :unfold-subcategories="true"
     />
   </div>
 </template>
@@ -22,23 +23,22 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type AmountWithCurrency,
+  AssuranceDataAssuranceEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
+  FiscalYearDeviation,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import {
-  formatPercentageNumber,
-  formatAmountWithCurrency,
-  formatNumberToReadableFormat,
-} from "@/utils/ValuesConversionUtils";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -75,7 +75,7 @@ export default defineComponent({
   },
 
   methods: {
-    humanizeString,
+    humanizeString: humanizeStringOrNumber,
     /**
      * Fetches all accepted EU Taxonomy Non-Financial datasets for the current company and converts them to the required frontend format.
      */
@@ -132,6 +132,32 @@ export default defineComponent({
     },
 
     /**
+     * Checks if a KpiValue is a string with one of the Enum values of Assurance
+     * @param kpiValue the kpiValue that shall be checked
+     * @returns a boolean based on the result of the check
+     */
+    isKpiObjectAssuranceLevel(kpiValue: KpiValue): boolean {
+      if (typeof kpiValue === "string") {
+        return Object.values(AssuranceDataAssuranceEnum).includes(kpiValue as AssuranceDataAssuranceEnum);
+      } else {
+        return false;
+      }
+    },
+
+    /**
+     * Checks if a KpiValue is a string with one of the Enum values of FiscalYearDeviation
+     * @param kpiValue the kpiValue that shall be checked
+     * @returns a boolean based on the result of the check
+     */
+    isKpiObjectFiscalYearDeviation(kpiValue: KpiValue): boolean {
+      if (typeof kpiValue === "string") {
+        return Object.values(FiscalYearDeviation).includes(kpiValue as FiscalYearDeviation);
+      } else {
+        return false;
+      }
+    },
+
+    /**
      * Formats KPI values for display
      * @param field the considered KPI field
      * @param kpiValueToFormat the value to be formatted
@@ -141,14 +167,14 @@ export default defineComponent({
       if (kpiValueToFormat == null) {
         return kpiValueToFormat;
       }
+      if (this.isKpiObjectFiscalYearDeviation(kpiValueToFormat) || this.isKpiObjectAssuranceLevel(kpiValueToFormat)) {
+        return humanizeStringOrNumber(kpiValueToFormat as string);
+      }
       if (field.component == "PercentageFormField") {
-        return formatPercentageNumber(kpiValueToFormat as number);
+        return roundNumber((kpiValueToFormat as number) * 100, 2);
       }
       if (this.isKpiObjectAmountWithCurrency(kpiValueToFormat)) {
         return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
-      }
-      if (typeof kpiValueToFormat === "number") {
-        return formatNumberToReadableFormat(kpiValueToFormat);
       }
       return kpiValueToFormat;
     },

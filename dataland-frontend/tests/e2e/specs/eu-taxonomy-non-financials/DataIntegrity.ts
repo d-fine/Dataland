@@ -1,18 +1,27 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataTypeEnum, type EuTaxonomyDataForNonFinancials, type StoredCompany } from "@clients/backend";
+import {
+  type DataMetaInformation,
+  DataTypeEnum,
+  type EuTaxonomyDataForNonFinancials,
+  type StoredCompany,
+} from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
     const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
-    euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
+    euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
+      "all-fields-defined-for-eu-taxo-non-financials",
+      preparedFixtures,
+    );
   });
 });
 
@@ -23,16 +32,12 @@ describeIf(
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   function (): void {
-    beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-    });
-
     /**
      * validates that the data uploaded via api is displayed correctly for a company
      * @param company the company associated to the data uploaded via form
      * @param dataId the company data id for accessing its view page
      */
-    function validateFormUploadedData(company: StoredCompany, dataId: string): void {
+    function validateSomeValuesForTheReuploadedDataset(company: StoredCompany, dataId: string): void {
       cy.visit(`/companies/${company.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/${dataId}`);
       cy.get("h1").should("contain", company.companyInformation.companyName);
       cy.get('span[data-test="_basicInformation"]').contains("Basic Information").should("exist");
@@ -45,48 +50,63 @@ describeIf(
         .contains(assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.general?.fiscalYearEnd))
         .should("exist");
       cy.get('div > [data-test="CapEx"]').click();
-      cy.get('span[data-test="eligibleShare"]').filter(":visible").click();
       cy.get('td > [data-test="relativeShareInPercent"]')
         .parent()
         .next("td")
         .contains(
-          assertDefined(
-            euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent,
-          ).toFixed(2),
+          roundNumber(
+            assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent) *
+              100,
+            2,
+          ),
         )
         .should("exist");
     }
 
-    it("Create a company via api and upload an EU taxonomy data for non-financials dataset via the api", () => {
-      const uniqueCompanyMarker = Date.now().toString();
-      const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          console.log("storedCompany", storedCompany);
-          return uploadFrameworkData(
-            DataTypeEnum.EutaxonomyNonFinancials,
-            token,
-            storedCompany.companyId,
-            "2021",
-            euTaxonomyForNonFinancialsFixtureForTest.t,
-          ).then((dataMetaInformation) => {
-            cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
-            cy.visitAndCheckAppMount(
-              "/companies/" +
-                storedCompany.companyId +
-                "/frameworks/" +
-                DataTypeEnum.EutaxonomyNonFinancials +
-                "/upload?templateDataId=" +
-                dataMetaInformation.dataId,
-            );
-            cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-            cy.get("h1").should("contain", testCompanyName);
-            submitButton.clickButton();
-            cy.url().should("eq", getBaseUrl() + "/datasets");
-            validateFormUploadedData(storedCompany, dataMetaInformation.dataId);
+    it(
+      "Create a company and an EU taxonomy for non-financials dataset via api, then re-upload it with the " +
+        "upload form in Edit mode and assure that it worked by validating a couple of values",
+      () => {
+        const uniqueCompanyMarker = Date.now().toString();
+        const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
+        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+            return uploadFrameworkData(
+              DataTypeEnum.EutaxonomyNonFinancials,
+              token,
+              storedCompany.companyId,
+              "2021",
+              euTaxonomyForNonFinancialsFixtureForTest.t,
+            ).then((dataMetaInformation) => {
+              cy.ensureLoggedIn(admin_name, admin_pw);
+              cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+              cy.visitAndCheckAppMount(
+                "/companies/" +
+                  storedCompany.companyId +
+                  "/frameworks/" +
+                  DataTypeEnum.EutaxonomyNonFinancials +
+                  "/upload?templateDataId=" +
+                  dataMetaInformation.dataId,
+              );
+              cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+              cy.get("h1").should("contain", testCompanyName);
+              cy.intercept({
+                url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`,
+                times: 1,
+              }).as("postCompanyAssociatedData");
+              submitButton.clickButton();
+              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
+                (interception) => {
+                  const response = interception.response?.body as DataMetaInformation;
+                  const dataIdOfReuploadedDataset = response.dataId;
+                  cy.url().should("eq", getBaseUrl() + "/datasets");
+                  validateSomeValuesForTheReuploadedDataset(storedCompany, dataIdOfReuploadedDataset);
+                },
+              );
+            });
           });
         });
-      });
-    });
+      },
+    );
   },
 );

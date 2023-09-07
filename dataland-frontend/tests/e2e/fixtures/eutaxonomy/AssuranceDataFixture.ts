@@ -8,7 +8,7 @@ import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
  * @param reports the reports that can be referenced as data sources
  * @returns random assurance data
  */
-export function generateAssuranceData(reports: ReferencedDocuments): AssuranceData | undefined {
+export function generateAssuranceData(reports: ReferencedDocuments): AssuranceData {
   const assurance = faker.helpers.arrayElement(Object.values(AssuranceDataAssuranceEnum));
   const provider =
     assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean() ? faker.company.name() : undefined;

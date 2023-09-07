@@ -62,7 +62,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import { type DataTypeEnum } from "@clients/backend";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import {
@@ -199,7 +199,7 @@ export default defineComponent({
       this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         return {
           frameworkDataType: dataTypeEnum,
-          displayName: humanizeString(dataTypeEnum),
+          displayName: humanizeStringOrNumber(dataTypeEnum),
           disabled: false,
         };
       });
