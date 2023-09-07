@@ -40,29 +40,37 @@
       },
       "quality": "Estimated"
     },
-    "nonEligibleShare": {},
-    "eligibleShare": {},
-    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 12,
-    "substantialContributionToClimateChangeMitigationInPercent": 5,
-    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7,
+    "totalNonEligibleShare": {},
+    "totalEligibleShare": {},
+    "substantialContributionCriteria": {
+      "Water": 12,
+      "ClimateMitigation": 5,
+      "Biodiversity": 7
+    },
     "alignedActivities": [
       {
         "activityName": "testActivity",
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 12,
-        "substantialContributionToClimateChangeMitigationInPercent": 5,
-        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7,
-        "dnshToClimateChangeMitigation": 9
+        "substantialContributionCriteria": {
+          "Water": 12,
+          "ClimateMitigation": 5,
+          "Biodiversity": 7
+        },
+        "dnshCriteria": {
+          "ClimateMitigation": 9
+        }
       }, {
-        "substantialContributionToClimateChangeAdaptionInPercent": 1,
-        "substantialContributionToPollutionPreventionAndControlInPercent": 51,
-        "substantialContributionToTransitionToACircularEconomyInPercent": 6,
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 11
+        "substantialContributionCriteria": {
+          "ClimateAdaptation": 1,
+          "PollutionPrevention": 51,
+          "CircularEconomy": 6,
+          "Water": 11
+        }
       }
     ]
   },
   "capex": {
-    "nonAlignedShare": {},
-    "alignedShare": {
+    "totalNonAlignedShare": {},
+    "totalAlignedShare": {
       "relativeShareInPercent": 0.1965,
       "absoluteShare": {
         "amount": 396564.95871022346,
@@ -81,6 +89,7 @@
     },
     "alignedActivities": [
       {
+        "substantialContributionCriteria": null
       }
     ]
   },
@@ -94,21 +103,23 @@
       "quality": "Incomplete",
       "comment": null
     },
-    "alignedShare": {
+    "totalAlignedShare": {
       "relativeShareInPercent": 0.4347,
       "absoluteShare": {
         "amount": 840897.8063846007,
         "currency": null
       }
     },
-    "eligibleShare": {
+    "totalEligibleShare": {
       "relativeShareInPercent": null,
       "absoluteShare": {
         "amount": 917185.3733132593,
         "currency": null
       }
     },
-    "enablingShareInPercent": 20,
-    "transitionalShareInPercent": 4
+    "substantialContributionCriteria": {
+    },
+    "totalEnablingShare": 20,
+    "totalTransitionalShare": 4
   }
 }

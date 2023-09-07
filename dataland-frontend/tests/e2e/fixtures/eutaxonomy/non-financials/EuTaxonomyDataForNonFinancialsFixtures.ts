@@ -9,9 +9,9 @@ import {
   YesNo,
 } from "@clients/backend";
 import { generateArray, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { generateDatapointWithUnit } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { randomFloat } from "@e2e/fixtures/common/NumberFixtures";
+import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
@@ -73,50 +73,42 @@ function generateActivity(undefinedProbabilityOfFields?: number): EuTaxonomyActi
  */
 function generateAlignedActivity(undefinedProbabilityOfFields?: number): EuTaxonomyAlignedActivity {
   return {
-    ...generateActivity(undefinedProbabilityOfFields),
-    substantialContributionToClimateChangeMitigation: valueOrUndefined(
-      generatePercentage(),
-      undefinedProbabilityOfFields,
+    ...generateActivity(),
+    substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(
+        generatePercentage(),
+        undefinedProbabilityOfFields,
     ),
-    substantialContributionToClimateChangeAdaption: valueOrUndefined(
-      generatePercentage(),
-      undefinedProbabilityOfFields,
+    substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(
+        generatePercentage(),
+        undefinedProbabilityOfFields,
     ),
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
-      generatePercentage(),
-      undefinedProbabilityOfFields,
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: valueOrUndefined(
+        generatePercentage(),
+        undefinedProbabilityOfFields,
     ),
-    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(
-      generatePercentage(),
-      undefinedProbabilityOfFields,
+    substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(
+        generatePercentage(),
+        undefinedProbabilityOfFields,
     ),
-    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(
-      generatePercentage(),
-      undefinedProbabilityOfFields,
+    substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(
+        generatePercentage(),
+        undefinedProbabilityOfFields,
     ),
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
-      generatePercentage(),
-      undefinedProbabilityOfFields,
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: valueOrUndefined(
+        generatePercentage(),
+        undefinedProbabilityOfFields,
     ),
     dnshToClimateChangeMitigation: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
     dnshToClimateChangeAdaption: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
     dnshToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
-      undefinedProbabilityOfFields,
+      faker.helpers.arrayElement(Object.values(YesNo)), // TODO do wee need undefined probabilities for Yes No ?
     ),
-    dnshToTransitionToACircularEconomy: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
-      undefinedProbabilityOfFields,
-    ),
-    dnshToPollutionPreventionAndControl: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
-      undefinedProbabilityOfFields,
-    ),
+    dnshToTransitionToACircularEconomy: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToPollutionPreventionAndControl: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
     dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
       faker.helpers.arrayElement(Object.values(YesNo)),
-      undefinedProbabilityOfFields,
     ),
-    minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo)), undefinedProbabilityOfFields),
+    minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
   };
 }
 
@@ -146,11 +138,11 @@ export function generateEuTaxonomyPerCashflowType(
     ),
     nonAlignedActivities: valueOrUndefined(generateArray(generateActivity, 1, 3, undefinedProbabilityOfFields)),
     alignedShare: valueOrUndefined(generateFinancialShare(undefinedProbabilityOfFields), undefinedProbabilityOfFields),
-    substantialContributionToClimateChangeMitigation: valueOrUndefined(
+    substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(
       generatePercentage(),
       undefinedProbabilityOfFields,
     ),
-    substantialContributionToClimateChangeAdaption: valueOrUndefined(
+    substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(
       generatePercentage(),
       undefinedProbabilityOfFields,
     ),
@@ -158,21 +150,21 @@ export function generateEuTaxonomyPerCashflowType(
       generatePercentage(),
       undefinedProbabilityOfFields,
     ),
-    substantialContributionToTransitionToACircularEconomy: valueOrUndefined(
+    substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(
       generatePercentage(),
       undefinedProbabilityOfFields,
     ),
-    substantialContributionToPollutionPreventionAndControl: valueOrUndefined(
+    substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(
       generatePercentage(),
       undefinedProbabilityOfFields,
     ),
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: valueOrUndefined(
       generatePercentage(),
       undefinedProbabilityOfFields,
     ),
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity, 1, 3, undefinedProbabilityOfFields)),
-    enablingShare: valueOrUndefined(generatePercentage(), undefinedProbabilityOfFields),
-    transitionalShare: valueOrUndefined(generatePercentage(), undefinedProbabilityOfFields),
+    enablingShareInPercent: valueOrUndefined(generatePercentage(), undefinedProbabilityOfFields),
+    transitionalShareInPercent: valueOrUndefined(generatePercentage(), undefinedProbabilityOfFields),
   };
 }
 

@@ -89,7 +89,7 @@ import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
@@ -125,7 +125,7 @@ export default defineComponent({
       ) as DataTypeEnum[],
       waitingForData: true,
       DataTypeEnum,
-      humanizeString: humanizeString,
+      humanizeString: humanizeStringOrNumber,
       mapOfDataTypeToListOfDataMetaInfo: new Map<DataTypeEnum, DataMetaInformation[]>(),
       KEYCLOAK_ROLE_UPLOADER,
     };

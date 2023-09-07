@@ -10,7 +10,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 let companiesWithSmeData: Array<FixtureData<SmeData>>;
@@ -35,7 +35,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("#framework-filter")
       .click()
       .get("div.p-multiselect-panel")
-      .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.EutaxonomyFinancials)})`)
+      .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
       .click();
     verifySearchResultTable();
     cy.url()
@@ -50,13 +50,13 @@ describe("As a user, I expect the search functionality on the /companies page to
           `&framework=${DataTypeEnum.Sme}`,
       )
       .get("div.p-multiselect-panel")
-      .find(`li.p-multiselect-item:contains(${humanizeString(DataTypeEnum.EutaxonomyFinancials)})`)
+      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
       .click();
     verifySearchResultTable();
     cy.url()
       .should("eq", getBaseUrl() + "/companies")
       .get("div.p-multiselect-panel")
-      .find(`li.p-highlight:contains(${humanizeString(DataTypeEnum.Sfdr)})`)
+      .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.Sfdr)})`)
       .click();
     verifySearchResultTable();
     cy.url().should(

@@ -4,7 +4,7 @@ import { Configuration, DataTypeEnum, type LksgData, LksgDataControllerApi } fro
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { checkStickynessOfSubmitSideBar } from "@e2e/utils/LksgUpload";
 import { describeIf } from "@e2e/support/TestUtility";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -43,7 +43,7 @@ describeIf(
     it("Editing Lksg data without changes should create a copy when uploaded", function () {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
+      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeStringOrNumber(DataTypeEnum.Lksg));
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
       cy.get("div").contains("New Dataset - LkSG").should("be.visible");
       const expectedCountry = preparedFixture.t.general?.productionSpecific?.listOfProductionSites?.[0]
@@ -79,7 +79,7 @@ describeIf(
     it("Edit and subsequent upload should work properly when removing or changing referenced documents", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
+      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeStringOrNumber(DataTypeEnum.Lksg));
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
       submitButton.buttonAppearsEnabled();
 

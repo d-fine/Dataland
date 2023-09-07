@@ -10,7 +10,7 @@ import {
   type SmeData,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
@@ -23,10 +23,10 @@ describe("The shared header of the framework pages should act as expected", { sc
     function (): void {
       const nameOfCompanyAlpha = "company-alpha-with-four-different-framework-types";
       const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
-        humanizeString(DataTypeEnum.EutaxonomyFinancials),
-        humanizeString(DataTypeEnum.Sme),
-        humanizeString(DataTypeEnum.Lksg),
-        humanizeString(DataTypeEnum.Sfdr),
+        humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
+        humanizeStringOrNumber(DataTypeEnum.Sme),
+        humanizeStringOrNumber(DataTypeEnum.Lksg),
+        humanizeStringOrNumber(DataTypeEnum.Sfdr),
       ]);
       const expectedReportingPeriodsForEuTaxoFinancialsForAlpha = new Set<string>(["2019", "2016"]);
       let companyIdOfAlpha: string;
@@ -36,8 +36,8 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data";
       const expectedFrameworkDropdownItemsForBeta = new Set<string>([
-        humanizeString(DataTypeEnum.Sme),
-        humanizeString(DataTypeEnum.Lksg),
+        humanizeStringOrNumber(DataTypeEnum.Sme),
+        humanizeStringOrNumber(DataTypeEnum.Lksg),
       ]);
       let companyIdOfBeta: string;
 
@@ -97,11 +97,14 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function validateChosenFramework(expectedChosenFramework: string): void {
         cy.url().should("contain", `/frameworks/${expectedChosenFramework}`);
-        cy.get('[data-test="frameworkDataTableTitle"]').should("contain", humanizeString(expectedChosenFramework));
+        cy.get('[data-test="frameworkDataTableTitle"]').should(
+          "contain",
+          humanizeStringOrNumber(expectedChosenFramework),
+        );
         cy.get("h2:contains('Checking if')").should("not.exist");
         cy.get(frameworkDropdownSelector)
           .find(".p-dropdown-label")
-          .should("have.text", humanizeString(expectedChosenFramework));
+          .should("have.text", humanizeStringOrNumber(expectedChosenFramework));
         if (
           ([DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyFinancials] as string[]).indexOf(
             expectedChosenFramework,
@@ -183,7 +186,9 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(frameworkDropdownSelector).click();
-        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)})`).click({ force: true });
+        cy.get(`${dropdownItemsSelector}:contains(${humanizeStringOrNumber(frameworkToSelect)})`).click({
+          force: true,
+        });
       }
 
       /**

@@ -9,7 +9,7 @@
           :colspan="2"
           class="frozen-row-header border-right"
           style="background-color: #fff"
-        ></Column>
+        />
         <Column
           data-test="mainColumnTest"
           v-for="group of mainColumnGroups"
@@ -17,7 +17,7 @@
           :header="group.label"
           :colspan="group.colspan"
           class="group-row-header"
-        ></Column>
+        />
       </Row>
       <Row>
         <Column
@@ -26,16 +26,15 @@
           :frozen="true"
           alignFrozen="left"
           class="frozen-row-header"
-        ></Column>
-        <Column header="NACE Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right"></Column>
+        />
+        <Column header="NACE Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right" />
         <Column
           v-for="col of mainColumnDefinitions"
           :key="col.field"
           :header="col.header"
           :field="col.field"
           :class="groupColumnCssClasses(col, 'non-frozen-header')"
-        >
-        </Column>
+        />
       </Row>
     </ColumnGroup>
     <Column
@@ -49,7 +48,7 @@
       headerClass="horizontal-headers-size"
     >
       <template #body="{ data }">
-        <template v-if="col.field === 'activity'">{{ camelCaseToWords(data.activity) }}</template>
+        <template v-if="col.field === 'activity'">{{ activityApiNameToHumanizedName(data.activity) }}</template>
         <template v-else>
           <ul class="unstyled-ul-list">
             <li v-for="code of data.naceCodes" :key="code">{{ code }}</li>
@@ -86,6 +85,8 @@ import {
   type Activity,
   type EuTaxonomyAlignedActivity,
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
 
 type ActivityFieldValueObject = {
   activity: string;
@@ -101,24 +102,6 @@ type MainColumnDefinition = {
   group: string;
   groupIndex: number;
 };
-
-const substantialContributionFields = [
-  "substantialContributionToClimateChangeMitigation",
-  "substantialContributionToClimateChangeAdaption",
-  "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
-  "substantialContributionToTransitionToACircularEconomy",
-  "substantialContributionToPollutionPreventionAndControl",
-  "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
-] as const;
-
-const dnshCriteriaFields = [
-  "dnshToClimateChangeMitigation",
-  "dnshToClimateChangeAdaption",
-  "dnshToSustainableUseAndProtectionOfWaterAndMarineResources",
-  "dnshToTransitionToACircularEconomy",
-  "dnshToPollutionPreventionAndControl",
-  "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems",
-] as const;
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -164,8 +147,8 @@ export default defineComponent({
       { field: "revenue", header: this.humanizeHeaderName("revenue"), group: "_revenue", groupIndex: 0 },
       { field: "revenuePercent", header: this.humanizeHeaderName("revenuePercent"), group: "_revenue", groupIndex: 1 },
 
-      ...this.createGroupColumnDefinitions([...substantialContributionFields], "substantialContributionCriteria"),
-      ...this.createGroupColumnDefinitions([...dnshCriteriaFields], "dnshCriteria"),
+      ...this.makeGroupColumns("substantialContributionCriteria", "substantialContribution"),
+      ...this.makeGroupColumns("dnshCriteria", "dnsh"),
 
       {
         field: "minimumSafeguards",
@@ -183,25 +166,40 @@ export default defineComponent({
     this.mainColumnData = this.listOfRowContents
       .map((col) => [
         ...createRevenueGroupData(col),
-
-        ...substantialContributionFields.map((field) =>
-          createActivityGroupDataItem(
-            col.activityName as string,
-            "substantialContributionCriteria",
-            field,
-            this.valueFormatterForPercentage(col[field]),
-          ),
+        ...createActivityGroupData<number>(
+          col.activityName as string,
+          "substantialContributionCriteria",
+          {
+            substantialContributionToClimateChangeMitigationInPercent:
+              col.substantialContributionToClimateChangeMitigationInPercent,
+            substantialContributionToClimateChangeAdaptionInPercent:
+              col.substantialContributionToClimateChangeAdaptionInPercent,
+            substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+              col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
+            substantialContributionToTransitionToACircularEconomyInPercent:
+              col.substantialContributionToTransitionToACircularEconomyInPercent,
+            substantialContributionToPollutionPreventionAndControlInPercent:
+              col.substantialContributionToPollutionPreventionAndControlInPercent,
+            substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+              col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
+          },
+          formatPercentageNumberAsString,
         ),
-
-        ...dnshCriteriaFields.map((field) =>
-          createActivityGroupDataItem(
-            col.activityName as string,
-            "dnshCriteria",
-            field,
-            this.valueFormatterForYesNo(col[field] as YesNo),
-          ),
+        ...createActivityGroupData<YesNo>(
+          col.activityName as string,
+          "dnshCriteria",
+          {
+            dnshToClimateChangeMitigation: col.dnshToClimateChangeMitigation,
+            dnshToClimateChangeAdaption: col.dnshToClimateChangeAdaption,
+            dnshToSustainableUseAndProtectionOfWaterAndMarineResources:
+              col.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
+            dnshToTransitionToACircularEconomy: col.dnshToTransitionToACircularEconomy,
+            dnshToPollutionPreventionAndControl: col.dnshToPollutionPreventionAndControl,
+            dnshToProtectionAndRestorationOfBiodiversityAndEcosystems:
+              col.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
+          },
+          (value: YesNo) => (value ? `${value}` : ""),
         ),
-
         ...createMinimumSafeguardsGroupData(col),
       ])
       .flat();
@@ -222,20 +220,7 @@ export default defineComponent({
     ];
   },
   methods: {
-    /**
-     * @param value the number to format as a percentage
-     * @returns the new formatted string
-     */
-    valueFormatterForPercentage(value: number | undefined): string {
-      return typeof value !== "undefined" ? `${value}%` : "";
-    },
-    /**
-     * @param value the YesNo value to format as Yes, No or blank
-     * @returns the new formatted string
-     */
-    valueFormatterForYesNo(value: YesNo): string {
-      return typeof value !== "undefined" ? value : "";
-    },
+    activityApiNameToHumanizedName,
     /**
      * @param groupName name of the group to count number of fields
      * @returns the maximum value of fields per activity and group
@@ -263,13 +248,36 @@ export default defineComponent({
       );
       return value ? value.content : "";
     },
+
     /**
-     * @param target the camel case string we want to format
-     * @returns a human readable version
+     * @param groupName the name of the group to which columns will be assigned
+     * @param prefix prefix
+     * @returns column definitions for group
      */
-    camelCaseToWords(target: string): string {
-      return target.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, " $1");
+    makeGroupColumns(groupName: string, prefix: string) {
+      const environmentalObjectiveKeys = [
+        "ClimateChangeMitigation",
+        "ClimateChangeAdaption", // TODO can we get these value sfrom the enum automatically
+        "SustainableUseAndProtectionOfWaterAndMarineResources",
+        "TransitionToACircularEconomy",
+        "PollutionPreventionAndControl",
+        "ProtectionAndRestorationOfBiodiversityAndEcosystems",
+      ].map((suffix) => {
+        const extendedKey = `${prefix}To${suffix}`;
+        if (prefix === "dnsh") {
+          return extendedKey;
+        } else {
+          return `${extendedKey}InPercent`;
+        }
+      });
+      return environmentalObjectiveKeys.map((environmentalObjectiveKey: string, index: number) => ({
+        field: environmentalObjectiveKey,
+        header: this.humanizeHeaderName(environmentalObjectiveKey),
+        group: groupName,
+        groupIndex: index,
+      }));
     },
+
     /**
      * @param key Define the column's CSS class
      * @returns CSS class name
@@ -300,21 +308,6 @@ export default defineComponent({
     humanizeHeaderName(key: string) {
       return this.columnHeaders[this.kpiKeyOfTable][key];
     },
-
-    /**
-     *
-     * @param groupFields array of field names within the group
-     * @param groupKey the group key or name
-     * @returns column definitions
-     */
-    createGroupColumnDefinitions(groupFields: string[], groupKey: string) {
-      return groupFields.map((field, index) => ({
-        field,
-        header: this.humanizeHeaderName(field),
-        group: groupKey,
-        groupIndex: index,
-      }));
-    },
   },
 });
 
@@ -328,13 +321,13 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
       activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenue",
-      content: `${activity.share?.absoluteShare?.amount ?? ""} ${activity.share?.absoluteShare?.currency ?? ""}`,
+      content: formatAmountWithCurrency(activity.share?.absoluteShare),
     },
     {
       activity: activity.activityName as Activity,
       group: "_revenue",
       field: "revenuePercent",
-      content: `${activity.share?.relativeShareInPercent ?? ""}%`,
+      content: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
     },
   ];
 }
@@ -342,22 +335,27 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
 /**
  * @param activityName name of the activity
  * @param groupName the name of the group to which the fields will be assigned to
- * @param field key of field where content will be rendered
- * @param content formatted value which will be displayed
- * @returns data item for the field in the group
+ * @param fields collection of fields and their values
+ * @param valueFormatter function which formats the final look of the value
+ * @returns grouped list of data items
  */
-function createActivityGroupDataItem(
+function createActivityGroupData<T>(
   activityName: string,
   groupName: string,
-  field: string,
-  content: string,
-): ActivityFieldValueObject {
-  return {
-    activity: activityName,
-    group: groupName,
-    field,
-    content,
-  };
+  fields: { [key: string]: T } | undefined,
+  valueFormatter: (value: T) => string,
+): ActivityFieldValueObject[] {
+  const fieldsEntries = Object.entries(fields ?? {});
+  return fieldsEntries
+    .filter(([, value]) => value != null)
+    .map(([field, value]) => {
+      return {
+        activity: activityName,
+        group: groupName,
+        field,
+        content: valueFormatter(value) ?? "",
+      };
+    });
 }
 
 /**

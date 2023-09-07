@@ -2,45 +2,52 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "North Altastead",
-			"sector": "solutions",
+			"headquarters": "Emardshire",
+			"sector": "networks",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [
-					"BIbdAbHD38y8",
-					"FGs5kowZgQcb"
-				],
+				"Isin": [],
 				"PermId": [
-					"jCoXSJPKFs"
+					"0eX6hgkR2c"
 				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"Ticker": [
+					"SjDAc9w"
+				],
+				"Duns": [
+					"gDLqoPxTG"
+				],
+				"VatNumber": [
+					"3s0EoSMcV"
+				],
+				"CompanyRegistrationNumber": [
+					"mh1TPWz8cfNRLA1"
+				]
 			},
-			"countryCode": "FI",
+			"countryCode": "MV",
 			"companyAlternativeNames": [
-				"Homenick - Gutkowski",
-				"Schamberger, Pollich and Spinka"
+				"Gutkowski Inc",
+				"Waters LLC"
 			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://gaseous-misunderstand.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
+						"A",
 						"E",
-						"J",
-						"K"
+						"H",
+						"J"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Liana Trace 5011",
-						"city": "Nitzscheport",
-						"state": "Montana",
-						"country": "BH"
+						"postalCode": "05804",
+						"city": "Susanmouth",
+						"country": "CM"
 					},
-					"numberOfEmployees": 5520,
-					"fiscalYearStart": "2023-12-05"
+					"numberOfEmployees": 3022,
+					"fiscalYearStart": "2024-07-27"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -49,7 +56,34 @@
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"postalCode": "86911-1130",
+								"city": "South Emmieton",
+								"country": "SV"
+							},
+							"percentageOfTotalRevenue": 0.2403
+						},
+						{
+							"nameOfProductionSite": "Homenick - Dickinson",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Feest Turnpike 993",
+								"postalCode": "19357-7690",
+								"city": "Wehnershire",
+								"country": "GE"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"postalCode": "13536-0995",
+								"city": "Port Sydni",
+								"country": "BJ"
+							}
+						}
+					]
+				},
 				"products": {}
 			},
 			"power": {
@@ -57,15 +91,17 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1089,
-					"energyConsumptionHeatingAndHotWater": 260,
+					"powerFromRenewableSources": "No",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 34494207,
 					"naturalHazardsCovered": [
-						"Snow",
+						"Wind",
+						"EarthQuake",
 						"Flooding"
 					]
 				}
@@ -76,40 +112,29 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Aureliofield",
-			"sector": "models",
+			"headquarters": "Fort Gardnertown",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"TnHJFfTtn9jg"
+					"q4jLKiBp2KIY"
 				],
-				"PermId": [
-					"i4akzkQxyI"
-				],
-				"Ticker": [
-					"dCETxcZ"
-				],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"2F5BoF3lI"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CU",
-			"companyAlternativeNames": [
-				"Stanton Inc"
-			],
-			"companyLegalForm": "GmbH",
+			"countryCode": "SM",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [
-						"D",
-						"F",
-						"I",
-						"K",
-						"M"
-					],
+					"sector": [],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
 						"postalCode": "12345",
@@ -117,68 +142,33 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8776,
-					"fiscalYearStart": "2024-06-15"
+					"numberOfEmployees": 1451,
+					"fiscalYearStart": "2024-01-27"
 				},
-				"companyFinancials": {
-					"revenueInEur": 25850041,
-					"operatingCostInEur": 6862475,
-					"capitalAssetsInEur": 69514817
-				}
+				"companyFinancials": {}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
+				"sites": {},
+				"products": {
+					"listOfProducts": [
 						{
-							"addressOfProductionSite": {
-								"postalCode": "14045-9500",
-								"city": "Colinfurt",
-								"country": "MF"
-							}
+							"name": "Intelligent Soft Bike"
 						},
 						{
-							"nameOfProductionSite": "Cormier and Sons",
-							"addressOfProductionSite": {
-								"postalCode": "36649",
-								"city": "Gary",
-								"country": "MC"
-							}
-						},
-						{
-							"nameOfProductionSite": "Christiansen - Hand",
-							"addressOfProductionSite": {
-								"postalCode": "05899-2901",
-								"city": "Lake Adolfo",
-								"state": "Hawaii",
-								"country": "IE"
-							}
-						},
-						{
-							"nameOfProductionSite": "Cruickshank - Champlin",
-							"addressOfProductionSite": {
-								"postalCode": "70349-2450",
-								"city": "West Noble",
-								"country": "VN"
-							},
-							"percentageOfTotalRevenue": 0.7904
+							"name": "Fantastic Frozen Chicken",
+							"percentageOfTotalRevenue": 0.7518
 						}
 					]
-				},
-				"products": {}
+				}
 			},
 			"power": {
 				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 1594,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 240,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
-				}
+				"naturalHazards": {}
 			}
 		},
 		"reportingPeriod": "2021"
@@ -186,126 +176,68 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Edaland",
-			"sector": "infrastructures",
+			"headquarters": "South Ofelia",
+			"headquartersPostalCode": "68899",
 			"identifiers": {
-				"Lei": [
-					"LoKRzJ4nJKmUcMS2tWKd"
-				],
+				"Lei": [],
 				"Isin": [
-					"Wq4G3ZmXwwqU"
+					"S0hS9eOLcxKt"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"QGOEkCkUj"
+				],
 				"VatNumber": [
-					"CftrMBGBv"
+					"DgL16ionK"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ET",
-			"companyAlternativeNames": [
-				"Jakubowski - Quigley"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://altruistic-pharmacist.org",
+			"countryCode": "ST",
+			"companyAlternativeNames": [],
+			"website": "https://straight-coverall.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
+						"A",
+						"C",
+						"D",
+						"F",
 						"J"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 9243,
-					"fiscalYearStart": "2023-11-04"
+					"numberOfEmployees": 7209,
+					"fiscalYearStart": "2024-03-11"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 29635558
+					"revenueInEur": 83425846
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Graham Light 26575",
-								"postalCode": "07805-8803",
-								"city": "Waco",
-								"country": "ER"
-							},
-							"percentageOfTotalRevenue": 0.1014
-						},
-						{
-							"nameOfProductionSite": "Monahan, Gibson and Wiza",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Collins Place 982",
-								"city": "East Iva",
-								"country": "KZ"
-							}
-						},
-						{
-							"nameOfProductionSite": "Bins, Balistreri and Stehr",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Fred Rapid 308",
-								"city": "Ferryboro",
-								"state": "Minnesota",
-								"country": "KG"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "New Bethworth",
-								"country": "AW"
-							},
-							"percentageOfTotalRevenue": 0.5253
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "Modesto",
-								"country": "CH"
-							}
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Oriental Concrete Tuna"
-						},
-						{
-							"name": "Handmade Metal Pizza"
-						},
-						{
-							"name": "Oriental Wooden Tuna"
-						},
-						{
-							"name": "Sleek Fresh Salad"
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
-				},
+				"investments": {},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 478,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMwh": 1036,
+					"powerFromRenewableSources": "Yes",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Snow",
-						"EarthQuake"
-					]
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},
