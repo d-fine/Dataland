@@ -42,27 +42,27 @@ export default defineComponent({
       objectives: [
         {
           name: "Climate mitigation mitigation",
-          key: "ClimateChangeMitigation",
+          key: "ClimateChangeMitigationInPercent",
         },
         {
           name: "Climate adaptation adaptation",
-          key: "ClimateChangeAdaption",
+          key: "ClimateChangeAdaptionInPercent",
         },
         {
           name: "Sustainable use and protection of water and marine resources",
-          key: "SustainableUseAndProtectionOfWaterAndMarineResources",
+          key: "SustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
         },
         {
           name: "Transition to a circular economy",
-          key: "TransitionToACircularEconomy",
+          key: "TransitionToACircularEconomyInPercent",
         },
         {
           name: "Pollution prevention and control",
-          key: "PollutionPreventionAndControl",
+          key: "PollutionPreventionAndControlInPercent",
         },
         {
           name: "Protection and restoration of biodiversity and ecosystems",
-          key: "ProtectionAndRestorationOfBiodiversityAndEcosystems",
+          key: "ProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
         },
       ],
     };
