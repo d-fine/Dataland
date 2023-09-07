@@ -73,7 +73,7 @@ function generateActivity(undefinedProbabilityOfFields?: number): EuTaxonomyActi
  */
 function generateAlignedActivity(undefinedProbabilityOfFields?: number): EuTaxonomyAlignedActivity {
   return {
-    ...generateActivity(),
+    ...generateActivity(0),
     substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(
       generatePercentage(),
       undefinedProbabilityOfFields,

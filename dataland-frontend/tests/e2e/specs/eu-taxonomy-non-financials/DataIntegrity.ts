@@ -12,6 +12,7 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
 before(function () {
@@ -49,14 +50,15 @@ describeIf(
         .contains(assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.general?.fiscalYearEnd))
         .should("exist");
       cy.get('div > [data-test="CapEx"]').click();
-      cy.get('span[data-test="eligibleShare"]').filter(":visible").click();
       cy.get('td > [data-test="relativeShareInPercent"]')
         .parent()
         .next("td")
         .contains(
-          assertDefined(
-            euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent,
-          ).toFixed(2),
+          roundNumber(
+            assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent) *
+              100,
+            2,
+          ),
         )
         .should("exist");
     }
