@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import Tree from "primevue/tree";
+import Tree, { type TreeNode } from "primevue/tree";
 import OverlayPanel from "primevue/overlaypanel";
 import { defineComponent, ref } from "vue";
 import RadioButton from "primevue/radiobutton";
@@ -87,9 +87,9 @@ export default defineComponent({
     selectedActivities() {
       for (const activities of this.allActivities) {
         if (activities && activities.children?.length) {
-          for (const activitie of activities.children) {
-            if (activitie.value === this.selectedActivityValue) {
-              return activitie;
+          for (const activity of activities.children) {
+            if (activity.value === this.selectedActivityValue) {
+              return activity;
             }
           }
         }
@@ -115,11 +115,11 @@ export default defineComponent({
   methods: {
     /**
      * Close the Tree Overlay and set selectedActivityValue.
-     * @param event onchange
+     * @param activity activity value from selected NACE codes
      */
-    newActivitieSelected(event: Event) {
+    newActivitieSelected(activity: TreeNode) {
       this.overlayPanel?.hide();
-      this.selectedActivityValue = event.value;
+      this.selectedActivityValue = activity.value as string;
     },
     /**
      * Opens the Tree Overlay.
