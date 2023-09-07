@@ -173,7 +173,7 @@ export default defineComponent({
       if (field.component == "PercentageFormField") {
         return roundNumber((kpiValueToFormat as number) * 100, 2);
       }
-      if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
+      if (this.isKpiObjectAmountWithCurrency(kpiValueToFormat)) {
         return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
       }
       return kpiValueToFormat;
