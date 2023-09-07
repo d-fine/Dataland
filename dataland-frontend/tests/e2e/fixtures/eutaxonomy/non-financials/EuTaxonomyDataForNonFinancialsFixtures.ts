@@ -10,21 +10,13 @@ import {
 } from "@clients/backend";
 import { generateArray, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { randomFloat } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFloat, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateDatapointWithUnit } from "@e2e/fixtures/common/DataPointFixtures";
-
-/**
- * Generates a random percentage between 0 and 100
- * @returns a reandom percentage
- */
-function generatePercentage(): number {
-  return faker.number.float({ min: 0, max: 100 });
-}
 
 /**
  * Generates a random amount of money
@@ -45,7 +37,7 @@ export function generateAmountWithCurrency(undefinedProbabilityOfFields?: number
  */
 export function generateFinancialShare(undefinedProbabilityOfFields?: number): RelativeAndAbsoluteFinancialShare {
   return {
-    relativeShareInPercent: valueOrUndefined(generatePercentage(), undefinedProbabilityOfFields),
+    relativeShareInPercent: valueOrUndefined(randomPercentageValue(), undefinedProbabilityOfFields),
     absoluteShare: valueOrUndefined(
       generateAmountWithCurrency(undefinedProbabilityOfFields),
       undefinedProbabilityOfFields,
@@ -75,27 +67,27 @@ function generateAlignedActivity(undefinedProbabilityOfFields?: number): EuTaxon
   return {
     ...generateActivity(0),
     substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     dnshToClimateChangeMitigation: valueOrUndefined(
@@ -153,32 +145,32 @@ export function generateEuTaxonomyPerCashflowType(
     nonAlignedActivities: valueOrUndefined(generateArray(generateActivity, 1, 3, undefinedProbabilityOfFields)),
     alignedShare: valueOrUndefined(generateFinancialShare(undefinedProbabilityOfFields), undefinedProbabilityOfFields),
     substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: valueOrUndefined(
-      generatePercentage(),
+      randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
     alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity, 1, 3, undefinedProbabilityOfFields)),
-    enablingShareInPercent: valueOrUndefined(generatePercentage(), undefinedProbabilityOfFields),
-    transitionalShareInPercent: valueOrUndefined(generatePercentage(), undefinedProbabilityOfFields),
+    enablingShareInPercent: valueOrUndefined(randomPercentageValue(), undefinedProbabilityOfFields),
+    transitionalShareInPercent: valueOrUndefined(randomPercentageValue(), undefinedProbabilityOfFields),
   };
 }
 

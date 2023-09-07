@@ -159,7 +159,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToClimateChangeMitigation",
+            name: "substantialContributionToClimateChangeMitigationInPercent",
             label: "Substantial Contribution to Climate Change Mitigation",
             description: "The value in percentage of the contribution to climate change mitigation",
             unit: "Percentage",
@@ -169,7 +169,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToClimateChangeAdaption",
+            name: "substantialContributionToClimateChangeAdaptionInPercent",
             label: "Substantial Contribution to Climate Change Adaption",
             description: "The value in percentage of the contribution to climate change adaption",
             unit: "Percentage",
@@ -179,7 +179,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
             label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
             description:
               "The value in percentage of the contribution to use and protection of water and marine resources",
@@ -190,7 +190,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToTransitionToACircularEconomy",
+            name: "substantialContributionToTransitionToACircularEconomyInPercent",
             label: "Substantial Contribution to Transition to a Circular Economy",
             description: "The value in percentage of the contribution to transition to a circular economy",
             unit: "Percentage",
@@ -200,7 +200,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToPollutionPreventionAndControl",
+            name: "substantialContributionToPollutionPreventionAndControlInPercent",
             label: "Substantial Contribution to Pollution Prevention and Control",
             description: "The value in percentage of the contribution to pollution prevention and control",
             unit: "Percentage",
@@ -210,7 +210,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
             label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
             description:
               "The value in percentage of the contribution to protection and restoration of biodiversity and ecosystems",
@@ -266,7 +266,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "enablingShare",
+            name: "enablingShareInPercent",
             label: "Total Enabling Revenue",
             description: "The percentage value of the share of the revenue applicable to enabling activities",
             unit: "",
@@ -276,7 +276,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "transitionalShare",
+            name: "transitionalShareInPercent",
             label: "Total Transitional Revenue",
             description: "The percentage value of the share of the revenue applicable to transitional activities",
             unit: "",
@@ -334,7 +334,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToClimateChangeMitigation",
+            name: "substantialContributionToClimateChangeMitigationInPercent",
             label: "Substantial Contribution to Climate Change Mitigation",
             description: "The value in percentage of the contribution to climate change mitigation",
             unit: "Percentage",
@@ -344,7 +344,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToClimateChangeAdaption",
+            name: "substantialContributionToClimateChangeAdaptionInPercent",
             label: "Substantial Contribution to Climate Change Adaption",
             description: "The value in percentage of the contribution to climate change adaption",
             unit: "Percentage",
@@ -354,7 +354,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
             label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
             description:
               "The value in percentage of the contribution to use and protection of water and marine resources",
@@ -365,7 +365,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToTransitionToACircularEconomy",
+            name: "substantialContributionToTransitionToACircularEconomyInPercent",
             label: "Substantial Contribution to Transition to a Circular Economy",
             description: "The value in percentage of the contribution to transition to a circular economy",
             unit: "Percentage",
@@ -375,7 +375,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToPollutionPreventionAndControl",
+            name: "substantialContributionToPollutionPreventionAndControlInPercent",
             label: "Substantial Contribution to Pollution Prevention and Control",
             description: "The value in percentage of the contribution to pollution prevention and control",
             unit: "Percentage",
@@ -385,7 +385,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
             label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
             description:
               "The value in percentage of the contribution to protection and restoration of biodiversity and ecosystems",
@@ -441,7 +441,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "enablingShare",
+            name: "enablingShareInPercent",
             label: "Total Enabling CapEx",
             description: "The percentage value of the share of the CapEx applicable to enabling activities",
             unit: "",
@@ -451,7 +451,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "transitionalShare",
+            name: "transitionalShareInPercent",
             label: "Total Transitional CapEx",
             description: "The percentage value of the share of the CapEx applicable to transitional activities",
             unit: "",
@@ -509,7 +509,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToClimateChangeMitigation",
+            name: "substantialContributionToClimateChangeMitigationInPercent",
             label: "Substantial Contribution to Climate Change Mitigation",
             description: "The value in percentage of the contribution to climate change mitigation",
             unit: "Percentage",
@@ -519,7 +519,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToClimateChangeAdaption",
+            name: "substantialContributionToClimateChangeAdaptionInPercent",
             label: "Substantial Contribution to Climate Change Adaption",
             description: "The value in percentage of the contribution to climate change adaption",
             unit: "Percentage",
@@ -529,7 +529,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
             label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
             description:
               "The value in percentage of the contribution to use and protection of water and marine resources",
@@ -540,7 +540,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToTransitionToACircularEconomy",
+            name: "substantialContributionToTransitionToACircularEconomyInPercent",
             label: "Substantial Contribution to Transition to a Circular Economy",
             description: "The value in percentage of the contribution to transition to a circular economy",
             unit: "Percentage",
@@ -550,7 +550,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToPollutionPreventionAndControl",
+            name: "substantialContributionToPollutionPreventionAndControlInPercent",
             label: "Substantial Contribution to Pollution Prevention and Control",
             description: "The value in percentage of the contribution to pollution prevention and control",
             unit: "Percentage",
@@ -560,7 +560,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
             label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
             description:
               "The value in percentage of the contribution to protection and restoration of biodiversity and ecosystems",
@@ -616,7 +616,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "enablingShare",
+            name: "enablingShareInPercent",
             label: "Total Enabling OpEx",
             description: "The percentage value of the share of the OpEx ppliopble to enabling activities",
             unit: "",
@@ -626,7 +626,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "transitionalShare",
+            name: "transitionalShareInPercent",
             label: "Total Transitional OpEx",
             description: "The percentage value of the share of the OpEx ppliopble to transitional activities",
             unit: "",
