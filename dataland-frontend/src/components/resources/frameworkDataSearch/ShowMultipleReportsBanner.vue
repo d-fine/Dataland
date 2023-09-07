@@ -1,14 +1,14 @@
 <template>
   <div style="display: flex">
     <h2 class="mb-0" style="font-size: 12px" data-test="frameworkNewDataTableTitle">
-      {{ `Data extracted from the company report.Company Reports(${reportingPeriod}):` }}
+      {{ `Data extracted from the company report.Company Reports(${reportingPeriods[indexOfNewestReportingPeriod]}):` }}
     </h2>
     <span id="reportList">
-      <span v-for="(report, name, index) in reports" :key="index">
+      <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index">
         <DocumentLink :download-name="name" :reference="report.reference" font-style="font-semibold" />
-        <span v-if="index < numberOfReports - 1"> | </span>
+        <span v-if="index < reports[indexOfNewestReportingPeriod].length - 1"> | </span>
       </span>
-      <span class="link" style="text-align: right" @click="openModalAndDisplayPreviousReportsInTable(reportingPeriod)"
+      <span class="link" style="text-align: right" @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
         >Previous years reports
       </span>
     </span>
@@ -19,29 +19,37 @@
 import { defineComponent } from "vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import PreviousReportsModal from "@/components/resources/frameworkDataSearch/PreviousReportsModal.vue";
+import type { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
   name: "ShowMultipleReportsBanner",
   components: { DocumentLink },
-  props: {
-    reports: { type: Object, required: true },
-    reportingPeriod: { type: String, required: true },
+  data() {
+    return {
+      indexOfNewestReportingPeriod: -1 as number,
+    };
   },
-  computed: {
-    numberOfReports(): number {
-      return Object.keys(this.reports).length;
-    },
+  props: {
+    reports: { type: Array<{ [p: string]: CompanyReport }>, required: true },
+    reportingPeriods: { type: Array<string>, required: true },
+  },
+  mounted() {
+    this.indexOfNewestReportingPeriod = this.calculateIndexOfNewestReportingPeriod(this.reportingPeriods);
   },
   methods: {
     /**
      * Opens a modal to display a table containing previous referenced reports
-     * @param reportingPeriod States the origin year of the report.
+     * @param reportingPeriods States the origin year of the report.
      */
-    openModalAndDisplayPreviousReportsInTable(reportingPeriod: string) {
+    openModalAndDisplayPreviousReportsInTable(reportingPeriods: Array<string>) {
+      this.indexOfNewestReportingPeriod = this.calculateIndexOfNewestReportingPeriod(this.reportingPeriods);
       const passedData = {
-        reportingPeriodForTable: reportingPeriod,
-        referencedReports: this.reports,
+        reportingPeriodsForTable: reportingPeriods,
+        referencedReportsForModal: this.reports,
+        indexOfNewestReportingPeriodForModal: this.indexOfNewestReportingPeriod,
       };
+      console.log("def");
+      console.log(passedData);
       this.$dialog.open(PreviousReportsModal, {
         props: {
           modal: true,
@@ -49,6 +57,22 @@ export default defineComponent({
         },
         data: passedData,
       });
+    },
+
+    /**
+     * Returns the index of the with the newest reporting period in the array containing all reporting periods.
+     * @param reportingPeriods array containing all reporting periods.
+     */
+    calculateIndexOfNewestReportingPeriod(reportingPeriods: Array<string>): number {
+      let indexOfHighestReportingPeriod = 0;
+      let tempHighestReportingPeriodNumber = 0;
+      for (let i = 0; i < reportingPeriods.length; i++) {
+        if (Number(reportingPeriods[i]) > tempHighestReportingPeriodNumber) {
+          tempHighestReportingPeriodNumber = Number(reportingPeriods[i]);
+          indexOfHighestReportingPeriod = i;
+        }
+      }
+      return indexOfHighestReportingPeriod;
     },
   },
 });

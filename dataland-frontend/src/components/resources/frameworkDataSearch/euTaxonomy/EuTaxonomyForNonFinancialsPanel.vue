@@ -5,9 +5,13 @@
   </div>
   <div v-show="!waitingForData" data-test="multipleReportsBanner">
     <ShowMultipleReportsBanner
-      v-if="dataSet?.general?.referencedReports && Object.keys(dataSet?.general?.referencedReports).length > 0"
-      :reporting-period="singleDataMetaInfoToDisplay?.reportingPeriod"
-      :reports="dataSet?.general?.referencedReports"
+      v-if="
+        extractedReportsAndReportingPeriods &&
+        extractedReportsAndReportingPeriods[0] &&
+        extractedReportsAndReportingPeriods[1]
+      "
+      :reporting-periods="extractedReportsAndReportingPeriods[1]"
+      :reports="extractedReportsAndReportingPeriods[0]"
     />
     <ThreeLayerTable
       data-test="ThreeLayerTableTest"
@@ -42,6 +46,7 @@ import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resourc
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
+import type { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -51,11 +56,17 @@ export default defineComponent({
       DataTypeEnum,
       firstRender: true,
       waitingForData: true,
+      waitingForReports: true,
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel,
       namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "totalEnablingShare", "totalTransitionalShare"],
       dataSet: null as EuTaxonomyDataForNonFinancials | null | undefined,
+      dataAndMetaInfoSets: null as Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials> | null | undefined,
+      extractedReportsAndReportingPeriods: null as
+        | [({ [p: string]: CompanyReport } | undefined)[], Array<string>]
+        | null
+        | undefined,
     };
   },
   props: PanelProps,
@@ -101,12 +112,20 @@ export default defineComponent({
             { metaInfo: this.singleDataMetaInfoToDisplay, data: singleEuTaxonomyForNonFinancialsDataData },
           ];
           this.dataSet = singleEuTaxonomyForNonFinancialsDataData;
+          console.log("if:");
+          console.log(this.dataSet);
         } else {
+          console.log("else");
           fetchedData = (
             await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(
               assertDefined(this.companyId),
             )
           ).data;
+          this.dataAndMetaInfoSets = fetchedData;
+          this.extractedReportsAndReportingPeriods = this.extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
+            this.dataAndMetaInfoSets,
+          );
+          console.log(this.dataAndMetaInfoSets);
         }
         this.convertedDataAndMetaInfo = fetchedData.map(
           (dataAndMetaInfo) => new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfo),
@@ -186,6 +205,28 @@ export default defineComponent({
         return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
       }
       return kpiValueToFormat;
+    },
+
+    /**
+     * Extracts the reports and reporting periods for all data sets.
+     * @param dataAndMetaInfoSets array of data sets includin meta information
+     */
+    extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
+      dataAndMetaInfoSets: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>,
+    ): [({ [p: string]: CompanyReport } | undefined)[], Array<string>] {
+      const reportingPeriods = [];
+      let tempReportingPeriod: string | undefined;
+      for (let i = 0; i < dataAndMetaInfoSets.length; i++) {
+        tempReportingPeriod = dataAndMetaInfoSets[i].metaInfo.reportingPeriod;
+        if (tempReportingPeriod) {
+          reportingPeriods.push(tempReportingPeriod);
+        } else console.log("no reporting period given");
+      }
+      const allReports = dataAndMetaInfoSets.map(
+        (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
+      );
+      this.waitingForReports = false;
+      return [allReports, reportingPeriods];
     },
   },
 });
