@@ -9,14 +9,14 @@ import {
   YesNo,
 } from "@clients/backend";
 import { generateArray, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFloat } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { generateDatapointWithUnit } from "@e2e/fixtures/common/DataPointFixtures";
 
 /**
  * Generates a random percentage between 0 and 100
