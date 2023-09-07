@@ -28,14 +28,9 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import {
-  type AmountWithCurrency,
-  type EuTaxonomyAlignedActivity,
-} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
-import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { type EuTaxonomyAlignedActivity } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
-import { formatAmountWithCurrency, formatPercentageNumber } from "@/utils/ValuesConversionUtils";
+import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
 
 type NonAlignedActivityFieldValueObject = {
   activity: string;
