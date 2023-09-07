@@ -112,10 +112,8 @@ export default defineComponent({
             { metaInfo: this.singleDataMetaInfoToDisplay, data: singleEuTaxonomyForNonFinancialsDataData },
           ];
           this.dataSet = singleEuTaxonomyForNonFinancialsDataData;
-          console.log("if:");
-          console.log(this.dataSet);
+          this.dataAndMetaInfoSets = fetchedData;
         } else {
-          console.log("else");
           fetchedData = (
             await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(
               assertDefined(this.companyId),
@@ -125,7 +123,6 @@ export default defineComponent({
           this.extractedReportsAndReportingPeriods = this.extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
             this.dataAndMetaInfoSets,
           );
-          console.log(this.dataAndMetaInfoSets);
         }
         this.convertedDataAndMetaInfo = fetchedData.map(
           (dataAndMetaInfo) => new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfo),

@@ -48,8 +48,6 @@ export default defineComponent({
         referencedReportsForModal: this.reports,
         indexOfNewestReportingPeriodForModal: this.indexOfNewestReportingPeriod,
       };
-      console.log("def");
-      console.log(passedData);
       this.$dialog.open(PreviousReportsModal, {
         props: {
           modal: true,
