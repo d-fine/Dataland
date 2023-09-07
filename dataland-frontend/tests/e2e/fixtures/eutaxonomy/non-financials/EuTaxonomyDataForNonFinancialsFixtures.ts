@@ -98,17 +98,31 @@ function generateAlignedActivity(undefinedProbabilityOfFields?: number): EuTaxon
       generatePercentage(),
       undefinedProbabilityOfFields,
     ),
-    dnshToClimateChangeMitigation: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
-    dnshToClimateChangeAdaption: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
-    dnshToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)), // TODO do wee need undefined probabilities for Yes No ?
+    dnshToClimateChangeMitigation: valueOrUndefined(
+      faker.helpers.arrayElement(Object.values(YesNo)),
+      undefinedProbabilityOfFields,
     ),
-    dnshToTransitionToACircularEconomy: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
-    dnshToPollutionPreventionAndControl: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToClimateChangeAdaption: valueOrUndefined(
+      faker.helpers.arrayElement(Object.values(YesNo)),
+      undefinedProbabilityOfFields,
+    ),
+    dnshToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+      faker.helpers.arrayElement(Object.values(YesNo)),
+      undefinedProbabilityOfFields,
+    ),
+    dnshToTransitionToACircularEconomy: valueOrUndefined(
+      faker.helpers.arrayElement(Object.values(YesNo)),
+      undefinedProbabilityOfFields,
+    ),
+    dnshToPollutionPreventionAndControl: valueOrUndefined(
+      faker.helpers.arrayElement(Object.values(YesNo)),
+      undefinedProbabilityOfFields,
+    ),
     dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
       faker.helpers.arrayElement(Object.values(YesNo)),
+      undefinedProbabilityOfFields,
     ),
-    minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo)), undefinedProbabilityOfFields),
   };
 }
 
