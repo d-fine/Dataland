@@ -16,8 +16,7 @@ const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pa
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
 
-const ViewTeaserCompanyData = (): Promise<RouteComponent> =>
-    import("@/components/pages/ViewTeaserCompanyData.vue");
+const ViewTeaserCompanyData = (): Promise<RouteComponent> => import("@/components/pages/ViewTeaserCompanyData.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
 import { DataTypeEnum } from "@clients/backend";

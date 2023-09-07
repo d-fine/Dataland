@@ -6,7 +6,7 @@ import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clie
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { roundNumber } from "@/utils/NumberConversionUtils";
-import { formatAmountWithCurrency } from "../../../../../src/utils/Formatter";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
 
 describe("Component test for the EUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
