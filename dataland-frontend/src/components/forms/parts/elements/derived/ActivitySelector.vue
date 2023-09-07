@@ -86,7 +86,7 @@ export default defineComponent({
   computed: {
     selectedActivities() {
       for (const activities of this.allActivities) {
-        if (activities && activities.children?.length) {
+        if (activities?.children?.length) {
           for (const activity of activities.children) {
             if (activity.value === this.selectedActivityValue) {
               return activity;
