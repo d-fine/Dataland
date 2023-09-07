@@ -75,28 +75,28 @@ function generateAlignedActivity(undefinedProbabilityOfFields?: number): EuTaxon
   return {
     ...generateActivity(),
     substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(
-        generatePercentage(),
-        undefinedProbabilityOfFields,
+      generatePercentage(),
+      undefinedProbabilityOfFields,
     ),
     substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(
-        generatePercentage(),
-        undefinedProbabilityOfFields,
+      generatePercentage(),
+      undefinedProbabilityOfFields,
     ),
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: valueOrUndefined(
-        generatePercentage(),
-        undefinedProbabilityOfFields,
+      generatePercentage(),
+      undefinedProbabilityOfFields,
     ),
     substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(
-        generatePercentage(),
-        undefinedProbabilityOfFields,
+      generatePercentage(),
+      undefinedProbabilityOfFields,
     ),
     substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(
-        generatePercentage(),
-        undefinedProbabilityOfFields,
+      generatePercentage(),
+      undefinedProbabilityOfFields,
     ),
     substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: valueOrUndefined(
-        generatePercentage(),
-        undefinedProbabilityOfFields,
+      generatePercentage(),
+      undefinedProbabilityOfFields,
     ),
     dnshToClimateChangeMitigation: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
     dnshToClimateChangeAdaption: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
