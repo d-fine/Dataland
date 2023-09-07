@@ -15,6 +15,9 @@ const DatasetOverview = (): Promise<RouteComponent> => import("@/components/page
 const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pages/UploadFormWrapper.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
+
+const ViewTeaserCompanyData = (): Promise<RouteComponent> =>
+    import("@/components/pages/ViewTeaserCompanyData.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
 import { DataTypeEnum } from "@clients/backend";
@@ -60,7 +63,7 @@ const routes = [
     component: UploadEuTaxonomyDataForFinancials,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}/upload`, // TODO code duplication
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}/upload`, // TODO Emanuel: code duplication
     props: (route: RouteLocationNormalized): object => ({
       companyID: route.params.companyID,
       frameworkType: DataTypeEnum.Lksg,

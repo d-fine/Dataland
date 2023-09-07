@@ -5,6 +5,9 @@ import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/com
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { roundNumber } from "@/utils/NumberConversionUtils";
+import { formatAmountWithCurrency } from "../../../../../src/utils/Formatter";
+
 describe("Component test for the EUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
 
