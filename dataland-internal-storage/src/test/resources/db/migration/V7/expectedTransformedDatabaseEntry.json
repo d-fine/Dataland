@@ -38,11 +38,11 @@
       "unit": "EUR",
       "quality": "Estimated"
     },
-    "totalAlignedShare": {},
-    "totalEligibleShare": {}
+    "alignedShare": {},
+    "eligibleShare": {}
   },
   "capex": {
-    "totalAlignedShare": {
+    "alignedShare": {
       "relativeShareInPercent": 0.1965,
       "absoluteShare": {
         "amount": 396564.95871022346,
@@ -60,7 +60,7 @@
       "unit": null,
       "comment": "quantify 1080p driver"
     },
-    "totalEligibleShare": {}
+    "eligibleShare": {}
   },
   "revenue": {
     "totalAmount": {
@@ -70,14 +70,14 @@
       "quality": "Incomplete",
       "comment": null
     },
-    "totalAlignedShare": {
+    "alignedShare": {
       "relativeShareInPercent": 0.4347,
       "absoluteShare": {
         "amount": 840897.8063846007,
         "currency": null
       }
     },
-    "totalEligibleShare": {
+    "eligibleShare": {
       "relativeShareInPercent": null,
       "absoluteShare": {
         "amount": 917185.00,
