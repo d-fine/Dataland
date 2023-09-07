@@ -5,13 +5,11 @@
     </div>
     <span v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
       <div v-if="indexOuter !== indexOfNewestReportingPeriod + 100">
-        <h2 class="mb-0" style="font-size: 12px" data-test="titleOfReportingperiodInModal">
-          {{ `${reportingPeriods[indexOuter]}:` }}
-        </h2>
+        <span class="mb-4" style="font-size: 16px" data-test="titleOfReportingperiodInModal">
+          {{ `Company Reports (${reportingPeriods[indexOuter]})` }}
+        </span>
         <div v-for="(report, nameInner, indexInner) in referencedReportObject" :key="indexInner" class="row">
-          <div>
-            <DocumentLink :download-name="nameInner" :reference="report.reference" font-style="font-semibold" />
-          </div>
+          <DocumentLink :download-name="nameInner" :reference="report.reference" font-style="font-semibold" />
         </div>
       </div>
     </span>
