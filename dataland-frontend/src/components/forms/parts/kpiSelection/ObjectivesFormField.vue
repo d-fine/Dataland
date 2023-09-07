@@ -7,7 +7,7 @@
     <UploadFormHeader :label="'Substantial Contribution to ' + field.name" description="" :is-required="false" />
     <FormKit
       type="text"
-      :name="'substantialContributionTo' + field.key"
+      :name="'substantialContributionTo' + field.key + 'InPercent'"
       :validation-label="field.name"
       validation="number|between:0,100"
       placeholder="Relative Value in %"
@@ -42,27 +42,27 @@ export default defineComponent({
       objectives: [
         {
           name: "Climate mitigation mitigation",
-          key: "ClimateChangeMitigationInPercent",
+          key: "ClimateChangeMitigation",
         },
         {
           name: "Climate adaptation adaptation",
-          key: "ClimateChangeAdaptionInPercent",
+          key: "ClimateChangeAdaption",
         },
         {
           name: "Sustainable use and protection of water and marine resources",
-          key: "SustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
+          key: "SustainableUseAndProtectionOfWaterAndMarineResources",
         },
         {
           name: "Transition to a circular economy",
-          key: "TransitionToACircularEconomyInPercent",
+          key: "TransitionToACircularEconomy",
         },
         {
           name: "Pollution prevention and control",
-          key: "PollutionPreventionAndControlInPercent",
+          key: "PollutionPreventionAndControl",
         },
         {
           name: "Protection and restoration of biodiversity and ecosystems",
-          key: "ProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+          key: "ProtectionAndRestorationOfBiodiversityAndEcosystems",
         },
       ],
     };
