@@ -12,7 +12,7 @@ import org.json.JSONObject
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
  * and the new version is integrated into the old datatype
  */
-class V6__MigrateFromAmountWithCurrencyToUnit : BaseJavaMigration() {
+class V7__MigrateFromAmountWithCurrencyToUnit : BaseJavaMigration() {
 
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
