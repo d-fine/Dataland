@@ -146,7 +146,7 @@ export function generateEuTaxonomyPerCashflowType(
       generatePercentage(),
       undefinedProbabilityOfFields,
     ),
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: valueOrUndefined(
       generatePercentage(),
       undefinedProbabilityOfFields,
     ),
