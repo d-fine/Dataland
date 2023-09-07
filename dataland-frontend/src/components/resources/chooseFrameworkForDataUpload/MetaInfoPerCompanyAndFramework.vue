@@ -52,7 +52,7 @@ import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import PrimeButton from "primevue/button";
 import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { getDatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
 
@@ -81,7 +81,7 @@ export default defineComponent({
 
   data() {
     return {
-      title: humanizeString(this.dataType),
+      title: humanizeStringOrNumber(this.dataType),
       isFrontendViewPageExisting: null as null | boolean,
       isFrontendUploadFormExisting: null as null | boolean,
       convertUnixTimeInMsToDateString: convertUnixTimeInMsToDateString,

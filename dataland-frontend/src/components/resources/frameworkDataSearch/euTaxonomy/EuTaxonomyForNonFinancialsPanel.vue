@@ -12,6 +12,7 @@
       :format-value-for-display="formatValueForDisplay"
       :modal-column-headers="euTaxonomyForNonFinancialsModalColumnHeaders"
       :sort-by-subcategory-key="false"
+      :unfold-subcategories="true"
     />
   </div>
 </template>
@@ -22,19 +23,22 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type AmountWithCurrency,
+  AssuranceDataAssuranceEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
+  FiscalYearDeviation,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -47,7 +51,6 @@ export default defineComponent({
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel,
-      namesOfFieldsToFormatAsPercentages: ["relativeShareInPercent", "totalEnablingShare", "totalTransitionalShare"],
     };
   },
   props: PanelProps,
@@ -72,7 +75,7 @@ export default defineComponent({
   },
 
   methods: {
-    humanizeString,
+    humanizeString: humanizeStringOrNumber,
     /**
      * Fetches all accepted EU Taxonomy Non-Financial datasets for the current company and converts them to the required frontend format.
      */
@@ -127,34 +130,29 @@ export default defineComponent({
     },
 
     /**
-     * Checks if a field name is included in the EnvironmentalObjectives enum.
-     * @param fieldName is the field name to check for
+     * Checks if a KpiValue is a string with one of the Enum values of Assurance
+     * @param kpiValue the kpiValue that shall be checked
      * @returns a boolean based on the result of the check
      */
-    isFieldNameAmongEnvironmentalObjectives(fieldName: string): boolean {
-      return Object.values(EnvironmentalObjective).includes(fieldName);
-    },
-
-    /**
-     * Formats an AmountWithCurrency object by concatenating the amount and the currency.
-     * @param amountWithCurrency the object that holds the amount and currency
-     * @returns the resulting string from the concatenation
-     */
-    formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency) {
-      if (amountWithCurrency.amount == undefined) {
-        return null;
+    isKpiObjectAssuranceLevel(kpiValue: KpiValue): boolean {
+      if (typeof kpiValue === "string") {
+        return Object.values(AssuranceDataAssuranceEnum).includes(kpiValue as AssuranceDataAssuranceEnum);
+      } else {
+        return false;
       }
-      return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
     },
 
     /**
-     * Formats a percentage number by rounding it to two decimals and afterward making it a string with a percent
-     * symbol at the end.
-     * @param relativeShareInPercent is the percentage number to round
-     * @returns the resulting string
+     * Checks if a KpiValue is a string with one of the Enum values of FiscalYearDeviation
+     * @param kpiValue the kpiValue that shall be checked
+     * @returns a boolean based on the result of the check
      */
-    formatPercentageNumber(relativeShareInPercent: number) {
-      return `${relativeShareInPercent.toFixed(2).toString()} %`;
+    isKpiObjectFiscalYearDeviation(kpiValue: KpiValue): boolean {
+      if (typeof kpiValue === "string") {
+        return Object.values(FiscalYearDeviation).includes(kpiValue as FiscalYearDeviation);
+      } else {
+        return false;
+      }
     },
 
     /**
@@ -167,14 +165,14 @@ export default defineComponent({
       if (kpiValueToFormat == null) {
         return kpiValueToFormat;
       }
-      if (
-        this.namesOfFieldsToFormatAsPercentages.includes(field.name) ||
-        this.isFieldNameAmongEnvironmentalObjectives(field.name)
-      ) {
-        return this.formatPercentageNumber(kpiValueToFormat as number);
+      if (this.isKpiObjectFiscalYearDeviation(kpiValueToFormat) || this.isKpiObjectAssuranceLevel(kpiValueToFormat)) {
+        return humanizeStringOrNumber(kpiValueToFormat as string);
+      }
+      if (field.component == "PercentageFormField") {
+        return roundNumber((kpiValueToFormat as number) * 100, 2);
       }
       if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
-        return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
+        return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
       }
       return kpiValueToFormat;
     },

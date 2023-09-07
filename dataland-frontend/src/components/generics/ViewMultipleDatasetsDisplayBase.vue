@@ -4,6 +4,7 @@
     :dataType="dataType"
     :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
+    :viewInPreviewMode="viewInPreviewMode"
   >
     <template v-slot:content>
       <div v-if="isListOfDataIdsToDisplayFound">
@@ -78,7 +79,7 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { defineComponent, inject } from "vue";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
 import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -114,6 +115,10 @@ export default defineComponent({
     reportingPeriod: {
       type: String,
     },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -121,10 +126,10 @@ export default defineComponent({
       isListOfDataIdsToDisplayFound: false,
       receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo: {} as Map<string, DataMetaInformation>,
       singleDataMetaInfoToDisplay: null as null | DataMetaInformation,
-      humanizeString: humanizeString,
+      humanizeString: humanizeStringOrNumber,
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
-      humanizedDataDescription: humanizeString(this.dataType),
+      humanizedDataDescription: humanizeStringOrNumber(this.dataType),
       DataTypeEnum,
     };
   },

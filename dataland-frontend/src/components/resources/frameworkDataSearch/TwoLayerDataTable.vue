@@ -22,6 +22,7 @@
         <template #body="slotProps">
           <span class="table-left-label" :data-test="slotProps.data.kpiKey">{{ slotProps.data.kpiLabel }}</span>
           <em
+            v-if="slotProps.data.kpiDescription"
             class="material-icons info-icon"
             aria-hidden="true"
             :title="slotProps.data.kpiLabel ? slotProps.data.kpiLabel : ''"
@@ -195,8 +196,15 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    unfoldSubcategories: {
+      type: Boolean,
+      default: false,
+    },
   },
   created() {
+    if (this.unfoldSubcategories) {
+      this.expandedRowGroups = this.arrayOfKpiDataObjects?.map((kpiDataObject) => kpiDataObject.subcategoryKey) ?? [];
+    }
     this.dataTableIdentifier = (Math.random() + 1).toString(36).substring(2);
     setTimeout(() => {
       this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
