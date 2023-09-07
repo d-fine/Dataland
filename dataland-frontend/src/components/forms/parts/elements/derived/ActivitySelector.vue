@@ -5,12 +5,7 @@
       <b> {{ selectedActivities ? selectedActivities.name : "" }}</b>
     </p>
 
-    <FormKit
-      type="hidden"
-      name="activityName"
-      :modelValue="selectedActivities ? selectedActivities.value : ''"
-      disabled="true"
-    />
+    <FormKit type="hidden" name="activityName" v-model="selectedActivityValue" disabled="true" />
 
     <PrimeButton
       data-test="dataTestChooseActivityButton"
@@ -30,11 +25,11 @@
         <template #child="slotProps">
           <span class="next-to-each-other -ml-5">
             <RadioButton
-              v-model="selectedActivities"
+              :modelValue="selectedActivities"
               :inputId="slotProps.node.reference"
               name="selectedActivities"
               :value="slotProps.node"
-              @change="newActivitieSelected"
+              @update:modelValue="newActivitieSelected($event)"
             />
             <label :for="slotProps.node.key" class="ml-2">{{ slotProps.node.name }}</label>
           </span>
@@ -85,10 +80,23 @@ export default defineComponent({
     };
   },
   data: () => ({
-    selectedActivities: null,
     allActivities: activityTree,
+    selectedActivityValue: "",
   }),
   computed: {
+    selectedActivities() {
+      for (const activities of this.allActivities) {
+        if (activities && activities.children?.length) {
+          for (const activitie of activities.children) {
+            if (activitie.value === this.selectedActivityValue) {
+              return activitie;
+            }
+          }
+        }
+      }
+      return {};
+    },
+
     NaceCodesForActivities() {
       if (this.selectedActivities?.nace_codes) {
         return (this.selectedActivities.nace_codes as string).split(", ").map((naceCode: string) => {
@@ -106,10 +114,12 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Close the Tree Overlay.
+     * Close the Tree Overlay and set selectedActivityValue.
+     * @param event onchange
      */
-    newActivitieSelected() {
+    newActivitieSelected(event: Event) {
       this.overlayPanel?.hide();
+      this.selectedActivityValue = event.value;
     },
     /**
      * Opens the Tree Overlay.
