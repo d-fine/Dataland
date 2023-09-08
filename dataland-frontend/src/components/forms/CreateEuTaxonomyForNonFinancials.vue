@@ -21,7 +21,7 @@
             @submit="postEuTaxonomyForNonFinancialsData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
+            <FormKit type="hidden" name="companyId" :model-value="companyID" />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
                 <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
