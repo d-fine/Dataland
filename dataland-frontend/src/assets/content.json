@@ -42,6 +42,20 @@
                         "In Dataland ",
                         "we",
                         " create change."
+                    ],
+                    "cards": [
+                        {
+                            "icon": "/src/assets/images/elements/summit.svg",
+                            "text": "Purpose\ndriven"
+                        },
+                        {
+                            "icon": "/src/assets/images/elements/group.svg",
+                            "text": "Thriving\ncommunity"
+                        },
+                        {
+                            "icon": "/src/assets/images/elements/global--network.svg",
+                            "text": "We advocate for equal opportuinities"
+                        }
                     ]
                 }
             ]
