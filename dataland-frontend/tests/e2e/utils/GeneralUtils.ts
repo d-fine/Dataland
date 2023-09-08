@@ -67,7 +67,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
  * @param path is the path of the current key of object A that is being compared to object B
  */
 export function compareObjectKeysAndValuesDeep(objA: Record<string, any>, objB: Record<string, any>, path = ""): void {
-  const throwErrorBecauseOfFieldValue = (fieldPath: string, fieldValueA: object, fieldValueB: object):void => {
+  const throwErrorBecauseOfFieldValue = (fieldPath: string, fieldValueA: object, fieldValueB: object): void => {
     throw new Error(`Field ${fieldPath} is not equal. A: ${fieldValueA}, B: ${fieldValueB}`);
   };
 
@@ -81,8 +81,8 @@ export function compareObjectKeysAndValuesDeep(objA: Record<string, any>, objB: 
       throw new Error(`Field ${newPath} exists in A but not in B`);
     }
 
-    const valueA = objA[key]
-    const valueB = objB[key]
+    const valueA = objA[key];
+    const valueB = objB[key];
 
     if (typeof valueA === "object" && typeof valueB === "object") {
       if (valueA === null || valueB === null) {

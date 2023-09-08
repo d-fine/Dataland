@@ -109,7 +109,8 @@ describeIf(
                 times: 1,
               }).as("postCompanyAssociatedData");
               submitButton.clickButton();
-              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then((interception) => {
+              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
+                (interception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
                   const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
                   return new EuTaxonomyDataForNonFinancialsControllerApi(new Configuration({ accessToken: token }))
@@ -117,7 +118,10 @@ describeIf(
                     .then((axiosResponse) => {
                       const reuploadedDatasetFromBackend = axiosResponse.data.data;
                       compareObjectKeysAndValuesDeep(dataSetFromPrefillRequest, reuploadedDatasetFromBackend);
-                      validateSomeValuesForTheReuploadedDataset(storedCompany, dataMetaInformationOfReuploadedDataset.dataId);
+                      validateSomeValuesForTheReuploadedDataset(
+                        storedCompany,
+                        dataMetaInformationOfReuploadedDataset.dataId,
+                      );
                     });
                 },
               );
