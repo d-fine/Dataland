@@ -38,6 +38,7 @@
             <FormKit
               type="select"
               name="report"
+              v-model="currentReportValue"
               placeholder="Select a report"
               :options="['None...', ...injectReportsName]"
             />
@@ -125,6 +126,7 @@ export default defineComponent({
       })),
       qualityValue: "NA",
       currentValue: "",
+      currentReportValue: "",
     };
   },
   props: {
