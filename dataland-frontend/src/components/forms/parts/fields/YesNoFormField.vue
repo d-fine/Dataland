@@ -80,7 +80,7 @@
               :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
               placeholder="Data quality"
-              :options="qualityOptions"
+              :options="computeQualityOption"
             />
           </div>
         </div>
@@ -151,6 +151,13 @@ export default defineComponent({
   computed: {
     isDataQualityRequired(): boolean {
       return this.currentValue ?? false;
+    },
+    computeQualityOption(): object {
+      if (this.currentValue == "") {
+        return this.qualityOptions;
+      } else {
+        return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
+      }
     },
   },
   emits: ["reportsUpdated"],
