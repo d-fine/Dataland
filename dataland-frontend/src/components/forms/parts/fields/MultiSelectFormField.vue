@@ -2,6 +2,7 @@
   <div class="form-field" :data-test="dataTest">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <MultiSelectFormElement
+      ref="multiSelectFormElementRef"
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"

@@ -106,7 +106,7 @@ export default defineComponent({
         LimitedAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.LimitedAssurance),
         ReasonableAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.ReasonableAssurance),
       },
-        currentReportValue: "",
+      currentReportValue: "",
     };
   },
   props: BaseFormFieldProps,

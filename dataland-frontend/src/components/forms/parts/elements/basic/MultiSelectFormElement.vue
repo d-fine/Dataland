@@ -48,5 +48,14 @@ export default defineComponent({
     };
   },
   props: DropdownOptionFormFieldProps,
+  methods: {
+    /**
+     * Resets selected values
+     */
+    // eslint-disable-next-line vue/no-unused-properties
+    clearSelections() {
+      this.selections = [];
+    },
+  },
 });
 </script>
