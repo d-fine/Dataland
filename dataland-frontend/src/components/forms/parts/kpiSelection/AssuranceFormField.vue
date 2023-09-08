@@ -48,9 +48,9 @@
             <FormKit
               type="select"
               name="report"
+              v-model="currentReportValue"
               placeholder="Select a report"
               :options="['None...', ...injectReportsName]"
-              :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
           </div>
           <div>
@@ -106,6 +106,7 @@ export default defineComponent({
         LimitedAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.LimitedAssurance),
         ReasonableAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.ReasonableAssurance),
       },
+        currentReportValue: "",
     };
   },
   props: BaseFormFieldProps,
