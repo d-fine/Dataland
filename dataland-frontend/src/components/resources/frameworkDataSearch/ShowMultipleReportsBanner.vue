@@ -64,6 +64,7 @@ export default defineComponent({
     /**
      * Returns the index of the with the newest reporting period in the array containing all reporting periods.
      * @param reportingPeriods array containing all reporting periods.
+     * @returns index of the newest reporting period
      */
     calculateIndexOfNewestReportingPeriod(reportingPeriods: Array<string>): number {
       let indexOfHighestReportingPeriod = 0;
@@ -81,6 +82,7 @@ export default defineComponent({
      * Checks whether a report of the previous year exists.
      * @param reports array of all reports
      * @param indexOfNewestReport index of newest report in the reports array
+     * @returns returns a boolean wheter a report has been found
      */
     doPreviousReportsExist(reports: Array<{ [p: string]: CompanyReport }>, indexOfNewestReport: number): boolean {
       if (!indexOfNewestReport) return false;

@@ -207,6 +207,8 @@ export default defineComponent({
     /**
      * Extracts the reports and reporting periods for all data sets.
      * @param dataAndMetaInfoSets array of data sets includin meta information
+     * @returns array containing an array of company reports and an array of the corresponding reporting periods
+     * as strings
      */
     extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
       dataAndMetaInfoSets: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>,
