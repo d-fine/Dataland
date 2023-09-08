@@ -215,8 +215,8 @@ export default defineComponent({
     ): [({ [p: string]: CompanyReport } | undefined)[], Array<string>] {
       const reportingPeriods = [];
       let tempReportingPeriod: string | undefined;
-      for (let i = 0; i < dataAndMetaInfoSets.length; i++) {
-        tempReportingPeriod = dataAndMetaInfoSets[i].metaInfo.reportingPeriod;
+      for (const dataAndMetaInfoSet of dataAndMetaInfoSets) {
+        tempReportingPeriod = dataAndMetaInfoSet.metaInfo.reportingPeriod;
         if (tempReportingPeriod) {
           reportingPeriods.push(tempReportingPeriod);
         } else console.log("no reporting period given");
