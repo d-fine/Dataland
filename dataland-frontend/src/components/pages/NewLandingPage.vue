@@ -4,10 +4,10 @@
     <TheIntro :sections="landingPage?.sections" />
     <TheBrands :sections="landingPage?.sections" />
     <TheMission :sections="landingPage?.sections" />
-    <TheQuotes />
-    <TheStruggle />
-    <TheClaim />
+    <TheStruggle :sections="landingPage?.sections" />
     <TheHowItWorks />
+    <TheClaim :sections="landingPage?.sections" />
+    <TheQuotes />
     <TheCampaigns />
   </main>
   <TheFooter :isMobile="isMobile" />

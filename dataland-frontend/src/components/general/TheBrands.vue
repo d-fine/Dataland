@@ -1,7 +1,7 @@
 <template>
-  <section v-if="brandsSection" class="brands" role="region" aria-labelledby="brands-heading">
+  <section v-if="brandsSection" class="brands" role="region" aria-label="Brands Statement">
     <div class="brands__wrap">
-      <h2 id="brands-heading" class="brands__text">{{ brandsSection.text[0] }}</h2>
+      <h2 id="brands-heading" aria-labelledby="brands-heading" class="brands__text">{{ brandsSection.text[0] }}</h2>
       <div class="brands__list" role="list">
         <div class="brands__item" v-for="(imgSrc, index) in brandsSection.image" :key="index" role="listitem">
           <img :src="imgSrc" :alt="`Brand ${index + 1}`" class="brands__item-image" />

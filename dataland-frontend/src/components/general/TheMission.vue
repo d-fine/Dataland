@@ -1,27 +1,32 @@
 <template>
   <section v-if="brandsSection" class="mission" role="region" aria-label="Mission Statement">
-    <h2 id="mission-heading" aria-labelledby="mission-heading">
-      <template v-for="(part, index) in brandsSection.text" :key="index">
-        <span v-if="index === 1" role="emphasis">{{ part }}</span>
-        <template v-else>{{ part }}</template>
-      </template>
-    </h2>
-
-    <div class="mission__tiles" role="list">
-      <div
-        v-for="(card, index) in brandsSection.cards"
-        :key="index"
-        class="mission__tile"
-        :class="`mission__tile--type_${index + 1}`"
-        role="listitem"
-      >
-        <img :src="card.icon" :alt="card.text" class="mission__tile__icon" />
-        <p class="mission__tile__text">{{ card.text }}</p>
+    <div class="mission__wrapper">
+      <h2 id="mission-heading" aria-labelledby="mission-heading">
+        <template v-for="(part, index) in brandsSection.text" :key="index">
+          <span v-if="index === 1" role="emphasis">{{ part }}</span>
+          <template v-else>{{ part }}</template>
+        </template>
+      </h2>
+      <div class="mission__tiles" role="list">
+        <div
+          v-for="(card, index) in brandsSection.cards"
+          :key="index"
+          class="mission__tile"
+          :class="`mission__tile--type_${index + 1}`"
+          role="listitem"
+        >
+          <img :src="card.icon" :alt="card.text" class="mission__tile__icon" />
+          <p class="mission__tile__text">{{ card.text }}</p>
+        </div>
       </div>
+      <router-link
+        to="/mission"
+        class="mission__button mission__button--black"
+        aria-label="Read More About Our Mission"
+      >
+        OUR MISSION
+      </router-link>
     </div>
-    <router-link to="/mission" class="mission__button mission__button--black" aria-label="Read More About Our Mission">
-      OUR MISSION
-    </router-link>
   </section>
 </template>
 
@@ -42,13 +47,16 @@ const brandsSection = computed(() => {
   flex-direction: column;
   padding: 120px 0;
   align-items: center;
+  &__wrapper {
+    max-width: 1200px;
+    width: 100%;
+  }
   h2 {
     font-size: 160px;
     font-style: normal;
     font-weight: 600;
     line-height: 160px; /* 100% */
-    max-width: 984px;
-    margin: 0;
+    margin: 0 108px;
     span {
       color: #ff6813;
     }

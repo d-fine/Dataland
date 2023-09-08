@@ -1,6 +1,7 @@
 // ContentTypes.ts
 export interface Card {
-  icon: string;
+  icon?: string;
+  title?: string;
   text: string;
 }
 

@@ -1,7 +1,85 @@
 <template>
-  <div>struggle</div>
+  <section v-if="struggleSection" class="struggle" role="region" aria-label="Struggle Statement">
+    <div class="struggle__wrapper">
+      <h2 id="struggle-heading" aria-labelledby="struggle-heading">{{ struggleSection.text[0] }}</h2>
+      <div class="struggle__grid" role="list">
+        <div v-for="(card, index) in struggleSection.cards" :key="index" class="struggle__cell" role="listitem">
+          <img :src="card.icon" :alt="card.title" class="struggle__cell__icon" />
+          <h3 class="struggle__cell__title">{{ card.title }}</h3>
+          <p class="struggle__cell__text">{{ card.text }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
+<script setup lang="ts">
+import { computed } from "vue";
+import type { Section } from "@/types/ContentTypes";
 
-<script setup lang="ts"></script>
+const { sections } = defineProps<{ sections?: Section[] }>();
 
-<style scoped></style>
+const struggleSection = computed(() => {
+  return sections?.find((section) => section.title === "Struggle") || null;
+});
+</script>
+<style scoped lang="scss">
+.struggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120px 0;
+  background-color: #f6f6f6;
+  &__wrapper {
+    max-width: 848px;
+    width: 100%;
+  }
+  h2 {
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 78px; /* 121.875% */
+    margin: 0 0 68px;
+    text-align: left;
+    max-width: 668px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 32px;
+  }
+
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-right: 88px;
+
+    &__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 24px;
+    }
+
+    &__title {
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 32px; /* 133.333% */
+      letter-spacing: 0.25px;
+      margin: 0 0 8px;
+    }
+
+    &__text {
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 28px; /* 140% */
+      letter-spacing: 0.25px;
+      color: #5b5b5b;
+      text-align: left;
+      margin: 0;
+    }
+  }
+}
+</style>
