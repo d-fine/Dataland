@@ -1,20 +1,19 @@
 <template>
-  <div style="display: flex">
-    <h2 class="mb-3" style="font-size: 16px" data-test="frameworkNewDataTableTitle">
+  <div class="next-to-each-other my-4">
+    <h4 class="m-0" data-test="frameworkNewDataTableTitle">
       {{ `Data extracted from the company report.Company Reports(${reportingPeriods[indexOfNewestReportingPeriod]}):` }}
-    </h2>
+    </h4>
     <span id="reportList">
-      <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" style="font-size: 16px">
+      <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
         <DocumentLink :download-name="name" :reference="report.reference" font-style="font-semibold" />
-        <span v-if="index < reports[indexOfNewestReportingPeriod].length - 1"> | </span>
+        <!--        <span v-if="index < reports[indexOfNewestReportingPeriod].length - 1"> | </span>-->
       </span>
-      <span
-        v-if="doPreviousReportsExist(reports, indexOfNewestReportingPeriod)"
-        class="link"
-        style="text-align: right"
-        @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
-        >Previous years reports
-      </span>
+    </span>
+    <span
+      v-if="doPreviousReportsExist(reports, indexOfNewestReportingPeriod)"
+      class="link font-semibold underline mr-0 ml-auto"
+      @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
+      >Previous years reports
     </span>
   </div>
 </template>
@@ -99,9 +98,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-a:link {
-  color: var(--yellow-700);
-}
-</style>
