@@ -1,14 +1,18 @@
 <template>
   <div style="display: flex">
-    <h2 class="mb-0" style="font-size: 12px" data-test="frameworkNewDataTableTitle">
+    <h2 class="mb-3" style="font-size: 16px" data-test="frameworkNewDataTableTitle">
       {{ `Data extracted from the company report.Company Reports(${reportingPeriods[indexOfNewestReportingPeriod]}):` }}
     </h2>
     <span id="reportList">
-      <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index">
+      <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" style="font-size: 16px">
         <DocumentLink :download-name="name" :reference="report.reference" font-style="font-semibold" />
         <span v-if="index < reports[indexOfNewestReportingPeriod].length - 1"> | </span>
       </span>
-      <span class="link" style="text-align: right" @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
+      <span
+        v-if="doPreviousReportsExist(reports, indexOfNewestReportingPeriod)"
+        class="link"
+        style="text-align: right"
+        @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
         >Previous years reports
       </span>
     </span>
@@ -71,6 +75,24 @@ export default defineComponent({
         }
       }
       return indexOfHighestReportingPeriod;
+    },
+
+    /**
+     * Checks whether a report of the previous year exists.
+     * @param reports array of all reports
+     * @param indexOfNewestReport index of newest report in the reports array
+     */
+    doPreviousReportsExist(reports: Array<{ [p: string]: CompanyReport }>, indexOfNewestReport: number): boolean {
+      if (!indexOfNewestReport) return false;
+      let reportsFound = false;
+      reports.forEach((report, index) => {
+        if (index != indexOfNewestReport) {
+          if (report) {
+            reportsFound = true;
+          }
+        }
+      });
+      return reportsFound;
     },
   },
 });

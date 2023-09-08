@@ -120,10 +120,10 @@ export default defineComponent({
             )
           ).data;
           this.dataAndMetaInfoSets = fetchedData;
-          this.extractedReportsAndReportingPeriods = this.extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
-            this.dataAndMetaInfoSets,
-          );
         }
+        this.extractedReportsAndReportingPeriods = this.extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
+          this.dataAndMetaInfoSets,
+        );
         this.convertedDataAndMetaInfo = fetchedData.map(
           (dataAndMetaInfo) => new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfo),
         );

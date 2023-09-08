@@ -1,10 +1,10 @@
 <template>
-  <div class="grid" v-if="referencedReportsList.length > 0">
+  <div class="grid" style="text-alig: center" v-if="referencedReportsList.length > 0">
     <div class="col-12 text-left">
       <h2 class="mb-0">Previous years reports</h2>
     </div>
     <span v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
-      <div v-if="indexOuter !== indexOfNewestReportingPeriod + 100">
+      <div v-if="indexOuter !== indexOfNewestReportingPeriod">
         <span class="mb-4" style="font-size: 16px" data-test="titleOfReportingperiodInModal">
           {{ `Company Reports (${reportingPeriods[indexOuter]})` }}
         </span>
