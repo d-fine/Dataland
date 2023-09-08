@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euxo pipefail
 
 dependencies="./dataland-batch-manager/ ./dataland-backend/backendOpenApi.json ./build.gradle.kts ./gradle.properties ./settings.gradle.kts"
