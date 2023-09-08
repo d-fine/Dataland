@@ -3,7 +3,7 @@ import {
   formatNumberToReadableFormat,
   formatPercentageNumberAsString,
   formatAmountWithCurrency,
-} from "@/utils/Formatter.ts";
+} from "@/utils/Formatter";
 
 describe("Unit tests for formating data", () => {
   it("Check if file size display in more readable format", () => {
