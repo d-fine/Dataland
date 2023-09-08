@@ -53,6 +53,7 @@ export default defineComponent({
       };
       this.$dialog.open(PreviousReportsModal, {
         props: {
+          header: "Previous years reports",
           modal: true,
           dismissableMask: true,
         },

@@ -1,18 +1,19 @@
 <template>
-  <div class="grid" style="text-align: center" v-if="referencedReportsList.length > 0">
-    <div class="col-12 text-left">
-      <h2 class="mb-0">Previous years reports</h2>
-    </div>
-    <span v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
-      <span v-if="indexOuter !== indexOfNewestReportingPeriod">
-        <span class="mb-4" style="font-size: 16px" data-test="titleOfReportingperiodInModal">
-          {{ `Company Reports (${reportingPeriods[indexOuter]})` }}
-        </span>
-        <span v-for="(report, nameInner, indexInner) in referencedReportObject" :key="indexInner" class="row">
-          <DocumentLink :download-name="nameInner" :reference="report.reference" font-style="font-semibold" />
-        </span>
+  <div class="dialog-sm">
+    <div v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
+      <h4>{{ `Company Reports (${reportingPeriods[indexOuter]})` }}</h4>
+
+      <div v-for="(report, nameInner, indexInner) in referencedReportObject" :key="indexInner" class="row mb-2">
+        <DocumentLink :download-name="nameInner" :reference="report.reference" show-icon />
+      </div>
+
+      <!-- <span v-if="indexOuter !== indexOfNewestReportingPeriod">
+      <span class="mb-4" style="font-size: 16px" data-test="titleOfReportingperiodInModal">
+        {{ `Company Reports (${reportingPeriods[indexOuter]})` }}
       </span>
-    </span>
+      
+    </span> -->
+    </div>
   </div>
 </template>
 
@@ -43,8 +44,17 @@ export default defineComponent({
     this.reportingPeriods = dialogRefData.reportingPeriodsForTable;
     this.referencedReportsList = dialogRefData.referencedReportsForModal;
     this.indexOfNewestReportingPeriod = dialogRefData.indexOfNewestReportingPeriodForModal;
+    console.log(getLatestByReportDate([...dialogRefData.referencedReportsForModal]));
+    // [...dialogRefData.referencedReportsForModal].sort((a, b) => Math.max(...[...a.map(item=>item.reportDate]])));
   },
 });
+
+function getLatestByReportDate(items: Array<{ [p: string]: CompanyReport }>) {
+  return items.map((reports) => {
+    const reportDates = Object.values(reports).map((reportObject) => reportObject.reportDate);
+    return reportDates.sort().pop();
+  });
+}
 </script>
 
 <style scoped>
