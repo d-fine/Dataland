@@ -1,28 +1,19 @@
 <template>
-  <div class="grid" style="text-align: center" v-if="referencedReportsList.length > 0">
-    <div class="col-12 text-left">
-      <h2 data-test="modalTitle" class="mb-0">Previous years reports</h2>
-    </div>
-    <span
-      v-for="(referencedReportObject, indexOuter) in referencedReportsList"
-      :key="indexOuter"
-      class="row"
-      data-test="previousReportsList"
-    >
-      <span v-if="indexOuter !== indexOfNewestReportingPeriod">
-        <span class="mb-4" style="font-size: 16px" data-test="titleOfReportingPeriodInModal">
-          {{ `Company Reports (${reportingPeriods[indexOuter]})` }}
-        </span>
-        <span v-for="(report, nameInner, indexInner) in referencedReportObject" :key="indexInner" class="row">
-          <DocumentLink
-            data-test="previousReportsDocumentLink"
-            :download-name="nameInner"
-            :reference="report.reference"
-            font-style="font-semibold"
-          />
-        </span>
+  <div class="dialog-sm">
+    <div v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
+      <h4>{{ `Company Reports (${reportingPeriods[indexOuter]})` }}</h4>
+
+      <div v-for="(report, nameInner, indexInner) in referencedReportObject" :key="indexInner" class="row mb-2">
+        <DocumentLink :download-name="nameInner" :reference="report.reference" show-icon />
+      </div>
+
+      <!-- <span v-if="indexOuter !== indexOfNewestReportingPeriod">
+      <span class="mb-4" style="font-size: 16px" data-test="titleOfReportingperiodInModal">
+        {{ `Company Reports (${reportingPeriods[indexOuter]})` }}
       </span>
-    </span>
+
+    </span> -->
+    </div>
   </div>
 </template>
 
