@@ -40,7 +40,6 @@
               name="report"
               placeholder="Select a report"
               :options="['None...', ...injectReportsName]"
-              :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
           </div>
           <div>
