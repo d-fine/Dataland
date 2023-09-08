@@ -5,7 +5,12 @@
     </h4>
     <span id="reportList">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
-        <DocumentLink :download-name="name" :reference="report.reference" font-style="font-semibold" />
+        <DocumentLink
+          data-test="documentLinkTest"
+          :download-name="name"
+          :reference="report.reference"
+          font-style="font-semibold"
+        />
         <!--        <span v-if="index < reports[indexOfNewestReportingPeriod].length - 1"> | </span>-->
       </span>
     </span>
@@ -13,6 +18,7 @@
       v-if="doPreviousReportsExist(reports, indexOfNewestReportingPeriod)"
       class="link font-semibold underline mr-0 ml-auto"
       @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
+      data-test="previousReportsLinkToModal"
       >Previous years reports
     </span>
   </div>

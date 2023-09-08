@@ -1,8 +1,10 @@
 import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
+import ShowMultipleReports from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import type { CompanyReport } from "@clients/backend";
 
 describe("Component test for the NewEUTaxonomy Page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
@@ -68,4 +70,76 @@ describe("Component test for the NewEUTaxonomy Page", () => {
         .should("contain", gammaContributionToClimateChangeMitigation);
     });
   });
+  it("Checks if the reports banner and the corresponding modal is properly displayed", () => {
+    const reportsAndReportingPeriods =
+      extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(mockedBackendDataForTest);
+    const hightestIndexOfReportingPeriods = calculateIndexOfNewestReportingPeriod(reportsAndReportingPeriods[1]);
+    console.log(reportsAndReportingPeriods[0]);
+    cy.mountWithDialog(
+      ShowMultipleReports,
+      {
+        keycloak: minimalKeycloakMock({}),
+      },
+      {
+        reports: reportsAndReportingPeriods[0],
+        reportingPeriods: reportsAndReportingPeriods[1],
+      },
+    ).then(() => {
+      cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
+        "Data extracted from the company report.Company Reports",
+      );
+      cy.get('[data-test="documentLinkTest"]').contains("IntegratedReport");
+      cy.get('[data-test="documentLinkTest"]').contains("ESEFReport");
+      cy.get('[data-test="documentLinkTest"]').contains("AnnualReport");
+      cy.get('[data-test="documentLinkTest"]').contains("SustainabilityReport");
+
+      cy.get(`[data-test="previousReportsLinkToModal"]`).contains("Previous years reports").click();
+      cy.get(`[data-test="modalTitle"]`).contains("Previous years reports");
+      for (let i = 0; i < reportsAndReportingPeriods[1]?.length; i++) {
+        if (i != hightestIndexOfReportingPeriods) {
+          cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportsAndReportingPeriods[1][i]})`);
+        }
+      }
+    });
+  });
 });
+
+/**
+ * Extracts the reports and reporting periods for all data sets.
+ * @param dataAndMetaInfoSets array of data sets including meta information
+ * @returns array containing an array of company reports and an array of the corresponding reporting periods
+ * as strings
+ */
+export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
+  dataAndMetaInfoSets: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>,
+): [{ [p: string]: CompanyReport } | undefined, Array<string>] {
+  const reportingPeriods = [];
+  let tempReportingPeriod: string | undefined;
+  for (const dataAndMetaInfoSet of dataAndMetaInfoSets) {
+    tempReportingPeriod = dataAndMetaInfoSet.metaInfo.reportingPeriod;
+    if (tempReportingPeriod) {
+      reportingPeriods.push(tempReportingPeriod);
+    } else console.log("no reporting period given");
+  }
+  const allReports = dataAndMetaInfoSets.map(
+    (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
+  );
+  return [allReports, reportingPeriods];
+}
+
+/**
+ * Returns the index of the with the newest reporting period in the array containing all reporting periods.
+ * @param reportingPeriods array containing all reporting periods.
+ * @returns index of the newest reporting period
+ */
+export function calculateIndexOfNewestReportingPeriod(reportingPeriods: Array<string>): number {
+  let indexOfHighestReportingPeriod = 0;
+  let tempHighestReportingPeriodNumber = 0;
+  for (let i = 0; i < reportingPeriods.length; i++) {
+    if (Number(reportingPeriods[i]) > tempHighestReportingPeriodNumber) {
+      tempHighestReportingPeriodNumber = Number(reportingPeriods[i]);
+      indexOfHighestReportingPeriod = i;
+    }
+  }
+  return indexOfHighestReportingPeriod;
+}
