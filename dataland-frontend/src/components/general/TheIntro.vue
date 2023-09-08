@@ -4,11 +4,16 @@
       v-for="(img, index) in introSection.image"
       :key="index"
       :src="img"
-      :alt="introSection.text"
+      :alt="introSection.text.join(' ')"
       class="intro__img"
     />
 
-    <h1 class="intro__text">{{ introSection.text }}</h1>
+    <h1 class="intro__text">
+      <template v-for="(part, index) in introSection.text" :key="index">
+        <span v-if="index === 0">{{ part }}</span>
+        <template v-else>{{ part }}</template>
+      </template>
+    </h1>
   </section>
 </template>
 
@@ -38,10 +43,13 @@ const introSection = computed(() => {
     text-align: center;
     font-size: 100px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 300;
     line-height: 106px;
     letter-spacing: 0.25px;
     margin: 0;
+    span {
+      font-weight: 700;
+    }
   }
 }
 </style>

@@ -1,7 +1,7 @@
 // ContentTypes.ts
 export interface Section {
   title: string;
-  text: string;
+  text: string[];
   image?: string[];
 }
 
