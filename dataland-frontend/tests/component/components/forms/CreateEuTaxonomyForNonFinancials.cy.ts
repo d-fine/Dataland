@@ -6,7 +6,7 @@ import { type CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clien
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 
-describe("Component tests for the CreateP2pDataset that test dependent fields", () => {
+describe("Component tests for the Eu Taxonomy for non financials that test dependent fields", () => {
   /**
    * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
    * whose name equals the one of a file selected before
@@ -134,38 +134,38 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type("50");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type("4000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(1).select(51);
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("a");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]').clear().type("a");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be a number")
       .should("exist");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("-12");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]').clear().type("-12");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be between 0 and 100")
       .should("exist");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigation"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaption"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptionInPercent"]').clear().type("15");
     cy.get(
-      'div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources"]',
+      'div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent"]',
     )
       .clear()
       .type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomy"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomyInPercent"]')
       .clear()
       .type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControl"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControlInPercent"]')
       .clear()
       .type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaption"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptionInPercent"]').clear().type("15");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type("12000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(2).select(51);
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(3).clear().type("13");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(3).clear().type("13000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(3).select(53);
-    cy.get('div[label="Revenue"] input[name="enablingShare"]').clear().type("12");
-    cy.get('div[label="Revenue"] input[name="transitionalShare"]').clear().type("12");
+    cy.get('div[label="Revenue"] input[name="enablingShareInPercent"]').clear().type("12");
+    cy.get('div[label="Revenue"] input[name="transitionalShareInPercent"]').clear().type("12");
   }
 
   /**
