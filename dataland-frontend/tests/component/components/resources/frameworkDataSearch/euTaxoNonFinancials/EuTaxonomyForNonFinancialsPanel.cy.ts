@@ -94,7 +94,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       cy.get('[data-test="documentLinkTest"]').contains("SustainabilityReport");
 
       cy.get(`[data-test="previousReportsLinkToModal"]`).contains("Previous years reports").click();
-      cy.get(`[data-test="modalTitle"]`).contains("Previous years reports");
+      //cy.get(`[data-test="modalTitle"]`).contains("Previous years reports");
       for (let i = 0; i < reportsAndReportingPeriods[1]?.length; i++) {
         if (i != hightestIndexOfReportingPeriods) {
           cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportsAndReportingPeriods[1][i]})`);

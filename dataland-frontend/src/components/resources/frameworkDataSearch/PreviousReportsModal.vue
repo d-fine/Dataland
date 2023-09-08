@@ -3,7 +3,12 @@
     <div v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
       <h4>{{ `Company Reports (${reportingPeriods[indexOuter]})` }}</h4>
 
-      <div v-for="(report, nameInner, indexInner) in referencedReportObject" :key="indexInner" class="row mb-2">
+      <div
+        v-for="(report, nameInner, indexInner) in referencedReportObject"
+        :key="indexInner"
+        class="row mb-2"
+        data-test="previousReportsList"
+      >
         <DocumentLink :download-name="nameInner" :reference="report.reference" show-icon />
       </div>
 
