@@ -5,6 +5,7 @@
   </div>
   <div v-show="!waitingForData" data-test="multipleReportsBanner">
     <ShowMultipleReportsBanner
+      data-test="multipleReportsBanner"
       v-if="
         extractedReportsAndReportingPeriods &&
         extractedReportsAndReportingPeriods[0] &&
