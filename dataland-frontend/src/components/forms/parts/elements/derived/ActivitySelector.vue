@@ -1,15 +1,15 @@
 <template>
   <UploadFormSubcategoryHeader label="Activity Name" description="Name of the activity." />
   <div class="form-field next-to-each-other">
-    <p>
-      <b> {{ selectedActivities ? selectedActivities.name : "" }}</b>
+    <p v-if="selectedActivities.name">
+      <b> {{ selectedActivities.name }}</b>
     </p>
 
     <FormKit type="hidden" name="activityName" v-model="selectedActivityValue" />
 
     <PrimeButton
       data-test="dataTestChooseActivityButton"
-      :label="selectedActivities ? 'Change Activity' : 'Choose Activity'"
+      :label="selectedActivities.name ? 'Change Activity' : 'Choose Activity'"
       class="p-button-text p-0 m-0"
       :icon="selectedActivities ? 'pi pi-pencil' : 'pi pi-list'"
       @focus="inputFocused"
@@ -43,12 +43,12 @@
       ref="multiSelectFormFieldRef"
       dataTest="selectNaceCodes"
       name="naceCodes"
-      :validation="NaceCodesForActivities.length ? 'required' : ''"
-      validation-label="Nace Codes for Activity"
+      :validation="naceCodesForActivities.length ? 'required' : ''"
+      validation-label="NACE codes for Activity"
       description="The NACE codes associated with this activity"
-      label="Nace Codes"
-      placeholder="Chose Nace Codes for Activity"
-      :options="NaceCodesForActivities"
+      label="NACE codes"
+      :placeholder="selectedActivityValue ? 'Chose NACE codes for Activity' : 'Please select an activity before selecting NACE code' "
+      :options="naceCodesForActivities"
       innerClass="long"
     />
   </div>
@@ -98,10 +98,10 @@ export default defineComponent({
       return {};
     },
 
-    NaceCodesForActivities() {
-      if (this.selectedActivities?.nace_codes) {
+    naceCodesForActivities() {
+      if (this.selectedActivities?.naceCodes) {
         this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
-        return (this.selectedActivities.nace_codes as string).split(", ").map((naceCode: string) => {
+        return this.selectedActivities.naceCodes.map((naceCode: string) => {
           const naceCodeWithoutLetter = naceCode.substring(1);
           const convertedNaceCode = convertNace(
             naceCodeWithoutLetter.length === 1 ? `0${naceCodeWithoutLetter}` : naceCodeWithoutLetter,
