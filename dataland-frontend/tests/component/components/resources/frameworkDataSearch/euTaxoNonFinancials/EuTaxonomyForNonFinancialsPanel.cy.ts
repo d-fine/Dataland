@@ -3,7 +3,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { roundNumber } from "@/utils/NumberConversionUtils";
-import { formatAmountWithCurrency} from "@/utils/Formatter";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
 
 describe("Component test for the EUTaxonomy Page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
