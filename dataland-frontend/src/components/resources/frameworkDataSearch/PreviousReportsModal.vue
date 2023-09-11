@@ -39,6 +39,8 @@ export default defineComponent({
     };
     this.reportingPeriods = dialogRefData.reportingPeriodsForTable;
     this.referencedReportsList = dialogRefData.referencedReportsForModal;
+    this.reportingPeriods.pop();
+    this.referencedReportsList.pop();
     this.reportingPeriods.reverse();
     this.referencedReportsList.reverse();
   },
