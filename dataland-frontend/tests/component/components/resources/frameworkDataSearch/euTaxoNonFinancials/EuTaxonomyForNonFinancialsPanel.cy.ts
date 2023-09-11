@@ -114,7 +114,6 @@ describe("Component test for the EuTaxonomy Page", () => {
           }
         }
       }
-      cy.wait(5000);
     });
   });
 });
