@@ -6,7 +6,6 @@ import {
   type AmountWithCurrency,
   type EuTaxonomyDataForNonFinancials,
   type EuTaxonomyDetailsPerCashFlowType,
-  YesNo,
 } from "@clients/backend";
 import { generateArray, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
@@ -17,6 +16,7 @@ import { faker } from "@faker-js/faker";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateDatapointWithUnit } from "@e2e/fixtures/common/DataPointFixtures";
+import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 
 /**
  * Generates a random amount of money
@@ -90,31 +90,19 @@ function generateAlignedActivity(undefinedProbabilityOfFields?: number): EuTaxon
       randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
-    dnshToClimateChangeMitigation: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
-      undefinedProbabilityOfFields,
-    ),
-    dnshToClimateChangeAdaption: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
-      undefinedProbabilityOfFields,
-    ),
+    dnshToClimateChangeMitigation: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
+    dnshToClimateChangeAdaption: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
     dnshToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
+      randomYesNo(),
       undefinedProbabilityOfFields,
     ),
-    dnshToTransitionToACircularEconomy: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
-      undefinedProbabilityOfFields,
-    ),
-    dnshToPollutionPreventionAndControl: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
-      undefinedProbabilityOfFields,
-    ),
+    dnshToTransitionToACircularEconomy: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
+    dnshToPollutionPreventionAndControl: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
     dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
+      randomYesNo(),
       undefinedProbabilityOfFields,
     ),
-    minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo)), undefinedProbabilityOfFields),
+    minimumSafeguards: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
   };
 }
 

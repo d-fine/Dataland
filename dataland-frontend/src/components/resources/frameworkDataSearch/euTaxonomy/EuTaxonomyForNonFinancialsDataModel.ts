@@ -46,8 +46,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "referencedReports",
             label: "Referenced Reports",
-            description:
-              "Please upload all relevant reports for this dataset in the PDF format.",
+            description: "Please upload all relevant reports for this dataset in the PDF format.",
             unit: "",
             component: "UploadReports",
             evidenceDesired: false,
@@ -181,8 +180,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
             label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-            description:
-              "Grade of the substantial contribution criterion fulfillment",
+            description: "Grade of the substantial contribution criterion fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -212,8 +210,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
             label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-            description:
-              "Grade of the substantial contribution criterion fulfillment",
+            description: "Grade of the substantial contribution criterion fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -268,7 +265,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "enablingShareInPercent",
             label: "Enabling Revenue",
-            description: "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
+            description:
+              "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -278,7 +276,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "transitionalShareInPercent",
             label: "Transitional Revenue",
-            description: "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
+            description:
+              "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -356,8 +355,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
             label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-            description:
-              "Grade of the substantial contribution criterion fulfillment",
+            description: "Grade of the substantial contribution criterion fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -387,8 +385,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
             label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-            description:
-              "Grade of the substantial contribution criterion fulfillment",
+            description: "Grade of the substantial contribution criterion fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -421,8 +418,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "nonAlignedActivities",
             label: "Non-Aligned CapEx per Activity",
-            description:
-              "Absolute value and share of the CapEx per activity that is not taxonomy-aligned but eligible",
+            description: "Absolute value and share of the CapEx per activity that is not taxonomy-aligned but eligible",
             unit: "",
             component: "NonAlignedActivitiesFormField",
             evidenceDesired: false,
@@ -443,7 +439,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "enablingShareInPercent",
             label: "Enabling CapEx",
-            description: "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
+            description:
+              "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -453,7 +450,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "transitionalShareInPercent",
             label: "Transitional CapEx",
-            description: "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
+            description:
+              "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -531,8 +529,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
             label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-            description:
-              "Grade of the substantial contribution criterion fulfillment",
+            description: "Grade of the substantial contribution criterion fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -562,8 +559,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
             label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-            description:
-              "Grade of the substantial contribution criterion fulfillment",
+            description: "Grade of the substantial contribution criterion fulfillment",
             unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -596,8 +592,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "nonAlignedActivities",
             label: "Non-Aligned OpEx per Activity",
-            description:
-              "Absolute value and share of the opex per activity that is not taxonomy-aligned but eligible",
+            description: "Absolute value and share of the opex per activity that is not taxonomy-aligned but eligible",
             unit: "",
             component: "NonAlignedActivitiesFormField",
             evidenceDesired: false,
@@ -618,7 +613,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "enablingShareInPercent",
             label: " Enabling OpEx",
-            description: "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors",
+            description:
+              "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -628,7 +624,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "transitionalShareInPercent",
             label: "Transitional OpEx",
-            description: "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
+            description:
+              "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,

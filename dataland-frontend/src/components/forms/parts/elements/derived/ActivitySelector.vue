@@ -47,7 +47,9 @@
       validation-label="NACE codes for Activity"
       description="The NACE codes associated with this activity"
       label="NACE codes"
-      :placeholder="selectedActivityValue ? 'Chose NACE codes for Activity' : 'Please select an activity before selecting NACE code' "
+      :placeholder="
+        selectedActivityValue ? 'Chose NACE codes for Activity' : 'Please select an activity before selecting NACE code'
+      "
       :options="naceCodesForActivities"
       innerClass="long"
     />

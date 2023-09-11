@@ -89,7 +89,12 @@ export function compareObjectKeysAndValuesDeep(objA: Record<string, any>, objB: 
     }
   }
 }
-
+/**
+ * This method compares if two values are the same, if not it will throw an error
+ * @param valueA the first value of the comparison
+ * @param valueB the second value of the comparison
+ * @param newPath is the path of the current key of value A that is being compared to value B
+ */
 function checkIfValuesAreIdentical(valueA: any, valueB: any, newPath: string) {
   const throwErrorBecauseOfFieldValue = (fieldPath: string, fieldValueA: object, fieldValueB: object): void => {
     throw new Error(`Field ${fieldPath} is not equal. A: ${fieldValueA}, B: ${fieldValueB}`);
