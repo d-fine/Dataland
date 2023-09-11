@@ -103,7 +103,6 @@ describe("Component test for the EuTaxonomy Page", () => {
       cy.get('[data-test="documentLinkTest"]').contains("IntegratedReport");
       //cy.get('[data-test="documentLinkTest"]').contains("ESEFReport");
       //cy.get('[data-test="documentLinkTest"]').contains("AnnualReport");
-      //cy.get('[data-test="documentLinkTest"]').contains("SustainabilityReport");
 
       cy.get(`[data-test="previousReportsLinkToModal"]`).contains("Previous years reports").click();
       for (let i = 0; i < reportsAndReportingPeriods[1]?.length; i++) {
