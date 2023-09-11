@@ -37,8 +37,8 @@ export default defineComponent({
       reportingPeriodsForTable: Array<string>;
       referencedReportsForModal: Array<{ [p: string]: CompanyReport }>;
     };
-    this.reportingPeriods = dialogRefData.reportingPeriodsForTable;
-    this.referencedReportsList = dialogRefData.referencedReportsForModal;
+    this.reportingPeriods = [...dialogRefData.reportingPeriodsForTable];
+    this.referencedReportsList = [...dialogRefData.referencedReportsForModal];
     this.reportingPeriods.pop();
     this.referencedReportsList.pop();
     this.reportingPeriods.reverse();
