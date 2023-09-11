@@ -1,12 +1,12 @@
 import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
-import ShowMultipleReports from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
+import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
 import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type { CompanyReport } from "@clients/backend";
 
-describe("Component test for the NewEUTaxonomy Page", () => {
+describe("Component test for the EuTaxonomy Page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
 
   before(function () {
@@ -76,7 +76,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
     const hightestIndexOfReportingPeriods = calculateIndexOfNewestReportingPeriod(reportsAndReportingPeriods[1]);
     console.log(reportsAndReportingPeriods[0]);
     cy.mountWithDialog(
-      ShowMultipleReports,
+      ShowMultipleReportsBanner,
       {
         keycloak: minimalKeycloakMock({}),
       },
@@ -98,8 +98,12 @@ describe("Component test for the NewEUTaxonomy Page", () => {
       for (let i = 0; i < reportsAndReportingPeriods[1]?.length; i++) {
         if (i != hightestIndexOfReportingPeriods) {
           cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportsAndReportingPeriods[1][i]})`);
+          for (const key in reportsAndReportingPeriods[0][i]) {
+            cy.get(`[data-test='Report-Download-${key}']`).contains(key);
+          }
         }
       }
+      cy.wait(5000);
     });
   });
 });
@@ -112,7 +116,7 @@ describe("Component test for the NewEUTaxonomy Page", () => {
  */
 export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
   dataAndMetaInfoSets: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>,
-): [{ [p: string]: CompanyReport } | undefined, Array<string>] {
+): [Array<{ [p: string]: CompanyReport } | undefined>, Array<string>] {
   const reportingPeriods = [];
   let tempReportingPeriod: string | undefined;
   for (const dataAndMetaInfoSet of dataAndMetaInfoSets) {
@@ -121,7 +125,7 @@ export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
       reportingPeriods.push(tempReportingPeriod);
     } else console.log("no reporting period given");
   }
-  const allReports = dataAndMetaInfoSets.map(
+  const allReports: Array<{ [p: string]: CompanyReport } | undefined> = dataAndMetaInfoSets.map(
     (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
   );
   return [allReports, reportingPeriods];

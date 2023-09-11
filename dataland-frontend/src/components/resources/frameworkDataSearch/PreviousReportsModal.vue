@@ -1,14 +1,9 @@
 <template>
-  <div class="dialog-sm">
+  <div class="dialog-sm" data-test="previousReportsList">
     <div v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
       <h4>{{ `Company Reports (${reportingPeriods[indexOuter]})` }}</h4>
 
-      <div
-        v-for="(report, nameInner, indexInner) in referencedReportObject"
-        :key="indexInner"
-        class="row mb-2"
-        data-test="previousReportsList"
-      >
+      <div v-for="(report, nameInner, indexInner) in referencedReportObject" :key="indexInner" class="row mb-2">
         <DocumentLink :download-name="nameInner" :reference="report.reference" show-icon />
       </div>
 
