@@ -5,7 +5,7 @@
     <TheBrands :sections="landingPage?.sections" />
     <TheMission :sections="landingPage?.sections" />
     <TheStruggle :sections="landingPage?.sections" />
-    <TheHowItWorks />
+    <TheHowItWorks :sections="landingPage?.sections" />
     <TheClaim :sections="landingPage?.sections" />
     <TheQuotes />
     <TheCampaigns />
