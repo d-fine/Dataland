@@ -17,7 +17,6 @@ const UploadEuTaxonomyDataForFinancials = (): Promise<RouteComponent> =>
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
-const ViewTeaserCompanyData = (): Promise<RouteComponent> => import("@/components/pages/ViewTeaserCompanyData.vue");
 const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
 const UploadSfdr = (): Promise<RouteComponent> => import("@/components/pages/UploadSfdr.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
@@ -38,9 +37,18 @@ const routes = [
     },
   },
   {
-    path: "/preview",
-    name: "View Sample Data in Preview Mode",
-    component: ViewTeaserCompanyData,
+    path: "/lp",
+    name: "New Landing Page",
+    component: NewLandingPage,
+    props: {
+      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
+    },
+  },
+  {
+    path: `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
+
+    name: "Eu Taxonomy For Non-Financials Sample",
+    component: ViewEuTaxonomyNonFinancialsSample,
   },
   {
     path: "/companies/choose",
