@@ -2,9 +2,9 @@ import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDat
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
+import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type { CompanyReport } from "@clients/backend";
-import { roundNumber } from "@/utils/NumberConversionUtils";
 
 describe("Component test for the EuTaxonomy Page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
@@ -35,47 +35,35 @@ describe("Component test for the EuTaxonomy Page", () => {
       const capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
       const capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
 
-      const betaTotalAlignedCapexPercentage = roundNumber(
-        assertDefined(capexOfDatasetBeta.alignedShare?.relativeShareInPercent) * 100,
-        2,
-      );
+      const betaTotalAlignedCapexPercentage = capexOfDatasetBeta.totalAlignedShare?.relativeShareInPercent?.toFixed(2);
 
       const gammaTotalAlignedCapexAbsoluteShareString =
-        Math.round(assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.amount)).toString() +
-        ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
+        Math.round(assertDefined(capexOfDatasetGamma.totalAlignedShare?.absoluteShare?.amount)).toString() +
+        ` ${assertDefined(capexOfDatasetGamma.totalAlignedShare?.absoluteShare?.currency)}`;
 
-      const alphaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent) * 100,
-        2,
-      );
+      const alphaContributionToClimateChangeMitigation = assertDefined(
+        capexOfDatasetAlpha.substantialContributionCriteria,
+      )
+        [EnvironmentalObjective.ClimateMitigation].toFixed(2)
+        .toString();
 
-      const gammaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigationInPercent) * 100,
-        2,
-      );
+      const gammaContributionToClimateChangeMitigation = assertDefined(
+        capexOfDatasetGamma.substantialContributionCriteria,
+      )
+        [EnvironmentalObjective.ClimateMitigation].toFixed(2)
+        .toString();
 
       cy.get(`[data-test='CapEx']`).click();
+      cy.contains("span", "Total Aligned CapEx").click();
 
-      cy.get('tr:has(td > span:contains("Aligned CapEx"))')
-        .first()
-        .next("tr")
-        .find("span")
-        .should("contain", "Percentage")
-        .should("contain", betaTotalAlignedCapexPercentage);
+      cy.contains("td", "Percentage").siblings("td").find("span").should("contain", betaTotalAlignedCapexPercentage);
 
-      cy.get('tr:has(td > span:contains("Aligned CapEx"))')
-        .first()
-        .next("tr")
-        .next("tr")
+      cy.contains("td", "Absolute share")
+        .siblings("td")
         .find("span")
-        .should("contain", "Absolute share")
         .should("contain", gammaTotalAlignedCapexAbsoluteShareString);
 
-      cy.get('span[data-test="CapEx"]')
-        .parent()
-        .parent()
-        .parent()
-        .contains("td", "Substantial Contribution to Climate Change Mitigation")
+      cy.contains("td", "Substantial Contribution to Climate Change Mitigation")
         .siblings("td")
         .find("span")
         .should("contain", alphaContributionToClimateChangeMitigation)
@@ -86,7 +74,6 @@ describe("Component test for the EuTaxonomy Page", () => {
     const reportsAndReportingPeriods =
       extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(mockedBackendDataForTest);
     const hightestIndexOfReportingPeriods = calculateIndexOfNewestReportingPeriod(reportsAndReportingPeriods[1]);
-    console.log(reportsAndReportingPeriods[0]);
     cy.mountWithDialog(
       ShowMultipleReportsBanner,
       {
@@ -115,7 +102,6 @@ describe("Component test for the EuTaxonomy Page", () => {
           }
         }
       }
-      cy.wait(5000);
     });
   });
 });
@@ -135,7 +121,7 @@ export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
     tempReportingPeriod = dataAndMetaInfoSet.metaInfo.reportingPeriod;
     if (tempReportingPeriod) {
       reportingPeriods.push(tempReportingPeriod);
-    } else console.log("no reporting period given");
+    }
   }
   const allReports: Array<{ [p: string]: CompanyReport } | undefined> = dataAndMetaInfoSets.map(
     (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,

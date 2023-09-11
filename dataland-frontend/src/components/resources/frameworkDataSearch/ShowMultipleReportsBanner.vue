@@ -54,6 +54,7 @@ export default defineComponent({
       const passedData = {
         reportingPeriodsForTable: reportingPeriods,
         referencedReportsForModal: this.reports,
+        indexOfNewestReportingPeriod: this.indexOfNewestReportingPeriod,
       };
       this.$dialog.open(PreviousReportsModal, {
         props: {
