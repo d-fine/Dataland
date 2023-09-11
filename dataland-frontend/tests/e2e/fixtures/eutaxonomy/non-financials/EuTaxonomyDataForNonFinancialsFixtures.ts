@@ -142,7 +142,10 @@ export function generateEuTaxonomyPerCashflowType(
       generateFinancialShare(undefinedProbabilityOfFields),
       undefinedProbabilityOfFields,
     ),
-    nonAlignedActivities: valueOrUndefined(generateArray(generateActivity, 1, 3, undefinedProbabilityOfFields)),
+    nonAlignedActivities: valueOrUndefined(
+      generateArray(generateActivity, 1, 3, undefinedProbabilityOfFields),
+      undefinedProbabilityOfFields,
+    ),
     alignedShare: valueOrUndefined(generateFinancialShare(undefinedProbabilityOfFields), undefinedProbabilityOfFields),
     substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(
       randomPercentageValue(),
@@ -168,7 +171,10 @@ export function generateEuTaxonomyPerCashflowType(
       randomPercentageValue(),
       undefinedProbabilityOfFields,
     ),
-    alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity, 1, 3, undefinedProbabilityOfFields)),
+    alignedActivities: valueOrUndefined(
+      generateArray(generateAlignedActivity, 1, 3, undefinedProbabilityOfFields),
+      undefinedProbabilityOfFields,
+    ),
     enablingShareInPercent: valueOrUndefined(randomPercentageValue(), undefinedProbabilityOfFields),
     transitionalShareInPercent: valueOrUndefined(randomPercentageValue(), undefinedProbabilityOfFields),
   };

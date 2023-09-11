@@ -122,6 +122,8 @@ function createQualityAndDataSourceAndComment(
   ) {
     dataSource = generateDataSource(reports);
     comment = faker.git.commitMessage();
+  } else {
+    dataSource = { report: "", page: undefined, tagName: undefined };
   }
   return { dataSource, comment };
 }
