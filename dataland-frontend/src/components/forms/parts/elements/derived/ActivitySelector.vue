@@ -40,9 +40,10 @@
 
   <div class="my-4">
     <MultiSelectFormField
+      ref="multiSelectFormFieldRef"
       dataTest="selectNaceCodes"
       name="naceCodes"
-      validation="required"
+      :validation="NaceCodesForActivities.length ? 'required' : ''"
       validation-label="Nace Codes for Activity"
       description="The NACE codes associated with this activity"
       label="Nace Codes"
@@ -99,6 +100,7 @@ export default defineComponent({
 
     NaceCodesForActivities() {
       if (this.selectedActivities?.nace_codes) {
+        this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
         return (this.selectedActivities.nace_codes as string).split(", ").map((naceCode: string) => {
           const naceCodeWithoutLetter = naceCode.substring(1);
           const convertedNaceCode = convertNace(
