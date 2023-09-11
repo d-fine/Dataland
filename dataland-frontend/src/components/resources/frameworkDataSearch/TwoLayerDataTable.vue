@@ -48,71 +48,75 @@
               slotProps.data.content[reportingPeriodWithDataId.dataId] !== null
             "
           >
-            <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
-              <a
-                v-if="
-                  slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
-                  slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
-                "
-                @click="
-                  openModalAndDisplayValuesInSubTable(
-                    slotProps.data.content[reportingPeriodWithDataId.dataId],
-                    slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey,
-                    slotProps.data.kpiFormFieldComponent,
-                  )
-                "
-                class="link"
-                >Show "{{ slotProps.data.kpiLabel }}"
-                <em class="material-icons" aria-hidden="true" title=""> dataset </em>
-              </a>
+            <span
+              :data-test="`${reportingPeriodWithDataId.reportingPeriod}_${slotProps.data.categoryKey}_${slotProps.data.kpiKey}`"
+            >
+              <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
+                <a
+                  v-if="
+                    slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
+                    slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
+                  "
+                  @click="
+                    openModalAndDisplayValuesInSubTable(
+                      slotProps.data.content[reportingPeriodWithDataId.dataId],
+                      slotProps.data.kpiLabel,
+                      slotProps.data.kpiKey,
+                      slotProps.data.kpiFormFieldComponent,
+                    )
+                  "
+                  class="link"
+                  >Show "{{ slotProps.data.kpiLabel }}"
+                  <em class="material-icons" aria-hidden="true" title=""> dataset </em>
+                </a>
 
-              <span v-else> {{ slotProps.data.content[reportingPeriodWithDataId.dataId][0] }} </span>
-            </template>
-            <span
-              v-else-if="
-                slotProps.data.kpiFormFieldComponent === 'PercentageFormField' &&
-                slotProps.data.content[reportingPeriodWithDataId.dataId] !== ''
-              "
-            >
-              {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }}</span
-            >
-            <span
-              v-else-if="
-                typeof slotProps.data.content[reportingPeriodWithDataId.dataId] === 'object' &&
-                slotProps.data.content[reportingPeriodWithDataId.dataId]?.value !== undefined
-              "
-            >
-              <span
-                v-if="
-                  isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
-                  hasDocument(slotProps.data.content[reportingPeriodWithDataId.dataId])
-                "
-              >
-                <DocumentLink
-                  :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
-                  :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.name"
-                  :reference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.reference"
-                  show-icon
-                />
-              </span>
+                <span v-else> {{ slotProps.data.content[reportingPeriodWithDataId.dataId][0] }} </span>
+              </template>
               <span
                 v-else-if="
-                  isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
-                  isCertificate(slotProps.data.kpiLabel)
+                  slotProps.data.kpiFormFieldComponent === 'PercentageFormField' &&
+                  slotProps.data.content[reportingPeriodWithDataId.dataId] !== ''
                 "
               >
-                {{
-                  slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes
-                    ? yesLabelMap.get(true)
-                    : noLabelMap.get(true)
-                }}
+                {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} %</span
+              >
+              <span
+                v-else-if="
+                  typeof slotProps.data.content[reportingPeriodWithDataId.dataId] === 'object' &&
+                  slotProps.data.content[reportingPeriodWithDataId.dataId]?.value !== undefined
+                "
+              >
+                <span
+                  v-if="
+                    isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
+                    hasDocument(slotProps.data.content[reportingPeriodWithDataId.dataId])
+                  "
+                >
+                  <DocumentLink
+                    :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
+                    :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.name"
+                    :reference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.reference"
+                    show-icon
+                  />
+                </span>
+                <span
+                  v-else-if="
+                    isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
+                    isCertificate(slotProps.data.kpiLabel)
+                  "
+                >
+                  {{
+                    slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes
+                      ? yesLabelMap.get(true)
+                      : noLabelMap.get(true)
+                  }}
+                </span>
+                <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}</span>
               </span>
-              <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}</span>
+              <span v-else style="white-space: pre-wrap">{{
+                slotProps.data.content[reportingPeriodWithDataId.dataId]
+              }}</span>
             </span>
-            <span v-else style="white-space: pre-wrap">{{
-              slotProps.data.content[reportingPeriodWithDataId.dataId]
-            }}</span>
           </template>
         </template>
       </Column>

@@ -1,12 +1,20 @@
 import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
+import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import {
+  DataTypeEnum,
+  type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
+  P2pSector,
+  type PathwaysToParisData,
+  type DataMetaInformation,
+} from "@clients/backend";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { roundNumber } from "@/utils/NumberConversionUtils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
 
 describe("Component test for the EUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
@@ -217,6 +225,65 @@ describe("Component test for the EUTaxonomy Page", () => {
       cy.get("table").find(`tr:contains("${capexFirstNonAlignedActivityNaceCodes}")`);
       cy.get("table").find(`tr:contains(${capexFirstNonAlignedActivityRelativeShare})`);
       cy.get("table").find(`tr:contains(${capexFirstNonAlignedActivityAbsoluteShare})`);
+    });
+  });
+
+  it("Check P2p view page that properties with same name in different KPIs have different values", () => {
+    const metaInfo: DataMetaInformation = {
+      companyId: "some-fake-ID-123456789",
+      dataId: "some-fake-dataId-123456789",
+      dataType: DataTypeEnum.P2p,
+      reportingPeriod: "2018",
+      currentlyActive: true,
+      qaStatus: "Accepted",
+      uploadTime: 1234567890,
+    };
+
+    const p2pData: PathwaysToParisData = {
+      general: {
+        general: {
+          dataDate: "2023-09-30",
+          sectors: [P2pSector.Ammonia, P2pSector.Cement],
+        },
+        governance: {},
+        climateTargets: {},
+        emissionsPlanning: {},
+        investmentPlanning: {},
+      },
+      ammonia: {
+        decarbonisation: {
+          energyMix: 11,
+        },
+        defossilisation: {},
+      },
+      cement: {
+        energy: {
+          energyMix: 22,
+        },
+        technology: {},
+        material: {},
+      },
+    };
+
+    cy.mountWithPlugins(ThreeLayerDataTable, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        dataModel: p2pDataModel,
+        dataAndMetaInfo: [getViewModelWithIdentityApiModel<PathwaysToParisData>({ metaInfo, data: p2pData })],
+        modalColumnHeaders: {},
+        sortBySubcategoryKey: false,
+      },
+    }).then(() => {
+      toggleCategoryByClick("Ammonia");
+      toggleCategoryByClick("decarbonisation");
+
+      toggleCategoryByClick("Cement");
+      toggleCategoryByClick("energy");
+
+      cy.get('[data-test="2018_ammonia_energyMix"] span').should("exist").contains("11 %");
+      cy.get('[data-test="2018_cement_energyMix"] span').should("exist").contains("22 %");
     });
   });
 });
