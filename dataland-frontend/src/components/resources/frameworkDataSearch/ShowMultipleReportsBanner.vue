@@ -11,7 +11,6 @@
           :reference="report.reference"
           font-style="font-semibold"
         />
-        <!--        <span v-if="index < reports[indexOfNewestReportingPeriod].length - 1"> | </span>-->
       </span>
     </span>
     <span
