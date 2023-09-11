@@ -21,7 +21,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { type DataAndMetaInformationPathwaysToParisData, DataTypeEnum } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
@@ -63,7 +63,7 @@ export default defineComponent({
 
   methods: {
     getViewModelWithIdentityApiModel,
-    humanizeString,
+    humanizeString: humanizeStringOrNumber,
     /**
      * Fetches all accepted P2P datasets for the current company and converts them to the required frontend format.
      */
@@ -101,7 +101,7 @@ export default defineComponent({
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
       if (field.name == "sector") {
-        return (value as string[]).map((sector) => humanizeString(sector));
+        return (value as string[]).map((sector) => humanizeStringOrNumber(sector));
       }
       return value;
     },

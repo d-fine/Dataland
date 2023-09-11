@@ -50,7 +50,7 @@ function createOnlyEglibileNumbers(
   function generateCashFlowWithOnlyEligibleNumbers(): EuTaxonomyDetailsPerCashFlowType {
     const share = generateFinancialShare();
     share.absoluteShare = undefined;
-    return { totalEligibleShare: share };
+    return { eligibleShare: share };
   }
 
   input.companyInformation.companyName = "only-eligible-numbers";
@@ -78,7 +78,7 @@ function createOnlyEligibleAndTotalNumbers(
   ): EuTaxonomyDetailsPerCashFlowType {
     return {
       totalAmount: generateDatapoint(randomEuroValue(), referencedReports),
-      totalEligibleShare: generateFinancialShare(),
+      eligibleShare: generateFinancialShare(),
     };
   }
 

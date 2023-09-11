@@ -2,52 +2,52 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Rosettashire",
+			"headquarters": "Emardshire",
+			"sector": "networks",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [
-					"nKbuCUMAiUrF",
-					"bgosHkXJqxVA"
-				],
+				"Isin": [],
 				"PermId": [
-					"NnLKR7J9Tt"
+					"0eX6hgkR2c"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"SjDAc9w"
+				],
 				"Duns": [
-					"aytWeXqMg"
+					"gDLqoPxTG"
 				],
 				"VatNumber": [
-					"OQ8QQ9STc"
+					"3s0EoSMcV"
 				],
 				"CompanyRegistrationNumber": [
-					"3gmLlJ40RBooioK"
+					"mh1TPWz8cfNRLA1"
 				]
 			},
-			"countryCode": "TW",
+			"countryCode": "MV",
 			"companyAlternativeNames": [
-				"Bayer - Hoppe",
-				"Gerlach - Boehm",
-				"Gerlach, Cronin and Reinger",
-				"O'Kon, Hudson and Ernser"
+				"Gutkowski Inc",
+				"Waters LLC"
 			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://gaseous-misunderstand.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
+						"A",
+						"E",
 						"H",
-						"I",
-						"J",
-						"M"
+						"J"
 					],
 					"addressOfHeadquarters": {
-						"city": "South Alyson",
-						"state": "New Hampshire",
-						"country": "AD"
+						"postalCode": "05804",
+						"city": "Susanmouth",
+						"country": "CM"
 					},
-					"numberOfEmployees": 5941,
-					"fiscalYearStart": "2023-11-01"
+					"numberOfEmployees": 3022,
+					"fiscalYearStart": "2024-07-27"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -59,11 +59,27 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Oberbrunner, Farrell and Collins",
 							"addressOfProductionSite": {
-								"city": "Catherinecester",
-								"state": "Utah",
-								"country": "UY"
+								"postalCode": "86911-1130",
+								"city": "South Emmieton",
+								"country": "SV"
+							},
+							"percentageOfTotalRevenue": 0.2403
+						},
+						{
+							"nameOfProductionSite": "Homenick - Dickinson",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Feest Turnpike 993",
+								"postalCode": "19357-7690",
+								"city": "Wehnershire",
+								"country": "GE"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"postalCode": "13536-0995",
+								"city": "Port Sydni",
+								"country": "BJ"
 							}
 						}
 					]
@@ -75,18 +91,18 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 238,
-					"powerFromRenewableSources": "Yes",
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerFromRenewableSources": "No",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 34494207,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Wind"
+						"Wind",
+						"EarthQuake",
+						"Flooding"
 					]
 				}
 			}
@@ -96,42 +112,29 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Abagailstead",
-			"headquartersPostalCode": "72132",
-			"sector": "e-commerce",
+			"headquarters": "Fort Gardnertown",
 			"identifiers": {
-				"Lei": [
-					"CgnWNLKSWt2jt25t1h5e"
-				],
+				"Lei": [],
 				"Isin": [
-					"BR8XZ8oztm7O"
+					"q4jLKiBp2KIY"
 				],
 				"PermId": [],
-				"Ticker": [
-					"GzkWaqi"
-				],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"Rp3CLh4rV"
+					"2F5BoF3lI"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NU",
-			"companyAlternativeNames": [
-				"Considine, Simonis and Hessel"
-			],
-			"website": "https://sour-affinity.org/",
+			"countryCode": "SM",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [
-						"G",
-						"H",
-						"I",
-						"K"
-					],
+					"sector": [],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
 						"postalCode": "12345",
@@ -139,8 +142,8 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3209,
-					"fiscalYearStart": "2024-02-18"
+					"numberOfEmployees": 1451,
+					"fiscalYearStart": "2024-01-27"
 				},
 				"companyFinancials": {}
 			},
@@ -149,11 +152,11 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Practical Wooden Mouse"
+							"name": "Intelligent Soft Bike"
 						},
 						{
-							"name": "Modern Wooden Gloves",
-							"percentageOfTotalRevenue": 0.6358
+							"name": "Fantastic Frozen Chicken",
+							"percentageOfTotalRevenue": 0.7518
 						}
 					]
 				}
@@ -161,21 +164,11 @@
 			"power": {
 				"investments": {},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 558,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
-				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 37153613,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Wind",
-						"Snow",
-						"Avalanche",
-						"Hail"
-					]
-				}
+				"naturalHazards": {}
 			}
 		},
 		"reportingPeriod": "2021"
@@ -183,51 +176,47 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "West Cletus",
-			"headquartersPostalCode": "88624-7914",
-			"sector": "eyeballs",
+			"headquarters": "South Ofelia",
+			"headquartersPostalCode": "68899",
 			"identifiers": {
-				"Lei": [
-					"pwDWtJ8nBD0RhOq2FrQL"
-				],
+				"Lei": [],
 				"Isin": [
-					"kmols4wt08bI",
-					"zlocKZixx1F6"
+					"S0hS9eOLcxKt"
 				],
-				"PermId": [
-					"olVhTJIO4f"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"ALwly19N1"
+					"QGOEkCkUj"
 				],
 				"VatNumber": [
-					"fRRh8DAPV"
+					"DgL16ionK"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BA",
-			"companyAlternativeNames": [
-				"Bruen LLC",
-				"D'Amore - Considine"
-			],
+			"countryCode": "ST",
+			"companyAlternativeNames": [],
+			"website": "https://straight-coverall.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"E"
+						"A",
+						"C",
+						"D",
+						"F",
+						"J"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6515,
-					"fiscalYearStart": "2023-12-30"
+					"numberOfEmployees": 7209,
+					"fiscalYearStart": "2024-03-11"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEur": 57613818
+					"revenueInEur": 83425846
 				}
 			},
 			"production": {
@@ -235,43 +224,20 @@
 					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Electronic Soft Towels",
-							"percentageOfTotalRevenue": 0.7605
-						},
-						{
-							"name": "Bespoke Steel Car"
-						},
-						{
-							"name": "Incredible Wooden Bacon"
-						},
-						{
-							"name": "Generic Bronze Pizza",
-							"percentageOfTotalRevenue": 0.9656
-						},
-						{
-							"name": "Luxurious Cotton Pizza"
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {},
 				"consumption": {
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 676,
+					"powerConsumptionInMwh": 1036,
+					"powerFromRenewableSources": "Yes",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"EarthQuake",
-						"Flooding",
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},

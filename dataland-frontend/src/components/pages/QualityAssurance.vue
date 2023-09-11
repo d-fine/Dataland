@@ -88,7 +88,7 @@ import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue"
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from "primevue/datatable";
 import Column from "primevue/column";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import QADatasetModal from "@/components/general/QaDatasetModal.vue";
 import { AxiosError } from "axios";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
@@ -134,7 +134,7 @@ export default defineComponent({
   },
   methods: {
     convertUnixTimeInMsToDateString,
-    humanizeString,
+    humanizeString: humanizeStringOrNumber,
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
      */
