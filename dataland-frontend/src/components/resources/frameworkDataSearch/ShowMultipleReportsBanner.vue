@@ -51,11 +51,9 @@ export default defineComponent({
      * @param reportingPeriods States the origin year of the report.
      */
     openModalAndDisplayPreviousReportsInTable(reportingPeriods: Array<string>) {
-      this.indexOfNewestReportingPeriod = this.calculateIndexOfNewestReportingPeriod(this.reportingPeriods);
       const passedData = {
         reportingPeriodsForTable: reportingPeriods,
         referencedReportsForModal: this.reports,
-        indexOfNewestReportingPeriodForModal: this.indexOfNewestReportingPeriod,
       };
       this.$dialog.open(PreviousReportsModal, {
         props: {
