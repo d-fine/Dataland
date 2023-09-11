@@ -14,7 +14,9 @@ export function generateAssuranceData(reports: ReferencedDocuments): AssuranceDa
     assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean() ? faker.company.name() : undefined;
 
   const dataSource =
-    assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean() ? generateDataSource(reports) : undefined;
+    assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean()
+      ? generateDataSource(reports)
+      : { report: "", page: undefined, tagName: undefined };
 
   return {
     assurance: assurance,

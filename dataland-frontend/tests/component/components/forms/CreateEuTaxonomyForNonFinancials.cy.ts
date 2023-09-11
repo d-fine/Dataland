@@ -134,18 +134,26 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type("50");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type("4000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(1).select(51);
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]').clear().type("a");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
+      .clear()
+      .type("a");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be a number")
       .should("exist");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]').clear().type("-12");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
+      .clear()
+      .type("-12");
     cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be between 0 and 100")
       .should("exist");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]').clear().type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptionInPercent"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
+      .clear()
+      .type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptionInPercent"]')
+      .clear()
+      .type("15");
     cy.get(
       'div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent"]',
     )
@@ -157,7 +165,9 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControlInPercent"]')
       .clear()
       .type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptionInPercent"]').clear().type("15");
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptionInPercent"]')
+      .clear()
+      .type("15");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type("12000");
     cy.get('div[label="Revenue"] select[name="currency"]').eq(2).select(51);

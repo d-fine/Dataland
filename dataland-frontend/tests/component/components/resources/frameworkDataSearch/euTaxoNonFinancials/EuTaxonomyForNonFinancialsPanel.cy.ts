@@ -3,6 +3,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { roundNumber } from "@/utils/NumberConversionUtils";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
 
 describe("Component test for the EUTaxonomy Page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
@@ -38,9 +39,9 @@ describe("Component test for the EUTaxonomy Page", () => {
         2,
       );
 
-      const gammaTotalAlignedCapexAbsoluteShareString =
-        Math.round(assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.amount)).toString() +
-        ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
+      const gammaTotalAlignedCapexAbsoluteShareString = assertDefined(
+        formatAmountWithCurrency(capexOfDatasetGamma.alignedShare?.absoluteShare),
+      );
 
       const alphaContributionToClimateChangeMitigation = roundNumber(
         assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent) * 100,

@@ -94,7 +94,6 @@ import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
-import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
@@ -136,7 +135,6 @@ export default defineComponent({
     },
   },
   methods: {
-    selectNothingIfNotExistsFormKitPlugin,
     /**
      * Handle blur event on value input.
      */

@@ -67,10 +67,6 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
  * @param path is the path of the current key of object A that is being compared to object B
  */
 export function compareObjectKeysAndValuesDeep(objA: Record<string, any>, objB: Record<string, any>, path = ""): void {
-  const throwErrorBecauseOfFieldValue = (fieldPath: string, fieldValueA: object, fieldValueB: object): void => {
-    throw new Error(`Field ${fieldPath} is not equal. A: ${fieldValueA}, B: ${fieldValueB}`);
-  };
-
   const keysA = Object.keys(objA);
   const keysB = Object.keys(objB);
 
@@ -84,22 +80,30 @@ export function compareObjectKeysAndValuesDeep(objA: Record<string, any>, objB: 
     const valueA = objA[key];
     const valueB = objB[key];
 
-    if (typeof valueA === "object" && typeof valueB === "object") {
-      if (valueA === null || valueB === null) {
-        if (valueA !== valueB) {
-          throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
-        }
-      } else {
-        compareObjectKeysAndValuesDeep(valueA, valueB, newPath);
-      }
-    } else if (valueA !== valueB) {
-      throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
-    }
+    checkIfValuesAreIdentical(valueA, valueB, newPath);
   }
 
   for (const key of keysB) {
     if (!keysA.includes(key)) {
       throw new Error(`Field ${path}.${key} exists in B but not in A`);
     }
+  }
+}
+
+function checkIfValuesAreIdentical(valueA: any, valueB: any, newPath: string) {
+  const throwErrorBecauseOfFieldValue = (fieldPath: string, fieldValueA: object, fieldValueB: object): void => {
+    throw new Error(`Field ${fieldPath} is not equal. A: ${fieldValueA}, B: ${fieldValueB}`);
+  };
+
+  if (typeof valueA === "object" && typeof valueB === "object") {
+    if (valueA === null || valueB === null) {
+      if (valueA !== valueB) {
+        throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
+      }
+    } else {
+      compareObjectKeysAndValuesDeep(valueA, valueB, newPath);
+    }
+  } else if (valueA !== valueB) {
+    throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
   }
 }
