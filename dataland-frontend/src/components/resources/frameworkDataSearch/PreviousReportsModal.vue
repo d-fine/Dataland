@@ -1,15 +1,16 @@
 <template>
   <div class="dataland-dialog dataland-dialog-sm" data-test="previousReportsList">
     <div v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
-      <h4>{{ `Company Reports (${reportingPeriods[indexOuter]})` }}</h4>
-
-      <div
-        v-for="(report, nameInner, indexInner) in referencedReportObject"
-        :key="indexInner"
-        class="row mb-2"
-        data-test="previousReportsList"
-      >
-        <DocumentLink :download-name="nameInner" :reference="report.reference" show-icon />
+      <div v-if="indexOuter !== indexOfNewestReportingPeriod">
+        <h4>{{ `Company Reports (${reportingPeriods[indexOuter]})` }}</h4>
+        <div
+          v-for="(report, nameInner, indexInner) in referencedReportObject"
+          :key="indexInner"
+          class="row mb-2"
+          data-test="previousReportsList"
+        >
+          <DocumentLink :download-name="nameInner" :reference="report.reference" show-icon />
+        </div>
       </div>
     </div>
   </div>
@@ -29,6 +30,7 @@ export default defineComponent({
     return {
       reportingPeriods: [] as Array<string>,
       referencedReportsList: [] as Array<{ [p: string]: CompanyReport }>,
+      indexOfNewestReportingPeriod: 9999 as number,
     };
   },
   created() {
@@ -36,9 +38,12 @@ export default defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       reportingPeriodsForTable: Array<string>;
       referencedReportsForModal: Array<{ [p: string]: CompanyReport }>;
+      indexOfNewestReportingPeriodForModal: number;
     };
     this.reportingPeriods = dialogRefData.reportingPeriodsForTable;
     this.referencedReportsList = dialogRefData.referencedReportsForModal;
+    this.indexOfNewestReportingPeriod =
+      this.reportingPeriods.length - dialogRefData.indexOfNewestReportingPeriodForModal - 1;
     this.reportingPeriods.reverse();
     this.referencedReportsList.reverse();
   },

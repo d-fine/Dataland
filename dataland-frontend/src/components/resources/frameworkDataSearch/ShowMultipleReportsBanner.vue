@@ -53,6 +53,7 @@ export default defineComponent({
       const passedData = {
         reportingPeriodsForTable: reportingPeriods,
         referencedReportsForModal: this.reports,
+        indexOfNewestReportingPeriodForModal: this.indexOfNewestReportingPeriod,
       };
       this.$dialog.open(PreviousReportsModal, {
         props: {
@@ -88,7 +89,7 @@ export default defineComponent({
      * @returns returns a boolean wheter a report has been found
      */
     doPreviousReportsExist(reports: Array<{ [p: string]: CompanyReport }>, indexOfNewestReport: number): boolean {
-      if (!indexOfNewestReport) return false;
+      if (!reports) return false;
       let reportsFound = false;
       reports.forEach((report, index) => {
         if (index != indexOfNewestReport) {
