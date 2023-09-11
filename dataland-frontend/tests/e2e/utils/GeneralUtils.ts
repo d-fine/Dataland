@@ -74,16 +74,7 @@ export function compareObjectKeysAndValuesDeep(objA: Record<string, any>, objB: 
   const keysA = Object.keys(objA);
   const keysB = Object.keys(objB);
 
-  for (const key of keysA) {
-    const newPath = path ? `${path}.${key}` : key;
-
-    if (!keysB.includes(key)) {
-      throw new Error(`Field ${newPath} exists in A but not in B`);
-    }
-
-    const valueA = objA[key];
-    const valueB = objB[key];
-
+  function checkIfValuesAreIdentical(valueA: any, valueB: any, newPath: string) {
     if (typeof valueA === "object" && typeof valueB === "object") {
       if (valueA === null || valueB === null) {
         if (valueA !== valueB) {
@@ -95,6 +86,19 @@ export function compareObjectKeysAndValuesDeep(objA: Record<string, any>, objB: 
     } else if (valueA !== valueB) {
       throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
     }
+  }
+
+  for (const key of keysA) {
+    const newPath = path ? `${path}.${key}` : key;
+
+    if (!keysB.includes(key)) {
+      throw new Error(`Field ${newPath} exists in A but not in B`);
+    }
+
+    const valueA = objA[key];
+    const valueB = objB[key];
+
+    checkIfValuesAreIdentical(valueA, valueB, newPath);
   }
 
   for (const key of keysB) {
