@@ -1,5 +1,4 @@
 import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
-import { DataTypeEnum } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { checkFooter } from "@sharedUtils/ElementChecks";
@@ -11,7 +10,7 @@ describe("As a user, I expect the footer section to be present and contain relev
       cy.ensureLoggedIn();
     });
 
-    const pagesToCheck = ["/companies", `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`];
+    const pagesToCheck = ["/companies", `/preview`];
 
     pagesToCheck.forEach((page) => {
       it(`Checks that the footer is present on ${page}`, () => {

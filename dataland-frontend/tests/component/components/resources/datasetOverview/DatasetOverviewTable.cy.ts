@@ -1,7 +1,7 @@
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
 import { type DatasetTableInfo, DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { DataTypeEnum } from "@clients/backend";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 describe("Component test for DatasetOverviewTable", () => {
@@ -51,7 +51,12 @@ describe("Component test for DatasetOverviewTable", () => {
 
   it("Check if the table rows look as expected", () => {
     prepareSimpleDatasetOverviewTable([datasetTableInfoMockForAlpha]);
-    const expectedRowContents = [nameOfCompanyAlpha, humanizeString(dataTypeOfDatasetForAlpha), "2023", "APPROVED"];
+    const expectedRowContents = [
+      nameOfCompanyAlpha,
+      humanizeStringOrNumber(dataTypeOfDatasetForAlpha),
+      "2023",
+      "APPROVED",
+    ];
     cy.get("tbody td").should((elements) => {
       expect(elements.length).to.equal(6);
     });
