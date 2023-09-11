@@ -6,7 +6,6 @@
     <span id="reportList">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
         <DocumentLink :download-name="name" :reference="report.reference" font-style="font-semibold" />
-        <!--        <span v-if="index < reports[indexOfNewestReportingPeriod].length - 1"> | </span>-->
       </span>
     </span>
     <span
@@ -45,11 +44,9 @@ export default defineComponent({
      * @param reportingPeriods States the origin year of the report.
      */
     openModalAndDisplayPreviousReportsInTable(reportingPeriods: Array<string>) {
-      this.indexOfNewestReportingPeriod = this.calculateIndexOfNewestReportingPeriod(this.reportingPeriods);
       const passedData = {
         reportingPeriodsForTable: reportingPeriods,
         referencedReportsForModal: this.reports,
-        indexOfNewestReportingPeriodForModal: this.indexOfNewestReportingPeriod,
       };
       this.$dialog.open(PreviousReportsModal, {
         props: {

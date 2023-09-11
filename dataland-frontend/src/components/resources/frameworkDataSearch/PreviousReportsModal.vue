@@ -1,18 +1,11 @@
 <template>
-  <div class="dialog-sm">
+  <div class="dataland-dialog dataland-dialog-sm">
     <div v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
       <h4>{{ `Company Reports (${reportingPeriods[indexOuter]})` }}</h4>
 
       <div v-for="(report, nameInner, indexInner) in referencedReportObject" :key="indexInner" class="row mb-2">
         <DocumentLink :download-name="nameInner" :reference="report.reference" show-icon />
       </div>
-
-      <!-- <span v-if="indexOuter !== indexOfNewestReportingPeriod">
-      <span class="mb-4" style="font-size: 16px" data-test="titleOfReportingperiodInModal">
-        {{ `Company Reports (${reportingPeriods[indexOuter]})` }}
-      </span>
-      
-    </span> -->
     </div>
   </div>
 </template>
@@ -31,7 +24,6 @@ export default defineComponent({
     return {
       reportingPeriods: [] as Array<string>,
       referencedReportsList: [] as Array<{ [p: string]: CompanyReport }>,
-      indexOfNewestReportingPeriod: 999 as number,
     };
   },
   created() {
@@ -39,22 +31,13 @@ export default defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       reportingPeriodsForTable: Array<string>;
       referencedReportsForModal: Array<{ [p: string]: CompanyReport }>;
-      indexOfNewestReportingPeriodForModal: number;
     };
     this.reportingPeriods = dialogRefData.reportingPeriodsForTable;
     this.referencedReportsList = dialogRefData.referencedReportsForModal;
-    this.indexOfNewestReportingPeriod = dialogRefData.indexOfNewestReportingPeriodForModal;
-    console.log(getLatestByReportDate([...dialogRefData.referencedReportsForModal]));
-    // [...dialogRefData.referencedReportsForModal].sort((a, b) => Math.max(...[...a.map(item=>item.reportDate]])));
+    this.reportingPeriods.reverse();
+    this.referencedReportsList.reverse();
   },
 });
-
-function getLatestByReportDate(items: Array<{ [p: string]: CompanyReport }>) {
-  return items.map((reports) => {
-    const reportDates = Object.values(reports).map((reportObject) => reportObject.reportDate);
-    return reportDates.sort().pop();
-  });
-}
 </script>
 
 <style scoped>
