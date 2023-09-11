@@ -1,5 +1,5 @@
 <template>
-  <div class="dataland-dialog dataland-dialog-sm">
+  <div class="dataland-dialog dataland-dialog-sm" data-test="previousReportsList">
     <div v-for="(referencedReportObject, indexOuter) in referencedReportsList" :key="indexOuter" class="row">
       <h4>{{ `Company Reports (${reportingPeriods[indexOuter]})` }}</h4>
 
