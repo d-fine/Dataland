@@ -13,7 +13,7 @@ export const activityTree: Array<TreeNode> = [
         key: "1.1",
         sector: "Forestry",
         type: "child",
-        nace_codes: "A2",
+        naceCodes: ["A2"],
       },
       {
         name: "Rehabilitation and restoration of forests, including reforestation and natural forest regeneration after an extreme event",
@@ -22,7 +22,7 @@ export const activityTree: Array<TreeNode> = [
         key: "1.2",
         sector: "Forestry",
         type: "child",
-        nace_codes: "A2",
+        naceCodes: ["A2"],
       },
       {
         name: "Forest management",
@@ -30,7 +30,7 @@ export const activityTree: Array<TreeNode> = [
         key: "1.3",
         sector: "Forestry",
         type: "child",
-        nace_codes: "A2",
+        naceCodes: ["A2"],
       },
       {
         name: "Conservation forestry",
@@ -38,7 +38,7 @@ export const activityTree: Array<TreeNode> = [
         key: "1.4",
         sector: "Forestry",
         type: "child",
-        nace_codes: "A2",
+        naceCodes: ["A2"],
       },
     ],
   },
@@ -54,7 +54,6 @@ export const activityTree: Array<TreeNode> = [
         key: "2.1",
         sector: "Environmental protection and restoration activities",
         type: "child",
-        nace_codes: null,
       },
     ],
   },
@@ -70,7 +69,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.1",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C25, C27, C28",
+        naceCodes: ["C25", "C27", "C28"],
       },
       {
         name: "Manufacture of equipment for the production and use of hydrogen",
@@ -78,7 +77,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.2",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C25, C27, C28",
+        naceCodes: ["C25", "C27", "C28"],
       },
       {
         name: "Manufacture of low carbon technologies for transport",
@@ -86,7 +85,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.3",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C29.1, C30.1, C30.2, C30.9, C33.15, C33.17",
+        naceCodes: ["C29.1", "C30.1", "C30.2", "C30.9", "C33.15", "C33.17"],
       },
       {
         name: "Manufacture of batteries",
@@ -94,7 +93,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.4",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C27.2, E38.32",
+        naceCodes: ["C27.2", "E38.32"],
       },
       {
         name: "Manufacture of energy efficiency equipment for buildings",
@@ -102,8 +101,29 @@ export const activityTree: Array<TreeNode> = [
         key: "3.5",
         sector: "Manufacturing",
         type: "child",
-        nace_codes:
-          "C16.23, C23.11, C23.20, C23.31, C23.32, C23.43, C23.61, C25.11, C25.12, C25.21, C25.29, C25.93, C27.31, C27.32, C27.33, C27.40, C27.51, C28.11, C28.12, C28.13, C28.14",
+        naceCodes: [
+          "C16.23",
+          "C23.11",
+          "C23.20",
+          "C23.31",
+          "C23.32",
+          "C23.43",
+          "C23.61",
+          "C25.11",
+          "C25.12",
+          "C25.21",
+          "C25.29",
+          "C25.93",
+          "C27.31",
+          "C27.32",
+          "C27.33",
+          "C27.40",
+          "C27.51",
+          "C28.11",
+          "C28.12",
+          "C28.13",
+          "C28.14",
+        ],
       },
       {
         name: "Manufacture of other low carbon technologies",
@@ -111,7 +131,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.6",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C22, C25, C26, C27, C28",
+        naceCodes: ["C22", "C25", "C26", "C27", "C28"],
       },
       {
         name: "Manufacture of cement",
@@ -119,7 +139,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.7",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C23.51",
+        naceCodes: ["C23.51"],
       },
       {
         name: "Manufacture of aluminium",
@@ -127,7 +147,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.8",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C24.42, C24.53",
+        naceCodes: ["C24.42", "C24.53"],
       },
       {
         name: "Manufacture of iron and steel",
@@ -135,7 +155,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.9",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C24.10, C24.20, C24.31, C24.32, C24.33, C24.34, C24.51, C24.52",
+        naceCodes: ["C24.10", "C24.20", "C24.31", "C24.32", "C24.33", "C24.34", "C24.51", "C24.52"],
       },
       {
         name: "Manufacture of hydrogen",
@@ -143,7 +163,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.10",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C20.11",
+        naceCodes: ["C20.11"],
       },
       {
         name: "Manufacture of carbon black",
@@ -151,7 +171,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.11",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C20.13",
+        naceCodes: ["C20.13"],
       },
       {
         name: "Manufacture of soda ash",
@@ -159,7 +179,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.12",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C20.13",
+        naceCodes: ["C20.13"],
       },
       {
         name: "Manufacture of chlorine",
@@ -167,7 +187,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.13",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C20.13",
+        naceCodes: ["C20.13"],
       },
       {
         name: "Manufacture of organic basic chemicals",
@@ -175,7 +195,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.14",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C20.14",
+        naceCodes: ["C20.14"],
       },
       {
         name: "Manufacture of anhydrous ammonia",
@@ -183,7 +203,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.15",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C20.15",
+        naceCodes: ["C20.15"],
       },
       {
         name: "Manufacture of nitric acid",
@@ -191,7 +211,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.16",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C20.15",
+        naceCodes: ["C20.15"],
       },
       {
         name: "Manufacture of plastics in primary form",
@@ -199,7 +219,7 @@ export const activityTree: Array<TreeNode> = [
         key: "3.17",
         sector: "Manufacturing",
         type: "child",
-        nace_codes: "C20.16",
+        naceCodes: ["C20.16"],
       },
     ],
   },
@@ -215,7 +235,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.1",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "Electricity generation using concentrated solar power (CSP) technology",
@@ -223,7 +243,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.2",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "Electricity generation from wind power",
@@ -231,7 +251,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.3",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "Electricity generation from ocean energy technologies",
@@ -239,7 +259,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.4",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "Electricity generation from hydropower",
@@ -247,7 +267,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.5",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "Electricity generation from geothermal energy",
@@ -255,7 +275,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.6",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "Electricity generation from renewable non-fossil gaseous and liquid fuels",
@@ -263,7 +283,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.7",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "Electricity generation from bioenergy",
@@ -271,7 +291,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.8",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11",
+        naceCodes: ["D35.11"],
       },
       {
         name: "Transmission and distribution of electricity",
@@ -279,7 +299,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.9",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.12, D35.13",
+        naceCodes: ["D35.12", "D35.13"],
       },
       {
         name: "Storage of electricity",
@@ -287,7 +307,6 @@ export const activityTree: Array<TreeNode> = [
         key: "4.10",
         sector: "Energy",
         type: "child",
-        nace_codes: null,
       },
       {
         name: "Storage of thermal energy",
@@ -295,7 +314,6 @@ export const activityTree: Array<TreeNode> = [
         key: "4.11",
         sector: "Energy",
         type: "child",
-        nace_codes: null,
       },
       {
         name: "Storage of hydrogen",
@@ -303,7 +321,6 @@ export const activityTree: Array<TreeNode> = [
         key: "4.12",
         sector: "Energy",
         type: "child",
-        nace_codes: null,
       },
       {
         name: "Manufacture of biogas and biofuels for use in transport and of bioliquids",
@@ -311,7 +328,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.13",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.21",
+        naceCodes: ["D35.21"],
       },
       {
         name: "Transmission and distribution networks for renewable and low-carbon gases",
@@ -319,7 +336,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.14",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.22, F42.21, H49.50",
+        naceCodes: ["D35.22", "F42.21", "H49.50"],
       },
       {
         name: "District heating/cooling distribution",
@@ -327,7 +344,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.15",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.30",
+        naceCodes: ["D35.30"],
       },
       {
         name: "Installation and operation of electric heat pumps",
@@ -335,7 +352,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.16",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.30, F43.22",
+        naceCodes: ["D35.30", "F43.22"],
       },
       {
         name: "Cogeneration of heat/cool and power from solar energy",
@@ -343,7 +360,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.17",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, D35.30",
+        naceCodes: ["D35.11", "D35.30"],
       },
       {
         name: "Cogeneration of heat/cool and power from geothermal energy",
@@ -351,7 +368,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.18",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, D35.30",
+        naceCodes: ["D35.11", "D35.30"],
       },
       {
         name: "Cogeneration of heat/cool and power from renewable non-fossil gaseous and liquid fuels",
@@ -359,7 +376,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.19",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, D35.30",
+        naceCodes: ["D35.11", "D35.30"],
       },
       {
         name: "Cogeneration of heat/cool and power from bioenergy",
@@ -367,7 +384,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.20",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, D35.30",
+        naceCodes: ["D35.11", "D35.30"],
       },
       {
         name: "Production of heat/cool from solar thermal heating",
@@ -375,7 +392,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.21",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.30",
+        naceCodes: ["D35.30"],
       },
       {
         name: "Production of heat/cool from geothermal energy",
@@ -383,7 +400,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.22",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.30",
+        naceCodes: ["D35.30"],
       },
       {
         name: "Production of heat/cool from renewable non-fossil gaseous and liquid fuels",
@@ -391,7 +408,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.23",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.30",
+        naceCodes: ["D35.30"],
       },
       {
         name: "Production of heat/cool from bioenergy",
@@ -399,7 +416,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.24",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.30",
+        naceCodes: ["D35.30"],
       },
       {
         name: "Production of heat/cool using waste heat",
@@ -407,7 +424,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.25",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.30",
+        naceCodes: ["D35.30"],
       },
       {
         name: "Pre-commercial stages of advanced technologies to produce energy from nuclear processes with minimal waste from the fuel cycle",
@@ -416,7 +433,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.26",
         sector: "Energy",
         type: "child",
-        nace_codes: "M72, M72.1",
+        naceCodes: ["M72", "M72.1"],
       },
       {
         name: "Construction and safe operation of new nuclear power plants, for the generation of electricity and/or heat, including for hydrogen production, using best-available technologies",
@@ -425,7 +442,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.27",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "Electricity generation from nuclear energy in existing installations",
@@ -433,7 +450,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.28",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "Electricity generation from fossil gaseous fuels",
@@ -441,7 +458,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.29",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, F42.22",
+        naceCodes: ["D35.11", "F42.22"],
       },
       {
         name: "High-efficiency co-generation of heat/cool and power from fossil gaseous fuels",
@@ -449,7 +466,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.30",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.11, D35.30",
+        naceCodes: ["D35.11", "D35.30"],
       },
       {
         name: "Production of heat/cool from fossil gaseous fuels in an efficient district heating and cooling system",
@@ -457,7 +474,7 @@ export const activityTree: Array<TreeNode> = [
         key: "4.31",
         sector: "Energy",
         type: "child",
-        nace_codes: "D35.30",
+        naceCodes: ["D35.30"],
       },
     ],
   },
@@ -473,7 +490,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.1",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E36.00, F42.99",
+        naceCodes: ["E36.00", "F42.99"],
       },
       {
         name: "Renewal of water collection, treatment and supply systems",
@@ -481,7 +498,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.2",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E36.00, F42.99",
+        naceCodes: ["E36.00", "F42.99"],
       },
       {
         name: "Construction, extension and operation of waste water collection and treatment",
@@ -489,7 +506,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.3",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E37.00, F42.99",
+        naceCodes: ["E37.00", "F42.99"],
       },
       {
         name: "Renewal of waste water collection and treatment",
@@ -497,7 +514,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.4",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E37.00",
+        naceCodes: ["E37.00"],
       },
       {
         name: "Collection and transport of non-hazardous waste in source segregated fractions",
@@ -505,7 +522,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.5",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E38.11",
+        naceCodes: ["E38.11"],
       },
       {
         name: "Anaerobic digestion of sewage sludge",
@@ -513,7 +530,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.6",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E37.00, F42.99",
+        naceCodes: ["E37.00", "F42.99"],
       },
       {
         name: "Anaerobic digestion of bio-waste",
@@ -521,7 +538,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.7",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E38.21, F42.99",
+        naceCodes: ["E38.21", "F42.99"],
       },
       {
         name: "Composting of bio-waste",
@@ -529,7 +546,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.8",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E38.21, F42.99",
+        naceCodes: ["E38.21", "F42.99"],
       },
       {
         name: "Material recovery from non-hazardous waste",
@@ -537,7 +554,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.9",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E38.32, F42.99",
+        naceCodes: ["E38.32", "F42.99"],
       },
       {
         name: "Landfill gas capture and utilisation",
@@ -545,7 +562,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.10",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E38.21",
+        naceCodes: ["E38.21"],
       },
       {
         name: "Transport of CO2",
@@ -553,7 +570,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.11",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "F42.21, H49.50",
+        naceCodes: ["F42.21", "H49.50"],
       },
       {
         name: "Underground permanent geological storage of CO2",
@@ -561,7 +578,7 @@ export const activityTree: Array<TreeNode> = [
         key: "5.12",
         sector: "Water supply, sewerage, waste management and remediation",
         type: "child",
-        nace_codes: "E39.00",
+        naceCodes: ["E39.00"],
       },
     ],
   },
@@ -577,7 +594,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.1",
         sector: "Transport",
         type: "child",
-        nace_codes: "H49.10, N77.39",
+        naceCodes: ["H49.10", "N77.39"],
       },
       {
         name: "Freight rail transport",
@@ -585,7 +602,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.2",
         sector: "Transport",
         type: "child",
-        nace_codes: "H49.20, N77.39",
+        naceCodes: ["H49.20", "N77.39"],
       },
       {
         name: "Urban and suburban transport, road passenger transport",
@@ -593,7 +610,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.3",
         sector: "Transport",
         type: "child",
-        nace_codes: "H49.31, H49.3.9, N77.39, N77.11",
+        naceCodes: ["H49.31", "H49.3.9", "N77.39", "N77.11"],
       },
       {
         name: "Operation of personal mobility devices, cycle logistics",
@@ -601,7 +618,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.4",
         sector: "Transport",
         type: "child",
-        nace_codes: "N77.11, N77.21",
+        naceCodes: ["N77.11", "N77.21"],
       },
       {
         name: "Transport by motorbikes, passenger cars and light commercial vehicles",
@@ -609,7 +626,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.5",
         sector: "Transport",
         type: "child",
-        nace_codes: "H49.32, H49.39, N77.11",
+        naceCodes: ["H49.32", "H49.39", "N77.11"],
       },
       {
         name: "Freight transport services by road",
@@ -617,7 +634,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.6",
         sector: "Transport",
         type: "child",
-        nace_codes: "H49.4.1, H53.10, H53.20, N77.12",
+        naceCodes: ["H49.4.1", "H53.10", "H53.20", "N77.12"],
       },
       {
         name: "Inland passenger water transport",
@@ -625,7 +642,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.7",
         sector: "Transport",
         type: "child",
-        nace_codes: "H50.30",
+        naceCodes: ["H50.30"],
       },
       {
         name: "Inland freight water transport",
@@ -633,7 +650,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.8",
         sector: "Transport",
         type: "child",
-        nace_codes: "H50.4",
+        naceCodes: ["H50.4"],
       },
       {
         name: "Retrofitting of inland water passenger and freight transport",
@@ -641,7 +658,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.9",
         sector: "Transport",
         type: "child",
-        nace_codes: "H50.4, H50.30, C33.15",
+        naceCodes: ["H50.4", "H50.30", "C33.15"],
       },
       {
         name: "Sea and coastal freight water transport, vessels for port operations and auxiliary activities",
@@ -649,7 +666,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.10",
         sector: "Transport",
         type: "child",
-        nace_codes: "H50.2, H52.22, N77.34",
+        naceCodes: ["H50.2", "H52.22", "N77.34"],
       },
       {
         name: "Sea and coastal passenger water transport",
@@ -657,7 +674,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.11",
         sector: "Transport",
         type: "child",
-        nace_codes: "H50.10, N77.21, N77.34",
+        naceCodes: ["H50.10", "N77.21", "N77.34"],
       },
       {
         name: "Retrofitting of sea and coastal freight and passenger water transport",
@@ -665,7 +682,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.12",
         sector: "Transport",
         type: "child",
-        nace_codes: "H50.10, H50.2, H52.22, C33.15, N77.21",
+        naceCodes: ["H50.10", "H50.2", "H52.22", "C33.15", "N77.21"],
       },
       {
         name: "Infrastructure for personal mobility, cycle logistics",
@@ -673,7 +690,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.13",
         sector: "Transport",
         type: "child",
-        nace_codes: "F42.11, F42.12, F42.13, F43.21, F711, F71.20",
+        naceCodes: ["F42.11", "F42.12", "F42.13", "F43.21", "F711", "F71.20"],
       },
       {
         name: "Infrastructure for rail transport",
@@ -681,7 +698,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.14",
         sector: "Transport",
         type: "child",
-        nace_codes: "F42.12, F42.13, M71.12, M71.20, F43.21, H52.21",
+        naceCodes: ["F42.12", "F42.13", "M71.12", "M71.20", "F43.21", "H52.21"],
       },
       {
         name: "Infrastructure enabling low-carbon road transport and public transport",
@@ -689,7 +706,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.15",
         sector: "Transport",
         type: "child",
-        nace_codes: "F42.11, F42.13, F71.1, F71.20",
+        naceCodes: ["F42.11", "F42.13", "F71.1", "F71.20"],
       },
       {
         name: "Infrastructure enabling low carbon water transport",
@@ -697,7 +714,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.16",
         sector: "Transport",
         type: "child",
-        nace_codes: "F42.91, F71.1, F71.20",
+        naceCodes: ["F42.91", "F71.1", "F71.20"],
       },
       {
         name: "Low carbon airport infrastructure",
@@ -705,7 +722,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.17",
         sector: "Transport",
         type: "child",
-        nace_codes: "F41.20, F42.99",
+        naceCodes: ["F41.20", "F42.99"],
       },
       {
         name: "Infrastructure enabling road transport and public transport",
@@ -713,7 +730,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.18",
         sector: "Transport",
         type: "child",
-        nace_codes: "F42.11, F42.13, F71.1, F71.20",
+        naceCodes: ["F42.11", "F42.13", "F71.1", "F71.20"],
       },
       {
         name: "Infrastructure for water transport",
@@ -721,7 +738,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.19",
         sector: "Transport",
         type: "child",
-        nace_codes: "F42.91, F71.1, F71.20",
+        naceCodes: ["F42.91", "F71.1", "F71.20"],
       },
       {
         name: "Airport infrastructure",
@@ -729,7 +746,7 @@ export const activityTree: Array<TreeNode> = [
         key: "6.20",
         sector: "Transport",
         type: "child",
-        nace_codes: "F41.20, F42.99",
+        naceCodes: ["F41.20", "F42.99"],
       },
     ],
   },
@@ -745,7 +762,7 @@ export const activityTree: Array<TreeNode> = [
         key: "7.1",
         sector: "Construction and real estate",
         type: "child",
-        nace_codes: "F41.1, F41.2, F43",
+        naceCodes: ["F41.1", "F41.2", "F43"],
       },
       {
         name: "Renovation of existing buildings",
@@ -753,7 +770,7 @@ export const activityTree: Array<TreeNode> = [
         key: "7.2",
         sector: "Construction and real estate",
         type: "child",
-        nace_codes: "F41, F43",
+        naceCodes: ["F41", "F43"],
       },
       {
         name: "Installation, maintenance and repair of energy efficiency equipment",
@@ -761,7 +778,7 @@ export const activityTree: Array<TreeNode> = [
         key: "7.3",
         sector: "Construction and real estate",
         type: "child",
-        nace_codes: "F42, F43, M71, C16, C17, C22, C23, C25, C27, C28, S95.21, S95.22, C33.12",
+        naceCodes: ["F42", "F43", "M71", "C16", "C17", "C22", "C23", "C25", "C27", "C28", "S95.21", "S95.22", "C33.12"],
       },
       {
         name: "Installation, maintenance and repair of charging stations for electric vehicles in buildings (and parking spaces attached to buildings)",
@@ -770,7 +787,7 @@ export const activityTree: Array<TreeNode> = [
         key: "7.4",
         sector: "Construction and real estate",
         type: "child",
-        nace_codes: "F42, F43, M71, C16, C17, C22, C23, C25, C27, C28",
+        naceCodes: ["F42", "F43", "M71", "C16", "C17", "C22", "C23", "C25", "C27", "C28"],
       },
       {
         name: "Installation, maintenance and repair of instruments and devices for measuring, regulation and controlling energy performance of buildings",
@@ -779,7 +796,7 @@ export const activityTree: Array<TreeNode> = [
         key: "7.5",
         sector: "Construction and real estate",
         type: "child",
-        nace_codes: "F42, F43, M71, C16, C17, C22, C23, C25, C27, C28",
+        naceCodes: ["F42", "F43", "M71", "C16", "C17", "C22", "C23", "C25", "C27", "C28"],
       },
       {
         name: "Installation, maintenance and repair of renewable energy technologies",
@@ -787,7 +804,7 @@ export const activityTree: Array<TreeNode> = [
         key: "7.6",
         sector: "Construction and real estate",
         type: "child",
-        nace_codes: "F42, F43, M71, C16, C17, C22, C23, C25, C27, C28",
+        naceCodes: ["F42", "F43", "M71", "C16", "C17", "C22", "C23", "C25", "C27", "C28"],
       },
       {
         name: "Acquisition and ownership of buildings",
@@ -795,7 +812,7 @@ export const activityTree: Array<TreeNode> = [
         key: "7.7",
         sector: "Construction and real estate",
         type: "child",
-        nace_codes: "L68",
+        naceCodes: ["L68"],
       },
     ],
   },
@@ -811,7 +828,7 @@ export const activityTree: Array<TreeNode> = [
         key: "8.1",
         sector: "Information and communication",
         type: "child",
-        nace_codes: "J63.11",
+        naceCodes: ["J63.11"],
       },
       {
         name: "Data-driven solutions for GHG emissions reductions",
@@ -819,7 +836,7 @@ export const activityTree: Array<TreeNode> = [
         key: "8.2",
         sector: "Information and communication",
         type: "child",
-        nace_codes: "J61, J62, J63.11",
+        naceCodes: ["J61", "J62", "J63.11"],
       },
       {
         name: "Computer programming, consultancy and related activities",
@@ -827,7 +844,7 @@ export const activityTree: Array<TreeNode> = [
         key: "8.3",
         sector: "Information and communication",
         type: "child",
-        nace_codes: "J62",
+        naceCodes: ["J62"],
       },
       {
         name: "Programming and broadcasting activities",
@@ -835,7 +852,7 @@ export const activityTree: Array<TreeNode> = [
         key: "8.4",
         sector: "Information and communication",
         type: "child",
-        nace_codes: "J60",
+        naceCodes: ["J60"],
       },
     ],
   },
@@ -851,7 +868,7 @@ export const activityTree: Array<TreeNode> = [
         key: "9.1",
         sector: "Professional, scientific and technical activities",
         type: "child",
-        nace_codes: "M71.1.2, M72.1",
+        naceCodes: ["M71.12", "M72.1"],
       },
       {
         name: "Research, development and innovation for direct air capture of CO2",
@@ -859,7 +876,7 @@ export const activityTree: Array<TreeNode> = [
         key: "9.2",
         sector: "Professional, scientific and technical activities",
         type: "child",
-        nace_codes: "M71.1.2, M72.1",
+        naceCodes: ["M71.12", "M72.1"],
       },
       {
         name: "Professional services related to energy performance of buildings",
@@ -867,7 +884,7 @@ export const activityTree: Array<TreeNode> = [
         key: "9.3",
         sector: "Professional, scientific and technical activities",
         type: "child",
-        nace_codes: "M71",
+        naceCodes: ["M71"],
       },
       {
         name: "Engineering activities and related technical consultancy dedicated to adaptation to climate change",
@@ -875,7 +892,7 @@ export const activityTree: Array<TreeNode> = [
         key: "9.4",
         sector: "Professional, scientific and technical activities",
         type: "child",
-        nace_codes: "M71.12",
+        naceCodes: ["M71.12"],
       },
     ],
   },
@@ -891,7 +908,7 @@ export const activityTree: Array<TreeNode> = [
         key: "10.1",
         sector: "Financial and insurance activities",
         type: "child",
-        nace_codes: "K65.12",
+        naceCodes: ["K65.12"],
       },
       {
         name: "Reinsurance",
@@ -899,7 +916,7 @@ export const activityTree: Array<TreeNode> = [
         key: "10.2",
         sector: "Financial and insurance activities",
         type: "child",
-        nace_codes: "K65.20",
+        naceCodes: ["K65.20"],
       },
     ],
   },
@@ -915,7 +932,7 @@ export const activityTree: Array<TreeNode> = [
         key: "11.1",
         sector: "Education",
         type: "child",
-        nace_codes: "P85",
+        naceCodes: ["P85"],
       },
     ],
   },
@@ -931,7 +948,7 @@ export const activityTree: Array<TreeNode> = [
         key: "12.1",
         sector: "Human health and social work activities",
         type: "child",
-        nace_codes: "Q87",
+        naceCodes: ["Q87"],
       },
     ],
   },
@@ -947,7 +964,7 @@ export const activityTree: Array<TreeNode> = [
         key: "13.1",
         sector: "Arts, entertainment and recreation",
         type: "child",
-        nace_codes: "R90",
+        naceCodes: ["R90"],
       },
       {
         name: "Libraries, archives, museums and cultural activities",
@@ -955,7 +972,7 @@ export const activityTree: Array<TreeNode> = [
         key: "13.2",
         sector: "Arts, entertainment and recreation",
         type: "child",
-        nace_codes: "R91",
+        naceCodes: ["R91"],
       },
       {
         name: "Motion picture, video and television programme production, sound recording and music publishing activities",
@@ -963,7 +980,7 @@ export const activityTree: Array<TreeNode> = [
         key: "13.3",
         sector: "Arts, entertainment and recreation",
         type: "child",
-        nace_codes: "J59",
+        naceCodes: ["J59"],
       },
     ],
   },
