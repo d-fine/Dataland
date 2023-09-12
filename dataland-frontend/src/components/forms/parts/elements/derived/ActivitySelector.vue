@@ -43,6 +43,7 @@
       ref="multiSelectFormFieldRef"
       dataTest="selectNaceCodes"
       name="naceCodes"
+      :emptyMessage="`No NACE code available for ${selectedActivities.name} Activity`"
       :validation="naceCodesForActivities.length ? 'required' : ''"
       validation-label="NACE codes for Activity"
       description="The NACE codes associated with this activity"
@@ -112,6 +113,7 @@ export default defineComponent({
           return { label: convertedNaceCode, value: naceCode };
         });
       } else {
+        this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
         return [];
       }
     },

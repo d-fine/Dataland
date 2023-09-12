@@ -9,6 +9,7 @@
       :placeholder="placeholder"
       :options="options"
       :innerClass="innerClass"
+      :emptyMessage="emptyMessage"
     />
   </div>
 </template>
@@ -28,6 +29,9 @@ export default defineComponent({
     dataTest: {
       type: String,
       default: "multiSelectFormElement",
+    },
+    emptyMessage: {
+      type: String,
     },
   },
 });
