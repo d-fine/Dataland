@@ -97,7 +97,7 @@ describe("Component test for the EuTaxonomy Page", () => {
       },
     ).then(() => {
       cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
-        "Data extracted from the company report.Company Reports",
+        "Data extracted from the company report. Company Reports",
       );
       cy.get('[data-test="documentLinkTest"]').contains("IntegratedReport");
 
