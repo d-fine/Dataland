@@ -44,7 +44,6 @@ describe("Component test for the EuTaxonomy Page", () => {
         Math.round(assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.amount)).toString() +
         ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
 
-
       const alphaContributionToClimateChangeMitigation = roundNumber(
         assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent) * 100,
         2,
@@ -130,7 +129,7 @@ export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
     tempReportingPeriod = dataAndMetaInfoSet.metaInfo.reportingPeriod;
     if (tempReportingPeriod) {
       reportingPeriods.push(tempReportingPeriod);
-    } else console.log("no reporting period given");
+    }
   }
   const allReports: Array<{ [p: string]: CompanyReport } | undefined> = dataAndMetaInfoSets.map(
     (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
