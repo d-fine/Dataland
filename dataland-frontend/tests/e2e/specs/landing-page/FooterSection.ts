@@ -1,10 +1,17 @@
+import { describeIf } from "@e2e/support/TestUtility";
 import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { checkFooter } from "@sharedUtils/ElementChecks";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
-describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
+
+describeIf(
+    "As a user, I expect the footer section to be present and contain relevant legal links",
+    {
+      executionEnvironments: ["developmentLocal", "ci"],
+    },
+    () => {
   describe("Checks that the footer section is present on many pages", () => {
     beforeEach(() => {
       cy.ensureLoggedIn();
