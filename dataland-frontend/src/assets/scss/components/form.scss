@@ -681,6 +681,10 @@ input[type="radio"] {
     }
   }
 }
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
 
 .p-checkbox .p-checkbox-box {
   border: 2px solid #ced4da;

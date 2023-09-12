@@ -1,5 +1,5 @@
 import { type TreeNode } from "primevue/tree";
-
+// Content is based on https://ec.europa.eu/sustainable-finance-taxonomy/assets/taxonomy.json
 export const activityTree: Array<TreeNode> = [
   {
     name: "Forestry",
