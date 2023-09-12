@@ -137,7 +137,6 @@ export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
   return [allReports, reportingPeriods];
 }
 
-
 /**
  * Returns the index of the with the newest reporting period in the array containing all reporting periods.
  * @param reportingPeriods array containing all reporting periods.
