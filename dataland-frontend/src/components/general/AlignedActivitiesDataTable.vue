@@ -50,7 +50,7 @@
       <template #body="{ data }">
         <template v-if="col.field === 'activity'">{{ activityApiNameToHumanizedName(data.activity) }}</template>
         <template v-else>
-          <ul class="unstyled-ul-list">
+          <ul class="unstyled-ul-list grid4">
             <li v-for="code of data.naceCodes" :key="code">{{ code }}</li>
           </ul>
         </template>

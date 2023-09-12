@@ -260,3 +260,9 @@ ul.unstyled-ul-list {
   display: flex;
   gap: 1rem;
 }
+
+.grid4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+}
