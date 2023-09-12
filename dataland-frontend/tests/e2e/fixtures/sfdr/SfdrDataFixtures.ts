@@ -1,10 +1,5 @@
-import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { Generator } from "@e2e/utils/FakeFixtureUtils";
 import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
-import {
-  generateNumericOrEmptyDatapoint,
-  generateYesNoOrEmptyDatapoint,
-  generateReferencedReports,
-} from "@e2e/fixtures/common/DataPointFixtures";
 import { type SfdrData } from "@clients/backend";
 import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
@@ -16,267 +11,126 @@ import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
  * @returns SFDR object with populated properties
  */
 export function generateSfdrData(undefinedProbability = 0.5): SfdrData {
-  const reports = generateReferencedReports();
+  const dataGenerator = new Generator(undefinedProbability);
   return {
     general: {
       general: {
         dataDate: randomPastDate(),
         fiscalYearDeviation: randomFiscalYearDeviation(),
         fiscalYearEnd: randomPastDate(),
-        referencedReports: reports,
-        scopeOfEntities: valueOrUndefined(randomYesNo(), undefinedProbability),
+        referencedReports: dataGenerator.getReports(),
+        scopeOfEntities: dataGenerator.randomYesNo(),
       },
     },
     environmental: {
       greenhouseGasEmissions: {
-        scope1: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        scope2: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        scope3: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        enterpriseValue: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        totalRevenue: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        fossilFuelSectorExposure: generateYesNoOrEmptyDatapoint(reports),
+        scope1: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        scope2: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        scope3: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        enterpriseValue: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        totalRevenue: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        fossilFuelSectorExposure: dataGenerator.randomDataPoint(randomYesNo()),
       },
       energyPerformance: {
-        renewableEnergyProduction: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        renewableEnergyConsumption: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        nonRenewableEnergyConsumption: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        nonRenewableEnergyProduction: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        highImpactClimateSectorEnergyConsumptionNaceA: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        highImpactClimateSectorEnergyConsumptionNaceB: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        highImpactClimateSectorEnergyConsumptionNaceC: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        highImpactClimateSectorEnergyConsumptionNaceD: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        highImpactClimateSectorEnergyConsumptionNaceE: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        highImpactClimateSectorEnergyConsumptionNaceF: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        highImpactClimateSectorEnergyConsumptionNaceG: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        highImpactClimateSectorEnergyConsumptionNaceH: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        highImpactClimateSectorEnergyConsumptionNaceL: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        totalHighImpactClimateSectorEnergyConsumption: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        nonRenewableEnergyConsumptionFossilFuels: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        nonRenewableEnergyConsumptionCrudeOil: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        nonRenewableEnergyConsumptionNaturalGas: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        nonRenewableEnergyConsumptionLignite: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        nonRenewableEnergyConsumptionCoal: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        nonRenewableEnergyConsumptionNuclearEnergy: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        nonRenewableEnergyConsumptionOther: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
+        renewableEnergyProduction: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        renewableEnergyConsumption: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        nonRenewableEnergyConsumption: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        nonRenewableEnergyProduction: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        highImpactClimateSectorEnergyConsumptionNaceA: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        highImpactClimateSectorEnergyConsumptionNaceB: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        highImpactClimateSectorEnergyConsumptionNaceC: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        highImpactClimateSectorEnergyConsumptionNaceD: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        highImpactClimateSectorEnergyConsumptionNaceE: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        highImpactClimateSectorEnergyConsumptionNaceF: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        highImpactClimateSectorEnergyConsumptionNaceG: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        highImpactClimateSectorEnergyConsumptionNaceH: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        highImpactClimateSectorEnergyConsumptionNaceL: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        totalHighImpactClimateSectorEnergyConsumption: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        nonRenewableEnergyConsumptionFossilFuels: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        nonRenewableEnergyConsumptionCrudeOil: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        nonRenewableEnergyConsumptionNaturalGas: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        nonRenewableEnergyConsumptionLignite: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        nonRenewableEnergyConsumptionCoal: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        nonRenewableEnergyConsumptionNuclearEnergy: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        nonRenewableEnergyConsumptionOther: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
       },
       biodiversity: {
-        primaryForestAndWoodedLandOfNativeSpeciesExposure: generateYesNoOrEmptyDatapoint(reports),
-        protectedAreasExposure: generateYesNoOrEmptyDatapoint(reports),
-        rareOrEndangeredEcosystemsExposure: generateYesNoOrEmptyDatapoint(reports),
+        primaryForestAndWoodedLandOfNativeSpeciesExposure: dataGenerator.randomDataPoint(randomYesNo()),
+        protectedAreasExposure: dataGenerator.randomDataPoint(randomYesNo()),
+        rareOrEndangeredEcosystemsExposure: dataGenerator.randomDataPoint(randomYesNo()),
       },
       water: {
-        emissionsToWater: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        waterConsumption: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        waterReused: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        waterManagementPolicy: generateYesNoOrEmptyDatapoint(reports),
-        waterStressAreaExposure: generateYesNoOrEmptyDatapoint(reports),
+        emissionsToWater: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        waterConsumption: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        waterReused: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        waterManagementPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        waterStressAreaExposure: dataGenerator.randomDataPoint(randomYesNo()),
       },
       waste: {
-        hazardousWaste: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        manufactureOfAgrochemicalPesticidesProducts: generateYesNoOrEmptyDatapoint(reports),
-        landDegradationDesertificationSoilSealingExposure: generateYesNoOrEmptyDatapoint(reports),
-        sustainableAgriculturePolicy: generateYesNoOrEmptyDatapoint(reports),
-        sustainableOceansAndSeasPolicy: generateYesNoOrEmptyDatapoint(reports),
-        wasteNonRecycled: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        threatenedSpeciesExposure: generateYesNoOrEmptyDatapoint(reports),
-        biodiversityProtectionPolicy: generateYesNoOrEmptyDatapoint(reports),
-        deforestationPolicy: generateYesNoOrEmptyDatapoint(reports),
+        hazardousWaste: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        manufactureOfAgrochemicalPesticidesProducts: dataGenerator.randomDataPoint(randomYesNo()),
+        landDegradationDesertificationSoilSealingExposure: dataGenerator.randomDataPoint(randomYesNo()),
+        sustainableAgriculturePolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        sustainableOceansAndSeasPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        wasteNonRecycled: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        threatenedSpeciesExposure: dataGenerator.randomDataPoint(randomYesNo()),
+        biodiversityProtectionPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        deforestationPolicy: dataGenerator.randomDataPoint(randomYesNo()),
       },
       emissions: {
-        inorganicPollutants: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        airPollutants: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        ozoneDepletionSubstances: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        carbonReductionInitiatives: generateYesNoOrEmptyDatapoint(reports),
+        inorganicPollutants: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        airPollutants: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        ozoneDepletionSubstances: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        carbonReductionInitiatives: dataGenerator.randomDataPoint(randomYesNo()),
       },
     },
     social: {
       socialAndEmployeeMatters: {
-        humanRightsLegalProceedings: generateYesNoOrEmptyDatapoint(reports),
-        iloCoreLabourStandards: generateYesNoOrEmptyDatapoint(reports),
-        environmentalPolicy: generateYesNoOrEmptyDatapoint(reports),
-        corruptionLegalProceedings: generateYesNoOrEmptyDatapoint(reports),
-        transparencyDisclosurePolicy: generateYesNoOrEmptyDatapoint(reports),
-        humanRightsDueDiligencePolicy: generateYesNoOrEmptyDatapoint(reports),
-        childForcedDiscriminationPolicy: generateYesNoOrEmptyDatapoint(reports),
-        iso14001Certificate: generateYesNoOrEmptyDatapoint(reports),
-        briberyCorruptionPolicy: generateYesNoOrEmptyDatapoint(reports),
-        fairBusinessMarketingAdvertisingPolicy: generateYesNoOrEmptyDatapoint(reports),
-        technologiesExpertiseTransferPolicy: generateYesNoOrEmptyDatapoint(reports),
-        fairCompetitionPolicy: generateYesNoOrEmptyDatapoint(reports),
-        violationOfTaxRulesAndRegulation: generateYesNoOrEmptyDatapoint(reports),
-        unGlobalCompactPrinciplesCompliancePolicy: generateYesNoOrEmptyDatapoint(reports),
-        oecdGuidelinesForMultinationalEnterprisesPolicy: generateYesNoOrEmptyDatapoint(reports),
-        averageGrossHourlyEarningsMaleEmployees: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        averageGrossHourlyEarningsFemaleEmployees: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        femaleBoardMembers: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        maleBoardMembers: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        controversialWeaponsExposure: generateYesNoOrEmptyDatapoint(reports),
-        workplaceAccidentPreventionPolicy: generateYesNoOrEmptyDatapoint(reports),
-        rateOfAccidents: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        workdaysLost: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        supplierCodeOfConduct: generateYesNoOrEmptyDatapoint(reports),
-        grievanceHandlingMechanism: generateYesNoOrEmptyDatapoint(reports),
-        whistleblowerProtectionPolicy: generateYesNoOrEmptyDatapoint(reports),
-        reportedIncidentsOfDiscrimination: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        sanctionsIncidentsOfDiscrimination: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        ceoToEmployeePayGap: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
+        humanRightsLegalProceedings: dataGenerator.randomDataPoint(randomYesNo()),
+        iloCoreLabourStandards: dataGenerator.randomDataPoint(randomYesNo()),
+        environmentalPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        corruptionLegalProceedings: dataGenerator.randomDataPoint(randomYesNo()),
+        transparencyDisclosurePolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        humanRightsDueDiligencePolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        childForcedDiscriminationPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        iso14001Certificate: dataGenerator.randomDataPoint(randomYesNo()),
+        briberyCorruptionPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        fairBusinessMarketingAdvertisingPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        technologiesExpertiseTransferPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        fairCompetitionPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        violationOfTaxRulesAndRegulation: dataGenerator.randomDataPoint(randomYesNo()),
+        unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        oecdGuidelinesForMultinationalEnterprisesPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        femaleBoardMembers: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        maleBoardMembers: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        controversialWeaponsExposure: dataGenerator.randomDataPoint(randomYesNo()),
+        workplaceAccidentPreventionPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        rateOfAccidents: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        workdaysLost: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        supplierCodeOfConduct: dataGenerator.randomDataPoint(randomYesNo()),
+        grievanceHandlingMechanism: dataGenerator.randomDataPoint(randomYesNo()),
+        whistleblowerProtectionPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        reportedIncidentsOfDiscrimination: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        sanctionsIncidentsOfDiscrimination: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        ceoToEmployeePayGap: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
       },
       greenSecurities: {
-        securitiesNotCertifiedAsGreen: generateYesNoOrEmptyDatapoint(reports),
+        securitiesNotCertifiedAsGreen: dataGenerator.randomDataPoint(randomYesNo()),
       },
       humanRights: {
-        humanRightsPolicy: generateYesNoOrEmptyDatapoint(reports),
-        humanRightsDueDiligence: generateYesNoOrEmptyDatapoint(reports),
-        traffickingInHumanBeingsPolicy: generateYesNoOrEmptyDatapoint(reports),
-        reportedChildLabourIncidents: generateYesNoOrEmptyDatapoint(reports),
-        reportedForcedOrCompulsoryLabourIncidents: generateYesNoOrEmptyDatapoint(reports),
-        reportedIncidentsOfHumanRights: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
+        humanRightsPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        humanRightsDueDiligence: dataGenerator.randomDataPoint(randomYesNo()),
+        traffickingInHumanBeingsPolicy: dataGenerator.randomDataPoint(randomYesNo()),
+        reportedChildLabourIncidents: dataGenerator.randomDataPoint(randomYesNo()),
+        reportedForcedOrCompulsoryLabourIncidents: dataGenerator.randomDataPoint(randomYesNo()),
+        reportedIncidentsOfHumanRights: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
       },
       antiCorruptionAndAntiBribery: {
-        reportedCasesOfBriberyCorruption: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        reportedConvictionsOfBriberyCorruption: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
-        reportedFinesOfBriberyCorruption: valueOrUndefined(
-          generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
-          undefinedProbability,
-        ),
+        reportedCasesOfBriberyCorruption: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        reportedConvictionsOfBriberyCorruption: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
+        reportedFinesOfBriberyCorruption: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
       },
     },
   };

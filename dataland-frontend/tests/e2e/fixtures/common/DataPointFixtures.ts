@@ -58,19 +58,6 @@ export function generateNumericOrEmptyDatapoint(
 }
 
 /**
- * Randomly returns a datapoint with the specified value (chosen at random between 0 and 99999 if not specified)
- * @param reports the reports that can be referenced as data sources
- * @param value the value of the datapoint to generate (chosen at random between 0 and 99999 if not specified)
- * @returns the generated datapoint
- */
-export function generateNumericDatapoint(
-  reports: ReferencedDocuments,
-  value: number | null = valueOrNull(faker.number.int()),
-): DataPointOneValueBigDecimal {
-  return generateDatapoint(value, reports);
-}
-
-/**
  * Randomly generates a Yes / No / Na / undefined datapoint
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint or undefined
@@ -99,7 +86,7 @@ export function generateDatapointOrNotReportedAtRandom(
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint
  */
-export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedDocuments): Y {
+export function generateDatapoint<T>(value: T | null, reports: ReferencedDocuments): GenericDataPoint<T> {
   const qualityBucket =
     value === null
       ? QualityOptions.Na
@@ -112,7 +99,14 @@ export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedDocu
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
-  } as Y;
+  } as GenericDataPoint<T>;
+}
+
+export interface GenericDataPoint<T> {
+  value: T | undefined;
+  dataSource: CompanyReportReference | undefined;
+  quality: QualityOptions;
+  comment: string | undefined;
 }
 
 /**
@@ -137,31 +131,4 @@ function createQualityAndDataSourceAndComment(
     comment = faker.git.commitMessage();
   }
   return { dataSource, comment };
-}
-
-/**
- * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
- * @param valueAsAbsolute the decimal value of the datapoint to generate
- * @param valueAsPercentage the percentage of the datapoint to generate
- * @param reports the reports that can be referenced as data sources
- * @returns the generated datapoint
- */
-export function generateDatapointAbsoluteAndPercentage<T, Y>(
-  valueAsAbsolute: T | null,
-  valueAsPercentage: T | null,
-  reports: ReferencedDocuments,
-): Y {
-  const qualityBucket =
-    valueAsAbsolute === null
-      ? QualityOptions.Na
-      : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
-  const { dataSource, comment } = createQualityAndDataSourceAndComment(reports, qualityBucket);
-
-  return {
-    valueAsPercentage: valueAsPercentage ?? undefined,
-    dataSource: dataSource,
-    quality: qualityBucket,
-    comment: comment,
-    valueAsAbsolute: valueAsAbsolute ?? undefined,
-  } as Y;
 }
