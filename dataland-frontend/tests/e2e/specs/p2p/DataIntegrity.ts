@@ -6,7 +6,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
@@ -39,7 +39,7 @@ describeIf(
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
       cy.get(".p-dialog th").eq(0).should("have.text", "Sectors");
       p2pFixtureForTest.t.general.general.sectors.forEach((sector) => {
-        cy.get("span").contains(humanizeString(sector)).should("exist");
+        cy.get("span").contains(humanizeStringOrNumber(sector)).should("exist");
       });
       cy.get(".p-dialog").find(".p-dialog-header-icon").click();
       cy.get('td > [data-test="emissionsPlanning"]').click();

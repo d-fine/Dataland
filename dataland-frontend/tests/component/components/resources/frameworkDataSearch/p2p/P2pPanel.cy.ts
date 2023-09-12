@@ -154,7 +154,7 @@ describe("Component test for P2pPanel", () => {
         };
       },
     });
-    cy.get("table").find(`tr:contains("Data Date")`).find(`span`).eq(6).contains("2023");
+    cy.get("table").find(`tr:contains("Data Date")`).find("span").eq(6).get("span").contains("2023");
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
       cy.get(`span.p-column-title`)

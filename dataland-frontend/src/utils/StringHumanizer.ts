@@ -53,16 +53,19 @@ function humanizeViaMapping(rawText: string): string {
 }
 
 /**
- * convert string to a human-readable text
- * @param rawText is the string to be converted to a human-readable string
+ * convert string or number to a human-readable string
+ * @param rawInput is the string or number to be converted to a human-readable string
  * @returns the converted string
  */
-export function humanizeString(rawText: string | null | undefined): string {
-  if (!rawText) {
+export function humanizeStringOrNumber(rawInput: string | number | null | undefined): string {
+  if (typeof rawInput === "number") {
+    return rawInput.toString();
+  }
+  if (!rawInput) {
     return "";
   }
-  const resultOfCustomMappingHumanisation = humanizeViaMapping(rawText);
+  const resultOfCustomMappingHumanisation = humanizeViaMapping(rawInput);
   return resultOfCustomMappingHumanisation == ""
-    ? convertCamelCaseToSentenceCase(rawText)
+    ? convertCamelCaseToSentenceCase(rawInput)
     : resultOfCustomMappingHumanisation;
 }
