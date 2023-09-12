@@ -218,7 +218,7 @@ export default defineComponent({
         tempReportingPeriod = dataAndMetaInfoSet.metaInfo.reportingPeriod;
         if (tempReportingPeriod) {
           reportingPeriods.push(tempReportingPeriod);
-        } else console.log("no reporting period given");
+        }
       }
       const allReports = dataAndMetaInfoSets.map(
         (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
