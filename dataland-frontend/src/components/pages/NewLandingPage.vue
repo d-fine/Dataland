@@ -7,8 +7,8 @@
     <TheStruggle :sections="landingPage?.sections" />
     <TheHowItWorks />
     <TheClaim :sections="landingPage?.sections" />
-    <TheQuotes />
-    <TheCampaigns />
+    <TheCampaigns :sections="landingPage?.sections" />
+    <TheComeTogether :sections="landingPage?.sections" />
   </main>
   <TheFooter :isMobile="isMobile" />
 </template>
@@ -27,11 +27,11 @@ import TheHeader from "@/components/layout/TheHeader.vue";
 import TheIntro from "@/components/general/TheIntro.vue";
 import TheBrands from "@/components/general/TheBrands.vue";
 import TheMission from "@/components/general/TheMission.vue";
-import TheQuotes from "@/components/general/TheQuotes.vue";
 import TheStruggle from "@/components/general/TheStruggle.vue";
-import TheClaim from "@/components/general/TheClaim.vue";
 import TheHowItWorks from "@/components/general/TheHowItWorks.vue";
+import TheClaim from "@/components/general/TheClaim.vue";
 import TheCampaigns from "@/components/general/TheCampaigns.vue";
+import TheComeTogether from "@/components/general/TheComeTogether.vue";
 import TheFooter from "@/components/layout/TheFooter.vue";
 
 // Import the JSON content and types

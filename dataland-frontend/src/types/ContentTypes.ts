@@ -3,6 +3,7 @@ export interface Card {
   icon?: string;
   title?: string;
   text: string;
+  date?: string;
 }
 
 export interface Section {
