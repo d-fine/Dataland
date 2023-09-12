@@ -34,9 +34,8 @@ describe("Component test for the EuTaxonomy Page", () => {
       const capexOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.capex);
       const capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
       const capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
-      /**
+
       const betaTotalAlignedCapexPercentage = roundNumber(
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         assertDefined(capexOfDatasetBeta.alignedShare?.relativeShareInPercent) * 100,
         2,
       );
@@ -81,7 +80,6 @@ describe("Component test for the EuTaxonomy Page", () => {
         .find("span")
         .should("contain", alphaContributionToClimateChangeMitigation)
         .should("contain", gammaContributionToClimateChangeMitigation);
-       **/
     });
   });
   it("Checks if the reports banner and the corresponding modal is properly displayed", () => {
@@ -103,6 +101,8 @@ describe("Component test for the EuTaxonomy Page", () => {
         "Data extracted from the company report.Company Reports",
       );
       cy.get('[data-test="documentLinkTest"]').contains("IntegratedReport");
+      //cy.get('[data-test="documentLinkTest"]').contains("ESEFReport");
+
       cy.get(`[data-test="previousReportsLinkToModal"]`).contains("Previous years reports").click();
       for (let i = 0; i < reportsAndReportingPeriods[1]?.length; i++) {
         if (i != hightestIndexOfReportingPeriods) {
