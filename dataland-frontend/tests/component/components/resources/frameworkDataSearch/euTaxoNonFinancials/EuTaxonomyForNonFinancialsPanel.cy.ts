@@ -86,7 +86,6 @@ describe("Component test for the EuTaxonomy Page", () => {
     const reportsAndReportingPeriods =
       extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(mockedBackendDataForTest);
     const hightestIndexOfReportingPeriods = calculateIndexOfNewestReportingPeriod(reportsAndReportingPeriods[1]);
-    console.log(reportsAndReportingPeriods[0]);
     cy.mountWithDialog(
       ShowMultipleReportsBanner,
       {
@@ -101,7 +100,6 @@ describe("Component test for the EuTaxonomy Page", () => {
         "Data extracted from the company report.Company Reports",
       );
       cy.get('[data-test="documentLinkTest"]').contains("IntegratedReport");
-      //cy.get('[data-test="documentLinkTest"]').contains("ESEFReport");
 
       cy.get(`[data-test="previousReportsLinkToModal"]`).contains("Previous years reports").click();
       for (let i = 0; i < reportsAndReportingPeriods[1]?.length; i++) {
