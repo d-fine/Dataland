@@ -44,6 +44,7 @@ describe("Component test for the EuTaxonomy Page", () => {
         Math.round(assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.amount)).toString() +
         ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
 
+
       const alphaContributionToClimateChangeMitigation = roundNumber(
         assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent) * 100,
         2,
