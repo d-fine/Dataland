@@ -29,10 +29,10 @@ appear.
   this can be possibly fixed by reverting the docker-compose-plugin version
 ### Gradle update
 
-- [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
-- [ ] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco
+- [x] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
+- [x] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco
   and ktlint)
-- [ ] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
+- [x] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
 
