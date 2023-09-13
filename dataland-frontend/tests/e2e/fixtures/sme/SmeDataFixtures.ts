@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { type SmeData, type SmeProduct, type SmeProductionSite } from "@clients/backend";
 import { randomNumber } from "@e2e/fixtures/common/NumberFixtures";
-import { Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
@@ -25,10 +25,10 @@ export function generateSmeFixtures(numFixtures: number): FixtureData<SmeData>[]
 
 /**
  * Generates a random SME dataset
- * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random SME dataset
  */
-export function generateSmeData(undefinedProbability = 0.5): SmeData {
+export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): SmeData {
   const dataGenerator = new SmeGenerator(undefinedProbability);
   return {
     general: {

@@ -17,7 +17,7 @@ import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
- * @param undefinedProbability
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns the generated fixture
  */
 export function generateEuTaxonomyDataForNonFinancials(

@@ -13,7 +13,7 @@ import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single eutaxonomy-financials fixture
- * @param undefinedProbability
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random eutaxonomy-financials fixture
  */
 export function generateEuTaxonomyDataForFinancials(
@@ -39,7 +39,7 @@ export class EuFinancialsGenerator extends Generator {
 
   /**
    * Generates a single eutaxonomy-financials fixture for a company with the given financial services types
-   * @param financialServicesTypes
+   * @param financialServicesTypes the selected financial service type, if not given default values are used
    * @returns a random eutaxonomy-financials fixture
    */
   generateEuTaxonomyDataForFinancialsWithTypes(

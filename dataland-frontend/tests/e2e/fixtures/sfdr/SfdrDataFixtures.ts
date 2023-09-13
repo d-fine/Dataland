@@ -7,7 +7,7 @@ import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 
 /**
  *
- * @param undefinedProbability probability factor
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns SFDR object with populated properties
  */
 export function generateSfdrData(undefinedProbability = DEFAULT_PROBABILITY): SfdrData {

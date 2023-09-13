@@ -1,14 +1,14 @@
 import { faker } from "@faker-js/faker";
 import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { type Address } from "@clients/backend";
-import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random address
- * @param undefinedProbability the probability for "undefined" values in nullable fields
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random address
  */
-export function generateAddress(undefinedProbability = 0.5): Address {
+export function generateAddress(undefinedProbability = DEFAULT_PROBABILITY): Address {
   return {
     streetAndHouseNumber: valueOrUndefined(
       faker.location.street() + " " + faker.location.buildingNumber(),

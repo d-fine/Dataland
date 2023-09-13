@@ -8,16 +8,6 @@ import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
-const nullRatio = 0.1;
-
-/**
- * Randomly returns the specified value or null
- * @param value the value to return
- * @returns the value or null
- */
-export function valueOrNull<T>(value: T): T | null {
-  return Math.random() > nullRatio ? value : null;
-}
 
 /**
  * Generates a random non-empty set of reports that can be referenced

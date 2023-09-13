@@ -17,17 +17,19 @@ import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtu
 import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
-import { valueOrNull } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 
 /**
  * Generates a set number of LKSG fixtures
  * @param numFixtures the number of lksg fixtures to generate
- * @param undefinedProbability the probability of fields to be undefined (number between 0 and 1)
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a set number of LKSG fixtures
  */
-export function generateLksgFixture(numFixtures: number, undefinedProbability = 0.5): FixtureData<LksgData>[] {
+export function generateLksgFixture(
+  numFixtures: number,
+  undefinedProbability = DEFAULT_PROBABILITY,
+): FixtureData<LksgData>[] {
   return generateFixtureDataset<LksgData>(
     () => generateLksgData(undefinedProbability),
     numFixtures,
@@ -49,10 +51,10 @@ export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
 
 /**
  * Generates a random production site
- * @param undefinedProbability the percentage of undefined values in the returned production site
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random production site
  */
-export function generateProductionSite(undefinedProbability = 0.5): LksgProductionSite {
+export function generateProductionSite(undefinedProbability = DEFAULT_PROBABILITY): LksgProductionSite {
   return {
     nameOfProductionSite: valueOrUndefined(faker.company.name(), undefinedProbability),
     addressOfProductionSite: generateAddress(undefinedProbability),
@@ -78,7 +80,7 @@ function generateProduct(): LksgProduct {
  */
 function generateProcurementCategory(): LksgProcurementCategory {
   const numberOfSuppliersPerCountryCodeAsMap = new Map<string, number>(
-    generateArray(() => [getRandomIso2CountryCode(), valueOrNull(faker.number.int({ min: 0, max: 50 }))!]),
+    generateArray(() => [getRandomIso2CountryCode(), valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!]),
   );
   return {
     procuredProductTypesAndServicesNaceCodes: generateListOfNaceCodes(),
@@ -162,7 +164,7 @@ export function generateOneLksgDatasetWithManyNulls(): LksgData {
 
 /**
  * Generates a random LKSG dataset
- * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random LKSG dataset
  */
 export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): LksgData {
