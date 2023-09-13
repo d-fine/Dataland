@@ -36,6 +36,9 @@ export class Generator {
   getReports(): ReferencedDocuments {
     return this.reports;
   }
+  setReports(reports: ReferencedDocuments): void {
+    this.reports = reports;
+  }
   randomYesNo(): YesNo | undefined {
     return this.valueOrUndefined(randomYesNo());
   }

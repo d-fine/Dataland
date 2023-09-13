@@ -13,7 +13,6 @@ import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
@@ -33,9 +32,6 @@ export function generateEuTaxonomyDataForNonFinancials(
 }
 
 export class EuNonFinancialsGenerator extends Generator {
-  setReports(reports: ReferencedDocuments): void {
-    this.reports = reports;
-  }
   /**
    * Generates a random amount of money
    * @returns an amount of money

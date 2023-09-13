@@ -9,7 +9,6 @@ import {
 } from "@clients/backend";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single eutaxonomy-financials fixture
@@ -31,10 +30,6 @@ export class EuFinancialsGenerator extends Generator {
     this.financialServicesTypes = faker.helpers.arrayElements(
       Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum),
     );
-  }
-
-  setReports(reports: ReferencedDocuments): void {
-    this.reports = reports;
   }
 
   /**

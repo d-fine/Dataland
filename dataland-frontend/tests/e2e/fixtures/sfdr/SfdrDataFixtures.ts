@@ -135,25 +135,3 @@ export function generateSfdrData(undefinedProbability = DEFAULT_PROBABILITY): Sf
     },
   };
 }
-/**
- * Generates an SFDR dataset with the value null for some categories, subcategories and field values.
- * Datasets that were uploaded via the Dataland API can look like this in production.
- * @returns the dataset
- */
-export function generateOneSfdrDatasetWithManyNulls(): SfdrData {
-  return {
-    general: {
-      general: {
-        dataDate: "27-08-2022",
-        fiscalYearDeviation: "Deviation",
-        fiscalYearEnd: "marker-for-test",
-        scopeOfEntities: null!,
-        referencedReports: null!,
-      },
-    },
-    social: {
-      socialAndEmployeeMatters: null!,
-    },
-    environmental: null!,
-  };
-}
