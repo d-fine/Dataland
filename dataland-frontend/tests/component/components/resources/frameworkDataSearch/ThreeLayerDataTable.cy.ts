@@ -16,7 +16,7 @@ import { roundNumber } from "@/utils/NumberConversionUtils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
 import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
 
-describe("Component test for the EUTaxonomy Page", () => {
+describe("Component test for ThreeLayerDataTable", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
 
   before(function () {
