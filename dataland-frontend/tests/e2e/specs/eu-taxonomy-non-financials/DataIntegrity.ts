@@ -44,7 +44,7 @@ describeIf(
     function validateSomeValuesForTheReuploadedDataset(company: StoredCompany, dataId: string): void {
       cy.visit(`/companies/${company.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/${dataId}`);
       cy.get("h1").should("contain", company.companyInformation.companyName);
-      cy.get('span[data-test="_basicInformation"]').contains("Basic Information").should("exist");
+      cy.get('span[data-test="_general"]').contains("General").should("exist");
       ["Assurance", "CapEx", "OpEx"].forEach((category) => {
         cy.get(`span[data-test="${category}"]`).contains(category.toUpperCase()).should("exist");
       });
