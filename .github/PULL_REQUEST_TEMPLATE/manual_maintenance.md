@@ -36,7 +36,7 @@ appear.
 
 ### Dataland frontend
 
-- [ ] Update node version in `dataland-frontend/build.gradle.kts`
+- [x] Update node version in `dataland-frontend/build.gradle.kts`
 - [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
   package.json
 - [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
