@@ -8,7 +8,7 @@ import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 describeIf(
   "As a user, I expect the footer section to be present and contain relevant legal links",
   {
-    executionEnvironments: ["developmentLocal", "ci"],
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   () => {
     describe("Checks that the footer section is present on many pages", () => {
