@@ -38,8 +38,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   describeIf(
     "",
     {
-      executionEnvironments: ["ci", "developmentCd"],
-      onlyExecuteOnDatabaseReset: true,
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     },
     () => {
       it(
@@ -171,7 +170,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       describeIf(
         "As a user, I expect substrings of the autocomplete suggestions to be highlighted if they match my search string",
         {
-          executionEnvironments: ["ci", "developmentCd"],
+          executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
         },
         () => {
           it("Search for company by its alternative name", () => {
