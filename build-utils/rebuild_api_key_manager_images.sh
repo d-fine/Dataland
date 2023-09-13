@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euxo pipefail
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_api_key_manager_base ./dataland-api-key-manager/DockerfileBase \

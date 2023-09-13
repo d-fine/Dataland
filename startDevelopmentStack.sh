@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Login to the docker repository
 set -euxo pipefail
 ./verifyEnvironmentVariables.sh
