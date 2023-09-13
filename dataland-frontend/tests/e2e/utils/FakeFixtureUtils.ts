@@ -9,7 +9,7 @@ import { type YesNo, type YesNoNa } from "@clients/backend";
 import { generateBaseDataPoint, type GenericBaseDataPoint } from "@e2e/fixtures/common/BaseDataPointFixtures";
 import { randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 
-export const DEFAULT_PROBABILITY = 0.5;
+export const DEFAULT_PROBABILITY = 0.2;
 
 /**
  * Randomly returns the specified value or undefined
