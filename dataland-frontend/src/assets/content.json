@@ -96,6 +96,63 @@
                     "image": [
                         "/src/assets/images/pictures/claim_img.jpg"
                     ]
+                },
+                {
+                    "title": "Campaigns",
+                    "text": [
+                        "Create or join a campaign",
+                        " to get the missing data."
+                    ],
+                    "cards": [
+                        {
+                            "icon": "/src/assets/images/elements/Crop-growth.svg",
+                            "title": "SFDR",
+                            "text": "101",
+                            "date": "14th of August"
+                        },
+                        {
+                            "icon": "/src/assets/images/elements/Diagram--reference.svg",
+                            "title": "EU Taxonomy",
+                            "text": "269"
+                        },
+                        {
+                            "icon": "/src/assets/images/elements/Dashboard--reference.svg",
+                            "title": "LksG",
+                            "text": "101",
+                            "date": "14th of August"
+                        },
+                        {
+                            "icon": "/src/assets/images/elements/Explore.svg",
+                            "title": "Pathway to Paris",
+                            "text": "101",
+                            "date": "Starting soon!"
+                        }
+                    ]
+                },
+                {
+                    "title": "Come together",
+                    "text": [
+                        "Come together",
+                        " to create a dataset that nobody can create alone while sharing the costs."
+                    ],
+                    "cards": [
+                        {
+                            "title": "10",
+                            "text": "Utilize the search feature to find specific companies within the platform."
+                        },
+                        {
+                            "title": "9000",
+                            "text": "Request company’s inclusion in case you can’t find the company you are looking for."
+                        },
+                        {
+                            "title": "3",
+                            "text": "Create or join a campaign  to get the missing data."
+                        },
+                        {
+                            "title": "5",
+                            "text": "Download either  through the platform  or through API."
+                        }
+                    ]
                 }
             ]
         },

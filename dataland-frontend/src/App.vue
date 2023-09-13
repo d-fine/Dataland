@@ -117,6 +117,7 @@ function openSessionWarningModal(): void {
 #app.lp {
   max-width: 1440px;
   margin: 0 auto;
+  text-align: left;
 }
 </style>
 
