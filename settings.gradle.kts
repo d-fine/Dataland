@@ -56,7 +56,7 @@ dependencyResolutionManagement {
 
             library("commons-io", "commons-io:commons-io:2.13.0")
 
-            library("flyway", "org.flywaydb:flyway-core:9.22.1")
+            library("flyway", "org.flywaydb:flyway-core:9.18.0")
         }
     }
 }
