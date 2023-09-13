@@ -159,6 +159,9 @@
                         "Come together",
                         " to create a dataset that nobody can create alone while sharing the costs."
                     ],
+                    "image": [
+                        "Join now!"
+                    ],
                     "cards": [
                         {
                             "title": "10",
@@ -176,6 +179,16 @@
                             "title": "5",
                             "text": "Download either through the platform or through API."
                         }
+                    ]
+                },
+                {
+                    "title": "Footer",
+                    "text": [
+                        "Copyright © ",
+                        " Dataland"
+                    ],
+                    "image": [
+                        "/src/assets/images/logos/gfx_logo_dataland_orange_S.svg"
                     ]
                 }
             ]

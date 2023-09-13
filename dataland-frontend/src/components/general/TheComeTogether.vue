@@ -15,6 +15,9 @@
           </div>
         </div>
       </div>
+      <div class="cometogether__cta">
+        {{ comeTogetherSection?.image?.[0] ?? "" }}
+      </div>
     </div>
   </section>
 </template>
@@ -35,7 +38,7 @@ const comeTogetherSection = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding: 140px 0 140px 296px;
+  padding: 140px 0 80px 296px;
   background-color: #f6f6f6;
 
   &__wrapper {
@@ -87,52 +90,14 @@ const comeTogetherSection = computed(() => {
       line-height: 78px;
     }
   }
-
-  //   span {
-  //     font-weight: 700;
-  //   }
-  //   &:last-child:not(:last-of-type)::after {
-  //     content: "";
-  //     display: block;
-  //     position: absolute;
-  //     bottom: 0;
-  //     left: 24px; // same as left padding
-  //     right: 24px; // same as right padding
-  //     height: 1px;
-  //     background: #ccc;
-  //   }
-  //   &:last-child {
-  //     justify-content: flex-end;
-  //   }
-
-  //   &--icon {
-  //     font-size: 20px;
-
-  //     font-weight: 600;
-  //     line-height: 28px; /* 140% */
-  //     letter-spacing: 0.25px;
-  //     img {
-  //       width: 24px;
-  //       height: 24px;
-  //       margin-right: 16px;
-  //     }
-  //   }
-  // }
-
-  // &__button {
-  //   padding: 14px 32px;
-  //   border-radius: 32px;
-  //   background-color: #ff6813;
-  //   color: #fff;
-  //   font-size: 16px;
-  //   font-style: normal;
-  //   font-weight: 600;
-  //   line-height: 20px;
-  //   letter-spacing: 0.75px;
-  //   text-transform: uppercase;
-  //   border: 2px solid #ff6813;
-  //   cursor: pointer;
-  //   cursor: pointer;
-  // }
+  &__cta {
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 56px; /* 116.667% */
+    letter-spacing: 0.25px;
+    text-align: right;
+    padding-right: 120px;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :isMobile="isMobile" :landingPage="landingPage" :contentData="content" />
+  <TheHeader :landingPage="landingPage" :contentData="content" />
   <main role="main">
     <TheIntro :sections="landingPage?.sections" />
     <TheBrands :sections="landingPage?.sections" />
@@ -10,7 +10,7 @@
     <TheCampaigns :sections="landingPage?.sections" />
     <TheComeTogether :sections="landingPage?.sections" />
   </main>
-  <TheFooter :isMobile="isMobile" />
+  <TheFooter :sections="landingPage?.sections" />
 </template>
 
 <script setup lang="ts">
@@ -37,12 +37,11 @@ import TheFooter from "@/components/layout/TheFooter.vue";
 // Import the JSON content and types
 import contentData from "@/assets/content.json";
 import type { Content, Page } from "@/types/ContentTypes";
-// Assuming the contentData is of type Content
+
 const content: Content = contentData;
-// Find the Landing Page details
 const landingPage: Page | undefined = content.pages.find((page) => page.url === "/lp");
+
 const dialog = useDialog();
-const { isMobile } = defineProps<{ isMobile: boolean }>();
 const injectedAuthenticated = inject<boolean>("authenticated");
 const authenticated = ref(injectedAuthenticated);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");

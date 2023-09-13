@@ -1,9 +1,11 @@
-// ContentTypes.ts
-export interface Card {
-  icon?: string;
-  title?: string;
-  text: string;
-  date?: string;
+export interface Content {
+  pages: Page[];
+}
+
+export interface Page {
+  title: string;
+  url: string;
+  sections: Section[];
 }
 
 export interface Section {
@@ -13,12 +15,9 @@ export interface Section {
   cards?: Card[];
 }
 
-export interface Page {
-  title: string;
-  url: string;
-  sections: Section[];
-}
-
-export interface Content {
-  pages: Page[];
+export interface Card {
+  icon?: string;
+  text: string;
+  title?: string;
+  date?: string;
 }
