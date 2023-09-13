@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # option pipefail does not work with bash in an nginx container
 set -eux
 echo "Getting Certificates after Boot"
