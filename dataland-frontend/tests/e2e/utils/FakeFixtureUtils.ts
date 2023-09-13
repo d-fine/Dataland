@@ -2,12 +2,14 @@ import {
   generateDatapoint,
   generateReferencedReports,
   type GenericDataPoint,
+  type GenericBaseDataPoint,
 } from "@e2e/fixtures/common/DataPointFixtures";
 import { type ReferencedDocuments, generateArray } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNo, randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { type YesNo, type YesNoNa } from "@clients/backend";
-import { generateBaseDataPoint, type GenericBaseDataPoint } from "@e2e/fixtures/common/BaseDataPointFixtures";
 import { randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
+import { faker } from "@faker-js/faker";
 
 export const DEFAULT_PROBABILITY = 0.2;
 
@@ -24,14 +26,16 @@ export function valueOrUndefined<T>(value: T, undefinedProbability = DEFAULT_PRO
 export class Generator {
   undefinedProbability: number;
   reports: ReferencedDocuments;
+  documents: ReferencedDocuments;
 
   constructor(undefinedProbability = DEFAULT_PROBABILITY) {
     this.undefinedProbability = undefinedProbability;
     this.reports = generateReferencedReports();
+    this.documents = generateReferencedDocuments();
   }
 
   valueOrUndefined<T>(value: T): T | undefined {
-    return Math.random() > this.undefinedProbability ? value : undefined;
+    return valueOrUndefined(value, this.undefinedProbability);
   }
   getReports(): ReferencedDocuments {
     return this.reports;
@@ -40,24 +44,31 @@ export class Generator {
     this.reports = reports;
   }
   randomYesNo(): YesNo | undefined {
-    return this.valueOrUndefined(randomYesNo());
+    return valueOrUndefined(randomYesNo(), this.undefinedProbability);
   }
   randomYesNoNa(): YesNoNa | undefined {
-    return this.valueOrUndefined(randomYesNoNa());
+    return valueOrUndefined(randomYesNoNa(), this.undefinedProbability);
   }
   randomPercentageValue(): number | undefined {
-    return this.valueOrUndefined(randomPercentageValue());
+    return valueOrUndefined(randomPercentageValue(), this.undefinedProbability);
   }
   randomNumber(max = 10000): number | undefined {
-    return this.valueOrUndefined(randomNumber(max));
+    return valueOrUndefined(randomNumber(max), this.undefinedProbability);
   }
   randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | undefined {
-    return this.valueOrUndefined(generateBaseDataPoint(input, this.undefinedProbability));
+    const document = valueOrUndefined(
+      faker.helpers.arrayElement(Object.values(this.documents)),
+      this.undefinedProbability,
+    );
+    return valueOrUndefined({
+      value: input,
+      dataSource: document,
+    } as GenericBaseDataPoint<T>);
   }
   randomDataPoint<T>(input: T): GenericDataPoint<T> | undefined {
-    return this.valueOrUndefined(generateDatapoint(input, this.reports));
+    return valueOrUndefined(generateDatapoint(input, this.reports), this.undefinedProbability);
   }
   generateArray<T>(generator: () => T): T[] | undefined {
-    return this.valueOrUndefined(generateArray(generator));
+    return valueOrUndefined(generateArray(generator), this.undefinedProbability);
   }
 }

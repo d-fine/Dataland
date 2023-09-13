@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { type CompanyReportReference, QualityOptions } from "@clients/backend";
+import { type CompanyReportReference, type DocumentReference, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNoNa } from "./YesNoFixtures";
@@ -55,6 +55,11 @@ export interface GenericDataPoint<T> {
   dataSource: CompanyReportReference | undefined;
   quality: QualityOptions;
   comment: string | undefined;
+}
+
+export interface GenericBaseDataPoint<T> {
+  value: T;
+  dataSource: DocumentReference | undefined;
 }
 
 /**
