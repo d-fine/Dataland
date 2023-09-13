@@ -119,12 +119,12 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] select[name="quality"]').select(2);
     cy.get('div[label="Revenue"] textarea[name="comment"]').clear().type("just a comment");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("a");
-    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be a number")
       .should("exist");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("120");
-    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be between 0 and 100")
       .should("exist");
@@ -137,14 +137,14 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
       .clear()
       .type("a");
-    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be a number")
       .should("exist");
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
       .clear()
       .type("-12");
-    cy.get('div[label="Revenue"] em[title="Total Eligible Revenue"]').click();
+    cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should("contain", "must be between 0 and 100")
       .should("exist");
