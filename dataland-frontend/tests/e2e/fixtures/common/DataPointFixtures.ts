@@ -34,9 +34,9 @@ export function generateReferencedReports(): ReferencedDocuments {
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint
  */
-export function generateDatapoint<T>(value: T | null, reports: ReferencedDocuments): GenericDataPoint<T> {
+export function generateDatapoint<T>(value: T | undefined, reports: ReferencedDocuments): GenericDataPoint<T> {
   const qualityBucket =
-    value === null
+    value === undefined
       ? QualityOptions.Na
       : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 

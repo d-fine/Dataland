@@ -2,46 +2,49 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Detroit",
-			"sector": "eyeballs",
+			"headquarters": "Enosland",
+			"headquartersPostalCode": "44568",
+			"sector": "solutions",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"bXm1STlA52kyKUdZz4Ww"
+				],
 				"Isin": [],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
+				"PermId": [
+					"PrLtz7ZYL7"
+				],
+				"Ticker": [
+					"FSa5mmF"
+				],
+				"Duns": [
+					"2JPSBVAhU"
+				],
+				"VatNumber": [
+					"dqlw4WPVV"
+				],
 				"CompanyRegistrationNumber": [
-					"u6hASS3k9XpYock"
+					"2TcSvamJgy5KosG"
 				]
 			},
-			"countryCode": "MG",
-			"companyAlternativeNames": [
-				"Roob - Goldner",
-				"Willms and Sons"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://enraged-wash.com/",
+			"countryCode": "SV",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://impeccable-spaghetti.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [
-						"A",
-						"C",
-						"E",
-						"K",
-						"L"
-					],
+					"sector": [],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Zena Harbor 228",
-						"postalCode": "70510",
-						"city": "Boylestad",
-						"country": "ES"
+						"streetAndHouseNumber": "Heber Rue 19169",
+						"postalCode": "10321",
+						"city": "Nicholausbury",
+						"state": "Kentucky",
+						"country": "CX"
 					},
-					"numberOfEmployees": 7380,
-					"fiscalYearStart": "2024-02-21"
+					"numberOfEmployees": 782,
+					"fiscalYearStart": "2024-04-10"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -50,27 +53,50 @@
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Dianna Parks 50738",
+								"postalCode": "99849",
+								"city": "Frisco",
+								"country": "LS"
+							},
+							"percentageOfTotalRevenue": 0.7513
+						},
+						{
+							"nameOfProductionSite": "Mohr Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Gerlach Divide 86604",
+								"postalCode": "54354",
+								"city": "Port Cleora",
+								"state": "New Jersey",
+								"country": "BM"
+							},
+							"percentageOfTotalRevenue": 0.947
+						}
+					]
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Luxurious Soft Fish",
-							"percentageOfTotalRevenue": 0.9195
+							"name": "Licensed Rubber Pizza",
+							"percentageOfTotalRevenue": 0.7657
 						},
 						{
-							"name": "Unbranded Cotton Shirt",
-							"percentageOfTotalRevenue": 0.958
+							"name": "Fantastic Frozen Car",
+							"percentageOfTotalRevenue": 0.5519
 						},
 						{
-							"name": "Handmade Plastic Chicken",
-							"percentageOfTotalRevenue": 0.2836
+							"name": "Generic Fresh Chair"
 						},
 						{
-							"name": "Practical Bronze Tuna"
+							"name": "Handmade Wooden Table",
+							"percentageOfTotalRevenue": 0.8526
 						},
 						{
-							"name": "Fantastic Cotton Chicken",
-							"percentageOfTotalRevenue": 0.2515
+							"name": "Fantastic Steel Salad",
+							"percentageOfTotalRevenue": 0.0376
 						}
 					]
 				}
@@ -80,15 +106,24 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 415,
-					"energyConsumptionHeatingAndHotWater": 30,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 569,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 30237889
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23395017,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Wind",
+						"EarthQuake",
+						"Hail",
+						"Flooding",
+						"Snow"
+					]
 				}
 			}
 		},
@@ -97,48 +132,35 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Kautzerborough",
-			"headquartersPostalCode": "69935-8878",
-			"sector": "e-business",
+			"headquarters": "South Hilton",
+			"sector": "initiatives",
 			"identifiers": {
 				"Lei": [
-					"EvIts2VgXpxCZzyZx9Wg"
+					"30chXqpHKqrI4liwDQxC"
 				],
 				"Isin": [
-					"ZsTcmpNZFl4Y",
-					"slYzevwn4U5q"
+					"dAj1TYSnUNLy"
 				],
 				"PermId": [
-					"Svu5tgmVt1"
+					"4WVM2UGUtV"
 				],
 				"Ticker": [],
-				"Duns": [
-					"yzVOrw0g7"
-				],
-				"VatNumber": [
-					"ycM72X0tm"
-				],
-				"CompanyRegistrationNumber": [
-					"jKIqShiGWPRGbms"
-				]
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PM",
+			"countryCode": "SS",
 			"companyAlternativeNames": [
-				"Kuvalis LLC"
+				"Nienow, Heller and Hilpert",
+				"Schmidt, Johnson and Dickens"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://firsthand-cane.com",
+			"website": "https://minty-chick.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [
-						"F",
-						"H",
-						"I",
-						"M"
-					],
+					"sector": [],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
 						"postalCode": "12345",
@@ -146,38 +168,63 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 4883,
-					"fiscalYearStart": "2024-02-23"
+					"numberOfEmployees": 7419,
+					"fiscalYearStart": "2024-08-26"
 				},
 				"companyFinancials": {
-					"revenueInEur": 30854982,
-					"operatingCostInEur": 72756078,
-					"capitalAssetsInEur": 58708038
+					"revenueInEur": 27905951,
+					"operatingCostInEur": 26974602,
+					"capitalAssetsInEur": 20189787
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {}
+				"sites": {
+					"listOfProductionSites": []
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Intelligent Frozen Fish",
+							"percentageOfTotalRevenue": 0.0171
+						},
+						{
+							"name": "Incredible Concrete Bike",
+							"percentageOfTotalRevenue": 0.9156
+						},
+						{
+							"name": "Rustic Metal Chicken",
+							"percentageOfTotalRevenue": 0.2725
+						},
+						{
+							"name": "Practical Wooden Pants"
+						},
+						{
+							"name": "Rustic Fresh Shoes",
+							"percentageOfTotalRevenue": 0.5095
+						}
+					]
+				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 60,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 741,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 666,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 44396633,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 49197827,
 					"naturalHazardsCovered": [
 						"Wind",
-						"Hail",
 						"Avalanche",
-						"EarthQuake"
+						"Snow",
+						"Hail",
+						"Flooding"
 					]
 				}
 			}
@@ -187,34 +234,29 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Carrollport",
-			"headquartersPostalCode": "64601",
-			"sector": "blockchains",
+			"headquarters": "Port Germanboro",
+			"headquartersPostalCode": "82504-7570",
+			"sector": "networks",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [
-					"7zoEjv4kQqbV"
+				"Isin": [],
+				"PermId": [
+					"cxFZfvJMin"
 				],
-				"PermId": [],
-				"Ticker": [
-					"SvIUtH6"
+				"Ticker": [],
+				"Duns": [
+					"F9chv304t"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"J5DOh5jzM"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"z58qmJUwCYqwu6I"
+					"pyuXoevGAAGmQaL"
 				]
 			},
-			"countryCode": "MW",
+			"countryCode": "BM",
 			"companyAlternativeNames": [
-				"Cassin - Mertz",
-				"Gleason - Dicki",
-				"McCullough - Hills"
+				"Mohr LLC"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://zesty-pannier.com/",
+			"website": "https://weird-slider.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -222,88 +264,62 @@
 				"basicInformation": {
 					"sector": [
 						"H",
-						"K"
+						"I",
+						"J"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 218,
-					"fiscalYearStart": "2024-07-23"
+					"numberOfEmployees": 1679,
+					"fiscalYearStart": "2024-04-27"
 				},
 				"companyFinancials": {
-					"revenueInEur": 28821470,
-					"operatingCostInEur": 37355336
+					"revenueInEur": 23300943,
+					"operatingCostInEur": 41409328,
+					"capitalAssetsInEur": 56387301
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Adela Light 7697",
-								"city": "Fort Cleta",
-								"state": "Indiana",
-								"country": "BQ"
-							},
-							"percentageOfTotalRevenue": 0.2537
-						},
-						{
-							"nameOfProductionSite": "Witting - Von",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Strosin Union 8993",
-								"postalCode": "27845",
-								"city": "East Lavonne",
-								"state": "Washington",
-								"country": "VI"
-							},
-							"percentageOfTotalRevenue": 0.0053
-						},
-						{
-							"nameOfProductionSite": "Jacobs Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "D'Amore Hills 708",
-								"postalCode": "77619",
-								"city": "South Maeve",
-								"state": "Pennsylvania",
-								"country": "ZM"
-							}
-						},
-						{
-							"nameOfProductionSite": "Heidenreich LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Wyatt Lights 43274",
-								"postalCode": "54319",
-								"city": "Schusterton",
-								"state": "North Dakota",
-								"country": "HT"
-							},
-							"percentageOfTotalRevenue": 0.4096
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Intelligent Frozen Shoes",
+							"percentageOfTotalRevenue": 0.8667
+						},
+						{
+							"name": "Bespoke Rubber Sausages",
+							"percentageOfTotalRevenue": 0.9416
+						},
+						{
+							"name": "Handmade Bronze Shoes",
+							"percentageOfTotalRevenue": 0.4114
+						},
+						{
+							"name": "Bespoke Cotton Mouse",
+							"percentageOfTotalRevenue": 0.1203
+						}
+					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 1947,
-					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMwh": 1048,
+					"energyConsumptionHeatingAndHotWater": 537,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 49380988,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 6931970,
 					"naturalHazardsCovered": [
-						"Wind",
-						"EarthQuake"
+						"Flooding"
 					]
 				}
 			}
