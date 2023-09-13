@@ -66,7 +66,14 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
  * @param objB the second object of the comparison
  * @param path is the path of the current key of object A that is being compared to object B
  */
-export function compareObjectKeysAndValuesDeep(objA: Record<string, any>, objB: Record<string, any>, path = ""): void {
+export function compareObjectKeysAndValuesDeep(
+  objA: Record<string, object>,
+  objB: Record<string, object>,
+  path = "",
+): void {
+  const throwErrorBecauseOfFieldValue = (fieldPath: string, fieldValueA: object, fieldValueB: object): void => {
+    throw new Error(`Field ${fieldPath} is not equal. A: ${fieldValueA.toString()}, B: ${fieldValueB.toString()}`);
+  };
   const keysA = Object.keys(objA);
   const keysB = Object.keys(objB);
 
@@ -79,36 +86,22 @@ export function compareObjectKeysAndValuesDeep(objA: Record<string, any>, objB: 
 
     const valueA = objA[key];
     const valueB = objB[key];
-
-    checkIfValuesAreIdentical(valueA, valueB, newPath);
+    if (typeof valueA === "object" && typeof valueB === "object") {
+      if (valueA === null || valueB === null) {
+        if (valueA !== valueB) {
+          throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
+        }
+      } else {
+        compareObjectKeysAndValuesDeep(valueA, valueB, newPath);
+      }
+    } else if (valueA !== valueB) {
+      throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
+    }
   }
 
   for (const key of keysB) {
     if (!keysA.includes(key)) {
       throw new Error(`Field ${path}.${key} exists in B but not in A`);
     }
-  }
-}
-/**
- * This method compares if two values are the same, if not it will throw an error
- * @param valueA the first value of the comparison
- * @param valueB the second value of the comparison
- * @param newPath is the path of the current key of value A that is being compared to value B
- */
-function checkIfValuesAreIdentical(valueA: any, valueB: any, newPath: string) {
-  const throwErrorBecauseOfFieldValue = (fieldPath: string, fieldValueA: object, fieldValueB: object): void => {
-    throw new Error(`Field ${fieldPath} is not equal. A: ${fieldValueA}, B: ${fieldValueB}`);
-  };
-
-  if (typeof valueA === "object" && typeof valueB === "object") {
-    if (valueA === null || valueB === null) {
-      if (valueA !== valueB) {
-        throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
-      }
-    } else {
-      compareObjectKeysAndValuesDeep(valueA, valueB, newPath);
-    }
-  } else if (valueA !== valueB) {
-    throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
   }
 }
