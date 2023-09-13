@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euxo pipefail
 # Ensure /certs director is present and permissions are configured accordingly
 echo Creating Certificate Reload Hook

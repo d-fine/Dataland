@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script retrieves tokens from keycloak. Using the dev stack the keycloak_base_url would be https://local-dev.dataland.com/keycloak
 set -euxo pipefail
 
