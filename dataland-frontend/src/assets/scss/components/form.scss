@@ -490,10 +490,6 @@ input[type="checkbox"], input[type="radio"]{
   .short { width: 33%; }
   .medium { width: 66%; }
   .long { width: 100%; }
-  .next-to-each-other {
-    display: flex;
-    gap: 1rem;
-  }
   .yes-no-radio {
     fieldset.formkit-fieldset {
       border: 0;
@@ -646,6 +642,10 @@ input[type="checkbox"], input[type="radio"]{
       }
     }
   }
+}
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
 }
 
 .p-checkbox .p-checkbox-box {
