@@ -30,7 +30,7 @@ const introSection = computed(() => {
 
 <style scoped lang="scss">
 .intro {
-  align-items: center;
+  text-align: center;
   margin: 140px auto 120px;
   max-width: 1007px;
   &__img {

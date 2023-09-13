@@ -48,6 +48,9 @@ const brandsSection = computed(() => {
   padding: 120px 0;
   align-items: center;
   &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 1200px;
     width: 100%;
   }

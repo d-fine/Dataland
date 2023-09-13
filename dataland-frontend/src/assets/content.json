@@ -87,6 +87,30 @@
                     ]
                 },
                 {
+                    "title": "How it works",
+                    "text": [
+                        "How does it work?"
+                    ],
+                    "cards": [
+                        {
+                            "title": "Search",
+                            "text": "Utilize the search feature to find specific companies within the platform."
+                        },
+                        {
+                            "title": "Request company’s inclusion",
+                            "text": "Request company’s inclusion in case you can’t find the company you are looking for."
+                        },
+                        {
+                            "title": "Request framework data",
+                            "text": "Create or join a campaign to get the missing data."
+                        },
+                        {
+                            "title": "Download",
+                            "text": "Download either through the platform or through API."
+                        }
+                    ]
+                },
+                {
                     "title": "Claim",
                     "text": [
                         "In Dataland ",
@@ -146,11 +170,11 @@
                         },
                         {
                             "title": "3",
-                            "text": "Create or join a campaign  to get the missing data."
+                            "text": "Create or join a campaign to get the missing data."
                         },
                         {
                             "title": "5",
-                            "text": "Download either  through the platform  or through API."
+                            "text": "Download either through the platform or through API."
                         }
                     ]
                 }
