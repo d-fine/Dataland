@@ -49,7 +49,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.23.1"
     id("com.github.node-gradle.node") version "7.0.0" apply false
     id("org.springframework.boot") version "3.1.1" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.5.1"
     kotlin("jvm") version "1.9.0"
     kotlin("plugin.spring") version "1.9.0" apply false
     id("org.sonarqube") version "4.3.0.3225"
