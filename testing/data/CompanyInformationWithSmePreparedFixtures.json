@@ -2,200 +2,26 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Emardshire",
-			"sector": "networks",
+			"headquarters": "Detroit",
+			"sector": "eyeballs",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [],
-				"PermId": [
-					"0eX6hgkR2c"
-				],
-				"Ticker": [
-					"SjDAc9w"
-				],
-				"Duns": [
-					"gDLqoPxTG"
-				],
-				"VatNumber": [
-					"3s0EoSMcV"
-				],
-				"CompanyRegistrationNumber": [
-					"mh1TPWz8cfNRLA1"
-				]
-			},
-			"countryCode": "MV",
-			"companyAlternativeNames": [
-				"Gutkowski Inc",
-				"Waters LLC"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://gaseous-misunderstand.biz/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"A",
-						"E",
-						"H",
-						"J"
-					],
-					"addressOfHeadquarters": {
-						"postalCode": "05804",
-						"city": "Susanmouth",
-						"country": "CM"
-					},
-					"numberOfEmployees": 3022,
-					"fiscalYearStart": "2024-07-27"
-				},
-				"companyFinancials": {
-					"revenueInEur": 0,
-					"operatingCostInEur": 1000000,
-					"capitalAssetsInEur": 2000000
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"postalCode": "86911-1130",
-								"city": "South Emmieton",
-								"country": "SV"
-							},
-							"percentageOfTotalRevenue": 0.2403
-						},
-						{
-							"nameOfProductionSite": "Homenick - Dickinson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Feest Turnpike 993",
-								"postalCode": "19357-7690",
-								"city": "Wehnershire",
-								"country": "GE"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"postalCode": "13536-0995",
-								"city": "Port Sydni",
-								"country": "BJ"
-							}
-						}
-					]
-				},
-				"products": {}
-			},
-			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
-				},
-				"consumption": {
-					"powerFromRenewableSources": "No",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 34494207,
-					"naturalHazardsCovered": [
-						"Wind",
-						"EarthQuake",
-						"Flooding"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Gardnertown",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"q4jLKiBp2KIY"
-				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"2F5BoF3lI"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"u6hASS3k9XpYock"
+				]
 			},
-			"countryCode": "SM",
-			"companyAlternativeNames": [],
+			"countryCode": "MG",
+			"companyAlternativeNames": [
+				"Roob - Goldner",
+				"Willms and Sons"
+			],
 			"companyLegalForm": "Public Limited Company (PLC)",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 1451,
-					"fiscalYearStart": "2024-01-27"
-				},
-				"companyFinancials": {}
-			},
-			"production": {
-				"sites": {},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Intelligent Soft Bike"
-						},
-						{
-							"name": "Fantastic Frozen Chicken",
-							"percentageOfTotalRevenue": 0.7518
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {},
-				"consumption": {
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "South Ofelia",
-			"headquartersPostalCode": "68899",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"S0hS9eOLcxKt"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"QGOEkCkUj"
-				],
-				"VatNumber": [
-					"DgL16ionK"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "ST",
-			"companyAlternativeNames": [],
-			"website": "https://straight-coverall.name/",
+			"website": "https://enraged-wash.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -204,40 +30,281 @@
 					"sector": [
 						"A",
 						"C",
-						"D",
+						"E",
+						"K",
+						"L"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Zena Harbor 228",
+						"postalCode": "70510",
+						"city": "Boylestad",
+						"country": "ES"
+					},
+					"numberOfEmployees": 7380,
+					"fiscalYearStart": "2024-02-21"
+				},
+				"companyFinancials": {
+					"revenueInEur": 0,
+					"operatingCostInEur": 1000000,
+					"capitalAssetsInEur": 2000000
+				}
+			},
+			"production": {
+				"sites": {},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Luxurious Soft Fish",
+							"percentageOfTotalRevenue": 0.9195
+						},
+						{
+							"name": "Unbranded Cotton Shirt",
+							"percentageOfTotalRevenue": 0.958
+						},
+						{
+							"name": "Handmade Plastic Chicken",
+							"percentageOfTotalRevenue": 0.2836
+						},
+						{
+							"name": "Practical Bronze Tuna"
+						},
+						{
+							"name": "Fantastic Cotton Chicken",
+							"percentageOfTotalRevenue": 0.2515
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": 415,
+					"energyConsumptionHeatingAndHotWater": 30,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 30237889
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "Kautzerborough",
+			"headquartersPostalCode": "69935-8878",
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [
+					"EvIts2VgXpxCZzyZx9Wg"
+				],
+				"Isin": [
+					"ZsTcmpNZFl4Y",
+					"slYzevwn4U5q"
+				],
+				"PermId": [
+					"Svu5tgmVt1"
+				],
+				"Ticker": [],
+				"Duns": [
+					"yzVOrw0g7"
+				],
+				"VatNumber": [
+					"ycM72X0tm"
+				],
+				"CompanyRegistrationNumber": [
+					"jKIqShiGWPRGbms"
+				]
+			},
+			"countryCode": "PM",
+			"companyAlternativeNames": [
+				"Kuvalis LLC"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://firsthand-cane.com",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
 						"F",
-						"J"
+						"H",
+						"I",
+						"M"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
+					},
+					"numberOfEmployees": 4883,
+					"fiscalYearStart": "2024-02-23"
+				},
+				"companyFinancials": {
+					"revenueInEur": 30854982,
+					"operatingCostInEur": 72756078,
+					"capitalAssetsInEur": 58708038
+				}
+			},
+			"production": {
+				"sites": {},
+				"products": {}
+			},
+			"power": {
+				"investments": {},
+				"consumption": {
+					"powerConsumptionInMwh": 60,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 741,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 44396633,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Hail",
+						"Avalanche",
+						"EarthQuake"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "Carrollport",
+			"headquartersPostalCode": "64601",
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"7zoEjv4kQqbV"
+				],
+				"PermId": [],
+				"Ticker": [
+					"SvIUtH6"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"J5DOh5jzM"
+				],
+				"CompanyRegistrationNumber": [
+					"z58qmJUwCYqwu6I"
+				]
+			},
+			"countryCode": "MW",
+			"companyAlternativeNames": [
+				"Cassin - Mertz",
+				"Gleason - Dicki",
+				"McCullough - Hills"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://zesty-pannier.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"H",
+						"K"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 7209,
-					"fiscalYearStart": "2024-03-11"
+					"numberOfEmployees": 218,
+					"fiscalYearStart": "2024-07-23"
 				},
 				"companyFinancials": {
-					"revenueInEur": 83425846
+					"revenueInEur": 28821470,
+					"operatingCostInEur": 37355336
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Adela Light 7697",
+								"city": "Fort Cleta",
+								"state": "Indiana",
+								"country": "BQ"
+							},
+							"percentageOfTotalRevenue": 0.2537
+						},
+						{
+							"nameOfProductionSite": "Witting - Von",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Strosin Union 8993",
+								"postalCode": "27845",
+								"city": "East Lavonne",
+								"state": "Washington",
+								"country": "VI"
+							},
+							"percentageOfTotalRevenue": 0.0053
+						},
+						{
+							"nameOfProductionSite": "Jacobs Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "D'Amore Hills 708",
+								"postalCode": "77619",
+								"city": "South Maeve",
+								"state": "Pennsylvania",
+								"country": "ZM"
+							}
+						},
+						{
+							"nameOfProductionSite": "Heidenreich LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Wyatt Lights 43274",
+								"postalCode": "54319",
+								"city": "Schusterton",
+								"state": "North Dakota",
+								"country": "HT"
+							},
+							"percentageOfTotalRevenue": 0.4096
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": []
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 1036,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 1947,
+					"powerFromRenewableSources": "No",
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 49380988,
+					"naturalHazardsCovered": [
+						"Wind",
+						"EarthQuake"
+					]
 				}
 			}
 		},
