@@ -24,7 +24,6 @@
           />
           <SingleSelectFormElement
             name="currency"
-            validation="length:2,3"
             validation-label="Currency"
             placeholder="Currency"
             :options="countryCodeOptions"

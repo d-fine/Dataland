@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 echo "Certbot obtained new certificate. Deploying..."
 ln -sTf $RENEWED_LINEAGE /certs/dataland
 

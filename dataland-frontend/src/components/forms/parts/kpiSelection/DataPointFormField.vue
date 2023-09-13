@@ -38,9 +38,9 @@
             <FormKit
               type="select"
               name="report"
+              v-model="currentReportValue"
               placeholder="Select a report"
               :options="['None...', ...injectReportsName]"
-              :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
           </div>
           <div>
@@ -75,7 +75,7 @@
           :validation="isDataQualityRequired ? 'required' : ''"
           validation-label="Data quality"
           placeholder="Data quality"
-          :options="qualityOptions"
+          :options="computeQualityOption"
         />
       </div>
     </div>
@@ -94,7 +94,6 @@ import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
-import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
@@ -110,6 +109,13 @@ export default defineComponent({
     isDataQualityRequired(): boolean {
       return this.currentValue !== "";
     },
+    computeQualityOption(): object {
+      if (this.currentValue == "") {
+        return this.qualityOptions;
+      } else {
+        return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
+      }
+    },
   },
   data() {
     return {
@@ -119,6 +125,7 @@ export default defineComponent({
       })),
       qualityValue: "NA",
       currentValue: "",
+      currentReportValue: "",
     };
   },
   props: {
@@ -128,7 +135,6 @@ export default defineComponent({
     },
   },
   methods: {
-    selectNothingIfNotExistsFormKitPlugin,
     /**
      * Handle blur event on value input.
      */

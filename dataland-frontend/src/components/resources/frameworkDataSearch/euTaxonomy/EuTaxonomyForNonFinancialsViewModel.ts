@@ -21,15 +21,15 @@ interface EuTaxonomyDetailsPerCashFlowViewModel {
   nonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };
   alignedShare?: RelativeAndAbsoluteFinancialShare & {
     alignedActivities?: EuTaxonomyAlignedActivity[];
-    substantialContributionToClimateChangeMitigation?: number;
-    substantialContributionToClimateChangeAdaption?: number;
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources?: number;
-    substantialContributionToTransitionToACircularEconomy?: number;
-    substantialContributionToPollutionPreventionAndControl?: number;
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems?: number;
+    substantialContributionToClimateChangeMitigationInPercent?: number;
+    substantialContributionToClimateChangeAdaptionInPercent?: number;
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent?: number;
+    substantialContributionToTransitionToACircularEconomyInPercent?: number;
+    substantialContributionToPollutionPreventionAndControlInPercent?: number;
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent?: number;
   };
-  enablingShare?: { enablingShare?: number };
-  transitionalShare?: { transitionalShare?: number };
+  enablingShare?: { enablingShareInPercent?: number };
+  transitionalShare?: { transitionalShareInPercent?: number };
 }
 
 export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
@@ -112,16 +112,18 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
       eligibleShare: apiModel.eligibleShare,
       alignedShare: {
         ...(apiModel.alignedShare ?? {}),
-        substantialContributionToClimateChangeMitigation: apiModel.substantialContributionToClimateChangeMitigation,
-        substantialContributionToClimateChangeAdaption: apiModel.substantialContributionToClimateChangeAdaption,
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
-          apiModel.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
-        substantialContributionToTransitionToACircularEconomy:
-          apiModel.substantialContributionToTransitionToACircularEconomy,
-        substantialContributionToPollutionPreventionAndControl:
-          apiModel.substantialContributionToPollutionPreventionAndControl,
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
-          apiModel.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
+        substantialContributionToClimateChangeMitigationInPercent:
+          apiModel.substantialContributionToClimateChangeMitigationInPercent,
+        substantialContributionToClimateChangeAdaptionInPercent:
+          apiModel.substantialContributionToClimateChangeAdaptionInPercent,
+        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+          apiModel.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
+        substantialContributionToTransitionToACircularEconomyInPercent:
+          apiModel.substantialContributionToTransitionToACircularEconomyInPercent,
+        substantialContributionToPollutionPreventionAndControlInPercent:
+          apiModel.substantialContributionToPollutionPreventionAndControlInPercent,
+        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+          apiModel.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
         alignedActivities: apiModel.alignedActivities,
       },
       nonAlignedShare: {
@@ -129,8 +131,8 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
         nonAlignedActivities: apiModel.nonAlignedActivities,
       },
       nonEligibleShare: apiModel.nonEligibleShare,
-      enablingShare: { enablingShare: apiModel.enablingShare },
-      transitionalShare: { transitionalShare: apiModel.transitionalShare },
+      enablingShare: { enablingShareInPercent: apiModel.enablingShareInPercent },
+      transitionalShare: { transitionalShareInPercent: apiModel.transitionalShareInPercent },
     };
   }
 
@@ -148,20 +150,20 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
       alignedShare: viewModel.alignedShare,
       nonAlignedActivities: viewModel.nonAlignedShare?.nonAlignedActivities,
       alignedActivities: viewModel.alignedShare?.alignedActivities,
-      substantialContributionToClimateChangeMitigation:
-        viewModel.alignedShare?.substantialContributionToClimateChangeMitigation,
-      substantialContributionToClimateChangeAdaption:
-        viewModel.alignedShare?.substantialContributionToClimateChangeAdaption,
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
-        viewModel.alignedShare?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
-      substantialContributionToTransitionToACircularEconomy:
-        viewModel.alignedShare?.substantialContributionToTransitionToACircularEconomy,
-      substantialContributionToPollutionPreventionAndControl:
-        viewModel.alignedShare?.substantialContributionToPollutionPreventionAndControl,
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
-        viewModel.alignedShare?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
-      enablingShare: viewModel.enablingShare?.enablingShare,
-      transitionalShare: viewModel.transitionalShare?.transitionalShare,
+      substantialContributionToClimateChangeMitigationInPercent:
+        viewModel.alignedShare?.substantialContributionToClimateChangeMitigationInPercent,
+      substantialContributionToClimateChangeAdaptionInPercent:
+        viewModel.alignedShare?.substantialContributionToClimateChangeAdaptionInPercent,
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+        viewModel.alignedShare?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
+      substantialContributionToTransitionToACircularEconomyInPercent:
+        viewModel.alignedShare?.substantialContributionToTransitionToACircularEconomyInPercent,
+      substantialContributionToPollutionPreventionAndControlInPercent:
+        viewModel.alignedShare?.substantialContributionToPollutionPreventionAndControlInPercent,
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+        viewModel.alignedShare?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
+      enablingShareInPercent: viewModel.enablingShare?.enablingShareInPercent,
+      transitionalShareInPercent: viewModel.transitionalShare?.transitionalShareInPercent,
     };
   }
 }

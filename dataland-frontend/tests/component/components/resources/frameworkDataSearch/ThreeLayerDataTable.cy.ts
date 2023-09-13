@@ -1,10 +1,21 @@
 import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
+import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import {
+  DataTypeEnum,
+  type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
+  P2pSector,
+  type PathwaysToParisData,
+  type DataMetaInformation,
+} from "@clients/backend";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { roundNumber } from "@/utils/NumberConversionUtils";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
+
 describe("Component test for the EUTaxonomy Page", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
 
@@ -87,6 +98,16 @@ describe("Component test for the EUTaxonomy Page", () => {
       .click();
   }
 
+  /**
+   * Searches for common column headers that appear on multiple modal windows (to avoid code duplication).
+   */
+  function validateExistenceOfCommonColumnHeaders(): void {
+    cy.get("table").find(`tr:contains("Activity")`);
+    cy.get("table").find(`tr:contains("NACE Code(s)")`);
+    cy.get("table").find(`tr:contains("Revenue")`);
+    cy.get("table").find(`tr:contains("Revenue (%)")`);
+  }
+
   it("Check order of the displayed KPIs and its entries", () => {
     cy.mountWithPlugins(ThreeLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
@@ -128,10 +149,16 @@ describe("Component test for the EUTaxonomy Page", () => {
   });
 
   it("Opens the aligned activities modal and checks that it works as intended", () => {
-    const capexOfDataset = assertDefined(mockedDataForTest[0].data.capex);
     const revenueOfDataset = assertDefined(mockedDataForTest[0].data.revenue);
-    const revenueAlignedActivity = assertDefined(revenueOfDataset.alignedShare?.alignedActivities)[0];
-    const revenueAlignedActivitiesName = assertDefined(revenueAlignedActivity?.activityName);
+    const revenueFirstAlignedActivity = assertDefined(revenueOfDataset.alignedShare?.alignedActivities)[0];
+    const revenueFirstAlignedActivityName = assertDefined(revenueFirstAlignedActivity?.activityName);
+    const revenueFirstAlignedActivityRelativeShare = roundNumber(
+      assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent) * 100,
+      2,
+    );
+    const revenueFirstAlignedActivityAbsoluteShare = formatAmountWithCurrency(
+      assertDefined(revenueFirstAlignedActivity?.share?.absoluteShare),
+    );
 
     cy.mountWithDialog(
       ThreeLayerDataTable,
@@ -146,39 +173,36 @@ describe("Component test for the EUTaxonomy Page", () => {
       },
     ).then(() => {
       expandViewPageAndOpenModal("Revenue", "alignedShare");
-      checkDuplicateFields();
+      validateExistenceOfCommonColumnHeaders();
       cy.get("table").find(`tr:contains("DNSH Criteria")`);
-
-      cy.get("table").find(`tr:contains("Climate change mitigation")`);
-      cy.get("table").find(`tr:contains("Climate change adaptation")`);
-      cy.get("table").find(`tr:contains("Water and marine resources")`);
-      cy.get("table").find(`tr:contains("Circular economy")`);
-      cy.get("table").find(`tr:contains("Pollution prevention")`);
-      cy.get("table").find(`tr:contains("Biodiversity and ecosystems")`);
+      cy.get("table").find(`tr:contains("Climate Change Mitigation")`);
+      cy.get("table").find(`tr:contains("Climate Change Adaptation")`);
+      cy.get("table").find(`tr:contains("Water and Marine Resources")`);
+      cy.get("table").find(`tr:contains("Circular Economy")`);
+      cy.get("table").find(`tr:contains("Pollution Prevention")`);
+      cy.get("table").find(`tr:contains("Biodiversity and Ecosystems")`);
       cy.get("table").find(`tr:contains("Minimum safeguards")`);
-
-      cy.get("table").find(`tr:contains("20%")`);
       cy.get("table").find(`tr:contains("Yes")`);
       cy.get("table").find(`tr:contains("No")`);
-
-      const capexAlignedActivitiesShareInPercent: number = assertDefined(
-        capexOfDataset.alignedShare?.relativeShareInPercent,
-      );
-
-      cy.get("table").find(`tr:contains("${revenueAlignedActivitiesName}")`);
-      cy.get("table").find(`tr:contains("${capexAlignedActivitiesShareInPercent}")`);
+      cy.get("table").find(`tr:contains("${revenueFirstAlignedActivityName}")`);
+      cy.get("table").find(`tr:contains("${revenueFirstAlignedActivityRelativeShare}")`);
+      cy.get("table").find(`tr:contains("${revenueFirstAlignedActivityAbsoluteShare}")`);
     });
   });
 
   it("Opens the non-aligned activities modal and checks that it works as intended", () => {
     const capexOfDataset = assertDefined(mockedDataForTest[0].data.capex);
-    const capexNonAlignedActivities = assertDefined(capexOfDataset.nonAlignedShare?.nonAlignedActivities)[0];
-    const capexNonAlignedActivitiesName = assertDefined(capexNonAlignedActivities.activityName);
-
-    const capexNonAlignedActivitiesShareInPercent = assertDefined(
-      capexOfDataset.nonAlignedShare?.relativeShareInPercent,
+    const capexFirstNonAlignedActivity = assertDefined(capexOfDataset.nonAlignedShare?.nonAlignedActivities)[0];
+    assertDefined(capexFirstNonAlignedActivity.activityName);
+    const capexNonAlignedShareInPercent = assertDefined(capexOfDataset.nonAlignedShare?.relativeShareInPercent);
+    const capexFirstNonAlignedActivityNaceCodes: string = assertDefined(capexFirstNonAlignedActivity.naceCodes)[0];
+    const capexFirstNonAlignedActivityRelativeShare = roundNumber(
+      assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent) * 100,
+      2,
     );
-    const capexNonAlignedActivitiesNaceCodes: string = assertDefined(capexNonAlignedActivities.naceCodes)[0];
+    const capexFirstNonAlignedActivityAbsoluteShare = formatAmountWithCurrency(
+      assertDefined(capexFirstNonAlignedActivity.share?.absoluteShare),
+    );
 
     cy.mountWithDialog(
       ThreeLayerDataTable,
@@ -193,25 +217,73 @@ describe("Component test for the EUTaxonomy Page", () => {
       },
     ).then(() => {
       expandViewPageAndOpenModal("CapEx", "nonAlignedShare");
-      checkDuplicateFields();
+      validateExistenceOfCommonColumnHeaders();
+      cy.get("table").find(
+        `tr:contains("Construction, extension and operation of waste water collection and treatment")`,
+      );
+      cy.get("table").find(`tr:contains("${capexNonAlignedShareInPercent}")`);
+      cy.get("table").find(`tr:contains("${capexFirstNonAlignedActivityNaceCodes}")`);
+      cy.get("table").find(`tr:contains(${capexFirstNonAlignedActivityRelativeShare})`);
+      cy.get("table").find(`tr:contains(${capexFirstNonAlignedActivityAbsoluteShare})`);
+    });
+  });
 
-      cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesName}")`);
-      cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesShareInPercent}")`);
-      cy.get("table").find(`tr:contains("${capexNonAlignedActivitiesNaceCodes}")`);
+  it("Check P2p view page that properties with same name in different KPIs have different values", () => {
+    const metaInfo: DataMetaInformation = {
+      companyId: "some-fake-ID-123456789",
+      dataId: "some-fake-dataId-123456789",
+      dataType: DataTypeEnum.P2p,
+      reportingPeriod: "2018",
+      currentlyActive: true,
+      qaStatus: "Accepted",
+      uploadTime: 1234567890,
+    };
 
-      cy.get("table").find(`tr:contains("abc")`);
-      cy.get("table").find(`tr:contains("0.1")`);
-      cy.get("table").find(`tr:contains("1337")`);
+    const p2pData: PathwaysToParisData = {
+      general: {
+        general: {
+          dataDate: "2023-09-30",
+          sectors: [P2pSector.Ammonia, P2pSector.Cement],
+        },
+        governance: {},
+        climateTargets: {},
+        emissionsPlanning: {},
+        investmentPlanning: {},
+      },
+      ammonia: {
+        decarbonisation: {
+          energyMix: 11,
+        },
+        defossilisation: {},
+      },
+      cement: {
+        energy: {
+          energyMix: 22,
+        },
+        technology: {},
+        material: {},
+      },
+    };
+
+    cy.mountWithPlugins(ThreeLayerDataTable, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        dataModel: p2pDataModel,
+        dataAndMetaInfo: [getViewModelWithIdentityApiModel<PathwaysToParisData>({ metaInfo, data: p2pData })],
+        modalColumnHeaders: {},
+        sortBySubcategoryKey: false,
+      },
+    }).then(() => {
+      toggleCategoryByClick("Ammonia");
+      toggleCategoryByClick("decarbonisation");
+
+      toggleCategoryByClick("Cement");
+      toggleCategoryByClick("energy");
+
+      cy.get('[data-test="2018_ammonia_energyMix"] span').should("exist").contains("11 %");
+      cy.get('[data-test="2018_cement_energyMix"] span').should("exist").contains("22 %");
     });
   });
 });
-
-/**
- * Searches for common fields that appear on multiple modal windows (to avoid code duplicaitons).
- */
-function checkDuplicateFields(): void {
-  cy.get("table").find(`tr:contains("Activity")`);
-  cy.get("table").find(`tr:contains("NACE Code(s)")`);
-  cy.get("table").find(`tr:contains("Revenue")`);
-  cy.get("table").find(`tr:contains("Revenue (%)")`);
-}

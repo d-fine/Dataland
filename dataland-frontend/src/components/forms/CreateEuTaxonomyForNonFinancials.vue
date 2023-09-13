@@ -21,7 +21,7 @@
             @submit="postEuTaxonomyForNonFinancialsData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
+            <FormKit type="hidden" name="companyId" :model-value="companyID" />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
                 <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
@@ -233,7 +233,7 @@ export default defineComponent({
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
         this.euTaxonomyForNonFinancialsDataModel,
-        this.companyAssociatedEuTaxonomyDataForNonFinancials.data,
+        this.companyAssociatedEuTaxonomyDataForNonFinancials.data
       );
     },
   },
@@ -264,7 +264,7 @@ export default defineComponent({
     async loadEuTaxonomyForNonFinancialsData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
       const dataResponse =
@@ -275,11 +275,45 @@ export default defineComponent({
       }
       this.referencedReportsForPrefill = euTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedEuTaxonomyDataForNonFinancials = objectDropNull(
-        euTaxonomyForNonFinancialsResponseData as ObjectType,
+        euTaxonomyForNonFinancialsResponseData as ObjectType
       ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
 
       this.waitingForData = false;
     },
+
+    /**
+     * Converts the entered percentage values from 0-100 to decimals from 0-1 (can be safely removed in the consistent
+     * percentage handling story)
+     * @param companyAssociatedDataEuTaxonomyDataForNonFinancials the full dataset to transform
+     * @returns The transformed dataset
+     */
+    convertPercentagesToDecimals(
+      companyAssociatedDataEuTaxonomyDataForNonFinancials: CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+    ): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
+      const euTaxonomyDataForNonFinancials: Record<string, object> =
+        companyAssociatedDataEuTaxonomyDataForNonFinancials.data as Record<string, object>;
+      for (const sectionName in euTaxonomyDataForNonFinancials) {
+        const section: Record<string, number | object> = euTaxonomyDataForNonFinancials[sectionName] as Record<
+          string,
+          number | object
+        >;
+        for (const fieldName in section) {
+          if (fieldName.includes("InPercent")) {
+            section[fieldName] = (section[fieldName] as number) / 100;
+          } else if (typeof section[fieldName] === "object") {
+            const field = section[fieldName] as Record<string, number | object>;
+            for (const property in field) {
+              if (property.includes("InPercent")) {
+                field[property] = (field[property] as number) / 100;
+              }
+            }
+          }
+        }
+      }
+      companyAssociatedDataEuTaxonomyDataForNonFinancials.data = euTaxonomyDataForNonFinancials;
+      return companyAssociatedDataEuTaxonomyDataForNonFinancials;
+    },
+
     /**
      * Sends data to add EuTaxonomyForNonFinancials data
      */
@@ -289,17 +323,20 @@ export default defineComponent({
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEuTaxonomyDataForNonFinancials.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset,
+            this.namesOfAllCompanyReportsForTheDataset
           );
 
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
+        const companyAssociatedEuTaxonomyDataForNonFinancialsToSend = this.convertPercentagesToDecimals(
+          this.companyAssociatedEuTaxonomyDataForNonFinancials
+        );
         await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-          this.companyAssociatedEuTaxonomyDataForNonFinancials,
+          companyAssociatedEuTaxonomyDataForNonFinancialsToSend
         );
         this.$emit("datasetCreated");
         this.dataDate = undefined;

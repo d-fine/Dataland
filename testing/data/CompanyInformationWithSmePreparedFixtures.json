@@ -2,45 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "North Altastead",
-			"sector": "solutions",
+			"headquarters": "Riverton",
+			"headquartersPostalCode": "88900",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"ZKTUWUco9CrNtVthAoif"
+				],
 				"Isin": [
-					"BIbdAbHD38y8",
-					"FGs5kowZgQcb"
+					"trJYMHJSNWWG"
 				],
 				"PermId": [
-					"jCoXSJPKFs"
+					"lV4IHQPjkO"
 				],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
+				"Duns": [
+					"8zQHqcNQo"
+				],
+				"VatNumber": [
+					"FSCKbf6nT"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FI",
+			"countryCode": "SS",
 			"companyAlternativeNames": [
-				"Homenick - Gutkowski",
-				"Schamberger, Pollich and Spinka"
+				"Williamson - Kautzer"
 			],
+			"companyLegalForm": "Partnership without Limited Liability",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"E",
 						"J",
-						"K"
+						"L",
+						"M"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Liana Trace 5011",
-						"city": "Nitzscheport",
-						"state": "Montana",
-						"country": "BH"
+						"streetAndHouseNumber": "Christa Causeway 90049",
+						"postalCode": "44500-0907",
+						"city": "South Davin",
+						"country": "IL"
 					},
-					"numberOfEmployees": 5520,
-					"fiscalYearStart": "2023-12-05"
+					"numberOfEmployees": 6253,
+					"fiscalYearStart": "2024-05-21"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -57,15 +62,21 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1089,
-					"energyConsumptionHeatingAndHotWater": 260,
+					"powerConsumptionInMwh": 1358,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 177,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
 					"naturalHazardsCovered": [
 						"Snow",
+						"EarthQuake",
+						"Wind",
+						"Hail",
 						"Flooding"
 					]
 				}
@@ -76,39 +87,36 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Aureliofield",
-			"sector": "models",
+			"headquarters": "Fort Dagmar",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"TnHJFfTtn9jg"
+				"Lei": [
+					"ismiiDzWwWsgILd0avc4"
 				],
-				"PermId": [
-					"i4akzkQxyI"
-				],
+				"Isin": [],
+				"PermId": [],
 				"Ticker": [
-					"dCETxcZ"
+					"BjQ9fJy"
 				],
-				"Duns": [],
-				"VatNumber": [],
+				"Duns": [
+					"vy3Zai983"
+				],
+				"VatNumber": [
+					"Sk3vRfSwi"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CU",
+			"countryCode": "KI",
 			"companyAlternativeNames": [
-				"Stanton Inc"
+				"Zulauf, Walker and Olson"
 			],
-			"companyLegalForm": "GmbH",
+			"website": "https://limited-earrings.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"D",
-						"F",
-						"I",
-						"K",
-						"M"
+						"C"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -117,67 +125,51 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8776,
-					"fiscalYearStart": "2024-06-15"
+					"numberOfEmployees": 3312,
+					"fiscalYearStart": "2024-02-12"
 				},
 				"companyFinancials": {
-					"revenueInEur": 25850041,
-					"operatingCostInEur": 6862475,
-					"capitalAssetsInEur": 69514817
+					"revenueInEur": 78783457,
+					"operatingCostInEur": 69896373,
+					"capitalAssetsInEur": 45409968
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
+					"listOfProductionSites": []
+				},
+				"products": {
+					"listOfProducts": [
 						{
-							"addressOfProductionSite": {
-								"postalCode": "14045-9500",
-								"city": "Colinfurt",
-								"country": "MF"
-							}
+							"name": "Elegant Fresh Chair",
+							"percentageOfTotalRevenue": 0.5581
 						},
 						{
-							"nameOfProductionSite": "Cormier and Sons",
-							"addressOfProductionSite": {
-								"postalCode": "36649",
-								"city": "Gary",
-								"country": "MC"
-							}
+							"name": "Ergonomic Wooden Computer",
+							"percentageOfTotalRevenue": 0.9827
 						},
 						{
-							"nameOfProductionSite": "Christiansen - Hand",
-							"addressOfProductionSite": {
-								"postalCode": "05899-2901",
-								"city": "Lake Adolfo",
-								"state": "Hawaii",
-								"country": "IE"
-							}
+							"name": "Intelligent Fresh Salad",
+							"percentageOfTotalRevenue": 0.0909
 						},
 						{
-							"nameOfProductionSite": "Cruickshank - Champlin",
-							"addressOfProductionSite": {
-								"postalCode": "70349-2450",
-								"city": "West Noble",
-								"country": "VN"
-							},
-							"percentageOfTotalRevenue": 0.7904
+							"name": "Luxurious Metal Bike"
 						}
 					]
-				},
-				"products": {}
+				}
 			},
 			"power": {
 				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 1594,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 240,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"energyConsumptionHeatingAndHotWater": 44,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 25373847
 				}
 			}
 		},
@@ -186,46 +178,52 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Edaland",
-			"sector": "infrastructures",
+			"headquarters": "Sterling Heights",
 			"identifiers": {
 				"Lei": [
-					"LoKRzJ4nJKmUcMS2tWKd"
+					"rwPMFdtNC0cDGCPJmR3L"
 				],
-				"Isin": [
-					"Wq4G3ZmXwwqU"
+				"Isin": [],
+				"PermId": [
+					"5tsXS7J4H3"
 				],
-				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"KizxAKI"
+				],
 				"Duns": [],
 				"VatNumber": [
-					"CftrMBGBv"
+					"TpxQ1v3CW"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"IhXqFLUhFRk0Ayu"
+				]
 			},
-			"countryCode": "ET",
+			"countryCode": "MH",
 			"companyAlternativeNames": [
-				"Jakubowski - Quigley"
+				"D'Amore - Konopelski"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://altruistic-pharmacist.org",
+			"companyLegalForm": "AG",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"J"
+						"B",
+						"F",
+						"H",
+						"J",
+						"M"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 9243,
-					"fiscalYearStart": "2023-11-04"
+					"numberOfEmployees": 2915,
+					"fiscalYearStart": "2024-04-08"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 29635558
+					"revenueInEur": 67460952
 				}
 			},
 			"production": {
@@ -233,40 +231,43 @@
 					"listOfProductionSites": [
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Graham Light 26575",
-								"postalCode": "07805-8803",
-								"city": "Waco",
-								"country": "ER"
+								"city": "Hamillworth",
+								"state": "New Hampshire",
+								"country": "GB"
 							},
-							"percentageOfTotalRevenue": 0.1014
-						},
-						{
-							"nameOfProductionSite": "Monahan, Gibson and Wiza",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Collins Place 982",
-								"city": "East Iva",
-								"country": "KZ"
-							}
-						},
-						{
-							"nameOfProductionSite": "Bins, Balistreri and Stehr",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Fred Rapid 308",
-								"city": "Ferryboro",
-								"state": "Minnesota",
-								"country": "KG"
-							}
+							"percentageOfTotalRevenue": 0.8874
 						},
 						{
 							"addressOfProductionSite": {
-								"city": "New Bethworth",
-								"country": "AW"
+								"postalCode": "94465-6734",
+								"city": "North Sylvan",
+								"state": "Arizona",
+								"country": "FO"
 							},
-							"percentageOfTotalRevenue": 0.5253
+							"percentageOfTotalRevenue": 0.6986
+						},
+						{
+							"nameOfProductionSite": "Lemke and Sons",
+							"addressOfProductionSite": {
+								"postalCode": "21256-2164",
+								"city": "Schultzview",
+								"country": "PL"
+							},
+							"percentageOfTotalRevenue": 0.4477
 						},
 						{
 							"addressOfProductionSite": {
-								"city": "Modesto",
+								"city": "Waukesha",
+								"state": "South Carolina",
+								"country": "GU"
+							},
+							"percentageOfTotalRevenue": 0.2716
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Carlee Mews 53172",
+								"city": "East Josieburgh",
+								"state": "Florida",
 								"country": "CH"
 							}
 						}
@@ -275,36 +276,26 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Oriental Concrete Tuna"
-						},
-						{
-							"name": "Handmade Metal Pizza"
-						},
-						{
-							"name": "Oriental Wooden Tuna"
-						},
-						{
-							"name": "Sleek Fresh Salad"
+							"name": "Gorgeous Wooden Hat"
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
-				},
+				"investments": {},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 478,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 479,
+					"energyConsumptionHeatingAndHotWater": 737,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
+					"amountCoveredByInsuranceAgainstNaturalHazards": 208017,
 					"naturalHazardsCovered": [
-						"Avalanche",
 						"Snow",
-						"EarthQuake"
+						"EarthQuake",
+						"Wind"
 					]
 				}
 			}

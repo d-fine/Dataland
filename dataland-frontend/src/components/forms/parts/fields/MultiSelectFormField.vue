@@ -2,12 +2,14 @@
   <div class="form-field" :data-test="dataTest">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <MultiSelectFormElement
+      ref="multiSelectFormElementRef"
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
       :options="options"
       :innerClass="innerClass"
+      :emptyMessage="emptyMessage"
     />
   </div>
 </template>
@@ -27,6 +29,9 @@ export default defineComponent({
     dataTest: {
       type: String,
       default: "multiSelectFormElement",
+    },
+    emptyMessage: {
+      type: String,
     },
   },
 });

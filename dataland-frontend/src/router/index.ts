@@ -11,14 +11,15 @@ const UploadEuTaxonomyDataForFinancials = (): Promise<RouteComponent> =>
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
-const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pages/UploadFormWrapper.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
+const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pages/UploadFormWrapper.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
+
+const ViewTeaserCompanyData = (): Promise<RouteComponent> => import("@/components/pages/ViewTeaserCompanyData.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
 import { DataTypeEnum } from "@clients/backend";
-
 const routes = [
   {
     path: "/",
@@ -27,6 +28,11 @@ const routes = [
     props: {
       isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
     },
+  },
+  {
+    path: "/preview",
+    name: "View Sample Data in Preview Mode",
+    component: ViewTeaserCompanyData,
   },
   {
     path: "/companies/choose",
@@ -55,7 +61,7 @@ const routes = [
     component: UploadEuTaxonomyDataForFinancials,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}/upload`,
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}/upload`, // TODO Emanuel: code duplication
     props: (route: RouteLocationNormalized): object => ({
       companyID: route.params.companyID,
       frameworkType: DataTypeEnum.Lksg,

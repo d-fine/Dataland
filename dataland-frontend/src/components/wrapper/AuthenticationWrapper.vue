@@ -1,5 +1,5 @@
 <template>
-  <slot v-if="authenticated"></slot>
+  <slot v-if="authenticated || disableAuthenticationWrapper"></slot>
   <MiddleCenterDiv v-else>
     <h1 class="text-justify text-base font-normal">
       Checking Log-In status.
@@ -17,6 +17,12 @@ import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 export default defineComponent({
   name: "AuthenticationWrapper",
   components: { MiddleCenterDiv },
+  props: {
+    disableAuthenticationWrapper: {
+      type: Boolean,
+      default: false,
+    },
+  },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -24,7 +30,7 @@ export default defineComponent({
     };
   },
   mounted: function () {
-    if (!this.authenticated) {
+    if (!this.authenticated && !this.disableAuthenticationWrapper) {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {

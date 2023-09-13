@@ -1,20 +1,15 @@
 <template>
   <UploadFormSubcategoryHeader label="Activity Name" description="Name of the activity." />
   <div class="form-field next-to-each-other">
-    <p>
-      <b> {{ selectedActivities ? selectedActivities.name : "" }}</b>
+    <p v-if="selectedActivities.name">
+      <b> {{ selectedActivities.name }}</b>
     </p>
 
-    <FormKit
-      type="hidden"
-      name="activityName"
-      :modelValue="selectedActivities ? selectedActivities.value : ''"
-      disabled="true"
-    />
+    <FormKit type="hidden" name="activityName" v-model="selectedActivityValue" />
 
     <PrimeButton
       data-test="dataTestChooseActivityButton"
-      :label="selectedActivities ? 'Change Activity' : 'Choose Activity'"
+      :label="selectedActivities.name ? 'Change Activity' : 'Choose Activity'"
       class="p-button-text p-0 m-0"
       :icon="selectedActivities ? 'pi pi-pencil' : 'pi pi-list'"
       @focus="inputFocused"
@@ -30,11 +25,11 @@
         <template #child="slotProps">
           <span class="next-to-each-other -ml-5">
             <RadioButton
-              v-model="selectedActivities"
+              :modelValue="selectedActivities"
               :inputId="slotProps.node.reference"
               name="selectedActivities"
               :value="slotProps.node"
-              @change="newActivitieSelected"
+              @update:modelValue="newActivitieSelected($event)"
             />
             <label :for="slotProps.node.key" class="ml-2">{{ slotProps.node.name }}</label>
           </span>
@@ -45,21 +40,25 @@
 
   <div class="my-4">
     <MultiSelectFormField
+      ref="multiSelectFormFieldRef"
       dataTest="selectNaceCodes"
       name="naceCodes"
-      validation="required"
-      validation-label="Nace Codes for Activity"
+      :emptyMessage="`No NACE code available for ${selectedActivities.name} Activity`"
+      :validation="naceCodesForActivities.length ? 'required' : ''"
+      validation-label="NACE codes for Activity"
       description="The NACE codes associated with this activity"
-      label="Nace Codes"
-      placeholder="Chose Nace Codes for Activity"
-      :options="NaceCodesForActivities"
+      label="NACE codes"
+      :placeholder="
+        selectedActivityValue ? 'Chose NACE codes for Activity' : 'Please select an activity before selecting NACE code'
+      "
+      :options="naceCodesForActivities"
       innerClass="long"
     />
   </div>
 </template>
 
 <script lang="ts">
-import Tree from "primevue/tree";
+import Tree, { type TreeNode } from "primevue/tree";
 import OverlayPanel from "primevue/overlaypanel";
 import { defineComponent, ref } from "vue";
 import RadioButton from "primevue/radiobutton";
@@ -85,13 +84,27 @@ export default defineComponent({
     };
   },
   data: () => ({
-    selectedActivities: null,
     allActivities: activityTree,
+    selectedActivityValue: "",
   }),
   computed: {
-    NaceCodesForActivities() {
-      if (this.selectedActivities?.nace_codes) {
-        return (this.selectedActivities.nace_codes as string).split(", ").map((naceCode: string) => {
+    selectedActivities() {
+      for (const activities of this.allActivities) {
+        if (activities?.children?.length) {
+          for (const activity of activities.children) {
+            if (activity.value === this.selectedActivityValue) {
+              return activity;
+            }
+          }
+        }
+      }
+      return {};
+    },
+
+    naceCodesForActivities() {
+      if (this.selectedActivities?.naceCodes) {
+        this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
+        return this.selectedActivities.naceCodes.map((naceCode: string) => {
           const naceCodeWithoutLetter = naceCode.substring(1);
           const convertedNaceCode = convertNace(
             naceCodeWithoutLetter.length === 1 ? `0${naceCodeWithoutLetter}` : naceCodeWithoutLetter,
@@ -100,16 +113,19 @@ export default defineComponent({
           return { label: convertedNaceCode, value: naceCode };
         });
       } else {
+        this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
         return [];
       }
     },
   },
   methods: {
     /**
-     * Close the Tree Overlay.
+     * Close the Tree Overlay and set selectedActivityValue.
+     * @param activity activity value from selected NACE codes
      */
-    newActivitieSelected() {
+    newActivitieSelected(activity: TreeNode) {
       this.overlayPanel?.hide();
+      this.selectedActivityValue = activity.value as string;
     },
     /**
      * Opens the Tree Overlay.

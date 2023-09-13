@@ -3,7 +3,17 @@
     <p class="font-medium text-xl">Loading {{ humanizeString(DataTypeEnum.EutaxonomyNonFinancials) }} Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-show="!waitingForData">
+  <div v-show="!waitingForData" data-test="multipleReportsBanner">
+    <ShowMultipleReportsBanner
+      data-test="multipleReportsBanner"
+      v-if="
+        extractedReportsAndReportingPeriods &&
+        extractedReportsAndReportingPeriods[0] &&
+        extractedReportsAndReportingPeriods[1]
+      "
+      :reporting-periods="extractedReportsAndReportingPeriods[1]"
+      :reports="extractedReportsAndReportingPeriods[0]"
+    />
     <ThreeLayerTable
       data-test="ThreeLayerTableTest"
       :data-model="euTaxonomyForNonFinancialsDisplayDataModel"
@@ -12,6 +22,7 @@
       :format-value-for-display="formatValueForDisplay"
       :modal-column-headers="euTaxonomyForNonFinancialsModalColumnHeaders"
       :sort-by-subcategory-key="false"
+      :unfold-subcategories="true"
     />
   </div>
 </template>
@@ -22,30 +33,47 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type AmountWithCurrency,
+  AssuranceDataAssuranceEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
+  type EuTaxonomyDataForNonFinancials,
+  FiscalYearDeviation,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
+import {
+  formatAmountWithCurrency,
+  formatPercentageNumberAsString,
+  formatNumberToReadableFormat,
+} from "@/utils/Formatter";
+import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
+import type { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
-  components: { ThreeLayerTable },
+  components: { ThreeLayerTable, ShowMultipleReportsBanner },
   data() {
     return {
       DataTypeEnum,
       firstRender: true,
       waitingForData: true,
+      waitingForReports: true,
       convertedDataAndMetaInfo: [] as Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>,
       euTaxonomyForNonFinancialsModalColumnHeaders,
       euTaxonomyForNonFinancialsDisplayDataModel,
+      dataSet: null as EuTaxonomyDataForNonFinancials | null | undefined,
+      dataAndMetaInfoSets: null as Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials> | null | undefined,
+      extractedReportsAndReportingPeriods: null as
+        | [({ [p: string]: CompanyReport } | undefined)[], Array<string>]
+        | null
+        | undefined,
     };
   },
   props: PanelProps,
@@ -70,7 +98,7 @@ export default defineComponent({
   },
 
   methods: {
-    humanizeString,
+    humanizeString: humanizeStringOrNumber,
     /**
      * Fetches all accepted EU Taxonomy Non-Financial datasets for the current company and converts them to the required frontend format.
      */
@@ -90,13 +118,19 @@ export default defineComponent({
           fetchedData = [
             { metaInfo: this.singleDataMetaInfoToDisplay, data: singleEuTaxonomyForNonFinancialsDataData },
           ];
+          this.dataSet = singleEuTaxonomyForNonFinancialsDataData;
+          this.dataAndMetaInfoSets = fetchedData;
         } else {
           fetchedData = (
             await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(
               assertDefined(this.companyId),
             )
           ).data;
+          this.dataAndMetaInfoSets = fetchedData;
         }
+        this.extractedReportsAndReportingPeriods = this.extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
+          this.dataAndMetaInfoSets,
+        );
         this.convertedDataAndMetaInfo = fetchedData.map(
           (dataAndMetaInfo) => new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(dataAndMetaInfo),
         );
@@ -127,25 +161,29 @@ export default defineComponent({
     },
 
     /**
-     * Formats an AmountWithCurrency object by concatenating the amount and the currency.
-     * @param amountWithCurrency the object that holds the amount and currency
-     * @returns the resulting string from the concatenation
+     * Checks if a KpiValue is a string with one of the Enum values of Assurance
+     * @param kpiValue the kpiValue that shall be checked
+     * @returns a boolean based on the result of the check
      */
-    formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency) {
-      if (amountWithCurrency.amount == undefined) {
-        return null;
+    isKpiObjectAssuranceLevel(kpiValue: KpiValue): boolean {
+      if (typeof kpiValue === "string") {
+        return Object.values(AssuranceDataAssuranceEnum).includes(kpiValue as AssuranceDataAssuranceEnum);
+      } else {
+        return false;
       }
-      return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
     },
 
     /**
-     * Formats a percentage number by rounding it to two decimals and afterward making it a string with a percent
-     * symbol at the end.
-     * @param relativeShareInPercent is the percentage number to round
-     * @returns the resulting string
+     * Checks if a KpiValue is a string with one of the Enum values of FiscalYearDeviation
+     * @param kpiValue the kpiValue that shall be checked
+     * @returns a boolean based on the result of the check
      */
-    formatPercentageNumber(relativeShareInPercent: number) {
-      return `${relativeShareInPercent.toFixed(2).toString()}`;
+    isKpiObjectFiscalYearDeviation(kpiValue: KpiValue): boolean {
+      if (typeof kpiValue === "string") {
+        return Object.values(FiscalYearDeviation).includes(kpiValue as FiscalYearDeviation);
+      } else {
+        return false;
+      }
     },
 
     /**
@@ -158,13 +196,43 @@ export default defineComponent({
       if (kpiValueToFormat == null) {
         return kpiValueToFormat;
       }
+      if (this.isKpiObjectFiscalYearDeviation(kpiValueToFormat) || this.isKpiObjectAssuranceLevel(kpiValueToFormat)) {
+        return humanizeStringOrNumber(kpiValueToFormat as string);
+      }
       if (field.component == "PercentageFormField") {
-        return this.formatPercentageNumber(kpiValueToFormat as number);
+        return formatPercentageNumberAsString(kpiValueToFormat as number);
       }
       if (this.isKpiObjectAmountWithCurrency(kpiValueToFormat)) {
-        return this.formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
+        return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
+      }
+      if (typeof kpiValueToFormat === "number") {
+        return formatNumberToReadableFormat(kpiValueToFormat);
       }
       return kpiValueToFormat;
+    },
+
+    /**
+     * Extracts the reports and reporting periods for all data sets.
+     * @param dataAndMetaInfoSets array of data sets includin meta information
+     * @returns array containing an array of company reports and an array of the corresponding reporting periods
+     * as strings
+     */
+    extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
+      dataAndMetaInfoSets: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>,
+    ): [({ [p: string]: CompanyReport } | undefined)[], Array<string>] {
+      const reportingPeriods = [];
+      let tempReportingPeriod: string | undefined;
+      for (const dataAndMetaInfoSet of dataAndMetaInfoSets) {
+        tempReportingPeriod = dataAndMetaInfoSet.metaInfo.reportingPeriod;
+        if (tempReportingPeriod) {
+          reportingPeriods.push(tempReportingPeriod);
+        }
+      }
+      const allReports = dataAndMetaInfoSets.map(
+        (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
+      );
+      this.waitingForReports = false;
+      return [allReports, reportingPeriods];
     },
   },
 });

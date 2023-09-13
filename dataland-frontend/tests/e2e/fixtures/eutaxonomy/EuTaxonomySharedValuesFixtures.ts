@@ -8,19 +8,22 @@ import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviat
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
- * Generates a new Eu Taxonomy instance fitting for either "financials" or "non-financials"
- * @returns Eu Taxonomy instance with common fields
+ * Generates a new Eu Taxonomy base fields, which fit for either "financials" or "non-financials"
+ * @param undefinedProbabilityOfFields the probability of an undefined value per field
+ * @returns Eu Taxonomy data object with common fields
  */
-export function generateEuTaxonomyWithBaseFields(): EuTaxonomyDataForFinancials | EuTaxonomyGeneral {
+export function generateEuTaxonomyWithBaseFields(
+  undefinedProbabilityOfFields?: number,
+): EuTaxonomyDataForFinancials | EuTaxonomyGeneral {
   const referencedReports = generateReferencedReports();
   return {
-    fiscalYearDeviation: valueOrUndefined(randomFiscalYearDeviation()),
-    fiscalYearEnd: valueOrUndefined(randomPastDate()),
-    numberOfEmployees: valueOrUndefined(randomInt(100000)),
+    fiscalYearDeviation: valueOrUndefined(randomFiscalYearDeviation(), undefinedProbabilityOfFields),
+    fiscalYearEnd: valueOrUndefined(randomPastDate(), undefinedProbabilityOfFields),
+    numberOfEmployees: valueOrUndefined(randomInt(100000), undefinedProbabilityOfFields),
     referencedReports: referencedReports,
     assurance: generateAssuranceData(referencedReports),
-    scopeOfEntities: valueOrUndefined(randomYesNoNa()),
-    nfrdMandatory: valueOrUndefined(randomYesNo()),
-    euTaxonomyActivityLevelReporting: valueOrUndefined(randomYesNo()),
+    scopeOfEntities: valueOrUndefined(randomYesNoNa(), undefinedProbabilityOfFields),
+    nfrdMandatory: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
+    euTaxonomyActivityLevelReporting: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
   };
 }

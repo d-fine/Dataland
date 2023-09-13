@@ -36,10 +36,16 @@ export function generateFixtureDataset<T>(
  * @param generator generator for a single entry
  * @param min the minimum number of entries
  * @param max the maximum number of entries
+ * @param undefinedProbabilityInGenerator the probability of undefined values to use inside the generator
  * @returns the generated array
  */
-export function generateArray<T>(generator: () => T, min = 0, max = 5): T[] {
-  return Array.from({ length: faker.number.int({ min, max }) }, () => generator());
+export function generateArray<T>(
+  generator: (undefinedProbabilityInGenerator?: number) => T,
+  min = 0,
+  max = 5,
+  undefinedProbabilityInGenerator?: number,
+): T[] {
+  return Array.from({ length: faker.number.int({ min, max }) }, () => generator(undefinedProbabilityInGenerator));
 }
 
 /**

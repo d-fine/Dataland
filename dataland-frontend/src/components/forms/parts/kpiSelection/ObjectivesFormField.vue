@@ -7,7 +7,7 @@
     <UploadFormHeader :label="'Substantial Contribution to ' + field.name" description="" :is-required="false" />
     <FormKit
       type="text"
-      :name="'substantialContributionTo' + field.key"
+      :name="'substantialContributionTo' + field.key + 'InPercent'"
       :validation-label="field.name"
       validation="number|between:0,100"
       placeholder="Relative Value in %"

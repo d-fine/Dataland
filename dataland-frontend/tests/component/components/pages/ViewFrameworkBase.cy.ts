@@ -3,7 +3,7 @@ import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { shallowMount } from "@vue/test-utils";
 import { nextTick } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 describe("Component test for ViewFrameworkBase", () => {
@@ -46,10 +46,16 @@ describe("Component test for ViewFrameworkBase", () => {
       cy.wait("@inter").then(() => {
         expect(wrapper.vm.dataTypesInDropdown).to.be.an("array").that.is.not.empty;
         expect(wrapper.vm.dataTypesInDropdown).to.deep.equal([
-          { label: humanizeString(DataTypeEnum.EutaxonomyFinancials), value: DataTypeEnum.EutaxonomyFinancials },
-          { label: humanizeString(DataTypeEnum.EutaxonomyNonFinancials), value: DataTypeEnum.EutaxonomyNonFinancials },
-          { label: humanizeString(DataTypeEnum.Lksg), value: DataTypeEnum.Lksg },
-          { label: humanizeString(DataTypeEnum.Sfdr), value: DataTypeEnum.Sfdr },
+          {
+            label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
+            value: DataTypeEnum.EutaxonomyFinancials,
+          },
+          {
+            label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyNonFinancials),
+            value: DataTypeEnum.EutaxonomyNonFinancials,
+          },
+          { label: humanizeStringOrNumber(DataTypeEnum.Lksg), value: DataTypeEnum.Lksg },
+          { label: humanizeStringOrNumber(DataTypeEnum.Sfdr), value: DataTypeEnum.Sfdr },
         ]);
       });
 

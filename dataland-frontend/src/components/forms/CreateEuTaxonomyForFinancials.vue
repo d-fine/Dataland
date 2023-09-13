@@ -26,7 +26,6 @@
               label="Company ID"
               placeholder="Company ID"
               :modelValue="companyID"
-              disabled="true"
             />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
@@ -308,7 +307,7 @@ import MultiSelect from "primevue/multiselect";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { useRoute } from "vue-router";
@@ -379,9 +378,9 @@ export default defineComponent({
       fiscalYearEnd: "",
       reportingPeriod: undefined as undefined | Date,
       assuranceData: {
-        None: humanizeString(AssuranceDataAssuranceEnum.None),
-        LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
-        ReasonableAssurance: humanizeString(AssuranceDataAssuranceEnum.ReasonableAssurance),
+        None: humanizeStringOrNumber(AssuranceDataAssuranceEnum.None),
+        LimitedAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.LimitedAssurance),
+        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.ReasonableAssurance),
       },
       euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
