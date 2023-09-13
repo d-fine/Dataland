@@ -117,7 +117,10 @@ describeIf(
                     .getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosResponse) => {
                       const reuploadedDatasetFromBackend = axiosResponse.data.data;
-                      compareObjectKeysAndValuesDeep(dataSetFromPrefillRequest, reuploadedDatasetFromBackend);
+                      compareObjectKeysAndValuesDeep(
+                        dataSetFromPrefillRequest as Record<string, object>,
+                        reuploadedDatasetFromBackend as Record<string, object>,
+                      );
                       validateSomeValuesForTheReuploadedDataset(
                         storedCompany,
                         dataMetaInformationOfReuploadedDataset.dataId,

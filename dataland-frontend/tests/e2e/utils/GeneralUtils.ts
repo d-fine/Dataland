@@ -84,8 +84,8 @@ export function compareObjectKeysAndValuesDeep(
       throw new Error(`Field ${newPath} exists in A but not in B`);
     }
 
-    const valueA = objA[key];
-    const valueB = objB[key];
+    const valueA = objA[key] as Record<string, object>;
+    const valueB = objB[key] as Record<string, object>;
     if (typeof valueA === "object" && typeof valueB === "object") {
       if (valueA === null || valueB === null) {
         if (valueA !== valueB) {
