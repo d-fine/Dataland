@@ -3,11 +3,13 @@ import {
   generateReferencedReports,
   type GenericDataPoint,
 } from "@e2e/fixtures/common/DataPointFixtures";
-import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { type ReferencedDocuments, generateArray } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNo, randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { type YesNo, type YesNoNa } from "@clients/backend";
-import { generateBaseDataPoint } from "@e2e/fixtures/common/BaseDataPointFixtures";
+import { generateBaseDataPoint, type GenericBaseDataPoint } from "@e2e/fixtures/common/BaseDataPointFixtures";
 import { randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+
+export const DEFAULT_PROBABILITY = 0.5;
 
 /**
  * Randomly returns the specified value or undefined
@@ -46,10 +48,13 @@ export class Generator {
   randomNumber(max = 10000): number | undefined {
     return this.valueOrUndefined(randomNumber(max));
   }
-  randomBaseDataPoint<T, Y>(input: T): Y | undefined {
+  randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | undefined {
     return this.valueOrUndefined(generateBaseDataPoint(input, this.undefinedProbability));
   }
   randomDataPoint<T>(input: T): GenericDataPoint<T> | undefined {
     return this.valueOrUndefined(generateDatapoint(input, this.reports));
+  }
+  generateArray<T>(generator: () => T): T[] | undefined {
+    return this.valueOrUndefined(generateArray(generator));
   }
 }

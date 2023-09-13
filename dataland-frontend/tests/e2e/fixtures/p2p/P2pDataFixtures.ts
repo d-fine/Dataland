@@ -39,283 +39,290 @@ export function generateP2pFixtures(
 }
 
 /**
- * Generates random P2pAmmonia instance
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @returns a random P2pAmmonia
- */
-export function getSectorAmmonia(dataGenerator: Generator): P2pAmmonia {
-  return {
-    decarbonisation: {
-      energyMix: dataGenerator.randomPercentageValue(),
-      ccsTechnologyAdoption: dataGenerator.randomPercentageValue(),
-      electrification: dataGenerator.randomPercentageValue(),
-    },
-    defossilisation: {
-      useOfRenewableFeedstocks: dataGenerator.randomPercentageValue(),
-    },
-  };
-}
-
-/**
- * Generates random P2pAutomotive instance
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @returns a random P2pAutomotive
- */
-export function getSectorAutomotive(dataGenerator: Generator): P2pAutomotive {
-  return {
-    energy: {
-      productionSiteEnergyConsumption: dataGenerator.randomNumber(),
-      energyMix: dataGenerator.randomPercentageValue(),
-    },
-    technologyValueCreation: {
-      driveMix: dataGenerator.randomPercentageValue(),
-      icAndHybridEnginePhaseOutDate: dataGenerator.valueOrUndefined(randomFutureDate()),
-      futureValueCreationStrategy: dataGenerator.randomYesNo(),
-    },
-    materials: {
-      materialUseManagement: dataGenerator.randomPercentageValue(),
-      useOfSecondaryMaterials: dataGenerator.randomPercentageValue(),
-    },
-  };
-}
-
-/**
- * Generates random P2pHvcPlastics instance
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @returns a random P2pHvcPlastics
- */
-export function getSectorHVCPlastics(dataGenerator: Generator): P2pHvcPlastics {
-  return {
-    decarbonisation: {
-      energyMix: dataGenerator.randomPercentageValue(),
-      electrification: dataGenerator.randomPercentageValue(),
-    },
-    defossilisation: {
-      useOfRenewableFeedstocks: dataGenerator.randomPercentageValue(),
-      useOfBioplastics: dataGenerator.randomPercentageValue(),
-      useOfCo2FromCarbonCaptureAndReUseTechnologies: dataGenerator.randomPercentageValue(),
-      carbonCaptureAndUseStorageTechnologies: dataGenerator.randomPercentageValue(),
-    },
-    recycling: {
-      contributionToCircularEconomy: dataGenerator.randomYesNo(),
-      materialRecycling: dataGenerator.randomPercentageValue(),
-      chemicalRecycling: dataGenerator.randomPercentageValue(),
-    },
-  };
-}
-
-/**
- * Generates random P2pRealEstate (commercial and residential) instance
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @returns a random P2pRealEstate
- */
-export function getSectorRealEstate(dataGenerator: Generator): P2pRealEstate {
-  return {
-    buildingEfficiency: {
-      buildingSpecificReburbishmentRoadmap: dataGenerator.randomPercentageValue(),
-      zeroEmissionBuildingShare: dataGenerator.randomPercentageValue(),
-      buildingEnergyEfficiency: dataGenerator.randomNumber(),
-    },
-    energySource: {
-      renewableHeating: dataGenerator.randomPercentageValue(),
-    },
-    technology: {
-      useOfDistrictHeatingNetworks: dataGenerator.randomYesNo(),
-      heatPumpUsage: dataGenerator.randomYesNo(),
-    },
-  };
-}
-
-/**
- * Generates random P2pSteel instance
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @returns a random P2pSteel
- */
-export function getSectorSteel(dataGenerator: Generator): P2pSteel {
-  return {
-    energy: {
-      emissionIntensityOfElectricity: dataGenerator.randomNumber(),
-      greenHydrogenUsage: dataGenerator.randomYesNo(),
-    },
-    technology: {
-      blastFurnacePhaseOut: dataGenerator.randomPercentageValue(),
-      lowCarbonSteelScaleUp: dataGenerator.randomPercentageValue(),
-    },
-  };
-}
-
-/**
- * Generates random P2pFreightTransportByRoad instance
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @returns a random P2pFreightTransportByRoad
- */
-export function getSectorFreightTransportByRoad(dataGenerator: Generator): P2pFreightTransportByRoad {
-  return {
-    technology: {
-      driveMix: dataGenerator.randomPercentageValue(),
-      icePhaseOut: dataGenerator.valueOrUndefined(randomFutureDate()),
-    },
-    energy: {
-      fuelMix: dataGenerator.randomPercentageValue(),
-    },
-  };
-}
-
-/**
- * Generates random P2pElectricityGeneration instance
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @returns a random P2pElectricityGeneration
- */
-export function getSectorElectricityGeneration(dataGenerator: Generator): P2pElectricityGeneration {
-  return {
-    technology: {
-      electricityMixEmissions: dataGenerator.randomNumber(),
-      shareOfRenewableElectricity: dataGenerator.randomPercentageValue(),
-      naturalGasPhaseOut: dataGenerator.valueOrUndefined(randomFutureDate()),
-      coalPhaseOut: dataGenerator.valueOrUndefined(randomFutureDate()),
-      storageCapacityExpansion: dataGenerator.randomPercentageValue(),
-    },
-  };
-}
-
-/**
- * Generates random P2pLivestockFarming instance
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @returns a random P2pLivestockFarming
- */
-export function getSectorLivestockFarming(dataGenerator: Generator): P2pLivestockFarming {
-  return {
-    emissionsFromManureAndFertiliserAndLivestock: {
-      compostedFermentedManure: dataGenerator.randomPercentageValue(),
-      emissionProofFertiliserStorage: dataGenerator.randomPercentageValue(),
-    },
-    animalWelfare: {
-      mortalityRate: dataGenerator.randomPercentageValue(),
-    },
-    animalFeed: {
-      ownFeedPercentage: dataGenerator.randomPercentageValue(),
-      externalFeedCertification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-      originOfExternalFeed: faker.company.buzzPhrase(),
-      excessNitrogen: dataGenerator.randomNumber(),
-      cropRotation: dataGenerator.randomNumber(),
-      climateFriendlyProteinProduction: dataGenerator.randomPercentageValue(),
-      greenFodderPercentage: dataGenerator.randomPercentageValue(),
-    },
-    energy: {
-      renewableElectricityPercentage: dataGenerator.randomPercentageValue(),
-      renewableHeatingPercentage: dataGenerator.randomPercentageValue(),
-      electricGasPoweredMachineryVehiclePercentage: dataGenerator.randomPercentageValue(),
-    },
-  };
-}
-
-/**
- * Generates random P2pCement instance
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @returns a random P2pCement
- */
-export function getSectorCement(dataGenerator: Generator): P2pCement {
-  return {
-    energy: {
-      energyMix: dataGenerator.randomPercentageValue(),
-      fuelMix: dataGenerator.randomPercentageValue(),
-      thermalEnergyEfficiency: dataGenerator.randomPercentageValue(),
-      compositionOfThermalInput: dataGenerator.randomPercentageValue(),
-    },
-    technology: {
-      carbonCaptureAndUseTechnologyUsage: dataGenerator.randomYesNo(),
-      electrificationOfProcessHeat: dataGenerator.randomPercentageValue(),
-    },
-    material: {
-      clinkerFactorReduction: dataGenerator.randomNumber(),
-      preCalcinedClayUsage: dataGenerator.randomPercentageValue(),
-      circularEconomyContribution: dataGenerator.randomYesNo(),
-    },
-  };
-}
-
-/**
- * Generates random general information for the P2P Framework
- * @param dataGenerator instance of the Generator class to create fake fixture data
- * @param sectors Sectors of the company
- * @returns a random P2pGeneral instance with the given sectors
- */
-export function getSectorGeneral(dataGenerator: Generator, sectors: Array<P2pSector>): P2pGeneral {
-  return {
-    general: {
-      dataDate: randomFutureDate(),
-      sectors: sectors,
-    },
-    governance: {
-      organisationalResponsibilityForParisCompatibility: dataGenerator.randomYesNo(),
-      parisCompatibilityInExecutiveRemuneration: dataGenerator.randomPercentageValue(),
-      parisCompatibilityInAverageRemuneration: dataGenerator.randomPercentageValue(),
-      shareOfEmployeesTrainedOnParisCompatibility: dataGenerator.randomPercentageValue(),
-      qualificationRequirementsOnParisCompatibility: dataGenerator.randomYesNo(),
-      mobilityAndTravelPolicy: dataGenerator.randomYesNo(),
-      upstreamSupplierEngagementStrategy: dataGenerator.randomYesNo(),
-      upstreamSupplierProcurementPolicy: dataGenerator.randomYesNo(),
-      downstreamCustomerEngagement: dataGenerator.randomYesNo(),
-      policymakerEngagement: dataGenerator.randomYesNo(),
-    },
-    climateTargets: {
-      shortTermScienceBasedClimateTarget: dataGenerator.randomYesNo(),
-      longTermScienceBasedClimateTarget: dataGenerator.randomYesNo(),
-    },
-    emissionsPlanning: {
-      reductionOfAbsoluteEmissions: dataGenerator.randomPercentageValue(),
-      reductionOfRelativeEmissions: dataGenerator.randomNumber(),
-      absoluteEmissions: dataGenerator.randomNumber(),
-      relativeEmissions: dataGenerator.randomNumber(),
-      climateActionPlan: dataGenerator.randomYesNo(),
-      useOfInternalCarbonPrice: dataGenerator.randomYesNo(),
-    },
-    investmentPlanning: {
-      investmentPlanForClimateTargets: dataGenerator.randomYesNo(),
-      capexShareInNetZeroSolutions: dataGenerator.randomPercentageValue(),
-      capexShareInGhgIntensivePlants: dataGenerator.randomPercentageValue(),
-      researchAndDevelopmentExpenditureForNetZeroSolutions: dataGenerator.randomPercentageValue(),
-    },
-  };
-}
-
-/**
- * Method to generate the sectors for a p2p dataset
- * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
- * @returns the sectors used for generating fixtures
- */
-function generateSectors(toggleRandomSectors: boolean): P2pSector[] {
-  if (toggleRandomSectors) {
-    return faker.helpers.arrayElements(Object.values(P2pSector));
-  } else {
-    return Object.values(P2pSector);
-  }
-}
-/**
  * Generates a random P2P dataset
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
  * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
  * @returns a random P2P dataset
  */
-export function generateP2pData(undefinedProbability = 0.5, toggleRandomSectors = true): PathwaysToParisData {
-  const dataGenerator = new Generator(undefinedProbability);
-  const inputSectors = generateSectors(toggleRandomSectors);
+function generateP2pData(undefinedProbability = 0.5, toggleRandomSectors = true): PathwaysToParisData {
+  const dataGenerator = new P2pGenerator(undefinedProbability, toggleRandomSectors);
   return {
-    general: getSectorGeneral(dataGenerator, inputSectors),
-    ammonia: inputSectors.indexOf("Ammonia") != -1 ? getSectorAmmonia(dataGenerator) : undefined,
-    automotive: inputSectors.indexOf("Automotive") != -1 ? getSectorAutomotive(dataGenerator) : undefined,
-    hvcPlastics: inputSectors.indexOf("HVCPlastics") != -1 ? getSectorHVCPlastics(dataGenerator) : undefined,
-    commercialRealEstate:
-      inputSectors.indexOf("CommercialRealEstate") != -1 ? getSectorRealEstate(dataGenerator) : undefined,
-    residentialRealEstate:
-      inputSectors.indexOf("ResidentialRealEstate") != -1 ? getSectorRealEstate(dataGenerator) : undefined,
-    steel: inputSectors.indexOf("Steel") != -1 ? getSectorSteel(dataGenerator) : undefined,
-    freightTransportByRoad:
-      inputSectors.indexOf("FreightTransportByRoad") != -1 ? getSectorFreightTransportByRoad(dataGenerator) : undefined,
-    electricityGeneration:
-      inputSectors.indexOf("ElectricityGeneration") != -1 ? getSectorElectricityGeneration(dataGenerator) : undefined,
-    livestockFarming:
-      inputSectors.indexOf("LivestockFarming") != -1 ? getSectorLivestockFarming(dataGenerator) : undefined,
-    cement: inputSectors.indexOf("Cement") != -1 ? getSectorCement(dataGenerator) : undefined,
+    general: dataGenerator.getSectorGeneral(),
+    ammonia: dataGenerator.getSectorAmmonia(),
+    automotive: dataGenerator.getSectorAutomotive(),
+    hvcPlastics: dataGenerator.getSectorHVCPlastics(),
+    commercialRealEstate: dataGenerator.getSectorRealEstate("CommercialRealEstate"),
+    residentialRealEstate: dataGenerator.getSectorRealEstate("ResidentialRealEstate"),
+    steel: dataGenerator.getSectorSteel(),
+    freightTransportByRoad: dataGenerator.getSectorFreightTransportByRoad(),
+    electricityGeneration: dataGenerator.getSectorElectricityGeneration(),
+    livestockFarming: dataGenerator.getSectorLivestockFarming(),
+    cement: dataGenerator.getSectorCement(),
   };
+}
+
+class P2pGenerator extends Generator {
+  sectors: Array<P2pSector>;
+
+  constructor(undefinedProbability = 0.5, toggleRandomSectors = true) {
+    super(undefinedProbability);
+    this.sectors = this.generateSectors(toggleRandomSectors);
+  }
+
+  sectorPresent(sector: P2pSector): boolean {
+    return this.sectors.indexOf(sector) != -1;
+  }
+
+  /**
+   * Method to generate the sectors for a p2p dataset
+   * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
+   * @returns the sectors used for generating fixtures
+   */
+  generateSectors(toggleRandomSectors: boolean): P2pSector[] {
+    if (toggleRandomSectors) {
+      return faker.helpers.arrayElements(Object.values(P2pSector));
+    } else {
+      return Object.values(P2pSector);
+    }
+  }
+
+  /**
+   * Generates random general information for the P2P Framework
+   * @returns a random P2pGeneral instance with the given sectors
+   */
+  getSectorGeneral(): P2pGeneral {
+    return {
+      general: {
+        dataDate: randomFutureDate(),
+        sectors: this.sectors,
+      },
+      governance: {
+        organisationalResponsibilityForParisCompatibility: this.randomYesNo(),
+        parisCompatibilityInExecutiveRemuneration: this.randomPercentageValue(),
+        parisCompatibilityInAverageRemuneration: this.randomPercentageValue(),
+        shareOfEmployeesTrainedOnParisCompatibility: this.randomPercentageValue(),
+        qualificationRequirementsOnParisCompatibility: this.randomYesNo(),
+        mobilityAndTravelPolicy: this.randomYesNo(),
+        upstreamSupplierEngagementStrategy: this.randomYesNo(),
+        upstreamSupplierProcurementPolicy: this.randomYesNo(),
+        downstreamCustomerEngagement: this.randomYesNo(),
+        policymakerEngagement: this.randomYesNo(),
+      },
+      climateTargets: {
+        shortTermScienceBasedClimateTarget: this.randomYesNo(),
+        longTermScienceBasedClimateTarget: this.randomYesNo(),
+      },
+      emissionsPlanning: {
+        reductionOfAbsoluteEmissions: this.randomPercentageValue(),
+        reductionOfRelativeEmissions: this.randomNumber(),
+        absoluteEmissions: this.randomNumber(),
+        relativeEmissions: this.randomNumber(),
+        climateActionPlan: this.randomYesNo(),
+        useOfInternalCarbonPrice: this.randomYesNo(),
+      },
+      investmentPlanning: {
+        investmentPlanForClimateTargets: this.randomYesNo(),
+        capexShareInNetZeroSolutions: this.randomPercentageValue(),
+        capexShareInGhgIntensivePlants: this.randomPercentageValue(),
+        researchAndDevelopmentExpenditureForNetZeroSolutions: this.randomPercentageValue(),
+      },
+    };
+  }
+
+  /**
+   * Generates random P2pAmmonia instance
+   * @returns a random P2pAmmonia or undefined
+   */
+  getSectorAmmonia(): P2pAmmonia | undefined {
+    const data: P2pAmmonia = {
+      decarbonisation: {
+        energyMix: this.randomPercentageValue(),
+        ccsTechnologyAdoption: this.randomPercentageValue(),
+        electrification: this.randomPercentageValue(),
+      },
+      defossilisation: {
+        useOfRenewableFeedstocks: this.randomPercentageValue(),
+      },
+    };
+    return this.sectorPresent("Ammonia") ? data : undefined;
+  }
+
+  /**
+   * Generates random P2pAutomotive instance
+   * @returns a random P2pAutomotive or undefined
+   */
+  getSectorAutomotive(): P2pAutomotive | undefined {
+    const data: P2pAutomotive = {
+      energy: {
+        productionSiteEnergyConsumption: this.randomNumber(),
+        energyMix: this.randomPercentageValue(),
+      },
+      technologyValueCreation: {
+        driveMix: this.randomPercentageValue(),
+        icAndHybridEnginePhaseOutDate: this.valueOrUndefined(randomFutureDate()),
+        futureValueCreationStrategy: this.randomYesNo(),
+      },
+      materials: {
+        materialUseManagement: this.randomPercentageValue(),
+        useOfSecondaryMaterials: this.randomPercentageValue(),
+      },
+    };
+    return this.sectorPresent("Automotive") ? data : undefined;
+  }
+
+  /**
+   * Generates random P2pHvcPlastics instance
+   * @returns a random P2pHvcPlastics or undefined
+   */
+  getSectorHVCPlastics(): P2pHvcPlastics | undefined {
+    const data: P2pHvcPlastics = {
+      decarbonisation: {
+        energyMix: this.randomPercentageValue(),
+        electrification: this.randomPercentageValue(),
+      },
+      defossilisation: {
+        useOfRenewableFeedstocks: this.randomPercentageValue(),
+        useOfBioplastics: this.randomPercentageValue(),
+        useOfCo2FromCarbonCaptureAndReUseTechnologies: this.randomPercentageValue(),
+        carbonCaptureAndUseStorageTechnologies: this.randomPercentageValue(),
+      },
+      recycling: {
+        contributionToCircularEconomy: this.randomYesNo(),
+        materialRecycling: this.randomPercentageValue(),
+        chemicalRecycling: this.randomPercentageValue(),
+      },
+    };
+    return this.sectorPresent("HVCPlastics") ? data : undefined;
+  }
+
+  /**
+   * Generates random P2pRealEstate (commercial and residential) instance
+   * @param sector the type of real estate
+   * @returns a random P2pRealEstate or undefined
+   */
+  getSectorRealEstate(sector: P2pSector): P2pRealEstate | undefined {
+    const data: P2pRealEstate = {
+      buildingEfficiency: {
+        buildingSpecificReburbishmentRoadmap: this.randomPercentageValue(),
+        zeroEmissionBuildingShare: this.randomPercentageValue(),
+        buildingEnergyEfficiency: this.randomNumber(),
+      },
+      energySource: {
+        renewableHeating: this.randomPercentageValue(),
+      },
+      technology: {
+        useOfDistrictHeatingNetworks: this.randomYesNo(),
+        heatPumpUsage: this.randomYesNo(),
+      },
+    };
+    return this.sectorPresent(sector) ? data : undefined;
+  }
+
+  /**
+   * Generates random P2pSteel instance
+   * @returns a random P2pSteel or undefined
+   */
+  getSectorSteel(): P2pSteel | undefined {
+    const data: P2pSteel = {
+      energy: {
+        emissionIntensityOfElectricity: this.randomNumber(),
+        greenHydrogenUsage: this.randomYesNo(),
+      },
+      technology: {
+        blastFurnacePhaseOut: this.randomPercentageValue(),
+        lowCarbonSteelScaleUp: this.randomPercentageValue(),
+      },
+    };
+    return this.sectorPresent("Steel") ? data : undefined;
+  }
+
+  /**
+   * Generates random P2pFreightTransportByRoad instance
+   * @returns a random P2pFreightTransportByRoad or undefined
+   */
+  getSectorFreightTransportByRoad(): P2pFreightTransportByRoad | undefined {
+    const data: P2pFreightTransportByRoad = {
+      technology: {
+        driveMix: this.randomPercentageValue(),
+        icePhaseOut: this.valueOrUndefined(randomFutureDate()),
+      },
+      energy: {
+        fuelMix: this.randomPercentageValue(),
+      },
+    };
+    return this.sectorPresent("FreightTransportByRoad") ? data : undefined;
+  }
+
+  /**
+   * Generates random P2pElectricityGeneration instance
+   * @returns a random P2pElectricityGeneration or undefined
+   */
+  getSectorElectricityGeneration(): P2pElectricityGeneration | undefined {
+    const data: P2pElectricityGeneration = {
+      technology: {
+        electricityMixEmissions: this.randomNumber(),
+        shareOfRenewableElectricity: this.randomPercentageValue(),
+        naturalGasPhaseOut: this.valueOrUndefined(randomFutureDate()),
+        coalPhaseOut: this.valueOrUndefined(randomFutureDate()),
+        storageCapacityExpansion: this.randomPercentageValue(),
+      },
+    };
+    return this.sectorPresent("ElectricityGeneration") ? data : undefined;
+  }
+
+  /**
+   * Generates random P2pLivestockFarming instance
+   * @returns a random P2pLivestockFarming or undefined
+   */
+  getSectorLivestockFarming(): P2pLivestockFarming | undefined {
+    const data: P2pLivestockFarming = {
+      emissionsFromManureAndFertiliserAndLivestock: {
+        compostedFermentedManure: this.randomPercentageValue(),
+        emissionProofFertiliserStorage: this.randomPercentageValue(),
+      },
+      animalWelfare: {
+        mortalityRate: this.randomPercentageValue(),
+      },
+      animalFeed: {
+        ownFeedPercentage: this.randomPercentageValue(),
+        externalFeedCertification: this.randomBaseDataPoint(randomYesNo()),
+        originOfExternalFeed: faker.company.buzzPhrase(),
+        excessNitrogen: this.randomNumber(),
+        cropRotation: this.randomNumber(),
+        climateFriendlyProteinProduction: this.randomPercentageValue(),
+        greenFodderPercentage: this.randomPercentageValue(),
+      },
+      energy: {
+        renewableElectricityPercentage: this.randomPercentageValue(),
+        renewableHeatingPercentage: this.randomPercentageValue(),
+        electricGasPoweredMachineryVehiclePercentage: this.randomPercentageValue(),
+      },
+    };
+    return this.sectorPresent("LivestockFarming") ? data : undefined;
+  }
+
+  /**
+   * Generates random P2pCement instance
+   * @returns a random P2pCement or undefined
+   */
+  getSectorCement(): P2pCement | undefined {
+    const data: P2pCement = {
+      energy: {
+        energyMix: this.randomPercentageValue(),
+        fuelMix: this.randomPercentageValue(),
+        thermalEnergyEfficiency: this.randomPercentageValue(),
+        compositionOfThermalInput: this.randomPercentageValue(),
+      },
+      technology: {
+        carbonCaptureAndUseTechnologyUsage: this.randomYesNo(),
+        electrificationOfProcessHeat: this.randomPercentageValue(),
+      },
+      material: {
+        clinkerFactorReduction: this.randomNumber(),
+        preCalcinedClayUsage: this.randomPercentageValue(),
+        circularEconomyContribution: this.randomYesNo(),
+      },
+    };
+    return this.sectorPresent("Cement") ? data : undefined;
+  }
 }

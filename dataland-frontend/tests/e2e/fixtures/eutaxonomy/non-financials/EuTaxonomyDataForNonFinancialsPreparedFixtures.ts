@@ -1,11 +1,13 @@
 import { generateFixtureDataset, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type EuTaxonomyDataForNonFinancials, type EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
-import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import {
-  generateFinancialShare,
+  type EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyDetailsPerCashFlowType,
+  type RelativeAndAbsoluteFinancialShare,
+} from "@clients/backend";
+import {
   generateEuTaxonomyDataForNonFinancials,
-  generateAmountWithCurrency,
+  EuNonFinancialsGenerator,
 } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
 
 type generatorFunction = (
@@ -48,7 +50,8 @@ function createOnlyEglibileNumbers(
    * @returns the details object
    */
   function generateCashFlowWithOnlyEligibleNumbers(): EuTaxonomyDetailsPerCashFlowType {
-    const share = generateFinancialShare();
+    const dataGenerator = new EuNonFinancialsGenerator(0);
+    const share = dataGenerator.generateFinancialShare() as RelativeAndAbsoluteFinancialShare;
     share.absoluteShare = undefined;
     return { eligibleShare: share };
   }
@@ -76,9 +79,11 @@ function createOnlyEligibleAndTotalNumbers(
   function generateCashFlowWithOnlyEligibleAndTotalNumbers(
     referencedReports: ReferencedDocuments,
   ): EuTaxonomyDetailsPerCashFlowType {
+    const dataGenerator = new EuNonFinancialsGenerator(0);
+    dataGenerator.setReports(referencedReports);
     return {
-      totalAmount: generateDatapoint(generateAmountWithCurrency(), referencedReports),
-      eligibleShare: generateFinancialShare(),
+      totalAmount: dataGenerator.randomDataPoint(dataGenerator.generateAmountWithCurrency()),
+      eligibleShare: dataGenerator.generateFinancialShare(),
     };
   }
 

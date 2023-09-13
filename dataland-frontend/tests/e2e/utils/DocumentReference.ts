@@ -20,8 +20,7 @@ export function getReferencedDocumentId(): string {
  * @returns a random non-empty set of reports
  */
 export function generateReferencedDocuments(): ReferencedDocuments {
-  const availableDocuments = faker.helpers.arrayElements(possibleDocuments);
-  if (availableDocuments.length == 0) availableDocuments.push(possibleDocuments[0]);
+  const availableDocuments = faker.helpers.arrayElements(possibleDocuments, { min: 1, max: possibleDocuments.length });
 
   const referencedDocuments: ReferencedDocuments = {};
   for (const documentName of availableDocuments) {

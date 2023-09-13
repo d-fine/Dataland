@@ -1,4 +1,4 @@
-import { Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
 import { type SfdrData } from "@clients/backend";
 import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
@@ -10,7 +10,7 @@ import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
  * @param undefinedProbability probability factor
  * @returns SFDR object with populated properties
  */
-export function generateSfdrData(undefinedProbability = 0.5): SfdrData {
+export function generateSfdrData(undefinedProbability = DEFAULT_PROBABILITY): SfdrData {
   const dataGenerator = new Generator(undefinedProbability);
   return {
     general: {
@@ -29,7 +29,7 @@ export function generateSfdrData(undefinedProbability = 0.5): SfdrData {
         scope3: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
         enterpriseValue: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
         totalRevenue: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),
-        fossilFuelSectorExposure: dataGenerator.randomDataPoint(randomYesNo()),
+        fossilFuelSectorExposure: dataGenerator.randomDataPoint(dataGenerator.randomYesNo()),
       },
       energyPerformance: {
         renewableEnergyProduction: dataGenerator.randomDataPoint(randomEuroValue(0, 100)),

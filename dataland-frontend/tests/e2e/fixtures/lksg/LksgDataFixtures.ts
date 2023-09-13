@@ -9,7 +9,7 @@ import {
 } from "@clients/backend";
 import { randomYesNo, randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { Generator, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY, Generator, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
@@ -165,7 +165,7 @@ export function generateOneLksgDatasetWithManyNulls(): LksgData {
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
  * @returns a random LKSG dataset
  */
-export function generateLksgData(undefinedProbability = 0.5): LksgData {
+export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): LksgData {
   const dataGenerator = new Generator(undefinedProbability);
   return {
     general: {

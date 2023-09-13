@@ -1,24 +1,7 @@
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 import { faker } from "@faker-js/faker";
-
-/**
- * Generates a base data point with the given value, choosing a random (possibly undefined) report, or undefined
- * @param value the type for which the base data point shall be generated
- * @param undefinedProbability the probability with which "undefined" is returned
- * @returns the generated base data point
- */
-export function generateBaseDataPointOrUndefined<T, Y>(value: T | null, undefinedProbability: number): Y | undefined {
-  const documents = generateReferencedDocuments();
-  const chosenReport = valueOrUndefined(faker.helpers.arrayElement(Object.values(documents)), undefinedProbability);
-
-  const baseDataPoint = {
-    value: value ?? undefined,
-    dataSource: chosenReport,
-  } as Y;
-
-  return valueOrUndefined(baseDataPoint, undefinedProbability);
-}
+import { type DocumentReference } from "@clients/backend";
 
 /**
  * Generates a base data point with the given value, choosing a random (possibly undefined) report
@@ -26,14 +9,17 @@ export function generateBaseDataPointOrUndefined<T, Y>(value: T | null, undefine
  * @param undefinedProbability the probability with which the referenced report is undefined
  * @returns the generated base data point
  */
-export function generateBaseDataPoint<T, Y>(value: T | null, undefinedProbability: number): Y | undefined {
+export function generateBaseDataPoint<T>(value: T, undefinedProbability: number): GenericBaseDataPoint<T> {
   const documents = generateReferencedDocuments();
   const chosenReport = valueOrUndefined(faker.helpers.arrayElement(Object.values(documents)), undefinedProbability);
 
-  const baseDataPoint = {
-    value: value ?? undefined,
+  return {
+    value: value,
     dataSource: chosenReport,
-  } as Y;
+  } as GenericBaseDataPoint<T>;
+}
 
-  return baseDataPoint;
+export interface GenericBaseDataPoint<T> {
+  value: T;
+  dataSource: DocumentReference | undefined;
 }

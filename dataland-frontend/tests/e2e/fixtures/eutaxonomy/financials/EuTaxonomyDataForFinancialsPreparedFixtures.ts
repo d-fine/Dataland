@@ -1,12 +1,8 @@
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type EuTaxonomyDataForFinancials, QualityOptions } from "@clients/backend";
-import {
-  generateEuTaxonomyDataForFinancials,
-  generateEuTaxonomyDataForFinancialsWithTypes,
-} from "./EuTaxonomyDataForFinancialsFixtures";
+import { EuFinancialsGenerator, generateEuTaxonomyDataForFinancials } from "./EuTaxonomyDataForFinancialsFixtures";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 
 type generatorFunction = (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials>;
 
@@ -45,12 +41,14 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
 function createCreditInstitutionDualFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
+  const dataGenerator = new EuFinancialsGenerator();
+  dataGenerator.setReports(input.t.referencedReports!);
   input.companyInformation.companyName = "credit-institution-dual-field-submission";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+  input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
-    interbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    tradingPortfolio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    greenAssetRatio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    interbankLoans: dataGenerator.randomDataPoint(randomPercentageValue()),
+    tradingPortfolio: dataGenerator.randomDataPoint(randomPercentageValue()),
+    greenAssetRatio: dataGenerator.randomDataPoint(randomPercentageValue()),
   };
   return input;
 }
@@ -63,11 +61,13 @@ function createCreditInstitutionDualFieldSubmission(
 function createCreditInstitutionSingleFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
+  const dataGenerator = new EuFinancialsGenerator();
+  dataGenerator.setReports(input.t.referencedReports!);
   input.companyInformation.companyName = "credit-institution-single-field-submission";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
-    tradingPortfolioAndInterbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    greenAssetRatio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    tradingPortfolioAndInterbankLoans: dataGenerator.randomDataPoint(randomPercentageValue()),
+    greenAssetRatio: dataGenerator.randomDataPoint(randomPercentageValue()),
   };
   return input;
 }
@@ -81,7 +81,7 @@ function createInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "insurance-company";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["InsuranceOrReinsurance"]);
+  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["InsuranceOrReinsurance"]);
   return input;
 }
 
@@ -94,7 +94,7 @@ function createAssetManagementCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "asset-management-company";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement"]);
+  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement"]);
   return input;
 }
 
@@ -107,7 +107,10 @@ function createAssetManagementAndInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "asset-management-insurance-company";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement", "InsuranceOrReinsurance"]);
+  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes([
+    "AssetManagement",
+    "InsuranceOrReinsurance",
+  ]);
   return input;
 }
 
@@ -120,54 +123,7 @@ function createAllValuesCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "company-for-all-types";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes([
-    "CreditInstitution",
-    "AssetManagement",
-    "InsuranceOrReinsurance",
-    "InvestmentFirm",
-  ]);
-  input.t.creditInstitutionKpis = {
-    interbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    tradingPortfolio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    tradingPortfolioAndInterbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    greenAssetRatio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-  };
-  input.t.insuranceKpis = {
-    taxonomyEligibleNonLifeInsuranceActivities: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-  };
-  input.t.investmentFirmKpis = {
-    greenAssetRatio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-  };
-  input.t.eligibilityKpis = {
-    CreditInstitution: {
-      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    },
-    AssetManagement: {
-      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    },
-    InsuranceOrReinsurance: {
-      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    },
-    InvestmentFirm: {
-      banksAndIssuers: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      derivatives: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      investmentNonNfrd: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      taxonomyEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-      taxonomyNonEligibleActivity: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
-    },
-  };
+  input.t = generateEuTaxonomyDataForFinancials(0);
   return input;
 }
 
@@ -182,7 +138,7 @@ function createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(
 ): (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials> {
   return (input) => {
     input.companyInformation.companyName = "eligible-activity-Point-" + eligibleActivityValue.toString();
-    input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+    input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
     input.t.eligibilityKpis = {
       CreditInstitution: {
         taxonomyEligibleActivity: {

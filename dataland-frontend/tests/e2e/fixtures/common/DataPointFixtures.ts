@@ -1,13 +1,8 @@
 import { faker } from "@faker-js/faker";
-import {
-  type CompanyReportReference,
-  type DataPointOneValueBigDecimal,
-  type DataPointOneValueYesNo,
-  QualityOptions,
-} from "@clients/backend";
+import { type CompanyReportReference, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { randomYesNo, randomYesNoNa } from "./YesNoFixtures";
+import { randomYesNoNa } from "./YesNoFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
@@ -41,43 +36,6 @@ export function generateReferencedReports(): ReferencedDocuments {
     };
   }
   return referencedReports;
-}
-
-/**
- * Randomly returns a datapoint with the specified value (chosen at random between 0 and 99999 if not specified) or
- * undefined
- * @param reports the reports that can be referenced as data sources
- * @param value the value of the datapoint to generate (chosen at random between 0 and 99999 if not specified)
- * @returns the generated datapoint or undefined
- */
-export function generateNumericOrEmptyDatapoint(
-  reports: ReferencedDocuments,
-  value: number | null = valueOrNull(faker.number.int()),
-): DataPointOneValueBigDecimal | undefined {
-  return valueOrUndefined(generateDatapoint(value, reports));
-}
-
-/**
- * Randomly generates a Yes / No / Na / undefined datapoint
- * @param reports the reports that can be referenced as data sources
- * @returns the generated datapoint or undefined
- */
-export function generateYesNoOrEmptyDatapoint(reports: ReferencedDocuments): DataPointOneValueYesNo | undefined {
-  return valueOrUndefined(generateDatapoint(randomYesNo(), reports));
-}
-
-/**
- * Generates a datapoint with the given value or a datapoint with no value reported at random
- * @param value the decimal value of the datapoint to generate (is ignored at random)
- * @param reports the reports that can be referenced as data sources
- * @returns the generated datapoint or undefined
- */
-export function generateDatapointOrNotReportedAtRandom(
-  value: number | undefined,
-  reports: ReferencedDocuments,
-): DataPointOneValueBigDecimal | undefined {
-  if (value === undefined) return undefined;
-  return generateDatapoint(valueOrNull(value), reports);
 }
 
 /**
