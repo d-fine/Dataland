@@ -51,7 +51,6 @@ import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/com
 import { formatAmountWithCurrency,
     formatPercentageNumberAsString,
     formatNumberToReadableFormat,} from "@/utils/Formatter";
-import { roundNumber } from "@/utils/NumberConversionUtils";
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import type { CompanyReport } from "@clients/backend";
 
