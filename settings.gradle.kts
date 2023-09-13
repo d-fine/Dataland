@@ -45,7 +45,7 @@ dependencyResolutionManagement {
             library("cloudevents-json-jackson", "io.cloudevents:cloudevents-json-jackson:2.5.0")
             library("cloudevents-core", "io.cloudevents:cloudevents-core:2.5.0")
             library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.5")
-            library("mailjet-client", "com.mailjet:mailjet-client:5.2.3")
+            library("mailjet-client", "com.mailjet:mailjet-client:5.2.4")
 
             library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.29")
 
