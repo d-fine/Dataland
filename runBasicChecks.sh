@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #This script is intended for developers to check whether or not basic tests in the pipeline will fail.
 #It takes one parameter to switch between full mode (if nothing or "full" is provided) and short mode (any other input).
 #The script must be executed from the same directory it is located in.
