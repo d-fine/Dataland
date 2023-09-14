@@ -336,8 +336,12 @@ export default defineComponent({
         const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
+        // JSON.parse/stringify used to clone the formInputsModel in order to avoid infinite loop on dev servers
+        const clonedCompanyAssociatedEuTaxonomyDataForNonFinancials = JSON.parse(
+          JSON.stringify(this.companyAssociatedEuTaxonomyDataForNonFinancials)
+        ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
         const companyAssociatedEuTaxonomyDataForNonFinancialsToSend = this.convertPercentagesToDecimals(
-          this.companyAssociatedEuTaxonomyDataForNonFinancials
+          clonedCompanyAssociatedEuTaxonomyDataForNonFinancials
         );
         await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
           companyAssociatedEuTaxonomyDataForNonFinancialsToSend
