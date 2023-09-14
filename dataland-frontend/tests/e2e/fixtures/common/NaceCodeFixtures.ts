@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
-import {TreeNode} from "primevue/tree";
+import { type TreeNode } from "primevue/tree";
 
 /**
  * Generates a random list of NACE codes (unique and sorted)
@@ -29,7 +29,7 @@ export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: stri
     if (node.type === "header" && node.children) {
       for (const childNode of node.children) {
         if (childNode.type === "child" && childNode.value === activityName) {
-          return getRandomNumberOfNaceCodes(childNode)
+          return getRandomNumberOfNaceCodes(childNode);
         }
       }
     }
@@ -43,14 +43,16 @@ export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: stri
  * @returns a random number of valid NACE codes or undefined
  */
 function getRandomNumberOfNaceCodes(childNode: TreeNode): string[] | undefined {
-  let naceCodesToReturn
+  let naceCodesToReturn;
   if (Array.isArray(childNode.naceCodes) && childNode.naceCodes.every((item) => typeof item === "string")) {
     const allNaceCodesForActivity = childNode.naceCodes as string[];
     const listWithRandomNumberOfNaceCodes = Array.from(
-        {length: faker.number.int({min: 1, max: allNaceCodesForActivity.length})},
-        () => {return faker.helpers.arrayElement(allNaceCodesForActivity)},
+      { length: faker.number.int({ min: 1, max: allNaceCodesForActivity.length }) },
+      () => {
+        return faker.helpers.arrayElement(allNaceCodesForActivity);
+      },
     );
-    naceCodesToReturn =  [...new Set(listWithRandomNumberOfNaceCodes)];
+    naceCodesToReturn = [...new Set(listWithRandomNumberOfNaceCodes)];
   }
-  return naceCodesToReturn
+  return naceCodesToReturn;
 }
