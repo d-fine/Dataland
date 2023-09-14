@@ -132,7 +132,11 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDataModel.ts";
-import { type CompanyAssociatedDataEuTaxonomyDataForNonFinancials, type CompanyReport } from "@clients/backend";
+import {
+    type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+    type CompanyReport,
+    EuTaxonomyDataForNonFinancials
+} from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -286,13 +290,13 @@ export default defineComponent({
      * @param object the object to transform
      * @returns the modified object
      */
-    transformPercentagesToDecimalsForObject(object: Record<string, number | object>): Record<string, number | object> {
+    transformPercentagesToDecimalsForObject(object: object): object {
       const modifiedObject = object;
       for (const property in modifiedObject) {
         if (property.includes("InPercent")) {
           modifiedObject[property] = (modifiedObject[property] as number) / 100;
         } else if (typeof modifiedObject[property] === "object") {
-          this.transformPercentagesToDecimalsForObject(modifiedObject[property] as Record<string, number | object>);
+          this.transformPercentagesToDecimalsForObject(modifiedObject[property]);
         }
       }
       return modifiedObject;
@@ -307,14 +311,14 @@ export default defineComponent({
     convertPercentagesToDecimals(
       companyAssociatedDataEuTaxonomyDataForNonFinancials: CompanyAssociatedDataEuTaxonomyDataForNonFinancials
     ): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
-      const euTaxonomyDataForNonFinancials: Record<string, object> =
-        companyAssociatedDataEuTaxonomyDataForNonFinancials.data as Record<string, object>;
+      const euTaxonomyDataForNonFinancials =
+        companyAssociatedDataEuTaxonomyDataForNonFinancials.data;
       for (const sectionName in euTaxonomyDataForNonFinancials) {
         euTaxonomyDataForNonFinancials[sectionName] = this.transformPercentagesToDecimalsForObject(
-          euTaxonomyDataForNonFinancials[sectionName] as Record<string, number | object>
+          euTaxonomyDataForNonFinancials[sectionName]
         );
       }
-      companyAssociatedDataEuTaxonomyDataForNonFinancials.data = euTaxonomyDataForNonFinancials;
+      companyAssociatedDataEuTaxonomyDataForNonFinancials.data = euTaxonomyDataForNonFinancials as EuTaxonomyDataForNonFinancials;
       return companyAssociatedDataEuTaxonomyDataForNonFinancials;
     },
 
