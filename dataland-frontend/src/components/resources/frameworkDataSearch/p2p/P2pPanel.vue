@@ -71,7 +71,7 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         const p2pDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getP2pDataControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
           const singleP2pData = (
