@@ -86,7 +86,7 @@ Update versions in the following dockerfiles
 
 ## Dataland Monitoring
 
-- [ ] Go to the monitoring repository and execute the tasks described in the manual maintenance template there
+- [x] Go to the monitoring repository and execute the tasks described in the manual maintenance template there
 
 ## Server updates
 
