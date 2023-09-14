@@ -26,7 +26,7 @@
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
           <div class="flex">
-              <template v-if="!canReview">
+            <template v-if="!canReview">
               <Dropdown
                 id="chooseFrameworkDropdown"
                 v-model="chosenDataTypeInDropdown"
@@ -41,7 +41,7 @@
               />
               <slot name="reportingPeriodDropdown"></slot>
             </template>
-            </div>
+          </div>
           <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
             <template v-if="canReview">
               <QualityAssuranceButtons></QualityAssuranceButtons>
