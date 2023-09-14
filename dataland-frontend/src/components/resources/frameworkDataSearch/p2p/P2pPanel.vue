@@ -23,10 +23,8 @@ import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
-import { type Field } from "@/utils/GenericFrameworkTypes";
-import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
-import { formatNumberToReadableFormat, formatPercentageNumberAsString } from "@/utils/Formatter";
+import { formatValueForDisplay } from "@/components/resources/frameworkDataSearch/p2p/P2pFormatValueForDisplay";
 
 export default defineComponent({
   name: "P2pPanel",
@@ -63,6 +61,7 @@ export default defineComponent({
   },
 
   methods: {
+    formatValueForDisplay,
     getViewModelWithIdentityApiModel,
     humanizeString: humanizeStringOrNumber,
     /**
@@ -72,7 +71,7 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         const p2pDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getP2pDataControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
           const singleP2pData = (
@@ -93,24 +92,6 @@ export default defineComponent({
      */
     handleFinishedDataConversion() {
       this.waitingForData = false;
-    },
-    /**
-     * Formats KPI values for display
-     * @param field the considered KPI field
-     * @param value the value to be formatted
-     * @returns the formatted value
-     */
-    formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
-      if (field.name == "sector") {
-        return (value as string[]).map((sector) => humanizeStringOrNumber(sector));
-      }
-      if (field.component == "PercentageFormField") {
-        return formatPercentageNumberAsString(value as number);
-      }
-      if (typeof value === "number") {
-        return formatNumberToReadableFormat(value);
-      }
-      return value;
     },
   },
 });
