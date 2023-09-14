@@ -233,7 +233,7 @@ export default defineComponent({
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
         this.euTaxonomyForNonFinancialsDataModel,
-        this.companyAssociatedEuTaxonomyDataForNonFinancials.data,
+        this.companyAssociatedEuTaxonomyDataForNonFinancials.data
       );
     },
   },
@@ -264,7 +264,7 @@ export default defineComponent({
     async loadEuTaxonomyForNonFinancialsData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
       const dataResponse =
@@ -275,10 +275,27 @@ export default defineComponent({
       }
       this.referencedReportsForPrefill = euTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedEuTaxonomyDataForNonFinancials = objectDropNull(
-        euTaxonomyForNonFinancialsResponseData as ObjectType,
+        euTaxonomyForNonFinancialsResponseData as ObjectType
       ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
 
       this.waitingForData = false;
+    },
+
+    /**
+     * Iteratively go through a given object and transform all fields whose names include "InPercent" to a decimal
+     * @param object the object to transform
+     * @returns the modified object
+     */
+    transformPercentagesToDecimalsForObject(object: Record<string, number | object>): Record<string, number | object> {
+      const modifiedObject = object;
+      for (const property in modifiedObject) {
+        if (property.includes("InPercent")) {
+          modifiedObject[property] = (modifiedObject[property] as number) / 100;
+        } else if (typeof modifiedObject[property] === "object") {
+          this.transformPercentagesToDecimalsForObject(modifiedObject[property] as Record<string, number | object>);
+        }
+      }
+      return modifiedObject;
     },
 
     /**
@@ -288,27 +305,14 @@ export default defineComponent({
      * @returns The transformed dataset
      */
     convertPercentagesToDecimals(
-      companyAssociatedDataEuTaxonomyDataForNonFinancials: CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+      companyAssociatedDataEuTaxonomyDataForNonFinancials: CompanyAssociatedDataEuTaxonomyDataForNonFinancials
     ): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
       const euTaxonomyDataForNonFinancials: Record<string, object> =
         companyAssociatedDataEuTaxonomyDataForNonFinancials.data as Record<string, object>;
       for (const sectionName in euTaxonomyDataForNonFinancials) {
-        const section: Record<string, number | object> = euTaxonomyDataForNonFinancials[sectionName] as Record<
-          string,
-          number | object
-        >;
-        for (const fieldName in section) {
-          if (fieldName.includes("InPercent")) {
-            section[fieldName] = (section[fieldName] as number) / 100;
-          } else if (typeof section[fieldName] === "object") {
-            const field = section[fieldName] as Record<string, number | object>;
-            for (const property in field) {
-              if (property.includes("InPercent")) {
-                field[property] = (field[property] as number) / 100;
-              }
-            }
-          }
-        }
+        euTaxonomyDataForNonFinancials[sectionName] = this.transformPercentagesToDecimalsForObject(
+          euTaxonomyDataForNonFinancials[sectionName] as Record<string, number | object>
+        );
       }
       companyAssociatedDataEuTaxonomyDataForNonFinancials.data = euTaxonomyDataForNonFinancials;
       return companyAssociatedDataEuTaxonomyDataForNonFinancials;
@@ -323,20 +327,21 @@ export default defineComponent({
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEuTaxonomyDataForNonFinancials.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset,
+            this.namesOfAllCompanyReportsForTheDataset
           );
 
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         const companyAssociatedEuTaxonomyDataForNonFinancialsToSend = this.convertPercentagesToDecimals(
-          this.companyAssociatedEuTaxonomyDataForNonFinancials,
+          this.companyAssociatedEuTaxonomyDataForNonFinancials
         );
+        console.log(companyAssociatedEuTaxonomyDataForNonFinancialsToSend);
         await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-          companyAssociatedEuTaxonomyDataForNonFinancialsToSend,
+          companyAssociatedEuTaxonomyDataForNonFinancialsToSend
         );
         this.$emit("datasetCreated");
         this.dataDate = undefined;
