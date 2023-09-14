@@ -37,41 +37,41 @@ export class Generator {
   valueOrUndefined<T>(value: T): T | undefined {
     return valueOrUndefined(value, this.undefinedProbability);
   }
+
   getReports(): ReferencedDocuments {
     return this.reports;
   }
+
   setReports(reports: ReferencedDocuments): void {
     this.reports = reports;
   }
+
   randomYesNo(): YesNo | undefined {
-    return valueOrUndefined(randomYesNo(), this.undefinedProbability);
+    return this.valueOrUndefined(randomYesNo());
   }
+
   randomYesNoNa(): YesNoNa | undefined {
-    return valueOrUndefined(randomYesNoNa(), this.undefinedProbability);
+    return this.valueOrUndefined(randomYesNoNa());
   }
+
   randomPercentageValue(): number | undefined {
-    return valueOrUndefined(randomPercentageValue(), this.undefinedProbability);
+    return this.valueOrUndefined(randomPercentageValue());
   }
+
   randomNumber(max = 10000): number | undefined {
-    return valueOrUndefined(randomNumber(max), this.undefinedProbability);
+    return this.valueOrUndefined(randomNumber(max));
   }
+
   randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | undefined {
-    const document = valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(this.documents)),
-      this.undefinedProbability,
-    );
-    return valueOrUndefined({
-      value: input,
-      dataSource: document,
-    } as GenericBaseDataPoint<T>);
+    const document = this.valueOrUndefined(faker.helpers.arrayElement(Object.values(this.documents)));
+    return this.valueOrUndefined({ value: input, dataSource: document } as GenericBaseDataPoint<T>);
   }
+
   randomDataPoint<T>(input: T): GenericDataPoint<T> | undefined {
-    return valueOrUndefined(
-      generateDatapoint(valueOrUndefined(input, this.undefinedProbability), this.reports),
-      this.undefinedProbability,
-    );
+    return this.valueOrUndefined(generateDatapoint(valueOrUndefined(input, this.undefinedProbability), this.reports));
   }
-  generateArray<T>(generator: () => T): T[] | undefined {
-    return valueOrUndefined(generateArray(generator), this.undefinedProbability);
+
+  randomArray<T>(generator: () => T): T[] | undefined {
+    return this.valueOrUndefined(generateArray(generator));
   }
 }

@@ -84,7 +84,7 @@ class SmeGenerator extends Generator {
    * @returns a random product
    */
   generateProduct(): SmeProduct[] | undefined {
-    return this.generateArray(() => {
+    return this.randomArray(() => {
       return {
         name: faker.commerce.productName(),
         percentageOfTotalRevenue: this.randomPercentageValue(),
@@ -97,7 +97,7 @@ class SmeGenerator extends Generator {
    * @returns a random production site
    */
   generateProductionSite(): SmeProductionSite[] | undefined {
-    return this.generateArray(() => {
+    return this.randomArray(() => {
       return {
         nameOfProductionSite: this.valueOrUndefined(faker.company.name()),
         addressOfProductionSite: generateAddress(this.undefinedProbability),

@@ -2,49 +2,45 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "South Ronburgh",
-			"headquartersPostalCode": "68059-9755",
-			"sector": "methodologies",
+			"headquarters": "Denver",
+			"headquartersPostalCode": "04743-8688",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"QMIEDD71yAia"
+				"Lei": [
+					"25Z0hli9WunsqfnoiwR7"
 				],
+				"Isin": [],
 				"PermId": [],
-				"Ticker": [
-					"yDK853M"
-				],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"eEHneguNPfErNNS"
-				]
+				"VatNumber": [
+					"0xpdzHgxn"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BS",
-			"companyAlternativeNames": [
-				"Barton, Smith and Gutmann",
-				"Champlin, McKenzie and Kreiger",
-				"Hahn Group",
-				"Hegmann - Bradtke"
-			],
-			"website": "https://disastrous-savior.name",
+			"countryCode": "AQ",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://lighthearted-deer.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"I"
+						"B",
+						"F",
+						"I",
+						"M"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Marquis Spring 4079",
-						"postalCode": "56388-0077",
-						"city": "Abilene",
-						"state": "Kentucky",
-						"country": "HN"
+						"streetAndHouseNumber": "Bechtelar Walk 9300",
+						"postalCode": "94685",
+						"city": "Blandaville",
+						"state": "Alabama",
+						"country": "TF"
 					},
-					"numberOfEmployees": 765,
-					"fiscalYearStart": "2024-02-27"
+					"numberOfEmployees": 327,
+					"fiscalYearStart": "2024-05-20"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -56,45 +52,77 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Walsh - Batz",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Hessel Shoal 725",
-								"postalCode": "90184-3073",
-								"city": "New Spencer",
-								"state": "Montana",
-								"country": "JE"
+								"streetAndHouseNumber": "Payton Manors 60176",
+								"postalCode": "43952-1600",
+								"city": "West Nakiaworth",
+								"state": "Maine",
+								"country": "MO"
+							}
+						},
+						{
+							"nameOfProductionSite": "Kreiger, Heathcote and Hilpert",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Ara Circles 28267",
+								"postalCode": "68420",
+								"city": "Janetfort",
+								"state": "Arizona",
+								"country": "MT"
 							},
-							"percentageOfTotalRevenue": 0.4088
+							"percentageOfTotalRevenue": 0.2007
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Damaris Fields 174",
-								"postalCode": "69915-7846",
-								"city": "Collierview",
-								"state": "Oregon",
-								"country": "DJ"
+								"streetAndHouseNumber": "Minnie Mill 45852",
+								"postalCode": "47837-2309",
+								"city": "New Sallyton",
+								"state": "North Carolina",
+								"country": "PK"
 							},
-							"percentageOfTotalRevenue": 0.8876
+							"percentageOfTotalRevenue": 0.6201
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Dorian Rapid 7867",
-								"city": "Fort Danehaven",
-								"state": "Iowa",
-								"country": "ST"
+								"streetAndHouseNumber": "Kerluke Port 4947",
+								"postalCode": "57494",
+								"city": "Monahanchester",
+								"state": "Delaware",
+								"country": "SD"
 							},
-							"percentageOfTotalRevenue": 0.8428
+							"percentageOfTotalRevenue": 0.5067
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Maxime Union 8751",
+								"postalCode": "70400",
+								"city": "Nienowborough",
+								"country": "AW"
+							},
+							"percentageOfTotalRevenue": 0.1496
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Rustic Bronze Fish",
-							"percentageOfTotalRevenue": 0.2016
+							"name": "Generic Wooden Salad",
+							"percentageOfTotalRevenue": 0.6405
 						},
 						{
-							"name": "Refined Soft Salad",
-							"percentageOfTotalRevenue": 0.8026
+							"name": "Fantastic Wooden Shoes",
+							"percentageOfTotalRevenue": 0.2386
+						},
+						{
+							"name": "Modern Metal Chips",
+							"percentageOfTotalRevenue": 0.217
+						},
+						{
+							"name": "Practical Fresh Soap",
+							"percentageOfTotalRevenue": 0.1788
+						},
+						{
+							"name": "Recycled Wooden Salad"
 						}
 					]
 				}
@@ -104,7 +132,8 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 968,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 226,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
@@ -112,13 +141,13 @@
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 25538902,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 37248639,
 					"naturalHazardsCovered": [
-						"Snow",
 						"Flooding",
+						"Hail",
 						"Avalanche",
-						"Wind",
-						"Hail"
+						"Snow",
+						"EarthQuake"
 					]
 				}
 			}
@@ -128,38 +157,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "York",
-			"headquartersPostalCode": "71746-8666",
-			"sector": "technologies",
+			"headquarters": "West Westonville",
+			"headquartersPostalCode": "97247-5338",
+			"sector": "action-items",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [],
+				"Lei": [
+					"mXm83r12tn12EDoHdNGh"
+				],
+				"Isin": [
+					"tXgCjkhE7xVx"
+				],
 				"PermId": [],
 				"Ticker": [
-					"R4NJSCJ"
+					"txOBcRt"
 				],
-				"Duns": [],
-				"VatNumber": [],
+				"Duns": [
+					"rIbAHh8Yv"
+				],
+				"VatNumber": [
+					"Esg77Vo62"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "UG",
+			"countryCode": "BA",
 			"companyAlternativeNames": [
-				"Dickinson - Kutch",
-				"Marks Inc",
-				"Mraz LLC"
+				"Donnelly - Schamberger"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://leading-footrest.info",
+			"companyLegalForm": "AG",
+			"website": "https://droopy-yoga.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
-						"F",
-						"H",
-						"J"
+						"D"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -168,40 +200,69 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 1282,
-					"fiscalYearStart": "2023-09-29"
+					"numberOfEmployees": 7040,
+					"fiscalYearStart": "2023-10-11"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 62340984,
-					"capitalAssetsInEur": 24599072
+					"capitalAssetsInEur": 68603103
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Minnie Skyway 98160",
+								"postalCode": "88763",
+								"city": "Roscoeberg",
+								"state": "Massachusetts",
+								"country": "VC"
+							},
+							"percentageOfTotalRevenue": 0.9709
+						},
+						{
+							"nameOfProductionSite": "Moore Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Frami Knoll 227",
+								"postalCode": "47316",
+								"city": "Ryanworth",
+								"state": "Idaho",
+								"country": "NO"
+							},
+							"percentageOfTotalRevenue": 0.0869
+						}
+					]
+				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Handmade Bronze Chicken",
+							"percentageOfTotalRevenue": 0.3667
+						},
+						{
+							"name": "Recycled Fresh Cheese",
+							"percentageOfTotalRevenue": 0.2076
+						},
+						{
+							"name": "Refined Rubber Car"
+						}
+					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 563,
-					"energyConsumptionHeatingAndHotWater": 549,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMwh": 1133,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 41047027,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 11776077,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Hail",
-						"Flooding",
-						"Wind",
-						"Snow"
+						"Wind"
 					]
 				}
 			}
@@ -211,138 +272,98 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Uniqueboro",
-			"headquartersPostalCode": "85340-3751",
-			"sector": "experiences",
+			"headquarters": "Carolinechester",
+			"headquartersPostalCode": "10788",
+			"sector": "partnerships",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"ANwiBEtnBLTl"
+				"Lei": [
+					"Fu3flS8lK9eQEKfoSViS"
 				],
-				"PermId": [],
+				"Isin": [
+					"Qynbp4QEDzTt",
+					"LIuZKrMI2ceW"
+				],
+				"PermId": [
+					"GHlWTNUHwi"
+				],
 				"Ticker": [
-					"qFzI9PD"
+					"vPvOMqQ"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"YHtqi5Qog"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"KKA1bILDrzBnJCg"
+				]
 			},
-			"countryCode": "HM",
-			"companyAlternativeNames": [
-				"Goodwin Inc"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://loving-birdhouse.com/",
+			"countryCode": "BJ",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://darling-restaurant.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A"
+						"C",
+						"E"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 9476,
-					"fiscalYearStart": "2023-09-16"
+					"numberOfEmployees": 958,
+					"fiscalYearStart": "2023-11-05"
 				},
 				"companyFinancials": {
-					"revenueInEur": 8877361,
-					"operatingCostInEur": 66881306,
-					"capitalAssetsInEur": 35360735
+					"revenueInEur": 14937676,
+					"operatingCostInEur": 38333499,
+					"capitalAssetsInEur": 63550555
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Fritsch, Kulas and Schultz",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lueilwitz Cove 45513",
-								"postalCode": "60431",
-								"city": "Halstead",
-								"country": "LR"
-							},
-							"percentageOfTotalRevenue": 0.5659
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Thiel Ports 2814",
-								"city": "Lake Santoshaven",
-								"state": "Mississippi",
-								"country": "FM"
-							},
-							"percentageOfTotalRevenue": 0.8782
-						},
-						{
-							"nameOfProductionSite": "Ryan Inc",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Hegmann Radial 98494",
-								"postalCode": "32387-9770",
-								"city": "Weymouth Town",
-								"state": "Iowa",
-								"country": "TH"
-							},
-							"percentageOfTotalRevenue": 0.4301
-						},
-						{
-							"nameOfProductionSite": "Hackett Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Nona Orchard 676",
-								"city": "North Rayfurt",
-								"state": "Idaho",
-								"country": "AE"
-							},
-							"percentageOfTotalRevenue": 0.4796
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Yundt Knoll 683",
-								"postalCode": "54580-6522",
-								"city": "Millieland",
-								"state": "Alabama",
-								"country": "AL"
-							}
-						}
-					]
-				},
+				"sites": {},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Bespoke Fresh Shirt",
-							"percentageOfTotalRevenue": 0.5638
+							"name": "Oriental Granite Mouse",
+							"percentageOfTotalRevenue": 0.7568
 						},
 						{
-							"name": "Oriental Concrete Chips",
-							"percentageOfTotalRevenue": 0.8716
+							"name": "Bespoke Granite Bike",
+							"percentageOfTotalRevenue": 0.795
 						},
 						{
-							"name": "Tasty Plastic Salad"
+							"name": "Ergonomic Fresh Mouse",
+							"percentageOfTotalRevenue": 0.4244
+						},
+						{
+							"name": "Oriental Cotton Shirt",
+							"percentageOfTotalRevenue": 0.8721
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
+					"powerConsumptionInMwh": 1591,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 264,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"energyConsumptionHeatingAndHotWater": 702,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 16920719,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 17936408,
 					"naturalHazardsCovered": [
 						"Hail",
-						"Avalanche"
+						"Wind",
+						"Avalanche",
+						"EarthQuake"
 					]
 				}
 			}
