@@ -339,7 +339,6 @@ export default defineComponent({
         const companyAssociatedEuTaxonomyDataForNonFinancialsToSend = this.convertPercentagesToDecimals(
           this.companyAssociatedEuTaxonomyDataForNonFinancials
         );
-        console.log(companyAssociatedEuTaxonomyDataForNonFinancialsToSend);
         await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
           companyAssociatedEuTaxonomyDataForNonFinancialsToSend
         );
