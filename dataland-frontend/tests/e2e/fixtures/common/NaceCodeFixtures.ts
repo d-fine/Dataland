@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
+import {TreeNode} from "primevue/tree";
 
 /**
  * Generates a random list of NACE codes (unique and sorted)
@@ -23,26 +24,33 @@ export function generateListOfRandomNaceCodes(minNumberOfNaceCodes = 0, maxNumbe
  * @param activityName name of the activity to return NACE codes for
  * @returns a random number of valid NACE codes
  */
-export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: string): string[] {
+export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: string): string[] | undefined {
   for (const node of activityTree) {
     if (node.type === "header" && node.children) {
       for (const childNode of node.children) {
         if (childNode.type === "child" && childNode.value === activityName) {
-          if (Array.isArray(childNode.naceCodes) && childNode.naceCodes.every((item) => typeof item === "string")) {
-            const allNaceCodesForActivity = childNode.naceCodes as string[];
-            const listWithRandomNumberOfNaceCodes = Array.from(
-              { length: faker.number.int({ min: 1, max: allNaceCodesForActivity.length }) },
-              () => {
-                return faker.helpers.arrayElement(allNaceCodesForActivity);
-              },
-            );
-            return [...new Set(listWithRandomNumberOfNaceCodes)];
-          } else {
-            return [];
-          }
+          return getRandomNumberOfNaceCodes(childNode)
         }
       }
     }
   }
-  throw new Error(`Activity not found: ${activityName}`);
+  throw new Error(`Activity not found in activity tree: ${activityName}`);
+}
+
+/**
+ * Gets a random number of NACE codes for one specific childNode if it actually contains NACE codes.
+ * @param childNode node in the activity tree to get potential NACE codes from
+ * @returns a random number of valid NACE codes or undefined
+ */
+function getRandomNumberOfNaceCodes(childNode: TreeNode): string[] | undefined {
+  let naceCodesToReturn
+  if (Array.isArray(childNode.naceCodes) && childNode.naceCodes.every((item) => typeof item === "string")) {
+    const allNaceCodesForActivity = childNode.naceCodes as string[];
+    const listWithRandomNumberOfNaceCodes = Array.from(
+        {length: faker.number.int({min: 1, max: allNaceCodesForActivity.length})},
+        () => {return faker.helpers.arrayElement(allNaceCodesForActivity)},
+    );
+    naceCodesToReturn =  [...new Set(listWithRandomNumberOfNaceCodes)];
+  }
+  return naceCodesToReturn
 }
