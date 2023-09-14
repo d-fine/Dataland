@@ -2,9 +2,9 @@ import { faker } from "@faker-js/faker";
 import { type CompanyReportReference, type DocumentReference, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { randomYesNoNa } from "./YesNoFixtures";
+import { generateYesNoNa } from "./YesNoFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
+import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
@@ -20,8 +20,8 @@ export function generateReferencedReports(): ReferencedDocuments {
   for (const reportName of availableReportNames) {
     referencedReports[reportName] = {
       reference: getReferencedDocumentId(),
-      isGroupLevel: valueOrUndefined(randomYesNoNa()),
-      reportDate: valueOrUndefined(randomPastDate()),
+      isGroupLevel: valueOrUndefined(generateYesNoNa()),
+      reportDate: valueOrUndefined(generatePastDate()),
       currency: faker.finance.currencyCode(),
     };
   }
@@ -40,7 +40,7 @@ export function generateDatapoint<T>(value: T | undefined, reports: ReferencedDo
       ? QualityOptions.Na
       : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
-  const { dataSource, comment } = createQualityAndDataSourceAndComment(reports, qualityBucket);
+  const { dataSource, comment } = generateQualityAndDataSourceAndComment(reports, qualityBucket);
 
   return {
     value: value ?? undefined,
@@ -68,7 +68,7 @@ export interface GenericBaseDataPoint<T> {
  * @param qualityBucket the quality bucket of the datapoint
  * @returns the generated data source and comment of the datapoint
  */
-function createQualityAndDataSourceAndComment(
+function generateQualityAndDataSourceAndComment(
   reports: ReferencedDocuments,
   qualityBucket: QualityOptions,
 ): { dataSource: CompanyReportReference | undefined; comment: string | undefined } {

@@ -1,6 +1,6 @@
 import { type CompanyReport, type DocumentReference } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
-import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
+import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { faker } from "@faker-js/faker";
 
@@ -17,7 +17,7 @@ export type ReferencedDocuments = { [key: string]: CompanyReport | DocumentRefer
 export function generateFixtureDataset<T>(
   frameworkDataGenerator: () => T,
   numElements: number,
-  reportingPeriodGenerator: (dataSet: T) => string = getRandomReportingPeriod,
+  reportingPeriodGenerator: (dataSet: T) => string = generateReportingPeriod,
 ): Array<FixtureData<T>> {
   const fixtureDataset = [];
   for (let id = 1; id <= numElements; id++) {
@@ -32,7 +32,7 @@ export function generateFixtureDataset<T>(
 }
 
 /**
- * Generates a array of random length with content
+ * Generates an array of random length with content
  * @param generator generator for a single entry
  * @param min the minimum number of entries
  * @param max the maximum number of entries

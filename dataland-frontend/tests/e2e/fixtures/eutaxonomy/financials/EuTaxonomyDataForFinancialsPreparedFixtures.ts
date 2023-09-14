@@ -2,7 +2,7 @@ import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type EuTaxonomyDataForFinancials, QualityOptions } from "@clients/backend";
 import { EuFinancialsGenerator, generateEuTaxonomyDataForFinancials } from "./EuTaxonomyDataForFinancialsFixtures";
-import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 
 type generatorFunction = (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials>;
 
@@ -46,9 +46,9 @@ function createCreditInstitutionDualFieldSubmission(
   input.companyInformation.companyName = "credit-institution-dual-field-submission";
   input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
-    interbankLoans: dataGenerator.randomDataPoint(randomPercentageValue()),
-    tradingPortfolio: dataGenerator.randomDataPoint(randomPercentageValue()),
-    greenAssetRatio: dataGenerator.randomDataPoint(randomPercentageValue()),
+    interbankLoans: dataGenerator.randomDataPoint(generatePercentageValue()),
+    tradingPortfolio: dataGenerator.randomDataPoint(generatePercentageValue()),
+    greenAssetRatio: dataGenerator.randomDataPoint(generatePercentageValue()),
   };
   return input;
 }
@@ -66,8 +66,8 @@ function createCreditInstitutionSingleFieldSubmission(
   input.companyInformation.companyName = "credit-institution-single-field-submission";
   input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
-    tradingPortfolioAndInterbankLoans: dataGenerator.randomDataPoint(randomPercentageValue()),
-    greenAssetRatio: dataGenerator.randomDataPoint(randomPercentageValue()),
+    tradingPortfolioAndInterbankLoans: dataGenerator.randomDataPoint(generatePercentageValue()),
+    greenAssetRatio: dataGenerator.randomDataPoint(generatePercentageValue()),
   };
   return input;
 }

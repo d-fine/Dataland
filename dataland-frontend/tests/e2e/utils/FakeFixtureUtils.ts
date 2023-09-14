@@ -5,9 +5,9 @@ import {
   type GenericBaseDataPoint,
 } from "@e2e/fixtures/common/DataPointFixtures";
 import { type ReferencedDocuments, generateArray } from "@e2e/fixtures/FixtureUtils";
-import { randomYesNo, randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
+import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { type YesNo, type YesNoNa } from "@clients/backend";
-import { randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateNumber, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 import { faker } from "@faker-js/faker";
 
@@ -47,19 +47,19 @@ export class Generator {
   }
 
   randomYesNo(): YesNo | undefined {
-    return this.valueOrUndefined(randomYesNo());
+    return this.valueOrUndefined(generateYesNo());
   }
 
   randomYesNoNa(): YesNoNa | undefined {
-    return this.valueOrUndefined(randomYesNoNa());
+    return this.valueOrUndefined(generateYesNoNa());
   }
 
   randomPercentageValue(): number | undefined {
-    return this.valueOrUndefined(randomPercentageValue());
+    return this.valueOrUndefined(generatePercentageValue());
   }
 
   randomNumber(max = 10000): number | undefined {
-    return this.valueOrUndefined(randomNumber(max));
+    return this.valueOrUndefined(generateNumber(max));
   }
 
   randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | undefined {
@@ -71,7 +71,7 @@ export class Generator {
     return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports));
   }
 
-  randomArray<T>(generator: () => T): T[] | undefined {
-    return this.valueOrUndefined(generateArray(generator));
+  randomArray<T>(generator: () => T, min = 0, max = 5): T[] | undefined {
+    return this.valueOrUndefined(generateArray(generator, min, max));
   }
 }

@@ -8,7 +8,7 @@ import {
   type EuTaxonomyDetailsPerCashFlowType,
 } from "@clients/backend";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateEuroValue } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
@@ -38,7 +38,7 @@ export class EuNonFinancialsGenerator extends Generator {
    */
   generateAmountWithCurrency(): AmountWithCurrency {
     return {
-      amount: this.valueOrUndefined(randomEuroValue()),
+      amount: this.valueOrUndefined(generateEuroValue()),
       currency: this.valueOrUndefined(generateIso4217CurrencyCode()),
     };
   }

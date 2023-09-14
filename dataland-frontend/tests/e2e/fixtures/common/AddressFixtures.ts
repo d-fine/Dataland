@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
+import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { type Address } from "@clients/backend";
 import { DEFAULT_PROBABILITY, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
@@ -17,6 +17,6 @@ export function generateAddress(undefinedProbability = DEFAULT_PROBABILITY): Add
     postalCode: valueOrUndefined(faker.location.zipCode(), undefinedProbability),
     city: faker.location.city(),
     state: valueOrUndefined(faker.location.state(), undefinedProbability),
-    country: getRandomIso2CountryCode(),
+    country: generateIso2CountryCode(),
   };
 }

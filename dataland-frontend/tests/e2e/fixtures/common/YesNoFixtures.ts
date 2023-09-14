@@ -5,7 +5,7 @@ import { YesNo, YesNoNa } from "@clients/backend";
  * Randomly returns Yes or No
  * @returns Yes or No
  */
-export function randomYesNo(): YesNo {
+export function generateYesNo(): YesNo {
   return faker.helpers.arrayElement(Object.values(YesNo));
 }
 
@@ -13,6 +13,6 @@ export function randomYesNo(): YesNo {
  * Randomly returns Yes, No or Na
  * @returns Yes, No or Na
  */
-export function randomYesNoNa(): YesNoNa {
+export function generateYesNoNa(): YesNoNa {
   return faker.helpers.arrayElement(Object.values(YesNoNa));
 }

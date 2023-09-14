@@ -7,15 +7,15 @@ import {
   NationalOrInternationalMarket,
   ShareOfTemporaryWorkers,
 } from "@clients/backend";
-import { randomYesNo, randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
+import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { DEFAULT_PROBABILITY, Generator, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
+import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
-import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { generateEuroValue, generateNumber, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
+import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
@@ -33,20 +33,8 @@ export function generateLksgFixture(
   return generateFixtureDataset<LksgData>(
     () => generateLksgData(undefinedProbability),
     numFixtures,
-    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod(),
+    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || generateReportingPeriod(),
   );
-}
-
-/**
- * Generates a Lksg fixture with a dataset with many null values for categories, subcategories and field values
- * @returns the fixture
- */
-export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
-  return generateFixtureDataset<LksgData>(
-    () => generateOneLksgDatasetWithManyNulls(),
-    1,
-    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod(),
-  )[0];
 }
 
 /**
@@ -63,103 +51,11 @@ export function generateProductionSite(undefinedProbability = DEFAULT_PROBABILIT
 }
 
 /**
- * Generates a random product
- * @returns a random product
- */
-function generateProduct(): LksgProduct {
-  return {
-    name: faker.commerce.productName(),
-    productionSteps: valueOrUndefined(generateArray(() => `${faker.word.verb()} ${faker.commerce.productMaterial()}`)),
-    relatedCorporateSupplyChain: valueOrUndefined(faker.lorem.sentences()),
-  };
-}
-
-/**
- * Generates a random procurement category
- * @returns random procurement category
- */
-function generateProcurementCategory(): LksgProcurementCategory {
-  const numberOfSuppliersPerCountryCodeAsMap = new Map<string, number>(
-    generateArray(() => [getRandomIso2CountryCode(), valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!]),
-  );
-  return {
-    procuredProductTypesAndServicesNaceCodes: generateListOfNaceCodes(1),
-    numberOfSuppliersPerCountryCode: valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
-    percentageOfTotalProcurement: valueOrUndefined(randomPercentageValue()),
-  };
-}
-
-/**
- * Generates a random map of procurement categories
- * @returns random map of procurement categories
- */
-function generateProcurementCategories(): { [key: string]: LksgProcurementCategory } {
-  const procurementCategories = Object.values(ProcurementCategoryType);
-  const keys = [] as ProcurementCategoryType[];
-  procurementCategories.forEach((category) => {
-    if (faker.datatype.boolean()) {
-      keys.push(category);
-    }
-  });
-  return Object.fromEntries(
-    new Map<string, LksgProcurementCategory>(
-      keys.map((procurementCategoryType) => [procurementCategoryType as string, generateProcurementCategory()]),
-    ),
-  );
-}
-
-/**
  * Generates a random array of goods or services
  * @returns random array of goods or services
  */
-export function generateListOfGoodsOrServices(): string[] {
+function generateListOfGoodsOrServices(): string[] {
   return generateArray(() => faker.commerce.productName(), 1);
-}
-
-/**
- * Randomly returns <10%, 10-25%, 25-50% or >50%
- * @returns one of the four percentage intervals as string
- */
-export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers {
-  return faker.helpers.arrayElement(Object.values(ShareOfTemporaryWorkers));
-}
-
-/**
- * Randomly returns National, International or Both
- * @returns one of the options as string
- */
-export function randomNationalOrInternationalMarket(): NationalOrInternationalMarket {
-  return faker.helpers.arrayElement(Object.values(NationalOrInternationalMarket));
-}
-
-/**
- * Generates an LKSG dataset with the value null for some categories, subcategories and field values.
- * Datasets that were uploaded via the Dataland API can look like this in production.
- * @returns the dataset
- */
-export function generateOneLksgDatasetWithManyNulls(): LksgData {
-  return {
-    general: {
-      masterData: {
-        dataDate: "1999-12-24",
-        headOfficeInGermany: null!,
-        groupOfCompanies: null!,
-        groupOfCompaniesName: null!,
-        industry: null!,
-        numberOfEmployees: null!,
-        seasonalOrMigrantWorkers: null!,
-        shareOfTemporaryWorkers: null!,
-        totalRevenueCurrency: null!,
-        annualTotalRevenue: null!,
-        fixedAndWorkingCapital: null!,
-      },
-      productionSpecific: null!,
-      productionSpecificOwnOperations: null!,
-    },
-    governance: null!,
-    social: null!,
-    environmental: null!,
-  };
 }
 
 /**
@@ -168,40 +64,40 @@ export function generateOneLksgDatasetWithManyNulls(): LksgData {
  * @returns a random LKSG dataset
  */
 export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): LksgData {
-  const dataGenerator = new Generator(undefinedProbability);
+  const dataGenerator = new P2pGenerator(undefinedProbability);
   return {
     general: {
       masterData: {
-        dataDate: randomFutureDate(),
+        dataDate: generateFutureDate(),
         headOfficeInGermany: dataGenerator.randomYesNo(),
         groupOfCompanies: dataGenerator.randomYesNo(),
         groupOfCompaniesName: dataGenerator.valueOrUndefined(faker.company.name()),
         industry: dataGenerator.valueOrUndefined(generateListOfNaceCodes()),
-        numberOfEmployees: dataGenerator.valueOrUndefined(randomNumber(10000)),
+        numberOfEmployees: dataGenerator.valueOrUndefined(generateNumber(10000)),
         seasonalOrMigrantWorkers: dataGenerator.randomYesNo(),
-        shareOfTemporaryWorkers: dataGenerator.valueOrUndefined(randomShareOfTemporaryWorkersInterval()),
-        annualTotalRevenue: dataGenerator.valueOrUndefined(randomEuroValue()),
+        shareOfTemporaryWorkers: dataGenerator.randomShareOfTemporaryWorkersInterval(),
+        annualTotalRevenue: dataGenerator.valueOrUndefined(generateEuroValue()),
         totalRevenueCurrency: dataGenerator.valueOrUndefined(generateIso4217CurrencyCode()),
-        fixedAndWorkingCapital: dataGenerator.valueOrUndefined(randomNumber(10000)),
+        fixedAndWorkingCapital: dataGenerator.valueOrUndefined(generateNumber(10000)),
       },
       productionSpecific: {
         manufacturingCompany: dataGenerator.randomYesNo(),
         capacity: dataGenerator.valueOrUndefined(
-          randomNumber(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
+          generateNumber(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
         ),
         productionViaSubcontracting: dataGenerator.randomYesNo(),
-        subcontractingCompaniesCountries: dataGenerator.valueOrUndefined(generateArray(getRandomIso2CountryCode)),
+        subcontractingCompaniesCountries: dataGenerator.valueOrUndefined(generateArray(generateIso2CountryCode)),
         subcontractingCompaniesIndustries: dataGenerator.valueOrUndefined(generateListOfNaceCodes()),
         productionSites: dataGenerator.randomYesNo(),
-        listOfProductionSites: dataGenerator.valueOrUndefined(
-          generateArray(() => generateProductionSite(undefinedProbability)),
-        ),
-        market: dataGenerator.valueOrUndefined(randomNationalOrInternationalMarket()),
+        listOfProductionSites: dataGenerator.randomArray(() => generateProductionSite(undefinedProbability)),
+        market: dataGenerator.randomNationalOrInternationalMarket(),
         specificProcurement: dataGenerator.randomYesNo(),
       },
       productionSpecificOwnOperations: {
-        mostImportantProducts: dataGenerator.valueOrUndefined(generateArray(generateProduct)),
-        productsServicesCategoriesPurchased: dataGenerator.valueOrUndefined(generateProcurementCategories()),
+        mostImportantProducts: dataGenerator.valueOrUndefined(generateArray(() => dataGenerator.generateProduct())),
+        productsServicesCategoriesPurchased: dataGenerator.valueOrUndefined(
+          dataGenerator.generateProcurementCategories(),
+        ),
       },
     },
     governance: {
@@ -214,8 +110,8 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         whichCounteractingMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
         regulatedRiskManagementResponsibility: dataGenerator.randomYesNo(),
         environmentalManagementSystem: dataGenerator.randomYesNo(),
-        environmentalManagementSystemInternationalCertification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        environmentalManagementSystemNationalCertification: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        environmentalManagementSystemInternationalCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        environmentalManagementSystemNationalCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
       grievanceMechanismOwnOperations: {
         grievanceHandlingMechanism: dataGenerator.randomYesNo(),
@@ -224,7 +120,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         appropriateGrievanceHandlingSupport: dataGenerator.randomYesNo(),
         accessToExpertiseForGrievanceHandling: dataGenerator.randomYesNo(),
         grievanceComplaints: dataGenerator.randomYesNo(),
-        complaintsNumber: dataGenerator.valueOrUndefined(randomNumber(10000)),
+        complaintsNumber: dataGenerator.valueOrUndefined(generateNumber(10000)),
         complaintsReason: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
         actionsForComplaintsUndertaken: dataGenerator.randomYesNo(),
         whichActionsForComplaintsUndertaken: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
@@ -233,26 +129,26 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         dueDiligenceProcessForGrievanceHandling: dataGenerator.randomYesNo(),
       },
       certificationsPoliciesAndResponsibilities: {
-        sa8000Certification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        smetaSocialAuditConcept: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        betterWorkProgramCertificate: dataGenerator.randomBaseDataPoint(randomYesNoNa()),
-        iso45001Certification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        iso14001Certification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        emasCertification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        iso37001Certification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        iso37301Certification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        riskManagementSystemCertification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        amforiBsciAuditReport: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        responsibleBusinessAssociationCertification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        fairLaborAssociationCertification: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        sa8000Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        smetaSocialAuditConcept: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        betterWorkProgramCertificate: dataGenerator.randomBaseDataPoint(generateYesNoNa()),
+        iso45001Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        iso14001Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        emasCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        iso37001Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        iso37301Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        riskManagementSystemCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        amforiBsciAuditReport: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        responsibleBusinessAssociationCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        fairLaborAssociationCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
         additionalAudits: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
-        codeOfConduct: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        codeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
         codeOfConductTraining: dataGenerator.randomYesNo(),
-        supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        policyStatement: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        policyStatement: dataGenerator.randomBaseDataPoint(generateYesNo()),
         humanRightsStrategy: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
-        environmentalImpactPolicy: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        fairWorkingConditionsPolicy: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        environmentalImpactPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        fairWorkingConditionsPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
       generalViolations: {
         responsibilitiesForFairWorkingConditions: dataGenerator.randomYesNo(),
@@ -264,16 +160,16 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         humanRightsViolationAction: dataGenerator.randomYesNo(),
         humanRightsViolationActionMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
         highRiskCountriesRawMaterials: dataGenerator.randomYesNo(),
-        highRiskCountriesRawMaterialsLocation: dataGenerator.valueOrUndefined(generateArray(getRandomIso2CountryCode)),
+        highRiskCountriesRawMaterialsLocation: dataGenerator.valueOrUndefined(generateArray(generateIso2CountryCode)),
         highRiskCountriesActivity: dataGenerator.randomYesNo(),
-        highRiskCountries: dataGenerator.valueOrUndefined(generateArray(getRandomIso2CountryCode)),
+        highRiskCountries: dataGenerator.valueOrUndefined(generateArray(generateIso2CountryCode)),
         highRiskCountriesProcurement: dataGenerator.randomYesNo(),
-        highRiskCountriesProcurementName: dataGenerator.valueOrUndefined(generateArray(getRandomIso2CountryCode)),
+        highRiskCountriesProcurementName: dataGenerator.valueOrUndefined(generateArray(generateIso2CountryCode)),
       },
     },
     social: {
       childLabor: {
-        childLaborPreventionPolicy: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        childLaborPreventionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         employeeSUnder18: dataGenerator.randomYesNo(),
         employeeSUnder15: dataGenerator.randomYesNo(),
         employeeSUnder18InApprenticeship: dataGenerator.randomYesNo(),
@@ -291,7 +187,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
       forcedLaborSlavery: {
         forcedLaborAndSlaveryPrevention: dataGenerator.randomYesNo(),
         forcedLaborAndSlaveryPreventionPractices: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
-        forcedLaborPreventionPolicy: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        forcedLaborPreventionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         forcedLaborAndSlaveryPreventionMeasures: dataGenerator.randomYesNo(),
         forcedLaborAndSlaveryPreventionEmploymentContracts: dataGenerator.randomYesNo(),
         forcedLaborAndSlaveryPreventionIdentityDocuments: dataGenerator.randomYesNo(),
@@ -326,15 +222,15 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         oshPolicyTrainingAddressed: dataGenerator.randomYesNo(),
         oshPolicyTraining: dataGenerator.randomYesNo(),
         oshManagementSystem: dataGenerator.randomYesNo(),
-        oshManagementSystemInternationalCertification: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        oshManagementSystemNationalCertification: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        oshManagementSystemInternationalCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        oshManagementSystemNationalCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
         under10WorkplaceAccidents: dataGenerator.randomYesNo(),
         oshTraining: dataGenerator.randomYesNo(),
-        healthAndSafetyPolicy: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        healthAndSafetyPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
       disregardForFreedomOfAssociation: {
         freedomOfAssociation: dataGenerator.randomYesNo(),
-        employeeRepresentation: dataGenerator.valueOrUndefined(randomPercentageValue()),
+        employeeRepresentation: dataGenerator.valueOrUndefined(generatePercentageValue()),
         discriminationForTradeUnionMembers: dataGenerator.randomYesNo(),
         freedomOfOperationForTradeUnion: dataGenerator.randomYesNo(),
         freedomOfAssociationTraining: dataGenerator.randomYesNo(),
@@ -345,8 +241,8 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         diversityAndInclusionRole: dataGenerator.randomYesNo(),
         preventionOfMistreatments: dataGenerator.randomYesNo(),
         equalOpportunitiesOfficer: dataGenerator.randomYesNo(),
-        fairAndEthicalRecruitmentPolicy: dataGenerator.randomBaseDataPoint(randomYesNo()),
-        equalOpportunitiesAndNonDiscriminationPolicy: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        fairAndEthicalRecruitmentPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        equalOpportunitiesAndNonDiscriminationPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
       contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption: {
         harmfulSoilImpact: dataGenerator.randomYesNo(),
@@ -389,7 +285,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
     environmental: {
       useOfMercuryMercuryWasteMinamataConvention: {
         mercuryAndMercuryWasteHandling: dataGenerator.randomYesNo(),
-        mercuryAndMercuryWasteHandlingPolicy: dataGenerator.randomBaseDataPoint(randomYesNo()),
+        mercuryAndMercuryWasteHandlingPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         mercuryAddedProductsHandling: dataGenerator.randomYesNo(),
         mercuryAddedProductsHandlingRiskOfExposure: dataGenerator.randomYesNo(),
         mercuryAddedProductsHandlingRiskOfDisposal: dataGenerator.randomYesNo(),
@@ -414,4 +310,68 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
       },
     },
   };
+}
+
+class P2pGenerator extends Generator {
+  /**
+   * Generates a random product
+   * @returns a random product
+   */
+  generateProduct(): LksgProduct {
+    return {
+      name: faker.commerce.productName(),
+      productionSteps: this.randomArray(() => `${faker.word.verb()} ${faker.commerce.productMaterial()}`),
+      relatedCorporateSupplyChain: this.valueOrUndefined(faker.lorem.sentences()),
+    };
+  }
+
+  /**
+   * Generates a random procurement category
+   * @returns random procurement category
+   */
+  generateProcurementCategory(): LksgProcurementCategory {
+    const numberOfSuppliersPerCountryCodeAsMap = new Map<string, number>(
+      generateArray(() => [generateIso2CountryCode(), this.valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!]),
+    );
+    return {
+      procuredProductTypesAndServicesNaceCodes: generateListOfNaceCodes(1),
+      numberOfSuppliersPerCountryCode: this.valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
+      percentageOfTotalProcurement: this.randomPercentageValue(),
+    };
+  }
+
+  /**
+   * Generates a random map of procurement categories
+   * @returns random map of procurement categories
+   */
+  generateProcurementCategories(): { [key: string]: LksgProcurementCategory } {
+    const procurementCategories = Object.values(ProcurementCategoryType);
+    const keys = [] as ProcurementCategoryType[];
+    procurementCategories.forEach((category) => {
+      if (faker.datatype.boolean()) {
+        keys.push(category);
+      }
+    });
+    return Object.fromEntries(
+      new Map<string, LksgProcurementCategory>(
+        keys.map((procurementCategoryType) => [procurementCategoryType as string, this.generateProcurementCategory()]),
+      ),
+    );
+  }
+
+  /**
+   * Randomly returns <10%, 10-25%, 25-50% or >50%
+   * @returns one of the four percentage intervals as string
+   */
+  randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers | undefined {
+    return this.valueOrUndefined(faker.helpers.arrayElement(Object.values(ShareOfTemporaryWorkers)));
+  }
+
+  /**
+   * Randomly returns National, International or Both
+   * @returns one of the options as string
+   */
+  randomNationalOrInternationalMarket(): NationalOrInternationalMarket | undefined {
+    return this.valueOrUndefined(faker.helpers.arrayElement(Object.values(NationalOrInternationalMarket)));
+  }
 }

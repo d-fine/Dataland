@@ -14,10 +14,10 @@ import {
 } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { faker } from "@faker-js/faker";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
+import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 
 /**
  * Generates a set number of P2P fixtures
@@ -93,7 +93,7 @@ class P2pGenerator extends Generator {
   getSectorGeneral(): P2pGeneral {
     return {
       general: {
-        dataDate: randomFutureDate(),
+        dataDate: generateFutureDate(),
         sectors: this.sectors,
       },
       governance: {
@@ -159,7 +159,7 @@ class P2pGenerator extends Generator {
       },
       technologyValueCreation: {
         driveMix: this.randomPercentageValue(),
-        icAndHybridEnginePhaseOutDate: this.valueOrUndefined(randomFutureDate()),
+        icAndHybridEnginePhaseOutDate: this.valueOrUndefined(generateFutureDate()),
         futureValueCreationStrategy: this.randomYesNo(),
       },
       materials: {
@@ -244,7 +244,7 @@ class P2pGenerator extends Generator {
     const data: P2pFreightTransportByRoad = {
       technology: {
         driveMix: this.randomPercentageValue(),
-        icePhaseOut: this.valueOrUndefined(randomFutureDate()),
+        icePhaseOut: this.valueOrUndefined(generateFutureDate()),
       },
       energy: {
         fuelMix: this.randomPercentageValue(),
@@ -262,8 +262,8 @@ class P2pGenerator extends Generator {
       technology: {
         electricityMixEmissions: this.randomNumber(),
         shareOfRenewableElectricity: this.randomPercentageValue(),
-        naturalGasPhaseOut: this.valueOrUndefined(randomFutureDate()),
-        coalPhaseOut: this.valueOrUndefined(randomFutureDate()),
+        naturalGasPhaseOut: this.valueOrUndefined(generateFutureDate()),
+        coalPhaseOut: this.valueOrUndefined(generateFutureDate()),
         storageCapacityExpansion: this.randomPercentageValue(),
       },
     };
@@ -285,7 +285,7 @@ class P2pGenerator extends Generator {
       },
       animalFeed: {
         ownFeedPercentage: this.randomPercentageValue(),
-        externalFeedCertification: this.randomBaseDataPoint(randomYesNo()),
+        externalFeedCertification: this.randomBaseDataPoint(generateYesNo()),
         originOfExternalFeed: faker.company.buzzPhrase(),
         excessNitrogen: this.randomNumber(),
         cropRotation: this.randomNumber(),

@@ -10,7 +10,7 @@ const minEuro = 50000;
  * @param max the maximum allowed value (inclusive)
  * @returns a random number in [min, max]
  */
-export function randomEuroValue(min: number = minEuro, max: number = maxEuro): number {
+export function generateEuroValue(min: number = minEuro, max: number = maxEuro): number {
   return faker.number.float({ min: min, max: max });
 }
 
@@ -19,7 +19,7 @@ export function randomEuroValue(min: number = minEuro, max: number = maxEuro): n
  * @param max the maximum allowed value (inclusive)
  * @returns a random number in [0, max]
  */
-export function randomNumber(max: number): number {
+export function generateNumber(max: number): number {
   return faker.number.int(max);
 }
 
@@ -27,7 +27,7 @@ export function randomNumber(max: number): number {
  * Generates a random decimal value between 0 and 1
  * @returns a random float between 0 and 1
  */
-export function randomPercentageValue(): number {
+export function generatePercentageValue(): number {
   return faker.number.float({
     min: 0,
     max: 1,

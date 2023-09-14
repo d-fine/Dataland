@@ -35,6 +35,6 @@ export function getRandomHeatSource(): EnergySourceForHeatingAndHotWater {
  * Picks a random natural hazard
  * @returns a random natural hazard
  */
-export function getRandomSlectionOfNaturalHazards(): NaturalHazard[] {
+export function getRandomSelectionOfNaturalHazards(): NaturalHazard[] {
   return getRandomNumberOfDistinctElementsFromArray(Object.values(NaturalHazard));
 }

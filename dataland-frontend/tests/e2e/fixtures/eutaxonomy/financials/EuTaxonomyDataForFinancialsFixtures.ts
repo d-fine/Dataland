@@ -9,7 +9,7 @@ import {
 } from "@clients/backend";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 
 /**
  * Generates a single eutaxonomy-financials fixture
@@ -61,7 +61,7 @@ export class EuFinancialsGenerator extends Generator {
    */
   generateInsuranceKpis(): InsuranceKpis {
     return {
-      taxonomyEligibleNonLifeInsuranceActivities: this.randomDataPoint(randomPercentageValue()),
+      taxonomyEligibleNonLifeInsuranceActivities: this.randomDataPoint(generatePercentageValue()),
     };
   }
 
@@ -97,7 +97,7 @@ export class EuFinancialsGenerator extends Generator {
    */
   generateInvestmentFirmKpis(): InvestmentFirmKpis {
     return {
-      greenAssetRatio: this.randomDataPoint(randomPercentageValue()),
+      greenAssetRatio: this.randomDataPoint(generatePercentageValue()),
     };
   }
   /**
@@ -106,11 +106,11 @@ export class EuFinancialsGenerator extends Generator {
    */
   generateEligibilityKpis(): EligibilityKpis {
     return {
-      banksAndIssuers: this.randomDataPoint(randomPercentageValue()),
-      derivatives: this.randomDataPoint(randomPercentageValue()),
-      investmentNonNfrd: this.randomDataPoint(randomPercentageValue()),
-      taxonomyEligibleActivity: this.randomDataPoint(randomPercentageValue()),
-      taxonomyNonEligibleActivity: this.randomDataPoint(randomPercentageValue()),
+      banksAndIssuers: this.randomDataPoint(generatePercentageValue()),
+      derivatives: this.randomDataPoint(generatePercentageValue()),
+      investmentNonNfrd: this.randomDataPoint(generatePercentageValue()),
+      taxonomyEligibleActivity: this.randomDataPoint(generatePercentageValue()),
+      taxonomyNonEligibleActivity: this.randomDataPoint(generatePercentageValue()),
     };
   }
 }

@@ -1,6 +1,8 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type LksgData } from "@clients/backend";
-import { generateLksgFixture, generateOneLksgFixtureWithManyNulls, generateProductionSite } from "./LksgDataFixtures";
+import { generateLksgFixture, generateProductionSite } from "./LksgDataFixtures";
+import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
@@ -80,4 +82,46 @@ function manipulateFixtureForAllFields(fixture: FixtureData<LksgData>): FixtureD
 function manipulateFixtureForLksgDatasetWithLotsOfNulls(fixture: FixtureData<LksgData>): FixtureData<LksgData> {
   fixture.companyInformation.companyName = "lksg-a-lot-of-nulls";
   return fixture;
+}
+
+/**
+ * Generates a Lksg fixture with a dataset with many null values for categories, subcategories and field values
+ * @returns the fixture
+ */
+export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
+  return generateFixtureDataset<LksgData>(
+    () => generateOneLksgDatasetWithManyNulls(),
+    1,
+    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || generateReportingPeriod(),
+  )[0];
+}
+
+/**
+ * Generates an LKSG dataset with the value null for some categories, subcategories and field values.
+ * Datasets that were uploaded via the Dataland API can look like this in production.
+ * @returns the dataset
+ */
+export function generateOneLksgDatasetWithManyNulls(): LksgData {
+  return {
+    general: {
+      masterData: {
+        dataDate: "1999-12-24",
+        headOfficeInGermany: null!,
+        groupOfCompanies: null!,
+        groupOfCompaniesName: null!,
+        industry: null!,
+        numberOfEmployees: null!,
+        seasonalOrMigrantWorkers: null!,
+        shareOfTemporaryWorkers: null!,
+        totalRevenueCurrency: null!,
+        annualTotalRevenue: null!,
+        fixedAndWorkingCapital: null!,
+      },
+      productionSpecific: null!,
+      productionSpecificOwnOperations: null!,
+    },
+    governance: null!,
+    social: null!,
+    environmental: null!,
+  };
 }
