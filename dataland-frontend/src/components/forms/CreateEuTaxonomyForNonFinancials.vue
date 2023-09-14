@@ -277,45 +277,55 @@ export default defineComponent({
       this.companyAssociatedEuTaxonomyDataForNonFinancials = objectDropNull(
         euTaxonomyForNonFinancialsResponseData as ObjectType,
       ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
-
+      this.companyAssociatedEuTaxonomyDataForNonFinancials = this.convertPercentageFieldsViaFactor(100);
       this.waitingForData = false;
     },
 
     /**
      * Iteratively go through a given object and transform all fields whose names include "InPercent" to a decimal
      * @param object the object to transform
+     * @param factor the factor by which the numbers shall be transformed
      * @returns the modified object
      */
-    transformPercentagesToDecimalsForObject(object: Record<string, number | object>): Record<string, number | object> {
+    multiplyPercentageFieldsOfObjectByFactor(
+      object: Record<string, number | object>,
+      factor: number,
+    ): Record<string, number | object> {
       const modifiedObject = object;
       for (const property in modifiedObject) {
         if (property.includes("InPercent")) {
-          modifiedObject[property] = (modifiedObject[property] as number) / 100;
+          modifiedObject[property] = factor * (modifiedObject[property] as number);
         } else if (typeof modifiedObject[property] === "object") {
-          this.transformPercentagesToDecimalsForObject(modifiedObject[property] as Record<string, number | object>);
+          this.multiplyPercentageFieldsOfObjectByFactor(
+            modifiedObject[property] as Record<string, number | object>,
+            factor,
+          );
         }
       }
       return modifiedObject;
     },
 
     /**
-     * Converts the entered percentage values from 0-100 to decimals from 0-1 (can be safely removed in the consistent
+     * Converts the entered percentage values using a specified factor (can be safely removed in the consistent
      * percentage handling story)
-     * @param companyAssociatedDataEuTaxonomyDataForNonFinancials the full dataset to transform
+     * @param factor the factor by which the numbers shall be transformed
      * @returns The transformed dataset
      */
-    convertPercentagesToDecimals(
-      companyAssociatedDataEuTaxonomyDataForNonFinancials: CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-    ): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
+    convertPercentageFieldsViaFactor(factor: number): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
+      // JSON.parse/stringify used to clone the formInputsModel in order to avoid infinite loop on dev servers
+      const clonedCompanyAssociatedEuTaxonomyDataForNonFinancials = JSON.parse(
+        JSON.stringify(this.companyAssociatedEuTaxonomyDataForNonFinancials),
+      ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
       const euTaxonomyDataForNonFinancials: Record<string, object> =
-        companyAssociatedDataEuTaxonomyDataForNonFinancials.data as Record<string, object>;
+        clonedCompanyAssociatedEuTaxonomyDataForNonFinancials.data as Record<string, object>;
       for (const sectionName in euTaxonomyDataForNonFinancials) {
-        euTaxonomyDataForNonFinancials[sectionName] = this.transformPercentagesToDecimalsForObject(
+        euTaxonomyDataForNonFinancials[sectionName] = this.multiplyPercentageFieldsOfObjectByFactor(
           euTaxonomyDataForNonFinancials[sectionName] as Record<string, number | object>,
+          factor,
         );
       }
-      companyAssociatedDataEuTaxonomyDataForNonFinancials.data = euTaxonomyDataForNonFinancials;
-      return companyAssociatedDataEuTaxonomyDataForNonFinancials;
+      clonedCompanyAssociatedEuTaxonomyDataForNonFinancials.data = euTaxonomyDataForNonFinancials;
+      return clonedCompanyAssociatedEuTaxonomyDataForNonFinancials;
     },
 
     /**
@@ -336,13 +346,7 @@ export default defineComponent({
         const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        // JSON.parse/stringify used to clone the formInputsModel in order to avoid infinite loop on dev servers
-        const clonedCompanyAssociatedEuTaxonomyDataForNonFinancials = JSON.parse(
-          JSON.stringify(this.companyAssociatedEuTaxonomyDataForNonFinancials),
-        ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
-        const companyAssociatedEuTaxonomyDataForNonFinancialsToSend = this.convertPercentagesToDecimals(
-          clonedCompanyAssociatedEuTaxonomyDataForNonFinancials,
-        );
+        const companyAssociatedEuTaxonomyDataForNonFinancialsToSend = this.convertPercentageFieldsViaFactor(0.01);
         await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
           companyAssociatedEuTaxonomyDataForNonFinancialsToSend,
         );
