@@ -73,9 +73,9 @@ Update versions in the following dockerfiles
 - [x] `./dataland-qa-service/Dockerfile`
 - [x] `./dataland-qa-service/DockerfileBase`
 - [x] `./dataland-qa-service/DockerfileTest`
-- [ ] `./dataland-rabbitmq/Dockerfile`
-- [ ] `./dataland-inbound-admin-proxy/Dockerfile`
-- [ ] `./dataland-inbound-proxy/Dockerfile`
+- [x] `./dataland-rabbitmq/Dockerfile`
+- [x] `./dataland-inbound-admin-proxy/Dockerfile`
+- [x] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
