@@ -2,51 +2,49 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "North Lenoraboro",
-			"headquartersPostalCode": "97600-2184",
-			"sector": "functionalities",
+			"headquarters": "South Ronburgh",
+			"headquartersPostalCode": "68059-9755",
+			"sector": "methodologies",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [],
+				"Isin": [
+					"QMIEDD71yAia"
+				],
 				"PermId": [],
 				"Ticker": [
-					"t4RLfhc"
+					"yDK853M"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"FKJa8NHv5"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"FIuX6rkFVUbGlpe"
+					"eEHneguNPfErNNS"
 				]
 			},
-			"countryCode": "TK",
+			"countryCode": "BS",
 			"companyAlternativeNames": [
-				"Romaguera Inc",
-				"Treutel - Daugherty",
-				"Weber, Lindgren and Lowe",
-				"Witting - Koss"
+				"Barton, Smith and Gutmann",
+				"Champlin, McKenzie and Kreiger",
+				"Hahn Group",
+				"Hegmann - Bradtke"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://ancient-bump.com",
+			"website": "https://disastrous-savior.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
-						"C",
-						"K"
+						"I"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Genoveva Estate 70383",
-						"city": "Schillershire",
-						"state": "South Carolina",
-						"country": "CY"
+						"streetAndHouseNumber": "Marquis Spring 4079",
+						"postalCode": "56388-0077",
+						"city": "Abilene",
+						"state": "Kentucky",
+						"country": "HN"
 					},
-					"numberOfEmployees": 8488,
-					"fiscalYearStart": "2024-03-13"
+					"numberOfEmployees": 765,
+					"fiscalYearStart": "2024-02-27"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -58,37 +56,45 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Stanton and Sons",
 							"addressOfProductionSite": {
-								"postalCode": "04637",
-								"city": "North Christy",
-								"country": "GH"
+								"streetAndHouseNumber": "Hessel Shoal 725",
+								"postalCode": "90184-3073",
+								"city": "New Spencer",
+								"state": "Montana",
+								"country": "JE"
 							},
-							"percentageOfTotalRevenue": 0.3172
+							"percentageOfTotalRevenue": 0.4088
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Damaris Fields 174",
+								"postalCode": "69915-7846",
+								"city": "Collierview",
+								"state": "Oregon",
+								"country": "DJ"
+							},
+							"percentageOfTotalRevenue": 0.8876
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Dorian Rapid 7867",
+								"city": "Fort Danehaven",
+								"state": "Iowa",
+								"country": "ST"
+							},
+							"percentageOfTotalRevenue": 0.8428
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Ergonomic Rubber Tuna",
-							"percentageOfTotalRevenue": 0.1993
+							"name": "Rustic Bronze Fish",
+							"percentageOfTotalRevenue": 0.2016
 						},
 						{
-							"name": "Gorgeous Wooden Bacon",
-							"percentageOfTotalRevenue": 0.8275
-						},
-						{
-							"name": "Rustic Steel Bacon",
-							"percentageOfTotalRevenue": 0.9678
-						},
-						{
-							"name": "Handcrafted Wooden Chicken",
-							"percentageOfTotalRevenue": 0.1764
-						},
-						{
-							"name": "Unbranded Fresh Shirt",
-							"percentageOfTotalRevenue": 0.038
+							"name": "Refined Soft Salad",
+							"percentageOfTotalRevenue": 0.8026
 						}
 					]
 				}
@@ -98,19 +104,21 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1372,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 619,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionHeatingAndHotWater": 968,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 24977743,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 25538902,
 					"naturalHazardsCovered": [
-						"Snow"
+						"Snow",
+						"Flooding",
+						"Avalanche",
+						"Wind",
+						"Hail"
 					]
 				}
 			}
@@ -120,38 +128,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Lewfurt",
-			"headquartersPostalCode": "94006-8690",
-			"sector": "web services",
+			"headquarters": "York",
+			"headquartersPostalCode": "71746-8666",
+			"sector": "technologies",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [
-					"3xViGFWhVyzM"
-				],
-				"PermId": [
-					"5wNtF1bfnZ"
-				],
+				"Isin": [],
+				"PermId": [],
 				"Ticker": [
-					"Gww3FoS"
+					"R4NJSCJ"
 				],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"wDb2Affo3wzLAUV"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ES",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://ringed-octave.biz/",
+			"countryCode": "UG",
+			"companyAlternativeNames": [
+				"Dickinson - Kutch",
+				"Marks Inc",
+				"Mraz LLC"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://leading-footrest.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"L",
-						"M"
+						"A",
+						"F",
+						"H",
+						"J"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -160,75 +168,40 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8748,
-					"fiscalYearStart": "2024-07-14"
+					"numberOfEmployees": 1282,
+					"fiscalYearStart": "2023-09-29"
 				},
 				"companyFinancials": {
-					"revenueInEur": 10736854,
-					"operatingCostInEur": 52939060,
-					"capitalAssetsInEur": 60264396
+					"operatingCostInEur": 62340984,
+					"capitalAssetsInEur": 24599072
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Windler - Muller",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kirlin Alley 90986",
-								"postalCode": "63799",
-								"city": "Lake Waino",
-								"state": "Washington",
-								"country": "NF"
-							}
-						},
-						{
-							"nameOfProductionSite": "Lehner, Marvin and Denesik",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "April Views 48873",
-								"postalCode": "64074-5814",
-								"city": "Lake Clareshire",
-								"state": "Rhode Island",
-								"country": "KG"
-							},
-							"percentageOfTotalRevenue": 0.6677
-						},
-						{
-							"nameOfProductionSite": "Wisoky, Johns and Dickinson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jacobs Fall 3400",
-								"postalCode": "31794",
-								"city": "East Hughside",
-								"state": "Alaska",
-								"country": "LR"
-							},
-							"percentageOfTotalRevenue": 0.179
-						}
-					]
-				},
+				"sites": {},
 				"products": {
 					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1774,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMwh": 563,
+					"energyConsumptionHeatingAndHotWater": 549,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 43287676,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 41047027,
 					"naturalHazardsCovered": [
 						"EarthQuake",
-						"Avalanche",
 						"Hail",
-						"Wind"
+						"Flooding",
+						"Wind",
+						"Snow"
 					]
 				}
 			}
@@ -238,73 +211,137 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Macejkovicland",
-			"headquartersPostalCode": "03689",
-			"sector": "paradigms",
+			"headquarters": "Uniqueboro",
+			"headquartersPostalCode": "85340-3751",
+			"sector": "experiences",
 			"identifiers": {
-				"Lei": [
-					"7156ZEIlmGfCWXJcC5Y1"
-				],
+				"Lei": [],
 				"Isin": [
-					"E5zjQOkoyXKO",
-					"mXFZMRyYrzDr"
+					"ANwiBEtnBLTl"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"MPXvDD5uk"
+				"Ticker": [
+					"qFzI9PD"
 				],
-				"VatNumber": [],
+				"Duns": [],
+				"VatNumber": [
+					"YHtqi5Qog"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GR",
+			"countryCode": "HM",
 			"companyAlternativeNames": [
-				"Bogisich LLC",
-				"Kihn, Rogahn and Schoen",
-				"O'Connell, Terry and Nitzsche"
+				"Goodwin Inc"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://magnificent-refectory.net",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://loving-birdhouse.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"E"
+						"A"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 7612,
-					"fiscalYearStart": "2024-03-09"
+					"numberOfEmployees": 9476,
+					"fiscalYearStart": "2023-09-16"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 35645668,
-					"capitalAssetsInEur": 5640614
+					"revenueInEur": 8877361,
+					"operatingCostInEur": 66881306,
+					"capitalAssetsInEur": 35360735
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Fritsch, Kulas and Schultz",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Lueilwitz Cove 45513",
+								"postalCode": "60431",
+								"city": "Halstead",
+								"country": "LR"
+							},
+							"percentageOfTotalRevenue": 0.5659
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Thiel Ports 2814",
+								"city": "Lake Santoshaven",
+								"state": "Mississippi",
+								"country": "FM"
+							},
+							"percentageOfTotalRevenue": 0.8782
+						},
+						{
+							"nameOfProductionSite": "Ryan Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Hegmann Radial 98494",
+								"postalCode": "32387-9770",
+								"city": "Weymouth Town",
+								"state": "Iowa",
+								"country": "TH"
+							},
+							"percentageOfTotalRevenue": 0.4301
+						},
+						{
+							"nameOfProductionSite": "Hackett Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Nona Orchard 676",
+								"city": "North Rayfurt",
+								"state": "Idaho",
+								"country": "AE"
+							},
+							"percentageOfTotalRevenue": 0.4796
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Yundt Knoll 683",
+								"postalCode": "54580-6522",
+								"city": "Millieland",
+								"state": "Alabama",
+								"country": "AL"
+							}
+						}
+					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Bespoke Fresh Shirt",
+							"percentageOfTotalRevenue": 0.5638
+						},
+						{
+							"name": "Oriental Concrete Chips",
+							"percentageOfTotalRevenue": 0.8716
+						},
+						{
+							"name": "Tasty Plastic Salad"
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1683,
-					"energyConsumptionHeatingAndHotWater": 53,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas"
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 264,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 6512697,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 16920719,
 					"naturalHazardsCovered": [
+						"Hail",
 						"Avalanche"
 					]
 				}
