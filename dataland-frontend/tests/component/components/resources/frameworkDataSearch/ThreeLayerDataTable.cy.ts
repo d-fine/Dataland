@@ -24,10 +24,10 @@ describe("Component test for ThreeLayerDataTable", () => {
     cy.fixture("EuTaxonomyForNonFinancialsMocks.json").then(
       (mockedBackendResponses: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]) => {
         const singleMockDataAndMetaInfo = new DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel(
-          mockedBackendResponses[0]
+          mockedBackendResponses[0],
         );
         mockedDataForTest = [singleMockDataAndMetaInfo];
-      }
+      },
     );
   });
 
@@ -155,10 +155,10 @@ describe("Component test for ThreeLayerDataTable", () => {
     const revenueFirstAlignedActivityName = assertDefined(revenueFirstAlignedActivity?.activityName);
     const revenueFirstAlignedActivityRelativeShare = roundNumber(
       assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent) * 100,
-      2
+      2,
     );
     const revenueFirstAlignedActivityAbsoluteShare = formatAmountWithCurrency(
-      assertDefined(revenueFirstAlignedActivity?.share?.absoluteShare)
+      assertDefined(revenueFirstAlignedActivity?.share?.absoluteShare),
     );
 
     cy.mountWithDialog(
@@ -171,7 +171,7 @@ describe("Component test for ThreeLayerDataTable", () => {
         dataAndMetaInfo: mockedDataForTest,
         modalColumnHeaders: euTaxonomyForNonFinancialsModalColumnHeaders,
         sortBySubcategoryKey: false,
-      }
+      },
     ).then(() => {
       expandViewPageAndOpenModal("Revenue", "alignedShare");
       validateExistenceOfCommonColumnHeaders();
@@ -199,10 +199,10 @@ describe("Component test for ThreeLayerDataTable", () => {
     const capexFirstNonAlignedActivityNaceCodes: string = assertDefined(capexFirstNonAlignedActivity.naceCodes)[0];
     const capexFirstNonAlignedActivityRelativeShare = roundNumber(
       assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent) * 100,
-      2
+      2,
     );
     const capexFirstNonAlignedActivityAbsoluteShare = formatAmountWithCurrency(
-      assertDefined(capexFirstNonAlignedActivity.share?.absoluteShare)
+      assertDefined(capexFirstNonAlignedActivity.share?.absoluteShare),
     );
 
     cy.mountWithDialog(
@@ -215,12 +215,12 @@ describe("Component test for ThreeLayerDataTable", () => {
         dataAndMetaInfo: mockedDataForTest,
         modalColumnHeaders: euTaxonomyForNonFinancialsModalColumnHeaders,
         sortBySubcategoryKey: false,
-      }
+      },
     ).then(() => {
       expandViewPageAndOpenModal("CapEx", "nonAlignedShare");
       validateExistenceOfCommonColumnHeaders();
       cy.get("table").find(
-        `tr:contains("Construction, extension and operation of waste water collection and treatment")`
+        `tr:contains("Construction, extension and operation of waste water collection and treatment")`,
       );
       cy.get("table").find(`tr:contains("${capexNonAlignedShareInPercent}")`);
       cy.get("table").find(`tr:contains("${capexFirstNonAlignedActivityNaceCodes}")`);
@@ -268,7 +268,7 @@ describe("Component test for ThreeLayerDataTable", () => {
 
     const expectedAmmoniaDecarbonisationEnergyMix = roundNumber(
       assertDefined(p2pData.ammonia?.decarbonisation?.energyMix) * 100,
-      2
+      2,
     );
     const expectedCementEnergyEnergyMix = roundNumber(assertDefined(p2pData.cement?.energy?.energyMix) * 100, 2);
 
