@@ -235,7 +235,6 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.frameworkDataSearchBar?.$refs.autocomplete.hide();
       const windowScrollY = window.scrollY;
-      console.log(windowScrollY);
       if (this.scrollEmittedByToolbar) {
         this.scrollEmittedByToolbar = false;
       } else {
