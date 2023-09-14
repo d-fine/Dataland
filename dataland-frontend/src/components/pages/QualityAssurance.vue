@@ -17,7 +17,7 @@
                 id="qa-data-result"
                 :rowHover="true"
                 data-test="qa-review-section"
-                @row-click="loadDatasetAndOpenModal($event)"
+                @row-click="goToQaViewPage($event)"
                 paginator
                 paginator-position="top"
                 :rows="datasetsPerPage"
@@ -250,32 +250,35 @@ export default defineComponent({
       }
     },
     /**
-     * Opens a modal to display a table with the provided list of production sites
-     * @param event the event which triggers the method
+     * Navigates to the view framework data page on a click on the row of the company
+     * @param event the row click event
+     * @returns the promise of the router push action
      */
-    async loadDatasetAndOpenModal(event: DataTableRowClickEvent) {
+    goToQaViewPage(event: DataTableRowClickEvent) {
       const qaDataObject = event.data as QaDataObject;
-      await this.getDataSet(qaDataObject);
-      this.$dialog.open(QADatasetModal, {
-        props: {
-          header:
-            "Reviewing " +
-            qaDataObject.metaInformation.dataType +
-            " data for " +
-            qaDataObject.companyInformation.companyName +
-            " for the reporting period " +
-            qaDataObject.metaInformation.reportingPeriod,
-          modal: true,
-          dismissableMask: true,
-        },
-        data: {
-          dataSetToReview: this.dataSet,
-          dataId: this.dataId,
-        },
-        onClose: () => {
-          this.getQaDataForCurrentPage().catch((error) => console.log(error));
-        },
-      });
+      const qaUri = `/companies/${qaDataObject.metaInformation.companyId}/frameworks/${qaDataObject.metaInformation.dataType}/${qaDataObject.dataId}`;
+      return this.$router.push(qaUri);
+
+      // this.$dialog.open(QADatasetModal, {
+      //   props: {
+      //     header:
+      //       "Reviewing " +
+      //       qaDataObject.metaInformation.dataType +
+      //       " data for " +
+      //       qaDataObject.companyInformation.companyName +
+      //       " for the reporting period " +
+      //       qaDataObject.metaInformation.reportingPeriod,
+      //     modal: true,
+      //     dismissableMask: true,
+      //   },
+      //   data: {
+      //     dataSetToReview: this.dataSet,
+      //     dataId: this.dataId,
+      //   },
+      //   onClose: () => {
+      //     this.getQaDataForCurrentPage().catch((error) => console.log(error));
+      //   },
+      // });
     },
     /**
      * Updates the data for the current page

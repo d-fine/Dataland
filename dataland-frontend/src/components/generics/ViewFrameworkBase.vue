@@ -36,27 +36,32 @@
             />
             <slot name="reportingPeriodDropdown"></slot>
           </div>
-          <div v-if="hasUserUploaderRights" class="flex align-content-end align-items-center">
-            <PrimeButton
-              v-if="canEdit"
-              class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
-              aria-label="EDIT DATA"
-              @click="editDataset"
-              data-test="editDatasetButton"
-            >
-              <span class="px-2">EDIT DATA</span>
-              <span
-                v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
-                class="material-icons-outlined"
-                >arrow_drop_down</span
+          <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
+            <template v-if="hasUserReviewerRights">
+              <div v-if="canReview">REVIEWER</div>
+            </template>
+            <template v-if="hasUserUploaderRights">
+              <PrimeButton
+                v-if="canEdit"
+                class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
+                aria-label="EDIT DATA"
+                @click="editDataset"
+                data-test="editDatasetButton"
               >
-            </PrimeButton>
-            <router-link :to="addNewDatasetLinkTarget" class="no-underline" data-test="gotoNewDatasetButton">
-              <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
-                <span class="material-icons-outlined px-2">queue</span>
-                <span class="px-2">NEW DATASET</span>
+                <span class="px-2">EDIT DATA</span>
+                <span
+                  v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
+                  class="material-icons-outlined"
+                  >arrow_drop_down</span
+                >
               </PrimeButton>
-            </router-link>
+              <router-link :to="addNewDatasetLinkTarget" class="no-underline" data-test="gotoNewDatasetButton">
+                <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
+                  <span class="material-icons-outlined px-2">queue</span>
+                  <span class="px-2">NEW DATASET</span>
+                </PrimeButton>
+              </router-link>
+            </template>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
@@ -88,7 +93,7 @@ import { defineComponent, inject, ref } from "vue";
 
 import TheFooter from "@/components/general/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasAllRoles } from "@/utils/KeycloakUtils";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
 
@@ -143,10 +148,14 @@ export default defineComponent({
       },
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccesfully: true,
-      hasUserUploaderRights: undefined,
+      hasUserUploaderRights: false,
+      hasUserReviewerRights: false,
     };
   },
   computed: {
+    canReview() {
+      return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
+    },
     canEdit() {
       return (
         ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum) &&
@@ -162,11 +171,14 @@ export default defineComponent({
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        this.hasUserUploaderRights = hasUserUploaderRights;
+
+    checkIfUserHasAllRoles([KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_REVIEWER], this.getKeycloakPromise)
+      .then((userRolesMap) => {
+        this.hasUserUploaderRights = userRolesMap[KEYCLOAK_ROLE_UPLOADER];
+        this.hasUserReviewerRights = userRolesMap[KEYCLOAK_ROLE_REVIEWER];
       })
       .catch((error) => console.log(error));
+
     window.addEventListener("scroll", this.windowScrollHandler);
   },
   methods: {

@@ -51,6 +51,31 @@ export async function checkIfUserHasRole(
 }
 
 /**
+ * Derives the roles from the resolved Keycloak-promise of a logged in user
+ * and checks if all the provided roles are included.
+ * @param keycloakRoles the keycloak user roles to test for
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-promise
+ * @returns a promise, which resolves to a map of roles and their boolean value
+ */
+export async function checkIfUserHasAllRoles(
+  keycloakRoles: string[],
+  keycloakPromiseGetter?: () => Promise<Keycloak>,
+): Promise<Record<string, boolean>> {
+  const rolePresence: Record<string, boolean> = Object.fromEntries(keycloakRoles.map((role) => [role, false]));
+
+  if (keycloakPromiseGetter) {
+    const roles = await getKeycloakRolesForUser(keycloakPromiseGetter);
+    if (roles) {
+      keycloakRoles.forEach((role) => {
+        rolePresence[role] = roles.includes(role);
+      });
+    }
+  }
+
+  return rolePresence;
+}
+
+/**
  * Logs the user out and redirects her/him to the base url concatenated with the passed redirectPath.
  * @param keycloak is the keycloak adaptor used to do the logout
  * @param additionToBasePath is the addition to the base url to result in the final url that the user shall be
