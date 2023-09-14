@@ -37,13 +37,13 @@
             <slot name="reportingPeriodDropdown"></slot>
           </div>
           <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
-            <template v-if="hasUserReviewerRights">
-              <div v-if="canReview">REVIEWER</div>
+            <template v-if="canReview">
+              <QualityAssuranceButtons></QualityAssuranceButtons>
             </template>
             <template v-if="hasUserUploaderRights">
               <PrimeButton
                 v-if="canEdit"
-                class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
+                class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
                 aria-label="EDIT DATA"
                 @click="editDataset"
                 data-test="editDatasetButton"
@@ -55,7 +55,7 @@
                   >arrow_drop_down</span
                 >
               </PrimeButton>
-              <router-link :to="addNewDatasetLinkTarget" class="no-underline" data-test="gotoNewDatasetButton">
+              <router-link :to="addNewDatasetLinkTarget" class="no-underline ml-3" data-test="gotoNewDatasetButton">
                 <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
                   <span class="material-icons-outlined px-2">queue</span>
                   <span class="px-2">NEW DATASET</span>
@@ -99,6 +99,7 @@ import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
+import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -114,6 +115,7 @@ export default defineComponent({
     PrimeButton,
     OverlayPanel,
     SelectReportingPeriodDialog,
+    QualityAssuranceButtons,
   },
   emits: ["updateActiveDataMetaInfoForChosenFramework"],
   props: {
