@@ -33,7 +33,7 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
   return {
     general: {
       basicInformation: {
-        sector: generateListOfNaceCodes(),
+        sector: generateListOfNaceCodes(1),
         addressOfHeadquarters: generateAddress(dataGenerator.undefinedProbability),
         numberOfEmployees: randomNumber(10000),
         fiscalYearStart: randomFutureDate(),

@@ -2,49 +2,51 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Enosland",
-			"headquartersPostalCode": "44568",
-			"sector": "solutions",
+			"headquarters": "North Lenoraboro",
+			"headquartersPostalCode": "97600-2184",
+			"sector": "functionalities",
 			"identifiers": {
-				"Lei": [
-					"bXm1STlA52kyKUdZz4Ww"
-				],
+				"Lei": [],
 				"Isin": [],
-				"PermId": [
-					"PrLtz7ZYL7"
-				],
+				"PermId": [],
 				"Ticker": [
-					"FSa5mmF"
+					"t4RLfhc"
 				],
-				"Duns": [
-					"2JPSBVAhU"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"dqlw4WPVV"
+					"FKJa8NHv5"
 				],
 				"CompanyRegistrationNumber": [
-					"2TcSvamJgy5KosG"
+					"FIuX6rkFVUbGlpe"
 				]
 			},
-			"countryCode": "SV",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://impeccable-spaghetti.name/",
+			"countryCode": "TK",
+			"companyAlternativeNames": [
+				"Romaguera Inc",
+				"Treutel - Daugherty",
+				"Weber, Lindgren and Lowe",
+				"Witting - Koss"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://ancient-bump.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [],
+					"sector": [
+						"A",
+						"C",
+						"K"
+					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Heber Rue 19169",
-						"postalCode": "10321",
-						"city": "Nicholausbury",
-						"state": "Kentucky",
-						"country": "CX"
+						"streetAndHouseNumber": "Genoveva Estate 70383",
+						"city": "Schillershire",
+						"state": "South Carolina",
+						"country": "CY"
 					},
-					"numberOfEmployees": 782,
-					"fiscalYearStart": "2024-04-10"
+					"numberOfEmployees": 8488,
+					"fiscalYearStart": "2024-03-13"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -56,47 +58,37 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Stanton and Sons",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Dianna Parks 50738",
-								"postalCode": "99849",
-								"city": "Frisco",
-								"country": "LS"
+								"postalCode": "04637",
+								"city": "North Christy",
+								"country": "GH"
 							},
-							"percentageOfTotalRevenue": 0.7513
-						},
-						{
-							"nameOfProductionSite": "Mohr Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Gerlach Divide 86604",
-								"postalCode": "54354",
-								"city": "Port Cleora",
-								"state": "New Jersey",
-								"country": "BM"
-							},
-							"percentageOfTotalRevenue": 0.947
+							"percentageOfTotalRevenue": 0.3172
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Licensed Rubber Pizza",
-							"percentageOfTotalRevenue": 0.7657
+							"name": "Ergonomic Rubber Tuna",
+							"percentageOfTotalRevenue": 0.1993
 						},
 						{
-							"name": "Fantastic Frozen Car",
-							"percentageOfTotalRevenue": 0.5519
+							"name": "Gorgeous Wooden Bacon",
+							"percentageOfTotalRevenue": 0.8275
 						},
 						{
-							"name": "Generic Fresh Chair"
+							"name": "Rustic Steel Bacon",
+							"percentageOfTotalRevenue": 0.9678
 						},
 						{
-							"name": "Handmade Wooden Table",
-							"percentageOfTotalRevenue": 0.8526
+							"name": "Handcrafted Wooden Chicken",
+							"percentageOfTotalRevenue": 0.1764
 						},
 						{
-							"name": "Fantastic Steel Salad",
-							"percentageOfTotalRevenue": 0.0376
+							"name": "Unbranded Fresh Shirt",
+							"percentageOfTotalRevenue": 0.038
 						}
 					]
 				}
@@ -106,22 +98,18 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
+					"powerConsumptionInMwh": 1372,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 569,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionHeatingAndHotWater": 619,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 23395017,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 24977743,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Wind",
-						"EarthQuake",
-						"Hail",
-						"Flooding",
 						"Snow"
 					]
 				}
@@ -132,35 +120,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "South Hilton",
-			"sector": "initiatives",
+			"headquarters": "Lewfurt",
+			"headquartersPostalCode": "94006-8690",
+			"sector": "web services",
 			"identifiers": {
-				"Lei": [
-					"30chXqpHKqrI4liwDQxC"
-				],
+				"Lei": [],
 				"Isin": [
-					"dAj1TYSnUNLy"
+					"3xViGFWhVyzM"
 				],
 				"PermId": [
-					"4WVM2UGUtV"
+					"5wNtF1bfnZ"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"Gww3FoS"
+				],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"wDb2Affo3wzLAUV"
+				]
 			},
-			"countryCode": "SS",
-			"companyAlternativeNames": [
-				"Nienow, Heller and Hilpert",
-				"Schmidt, Johnson and Dickens"
-			],
-			"website": "https://minty-chick.com/",
+			"countryCode": "ES",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://ringed-octave.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [],
+					"sector": [
+						"L",
+						"M"
+					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
 						"postalCode": "12345",
@@ -168,63 +160,75 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7419,
-					"fiscalYearStart": "2024-08-26"
+					"numberOfEmployees": 8748,
+					"fiscalYearStart": "2024-07-14"
 				},
 				"companyFinancials": {
-					"revenueInEur": 27905951,
-					"operatingCostInEur": 26974602,
-					"capitalAssetsInEur": 20189787
+					"revenueInEur": 10736854,
+					"operatingCostInEur": 52939060,
+					"capitalAssetsInEur": 60264396
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Intelligent Frozen Fish",
-							"percentageOfTotalRevenue": 0.0171
+							"nameOfProductionSite": "Windler - Muller",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kirlin Alley 90986",
+								"postalCode": "63799",
+								"city": "Lake Waino",
+								"state": "Washington",
+								"country": "NF"
+							}
 						},
 						{
-							"name": "Incredible Concrete Bike",
-							"percentageOfTotalRevenue": 0.9156
+							"nameOfProductionSite": "Lehner, Marvin and Denesik",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "April Views 48873",
+								"postalCode": "64074-5814",
+								"city": "Lake Clareshire",
+								"state": "Rhode Island",
+								"country": "KG"
+							},
+							"percentageOfTotalRevenue": 0.6677
 						},
 						{
-							"name": "Rustic Metal Chicken",
-							"percentageOfTotalRevenue": 0.2725
-						},
-						{
-							"name": "Practical Wooden Pants"
-						},
-						{
-							"name": "Rustic Fresh Shoes",
-							"percentageOfTotalRevenue": 0.5095
+							"nameOfProductionSite": "Wisoky, Johns and Dickinson",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Jacobs Fall 3400",
+								"postalCode": "31794",
+								"city": "East Hughside",
+								"state": "Alaska",
+								"country": "LR"
+							},
+							"percentageOfTotalRevenue": 0.179
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 666,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 1774,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 49197827,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 43287676,
 					"naturalHazardsCovered": [
-						"Wind",
+						"EarthQuake",
 						"Avalanche",
-						"Snow",
 						"Hail",
-						"Flooding"
+						"Wind"
 					]
 				}
 			}
@@ -234,92 +238,74 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Port Germanboro",
-			"headquartersPostalCode": "82504-7570",
-			"sector": "networks",
+			"headquarters": "Macejkovicland",
+			"headquartersPostalCode": "03689",
+			"sector": "paradigms",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [],
-				"PermId": [
-					"cxFZfvJMin"
+				"Lei": [
+					"7156ZEIlmGfCWXJcC5Y1"
 				],
+				"Isin": [
+					"E5zjQOkoyXKO",
+					"mXFZMRyYrzDr"
+				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"F9chv304t"
+					"MPXvDD5uk"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"pyuXoevGAAGmQaL"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BM",
+			"countryCode": "GR",
 			"companyAlternativeNames": [
-				"Mohr LLC"
+				"Bogisich LLC",
+				"Kihn, Rogahn and Schoen",
+				"O'Connell, Terry and Nitzsche"
 			],
-			"website": "https://weird-slider.biz",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://magnificent-refectory.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"H",
-						"I",
-						"J"
+						"E"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 1679,
-					"fiscalYearStart": "2024-04-27"
+					"numberOfEmployees": 7612,
+					"fiscalYearStart": "2024-03-09"
 				},
 				"companyFinancials": {
-					"revenueInEur": 23300943,
-					"operatingCostInEur": 41409328,
-					"capitalAssetsInEur": 56387301
+					"operatingCostInEur": 35645668,
+					"capitalAssetsInEur": 5640614
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": []
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Intelligent Frozen Shoes",
-							"percentageOfTotalRevenue": 0.8667
-						},
-						{
-							"name": "Bespoke Rubber Sausages",
-							"percentageOfTotalRevenue": 0.9416
-						},
-						{
-							"name": "Handmade Bronze Shoes",
-							"percentageOfTotalRevenue": 0.4114
-						},
-						{
-							"name": "Bespoke Cotton Mouse",
-							"percentageOfTotalRevenue": 0.1203
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 1048,
-					"energyConsumptionHeatingAndHotWater": 537,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMwh": 1683,
+					"energyConsumptionHeatingAndHotWater": 53,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 6931970,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 6512697,
 					"naturalHazardsCovered": [
-						"Flooding"
+						"Avalanche"
 					]
 				}
 			}

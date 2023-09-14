@@ -1,7 +1,6 @@
 import { readFileSync } from "fs";
 import { createHash } from "crypto";
 import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { faker } from "@faker-js/faker";
 
 const possibleDocuments = ["Certification", "Policy"];
 
@@ -20,10 +19,8 @@ export function getReferencedDocumentId(): string {
  * @returns a random non-empty set of reports
  */
 export function generateReferencedDocuments(): ReferencedDocuments {
-  const availableDocuments = faker.helpers.arrayElements(possibleDocuments, { min: 1, max: possibleDocuments.length });
-
   const referencedDocuments: ReferencedDocuments = {};
-  for (const documentName of availableDocuments) {
+  for (const documentName of possibleDocuments) {
     referencedDocuments[documentName] = {
       name: documentName,
       reference: getReferencedDocumentId(),
