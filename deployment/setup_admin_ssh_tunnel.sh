@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eux
 
 source ./deployment/deployment_utils.sh

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 expected_vars=( \
   GITHUB_TOKEN \

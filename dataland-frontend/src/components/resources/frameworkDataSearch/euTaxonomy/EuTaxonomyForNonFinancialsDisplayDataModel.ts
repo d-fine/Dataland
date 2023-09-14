@@ -9,14 +9,14 @@ content from the auto-generated file in the devtools repo.
 
 export const euTaxonomyForNonFinancialsDisplayDataModel = [
   {
-    name: "basicInformation",
-    label: "Basic Information",
+    name: "general",
+    label: "General",
     color: "orange",
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: "basicInformation",
-        label: "Basic Information",
+        name: "general",
+        label: "General",
         fields: [
           {
             name: "fiscalYearDeviation",
