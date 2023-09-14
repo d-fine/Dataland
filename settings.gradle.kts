@@ -1,3 +1,4 @@
+/* ktlint-disable comment-spacing */
 import de.fayard.refreshVersions.core.StabilityLevel
 rootProject.name = "Dataland"
 

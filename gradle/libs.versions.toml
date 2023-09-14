@@ -34,7 +34,8 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.9.1
 
 [versions]
 
-kotlin = "1.9.10"
+kotlin = "1.9.0"
+##  ⬆ = "1.9.10"
 
 okhttp3 = "4.11.0"
 
@@ -46,7 +47,7 @@ junit-jupiter = "5.10.0"
 
 [libraries]
 
-detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:1.23.1"
+detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
 
 kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlin" }
 
