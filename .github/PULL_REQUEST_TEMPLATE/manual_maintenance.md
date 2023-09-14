@@ -76,7 +76,7 @@ Update versions in the following dockerfiles
 - [x] `./dataland-rabbitmq/Dockerfile`
 - [x] `./dataland-inbound-admin-proxy/Dockerfile`
 - [x] `./dataland-inbound-proxy/Dockerfile`
-- [ ] `./dataland-pgadmin/Dockerfile`
+- [x] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
