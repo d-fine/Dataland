@@ -4,6 +4,7 @@
 
   &.fixed {
     top: 72px;
+    border-bottom: 1px solid $gray-light;
 
     .d-search-filters-panel {
       padding: 0 9px 0 0px;
