@@ -4,7 +4,7 @@
     <MarginWrapper class="text-left surface-0" style="margin-right: 0">
       <BackButton />
       <FrameworkDataSearchBar
-        v-if="!viewInPreviewMode"
+        v-if="!viewInPreviewMode && !canReview"
         :companyIdIfOnViewPage="companyID"
         class="mt-2"
         ref="frameworkDataSearchBar"
@@ -19,23 +19,29 @@
       </div>
     </MarginWrapper>
     <div v-if="isDataProcessedSuccesfully">
-      <MarginWrapper class="text-left surface-0" style="margin-right: 0">
+      <MarginWrapper
+        class="text-left surface-0 dataland-toolbar"
+        style="margin-right: 0"
+        :class="[pageScrolled ? ['fixed w-100'] : '']"
+      >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
           <div class="flex">
-            <Dropdown
-              id="chooseFrameworkDropdown"
-              v-model="chosenDataTypeInDropdown"
-              :options="dataTypesInDropdown"
-              optionLabel="label"
-              optionValue="value"
-              :placeholder="humanizeString(dataType)"
-              aria-label="Choose framework"
-              class="fill-dropdown always-fill"
-              dropdownIcon="pi pi-angle-down"
-              @change="handleChangeFrameworkEvent"
-            />
-            <slot name="reportingPeriodDropdown"></slot>
-          </div>
+              <template v-if="!canReview">
+              <Dropdown
+                id="chooseFrameworkDropdown"
+                v-model="chosenDataTypeInDropdown"
+                :options="dataTypesInDropdown"
+                optionLabel="label"
+                optionValue="value"
+                :placeholder="humanizeString(dataType)"
+                aria-label="Choose framework"
+                class="fill-dropdown always-fill"
+                dropdownIcon="pi pi-angle-down"
+                @change="handleChangeFrameworkEvent"
+              />
+              <slot name="reportingPeriodDropdown"></slot>
+            </template>
+            </div>
           <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
             <template v-if="canReview">
               <QualityAssuranceButtons></QualityAssuranceButtons>
@@ -152,6 +158,9 @@ export default defineComponent({
       isDataProcessedSuccesfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
+      pageScrolled: false,
+      scrollEmittedByToolbar: false,
+      latestScrollPosition: 0,
     };
   },
   computed: {
@@ -225,6 +234,21 @@ export default defineComponent({
     handleScroll() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.frameworkDataSearchBar?.$refs.autocomplete.hide();
+      const windowScrollY = window.scrollY;
+      console.log(windowScrollY);
+      if (this.scrollEmittedByToolbar) {
+        this.scrollEmittedByToolbar = false;
+      } else {
+        if (this.latestScrollPosition > windowScrollY) {
+          //ScrollUP event
+          this.latestScrollPosition = windowScrollY;
+          this.pageScrolled = document.documentElement.scrollTop >= 195;
+        } else {
+          //ScrollDOWN event
+          this.latestScrollPosition = windowScrollY;
+          this.pageScrolled = document.documentElement.scrollTop > 195;
+        }
+      }
     },
     /**
      * Visits the framework view page for the framework which was chosen in the dropdown
