@@ -233,7 +233,7 @@ export default defineComponent({
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
         this.euTaxonomyForNonFinancialsDataModel,
-        this.companyAssociatedEuTaxonomyDataForNonFinancials.data
+        this.companyAssociatedEuTaxonomyDataForNonFinancials.data,
       );
     },
   },
@@ -264,7 +264,7 @@ export default defineComponent({
     async loadEuTaxonomyForNonFinancialsData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
       const dataResponse =
@@ -275,7 +275,7 @@ export default defineComponent({
       }
       this.referencedReportsForPrefill = euTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedEuTaxonomyDataForNonFinancials = objectDropNull(
-        euTaxonomyForNonFinancialsResponseData as ObjectType
+        euTaxonomyForNonFinancialsResponseData as ObjectType,
       ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
 
       this.waitingForData = false;
@@ -305,13 +305,13 @@ export default defineComponent({
      * @returns The transformed dataset
      */
     convertPercentagesToDecimals(
-      companyAssociatedDataEuTaxonomyDataForNonFinancials: CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+      companyAssociatedDataEuTaxonomyDataForNonFinancials: CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     ): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
       const euTaxonomyDataForNonFinancials: Record<string, object> =
         companyAssociatedDataEuTaxonomyDataForNonFinancials.data as Record<string, object>;
       for (const sectionName in euTaxonomyDataForNonFinancials) {
         euTaxonomyDataForNonFinancials[sectionName] = this.transformPercentagesToDecimalsForObject(
-          euTaxonomyDataForNonFinancials[sectionName] as Record<string, number | object>
+          euTaxonomyDataForNonFinancials[sectionName] as Record<string, number | object>,
         );
       }
       companyAssociatedDataEuTaxonomyDataForNonFinancials.data = euTaxonomyDataForNonFinancials;
@@ -327,24 +327,24 @@ export default defineComponent({
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEuTaxonomyDataForNonFinancials.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset
+            this.namesOfAllCompanyReportsForTheDataset,
           );
 
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         // JSON.parse/stringify used to clone the formInputsModel in order to avoid infinite loop on dev servers
         const clonedCompanyAssociatedEuTaxonomyDataForNonFinancials = JSON.parse(
-          JSON.stringify(this.companyAssociatedEuTaxonomyDataForNonFinancials)
+          JSON.stringify(this.companyAssociatedEuTaxonomyDataForNonFinancials),
         ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
         const companyAssociatedEuTaxonomyDataForNonFinancialsToSend = this.convertPercentagesToDecimals(
-          clonedCompanyAssociatedEuTaxonomyDataForNonFinancials
+          clonedCompanyAssociatedEuTaxonomyDataForNonFinancials,
         );
         await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-          companyAssociatedEuTaxonomyDataForNonFinancialsToSend
+          companyAssociatedEuTaxonomyDataForNonFinancialsToSend,
         );
         this.$emit("datasetCreated");
         this.dataDate = undefined;
