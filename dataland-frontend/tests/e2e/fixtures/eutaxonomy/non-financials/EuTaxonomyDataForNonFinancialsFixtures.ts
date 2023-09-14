@@ -13,7 +13,7 @@ import { randomFloat, randomPercentageValue } from "@e2e/fixtures/common/NumberF
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
-import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateDatapointWithUnit } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
@@ -51,9 +51,13 @@ export function generateFinancialShare(undefinedProbabilityOfFields?: number): R
  * @returns a random activity
  */
 function generateActivity(undefinedProbabilityOfFields?: number): EuTaxonomyActivity {
+  const randomActivityName: Activity = faker.helpers.arrayElement(Object.values(Activity));
   return {
-    activityName: faker.helpers.arrayElement(Object.values(Activity)),
-    naceCodes: valueOrUndefined(generateListOfNaceCodes(1, 3), undefinedProbabilityOfFields),
+    activityName: randomActivityName,
+    naceCodes: valueOrUndefined(
+      getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName),
+      undefinedProbabilityOfFields,
+    ),
     share: valueOrUndefined(generateFinancialShare(undefinedProbabilityOfFields), undefinedProbabilityOfFields),
   };
 }

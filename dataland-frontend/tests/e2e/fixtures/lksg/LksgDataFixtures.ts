@@ -19,7 +19,7 @@ import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateBaseDataPoint } from "@e2e/fixtures/common/BaseDataPointFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { valueOrNull } from "@e2e/fixtures/common/DataPointFixtures";
-import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 
 /**
@@ -82,7 +82,7 @@ function generateProcurementCategory(): LksgProcurementCategory {
     generateArray(() => [getRandomIso2CountryCode(), valueOrNull(faker.number.int({ min: 0, max: 50 }))!]),
   );
   return {
-    procuredProductTypesAndServicesNaceCodes: generateListOfNaceCodes(),
+    procuredProductTypesAndServicesNaceCodes: generateListOfRandomNaceCodes(),
     numberOfSuppliersPerCountryCode: valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
     percentageOfTotalProcurement: valueOrUndefined(randomPercentageValue()),
   };
@@ -174,7 +174,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         headOfficeInGermany: valueOrUndefined(randomYesNo(), undefinedProbability),
         groupOfCompanies: valueOrUndefined(randomYesNo(), undefinedProbability),
         groupOfCompaniesName: valueOrUndefined(faker.company.name(), undefinedProbability),
-        industry: valueOrUndefined(generateListOfNaceCodes(), undefinedProbability),
+        industry: valueOrUndefined(generateListOfRandomNaceCodes(), undefinedProbability),
         numberOfEmployees: valueOrUndefined(randomInt(10000), undefinedProbability),
         seasonalOrMigrantWorkers: valueOrUndefined(randomYesNo(), undefinedProbability),
         shareOfTemporaryWorkers: valueOrUndefined(randomShareOfTemporaryWorkersInterval(), undefinedProbability),
@@ -193,7 +193,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
           generateArray(getRandomIso2CountryCode),
           undefinedProbability,
         ),
-        subcontractingCompaniesIndustries: valueOrUndefined(generateListOfNaceCodes(), undefinedProbability),
+        subcontractingCompaniesIndustries: valueOrUndefined(generateListOfRandomNaceCodes(), undefinedProbability),
         productionSites: valueOrUndefined(randomYesNo(), undefinedProbability),
         listOfProductionSites: valueOrUndefined(
           generateArray(() => generateProductionSite(undefinedProbability)),
