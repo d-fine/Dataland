@@ -2,45 +2,45 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Denver",
-			"headquartersPostalCode": "04743-8688",
+			"headquarters": "South Elliott",
+			"headquartersPostalCode": "97598",
+			"sector": "initiatives",
 			"identifiers": {
 				"Lei": [
-					"25Z0hli9WunsqfnoiwR7"
+					"v2Z31Hzua7LOpp9j96Mb"
 				],
-				"Isin": [],
+				"Isin": [
+					"fBxhTzKC9Fkj"
+				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"EJhESUt"
+				],
 				"Duns": [],
 				"VatNumber": [
-					"0xpdzHgxn"
+					"q0KV8OqPG"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AQ",
+			"countryCode": "CH",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://lighthearted-deer.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
-						"F",
-						"I",
-						"M"
+						"A",
+						"G"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Bechtelar Walk 9300",
-						"postalCode": "94685",
-						"city": "Blandaville",
-						"state": "Alabama",
-						"country": "TF"
+						"postalCode": "49444",
+						"city": "Fort Jodieland",
+						"state": "Florida",
+						"country": "MX"
 					},
-					"numberOfEmployees": 327,
-					"fiscalYearStart": "2024-05-20"
+					"numberOfEmployees": 562,
+					"fiscalYearStart": "2024-05-15"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -52,77 +52,54 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Walsh - Batz",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Payton Manors 60176",
-								"postalCode": "43952-1600",
-								"city": "West Nakiaworth",
-								"state": "Maine",
-								"country": "MO"
-							}
+								"postalCode": "67113-4509",
+								"city": "South Beaustad",
+								"state": "Hawaii",
+								"country": "SX"
+							},
+							"percentageOfTotalRevenue": 0.413
 						},
 						{
-							"nameOfProductionSite": "Kreiger, Heathcote and Hilpert",
+							"nameOfProductionSite": "Ritchie - Jacobi",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ara Circles 28267",
-								"postalCode": "68420",
-								"city": "Janetfort",
-								"state": "Arizona",
-								"country": "MT"
+								"streetAndHouseNumber": "Larson Dale 603",
+								"postalCode": "35973",
+								"city": "Jerdemouth",
+								"state": "Massachusetts",
+								"country": "SV"
 							},
-							"percentageOfTotalRevenue": 0.2007
+							"percentageOfTotalRevenue": 0.9365
 						},
 						{
+							"nameOfProductionSite": "Hintz and Sons",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Minnie Mill 45852",
-								"postalCode": "47837-2309",
-								"city": "New Sallyton",
-								"state": "North Carolina",
-								"country": "PK"
+								"streetAndHouseNumber": "Zulauf Heights 968",
+								"postalCode": "93826",
+								"city": "Quigleyport",
+								"state": "New Jersey",
+								"country": "ET"
 							},
-							"percentageOfTotalRevenue": 0.6201
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kerluke Port 4947",
-								"postalCode": "57494",
-								"city": "Monahanchester",
-								"state": "Delaware",
-								"country": "SD"
-							},
-							"percentageOfTotalRevenue": 0.5067
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Maxime Union 8751",
-								"postalCode": "70400",
-								"city": "Nienowborough",
-								"country": "AW"
-							},
-							"percentageOfTotalRevenue": 0.1496
+							"percentageOfTotalRevenue": 0.3283
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Generic Wooden Salad",
-							"percentageOfTotalRevenue": 0.6405
+							"name": "Rustic Bronze Shoes",
+							"percentageOfTotalRevenue": 0.5655
 						},
 						{
-							"name": "Fantastic Wooden Shoes",
-							"percentageOfTotalRevenue": 0.2386
+							"name": "Practical Steel Table",
+							"percentageOfTotalRevenue": 0.8446
 						},
 						{
-							"name": "Modern Metal Chips",
-							"percentageOfTotalRevenue": 0.217
+							"name": "Licensed Concrete Chicken"
 						},
 						{
-							"name": "Practical Fresh Soap",
-							"percentageOfTotalRevenue": 0.1788
-						},
-						{
-							"name": "Recycled Wooden Salad"
+							"name": "Modern Granite Tuna",
+							"percentageOfTotalRevenue": 0.4942
 						}
 					]
 				}
@@ -132,22 +109,19 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 226,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 1627,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 454,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 37248639,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 33546619,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Hail",
-						"Avalanche",
-						"Snow",
-						"EarthQuake"
+						"Avalanche"
 					]
 				}
 			}
@@ -157,41 +131,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "West Westonville",
-			"headquartersPostalCode": "97247-5338",
-			"sector": "action-items",
+			"headquarters": "Fort Cleve",
+			"headquartersPostalCode": "45027-5320",
+			"sector": "synergies",
 			"identifiers": {
 				"Lei": [
-					"mXm83r12tn12EDoHdNGh"
+					"2AG6QR7i0vg1s1Lny8wv"
 				],
-				"Isin": [
-					"tXgCjkhE7xVx"
-				],
+				"Isin": [],
 				"PermId": [],
-				"Ticker": [
-					"txOBcRt"
-				],
-				"Duns": [
-					"rIbAHh8Yv"
-				],
-				"VatNumber": [
-					"Esg77Vo62"
-				],
-				"CompanyRegistrationNumber": []
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"fyS7auxvRNZERfg"
+				]
 			},
-			"countryCode": "BA",
+			"countryCode": "RO",
 			"companyAlternativeNames": [
-				"Donnelly - Schamberger"
+				"Graham, Balistreri and Batz",
+				"Sauer - Koss",
+				"Smitham - Stehr"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://droopy-yoga.org/",
+			"website": "https://flippant-freelance.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"D"
+						"G",
+						"J",
+						"L",
+						"M"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -200,69 +172,73 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7040,
-					"fiscalYearStart": "2023-10-11"
+					"numberOfEmployees": 6937,
+					"fiscalYearStart": "2023-09-27"
 				},
-				"companyFinancials": {
-					"capitalAssetsInEur": 68603103
-				}
+				"companyFinancials": {}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Minnie Skyway 98160",
-								"postalCode": "88763",
-								"city": "Roscoeberg",
-								"state": "Massachusetts",
-								"country": "VC"
+								"streetAndHouseNumber": "Jayne Plains 9561",
+								"postalCode": "23824-4787",
+								"city": "Dixiebury",
+								"state": "Texas",
+								"country": "AT"
 							},
-							"percentageOfTotalRevenue": 0.9709
+							"percentageOfTotalRevenue": 0.1546
 						},
 						{
-							"nameOfProductionSite": "Moore Inc",
+							"nameOfProductionSite": "Koss LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Frami Knoll 227",
-								"postalCode": "47316",
-								"city": "Ryanworth",
-								"state": "Idaho",
-								"country": "NO"
+								"streetAndHouseNumber": "Franey Via 554",
+								"postalCode": "96992",
+								"city": "South Manuelfield",
+								"state": "Kentucky",
+								"country": "HK"
 							},
-							"percentageOfTotalRevenue": 0.0869
+							"percentageOfTotalRevenue": 0.8025
+						},
+						{
+							"nameOfProductionSite": "Strosin - Lueilwitz",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Laura Square 239",
+								"postalCode": "09137",
+								"city": "Milanborough",
+								"state": "New Jersey",
+								"country": "BZ"
+							},
+							"percentageOfTotalRevenue": 0.4046
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Handmade Bronze Chicken",
-							"percentageOfTotalRevenue": 0.3667
-						},
-						{
-							"name": "Recycled Fresh Cheese",
-							"percentageOfTotalRevenue": 0.2076
-						},
-						{
-							"name": "Refined Rubber Car"
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 1133,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMwh": 495,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 335,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 11776077,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 20986968,
 					"naturalHazardsCovered": [
-						"Wind"
+						"Snow",
+						"Wind",
+						"EarthQuake",
+						"Hail"
 					]
 				}
 			}
@@ -272,98 +248,142 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Carolinechester",
-			"headquartersPostalCode": "10788",
-			"sector": "partnerships",
+			"headquarters": "Fort Kayafield",
+			"headquartersPostalCode": "31338",
 			"identifiers": {
 				"Lei": [
-					"Fu3flS8lK9eQEKfoSViS"
+					"yKRGGsg3mVikBmjmNzDP"
 				],
-				"Isin": [
-					"Qynbp4QEDzTt",
-					"LIuZKrMI2ceW"
-				],
+				"Isin": [],
 				"PermId": [
-					"GHlWTNUHwi"
+					"c3m8LtgZyb"
 				],
 				"Ticker": [
-					"vPvOMqQ"
+					"fyElKem"
 				],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"KKA1bILDrzBnJCg"
-				]
+				"VatNumber": [
+					"7W0GmjE8c"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BJ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://darling-restaurant.org",
+			"countryCode": "TL",
+			"companyAlternativeNames": [
+				"Auer - Hessel",
+				"Crooks - Gottlieb"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://untried-gradient.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"C",
+						"B",
 						"E"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 958,
-					"fiscalYearStart": "2023-11-05"
+					"numberOfEmployees": 8497,
+					"fiscalYearStart": "2023-12-22"
 				},
 				"companyFinancials": {
-					"revenueInEur": 14937676,
-					"operatingCostInEur": 38333499,
-					"capitalAssetsInEur": 63550555
+					"revenueInEur": 8815465
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "West Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Audrey Ville 9226",
+								"city": "Ralphboro",
+								"state": "Maryland",
+								"country": "DM"
+							},
+							"percentageOfTotalRevenue": 0.578
+						},
+						{
+							"nameOfProductionSite": "Harvey - Kovacek",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Aufderhar Island 8688",
+								"city": "Spring",
+								"country": "RE"
+							}
+						},
+						{
+							"nameOfProductionSite": "Beahan - Rau",
+							"addressOfProductionSite": {
+								"postalCode": "07194",
+								"city": "Fort Rosa",
+								"state": "Michigan",
+								"country": "SD"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Bergstrom Burgs 761",
+								"postalCode": "81155-1740",
+								"city": "South Itzelport",
+								"state": "Wisconsin",
+								"country": "BZ"
+							},
+							"percentageOfTotalRevenue": 0.4493
+						},
+						{
+							"nameOfProductionSite": "Mueller, Moore and Bailey",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Effertz Unions 945",
+								"postalCode": "06304-7746",
+								"city": "Haroldbury",
+								"country": "IN"
+							},
+							"percentageOfTotalRevenue": 0.1417
+						}
+					]
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Oriental Granite Mouse",
-							"percentageOfTotalRevenue": 0.7568
+							"name": "Refined Frozen Shirt",
+							"percentageOfTotalRevenue": 0.4444
 						},
 						{
-							"name": "Bespoke Granite Bike",
-							"percentageOfTotalRevenue": 0.795
+							"name": "Handmade Cotton Computer"
 						},
 						{
-							"name": "Ergonomic Fresh Mouse",
-							"percentageOfTotalRevenue": 0.4244
-						},
-						{
-							"name": "Oriental Cotton Shirt",
-							"percentageOfTotalRevenue": 0.8721
+							"name": "Ergonomic Granite Ball",
+							"percentageOfTotalRevenue": 0.5295
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1591,
+					"powerConsumptionInMwh": 1716,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 702,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 17936408,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 48775925,
 					"naturalHazardsCovered": [
+						"Snow",
 						"Hail",
 						"Wind",
+						"EarthQuake",
 						"Avalanche",
-						"EarthQuake"
+						"Flooding"
 					]
 				}
 			}

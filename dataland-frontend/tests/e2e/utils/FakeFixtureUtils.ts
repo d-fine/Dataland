@@ -68,7 +68,7 @@ export class Generator {
   }
 
   randomDataPoint<T>(input: T): GenericDataPoint<T> | undefined {
-    return this.valueOrUndefined(generateDatapoint(valueOrUndefined(input, this.undefinedProbability), this.reports));
+    return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports));
   }
 
   randomArray<T>(generator: () => T): T[] | undefined {
