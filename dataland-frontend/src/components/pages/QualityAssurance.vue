@@ -79,7 +79,6 @@ import {
   type CompanyDataControllerApiInterface,
   type CompanyInformation,
   type DataMetaInformation,
-  DataTypeEnum,
   type MetaDataControllerApiInterface,
 } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -89,7 +88,6 @@ import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import QADatasetModal from "@/components/general/QaDatasetModal.vue";
 import { AxiosError } from "axios";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
@@ -116,10 +114,10 @@ export default defineComponent({
   data() {
     return {
       dataIdList: [] as Array<string>,
-      dataId: "",
+      // dataId: "",
       displayDataOfPage: [] as QaDataObject[],
       waitingForData: true,
-      dataSet: null as unknown as object,
+      // dataSet: null as unknown as object,
       KEYCLOAK_ROLE_REVIEWER,
       metaInformation: null as DataMetaInformation,
       companyInformation: null as CompanyInformation | null,
@@ -204,51 +202,51 @@ export default defineComponent({
      * Retrieves the dataset corresponding to the given dataId
      * @param qaDataObject is the quality assurance data object used to retrieve the actual dataset to be reviewed
      */
-    async getDataSet(qaDataObject: QaDataObject) {
-      try {
-        const dataTypeOfDatasetToReview = qaDataObject.metaInformation.dataType;
-        this.dataId = qaDataObject.dataId;
-        const keycloakPromise = assertDefined(this.getKeycloakPromise)();
+    // async getDataSet(qaDataObject: QaDataObject) {
+    //   try {
+    //     const dataTypeOfDatasetToReview = qaDataObject.metaInformation.dataType;
+    //     this.dataId = qaDataObject.dataId;
+    //     const keycloakPromise = assertDefined(this.getKeycloakPromise)();
 
-        if (dataTypeOfDatasetToReview === DataTypeEnum.EutaxonomyNonFinancials) {
-          const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-            keycloakPromise,
-          ).getEuTaxonomyDataForNonFinancialsControllerApi();
-          const companyAssociatedDataResponse =
-            await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-              this.dataId,
-            );
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (dataTypeOfDatasetToReview === DataTypeEnum.EutaxonomyFinancials) {
-          const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-            keycloakPromise,
-          ).getEuTaxonomyDataForFinancialsControllerApi();
-          const companyAssociatedDataResponse =
-            await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(this.dataId);
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (dataTypeOfDatasetToReview === DataTypeEnum.Lksg) {
-          const lksgDataControllerApi = await new ApiClientProvider(keycloakPromise).getLksgDataControllerApi();
-          const companyAssociatedDataResponse = await lksgDataControllerApi.getCompanyAssociatedLksgData(this.dataId);
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (dataTypeOfDatasetToReview === DataTypeEnum.Sfdr) {
-          const sfdrDataControllerApi = await new ApiClientProvider(keycloakPromise).getSfdrDataControllerApi();
-          const companyAssociatedDataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.dataId);
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (dataTypeOfDatasetToReview === DataTypeEnum.P2p) {
-          const p2pDataControllerApi = await new ApiClientProvider(keycloakPromise).getP2pDataControllerApi();
-          const companyAssociatedDataResponse = await p2pDataControllerApi.getCompanyAssociatedP2pData(this.dataId);
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (dataTypeOfDatasetToReview === DataTypeEnum.Sme) {
-          const smeDataControllerApi = await new ApiClientProvider(keycloakPromise).getSmeDataControllerApi();
-          const companyAssociatedDataResponse = await smeDataControllerApi.getCompanyAssociatedSmeData(this.dataId);
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else {
-          throw new Error("The qaDataObject type of the selected dataset is not supported by the QA frontend.");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
+    //     if (dataTypeOfDatasetToReview === DataTypeEnum.EutaxonomyNonFinancials) {
+    //       const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
+    //         keycloakPromise,
+    //       ).getEuTaxonomyDataForNonFinancialsControllerApi();
+    //       const companyAssociatedDataResponse =
+    //         await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
+    //           this.dataId,
+    //         );
+    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
+    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.EutaxonomyFinancials) {
+    //       const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+    //         keycloakPromise,
+    //       ).getEuTaxonomyDataForFinancialsControllerApi();
+    //       const companyAssociatedDataResponse =
+    //         await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(this.dataId);
+    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
+    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.Lksg) {
+    //       const lksgDataControllerApi = await new ApiClientProvider(keycloakPromise).getLksgDataControllerApi();
+    //       const companyAssociatedDataResponse = await lksgDataControllerApi.getCompanyAssociatedLksgData(this.dataId);
+    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
+    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.Sfdr) {
+    //       const sfdrDataControllerApi = await new ApiClientProvider(keycloakPromise).getSfdrDataControllerApi();
+    //       const companyAssociatedDataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.dataId);
+    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
+    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.P2p) {
+    //       const p2pDataControllerApi = await new ApiClientProvider(keycloakPromise).getP2pDataControllerApi();
+    //       const companyAssociatedDataResponse = await p2pDataControllerApi.getCompanyAssociatedP2pData(this.dataId);
+    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
+    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.Sme) {
+    //       const smeDataControllerApi = await new ApiClientProvider(keycloakPromise).getSmeDataControllerApi();
+    //       const companyAssociatedDataResponse = await smeDataControllerApi.getCompanyAssociatedSmeData(this.dataId);
+    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
+    //     } else {
+    //       throw new Error("The qaDataObject type of the selected dataset is not supported by the QA frontend.");
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // },
     /**
      * Navigates to the view framework data page on a click on the row of the company
      * @param event the row click event
