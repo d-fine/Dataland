@@ -38,14 +38,6 @@ export class Generator {
     return valueOrUndefined(value, this.undefinedProbability);
   }
 
-  getReports(): ReferencedDocuments {
-    return this.reports;
-  }
-
-  setReports(reports: ReferencedDocuments): void {
-    this.reports = reports;
-  }
-
   randomYesNo(): YesNo | undefined {
     return this.valueOrUndefined(generateYesNo());
   }

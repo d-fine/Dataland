@@ -41,7 +41,10 @@ export class EuFinancialsGenerator extends Generator {
   generateEuTaxonomyDataForFinancialsWithTypes(
     financialServicesTypes = this.financialServicesTypes,
   ): EuTaxonomyDataForFinancials {
-    const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields();
+    const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields(
+      this.reports,
+      this.undefinedProbability,
+    );
     const eligibilityKpis = Object.fromEntries(
       financialServicesTypes.map((it) => [it, this.generateEligibilityKpis()]),
     );

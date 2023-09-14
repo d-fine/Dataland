@@ -11,7 +11,7 @@ import { getRandomNumberOfDistinctElementsFromArray } from "@e2e/fixtures/Fixtur
  * Picks a random percentage range option
  * @returns a random percentage range option
  */
-export function getRandomPercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower {
+export function generatePercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower {
   return faker.helpers.arrayElement([...Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)]);
 }
 
@@ -19,7 +19,7 @@ export function getRandomPercentageRangeEnergyConsumption(): PercentRangeForEner
  * Picks a random percentage range option
  * @returns a random percentage range option
  */
-export function getRandomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency {
+export function generatePercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency {
   return faker.helpers.arrayElement([...Object.values(PercentRangeForInvestmentsInEnergyEfficiency)]);
 }
 
@@ -27,7 +27,7 @@ export function getRandomPercentageRangeInvestmentEnergyEfficiency(): PercentRan
  * Picks a random heat source
  * @returns a random heat source
  */
-export function getRandomHeatSource(): EnergySourceForHeatingAndHotWater {
+export function generateHeatSource(): EnergySourceForHeatingAndHotWater {
   return faker.helpers.arrayElement([...Object.values(EnergySourceForHeatingAndHotWater)]);
 }
 
@@ -35,6 +35,6 @@ export function getRandomHeatSource(): EnergySourceForHeatingAndHotWater {
  * Picks a random natural hazard
  * @returns a random natural hazard
  */
-export function getRandomSelectionOfNaturalHazards(): NaturalHazard[] {
+export function generateSelectionOfNaturalHazards(): NaturalHazard[] {
   return getRandomNumberOfDistinctElementsFromArray(Object.values(NaturalHazard));
 }

@@ -18,7 +18,7 @@ export function generateSfdrData(undefinedProbability = DEFAULT_PROBABILITY): Sf
         dataDate: generatePastDate(),
         fiscalYearDeviation: generateFiscalYearDeviation(),
         fiscalYearEnd: generatePastDate(),
-        referencedReports: dataGenerator.getReports(),
+        referencedReports: dataGenerator.reports,
         scopeOfEntities: dataGenerator.randomYesNo(),
       },
     },

@@ -80,7 +80,7 @@ function createOnlyEligibleAndTotalNumbers(
     referencedReports: ReferencedDocuments,
   ): EuTaxonomyDetailsPerCashFlowType {
     const dataGenerator = new EuNonFinancialsGenerator(0);
-    dataGenerator.setReports(referencedReports);
+    dataGenerator.reports = referencedReports;
     return {
       totalAmount: dataGenerator.randomDataPoint(dataGenerator.generateAmountWithCurrency()),
       eligibleShare: dataGenerator.generateFinancialShare(),

@@ -2,45 +2,54 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "South Elliott",
-			"headquartersPostalCode": "97598",
-			"sector": "initiatives",
+			"headquarters": "West Cathrine",
+			"headquartersPostalCode": "23083-3374",
 			"identifiers": {
 				"Lei": [
-					"v2Z31Hzua7LOpp9j96Mb"
+					"O9CArILtUk881mGbj4t9"
 				],
 				"Isin": [
-					"fBxhTzKC9Fkj"
+					"A91JIApCnUTg",
+					"S1KiVJaMWY6l"
 				],
-				"PermId": [],
-				"Ticker": [
-					"EJhESUt"
+				"PermId": [
+					"vdwk45rlW4"
 				],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"q0KV8OqPG"
+					"7LL1haWO0"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CH",
-			"companyAlternativeNames": [],
+			"countryCode": "KM",
+			"companyAlternativeNames": [
+				"Bashirian - Hackett",
+				"Rempel Group",
+				"Weimann - Simonis",
+				"Wisoky - Kutch"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://neighboring-fir.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
-						"G"
+						"E",
+						"J",
+						"L"
 					],
 					"addressOfHeadquarters": {
-						"postalCode": "49444",
-						"city": "Fort Jodieland",
-						"state": "Florida",
-						"country": "MX"
+						"streetAndHouseNumber": "Margret Forest 402",
+						"postalCode": "19389-0182",
+						"city": "Jadaborough",
+						"state": "Indiana",
+						"country": "TR"
 					},
-					"numberOfEmployees": 562,
-					"fiscalYearStart": "2024-05-15"
+					"numberOfEmployees": 2152,
+					"fiscalYearStart": "2024-03-11"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -50,56 +59,24 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"postalCode": "67113-4509",
-								"city": "South Beaustad",
-								"state": "Hawaii",
-								"country": "SX"
-							},
-							"percentageOfTotalRevenue": 0.413
-						},
-						{
-							"nameOfProductionSite": "Ritchie - Jacobi",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Larson Dale 603",
-								"postalCode": "35973",
-								"city": "Jerdemouth",
-								"state": "Massachusetts",
-								"country": "SV"
-							},
-							"percentageOfTotalRevenue": 0.9365
-						},
-						{
-							"nameOfProductionSite": "Hintz and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Zulauf Heights 968",
-								"postalCode": "93826",
-								"city": "Quigleyport",
-								"state": "New Jersey",
-								"country": "ET"
-							},
-							"percentageOfTotalRevenue": 0.3283
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Rustic Bronze Shoes",
-							"percentageOfTotalRevenue": 0.5655
+							"name": "Luxurious Fresh Shirt"
 						},
 						{
-							"name": "Practical Steel Table",
-							"percentageOfTotalRevenue": 0.8446
+							"name": "Refined Rubber Cheese",
+							"percentageOfTotalRevenue": 0.6747
 						},
 						{
-							"name": "Licensed Concrete Chicken"
+							"name": "Generic Bronze Hat",
+							"percentageOfTotalRevenue": 0.0243
 						},
 						{
-							"name": "Modern Granite Tuna",
-							"percentageOfTotalRevenue": 0.4942
+							"name": "Practical Steel Bike",
+							"percentageOfTotalRevenue": 0.3302
 						}
 					]
 				}
@@ -109,19 +86,22 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1627,
+					"powerConsumptionInMwh": 1209,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 454,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionHeatingAndHotWater": 333,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 33546619,
 					"naturalHazardsCovered": [
-						"Avalanche"
+						"Snow",
+						"EarthQuake",
+						"Wind",
+						"Hail",
+						"Avalanche",
+						"Flooding"
 					]
 				}
 			}
@@ -131,39 +111,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Cleve",
-			"headquartersPostalCode": "45027-5320",
-			"sector": "synergies",
+			"headquarters": "Maudefurt",
+			"headquartersPostalCode": "74179",
+			"sector": "deliverables",
 			"identifiers": {
-				"Lei": [
-					"2AG6QR7i0vg1s1Lny8wv"
+				"Lei": [],
+				"Isin": [
+					"ObpM16kObahE"
 				],
-				"Isin": [],
-				"PermId": [],
-				"Ticker": [],
+				"PermId": [
+					"LDryCGSboR"
+				],
+				"Ticker": [
+					"JoCAFJD"
+				],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"fyS7auxvRNZERfg"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "RO",
+			"countryCode": "MX",
 			"companyAlternativeNames": [
-				"Graham, Balistreri and Batz",
-				"Sauer - Koss",
-				"Smitham - Stehr"
+				"Dare Inc",
+				"Monahan, Monahan and McKenzie"
 			],
-			"website": "https://flippant-freelance.com",
+			"website": "https://enraged-chassis.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"G",
-						"J",
-						"L",
-						"M"
+						"A",
+						"H",
+						"L"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -172,74 +152,62 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 6937,
-					"fiscalYearStart": "2023-09-27"
+					"numberOfEmployees": 158,
+					"fiscalYearStart": "2023-11-25"
 				},
-				"companyFinancials": {}
+				"companyFinancials": {
+					"operatingCostInEur": 48659982,
+					"capitalAssetsInEur": 40958807
+				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Frami, Prohaska and Huels",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jayne Plains 9561",
-								"postalCode": "23824-4787",
-								"city": "Dixiebury",
-								"state": "Texas",
-								"country": "AT"
+								"streetAndHouseNumber": "Schowalter Mills 22896",
+								"postalCode": "51882-1378",
+								"city": "Barrowschester",
+								"state": "Georgia",
+								"country": "PE"
 							},
-							"percentageOfTotalRevenue": 0.1546
+							"percentageOfTotalRevenue": 0.4865
 						},
 						{
-							"nameOfProductionSite": "Koss LLC",
+							"nameOfProductionSite": "Heidenreich - Daniel",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Franey Via 554",
-								"postalCode": "96992",
-								"city": "South Manuelfield",
-								"state": "Kentucky",
-								"country": "HK"
+								"streetAndHouseNumber": "Jenkins Neck 83275",
+								"city": "West Rene",
+								"country": "FK"
 							},
-							"percentageOfTotalRevenue": 0.8025
-						},
-						{
-							"nameOfProductionSite": "Strosin - Lueilwitz",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Laura Square 239",
-								"postalCode": "09137",
-								"city": "Milanborough",
-								"state": "New Jersey",
-								"country": "BZ"
-							},
-							"percentageOfTotalRevenue": 0.4046
+							"percentageOfTotalRevenue": 0.871
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Generic Soft Car"
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 495,
+					"powerConsumptionInMwh": 174,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 335,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 681,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 20986968,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Wind",
-						"EarthQuake",
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},
@@ -248,144 +216,71 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Fort Kayafield",
-			"headquartersPostalCode": "31338",
+			"headquarters": "West Garfieldview",
+			"headquartersPostalCode": "21073-6219",
+			"sector": "paradigms",
 			"identifiers": {
-				"Lei": [
-					"yKRGGsg3mVikBmjmNzDP"
+				"Lei": [],
+				"Isin": [
+					"wqpUGGI2jhbP",
+					"DidkgUon19kP"
 				],
-				"Isin": [],
-				"PermId": [
-					"c3m8LtgZyb"
-				],
+				"PermId": [],
 				"Ticker": [
-					"fyElKem"
+					"T1bOi9X"
 				],
 				"Duns": [],
 				"VatNumber": [
-					"7W0GmjE8c"
+					"QxBGIK1Hi"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TL",
+			"countryCode": "FI",
 			"companyAlternativeNames": [
-				"Auer - Hessel",
-				"Crooks - Gottlieb"
+				"Treutel, Davis and Watsica"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://untried-gradient.net",
+			"companyLegalForm": "AG",
+			"website": "https://blaring-millstone.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
-						"E"
+						"C"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8497,
-					"fiscalYearStart": "2023-12-22"
+					"numberOfEmployees": 4908,
+					"fiscalYearStart": "2024-06-20"
 				},
 				"companyFinancials": {
-					"revenueInEur": 8815465
+					"operatingCostInEur": 26502350,
+					"capitalAssetsInEur": 57632509
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "West Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Audrey Ville 9226",
-								"city": "Ralphboro",
-								"state": "Maryland",
-								"country": "DM"
-							},
-							"percentageOfTotalRevenue": 0.578
-						},
-						{
-							"nameOfProductionSite": "Harvey - Kovacek",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Aufderhar Island 8688",
-								"city": "Spring",
-								"country": "RE"
-							}
-						},
-						{
-							"nameOfProductionSite": "Beahan - Rau",
-							"addressOfProductionSite": {
-								"postalCode": "07194",
-								"city": "Fort Rosa",
-								"state": "Michigan",
-								"country": "SD"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bergstrom Burgs 761",
-								"postalCode": "81155-1740",
-								"city": "South Itzelport",
-								"state": "Wisconsin",
-								"country": "BZ"
-							},
-							"percentageOfTotalRevenue": 0.4493
-						},
-						{
-							"nameOfProductionSite": "Mueller, Moore and Bailey",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Effertz Unions 945",
-								"postalCode": "06304-7746",
-								"city": "Haroldbury",
-								"country": "IN"
-							},
-							"percentageOfTotalRevenue": 0.1417
-						}
-					]
+					"listOfProductionSites": []
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Refined Frozen Shirt",
-							"percentageOfTotalRevenue": 0.4444
-						},
-						{
-							"name": "Handmade Cotton Computer"
-						},
-						{
-							"name": "Ergonomic Granite Ball",
-							"percentageOfTotalRevenue": 0.5295
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1716,
+					"powerConsumptionInMwh": 1147,
 					"powerFromRenewableSources": "Yes",
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"energyConsumptionHeatingAndHotWater": 530,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 48775925,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Hail",
-						"Wind",
-						"EarthQuake",
-						"Avalanche",
-						"Flooding"
-					]
-				}
+				"naturalHazards": {}
 			}
 		},
 		"reportingPeriod": "2022"

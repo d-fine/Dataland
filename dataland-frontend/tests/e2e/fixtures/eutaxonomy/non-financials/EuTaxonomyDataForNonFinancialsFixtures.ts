@@ -24,7 +24,7 @@ export function generateEuTaxonomyDataForNonFinancials(
 ): EuTaxonomyDataForNonFinancials {
   const dataGenerator = new EuNonFinancialsGenerator(undefinedProbability);
   return {
-    general: generateEuTaxonomyWithBaseFields(),
+    general: generateEuTaxonomyWithBaseFields(dataGenerator.reports, undefinedProbability),
     opex: dataGenerator.generateEuTaxonomyPerCashflowType(),
     capex: dataGenerator.generateEuTaxonomyPerCashflowType(),
     revenue: dataGenerator.generateEuTaxonomyPerCashflowType(),

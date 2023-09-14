@@ -42,7 +42,7 @@ function createCreditInstitutionDualFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
   const dataGenerator = new EuFinancialsGenerator();
-  dataGenerator.setReports(input.t.referencedReports!);
+  dataGenerator.reports = input.t.referencedReports!;
   input.companyInformation.companyName = "credit-institution-dual-field-submission";
   input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
@@ -62,7 +62,7 @@ function createCreditInstitutionSingleFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
   const dataGenerator = new EuFinancialsGenerator();
-  dataGenerator.setReports(input.t.referencedReports!);
+  dataGenerator.reports = input.t.referencedReports!;
   input.companyInformation.companyName = "credit-institution-single-field-submission";
   input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
