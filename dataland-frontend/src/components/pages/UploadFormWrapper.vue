@@ -34,6 +34,7 @@ import { redirectToMyDatasets } from "@/components/resources/uploadDataset/Datas
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { defineComponent } from "vue";
 import TheContent from "@/components/generics/TheContent.vue";
+import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 
 export default defineComponent({
   name: "UploadFormWrapper",
@@ -71,6 +72,8 @@ export default defineComponent({
           return CreateP2pDataset;
         case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
+        case `${DataTypeEnum.EutaxonomyFinancials}`:
+          return CreateEuTaxonomyForFinancials;
         default:
           return null;
       }
