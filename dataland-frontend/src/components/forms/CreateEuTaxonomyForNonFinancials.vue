@@ -161,6 +161,7 @@ import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 export default defineComponent({
   setup() {
     return {
@@ -294,7 +295,8 @@ export default defineComponent({
       const modifiedObject = object;
       for (const property in modifiedObject) {
         if (property.includes("InPercent")) {
-          modifiedObject[property] = factor * (modifiedObject[property] as number);
+          const originalValue = modifiedObject[property] as number;
+          modifiedObject[property] = roundNumber(factor * originalValue, String(originalValue).length);
         } else if (typeof modifiedObject[property] === "object") {
           this.multiplyPercentageFieldsOfObjectByFactor(
             modifiedObject[property] as Record<string, number | object>,
