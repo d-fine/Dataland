@@ -11,7 +11,7 @@ creation URL (or simply copy this md file into the description)
 
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
-
+- [ ] Update node.js to version 20.6.1 breaks the build
 - [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
@@ -37,42 +37,42 @@ appear.
 ### Dataland frontend
 
 - [x] Update node version in `dataland-frontend/build.gradle.kts`
-- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
+- [x] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
   package.json
-- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
+- [x] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
   for security issues
 
 ### Dataland keycloak theme
 
-- [ ] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
-- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
+- [x] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
+- [x] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
   package.json
-- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
+- [x] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
   for security issues
 
 ### Dockerfile updates
 
 Update versions in the following dockerfiles
 
-- [ ] `./dataland-api-key-manager/Dockerfile`
-- [ ] `./dataland-api-key-manager/DockerfileBase`
-- [ ] `./dataland-api-key-manager/DockerfileTest`
-- [ ] `./dataland-backend/Dockerfile`
-- [ ] `./dataland-backend/DockerfileBase`
-- [ ] `./dataland-backend/DockerfileTest`
-- [ ] `./dataland-document-manager/Dockerfile`
-- [ ] `./dataland-document-manager/DockerfileBase`
-- [ ] `./dataland-document-manager/DockerfileTest`
-- [ ] `./dataland-e2etests/Dockerfile`
-- [ ] `./dataland-e2etests/DockerfileBase`
-- [ ] `./dataland-frontend/Dockerfile`
-- [ ] `./dataland-frontend/DockerfileTest`
-- [ ] `./dataland-internal-storage/Dockerfile`
-- [ ] `./dataland-internal-storage/DockerfileBase`
-- [ ] `./dataland-internal-storage/DockerfileTest`
-- [ ] `./dataland-qa-service/Dockerfile`
-- [ ] `./dataland-qa-service/DockerfileBase`
-- [ ] `./dataland-qa-service/DockerfileTest`
+- [x] `./dataland-api-key-manager/Dockerfile`
+- [x] `./dataland-api-key-manager/DockerfileBase`
+- [x] `./dataland-api-key-manager/DockerfileTest`
+- [x] `./dataland-backend/Dockerfile`
+- [x] `./dataland-backend/DockerfileBase`
+- [x] `./dataland-backend/DockerfileTest`
+- [x] `./dataland-document-manager/Dockerfile`
+- [x] `./dataland-document-manager/DockerfileBase`
+- [x] `./dataland-document-manager/DockerfileTest`
+- [x] `./dataland-e2etests/Dockerfile`
+- [x] `./dataland-e2etests/DockerfileBase`
+- [x] `./dataland-frontend/Dockerfile`
+- [x] `./dataland-frontend/DockerfileTest`
+- [x] `./dataland-internal-storage/Dockerfile`
+- [x] `./dataland-internal-storage/DockerfileBase`
+- [x] `./dataland-internal-storage/DockerfileTest`
+- [x] `./dataland-qa-service/Dockerfile`
+- [x] `./dataland-qa-service/DockerfileBase`
+- [x] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
