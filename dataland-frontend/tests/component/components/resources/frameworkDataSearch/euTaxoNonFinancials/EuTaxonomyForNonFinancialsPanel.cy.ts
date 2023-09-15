@@ -61,11 +61,6 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         formatAmountWithCurrency(capexOfDatasetGamma.alignedShare?.absoluteShare),
       );
 
-      const alphaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent) * 100,
-        2,
-      );
-
       const gammaContributionToClimateChangeMitigation = roundNumber(
         assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigationInPercent) * 100,
         2,
