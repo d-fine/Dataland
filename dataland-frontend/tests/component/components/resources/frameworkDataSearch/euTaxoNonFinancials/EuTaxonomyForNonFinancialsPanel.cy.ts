@@ -57,8 +57,8 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         2,
       );
 
-      const gammaTotalAlignedCapexAbsoluteShareString = assertDefined(
-        formatAmountWithCurrency(capexOfDatasetGamma.alignedShare?.absoluteShare),
+      const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency(
+        assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare),
       );
 
       const gammaContributionToClimateChangeMitigation = roundNumber(
