@@ -21,8 +21,8 @@ export function formatPercentageNumberAsString(percentageNumber?: number, precis
  * @returns the resulting string from the concatenation
  */
 export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency): string {
-  if (amountWithCurrency?.amount) {
-    return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
+  if (amountWithCurrency?.amount == undefined) {
+    return "";
   }
-  return "";
+  return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
 }
