@@ -36,6 +36,13 @@ body {
 .w-90 { width: 90vw; }
 .w-100 { width: 100vw; }
 
+.flex-direction-column {
+  flex-direction: column;
+}
+.flex-direction-row {
+  flex-direction: row;
+}
+
 .p-component {
   &:disabled {
     opacity: .8

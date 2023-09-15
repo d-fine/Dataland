@@ -22,12 +22,14 @@ import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
 import { QaStatus } from "@clients/qaservice";
+import QADatasetModal from "@/components/general/QaDatasetModal.vue";
+import { type DataMetaInformation } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "QualityAssuranceButtons",
-  components: { PrimeButton },
+  components: { PrimeButton, QADatasetModal },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -41,7 +43,7 @@ export default defineComponent({
     };
   },
   props: {
-    dataId: { type: String, required: true },
+    metaInfo: { type: Object, required: true },
   },
   methods: {
     /**
@@ -53,17 +55,35 @@ export default defineComponent({
       event.preventDefault();
       event.stopImmediatePropagation();
 
-      try {
-        this.reviewSubmitted = true;
-        const qaServiceControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getQaControllerApi();
-        // await qaServiceControllerApi.assignQaStatus(this.dataId, qaStatus);
-        this.reviewSuccessful = true;
-        console.log(qaStatus, "success");
-      } catch (error) {
-        console.error(error);
-      }
+      const companyName = await this.getCompanyName();
+      const { dataId, dataType, reportingPeriod } = this.metaInfo as DataMetaInformation;
+      const message = `${qaStatus} ${dataType} data for ${companyName} for the reporting period ${reportingPeriod}.`;
+
+      this.$dialog.open(QADatasetModal, {
+        props: {
+          header: qaStatus,
+          modal: true,
+          dismissableMask: false,
+        },
+        data: {
+          dataId,
+          qaStatus,
+          message,
+        },
+        onClose: () => {
+          void this.$router.push("/qualityassurance");
+        },
+      });
+    },
+    /**
+     * @returns a promise including the company name
+     */
+    async getCompanyName() {
+      const companyDataControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)(),
+      ).getCompanyDataControllerApi();
+      const response = await companyDataControllerApi.getCompanyById((this.metaInfo as DataMetaInformation).companyId);
+      return response.data.companyInformation.companyName;
     },
   },
 });

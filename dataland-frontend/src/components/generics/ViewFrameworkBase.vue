@@ -44,7 +44,7 @@
           </div>
           <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
             <template v-if="canReview && singleDataMetaInfoToDisplay">
-              <QualityAssuranceButtons :dataId="singleDataMetaInfoToDisplay.dataId"></QualityAssuranceButtons>
+              <QualityAssuranceButtons :meta-info="singleDataMetaInfoToDisplay"></QualityAssuranceButtons>
             </template>
             <template v-if="hasUserUploaderRights">
               <PrimeButton
