@@ -40,7 +40,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         amount: 0.0,
         currency: "EUR",
       } as AmountWithCurrency;
-      cy.wrap(revenueOfDatasetAlpha.totalAmount.value).should("deep.eq", alphaTotalRevenueExpectedValue);
+      cy.wrap(revenueOfDatasetAlpha.totalAmount?.value).should("deep.eq", alphaTotalRevenueExpectedValue);
 
       const capexOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.capex);
       const capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
