@@ -29,59 +29,59 @@ appear.
   this can be possibly fixed by reverting the docker-compose-plugin version
 ### Gradle update
 
-- [x] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
-- [x] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco
+- [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
+- [ ] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco
   and ktlint)
-- [x] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
+- [ ] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
 
-- [x] Update node version in `dataland-frontend/build.gradle.kts`
-- [x] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
+- [ ] Update node version in `dataland-frontend/build.gradle.kts`
+- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
   package.json
-- [x] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
+- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
   for security issues
 
 ### Dataland keycloak theme
 
-- [x] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
-- [x] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
+- [ ] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
+- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
   package.json
-- [x] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
+- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
   for security issues
 
 ### Dockerfile updates
 
 Update versions in the following dockerfiles
 
-- [x] `./dataland-api-key-manager/Dockerfile`
-- [x] `./dataland-api-key-manager/DockerfileBase`
-- [x] `./dataland-api-key-manager/DockerfileTest`
-- [x] `./dataland-backend/Dockerfile`
-- [x] `./dataland-backend/DockerfileBase`
-- [x] `./dataland-backend/DockerfileTest`
-- [x] `./dataland-document-manager/Dockerfile`
-- [x] `./dataland-document-manager/DockerfileBase`
-- [x] `./dataland-document-manager/DockerfileTest`
-- [x] `./dataland-e2etests/Dockerfile`
-- [x] `./dataland-e2etests/DockerfileBase`
-- [x] `./dataland-frontend/Dockerfile`
-- [x] `./dataland-frontend/DockerfileTest`
-- [x] `./dataland-internal-storage/Dockerfile`
-- [x] `./dataland-internal-storage/DockerfileBase`
-- [x] `./dataland-internal-storage/DockerfileTest`
-- [x] `./dataland-qa-service/Dockerfile`
-- [x] `./dataland-qa-service/DockerfileBase`
-- [x] `./dataland-qa-service/DockerfileTest`
-- [x] `./dataland-rabbitmq/Dockerfile`
-- [x] `./dataland-inbound-admin-proxy/Dockerfile`
-- [x] `./dataland-inbound-proxy/Dockerfile`
-- [x] `./dataland-pgadmin/Dockerfile`
-- [x] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
-- [x] `./base-dockerfiles/DockerfileGradle`
-- [x] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
+- [ ] `./dataland-api-key-manager/Dockerfile`
+- [ ] `./dataland-api-key-manager/DockerfileBase`
+- [ ] `./dataland-api-key-manager/DockerfileTest`
+- [ ] `./dataland-backend/Dockerfile`
+- [ ] `./dataland-backend/DockerfileBase`
+- [ ] `./dataland-backend/DockerfileTest`
+- [ ] `./dataland-document-manager/Dockerfile`
+- [ ] `./dataland-document-manager/DockerfileBase`
+- [ ] `./dataland-document-manager/DockerfileTest`
+- [ ] `./dataland-e2etests/Dockerfile`
+- [ ] `./dataland-e2etests/DockerfileBase`
+- [ ] `./dataland-frontend/Dockerfile`
+- [ ] `./dataland-frontend/DockerfileTest`
+- [ ] `./dataland-internal-storage/Dockerfile`
+- [ ] `./dataland-internal-storage/DockerfileBase`
+- [ ] `./dataland-internal-storage/DockerfileTest`
+- [ ] `./dataland-qa-service/Dockerfile`
+- [ ] `./dataland-qa-service/DockerfileBase`
+- [ ] `./dataland-qa-service/DockerfileTest`
+- [ ] `./dataland-rabbitmq/Dockerfile`
+- [ ] `./dataland-inbound-admin-proxy/Dockerfile`
+- [ ] `./dataland-inbound-proxy/Dockerfile`
+- [ ] `./dataland-pgadmin/Dockerfile`
+- [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
+- [ ] `./base-dockerfiles/DockerfileGradle`
+- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
   document-manager-db, qa-service-db and frontend-dev in `./docker-compose.yml`
-- [x] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new
+- [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new
   service that is not covered by the tasks above)
 
 ## Dataland Monitoring
