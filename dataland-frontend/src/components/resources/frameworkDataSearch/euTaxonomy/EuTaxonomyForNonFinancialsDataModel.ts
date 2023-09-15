@@ -35,7 +35,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "fiscalYearEnd",
             label: "Fiscal Year End",
-            description: "The date at which the fiscal year ends.",
+            description: "The date the fiscal year ends.",
             unit: "",
             component: "DateFormField",
             evidenceDesired: false,
@@ -90,7 +90,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
           {
             name: "nfrdMandatory",
             label: "NFRD Mandatory",
-            description: "The reporting obligation for companies whose number of employees is greater or equal to 500",
+            description: "Is the NFRD mandatory for your company?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: false,
@@ -116,7 +116,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
   {
     name: "revenue",
     label: "Revenue",
-    color: "orange",
+    color: "green",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -255,7 +255,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             name: "nonEligibleShare",
             label: "Non-Eligible Revenue",
             description:
-              "Absolute value and share of the revenue where the economic activity does not meet taxonomy criteria for substantial contribution to climate change mitigation or does no serious harm to the other environmental objectives (DNSH criteria)",
+              "Absolute value and share of the revenue where the economic activity does not meet taxonomy criteria for substantial contribution to climate change mitigation or does serious harm to the other environmental objectives (DNSH criteria)",
             unit: "Percentage",
             component: "FinancialShareFormField",
             evidenceDesired: false,
@@ -267,7 +267,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             label: "Enabling Revenue",
             description:
               "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
-            unit: "",
+            unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
             required: false,
@@ -278,7 +278,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             label: "Transitional Revenue",
             description:
               "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-            unit: "",
+            unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
             required: false,
@@ -314,8 +314,8 @@ export const euTaxonomyForNonFinancialsDataModel = [
             name: "eligibleShare",
             label: "Eligible CapEx",
             description:
-              "Absolute value and share of the OpEx that is part of a plan to meet the taxonomy criteria for substantial contribution to climate change adaptation and relevant DNSH criteria",
-            unit: "",
+              "Absolute value and share of the CapEx that is part of a plan to meet taxonomy criteria for substantial contribution to either climate change mitigation or climate change adaptation",
+            unit: "Percentage",
             component: "FinancialShareFormField",
             evidenceDesired: false,
             required: false,
@@ -326,7 +326,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             label: "Aligned CapEx",
             description:
               "Absolute value and share of the CapEx that is either already taxonomy-aligned or is part of a credible plan to extend or reach taxonomy alignment, i.e., an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards",
-            unit: "",
+            unit: "Percentage",
             component: "FinancialShareFormField",
             evidenceDesired: false,
             required: false,
@@ -441,7 +441,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             label: "Enabling CapEx",
             description:
               "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
-            unit: "",
+            unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
             required: false,
@@ -452,7 +452,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             label: "Transitional CapEx",
             description:
               "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-            unit: "",
+            unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
             required: false,
@@ -612,10 +612,10 @@ export const euTaxonomyForNonFinancialsDataModel = [
           },
           {
             name: "enablingShareInPercent",
-            label: " Enabling OpEx",
+            label: "Enabling OpEx",
             description:
               "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors",
-            unit: "",
+            unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
             required: false,
@@ -626,7 +626,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             label: "Transitional OpEx",
             description:
               "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-            unit: "",
+            unit: "Percentage",
             component: "PercentageFormField",
             evidenceDesired: false,
             required: false,

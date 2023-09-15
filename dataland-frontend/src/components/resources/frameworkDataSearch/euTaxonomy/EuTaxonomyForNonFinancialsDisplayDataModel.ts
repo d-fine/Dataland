@@ -134,7 +134,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
   {
     name: "revenue",
     label: "Revenue",
-    color: "yellow",
+    color: "green",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -396,7 +396,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
   {
     name: "capex",
     label: "CapEx",
-    color: "green",
+    color: "yellow",
     showIf: (): boolean => true,
     subcategories: [
       {
