@@ -296,7 +296,11 @@ export default defineComponent({
       for (const property in modifiedObject) {
         if (property.includes("InPercent")) {
           const originalValue = modifiedObject[property] as number;
-          modifiedObject[property] = roundNumber(factor * originalValue, String(originalValue).length);
+          let precisionValue = String(originalValue).length;
+          if (precisionValue < 2) {
+            precisionValue = 2;
+          }
+          modifiedObject[property] = roundNumber(factor * originalValue, precisionValue);
         } else if (typeof modifiedObject[property] === "object") {
           this.multiplyPercentageFieldsOfObjectByFactor(
             modifiedObject[property] as Record<string, number | object>,
