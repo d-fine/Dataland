@@ -38,7 +38,6 @@ export default defineComponent({
   data() {
     return {
       reviewSubmitted: false,
-      reviewSuccessful: false,
       QaStatus,
     };
   },

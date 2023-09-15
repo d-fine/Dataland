@@ -65,7 +65,6 @@ export default defineComponent({
   methods: {
     /**
      * Sets dataset quality status to the given status
-     * @param qaStatus the QA status to be assigned
      */
     async setQaStatus() {
       try {
