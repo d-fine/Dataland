@@ -42,8 +42,8 @@
             },
             "comment": "connect virtual transmitter",
             "value": {
-              "amount": null,
-              "currency": null
+              "amount": 0.0,
+              "currency": "EUR"
             }
           },
           "nonEligibleShare": {

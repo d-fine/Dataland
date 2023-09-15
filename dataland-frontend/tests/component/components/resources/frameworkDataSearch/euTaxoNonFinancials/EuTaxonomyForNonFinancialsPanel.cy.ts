@@ -1,13 +1,17 @@
 import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials, DataTypeEnum } from "@clients/backend";
+import {
+  type AmountWithCurrency,
+  type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
+  DataTypeEnum,
+} from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type { CompanyReport } from "@clients/backend";
 import { roundNumber } from "@/utils/NumberConversionUtils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
 
-describe("Component test for the EuTaxonomy Page", () => {
+describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
 
   before(function () {
@@ -32,9 +36,21 @@ describe("Component test for the EuTaxonomy Page", () => {
         companyId: "mock-company-Id",
       },
     }).then(() => {
+      const revenueOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.revenue);
+      const alphaTotalRevenueExpectedValue = {
+        amount: 0.0,
+        currency: "EUR",
+      } as AmountWithCurrency;
+      cy.wrap(revenueOfDatasetAlpha.totalAmount?.value).should("deep.eq", alphaTotalRevenueExpectedValue);
+
       const capexOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.capex);
       const capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
       const capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
+
+      const alphaContributionToClimateChangeMitigation = roundNumber(
+        assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent) * 100,
+        2,
+      );
 
       const betaTotalAlignedCapexPercentage = roundNumber(
         assertDefined(capexOfDatasetBeta.alignedShare?.relativeShareInPercent) * 100,
@@ -54,6 +70,15 @@ describe("Component test for the EuTaxonomy Page", () => {
         assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigationInPercent) * 100,
         2,
       );
+
+      cy.get(`[data-test='Revenue']`).click();
+
+      cy.get('tr:has(td > span:contains("Total Revenue"))')
+        .next("tr")
+        .next("tr")
+        .find("span")
+        .should("contain", "Value")
+        .should("contain", "0 EUR");
 
       cy.get(`[data-test='CapEx']`).click();
 
