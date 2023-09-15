@@ -69,16 +69,15 @@ export default defineComponent({
      */
     async setQaStatus() {
       try {
-        this.reviewSubmitted = true;
         const qaServiceControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getQaControllerApi();
-        // TODO: Un-comment final request when finished task.
-        // await qaServiceControllerApi.assignQaStatus(this.dataId, this.qaStatus);
+        await qaServiceControllerApi.assignQaStatus(this.dataId, this.qaStatus);
+        this.reviewSubmitted = true;
         this.reviewSuccessful = true;
         setTimeout(() => {
           this.closeTheDialog();
-        }, 10000000); // TODO: Reduce timeout to 4-6 seconds for automatic close of dialog
+        }, 5000);
       } catch (error) {
         console.error(error);
       }
