@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { type SmeData, type SmeProduct, type SmeProductionSite } from "@clients/backend";
-import { generateNumber } from "@e2e/fixtures/common/NumberFixtures";
+import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import {
@@ -37,15 +37,15 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
   return {
     general: {
       basicInformation: {
-        sector: generateListOfNaceCodes(1),
+        sector: generateListOfRandomNaceCodes(1),
         addressOfHeadquarters: generateAddress(dataGenerator.undefinedProbability),
-        numberOfEmployees: generateNumber(10000),
+        numberOfEmployees: generateInt(10000),
         fiscalYearStart: generateFutureDate(),
       },
       companyFinancials: {
-        revenueInEur: dataGenerator.randomNumber(100000000),
-        operatingCostInEur: dataGenerator.randomNumber(80000000),
-        capitalAssetsInEur: dataGenerator.randomNumber(70000000),
+        revenueInEur: dataGenerator.randomInt(100000000),
+        operatingCostInEur: dataGenerator.randomInt(80000000),
+        capitalAssetsInEur: dataGenerator.randomInt(70000000),
       },
     },
     production: {
@@ -63,9 +63,9 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
         ),
       },
       consumption: {
-        powerConsumptionInMwh: dataGenerator.valueOrUndefined(generateNumber(2000)),
+        powerConsumptionInMwh: dataGenerator.valueOrUndefined(generateInt(2000)),
         powerFromRenewableSources: dataGenerator.randomYesNo(),
-        energyConsumptionHeatingAndHotWater: dataGenerator.randomNumber(1000),
+        energyConsumptionHeatingAndHotWater: dataGenerator.randomInt(1000),
         primaryEnergySourceForHeatingAndHotWater: dataGenerator.valueOrUndefined(generateHeatSource()),
         energyConsumptionCoveredByOwnRenewablePowerGeneration: dataGenerator.valueOrUndefined(
           generatePercentageRangeEnergyConsumption(),
@@ -75,7 +75,7 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
     insurances: {
       naturalHazards: {
         insuranceAgainstNaturalHazards: dataGenerator.randomYesNo(),
-        amountCoveredByInsuranceAgainstNaturalHazards: dataGenerator.randomNumber(50000000),
+        amountCoveredByInsuranceAgainstNaturalHazards: dataGenerator.randomInt(50000000),
         naturalHazardsCovered: dataGenerator.valueOrUndefined(generateSelectionOfNaturalHazards()),
       },
     },

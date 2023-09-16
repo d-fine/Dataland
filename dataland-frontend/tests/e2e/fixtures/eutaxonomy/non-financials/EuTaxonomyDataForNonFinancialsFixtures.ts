@@ -8,10 +8,9 @@ import {
   type EuTaxonomyDetailsPerCashFlowType,
 } from "@clients/backend";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { generateEuroValue } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
-import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 
 /**
@@ -38,7 +37,7 @@ export class EuNonFinancialsGenerator extends Generator {
    */
   generateAmountWithCurrency(): AmountWithCurrency {
     return {
-      amount: this.valueOrUndefined(generateEuroValue()),
+      amount: this.randomCurrencyValue(),
       currency: this.valueOrUndefined(generateIso4217CurrencyCode()),
     };
   }
@@ -59,9 +58,10 @@ export class EuNonFinancialsGenerator extends Generator {
    * @returns a random activity
    */
   generateActivity(): EuTaxonomyActivity {
+    const randomActivityName: Activity = faker.helpers.arrayElement(Object.values(Activity));
     return {
-      activityName: faker.helpers.arrayElement(Object.values(Activity)),
-      naceCodes: this.valueOrUndefined(generateListOfNaceCodes()),
+      activityName: randomActivityName,
+      naceCodes: this.valueOrUndefined(getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName)),
       share: this.generateFinancialShare(),
     };
   }

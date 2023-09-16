@@ -13,11 +13,11 @@ import { DEFAULT_PROBABILITY, Generator, valueOrUndefined } from "@e2e/utils/Fak
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { generateEuroValue, generateNumber, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
-import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 
 /**
@@ -64,7 +64,7 @@ function generateListOfGoodsOrServices(): string[] {
  * @returns a random LKSG dataset
  */
 export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): LksgData {
-  const dataGenerator = new P2pGenerator(undefinedProbability);
+  const dataGenerator = new LksgGenerator(undefinedProbability);
   return {
     general: {
       masterData: {
@@ -72,22 +72,22 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         headOfficeInGermany: dataGenerator.randomYesNo(),
         groupOfCompanies: dataGenerator.randomYesNo(),
         groupOfCompaniesName: dataGenerator.valueOrUndefined(faker.company.name()),
-        industry: dataGenerator.valueOrUndefined(generateListOfNaceCodes()),
-        numberOfEmployees: dataGenerator.valueOrUndefined(generateNumber(10000)),
+        industry: dataGenerator.valueOrUndefined(generateListOfRandomNaceCodes()),
+        numberOfEmployees: dataGenerator.valueOrUndefined(generateInt(10000)),
         seasonalOrMigrantWorkers: dataGenerator.randomYesNo(),
         shareOfTemporaryWorkers: dataGenerator.randomShareOfTemporaryWorkersInterval(),
-        annualTotalRevenue: dataGenerator.valueOrUndefined(generateEuroValue()),
+        annualTotalRevenue: dataGenerator.randomCurrencyValue(),
         totalRevenueCurrency: dataGenerator.valueOrUndefined(generateIso4217CurrencyCode()),
-        fixedAndWorkingCapital: dataGenerator.valueOrUndefined(generateNumber(10000)),
+        fixedAndWorkingCapital: dataGenerator.valueOrUndefined(generateInt(10000)),
       },
       productionSpecific: {
         manufacturingCompany: dataGenerator.randomYesNo(),
         capacity: dataGenerator.valueOrUndefined(
-          generateNumber(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
+          generateInt(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
         ),
         productionViaSubcontracting: dataGenerator.randomYesNo(),
         subcontractingCompaniesCountries: dataGenerator.valueOrUndefined(generateArray(generateIso2CountryCode)),
-        subcontractingCompaniesIndustries: dataGenerator.valueOrUndefined(generateListOfNaceCodes()),
+        subcontractingCompaniesIndustries: dataGenerator.valueOrUndefined(generateListOfRandomNaceCodes()),
         productionSites: dataGenerator.randomYesNo(),
         listOfProductionSites: dataGenerator.randomArray(() => generateProductionSite(undefinedProbability)),
         market: dataGenerator.randomNationalOrInternationalMarket(),
@@ -120,7 +120,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         appropriateGrievanceHandlingSupport: dataGenerator.randomYesNo(),
         accessToExpertiseForGrievanceHandling: dataGenerator.randomYesNo(),
         grievanceComplaints: dataGenerator.randomYesNo(),
-        complaintsNumber: dataGenerator.valueOrUndefined(generateNumber(10000)),
+        complaintsNumber: dataGenerator.valueOrUndefined(generateInt(10000)),
         complaintsReason: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
         actionsForComplaintsUndertaken: dataGenerator.randomYesNo(),
         whichActionsForComplaintsUndertaken: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
@@ -312,7 +312,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
   };
 }
 
-class P2pGenerator extends Generator {
+class LksgGenerator extends Generator {
   /**
    * Generates a random product
    * @returns a random product
@@ -334,7 +334,7 @@ class P2pGenerator extends Generator {
       generateArray(() => [generateIso2CountryCode(), this.valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!]),
     );
     return {
-      procuredProductTypesAndServicesNaceCodes: generateListOfNaceCodes(1),
+      procuredProductTypesAndServicesNaceCodes: generateListOfRandomNaceCodes(1),
       numberOfSuppliersPerCountryCode: this.valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
       percentageOfTotalProcurement: this.randomPercentageValue(),
     };

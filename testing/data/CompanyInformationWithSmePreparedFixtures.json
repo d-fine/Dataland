@@ -2,50 +2,48 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Cedar Rapids",
-			"headquartersPostalCode": "98587",
-			"sector": "e-markets",
+			"headquarters": "Kylerfurt",
+			"headquartersPostalCode": "52301-6118",
+			"sector": "mindshare",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [],
+				"Isin": [
+					"BndySHV9lODr",
+					"tTtEGdv0Y5QA"
+				],
 				"PermId": [],
-				"Ticker": [
-					"bERDV9V"
-				],
-				"Duns": [
-					"vFaJeBmRS"
-				],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"DSGqv4SkBBLhmqT"
+					"C1WajnOPzAgR2WZ"
 				]
 			},
-			"countryCode": "GT",
+			"countryCode": "MO",
 			"companyAlternativeNames": [
-				"Goodwin, Lind and Blick"
+				"DuBuque - Durgan",
+				"Paucek - Weissnat",
+				"Yundt - Hauck"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://amusing-amnesty.biz/",
+			"companyLegalForm": "GmbH & Co. KG",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
-						"I",
-						"L",
-						"M"
+						"A",
+						"B"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Ryan Inlet 2539",
-						"postalCode": "37360-6131",
-						"city": "West Kailey",
-						"state": "Louisiana",
-						"country": "GT"
+						"streetAndHouseNumber": "Heller Forges 7169",
+						"postalCode": "19491",
+						"city": "Jakobhaven",
+						"state": "Connecticut",
+						"country": "SH"
 					},
-					"numberOfEmployees": 8176,
-					"fiscalYearStart": "2024-08-15"
+					"numberOfEmployees": 9394,
+					"fiscalYearStart": "2024-02-05"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -57,32 +55,25 @@
 				"sites": {
 					"listOfProductionSites": []
 				},
-				"products": {
-					"listOfProducts": []
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1775,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 456,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": 1501,
+					"energyConsumptionHeatingAndHotWater": 814,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 48817702,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 48468946,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"EarthQuake",
-						"Avalanche",
-						"Hail",
-						"Snow"
+						"Wind",
+						"Flooding"
 					]
 				}
 			}
@@ -92,39 +83,35 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Haagstad",
-			"headquartersPostalCode": "52258",
-			"sector": "initiatives",
+			"headquarters": "Tuckahoe",
+			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [
-					"o1E6rPixFTJmAibqWeiE"
-				],
+				"Lei": [],
 				"Isin": [],
 				"PermId": [
-					"Hq1bnzKb6b"
+					"UpfdUaXnPP"
 				],
 				"Ticker": [],
 				"Duns": [
-					"lMDqEclnK"
+					"6e84AoIX1"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NL",
+			"countryCode": "VI",
 			"companyAlternativeNames": [
-				"Kuhlman Group",
-				"Rempel Inc"
+				"Hamill Inc",
+				"Wiza, Mertz and Walsh"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://snarling-hourglass.net/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://idolized-hole.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
-						"L"
+						"A"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -133,107 +120,75 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7889,
-					"fiscalYearStart": "2024-01-30"
+					"numberOfEmployees": 8054,
+					"fiscalYearStart": "2024-05-19"
 				},
 				"companyFinancials": {
-					"revenueInEur": 83807336,
-					"operatingCostInEur": 42606506,
-					"capitalAssetsInEur": 44454358
+					"operatingCostInEur": 5438908,
+					"capitalAssetsInEur": 30168278
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Will - Jacobs",
+							"nameOfProductionSite": "Ernser, Hackett and McClure",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Leffler Mountains 90309",
-								"postalCode": "73296",
-								"city": "Lake Aliborough",
-								"state": "Kentucky",
-								"country": "NG"
-							},
-							"percentageOfTotalRevenue": 0.0191
-						},
-						{
-							"nameOfProductionSite": "D'Amore, Roberts and Legros",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Justus Highway 520",
-								"postalCode": "79316-8678",
-								"city": "Cameronshire",
-								"state": "Massachusetts",
-								"country": "OM"
-							},
-							"percentageOfTotalRevenue": 0.0986
-						},
-						{
-							"nameOfProductionSite": "Flatley - Wolff",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "McDermott Lock 801",
-								"postalCode": "05799",
-								"city": "North Hailee",
-								"state": "Illinois",
-								"country": "ME"
-							},
-							"percentageOfTotalRevenue": 0.4681
-						},
-						{
-							"nameOfProductionSite": "Kihn, Okuneva and Mitchell",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jordan Ferry 3598",
-								"postalCode": "17041-4885",
-								"city": "East Junior",
-								"state": "Pennsylvania",
-								"country": "MM"
-							},
-							"percentageOfTotalRevenue": 0.206
-						},
-						{
-							"nameOfProductionSite": "Ankunding LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kutch Fall 92273",
-								"postalCode": "03931-4793",
-								"city": "West Marquiseport",
+								"streetAndHouseNumber": "Arnulfo Gardens 5103",
+								"postalCode": "86892",
+								"city": "Fort Graceview",
 								"state": "Virginia",
-								"country": "VA"
+								"country": "AG"
 							},
-							"percentageOfTotalRevenue": 0.1032
+							"percentageOfTotalRevenue": 0.5502
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kulas Estates 34202",
+								"postalCode": "26560-6060",
+								"city": "Lake Zanderstad",
+								"state": "Oklahoma",
+								"country": "NE"
+							},
+							"percentageOfTotalRevenue": 0.5669
+						},
+						{
+							"addressOfProductionSite": {
+								"postalCode": "51046-1729",
+								"city": "Gislasonbury",
+								"state": "Colorado",
+								"country": "WF"
+							},
+							"percentageOfTotalRevenue": 0.048
+						},
+						{
+							"nameOfProductionSite": "Kozey - Morar",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Alena Glens 112",
+								"city": "Bettyboro",
+								"state": "Massachusetts",
+								"country": "QA"
+							},
+							"percentageOfTotalRevenue": 0.2279
 						}
 					]
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Refined Granite Computer",
-							"percentageOfTotalRevenue": 0.7039
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 967,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 392,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMwh": 1520,
+					"energyConsumptionHeatingAndHotWater": 136,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 24174102,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Flooding",
-						"Hail",
-						"Snow",
-						"Wind"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 17500782
 				}
 			}
 		},
@@ -242,110 +197,78 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Sanfordmouth",
-			"headquartersPostalCode": "98252-3023",
-			"sector": "models",
+			"headquarters": "Catonsville",
+			"sector": "partnerships",
 			"identifiers": {
-				"Lei": [
-					"zxB28pikFtvCw5O8KCOk"
-				],
-				"Isin": [
-					"OV1GrnLSoOlz"
-				],
-				"PermId": [
-					"AHrBC2aaou"
-				],
+				"Lei": [],
+				"Isin": [],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"djJfukfGI"
-				],
-				"VatNumber": [
-					"MKmlgbYqe"
-				],
-				"CompanyRegistrationNumber": []
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"wZDt0rJ9FA1p05V"
+				]
 			},
-			"countryCode": "AG",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://authentic-shock.org/",
+			"countryCode": "VA",
+			"companyAlternativeNames": [
+				"Baumbach, Sauer and Morissette",
+				"Buckridge, Klocko and Trantow",
+				"Jaskolski, Lowe and Treutel"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://suburban-arch-rival.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
-						"I",
-						"J"
+						"A"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 1269,
-					"fiscalYearStart": "2024-05-13"
+					"numberOfEmployees": 953,
+					"fiscalYearStart": "2024-06-29"
 				},
 				"companyFinancials": {
-					"revenueInEur": 12583179,
-					"operatingCostInEur": 53782293,
-					"capitalAssetsInEur": 46247691
+					"operatingCostInEur": 72275354,
+					"capitalAssetsInEur": 8984011
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Jakubowski LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Harber Terrace 32986",
-								"postalCode": "86526",
-								"city": "Lake Vergie",
-								"state": "Arizona",
-								"country": "KH"
-							},
-							"percentageOfTotalRevenue": 0.7915
-						}
-					]
-				},
+				"sites": {},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Incredible Plastic Computer",
-							"percentageOfTotalRevenue": 0.7096
+							"name": "Unbranded Granite Chicken",
+							"percentageOfTotalRevenue": 0.5443
 						},
 						{
-							"name": "Ergonomic Plastic Pants",
-							"percentageOfTotalRevenue": 0.0737
+							"name": "Modern Metal Bike",
+							"percentageOfTotalRevenue": 0.2733
 						},
 						{
-							"name": "Unbranded Fresh Cheese",
-							"percentageOfTotalRevenue": 0.1443
+							"name": "Electronic Steel Shoes",
+							"percentageOfTotalRevenue": 0.2024
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 759,
+					"powerConsumptionInMwh": 1845,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 10,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 38128270,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Avalanche",
-						"Wind",
-						"Flooding"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 24299887
 				}
 			}
 		},

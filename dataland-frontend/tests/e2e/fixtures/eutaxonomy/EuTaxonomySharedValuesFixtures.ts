@@ -2,7 +2,7 @@ import { type EuTaxonomyDataForFinancials, type EuTaxonomyGeneral } from "@clien
 import { generateYesNoNa, generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
-import { generateNumber } from "@e2e/fixtures/common/NumberFixtures";
+import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { DEFAULT_PROBABILITY, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
@@ -20,7 +20,7 @@ export function generateEuTaxonomyWithBaseFields(
   return {
     fiscalYearDeviation: valueOrUndefined(generateFiscalYearDeviation(), undefinedProbability),
     fiscalYearEnd: valueOrUndefined(generatePastDate(), undefinedProbability),
-    numberOfEmployees: valueOrUndefined(generateNumber(100000), undefinedProbability),
+    numberOfEmployees: valueOrUndefined(generateInt(100000), undefinedProbability),
     referencedReports: referencedReports,
     assurance: generateAssuranceData(referencedReports),
     scopeOfEntities: valueOrUndefined(generateYesNoNa(), undefinedProbability),

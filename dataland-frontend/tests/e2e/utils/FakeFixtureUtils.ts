@@ -7,7 +7,7 @@ import {
 import { type ReferencedDocuments, generateArray } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { type YesNo, type YesNoNa } from "@clients/backend";
-import { generateNumber, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateFloat, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 import { faker } from "@faker-js/faker";
 
@@ -50,8 +50,12 @@ export class Generator {
     return this.valueOrUndefined(generatePercentageValue());
   }
 
-  randomNumber(max = 10000): number | undefined {
-    return this.valueOrUndefined(generateNumber(max));
+  randomInt(max = 10000): number | undefined {
+    return this.valueOrUndefined(generateInt(max));
+  }
+
+  randomCurrencyValue(): number | undefined {
+    return this.valueOrUndefined(generateFloat(0, 1e10));
   }
 
   randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | undefined {
