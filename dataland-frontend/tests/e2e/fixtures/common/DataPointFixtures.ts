@@ -3,7 +3,7 @@ import { type CompanyReportReference, type DocumentReference, QualityOptions } f
 import { generateDataSource } from "./DataSourceFixtures";
 import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNoNa } from "./YesNoFixtures";
-import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 
@@ -11,17 +11,18 @@ const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedRepo
 
 /**
  * Generates a random non-empty set of reports that can be referenced
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random non-empty set of reports
  */
-export function generateReferencedReports(): ReferencedDocuments {
+export function generateReferencedReports(undefinedProbability = DEFAULT_PROBABILITY): ReferencedDocuments {
   const availableReportNames = faker.helpers.arrayElements(possibleReports, { min: 1, max: possibleReports.length });
 
   const referencedReports: ReferencedDocuments = {};
   for (const reportName of availableReportNames) {
     referencedReports[reportName] = {
       reference: getReferencedDocumentId(),
-      isGroupLevel: valueOrUndefined(generateYesNoNa()),
-      reportDate: valueOrUndefined(generatePastDate()),
+      isGroupLevel: valueOrUndefined(generateYesNoNa(), undefinedProbability),
+      reportDate: valueOrUndefined(generatePastDate(), undefinedProbability),
       currency: faker.finance.currencyCode(),
     };
   }

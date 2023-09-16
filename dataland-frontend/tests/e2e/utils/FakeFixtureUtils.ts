@@ -30,7 +30,7 @@ export class Generator {
 
   constructor(undefinedProbability = DEFAULT_PROBABILITY) {
     this.undefinedProbability = undefinedProbability;
-    this.reports = generateReferencedReports();
+    this.reports = generateReferencedReports(undefinedProbability);
     this.documents = generateReferencedDocuments();
   }
 

@@ -2,54 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "West Cathrine",
-			"headquartersPostalCode": "23083-3374",
+			"headquarters": "Cedar Rapids",
+			"headquartersPostalCode": "98587",
+			"sector": "e-markets",
 			"identifiers": {
-				"Lei": [
-					"O9CArILtUk881mGbj4t9"
+				"Lei": [],
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [
+					"bERDV9V"
 				],
-				"Isin": [
-					"A91JIApCnUTg",
-					"S1KiVJaMWY6l"
+				"Duns": [
+					"vFaJeBmRS"
 				],
-				"PermId": [
-					"vdwk45rlW4"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"7LL1haWO0"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"DSGqv4SkBBLhmqT"
+				]
 			},
-			"countryCode": "KM",
+			"countryCode": "GT",
 			"companyAlternativeNames": [
-				"Bashirian - Hackett",
-				"Rempel Group",
-				"Weimann - Simonis",
-				"Wisoky - Kutch"
+				"Goodwin, Lind and Blick"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://neighboring-fir.net",
+			"companyLegalForm": "GmbH",
+			"website": "https://amusing-amnesty.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"E",
-						"J",
-						"L"
+						"B",
+						"I",
+						"L",
+						"M"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Margret Forest 402",
-						"postalCode": "19389-0182",
-						"city": "Jadaborough",
-						"state": "Indiana",
-						"country": "TR"
+						"streetAndHouseNumber": "Ryan Inlet 2539",
+						"postalCode": "37360-6131",
+						"city": "West Kailey",
+						"state": "Louisiana",
+						"country": "GT"
 					},
-					"numberOfEmployees": 2152,
-					"fiscalYearStart": "2024-03-11"
+					"numberOfEmployees": 8176,
+					"fiscalYearStart": "2024-08-15"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -62,23 +58,7 @@
 					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Luxurious Fresh Shirt"
-						},
-						{
-							"name": "Refined Rubber Cheese",
-							"percentageOfTotalRevenue": 0.6747
-						},
-						{
-							"name": "Generic Bronze Hat",
-							"percentageOfTotalRevenue": 0.0243
-						},
-						{
-							"name": "Practical Steel Bike",
-							"percentageOfTotalRevenue": 0.3302
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
@@ -86,22 +66,23 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1209,
+					"powerConsumptionInMwh": 1775,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 333,
+					"energyConsumptionHeatingAndHotWater": 456,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 48817702,
 					"naturalHazardsCovered": [
-						"Snow",
+						"Flooding",
 						"EarthQuake",
-						"Wind",
-						"Hail",
 						"Avalanche",
-						"Flooding"
+						"Hail",
+						"Snow"
 					]
 				}
 			}
@@ -111,38 +92,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Maudefurt",
-			"headquartersPostalCode": "74179",
-			"sector": "deliverables",
+			"headquarters": "Haagstad",
+			"headquartersPostalCode": "52258",
+			"sector": "initiatives",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"ObpM16kObahE"
+				"Lei": [
+					"o1E6rPixFTJmAibqWeiE"
 				],
+				"Isin": [],
 				"PermId": [
-					"LDryCGSboR"
+					"Hq1bnzKb6b"
 				],
-				"Ticker": [
-					"JoCAFJD"
+				"Ticker": [],
+				"Duns": [
+					"lMDqEclnK"
 				],
-				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MX",
+			"countryCode": "NL",
 			"companyAlternativeNames": [
-				"Dare Inc",
-				"Monahan, Monahan and McKenzie"
+				"Kuhlman Group",
+				"Rempel Inc"
 			],
-			"website": "https://enraged-chassis.info",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://snarling-hourglass.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
-						"H",
+						"B",
 						"L"
 					],
 					"addressOfHeadquarters": {
@@ -152,62 +133,107 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 158,
-					"fiscalYearStart": "2023-11-25"
+					"numberOfEmployees": 7889,
+					"fiscalYearStart": "2024-01-30"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 48659982,
-					"capitalAssetsInEur": 40958807
+					"revenueInEur": 83807336,
+					"operatingCostInEur": 42606506,
+					"capitalAssetsInEur": 44454358
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Frami, Prohaska and Huels",
+							"nameOfProductionSite": "Will - Jacobs",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Schowalter Mills 22896",
-								"postalCode": "51882-1378",
-								"city": "Barrowschester",
-								"state": "Georgia",
-								"country": "PE"
+								"streetAndHouseNumber": "Leffler Mountains 90309",
+								"postalCode": "73296",
+								"city": "Lake Aliborough",
+								"state": "Kentucky",
+								"country": "NG"
 							},
-							"percentageOfTotalRevenue": 0.4865
+							"percentageOfTotalRevenue": 0.0191
 						},
 						{
-							"nameOfProductionSite": "Heidenreich - Daniel",
+							"nameOfProductionSite": "D'Amore, Roberts and Legros",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jenkins Neck 83275",
-								"city": "West Rene",
-								"country": "FK"
+								"streetAndHouseNumber": "Justus Highway 520",
+								"postalCode": "79316-8678",
+								"city": "Cameronshire",
+								"state": "Massachusetts",
+								"country": "OM"
 							},
-							"percentageOfTotalRevenue": 0.871
+							"percentageOfTotalRevenue": 0.0986
+						},
+						{
+							"nameOfProductionSite": "Flatley - Wolff",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "McDermott Lock 801",
+								"postalCode": "05799",
+								"city": "North Hailee",
+								"state": "Illinois",
+								"country": "ME"
+							},
+							"percentageOfTotalRevenue": 0.4681
+						},
+						{
+							"nameOfProductionSite": "Kihn, Okuneva and Mitchell",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Jordan Ferry 3598",
+								"postalCode": "17041-4885",
+								"city": "East Junior",
+								"state": "Pennsylvania",
+								"country": "MM"
+							},
+							"percentageOfTotalRevenue": 0.206
+						},
+						{
+							"nameOfProductionSite": "Ankunding LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kutch Fall 92273",
+								"postalCode": "03931-4793",
+								"city": "West Marquiseport",
+								"state": "Virginia",
+								"country": "VA"
+							},
+							"percentageOfTotalRevenue": 0.1032
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Generic Soft Car"
+							"name": "Refined Granite Computer",
+							"percentageOfTotalRevenue": 0.7039
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 174,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 681,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMwh": 967,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 392,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 24174102,
+					"naturalHazardsCovered": [
+						"EarthQuake",
+						"Flooding",
+						"Hail",
+						"Snow",
+						"Wind"
+					]
 				}
 			}
 		},
@@ -216,71 +242,111 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "West Garfieldview",
-			"headquartersPostalCode": "21073-6219",
-			"sector": "paradigms",
+			"headquarters": "Sanfordmouth",
+			"headquartersPostalCode": "98252-3023",
+			"sector": "models",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"zxB28pikFtvCw5O8KCOk"
+				],
 				"Isin": [
-					"wqpUGGI2jhbP",
-					"DidkgUon19kP"
+					"OV1GrnLSoOlz"
 				],
-				"PermId": [],
-				"Ticker": [
-					"T1bOi9X"
+				"PermId": [
+					"AHrBC2aaou"
 				],
-				"Duns": [],
+				"Ticker": [],
+				"Duns": [
+					"djJfukfGI"
+				],
 				"VatNumber": [
-					"QxBGIK1Hi"
+					"MKmlgbYqe"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FI",
-			"companyAlternativeNames": [
-				"Treutel, Davis and Watsica"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://blaring-millstone.biz",
+			"countryCode": "AG",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://authentic-shock.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"C"
+						"B",
+						"I",
+						"J"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 4908,
-					"fiscalYearStart": "2024-06-20"
+					"numberOfEmployees": 1269,
+					"fiscalYearStart": "2024-05-13"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 26502350,
-					"capitalAssetsInEur": 57632509
+					"revenueInEur": 12583179,
+					"operatingCostInEur": 53782293,
+					"capitalAssetsInEur": 46247691
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Jakubowski LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Harber Terrace 32986",
+								"postalCode": "86526",
+								"city": "Lake Vergie",
+								"state": "Arizona",
+								"country": "KH"
+							},
+							"percentageOfTotalRevenue": 0.7915
+						}
+					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Incredible Plastic Computer",
+							"percentageOfTotalRevenue": 0.7096
+						},
+						{
+							"name": "Ergonomic Plastic Pants",
+							"percentageOfTotalRevenue": 0.0737
+						},
+						{
+							"name": "Unbranded Fresh Cheese",
+							"percentageOfTotalRevenue": 0.1443
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1147,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 530,
+					"powerConsumptionInMwh": 759,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 10,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
-				"naturalHazards": {}
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 38128270,
+					"naturalHazardsCovered": [
+						"Snow",
+						"Avalanche",
+						"Wind",
+						"Flooding"
+					]
+				}
 			}
 		},
 		"reportingPeriod": "2022"
