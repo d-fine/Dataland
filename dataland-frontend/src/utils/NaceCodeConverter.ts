@@ -1,14 +1,14 @@
 /**
- * Module to convert single letter Nace code to full sector name
+ * Module to convert single letter NACE code to full sector name
  */
 
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 
 /**
- * convert the Nace code to full sector name
+ * convert the NACE code to full sector name
  * @param  {KpiValue} kpiValue is the value that needs to be converted corresponding to its field
- * @returns the full sector name including Nace code at the beginning
+ * @returns the full sector name including NACE code at the beginning
  */
 export function convertNace(kpiValue: KpiValue): KpiValue {
   return Array.isArray(kpiValue)

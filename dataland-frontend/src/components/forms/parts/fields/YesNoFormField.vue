@@ -32,6 +32,7 @@
             :validation-label="validationLabel ?? label"
             :options="yesNoOptions"
             :data-test="dataTest"
+            @blur="handleBlurValue"
           />
         </div>
         <div>
@@ -74,12 +75,12 @@
           <div class="md:col-6 col-12 p-0">
             <FormKit
               type="select"
-              :modelValue="!isDataQualityRequired ? 'NA' : ''"
+              v-model="qualityValue"
               name="quality"
               :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
               placeholder="Data quality"
-              :options="qualityOptions"
+              :options="computeQualityOption"
             />
           </div>
         </div>
@@ -144,11 +145,19 @@ export default defineComponent({
       })),
       currentValue: undefined,
       currentReportValue: "",
+      qualityValue: "NA",
     };
   },
   computed: {
     isDataQualityRequired(): boolean {
       return this.currentValue ?? false;
+    },
+    computeQualityOption(): object {
+      if (this.currentValue == "") {
+        return this.qualityOptions;
+      } else {
+        return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
+      }
     },
   },
   emits: ["reportsUpdated"],
@@ -187,6 +196,16 @@ export default defineComponent({
     updateFileUploadFiles() {
       if (this.documentName !== "" && this.referencedDocument === undefined) {
         this.fileNamesForPrefill = [this.documentName];
+      }
+    },
+    /**
+     * Handle blur event on value input.
+     */
+    handleBlurValue() {
+      if (this.currentValue === undefined) {
+        this.qualityValue = "NA";
+      } else if (this.currentValue !== "" && this.qualityValue == "NA") {
+        this.qualityValue = "";
       }
     },
   },

@@ -28,12 +28,9 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import {
-  type AmountWithCurrency,
-  type EuTaxonomyAlignedActivity,
-} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
-import { formatPercentageNumberAsString } from "@/utils/Formatter";
+import { type EuTaxonomyAlignedActivity } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
+import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
 
 type NonAlignedActivityFieldValueObject = {
   activity: string;
@@ -86,7 +83,7 @@ export default defineComponent({
     this.mainColumnData = this.listOfRowContents.map((activity) => ({
       activity: activity.activityName as string,
       naceCodes: activity.naceCodes as string[],
-      revenue: this.formatAbsoluteShare(activity.share?.absoluteShare),
+      revenue: formatAmountWithCurrency(activity.share?.absoluteShare),
       revenuePercent: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
     }));
   },
@@ -98,16 +95,6 @@ export default defineComponent({
      */
     humanizeHeaderName(key: string) {
       return this.columnHeaders[this.kpiKeyOfTable][key];
-    },
-    /**
-     * @param absoluteShare object containing amount and currency properties
-     * @returns combined amount and currency
-     */
-    formatAbsoluteShare(absoluteShare: AmountWithCurrency | undefined): string {
-      if (!absoluteShare) return "";
-      const amount = absoluteShare.amount ?? "";
-      const currency = absoluteShare.currency ?? "";
-      return `${amount} ${currency}`;
     },
     /**
      *

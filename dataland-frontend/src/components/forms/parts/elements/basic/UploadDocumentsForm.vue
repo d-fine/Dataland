@@ -1,6 +1,6 @@
 <template>
   <!-- Select company reports -->
-  <div class="uploaded-files" style="padding: 0; margin-left: 0">
+  <div id="uploadReports" class="uploaded-files" style="padding: 0; margin-left: 0">
     <FileUpload
       name="fileUpload"
       ref="fileUpload"

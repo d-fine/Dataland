@@ -48,8 +48,11 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
-import { formatAmountWithCurrency } from "@/utils/Formatter";
-import { roundNumber } from "@/utils/NumberConversionUtils";
+import {
+  formatAmountWithCurrency,
+  formatPercentageNumberAsString,
+  formatNumberToReadableFormat,
+} from "@/utils/Formatter";
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import type { CompanyReport } from "@clients/backend";
 
@@ -143,15 +146,17 @@ export default defineComponent({
     },
 
     /**
-     * Checks if a KpiValue is an object with amount and/or currency
+     * Checks if a KpiValue is an object with amount and currency
      * @param kpiValue the kpiValue that shall be checked
      * @returns a boolean based on the result of the check
      */
-    hasKpiObjectAmountOrCurrency(kpiValue: KpiValue): boolean {
+    isKpiObjectAmountWithCurrency(kpiValue: KpiValue): boolean {
       return (
         typeof kpiValue === "object" &&
-        (("amount" in kpiValue && (typeof kpiValue.amount === "number" || kpiValue.amount === null)) ||
-          ("currency" in kpiValue && (typeof kpiValue.currency === "string" || kpiValue.currency === null)))
+        "amount" in kpiValue &&
+        (typeof kpiValue.amount === "number" || kpiValue.amount === null) &&
+        "currency" in kpiValue &&
+        (typeof kpiValue.currency === "string" || kpiValue.currency === null)
       );
     },
 
@@ -195,10 +200,13 @@ export default defineComponent({
         return humanizeStringOrNumber(kpiValueToFormat as string);
       }
       if (field.component == "PercentageFormField") {
-        return roundNumber((kpiValueToFormat as number) * 100, 2);
+        return formatPercentageNumberAsString(kpiValueToFormat as number);
       }
-      if (this.hasKpiObjectAmountOrCurrency(kpiValueToFormat)) {
+      if (this.isKpiObjectAmountWithCurrency(kpiValueToFormat)) {
         return formatAmountWithCurrency(kpiValueToFormat as AmountWithCurrency);
+      }
+      if (typeof kpiValueToFormat === "number") {
+        return formatNumberToReadableFormat(kpiValueToFormat);
       }
       return kpiValueToFormat;
     },
