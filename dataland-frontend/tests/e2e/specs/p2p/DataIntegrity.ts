@@ -46,7 +46,7 @@ describeIf(
       cy.contains(assertDefined(p2pFixtureForTest.t.general.emissionsPlanning?.relativeEmissions));
       cy.contains("CEMENT").click();
       cy.contains("Material").click();
-      cy.contains(assertDefined(p2pFixtureForTest.t.cement?.material?.preCalcinedClayUsage));
+      cy.contains(assertDefined(p2pFixtureForTest.t.cement?.material?.preCalcinedClayUsage).toFixed(0));
     }
 
     it("Create a company via api and upload a P2P dataset via the api", () => {

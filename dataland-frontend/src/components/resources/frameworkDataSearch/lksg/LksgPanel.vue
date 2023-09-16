@@ -30,6 +30,7 @@ import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import { convertToMillions } from "@/utils/NumberConversionUtils";
 import { convertNace } from "@/utils/NaceCodeConverter";
+import { formatNumberToReadableFormat, formatPercentageNumberAsString } from "@/utils/Formatter";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -233,7 +234,7 @@ export default defineComponent({
           ),
           percentageOfTotalProcurement:
             lksgProcurementCategory.percentageOfTotalProcurement != null
-              ? String(lksgProcurementCategory.percentageOfTotalProcurement).concat(" %")
+              ? formatPercentageNumberAsString(lksgProcurementCategory.percentageOfTotalProcurement)
               : null,
         };
       });
@@ -255,10 +256,16 @@ export default defineComponent({
       if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
         kpiValue = this.reformatCountriesValue(kpiValue);
       }
+      if (kpiField.component == "PercentageFormField") {
+        kpiValue = formatPercentageNumberAsString(kpiValue as number);
+      }
       if (kpiField.name === "productsServicesCategoriesPurchased") {
         kpiValue = this.reformatProcurementCategoriesValue(
           kpiValue as Map<ProcurementCategoryType, LksgProcurementCategory> | null,
         );
+      }
+      if (typeof kpiValue === "number" && kpiField.component != "PercentageFormField") {
+        kpiValue = formatNumberToReadableFormat(kpiValue);
       }
 
       let returnValue;

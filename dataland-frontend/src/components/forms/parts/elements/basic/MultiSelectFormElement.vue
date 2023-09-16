@@ -7,6 +7,7 @@
     option-value="value"
     :show-toggle-all="false"
     :class="innerClass"
+    :emptyMessage="emptyMessage"
   />
   <!--
     Note: It is required to set the id of this div to the FormKit node Id to allow the checkCustomInputs methods
@@ -47,6 +48,21 @@ export default defineComponent({
       selections: [] as string[],
     };
   },
-  props: DropdownOptionFormFieldProps,
+  props: {
+    ...DropdownOptionFormFieldProps,
+    emptyMessage: {
+      type: String,
+      default: "No available options",
+    },
+  },
+  methods: {
+    /**
+     * Resets selected values
+     */
+    // eslint-disable-next-line vue/no-unused-properties
+    clearSelections() {
+      this.selections = [];
+    },
+  },
 });
 </script>

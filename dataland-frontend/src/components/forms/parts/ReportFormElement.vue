@@ -23,7 +23,6 @@
 
     <!-- Currency used in the report -->
     <SingleSelectFormField
-      validation="length:2,3"
       validation-label="Currency used in the report"
       placeholder="Currency used in the report"
       :options="countryCodeOptions"

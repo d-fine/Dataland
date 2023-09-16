@@ -1,13 +1,15 @@
 <template>
-  <div class="form-field">
+  <div class="form-field" :data-test="dataTest">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <MultiSelectFormElement
+      ref="multiSelectFormElementRef"
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
       :options="options"
       :innerClass="innerClass"
+      :emptyMessage="emptyMessage"
     />
   </div>
 </template>
@@ -22,6 +24,15 @@ import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/Fo
 export default defineComponent({
   name: "MultiSelectFormField",
   components: { MultiSelectFormElement, UploadFormHeader },
-  props: DropdownOptionFormFieldProps,
+  props: {
+    ...DropdownOptionFormFieldProps,
+    dataTest: {
+      type: String,
+      default: "multiSelectFormElement",
+    },
+    emptyMessage: {
+      type: String,
+    },
+  },
 });
 </script>
