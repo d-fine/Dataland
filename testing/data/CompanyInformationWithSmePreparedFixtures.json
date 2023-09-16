@@ -2,30 +2,34 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Kylerfurt",
-			"headquartersPostalCode": "52301-6118",
-			"sector": "mindshare",
+			"headquarters": "West Hiramstead",
+			"headquartersPostalCode": "02581",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"BndySHV9lODr",
-					"tTtEGdv0Y5QA"
+					"hGzfBgnGpNv2",
+					"phXNyQU1ZHjR"
 				],
-				"PermId": [],
+				"PermId": [
+					"lApTXnf6g9"
+				],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"Lh9TklgXH"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"C1WajnOPzAgR2WZ"
+					"ci6qXkrFep7hOyF"
 				]
 			},
-			"countryCode": "MO",
+			"countryCode": "WF",
 			"companyAlternativeNames": [
-				"DuBuque - Durgan",
-				"Paucek - Weissnat",
-				"Yundt - Hauck"
+				"Ebert Inc",
+				"Gerhold - Pollich",
+				"Langosh Group"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"companyLegalForm": "AG",
+			"website": "https://other-apparatus.info",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -36,14 +40,14 @@
 						"B"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Heller Forges 7169",
-						"postalCode": "19491",
-						"city": "Jakobhaven",
-						"state": "Connecticut",
-						"country": "SH"
+						"streetAndHouseNumber": "Balistreri Lock 603",
+						"postalCode": "92784-1500",
+						"city": "Fort Joaquin",
+						"state": "Washington",
+						"country": "PG"
 					},
-					"numberOfEmployees": 9394,
-					"fiscalYearStart": "2024-02-05"
+					"numberOfEmployees": 8501,
+					"fiscalYearStart": "2024-04-16"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -55,25 +59,29 @@
 				"sites": {
 					"listOfProductionSites": []
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": []
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1501,
-					"energyConsumptionHeatingAndHotWater": 814,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 423,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 491,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 48468946,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 1502964,
 					"naturalHazardsCovered": [
-						"Wind",
-						"Flooding"
+						"Hail",
+						"Wind"
 					]
 				}
 			}
@@ -83,35 +91,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Tuckahoe",
-			"sector": "lifetime value",
+			"headquarters": "North Fionafort",
+			"sector": "schemas",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [],
-				"PermId": [
-					"UpfdUaXnPP"
+				"Lei": [
+					"3hF9KvDsikPzT7zAEx1y"
 				],
+				"Isin": [
+					"wae1UB2xQ1RT",
+					"IVOgkd6bnzqo"
+				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"6e84AoIX1"
+				"Duns": [],
+				"VatNumber": [
+					"imbfEx2bW"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"qBnCW7eHlOdxEsD"
+				]
 			},
-			"countryCode": "VI",
+			"countryCode": "SO",
 			"companyAlternativeNames": [
-				"Hamill Inc",
-				"Wiza, Mertz and Walsh"
+				"Keeling - Hyatt",
+				"Reichert and Sons",
+				"Wintheiser - Haag"
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://idolized-hole.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A"
+						"B"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -120,75 +133,37 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8054,
-					"fiscalYearStart": "2024-05-19"
+					"numberOfEmployees": 3803,
+					"fiscalYearStart": "2024-01-01"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 5438908,
-					"capitalAssetsInEur": 30168278
+					"capitalAssetsInEur": 62353727
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Ernser, Hackett and McClure",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Arnulfo Gardens 5103",
-								"postalCode": "86892",
-								"city": "Fort Graceview",
-								"state": "Virginia",
-								"country": "AG"
-							},
-							"percentageOfTotalRevenue": 0.5502
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kulas Estates 34202",
-								"postalCode": "26560-6060",
-								"city": "Lake Zanderstad",
-								"state": "Oklahoma",
-								"country": "NE"
-							},
-							"percentageOfTotalRevenue": 0.5669
-						},
-						{
-							"addressOfProductionSite": {
-								"postalCode": "51046-1729",
-								"city": "Gislasonbury",
-								"state": "Colorado",
-								"country": "WF"
-							},
-							"percentageOfTotalRevenue": 0.048
-						},
-						{
-							"nameOfProductionSite": "Kozey - Morar",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Alena Glens 112",
-								"city": "Bettyboro",
-								"state": "Massachusetts",
-								"country": "QA"
-							},
-							"percentageOfTotalRevenue": 0.2279
-						}
-					]
-				},
+				"sites": {},
 				"products": {}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 1520,
-					"energyConsumptionHeatingAndHotWater": 136,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
+					"powerConsumptionInMwh": 549,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 701,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 17500782
+					"naturalHazardsCovered": [
+						"Snow",
+						"Flooding",
+						"Wind",
+						"Hail",
+						"EarthQuake"
+					]
 				}
 			}
 		},
@@ -197,78 +172,124 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Catonsville",
-			"sector": "partnerships",
+			"headquarters": "Saigefort",
+			"headquartersPostalCode": "44363",
+			"sector": "portals",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"KScs7LVrU"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"wZDt0rJ9FA1p05V"
+					"Vy11Yr02g0R9mlR"
 				]
 			},
-			"countryCode": "VA",
-			"companyAlternativeNames": [
-				"Baumbach, Sauer and Morissette",
-				"Buckridge, Klocko and Trantow",
-				"Jaskolski, Lowe and Treutel"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://suburban-arch-rival.name/",
+			"countryCode": "AI",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://thoughtful-smoke.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A"
+						"A",
+						"B"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 953,
-					"fiscalYearStart": "2024-06-29"
+					"numberOfEmployees": 6262,
+					"fiscalYearStart": "2023-12-13"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 72275354,
-					"capitalAssetsInEur": 8984011
+					"revenueInEur": 71814028,
+					"operatingCostInEur": 40712898,
+					"capitalAssetsInEur": 64310093
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {
-					"listOfProducts": [
+				"sites": {
+					"listOfProductionSites": [
 						{
-							"name": "Unbranded Granite Chicken",
-							"percentageOfTotalRevenue": 0.5443
+							"nameOfProductionSite": "Kreiger, Blick and Schroeder",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Johnston Track 538",
+								"postalCode": "39329",
+								"city": "Pourosstad",
+								"state": "Alaska",
+								"country": "IR"
+							},
+							"percentageOfTotalRevenue": 0.3688
 						},
 						{
-							"name": "Modern Metal Bike",
-							"percentageOfTotalRevenue": 0.2733
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Trantow Hills 8047",
+								"postalCode": "64668",
+								"city": "Maudietown",
+								"state": "Alabama",
+								"country": "KP"
+							},
+							"percentageOfTotalRevenue": 0.5569
 						},
 						{
-							"name": "Electronic Steel Shoes",
-							"percentageOfTotalRevenue": 0.2024
+							"nameOfProductionSite": "Walsh - Rippin",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Rodriguez Shore 13342",
+								"postalCode": "21940",
+								"city": "Lake Angie",
+								"country": "EE"
+							},
+							"percentageOfTotalRevenue": 0.1097
+						},
+						{
+							"nameOfProductionSite": "Brekke - Fahey",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Michaela Corners 331",
+								"postalCode": "16531-0226",
+								"city": "Midland",
+								"state": "New Mexico",
+								"country": "MO"
+							},
+							"percentageOfTotalRevenue": 0.1105
+						},
+						{
+							"nameOfProductionSite": "Daugherty and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Mona Field 668",
+								"postalCode": "05124-5101",
+								"city": "Ames",
+								"state": "Louisiana",
+								"country": "CR"
+							},
+							"percentageOfTotalRevenue": 0.6006
 						}
 					]
-				}
+				},
+				"products": {}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 1845,
-					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMwh": 1758,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 129,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 24299887
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 19354097
 				}
 			}
 		},

@@ -33,9 +33,14 @@ export function generateReferencedReports(undefinedProbability = DEFAULT_PROBABI
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
  * @param value the decimal value of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
+ * @param unit the unit of the datapoint to generate
  * @returns the generated datapoint
  */
-export function generateDatapoint<T>(value: T | undefined, reports: ReferencedDocuments): GenericDataPoint<T> {
+export function generateDatapoint<T>(
+  value: T | undefined,
+  reports: ReferencedDocuments,
+  unit?: string,
+): GenericDataPoint<T> {
   const qualityBucket =
     value === undefined
       ? QualityOptions.Na
@@ -48,6 +53,7 @@ export function generateDatapoint<T>(value: T | undefined, reports: ReferencedDo
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
+    unit: unit ?? undefined,
   } as GenericDataPoint<T>;
 }
 
@@ -56,6 +62,7 @@ export interface GenericDataPoint<T> {
   dataSource: CompanyReportReference | undefined;
   quality: QualityOptions;
   comment: string | undefined;
+  unit: string | undefined;
 }
 
 export interface GenericBaseDataPoint<T> {
@@ -73,7 +80,7 @@ function generateQualityAndDataSourceAndComment(
   reports: ReferencedDocuments,
   qualityBucket: QualityOptions,
 ): { dataSource: CompanyReportReference | undefined; comment: string | undefined } {
-  let dataSource: CompanyReportReference | undefined = undefined;
+  let dataSource: CompanyReportReference | undefined;
   let comment: string | undefined = undefined;
   if (
     qualityBucket === QualityOptions.Audited ||

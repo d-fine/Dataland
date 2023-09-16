@@ -9,6 +9,8 @@ import {
   generateEuTaxonomyDataForNonFinancials,
   EuNonFinancialsGenerator,
 } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
+import { faker } from "@faker-js/faker";
+import { generateCurrencyValue } from "@e2e/fixtures/common/NumberFixtures";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
@@ -82,7 +84,7 @@ function createOnlyEligibleAndTotalNumbers(
     const dataGenerator = new EuNonFinancialsGenerator(0);
     dataGenerator.reports = referencedReports;
     return {
-      totalAmount: dataGenerator.randomDataPoint(dataGenerator.generateAmountWithCurrency()),
+      totalAmount: dataGenerator.randomDataPoint(generateCurrencyValue(), faker.finance.currencyCode()),
       eligibleShare: dataGenerator.generateFinancialShare(),
     };
   }

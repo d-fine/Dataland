@@ -7,7 +7,7 @@ import {
 import { type ReferencedDocuments, generateArray } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { type YesNo, type YesNoNa } from "@clients/backend";
-import { generateFloat, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateCurrencyValue, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 import { faker } from "@faker-js/faker";
 
@@ -55,7 +55,7 @@ export class Generator {
   }
 
   randomCurrencyValue(): number | undefined {
-    return this.valueOrUndefined(generateFloat(0, 1e10));
+    return this.valueOrUndefined(generateCurrencyValue());
   }
 
   randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | undefined {
@@ -63,8 +63,8 @@ export class Generator {
     return this.valueOrUndefined({ value: input, dataSource: document } as GenericBaseDataPoint<T>);
   }
 
-  randomDataPoint<T>(input: T): GenericDataPoint<T> | undefined {
-    return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports));
+  randomDataPoint<T>(input: T, unit?: string): GenericDataPoint<T> | undefined {
+    return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports, unit));
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | undefined {

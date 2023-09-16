@@ -12,6 +12,7 @@ import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
 import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { generateCurrencyValue } from "@e2e/fixtures/common/NumberFixtures";
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
@@ -97,7 +98,7 @@ export class EuNonFinancialsGenerator extends Generator {
    */
   generateEuTaxonomyPerCashflowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: this.randomDataPoint(this.generateAmountWithCurrency()),
+      totalAmount: this.randomDataPoint(generateCurrencyValue(), faker.finance.currencyCode()),
       nonEligibleShare: this.generateFinancialShare(),
       eligibleShare: this.generateFinancialShare(),
       nonAlignedShare: this.generateFinancialShare(),

@@ -12,6 +12,17 @@ export function generateFloat(min = 0, max = 1e5, precision = 1e-2): number {
 }
 
 /**
+ * Generates a random currency value in [min, max]
+ * @param min the minimum allowed value (inclusive)
+ * @param max the maximum allowed value (inclusive)
+ * @param precision the precision of the decimal value
+ * @returns a random number in [min, max]
+ */
+export function generateCurrencyValue(min = 0, max = 1e10, precision = 1e-2): number {
+  return generateFloat(min, max, precision);
+}
+
+/**
  * Generates a random decimal value between 0 and 1
  * @param precision the precision of the decimal value
  * @returns a random float between 0 and 1
