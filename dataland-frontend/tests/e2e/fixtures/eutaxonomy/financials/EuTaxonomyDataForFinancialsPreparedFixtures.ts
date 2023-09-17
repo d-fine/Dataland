@@ -42,7 +42,10 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
 function createCreditInstitutionDualFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
+  const dataGenerator = new EuFinancialsGenerator();
+  dataGenerator.reports = input.t.referencedReports!;
   input.companyInformation.companyName = "credit-institution-dual-field-submission";
+  input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
     interbankLoans: generateDatapoint(generatePercentageValue(), input.t.referencedReports!),
     tradingPortfolio: generateDatapoint(generatePercentageValue(), input.t.referencedReports!),
@@ -59,7 +62,10 @@ function createCreditInstitutionDualFieldSubmission(
 function createCreditInstitutionSingleFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
+  const dataGenerator = new EuFinancialsGenerator();
+  dataGenerator.reports = input.t.referencedReports!;
   input.companyInformation.companyName = "credit-institution-single-field-submission";
+  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
     tradingPortfolioAndInterbankLoans: generateDatapoint(generatePercentageValue(), input.t.referencedReports!),
     greenAssetRatio: generateDatapoint(generatePercentageValue(), input.t.referencedReports!),
