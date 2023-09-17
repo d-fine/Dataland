@@ -3,7 +3,6 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type EuTaxonomyDataForFinancials, QualityOptions } from "@clients/backend";
 import { EuFinancialsGenerator, generateEuTaxonomyDataForFinancials } from "./EuTaxonomyDataForFinancialsFixtures";
 import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 
 type generatorFunction = (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials>;
 
@@ -42,14 +41,14 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
 function createCreditInstitutionDualFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
-  const dataGenerator = new EuFinancialsGenerator();
+  const dataGenerator = new EuFinancialsGenerator(0);
   dataGenerator.reports = input.t.referencedReports!;
   input.companyInformation.companyName = "credit-institution-dual-field-submission";
   input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
-    interbankLoans: generateDatapoint(generatePercentageValue(), input.t.referencedReports!),
-    tradingPortfolio: generateDatapoint(generatePercentageValue(), input.t.referencedReports!),
-    greenAssetRatio: generateDatapoint(generatePercentageValue(), input.t.referencedReports!),
+    interbankLoans: dataGenerator.randomDataPoint(generatePercentageValue()),
+    tradingPortfolio: dataGenerator.randomDataPoint(generatePercentageValue()),
+    greenAssetRatio: dataGenerator.randomDataPoint(generatePercentageValue()),
   };
   return input;
 }
@@ -62,13 +61,13 @@ function createCreditInstitutionDualFieldSubmission(
 function createCreditInstitutionSingleFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
-  const dataGenerator = new EuFinancialsGenerator();
+  const dataGenerator = new EuFinancialsGenerator(0);
   dataGenerator.reports = input.t.referencedReports!;
   input.companyInformation.companyName = "credit-institution-single-field-submission";
   input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
-    tradingPortfolioAndInterbankLoans: generateDatapoint(generatePercentageValue(), input.t.referencedReports!),
-    greenAssetRatio: generateDatapoint(generatePercentageValue(), input.t.referencedReports!),
+    tradingPortfolioAndInterbankLoans: dataGenerator.randomDataPoint(generatePercentageValue()),
+    greenAssetRatio: dataGenerator.randomDataPoint(generatePercentageValue()),
   };
   return input;
 }
