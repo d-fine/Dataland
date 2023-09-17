@@ -2,51 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Lansing",
-			"headquartersPostalCode": "42503",
-			"sector": "experiences",
+			"headquarters": "Ortizfield",
+			"headquartersPostalCode": "01536-5720",
+			"sector": "content",
 			"identifiers": {
 				"Lei": [
-					"J3BJ6fkY2YfDtIMEf5u9"
+					"urp4099QV7Pu1xYM3Gp7"
 				],
-				"Isin": [],
+				"Isin": [
+					"p94LqAZ3F6pm"
+				],
 				"PermId": [
-					"68vkzX54rI"
+					"beQKcMTQii"
 				],
-				"Ticker": [],
-				"Duns": [],
+				"Ticker": [
+					"DYxvnBN"
+				],
+				"Duns": [
+					"CEtBpXuaD"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"6f5orsDD7TBAKmR"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ZM",
+			"countryCode": "MY",
 			"companyAlternativeNames": [
-				"Hansen and Sons",
-				"Labadie Group",
-				"Mayert Group",
-				"O'Kon - Fritsch"
+				"Considine - Littel",
+				"Witting - Marvin"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://heavenly-inspiration.net/",
+			"companyLegalForm": "GmbH",
+			"website": "https://exciting-patty.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
 						"B"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Ayana River 329",
-						"postalCode": "18757",
-						"city": "Kozeystead",
-						"state": "Massachusetts",
-						"country": "NP"
+						"streetAndHouseNumber": "Deckow Canyon 230",
+						"city": "Lake Chanelshire",
+						"country": "NU"
 					},
-					"numberOfEmployees": 7873,
-					"fiscalYearStart": "2024-03-27"
+					"numberOfEmployees": 6070,
+					"fiscalYearStart": "2024-04-29"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -55,21 +54,63 @@
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Quitzon, Keebler and Daugherty",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Stark Gateway 88472",
+								"city": "Destineyhaven",
+								"state": "Virginia",
+								"country": "VN"
+							},
+							"percentageOfTotalRevenue": 0.3329
+						},
+						{
+							"nameOfProductionSite": "Klein - Lakin",
+							"addressOfProductionSite": {
+								"postalCode": "69458-2493",
+								"city": "Shieldsburgh",
+								"state": "Rhode Island",
+								"country": "MC"
+							},
+							"percentageOfTotalRevenue": 0.2577
+						},
+						{
+							"nameOfProductionSite": "Witting, Goldner and Armstrong",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kshlerin Corners 68314",
+								"postalCode": "37245",
+								"city": "Leanntown",
+								"state": "Illinois",
+								"country": "HU"
+							},
+							"percentageOfTotalRevenue": 0.1346
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Hauck Square 61062",
+								"city": "North Dillan",
+								"state": "Alabama",
+								"country": "MV"
+							},
+							"percentageOfTotalRevenue": 0.0754
+						}
+					]
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Electronic Fresh Salad"
+							"name": "Unbranded Concrete Salad",
+							"percentageOfTotalRevenue": 0.6725
 						},
 						{
-							"name": "Luxurious Soft Chips",
-							"percentageOfTotalRevenue": 0.0387
+							"name": "Sleek Granite Chicken",
+							"percentageOfTotalRevenue": 0.4243
 						},
 						{
-							"name": "Bespoke Concrete Pizza"
-						},
-						{
-							"name": "Tasty Concrete Cheese"
+							"name": "Small Concrete Table",
+							"percentageOfTotalRevenue": 0.3495
 						}
 					]
 				}
@@ -79,19 +120,21 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1850,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 73,
+					"powerConsumptionInMwh": 1855,
+					"energyConsumptionHeatingAndHotWater": 807,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 37775295,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 4267276,
 					"naturalHazardsCovered": [
+						"Hail",
+						"Flooding",
+						"Wind",
 						"Snow",
-						"Avalanche"
+						"EarthQuake"
 					]
 				}
 			}
@@ -101,27 +144,28 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Juniorfield",
-			"headquartersPostalCode": "37644-4666",
-			"sector": "e-business",
+			"headquarters": "Angelostad",
+			"headquartersPostalCode": "66100",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"knBgIw28k7wP"
+				"Lei": [
+					"0QtpJs6OED7njpOIkxrK"
 				],
+				"Isin": [],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"XxPSmfTDD"
+				"Ticker": [
+					"AUStjof"
 				],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"CjiEo5zt7yAydRS"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "VA",
-			"companyAlternativeNames": [],
-			"website": "https://great-conspiracy.name",
+			"countryCode": "BV",
+			"companyAlternativeNames": [
+				"Boehm Group",
+				"Buckridge and Sons",
+				"Dach, Pacocha and Zboncak"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -138,37 +182,95 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 328,
-					"fiscalYearStart": "2024-07-28"
+					"numberOfEmployees": 8790,
+					"fiscalYearStart": "2023-10-20"
 				},
 				"companyFinancials": {
-					"revenueInEur": 26897996,
-					"capitalAssetsInEur": 28711900
+					"operatingCostInEur": 39149618,
+					"capitalAssetsInEur": 39777404
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {}
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Nitzsche Inc",
+							"addressOfProductionSite": {
+								"postalCode": "49837-0515",
+								"city": "Raynorworth",
+								"state": "New Hampshire",
+								"country": "AU"
+							},
+							"percentageOfTotalRevenue": 0.3352
+						},
+						{
+							"nameOfProductionSite": "Bartoletti Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Karine Lane 44470",
+								"postalCode": "55080-9199",
+								"city": "North Ford",
+								"country": "MW"
+							},
+							"percentageOfTotalRevenue": 0.2448
+						},
+						{
+							"nameOfProductionSite": "Grant, Beatty and Blanda",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Polly Underpass 774",
+								"postalCode": "14951",
+								"city": "Malden",
+								"state": "Oregon",
+								"country": "BW"
+							},
+							"percentageOfTotalRevenue": 0.8884
+						},
+						{
+							"nameOfProductionSite": "Bode - Ondricka",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Tanya Pike 254",
+								"postalCode": "68627",
+								"city": "Goldnerside",
+								"state": "Colorado",
+								"country": "TR"
+							},
+							"percentageOfTotalRevenue": 0.2777
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Champlin Ridges 414",
+								"postalCode": "42249-6326",
+								"city": "Trishachester",
+								"country": "MS"
+							},
+							"percentageOfTotalRevenue": 0.3703
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Oriental Concrete Pizza",
+							"percentageOfTotalRevenue": 0.6183
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 256,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMwh": 1292,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 786,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Avalanche",
-						"Snow",
-						"Hail",
-						"Wind"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 40615240
 				}
 			}
 		},
@@ -177,35 +279,30 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Lorichester",
-			"sector": "deliverables",
+			"headquarters": "West Jovannyland",
+			"headquartersPostalCode": "19382",
+			"sector": "paradigms",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"zK6NX9P9yySp",
-					"oLYxILcGthjI"
+					"5GneKEEUBqx9"
 				],
-				"PermId": [
-					"BUtxLMOjW7"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"pyIAj1mVC"
+					"BY8vbRdGf"
 				],
-				"VatNumber": [
-					"nYkqgyzCt"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"phCgZTh831glgTB"
+					"j5rVwogY6SHOtGQ"
 				]
 			},
-			"countryCode": "TD",
+			"countryCode": "LA",
 			"companyAlternativeNames": [
-				"McLaughlin, Casper and Wilderman",
-				"Schaefer, Bartell and Padberg",
-				"Schmeler, Williamson and Brekke"
+				"Goodwin, Kessler and Jenkins",
+				"Hoeger, Rolfson and Blick",
+				"Romaguera and Sons"
 			],
-			"website": "https://exalted-downforce.name",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -219,75 +316,57 @@
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 3033,
-					"fiscalYearStart": "2024-07-20"
+					"numberOfEmployees": 2617,
+					"fiscalYearStart": "2024-03-20"
 				},
 				"companyFinancials": {
-					"revenueInEur": 47081440,
-					"operatingCostInEur": 77594028,
-					"capitalAssetsInEur": 53563864
+					"revenueInEur": 42467899,
+					"operatingCostInEur": 1518424,
+					"capitalAssetsInEur": 42944345
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Cole, Lowe and Douglas",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Mathew Course 822",
-								"postalCode": "29915",
-								"city": "Harrisburg",
-								"state": "Connecticut",
-								"country": "CX"
+								"streetAndHouseNumber": "Silas Centers 66659",
+								"postalCode": "75310-0051",
+								"city": "South Jany",
+								"state": "Alaska",
+								"country": "BH"
 							},
-							"percentageOfTotalRevenue": 0.2774
+							"percentageOfTotalRevenue": 0.941
 						},
 						{
-							"nameOfProductionSite": "Kiehn - Olson",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Henri Road 9272",
-								"postalCode": "40166",
-								"city": "West Caesarfield",
-								"state": "Arizona",
-								"country": "SC"
-							}
+								"streetAndHouseNumber": "Dortha Lane 5417",
+								"city": "Alaynastad",
+								"state": "Colorado",
+								"country": "BQ"
+							},
+							"percentageOfTotalRevenue": 0.7429
 						}
 					]
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Intelligent Wooden Bike",
-							"percentageOfTotalRevenue": 0.6454
-						},
-						{
-							"name": "Electronic Frozen Sausages",
-							"percentageOfTotalRevenue": 0.3123
-						},
-						{
-							"name": "Fantastic Concrete Mouse",
-							"percentageOfTotalRevenue": 0.3964
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 819,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMwh": 303,
+					"energyConsumptionHeatingAndHotWater": 285,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 9085686,
-					"naturalHazardsCovered": [
-						"Wind"
-					]
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 22775637
 				}
 			}
 		},

@@ -123,7 +123,11 @@ function createAllValuesCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = "company-for-all-types";
-  input.t = generateEuTaxonomyDataForFinancials(0);
+  input.t = new EuFinancialsGenerator(0).generateEuTaxonomyDataForFinancialsWithTypes([
+    "InvestmentFirm",
+    "AssetManagement",
+    "InsuranceOrReinsurance",
+  ]);
   return input;
 }
 
