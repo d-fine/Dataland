@@ -2,34 +2,26 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "West Hiramstead",
-			"headquartersPostalCode": "02581",
+			"headquarters": "West Alf",
+			"sector": "content",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"hGzfBgnGpNv2",
-					"phXNyQU1ZHjR"
+					"zdepPGT4xm8P",
+					"4pXGByiUJWrZ"
 				],
-				"PermId": [
-					"lApTXnf6g9"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"Lh9TklgXH"
+					"n3dzTqjyG"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"ci6qXkrFep7hOyF"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "WF",
-			"companyAlternativeNames": [
-				"Ebert Inc",
-				"Gerhold - Pollich",
-				"Langosh Group"
-			],
+			"countryCode": "PR",
+			"companyAlternativeNames": [],
 			"companyLegalForm": "AG",
-			"website": "https://other-apparatus.info",
+			"website": "https://wobbly-maintainer.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -40,14 +32,14 @@
 						"B"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Balistreri Lock 603",
-						"postalCode": "92784-1500",
-						"city": "Fort Joaquin",
-						"state": "Washington",
-						"country": "PG"
+						"streetAndHouseNumber": "Micah Gateway 466",
+						"postalCode": "37999",
+						"city": "Dearborn Heights",
+						"state": "Iowa",
+						"country": "SE"
 					},
-					"numberOfEmployees": 8501,
-					"fiscalYearStart": "2024-04-16"
+					"numberOfEmployees": 2565,
+					"fiscalYearStart": "2023-10-26"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -60,7 +52,12 @@
 					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Handmade Concrete Tuna",
+							"percentageOfTotalRevenue": 0.2343
+						}
+					]
 				}
 			},
 			"power": {
@@ -68,20 +65,22 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 423,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 491,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMwh": 4,
+					"energyConsumptionHeatingAndHotWater": 619,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 1502964,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 12195814,
 					"naturalHazardsCovered": [
+						"EarthQuake",
 						"Hail",
-						"Wind"
+						"Snow",
+						"Wind",
+						"Avalanche"
 					]
 				}
 			}
@@ -91,33 +90,31 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "North Fionafort",
-			"sector": "schemas",
+			"headquarters": "Inglewood",
+			"headquartersPostalCode": "35058",
+			"sector": "technologies",
 			"identifiers": {
 				"Lei": [
-					"3hF9KvDsikPzT7zAEx1y"
+					"xBiWspdtld9oYD9sPRdj"
 				],
 				"Isin": [
-					"wae1UB2xQ1RT",
-					"IVOgkd6bnzqo"
+					"eXgCx9fDNtmY"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"imbfEx2bW"
+				"Ticker": [
+					"BKBgSqG"
 				],
-				"CompanyRegistrationNumber": [
-					"qBnCW7eHlOdxEsD"
-				]
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SO",
+			"countryCode": "RW",
 			"companyAlternativeNames": [
-				"Keeling - Hyatt",
-				"Reichert and Sons",
-				"Wintheiser - Haag"
+				"Hessel Group",
+				"Tillman - Fritsch"
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://growing-mercury.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -133,37 +130,98 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3803,
-					"fiscalYearStart": "2024-01-01"
+					"numberOfEmployees": 4283,
+					"fiscalYearStart": "2023-10-30"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEur": 62353727
+					"revenueInEur": 20245523,
+					"operatingCostInEur": 5733443,
+					"capitalAssetsInEur": 11186055
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {}
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Ferry, Boyle and Franecki",
+							"addressOfProductionSite": {
+								"postalCode": "30151",
+								"city": "Salem",
+								"state": "Oklahoma",
+								"country": "ZA"
+							},
+							"percentageOfTotalRevenue": 0.4027
+						},
+						{
+							"nameOfProductionSite": "Durgan, Gibson and Schimmel",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Caterina Manor 994",
+								"postalCode": "64849-0178",
+								"city": "Lake Buster",
+								"state": "Iowa",
+								"country": "TR"
+							},
+							"percentageOfTotalRevenue": 0.9336
+						},
+						{
+							"nameOfProductionSite": "Rodriguez - Rolfson",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Alexandre Courts 781",
+								"postalCode": "99004",
+								"city": "Esperanzafort",
+								"state": "South Carolina",
+								"country": "LB"
+							},
+							"percentageOfTotalRevenue": 0.7393
+						},
+						{
+							"nameOfProductionSite": "Bruen Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Hailey Lane 366",
+								"postalCode": "83997-9051",
+								"city": "East Alta",
+								"state": "Colorado",
+								"country": "DJ"
+							},
+							"percentageOfTotalRevenue": 0.6942
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Refined Concrete Chips",
+							"percentageOfTotalRevenue": 0.5238
+						},
+						{
+							"name": "Rustic Metal Gloves",
+							"percentageOfTotalRevenue": 0.3539
+						},
+						{
+							"name": "Bespoke Frozen Computer"
+						},
+						{
+							"name": "Tasty Granite Mouse"
+						}
+					]
+				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 549,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 701,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": 1111,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 535,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"naturalHazardsCovered": [
-						"Snow",
-						"Flooding",
-						"Wind",
-						"Hail",
-						"EarthQuake"
-					]
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 25099793
 				}
 			}
 		},
@@ -172,26 +230,33 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Saigefort",
-			"headquartersPostalCode": "44363",
-			"sector": "portals",
+			"headquarters": "Sierra Vista",
+			"sector": "e-commerce",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [],
+				"Lei": [
+					"66eByiNKgcIKv1dIZzbg"
+				],
+				"Isin": [
+					"zz4JRnjNwATq"
+				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"hW58LtQ"
+				],
 				"Duns": [
-					"KScs7LVrU"
+					"mYyU3ddNe"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"Vy11Yr02g0R9mlR"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AI",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://thoughtful-smoke.org",
+			"countryCode": "PS",
+			"companyAlternativeNames": [
+				"Cummings - Hegmann",
+				"Langworth, Zieme and Aufderhar",
+				"Lemke - Turcotte"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://grim-stallion.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -205,70 +270,48 @@
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6262,
-					"fiscalYearStart": "2023-12-13"
+					"numberOfEmployees": 1550,
+					"fiscalYearStart": "2023-09-21"
 				},
 				"companyFinancials": {
-					"revenueInEur": 71814028,
-					"operatingCostInEur": 40712898,
-					"capitalAssetsInEur": 64310093
+					"revenueInEur": 65913860,
+					"operatingCostInEur": 51744994,
+					"capitalAssetsInEur": 21503822
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Kreiger, Blick and Schroeder",
+							"nameOfProductionSite": "Gulgowski, Schowalter and Ledner",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Johnston Track 538",
-								"postalCode": "39329",
-								"city": "Pourosstad",
-								"state": "Alaska",
-								"country": "IR"
+								"streetAndHouseNumber": "Franey Union 22885",
+								"postalCode": "03707-8133",
+								"city": "Margate",
+								"country": "PN"
 							},
-							"percentageOfTotalRevenue": 0.3688
+							"percentageOfTotalRevenue": 0.1504
 						},
 						{
+							"nameOfProductionSite": "Ullrich - Predovic",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Trantow Hills 8047",
-								"postalCode": "64668",
-								"city": "Maudietown",
-								"state": "Alabama",
-								"country": "KP"
+								"postalCode": "95549",
+								"city": "South Casandra",
+								"state": "Illinois",
+								"country": "TD"
 							},
-							"percentageOfTotalRevenue": 0.5569
+							"percentageOfTotalRevenue": 0.8321
 						},
 						{
-							"nameOfProductionSite": "Walsh - Rippin",
+							"nameOfProductionSite": "Runolfsdottir - Braun",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Rodriguez Shore 13342",
-								"postalCode": "21940",
-								"city": "Lake Angie",
-								"country": "EE"
+								"streetAndHouseNumber": "Mohr Points 53311",
+								"postalCode": "69493-1019",
+								"city": "New Winonahaven",
+								"state": "Maryland",
+								"country": "AI"
 							},
-							"percentageOfTotalRevenue": 0.1097
-						},
-						{
-							"nameOfProductionSite": "Brekke - Fahey",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Michaela Corners 331",
-								"postalCode": "16531-0226",
-								"city": "Midland",
-								"state": "New Mexico",
-								"country": "MO"
-							},
-							"percentageOfTotalRevenue": 0.1105
-						},
-						{
-							"nameOfProductionSite": "Daugherty and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Mona Field 668",
-								"postalCode": "05124-5101",
-								"city": "Ames",
-								"state": "Louisiana",
-								"country": "CR"
-							},
-							"percentageOfTotalRevenue": 0.6006
+							"percentageOfTotalRevenue": 0.6424
 						}
 					]
 				},
@@ -279,17 +322,15 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1758,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 129,
+					"energyConsumptionHeatingAndHotWater": 217,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 19354097
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},
