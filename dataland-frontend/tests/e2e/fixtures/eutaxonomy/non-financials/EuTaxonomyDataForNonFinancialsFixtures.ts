@@ -102,7 +102,7 @@ export class EuNonFinancialsGenerator extends Generator {
       nonEligibleShare: this.generateFinancialShare(),
       eligibleShare: this.generateFinancialShare(),
       nonAlignedShare: this.generateFinancialShare(),
-      nonAlignedActivities: this.randomArray(() => this.generateActivity()),
+      nonAlignedActivities: this.randomArray(() => this.generateActivity(), 0, 2),
       alignedShare: this.generateFinancialShare(),
       substantialContributionToClimateChangeMitigationInPercent: this.randomPercentageValue(),
       substantialContributionToClimateChangeAdaptionInPercent: this.randomPercentageValue(),
@@ -112,7 +112,7 @@ export class EuNonFinancialsGenerator extends Generator {
       substantialContributionToPollutionPreventionAndControlInPercent: this.randomPercentageValue(),
       substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
         this.randomPercentageValue(),
-      alignedActivities: this.randomArray(() => this.generateAlignedActivity()),
+      alignedActivities: this.randomArray(() => this.generateAlignedActivity(), 0, 2),
       enablingShareInPercent: this.randomPercentageValue(),
       transitionalShareInPercent: this.randomPercentageValue(),
     };

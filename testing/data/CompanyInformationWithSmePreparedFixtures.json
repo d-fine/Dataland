@@ -2,26 +2,33 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "West Alf",
-			"sector": "content",
+			"headquarters": "Lansing",
+			"headquartersPostalCode": "42503",
+			"sector": "experiences",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"zdepPGT4xm8P",
-					"4pXGByiUJWrZ"
+				"Lei": [
+					"J3BJ6fkY2YfDtIMEf5u9"
 				],
-				"PermId": [],
+				"Isin": [],
+				"PermId": [
+					"68vkzX54rI"
+				],
 				"Ticker": [],
-				"Duns": [
-					"n3dzTqjyG"
-				],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"6f5orsDD7TBAKmR"
+				]
 			},
-			"countryCode": "PR",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://wobbly-maintainer.biz",
+			"countryCode": "ZM",
+			"companyAlternativeNames": [
+				"Hansen and Sons",
+				"Labadie Group",
+				"Mayert Group",
+				"O'Kon - Fritsch"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://heavenly-inspiration.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -32,14 +39,14 @@
 						"B"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Micah Gateway 466",
-						"postalCode": "37999",
-						"city": "Dearborn Heights",
-						"state": "Iowa",
-						"country": "SE"
+						"streetAndHouseNumber": "Ayana River 329",
+						"postalCode": "18757",
+						"city": "Kozeystead",
+						"state": "Massachusetts",
+						"country": "NP"
 					},
-					"numberOfEmployees": 2565,
-					"fiscalYearStart": "2023-10-26"
+					"numberOfEmployees": 7873,
+					"fiscalYearStart": "2024-03-27"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -48,14 +55,21 @@
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": []
-				},
+				"sites": {},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Handmade Concrete Tuna",
-							"percentageOfTotalRevenue": 0.2343
+							"name": "Electronic Fresh Salad"
+						},
+						{
+							"name": "Luxurious Soft Chips",
+							"percentageOfTotalRevenue": 0.0387
+						},
+						{
+							"name": "Bespoke Concrete Pizza"
+						},
+						{
+							"name": "Tasty Concrete Cheese"
 						}
 					]
 				}
@@ -65,21 +79,18 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 4,
-					"energyConsumptionHeatingAndHotWater": 619,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMwh": 1850,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 73,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 12195814,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 37775295,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Hail",
 						"Snow",
-						"Wind",
 						"Avalanche"
 					]
 				}
@@ -90,37 +101,34 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Inglewood",
-			"headquartersPostalCode": "35058",
-			"sector": "technologies",
+			"headquarters": "Juniorfield",
+			"headquartersPostalCode": "37644-4666",
+			"sector": "e-business",
 			"identifiers": {
-				"Lei": [
-					"xBiWspdtld9oYD9sPRdj"
-				],
+				"Lei": [],
 				"Isin": [
-					"eXgCx9fDNtmY"
+					"knBgIw28k7wP"
 				],
 				"PermId": [],
-				"Ticker": [
-					"BKBgSqG"
+				"Ticker": [],
+				"Duns": [
+					"XxPSmfTDD"
 				],
-				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"CjiEo5zt7yAydRS"
+				]
 			},
-			"countryCode": "RW",
-			"companyAlternativeNames": [
-				"Hessel Group",
-				"Tillman - Fritsch"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://growing-mercury.biz/",
+			"countryCode": "VA",
+			"companyAlternativeNames": [],
+			"website": "https://great-conspiracy.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
+						"A",
 						"B"
 					],
 					"addressOfHeadquarters": {
@@ -130,98 +138,37 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 4283,
-					"fiscalYearStart": "2023-10-30"
+					"numberOfEmployees": 328,
+					"fiscalYearStart": "2024-07-28"
 				},
 				"companyFinancials": {
-					"revenueInEur": 20245523,
-					"operatingCostInEur": 5733443,
-					"capitalAssetsInEur": 11186055
+					"revenueInEur": 26897996,
+					"capitalAssetsInEur": 28711900
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Ferry, Boyle and Franecki",
-							"addressOfProductionSite": {
-								"postalCode": "30151",
-								"city": "Salem",
-								"state": "Oklahoma",
-								"country": "ZA"
-							},
-							"percentageOfTotalRevenue": 0.4027
-						},
-						{
-							"nameOfProductionSite": "Durgan, Gibson and Schimmel",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Caterina Manor 994",
-								"postalCode": "64849-0178",
-								"city": "Lake Buster",
-								"state": "Iowa",
-								"country": "TR"
-							},
-							"percentageOfTotalRevenue": 0.9336
-						},
-						{
-							"nameOfProductionSite": "Rodriguez - Rolfson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Alexandre Courts 781",
-								"postalCode": "99004",
-								"city": "Esperanzafort",
-								"state": "South Carolina",
-								"country": "LB"
-							},
-							"percentageOfTotalRevenue": 0.7393
-						},
-						{
-							"nameOfProductionSite": "Bruen Inc",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Hailey Lane 366",
-								"postalCode": "83997-9051",
-								"city": "East Alta",
-								"state": "Colorado",
-								"country": "DJ"
-							},
-							"percentageOfTotalRevenue": 0.6942
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Refined Concrete Chips",
-							"percentageOfTotalRevenue": 0.5238
-						},
-						{
-							"name": "Rustic Metal Gloves",
-							"percentageOfTotalRevenue": 0.3539
-						},
-						{
-							"name": "Bespoke Frozen Computer"
-						},
-						{
-							"name": "Tasty Granite Mouse"
-						}
-					]
-				}
+				"sites": {},
+				"products": {}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1111,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 535,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"energyConsumptionHeatingAndHotWater": 256,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 25099793
+					"naturalHazardsCovered": [
+						"Flooding",
+						"Avalanche",
+						"Snow",
+						"Hail",
+						"Wind"
+					]
 				}
 			}
 		},
@@ -230,33 +177,35 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Sierra Vista",
-			"sector": "e-commerce",
+			"headquarters": "Lorichester",
+			"sector": "deliverables",
 			"identifiers": {
-				"Lei": [
-					"66eByiNKgcIKv1dIZzbg"
-				],
+				"Lei": [],
 				"Isin": [
-					"zz4JRnjNwATq"
+					"zK6NX9P9yySp",
+					"oLYxILcGthjI"
 				],
-				"PermId": [],
-				"Ticker": [
-					"hW58LtQ"
+				"PermId": [
+					"BUtxLMOjW7"
 				],
+				"Ticker": [],
 				"Duns": [
-					"mYyU3ddNe"
+					"pyIAj1mVC"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"nYkqgyzCt"
+				],
+				"CompanyRegistrationNumber": [
+					"phCgZTh831glgTB"
+				]
 			},
-			"countryCode": "PS",
+			"countryCode": "TD",
 			"companyAlternativeNames": [
-				"Cummings - Hegmann",
-				"Langworth, Zieme and Aufderhar",
-				"Lemke - Turcotte"
+				"McLaughlin, Casper and Wilderman",
+				"Schaefer, Bartell and Padberg",
+				"Schmeler, Williamson and Brekke"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://grim-stallion.biz/",
+			"website": "https://exalted-downforce.name",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -270,67 +219,75 @@
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 1550,
-					"fiscalYearStart": "2023-09-21"
+					"numberOfEmployees": 3033,
+					"fiscalYearStart": "2024-07-20"
 				},
 				"companyFinancials": {
-					"revenueInEur": 65913860,
-					"operatingCostInEur": 51744994,
-					"capitalAssetsInEur": 21503822
+					"revenueInEur": 47081440,
+					"operatingCostInEur": 77594028,
+					"capitalAssetsInEur": 53563864
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Gulgowski, Schowalter and Ledner",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Franey Union 22885",
-								"postalCode": "03707-8133",
-								"city": "Margate",
-								"country": "PN"
+								"streetAndHouseNumber": "Mathew Course 822",
+								"postalCode": "29915",
+								"city": "Harrisburg",
+								"state": "Connecticut",
+								"country": "CX"
 							},
-							"percentageOfTotalRevenue": 0.1504
+							"percentageOfTotalRevenue": 0.2774
 						},
 						{
-							"nameOfProductionSite": "Ullrich - Predovic",
+							"nameOfProductionSite": "Kiehn - Olson",
 							"addressOfProductionSite": {
-								"postalCode": "95549",
-								"city": "South Casandra",
-								"state": "Illinois",
-								"country": "TD"
-							},
-							"percentageOfTotalRevenue": 0.8321
-						},
-						{
-							"nameOfProductionSite": "Runolfsdottir - Braun",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Mohr Points 53311",
-								"postalCode": "69493-1019",
-								"city": "New Winonahaven",
-								"state": "Maryland",
-								"country": "AI"
-							},
-							"percentageOfTotalRevenue": 0.6424
+								"streetAndHouseNumber": "Henri Road 9272",
+								"postalCode": "40166",
+								"city": "West Caesarfield",
+								"state": "Arizona",
+								"country": "SC"
+							}
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Intelligent Wooden Bike",
+							"percentageOfTotalRevenue": 0.6454
+						},
+						{
+							"name": "Electronic Frozen Sausages",
+							"percentageOfTotalRevenue": 0.3123
+						},
+						{
+							"name": "Fantastic Concrete Mouse",
+							"percentageOfTotalRevenue": 0.3964
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
 				},
 				"consumption": {
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 217,
+					"energyConsumptionHeatingAndHotWater": 819,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 9085686,
+					"naturalHazardsCovered": [
+						"Wind"
+					]
 				}
 			}
 		},

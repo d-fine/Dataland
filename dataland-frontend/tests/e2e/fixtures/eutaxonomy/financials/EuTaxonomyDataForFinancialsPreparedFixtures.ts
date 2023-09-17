@@ -64,7 +64,7 @@ function createCreditInstitutionSingleFieldSubmission(
   const dataGenerator = new EuFinancialsGenerator(0);
   dataGenerator.reports = input.t.referencedReports!;
   input.companyInformation.companyName = "credit-institution-single-field-submission";
-  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+  input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
     tradingPortfolioAndInterbankLoans: dataGenerator.randomDataPoint(generatePercentageValue()),
     greenAssetRatio: dataGenerator.randomDataPoint(generatePercentageValue()),
