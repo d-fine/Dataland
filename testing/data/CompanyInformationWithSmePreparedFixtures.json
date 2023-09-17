@@ -2,50 +2,46 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Ortizfield",
-			"headquartersPostalCode": "01536-5720",
-			"sector": "content",
+			"headquarters": "Peggiefield",
+			"headquartersPostalCode": "32634-9836",
 			"identifiers": {
-				"Lei": [
-					"urp4099QV7Pu1xYM3Gp7"
-				],
-				"Isin": [
-					"p94LqAZ3F6pm"
-				],
+				"Lei": [],
+				"Isin": [],
 				"PermId": [
-					"beQKcMTQii"
+					"TbGc7jt5V0"
 				],
-				"Ticker": [
-					"DYxvnBN"
-				],
+				"Ticker": [],
 				"Duns": [
-					"CEtBpXuaD"
+					"T4VsavS99"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"xVIHti6qlHYaUhz"
+				]
 			},
-			"countryCode": "MY",
+			"countryCode": "CX",
 			"companyAlternativeNames": [
-				"Considine - Littel",
-				"Witting - Marvin"
+				"Smith, Stark and Ledner"
 			],
 			"companyLegalForm": "GmbH",
-			"website": "https://exciting-patty.name",
+			"website": "https://spiteful-ratepayer.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
+						"A",
 						"B"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Deckow Canyon 230",
-						"city": "Lake Chanelshire",
-						"country": "NU"
+						"streetAndHouseNumber": "Mozelle Avenue 8595",
+						"postalCode": "99583-2606",
+						"city": "Rosalynmouth",
+						"country": "SS"
 					},
-					"numberOfEmployees": 6070,
-					"fiscalYearStart": "2024-04-29"
+					"numberOfEmployees": 938,
+					"fiscalYearStart": "2024-02-16"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -57,62 +53,52 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Quitzon, Keebler and Daugherty",
+							"nameOfProductionSite": "Jaskolski - Goldner",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Stark Gateway 88472",
-								"city": "Destineyhaven",
-								"state": "Virginia",
-								"country": "VN"
+								"streetAndHouseNumber": "Bosco Views 680",
+								"postalCode": "03351",
+								"city": "Flatleyfurt",
+								"state": "Washington",
+								"country": "EE"
 							},
-							"percentageOfTotalRevenue": 0.3329
+							"percentageOfTotalRevenue": 0.8566
 						},
 						{
-							"nameOfProductionSite": "Klein - Lakin",
+							"nameOfProductionSite": "Hilll, Rempel and Wisoky",
 							"addressOfProductionSite": {
-								"postalCode": "69458-2493",
-								"city": "Shieldsburgh",
-								"state": "Rhode Island",
-								"country": "MC"
+								"streetAndHouseNumber": "Malika Valley 43166",
+								"postalCode": "41655-7390",
+								"city": "Reynoldsshire",
+								"state": "Georgia",
+								"country": "BD"
 							},
-							"percentageOfTotalRevenue": 0.2577
+							"percentageOfTotalRevenue": 0.1749
 						},
 						{
-							"nameOfProductionSite": "Witting, Goldner and Armstrong",
+							"nameOfProductionSite": "Koch, Ryan and Dibbert",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kshlerin Corners 68314",
-								"postalCode": "37245",
-								"city": "Leanntown",
-								"state": "Illinois",
-								"country": "HU"
+								"streetAndHouseNumber": "Lambert Circle 5736",
+								"postalCode": "20876-8016",
+								"city": "East Geofurt",
+								"state": "Ohio",
+								"country": "HR"
 							},
-							"percentageOfTotalRevenue": 0.1346
+							"percentageOfTotalRevenue": 0.6689
 						},
 						{
+							"nameOfProductionSite": "Thompson - Howell",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Hauck Square 61062",
-								"city": "North Dillan",
-								"state": "Alabama",
-								"country": "MV"
+								"postalCode": "82863",
+								"city": "Carson City",
+								"state": "Georgia",
+								"country": "AT"
 							},
-							"percentageOfTotalRevenue": 0.0754
+							"percentageOfTotalRevenue": 0.8481
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Unbranded Concrete Salad",
-							"percentageOfTotalRevenue": 0.6725
-						},
-						{
-							"name": "Sleek Granite Chicken",
-							"percentageOfTotalRevenue": 0.4243
-						},
-						{
-							"name": "Small Concrete Table",
-							"percentageOfTotalRevenue": 0.3495
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
@@ -120,21 +106,19 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1855,
-					"energyConsumptionHeatingAndHotWater": 807,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": 476,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 827,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 4267276,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 36313443,
 					"naturalHazardsCovered": [
-						"Hail",
-						"Flooding",
-						"Wind",
 						"Snow",
-						"EarthQuake"
+						"Hail"
 					]
 				}
 			}
@@ -144,28 +128,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Angelostad",
-			"headquartersPostalCode": "66100",
+			"headquarters": "North Peggieboro",
+			"headquartersPostalCode": "17225-4960",
 			"identifiers": {
 				"Lei": [
-					"0QtpJs6OED7njpOIkxrK"
+					"nnYlHkCdiHxBAG8tzZ4X"
 				],
-				"Isin": [],
+				"Isin": [
+					"uytnm43rr5iC",
+					"9KP71Eckom4y"
+				],
 				"PermId": [],
 				"Ticker": [
-					"AUStjof"
+					"BkkES5z"
 				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"Duns": [
+					"qia5fDWl3"
+				],
+				"VatNumber": [
+					"wGJWLqL9D"
+				],
+				"CompanyRegistrationNumber": [
+					"S0GZDftBlrp7NDd"
+				]
 			},
-			"countryCode": "BV",
+			"countryCode": "SC",
 			"companyAlternativeNames": [
-				"Boehm Group",
-				"Buckridge and Sons",
-				"Dach, Pacocha and Zboncak"
+				"Ryan LLC",
+				"Schroeder - Jacobson",
+				"Ward Inc",
+				"Zulauf - Dooley"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://respectful-dream.org",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -182,95 +176,39 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8790,
-					"fiscalYearStart": "2023-10-20"
+					"numberOfEmployees": 7883,
+					"fiscalYearStart": "2024-02-13"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 39149618,
-					"capitalAssetsInEur": 39777404
+					"operatingCostInEur": 9039979,
+					"capitalAssetsInEur": 67925370
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Nitzsche Inc",
-							"addressOfProductionSite": {
-								"postalCode": "49837-0515",
-								"city": "Raynorworth",
-								"state": "New Hampshire",
-								"country": "AU"
-							},
-							"percentageOfTotalRevenue": 0.3352
-						},
-						{
-							"nameOfProductionSite": "Bartoletti Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Karine Lane 44470",
-								"postalCode": "55080-9199",
-								"city": "North Ford",
-								"country": "MW"
-							},
-							"percentageOfTotalRevenue": 0.2448
-						},
-						{
-							"nameOfProductionSite": "Grant, Beatty and Blanda",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Polly Underpass 774",
-								"postalCode": "14951",
-								"city": "Malden",
-								"state": "Oregon",
-								"country": "BW"
-							},
-							"percentageOfTotalRevenue": 0.8884
-						},
-						{
-							"nameOfProductionSite": "Bode - Ondricka",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Tanya Pike 254",
-								"postalCode": "68627",
-								"city": "Goldnerside",
-								"state": "Colorado",
-								"country": "TR"
-							},
-							"percentageOfTotalRevenue": 0.2777
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Champlin Ridges 414",
-								"postalCode": "42249-6326",
-								"city": "Trishachester",
-								"country": "MS"
-							},
-							"percentageOfTotalRevenue": 0.3703
-						}
-					]
-				},
+				"sites": {},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Oriental Concrete Pizza",
-							"percentageOfTotalRevenue": 0.6183
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1292,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 786,
+					"powerConsumptionInMwh": 1811,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 851,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 40615240
+					"amountCoveredByInsuranceAgainstNaturalHazards": 41804955,
+					"naturalHazardsCovered": [
+						"EarthQuake",
+						"Snow"
+					]
 				}
 			}
 		},
@@ -279,30 +217,34 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "West Jovannyland",
-			"headquartersPostalCode": "19382",
-			"sector": "paradigms",
+			"headquarters": "Keelingland",
+			"headquartersPostalCode": "38401-2668",
+			"sector": "lifetime value",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"5GneKEEUBqx9"
+					"y5hIKe8HOyPL",
+					"h6qKBFOxUly5"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"BY8vbRdGf"
+				"PermId": [
+					"13qtUAhDxn"
 				],
+				"Ticker": [
+					"y7iZRJ4"
+				],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"j5rVwogY6SHOtGQ"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LA",
+			"countryCode": "GT",
 			"companyAlternativeNames": [
-				"Goodwin, Kessler and Jenkins",
-				"Hoeger, Rolfson and Blick",
-				"Romaguera and Sons"
+				"Pfeffer, Herzog and Wisoky",
+				"Schultz LLC",
+				"Will LLC",
+				"Wiza, Leffler and Schuster"
 			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://expert-somebody.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -316,57 +258,56 @@
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2617,
-					"fiscalYearStart": "2024-03-20"
+					"numberOfEmployees": 2505,
+					"fiscalYearStart": "2023-11-20"
 				},
 				"companyFinancials": {
-					"revenueInEur": 42467899,
-					"operatingCostInEur": 1518424,
-					"capitalAssetsInEur": 42944345
+					"revenueInEur": 45676657,
+					"capitalAssetsInEur": 4216115
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
+				"sites": {},
+				"products": {
+					"listOfProducts": [
 						{
-							"nameOfProductionSite": "Cole, Lowe and Douglas",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Silas Centers 66659",
-								"postalCode": "75310-0051",
-								"city": "South Jany",
-								"state": "Alaska",
-								"country": "BH"
-							},
-							"percentageOfTotalRevenue": 0.941
+							"name": "Rustic Concrete Mouse",
+							"percentageOfTotalRevenue": 0.892
 						},
 						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Dortha Lane 5417",
-								"city": "Alaynastad",
-								"state": "Colorado",
-								"country": "BQ"
-							},
-							"percentageOfTotalRevenue": 0.7429
+							"name": "Refined Wooden Tuna",
+							"percentageOfTotalRevenue": 0.0318
+						},
+						{
+							"name": "Incredible Steel Bacon",
+							"percentageOfTotalRevenue": 0.8916
+						},
+						{
+							"name": "Sleek Cotton Shirt",
+							"percentageOfTotalRevenue": 0.0067
+						},
+						{
+							"name": "Modern Fresh Sausages"
 						}
 					]
-				},
-				"products": {}
+				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 303,
-					"energyConsumptionHeatingAndHotWater": 285,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 150,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 596,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 22775637
+					"amountCoveredByInsuranceAgainstNaturalHazards": 44730690,
+					"naturalHazardsCovered": [
+						"Snow"
+					]
 				}
 			}
 		},

@@ -122,12 +122,21 @@ function createAssetManagementAndInsuranceCompany(
 function createAllValuesCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>,
 ): FixtureData<EuTaxonomyDataForFinancials> {
+  const dataGenerator = new EuFinancialsGenerator(0);
   input.companyInformation.companyName = "company-for-all-types";
-  input.t = new EuFinancialsGenerator(0).generateEuTaxonomyDataForFinancialsWithTypes([
+  input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes([
     "InvestmentFirm",
     "AssetManagement",
     "InsuranceOrReinsurance",
+    "CreditInstitution",
   ]);
+  //Overwrite the section for Credit Institution since the tests require dual and single field submission at once
+  input.t.creditInstitutionKpis = {
+    interbankLoans: dataGenerator.randomDataPoint(generatePercentageValue()),
+    tradingPortfolio: dataGenerator.randomDataPoint(generatePercentageValue()),
+    tradingPortfolioAndInterbankLoans: dataGenerator.randomDataPoint(generatePercentageValue()),
+    greenAssetRatio: dataGenerator.randomDataPoint(generatePercentageValue()),
+  };
   return input;
 }
 
