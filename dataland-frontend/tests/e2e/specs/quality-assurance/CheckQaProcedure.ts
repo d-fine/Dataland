@@ -93,10 +93,9 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
 
-  cy.get(".p-dialog").should("exist").get(".p-dialog-header").should("contain", companyName);
-  cy.get(".p-dialog").get('.p-dialog-content pre[id="dataset-container"]').should("not.be.empty");
-  cy.get(".p-dialog").get('button[id="accept-button"]').should("exist").click();
-  cy.contains("span", "REVIEW");
+  cy.get('[data-test="qaRejectButton"').should("exist");
+  cy.get('[data-test="qaApproveButton"').should("exist").click();
+
   safeLogout();
   login(uploader_name, uploader_pw);
 
@@ -117,7 +116,8 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   viewRecentlyUploadedDatasetsInQaTable();
 
   cy.contains("td", dataMetaInfo.dataId).click();
-  cy.get('button[id="reject-button"]').should("exist").click();
+
+  cy.get('[data-test="qaRejectButton"').should("exist").click();
   cy.contains("span", "REVIEW");
   safeLogout();
   login(uploader_name, uploader_pw);
