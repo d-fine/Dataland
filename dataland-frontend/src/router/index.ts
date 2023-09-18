@@ -1,5 +1,8 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
+const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
+const NewMissionPage = (): Promise<RouteComponent> => import("@/components/pages/NewMissionPage.vue");
+
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
@@ -26,6 +29,16 @@ const routes = [
     props: {
       isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
     },
+  },
+  {
+    path: "/lp",
+    name: "New Landing Page",
+    component: NewLandingPage,
+  },
+  {
+    path: "/mission",
+    name: "Mission Page",
+    component: NewMissionPage,
   },
   {
     path: "/preview",
