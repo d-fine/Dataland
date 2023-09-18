@@ -25,6 +25,7 @@ import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonomyForNonFinancials.vue";
+import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
@@ -34,7 +35,6 @@ import { redirectToMyDatasets } from "@/components/resources/uploadDataset/Datas
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { defineComponent } from "vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 
 export default defineComponent({
   name: "UploadFormWrapper",
@@ -45,6 +45,7 @@ export default defineComponent({
     CreateSfdrDataset,
     CreateP2pDataset,
     CreateEuTaxonomyForNonFinancials,
+    CreateEuTaxonomyForFinancials,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
