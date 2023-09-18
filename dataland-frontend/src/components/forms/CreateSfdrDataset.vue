@@ -17,8 +17,8 @@
             @submit="postSfdrData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
+            <FormKit type="hidden" name="companyId" :model-value="companyID" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
 
             <FormKit type="group" name="data" label="data">
               <FormKit

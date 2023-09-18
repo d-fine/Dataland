@@ -26,7 +26,6 @@
               label="Company ID"
               placeholder="Company ID"
               :modelValue="companyID"
-              disabled="true"
             />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">

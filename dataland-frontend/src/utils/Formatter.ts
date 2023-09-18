@@ -21,8 +21,28 @@ export function formatPercentageNumberAsString(percentageNumber?: number, precis
  * @returns the resulting string from the concatenation
  */
 export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency): string {
-  if (amountWithCurrency?.amount) {
-    return `${Math.round(amountWithCurrency.amount).toString()} ${amountWithCurrency.currency ?? ""}`;
+  if (amountWithCurrency?.amount == undefined) {
+    return "";
   }
-  return "";
+  return `${amountWithCurrency.amount.toLocaleString("en-GB", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}${amountWithCurrency.currency ? " " + amountWithCurrency.currency : ""}`;
+}
+
+/**
+ * Formats number to be more readable.
+ * @param value number to format
+ * @returns formatted number (e.g. 1500600.0123 --> 1,500,600.01)
+ */
+export function formatNumberToReadableFormat(value: number | undefined): string {
+  if (value == undefined) {
+    return "";
+  }
+  if (value == 0) {
+    return "0";
+  }
+  return value.toLocaleString("en-GB", {
+    maximumFractionDigits: 2,
+  });
 }
