@@ -22,14 +22,14 @@ import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
 import { QaStatus } from "@clients/qaservice";
-import QADatasetModal from "@/components/general/QaDatasetModal.vue";
+import QaDatasetModal from "@/components/general/QaDatasetModal.vue";
 import { type DataMetaInformation } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "QualityAssuranceButtons",
-  components: { PrimeButton, QADatasetModal },
+  components: { PrimeButton },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -58,7 +58,7 @@ export default defineComponent({
       const { dataId, dataType, reportingPeriod } = this.metaInfo as DataMetaInformation;
       const message = `${qaStatus} ${dataType} data for ${companyName} for the reporting period ${reportingPeriod}.`;
 
-      this.$dialog.open(QADatasetModal, {
+      this.$dialog.open(QaDatasetModal, {
         props: {
           header: qaStatus,
           modal: true,
