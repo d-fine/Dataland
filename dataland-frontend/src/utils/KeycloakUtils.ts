@@ -25,9 +25,10 @@ export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promi
     return resolvedKeycloakPromise.realmAccess.roles;
   } else return [];
 }
-
+export const KEYCLOAK_ROLE_USER = "ROLE_USER";
 export const KEYCLOAK_ROLE_UPLOADER = "ROLE_UPLOADER";
 export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
+export const KEYCLOAK_ROLE_ADMIN = "ROLE_ADMIN";
 
 /**
  * Derives the roles from the resolved Keycloak-promise of a logged in user

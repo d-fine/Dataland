@@ -4,6 +4,7 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { type DataMetaInformation, DataTypeEnum, type PathwaysToParisData } from "@clients/backend";
 import { QaStatus } from "@clients/qaservice";
 import ViewFrameworkData from "@/components/pages/ViewFrameworkData.vue";
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component tests for the Quality Assurance page", () => {
   let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
@@ -20,7 +21,7 @@ describe("Component tests for the Quality Assurance page", () => {
   });
 
   const keycloakMockWithUploaderAndReviewerRoles = minimalKeycloakMock({
-    roles: ["ROLE_USER", "ROLE_REVIEWER"],
+    roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_REVIEWER],
   });
   const mockDataMetaInfoForP2pTestDataset = {
     dataId: "p2pTestDataId",

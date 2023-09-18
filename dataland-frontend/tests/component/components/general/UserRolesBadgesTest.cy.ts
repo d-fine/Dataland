@@ -1,11 +1,17 @@
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 import { mount } from "cypress/vue";
+import {
+  KEYCLOAK_ROLE_ADMIN,
+  KEYCLOAK_ROLE_REVIEWER,
+  KEYCLOAK_ROLE_UPLOADER,
+  KEYCLOAK_ROLE_USER,
+} from "@/utils/KeycloakUtils";
 
 describe("Component test for UserRolesBadges", () => {
   it("Should display the user roles for an uploader (READ/WRITE)", () => {
     mount(UserRolesBadges, {
       props: {
-        userRoles: ["ROLE_USER", "ROLE_UPLOADER"],
+        userRoles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
       },
     });
     cy.get("[data-test=userRoleUser]").should("have.text", "READ");
@@ -17,7 +23,7 @@ describe("Component test for UserRolesBadges", () => {
   it("Should display the user roles for a user (READ)", () => {
     mount(UserRolesBadges, {
       props: {
-        userRoles: ["ROLE_USER"],
+        userRoles: [KEYCLOAK_ROLE_USER],
       },
     });
     cy.get("[data-test=userRoleUser]").should("have.text", "READ");
@@ -29,7 +35,7 @@ describe("Component test for UserRolesBadges", () => {
   it("Should display the user roles for an admin (READ/WRITE/ADMIN/ROLE_REVIEWER)", () => {
     mount(UserRolesBadges, {
       props: {
-        userRoles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_ADMIN", "ROLE_REVIEWER"],
+        userRoles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_ADMIN],
       },
     });
     cy.get("[data-test=userRoleUser]").should("have.text", "READ");
