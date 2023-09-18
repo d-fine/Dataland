@@ -76,7 +76,7 @@
                   slotProps.data.content[reportingPeriodWithDataId.dataId] !== ''
                 "
               >
-                {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} %</span
+                {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }}</span
               >
               <span
                 v-else-if="

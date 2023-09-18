@@ -161,6 +161,7 @@ import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 export default defineComponent({
   setup() {
     return {
@@ -233,7 +234,7 @@ export default defineComponent({
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
         this.euTaxonomyForNonFinancialsDataModel,
-        this.companyAssociatedEuTaxonomyDataForNonFinancials.data
+        this.companyAssociatedEuTaxonomyDataForNonFinancials.data,
       );
     },
   },
@@ -264,7 +265,7 @@ export default defineComponent({
     async loadEuTaxonomyForNonFinancialsData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        assertDefined(this.getKeycloakPromise)(),
       ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
       const dataResponse =
@@ -275,43 +276,62 @@ export default defineComponent({
       }
       this.referencedReportsForPrefill = euTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedEuTaxonomyDataForNonFinancials = objectDropNull(
-        euTaxonomyForNonFinancialsResponseData as ObjectType
+        euTaxonomyForNonFinancialsResponseData as ObjectType,
       ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
-
+      this.companyAssociatedEuTaxonomyDataForNonFinancials = this.convertPercentageFieldsViaFactor(100);
       this.waitingForData = false;
     },
 
     /**
-     * Converts the entered percentage values from 0-100 to decimals from 0-1 (can be safely removed in the consistent
-     * percentage handling story)
-     * @param companyAssociatedDataEuTaxonomyDataForNonFinancials the full dataset to transform
-     * @returns The transformed dataset
+     * Iteratively go through a given object and transform all fields whose names include "InPercent" to a decimal
+     * @param object the object to transform
+     * @param factor the factor by which the numbers shall be transformed
+     * @returns the modified object
      */
-    convertPercentagesToDecimals(
-      companyAssociatedDataEuTaxonomyDataForNonFinancials: CompanyAssociatedDataEuTaxonomyDataForNonFinancials
-    ): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
-      const euTaxonomyDataForNonFinancials: Record<string, object> =
-        companyAssociatedDataEuTaxonomyDataForNonFinancials.data as Record<string, object>;
-      for (const sectionName in euTaxonomyDataForNonFinancials) {
-        const section: Record<string, number | object> = euTaxonomyDataForNonFinancials[sectionName] as Record<
-          string,
-          number | object
-        >;
-        for (const fieldName in section) {
-          if (fieldName.includes("InPercent")) {
-            section[fieldName] = (section[fieldName] as number) / 100;
-          } else if (typeof section[fieldName] === "object") {
-            const field = section[fieldName] as Record<string, number | object>;
-            for (const property in field) {
-              if (property.includes("InPercent")) {
-                field[property] = (field[property] as number) / 100;
-              }
-            }
+    multiplyPercentageFieldsOfObjectByFactor(
+      object: Record<string, number | object>,
+      factor: number,
+    ): Record<string, number | object> {
+      const modifiedObject = object;
+      for (const property in modifiedObject) {
+        if (property.includes("InPercent")) {
+          const originalValue = modifiedObject[property] as number;
+          let precisionValue = String(originalValue).length;
+          if (precisionValue < 2) {
+            precisionValue = 2;
           }
+          modifiedObject[property] = roundNumber(factor * originalValue, precisionValue);
+        } else if (typeof modifiedObject[property] === "object") {
+          this.multiplyPercentageFieldsOfObjectByFactor(
+            modifiedObject[property] as Record<string, number | object>,
+            factor,
+          );
         }
       }
-      companyAssociatedDataEuTaxonomyDataForNonFinancials.data = euTaxonomyDataForNonFinancials;
-      return companyAssociatedDataEuTaxonomyDataForNonFinancials;
+      return modifiedObject;
+    },
+
+    /**
+     * Converts the entered percentage values using a specified factor (can be safely removed in the consistent
+     * percentage handling story)
+     * @param factor the factor by which the numbers shall be transformed
+     * @returns The transformed dataset
+     */
+    convertPercentageFieldsViaFactor(factor: number): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
+      // JSON.parse/stringify used to clone the formInputsModel in order to avoid infinite loop on dev servers
+      const clonedCompanyAssociatedEuTaxonomyDataForNonFinancials = JSON.parse(
+        JSON.stringify(this.companyAssociatedEuTaxonomyDataForNonFinancials),
+      ) as CompanyAssociatedDataEuTaxonomyDataForNonFinancials;
+      const euTaxonomyDataForNonFinancials: Record<string, object> =
+        clonedCompanyAssociatedEuTaxonomyDataForNonFinancials.data as Record<string, object>;
+      for (const sectionName in euTaxonomyDataForNonFinancials) {
+        euTaxonomyDataForNonFinancials[sectionName] = this.multiplyPercentageFieldsOfObjectByFactor(
+          euTaxonomyDataForNonFinancials[sectionName] as Record<string, number | object>,
+          factor,
+        );
+      }
+      clonedCompanyAssociatedEuTaxonomyDataForNonFinancials.data = euTaxonomyDataForNonFinancials;
+      return clonedCompanyAssociatedEuTaxonomyDataForNonFinancials;
     },
 
     /**
@@ -323,20 +343,18 @@ export default defineComponent({
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEuTaxonomyDataForNonFinancials.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset
+            this.namesOfAllCompanyReportsForTheDataset,
           );
 
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)(),
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        const companyAssociatedEuTaxonomyDataForNonFinancialsToSend = this.convertPercentagesToDecimals(
-          this.companyAssociatedEuTaxonomyDataForNonFinancials
-        );
+        const companyAssociatedEuTaxonomyDataForNonFinancialsToSend = this.convertPercentageFieldsViaFactor(0.01);
         await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-          companyAssociatedEuTaxonomyDataForNonFinancialsToSend
+          companyAssociatedEuTaxonomyDataForNonFinancialsToSend,
         );
         this.$emit("datasetCreated");
         this.dataDate = undefined;

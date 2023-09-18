@@ -20,8 +20,8 @@ export function formatPercentageNumberAsString(percentageNumber?: number, precis
  * @param amountWithCurrency the object that holds the amount and currency
  * @returns the resulting string from the concatenation
  */
-export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency | undefined): string {
-  if (!amountWithCurrency?.amount) {
+export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency): string {
+  if (amountWithCurrency?.amount == undefined) {
     return "";
   }
   return `${amountWithCurrency.amount.toLocaleString("en-GB", {

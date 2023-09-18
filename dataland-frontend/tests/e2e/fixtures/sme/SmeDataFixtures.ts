@@ -3,7 +3,7 @@ import { type SmeData, type SmeProduct, type SmeProductionSite } from "@clients/
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomInt, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import {
@@ -57,7 +57,7 @@ export function generateSmeData(undefinedProbability = 0.5): SmeData {
   return {
     general: {
       basicInformation: {
-        sector: generateListOfNaceCodes(),
+        sector: generateListOfRandomNaceCodes(),
         addressOfHeadquarters: generateAddress(undefinedProbability),
         numberOfEmployees: randomInt(10000),
         fiscalYearStart: randomFutureDate(),

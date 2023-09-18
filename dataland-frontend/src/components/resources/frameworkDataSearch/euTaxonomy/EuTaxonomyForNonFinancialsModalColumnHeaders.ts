@@ -31,3 +31,12 @@ export const euTaxonomyForNonFinancialsModalColumnHeaders = {
     revenuePercent: "Revenue (%)",
   },
 };
+
+export const euTaxonomyObjectives = [
+  "ClimateChangeMitigation",
+  "ClimateChangeAdaption",
+  "SustainableUseAndProtectionOfWaterAndMarineResources",
+  "TransitionToACircularEconomy",
+  "PollutionPreventionAndControl",
+  "ProtectionAndRestorationOfBiodiversityAndEcosystems",
+];

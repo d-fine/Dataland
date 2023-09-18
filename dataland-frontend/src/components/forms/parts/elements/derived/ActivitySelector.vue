@@ -103,16 +103,18 @@ export default defineComponent({
 
     naceCodesForActivities() {
       if (this.selectedActivities?.naceCodes) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
-        return this.selectedActivities.naceCodes.map((naceCode: string) => {
-          const naceCodeWithoutLetter = naceCode.substring(1);
+        return (this.selectedActivities.naceCodes as Array<TreeNode>).map((naceCode: string) => {
+          const naceCodeWithoutLetter: string = naceCode.substring(1);
           const convertedNaceCode = convertNace(
             naceCodeWithoutLetter.length === 1 ? `0${naceCodeWithoutLetter}` : naceCodeWithoutLetter,
           );
 
           return { label: convertedNaceCode, value: naceCode };
-        });
+        }) as Record<object, string>;
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
         return [];
       }
