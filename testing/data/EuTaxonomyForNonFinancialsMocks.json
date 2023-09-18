@@ -41,10 +41,8 @@
               "tagName": "applications"
             },
             "comment": "connect virtual transmitter",
-            "value": {
-              "amount": 0.0,
-              "currency": "EUR"
-            }
+            "value": 0.0,
+            "unit": "EUR"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 29.5149,
@@ -141,10 +139,8 @@
               "tagName": "markets"
             },
             "comment": "parse neural matrix",
-            "value": {
-              "amount": 648635.27,
-              "currency": "EUR"
-            }
+            "value": 648635.27,
+            "unit": "EUR"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 29.5149,
@@ -210,10 +206,8 @@
               "tagName": "e-business"
             },
             "comment": "override 1080p program",
-            "value": {
-              "amount": null,
-              "currency": "USD"
-            }
+            "value": null,
+            "unit": "USD"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 49.55,
@@ -321,10 +315,8 @@
               "tagName": "action-items"
             },
             "comment": "navigate online feed",
-            "value": {
-              "amount": null,
-              "currency": "AUD"
-            }
+            "value": null,
+            "unit": "AUD"
           },
           "nonEligibleShare": null,
           "eligibleShare": {
@@ -440,10 +432,8 @@
               "tagName": "markets"
             },
             "comment": "parse neural matrix",
-            "value": {
-              "amount": 644635.2702681907,
-              "currency": "EUR"
-            }
+            "value": 644635.2702681907,
+            "unit": "EUR"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 19.803,
@@ -538,7 +528,8 @@
               "tagName": "schemas"
             },
             "comment": "back up primary sensor",
-            "value": null
+            "value": null,
+            "unit": null
           },
           "nonEligibleShare": null,
           "eligibleShare": null,
@@ -649,7 +640,8 @@
               "tagName": "e-commerce"
             },
             "comment": "connect open-source microchip",
-            "value": null
+            "value": null,
+            "unit": null
           },
           "nonEligibleShare": null,
           "eligibleShare": null,
@@ -705,10 +697,9 @@
             "quality": "Incomplete",
             "dataSource": null,
             "comment": null,
-            "value": {
-              "amount": 327319.7761620395,
-              "currency": "CHF"
-            }
+            "value": 327319.7761620395,
+            "unit": "CHF"
+
           },
           "nonEligibleShare": null,
           "eligibleShare": null,

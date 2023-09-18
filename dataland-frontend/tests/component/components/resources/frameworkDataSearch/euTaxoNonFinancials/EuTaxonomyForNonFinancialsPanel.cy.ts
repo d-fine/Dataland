@@ -2,9 +2,11 @@ import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDat
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
-  type AmountWithCurrency,
+  Activity,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
+  type EuTaxonomyAlignedActivity,
+  type EuTaxonomyDetailsPerCashFlowType,
 } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type { CompanyReport } from "@clients/backend";
@@ -12,12 +14,41 @@ import { roundNumber } from "@/utils/NumberConversionUtils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
 
 describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
-  let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
+  let mockedBackendDataForTest: DataAndMetaInformationEuTaxonomyDataForNonFinancials[];
+
+  let capexOfDatasetAlpha: EuTaxonomyDetailsPerCashFlowType;
+
+  let capexOfDatasetBeta: EuTaxonomyDetailsPerCashFlowType;
+
+  let capexOfDatasetGamma: EuTaxonomyDetailsPerCashFlowType;
+  let gammaReportingPeriod: string;
+  let gammaCapexFirstAlignedActivity: EuTaxonomyAlignedActivity;
 
   before(function () {
     cy.fixture("EuTaxonomyForNonFinancialsMocks.json").then(
       (mockedBackendResponse: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]) => {
         mockedBackendDataForTest = mockedBackendResponse;
+
+        const revenueOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.revenue);
+        const revenueOfDatasetAlphaTotalAmount = assertDefined(revenueOfDatasetAlpha.totalAmount);
+        revenueOfDatasetAlphaTotalAmount.value = 0;
+        revenueOfDatasetAlphaTotalAmount.unit = "EUR";
+        capexOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.capex);
+
+        capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
+
+        capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
+        gammaReportingPeriod = mockedBackendDataForTest[2].metaInfo.reportingPeriod;
+        const gammaCapexAlignedActivities = assertDefined(capexOfDatasetGamma.alignedActivities);
+        if (gammaCapexAlignedActivities.length < 1) {
+          throw new Error(
+            "Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.",
+          );
+        }
+        gammaCapexAlignedActivities.splice(1);
+        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities[0];
+        gammaCapexFirstAlignedActivity.activityName = Activity.Afforestation;
+        gammaCapexFirstAlignedActivity.substantialContributionToClimateChangeAdaptionInPercent = 0;
       },
     );
   });
@@ -28,55 +59,45 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
       `/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/companies/${mockCompanyId}`,
       mockedBackendDataForTest,
     );
-    cy.mountWithPlugins(EuTaxonomyForNonFinancialsPanel, {
-      keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
+    cy.mountWithDialog(
+      EuTaxonomyForNonFinancialsPanel,
+      {
+        keycloak: minimalKeycloakMock({}),
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+      },
+      {
         companyId: "mock-company-Id",
       },
-    }).then(() => {
-      const revenueOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.revenue);
-      const alphaTotalRevenueExpectedValue = {
-        amount: 0.0,
-        currency: "EUR",
-      } as AmountWithCurrency;
-      cy.wrap(revenueOfDatasetAlpha.totalAmount?.value).should("deep.eq", alphaTotalRevenueExpectedValue);
-
-      const capexOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.capex);
-      const capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
-      const capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
-
+    ).then(() => {
       const alphaContributionToClimateChangeMitigation = roundNumber(
         assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent) * 100,
         2,
       );
-
       const betaTotalAlignedCapexPercentage = roundNumber(
         assertDefined(capexOfDatasetBeta.alignedShare?.relativeShareInPercent) * 100,
         2,
       );
-
       const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency(
         assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare),
       );
-
       const gammaContributionToClimateChangeMitigation = roundNumber(
         assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigationInPercent) * 100,
         2,
       );
 
       cy.get(`[data-test='Revenue']`).click();
-
       cy.get('tr:has(td > span:contains("Total Revenue"))')
         .next("tr")
         .next("tr")
         .find("span")
         .should("contain", "Value")
-        .should("contain", "0 EUR");
+        .parent()
+        .next("td")
+        .invoke("text")
+        .should("match", /^0$/);
 
-      cy.get(`[data-test='CapEx']`).click();
-
+      cy.get('[data-test="CapEx"]').click();
       cy.get('tr:has(td > span:contains("Aligned CapEx"))')
         .first()
         .next("tr")
@@ -92,7 +113,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         .should("contain", "Absolute share")
         .should("contain", gammaTotalAlignedCapexAbsoluteShareString);
 
-      cy.get('span[data-test="CapEx"]')
+      cy.get('[data-test="CapEx"]')
         .parent()
         .parent()
         .parent()
@@ -101,8 +122,17 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         .find("span")
         .should("contain", alphaContributionToClimateChangeMitigation)
         .should("contain", gammaContributionToClimateChangeMitigation);
+
+      cy.get(`[data-test="${gammaReportingPeriod}_capex_alignedActivities"]`).click();
+      cy.get("tr")
+        .contains("td", assertDefined(gammaCapexFirstAlignedActivity.activityName))
+        .nextAll()
+        .eq(4)
+        .invoke("text")
+        .should("match", /^0 %$/);
     });
   });
+
   it("Checks if the reports banner and the corresponding modal is properly displayed", () => {
     const reportsAndReportingPeriods =
       extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(mockedBackendDataForTest);
