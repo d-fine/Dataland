@@ -83,6 +83,7 @@ export const uploadDocuments = {
   removeReportFromSelectionForUpload(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
+    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
   },
   removeAllReportsFromSelectionForUpload(): void {
     cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));

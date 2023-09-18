@@ -13,20 +13,19 @@ const ViewEuTaxonomyNonFinancialsSample = (): Promise<RouteComponent> =>
 const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/TheImprint.vue");
 const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
-const UploadEuTaxonomyDataForFinancials = (): Promise<RouteComponent> =>
-  import("@/components/pages/UploadEuTaxonomyDataForFinancials.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
 const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
 const UploadSfdr = (): Promise<RouteComponent> => import("@/components/pages/UploadSfdr.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
+const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pages/UploadFormWrapper.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
+
+const ViewTeaserCompanyData = (): Promise<RouteComponent> => import("@/components/pages/ViewTeaserCompanyData.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
-import { DataTypeEnum } from "@clients/backend";
-import UploadP2p from "@/components/pages/UploadP2p.vue";
 
 const routes = [
   {
@@ -114,7 +113,7 @@ const routes = [
   {
     path: `/companies/:companyId/frameworks/:dataType/reportingPeriods/:reportingPeriod`,
     props: true,
-    name: "Company EU Taxonomy for specific reporting period",
+    name: "Company framework data for specific reporting period",
     component: ViewFrameworkData,
   },
   {

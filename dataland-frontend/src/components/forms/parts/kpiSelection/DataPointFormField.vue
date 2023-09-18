@@ -11,6 +11,7 @@
           :validation="`number|${validation}`"
           placeholder="Value"
           outer-class="short"
+          @blur="handleBlurValue"
         />
         <div v-if="unit" class="form-field-label pb-3">
           <FormKit type="hidden" name="unit" :modelValue="unit" />
@@ -37,9 +38,9 @@
             <FormKit
               type="select"
               name="report"
+              v-model="currentReportValue"
               placeholder="Select a report"
               :options="['None...', ...injectReportsName]"
-              :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
           </div>
           <div>
@@ -69,12 +70,12 @@
       <div class="md:col-6 col-12 p-0">
         <FormKit
           type="select"
-          :modelValue="!isDataQualityRequired ? 'NA' : ''"
+          v-model="qualityValue"
           name="quality"
           :validation="isDataQualityRequired ? 'required' : ''"
           validation-label="Data quality"
           placeholder="Data quality"
-          :options="qualityOptions"
+          :options="computeQualityOption"
         />
       </div>
     </div>
@@ -93,7 +94,6 @@ import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
-import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
@@ -109,6 +109,13 @@ export default defineComponent({
     isDataQualityRequired(): boolean {
       return this.currentValue !== "";
     },
+    computeQualityOption(): object {
+      if (this.currentValue == "") {
+        return this.qualityOptions;
+      } else {
+        return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
+      }
+    },
   },
   data() {
     return {
@@ -116,7 +123,9 @@ export default defineComponent({
         label: qualityOption,
         value: qualityOption,
       })),
+      qualityValue: "NA",
       currentValue: "",
+      currentReportValue: "",
     };
   },
   props: {
@@ -126,7 +135,16 @@ export default defineComponent({
     },
   },
   methods: {
-    selectNothingIfNotExistsFormKitPlugin,
+    /**
+     * Handle blur event on value input.
+     */
+    handleBlurValue() {
+      if (this.currentValue === "") {
+        this.qualityValue = "NA";
+      } else if (this.currentValue !== "" && this.qualityValue == "NA") {
+        this.qualityValue = "";
+      }
+    },
   },
 });
 </script>
