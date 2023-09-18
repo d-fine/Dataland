@@ -26,21 +26,19 @@
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
           <div class="flex">
-            <template v-if="!canReview">
-              <Dropdown
-                id="chooseFrameworkDropdown"
-                v-model="chosenDataTypeInDropdown"
-                :options="dataTypesInDropdown"
-                optionLabel="label"
-                optionValue="value"
-                :placeholder="humanizeString(dataType)"
-                aria-label="Choose framework"
-                class="fill-dropdown always-fill"
-                dropdownIcon="pi pi-angle-down"
-                @change="handleChangeFrameworkEvent"
-              />
-              <slot name="reportingPeriodDropdown"></slot>
-            </template>
+            <Dropdown
+              id="chooseFrameworkDropdown"
+              v-model="chosenDataTypeInDropdown"
+              :options="dataTypesInDropdown"
+              optionLabel="label"
+              optionValue="value"
+              :placeholder="humanizeString(dataType)"
+              aria-label="Choose framework"
+              class="fill-dropdown always-fill"
+              dropdownIcon="pi pi-angle-down"
+              @change="handleChangeFrameworkEvent"
+            />
+            <slot name="reportingPeriodDropdown" />
           </div>
           <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
             <template v-if="canReview && singleDataMetaInfoToDisplay">
