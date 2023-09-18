@@ -6,6 +6,7 @@ import "primeicons/primeicons.css"; // use this for icons embedded in inputs and
 import "material-icons/iconfont/material-icons.css"; // prefer these icons in most cases such as stand-alone or in buttons -> recommended by UI/UX
 import "primeflex/primeflex.min.css";
 import "./assets/scss/global.scss";
+import "./assets/scss/newVariables.scss";
 import "./assets/css/ibm-plex-sans.scss";
 import "@formkit/themes/genesis";
 import { plugin, defaultConfig } from "@formkit/vue";

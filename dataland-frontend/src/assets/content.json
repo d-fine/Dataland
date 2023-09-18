@@ -194,6 +194,46 @@
             ]
         },
         {
+            "title": "Mission",
+            "url": "/mission",
+            "sections": [
+                {
+                    "title": "Mission",
+                    "text": [
+                        "Soon you will find our data privacy information here."
+                    ]
+                },
+                {
+                    "title": "Struggle",
+                    "text": [
+                        "86% of compaines struggle with"
+                    ],
+                    "cards": [
+                        {
+                            "icon": "/src/assets/images/elements/Diagram.svg",
+                            "title": "Data Gaps",
+                            "text": "Valuable insights remain hidden, preventing businesses from harnessing the full potential of their data."
+                        },
+                        {
+                            "icon": "/src/assets/images/elements/Badge.svg",
+                            "title": "Data Quality",
+                            "text": "Inaccurate, inconsistent, or outdated data jeopardizes the integrity of analytics and decision processes, leading to misguided strategies."
+                        },
+                        {
+                            "icon": "/src/assets/images/elements/3d-mpr-toggle.svg",
+                            "title": "Data Usage Rights",
+                            "text": "Companies must ensure they have the legal permissions to collect, store, process, and share data while adhering to regulations and privacy laws. "
+                        },
+                        {
+                            "icon": "/src/assets/images/elements/Airline--rapid-board.svg",
+                            "title": "Data Usage",
+                            "text": "Many organizations struggle with underutilization. Data analysis tools might be intimidating or inaccessible to certain teams, limiting the ability to extract valuable insights. "
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "title": "Imprint",
             "url": "/imprint",
             "sections": [
@@ -211,18 +251,6 @@
             "sections": [
                 {
                     "title": "Data Privacy",
-                    "text": [
-                        "Soon you will find our data privacy information here."
-                    ]
-                }
-            ]
-        },
-        {
-            "title": "Mission",
-            "url": "/mission",
-            "sections": [
-                {
-                    "title": "Mission",
                     "text": [
                         "Soon you will find our data privacy information here."
                     ]

@@ -3,6 +3,7 @@ const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
 const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
+const NewMissionPage = (): Promise<RouteComponent> => import("@/components/pages/NewMissionPage.vue");
 
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
@@ -40,9 +41,11 @@ const routes = [
     path: "/lp",
     name: "New Landing Page",
     component: NewLandingPage,
-    props: {
-      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
-    },
+  },
+  {
+    path: "/mission",
+    name: "Mission Page",
+    component: NewMissionPage,
   },
   {
     path: `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,

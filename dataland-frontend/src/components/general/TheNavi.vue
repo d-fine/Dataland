@@ -1,7 +1,12 @@
 <template>
   <nav class="header__nav" aria-label="Main Navigation">
     <ul class="header__nav-list" role="menu">
-      <li class="header__nav-item" v-for="page in filteredPages" :key="page.url">
+      <li
+        class="header__nav-item"
+        v-for="page in filteredPages"
+        :key="page.url"
+        :class="{ active: route.path === page.url }"
+      >
         <router-link :to="page.url" role="menuitem" tabindex="0" class="header__nav-link" :aria-label="page.title">{{
           page.title
         }}</router-link>
@@ -12,8 +17,10 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useRoute } from "vue-router";
 import type { Content } from "@/types/ContentTypes";
 
+const route = useRoute();
 const { contentData } = defineProps<{ contentData: Content }>();
 
 const filteredPages = computed(() => {
@@ -22,6 +29,8 @@ const filteredPages = computed(() => {
 </script>
 
 <style scoped lang="scss">
+// @import "../../assets/scss/newVariables";
+
 #app.lp {
   .header {
     &__nav {
@@ -36,12 +45,16 @@ const filteredPages = computed(() => {
         gap: 48px;
         padding: 0;
         margin: 0;
+        .header__nav-item.active .header__nav-link {
+          border-bottom: 2px solid var(--primary-orange);
+          color: var(--primary-orange);
+        }
       }
 
       &-link {
         position: relative;
         text-decoration: none;
-        color: #1b1b1b;
+        color: var(--basic-dark);
         font-size: 16px;
         font-style: normal;
         font-weight: 600;
@@ -50,7 +63,7 @@ const filteredPages = computed(() => {
         text-transform: uppercase;
 
         &:hover {
-          border-bottom: 2px solid #1b1b1b;
+          border-bottom: 2px solid var(--basic-dark);
 
           &::before {
             content: "";
