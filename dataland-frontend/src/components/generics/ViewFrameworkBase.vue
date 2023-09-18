@@ -25,8 +25,9 @@
         :class="[pageScrolled ? ['fixed w-100'] : '']"
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
-          <div v-if="!canReview" class="flex">
+          <div class="flex">
             <Dropdown
+              v-if="!canReview"
               id="chooseFrameworkDropdown"
               v-model="chosenDataTypeInDropdown"
               :options="dataTypesInDropdown"
@@ -38,7 +39,7 @@
               dropdownIcon="pi pi-angle-down"
               @change="handleChangeFrameworkEvent"
             />
-            <slot name="reportingPeriodDropdown" />
+            <slot name="reportingPeriodDropdown"></slot>
           </div>
           <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
             <template v-if="canReview && singleDataMetaInfoToDisplay">
