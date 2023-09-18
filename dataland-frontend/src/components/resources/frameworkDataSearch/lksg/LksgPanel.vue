@@ -192,7 +192,7 @@ export default defineComponent({
       if (numberOfSuppliersPerCountryCode != undefined) {
         const readableListOfSuppliersAndCountries = Array.from(numberOfSuppliersPerCountryCode.entries()).map(
           ([countryCode, numberOfSuppliers]) => {
-            const countryName = getCountryNameFromCountryCode(countryCode);
+            const countryName = this.reformatCountriesValue(countryCode);
             if (numberOfSuppliers != undefined) {
               return String(numberOfSuppliers) + " suppliers from " + countryName;
             } else {

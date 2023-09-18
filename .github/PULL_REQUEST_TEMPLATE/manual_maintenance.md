@@ -23,16 +23,15 @@ appear.
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 - [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
 - [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloak Docker images
-- [ ] Flyway version from 9.18.0 and above (until 9.22.1) seem to cause issues. Future versions should be tried
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
   If running `sudo apt-get update && sudo apt-get upgrade` on the servers causes connection issues
   this can be possibly fixed by reverting the docker-compose-plugin version
 ### Gradle update
 
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
-- [ ] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco
-  and ktlint)
-- [ ] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
+- [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
+- [ ] Update versions in `versions.properties`
+- [ ] Update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
 
