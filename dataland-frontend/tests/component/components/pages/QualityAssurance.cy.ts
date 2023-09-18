@@ -47,8 +47,7 @@ describe("Component tests for the Quality Assurance page", () => {
     cy.contains("td", `${mockDataMetaInfoForP2pTestDataset.dataId}`);
   });
 
-  it.only("Mock a pending P2P-dataset to check if dataset can be reviewed", () => {
-    // TODO remove "Only" tag
+  it("Mock a pending P2P-dataset to check if dataset can be reviewed", () => {
     cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfoForP2pTestDataset.companyId}`, [
       mockDataMetaInfoForActiveDataset,
     ]);
@@ -74,15 +73,17 @@ describe("Component tests for the Quality Assurance page", () => {
         dataId: mockDataMetaInfoForP2pTestDataset.dataId,
       },
     }).then(() => {
-      // cy.get('#framework_data_search_bar_standard').should('not.exist');
+      cy.get("#framework_data_search_bar_standard").should("not.exist");
       cy.get("#chooseFrameworkDropdown").should("not.exist");
-      // cy.get('a[data-test="gotoNewDatasetButton"]')
-      //   .should('not.exist');
+      cy.get('a[data-test="gotoNewDatasetButton"]').should("not.exist");
 
-      cy.wait(90000);
+      cy.get('button[data-test="qaRejectButton"]').should("exist");
+      cy.get('button[data-test="qaApproveButton"]').should("exist");
 
-      // TODO test absence of hidden stuff (search bar, dropdowns...)
-      // TODO check existence of expected stuff (pending-dataset-info, REJECT and APPROVE button)
+      cy.get('div[data-test="datasetDisplayStatusContainer"] span').contains(
+        "This dataset is currently pending review",
+      );
+
       // TODO test that REJECT and APPROVE buttons stick while scrolling  =>  First test if cypress can actually assert this
       // TODO click "REJECT" and spy on the correct and expected API-call
       // TODO revisit the page and this time click on "APPROVE" and spy on the correct and expected API-call

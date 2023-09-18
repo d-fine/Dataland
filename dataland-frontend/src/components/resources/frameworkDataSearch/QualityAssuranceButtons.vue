@@ -3,6 +3,7 @@
     class="uppercase p-button-outlined p-button-sm mr-3"
     @click="setQaStatusTo($event, QaStatus.Rejected)"
     :disabled="reviewSubmitted"
+    data-test="qaRejectButton"
   >
     <i class="material-icons"> clear </i>
     <span class="d-letters pl-2"> Reject </span>
@@ -11,6 +12,7 @@
     class="uppercase p-button p-button-sm"
     @click="setQaStatusTo($event, QaStatus.Accepted)"
     :disabled="reviewSubmitted"
+    data-test="qaApproveButton"
   >
     <i class="material-icons"> done </i>
     <span class="d-letters pl-2"> Approve </span>
