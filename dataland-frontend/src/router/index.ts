@@ -1,23 +1,14 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
-const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
-  import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
-const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
-const NewMissionPage = (): Promise<RouteComponent> => import("@/components/pages/NewMissionPage.vue");
-
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
-const ViewEuTaxonomyNonFinancialsSample = (): Promise<RouteComponent> =>
-  import("@/components/pages/ViewEuTaxonomyNonFinancialsSample.vue");
 const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/TheImprint.vue");
 const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
-const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
-const UploadSfdr = (): Promise<RouteComponent> => import("@/components/pages/UploadSfdr.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
 const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pages/UploadFormWrapper.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
@@ -37,20 +28,9 @@ const routes = [
     },
   },
   {
-    path: "/lp",
-    name: "New Landing Page",
-    component: NewLandingPage,
-  },
-  {
-    path: "/mission",
-    name: "Mission Page",
-    component: NewMissionPage,
-  },
-  {
-    path: `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
-
-    name: "Eu Taxonomy For Non-Financials Sample",
-    component: ViewEuTaxonomyNonFinancialsSample,
+    path: "/preview",
+    name: "View Sample Data in Preview Mode",
+    component: ViewTeaserCompanyData,
   },
   {
     path: "/companies/choose",
@@ -64,34 +44,10 @@ const routes = [
     component: ChooseFrameworkForDataUpload,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
+    path: `/companies/:companyID/frameworks/:frameworkType/upload`,
     props: true,
-    name: "Upload Eu Taxonomy Data For Non-Financials",
-    component: UploadEuTaxonomyDataForNonFinancials,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
-    props: true,
-    name: "Upload Eu Taxonomy Data For Financials",
-    component: UploadEuTaxonomyDataForFinancials,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}/upload`,
-    props: true,
-    name: "Upload lkSG Data",
-    component: UploadLkSG,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Sfdr}/upload`,
-    props: true,
-    name: "Upload SFDR Data",
-    component: UploadSfdr,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.P2p}/upload`,
-    props: true,
-    name: "Upload P2p Data",
-    component: UploadP2p,
+    name: `Upload framework data`,
+    component: UploadFormWrapper,
   },
   {
     path: "/companies",
