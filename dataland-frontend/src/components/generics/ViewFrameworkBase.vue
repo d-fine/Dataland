@@ -25,7 +25,7 @@
         :class="[pageScrolled ? ['fixed w-100'] : '']"
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
-          <div class="flex">
+          <div v-if="!canReview" class="flex">
             <Dropdown
               id="chooseFrameworkDropdown"
               v-model="chosenDataTypeInDropdown"
