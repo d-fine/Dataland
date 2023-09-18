@@ -175,6 +175,7 @@ export default defineComponent({
       YesNo,
       rowClickHandlersMap: new Map() as Map<Element, EventListener>,
       dataTableIdentifier: "" as string,
+      isModal: isModal as (componentName: string) => boolean,
     };
   },
   props: {
@@ -247,14 +248,7 @@ export default defineComponent({
      * @returns true if the string is 'Yes' or 'No'
      */
     isYesNo(value: string) {
-      return Object.values(YesNo).includes(value);
-    },
-    /**
-     * @param componentName name of component to be checked
-     * @returns whether passed component is a modal
-     */
-    isModal(componentName: string): boolean {
-      return isModal(componentName) as boolean;
+      return Object.values(YesNo).includes(value as YesNo);
     },
     /**
      * @param content the array value from the field

@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter, type RouteComponent, type RouteLocationNormalized } from "vue-router";
+import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
