@@ -199,55 +199,6 @@ export default defineComponent({
       }
     },
     /**
-     * Retrieves the dataset corresponding to the given dataId
-     * @param qaDataObject is the quality assurance data object used to retrieve the actual dataset to be reviewed
-     */
-    // async getDataSet(qaDataObject: QaDataObject) { TODO Emanuel: What about all this commented out code? Can it be deleted?
-    //   try {
-    //     const dataTypeOfDatasetToReview = qaDataObject.metaInformation.dataType;
-    //     this.dataId = qaDataObject.dataId;
-    //     const keycloakPromise = assertDefined(this.getKeycloakPromise)();
-
-    //     if (dataTypeOfDatasetToReview === DataTypeEnum.EutaxonomyNonFinancials) {
-    //       const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-    //         keycloakPromise,
-    //       ).getEuTaxonomyDataForNonFinancialsControllerApi();
-    //       const companyAssociatedDataResponse =
-    //         await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-    //           this.dataId,
-    //         );
-    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.EutaxonomyFinancials) {
-    //       const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-    //         keycloakPromise,
-    //       ).getEuTaxonomyDataForFinancialsControllerApi();
-    //       const companyAssociatedDataResponse =
-    //         await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(this.dataId);
-    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.Lksg) {
-    //       const lksgDataControllerApi = await new ApiClientProvider(keycloakPromise).getLksgDataControllerApi();
-    //       const companyAssociatedDataResponse = await lksgDataControllerApi.getCompanyAssociatedLksgData(this.dataId);
-    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.Sfdr) {
-    //       const sfdrDataControllerApi = await new ApiClientProvider(keycloakPromise).getSfdrDataControllerApi();
-    //       const companyAssociatedDataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.dataId);
-    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.P2p) {
-    //       const p2pDataControllerApi = await new ApiClientProvider(keycloakPromise).getP2pDataControllerApi();
-    //       const companyAssociatedDataResponse = await p2pDataControllerApi.getCompanyAssociatedP2pData(this.dataId);
-    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-    //     } else if (dataTypeOfDatasetToReview === DataTypeEnum.Sme) {
-    //       const smeDataControllerApi = await new ApiClientProvider(keycloakPromise).getSmeDataControllerApi();
-    //       const companyAssociatedDataResponse = await smeDataControllerApi.getCompanyAssociatedSmeData(this.dataId);
-    //       this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-    //     } else {
-    //       throw new Error("The qaDataObject type of the selected dataset is not supported by the QA frontend.");
-    //     }
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // },
-    /**
      * Navigates to the view framework data page on a click on the row of the company
      * @param event the row click event
      * @returns the promise of the router push action
@@ -256,27 +207,6 @@ export default defineComponent({
       const qaDataObject = event.data as QaDataObject;
       const qaUri = `/companies/${qaDataObject.metaInformation.companyId}/frameworks/${qaDataObject.metaInformation.dataType}/${qaDataObject.dataId}`;
       return this.$router.push(qaUri);
-
-      // this.$dialog.open(QADatasetModal, {
-      //   props: {
-      //     header:
-      //       "Reviewing " +
-      //       qaDataObject.metaInformation.dataType +
-      //       " data for " +
-      //       qaDataObject.companyInformation.companyName +
-      //       " for the reporting period " +
-      //       qaDataObject.metaInformation.reportingPeriod,
-      //     modal: true,
-      //     dismissableMask: true,
-      //   },
-      //   data: {
-      //     dataSetToReview: this.dataSet,
-      //     dataId: this.dataId,
-      //   },
-      //   onClose: () => {
-      //     this.getQaDataForCurrentPage().catch((error) => console.log(error));
-      //   },
-      // });
     },
     /**
      * Updates the data for the current page

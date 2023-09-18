@@ -81,6 +81,7 @@ export default defineComponent({
      */
     async getCompanyName() {
       //TODO Emanuel: We could simply pass the company name as prop to the buttons. Then we don't have to fetch it a second time.
+      //TODO Piotr: That was my initial intention, however the parent component doesn't have the company info data anyway. But yes, it would be better.
       const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
       ).getCompanyDataControllerApi();

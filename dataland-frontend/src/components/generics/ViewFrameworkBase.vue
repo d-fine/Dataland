@@ -165,6 +165,7 @@ export default defineComponent({
   computed: {
     canReview() {
       // TODO Emanuel: Maybe call this computed property "viewInReviewMode" ? This would be consistent with "viewInPreviewMode" which already exists
+      // TODO Piotr: Won't it intefere with the provided prop? I copied the term for consistency from the method below 'canEdit'
       return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
     },
     canEdit() {
@@ -237,16 +238,14 @@ export default defineComponent({
       const windowScrollY = window.scrollY;
       if (this.scrollEmittedByToolbar) {
         this.scrollEmittedByToolbar = false;
+      } else if (this.latestScrollPosition > windowScrollY) {
+        //ScrollUP event
+        this.latestScrollPosition = windowScrollY;
+        this.pageScrolled = document.documentElement.scrollTop >= 195;
       } else {
-        if (this.latestScrollPosition > windowScrollY) {
-          //ScrollUP event
-          this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop >= 195;
-        } else {
-          //ScrollDOWN event
-          this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop > 195;
-        }
+        //ScrollDOWN event
+        this.latestScrollPosition = windowScrollY;
+        this.pageScrolled = document.documentElement.scrollTop > 195;
       }
     },
     /**
