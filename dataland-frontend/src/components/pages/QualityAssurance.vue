@@ -202,7 +202,7 @@ export default defineComponent({
      * Retrieves the dataset corresponding to the given dataId
      * @param qaDataObject is the quality assurance data object used to retrieve the actual dataset to be reviewed
      */
-    // async getDataSet(qaDataObject: QaDataObject) {
+    // async getDataSet(qaDataObject: QaDataObject) { TODO Emanuel: What about all this commented out code? Can it be deleted?
     //   try {
     //     const dataTypeOfDatasetToReview = qaDataObject.metaInformation.dataType;
     //     this.dataId = qaDataObject.dataId;
