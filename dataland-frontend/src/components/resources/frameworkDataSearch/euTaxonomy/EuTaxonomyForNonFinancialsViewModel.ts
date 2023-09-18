@@ -2,7 +2,6 @@ import {
   type AssuranceDataAssuranceEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
-  type DataPointOneValueAmountWithCurrency,
   type EuTaxonomyActivity,
   type EuTaxonomyAlignedActivity,
   type FiscalYearDeviation,
@@ -11,11 +10,12 @@ import {
   type RelativeAndAbsoluteFinancialShare,
   type YesNo,
   type YesNoNa,
+  type DataPointWithUnitBigDecimal,
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
 interface EuTaxonomyDetailsPerCashFlowViewModel {
-  totalAmount?: DataPointOneValueAmountWithCurrency;
+  totalAmount?: DataPointWithUnitBigDecimal;
   nonEligibleShare?: RelativeAndAbsoluteFinancialShare;
   eligibleShare?: RelativeAndAbsoluteFinancialShare;
   nonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };
@@ -33,8 +33,8 @@ interface EuTaxonomyDetailsPerCashFlowViewModel {
 }
 
 export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
-  basicInformation?: {
-    basicInformation: {
+  general?: {
+    general: {
       fiscalYearDeviation?: FiscalYearDeviation;
       fiscalYearEnd?: string;
       scopeOfEntities?: YesNoNa;
@@ -54,8 +54,8 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   opex?: EuTaxonomyDetailsPerCashFlowViewModel;
 
   constructor(apiModel: EuTaxonomyDataForNonFinancials) {
-    this.basicInformation = {
-      basicInformation: {
+    this.general = {
+      general: {
         fiscalYearDeviation: apiModel.general?.fiscalYearDeviation,
         fiscalYearEnd: apiModel.general?.fiscalYearEnd,
         scopeOfEntities: apiModel.general?.scopeOfEntities,
@@ -81,11 +81,11 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   toApiModel(): EuTaxonomyDataForNonFinancials {
     return {
       general: {
-        fiscalYearDeviation: this.basicInformation?.basicInformation?.fiscalYearDeviation,
-        fiscalYearEnd: this.basicInformation?.basicInformation?.fiscalYearEnd,
-        scopeOfEntities: this.basicInformation?.basicInformation?.scopeOfEntities,
-        nfrdMandatory: this.basicInformation?.basicInformation?.nfrdMandatory,
-        euTaxonomyActivityLevelReporting: this.basicInformation?.basicInformation?.euTaxonomyActivityLevelReporting,
+        fiscalYearDeviation: this.general?.general?.fiscalYearDeviation,
+        fiscalYearEnd: this.general?.general?.fiscalYearEnd,
+        scopeOfEntities: this.general?.general?.scopeOfEntities,
+        nfrdMandatory: this.general?.general?.nfrdMandatory,
+        euTaxonomyActivityLevelReporting: this.general?.general?.euTaxonomyActivityLevelReporting,
         assurance:
           this.assurance == undefined
             ? undefined
@@ -93,7 +93,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
                 assurance: this.assurance?.assurance.levelOfAssurance,
                 provider: this.assurance?.assurance.assuranceProvider,
               },
-        numberOfEmployees: this.basicInformation?.basicInformation?.numberOfEmployees,
+        numberOfEmployees: this.general?.general?.numberOfEmployees,
       },
       revenue: EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.revenue),
       capex: EuTaxonomyForNonFinancialsViewModel.convertDetailsPerCashFlowViewModelToApiModel(this.capex),
@@ -137,33 +137,33 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   }
 
   private static convertDetailsPerCashFlowViewModelToApiModel(
-    details?: EuTaxonomyDetailsPerCashFlowViewModel,
+    viewModel?: EuTaxonomyDetailsPerCashFlowViewModel,
   ): EuTaxonomyDetailsPerCashFlowType | undefined {
-    if (details == undefined) {
+    if (viewModel == undefined) {
       return undefined;
     }
     return {
-      totalAmount: details.totalAmount,
-      nonEligibleShare: details.nonEligibleShare,
-      eligibleShare: details.eligibleShare,
-      nonAlignedShare: details.nonAlignedShare,
-      alignedShare: details.alignedShare,
-      nonAlignedActivities: details.nonAlignedShare?.nonAlignedActivities,
-      alignedActivities: details.alignedShare?.alignedActivities,
+      totalAmount: viewModel.totalAmount,
+      nonEligibleShare: viewModel.nonEligibleShare,
+      eligibleShare: viewModel.eligibleShare,
+      nonAlignedShare: viewModel.nonAlignedShare,
+      alignedShare: viewModel.alignedShare,
+      nonAlignedActivities: viewModel.nonAlignedShare?.nonAlignedActivities,
+      alignedActivities: viewModel.alignedShare?.alignedActivities,
       substantialContributionToClimateChangeMitigationInPercent:
-        details.alignedShare?.substantialContributionToClimateChangeMitigationInPercent,
+        viewModel.alignedShare?.substantialContributionToClimateChangeMitigationInPercent,
       substantialContributionToClimateChangeAdaptionInPercent:
-        details.alignedShare?.substantialContributionToClimateChangeAdaptionInPercent,
+        viewModel.alignedShare?.substantialContributionToClimateChangeAdaptionInPercent,
       substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
-        details.alignedShare?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
+        viewModel.alignedShare?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
       substantialContributionToTransitionToACircularEconomyInPercent:
-        details.alignedShare?.substantialContributionToTransitionToACircularEconomyInPercent,
+        viewModel.alignedShare?.substantialContributionToTransitionToACircularEconomyInPercent,
       substantialContributionToPollutionPreventionAndControlInPercent:
-        details.alignedShare?.substantialContributionToPollutionPreventionAndControlInPercent,
+        viewModel.alignedShare?.substantialContributionToPollutionPreventionAndControlInPercent,
       substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
-        details.alignedShare?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
-      enablingShareInPercent: details.enablingShare?.enablingShareInPercent,
-      transitionalShareInPercent: details.transitionalShare?.transitionalShareInPercent,
+        viewModel.alignedShare?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
+      enablingShareInPercent: viewModel.enablingShare?.enablingShareInPercent,
+      transitionalShareInPercent: viewModel.transitionalShare?.transitionalShareInPercent,
     };
   }
 }

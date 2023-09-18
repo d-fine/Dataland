@@ -6,121 +6,193 @@ import {
   type AmountWithCurrency,
   type EuTaxonomyDataForNonFinancials,
   type EuTaxonomyDetailsPerCashFlowType,
-  YesNo,
 } from "@clients/backend";
 import { generateArray, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFloat, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
-import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { generateDatapointWithUnit } from "@e2e/fixtures/common/DataPointFixtures";
+import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 
 /**
  * Generates a random amount of money
+ * @param undefinedProbabilityOfFields the probability of an undefined value per field
  * @returns an amount of money
  */
-export function generateAmountWithCurrency(): AmountWithCurrency {
+export function generateAmountWithCurrency(undefinedProbabilityOfFields?: number): AmountWithCurrency {
   return {
-    amount: valueOrUndefined(randomEuroValue()),
-    currency: valueOrUndefined(generateIso4217CurrencyCode()),
+    amount: valueOrUndefined(randomFloat(1000000, 10000000000, 1), undefinedProbabilityOfFields),
+    currency: valueOrUndefined(generateIso4217CurrencyCode(), undefinedProbabilityOfFields),
   };
 }
 
 /**
  * Generates a random financial share
+ * @param undefinedProbabilityOfFields the probability of an undefined value per field
  * @returns a financial share
  */
-export function generateFinancialShare(): RelativeAndAbsoluteFinancialShare {
+export function generateFinancialShare(undefinedProbabilityOfFields?: number): RelativeAndAbsoluteFinancialShare {
   return {
-    relativeShareInPercent: valueOrUndefined(randomPercentageValue()),
-    absoluteShare: valueOrUndefined(generateAmountWithCurrency()),
+    relativeShareInPercent: valueOrUndefined(randomPercentageValue(), undefinedProbabilityOfFields),
+    absoluteShare: valueOrUndefined(
+      generateAmountWithCurrency(undefinedProbabilityOfFields),
+      undefinedProbabilityOfFields,
+    ),
   };
 }
 
 /**
  * Generates a random activity
+ * @param undefinedProbabilityOfFields the probability of an undefined value per field
  * @returns a random activity
  */
-function generateActivity(): EuTaxonomyActivity {
+function generateActivity(undefinedProbabilityOfFields?: number): EuTaxonomyActivity {
+  const randomActivityName: Activity = faker.helpers.arrayElement(Object.values(Activity));
   return {
-    activityName: faker.helpers.arrayElement(Object.values(Activity)),
-    naceCodes: valueOrUndefined(generateListOfNaceCodes()),
-    share: valueOrUndefined(generateFinancialShare()),
+    activityName: randomActivityName,
+    naceCodes: valueOrUndefined(
+      getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName),
+      undefinedProbabilityOfFields,
+    ),
+    share: valueOrUndefined(generateFinancialShare(undefinedProbabilityOfFields), undefinedProbabilityOfFields),
   };
 }
 
 /**
  * Generates a random aligned activity
+ * @param undefinedProbabilityOfFields the probability of an undefined value per field
  * @returns a random aligned activity
  */
-function generateAlignedActivity(): EuTaxonomyAlignedActivity {
+function generateAlignedActivity(undefinedProbabilityOfFields?: number): EuTaxonomyAlignedActivity {
   return {
-    ...generateActivity(),
-    substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(randomPercentageValue()),
+    ...generateActivity(0),
+    substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(
+      randomPercentageValue(),
+      undefinedProbabilityOfFields,
+    ),
+    substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(
+      randomPercentageValue(),
+      undefinedProbabilityOfFields,
+    ),
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: valueOrUndefined(
       randomPercentageValue(),
+      undefinedProbabilityOfFields,
     ),
-    substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(
+      randomPercentageValue(),
+      undefinedProbabilityOfFields,
+    ),
+    substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(
+      randomPercentageValue(),
+      undefinedProbabilityOfFields,
+    ),
     substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: valueOrUndefined(
       randomPercentageValue(),
+      undefinedProbabilityOfFields,
     ),
-    dnshToClimateChangeMitigation: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
-    dnshToClimateChangeAdaption: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToClimateChangeMitigation: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
+    dnshToClimateChangeAdaption: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
     dnshToSustainableUseAndProtectionOfWaterAndMarineResources: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
+      randomYesNo(),
+      undefinedProbabilityOfFields,
     ),
-    dnshToTransitionToACircularEconomy: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
-    dnshToPollutionPreventionAndControl: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    dnshToTransitionToACircularEconomy: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
+    dnshToPollutionPreventionAndControl: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
     dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: valueOrUndefined(
-      faker.helpers.arrayElement(Object.values(YesNo)),
+      randomYesNo(),
+      undefinedProbabilityOfFields,
     ),
-    minimumSafeguards: valueOrUndefined(faker.helpers.arrayElement(Object.values(YesNo))),
+    minimumSafeguards: valueOrUndefined(randomYesNo(), undefinedProbabilityOfFields),
   };
 }
 
 /**
  * Generates fake data for a single cash-flow type for the eutaxonomy-non-financials framework
  * @param reports a list of reports that can be referenced
+ * @param undefinedProbabilityOfFields the probability of an undefined value per field
  * @returns the generated data
  */
-export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
+export function generateEuTaxonomyPerCashflowType(
+  reports: ReferencedDocuments,
+  undefinedProbabilityOfFields?: number,
+): EuTaxonomyDetailsPerCashFlowType {
   return {
-    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(generateAmountWithCurrency()), reports)),
-    nonEligibleShare: valueOrUndefined(generateFinancialShare()),
-    eligibleShare: valueOrUndefined(generateFinancialShare()),
-    nonAlignedShare: valueOrUndefined(generateFinancialShare()),
-    nonAlignedActivities: valueOrUndefined(generateArray(generateActivity)),
-    alignedShare: valueOrUndefined(generateFinancialShare()),
-    substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(randomPercentageValue()),
+    totalAmount: valueOrUndefined(
+      generateDatapointWithUnit(randomFloat(1000000, 10000000000, 1), faker.finance.currencyCode(), reports),
+      undefinedProbabilityOfFields,
+    ),
+    nonEligibleShare: valueOrUndefined(
+      generateFinancialShare(undefinedProbabilityOfFields),
+      undefinedProbabilityOfFields,
+    ),
+    eligibleShare: valueOrUndefined(generateFinancialShare(undefinedProbabilityOfFields), undefinedProbabilityOfFields),
+    nonAlignedShare: valueOrUndefined(
+      generateFinancialShare(undefinedProbabilityOfFields),
+      undefinedProbabilityOfFields,
+    ),
+    nonAlignedActivities: valueOrUndefined(
+      generateArray(generateActivity, 1, 3, undefinedProbabilityOfFields),
+      undefinedProbabilityOfFields,
+    ),
+    alignedShare: valueOrUndefined(generateFinancialShare(undefinedProbabilityOfFields), undefinedProbabilityOfFields),
+    substantialContributionToClimateChangeMitigationInPercent: valueOrUndefined(
+      randomPercentageValue(),
+      undefinedProbabilityOfFields,
+    ),
+    substantialContributionToClimateChangeAdaptionInPercent: valueOrUndefined(
+      randomPercentageValue(),
+      undefinedProbabilityOfFields,
+    ),
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: valueOrUndefined(
       randomPercentageValue(),
+      undefinedProbabilityOfFields,
     ),
-    substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(randomPercentageValue()),
-    substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(randomPercentageValue()),
+    substantialContributionToTransitionToACircularEconomyInPercent: valueOrUndefined(
+      randomPercentageValue(),
+      undefinedProbabilityOfFields,
+    ),
+    substantialContributionToPollutionPreventionAndControlInPercent: valueOrUndefined(
+      randomPercentageValue(),
+      undefinedProbabilityOfFields,
+    ),
     substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: valueOrUndefined(
       randomPercentageValue(),
+      undefinedProbabilityOfFields,
     ),
-    alignedActivities: valueOrUndefined(generateArray(generateAlignedActivity)),
-    enablingShareInPercent: valueOrUndefined(randomPercentageValue()),
-    transitionalShareInPercent: valueOrUndefined(randomPercentageValue()),
+    alignedActivities: valueOrUndefined(
+      generateArray(generateAlignedActivity, 1, 3, undefinedProbabilityOfFields),
+      undefinedProbabilityOfFields,
+    ),
+    enablingShareInPercent: valueOrUndefined(randomPercentageValue(), undefinedProbabilityOfFields),
+    transitionalShareInPercent: valueOrUndefined(randomPercentageValue(), undefinedProbabilityOfFields),
   };
 }
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
+ * @param undefinedProbabilityOfFields the probability of an undefined value per field
  * @returns the generated fixture
  */
-export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
+export function generateEuTaxonomyDataForNonFinancials(
+  undefinedProbabilityOfFields?: number,
+): EuTaxonomyDataForNonFinancials {
   const data: EuTaxonomyDataForNonFinancials = {};
-  data.general = generateEuTaxonomyWithBaseFields();
-  data.opex = generateEuTaxonomyPerCashflowType(assertDefined(data.general.referencedReports));
-  data.capex = generateEuTaxonomyPerCashflowType(assertDefined(data.general.referencedReports));
-  data.revenue = generateEuTaxonomyPerCashflowType(assertDefined(data.general.referencedReports));
+  data.general = generateEuTaxonomyWithBaseFields(undefinedProbabilityOfFields);
+  data.opex = generateEuTaxonomyPerCashflowType(
+    assertDefined(data.general.referencedReports),
+    undefinedProbabilityOfFields,
+  );
+  data.capex = generateEuTaxonomyPerCashflowType(
+    assertDefined(data.general.referencedReports),
+    undefinedProbabilityOfFields,
+  );
+  data.revenue = generateEuTaxonomyPerCashflowType(
+    assertDefined(data.general.referencedReports),
+    undefinedProbabilityOfFields,
+  );
   return data;
 }

@@ -50,7 +50,7 @@
       <template #body="{ data }">
         <template v-if="col.field === 'activity'">{{ activityApiNameToHumanizedName(data.activity) }}</template>
         <template v-else>
-          <ul class="unstyled-ul-list">
+          <ul class="unstyled-ul-list grid4">
             <li v-for="code of data.naceCodes" :key="code">{{ code }}</li>
           </ul>
         </template>
@@ -79,7 +79,6 @@ import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { EnvironmentalObjective } from "@/api-models/EnvironmentalObjective";
 import {
   type YesNo,
   type Activity,
@@ -87,6 +86,7 @@ import {
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
+import { euTaxonomyObjectives } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
 
 type ActivityFieldValueObject = {
   activity: string;
@@ -226,7 +226,7 @@ export default defineComponent({
      * @returns the maximum value of fields per activity and group
      */
     findMaxColspanForGroup(groupName: string): number {
-      const environmentalObjectivesLength = Object.keys(EnvironmentalObjective).length;
+      const environmentalObjectivesLength = euTaxonomyObjectives.length;
       const colspans: { [groupName: string]: number } = {
         _revenue: 2,
         substantialContributionCriteria: environmentalObjectivesLength,
@@ -255,14 +255,7 @@ export default defineComponent({
      * @returns column definitions for group
      */
     makeGroupColumns(groupName: string, prefix: string) {
-      const environmentalObjectiveKeys = [
-        "ClimateChangeMitigation",
-        "ClimateChangeAdaption",
-        "SustainableUseAndProtectionOfWaterAndMarineResources",
-        "TransitionToACircularEconomy",
-        "PollutionPreventionAndControl",
-        "ProtectionAndRestorationOfBiodiversityAndEcosystems",
-      ].map((suffix) => {
+      const environmentalObjectiveKeys = euTaxonomyObjectives.map((suffix) => {
         const extendedKey = `${prefix}To${suffix}`;
         if (prefix === "dnsh") {
           return extendedKey;

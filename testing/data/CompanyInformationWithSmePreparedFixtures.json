@@ -2,52 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Emardshire",
-			"sector": "networks",
+			"headquarters": "Riverton",
+			"headquartersPostalCode": "88900",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [],
+				"Lei": [
+					"ZKTUWUco9CrNtVthAoif"
+				],
+				"Isin": [
+					"trJYMHJSNWWG"
+				],
 				"PermId": [
-					"0eX6hgkR2c"
+					"lV4IHQPjkO"
 				],
-				"Ticker": [
-					"SjDAc9w"
-				],
+				"Ticker": [],
 				"Duns": [
-					"gDLqoPxTG"
+					"8zQHqcNQo"
 				],
 				"VatNumber": [
-					"3s0EoSMcV"
+					"FSCKbf6nT"
 				],
-				"CompanyRegistrationNumber": [
-					"mh1TPWz8cfNRLA1"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MV",
+			"countryCode": "SS",
 			"companyAlternativeNames": [
-				"Gutkowski Inc",
-				"Waters LLC"
+				"Williamson - Kautzer"
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://gaseous-misunderstand.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
-						"E",
-						"H",
-						"J"
+						"J",
+						"L",
+						"M"
 					],
 					"addressOfHeadquarters": {
-						"postalCode": "05804",
-						"city": "Susanmouth",
-						"country": "CM"
+						"streetAndHouseNumber": "Christa Causeway 90049",
+						"postalCode": "44500-0907",
+						"city": "South Davin",
+						"country": "IL"
 					},
-					"numberOfEmployees": 3022,
-					"fiscalYearStart": "2024-07-27"
+					"numberOfEmployees": 6253,
+					"fiscalYearStart": "2024-05-21"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -56,34 +54,7 @@
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"postalCode": "86911-1130",
-								"city": "South Emmieton",
-								"country": "SV"
-							},
-							"percentageOfTotalRevenue": 0.2403
-						},
-						{
-							"nameOfProductionSite": "Homenick - Dickinson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Feest Turnpike 993",
-								"postalCode": "19357-7690",
-								"city": "Wehnershire",
-								"country": "GE"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"postalCode": "13536-0995",
-								"city": "Port Sydni",
-								"country": "BJ"
-							}
-						}
-					]
-				},
+				"sites": {},
 				"products": {}
 			},
 			"power": {
@@ -91,17 +62,21 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
+					"powerConsumptionInMwh": 1358,
 					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 177,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 34494207,
+					"insuranceAgainstNaturalHazards": "Yes",
 					"naturalHazardsCovered": [
-						"Wind",
+						"Snow",
 						"EarthQuake",
+						"Wind",
+						"Hail",
 						"Flooding"
 					]
 				}
@@ -112,29 +87,37 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Gardnertown",
+			"headquarters": "Fort Dagmar",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"q4jLKiBp2KIY"
+				"Lei": [
+					"ismiiDzWwWsgILd0avc4"
 				],
+				"Isin": [],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"Ticker": [
+					"BjQ9fJy"
+				],
+				"Duns": [
+					"vy3Zai983"
+				],
 				"VatNumber": [
-					"2F5BoF3lI"
+					"Sk3vRfSwi"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SM",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"countryCode": "KI",
+			"companyAlternativeNames": [
+				"Zulauf, Walker and Olson"
+			],
+			"website": "https://limited-earrings.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [],
+					"sector": [
+						"C"
+					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
 						"postalCode": "12345",
@@ -142,81 +125,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 1451,
-					"fiscalYearStart": "2024-01-27"
-				},
-				"companyFinancials": {}
-			},
-			"production": {
-				"sites": {},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Intelligent Soft Bike"
-						},
-						{
-							"name": "Fantastic Frozen Chicken",
-							"percentageOfTotalRevenue": 0.7518
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {},
-				"consumption": {
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "South Ofelia",
-			"headquartersPostalCode": "68899",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"S0hS9eOLcxKt"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"QGOEkCkUj"
-				],
-				"VatNumber": [
-					"DgL16ionK"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "ST",
-			"companyAlternativeNames": [],
-			"website": "https://straight-coverall.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"A",
-						"C",
-						"D",
-						"F",
-						"J"
-					],
-					"addressOfHeadquarters": {
-						"city": "City 17",
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 7209,
-					"fiscalYearStart": "2024-03-11"
+					"numberOfEmployees": 3312,
+					"fiscalYearStart": "2024-02-12"
 				},
 				"companyFinancials": {
-					"revenueInEur": 83425846
+					"revenueInEur": 78783457,
+					"operatingCostInEur": 69896373,
+					"capitalAssetsInEur": 45409968
 				}
 			},
 			"production": {
@@ -224,20 +139,164 @@
 					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Elegant Fresh Chair",
+							"percentageOfTotalRevenue": 0.5581
+						},
+						{
+							"name": "Ergonomic Wooden Computer",
+							"percentageOfTotalRevenue": 0.9827
+						},
+						{
+							"name": "Intelligent Fresh Salad",
+							"percentageOfTotalRevenue": 0.0909
+						},
+						{
+							"name": "Luxurious Metal Bike"
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 1036,
 					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 44,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 25373847
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "Sterling Heights",
+			"identifiers": {
+				"Lei": [
+					"rwPMFdtNC0cDGCPJmR3L"
+				],
+				"Isin": [],
+				"PermId": [
+					"5tsXS7J4H3"
+				],
+				"Ticker": [
+					"KizxAKI"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"TpxQ1v3CW"
+				],
+				"CompanyRegistrationNumber": [
+					"IhXqFLUhFRk0Ayu"
+				]
+			},
+			"countryCode": "MH",
+			"companyAlternativeNames": [
+				"D'Amore - Konopelski"
+			],
+			"companyLegalForm": "AG",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"B",
+						"F",
+						"H",
+						"J",
+						"M"
+					],
+					"addressOfHeadquarters": {
+						"city": "City 17",
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 2915,
+					"fiscalYearStart": "2024-04-08"
+				},
+				"companyFinancials": {
+					"revenueInEur": 67460952
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"city": "Hamillworth",
+								"state": "New Hampshire",
+								"country": "GB"
+							},
+							"percentageOfTotalRevenue": 0.8874
+						},
+						{
+							"addressOfProductionSite": {
+								"postalCode": "94465-6734",
+								"city": "North Sylvan",
+								"state": "Arizona",
+								"country": "FO"
+							},
+							"percentageOfTotalRevenue": 0.6986
+						},
+						{
+							"nameOfProductionSite": "Lemke and Sons",
+							"addressOfProductionSite": {
+								"postalCode": "21256-2164",
+								"city": "Schultzview",
+								"country": "PL"
+							},
+							"percentageOfTotalRevenue": 0.4477
+						},
+						{
+							"addressOfProductionSite": {
+								"city": "Waukesha",
+								"state": "South Carolina",
+								"country": "GU"
+							},
+							"percentageOfTotalRevenue": 0.2716
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Carlee Mews 53172",
+								"city": "East Josieburgh",
+								"state": "Florida",
+								"country": "CH"
+							}
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Gorgeous Wooden Hat"
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {},
+				"consumption": {
+					"powerConsumptionInMwh": 479,
+					"energyConsumptionHeatingAndHotWater": 737,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"amountCoveredByInsuranceAgainstNaturalHazards": 208017,
+					"naturalHazardsCovered": [
+						"Snow",
+						"EarthQuake",
+						"Wind"
+					]
 				}
 			}
 		},
