@@ -87,7 +87,9 @@ describe("As a user, I expect the search functionality on the /companies page to
             (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode,
           )!.companyInformation;
 
-          const demoCompanyToTestForCountryName = assertDefined(getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode));
+          const demoCompanyToTestForCountryName = assertDefined(
+            getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode),
+          );
 
           cy.ensureLoggedIn();
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
