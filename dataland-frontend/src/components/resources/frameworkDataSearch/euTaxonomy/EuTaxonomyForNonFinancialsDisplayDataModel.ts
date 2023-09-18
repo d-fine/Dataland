@@ -9,14 +9,14 @@ content from the auto-generated file in the devtools repo.
 
 export const euTaxonomyForNonFinancialsDisplayDataModel = [
   {
-    name: "basicInformation",
-    label: "Basic Information",
+    name: "general",
+    label: "General",
     color: "orange",
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: "basicInformation",
-        label: "Basic Information",
+        name: "general",
+        label: "General",
         fields: [
           {
             name: "fiscalYearDeviation",
@@ -134,7 +134,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
   {
     name: "revenue",
     label: "Revenue",
-    color: "yellow",
+    color: "green",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -365,7 +365,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         fields: [
           {
             name: "enablingShareInPercent",
-            label: "Enabling Revenue (%)",
+            label: "Enabling Revenue",
             description: "",
             unit: "",
             component: "PercentageFormField",
@@ -381,7 +381,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         fields: [
           {
             name: "transitionalShareInPercent",
-            label: "Transitional Revenue (%)",
+            label: "Transitional Revenue",
             description: "",
             unit: "",
             component: "PercentageFormField",
@@ -396,7 +396,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
   {
     name: "capex",
     label: "CapEx",
-    color: "green",
+    color: "yellow",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -627,7 +627,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         fields: [
           {
             name: "enablingShareInPercent",
-            label: "Enabling CapEx (%)",
+            label: "Enabling CapEx",
             description: "",
             unit: "",
             component: "PercentageFormField",
@@ -643,7 +643,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         fields: [
           {
             name: "transitionalShareInPercent",
-            label: "Transitional CapEx (%)",
+            label: "Transitional CapEx",
             description: "",
             unit: "",
             component: "PercentageFormField",
@@ -889,7 +889,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         fields: [
           {
             name: "enablingShareInPercent",
-            label: "Enabling OpEx (%)",
+            label: "Enabling OpEx",
             description: "",
             unit: "",
             component: "PercentageFormField",
@@ -905,7 +905,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
         fields: [
           {
             name: "transitionalShareInPercent",
-            label: "Transitional OpEx (%)",
+            label: "Transitional OpEx",
             description: "",
             unit: "",
             component: "PercentageFormField",

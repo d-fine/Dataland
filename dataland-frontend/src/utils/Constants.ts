@@ -3,10 +3,13 @@ import { DataTypeEnum } from "@clients/backend";
 // - Available frameworks settings
 export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE: DataTypeEnum[] = Object.values(DataTypeEnum);
 
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = Object.values(DataTypeEnum).filter(
-  (frameworkName: DataTypeEnum) =>
-    [DataTypeEnum.Sme as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(frameworkName) === -1,
-);
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = [
+  DataTypeEnum.P2p,
+  DataTypeEnum.EutaxonomyFinancials,
+  DataTypeEnum.Sfdr,
+  DataTypeEnum.Lksg,
+  DataTypeEnum.EutaxonomyNonFinancials,
+];
 
 // - Keycloak and session management related settings
 

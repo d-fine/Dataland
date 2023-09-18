@@ -5152,26 +5152,6 @@
           }
         }
       },
-      "DataPointOneValueAmountWithCurrency": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/CompanyReportReference"
-          },
-          "comment": {
-            "type": "string"
-          },
-          "value": {
-            "$ref": "#/components/schemas/AmountWithCurrency"
-          }
-        }
-      },
       "EuTaxonomyActivity": {
         "type": "object",
         "properties": {
@@ -5266,7 +5246,7 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/DataPointOneValueAmountWithCurrency"
+            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
           },
           "nonEligibleShare": {
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"

@@ -40,6 +40,7 @@ export default defineConfig({
             "primevue/checkbox",
             "primevue/row",
             "primevue/columngroup",
+            "primevue/radiobutton",
             "@formkit/vue",
             "axios",
             "i18n-iso-countries",

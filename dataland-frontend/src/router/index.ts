@@ -1,27 +1,22 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
-
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
 const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/TheImprint.vue");
 const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
-const UploadEuTaxonomyDataForFinancials = (): Promise<RouteComponent> =>
-  import("@/components/pages/UploadEuTaxonomyDataForFinancials.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
-const ViewTeaserCompanyData = (): Promise<RouteComponent> => import("@/components/pages/ViewTeaserCompanyData.vue");
-const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
-const UploadSfdr = (): Promise<RouteComponent> => import("@/components/pages/UploadSfdr.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
+const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pages/UploadFormWrapper.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
+
+const ViewTeaserCompanyData = (): Promise<RouteComponent> => import("@/components/pages/ViewTeaserCompanyData.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
-import { DataTypeEnum } from "@clients/backend";
-import UploadP2p from "@/components/pages/UploadP2p.vue";
 
 const routes = [
   {
@@ -49,28 +44,10 @@ const routes = [
     component: ChooseFrameworkForDataUpload,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
+    path: `/companies/:companyID/frameworks/:frameworkType/upload`,
     props: true,
-    name: "Upload Eu Taxonomy Data For Financials",
-    component: UploadEuTaxonomyDataForFinancials,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}/upload`,
-    props: true,
-    name: "Upload lkSG Data",
-    component: UploadLkSG,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Sfdr}/upload`,
-    props: true,
-    name: "Upload SFDR Data",
-    component: UploadSfdr,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.P2p}/upload`,
-    props: true,
-    name: "Upload P2p Data",
-    component: UploadP2p,
+    name: `Upload framework data`,
+    component: UploadFormWrapper,
   },
   {
     path: "/companies",
@@ -92,7 +69,7 @@ const routes = [
   {
     path: `/companies/:companyId/frameworks/:dataType/reportingPeriods/:reportingPeriod`,
     props: true,
-    name: "Company EU Taxonomy for specific reporting period",
+    name: "Company framework data for specific reporting period",
     component: ViewFrameworkData,
   },
   {

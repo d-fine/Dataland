@@ -9,6 +9,7 @@ import {
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type { CompanyReport } from "@clients/backend";
 import { roundNumber } from "@/utils/NumberConversionUtils";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
 
 describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
   let mockedBackendDataForTest: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>;
@@ -56,9 +57,10 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         2,
       );
 
-      const gammaTotalAlignedCapexAbsoluteShareString =
-        Math.round(assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.amount)).toString() +
-        ` ${assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare?.currency)}`;
+      const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency(
+        assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare),
+      );
+
       const gammaContributionToClimateChangeMitigation = roundNumber(
         assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigationInPercent) * 100,
         2,

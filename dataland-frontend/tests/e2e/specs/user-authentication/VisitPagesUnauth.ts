@@ -5,7 +5,7 @@ describe("As a user I expect to be redirected to the login page if I am unauthen
     "/companies",
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
-    // `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`, TOD O after upload page is merged
+    `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
   ];
 

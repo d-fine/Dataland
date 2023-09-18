@@ -1,12 +1,7 @@
-import { generateFixtureDataset, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type EuTaxonomyDataForNonFinancials, type EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
-import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
-import { randomEuroValue } from "@e2e/fixtures/common/NumberFixtures";
-import {
-  generateFinancialShare,
-  generateEuTaxonomyDataForNonFinancials,
-} from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
+import { type EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
@@ -19,11 +14,7 @@ type generatorFunction = (
 export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
   FixtureData<EuTaxonomyDataForNonFinancials>
 > {
-  const creationFunctions: Array<generatorFunction> = [
-    createOnlyEglibileNumbers,
-    createOnlyEligibleAndTotalNumbers,
-    createDatasetWithoutReferencedReports,
-  ];
+  const creationFunctions: Array<generatorFunction> = [createDatasetThatHasAllFieldsDefined];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
     generateEuTaxonomyDataForNonFinancials,
     creationFunctions.length,
@@ -36,69 +27,14 @@ export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
 }
 
 /**
- * Creates a prepared fixture that only has eligible entries (no alignedPercentage/totalAmount)
+ * Creates a prepared fixture that has only defined fields and no undefined fields
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
-function createOnlyEglibileNumbers(
+function createDatasetThatHasAllFieldsDefined(
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
-  /**
-   * Generates a details per cash flow object with only the total eligible share defined
-   * @returns the details object
-   */
-  function generateCashFlowWithOnlyEligibleNumbers(): EuTaxonomyDetailsPerCashFlowType {
-    const share = generateFinancialShare();
-    share.absoluteShare = undefined;
-    return { eligibleShare: share };
-  }
-
-  input.companyInformation.companyName = "only-eligible-numbers";
-  input.t.opex = generateCashFlowWithOnlyEligibleNumbers();
-  input.t.capex = generateCashFlowWithOnlyEligibleNumbers();
-  input.t.revenue = generateCashFlowWithOnlyEligibleNumbers();
-  return input;
-}
-
-/**
- * Creates a prepared fixture that only has eligible and total KPI entries (no alignedPercentage)
- * @param input the base fixture to modify
- * @returns the modified fixture
- */
-function createOnlyEligibleAndTotalNumbers(
-  input: FixtureData<EuTaxonomyDataForNonFinancials>,
-): FixtureData<EuTaxonomyDataForNonFinancials> {
-  /**
-   * Generates a details per cash flow object with only the total eligible share and total amount defined
-   * @param referencedReports the ports to be referenced in a data point
-   * @returns the details object
-   */
-  function generateCashFlowWithOnlyEligibleAndTotalNumbers(
-    referencedReports: ReferencedDocuments,
-  ): EuTaxonomyDetailsPerCashFlowType {
-    return {
-      totalAmount: generateDatapoint(randomEuroValue(), referencedReports),
-      eligibleShare: generateFinancialShare(),
-    };
-  }
-
-  input.companyInformation.companyName = "only-eligible-and-total-numbers";
-  input.t.opex = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!);
-  input.t.capex = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!);
-  input.t.revenue = generateCashFlowWithOnlyEligibleAndTotalNumbers(input.t.general!.referencedReports!);
-  return input;
-}
-
-/**
- * Creates a prepared fixture that has no referenced reports
- * @param input the base fixture to modify
- * @returns the modified fixture
- */
-function createDatasetWithoutReferencedReports(
-  input: FixtureData<EuTaxonomyDataForNonFinancials>,
-): FixtureData<EuTaxonomyDataForNonFinancials> {
-  input.companyInformation.companyName = "company_without_reports";
-  input.t.general!.referencedReports = undefined;
-
+  input.companyInformation.companyName = "all-fields-defined-for-eu-taxo-non-financials";
+  input.t = generateEuTaxonomyDataForNonFinancials(0);
   return input;
 }
