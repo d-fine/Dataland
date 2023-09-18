@@ -41,11 +41,6 @@ export default defineComponent({
   components: {
     TheContent,
     AuthorizationWrapper,
-    CreateLksgDataset,
-    CreateSfdrDataset,
-    CreateP2pDataset,
-    CreateEuTaxonomyForNonFinancials,
-    CreateEuTaxonomyForFinancials,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
@@ -67,14 +62,14 @@ export default defineComponent({
       switch (this.frameworkType) {
         case `${DataTypeEnum.EutaxonomyNonFinancials}`:
           return CreateEuTaxonomyForNonFinancials;
+        case `${DataTypeEnum.EutaxonomyFinancials}`:
+          return CreateEuTaxonomyForFinancials;
         case `${DataTypeEnum.Lksg}`:
           return CreateLksgDataset;
         case `${DataTypeEnum.P2p}`:
           return CreateP2pDataset;
         case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
-        case `${DataTypeEnum.EutaxonomyFinancials}`:
-          return CreateEuTaxonomyForFinancials;
         default:
           return null;
       }
