@@ -87,13 +87,18 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
       );
 
       cy.get(`[data-test='Revenue']`).click();
+
       cy.get('tr:has(td > span:contains("Total Revenue"))')
         .next("tr")
         .next("tr")
         .find("span")
-        .should("contain", "Value")
-        .parent()
-        .next("td")
+        .should("contain", "Value");
+
+      cy.get('tr:has(td > span:contains("Total Revenue"))')
+        .next("tr")
+        .next("tr")
+        .find("td")
+        .eq(1)
         .invoke("text")
         .should("match", /^0$/);
 
@@ -129,7 +134,8 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         .nextAll()
         .eq(4)
         .invoke("text")
-        .should("match", /^0 %$/);
+        .should("match", /^0 %$/)
+        .wait(10000); // TODO
     });
   });
 
