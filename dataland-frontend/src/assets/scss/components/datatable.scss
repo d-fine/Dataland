@@ -85,6 +85,11 @@
   .p-rowgroup-header {
     background-color: $table-background-hover-color-light;
     cursor: pointer;
+
+    &.p-topmost-header {
+      background-color: $tables-headers-bg;
+    }
+
     td {
       position: relative;
       button {
@@ -99,6 +104,7 @@
       }
     }
   }
+
   .p-datatable-thead {
     z-index: 1;
     tr {
