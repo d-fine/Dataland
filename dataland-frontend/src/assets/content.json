@@ -21,19 +21,26 @@
                     ],
                     "image": [
                         "/src/assets/images/logos/gfx_logo_d_orange_S.svg"
+                    ],
+                    "cards": [
+                        {
+                            "icon": "/src/assets/images/elements/Search.svg",
+                            "text": "Search for a company to view or request data..."
+                        }
                     ]
                 },
                 {
                     "title": "Brands",
                     "text": [
-                        "Already trusted by top companies"
+                        "Already trusted ",
+                        "by top companies"
                     ],
                     "image": [
                         "/src/assets/images/logos/brands_deka.svg",
                         "/src/assets/images/logos/brands_ampega.svg",
                         "/src/assets/images/logos/brands_chom.png",
-                        "/src/assets/images/logos/brands_fuerstlich.svg",
-                        "/src/assets/images/logos/brands_metzler.svg"
+                        "/src/assets/images/logos/brands_metzler.svg",
+                        "/src/assets/images/logos/brands_fuerstlich.svg"
                     ]
                 },
                 {
@@ -45,15 +52,15 @@
                     ],
                     "cards": [
                         {
-                            "icon": "/src/assets/images/elements/summit.svg",
-                            "text": "Purpose\ndriven"
+                            "icon": "/src/assets/images/elements/Vector.svg",
+                            "text": "We are purpose driven"
                         },
                         {
-                            "icon": "/src/assets/images/elements/group.svg",
-                            "text": "Thriving\ncommunity"
+                            "icon": "/src/assets/images/elements/data--insights.svg",
+                            "text": "We are a thriving community"
                         },
                         {
-                            "icon": "/src/assets/images/elements/global--network.svg",
+                            "icon": "/src/assets/images/elements/productivity.svg",
                             "text": "We advocate for equal opportuinities"
                         }
                     ]
@@ -61,7 +68,7 @@
                 {
                     "title": "Struggle",
                     "text": [
-                        "86% of compaines struggle with"
+                        "86% of companies world wide struggle with"
                     ],
                     "cards": [
                         {
@@ -89,7 +96,7 @@
                 {
                     "title": "How it works",
                     "text": [
-                        "How does it work?"
+                        "How does Dataland work?"
                     ],
                     "cards": [
                         {

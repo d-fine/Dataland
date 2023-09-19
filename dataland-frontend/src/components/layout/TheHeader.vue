@@ -35,6 +35,7 @@ const { landingPage, contentData } = defineProps<{
   justify-content: space-between;
   align-items: center;
   padding: 24px 46px;
+  margin: 16px;
 
   &__logo {
     img {

@@ -51,15 +51,17 @@ const brandsSection = computed(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 1200px;
+    max-width: 1288px;
     width: 100%;
+    gap: 113px;
   }
   h2 {
     font-size: 160px;
     font-style: normal;
     font-weight: 600;
     line-height: 160px; /* 100% */
-    margin: 0 108px;
+    max-width: 1017px;
+    margin: 0;
     span {
       color: #ff6813;
     }
@@ -69,7 +71,6 @@ const brandsSection = computed(() => {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin: 168px 0;
     gap: 32px;
   }
 
@@ -77,53 +78,36 @@ const brandsSection = computed(() => {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    height: 400px;
-    padding: 40px;
-    background-color: #f6f6f6;
+    align-items: center;
+    height: 528px;
+    padding-top: 80px;
+    background-color: var(--default-neutral-white);
     border-radius: 16px;
+    gap: 32px;
+    transition:
+      background-color 0.3s ease,
+      border-radius 0.3s ease;
+    cursor: pointer;
 
     &__icon {
-      align-self: flex-start;
-      width: 112px;
-      height: 112px;
+      width: 160px;
     }
     &__text {
-      align-self: flex-start;
-      margin: auto 0 0;
-      font-size: 32px;
+      font-size: 48px;
       font-style: normal;
       font-weight: 600;
-      line-height: 44px; /* 137.5% */
+      line-height: 56px; /* 116.667% */
       letter-spacing: 0.25px;
-      text-align: left;
-      position: relative;
-      width: 100%;
-      white-space: pre-wrap;
-      &::after {
-        content: "";
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        width: 46px;
-        height: 46px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='47' height='47' viewBox='0 0 47 47' fill='none'%3E%3Crect width='46' height='46' transform='translate(0.666992 0.315918)' fill='white' fill-opacity='0.01' style='mix-blend-mode:multiply'/%3E%3Cpath d='M26.542 8.94092L24.4864 10.9434L35.3826 21.8784H6.41699V24.7534H35.3826L24.4864 35.6396L26.542 37.6909L40.917 23.3159L26.542 8.94092Z' fill='%23161616'/%3E%3C/svg%3E");
-        background-size: contain; // Ensure the background scales correctly
-        background-repeat: no-repeat;
+      text-align: center;
+      max-width: 308px;
+      transition: color 0.3s ease;
+      .mission__tile:hover & {
+        color: var(--primary-orange);
       }
     }
-    &--type_3 {
-      background-color: #ff6813;
-      & .mission__tile__text {
-        color: #fff;
-        font-size: 24px;
-        font-weight: 400;
-        line-height: 32px; /* 133.333% */
-        &::after {
-          content: none;
-        }
-      }
+    &:hover {
+      background-color: #ffebe0;
+      border-radius: 32px;
     }
   }
   &__button {

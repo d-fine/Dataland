@@ -115,7 +115,6 @@ function openSessionWarningModal(): void {
 
 <style lang="scss">
 #app.lp {
-  max-width: 1440px;
   margin: 0 auto;
   text-align: left;
 }

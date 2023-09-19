@@ -28,9 +28,10 @@ const struggleSection = computed(() => {
   flex-direction: column;
   align-items: center;
   padding: 120px 0;
-  background-color: #f6f6f6;
+  background-color: var(--grey-tones-100);
+  gap: 68px;
   &__wrapper {
-    max-width: 848px;
+    max-width: 840px;
     width: 100%;
   }
   h2 {
@@ -40,7 +41,6 @@ const struggleSection = computed(() => {
     line-height: 78px; /* 121.875% */
     margin: 0 0 68px;
     text-align: left;
-    max-width: 668px;
   }
 
   &__grid {

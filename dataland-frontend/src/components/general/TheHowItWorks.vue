@@ -54,6 +54,8 @@ const move = (direction: number): void => {
 };
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
+  // Disable dragging for window width greater than 1800px, for example
+  if (window.innerWidth > 1800) return;
   isDragging = true;
   startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
 
@@ -112,12 +114,14 @@ onUnmounted(() => {
 
 <style lang="scss">
 .howitworks {
-  padding: 120px 0 64px 296px;
+  padding: 200px 0;
+  background-color: var(--primary-orange);
   &__wrapper {
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 56px;
   }
   &__title {
@@ -126,12 +130,15 @@ onUnmounted(() => {
     font-weight: 700;
     line-height: 78px;
     margin: 0;
+    max-width: 1273px;
+    padding-right: 789px;
   }
 
   &__slides {
     display: flex;
     transition: transform 0.3s ease-out;
     gap: 32px;
+    justify-content: center;
     &.isdragging .howitworks__slide {
       cursor: grabbing;
     }
@@ -176,6 +183,7 @@ onUnmounted(() => {
   &__arrows {
     display: flex;
     gap: 18px;
+    display: none;
   }
   &__arrow {
     width: 48px;

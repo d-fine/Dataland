@@ -1,5 +1,5 @@
 <template>
-  <section v-if="claimSection" class="claim" role="region" aria-label="Claim Statement" :style="backgroundImageStyle">
+  <section v-if="claimSection" class="claim" role="region" aria-label="Claim Statement">
     <div class="claim__wrapper">
       <h2 class="claim__title">
         <template v-for="(part, index) in claimSection.text" :key="index">
@@ -20,13 +20,6 @@ const { sections } = defineProps<{ sections?: Section[] }>();
 const claimSection = computed(() => {
   return sections?.find((section) => section.title === "Claim") ?? null;
 });
-
-const backgroundImageStyle = computed(() => {
-  if (claimSection.value?.image && claimSection.value.image.length > 0) {
-    return `background-image: url(${claimSection.value.image[0]})`;
-  }
-  return "";
-});
 </script>
 
 <style scoped lang="scss">
@@ -34,12 +27,10 @@ const backgroundImageStyle = computed(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-size: cover;
-  background-position: center;
-  height: 998px;
   &__wrapper {
-    max-width: 1200px;
     width: 100%;
+    max-width: 1109px;
+    margin: 140px auto 21px;
   }
   h2 {
     font-size: 160px;
@@ -47,7 +38,7 @@ const backgroundImageStyle = computed(() => {
     font-weight: 600;
     line-height: 160px; /* 100% */
     margin: 0 108px;
-    color: #fff;
+
     span {
       color: #ff6813;
     }

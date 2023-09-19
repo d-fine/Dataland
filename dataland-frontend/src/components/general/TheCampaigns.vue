@@ -44,13 +44,13 @@ const campaignSection = computed(() => {
 .campaigns {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  padding: 140px 0 140px 296px;
+  align-items: center;
+  padding: 140px 0 200px;
 
   &__wrapper {
     display: flex;
     flex-direction: column;
-    gap: 58px;
+    gap: 80px;
   }
 
   &__title {
@@ -62,7 +62,7 @@ const campaignSection = computed(() => {
     max-width: 672px;
     margin: 0;
     span {
-      color: #a5a5a5;
+      color: var(--grey-tones-400);
     }
   }
 
@@ -70,7 +70,6 @@ const campaignSection = computed(() => {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     align-self: flex-end;
-    margin: 0 120px 0 177px;
     border-radius: 16px;
     border: 1px solid rgba(192, 192, 192, 0.24);
     background: rgba(255, 255, 255, 0.72);

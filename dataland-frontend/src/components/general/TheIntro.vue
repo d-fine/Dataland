@@ -14,24 +14,30 @@
         <template v-else>{{ part }}</template>
       </template>
     </h1>
+    <TheSearch v-if="introCard" :icon="introCard.icon ?? ''" :placeholderText="introCard.text" />
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
+import TheSearch from "./TheSearch.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const introSection = computed(() => {
   return sections?.find((section) => section.title === "Intro") || null;
 });
+
+const introCard = computed(() => {
+  return introSection.value?.cards?.find((card) => card.icon && card.text) || null;
+});
 </script>
 
 <style scoped lang="scss">
 .intro {
   text-align: center;
-  margin: 140px auto 120px;
+  margin: 120px auto;
   max-width: 1007px;
   &__img {
     width: 81px;
@@ -39,16 +45,16 @@ const introSection = computed(() => {
     margin-bottom: 42px;
   }
   &__text {
-    color: #1b1b1b;
+    color: var(--grey-tones-400);
     text-align: center;
     font-size: 100px;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 700;
     line-height: 106px;
     letter-spacing: 0.25px;
     margin: 0;
     span {
-      font-weight: 700;
+      color: var(--basic-dark);
     }
   }
 }
