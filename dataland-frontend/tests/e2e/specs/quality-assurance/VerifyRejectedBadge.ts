@@ -15,12 +15,11 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
-    let preparedFixture: FixtureData<LksgData>;
+    let lksgFixture: FixtureData<LksgData>;
 
     before(function () {
-      cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-        preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
+      cy.fixture("CompanyInformationWithLksgData").then(function (jsonContent: Array<FixtureData<LksgData>>) {
+        lksgFixture = jsonContent[0];
       });
     });
 
@@ -32,9 +31,9 @@ describeIf(
         return uploadCompanyAndFrameworkData(
           DataTypeEnum.Lksg,
           token,
-          preparedFixture.companyInformation,
-          preparedFixture.t,
-          preparedFixture.reportingPeriod,
+          lksgFixture.companyInformation,
+          lksgFixture.t,
+          lksgFixture.reportingPeriod,
         ).then((uploadIds) => {
           cy.intercept("**/qa/datasets").as("getDataIdsOfReviewableDatasets");
           cy.intercept(`**/api/metadata/${uploadIds.dataId}`).as("getDataMetaInfoOfPostedDataset");
