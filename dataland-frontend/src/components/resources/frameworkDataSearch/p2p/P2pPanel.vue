@@ -23,7 +23,7 @@ import { defineComponent, inject } from "vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { sortCompanyAssociatedDataByReportingPeriod } from "@/utils/DataTableDisplay";
-import { convertDataModel } from "@/components/resources/dataTable/MultiLayerDataTableConfigurationConverter";
+import { convertDataModel } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 
 export default defineComponent({

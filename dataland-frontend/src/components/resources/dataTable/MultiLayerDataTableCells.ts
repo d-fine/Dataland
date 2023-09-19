@@ -1,6 +1,5 @@
 import { type DocumentReference } from "@clients/backend";
 import { type DynamicDialogOptions } from "primevue/dynamicdialogoptions";
-import { type MLDTDisplayValue } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 
 export enum MLDTDisplayComponents {
   StringDisplayComponent = "StringDisplayComponent",
