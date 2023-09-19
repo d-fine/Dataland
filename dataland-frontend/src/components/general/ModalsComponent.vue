@@ -64,7 +64,7 @@ export function findModalComponent(componentName: string): FieldTriggerAndDataCo
 }
 /**
  * @param componentName name of component to be checked
- * @returns whether passed component is a modal
+ * @returns boolean whether passed component is a modal
  */
 export function isModal(componentName: string): boolean {
   return !!findModalComponent(componentName);
