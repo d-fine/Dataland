@@ -1,0 +1,174 @@
+{
+  "general": {
+    "fiscalYearDeviation": "NoDeviation",
+    "fiscalYearEnd": "2022-10-16",
+    "numberOfEmployees": 31296,
+    "referencedReports": {
+      "AnnualReport": {
+        "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "isGroupLevel": "Yes",
+        "reportDate": "2023-02-11",
+        "currency": "VES"
+      },
+      "IntegratedReport": {
+        "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "isGroupLevel": "NA",
+        "currency": "HKD"
+      }
+    },
+    "assurance": {
+      "assurance": "LimitedAssurance",
+      "dataSource": {
+        "page": 346,
+        "report": "AnnualReport",
+        "tagName": "initiatives"
+      }
+    },
+    "scopeOfEntities": "Yes",
+    "euTaxonomyActivityLevelReporting": "No"
+  },
+  "opex": {
+    "nonEligibleShare": {
+      "absoluteShare": {
+        "amount": 8330779590,
+        "currency": "CHF"
+      }
+    },
+    "alignedActivities": [
+      {
+        "activityName": "ElectricityGenerationFromFossilGaseousFuels",
+        "naceCodes": [
+          "D35.11"
+        ],
+        "share": {
+          "relativeShareInPercent": 81.93,
+          "absoluteShare": {
+            "amount": 2602803965,
+            "currency": "CHF"
+          }
+        },
+        "substantialContributionToClimateChangeMitigationInPercent": 6.86,
+        "substantialContributionToClimateChangeAdaptionInPercent": 96.06,
+        "substantialContributionToTransitionToACircularEconomyInPercent": 56.98,
+        "substantialContributionToPollutionPreventionAndControlInPercent": 50.86,
+        "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+        "dnshToTransitionToACircularEconomy": "Yes",
+        "minimumSafeguards": "No"
+      }
+    ],
+    "enablingShareInPercent": 66.39,
+    "transitionalShareInPercent": 49.53
+  },
+  "capex": {
+    "totalAmount": {
+      "value": 3218638681,
+      "dataSource": {
+        "page": 686,
+        "report": "AnnualReport",
+        "tagName": "content"
+      },
+      "quality": "Incomplete",
+      "comment": "index multi-byte monitor",
+      "unit": "SRD"
+    },
+    "nonAlignedShare": {
+      "relativeShareInPercent": 39.53,
+      "absoluteShare": {
+        "amount": 7209283257,
+        "currency": "AUD"
+      }
+    },
+    "alignedShare": {
+      "relativeShareInPercent": 41.28
+    },
+    "substantialContributionToClimateChangeAdaptionInPercent": 37.68,
+    "substantialContributionToPollutionPreventionAndControlInPercent": 61.35,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7.93
+  },
+  "revenue": {
+    "totalAmount": {
+      "value": 2887708806,
+      "dataSource": {
+        "page": 645,
+        "report": "IntegratedReport",
+        "tagName": "markets"
+      },
+      "quality": "Estimated",
+      "comment": "index multi-byte bus",
+      "unit": "LAK"
+    },
+    "nonEligibleShare": {
+      "relativeShareInPercent": 2.56
+    },
+    "nonAlignedActivities": [
+      {
+        "activityName": "MaterialRecoveryFromNonHazardousWaste",
+        "naceCodes": [
+          "E38.32"
+        ]
+      },
+      {
+        "activityName": "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
+        "share": {
+          "relativeShareInPercent": 74.16,
+          "absoluteShare": {
+            "amount": 2516087193,
+            "currency": "USD"
+          }
+        }
+      },
+      {
+        "activityName": "DataDrivenSolutionsForGhgEmissionsReductions",
+        "naceCodes": [
+          "J61"
+        ]
+      }
+    ],
+    "substantialContributionToClimateChangeAdaptionInPercent": 16.17,
+    "alignedActivities": [
+      {
+        "activityName": "ManufactureOfHydrogen",
+        "naceCodes": [
+          "C20.11"
+        ],
+        "share": {
+          "relativeShareInPercent": 98.26,
+          "absoluteShare": {
+            "amount": 684262690,
+            "currency": "CAD"
+          }
+        },
+        "substantialContributionToClimateChangeMitigationInPercent": 44.17,
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 44.49,
+        "substantialContributionToTransitionToACircularEconomyInPercent": 20.86,
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 97.52,
+        "dnshToClimateChangeMitigation": "No",
+        "dnshToClimateChangeAdaption": "No",
+        "dnshToTransitionToACircularEconomy": "Yes",
+        "dnshToPollutionPreventionAndControl": "Yes",
+        "minimumSafeguards": "Yes"
+      },
+      {
+        "activityName": "ComputerProgrammingConsultancyAndRelatedActivities",
+        "naceCodes": [
+          "J62"
+        ],
+        "share": {
+          "relativeShareInPercent": 60.95,
+          "absoluteShare": {
+            "amount": 1281706810,
+            "currency": "EUR"
+          }
+        },
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 33.01,
+        "substantialContributionToTransitionToACircularEconomyInPercent": 24.41,
+        "substantialContributionToPollutionPreventionAndControlInPercent": 64.06,
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 65.37,
+        "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
+        "dnshToPollutionPreventionAndControl": "No",
+        "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes"
+      }
+    ],
+    "transitionalShareInPercent": 5.69
+  }
+}

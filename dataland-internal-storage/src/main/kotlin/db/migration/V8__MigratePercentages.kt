@@ -5,6 +5,7 @@ import db.migration.utils.getOrJavaNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
+import org.json.JSONArray
 import org.json.JSONObject
 import java.math.BigDecimal
 
@@ -41,6 +42,11 @@ class V8__MigratePercentages : BaseJavaMigration() {
     private fun migratePercentageDataPoint(dataPointHolder: JSONObject, dataPointName: String) {
         val dataPointObject = (dataPointHolder.getOrJavaNull(dataPointName) ?: return) as JSONObject
         migratePercentageValue(dataPointObject, "value")
+    }
+
+    private fun migrateFinancialShare(financialShareHolder: JSONObject, financialShareName: String) {
+        val financialShareObject = (financialShareHolder.getOrJavaNull(financialShareName) ?: return) as JSONObject
+        migratePercentageValue(financialShareObject, "relativeShareInPercent")
     }
 
     private fun migratePercentageValue(kpiHolder: JSONObject, kpiName: String) {
@@ -80,12 +86,57 @@ class V8__MigratePercentages : BaseJavaMigration() {
      * Migrates a EU taxonomy for non-financials dataset
      */
     fun migrateEuTaxonomyNonFinancials(dataTableEntity: DataTableEntity) {
+        // TODO check for renamings for non financials
         migrateDataset(dataTableEntity) migration@{ dataObject ->
-        val dataObject = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
-//        listOf("revenue", "capex", "opex").forEach { cashFlowType ->
-//            val cashFlowObject = dataObject.getOrJavaNull(cashFlowType) ?: return@forEach
-//            migrateTotalAmount(cashFlowObject as JSONObject)
-//        }
+            listOf("revenue", "capex", "opex").forEach { cashFlowType ->
+                val cashFlowObject = (dataObject.getOrJavaNull(cashFlowType) ?: return@forEach) as JSONObject
+                val financialShareFields = listOf("nonEligibleShare", "eligibleShare", "nonAlignedShare", "alignedShare")
+                val percentageFields = listOf(
+                    "substantialContributionToClimateChangeMitigationInPercent",
+                    "substantialContributionToClimateChangeAdaptionInPercent",
+                    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
+                    "substantialContributionToTransitionToACircularEconomyInPercent",
+                    "substantialContributionToPollutionPreventionAndControlInPercent",
+                    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+                    "enablingShareInPercent",
+                    "transitionalShareInPercent",
+                )
+                financialShareFields.forEach {
+                    migrateFinancialShare(cashFlowObject, it)
+                }
+                percentageFields.forEach {
+                    migratePercentageValue(cashFlowObject, it)
+                }
+                cashFlowObject.getOrJavaNull("nonAlignedActivities")?.also {
+                    migrateNonAlignedActivities(it as JSONArray)
+                }
+                cashFlowObject.getOrJavaNull("alignedActivities")?.also {
+                    migrateAlignedActivities(it as JSONArray)
+                }
+            }
+        }
+    }
+
+    private fun migrateNonAlignedActivities(activities: JSONArray) {
+        activities.forEach { activity ->
+            migrateFinancialShare(activity as JSONObject, "share")
+        }
+    }
+
+    private fun migrateAlignedActivities(activities: JSONArray) {
+        val percentageFields = listOf(
+            "substantialContributionToClimateChangeMitigationInPercent",
+            "substantialContributionToClimateChangeAdaptionInPercent",
+            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
+            "substantialContributionToTransitionToACircularEconomyInPercent",
+            "substantialContributionToPollutionPreventionAndControlInPercent",
+            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+        )
+        activities.forEach { activity ->
+            migrateFinancialShare(activity as JSONObject, "share")
+            percentageFields.forEach { fieldName ->
+                migratePercentageValue(activity, fieldName)
+            }
         }
     }
 
