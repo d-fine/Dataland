@@ -1,0 +1,25 @@
+package db.migration
+
+import db.migration.utils.TestUtils
+import org.junit.jupiter.api.Test
+
+class V8__MigratePercentagesTest {
+
+    @Test
+    fun `test that the eu taxonomy for financials migration script works as expected`() {
+        TestUtils().testMigrationOfSingleDataset(
+            "V8/originalEuTaxonomyFinancialsData.json",
+            "V8/transformedEuTaxonomyFinancialsData.json",
+            V8__MigratePercentages()::migrateEuTaxonomyFinancials,
+        )
+    }
+
+    @Test
+    fun `test that the eu taxonomy for non financials migration script works as expected`() {
+        TestUtils().testMigrationOfSingleDataset(
+            "V8/originalEuTaxonomyNonFinancialsData.json",
+            "V8/transformedEuTaxonomyNonFinancialsData.json",
+            V8__MigratePercentages()::migrateEuTaxonomyNonFinancials,
+        )
+    }
+}

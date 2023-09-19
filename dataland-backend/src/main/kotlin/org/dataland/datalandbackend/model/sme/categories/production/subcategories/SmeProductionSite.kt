@@ -10,5 +10,5 @@ import java.math.BigDecimal
 data class SmeProductionSite(
     override val nameOfProductionSite: String?,
     override val addressOfProductionSite: Address,
-    val percentageOfTotalRevenue: BigDecimal?,
+    val totalRevenueInPercent: BigDecimal?,
 ) : ProductionSiteBase(nameOfProductionSite, addressOfProductionSite)

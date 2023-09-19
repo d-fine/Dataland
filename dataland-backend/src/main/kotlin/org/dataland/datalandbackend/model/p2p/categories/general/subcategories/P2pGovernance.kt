@@ -10,11 +10,11 @@ import java.math.BigDecimal
 data class P2pGovernance(
     val organisationalResponsibilityForParisCompatibility: YesNo? = null,
 
-    val parisCompatibilityInExecutiveRemuneration: BigDecimal? = null,
+    val parisCompatibilityInExecutiveRemuneration: BigDecimal? = null, // TODO changes hopefully
 
-    val parisCompatibilityInAverageRemuneration: BigDecimal? = null,
+    val parisCompatibilityInAverageRemuneration: BigDecimal? = null, // TODO changes hopefully
 
-    val shareOfEmployeesTrainedOnParisCompatibility: BigDecimal? = null,
+    val shareOfEmployeesTrainedOnParisCompatibility: BigDecimal? = null, // TODO changes hopefully
 
     val qualificationRequirementsOnParisCompatibility: YesNo? = null,
 

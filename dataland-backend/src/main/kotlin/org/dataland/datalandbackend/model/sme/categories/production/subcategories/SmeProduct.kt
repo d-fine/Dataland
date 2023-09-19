@@ -12,5 +12,5 @@ data class SmeProduct(
     @field:JsonProperty(required = true)
     override val name: String,
 
-    val percentageOfTotalRevenue: BigDecimal?,
+    val totalRevenueInPercent: BigDecimal?,
 ) : ProductBase(name)

@@ -14,9 +14,9 @@ data class P2pEmissionsPlanning(
 
     val climateActionPlan: YesNo? = null,
 
-    val reductionOfRelativeEmissions: BigDecimal? = null,
+    val reductionOfRelativeEmissions: BigDecimal? = null, // TODO hopefully changed
 
-    val relativeEmissions: BigDecimal? = null,
+    val relativeEmissions: BigDecimal? = null, // TODO hopefully changed
 
     val useOfInternalCarbonPrice: YesNo? = null,
 )
