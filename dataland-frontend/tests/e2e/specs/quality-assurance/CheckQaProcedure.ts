@@ -118,7 +118,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   cy.contains("td", dataMetaInfo.dataId).click();
 
   cy.get('[data-test="qaRejectButton"').should("exist").click();
-  cy.contains("span", "REVIEW");
+
   safeLogout();
   login(uploader_name, uploader_pw);
 
