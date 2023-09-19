@@ -11,6 +11,8 @@ creation URL (or simply copy this md file into the description)
 
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
+
+- [ ] Update keycloak to 22.0.3 is skipped due to failing all e2e tests
 - [ ] Update node.js to version 20.6.1 breaks the build
 - [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
