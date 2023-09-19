@@ -1,10 +1,13 @@
 import { type Category, type Field } from "@/utils/GenericFrameworkTypes";
 import {
-  type AvailableDisplayValues,
   type MLDTCellConfig,
   type MLDTConfig,
-  MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+
+import {
+  type AvailableDisplayValues,
+  MLDTDisplayComponents,
+} from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { formatNumberToReadableFormat, formatPercentageNumberAsString } from "@/utils/Formatter";
 import { type BaseDataPointYesNo } from "@clients/backend";
 import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";

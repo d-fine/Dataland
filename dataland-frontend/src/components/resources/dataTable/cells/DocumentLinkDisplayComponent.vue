@@ -12,7 +12,7 @@ import { defineComponent } from "vue";
 import {
   type MLDTDisplayComponents,
   type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+} from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 
 export default defineComponent({

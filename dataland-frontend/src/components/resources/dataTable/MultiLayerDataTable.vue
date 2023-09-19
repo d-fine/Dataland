@@ -34,7 +34,6 @@
 <script setup lang="ts" generic="T">
 import { type MLDTConfig, type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayerDataTableBody.vue";
-import { tr } from "@faker-js/faker";
 
 defineProps<{
   config: MLDTConfig<T>;

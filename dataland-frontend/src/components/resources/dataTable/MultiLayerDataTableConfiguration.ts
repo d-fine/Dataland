@@ -1,5 +1,4 @@
-import { type DocumentReference } from "@clients/backend";
-import { type DynamicDialogOptions } from "primevue/dynamicdialogoptions";
+import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 
 export type MLDTConfig<FrameworkDataType> = Array<
   MLDTCellConfig<FrameworkDataType> | MLDTSectionConfig<FrameworkDataType>
@@ -10,33 +9,7 @@ export interface MLDTDataset<FrameworkDataType> {
   dataset: FrameworkDataType;
 }
 
-export enum MLDTDisplayComponents {
-  StringDisplayComponent = "StringDisplayComponent",
-  DocumentLinkDisplayComponent = "DocumentLinkDisplayComponent",
-  ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
-}
-
 export type BadgeColors = "yellow" | "green" | "red" | "blue" | "purple" | "gray" | "brown" | "orange";
-
-export type MLDTDisplayComponentTypes = {
-  [MLDTDisplayComponents.StringDisplayComponent]: string;
-  [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: DocumentReference };
-  [MLDTDisplayComponents.ModalLinkDisplayComponent]: {
-    label: string;
-    modalComponent: any;
-    modalOptions?: DynamicDialogOptions;
-  };
-};
-
-export type AvailableDisplayValues =
-  | MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>
-  | MLDTDisplayValue<MLDTDisplayComponents.DocumentLinkDisplayComponent>
-  | MLDTDisplayValue<MLDTDisplayComponents.ModalLinkDisplayComponent>;
-
-export interface MLDTDisplayValue<DisplayComponent extends MLDTDisplayComponents> {
-  displayComponent: DisplayComponent;
-  displayValue: MLDTDisplayComponentTypes[DisplayComponent];
-}
 
 export interface MLDTCellConfig<FrameworkDataType> {
   type: "cell";
@@ -53,13 +26,6 @@ export interface MLDTSectionConfig<FrameworkDataType> {
   expandOnPageLoad: boolean;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   children: MLDTConfig<FrameworkDataType>;
-}
-
-export function isDisplayValueOfType<K extends MLDTDisplayComponents>(
-  type: K,
-  element: MLDTDisplayValue<MLDTDisplayComponents>,
-): element is MLDTDisplayValue<K> {
-  return element.displayComponent == type;
 }
 
 /**
