@@ -14,7 +14,10 @@
     <MarginWrapper class="surface-0" style="margin-right: 0">
       <div class="grid align-items-end">
         <div class="col-9">
-          <CompanyInformation :companyID="companyID" />
+          <CompanyInformationBanner
+            :companyId="companyID"
+            @fetchedCompanyInformation="handleFetchedCompanyInformation"
+          />
         </div>
       </div>
     </MarginWrapper>
@@ -33,7 +36,7 @@
               :options="dataTypesInDropdown"
               optionLabel="label"
               optionValue="value"
-              :placeholder="humanizeString(dataType)"
+              :placeholder="humanizeStringOrNumber(dataType)"
               aria-label="Choose framework"
               class="fill-dropdown always-fill"
               dropdownIcon="pi pi-angle-down"
@@ -43,7 +46,10 @@
           </div>
           <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
             <template v-if="canReview && singleDataMetaInfoToDisplay">
-              <QualityAssuranceButtons :meta-info="singleDataMetaInfoToDisplay"></QualityAssuranceButtons>
+              <QualityAssuranceButtons
+                :meta-info="singleDataMetaInfoToDisplay"
+                :company-name="fetchedCompanyInformation.companyName"
+              />
             </template>
             <template v-if="hasUserUploaderRights">
               <PrimeButton
@@ -86,7 +92,7 @@
 import BackButton from "@/components/general/BackButton.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
-import CompanyInformation from "@/components/pages/CompanyInformation.vue";
+import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -100,7 +106,7 @@ import TheFooter from "@/components/general/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasAllRoles } from "@/utils/KeycloakUtils";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
@@ -115,7 +121,7 @@ export default defineComponent({
     MarginWrapper,
     FrameworkDataSearchBar,
     Dropdown,
-    CompanyInformation,
+    CompanyInformationBanner,
     TheFooter,
     PrimeButton,
     OverlayPanel,
@@ -147,19 +153,21 @@ export default defineComponent({
   },
   data() {
     return {
+      fetchedCompanyInformation: {} as CompanyInformation,
+
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
-      humanizeString: humanizeStringOrNumber,
+      humanizeStringOrNumber,
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
+      pageScrolled: false,
+      scrollEmittedByToolbar: false,
+      latestScrollPosition: 0,
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccesfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
-      pageScrolled: false,
-      scrollEmittedByToolbar: false,
-      latestScrollPosition: 0,
     };
   },
   computed: {
@@ -192,6 +200,14 @@ export default defineComponent({
     window.addEventListener("scroll", this.windowScrollHandler);
   },
   methods: {
+    /**
+     * Saves the company information emitted by the CompanyInformation vue components event.
+     * @param fetchedCompanyInformation the company information for the current company Id
+     */
+    handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
+      this.fetchedCompanyInformation = fetchedCompanyInformation;
+    },
+
     /**
      * Opens Overlay Panel for selecting a reporting period to edit data for
      * @param event event

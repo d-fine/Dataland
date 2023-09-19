@@ -4,7 +4,7 @@
     <TheContent>
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
         <BackButton id="backButton" class="mt-2 pl-3" />
-        <CompanyInformation :companyID="companyID" />
+        <CompanyInformation :companyId="companyID" />
         <component
           :is="frameworkToUploadComponent"
           :companyID="companyID"

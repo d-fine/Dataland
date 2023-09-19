@@ -20,23 +20,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
-import type Keycloak from "keycloak-js";
 import { QaStatus } from "@clients/qaservice";
 import QaDatasetModal from "@/components/general/QaDatasetModal.vue";
 import { type DataMetaInformation } from "@clients/backend";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "QualityAssuranceButtons",
   components: { PrimeButton },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
   data() {
     return {
       reviewSubmitted: false,
@@ -44,7 +36,11 @@ export default defineComponent({
     };
   },
   props: {
-    metaInfo: { type: Object, required: true },
+    metaInfo: {
+      type: Object as () => DataMetaInformation,
+      required: true,
+    },
+    companyName: { type: String, required: true },
   },
   methods: {
     /**
@@ -52,13 +48,12 @@ export default defineComponent({
      * @param event the click event
      * @param qaStatus the QA status to be assigned
      */
-    async setQaStatusTo(event: MouseEvent, qaStatus: QaStatus) {
+    setQaStatusTo(event: MouseEvent, qaStatus: QaStatus) {
       event.preventDefault();
       event.stopImmediatePropagation();
 
-      const companyName = await this.getCompanyName();
-      const { dataId, dataType, reportingPeriod } = this.metaInfo as DataMetaInformation;
-      const message = `${qaStatus} ${dataType} data for ${companyName} for the reporting period ${reportingPeriod}.`;
+      const { dataId, dataType, reportingPeriod } = this.metaInfo;
+      const message = `${qaStatus} ${dataType} data for ${this.companyName} for the reporting period ${reportingPeriod}.`;
 
       this.$dialog.open(QaDatasetModal, {
         props: {
@@ -75,18 +70,6 @@ export default defineComponent({
           void this.$router.push("/qualityassurance");
         },
       });
-    },
-    /**
-     * @returns a promise including the company name
-     */
-    async getCompanyName() {
-      //TODO Emanuel: We could simply pass the company name as prop to the buttons. Then we don't have to fetch it a second time.
-      //TODO Piotr: That was my initial intention, however the parent component doesn't have the company info data anyway. But yes, it would be better.
-      const companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getCompanyDataControllerApi();
-      const response = await companyDataControllerApi.getCompanyById((this.metaInfo as DataMetaInformation).companyId);
-      return response.data.companyInformation.companyName;
     },
   },
 });
