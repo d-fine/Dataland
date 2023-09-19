@@ -4,6 +4,7 @@ import { DataTypeEnum, type LksgData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 
 describeIf(
   "Validation for correct display of 'Rejected' badge",
@@ -31,7 +32,7 @@ describeIf(
         return uploadCompanyAndFrameworkData(
           DataTypeEnum.Lksg,
           token,
-          lksgFixture.companyInformation,
+          generateCompanyInformation(),
           lksgFixture.t,
           lksgFixture.reportingPeriod,
         ).then((uploadIds) => {
