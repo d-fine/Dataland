@@ -11,9 +11,9 @@ export interface MLDTDataset<FrameworkDataType> {
 }
 
 export enum MLDTDisplayComponents {
-  StringDisplayComponent,
-  DocumentLinkDisplayComponent,
-  ModalLinkDisplayComponent,
+  StringDisplayComponent = "StringDisplayComponent",
+  DocumentLinkDisplayComponent = "DocumentLinkDisplayComponent",
+  ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
 }
 
 export type BadgeColors = "yellow" | "green" | "red" | "blue" | "purple" | "gray" | "brown" | "orange";
