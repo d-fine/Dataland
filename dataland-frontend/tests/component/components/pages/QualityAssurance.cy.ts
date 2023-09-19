@@ -84,9 +84,10 @@ describe("Component tests for the Quality Assurance page", () => {
         "This dataset is currently pending review",
       );
 
-      // TODO test that REJECT and APPROVE buttons stick while scrolling  =>  First test if cypress can actually assert this
-      // TODO click "REJECT" and spy on the correct and expected API-call
-      // TODO revisit the page and this time click on "APPROVE" and spy on the correct and expected API-call
+      // TODO Emanuel: still writing testcode WiP
+      //  test that REJECT and APPROVE buttons stick while scrolling  =>  First test if cypress can actually assert this
+      //  click "REJECT" and spy on the correct and expected API-call
+      //  revisit the page and this time click on "APPROVE" and spy on the correct and expected API-call
     });
   });
 });
