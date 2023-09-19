@@ -44,38 +44,37 @@
             />
             <slot name="reportingPeriodDropdown"></slot>
           </div>
-          <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
+          <div class="flex align-content-end align-items-center">
             <QualityAssuranceButtons
               v-if="isReviewableByCurrentUser"
               :meta-info="singleDataMetaInfoToDisplay"
               :company-name="fetchedCompanyInformation.companyName"
             />
-            <template v-if="hasUserUploaderRights">
-              <PrimeButton
-                v-if="isEditable"
-                class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
-                aria-label="EDIT DATA"
-                @click="editDataset"
-                data-test="editDatasetButton"
+            <PrimeButton
+              v-if="isEditableByCurrentUser"
+              class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
+              aria-label="EDIT DATA"
+              @click="editDataset"
+              data-test="editDatasetButton"
+            >
+              <span class="px-2">EDIT DATA</span>
+              <span
+                v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
+                class="material-icons-outlined"
+                >arrow_drop_down</span
               >
-                <span class="px-2">EDIT DATA</span>
-                <span
-                  v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
-                  class="material-icons-outlined"
-                  >arrow_drop_down</span
-                >
+            </PrimeButton>
+            <router-link
+              v-if="hasUserUploaderRights"
+              :to="targetLinkForAddingNewDataset"
+              class="no-underline ml-3"
+              data-test="gotoNewDatasetButton"
+            >
+              <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
+                <span class="material-icons-outlined px-2">queue</span>
+                <span class="px-2">NEW DATASET</span>
               </PrimeButton>
-              <router-link
-                :to="targetLinkForAddingNewDataset"
-                class="no-underline ml-3"
-                data-test="gotoNewDatasetButton"
-              >
-                <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
-                  <span class="material-icons-outlined px-2">queue</span>
-                  <span class="px-2">NEW DATASET</span>
-                </PrimeButton>
-              </router-link>
-            </template>
+            </router-link>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
@@ -135,13 +134,14 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
+      required: true,
     },
     dataType: {
       type: String,
+      required: true,
     },
     singleDataMetaInfoToDisplay: {
       type: Object as () => DataMetaInformation,
-      required: false,
     },
     viewInPreviewMode: {
       type: Boolean,
@@ -177,8 +177,9 @@ export default defineComponent({
     isReviewableByCurrentUser() {
       return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
     },
-    isEditable() {
+    isEditableByCurrentUser() {
       return (
+        this.hasUserUploaderRights &&
         ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum) &&
         (!this.singleDataMetaInfoToDisplay ||
           this.singleDataMetaInfoToDisplay.currentlyActive ||
@@ -271,7 +272,7 @@ export default defineComponent({
      */
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {
-        void this.$router.push(`/companies/${this.companyID as string}/frameworks/${this.chosenDataTypeInDropdown}`);
+        void this.$router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
     },
     /**
