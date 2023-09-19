@@ -27,7 +27,11 @@
           <td :colspan="datasets.length + 1">
             <ChevronDownIcon v-if="expandedSections.has(idx)" class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <ChevronLeftIcon v-else class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
-            <span class="font-medium">{{ element.label }}</span>
+
+            <span v-if="element.labelBadgeColor" :class="`p-badge badge-${element.labelBadgeColor}`"
+              >{{ element.label.toUpperCase() }}
+            </span>
+            <span v-else class="font-medium">{{ element.label }}</span>
           </td>
         </tr>
         <MultiLayerDataTableBody

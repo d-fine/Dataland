@@ -164,6 +164,7 @@ export function convertDataModel(dataModel: Array<Category>): MLDTConfig<any> {
       expandOnPageLoad: false,
       children: mldtCategoryChildren,
       shouldDisplay: category.showIf,
+      labelBadgeColor: category.color,
     });
   }
 

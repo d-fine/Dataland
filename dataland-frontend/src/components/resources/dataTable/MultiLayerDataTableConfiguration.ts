@@ -15,6 +15,9 @@ export enum MLDTDisplayComponents {
   DocumentLinkDisplayComponent,
   ModalLinkDisplayComponent,
 }
+
+export type BadgeColors = "yellow" | "green" | "red" | "blue" | "purple" | "gray" | "brown" | "orange";
+
 export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponents.StringDisplayComponent]: string;
   [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: DocumentReference };
@@ -46,6 +49,7 @@ export interface MLDTCellConfig<FrameworkDataType> {
 export interface MLDTSectionConfig<FrameworkDataType> {
   type: "section";
   label: string;
+  labelBadgeColor?: BadgeColors;
   expandOnPageLoad: boolean;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   children: MLDTConfig<FrameworkDataType>;

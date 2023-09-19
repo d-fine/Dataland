@@ -92,15 +92,12 @@
 
     td {
       position: relative;
+      width: $first-table-column-width;
       button {
         position: absolute;
         right: 1rem;
         top:50%;
         margin-top: -7px;
-      }
-      span {
-        display: block;
-        width: $first-table-column-width;
       }
     }
   }

@@ -4,12 +4,7 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-show="!waitingForData">
-    <ThreeLayerTable
-      :data-model="p2pDataModel"
-      :data-and-meta-info="p2pDataAndMetaInfo.map((it) => getViewModelWithIdentityApiModel(it))"
-      @data-converted="handleFinishedDataConversion"
-      :format-value-for-display="formatValueForDisplay"
-    />
+    <MultiLayerDataTable :datasets="mldtDatasets" :config="p2pDisplayConfiguration" />
   </div>
 </template>
 
@@ -18,26 +13,40 @@ import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComp
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { type DataAndMetaInformationPathwaysToParisData, DataTypeEnum } from "@clients/backend";
+import {
+  type DataAndMetaInformationPathwaysToParisData,
+  DataTypeEnum,
+  type PathwaysToParisData,
+} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
-import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
-import { formatValueForDisplay } from "@/components/resources/frameworkDataSearch/p2p/P2pFormatValueForDisplay";
+import { type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { sortCompanyAssociatedDataByReportingPeriod } from "@/utils/DataTableDisplay";
+import { convertDataModel } from "@/components/resources/dataTable/MultiLayerDataTableConfigurationConverter";
+import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 
 export default defineComponent({
   name: "P2pPanel",
 
-  components: { ThreeLayerTable },
+  components: { MultiLayerDataTable },
   data() {
     return {
       DataTypeEnum,
       firstRender: true,
       waitingForData: true,
+      p2pDisplayConfiguration: convertDataModel(p2pDataModel),
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,
-      p2pDataModel,
     };
+  },
+  computed: {
+    mldtDatasets(): Array<MLDTDataset<PathwaysToParisData>> {
+      const sortedDataAndMetaInformation = sortCompanyAssociatedDataByReportingPeriod(this.p2pDataAndMetaInfo);
+      return sortedDataAndMetaInformation.map((it) => ({
+        headerLabel: it.metaInfo.reportingPeriod,
+        dataset: it.data,
+      }));
+    },
   },
   props: PanelProps,
   watch: {
@@ -61,8 +70,6 @@ export default defineComponent({
   },
 
   methods: {
-    formatValueForDisplay,
-    getViewModelWithIdentityApiModel,
     humanizeString: humanizeStringOrNumber,
     /**
      * Fetches all accepted P2P datasets for the current company and converts them to the required frontend format.
@@ -83,15 +90,10 @@ export default defineComponent({
             await p2pDataControllerApi.getAllCompanyP2pData(assertDefined(this.companyId))
           ).data;
         }
+        this.waitingForData = false;
       } catch (error) {
         console.error(error);
       }
-    },
-    /**
-     * Handles the ThreeLayerTableEvent of finishing the data conversion
-     */
-    handleFinishedDataConversion() {
-      this.waitingForData = false;
     },
   },
 });

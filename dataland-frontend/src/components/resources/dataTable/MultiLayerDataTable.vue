@@ -1,7 +1,7 @@
 <template>
   <div class="p-datatable p-component">
     <div class="p-datatable-wrapper" style="overflow: auto">
-      <table class="p-datatable-table">
+      <table class="p-datatable-table w-full">
         <thead class="p-datatable-thead" style="position: sticky">
           <tr>
             <th class="horizontal-headers-size">
