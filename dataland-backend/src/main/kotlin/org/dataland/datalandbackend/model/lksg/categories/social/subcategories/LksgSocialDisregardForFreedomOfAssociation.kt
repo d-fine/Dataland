@@ -11,7 +11,7 @@ import java.math.BigDecimal
 data class LksgSocialDisregardForFreedomOfAssociation(
     val freedomOfAssociation: YesNo? = null,
 
-    val employeeRepresentation: BigDecimal? = null,
+    val employeeRepresentation: BigDecimal? = null, // TODO hopefully gets generated
 
     val discriminationForTradeUnionMembers: YesNo? = null,
 
