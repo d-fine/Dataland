@@ -1,0 +1,71 @@
+{
+  "general": {
+    "general": {
+      "dataDate": "2023-11-18",
+      "sectors": [
+        "ElectricityGeneration",
+        "Steel",
+        "CommercialRealEstate",
+        "Cement"
+      ]
+    },
+    "governance": {
+      "organisationalResponsibilityForParisCompatibility": "Yes",
+      "parisCompatibilityInExecutiveRemuneration": 0.5475,
+      "shareOfEmployeesTrainedOnParisCompatibility": 0.2372,
+      "qualificationRequirementsOnParisCompatibility": "Yes",
+      "upstreamSupplierEngagementStrategy": "No",
+      "downstreamCustomerEngagement": "No"
+    },
+    "climateTargets": {},
+    "emissionsPlanning": {
+      "reductionOfAbsoluteEmissions": 0.2071,
+      "absoluteEmissions": 7066,
+      "climateActionPlan": "Yes"
+    },
+    "investmentPlanning": {
+      "investmentPlanForClimateTargets": "No",
+      "capexShareInNetZeroSolutions": 0.3517,
+      "capexShareInGhgIntensivePlants": 0.8927
+    }
+  },
+  "commercialRealEstate": {
+    "buildingEfficiency": {
+      "buildingSpecificReburbishmentRoadmap": 0.1966
+    },
+    "energySource": {
+      "renewableHeating": 0.7651
+    },
+    "technology": {
+      "useOfDistrictHeatingNetworks": "Yes",
+      "heatPumpUsage": "No"
+    }
+  },
+  "steel": {
+    "energy": {},
+    "technology": {
+      "blastFurnacePhaseOut": 0.7091
+    }
+  },
+  "electricityGeneration": {
+    "technology": {
+      "electricityMixEmissions": 6147,
+      "storageCapacityExpansion": 0.6629
+    }
+  },
+  "cement": {
+    "energy": {
+      "energyMix": 0.2925,
+      "fuelMix": 0.1425,
+      "thermalEnergyEfficiency": 0.158,
+      "compositionOfThermalInput": 0.0943
+    },
+    "technology": {
+      "electrificationOfProcessHeat": 0.774
+    },
+    "material": {
+      "preCalcinedClayUsage": 0.9161,
+      "circularEconomyContribution": "No"
+    }
+  }
+}

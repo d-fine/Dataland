@@ -2,12 +2,14 @@ package db.migration
 
 import db.migration.utils.DataTableEntity
 import db.migration.utils.getOrJavaNull
+import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONArray
 import org.json.JSONObject
 import java.math.BigDecimal
+import java.time.LocalDate
 
 /**
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
@@ -57,7 +59,7 @@ class V8__MigratePercentages : BaseJavaMigration() {
      * Migrates a EU taxonomy for financials dataset
      */
     fun migrateEuTaxonomyFinancials(dataTableEntity: DataTableEntity) {
-        migrateDataset(dataTableEntity) migration@{ dataObject ->
+        migrateDataset(dataTableEntity) { dataObject ->
             val financialServiceTypesWithPercentageDataPointsOnly = listOf(
                 "creditInstitutionKpis", "investmentFirmKpis", "insuranceKpis",
             )
@@ -69,7 +71,7 @@ class V8__MigratePercentages : BaseJavaMigration() {
                     migratePercentageDataPoint(financialServiceKpis, kpiKey)
                 }
             }
-            val eligibilityKpis = (dataObject.getOrJavaNull("eligibilityKpis") ?: return@migration) as JSONObject
+            val eligibilityKpis = (dataObject.getOrJavaNull("eligibilityKpis") ?: return@migrateDataset) as JSONObject
             val financialServiceTypes = eligibilityKpis.keys()
             financialServiceTypes.forEach { key ->
                 val financialServiceKpis = (eligibilityKpis.getOrJavaNull(key) ?: return@forEach) as JSONObject
@@ -87,7 +89,7 @@ class V8__MigratePercentages : BaseJavaMigration() {
      */
     fun migrateEuTaxonomyNonFinancials(dataTableEntity: DataTableEntity) {
         // TODO check for renamings for non financials
-        migrateDataset(dataTableEntity) migration@{ dataObject ->
+        migrateDataset(dataTableEntity) { dataObject ->
             listOf("revenue", "capex", "opex").forEach { cashFlowType ->
                 val cashFlowObject = (dataObject.getOrJavaNull(cashFlowType) ?: return@forEach) as JSONObject
                 val financialShareFields = listOf("nonEligibleShare", "eligibleShare", "nonAlignedShare", "alignedShare")
@@ -144,23 +146,131 @@ class V8__MigratePercentages : BaseJavaMigration() {
      * Migrates an LkSG dataset
      */
     fun migrateLksg(dataTableEntity: DataTableEntity) {
+        // TODO check for renamings for non financials
+        migrateDataset(dataTableEntity) { dataObject ->
+            ((dataObject.getOrJavaNull("social") as JSONObject?)?.getOrJsonNull("disregardForFreedomOfAssociation") as JSONObject?)?.also {
+                migratePercentageValue(it, "employeeRepresentation") // TODO change this name
+            }
+            (((dataObject.getOrJavaNull("general") as JSONObject?)
+                ?.getOrJavaNull("productionSpecificOwnOperations") as JSONObject?)
+                ?.getOrJavaNull("productsServicesCategoriesPurchased") as JSONObject?)
+                ?.also { procurementCategories ->
+                        (procurementCategories).keys().forEach { procurementCategoryKey ->
+                            migratePercentageValue(
+                                (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach) as JSONObject,
+                                "percentageOfTotalProcurement", // TODO change this name
+                            )
+                       }
+                }
+        }
     }
 
     /**
      * Migrates an SFDR dataset
      */
     fun migrateSfdr(dataTableEntity: DataTableEntity) {
+        migrateDataset(dataTableEntity) { dataObject ->
+            // TODO only change names if neccessary
+        }
     }
 
     /**
      * Migrates an SME dataset
      */
     fun migrateSme(dataTableEntity: DataTableEntity) {
+        migrateDataset(dataTableEntity) { dataObject ->
+            val production = (dataObject.getOrJavaNull("production") ?: return@migrateDataset) as JSONObject
+            val fieldPaths = listOf(
+                Pair("sites", "listOfProductionSites"),
+                Pair("products", "listOfProducts"),
+            )
+            fieldPaths.forEach { fieldPath ->
+                ((production.getOrJavaNull(fieldPath.first) as JSONObject?)
+                    ?.getOrJavaNull(fieldPath.second) as JSONArray?)
+                    ?.forEach {
+                        migratePercentageValue(
+                            it as JSONObject,
+                            "percentageOfTotalRevenue", // TODO rename
+                        )
+                    }
+            }
+        }
     }
 
     /**
      * Migrates a Pathways to Paris dataset
      */
     fun migrateP2p(dataTableEntity: DataTableEntity) {
+        val percentageFieldNames = setOf(
+            "parisCompatibilityInExecutiveRemuneration",
+            "parisCompatibilityInAverageRemuneration",
+            "shareOfEmployeesTrainedOnParisCompatibility",
+            "reductionOfRelativeEmissions",
+            "relativeEmissions",
+            "capexShareInGhgIntensivePlants",
+            "capexShareInNetZeroSolutions",
+            "researchAndDevelopmentExpenditureForNetZeroSolutions",
+            "energyMix",
+            "ccsTechnologyAdoption",
+            "electrification",
+            "useOfRenewableFeedstocks",
+            "energyMix",
+            "driveMix",
+            "materialUseManagement",
+            "useOfSecondaryMaterials",
+            "energyMix",
+            "electrification",
+            "useOfRenewableFeedstocks",
+            "useOfBioplastics",
+            "useOfCo2FromCarbonCaptureAndReUseTechnologies",
+            "materialRecycling",
+            "chemicalRecycling",
+            "buildingSpecificReburbishmentRoadmap",
+            "zeroEmissionBuildingShare",
+            "renewableHeating",
+            "blastFurnacePhaseOut",
+            "fuelMix",
+            "lowCarbonSteelScaleUp",
+            "shareOfRenewableElectricity",
+            "compostedFermentedManure",
+            "emissionProofFertiliserStorage",
+            "storageCapacityExpansion",
+            "mortalityRate",
+            "ownFeedPercentage",
+            "climateFriendlyProteinProduction",
+            "greenFodderPercentage",
+            "renewableElectricityPercentage",
+            "renewableHeatingPercentage",
+            "electricGasPoweredMachineryVehiclePercentage",
+            "energyMix",
+            "fuelMix",
+            "thermalEnergyEfficiency",
+            "compositionOfThermalInput",
+            "electrificationOfProcessHeat",
+            "preCalcinedClayUsage",
+        )
+        val fieldsToMigrateInType = setOf(
+            "useOfDistrictHeatingNetworks",
+            "heatPumpUsage",
+        )
+        migrateDataset(dataTableEntity) { dataObject ->
+            dataObject.keys().forEach { categoryName ->
+                val category = (dataObject.getOrJavaNull(categoryName) ?: return@forEach) as JSONObject
+                category.keys().forEach { subcategoryName ->
+                    val subcategory = (category.getOrJavaNull(subcategoryName) ?: return@forEach) as JSONObject
+                    val fieldsToRemove = mutableListOf<String>()
+                    subcategory.keys().forEach { fieldName ->
+                        if(fieldName in percentageFieldNames) {
+                            migratePercentageValue(subcategory, fieldName) // TODO renaming
+                        } else if (fieldName in fieldsToMigrateInType) {
+                            fieldsToRemove.add(fieldName) // TODO renaming
+                        }
+                    }
+                    fieldsToRemove.forEach {
+                        subcategory.remove(it) // TODO renaming
+                    }
+                }
+            }
+        }
     }
 }

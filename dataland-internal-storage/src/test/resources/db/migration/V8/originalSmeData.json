@@ -1,0 +1,89 @@
+{
+  "general": {
+    "basicInformation": {
+      "sector": [
+        "A",
+        "C",
+        "F"
+      ],
+      "addressOfHeadquarters": {
+        "postalCode": "99589-6512",
+        "city": "Ondrickafield",
+        "country": "ID"
+      },
+      "numberOfEmployees": 4193,
+      "fiscalYearStart": "2023-11-19"
+    },
+    "companyFinancials": {
+      "operatingCostInEur": 17943007
+    }
+  },
+  "production": {
+    "sites": {
+      "listOfProductionSites": [
+        {
+          "nameOfProductionSite": "Bogan, Bradtke and Treutel",
+          "addressOfProductionSite": {
+            "city": "Blickville",
+            "state": "West Virginia",
+            "country": "BB"
+          },
+          "percentageOfTotalRevenue": 0.8274
+        },
+        {
+          "nameOfProductionSite": "Grimes - Raynor",
+          "addressOfProductionSite": {
+            "streetAndHouseNumber": "Rodriguez Pass 2226",
+            "postalCode": "57802",
+            "city": "Rogermouth",
+            "country": "GD"
+          },
+          "percentageOfTotalRevenue": 0.0381
+        }
+      ]
+    },
+    "products": {
+      "listOfProducts": [
+        {
+          "name": "Practical Bronze Keyboard"
+        },
+        {
+          "name": "Handcrafted Steel Pants"
+        },
+        {
+          "name": "Bespoke Bronze Towels",
+          "percentageOfTotalRevenue": null
+        },
+        {
+          "name": "Recycled Bronze Fish"
+        },
+        {
+          "name": "Oriental Cotton Table",
+          "percentageOfTotalRevenue": 0.9593
+        }
+      ]
+    }
+  },
+  "power": {
+    "investments": {
+      "percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+    },
+    "consumption": {
+      "primaryEnergySourceForHeatingAndHotWater": "Gas",
+      "energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+    }
+  },
+  "insurances": {
+    "naturalHazards": {
+      "insuranceAgainstNaturalHazards": "Yes",
+      "naturalHazardsCovered": [
+        "Flooding",
+        "Snow",
+        "EarthQuake",
+        "Wind",
+        "Hail",
+        "Avalanche"
+      ]
+    }
+  }
+}
