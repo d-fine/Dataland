@@ -114,10 +114,8 @@ export default defineComponent({
   data() {
     return {
       dataIdList: [] as Array<string>,
-      // dataId: "",
       displayDataOfPage: [] as QaDataObject[],
       waitingForData: true,
-      // dataSet: null as unknown as object,
       KEYCLOAK_ROLE_REVIEWER,
       metaInformation: null as DataMetaInformation,
       companyInformation: null as CompanyInformation | null,
