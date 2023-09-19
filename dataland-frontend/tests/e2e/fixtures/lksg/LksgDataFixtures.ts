@@ -8,12 +8,12 @@ import {
   ShareOfTemporaryWorkers,
 } from "@clients/backend";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
-import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { DEFAULT_PROBABILITY, Generator, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
@@ -73,12 +73,12 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         groupOfCompanies: dataGenerator.randomYesNo(),
         groupOfCompaniesName: dataGenerator.valueOrUndefined(faker.company.name()),
         industry: dataGenerator.valueOrUndefined(generateListOfRandomNaceCodes()),
-        numberOfEmployees: dataGenerator.valueOrUndefined(generateInt(10000)),
+        numberOfEmployees: dataGenerator.randomInt(),
         seasonalOrMigrantWorkers: dataGenerator.randomYesNo(),
         shareOfTemporaryWorkers: dataGenerator.randomShareOfTemporaryWorkersInterval(),
         annualTotalRevenue: dataGenerator.randomCurrencyValue(),
-        totalRevenueCurrency: dataGenerator.valueOrUndefined(generateIso4217CurrencyCode()),
-        fixedAndWorkingCapital: dataGenerator.valueOrUndefined(generateInt(10000)),
+        totalRevenueCurrency: dataGenerator.valueOrUndefined(generateCurrencyCode()),
+        fixedAndWorkingCapital: dataGenerator.randomInt(),
       },
       productionSpecific: {
         manufacturingCompany: dataGenerator.randomYesNo(),
@@ -86,7 +86,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
           generateInt(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
         ),
         productionViaSubcontracting: dataGenerator.randomYesNo(),
-        subcontractingCompaniesCountries: dataGenerator.valueOrUndefined(generateArray(generateIso2CountryCode)),
+        subcontractingCompaniesCountries: dataGenerator.randomArray(generateIso2CountryCode),
         subcontractingCompaniesIndustries: dataGenerator.valueOrUndefined(generateListOfRandomNaceCodes()),
         productionSites: dataGenerator.randomYesNo(),
         listOfProductionSites: dataGenerator.randomArray(() => generateProductionSite(undefinedProbability)),
@@ -94,7 +94,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         specificProcurement: dataGenerator.randomYesNo(),
       },
       productionSpecificOwnOperations: {
-        mostImportantProducts: dataGenerator.valueOrUndefined(generateArray(() => dataGenerator.generateProduct())),
+        mostImportantProducts: dataGenerator.randomArray(() => dataGenerator.generateProduct()),
         productsServicesCategoriesPurchased: dataGenerator.valueOrUndefined(
           dataGenerator.generateProcurementCategories(),
         ),
@@ -120,7 +120,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         appropriateGrievanceHandlingSupport: dataGenerator.randomYesNo(),
         accessToExpertiseForGrievanceHandling: dataGenerator.randomYesNo(),
         grievanceComplaints: dataGenerator.randomYesNo(),
-        complaintsNumber: dataGenerator.valueOrUndefined(generateInt(10000)),
+        complaintsNumber: dataGenerator.randomInt(),
         complaintsReason: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
         actionsForComplaintsUndertaken: dataGenerator.randomYesNo(),
         whichActionsForComplaintsUndertaken: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
@@ -160,11 +160,11 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         humanRightsViolationAction: dataGenerator.randomYesNo(),
         humanRightsViolationActionMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
         highRiskCountriesRawMaterials: dataGenerator.randomYesNo(),
-        highRiskCountriesRawMaterialsLocation: dataGenerator.valueOrUndefined(generateArray(generateIso2CountryCode)),
+        highRiskCountriesRawMaterialsLocation: dataGenerator.randomArray(generateIso2CountryCode),
         highRiskCountriesActivity: dataGenerator.randomYesNo(),
-        highRiskCountries: dataGenerator.valueOrUndefined(generateArray(generateIso2CountryCode)),
+        highRiskCountries: dataGenerator.randomArray(generateIso2CountryCode),
         highRiskCountriesProcurement: dataGenerator.randomYesNo(),
-        highRiskCountriesProcurementName: dataGenerator.valueOrUndefined(generateArray(generateIso2CountryCode)),
+        highRiskCountriesProcurementName: dataGenerator.randomArray(generateIso2CountryCode),
       },
     },
     social: {
@@ -230,7 +230,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
       },
       disregardForFreedomOfAssociation: {
         freedomOfAssociation: dataGenerator.randomYesNo(),
-        employeeRepresentation: dataGenerator.valueOrUndefined(generatePercentageValue()),
+        employeeRepresentation: dataGenerator.randomPercentageValue(),
         discriminationForTradeUnionMembers: dataGenerator.randomYesNo(),
         freedomOfOperationForTradeUnion: dataGenerator.randomYesNo(),
         freedomOfAssociationTraining: dataGenerator.randomYesNo(),

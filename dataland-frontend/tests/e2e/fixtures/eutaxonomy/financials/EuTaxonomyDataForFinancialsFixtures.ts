@@ -24,14 +24,9 @@ export function generateEuTaxonomyDataForFinancials(
 }
 
 export class EuFinancialsGenerator extends Generator {
-  financialServicesTypes: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum[];
-
-  constructor(undefinedProbability = DEFAULT_PROBABILITY) {
-    super(undefinedProbability);
-    this.financialServicesTypes = faker.helpers.arrayElements(
-      Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum),
-    );
-  }
+  financialServicesTypes = faker.helpers.arrayElements(
+    Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum),
+  );
 
   /**
    * Generates a single eutaxonomy-financials fixture for a company with the given financial services types

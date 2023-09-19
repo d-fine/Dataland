@@ -11,7 +11,7 @@ import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTax
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { faker } from "@faker-js/faker";
 import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateCurrencyValue } from "@e2e/fixtures/common/NumberFixtures";
 
 /**
@@ -39,7 +39,7 @@ export class EuNonFinancialsGenerator extends Generator {
   generateAmountWithCurrency(): AmountWithCurrency {
     return {
       amount: this.randomCurrencyValue(),
-      currency: this.valueOrUndefined(generateIso4217CurrencyCode()),
+      currency: this.valueOrUndefined(generateCurrencyCode()),
     };
   }
 
@@ -47,7 +47,7 @@ export class EuNonFinancialsGenerator extends Generator {
    * Generates a random financial share
    * @returns a financial share
    */
-  generateFinancialShare(): RelativeAndAbsoluteFinancialShare | undefined {
+  randomFinancialShare(): RelativeAndAbsoluteFinancialShare | undefined {
     return this.valueOrUndefined({
       relativeShareInPercent: this.randomPercentageValue(),
       absoluteShare: this.valueOrUndefined(this.generateAmountWithCurrency()),
@@ -63,7 +63,7 @@ export class EuNonFinancialsGenerator extends Generator {
     return {
       activityName: randomActivityName,
       naceCodes: this.valueOrUndefined(getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName)),
-      share: this.generateFinancialShare(),
+      share: this.randomFinancialShare(),
     };
   }
 
@@ -98,12 +98,12 @@ export class EuNonFinancialsGenerator extends Generator {
    */
   generateEuTaxonomyPerCashflowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: this.randomDataPoint(generateCurrencyValue(), faker.finance.currencyCode()),
-      nonEligibleShare: this.generateFinancialShare(),
-      eligibleShare: this.generateFinancialShare(),
-      nonAlignedShare: this.generateFinancialShare(),
+      totalAmount: this.randomDataPoint(generateCurrencyValue(), generateCurrencyCode()),
+      nonEligibleShare: this.randomFinancialShare(),
+      eligibleShare: this.randomFinancialShare(),
+      nonAlignedShare: this.randomFinancialShare(),
       nonAlignedActivities: this.randomArray(() => this.generateActivity(), 0, 2),
-      alignedShare: this.generateFinancialShare(),
+      alignedShare: this.randomFinancialShare(),
       substantialContributionToClimateChangeMitigationInPercent: this.randomPercentageValue(),
       substantialContributionToClimateChangeAdaptionInPercent: this.randomPercentageValue(),
       substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:

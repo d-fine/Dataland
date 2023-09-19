@@ -6,6 +6,7 @@ import { generateYesNoNa } from "./YesNoFixtures";
 import { DEFAULT_PROBABILITY, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
+import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
 
@@ -23,7 +24,7 @@ export function generateReferencedReports(undefinedProbability = DEFAULT_PROBABI
       reference: getReferencedDocumentId(),
       isGroupLevel: valueOrUndefined(generateYesNoNa(), undefinedProbability),
       reportDate: valueOrUndefined(generatePastDate(), undefinedProbability),
-      currency: faker.finance.currencyCode(),
+      currency: generateCurrencyCode(),
     };
   }
   return referencedReports;
@@ -81,7 +82,7 @@ function generateQualityAndDataSourceAndComment(
   qualityBucket: QualityOptions,
 ): { dataSource: CompanyReportReference | undefined; comment: string | undefined } {
   let dataSource: CompanyReportReference | undefined;
-  let comment: string | undefined = undefined;
+  let comment: string | undefined;
   if (
     qualityBucket === QualityOptions.Audited ||
     qualityBucket === QualityOptions.Reported ||
