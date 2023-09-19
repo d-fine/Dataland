@@ -49,9 +49,6 @@ export default defineComponent({
      * @param qaStatus the QA status to be assigned
      */
     setQaStatusTo(event: MouseEvent, qaStatus: QaStatus) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
       const { dataId, dataType, reportingPeriod } = this.metaInfo;
       const message = `${qaStatus} ${dataType} data for ${this.companyName} for the reporting period ${reportingPeriod}.`;
 
