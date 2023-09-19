@@ -134,8 +134,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         .nextAll()
         .eq(4)
         .invoke("text")
-        .should("match", /^0 %$/)
-        .wait(10000); // TODO
+        .should("match", /^0 %$/);
     });
   });
 
