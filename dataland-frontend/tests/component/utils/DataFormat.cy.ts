@@ -26,7 +26,7 @@ describe("Unit tests for formating data", () => {
     const outputArray = sampleNumbers.map((el) => {
       return formatPercentageNumberAsString(el);
     });
-    expect(outputArray).to.deep.equal(["12 %", "65.12 %", "1200 %", "100 %", "0 %"]);
+    expect(outputArray).to.deep.equal(["0.12 %", "0.65 %", "12 %", "1 %", "0 %"]);
   });
   it("Check if amount with currency is displayed in correct format", () => {
     const sampleObjects = [

@@ -154,7 +154,7 @@ describe("Component test for ThreeLayerDataTable", () => {
     const revenueFirstAlignedActivity = assertDefined(revenueOfDataset.alignedShare?.alignedActivities)[0];
     const revenueFirstAlignedActivityName = assertDefined(revenueFirstAlignedActivity?.activityName);
     const revenueFirstAlignedActivityRelativeShare = roundNumber(
-      assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent) * 100,
+      assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent),
       2,
     );
     const revenueFirstAlignedActivityAbsoluteShare = formatAmountWithCurrency(
@@ -198,7 +198,7 @@ describe("Component test for ThreeLayerDataTable", () => {
     const capexNonAlignedShareInPercent = assertDefined(capexOfDataset.nonAlignedShare?.relativeShareInPercent);
     const capexFirstNonAlignedActivityNaceCodes: string = assertDefined(capexFirstNonAlignedActivity.naceCodes)[0];
     const capexFirstNonAlignedActivityRelativeShare = roundNumber(
-      assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent) * 100,
+      assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent),
       2,
     );
     const capexFirstNonAlignedActivityAbsoluteShare = formatAmountWithCurrency(
