@@ -36,7 +36,6 @@ describeIf(
           preparedFixture.t,
           preparedFixture.reportingPeriod,
         ).then((uploadIds) => {
-          cy.wait(10);
           cy.intercept("**/qa/datasets").as("getDataIdsOfReviewableDatasets");
           cy.intercept(`**/api/metadata/${uploadIds.dataId}`).as("getDataMetaInfoOfPostedDataset");
           cy.visit(`/qualityassurance`);
