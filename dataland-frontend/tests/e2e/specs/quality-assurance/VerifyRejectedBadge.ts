@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { DataTypeEnum, type LksgData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
