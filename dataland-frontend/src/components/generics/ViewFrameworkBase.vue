@@ -164,8 +164,6 @@ export default defineComponent({
   },
   computed: {
     canReview() {
-      // TODO Emanuel: Maybe call this computed property "viewInReviewMode" ? This would be consistent with "viewInPreviewMode" which already exists
-      // TODO Piotr: Won't it intefere with the provided prop? I copied the term for consistency from the method below 'canEdit'
       return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
     },
     canEdit() {
