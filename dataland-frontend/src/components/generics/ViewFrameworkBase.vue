@@ -4,7 +4,7 @@
     <MarginWrapper class="text-left surface-0" style="margin-right: 0">
       <BackButton />
       <FrameworkDataSearchBar
-        v-if="!viewInPreviewMode && !canReview"
+        v-if="!viewInPreviewMode && !isReviewableByCurrentUser"
         :companyIdIfOnViewPage="companyID"
         class="mt-2"
         ref="frameworkDataSearchBar"
@@ -30,7 +30,7 @@
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
           <div class="flex">
             <Dropdown
-              v-if="!canReview"
+              v-if="!isReviewableByCurrentUser"
               id="chooseFrameworkDropdown"
               v-model="chosenDataTypeInDropdown"
               :options="dataTypesInDropdown"
@@ -45,15 +45,14 @@
             <slot name="reportingPeriodDropdown"></slot>
           </div>
           <div v-if="hasUserUploaderRights || hasUserReviewerRights" class="flex align-content-end align-items-center">
-            <template v-if="canReview && singleDataMetaInfoToDisplay">
-              <QualityAssuranceButtons
-                :meta-info="singleDataMetaInfoToDisplay"
-                :company-name="fetchedCompanyInformation.companyName"
-              />
-            </template>
+            <QualityAssuranceButtons
+              v-if="isReviewableByCurrentUser"
+              :meta-info="singleDataMetaInfoToDisplay"
+              :company-name="fetchedCompanyInformation.companyName"
+            />
             <template v-if="hasUserUploaderRights">
               <PrimeButton
-                v-if="canEdit"
+                v-if="isEditable"
                 class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
                 aria-label="EDIT DATA"
                 @click="editDataset"
@@ -66,7 +65,11 @@
                   >arrow_drop_down</span
                 >
               </PrimeButton>
-              <router-link :to="addNewDatasetLinkTarget" class="no-underline ml-3" data-test="gotoNewDatasetButton">
+              <router-link
+                :to="targetLinkForAddingNewDataset"
+                class="no-underline ml-3"
+                data-test="gotoNewDatasetButton"
+              >
                 <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
                   <span class="material-icons-outlined px-2">queue</span>
                   <span class="px-2">NEW DATASET</span>
@@ -171,10 +174,10 @@ export default defineComponent({
     };
   },
   computed: {
-    canReview() {
+    isReviewableByCurrentUser() {
       return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
     },
-    canEdit() {
+    isEditable() {
       return (
         ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum) &&
         (!this.singleDataMetaInfoToDisplay ||
@@ -182,7 +185,7 @@ export default defineComponent({
           this.singleDataMetaInfoToDisplay.qaStatus === "Rejected")
       );
     },
-    addNewDatasetLinkTarget() {
+    targetLinkForAddingNewDataset() {
       return `/companies/${this.companyID ?? ""}/frameworks/upload`;
     },
   },
