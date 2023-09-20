@@ -4,11 +4,19 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * --- API model ---
+ * Interface of the generic base data point
+ */
+interface BaseDataPointInterface<T> {
+    val value: T?
+    val dataSource: DocumentReference?
+}
+/**
+ * --- API model ---
  * Fields of a generic base data point and its source
  */
 data class BaseDataPoint<T>(
     @field:JsonProperty(required = true)
-    val value: T,
+    override val value: T?,
 
-    val dataSource: DocumentReference? = null,
-)
+    override val dataSource: DocumentReference? = null,
+): BaseDataPointInterface<T>
