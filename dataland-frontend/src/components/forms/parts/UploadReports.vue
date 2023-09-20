@@ -75,7 +75,7 @@ import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadD
 import { type CompanyReport } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
-type DuplicateWithIndex = { document: DocumentToUpload; index: number };
+type FileNameWithIndex = { fileName: string; index: number };
 
 export default defineComponent({
   name: "UploadReports",
@@ -149,40 +149,46 @@ export default defineComponent({
     /**
      * Handles selection of a file by the user. If duplicates are found in the selection, this is handled.
      * At the end an event is emitted reflecting that the referenceable reports have updated.
-     * @param documents the list of all documents for the upload, determined by the selection in the file uploader
+     * @param selectedDocumentsForUpload the list of all selectedDocumentsForUpload for the upload, determined by the selection in the file uploader
      */
-    handleUpdatedDocumentsSelectedForUpload(documents: DocumentToUpload[]) {
-      this.documentsToUpload = documents;
-      const duplicatesWithIndex: DuplicateWithIndex[] = [];
+    handleUpdatedDocumentsSelectedForUpload(selectedDocumentsForUpload: DocumentToUpload[]) {
+      this.documentsToUpload = selectedDocumentsForUpload;
+      const duplicateFileNamesWithIndex: FileNameWithIndex[] = [];
+
+      // const invalidFileNamesWithIndex: FileNameWithIndex[] = []
 
       if (this.areDuplicatesAmongReferenceableReportNames()) {
-        const foundExistingRecords = new Set<string>();
+        const existingFileNamesCollector = new Set<string>();
 
         for (let i = 0; i < this.documentsToUpload.length; i++) {
-          const currentName = this.documentsToUpload[i].fileNameWithoutSuffix;
+          const fileName = this.documentsToUpload[i].fileNameWithoutSuffix;
 
-          if (foundExistingRecords.has(currentName) || this.namesOfStoredReports.indexOf(currentName) !== -1) {
-            duplicatesWithIndex.push({ document: this.documentsToUpload[i], index: i });
+          if (existingFileNamesCollector.has(fileName) || this.namesOfStoredReports.indexOf(fileName) !== -1) {
+            duplicateFileNamesWithIndex.push({ fileName: fileName, index: i });
           } else {
-            foundExistingRecords.add(currentName);
+            existingFileNamesCollector.add(fileName);
           }
         }
 
-        this.handleReportDuplicates([...duplicatesWithIndex].reverse());
+        this.handleFileNameDuplicates([...duplicateFileNamesWithIndex].reverse());
       } else {
         this.emitReportsUpdatedEvent();
       }
     },
     /**
      * This handles duplicates in the file selection by removing them from the file selection.
-     * @param duplicatesWithIndex duplicate documents together with their indexes in the file selection list
+     * @param duplicateFileNamesWithIndex duplicate file names together with their indexes in the file selection list
      */
-    handleReportDuplicates(duplicatesWithIndex: DuplicateWithIndex[]) {
-      const documents: DocumentToUpload[] = duplicatesWithIndex.map(({ document }) => document);
-      const indexes: number[] = duplicatesWithIndex.map(({ index }) => index);
-
-      this.namesOfDuplicatesAmongDocumentsToUpload = documents.map((document) => document.fileNameWithoutSuffix);
-      (this.$refs.uploadDocumentsForm.removeDocumentsFromDocumentsToUpload as (indexes: number[]) => void)(indexes);
+    handleFileNameDuplicates(duplicateFileNamesWithIndex: FileNameWithIndex[]) {
+      this.namesOfDuplicatesAmongDocumentsToUpload = duplicateFileNamesWithIndex.map(
+        (fileNameWithIndex) => fileNameWithIndex.fileName,
+      );
+      const indexesOfDuplicateFileNames = duplicateFileNamesWithIndex.map(
+        (fileNameWithIndex) => fileNameWithIndex.index,
+      );
+      (this.$refs.uploadDocumentsForm.removeDocumentsFromDocumentsToUpload as (indexes: number[]) => void)(
+        indexesOfDuplicateFileNames,
+      );
     },
     /**
      * When the X besides existing reports is clicked this function should be called and
