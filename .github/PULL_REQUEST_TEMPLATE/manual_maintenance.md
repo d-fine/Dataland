@@ -12,6 +12,8 @@ creation URL (or simply copy this md file into the description)
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
+- [ ] Update keycloak to 22.0.3 is skipped due to failing all e2e tests
+- [ ] Update node.js to version 20.6.1 breaks the build
 - [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
@@ -23,16 +25,15 @@ appear.
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 - [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
 - [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloak Docker images
-- [ ] Flyway version from 9.18.0 and above (until 9.21.1) seem to cause issues. Future versions should be tried
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
   If running `sudo apt-get update && sudo apt-get upgrade` on the servers causes connection issues
   this can be possibly fixed by reverting the docker-compose-plugin version
 ### Gradle update
 
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
-- [ ] Update `settings.gradle.kts` (for libraries), `build.gradle.kts` (for plugins) and `gradle.properties` (for jacoco
-  and ktlint)
-- [ ] update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
+- [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
+- [ ] Update versions in `versions.properties`
+- [ ] Update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
 
