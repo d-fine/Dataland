@@ -7,9 +7,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
-import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
+import type DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
+import type AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
+import type NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
 
 export type GenericsDataTableRequiredData =
   | {
@@ -23,7 +23,6 @@ export type GenericsDataTableRequiredData =
 
 export default defineComponent({
   name: "GenericDataTableModalLink",
-  components: { DetailsCompanyDataTable, AlignedActivitiesDataTable, NonAlignedActivitiesDataTable },
   props: {
     component: {
       type: Object as () =>
