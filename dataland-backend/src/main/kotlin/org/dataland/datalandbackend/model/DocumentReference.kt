@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class DocumentReference(
     @field:JsonProperty(required = true)
     val name: String,
-
+    //TODO make naming clearer, maybe fileName and fileReference
     @field:JsonProperty(required = true)
     val reference: String,
 )
