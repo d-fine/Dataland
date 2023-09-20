@@ -2,46 +2,47 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Peggiefield",
-			"headquartersPostalCode": "32634-9836",
+			"headquarters": "Hoppeland",
+			"headquartersPostalCode": "08779",
+			"sector": "mindshare",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"G7it5Ptvz6ZpfdJb3htt"
+				],
 				"Isin": [],
 				"PermId": [
-					"TbGc7jt5V0"
+					"lVE3suU9JE"
 				],
-				"Ticker": [],
-				"Duns": [
-					"T4VsavS99"
+				"Ticker": [
+					"o6spAAQ"
 				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"xVIHti6qlHYaUhz"
+					"2DSXLCGQYMGSwhW"
 				]
 			},
-			"countryCode": "CX",
+			"countryCode": "GG",
 			"companyAlternativeNames": [
-				"Smith, Stark and Ledner"
+				"Spinka, Boehm and Stamm"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://spiteful-ratepayer.name",
+			"website": "https://handmade-turn.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
 						"B"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Mozelle Avenue 8595",
-						"postalCode": "99583-2606",
-						"city": "Rosalynmouth",
-						"country": "SS"
+						"streetAndHouseNumber": "Adams Lodge 7751",
+						"city": "South Darlene",
+						"state": "Nevada",
+						"country": "GB"
 					},
-					"numberOfEmployees": 938,
-					"fiscalYearStart": "2024-02-16"
+					"numberOfEmployees": 3198,
+					"fiscalYearStart": "2023-11-22"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -51,54 +52,15 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Jaskolski - Goldner",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bosco Views 680",
-								"postalCode": "03351",
-								"city": "Flatleyfurt",
-								"state": "Washington",
-								"country": "EE"
-							},
-							"percentageOfTotalRevenue": 0.8566
-						},
-						{
-							"nameOfProductionSite": "Hilll, Rempel and Wisoky",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Malika Valley 43166",
-								"postalCode": "41655-7390",
-								"city": "Reynoldsshire",
-								"state": "Georgia",
-								"country": "BD"
-							},
-							"percentageOfTotalRevenue": 0.1749
-						},
-						{
-							"nameOfProductionSite": "Koch, Ryan and Dibbert",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lambert Circle 5736",
-								"postalCode": "20876-8016",
-								"city": "East Geofurt",
-								"state": "Ohio",
-								"country": "HR"
-							},
-							"percentageOfTotalRevenue": 0.6689
-						},
-						{
-							"nameOfProductionSite": "Thompson - Howell",
-							"addressOfProductionSite": {
-								"postalCode": "82863",
-								"city": "Carson City",
-								"state": "Georgia",
-								"country": "AT"
-							},
-							"percentageOfTotalRevenue": 0.8481
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Handmade Fresh Shoes",
+							"percentageOfTotalRevenue": 0.6243
+						}
+					]
 				}
 			},
 			"power": {
@@ -106,19 +68,18 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 476,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 827,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 525,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 36313443,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 27141678,
 					"naturalHazardsCovered": [
-						"Snow",
-						"Hail"
+						"EarthQuake",
+						"Flooding",
+						"Snow"
 					]
 				}
 			}
@@ -128,46 +89,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "North Peggieboro",
-			"headquartersPostalCode": "17225-4960",
+			"headquarters": "North Ramona",
+			"headquartersPostalCode": "03930",
 			"identifiers": {
 				"Lei": [
-					"nnYlHkCdiHxBAG8tzZ4X"
+					"XOMuhs0yhNzd82e33QBv"
 				],
 				"Isin": [
-					"uytnm43rr5iC",
-					"9KP71Eckom4y"
+					"dE2r7nFdFN3I"
 				],
 				"PermId": [],
-				"Ticker": [
-					"BkkES5z"
-				],
+				"Ticker": [],
 				"Duns": [
-					"qia5fDWl3"
+					"yuTcuNC1G"
 				],
 				"VatNumber": [
-					"wGJWLqL9D"
+					"JEudMcWo5"
 				],
 				"CompanyRegistrationNumber": [
-					"S0GZDftBlrp7NDd"
+					"zUHmsP6FhPYylmG"
 				]
 			},
-			"countryCode": "SC",
+			"countryCode": "NE",
 			"companyAlternativeNames": [
-				"Ryan LLC",
-				"Schroeder - Jacobson",
-				"Ward Inc",
-				"Zulauf - Dooley"
+				"Ernser Group",
+				"Fay - Mohr",
+				"Towne, Franey and Bashirian"
 			],
-			"website": "https://respectful-dream.org",
+			"companyLegalForm": "AG",
+			"website": "https://elaborate-wisteria.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
-						"B"
+						"A"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -176,37 +133,80 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7883,
-					"fiscalYearStart": "2024-02-13"
+					"numberOfEmployees": 4531,
+					"fiscalYearStart": "2024-02-28"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 9039979,
-					"capitalAssetsInEur": 67925370
+					"revenueInEur": 6602365,
+					"operatingCostInEur": 55506613,
+					"capitalAssetsInEur": 27473146
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {
-					"listOfProducts": []
-				}
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Funk and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Elisabeth Coves 399",
+								"postalCode": "68556",
+								"city": "Oceanside",
+								"state": "California",
+								"country": "GY"
+							},
+							"percentageOfTotalRevenue": 0.9267
+						},
+						{
+							"nameOfProductionSite": "Moen and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Josianne Expressway 621",
+								"city": "McLaughlinberg",
+								"country": "MH"
+							},
+							"percentageOfTotalRevenue": 0.9911
+						},
+						{
+							"nameOfProductionSite": "Lockman, Bergstrom and Von",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Claire Field 403",
+								"postalCode": "80508",
+								"city": "South Jasen",
+								"state": "Connecticut",
+								"country": "NU"
+							},
+							"percentageOfTotalRevenue": 0.8731
+						},
+						{
+							"nameOfProductionSite": "Larson, Streich and Hessel",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Ollie Rue 95211",
+								"postalCode": "39190-6492",
+								"city": "Belleville",
+								"country": "KM"
+							},
+							"percentageOfTotalRevenue": 0.2818
+						}
+					]
+				},
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1811,
+					"powerConsumptionInMwh": 192,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 851,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 41804955,
+					"insuranceAgainstNaturalHazards": "Yes",
 					"naturalHazardsCovered": [
-						"EarthQuake",
+						"Flooding",
+						"Avalanche",
 						"Snow"
 					]
 				}
@@ -217,96 +217,70 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Keelingland",
-			"headquartersPostalCode": "38401-2668",
-			"sector": "lifetime value",
+			"headquarters": "Fort Rubyfurt",
+			"headquartersPostalCode": "46685-0362",
+			"sector": "technologies",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [
-					"y5hIKe8HOyPL",
-					"h6qKBFOxUly5"
+				"Isin": [],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"fWbycgmfG"
 				],
-				"PermId": [
-					"13qtUAhDxn"
+				"VatNumber": [
+					"KSS9GRHNy"
 				],
-				"Ticker": [
-					"y7iZRJ4"
-				],
-				"Duns": [],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GT",
+			"countryCode": "FJ",
 			"companyAlternativeNames": [
-				"Pfeffer, Herzog and Wisoky",
-				"Schultz LLC",
-				"Will LLC",
-				"Wiza, Leffler and Schuster"
+				"Mohr - Harber",
+				"Wuckert, Harber and Wehner"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://expert-somebody.biz/",
+			"companyLegalForm": "GmbH",
+			"website": "https://nautical-fortress.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A",
 						"B"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2505,
-					"fiscalYearStart": "2023-11-20"
+					"numberOfEmployees": 2021,
+					"fiscalYearStart": "2024-02-14"
 				},
 				"companyFinancials": {
-					"revenueInEur": 45676657,
-					"capitalAssetsInEur": 4216115
+					"revenueInEur": 85940625,
+					"operatingCostInEur": 17556039,
+					"capitalAssetsInEur": 50737890
 				}
 			},
 			"production": {
 				"sites": {},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Rustic Concrete Mouse",
-							"percentageOfTotalRevenue": 0.892
-						},
-						{
-							"name": "Refined Wooden Tuna",
-							"percentageOfTotalRevenue": 0.0318
-						},
-						{
-							"name": "Incredible Steel Bacon",
-							"percentageOfTotalRevenue": 0.8916
-						},
-						{
-							"name": "Sleek Cotton Shirt",
-							"percentageOfTotalRevenue": 0.0067
-						},
-						{
-							"name": "Modern Fresh Sausages"
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 150,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 596,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 791,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 44730690,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 24408054,
 					"naturalHazardsCovered": [
-						"Snow"
+						"EarthQuake"
 					]
 				}
 			}
