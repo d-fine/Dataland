@@ -89,7 +89,7 @@ function manipulateFixtureForLksgDatasetWithLotsOfNulls(fixture: FixtureData<Lks
  * Generates a Lksg fixture with a dataset with many null values for categories, subcategories and field values
  * @returns the fixture
  */
-export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
+function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
   return generateFixtureDataset<LksgData>(
     () => generateOneLksgDatasetWithManyNulls(),
     1,
@@ -102,7 +102,7 @@ export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
  * Datasets that were uploaded via the Dataland API can look like this in production.
  * @returns the dataset
  */
-export function generateOneLksgDatasetWithManyNulls(): LksgData {
+function generateOneLksgDatasetWithManyNulls(): LksgData {
   return {
     general: {
       masterData: {

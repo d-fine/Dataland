@@ -53,7 +53,7 @@ export function generateArray<T>(
  * @param inputArray is the array containing all available values to choose from
  * @returns an array with a random number of distinct values chosen from the inputArray
  */
-export function getRandomNumberOfDistinctElementsFromArray<T>(inputArray: T[]): T[] {
+export function generateArrayOfUniqueElements<T>(inputArray: T[]): T[] {
   const arrayOfAvailableDistinctValues = [...Array.from(new Set(inputArray))];
   const numElementsForResultArray = Math.floor(Math.random() * arrayOfAvailableDistinctValues.length) + 1;
   return faker.helpers.uniqueArray(arrayOfAvailableDistinctValues, numElementsForResultArray);

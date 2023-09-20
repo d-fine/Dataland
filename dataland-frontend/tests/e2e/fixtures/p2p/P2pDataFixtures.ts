@@ -47,7 +47,7 @@ export function generateP2pFixtures(
 function generateP2pData(undefinedProbability = DEFAULT_PROBABILITY, toggleRandomSectors = true): PathwaysToParisData {
   const dataGenerator = new P2pGenerator(undefinedProbability, toggleRandomSectors);
   return {
-    general: dataGenerator.getSectorGeneral(),
+    general: dataGenerator.generateSectorGeneral(),
     ammonia: dataGenerator.getSectorAmmonia(),
     automotive: dataGenerator.getSectorAutomotive(),
     hvcPlastics: dataGenerator.getSectorHVCPlastics(),
@@ -90,7 +90,7 @@ class P2pGenerator extends Generator {
    * Generates random general information for the P2P Framework
    * @returns a random P2pGeneral instance with the given sectors
    */
-  getSectorGeneral(): P2pGeneral {
+  generateSectorGeneral(): P2pGeneral {
     return {
       general: {
         dataDate: generateFutureDate(),

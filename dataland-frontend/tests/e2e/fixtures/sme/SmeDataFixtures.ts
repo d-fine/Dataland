@@ -1,17 +1,19 @@
 import { faker } from "@faker-js/faker";
-import { type SmeData, type SmeProduct, type SmeProductionSite } from "@clients/backend";
+import {
+  EnergySourceForHeatingAndHotWater,
+  NaturalHazard,
+  PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower,
+  PercentRangeForInvestmentsInEnergyEfficiency,
+  type SmeData,
+  type SmeProduct,
+  type SmeProductionSite,
+} from "@clients/backend";
 import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
-import {
-  generateHeatSource,
-  generateSelectionOfNaturalHazards,
-  generatePercentageRangeEnergyConsumption,
-  generatePercentageRangeInvestmentEnergyEfficiency,
-} from "@e2e/fixtures/sme/SmeEnumFixtures";
-import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateArrayOfUniqueElements, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 
 /**
@@ -50,33 +52,30 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
     },
     production: {
       sites: {
-        listOfProductionSites: dataGenerator.generateProductionSite(),
+        listOfProductionSites: dataGenerator.randomProductionSite(),
       },
       products: {
-        listOfProducts: dataGenerator.generateProduct(),
+        listOfProducts: dataGenerator.randomProduct(),
       },
     },
     power: {
       investments: {
-        percentageOfInvestmentsInEnhancingEnergyEfficiency: dataGenerator.valueOrUndefined(
-          generatePercentageRangeInvestmentEnergyEfficiency(),
-        ),
+        percentageOfInvestmentsInEnhancingEnergyEfficiency:
+          dataGenerator.randomPercentageRangeInvestmentEnergyEfficiency(),
       },
       consumption: {
-        powerConsumptionInMwh: dataGenerator.valueOrUndefined(generateInt(2000)),
+        powerConsumptionInMwh: dataGenerator.randomInt(2000),
         powerFromRenewableSources: dataGenerator.randomYesNo(),
         energyConsumptionHeatingAndHotWater: dataGenerator.randomInt(1000),
-        primaryEnergySourceForHeatingAndHotWater: dataGenerator.valueOrUndefined(generateHeatSource()),
-        energyConsumptionCoveredByOwnRenewablePowerGeneration: dataGenerator.valueOrUndefined(
-          generatePercentageRangeEnergyConsumption(),
-        ),
+        primaryEnergySourceForHeatingAndHotWater: dataGenerator.randomHeatSource(),
+        energyConsumptionCoveredByOwnRenewablePowerGeneration: dataGenerator.randomPercentageRangeEnergyConsumption(),
       },
     },
     insurances: {
       naturalHazards: {
         insuranceAgainstNaturalHazards: dataGenerator.randomYesNo(),
         amountCoveredByInsuranceAgainstNaturalHazards: dataGenerator.randomInt(50000000),
-        naturalHazardsCovered: dataGenerator.valueOrUndefined(generateSelectionOfNaturalHazards()),
+        naturalHazardsCovered: dataGenerator.randomSelectionOfNaturalHazards(),
       },
     },
   };
@@ -87,7 +86,7 @@ class SmeGenerator extends Generator {
    * Generates a random product
    * @returns a random product
    */
-  generateProduct(): SmeProduct[] | undefined {
+  randomProduct(): SmeProduct[] | undefined {
     return this.randomArray(() => {
       return {
         name: faker.commerce.productName(),
@@ -100,7 +99,7 @@ class SmeGenerator extends Generator {
    * Generates a random production site
    * @returns a random production site
    */
-  generateProductionSite(): SmeProductionSite[] | undefined {
+  randomProductionSite(): SmeProductionSite[] | undefined {
     return this.randomArray(() => {
       return {
         nameOfProductionSite: this.valueOrUndefined(faker.company.name()),
@@ -108,5 +107,41 @@ class SmeGenerator extends Generator {
         percentageOfTotalRevenue: this.randomPercentageValue(),
       } as SmeProductionSite;
     });
+  }
+
+  /**
+   * Picks a random percentage range option
+   * @returns a random percentage range option
+   */
+  randomPercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower | undefined {
+    return this.valueOrUndefined(
+      faker.helpers.arrayElement([...Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)]),
+    );
+  }
+
+  /**
+   * Picks a random percentage range option
+   * @returns a random percentage range option
+   */
+  randomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency | undefined {
+    return this.valueOrUndefined(
+      faker.helpers.arrayElement([...Object.values(PercentRangeForInvestmentsInEnergyEfficiency)]),
+    );
+  }
+
+  /**
+   * Picks a random heat source
+   * @returns a random heat source
+   */
+  randomHeatSource(): EnergySourceForHeatingAndHotWater | undefined {
+    return this.valueOrUndefined(faker.helpers.arrayElement([...Object.values(EnergySourceForHeatingAndHotWater)]));
+  }
+
+  /**
+   * Picks a random natural hazard
+   * @returns a random natural hazard
+   */
+  randomSelectionOfNaturalHazards(): NaturalHazard[] | undefined {
+    return this.valueOrUndefined(generateArrayOfUniqueElements(Object.values(NaturalHazard)));
   }
 }

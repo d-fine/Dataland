@@ -10,7 +10,7 @@ import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixt
  */
 export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForYear(generateSmeFixtures(1)[0], "2023"));
+  preparedFixtures.push(manipulateFixtureForYearWithMultipleSectors(generateSmeFixtures(1)[0], "2023"));
   preparedFixtures.push(manipulateFixtureForMaximumAddress(generateSmeFixtures(1)[0]));
   preparedFixtures.push(manipulateFixtureForMinimumAddress(generateSmeFixtures(1)[0]));
   return preparedFixtures;
@@ -22,10 +22,9 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
  * @param year the year as a number
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForYear(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
+function manipulateFixtureForYearWithMultipleSectors(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
   input.companyInformation.companyName = "SME-year-" + year;
   input.reportingPeriod = year;
-  //There is a test that requires to sectors to be present at the same time, so that the modal appears
   input.t.general.basicInformation.sector = generateListOfRandomNaceCodes(2);
   input.t.power ??= {};
   input.t.power.investments ??= {};
