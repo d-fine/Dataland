@@ -74,6 +74,7 @@ import { type DocumentToUpload, type StoredReport } from "@/utils/FileUploadUtil
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type CompanyReport } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { REGEX_FOR_FILE_NAMES } from "@/utils/Constants";
 
 enum FileNameInvalidityReason {
   Duplicate = "Duplicate",
@@ -275,7 +276,7 @@ export default defineComponent({
      * @returns a boolean stating the result of that check
      */
     hasFileNameForbiddenCharacter(fileName: string) {
-      return fileName.includes("h"); // TODO Dummy
+      return !REGEX_FOR_FILE_NAMES.test(fileName);
     },
 
     /**
