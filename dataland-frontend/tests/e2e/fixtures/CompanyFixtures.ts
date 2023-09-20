@@ -21,7 +21,7 @@ const legalForms = [
 function getRandomIdentifiers(): { [p: string]: string[] } {
   const identifiers: { [p: string]: string[] } = {};
   identifiers["Lei"] = pickOneOrNoElement([faker.string.alphanumeric(20)]);
-  identifiers["Isin"] = pickSubsetOfElements([faker.string.alphanumeric(12), faker.string.alphanumeric(12)], 0, 2);
+  identifiers["Isin"] = pickSubsetOfElements([faker.string.alphanumeric(12), faker.string.alphanumeric(12)], 1, 2);
   identifiers["PermId"] = pickOneOrNoElement([faker.string.alphanumeric(10)]);
   identifiers["Ticker"] = pickOneOrNoElement([faker.string.alphanumeric(7)]);
   identifiers["Duns"] = pickOneOrNoElement([faker.string.alphanumeric(9)]);
