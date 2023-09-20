@@ -1,7 +1,7 @@
 package org.dataland.documentmanager.services
 
 import org.apache.commons.lang3.StringUtils.lowerCase
-import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.Loader
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -37,7 +37,7 @@ class PdfVerificationService {
     }
 
     private fun checkIfPdfDocumentIsEmpty(blob: ByteArray, correlationId: String) {
-        PDDocument.load(blob).use {
+        Loader.loadPDF(blob).use {
             if (it.numberOfPages <= 0) {
                 logger.info(
                     "PDF document uploaded with correlation ID: $correlationId seems to have 0 pages, aborting.",

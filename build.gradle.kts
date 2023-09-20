@@ -38,28 +38,28 @@ tasks.dependencyUpdates.configure {
 }
 
 dependencies {
-    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.23.1")
-    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.21")
+    detekt(libs.detekt.cli)
+    detekt(libs.kotlin.compiler.embeddable)
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
-    id("com.github.jk1.dependency-license-report") version "2.5"
-    id("io.gitlab.arturbosch.detekt") version "1.23.0"
-    id("com.github.node-gradle.node") version "5.0.0" apply false
-    id("org.springframework.boot") version "3.1.1" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
-    kotlin("jvm") version "1.9.0"
-    kotlin("plugin.spring") version "1.9.0" apply false
+    id("com.github.jk1.dependency-license-report")
+    id("io.gitlab.arturbosch.detekt")
+    id("com.github.node-gradle.node") apply false
+    id("org.springframework.boot") apply false
+    id("org.jlleitschuh.gradle.ktlint")
+    kotlin("jvm")
+    kotlin("plugin.spring") apply false
     id("org.sonarqube") version "4.3.0.3225"
     jacoco
-    id("org.springdoc.openapi-gradle-plugin") version "1.7.0" apply false
-    id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
-    id("org.openapi.generator") version "6.6.0" apply false
-    id("com.github.ben-manes.versions") version "0.47.0"
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.9.0" apply false
-    kotlin("plugin.serialization") version "1.9.0" apply false
+    id("org.springdoc.openapi-gradle-plugin") apply false
+    id("com.gorylenko.gradle-git-properties") apply false
+    id("org.openapi.generator") apply false
+    id("com.github.ben-manes.versions")
+    id("org.jetbrains.kotlin.plugin.jpa") apply false
+    kotlin("plugin.serialization") apply false
 }
 
 sonar {

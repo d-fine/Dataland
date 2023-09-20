@@ -30,27 +30,27 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-amqp")
+    implementation(Spring.boot.web)
+    implementation(Spring.boot.actuator)
+    implementation(Spring.boot.amqp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.amqp:spring-rabbit-test")
+    testImplementation(Spring.boot.test)
+    testImplementation(Spring.rabbitTest)
 
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation(Spring.boot.security)
     implementation(libs.springdoc.openapi.ui)
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    runtimeOnly("org.postgresql:postgresql")
-    runtimeOnly("com.h2database:h2")
+    implementation(Spring.boot.data.jpa)
+    runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.h2)
     implementation(project(":dataland-keycloak-adapter"))
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation(Spring.boot.validation)
     implementation(libs.json)
 
     // TODO added swaggerui for testing purposes only, first
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    kapt(Spring.boot.configurationProcessor)
+    implementation(Spring.boot.oauth2ResourceServer)
 }
 
 openApi {
