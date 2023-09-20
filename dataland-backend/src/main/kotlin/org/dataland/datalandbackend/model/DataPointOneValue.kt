@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
  * Fields of a generic data point and its source
  */
 data class DataPointOneValue<T>(
-    val value: T? = null,
+    override val value: T? = null,
 
     @field:JsonProperty(required = true)
     override val quality: QualityOptions,
@@ -16,4 +16,4 @@ data class DataPointOneValue<T>(
     override val dataSource: CompanyReportReference? = null,
 
     override val comment: String? = null,
-) : DataPointBaseInformation(quality, dataSource, comment)
+) : BaseDataPointInterface<T>, DataPointBaseInformation(quality, dataSource, comment)

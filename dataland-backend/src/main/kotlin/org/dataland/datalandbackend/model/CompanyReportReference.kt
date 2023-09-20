@@ -6,12 +6,22 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * --- API model ---
  * A reference to a page in a company report
  */
+interface CompanyReportReferenceInterface {
+    val page: Long?
+
+    val tagName: String?
+
+}
+/**
+ * --- API model ---
+ * A reference to a page in a company report
+ */
 data class CompanyReportReference(
+    override val fileName: String,
     @field:JsonProperty(required = true)
-    val report: String,
-//TODO report should be aligned with the corresponding variable of DocumentReference name or reference
-    val page: Long? = null,
+    override val fileReference: String,
+    override val page: Long? = null,
 
-    val tagName: String? = null,
+    override val tagName: String? = null,
 
-)
+):CompanyReportReferenceInterface, DocumentReferenceInterface
