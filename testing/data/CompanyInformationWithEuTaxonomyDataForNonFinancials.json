@@ -47,7 +47,7 @@
 						"reportDate": "2023-02-11",
 						"currency": "VES"
 					},
-					"SustainabilityReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "NA",
 						"currency": "HKD"
@@ -1420,7 +1420,7 @@
 				"transitionalShareInPercent": 0.6037
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
@@ -1473,11 +1473,6 @@
 						"currency": "MGA"
 					},
 					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "Yes",
-						"currency": "GMD"
-					},
-					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "Yes",
 						"currency": "FKP"
@@ -1636,6 +1631,7 @@
 				"Duns": [
 					"3aO6XufG9"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "CV",
@@ -1656,7 +1652,7 @@
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"currency": "AED"
 					},
-					"ESEFReport": {
+					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2022-11-05",
 						"currency": "SZL"
@@ -2269,7 +2265,7 @@
 				"fiscalYearEnd": "2022-12-24",
 				"numberOfEmployees": 31821,
 				"referencedReports": {
-					"AnnualReport": {
+					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2023-03-05",
 						"currency": "CLP"
@@ -2472,9 +2468,7 @@
 				"VatNumber": [
 					"tDkB1jwUj"
 				],
-				"CompanyRegistrationNumber": [
-					"ZtXWsGK1x6giuLT"
-				]
+				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "MY",
 			"companyAlternativeNames": [
@@ -2488,7 +2482,7 @@
 			"general": {
 				"numberOfEmployees": 23056,
 				"referencedReports": {
-					"AnnualReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2022-11-26",
 						"currency": "AMD"
@@ -2832,7 +2826,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0.8709,
 				"alignedActivities": [
 					{
-						"activityName": "ManufactureOfCement",
+						"activityName": "InfrastructureForRailTransport",
 						"naceCodes": [
 							"F43.21",
 							"H52.21",
@@ -3496,12 +3490,6 @@
 				"fiscalYearEnd": "2022-10-31",
 				"numberOfEmployees": 45239,
 				"referencedReports": {
-					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "NA",
-						"reportDate": "2022-10-25",
-						"currency": "ZAR"
-					},
 					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
@@ -3761,7 +3749,6 @@
 				"PermId": [
 					"GDf30WUPaJ"
 				],
-				"PermId": [],
 				"Ticker": [],
 				"Duns": [
 					"yJICq6YHM"
@@ -3786,7 +3773,7 @@
 				"fiscalYearEnd": "2023-01-31",
 				"numberOfEmployees": 51290,
 				"referencedReports": {
-					"AnnualReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "NA",
 						"currency": "HTG"
@@ -4149,7 +4136,7 @@
 					}
 				]
 			},
-			"revenue": {
+			"capex": {
 				"totalAmount": {
 					"value": 9679494717,
 					"dataSource": {
@@ -4844,7 +4831,7 @@
 				"enablingShareInPercent": 0.7663
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
@@ -5339,7 +5326,7 @@
 				"enablingShareInPercent": 0.3175
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
@@ -5805,7 +5792,6 @@
 				"VatNumber": [
 					"mZsSSoLrm"
 				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": [
 					"GaYz1ZThqpHfLMy"
 				]
@@ -5819,11 +5805,11 @@
 			"general": {
 				"fiscalYearDeviation": "NoDeviation",
 				"referencedReports": {
-					"AnnualReport": {
+					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"currency": "RWF"
 					},
-					"SustainabilityReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
 						"currency": "DZD"
@@ -6146,7 +6132,7 @@
 					}
 				]
 			},
-			"capex": {
+			"revenue": {
 				"totalAmount": {
 					"value": 2335340719,
 					"dataSource": {
@@ -6446,7 +6432,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercent": 0.6937,
 				"enablingShareInPercent": 0.0319
 			},
-			"opex": {
+			"capex": {
 				"totalAmount": {
 					"value": 1682315628,
 					"dataSource": {
@@ -6590,7 +6576,7 @@
 				"enablingShareInPercent": 0.1647
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
@@ -6657,12 +6643,7 @@
 				"nonAlignedShare": {
 					"absoluteShare": {}
 				},
-				"alignedShare": {},
-				"substantialContributionToClimateChangeMitigationInPercent": 0.4667,
-				"substantialContributionToClimateChangeAdaptionInPercent": 0.5294,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 0.1948,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 0.7198,
-				"alignedActivities": [
+				"nonAlignedActivities": [
 					{
 						"activityName": "DataDrivenSolutionsForGhgEmissionsReductions"
 					},
@@ -6857,6 +6838,7 @@
 				"Duns": [
 					"WGTSf40FK"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
 					"JNPimDJd23BAZ1t"
 				]
@@ -7019,7 +7001,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercent": 0.5877
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
@@ -7030,9 +7012,7 @@
 				"Lei": [],
 				"Isin": [],
 				"PermId": [],
-				"Ticker": [
-					"TyibfIt"
-				],
+				"Ticker": [],
 				"Duns": [
 					"JiPO0fJEs"
 				],
@@ -7320,7 +7300,7 @@
 			"general": {
 				"numberOfEmployees": 7335,
 				"referencedReports": {
-					"SustainabilityReport": {
+					"AnnualReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "NA",
 						"currency": "JPY"
@@ -7569,7 +7549,7 @@
 				"transitionalShareInPercent": 0.2548
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
@@ -7659,8 +7639,7 @@
 						"currency": "CAD"
 					}
 				},
-				"substantialContributionToPollutionPreventionAndControlInPercent": 0.7053,
-				"alignedActivities": [
+				"nonAlignedActivities": [
 					{
 						"activityName": "ProgrammingAndBroadcastingActivities",
 						"share": {
@@ -7896,15 +7875,6 @@
 						"dnshToTransitionToACircularEconomy": "No",
 						"dnshToPollutionPreventionAndControl": "No",
 						"minimumSafeguards": "Yes"
-					}
-				],
-				"transitionalShareInPercent": 0.8987
-			},
-			"capex": {
-				"nonEligibleShare": {},
-				"nonAlignedActivities": [
-					{
-						"activityName": "ManufactureOfSodaAsh"
 					},
 					{
 						"activityName": "CompostingOfBioWaste",
@@ -8172,7 +8142,7 @@
 						"reportDate": "2022-11-10",
 						"currency": "RON"
 					},
-					"IntegratedReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
 						"currency": "MGA"
@@ -8333,9 +8303,7 @@
 						"currency": "USD"
 					}
 				},
-				"substantialContributionToTransitionToACircularEconomyInPercent": 0.055,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 0.1139,
-				"alignedActivities": [
+				"nonAlignedActivities": [
 					{
 						"activityName": "ManufactureOfCarbonBlack",
 						"naceCodes": [
@@ -8737,7 +8705,7 @@
 				"transitionalShareInPercent": 0.1231
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
@@ -8781,7 +8749,7 @@
 				"fiscalYearDeviation": "NoDeviation",
 				"fiscalYearEnd": "2023-04-13",
 				"referencedReports": {
-					"ESEFReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "Yes",
 						"reportDate": "2022-10-29",
@@ -9102,7 +9070,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 0.0426
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
@@ -9140,11 +9108,7 @@
 				"fiscalYearDeviation": "Deviation",
 				"numberOfEmployees": 89885,
 				"referencedReports": {
-					"ESEFReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "GNF"
-					},
-					"IntegratedReport": {
+					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"currency": "KES"
 					},
@@ -9257,7 +9221,7 @@
 				"transitionalShareInPercent": 0.1847
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
@@ -9494,12 +9458,8 @@
 				"Ticker": [
 					"7B5Fzdd"
 				],
-				"Duns": [
-					"pchmuy4gF"
-				],
-				"VatNumber": [
-					"pbhBO71KR"
-				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
 					"VLO8UNrIkJcYdgm"
 				]
@@ -9752,7 +9712,7 @@
 				"enablingShareInPercent": 0.3861
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
@@ -9940,7 +9900,7 @@
 				"transitionalShareInPercent": 0.761
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
@@ -9959,12 +9919,8 @@
 				"Duns": [
 					"Ue9bCdWPn"
 				],
-				"VatNumber": [
-					"Wt4GcRY59"
-				],
-				"CompanyRegistrationNumber": [
-					"4rH3dkneFJ4MT8Q"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "BI",
 			"companyAlternativeNames": [
@@ -10456,12 +10412,12 @@
 				"fiscalYearDeviation": "Deviation",
 				"numberOfEmployees": 11436,
 				"referencedReports": {
-					"AnnualReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "NA",
 						"currency": "SAR"
 					},
-					"SustainabilityReport": {
+					"AnnualReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
 						"currency": "ALL"
@@ -10699,7 +10655,7 @@
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"currency": "EUR"
 					},
-					"SustainabilityReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2022-12-11",
 						"currency": "SGD"
@@ -10958,7 +10914,6 @@
 				"nonAlignedShare": {
 					"relativeShareInPercent": 0.2945
 				},
-				"nonAlignedShare": {},
 				"nonAlignedActivities": [
 					{
 						"activityName": "ManufactureOfNitricAcid"
@@ -11126,7 +11081,7 @@
 					"dataSource": {
 						"page": 815,
 						"report": "SustainabilityReport",
-						"tagName": "blockchains"
+						"tagName": "functionalities"
 					},
 					"quality": "Audited",
 					"comment": "generate online matrix",
@@ -11325,7 +11280,6 @@
 						"report": ""
 					}
 				},
-				"nfrdMandatory": "No",
 				"euTaxonomyActivityLevelReporting": "Yes"
 			},
 			"opex": {
@@ -11893,9 +11847,7 @@
 			"companyName": "Koss, McKenzie and Watsica",
 			"headquarters": "Kuphalcester",
 			"identifiers": {
-				"Lei": [
-					"B09btBpttSuesZU4nRAg"
-				],
+				"Lei": [],
 				"Isin": [],
 				"PermId": [
 					"4Xtf6zyxv0"
@@ -12388,7 +12340,7 @@
 				]
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
@@ -12841,12 +12793,12 @@
 						"isGroupLevel": "No",
 						"currency": "BSD"
 					},
-					"IntegratedReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
 						"currency": "MZN"
 					},
-					"ESEFReport": {
+					"AnnualReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
 						"currency": "SBD"
@@ -12972,7 +12924,7 @@
 				},
 				"nonAlignedActivities": [
 					{
-						"activityName": "OperationOfPersonalMobilityDevicesCycleLogistics",
+						"activityName": "ConservationForestry",
 						"naceCodes": [
 							"A2"
 						],
@@ -13047,7 +12999,7 @@
 				"fiscalYearDeviation": "NoDeviation",
 				"numberOfEmployees": 75159,
 				"referencedReports": {
-					"ESEFReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
 						"reportDate": "2023-04-26",
@@ -13608,8 +13560,7 @@
 						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
 						"minimumSafeguards": "No"
 					}
-				],
-				"enablingShareInPercent": 0.7374
+				]
 			}
 		},
 		"reportingPeriod": "2020"
@@ -13623,18 +13574,14 @@
 				"Lei": [],
 				"Isin": [],
 				"PermId": [],
-				"Ticker": [
-					"AN2kPFM"
-				],
+				"Ticker": [],
 				"Duns": [
 					"AxQ0jy55n"
 				],
 				"VatNumber": [
 					"5xX8A4CCI"
 				],
-				"CompanyRegistrationNumber": [
-					"yD7r4q7BBclKMnY"
-				]
+				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "SB",
 			"companyAlternativeNames": [],
@@ -13660,7 +13607,6 @@
 				},
 				"assurance": {
 					"assurance": "LimitedAssurance",
-					"provider": "Rempel Inc",
 					"dataSource": {
 						"page": 1133,
 						"report": "ESEFReport",
@@ -13770,7 +13716,7 @@
 						"dnshToPollutionPreventionAndControl": "No"
 					},
 					{
-						"activityName": "ElectricityGenerationFromNuclearEnergyInExistingInstallations",
+						"activityName": "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
 						"naceCodes": [
 							"C33.12",
 							"C16",
@@ -14013,7 +13959,7 @@
 						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes"
 					},
 					{
-						"activityName": "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
+						"activityName": "ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
 						"naceCodes": [
 							"M71"
 						],
@@ -14271,9 +14217,7 @@
 						"dnshToPollutionPreventionAndControl": "Yes",
 						"minimumSafeguards": "Yes"
 					}
-				],
-				"enablingShareInPercent": 0.7411,
-				"transitionalShareInPercent": 0.8281
+				]
 			},
 			"revenue": {
 				"totalAmount": {
@@ -14353,7 +14297,7 @@
 				"transitionalShareInPercent": 0.999
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
@@ -14491,9 +14435,7 @@
 					"2ZfGjOr1mcCD",
 					"EE1LnKWfCGDK"
 				],
-				"PermId": [
-					"Ky8JoiV0xw"
-				],
+				"PermId": [],
 				"Ticker": [
 					"sEwq1SK"
 				],
@@ -14517,7 +14459,7 @@
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"currency": "GTQ"
 					},
-					"ESEFReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "Yes",
 						"reportDate": "2023-07-23",
@@ -14940,7 +14882,7 @@
 						"reportDate": "2023-03-26",
 						"currency": "RWF"
 					},
-					"AnnualReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "Yes",
 						"reportDate": "2023-06-04",
@@ -15272,9 +15214,7 @@
 			"headquartersPostalCode": "68766-1274",
 			"sector": "ROI",
 			"identifiers": {
-				"Lei": [
-					"D3G0vtlJfJV6YL0YdqYj"
-				],
+				"Lei": [],
 				"Isin": [
 					"mnQ61RGmfrJk"
 				],
@@ -15301,7 +15241,7 @@
 				"fiscalYearEnd": "2023-01-04",
 				"numberOfEmployees": 3986,
 				"referencedReports": {
-					"AnnualReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2023-06-23",
 						"currency": "BRL"
@@ -15405,7 +15345,7 @@
 				"transitionalShareInPercent": 0.914
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
@@ -15443,17 +15383,17 @@
 			"general": {
 				"fiscalYearDeviation": "NoDeviation",
 				"referencedReports": {
-					"ESEFReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "Yes",
 						"currency": "SYP"
 					},
-					"IntegratedReport": {
+					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2023-02-26",
 						"currency": "MXN"
 					},
-					"AnnualReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2023-05-28",
 						"currency": "BWP"
@@ -15467,8 +15407,7 @@
 						"report": "ESEFReport",
 						"tagName": "channels"
 					}
-				},
-				"nfrdMandatory": "No"
+				}
 			},
 			"opex": {
 				"totalAmount": {
@@ -15495,18 +15434,6 @@
 				"enablingShareInPercent": 0.9525
 			},
 			"capex": {
-				"totalAmount": {
-					"value": 4940010956,
-					"dataSource": {
-						"page": 926,
-						"report": "AnnualReport",
-						"tagName": "metrics"
-					},
-					"quality": "Estimated",
-					"comment": "connect haptic transmitter",
-					"unit": "KGS"
-				},
-				"eligibleShare": {},
 				"nonAlignedShare": {
 					"relativeShareInPercent": 0.8082
 				},
@@ -15612,12 +15539,8 @@
 					"yAtjL1Gg7IugRX3mA6TZ"
 				],
 				"Isin": [],
-				"PermId": [
-					"r16P0OaLWd"
-				],
-				"Ticker": [
-					"I8ylZhK"
-				],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [
 					"HNw3ewuFx"
 				],
@@ -15647,7 +15570,7 @@
 						"isGroupLevel": "NA",
 						"currency": "VND"
 					},
-					"IntegratedReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"currency": "SYP"
 					},
@@ -16066,7 +15989,7 @@
 				"transitionalShareInPercent": 0.3883
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
@@ -16598,7 +16521,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercent": 0.6664,
 				"enablingShareInPercent": 0.3767
 			},
-			"revenue": {
+			"capex": {
 				"totalAmount": {
 					"value": 3695050440,
 					"dataSource": {
@@ -17032,7 +16955,7 @@
 			"general": {
 				"numberOfEmployees": 21357,
 				"referencedReports": {
-					"AnnualReport": {
+					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
 						"reportDate": "2022-11-18",
@@ -17164,19 +17087,7 @@
 			"general": {
 				"numberOfEmployees": 55538,
 				"referencedReports": {
-					"IntegratedReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "Yes",
-						"reportDate": "2022-12-04",
-						"currency": "JOD"
-					},
-					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"isGroupLevel": "Yes",
-						"reportDate": "2023-01-02",
-						"currency": "MKD"
-					},
-					"SustainabilityReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "Yes",
 						"currency": "TZS"
@@ -17677,9 +17588,7 @@
 						"tagName": "models"
 					}
 				},
-				"scopeOfEntities": "NA",
-				"nfrdMandatory": "Yes",
-				"euTaxonomyActivityLevelReporting": "Yes"
+				"nfrdMandatory": "Yes"
 			},
 			"opex": {
 				"nonEligibleShare": {
@@ -17996,9 +17905,7 @@
 					"zXxsFkrdRbLE"
 				],
 				"PermId": [],
-				"Ticker": [
-					"1uo4BMd"
-				],
+				"Ticker": [],
 				"Duns": [
 					"qI4HCtQ18"
 				],
@@ -18546,7 +18453,7 @@
 				"enablingShareInPercent": 0.8581
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
@@ -18918,9 +18825,7 @@
 				"Isin": [
 					"wahHcwY8Jek0"
 				],
-				"PermId": [
-					"oj2RiCzvjQ"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
 					"7JLAyJad2"
@@ -19614,7 +19519,6 @@
 					{
 						"activityName": "ManufactureOfCarbonBlack",
 						"share": {
-							"relativeShareInPercent": 0.0894,
 							"absoluteShare": {
 								"currency": "CAD"
 							}
@@ -20526,7 +20430,7 @@
 				"enablingShareInPercent": 0.7334,
 				"transitionalShareInPercent": 0.981
 			},
-			"capex": {
+			"revenue": {
 				"totalAmount": {
 					"value": 4932827247,
 					"dataSource": {
@@ -20840,7 +20744,7 @@
 						"reportDate": "2023-04-13",
 						"currency": "XOF"
 					},
-					"ESEFReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
 						"reportDate": "2023-04-02",
@@ -20868,11 +20772,7 @@
 				"nonAlignedShare": {
 					"relativeShareInPercent": 0.588
 				},
-				"substantialContributionToClimateChangeMitigationInPercent": 0.3286,
-				"substantialContributionToClimateChangeAdaptionInPercent": 0.752,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0.6316,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 0.0728,
-				"alignedActivities": [
+				"nonAlignedActivities": [
 					{
 						"activityName": "ElectricityGenerationFromWindPower",
 						"naceCodes": [
@@ -21504,10 +21404,6 @@
 		"t": {
 			"general": {
 				"referencedReports": {
-					"AnnualReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"currency": "BBD"
-					},
 					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2022-11-24",
@@ -21685,7 +21581,7 @@
 				"transitionalShareInPercent": 0.1833
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
@@ -21714,7 +21610,6 @@
 		},
 		"t": {
 			"general": {
-				"fiscalYearEnd": "2023-08-25",
 				"referencedReports": {
 					"AnnualReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
@@ -21841,7 +21736,6 @@
 					"absoluteShare": {}
 				},
 				"alignedShare": {
-					"relativeShareInPercent": 0.9108,
 					"absoluteShare": {
 						"currency": "CAD"
 					}
@@ -22114,7 +22008,7 @@
 				"fiscalYearEnd": "2023-08-21",
 				"numberOfEmployees": 20958,
 				"referencedReports": {
-					"IntegratedReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "No",
 						"currency": "GHS"
@@ -22345,38 +22239,6 @@
 				"scopeOfEntities": "No"
 			},
 			"opex": {
-				"nonAlignedShare": {
-					"relativeShareInPercent": 0.8924
-				},
-				"substantialContributionToClimateChangeMitigationInPercent": 0.7388,
-				"substantialContributionToClimateChangeAdaptionInPercent": 0.7204,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 0.249,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 0.1893,
-				"alignedActivities": [
-					{
-						"activityName": "ManufactureOfAluminium",
-						"naceCodes": [
-							"B",
-							"G"
-						],
-						"share": {
-							"relativeShareInPercent": 0.5623,
-							"absoluteShare": {
-								"amount": 8375227588,
-								"currency": "CHF"
-							}
-						},
-						"substantialContributionToClimateChangeMitigationInPercent": 0.7722,
-						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0.0641,
-						"substantialContributionToPollutionPreventionAndControlInPercent": 0.0742,
-						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 0.4033,
-						"dnshToClimateChangeMitigation": "Yes",
-						"minimumSafeguards": "No"
-					}
-				],
-				"enablingShareInPercent": 0.8328
-			},
-			"capex": {
 				"totalAmount": {
 					"value": 9316257622,
 					"dataSource": {
@@ -22479,9 +22341,7 @@
 					"DdvcUStzpG"
 				],
 				"Ticker": [],
-				"Duns": [
-					"ct43VamSs"
-				],
+				"Duns": [],
 				"VatNumber": [
 					"If9fMejyn"
 				],
@@ -22495,18 +22355,12 @@
 				"Sipes, Oberbrunner and Stoltenberg",
 				"Stark, Reilly and Roberts"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"numberOfEmployees": 62403,
 				"referencedReports": {
-					"ESEFReport": {
-						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"reportDate": "2022-12-21",
-						"currency": "AOA"
-					},
 					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2022-10-09",
@@ -22523,7 +22377,7 @@
 						"reportDate": "2023-01-28",
 						"currency": "SYP"
 					},
-					"IntegratedReport": {
+					"ESEFReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2023-01-01",
 						"currency": "BBD"
@@ -23104,8 +22958,7 @@
 					"comment": "quantify neural microchip",
 					"unit": "JPY"
 				},
-				"nonEligibleShare": {
-					"relativeShareInPercent": 0.2472,
+				"nonAlignedShare": {
 					"absoluteShare": {
 						"amount": 8552420033
 					}
@@ -24603,23 +24456,6 @@
 							"F42.99"
 						],
 						"share": {
-							"relativeShareInPercent": 0.5685
-						}
-					},
-					{
-						"activityName": "Education"
-					}
-				],
-				"substantialContributionToClimateChangeMitigationInPercent": 0.6512,
-				"substantialContributionToClimateChangeAdaptionInPercent": 0.3984,
-				"alignedActivities": [
-					{
-						"activityName": "ManufactureOfBatteries",
-						"naceCodes": [
-							"F"
-						],
-						"share": {
-							"relativeShareInPercent": 0.8972,
 							"absoluteShare": {
 								"amount": 9820060286
 							}
@@ -25188,9 +25024,7 @@
 					"Ab7QyNJMM"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"RZ8NsMD9RsxW0iS"
-				]
+				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "MO",
 			"companyAlternativeNames": [
@@ -25279,8 +25113,6 @@
 				"nonEligibleShare": {
 					"relativeShareInPercent": 0.2021
 				},
-				"nonEligibleShare": {},
-				"eligibleShare": {},
 				"nonAlignedShare": {
 					"relativeShareInPercent": 0.2647,
 					"absoluteShare": {
@@ -25601,7 +25433,7 @@
 					"comment": "parse back-end capacitor",
 					"unit": "DJF"
 				},
-				"alignedActivities": [
+				"nonAlignedActivities": [
 					{
 						"activityName": "ManufactureOfPlasticsInPrimaryForm",
 						"naceCodes": [
@@ -26137,7 +25969,7 @@
 				},
 				"nonEligibleShare": {
 					"absoluteShare": {
-						"amount": 569892131
+						"currency": "CAD"
 					}
 				},
 				"nonAlignedActivities": [
@@ -26150,7 +25982,6 @@
 							"C22"
 						],
 						"share": {
-							"relativeShareInPercent": 0.8384,
 							"absoluteShare": {
 								"currency": "EUR"
 							}
@@ -26647,9 +26478,7 @@
 				"nonAlignedShare": {
 					"relativeShareInPercent": 0.6264
 				},
-				"substantialContributionToClimateChangeMitigationInPercent": 0.6421,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 0.6817,
-				"alignedActivities": [
+				"nonAlignedActivities": [
 					{
 						"activityName": "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
 						"naceCodes": [
@@ -27089,7 +26918,7 @@
 					}
 				},
 				"assurance": {
-					"assurance": "None",
+					"assurance": "LimitedAssurance",
 					"dataSource": {
 						"page": 1134,
 						"report": "ESEFReport",
@@ -27203,9 +27032,7 @@
 					"fGLTTlj7TO"
 				],
 				"Ticker": [],
-				"Duns": [
-					"1wgBbT4kp"
-				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
@@ -27574,7 +27401,7 @@
 				],
 				"enablingShareInPercent": 0.685
 			},
-			"opex": {
+			"capex": {
 				"totalAmount": {
 					"value": 5880765970,
 					"dataSource": {
@@ -28100,7 +27927,7 @@
 				"enablingShareInPercent": 0.8904
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
@@ -28165,14 +27992,6 @@
 				"euTaxonomyActivityLevelReporting": "No"
 			},
 			"opex": {
-				"nonAlignedShare": {},
-				"substantialContributionToClimateChangeMitigationInPercent": 0.1065,
-				"substantialContributionToClimateChangeAdaptionInPercent": 0.4646,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 0.3816,
-				"enablingShareInPercent": 0.8718,
-				"transitionalShareInPercent": 0.6306
-			},
-			"capex": {
 				"totalAmount": {
 					"value": 1580248856,
 					"dataSource": {
@@ -28738,7 +28557,7 @@
 				"transitionalShareInPercent": 0.056
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
@@ -29191,7 +29010,7 @@
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"currency": "MUR"
 					},
-					"AnnualReport": {
+					"IntegratedReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2023-03-06",
 						"currency": "MKD"
@@ -29589,15 +29408,6 @@
 						"currency": "AUD"
 					}
 				},
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0.7562,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 0.4631,
-				"enablingShareInPercent": 0.2626
-			},
-			"capex": {
-				"nonEligibleShare": {
-					"relativeShareInPercent": 0.8556,
-					"absoluteShare": {}
-				},
 				"nonAlignedActivities": [
 					{
 						"activityName": "StorageOfElectricity"
@@ -29765,7 +29575,7 @@
 						"reportDate": "2023-01-19",
 						"currency": "PAB"
 					},
-					"IntegratedReport": {
+					"SustainabilityReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"isGroupLevel": "NA",
 						"currency": "HNL"
@@ -30269,7 +30079,7 @@
 				"fiscalYearEnd": "2023-06-24",
 				"numberOfEmployees": 99259,
 				"referencedReports": {
-					"SustainabilityReport": {
+					"AnnualReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2023-03-20",
 						"currency": "RSD"
@@ -30491,7 +30301,7 @@
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"currency": "GBP"
 					},
-					"SustainabilityReport": {
+					"AnnualReport": {
 						"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"reportDate": "2023-06-06",
 						"currency": "NIO"
@@ -30685,7 +30495,7 @@
 				]
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
@@ -30955,7 +30765,7 @@
 					}
 				},
 				"assurance": {
-					"assurance": "LimitedAssurance",
+					"assurance": "ReasonableAssurance",
 					"dataSource": {
 						"report": ""
 					}
