@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody class="p-datatable-tbody">
-          <MultiLayerDataTableBody :datasets="datasets" :config="config" :is-top-level="true" />
+          <MultiLayerDataTableBody :datasets="datasets" :config="config" :isTopLevel="true" :isVisible="true" />
         </tbody>
       </table>
     </div>

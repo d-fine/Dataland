@@ -16,8 +16,15 @@ import { getFieldValueFromDataModel } from "@/components/resources/dataTable/con
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function yesNoValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableDisplayValues {
   return (dataset) => {
-    if (field?.certificateRequiredIfYes == true) {
-      const elementValue = getFieldValueFromDataModel(path, dataset) as BaseDataPointYesNo;
+    if (field.certificateRequiredIfYes == true) {
+      const elementValue = getFieldValueFromDataModel(path, dataset) as BaseDataPointYesNo | undefined;
+      if (!elementValue) {
+        return {
+          displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+          displayValue: "",
+        };
+      }
+
       if (elementValue.dataSource) {
         const dataSource = elementValue.dataSource;
         return {
@@ -27,12 +34,17 @@ export function yesNoValueGetterFactory(path: string, field: Field): (dataset: a
             reference: dataSource,
           },
         };
+      } else {
+        return {
+          displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+          displayValue: elementValue.value,
+        };
       }
     }
 
     return {
       displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-      displayValue: getFieldValueFromDataModel(path, dataset) as string,
+      displayValue: getFieldValueFromDataModel(path, dataset) as string | undefined,
     };
   };
 }

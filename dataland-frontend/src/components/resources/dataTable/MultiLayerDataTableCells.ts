@@ -8,7 +8,7 @@ export enum MLDTDisplayComponents {
 }
 
 export type MLDTDisplayComponentTypes = {
-  [MLDTDisplayComponents.StringDisplayComponent]: string;
+  [MLDTDisplayComponents.StringDisplayComponent]: string | undefined | null;
   [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: DocumentReference };
   [MLDTDisplayComponents.ModalLinkDisplayComponent]: {
     label: string;

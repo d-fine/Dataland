@@ -7,7 +7,7 @@ import { defineComponent } from "vue";
 import {
   type MLDTDisplayComponents,
   type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+} from "@/components/resources/dataTable/MultiLayerDataTableCells";
 
 export default defineComponent({
   name: "StringDisplayComponent",

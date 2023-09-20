@@ -1,7 +1,7 @@
 <template>
   <template v-for="(element, idx) in config" :key="idx">
     <template v-if="isElementVisible(element, datasets)">
-      <tr v-if="element.type == 'cell'">
+      <tr v-if="element.type == 'cell'" v-show="isVisible">
         <td class="headers-bg">
           <span class="table-left-label">{{ element.label }}</span>
           <em
@@ -23,6 +23,7 @@
         <tr
           :class="isTopLevel ? ['p-rowgroup-header', 'p-topmost-header', 'border-bottom-table'] : ['p-rowgroup-header']"
           @click="toggleSection(idx)"
+          v-show="isVisible"
         >
           <td :colspan="datasets.length + 1">
             <ChevronDownIcon v-if="expandedSections.has(idx)" class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
@@ -37,8 +38,8 @@
         <MultiLayerDataTableBody
           :config="element.children"
           :datasets="datasets"
-          :is-top-level="false"
-          v-if="expandedSections.has(idx)"
+          :isTopLevel="false"
+          :isVisible="isVisible && expandedSections.has(idx)"
         />
       </template>
     </template>
@@ -77,6 +78,7 @@ const props = defineProps<{
   config: MLDTConfig<T>;
   datasets: Array<MLDTDataset<T>>;
   isTopLevel: boolean;
+  isVisible: boolean;
 }>();
 
 onMounted(() => {

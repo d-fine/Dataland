@@ -20,7 +20,7 @@ function convertCategory(category: Category): MLDTSectionConfig<any> {
   return {
     type: "section",
     label: category.label,
-    expandOnPageLoad: false,
+    expandOnPageLoad: category.name === "general",
     children: mldtCategoryChildren,
     shouldDisplay: category.showIf,
     labelBadgeColor: category.color as BadgeColors,
@@ -48,7 +48,7 @@ function convertSubCategory(category: Category, subcategory: Subcategory): MLDTS
   return {
     type: "section",
     label: subcategory.label,
-    expandOnPageLoad: false,
+    expandOnPageLoad: subcategory.name === "general",
     children: mldtSubcategoryChildren,
     shouldDisplay: () => true,
   };

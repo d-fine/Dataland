@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import DocumentLinkDisplayComponent from "@/components/resources/dataTable/cells/DocumentLinkDisplayComponent.vue";
 import ModalLinkDisplayComponent from "@/components/resources/dataTable/cells/ModalLinkDisplayComponent.vue";
 import StringDisplayComponent from "@/components/resources/dataTable/cells/StringDisplayComponent.vue";
