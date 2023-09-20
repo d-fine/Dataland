@@ -42,7 +42,7 @@
               dropdownIcon="pi pi-angle-down"
               @change="handleChangeFrameworkEvent"
             />
-            <slot name="reportingPeriodDropdown"></slot>
+            <slot name="reportingPeriodDropdown" />
           </div>
           <div class="flex align-content-end align-items-center">
             <QualityAssuranceButtons
@@ -106,7 +106,7 @@ import { defineComponent, inject, ref } from "vue";
 
 import TheFooter from "@/components/general/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasAllRoles } from "@/utils/KeycloakUtils";
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
 
@@ -194,10 +194,14 @@ export default defineComponent({
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
 
-    checkIfUserHasAllRoles([KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_REVIEWER], this.getKeycloakPromise)
-      .then((userRolesMap) => {
-        this.hasUserUploaderRights = userRolesMap[KEYCLOAK_ROLE_UPLOADER];
-        this.hasUserReviewerRights = userRolesMap[KEYCLOAK_ROLE_REVIEWER];
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
+      .then((hasUserUploaderRights) => {
+        this.hasUserUploaderRights = hasUserUploaderRights;
+      })
+      .catch((error) => console.log(error));
+    checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
+      .then((hasUserReviewerRights) => {
+        this.hasUserReviewerRights = hasUserReviewerRights;
       })
       .catch((error) => console.log(error));
 
