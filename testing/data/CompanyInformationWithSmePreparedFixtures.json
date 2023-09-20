@@ -2,47 +2,57 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Hoppeland",
-			"headquartersPostalCode": "08779",
-			"sector": "mindshare",
+			"headquarters": "Huelscester",
+			"headquartersPostalCode": "49065-1106",
 			"identifiers": {
 				"Lei": [
-					"G7it5Ptvz6ZpfdJb3htt"
+					"brKH99bb5bauMpD3cHXp"
 				],
-				"Isin": [],
-				"PermId": [
-					"lVE3suU9JE"
+				"Isin": [
+					"hCEW6fsJcV4G"
 				],
-				"Ticker": [
-					"o6spAAQ"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"RiQ2zSazq"
 				],
-				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"fapF9YyJk"
+				],
 				"CompanyRegistrationNumber": [
-					"2DSXLCGQYMGSwhW"
+					"ukM3AOVkAxgQT1f"
 				]
 			},
-			"countryCode": "GG",
+			"countryCode": "JM",
 			"companyAlternativeNames": [
-				"Spinka, Boehm and Stamm"
+				"Cartwright Group",
+				"Hauck and Sons",
+				"Jacobi, Sauer and Hyatt",
+				"Schuster, Kreiger and Durgan"
 			],
-			"website": "https://handmade-turn.net/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://revolving-speaking.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B"
+						"74.9",
+						"85.4",
+						"46.36",
+						"73.20",
+						"90.02"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Adams Lodge 7751",
-						"city": "South Darlene",
-						"state": "Nevada",
-						"country": "GB"
+						"streetAndHouseNumber": "Parker Brooks 1412",
+						"postalCode": "94351",
+						"city": "Anderson",
+						"state": "Idaho",
+						"country": "ES"
 					},
-					"numberOfEmployees": 3198,
-					"fiscalYearStart": "2023-11-22"
+					"numberOfEmployees": 4003,
+					"fiscalYearStart": "2024-04-16"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -55,12 +65,7 @@
 					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Handmade Fresh Shoes",
-							"percentageOfTotalRevenue": 0.6243
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
@@ -68,19 +73,16 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
+					"powerConsumptionInMwh": 106,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 525,
+					"energyConsumptionHeatingAndHotWater": 535,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 27141678,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Flooding",
-						"Snow"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 48767711
 				}
 			}
 		},
@@ -89,42 +91,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "North Ramona",
-			"headquartersPostalCode": "03930",
+			"headquarters": "Fort Myrtiscester",
+			"headquartersPostalCode": "50454-9193",
+			"sector": "content",
 			"identifiers": {
-				"Lei": [
-					"XOMuhs0yhNzd82e33QBv"
-				],
+				"Lei": [],
 				"Isin": [
-					"dE2r7nFdFN3I"
+					"F3RHMvj0ax93",
+					"xBb9LrdILqIj"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"yuTcuNC1G"
+					"XBzmSXszA"
 				],
-				"VatNumber": [
-					"JEudMcWo5"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"zUHmsP6FhPYylmG"
+					"5qOfLdePz6iZ6Lj"
 				]
 			},
-			"countryCode": "NE",
+			"countryCode": "RE",
 			"companyAlternativeNames": [
-				"Ernser Group",
-				"Fay - Mohr",
-				"Towne, Franey and Bashirian"
+				"Jast - Torphy",
+				"Prosacco, Mohr and Stanton",
+				"Stoltenberg, Osinski and Koss"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://elaborate-wisteria.com/",
+			"website": "https://fragrant-sound.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"A"
+						"30.91",
+						"46.2",
+						"26.2",
+						"47.62"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -133,82 +135,36 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 4531,
-					"fiscalYearStart": "2024-02-28"
+					"numberOfEmployees": 5541,
+					"fiscalYearStart": "2024-07-06"
 				},
 				"companyFinancials": {
-					"revenueInEur": 6602365,
-					"operatingCostInEur": 55506613,
-					"capitalAssetsInEur": 27473146
+					"revenueInEur": 95922822,
+					"operatingCostInEur": 33007973,
+					"capitalAssetsInEur": 8804654
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Funk and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Elisabeth Coves 399",
-								"postalCode": "68556",
-								"city": "Oceanside",
-								"state": "California",
-								"country": "GY"
-							},
-							"percentageOfTotalRevenue": 0.9267
-						},
-						{
-							"nameOfProductionSite": "Moen and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Josianne Expressway 621",
-								"city": "McLaughlinberg",
-								"country": "MH"
-							},
-							"percentageOfTotalRevenue": 0.9911
-						},
-						{
-							"nameOfProductionSite": "Lockman, Bergstrom and Von",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Claire Field 403",
-								"postalCode": "80508",
-								"city": "South Jasen",
-								"state": "Connecticut",
-								"country": "NU"
-							},
-							"percentageOfTotalRevenue": 0.8731
-						},
-						{
-							"nameOfProductionSite": "Larson, Streich and Hessel",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ollie Rue 95211",
-								"postalCode": "39190-6492",
-								"city": "Belleville",
-								"country": "KM"
-							},
-							"percentageOfTotalRevenue": 0.2818
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 192,
-					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMwh": 187,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 757,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Avalanche",
-						"Snow"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 28970850
 				}
 			}
 		},
@@ -217,70 +173,120 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Fort Rubyfurt",
-			"headquartersPostalCode": "46685-0362",
-			"sector": "technologies",
+			"headquarters": "Fort Donnyboro",
+			"headquartersPostalCode": "75122-5606",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"fWbycgmfG"
+				"Lei": [
+					"WP1aFZdsq8eXZW2GjCbB"
 				],
+				"Isin": [
+					"IosuRkHMdJZr"
+				],
+				"PermId": [
+					"9jp738P6sh"
+				],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [
-					"KSS9GRHNy"
+					"A16DI41Qn"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FJ",
+			"countryCode": "IS",
 			"companyAlternativeNames": [
-				"Mohr - Harber",
-				"Wuckert, Harber and Wehner"
+				"Anderson - Volkman",
+				"Fahey, Welch and Hodkiewicz",
+				"Weber, Wuckert and Blanda"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://nautical-fortress.info",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B"
+						"24.2",
+						"95.22",
+						"22.22",
+						"27.9",
+						"70.22"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2021,
-					"fiscalYearStart": "2024-02-14"
+					"numberOfEmployees": 5025,
+					"fiscalYearStart": "2023-12-04"
 				},
 				"companyFinancials": {
-					"revenueInEur": 85940625,
-					"operatingCostInEur": 17556039,
-					"capitalAssetsInEur": 50737890
+					"operatingCostInEur": 33548518
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {}
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Breitenberg, Cassin and Paucek",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Jacynthe Harbor 99159",
+								"city": "North Deborah",
+								"state": "Missouri",
+								"country": "SX"
+							},
+							"percentageOfTotalRevenue": 0.9606
+						},
+						{
+							"nameOfProductionSite": "Bechtelar Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Sophia Parkways 2823",
+								"postalCode": "74346-0785",
+								"city": "Grantville",
+								"state": "Florida",
+								"country": "PA"
+							},
+							"percentageOfTotalRevenue": 0.2214
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Modern Bronze Tuna"
+						},
+						{
+							"name": "Awesome Rubber Cheese",
+							"percentageOfTotalRevenue": 0.9347
+						},
+						{
+							"name": "Bespoke Steel Keyboard",
+							"percentageOfTotalRevenue": 0.4365
+						},
+						{
+							"name": "Practical Bronze Pizza",
+							"percentageOfTotalRevenue": 0.6702
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 791,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 795,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 202,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 24408054,
+					"insuranceAgainstNaturalHazards": "No",
 					"naturalHazardsCovered": [
-						"EarthQuake"
+						"Hail",
+						"Flooding",
+						"Wind"
 					]
 				}
 			}

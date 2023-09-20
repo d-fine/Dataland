@@ -17,7 +17,7 @@ import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
-import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 
 /**
@@ -72,7 +72,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         headOfficeInGermany: dataGenerator.randomYesNo(),
         groupOfCompanies: dataGenerator.randomYesNo(),
         groupOfCompaniesName: dataGenerator.valueOrUndefined(faker.company.name()),
-        industry: dataGenerator.valueOrUndefined(generateListOfRandomNaceCodes()),
+        industry: dataGenerator.valueOrUndefined(generateNaceCodes()),
         numberOfEmployees: dataGenerator.randomInt(),
         seasonalOrMigrantWorkers: dataGenerator.randomYesNo(),
         shareOfTemporaryWorkers: dataGenerator.randomShareOfTemporaryWorkersInterval(),
@@ -87,7 +87,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         ),
         productionViaSubcontracting: dataGenerator.randomYesNo(),
         subcontractingCompaniesCountries: dataGenerator.randomArray(generateIso2CountryCode),
-        subcontractingCompaniesIndustries: dataGenerator.valueOrUndefined(generateListOfRandomNaceCodes()),
+        subcontractingCompaniesIndustries: dataGenerator.valueOrUndefined(generateNaceCodes()),
         productionSites: dataGenerator.randomYesNo(),
         listOfProductionSites: dataGenerator.randomArray(() => generateProductionSite(undefinedProbability)),
         market: dataGenerator.randomNationalOrInternationalMarket(),
@@ -334,7 +334,7 @@ class LksgGenerator extends Generator {
       generateArray(() => [generateIso2CountryCode(), this.valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!]),
     );
     return {
-      procuredProductTypesAndServicesNaceCodes: generateListOfRandomNaceCodes(1),
+      procuredProductTypesAndServicesNaceCodes: generateNaceCodes(1),
       numberOfSuppliersPerCountryCode: this.valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
       percentageOfTotalProcurement: this.randomPercentageValue(),
     };

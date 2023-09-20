@@ -10,7 +10,7 @@ import {
 } from "@clients/backend";
 import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateFixtureDataset, pickOneElement, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
@@ -39,7 +39,7 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
   return {
     general: {
       basicInformation: {
-        sector: generateListOfRandomNaceCodes(1),
+        sector: generateNaceCodes(1),
         addressOfHeadquarters: generateAddress(dataGenerator.undefinedProbability),
         numberOfEmployees: generateInt(10000),
         fiscalYearStart: generateFutureDate(),

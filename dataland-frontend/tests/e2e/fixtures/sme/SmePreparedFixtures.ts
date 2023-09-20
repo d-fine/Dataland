@@ -1,7 +1,7 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type SmeData } from "@clients/backend";
 import { generateSmeFixtures } from "@e2e/fixtures/sme/SmeDataFixtures";
-import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 
 /**
  * Generates one SME prepared fixture dataset by generating a random SME dataset and afterwards manipulating some fields
@@ -25,7 +25,7 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
 function manipulateFixtureForYearWithMultipleSectors(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
   input.companyInformation.companyName = "SME-year-" + year;
   input.reportingPeriod = year;
-  input.t.general.basicInformation.sector = generateListOfRandomNaceCodes(2);
+  input.t.general.basicInformation.sector = generateNaceCodes(2);
   input.t.power ??= {};
   input.t.power.investments ??= {};
   input.t.power.investments.percentageOfInvestmentsInEnhancingEnergyEfficiency = "LessThan1";

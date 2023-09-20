@@ -1,22 +1,17 @@
 import { faker } from "@faker-js/faker";
 import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
 import { type TreeNode } from "primevue/tree";
-import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import { pickOneElement, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
+import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 
 /**
- * Generates a random list of NACE codes (unique and sorted)
- * @param minNumberOfNaceCodes minimum number of NACE codes to generate
- * @param maxNumberOfNaceCodes maximum number of NACE codes to generate
+ * Generates a list of NACE codes
+ * @param min minimum number of NACE codes to generate
+ * @param max maximum number of NACE codes to generate
  * @returns random list of NACE codes
  */
-export function generateListOfRandomNaceCodes(minNumberOfNaceCodes = 0, maxNumberOfNaceCodes = 5): string[] {
-  const values = Array.from(
-    { length: faker.number.int({ min: minNumberOfNaceCodes, max: maxNumberOfNaceCodes }) },
-    () => {
-      return pickOneElement(["A", "B"]);
-    },
-  ).sort((a, b) => a.localeCompare(b));
-  return [...new Set(values)];
+export function generateNaceCodes(min = 0, max = 5): string[] {
+  return pickSubsetOfElements(Array.from(naceCodeMap.keys()), min, max);
 }
 
 /**
