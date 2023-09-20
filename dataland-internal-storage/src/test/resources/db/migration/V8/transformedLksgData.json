@@ -24,7 +24,7 @@
         },
         "RawMaterials": {
           "procuredProductTypesAndServicesNaceCodes": [],
-          "percentageOfTotalProcurement": 38.08
+          "totalProcurementInPercent": 38.08
         }
       }
     }
@@ -132,7 +132,7 @@
       "discriminationForTradeUnionMembers": "No",
       "freedomOfAssociationTraining": "Yes",
       "worksCouncil": "No",
-      "employeeRepresentation": 37.89
+      "employeeRepresentationInPercent": 37.89
     },
     "unequalTreatmentOfEmployment": {
       "unequalTreatmentOfEmployment": "Yes",

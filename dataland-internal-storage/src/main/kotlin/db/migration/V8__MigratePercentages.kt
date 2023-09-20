@@ -1,6 +1,7 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
+import db.migration.utils.MigrationHelper
 import db.migration.utils.getOrJavaNull
 import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
@@ -9,7 +10,6 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONArray
 import org.json.JSONObject
 import java.math.BigDecimal
-import java.time.LocalDate
 
 /**
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
@@ -52,13 +52,26 @@ class V8__MigratePercentages : BaseJavaMigration() {
     }
 
     private fun migratePercentageValue(kpiHolder: JSONObject, kpiName: String) {
-        kpiHolder.put(kpiName, ((kpiHolder.getOrJavaNull(kpiName) ?: return) as BigDecimal * BigDecimal(100)))
+        migratePercentageValueFromTo(kpiHolder, kpiName, kpiName)
+    }
+
+    private fun migratePercentageValueAppendingSuffix(kpiHolder: JSONObject, kpiName: String) {
+        migratePercentageValueFromTo(kpiHolder, kpiName, "${kpiName}InPercent")
+    }
+
+    private fun migratePercentageValueFromTo(kpiHolder: JSONObject, oldKpiName: String, newKpiName: String = oldKpiName) {
+        kpiHolder.put(newKpiName, transformToPercentage((kpiHolder.getOrJavaNull(oldKpiName) ?: return) as BigDecimal))
+    }
+
+    private fun transformToPercentage(decimal: BigDecimal): BigDecimal {
+        return decimal * BigDecimal(100)
     }
 
     /**
      * Migrates a EU taxonomy for financials dataset
      */
     fun migrateEuTaxonomyFinancials(dataTableEntity: DataTableEntity) {
+        // TODO manual renamings in backend
         migrateDataset(dataTableEntity) { dataObject ->
             val financialServiceTypesWithPercentageDataPointsOnly = listOf(
                 "creditInstitutionKpis", "investmentFirmKpis", "insuranceKpis",
@@ -146,22 +159,30 @@ class V8__MigratePercentages : BaseJavaMigration() {
      * Migrates an LkSG dataset
      */
     fun migrateLksg(dataTableEntity: DataTableEntity) {
-        // TODO check for renamings for non financials
         migrateDataset(dataTableEntity) { dataObject ->
+            val migrationHelper = MigrationHelper()
             ((dataObject.getOrJavaNull("social") as JSONObject?)?.getOrJsonNull("disregardForFreedomOfAssociation") as JSONObject?)?.also {
-                migratePercentageValue(it, "employeeRepresentation") // TODO change this name
+                migrationHelper.migrateValueFromToAndQueueForRemoval(
+                    it,
+                    "employeeRepresentation",
+                    "employeeRepresentationInPercent",
+                    ::transformToPercentage
+                )
             }
             (((dataObject.getOrJavaNull("general") as JSONObject?)
                 ?.getOrJavaNull("productionSpecificOwnOperations") as JSONObject?)
                 ?.getOrJavaNull("productsServicesCategoriesPurchased") as JSONObject?)
                 ?.also { procurementCategories ->
                         (procurementCategories).keys().forEach { procurementCategoryKey ->
-                            migratePercentageValue(
+                            migrationHelper.migrateValueFromToAndQueueForRemoval(
                                 (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach) as JSONObject,
-                                "percentageOfTotalProcurement", // TODO change this name
+                                "percentageOfTotalProcurement",
+                                "totalProcurementInPercent",
+                                ::transformToPercentage
                             )
                        }
                 }
+            migrationHelper.removeQueuedFields()
         }
     }
 
