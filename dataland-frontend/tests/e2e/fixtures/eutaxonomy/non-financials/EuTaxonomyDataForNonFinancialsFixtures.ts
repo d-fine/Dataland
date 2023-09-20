@@ -9,10 +9,10 @@ import {
 } from "@clients/backend";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { faker } from "@faker-js/faker";
 import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateCurrencyValue } from "@e2e/fixtures/common/NumberFixtures";
+import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
@@ -59,7 +59,7 @@ export class EuNonFinancialsGenerator extends Generator {
    * @returns a random activity
    */
   generateActivity(): EuTaxonomyActivity {
-    const randomActivityName: Activity = faker.helpers.arrayElement(Object.values(Activity));
+    const randomActivityName: Activity = pickOneElement(Object.values(Activity));
     return {
       activityName: randomActivityName,
       naceCodes: this.valueOrUndefined(getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName)),

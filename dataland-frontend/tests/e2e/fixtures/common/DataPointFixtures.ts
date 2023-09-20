@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { type CompanyReportReference, type DocumentReference, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
-import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { pickSubsetOfElements, pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNoNa } from "./YesNoFixtures";
 import { DEFAULT_PROBABILITY, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
@@ -16,7 +16,7 @@ const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedRepo
  * @returns a random non-empty set of reports
  */
 export function generateReferencedReports(undefinedProbability = DEFAULT_PROBABILITY): ReferencedDocuments {
-  const availableReportNames = faker.helpers.arrayElements(possibleReports, { min: 1, max: possibleReports.length });
+  const availableReportNames = pickSubsetOfElements(possibleReports);
 
   const referencedReports: ReferencedDocuments = {};
   for (const reportName of availableReportNames) {
@@ -45,7 +45,7 @@ export function generateDatapoint<T>(
   const qualityBucket =
     value === undefined
       ? QualityOptions.Na
-      : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
+      : pickOneElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
   const { dataSource, comment } = generateQualityAndDataSourceAndComment(reports, qualityBucket);
 

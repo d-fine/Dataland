@@ -13,7 +13,7 @@ import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
-import { generateArrayOfUniqueElements, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateFixtureDataset, pickOneElement, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 
 /**
@@ -115,7 +115,7 @@ class SmeGenerator extends Generator {
    */
   randomPercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower | undefined {
     return this.valueOrUndefined(
-      faker.helpers.arrayElement([...Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)]),
+      pickOneElement(Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)),
     );
   }
 
@@ -124,9 +124,7 @@ class SmeGenerator extends Generator {
    * @returns a random percentage range option
    */
   randomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency | undefined {
-    return this.valueOrUndefined(
-      faker.helpers.arrayElement([...Object.values(PercentRangeForInvestmentsInEnergyEfficiency)]),
-    );
+    return this.valueOrUndefined(pickOneElement(Object.values(PercentRangeForInvestmentsInEnergyEfficiency)));
   }
 
   /**
@@ -134,7 +132,7 @@ class SmeGenerator extends Generator {
    * @returns a random heat source
    */
   randomHeatSource(): EnergySourceForHeatingAndHotWater | undefined {
-    return this.valueOrUndefined(faker.helpers.arrayElement([...Object.values(EnergySourceForHeatingAndHotWater)]));
+    return this.valueOrUndefined(pickOneElement(Object.values(EnergySourceForHeatingAndHotWater)));
   }
 
   /**
@@ -142,6 +140,6 @@ class SmeGenerator extends Generator {
    * @returns a random natural hazard
    */
   randomSelectionOfNaturalHazards(): NaturalHazard[] | undefined {
-    return this.valueOrUndefined(generateArrayOfUniqueElements(Object.values(NaturalHazard)));
+    return this.valueOrUndefined(pickSubsetOfElements(Object.values(NaturalHazard)));
   }
 }

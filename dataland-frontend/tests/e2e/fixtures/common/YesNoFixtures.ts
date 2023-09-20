@@ -1,12 +1,12 @@
-import { faker } from "@faker-js/faker";
 import { YesNo, YesNoNa } from "@clients/backend";
+import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Randomly returns Yes or No
  * @returns Yes or No
  */
 export function generateYesNo(): YesNo {
-  return faker.helpers.arrayElement(Object.values(YesNo));
+  return pickOneElement(Object.values(YesNo));
 }
 
 /**
@@ -14,5 +14,5 @@ export function generateYesNo(): YesNo {
  * @returns Yes, No or Na
  */
 export function generateYesNoNa(): YesNoNa {
-  return faker.helpers.arrayElement(Object.values(YesNoNa));
+  return pickOneElement(Object.values(YesNoNa));
 }

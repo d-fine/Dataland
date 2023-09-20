@@ -4,12 +4,11 @@ import {
   type GenericDataPoint,
   type GenericBaseDataPoint,
 } from "@e2e/fixtures/common/DataPointFixtures";
-import { type ReferencedDocuments, generateArray } from "@e2e/fixtures/FixtureUtils";
+import { type ReferencedDocuments, generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { type YesNo, type YesNoNa } from "@clients/backend";
 import { generateCurrencyValue, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
-import { faker } from "@faker-js/faker";
 
 export const DEFAULT_PROBABILITY = 0.2;
 
@@ -59,7 +58,7 @@ export class Generator {
   }
 
   randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | undefined {
-    const document = this.valueOrUndefined(faker.helpers.arrayElement(Object.values(this.documents)));
+    const document = this.valueOrUndefined(pickOneElement(Object.values(this.documents)));
     return this.valueOrUndefined({ value: input, dataSource: document } as GenericBaseDataPoint<T>);
   }
 

@@ -1,10 +1,10 @@
-import { faker } from "@faker-js/faker";
 import { FiscalYearDeviation } from "@clients/backend";
+import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a random fiscal year deviation value
  * @returns a random fiscal year deviation value
  */
 export function generateFiscalYearDeviation(): FiscalYearDeviation {
-  return faker.helpers.arrayElement(Object.values(FiscalYearDeviation));
+  return pickOneElement(Object.values(FiscalYearDeviation));
 }

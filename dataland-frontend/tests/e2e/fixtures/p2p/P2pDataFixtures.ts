@@ -13,7 +13,7 @@ import {
   type PathwaysToParisData,
 } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateFixtureDataset, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { faker } from "@faker-js/faker";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
@@ -80,7 +80,7 @@ class P2pGenerator extends Generator {
    */
   generateSectors(toggleRandomSectors: boolean): P2pSector[] {
     if (toggleRandomSectors) {
-      return faker.helpers.arrayElements(Object.values(P2pSector));
+      return pickSubsetOfElements(Object.values(P2pSector));
     } else {
       return Object.values(P2pSector);
     }

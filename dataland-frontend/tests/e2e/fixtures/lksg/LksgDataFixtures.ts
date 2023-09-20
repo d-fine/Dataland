@@ -11,7 +11,7 @@ import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtur
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { DEFAULT_PROBABILITY, Generator, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
-import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateArray, generateFixtureDataset, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
@@ -364,7 +364,7 @@ class LksgGenerator extends Generator {
    * @returns one of the four percentage intervals as string
    */
   randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers | undefined {
-    return this.valueOrUndefined(faker.helpers.arrayElement(Object.values(ShareOfTemporaryWorkers)));
+    return this.valueOrUndefined(pickOneElement(Object.values(ShareOfTemporaryWorkers)));
   }
 
   /**
@@ -372,6 +372,6 @@ class LksgGenerator extends Generator {
    * @returns one of the options as string
    */
   randomNationalOrInternationalMarket(): NationalOrInternationalMarket | undefined {
-    return this.valueOrUndefined(faker.helpers.arrayElement(Object.values(NationalOrInternationalMarket)));
+    return this.valueOrUndefined(pickOneElement(Object.values(NationalOrInternationalMarket)));
   }
 }

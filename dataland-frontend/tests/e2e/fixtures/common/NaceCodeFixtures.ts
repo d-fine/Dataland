@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
 import { type TreeNode } from "primevue/tree";
+import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a random list of NACE codes (unique and sorted)
@@ -12,7 +13,7 @@ export function generateListOfRandomNaceCodes(minNumberOfNaceCodes = 0, maxNumbe
   const values = Array.from(
     { length: faker.number.int({ min: minNumberOfNaceCodes, max: maxNumberOfNaceCodes }) },
     () => {
-      return faker.helpers.arrayElement(["A", "B"]);
+      return pickOneElement(["A", "B"]);
     },
   ).sort((a, b) => a.localeCompare(b));
   return [...new Set(values)];
@@ -49,7 +50,7 @@ function getRandomNumberOfNaceCodes(childNode: TreeNode): string[] | undefined {
     const listWithRandomNumberOfNaceCodes = Array.from(
       { length: faker.number.int({ min: 1, max: allNaceCodesForActivity.length }) },
       () => {
-        return faker.helpers.arrayElement(allNaceCodesForActivity);
+        return pickOneElement(allNaceCodesForActivity);
       },
     );
     naceCodesToReturn = [...new Set(listWithRandomNumberOfNaceCodes)];

@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { type CompanyInformation } from "@clients/backend";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { pickSubsetOfElements, pickOneOrNoElement } from "@e2e/fixtures/FixtureUtils";
 
 const legalForms = [
   "Public Limited Company (PLC)",
@@ -27,19 +28,13 @@ export function getRandomCompanyLegalForm(): string {
  */
 function getRandomIdentifiers(): { [p: string]: string[] } {
   const identifiers: { [p: string]: string[] } = {};
-  identifiers["Lei"] = faker.helpers.arrayElements([faker.string.alphanumeric(20)], { min: 0, max: 1 });
-  identifiers["Isin"] = faker.helpers.arrayElements([faker.string.alphanumeric(12), faker.string.alphanumeric(12)], {
-    min: 0,
-    max: 2,
-  });
-  identifiers["PermId"] = faker.helpers.arrayElements([faker.string.alphanumeric(10)], { min: 0, max: 1 });
-  identifiers["Ticker"] = faker.helpers.arrayElements([faker.string.alphanumeric(7)], { min: 0, max: 1 });
-  identifiers["Duns"] = faker.helpers.arrayElements([faker.string.alphanumeric(9)], { min: 0, max: 1 });
-  identifiers["VatNumber"] = faker.helpers.arrayElements([faker.string.alphanumeric(9)], { min: 0, max: 1 });
-  identifiers["CompanyRegistrationNumber"] = faker.helpers.arrayElements([faker.string.alphanumeric(15)], {
-    min: 0,
-    max: 1,
-  });
+  identifiers["Lei"] = pickOneOrNoElement([faker.string.alphanumeric(20)]);
+  identifiers["Isin"] = pickSubsetOfElements([faker.string.alphanumeric(12), faker.string.alphanumeric(12)], 0, 2);
+  identifiers["PermId"] = pickOneOrNoElement([faker.string.alphanumeric(10)]);
+  identifiers["Ticker"] = pickOneOrNoElement([faker.string.alphanumeric(7)]);
+  identifiers["Duns"] = pickOneOrNoElement([faker.string.alphanumeric(9)]);
+  identifiers["VatNumber"] = pickOneOrNoElement([faker.string.alphanumeric(9)]);
+  identifiers["CompanyRegistrationNumber"] = pickOneOrNoElement([faker.string.alphanumeric(15)]);
   return identifiers;
 }
 

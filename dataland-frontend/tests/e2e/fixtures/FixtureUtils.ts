@@ -49,12 +49,30 @@ export function generateArray<T>(
 }
 
 /**
- * Picks a random number of distinct values from an array and returns them
- * @param inputArray is the array containing all available values to choose from
- * @returns an array with a random number of distinct values chosen from the inputArray
+ * Picks one element of a given array and returns it
+ * @param inputArray the array containing all available values to choose from
+ * @returns a single element of the given array
  */
-export function generateArrayOfUniqueElements<T>(inputArray: T[]): T[] {
-  const arrayOfAvailableDistinctValues = [...Array.from(new Set(inputArray))];
-  const numElementsForResultArray = Math.floor(Math.random() * arrayOfAvailableDistinctValues.length) + 1;
-  return faker.helpers.uniqueArray(arrayOfAvailableDistinctValues, numElementsForResultArray);
+export function pickOneElement<T>(inputArray: T[]): T {
+  return faker.helpers.arrayElement(inputArray);
+}
+
+/**
+ * Picks one element of a given array and returns it
+ * @param inputArray the array containing all available values to choose from
+ * @returns a single element of the given array
+ */
+export function pickOneOrNoElement<T>(inputArray: T[]): T[] {
+  return pickSubsetOfElements(inputArray, 0, 1);
+}
+
+/**
+ * Picks a subset of elements from the given array and returns it
+ * @param inputArray the array containing all available values to choose from
+ * @param min the minimal number of elements returned
+ * @param max the maximal number of elements returned
+ * @returns an array containing a subset of elements from the given array
+ */
+export function pickSubsetOfElements<T>(inputArray: T[], min = 1, max = inputArray.length): T[] {
+  return faker.helpers.arrayElements(inputArray, { min: min, max: max });
 }

@@ -10,6 +10,7 @@ import {
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single eutaxonomy-financials fixture
@@ -24,9 +25,7 @@ export function generateEuTaxonomyDataForFinancials(
 }
 
 export class EuFinancialsGenerator extends Generator {
-  financialServicesTypes = faker.helpers.arrayElements(
-    Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum),
-  );
+  financialServicesTypes = pickSubsetOfElements(Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum));
 
   /**
    * Generates a single eutaxonomy-financials fixture for a company with the given financial services types
