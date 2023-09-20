@@ -27,13 +27,15 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * whose name equals the one of a file selected before
    */
   function checkFileWithExistingFilenameOpensDialogWithWarning(): void {
+    // TODO we need a similar test like this one here, that checks if the modal opens up in the case that a user
+    // selects a file with forbidden characters!
     uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
     cy.get(`button[data-test='upload-files-button-referencedReports']`).click();
     cy.get("input[type=file]").selectFile(
       `../${TEST_PDF_FILE_BASEPATH}/more-pdfs-in-seperate-directory/${TEST_PDF_FILE_NAME}.pdf`,
       { force: true },
     );
-    cy.get(".p-dialog-content").should("contain.text", "already uploaded");
+    cy.get(".p-dialog-content").should("contain.text", "Files with duplicate names");
     cy.get(".p-dialog-header-close").click();
     cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("have.length", 1);
   }
