@@ -7,9 +7,9 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the decarbonization of ammonia production
 */
 data class P2pAmmoniaDecarbonisation(
-    val energyMix: BigDecimal? = null, // TODO changes hopefully
+    val energyMixInPercent: BigDecimal? = null,
 
-    val ccsTechnologyAdoption: BigDecimal? = null,
+    val ccsTechnologyAdoptionInPercent: BigDecimal? = null,
 
-    val electrification: BigDecimal? = null,
+    val electrificationInPercent: BigDecimal? = null,
 )

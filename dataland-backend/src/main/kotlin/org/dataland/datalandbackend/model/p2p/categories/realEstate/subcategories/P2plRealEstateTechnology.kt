@@ -8,7 +8,7 @@ import java.math.BigDecimal
  * Fields of the P2P questionnaire regarding the used technology in the real estate sector
  */
 data class P2plRealEstateTechnology(
-    val useOfDistrictHeatingNetworks: BigDecimal? = null,
+    val useOfDistrictHeatingNetworksInPercent: BigDecimal? = null,
 
-    val heatPumpUsage: BigDecimal? = null,
+    val heatPumpUsageInPercent: BigDecimal? = null,
 )

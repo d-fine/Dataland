@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.p2p.categories.general.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -10,11 +11,11 @@ import java.math.BigDecimal
 data class P2pGovernance(
     val organisationalResponsibilityForParisCompatibility: YesNo? = null,
 
-    val parisCompatibilityInExecutiveRemuneration: BigDecimal? = null, // TODO changes hopefully
+    val parisCompatibilityInExecutiveRemunerationInPercent: BigDecimal? = null,
 
-    val parisCompatibilityInAverageRemuneration: BigDecimal? = null, // TODO changes hopefully
+    val parisCompatibilityInAverageRemunerationInPercent: BigDecimal? = null,
 
-    val shareOfEmployeesTrainedOnParisCompatibility: BigDecimal? = null, // TODO changes hopefully
+    val shareOfEmployeesTrainedOnParisCompatibilityInPercent: BigDecimal? = null,
 
     val qualificationRequirementsOnParisCompatibility: YesNo? = null,
 

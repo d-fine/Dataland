@@ -7,9 +7,9 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the energy of the livestock farming sector
 */
 data class P2pLivestockFarmingEnergy(
-    val renewableElectricityPercentage: BigDecimal? = null,
+    val renewableElectrictiyInPercent: BigDecimal? = null,
 
-    val renewableHeatingPercentage: BigDecimal? = null,
+    val renewableHeatingInPercent: BigDecimal? = null,
 
-    val electricGasPoweredMachineryVehiclePercentage: BigDecimal? = null,
+    val electricGasPoweredMachineryVehicleInPercent: BigDecimal? = null,
 )
