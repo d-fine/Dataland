@@ -6,7 +6,12 @@
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
     <div v-if="reviewSubmitted" class="col-12 text-center">
-      <SuccessMessage v-if="reviewSuccessful" success-message="Review successfully submitted." :closable="false" />
+      <SuccessMessage
+        v-if="reviewSuccessful"
+        data-test="qaReviewSubmittedMessage"
+        success-message="Review successfully submitted."
+        :closable="false"
+      />
       <FailMessage
         v-else
         message="The resource you tried to access is not available. Please close the data pop-up."

@@ -63,31 +63,52 @@ describe("Component tests for the Quality Assurance page", () => {
       data: p2pFixtureForTest.t,
     }).as("fetchP2pData");
 
-    cy.mountWithPlugins<typeof ViewFrameworkData>(ViewFrameworkData, {
-      keycloak: keycloakMockWithUploaderAndReviewerRoles,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
+    cy.mountWithDialog<typeof ViewFrameworkData>(
+      ViewFrameworkData,
+      {
+        keycloak: keycloakMockWithUploaderAndReviewerRoles,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+      },
+      {
         companyId: mockDataMetaInfoForP2pTestDataset.companyId,
         dataType: DataTypeEnum.P2p,
         dataId: mockDataMetaInfoForP2pTestDataset.dataId,
       },
-    }).then(() => {
+    ).then(() => {
+      cy.get("h1").contains(p2pFixtureForTest.companyInformation.companyName).should("be.visible");
+
       cy.get("#framework_data_search_bar_standard").should("not.exist");
       cy.get("#chooseFrameworkDropdown").should("not.exist");
       cy.get('a[data-test="gotoNewDatasetButton"]').should("not.exist");
-
-      cy.get('button[data-test="qaRejectButton"]').should("exist");
-      cy.get('button[data-test="qaApproveButton"]').should("exist");
 
       cy.get('div[data-test="datasetDisplayStatusContainer"] span').contains(
         "This dataset is currently pending review",
       );
 
-      // TODO Emanuel: still writing testcode WiP
-      //  test that REJECT and APPROVE buttons stick while scrolling  =>  First test if cypress can actually assert this
-      //  click "REJECT" and spy on the correct and expected API-call
-      //  revisit the page and this time click on "APPROVE" and spy on the correct and expected API-call
+      cy.intercept(
+        "POST",
+        `**/qa/datasets/${mockDataMetaInfoForP2pTestDataset.dataId}?qaStatus=${QaStatus.Accepted}`,
+        (request) => {
+          request.reply(200, {});
+        },
+      ).as("approveDataset");
+      cy.get('button[data-test="qaApproveButton"]').should("exist").click();
+      cy.wait("@approveDataset");
+      cy.get('div[data-test="qaReviewSubmittedMessage"]').should("exist");
+      cy.get(".p-dialog-header-close").click();
+
+      cy.intercept(
+        "POST",
+        `**/qa/datasets/${mockDataMetaInfoForP2pTestDataset.dataId}?qaStatus=${QaStatus.Rejected}`,
+        (request) => {
+          request.reply(200, {});
+        },
+      ).as("rejectDataset");
+      cy.get('button[data-test="qaRejectButton"]').should("exist").click();
+      cy.wait("@rejectDataset");
+      cy.get('div[data-test="qaReviewSubmittedMessage"]').should("exist");
+      cy.get(".p-dialog-header-close").click();
     });
   });
 });
