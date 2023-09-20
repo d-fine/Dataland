@@ -2,57 +2,48 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Huelscester",
-			"headquartersPostalCode": "49065-1106",
+			"headquarters": "Bell Gardens",
+			"headquartersPostalCode": "93814-3859",
 			"identifiers": {
-				"Lei": [
-					"brKH99bb5bauMpD3cHXp"
-				],
+				"Lei": [],
 				"Isin": [
-					"hCEW6fsJcV4G"
+					"eLqO0bWvMFUy"
 				],
-				"PermId": [],
+				"PermId": [
+					"0WxIjsMmjy"
+				],
 				"Ticker": [],
-				"Duns": [
-					"RiQ2zSazq"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"fapF9YyJk"
+					"MA2u3orAC"
 				],
 				"CompanyRegistrationNumber": [
-					"ukM3AOVkAxgQT1f"
+					"W71IkFnF27hBMAr"
 				]
 			},
-			"countryCode": "JM",
+			"countryCode": "CW",
 			"companyAlternativeNames": [
-				"Cartwright Group",
-				"Hauck and Sons",
-				"Jacobi, Sauer and Hyatt",
-				"Schuster, Kreiger and Durgan"
+				"Wyman, O'Keefe and Ernser"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://revolving-speaking.name/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://expensive-bobcat.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"74.9",
-						"85.4",
-						"46.36",
-						"73.20",
-						"90.02"
+						"77.2",
+						"19.1",
+						"60.10"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Parker Brooks 1412",
-						"postalCode": "94351",
-						"city": "Anderson",
-						"state": "Idaho",
-						"country": "ES"
+						"streetAndHouseNumber": "Johns Centers 125",
+						"city": "Schneiderbury",
+						"country": "EC"
 					},
-					"numberOfEmployees": 4003,
-					"fiscalYearStart": "2024-04-16"
+					"numberOfEmployees": 2903,
+					"fiscalYearStart": "2024-03-08"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -62,10 +53,65 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Pfannerstill, Kutch and Friesen",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Haag Fork 50375",
+								"postalCode": "50173",
+								"city": "New Chester",
+								"country": "NP"
+							},
+							"percentageOfTotalRevenue": 0.9551
+						},
+						{
+							"nameOfProductionSite": "Keebler - Moore",
+							"addressOfProductionSite": {
+								"postalCode": "96989",
+								"city": "Port Angeline",
+								"state": "Illinois",
+								"country": "MU"
+							},
+							"percentageOfTotalRevenue": 0.8658
+						},
+						{
+							"nameOfProductionSite": "Kessler - Powlowski",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Declan Ranch 7682",
+								"city": "Joelfort",
+								"country": "YT"
+							},
+							"percentageOfTotalRevenue": 0.3579
+						},
+						{
+							"nameOfProductionSite": "Lockman, Dooley and Collins",
+							"addressOfProductionSite": {
+								"postalCode": "65373",
+								"city": "West Johnnyhaven",
+								"state": "North Carolina",
+								"country": "GN"
+							}
+						}
+					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Ergonomic Soft Computer",
+							"percentageOfTotalRevenue": 0.6042
+						},
+						{
+							"name": "Rustic Plastic Car",
+							"percentageOfTotalRevenue": 0.3745
+						},
+						{
+							"name": "Rustic Metal Soap"
+						},
+						{
+							"name": "Ergonomic Steel Pants",
+							"percentageOfTotalRevenue": 0.1369
+						}
+					]
 				}
 			},
 			"power": {
@@ -73,16 +119,24 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 106,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 535,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMwh": 647,
+					"energyConsumptionHeatingAndHotWater": 279,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 48767711
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 21812791,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Avalanche",
+						"Snow",
+						"Flooding",
+						"Hail",
+						"EarthQuake"
+					]
 				}
 			}
 		},
@@ -91,42 +145,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Myrtiscester",
-			"headquartersPostalCode": "50454-9193",
-			"sector": "content",
+			"headquarters": "Lake Shakira",
+			"sector": "supply-chains",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"F3RHMvj0ax93",
-					"xBb9LrdILqIj"
+					"fGYKRTGHSVEb"
 				],
-				"PermId": [],
+				"PermId": [
+					"1HlaKDGTjN"
+				],
 				"Ticker": [],
 				"Duns": [
-					"XBzmSXszA"
+					"UHz2y7b8e"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"WcaCgicwd"
+				],
 				"CompanyRegistrationNumber": [
-					"5qOfLdePz6iZ6Lj"
+					"ldzoZHsQvfmLA7A"
 				]
 			},
-			"countryCode": "RE",
+			"countryCode": "MP",
 			"companyAlternativeNames": [
-				"Jast - Torphy",
-				"Prosacco, Mohr and Stanton",
-				"Stoltenberg, Osinski and Koss"
+				"McKenzie, Sawayn and Shanahan",
+				"Rippin - Blanda"
 			],
-			"website": "https://fragrant-sound.name",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://exemplary-fitness.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"30.91",
-						"46.2",
-						"26.2",
-						"47.62"
+						"32.3",
+						"64.1",
+						"07.21"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -135,36 +190,46 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 5541,
-					"fiscalYearStart": "2024-07-06"
+					"numberOfEmployees": 2191,
+					"fiscalYearStart": "2024-05-16"
 				},
 				"companyFinancials": {
-					"revenueInEur": 95922822,
-					"operatingCostInEur": 33007973,
-					"capitalAssetsInEur": 8804654
+					"revenueInEur": 37707949
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {}
+				"sites": {},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Licensed Granite Soap",
+							"percentageOfTotalRevenue": 0.643
+						},
+						{
+							"name": "Licensed Concrete Computer",
+							"percentageOfTotalRevenue": 0.615
+						},
+						{
+							"name": "Intelligent Frozen Mouse",
+							"percentageOfTotalRevenue": 0.9794
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 187,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 757,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMwh": 500,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 28970850
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 22683081
 				}
 			}
 		},
@@ -173,119 +238,80 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Fort Donnyboro",
-			"headquartersPostalCode": "75122-5606",
+			"headquarters": "Port Maximo",
+			"headquartersPostalCode": "40477-2344",
+			"sector": "technologies",
 			"identifiers": {
-				"Lei": [
-					"WP1aFZdsq8eXZW2GjCbB"
-				],
-				"Isin": [
-					"IosuRkHMdJZr"
-				],
+				"Lei": [],
+				"Isin": [],
 				"PermId": [
-					"9jp738P6sh"
+					"eal9P8FRf0"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"41IpMsU"
+				],
 				"Duns": [],
 				"VatNumber": [
-					"A16DI41Qn"
+					"SAxqsNgMN"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"cXcitoynBoNtblX"
+				]
 			},
-			"countryCode": "IS",
+			"countryCode": "AU",
 			"companyAlternativeNames": [
-				"Anderson - Volkman",
-				"Fahey, Welch and Hodkiewicz",
-				"Weber, Wuckert and Blanda"
+				"Reinger Group"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://royal-frost.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"24.2",
-						"95.22",
-						"22.22",
-						"27.9",
-						"70.22"
+						"23.51",
+						"32.4",
+						"61.90"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 5025,
-					"fiscalYearStart": "2023-12-04"
+					"numberOfEmployees": 3509,
+					"fiscalYearStart": "2024-03-26"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 33548518
+					"revenueInEur": 97007661,
+					"operatingCostInEur": 58801421,
+					"capitalAssetsInEur": 43439039
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Breitenberg, Cassin and Paucek",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jacynthe Harbor 99159",
-								"city": "North Deborah",
-								"state": "Missouri",
-								"country": "SX"
-							},
-							"percentageOfTotalRevenue": 0.9606
-						},
-						{
-							"nameOfProductionSite": "Bechtelar Inc",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Sophia Parkways 2823",
-								"postalCode": "74346-0785",
-								"city": "Grantville",
-								"state": "Florida",
-								"country": "PA"
-							},
-							"percentageOfTotalRevenue": 0.2214
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Modern Bronze Tuna"
-						},
-						{
-							"name": "Awesome Rubber Cheese",
-							"percentageOfTotalRevenue": 0.9347
-						},
-						{
-							"name": "Bespoke Steel Keyboard",
-							"percentageOfTotalRevenue": 0.4365
-						},
-						{
-							"name": "Practical Bronze Pizza",
-							"percentageOfTotalRevenue": 0.6702
-						}
-					]
-				}
+				"sites": {},
+				"products": {}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 795,
+					"powerConsumptionInMwh": 845,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 202,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"energyConsumptionHeatingAndHotWater": 538,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 2423886,
 					"naturalHazardsCovered": [
-						"Hail",
 						"Flooding",
+						"EarthQuake",
+						"Snow",
+						"Hail",
 						"Wind"
 					]
 				}

@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { type CompanyInformation } from "@clients/backend";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-import { pickSubsetOfElements, pickOneOrNoElement } from "@e2e/fixtures/FixtureUtils";
+import { pickSubsetOfElements, pickOneOrNoElement, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 const legalForms = [
   "Public Limited Company (PLC)",
@@ -13,14 +13,6 @@ const legalForms = [
   "AG",
   "GmbH & Co. KG",
 ];
-
-/**
- * Randomly picks and returns a legal form from a list of available legal forms.
- * @returns a random legal form from the list as string
- */
-export function getRandomCompanyLegalForm(): string {
-  return legalForms[faker.number.int(legalForms.length - 1)];
-}
 
 /**
  * Generates a random set of unique identifiers
@@ -53,7 +45,7 @@ export function generateCompanyInformation(): CompanyInformation {
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
     }).sort((a, b) => a.localeCompare(b)),
-    companyLegalForm: valueOrUndefined(getRandomCompanyLegalForm()),
+    companyLegalForm: valueOrUndefined(pickOneElement(legalForms)),
     website: valueOrUndefined(faker.internet.url()),
     isTeaserCompany: false,
   };

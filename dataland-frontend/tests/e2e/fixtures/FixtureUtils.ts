@@ -58,9 +58,9 @@ export function pickOneElement<T>(inputArray: T[]): T {
 }
 
 /**
- * Picks one element of a given array and returns it
+ * Picks one or no element of a given array and returns it
  * @param inputArray the array containing all available values to choose from
- * @returns a single element of the given array
+ * @returns an empty array or an array containing single element of the given array
  */
 export function pickOneOrNoElement<T>(inputArray: T[]): T[] {
   return pickSubsetOfElements(inputArray, 0, 1);
