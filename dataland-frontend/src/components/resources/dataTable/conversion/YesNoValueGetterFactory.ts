@@ -3,7 +3,7 @@ import {
   type AvailableDisplayValues,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { type BaseDataPointYesNo } from "@clients/backend";
+import { type BaseDataPointYesNo, type BaseDataPointYesNoNa } from "@clients/backend";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 
 /**
@@ -17,7 +17,10 @@ import { getFieldValueFromDataModel } from "@/components/resources/dataTable/con
 export function yesNoValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableDisplayValues {
   return (dataset) => {
     if (field.certificateRequiredIfYes == true) {
-      const elementValue = getFieldValueFromDataModel(path, dataset) as BaseDataPointYesNo | undefined;
+      const elementValue = getFieldValueFromDataModel(path, dataset) as
+        | BaseDataPointYesNo
+        | BaseDataPointYesNoNa
+        | undefined;
       if (!elementValue) {
         return {
           displayComponent: MLDTDisplayComponents.StringDisplayComponent,

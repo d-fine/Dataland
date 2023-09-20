@@ -21,7 +21,11 @@
       </tr>
       <template v-else-if="element.type == 'section'">
         <tr
-          :class="isTopLevel ? ['p-rowgroup-header', 'p-topmost-header', 'border-bottom-table'] : ['p-rowgroup-header']"
+          :class="
+            isTopLevel
+              ? ['p-rowgroup-header', 'p-topmost-header', 'border-bottom-table']
+              : ['p-rowgroup-header', 'border-bottom-table']
+          "
           @click="toggleSection(idx)"
           v-show="isVisible"
         >

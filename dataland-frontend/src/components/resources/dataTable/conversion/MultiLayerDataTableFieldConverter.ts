@@ -6,6 +6,7 @@ import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conver
 import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { percentageValueGetterFactory } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
+import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -17,9 +18,11 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   DateFormField: plainStringValueGetterFactory,
   InputTextFormField: plainStringValueGetterFactory,
   YesNoFormField: yesNoValueGetterFactory,
+  YesNoNaFormField: yesNoValueGetterFactory,
   MultiSelectFormField: multiSelectValueGetterFactory,
   NumberFormField: numberValueGetterFactory,
   PercentageFormField: percentageValueGetterFactory,
+  RadioButtonsFormField: singleSelectValueGetterFactory,
 };
 
 /**
