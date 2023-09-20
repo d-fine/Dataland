@@ -5,13 +5,13 @@ import { pickOneElement, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 
 /**
- * Generates a list of NACE codes
+ * Generates a list of sorted NACE codes
  * @param min minimum number of NACE codes to generate
  * @param max maximum number of NACE codes to generate
  * @returns random list of NACE codes
  */
 export function generateNaceCodes(min = 0, max = 5): string[] {
-  return pickSubsetOfElements(Array.from(naceCodeMap.keys()), min, max);
+  return pickSubsetOfElements<string>(Array.from(naceCodeMap.keys()), min, max).sort((a, b) => a.localeCompare(b));
 }
 
 /**

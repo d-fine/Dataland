@@ -2,48 +2,51 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Bell Gardens",
-			"headquartersPostalCode": "93814-3859",
+			"headquarters": "Lawton",
+			"sector": "convergence",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"eLqO0bWvMFUy"
+					"jl0fd21vciay",
+					"zhxg95rbwQHQ"
 				],
 				"PermId": [
-					"0WxIjsMmjy"
+					"LnLX3XJNIX"
 				],
-				"Ticker": [],
-				"Duns": [],
+				"Ticker": [
+					"lkOjbGx"
+				],
+				"Duns": [
+					"5B3XhOtCz"
+				],
 				"VatNumber": [
-					"MA2u3orAC"
+					"c9wZqzzd3"
 				],
-				"CompanyRegistrationNumber": [
-					"W71IkFnF27hBMAr"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CW",
+			"countryCode": "TO",
 			"companyAlternativeNames": [
-				"Wyman, O'Keefe and Ernser"
+				"Mitchell - Wiegand"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://expensive-bobcat.net/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"77.2",
-						"19.1",
-						"60.10"
+						"32.1",
+						"K"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Johns Centers 125",
-						"city": "Schneiderbury",
-						"country": "EC"
+						"streetAndHouseNumber": "Weissnat Overpass 640",
+						"postalCode": "36376-2787",
+						"city": "Veumstead",
+						"state": "Iowa",
+						"country": "VG"
 					},
-					"numberOfEmployees": 2903,
-					"fiscalYearStart": "2024-03-08"
+					"numberOfEmployees": 7605,
+					"fiscalYearStart": "2024-08-30"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -52,64 +55,19 @@
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Pfannerstill, Kutch and Friesen",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Haag Fork 50375",
-								"postalCode": "50173",
-								"city": "New Chester",
-								"country": "NP"
-							},
-							"percentageOfTotalRevenue": 0.9551
-						},
-						{
-							"nameOfProductionSite": "Keebler - Moore",
-							"addressOfProductionSite": {
-								"postalCode": "96989",
-								"city": "Port Angeline",
-								"state": "Illinois",
-								"country": "MU"
-							},
-							"percentageOfTotalRevenue": 0.8658
-						},
-						{
-							"nameOfProductionSite": "Kessler - Powlowski",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Declan Ranch 7682",
-								"city": "Joelfort",
-								"country": "YT"
-							},
-							"percentageOfTotalRevenue": 0.3579
-						},
-						{
-							"nameOfProductionSite": "Lockman, Dooley and Collins",
-							"addressOfProductionSite": {
-								"postalCode": "65373",
-								"city": "West Johnnyhaven",
-								"state": "North Carolina",
-								"country": "GN"
-							}
-						}
-					]
-				},
+				"sites": {},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Ergonomic Soft Computer",
-							"percentageOfTotalRevenue": 0.6042
+							"name": "Sleek Plastic Keyboard",
+							"percentageOfTotalRevenue": 0.4454
 						},
 						{
-							"name": "Rustic Plastic Car",
-							"percentageOfTotalRevenue": 0.3745
+							"name": "Tasty Bronze Chips"
 						},
 						{
-							"name": "Rustic Metal Soap"
-						},
-						{
-							"name": "Ergonomic Steel Pants",
-							"percentageOfTotalRevenue": 0.1369
+							"name": "Rustic Frozen Towels",
+							"percentageOfTotalRevenue": 0.4247
 						}
 					]
 				}
@@ -119,24 +77,17 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 647,
-					"energyConsumptionHeatingAndHotWater": 279,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 738,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 133,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 21812791,
-					"naturalHazardsCovered": [
-						"Wind",
-						"Avalanche",
-						"Snow",
-						"Flooding",
-						"Hail",
-						"EarthQuake"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 3561168
 				}
 			}
 		},
@@ -145,43 +96,34 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Lake Shakira",
-			"sector": "supply-chains",
+			"headquarters": "New Mallie",
 			"identifiers": {
 				"Lei": [],
-				"Isin": [
-					"fGYKRTGHSVEb"
-				],
-				"PermId": [
-					"1HlaKDGTjN"
-				],
+				"Isin": [],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"UHz2y7b8e"
+					"oIBWxeP7e"
 				],
-				"VatNumber": [
-					"WcaCgicwd"
-				],
-				"CompanyRegistrationNumber": [
-					"ldzoZHsQvfmLA7A"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MP",
+			"countryCode": "BR",
 			"companyAlternativeNames": [
-				"McKenzie, Sawayn and Shanahan",
-				"Rippin - Blanda"
+				"Anderson, Wyman and Balistreri",
+				"Bosco - Beatty",
+				"Heathcote LLC"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://exemplary-fitness.info",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://conventional-clam.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"32.3",
-						"64.1",
-						"07.21"
+						"58.12",
+						"79.90"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -190,30 +132,72 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 2191,
-					"fiscalYearStart": "2024-05-16"
+					"numberOfEmployees": 676,
+					"fiscalYearStart": "2024-01-21"
 				},
 				"companyFinancials": {
-					"revenueInEur": 37707949
+					"revenueInEur": 50417119,
+					"capitalAssetsInEur": 56948601
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {
-					"listOfProducts": [
+				"sites": {
+					"listOfProductionSites": [
 						{
-							"name": "Licensed Granite Soap",
-							"percentageOfTotalRevenue": 0.643
+							"nameOfProductionSite": "Torphy - Grimes",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Stella Freeway 508",
+								"postalCode": "03365-4197",
+								"city": "Schambergerport",
+								"country": "TZ"
+							},
+							"percentageOfTotalRevenue": 0.5756
 						},
 						{
-							"name": "Licensed Concrete Computer",
-							"percentageOfTotalRevenue": 0.615
+							"nameOfProductionSite": "Crooks, MacGyver and Bashirian",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Cayla Canyon 2734",
+								"city": "Fort Josianne",
+								"state": "Nevada",
+								"country": "IN"
+							}
 						},
 						{
-							"name": "Intelligent Frozen Mouse",
-							"percentageOfTotalRevenue": 0.9794
+							"nameOfProductionSite": "Torp, Abshire and Lindgren",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Jeffry Glen 7294",
+								"postalCode": "06024-7783",
+								"city": "Fort Jaronhaven",
+								"country": "IM"
+							},
+							"percentageOfTotalRevenue": 0.1311
+						},
+						{
+							"nameOfProductionSite": "Larson - Bailey",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Ernser Cape 316",
+								"postalCode": "14837-0302",
+								"city": "Estevanfield",
+								"state": "Ohio",
+								"country": "BI"
+							},
+							"percentageOfTotalRevenue": 0.0002
+						},
+						{
+							"nameOfProductionSite": "Lueilwitz, Leuschke and Boyer",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Botsford Heights 59360",
+								"postalCode": "27022-3472",
+								"city": "Lake Deannastead",
+								"state": "New Jersey",
+								"country": "KE"
+							},
+							"percentageOfTotalRevenue": 0.2347
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": []
 				}
 			},
 			"power": {
@@ -221,15 +205,23 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 500,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMwh": 865,
+					"energyConsumptionHeatingAndHotWater": 366,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 22683081
+					"amountCoveredByInsuranceAgainstNaturalHazards": 22009546,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"EarthQuake",
+						"Wind",
+						"Flooding",
+						"Snow",
+						"Hail"
+					]
 				}
 			}
 		},
@@ -238,82 +230,119 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Port Maximo",
-			"headquartersPostalCode": "40477-2344",
-			"sector": "technologies",
+			"headquarters": "Dooleymouth",
+			"headquartersPostalCode": "52035-0894",
+			"sector": "niches",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [],
 				"PermId": [
-					"eal9P8FRf0"
+					"mffDefTlxG"
 				],
 				"Ticker": [
-					"41IpMsU"
+					"dIOfH7s"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"SAxqsNgMN"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"cXcitoynBoNtblX"
+					"KXu579Hkigj8M6u"
 				]
 			},
-			"countryCode": "AU",
+			"countryCode": "EC",
 			"companyAlternativeNames": [
-				"Reinger Group"
+				"Mayert - O'Connell",
+				"Schimmel Group",
+				"Schmitt, Kling and Schimmel"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://royal-frost.com",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://alienated-bottom-line.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"23.51",
-						"32.4",
-						"61.90"
+						"01.50",
+						"06.2",
+						"23.31",
+						"28.2"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 3509,
-					"fiscalYearStart": "2024-03-26"
+					"numberOfEmployees": 6158,
+					"fiscalYearStart": "2023-12-19"
 				},
 				"companyFinancials": {
-					"revenueInEur": 97007661,
-					"operatingCostInEur": 58801421,
-					"capitalAssetsInEur": 43439039
+					"operatingCostInEur": 55935134
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {}
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Leuschke LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Bednar Orchard 8745",
+								"postalCode": "41924-2781",
+								"city": "Port Dasia",
+								"state": "Connecticut",
+								"country": "KG"
+							},
+							"percentageOfTotalRevenue": 0.7436
+						},
+						{
+							"addressOfProductionSite": {
+								"city": "Weissnatfurt",
+								"state": "New Jersey",
+								"country": "NU"
+							},
+							"percentageOfTotalRevenue": 0.516
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Elissa Falls 686",
+								"postalCode": "74677",
+								"city": "Danielworth",
+								"state": "Nevada",
+								"country": "FK"
+							},
+							"percentageOfTotalRevenue": 0.2574
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Licensed Metal Hat",
+							"percentageOfTotalRevenue": 0.2111
+						},
+						{
+							"name": "Tasty Steel Ball"
+						},
+						{
+							"name": "Fantastic Cotton Hat",
+							"percentageOfTotalRevenue": 0.4621
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 845,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 538,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 849,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 2423886,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"EarthQuake",
-						"Snow",
-						"Hail",
-						"Wind"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23025081
 				}
 			}
 		},
