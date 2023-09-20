@@ -30,6 +30,6 @@ export const TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS = 2000;
 
 export const UPLOAD_FILE_SIZE_DISPLAY_DECIMALS = 2;
 
-export const REGEX_FOR_FILE_NAMES = /^[A-Za-z]+$/;
+export const REGEX_FOR_FILE_NAMES = /^[\w-. ()äöüßÄÖÜẞ]{1,254}$/;
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
