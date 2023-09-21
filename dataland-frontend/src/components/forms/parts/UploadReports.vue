@@ -259,7 +259,7 @@ export default defineComponent({
           modal: true,
           closable: true,
           dismissableMask: true,
-          header: "Invalid File Selection",
+          header: "Files cannot be uploaded",
         },
         data: {
           duplicateNamesJoinedString: this.namesInFileSelectionThatAreAlreadyTakenByOtherReports.join(", "),

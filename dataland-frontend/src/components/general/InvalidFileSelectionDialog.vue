@@ -1,13 +1,11 @@
 <template>
-  <div>The following file(s) cannot be selected.</div>
-  <br />
   <div v-if="this.duplicateNamesJoinedString !== ''">
     <p>Files with duplicate names:</p>
     <strong>{{ this.duplicateNamesJoinedString }}</strong>
   </div>
-  <br />
+  <br v-if="(this.duplicateNamesJoinedString !== '') && (this.fileNamesWithCharacterViolationsJoinedString !== '')"/>
   <div v-if="this.fileNamesWithCharacterViolationsJoinedString !== ''">
-    <p>Files with characters that are not accepted:</p>
+    <p>File names containing illegal characters:</p>
     <strong>{{ this.fileNamesWithCharacterViolationsJoinedString }}</strong>
   </div>
 </template>
