@@ -2,50 +2,53 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Riverton",
-			"headquartersPostalCode": "88900",
+			"headquarters": "Kubbury",
+			"headquartersPostalCode": "74983",
+			"sector": "systems",
 			"identifiers": {
-				"Lei": [
-					"ZKTUWUco9CrNtVthAoif"
-				],
+				"Lei": [],
 				"Isin": [
-					"trJYMHJSNWWG"
+					"W0B12dbMOt2p"
 				],
 				"PermId": [
-					"lV4IHQPjkO"
+					"9ZPInGAuzc"
 				],
 				"Ticker": [],
-				"Duns": [
-					"8zQHqcNQo"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"FSCKbf6nT"
+					"6XDOFvTYd"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SS",
+			"countryCode": "IQ",
 			"companyAlternativeNames": [
-				"Williamson - Kautzer"
+				"Hegmann - Rice",
+				"Hermann - Wiza",
+				"Jones - Leannon",
+				"Rowe Group"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://our-capability.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"J",
-						"L",
-						"M"
+						"01.46",
+						"03.2",
+						"10.31",
+						"20.17",
+						"90.01"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Christa Causeway 90049",
-						"postalCode": "44500-0907",
-						"city": "South Davin",
-						"country": "IL"
+						"streetAndHouseNumber": "Watsica Way 8890",
+						"postalCode": "26900-2556",
+						"city": "Keelinghaven",
+						"state": "Florida",
+						"country": "PF"
 					},
-					"numberOfEmployees": 6253,
-					"fiscalYearStart": "2024-05-21"
+					"numberOfEmployees": 8597,
+					"fiscalYearStart": "2024-02-25"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -59,26 +62,20 @@
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1358,
+					"powerConsumptionInMwh": 467,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 177,
+					"energyConsumptionHeatingAndHotWater": 603,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"naturalHazardsCovered": [
-						"Snow",
-						"EarthQuake",
-						"Wind",
-						"Hail",
-						"Flooding"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 10797168
 				}
 			}
 		},
@@ -87,36 +84,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Dagmar",
+			"headquarters": "Lake Angelita",
+			"headquartersPostalCode": "17435-9861",
 			"identifiers": {
-				"Lei": [
-					"ismiiDzWwWsgILd0avc4"
+				"Lei": [],
+				"Isin": [
+					"YO1NL1v3rX01",
+					"7R1yTN9k3ztd"
 				],
-				"Isin": [],
-				"PermId": [],
+				"PermId": [
+					"5kp3k8ptKg"
+				],
 				"Ticker": [
-					"BjQ9fJy"
+					"Z6Eb6Qi"
 				],
 				"Duns": [
-					"vy3Zai983"
+					"zZx67tTKq"
 				],
 				"VatNumber": [
-					"Sk3vRfSwi"
+					"5lbKvQThz"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KI",
-			"companyAlternativeNames": [
-				"Zulauf, Walker and Olson"
-			],
-			"website": "https://limited-earrings.net",
+			"countryCode": "LI",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://direct-catch.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"C"
+						"28.49",
+						"43.34",
+						"62.09"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -125,35 +127,54 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3312,
-					"fiscalYearStart": "2024-02-12"
+					"numberOfEmployees": 1749,
+					"fiscalYearStart": "2024-06-05"
 				},
 				"companyFinancials": {
-					"revenueInEur": 78783457,
-					"operatingCostInEur": 69896373,
-					"capitalAssetsInEur": 45409968
+					"revenueInEur": 22946634,
+					"operatingCostInEur": 72699294,
+					"capitalAssetsInEur": 30629313
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Grady, Boyer and Kuhn",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Trantow Land 46844",
+								"postalCode": "36758-4258",
+								"city": "Rowlett",
+								"state": "South Dakota",
+								"country": "TT"
+							},
+							"totalRevenueInPercent": 63.7471
+						},
+						{
+							"nameOfProductionSite": "Auer, Anderson and Schmeler",
+							"addressOfProductionSite": {
+								"postalCode": "29616-7552",
+								"city": "Victorville",
+								"state": "Massachusetts",
+								"country": "GW"
+							},
+							"totalRevenueInPercent": 67.1982
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Elegant Fresh Chair",
-							"percentageOfTotalRevenue": 0.5581
+							"name": "Bespoke Soft Table",
+							"totalRevenueInPercent": 8.1439
 						},
 						{
-							"name": "Ergonomic Wooden Computer",
-							"percentageOfTotalRevenue": 0.9827
+							"name": "Generic Frozen Car",
+							"totalRevenueInPercent": 77.5023
 						},
 						{
-							"name": "Intelligent Fresh Salad",
-							"percentageOfTotalRevenue": 0.0909
-						},
-						{
-							"name": "Luxurious Metal Bike"
+							"name": "Oriental Cotton Car",
+							"totalRevenueInPercent": 72.5328
 						}
 					]
 				}
@@ -161,15 +182,18 @@
 			"power": {
 				"investments": {},
 				"consumption": {
+					"powerConsumptionInMwh": 310,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 44,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 297,
+					"percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 25373847
+					"amountCoveredByInsuranceAgainstNaturalHazards": 38010449,
+					"naturalHazardsCovered": [
+						"EarthQuake"
+					]
 				}
 			}
 		},
@@ -178,124 +202,84 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Sterling Heights",
+			"headquarters": "Ziemanntown",
+			"headquartersPostalCode": "95941",
+			"sector": "channels",
 			"identifiers": {
-				"Lei": [
-					"rwPMFdtNC0cDGCPJmR3L"
+				"Lei": [],
+				"Isin": [
+					"TKorIzXGAGA9",
+					"3Mf9TPSdjv2R"
 				],
-				"Isin": [],
-				"PermId": [
-					"5tsXS7J4H3"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"CTjsiDJGA"
 				],
-				"Ticker": [
-					"KizxAKI"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"TpxQ1v3CW"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"IhXqFLUhFRk0Ayu"
+					"gsd0tFHxSmz9X5u"
 				]
 			},
-			"countryCode": "MH",
+			"countryCode": "AG",
 			"companyAlternativeNames": [
-				"D'Amore - Konopelski"
+				"Parisian - Rolfson"
 			],
-			"companyLegalForm": "AG",
+			"website": "https://sandy-eicosanoid.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
-						"F",
-						"H",
-						"J",
-						"M"
+						"81.21"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2915,
-					"fiscalYearStart": "2024-04-08"
+					"numberOfEmployees": 1313,
+					"fiscalYearStart": "2024-02-17"
 				},
 				"companyFinancials": {
-					"revenueInEur": 67460952
+					"revenueInEur": 99757231,
+					"operatingCostInEur": 13839112,
+					"capitalAssetsInEur": 38442535
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"city": "Hamillworth",
-								"state": "New Hampshire",
-								"country": "GB"
-							},
-							"percentageOfTotalRevenue": 0.8874
-						},
-						{
-							"addressOfProductionSite": {
-								"postalCode": "94465-6734",
-								"city": "North Sylvan",
-								"state": "Arizona",
-								"country": "FO"
-							},
-							"percentageOfTotalRevenue": 0.6986
-						},
-						{
-							"nameOfProductionSite": "Lemke and Sons",
-							"addressOfProductionSite": {
-								"postalCode": "21256-2164",
-								"city": "Schultzview",
-								"country": "PL"
-							},
-							"percentageOfTotalRevenue": 0.4477
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "Waukesha",
-								"state": "South Carolina",
-								"country": "GU"
-							},
-							"percentageOfTotalRevenue": 0.2716
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Carlee Mews 53172",
-								"city": "East Josieburgh",
-								"state": "Florida",
-								"country": "CH"
-							}
-						}
-					]
-				},
+				"sites": {},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Gorgeous Wooden Hat"
+							"name": "Licensed Bronze Gloves",
+							"totalRevenueInPercent": 45.0656
+						},
+						{
+							"name": "Unbranded Soft Mouse"
+						},
+						{
+							"name": "Unbranded Wooden Gloves"
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 479,
-					"energyConsumptionHeatingAndHotWater": 737,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMwh": 1831,
+					"energyConsumptionHeatingAndHotWater": 978,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 208017,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 35233065,
 					"naturalHazardsCovered": [
-						"Snow",
-						"EarthQuake",
-						"Wind"
+						"Avalanche"
 					]
 				}
 			}

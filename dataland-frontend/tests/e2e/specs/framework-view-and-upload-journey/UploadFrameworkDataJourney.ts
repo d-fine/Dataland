@@ -11,7 +11,7 @@ import {
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { describeIf } from "@e2e/support/TestUtility";
-import { getRandomReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
+import { generateReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
@@ -94,7 +94,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                     DataTypeEnum.Lksg,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
-                    getRandomReportingPeriod(),
+                    generateReportingPeriod(),
                     preparedFixture.t,
                   );
                 })

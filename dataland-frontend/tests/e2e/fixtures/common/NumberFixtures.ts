@@ -7,8 +7,19 @@ import { faker } from "@faker-js/faker";
  * @param precision the precision of the decimal value
  * @returns a random number in [min, max]
  */
-export function randomFloat(min: number, max: number, precision?: number): number {
+export function generateFloat(min = 0, max = 1e5, precision = 1e-2): number {
   return faker.number.float({ min: min, max: max, precision: precision });
+}
+
+/**
+ * Generates a random currency value in [min, max]
+ * @param min the minimum allowed value (inclusive)
+ * @param max the maximum allowed value (inclusive)
+ * @param precision the precision of the decimal value
+ * @returns a random number in [min, max]
+ */
+export function generateCurrencyValue(min = 0, max = 1e10, precision = 1e-2): number {
+  return generateFloat(min, max, precision);
 }
 
 /**
@@ -16,8 +27,8 @@ export function randomFloat(min: number, max: number, precision?: number): numbe
  * @param precision the precision of the decimal value
  * @returns a random float between 0 and 1
  */
-export function randomPercentageValue(precision = 0.0001): number {
-  return randomFloat(0, 1, precision);
+export function generatePercentageValue(precision = 1e-4): number {
+  return generateFloat(0, 100, precision);
 }
 
 /**
@@ -25,6 +36,6 @@ export function randomPercentageValue(precision = 0.0001): number {
  * @param max the maximum allowed value (inclusive)
  * @returns a random number in [0, max]
  */
-export function randomInt(max: number): number {
+export function generateInt(max: number): number {
   return faker.number.int(max);
 }

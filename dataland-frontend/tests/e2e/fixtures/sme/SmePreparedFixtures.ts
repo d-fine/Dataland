@@ -1,6 +1,7 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type SmeData } from "@clients/backend";
 import { generateSmeFixtures } from "@e2e/fixtures/sme/SmeDataFixtures";
+import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 
 /**
  * Generates one SME prepared fixture dataset by generating a random SME dataset and afterwards manipulating some fields
@@ -9,7 +10,7 @@ import { generateSmeFixtures } from "@e2e/fixtures/sme/SmeDataFixtures";
  */
 export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForYear(generateSmeFixtures(1)[0], "2023"));
+  preparedFixtures.push(manipulateFixtureForYearWithMultipleSectors(generateSmeFixtures(1)[0], "2023"));
   preparedFixtures.push(manipulateFixtureForMaximumAddress(generateSmeFixtures(1)[0]));
   preparedFixtures.push(manipulateFixtureForMinimumAddress(generateSmeFixtures(1)[0]));
   return preparedFixtures;
@@ -21,14 +22,15 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
  * @param year the year as a number
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForYear(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
+function manipulateFixtureForYearWithMultipleSectors(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
   input.companyInformation.companyName = "SME-year-" + year;
   input.reportingPeriod = year;
+  input.t.general.basicInformation.sector = generateNaceCodes(2);
   input.t.power ??= {};
   input.t.power.investments ??= {};
-  input.t.power.investments.percentageOfInvestmentsInEnhancingEnergyEfficiency = "LessThan1";
+  input.t.power.investments.percentageForInvestmentsInEnhancingEnergyEfficiency = "LessThan1";
   input.t.power.consumption ??= {};
-  input.t.power.consumption.energyConsumptionCoveredByOwnRenewablePowerGeneration = "LessThan25";
+  input.t.power.consumption.percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration = "LessThan25";
   input.t.general.companyFinancials = {
     revenueInEur: 0,
     operatingCostInEur: 1000000,
