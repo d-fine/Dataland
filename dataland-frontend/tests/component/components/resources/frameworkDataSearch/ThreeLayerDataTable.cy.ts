@@ -269,7 +269,10 @@ describe("Component test for ThreeLayerDataTable", () => {
       assertDefined(p2pData.ammonia?.decarbonisation?.energyMixInPercent) * 100,
       2,
     );
-    const expectedCementEnergyEnergyMix = roundNumber(assertDefined(p2pData.cement?.energy?.energyMixInPercent) * 100, 2);
+    const expectedCementEnergyEnergyMix = roundNumber(
+      assertDefined(p2pData.cement?.energy?.energyMixInPercent) * 100,
+      2,
+    );
 
     cy.mountWithPlugins(ThreeLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
