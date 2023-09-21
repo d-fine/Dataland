@@ -2,7 +2,7 @@
   <template v-if="_isModal()">
     <component
       :is="_findModalComponent().triggerComponent"
-      :component="_findModalComponent().dataComponent"
+      :displayComponent="_findModalComponent().dataComponent"
       :data="data"
     ></component>
   </template>
@@ -43,11 +43,11 @@ const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDataComponents 
     triggerComponent: GenericDataTableModalLink,
     dataComponent: NonAlignedActivitiesDataTable,
   },
-  NaceCodeFormField: genericFieldTriggerAndDataComponent,
   MostImportantProductsFormField: genericFieldTriggerAndDataComponent,
   ProcurementCategoriesFormField: genericFieldTriggerAndDataComponent,
   ProductionSitesFormField: genericFieldTriggerAndDataComponent,
   MultiSelectFormField: genericFieldTriggerAndDataComponent,
+  ComponentName: genericFieldTriggerAndDataComponent,
 } as const;
 
 export type GenericModalData = {
@@ -77,7 +77,7 @@ export default defineComponent({
   props: {
     componentName: {
       type: String,
-      default: "componentName",
+      default: "ComponentName",
     },
     data: {},
   },

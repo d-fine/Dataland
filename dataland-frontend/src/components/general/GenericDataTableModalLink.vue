@@ -24,7 +24,7 @@ export type GenericsDataTableRequiredData =
 export default defineComponent({
   name: "GenericDataTableModalLink",
   props: {
-    component: {
+    displayComponent: {
       type: Object as () =>
         | typeof DetailsCompanyDataTable
         | typeof AlignedActivitiesDataTable
@@ -69,7 +69,7 @@ export default defineComponent({
       };
 
       if (dialogData) {
-        this.$dialog.open(this.component, {
+        this.$dialog.open(this.displayComponent, {
           props: {
             header: this.modalTitle,
             modal: true,

@@ -67,8 +67,19 @@
                 />
               </template>
 
-              <template v-else-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
-                {{ filterStringArray(slotProps.data.content[reportingPeriodWithDataId.dataId]) }}
+              <template
+                v-else-if="
+                  Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId]) &&
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].length
+                "
+              >
+                <ModalsComponent
+                  :data="{
+                    dataId: reportingPeriodWithDataId.dataId,
+                    ...slotProps.data,
+                    columnHeaders: modalColumnHeaders,
+                  }"
+                />
               </template>
               <span
                 v-else-if="
@@ -249,16 +260,6 @@ export default defineComponent({
      */
     isYesNo(value: string) {
       return Object.values(YesNo).includes(value as YesNo);
-    },
-    /**
-     * @param content the array value from the field
-     * @returns an array with undefined and null values filtered out
-     */
-    filterStringArray(content: unknown[]): string {
-      if (Array.isArray(content) && content.length > 0) {
-        return content.filter((item) => typeof item !== "string").join(", ");
-      }
-      return "";
     },
   },
 });
