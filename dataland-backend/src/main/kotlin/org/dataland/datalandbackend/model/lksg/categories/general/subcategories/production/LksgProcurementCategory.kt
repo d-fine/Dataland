@@ -13,5 +13,5 @@ data class LksgProcurementCategory(
 
     val numberOfSuppliersPerCountryCode: Map<String, Int?>?,
 
-    val totalProcurementInPercent: BigDecimal?,
+    val shareOfTotalProcurementInPercent: BigDecimal?,
 )

@@ -23,7 +23,7 @@ data class P2pGovernance(
 
     val upstreamSupplierEngagementStrategy: YesNo? = null,
 
-    val upstreamSupplierProcurementPolicy: BaseDataPoint<YesNo>? = null,
+    val upstreamSupplierProcurementPolicy: YesNo? = null,
 
     val downstreamCustomerEngagement: YesNo? = null,
 
