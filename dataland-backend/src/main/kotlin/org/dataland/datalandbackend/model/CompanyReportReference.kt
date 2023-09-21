@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * --- API model ---
  * A reference to a page in a company report
  */
-interface CompanyReportReferenceInterface: DocumentReferenceInterface {
+interface CompanyReportReferenceInterface: BaseDocumentReferenceInterface {
     val page: Long?
     val tagName: String?
 
@@ -24,3 +24,8 @@ data class CompanyReportReference(
     override val tagName: String? = null,
 
 ):CompanyReportReferenceInterface
+
+ExtendedDocumentReference
+BaseDocumentReference
+Page
+TagName

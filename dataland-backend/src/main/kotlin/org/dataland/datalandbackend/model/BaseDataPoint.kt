@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 interface BaseDataPointInterface<T> {
     val value: T?
-    val dataSource: DocumentReference?
 }
 //TODO separate those into separete files
 /**
@@ -19,5 +18,5 @@ data class BaseDataPoint<T>(
     @field:JsonProperty(required = true)
     override val value: T?,
 
-    override val dataSource: DocumentReference? = null,
+    val dataSource: BaseDocumentReference? = null,
 ): BaseDataPointInterface<T>

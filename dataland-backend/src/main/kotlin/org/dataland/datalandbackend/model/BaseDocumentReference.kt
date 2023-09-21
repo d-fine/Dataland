@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * --- API model ---
  * Fields of a generic document reference
  */
-interface DocumentReferenceInterface {
+interface BaseDocumentReferenceInterface {
     val fileName: String?
     val fileReference: String
 }
@@ -14,9 +14,10 @@ interface DocumentReferenceInterface {
  * --- API model ---
  * Fields of a generic document reference
  */
-data class DocumentReference(
+data class BaseDocumentReference(
     @field:JsonProperty(required = true)
     override val fileName: String,
     @field:JsonProperty(required = true)
     override val fileReference: String,
-): DocumentReferenceInterface
+): BaseDocumentReferenceInterface
+

@@ -13,7 +13,8 @@ data class DataPointOneValue<T>(
     @field:JsonProperty(required = true)
     override val quality: QualityOptions,
 
-    override val dataSource: CompanyReportReference? = null,
+    val dataSource: CompanyReportReference? = null,
 
     override val comment: String? = null,
-) : BaseDataPointInterface<T>, DataPointBaseInformationInterface
+
+) : ExtendedDataPointInterface<T>
