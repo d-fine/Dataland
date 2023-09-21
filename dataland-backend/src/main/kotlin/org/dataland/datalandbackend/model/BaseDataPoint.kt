@@ -10,6 +10,7 @@ interface BaseDataPointInterface<T> {
     val value: T?
     val dataSource: DocumentReference?
 }
+//TODO separate those into separete files
 /**
  * --- API model ---
  * Fields of a generic base data point and its source

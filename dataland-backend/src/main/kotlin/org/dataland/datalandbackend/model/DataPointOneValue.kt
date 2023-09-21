@@ -16,4 +16,4 @@ data class DataPointOneValue<T>(
     override val dataSource: CompanyReportReference? = null,
 
     override val comment: String? = null,
-) : BaseDataPointInterface<T>, DataPointBaseInformation(quality, dataSource, comment)
+) : BaseDataPointInterface<T>, DataPointBaseInformationInterface
