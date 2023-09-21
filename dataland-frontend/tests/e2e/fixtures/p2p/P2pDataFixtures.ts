@@ -98,9 +98,9 @@ class P2pGenerator extends Generator {
       },
       governance: {
         organisationalResponsibilityForParisCompatibility: this.randomYesNo(),
-        parisCompatibilityInExecutiveRemuneration: this.randomPercentageValue(),
-        parisCompatibilityInAverageRemuneration: this.randomPercentageValue(),
-        shareOfEmployeesTrainedOnParisCompatibility: this.randomPercentageValue(),
+        parisCompatibilityInAverageRemunerationInPercent: this.randomPercentageValue(),
+        parisCompatibilityInExecutiveRemunerationInPercent: this.randomPercentageValue(),
+        shareOfEmployeesTrainedOnParisCompatibilityInPercent: this.randomPercentageValue(),
         qualificationRequirementsOnParisCompatibility: this.randomYesNo(),
         mobilityAndTravelPolicy: this.randomYesNo(),
         upstreamSupplierEngagementStrategy: this.randomYesNo(),
@@ -114,17 +114,17 @@ class P2pGenerator extends Generator {
       },
       emissionsPlanning: {
         reductionOfAbsoluteEmissions: this.randomPercentageValue(),
-        reductionOfRelativeEmissions: this.randomInt(),
+        reductionOfRelativeEmissionsInPercent: this.randomPercentageValue(),
+        relativeEmissionsInPercent: this.randomPercentageValue(),
         absoluteEmissions: this.randomInt(),
-        relativeEmissions: this.randomInt(),
         climateActionPlan: this.randomYesNo(),
         useOfInternalCarbonPrice: this.randomYesNo(),
       },
       investmentPlanning: {
         investmentPlanForClimateTargets: this.randomYesNo(),
-        capexShareInNetZeroSolutions: this.randomPercentageValue(),
-        capexShareInGhgIntensivePlants: this.randomPercentageValue(),
-        researchAndDevelopmentExpenditureForNetZeroSolutions: this.randomPercentageValue(),
+        capexShareInGhgIntensivePlantsInPercent: this.randomPercentageValue(),
+        capexShareInNetZeroSolutionsInPercent: this.randomPercentageValue(),
+        researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent: this.randomPercentageValue(),
       },
     };
   }
@@ -136,12 +136,12 @@ class P2pGenerator extends Generator {
   getSectorAmmonia(): P2pAmmonia | undefined {
     const data: P2pAmmonia = {
       decarbonisation: {
-        energyMix: this.randomPercentageValue(),
-        ccsTechnologyAdoption: this.randomPercentageValue(),
-        electrification: this.randomPercentageValue(),
+        energyMixInPercent: this.randomPercentageValue(),
+        ccsTechnologyAdoptionInPercent: this.randomPercentageValue(),
+        electrificationInPercent: this.randomPercentageValue(),
       },
       defossilisation: {
-        useOfRenewableFeedstocks: this.randomPercentageValue(),
+        useOfRenewableFeedstocksInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent("Ammonia") ? data : undefined;
@@ -155,16 +155,16 @@ class P2pGenerator extends Generator {
     const data: P2pAutomotive = {
       energy: {
         productionSiteEnergyConsumption: this.randomInt(),
-        energyMix: this.randomPercentageValue(),
+        energyMixInPercent: this.randomPercentageValue(),
       },
       technologyValueCreation: {
-        driveMix: this.randomPercentageValue(),
+        driveMixInPercent: this.randomPercentageValue(),
         icAndHybridEnginePhaseOutDate: this.valueOrUndefined(generateFutureDate()),
         futureValueCreationStrategy: this.randomYesNo(),
       },
       materials: {
-        materialUseManagement: this.randomPercentageValue(),
-        useOfSecondaryMaterials: this.randomPercentageValue(),
+        materialUseManagementInPercent: this.randomPercentageValue(),
+        useOfSecondaryMaterialsInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent("Automotive") ? data : undefined;
@@ -177,19 +177,19 @@ class P2pGenerator extends Generator {
   getSectorHVCPlastics(): P2pHvcPlastics | undefined {
     const data: P2pHvcPlastics = {
       decarbonisation: {
-        energyMix: this.randomPercentageValue(),
-        electrification: this.randomPercentageValue(),
+        energyMixInPercent: this.randomPercentageValue(),
+        electrificationInPercent: this.randomPercentageValue(),
       },
       defossilisation: {
-        useOfRenewableFeedstocks: this.randomPercentageValue(),
-        useOfBioplastics: this.randomPercentageValue(),
-        useOfCo2FromCarbonCaptureAndReUseTechnologies: this.randomPercentageValue(),
+        useOfRenewableFeedstocksInPercent: this.randomPercentageValue(),
+        useOfBioplasticsInPercent: this.randomPercentageValue(),
+        useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent: this.randomPercentageValue(),
         carbonCaptureAndUseStorageTechnologies: this.randomPercentageValue(),
       },
       recycling: {
         contributionToCircularEconomy: this.randomYesNo(),
-        materialRecycling: this.randomPercentageValue(),
-        chemicalRecycling: this.randomPercentageValue(),
+        materialRecyclingInPercent: this.randomPercentageValue(),
+        chemicalRecyclingInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent("HVCPlastics") ? data : undefined;
@@ -203,16 +203,16 @@ class P2pGenerator extends Generator {
   getSectorRealEstate(sector: P2pSector): P2pRealEstate | undefined {
     const data: P2pRealEstate = {
       buildingEfficiency: {
-        buildingSpecificReburbishmentRoadmap: this.randomPercentageValue(),
-        zeroEmissionBuildingShare: this.randomPercentageValue(),
+        buildingSpecificReburbishmentRoadmapInPercent: this.randomPercentageValue(),
+        zeroEmissionBuildingShareInPercent: this.randomPercentageValue(),
         buildingEnergyEfficiency: this.randomInt(),
       },
       energySource: {
-        renewableHeating: this.randomPercentageValue(),
+        renewableHeatingInPercent: this.randomPercentageValue(),
       },
       technology: {
-        useOfDistrictHeatingNetworks: this.randomYesNo(),
-        heatPumpUsage: this.randomYesNo(),
+        useOfDistrictHeatingNetworksInPercent: this.randomPercentageValue(),
+        heatPumpUsageInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent(sector) ? data : undefined;
@@ -229,8 +229,8 @@ class P2pGenerator extends Generator {
         greenHydrogenUsage: this.randomYesNo(),
       },
       technology: {
-        blastFurnacePhaseOut: this.randomPercentageValue(),
-        lowCarbonSteelScaleUp: this.randomPercentageValue(),
+        blastFurnacePhaseOutInPercent: this.randomPercentageValue(),
+        lowCarbonSteelScaleUpInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent("Steel") ? data : undefined;
@@ -243,11 +243,11 @@ class P2pGenerator extends Generator {
   getSectorFreightTransportByRoad(): P2pFreightTransportByRoad | undefined {
     const data: P2pFreightTransportByRoad = {
       technology: {
-        driveMix: this.randomPercentageValue(),
+        driveMixPerFleetSegment: this.randomPercentageValue(),
         icePhaseOut: this.valueOrUndefined(generateFutureDate()),
       },
       energy: {
-        fuelMix: this.randomPercentageValue(),
+        fuelMixInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent("FreightTransportByRoad") ? data : undefined;
@@ -261,10 +261,10 @@ class P2pGenerator extends Generator {
     const data: P2pElectricityGeneration = {
       technology: {
         electricityMixEmissions: this.randomInt(),
-        shareOfRenewableElectricity: this.randomPercentageValue(),
+        shareOfRenewableElectricityInPercent: this.randomPercentageValue(),
         naturalGasPhaseOut: this.valueOrUndefined(generateFutureDate()),
         coalPhaseOut: this.valueOrUndefined(generateFutureDate()),
-        storageCapacityExpansion: this.randomPercentageValue(),
+        storageCapacityExpansionInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent("ElectricityGeneration") ? data : undefined;
@@ -277,25 +277,25 @@ class P2pGenerator extends Generator {
   getSectorLivestockFarming(): P2pLivestockFarming | undefined {
     const data: P2pLivestockFarming = {
       emissionsFromManureAndFertiliserAndLivestock: {
-        compostedFermentedManure: this.randomPercentageValue(),
-        emissionProofFertiliserStorage: this.randomPercentageValue(),
+        compostedFermentedManureInPercent: this.randomPercentageValue(),
+        emissionProofFertiliserStorageInPercent: this.randomPercentageValue(),
       },
       animalWelfare: {
-        mortalityRate: this.randomPercentageValue(),
+        mortalityRateInPercent: this.randomPercentageValue(),
       },
       animalFeed: {
-        ownFeedPercentage: this.randomPercentageValue(),
+        ownFeedInPercent: this.randomPercentageValue(),
         externalFeedCertification: this.randomBaseDataPoint(generateYesNo()),
         originOfExternalFeed: faker.company.buzzPhrase(),
         excessNitrogen: this.randomInt(),
         cropRotation: this.randomInt(),
-        climateFriendlyProteinProduction: this.randomPercentageValue(),
-        greenFodderPercentage: this.randomPercentageValue(),
+        climateFriendlyProteinProductionInPercent: this.randomPercentageValue(),
+        greenFodderInPercent: this.randomPercentageValue(),
       },
       energy: {
-        renewableElectricityPercentage: this.randomPercentageValue(),
-        renewableHeatingPercentage: this.randomPercentageValue(),
-        electricGasPoweredMachineryVehiclePercentage: this.randomPercentageValue(),
+        renewableElectrictiyInPercent: this.randomPercentageValue(),
+        renewableHeatingInPercent: this.randomPercentageValue(),
+        electricGasPoweredMachineryVehicleInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent("LivestockFarming") ? data : undefined;
@@ -308,18 +308,18 @@ class P2pGenerator extends Generator {
   getSectorCement(): P2pCement | undefined {
     const data: P2pCement = {
       energy: {
-        energyMix: this.randomPercentageValue(),
-        fuelMix: this.randomPercentageValue(),
-        thermalEnergyEfficiency: this.randomPercentageValue(),
-        compositionOfThermalInput: this.randomPercentageValue(),
+        energyMixInPercent: this.randomPercentageValue(),
+        fuelMixInPercent: this.randomPercentageValue(),
+        thermalEnergyEfficiencyInPercent: this.randomPercentageValue(),
+        compositionOfThermalInputInPercent: this.randomPercentageValue(),
       },
       technology: {
         carbonCaptureAndUseTechnologyUsage: this.randomYesNo(),
-        electrificationOfProcessHeat: this.randomPercentageValue(),
+        electrificationOfProcessHeatInPercent: this.randomPercentageValue(),
       },
       material: {
         clinkerFactorReduction: this.randomInt(),
-        preCalcinedClayUsage: this.randomPercentageValue(),
+        preCalcinedClayUsageInPercent: this.randomPercentageValue(),
         circularEconomyContribution: this.randomYesNo(),
       },
     };

@@ -60,7 +60,7 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
     },
     power: {
       investments: {
-        percentageOfInvestmentsInEnhancingEnergyEfficiency:
+        percentageForInvestmentsInEnhancingEnergyEfficiency:
           dataGenerator.randomPercentageRangeInvestmentEnergyEfficiency(),
       },
       consumption: {
@@ -68,7 +68,8 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
         powerFromRenewableSources: dataGenerator.randomYesNo(),
         energyConsumptionHeatingAndHotWater: dataGenerator.randomInt(1000),
         primaryEnergySourceForHeatingAndHotWater: dataGenerator.randomHeatSource(),
-        energyConsumptionCoveredByOwnRenewablePowerGeneration: dataGenerator.randomPercentageRangeEnergyConsumption(),
+        percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration:
+          dataGenerator.randomPercentageRangeEnergyConsumption(),
       },
     },
     insurances: {
@@ -87,11 +88,11 @@ class SmeGenerator extends Generator {
    * @returns a random product
    */
   randomProduct(): SmeProduct[] | undefined {
-    return this.randomArray(() => {
+    return this.randomArray((): SmeProduct => {
       return {
         name: faker.commerce.productName(),
-        percentageOfTotalRevenue: this.randomPercentageValue(),
-      } as SmeProduct;
+        totalRevenueInPercent: this.randomPercentageValue(),
+      };
     });
   }
 
@@ -100,12 +101,12 @@ class SmeGenerator extends Generator {
    * @returns a random production site
    */
   randomProductionSite(): SmeProductionSite[] | undefined {
-    return this.randomArray(() => {
+    return this.randomArray((): SmeProductionSite => {
       return {
         nameOfProductionSite: this.valueOrUndefined(faker.company.name()),
         addressOfProductionSite: generateAddress(this.undefinedProbability),
-        percentageOfTotalRevenue: this.randomPercentageValue(),
-      } as SmeProductionSite;
+        totalRevenueInPercent: this.randomPercentageValue(),
+      };
     });
   }
 
