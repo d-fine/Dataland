@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
-import org.dataland.datalandbackend.model.DataPointOneValue
+import org.dataland.datalandbackend.model.ExtendedDataPoint
 import java.math.BigDecimal
 
 /**
@@ -9,5 +9,5 @@ import java.math.BigDecimal
  */
 
 data class InvestmentFirmKpis(
-    val greenAssetRatio: DataPointOneValue<BigDecimal>? = null,
+    val greenAssetRatio: ExtendedDataPoint<BigDecimal>? = null,
 )

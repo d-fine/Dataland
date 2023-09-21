@@ -7,10 +7,18 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 /**
  * --- API model ---
  * Fields of a generic data point with unit and its source
+/**
+ * --- API model ---
+ * Fields of a generic data point and its source
  */
 data class ExtendedDataPoint<T>(
     override val value: T,
     @field:JsonProperty(required = true)
     override val quality: QualityOptions,
     override val comment: String,
+
+    override val comment: String? = null,
+
+    val dataSource: CompanyReportReference? = null,
+
 ) : ExtendedDataPointInterface<T>

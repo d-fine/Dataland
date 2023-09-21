@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
-import org.dataland.datalandbackend.model.DataPointOneValue
+import org.dataland.datalandbackend.model.ExtendedDataPoint
 import org.dataland.datalandbackend.model.DataPointWithUnit
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -16,5 +16,5 @@ data class SfdrEnvironmentalEmissions(
 
     val ozoneDepletionSubstances: DataPointWithUnit<BigDecimal>? = null,
 
-    val carbonReductionInitiatives: DataPointOneValue<YesNo>? = null,
+    val carbonReductionInitiatives: ExtendedDataPoint<YesNo>? = null,
 )
