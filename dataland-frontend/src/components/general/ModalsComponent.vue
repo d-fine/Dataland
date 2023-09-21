@@ -79,6 +79,7 @@ export default defineComponent({
       type: String,
       default: "componentName",
     },
+    data: {},
   },
   methods: {
     /**
