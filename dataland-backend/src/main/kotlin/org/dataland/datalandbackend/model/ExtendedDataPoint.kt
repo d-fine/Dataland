@@ -12,16 +12,4 @@ interface ExtendedDataPointInterface<T> : BaseDataPointInterface<T>{
     val comment: String?
 }
 //TODO separate those into separete files
-/**
- * --- API model ---
- * Fields of a generic data point with unit and its source
- */
-data class ExtendedDataPoint<T>(
-    override val value: T? = null,
 
-    @field:JsonProperty(required = true)
-    override val quality: QualityOptions,
-
-    override val comment: String? = null,
-
-) : ExtendedDataPointInterface<T>
