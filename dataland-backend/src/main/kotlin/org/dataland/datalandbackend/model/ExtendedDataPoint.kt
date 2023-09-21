@@ -9,9 +9,9 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
  * Fields of a generic data point and its source
  */
 data class ExtendedDataPoint<T>(
-    override val value: T,
+    override val value: T? = null,
     @field:JsonProperty(required = true)
     override val quality: QualityOptions,
-    override val comment: String,
+    override val comment: String? = null,
     val dataSource: ExtendedDocumentReference? = null,
 ) : ExtendedDataPointInterface<T>

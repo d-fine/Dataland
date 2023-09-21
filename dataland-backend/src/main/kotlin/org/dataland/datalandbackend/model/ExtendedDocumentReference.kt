@@ -8,9 +8,9 @@ import org.dataland.datalandbackend.interfaces.ExtendedDocumentReferenceInterfac
  * A reference to a page in a company report
  */
 data class ExtendedDocumentReference(
-    override val page: Long,
-    override val tagName: String,
-    override val fileName: String,
+    override val page: Long? = null,
+    override val tagName: String? = null,
+    override val fileName: String? = null,
     @field:JsonProperty(required = true)
     override val fileReference: String,
 ) : ExtendedDocumentReferenceInterface

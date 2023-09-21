@@ -9,10 +9,10 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
  * Fields of a generic data point with unit and its source
  */
 data class CurrencyDataPoint<T>(
-    val dataSource: ExtendedDocumentReference? = null,
-    override val value: T,
+    override val value: T? = null,
     @field:JsonProperty(required = true)
     override val quality: QualityOptions,
-    override val comment: String,
-    val currency: String?,
+    override val comment: String? = null,
+    val dataSource: ExtendedDocumentReference? = null,
+    val currency: String? = null,
 ) : ExtendedDataPointInterface<T>
