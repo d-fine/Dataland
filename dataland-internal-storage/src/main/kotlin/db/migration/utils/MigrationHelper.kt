@@ -1,6 +1,7 @@
 package db.migration.utils
 
 import org.json.JSONObject
+import kotlin.reflect.jvm.internal.impl.builtins.functions.FunctionTypeKind.KFunction
 
 class MigrationHelper {
     private data class FieldToRemove(
@@ -22,28 +23,45 @@ class MigrationHelper {
     }
 
     inline fun <O, reified N> migrateValueFromTo(
-        kpiHolder: JSONObject,
-        oldKpiName: String,
-        newKpiName: String,
+        fieldHolder: JSONObject,
+        oldFieldName: String,
+        newFieldName: String,
         transformation: (O) -> N = {
             require(it is N)
             it
         },
     ) {
-        kpiHolder.put(newKpiName, transformation((kpiHolder.getOrJavaNull(oldKpiName) ?: return) as O))
+        fieldHolder.put(newFieldName, transformation((fieldHolder.getOrJavaNull(oldFieldName) ?: return) as O))
+    }
+
+    inline fun <reified T> migrateValue(
+        fieldHolder: JSONObject,
+        fieldName: String,
+        transformation: (T) -> T = { it },
+    ) {
+        migrateValueFromTo(fieldHolder, fieldName, fieldName, transformation)
     }
 
     inline fun <O, reified N> migrateValueFromToAndQueueForRemoval(
-        kpiHolder: JSONObject,
-        oldKpiName: String,
-        newKpiName: String,
+        fieldHolder: JSONObject,
+        oldFieldName: String,
+        newFieldName: String,
         transformation: (O) -> N = {
             require(it is N)
             it
         },
     ) {
-        migrateValueFromTo(kpiHolder, oldKpiName, newKpiName, transformation)
-        queueFieldForRemoval(kpiHolder, oldKpiName)
+        migrateValueFromTo(fieldHolder, oldFieldName, newFieldName, transformation)
+        queueFieldForRemoval(fieldHolder, oldFieldName)
+    }
+
+    inline fun <reified T> migrateDataPointValue(
+        dataPointHolder: JSONObject,
+        dataPointName: String,
+        transformation: (T) -> T = { it },
+    ) {
+        val dataPointObject = (dataPointHolder.getOrJavaNull(dataPointName) ?: return) as JSONObject
+        migrateValue(dataPointObject, "value", transformation)
     }
 
 //    inline fun <O, reified N> migrateDataPointValueFromTo(
