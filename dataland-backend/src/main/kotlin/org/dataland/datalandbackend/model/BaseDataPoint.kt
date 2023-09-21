@@ -1,22 +1,15 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.interfaces.BaseDataPointInterface
 
-/**
- * --- API model ---
- * Interface of the generic base data point
- */
-interface BaseDataPointInterface<T> {
-    val value: T?
-}
-//TODO separate those into separete files
 /**
  * --- API model ---
  * Fields of a generic base data point and its source
  */
 data class BaseDataPoint<T>(
     @field:JsonProperty(required = true)
-    override val value: T?,
+    override val value: T,
+    val dataSource: BaseDocumentReference?,
+) : BaseDataPointInterface<T>
 
-    val dataSource: BaseDocumentReference? = null,
-): BaseDataPointInterface<T>

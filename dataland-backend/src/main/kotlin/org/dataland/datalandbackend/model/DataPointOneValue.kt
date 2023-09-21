@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.interfaces.ExtendedDataPointInterface
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 
 /**
