@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.p2p.categories.general.subcategories
 
-import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 

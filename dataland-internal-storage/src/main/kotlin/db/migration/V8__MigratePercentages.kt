@@ -153,21 +153,25 @@ class V8__MigratePercentages : BaseJavaMigration() {
                     it,
                     "employeeRepresentation",
                     "employeeRepresentationInPercent",
-                    ::transformToPercentage
+                    ::transformToPercentage,
                 )
             }
-            (((dataObject.getOrJavaNull("general") as JSONObject?)
-                ?.getOrJavaNull("productionSpecificOwnOperations") as JSONObject?)
-                ?.getOrJavaNull("productsServicesCategoriesPurchased") as JSONObject?)
+            (
+                (
+                    (dataObject.getOrJavaNull("general") as JSONObject?)
+                        ?.getOrJavaNull("productionSpecificOwnOperations") as JSONObject?
+                    )
+                    ?.getOrJavaNull("productsServicesCategoriesPurchased") as JSONObject?
+                )
                 ?.also { procurementCategories ->
-                        (procurementCategories).keys().forEach { procurementCategoryKey ->
-                            migrationHelper.migrateValueFromToAndQueueForRemoval(
-                                (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach) as JSONObject,
-                                "percentageOfTotalProcurement",
-                                "shareOfTotalProcurementInPercent",
-                                ::transformToPercentage
-                            )
-                       }
+                    (procurementCategories).keys().forEach { procurementCategoryKey ->
+                        migrationHelper.migrateValueFromToAndQueueForRemoval(
+                            (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach) as JSONObject,
+                            "percentageOfTotalProcurement",
+                            "shareOfTotalProcurementInPercent",
+                            ::transformToPercentage,
+                        )
+                    }
                 }
             migrationHelper.removeQueuedFields()
         }
