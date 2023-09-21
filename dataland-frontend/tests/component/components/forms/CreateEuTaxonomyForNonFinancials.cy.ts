@@ -27,7 +27,6 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * whose name equals the one of a file selected before
    */
   function checkFileWithExistingFilenameOpensDialogWithWarning(): void {
-
     uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
     cy.get(`button[data-test='upload-files-button-referencedReports']`).click();
     cy.get("input[type=file]").selectFile(
@@ -45,10 +44,10 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    */
   function checkFileWithIllegalCharacterOpensDialogWithWarning(): void {
     // TODO: Write this test correctly
-    uploadDocuments.selectDummyFile("Invalid:Filename",100, "referencedReports");
+    uploadDocuments.selectDummyFile("Invalid:Filename", 400, "referencedReports");
     cy.get(".p-dialog-content").should("contain.text", "File names containing illegal characters");
     cy.get(".p-dialog-header-close").click();
-    cy.get(`[data-test="Invalid:FilenameToUploadContainer"]`).should('not.exist');
+    cy.get(`[data-test="Invalid:FilenameToUploadContainer"]`).should("not.exist");
   }
 
   /**
