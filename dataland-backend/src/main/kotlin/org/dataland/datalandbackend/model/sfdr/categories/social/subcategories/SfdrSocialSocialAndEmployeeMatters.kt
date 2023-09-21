@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
 import org.dataland.datalandbackend.model.ExtendedDataPoint
-import org.dataland.datalandbackend.model.DataPointWithUnit
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -40,21 +39,21 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val oecdGuidelinesForMultinationalEnterprisesPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val averageGrossHourlyEarningsMaleEmployees: DataPointWithUnit<BigDecimal>? = null,
+    val averageGrossHourlyEarningsMaleEmployees: ExtendedDataPoint<BigDecimal>? = null,
 
-    val averageGrossHourlyEarningsFemaleEmployees: DataPointWithUnit<BigDecimal>? = null,
+    val averageGrossHourlyEarningsFemaleEmployees: ExtendedDataPoint<BigDecimal>? = null,
 
-    val femaleBoardMembers: DataPointWithUnit<BigDecimal>? = null,
+    val femaleBoardMembers: ExtendedDataPoint<BigDecimal>? = null,
 
-    val maleBoardMembers: DataPointWithUnit<BigDecimal>? = null,
+    val maleBoardMembers: ExtendedDataPoint<BigDecimal>? = null,
 
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo>? = null,
 
     val workplaceAccidentPreventionPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val rateOfAccidents: DataPointWithUnit<BigDecimal>? = null,
+    val rateOfAccidents: ExtendedDataPoint<BigDecimal>? = null,
 
-    val workdaysLost: DataPointWithUnit<BigDecimal>? = null,
+    val workdaysLost: ExtendedDataPoint<BigDecimal>? = null,
 
     val supplierCodeOfConduct: ExtendedDataPoint<YesNo>? = null,
 
@@ -62,9 +61,9 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val whistleblowerProtectionPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val reportedIncidentsOfDiscrimination: DataPointWithUnit<BigDecimal>? = null,
+    val reportedIncidentsOfDiscrimination: ExtendedDataPoint<BigDecimal>? = null,
 
-    val sanctionsIncidentsOfDiscrimination: DataPointWithUnit<BigDecimal>? = null,
+    val sanctionsIncidentsOfDiscrimination: ExtendedDataPoint<BigDecimal>? = null,
 
-    val ceoToEmployeePayGap: DataPointWithUnit<BigDecimal>? = null,
+    val ceoToEmployeePayGap: ExtendedDataPoint<BigDecimal>? = null,
 )

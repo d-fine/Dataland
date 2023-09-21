@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
 import org.dataland.datalandbackend.model.ExtendedDataPoint
-import org.dataland.datalandbackend.model.DataPointWithUnit
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -10,7 +9,7 @@ import java.math.BigDecimal
  * Fields of the subcategory "Waste" belonging to the category "Environmental" of the sfdr framework.
  */
 data class SfdrEnvironmentalWaste(
-    val hazardousWaste: DataPointWithUnit<BigDecimal>? = null,
+    val hazardousWaste: ExtendedDataPoint<BigDecimal>? = null,
 
     val manufactureOfAgrochemicalPesticidesProducts: ExtendedDataPoint<YesNo>? = null,
 
@@ -20,7 +19,7 @@ data class SfdrEnvironmentalWaste(
 
     val sustainableOceansAndSeasPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val wasteNonRecycled: DataPointWithUnit<BigDecimal>? = null,
+    val wasteNonRecycled: ExtendedDataPoint<BigDecimal>? = null,
 
     val threatenedSpeciesExposure: ExtendedDataPoint<YesNo>? = null,
 

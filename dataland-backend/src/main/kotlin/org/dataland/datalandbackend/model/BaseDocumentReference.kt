@@ -12,4 +12,3 @@ data class BaseDocumentReference(
     @field:JsonProperty(required = true)
     override val fileReference: String,
 ) : BaseDocumentReferenceInterface
-

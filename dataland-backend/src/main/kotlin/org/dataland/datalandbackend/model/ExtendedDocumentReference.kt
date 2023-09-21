@@ -12,8 +12,5 @@ data class ExtendedDocumentReference(
     override val tagName: String,
     override val fileName: String,
     @field:JsonProperty(required = true)
-    override val fileReference: String
-) : ExtendedDocumentReferenceInterface {
-
-}
-
+    override val fileReference: String,
+) : ExtendedDocumentReferenceInterface

@@ -12,4 +12,3 @@ data class BaseDataPoint<T>(
     override val value: T,
     val dataSource: BaseDocumentReference?,
 ) : BaseDataPointInterface<T>
-

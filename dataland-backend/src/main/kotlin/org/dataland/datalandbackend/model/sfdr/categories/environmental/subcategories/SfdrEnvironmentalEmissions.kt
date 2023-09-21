@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
 import org.dataland.datalandbackend.model.ExtendedDataPoint
-import org.dataland.datalandbackend.model.DataPointWithUnit
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -10,11 +9,11 @@ import java.math.BigDecimal
  * Fields of the subcategory "Emissions" belonging to the category "Environmental" of the sfdr framework.
  */
 data class SfdrEnvironmentalEmissions(
-    val inorganicPollutants: DataPointWithUnit<BigDecimal>? = null,
+    val inorganicPollutants: ExtendedDataPoint<BigDecimal>? = null,
 
-    val airPollutants: DataPointWithUnit<BigDecimal>? = null,
+    val airPollutants: ExtendedDataPoint<BigDecimal>? = null,
 
-    val ozoneDepletionSubstances: DataPointWithUnit<BigDecimal>? = null,
+    val ozoneDepletionSubstances: ExtendedDataPoint<BigDecimal>? = null,
 
     val carbonReductionInitiatives: ExtendedDataPoint<YesNo>? = null,
 )

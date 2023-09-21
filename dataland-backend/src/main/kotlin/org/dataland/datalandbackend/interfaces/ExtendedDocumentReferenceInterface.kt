@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.interfaces
 
-
 /**
  * --- API model ---
  * A reference to a page in a company report
