@@ -16,6 +16,7 @@ import GenericDataTableModalLink, {
 } from "@/components/general/GenericDataTableModalLink.vue";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 type AvailableTriggerComponents = typeof GenericDataTableModalLink;
 type AvailableDataComponents =
@@ -72,15 +73,12 @@ export function isModal(componentName: string): boolean {
 
 export default defineComponent({
   name: "ModalsComponent",
-  components: {},
   inheritAttrs: false,
-  inject: {},
   props: {
     componentName: {
       type: String,
       default: "componentName",
     },
-    data: {},
   },
   methods: {
     /**
@@ -95,7 +93,7 @@ export default defineComponent({
      * @returns defined modal
      */
     _findModalComponent(): FieldTriggerAndDataComponents {
-      return findModalComponent(this.componentName) as FieldTriggerAndDataComponents;
+      return assertDefined(findModalComponent(this.componentName));
     },
   },
 });

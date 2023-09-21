@@ -29,9 +29,11 @@ export default defineComponent({
         | typeof DetailsCompanyDataTable
         | typeof AlignedActivitiesDataTable
         | typeof NonAlignedActivitiesDataTable,
+      required: true,
     },
     data: {
       type: Object as () => GenericsDataTableRequiredData,
+      required: true,
     },
   },
   data() {
@@ -60,23 +62,21 @@ export default defineComponent({
      * Opens the modal
      */
     openModal() {
-      if (this.component && this.data) {
-        const dialogData = {
-          listOfRowContents: this.data.content[this.data.dataId],
-          kpiKeyOfTable: this.data.kpiKey,
-          columnHeaders: this.data.columnHeaders,
-        };
+      const dialogData = {
+        listOfRowContents: this.data.content[this.data.dataId],
+        kpiKeyOfTable: this.data.kpiKey,
+        columnHeaders: this.data.columnHeaders,
+      };
 
-        if (dialogData) {
-          this.$dialog.open(this.component, {
-            props: {
-              header: this.modalTitle,
-              modal: true,
-              dismissableMask: true,
-            },
-            data: dialogData,
-          });
-        }
+      if (dialogData) {
+        this.$dialog.open(this.component, {
+          props: {
+            header: this.modalTitle,
+            modal: true,
+            dismissableMask: true,
+          },
+          data: dialogData,
+        });
       }
     },
   },
