@@ -2,6 +2,7 @@ import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesF
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
 import type Keycloak from "keycloak-js";
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component tests for 'Request Data' button on the level of company search", function (): void {
   const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray();
@@ -36,7 +37,7 @@ describe("Component tests for 'Request Data' button on the level of company sear
 
   it("Check that the 'Request Data' button exists and works as expected when the 'New Dataset' button is also present", () => {
     const keycloakMock = minimalKeycloakMock({
-      roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
+      roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_REVIEWER],
     });
     verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock);
   });
