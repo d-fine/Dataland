@@ -177,7 +177,7 @@ class V8__MigratePercentages : BaseJavaMigration() {
                             migrationHelper.migrateValueFromToAndQueueForRemoval(
                                 (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach) as JSONObject,
                                 "percentageOfTotalProcurement",
-                                "totalProcurementInPercent",
+                                "shareOfTotalProcurementInPercent",
                                 ::transformToPercentage
                             )
                        }
@@ -270,26 +270,23 @@ class V8__MigratePercentages : BaseJavaMigration() {
             "electrificationOfProcessHeat",
             "preCalcinedClayUsage",
         )
-        val fieldsToMigrateInType = setOf(
-            "useOfDistrictHeatingNetworks",
-            "heatPumpUsage",
-        )
         migrateDataset(dataTableEntity) { dataObject ->
+            val migrationHelper = MigrationHelper()
             dataObject.keys().forEach { categoryName ->
                 val category = (dataObject.getOrJavaNull(categoryName) ?: return@forEach) as JSONObject
                 category.keys().forEach { subcategoryName ->
                     val subcategory = (category.getOrJavaNull(subcategoryName) ?: return@forEach) as JSONObject
-                    val fieldsToRemove = mutableListOf<String>()
                     subcategory.keys().forEach { fieldName ->
                         if(fieldName in percentageFieldNames) {
-                            migratePercentageValue(subcategory, fieldName) // TODO renaming
-                        } else if (fieldName in fieldsToMigrateInType) {
-                            fieldsToRemove.add(fieldName) // TODO renaming
+                            migrationHelper.migrateValueFromToAndQueueForRemoval(
+                                subcategory,
+                                fieldName,
+                                "${fieldName.removeSuffix("Percentage")}InPercent",
+                                ::transformToPercentage
+                            )
                         }
                     }
-                    fieldsToRemove.forEach {
-                        subcategory.remove(it) // TODO renaming
-                    }
+                    migrationHelper.removeQueuedFields()
                 }
             }
         }

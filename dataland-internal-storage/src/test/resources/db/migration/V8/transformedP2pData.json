@@ -11,8 +11,8 @@
     },
     "governance": {
       "organisationalResponsibilityForParisCompatibility": "Yes",
-      "parisCompatibilityInExecutiveRemuneration": 54.75,
-      "shareOfEmployeesTrainedOnParisCompatibility": 23.72,
+      "parisCompatibilityInExecutiveRemunerationInPercent": 54.75,
+      "shareOfEmployeesTrainedOnParisCompatibilityInPercent": 23.72,
       "qualificationRequirementsOnParisCompatibility": "Yes",
       "upstreamSupplierEngagementStrategy": "No",
       "downstreamCustomerEngagement": "No"
@@ -25,44 +25,46 @@
     },
     "investmentPlanning": {
       "investmentPlanForClimateTargets": "No",
-      "capexShareInNetZeroSolutions": 35.17,
-      "capexShareInGhgIntensivePlants": 89.27
+      "capexShareInNetZeroSolutionsInPercent": 35.17,
+      "capexShareInGhgIntensivePlantsInPercent": 89.27
     }
   },
   "commercialRealEstate": {
     "buildingEfficiency": {
-      "buildingSpecificReburbishmentRoadmap": 19.66
+      "buildingSpecificReburbishmentRoadmapInPercent": 19.66
     },
     "energySource": {
-      "renewableHeating": 76.51
+      "renewableHeatingInPercent": 76.51
     },
     "technology": {
+      "useOfDistrictHeatingNetworks": "Yes",
+      "heatPumpUsage": "No"
     }
   },
   "steel": {
     "energy": {},
     "technology": {
-      "blastFurnacePhaseOut": 70.91
+      "blastFurnacePhaseOutInPercent": 70.91
     }
   },
   "electricityGeneration": {
     "technology": {
       "electricityMixEmissions": 6147,
-      "storageCapacityExpansion": 66.29
+      "storageCapacityExpansionInPercent": 66.29
     }
   },
   "cement": {
     "energy": {
-      "energyMix": 29.25,
-      "fuelMix": 14.25,
-      "thermalEnergyEfficiency": 15.8,
-      "compositionOfThermalInput": 9.43
+      "energyMixInPercent": 29.25,
+      "fuelMixInPercent": 14.25,
+      "thermalEnergyEfficiencyInPercent": 15.8,
+      "compositionOfThermalInputInPercent": 9.43
     },
     "technology": {
-      "electrificationOfProcessHeat": 77.4
+      "electrificationOfProcessHeatInPercent": 77.4
     },
     "material": {
-      "preCalcinedClayUsage": 91.61,
+      "preCalcinedClayUsageInPercent": 91.61,
       "circularEconomyContribution": "No"
     }
   }
