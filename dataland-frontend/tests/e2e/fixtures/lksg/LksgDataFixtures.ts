@@ -230,7 +230,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
       },
       disregardForFreedomOfAssociation: {
         freedomOfAssociation: dataGenerator.randomYesNo(),
-        employeeRepresentation: dataGenerator.randomPercentageValue(),
+        employeeRepresentationInPercent: dataGenerator.randomPercentageValue(),
         discriminationForTradeUnionMembers: dataGenerator.randomYesNo(),
         freedomOfOperationForTradeUnion: dataGenerator.randomYesNo(),
         freedomOfAssociationTraining: dataGenerator.randomYesNo(),
@@ -336,7 +336,7 @@ class LksgGenerator extends Generator {
     return {
       procuredProductTypesAndServicesNaceCodes: generateNaceCodes(1),
       numberOfSuppliersPerCountryCode: this.valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
-      percentageOfTotalProcurement: this.randomPercentageValue(),
+      totalProcurementInPercent: this.randomPercentageValue(),
     };
   }
 

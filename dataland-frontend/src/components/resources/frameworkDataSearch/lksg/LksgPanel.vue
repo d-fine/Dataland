@@ -232,9 +232,9 @@ export default defineComponent({
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
             new Map(Object.entries(lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {})),
           ),
-          percentageOfTotalProcurement:
-            lksgProcurementCategory.percentageOfTotalProcurement != null
-              ? formatPercentageNumberAsString(lksgProcurementCategory.percentageOfTotalProcurement)
+          totalProcurementInPercent:
+            lksgProcurementCategory.totalProcurementInPercent != null
+              ? formatPercentageNumberAsString(lksgProcurementCategory.totalProcurementInPercent)
               : null,
         };
       });

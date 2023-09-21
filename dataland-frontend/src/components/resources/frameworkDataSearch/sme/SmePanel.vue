@@ -131,8 +131,8 @@ export default defineComponent({
         return listOfProductionSites.map((productionSite) => ({
           nameOfProductionSite: productionSite.nameOfProductionSite,
           addressOfProductionSite: productionSite.addressOfProductionSite,
-          percentageOfTotalRevenue: productionSite.percentageOfTotalRevenue
-            ? formatPercentageNumberAsString(productionSite.percentageOfTotalRevenue)
+          percentageOfTotalRevenue: productionSite.totalRevenueInPercent
+            ? formatPercentageNumberAsString(productionSite.totalRevenueInPercent)
             : undefined,
         }));
       } else if (field.name == "sector") {
@@ -141,8 +141,8 @@ export default defineComponent({
         const listOfProducts = value as SmeProduct[];
         return listOfProducts.map((product) => ({
           name: product.name,
-          percentageOfTotalRevenue: product.percentageOfTotalRevenue
-            ? formatPercentageNumberAsString(product.percentageOfTotalRevenue)
+          percentageOfTotalRevenue: product.totalRevenueInPercent
+            ? formatPercentageNumberAsString(product.totalRevenueInPercent)
             : undefined,
         }));
       } else if (fieldsToConvertToMillions.includes(field.name)) {
