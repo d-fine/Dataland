@@ -1,5 +1,6 @@
 import { CompanyDataControllerApi, Configuration, type DataTypeEnum, type StoredCompany } from "@clients/backend";
 import { type RouteHandler } from "cypress/types/net-stubbing";
+import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 
 export interface UploadIds {
   companyId: string;
@@ -82,7 +83,7 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
     }
     const base64EncodedAuthorizationPayload = authorizationHeader.split(".")[1];
     const authorization = JSON.parse(atob(base64EncodedAuthorizationPayload)) as { realm_access: { roles: string[] } };
-    if (authorization.realm_access.roles.includes("ROLE_REVIEWER")) {
+    if (authorization.realm_access.roles.includes(KEYCLOAK_ROLE_REVIEWER)) {
       incomingRequest.query["bypassQa"] = "true";
     }
   };

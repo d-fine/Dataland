@@ -1,4 +1,5 @@
 import CreateApiKeyCard from "@/components/general/apiKey/CreateApiKeyCard.vue";
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component test for CreateApiKeyCard", () => {
   it("Should have class invalidExpiryTimeText when expire time is invalid", () => {
@@ -6,7 +7,7 @@ describe("Component test for CreateApiKeyCard", () => {
       data() {
         return {
           isExpiryDateValid: false,
-          userRoles: ["ROLE_USER", "ROLE_ADMIN"],
+          userRoles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_ADMIN],
         };
       },
     });
@@ -17,7 +18,7 @@ describe("Component test for CreateApiKeyCard", () => {
       data() {
         return {
           isExpiryDateValid: true,
-          userRoles: ["ROLE_USER", "ROLE_ADMIN"],
+          userRoles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_ADMIN],
         };
       },
     });

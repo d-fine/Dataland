@@ -38,6 +38,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
+  emits: ["fetchedCompanyInformation"],
   data() {
     return {
       companyInformation: null as CompanyInformation | null,
@@ -46,16 +47,16 @@ export default defineComponent({
     };
   },
   props: {
-    companyID: {
+    companyId: {
       type: String,
-      default: "loading",
+      required: true,
     },
   },
   mounted() {
     void this.getCompanyInformation();
   },
   watch: {
-    companyID() {
+    companyId() {
       void this.getCompanyInformation();
     },
   },
@@ -67,13 +68,14 @@ export default defineComponent({
     async getCompanyInformation() {
       try {
         this.waitingForData = true;
-        if (this.companyID != "loading") {
+        if (this.companyId !== undefined) {
           const companyDataControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)(),
           ).getCompanyDataControllerApi();
-          const response = await companyDataControllerApi.getCompanyById(this.companyID);
+          const response = await companyDataControllerApi.getCompanyById(this.companyId);
           this.companyInformation = response.data.companyInformation;
           this.waitingForData = false;
+          this.$emit("fetchedCompanyInformation", this.companyInformation);
         }
       } catch (error) {
         console.error(error);
