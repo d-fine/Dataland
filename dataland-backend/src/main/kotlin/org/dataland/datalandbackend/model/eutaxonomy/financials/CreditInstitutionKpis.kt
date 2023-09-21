@@ -8,11 +8,11 @@ import java.math.BigDecimal
  * KPIs for credit institutions for the EuTaxonomyForFinancials framework
  */
 data class CreditInstitutionKpis(
-    val tradingPortfolio: DataPointOneValue<BigDecimal>? = null,
+    val tradingPortfolioInPercent: DataPointOneValue<BigDecimal>? = null,
 
-    val interbankLoans: DataPointOneValue<BigDecimal>? = null,
+    val interbankLoansInPercent: DataPointOneValue<BigDecimal>? = null,
 
-    val tradingPortfolioAndInterbankLoans: DataPointOneValue<BigDecimal>? = null,
+    val tradingPortfolioAndInterbankLoansInPercent: DataPointOneValue<BigDecimal>? = null,
 
-    val greenAssetRatio: DataPointOneValue<BigDecimal>? = null,
+    val greenAssetRatioInPercent: DataPointOneValue<BigDecimal>? = null,
 )

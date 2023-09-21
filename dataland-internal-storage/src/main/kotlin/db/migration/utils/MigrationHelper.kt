@@ -1,7 +1,6 @@
 package db.migration.utils
 
 import org.json.JSONObject
-import kotlin.reflect.jvm.internal.impl.builtins.functions.FunctionTypeKind.KFunction
 
 class MigrationHelper {
     private data class FieldToRemove(
@@ -55,24 +54,31 @@ class MigrationHelper {
         queueFieldForRemoval(fieldHolder, oldFieldName)
     }
 
-    inline fun <reified T> migrateDataPointValue(
+    inline fun <O, reified N> migrateDataPointValueFromToAndQueueForRemoval(
         dataPointHolder: JSONObject,
-        dataPointName: String,
-        transformation: (T) -> T = { it },
+        oldDataPointName: String,
+        newDataPointName: String,
+        transformation: (O) -> N = {
+            require(it is N)
+            it
+        },
     ) {
-        val dataPointObject = (dataPointHolder.getOrJavaNull(dataPointName) ?: return) as JSONObject
-        migrateValue(dataPointObject, "value", transformation)
+        migrateDataPointValueFromTo(dataPointHolder, oldDataPointName, newDataPointName, transformation)
+        queueFieldForRemoval(dataPointHolder, oldDataPointName)
     }
 
-//    inline fun <O, reified N> migrateDataPointValueFromTo(
-//        kpiHolder: JSONObject,
-//        oldDataPointName: String,
-//        newDataPointName: String,
-//        transformation: (O) -> N = {
-//            require(it is N)
-//            it
-//        },
-//    ) {
-//        kpiHolder.put(newDataPointName, transformation((kpiHolder.getOrJavaNull(oldDataPointName) ?: return) as O))
-//    }
+    inline fun <O, reified N> migrateDataPointValueFromTo(
+        dataPointHolder: JSONObject,
+        oldDataPointName: String,
+        newDataPointName: String,
+        transformation: (O) -> N = {
+            require(it is N)
+            it
+        },
+    ) {
+        val oldDataPointObject = (dataPointHolder.getOrJavaNull(oldDataPointName) ?: return) as JSONObject
+        val newDataPointObject = JSONObject(oldDataPointObject.toString())
+        migrateValueFromTo(newDataPointObject, "value", "value", transformation)
+        dataPointHolder.put(newDataPointName, newDataPointObject)
+    }
 }

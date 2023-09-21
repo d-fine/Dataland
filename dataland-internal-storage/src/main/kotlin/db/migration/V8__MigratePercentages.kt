@@ -38,27 +38,10 @@ class V8__MigratePercentages : BaseJavaMigration() {
         dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
     }
 
-//    private fun migratePercentageDataPoint(dataPointHolder: JSONObject, dataPointName: String) {
-//        val dataPointObject = (dataPointHolder.getOrJavaNull(dataPointName) ?: return) as JSONObject
-//        migratePercentageValue(dataPointObject, "value")
-//    }
-
     private fun migrateFinancialShare(migrationHelper: MigrationHelper, financialShareHolder: JSONObject, financialShareName: String) {
         val financialShareObject = (financialShareHolder.getOrJavaNull(financialShareName) ?: return) as JSONObject
         migrationHelper.migrateValue(financialShareObject, "relativeShareInPercent", ::transformToPercentage)
     }
-//
-//    private fun migratePercentageValue(migrationHelper: MigrationHelper, kpiHolder: JSONObject, kpiName: String) {
-//        migratePercentageValueFromTo(kpiHolder, kpiName, kpiName)
-//    }
-//
-//    private fun migratePercentageValueAppendingSuffix(kpiHolder: JSONObject, kpiName: String) {
-//        migratePercentageValueFromTo(kpiHolder, kpiName, "${kpiName}InPercent")
-//    }
-//
-//    private fun migratePercentageValueFromTo(kpiHolder: JSONObject, oldKpiName: String, newKpiName: String = oldKpiName) {
-//        kpiHolder.put(newKpiName, transformToPercentage((kpiHolder.getOrJavaNull(oldKpiName) ?: return) as BigDecimal))
-//    }
 
     private fun transformToPercentage(decimal: BigDecimal): BigDecimal {
         return decimal * BigDecimal(100)
@@ -68,30 +51,37 @@ class V8__MigratePercentages : BaseJavaMigration() {
      * Migrates a EU taxonomy for financials dataset
      */
     fun migrateEuTaxonomyFinancials(dataTableEntity: DataTableEntity) {
-        // TODO manual renamings in backend
-//        migrateDataset(dataTableEntity) { dataObject ->
-//            val financialServiceTypesWithPercentageDataPointsOnly = listOf(
-//                "creditInstitutionKpis", "investmentFirmKpis", "insuranceKpis",
-//            )
-//            financialServiceTypesWithPercentageDataPointsOnly.forEach { financialServiceType ->
-//                val financialServiceKpis = (dataObject.getOrJavaNull(financialServiceType) ?: return@forEach) as JSONObject
-//                val kpiKeys = financialServiceKpis.keys()
-//                kpiKeys.forEach { kpiKey ->
-//                    // TODO renaming
-//                    migratePercentageDataPoint(financialServiceKpis, kpiKey)
-//                }
-//            }
-//            val eligibilityKpis = (dataObject.getOrJavaNull("eligibilityKpis") ?: return@migrateDataset) as JSONObject
-//            val financialServiceTypes = eligibilityKpis.keys()
-//            financialServiceTypes.forEach { key ->
-//                val financialServiceKpis = (eligibilityKpis.getOrJavaNull(key) ?: return@forEach) as JSONObject
-//                // TODO renaming
-//                val financialServiceKpiKeys = financialServiceKpis.keys()
-//                financialServiceKpiKeys.forEach { kpiKey ->
-//                    migratePercentageDataPoint(financialServiceKpis, kpiKey)
-//                }
-//            }
-//        }
+        migrateDataset(dataTableEntity) { dataObject ->
+            val migrationHelper = MigrationHelper()
+            val financialServiceTypesWithPercentageDataPointsOnly = listOf(
+                "creditInstitutionKpis", "investmentFirmKpis", "insuranceKpis",
+            )
+            financialServiceTypesWithPercentageDataPointsOnly.forEach { financialServiceType ->
+                val financialServiceKpis = (dataObject.getOrJavaNull(financialServiceType) ?: return@forEach) as JSONObject
+                financialServiceKpis.keys().forEach { kpiKey ->
+                    migrationHelper.migrateDataPointValueFromToAndQueueForRemoval(
+                        financialServiceKpis,
+                        kpiKey,
+                        "${kpiKey}InPercent",
+                        ::transformToPercentage,
+                    )
+                }
+                migrationHelper.removeQueuedFields()
+            }
+            val eligibilityKpis = (dataObject.getOrJavaNull("eligibilityKpis") ?: return@migrateDataset) as JSONObject
+            eligibilityKpis.keys().forEach { key ->
+                val financialServiceKpis = (eligibilityKpis.getOrJavaNull(key) ?: return@forEach) as JSONObject
+                financialServiceKpis.keys().asSequence().toList().forEach { kpiKey ->
+                    migrationHelper.migrateDataPointValueFromToAndQueueForRemoval(
+                        financialServiceKpis,
+                        kpiKey,
+                        "${kpiKey}InPercent",
+                        ::transformToPercentage,
+                    )
+                }
+                migrationHelper.removeQueuedFields()
+            }
+        }
     }
 
     /**

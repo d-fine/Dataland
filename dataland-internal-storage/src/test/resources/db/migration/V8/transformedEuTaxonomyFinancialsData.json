@@ -25,7 +25,7 @@
   ],
   "eligibilityKpis": {
     "InsuranceOrReinsurance": {
-      "banksAndIssuers": {
+      "banksAndIssuersInPercent": {
         "value": 99.96,
         "dataSource": {
           "page": 1020,
@@ -35,7 +35,7 @@
         "quality": "Incomplete",
         "comment": "calculate bluetooth array"
       },
-      "derivatives": {
+      "derivativesInPercent": {
         "value": 79.65,
         "dataSource": {
           "page": 241,
@@ -45,14 +45,14 @@
         "quality": "Audited",
         "comment": "generate bluetooth hard drive"
       },
-      "investmentNonNfrd": {
+      "investmentNonNfrdInPercent": {
         "value": 81.03,
         "dataSource": {
           "report": ""
         },
         "quality": "Estimated"
       },
-      "taxonomyEligibleActivity": {
+      "taxonomyEligibleActivityInPercent": {
         "dataSource": {
           "page": 809,
           "report": "IntegratedReport",
@@ -61,7 +61,7 @@
         "quality": "Reported",
         "comment": "navigate 1080p driver"
       },
-      "taxonomyNonEligibleActivity": {
+      "taxonomyNonEligibleActivityInPercent": {
         "value": 57.44,
         "dataSource": {
           "report": ""
@@ -71,7 +71,7 @@
     }
   },
   "insuranceKpis": {
-    "taxonomyEligibleNonLifeInsuranceActivities": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
       "value": 39.14,
       "dataSource": {
         "page": 507,
@@ -83,7 +83,7 @@
     }
   },
   "investmentFirmKpis": {
-    "whatever": {
+    "whateverInPercent": {
       "value": 39.24,
       "dataSource": {
         "page": 507,
@@ -95,7 +95,7 @@
     }
   },
   "creditInstitutionKpis": {
-    "taxonomyEligibleNonLifeInsuranceActivities": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
       "value": null,
       "dataSource": {
         "page": 507,
