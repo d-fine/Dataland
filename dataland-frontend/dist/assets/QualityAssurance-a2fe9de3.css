@@ -1,0 +1,1 @@
+pre#dataset-container{background:white;padding:20px;border:1px solid black}#accept-button{color:var(--green-700);background:var(--green-100);border:1px solid var(--green-700)}#reject-button{color:var(--red-700);background:var(--red-100);border:1px solid var(--red-700)}#qa-data-result tr:hover{cursor:pointer}
