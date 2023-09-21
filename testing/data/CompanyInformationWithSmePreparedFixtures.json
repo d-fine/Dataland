@@ -2,50 +2,51 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Riverton",
-			"headquartersPostalCode": "88900",
+			"headquarters": "Lawton",
+			"sector": "convergence",
 			"identifiers": {
-				"Lei": [
-					"ZKTUWUco9CrNtVthAoif"
-				],
+				"Lei": [],
 				"Isin": [
-					"trJYMHJSNWWG"
+					"jl0fd21vciay",
+					"zhxg95rbwQHQ"
 				],
 				"PermId": [
-					"lV4IHQPjkO"
+					"LnLX3XJNIX"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"lkOjbGx"
+				],
 				"Duns": [
-					"8zQHqcNQo"
+					"5B3XhOtCz"
 				],
 				"VatNumber": [
-					"FSCKbf6nT"
+					"c9wZqzzd3"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SS",
+			"countryCode": "TO",
 			"companyAlternativeNames": [
-				"Williamson - Kautzer"
+				"Mitchell - Wiegand"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"J",
-						"L",
-						"M"
+						"32.1",
+						"K"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Christa Causeway 90049",
-						"postalCode": "44500-0907",
-						"city": "South Davin",
-						"country": "IL"
+						"streetAndHouseNumber": "Weissnat Overpass 640",
+						"postalCode": "36376-2787",
+						"city": "Veumstead",
+						"state": "Iowa",
+						"country": "VG"
 					},
-					"numberOfEmployees": 6253,
-					"fiscalYearStart": "2024-05-21"
+					"numberOfEmployees": 7605,
+					"fiscalYearStart": "2024-08-30"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -55,30 +56,38 @@
 			},
 			"production": {
 				"sites": {},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Sleek Plastic Keyboard",
+							"percentageOfTotalRevenue": 0.4454
+						},
+						{
+							"name": "Tasty Bronze Chips"
+						},
+						{
+							"name": "Rustic Frozen Towels",
+							"percentageOfTotalRevenue": 0.4247
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1358,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 177,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 738,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 133,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"naturalHazardsCovered": [
-						"Snow",
-						"EarthQuake",
-						"Wind",
-						"Hail",
-						"Flooding"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 3561168
 				}
 			}
 		},
@@ -87,36 +96,34 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Dagmar",
+			"headquarters": "New Mallie",
 			"identifiers": {
-				"Lei": [
-					"ismiiDzWwWsgILd0avc4"
-				],
+				"Lei": [],
 				"Isin": [],
 				"PermId": [],
-				"Ticker": [
-					"BjQ9fJy"
-				],
+				"Ticker": [],
 				"Duns": [
-					"vy3Zai983"
+					"oIBWxeP7e"
 				],
-				"VatNumber": [
-					"Sk3vRfSwi"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KI",
+			"countryCode": "BR",
 			"companyAlternativeNames": [
-				"Zulauf, Walker and Olson"
+				"Anderson, Wyman and Balistreri",
+				"Bosco - Beatty",
+				"Heathcote LLC"
 			],
-			"website": "https://limited-earrings.net",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://conventional-clam.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"C"
+						"58.12",
+						"79.90"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -125,51 +132,96 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3312,
-					"fiscalYearStart": "2024-02-12"
+					"numberOfEmployees": 676,
+					"fiscalYearStart": "2024-01-21"
 				},
 				"companyFinancials": {
-					"revenueInEur": 78783457,
-					"operatingCostInEur": 69896373,
-					"capitalAssetsInEur": 45409968
+					"revenueInEur": 50417119,
+					"capitalAssetsInEur": 56948601
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Elegant Fresh Chair",
-							"percentageOfTotalRevenue": 0.5581
+							"nameOfProductionSite": "Torphy - Grimes",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Stella Freeway 508",
+								"postalCode": "03365-4197",
+								"city": "Schambergerport",
+								"country": "TZ"
+							},
+							"percentageOfTotalRevenue": 0.5756
 						},
 						{
-							"name": "Ergonomic Wooden Computer",
-							"percentageOfTotalRevenue": 0.9827
+							"nameOfProductionSite": "Crooks, MacGyver and Bashirian",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Cayla Canyon 2734",
+								"city": "Fort Josianne",
+								"state": "Nevada",
+								"country": "IN"
+							}
 						},
 						{
-							"name": "Intelligent Fresh Salad",
-							"percentageOfTotalRevenue": 0.0909
+							"nameOfProductionSite": "Torp, Abshire and Lindgren",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Jeffry Glen 7294",
+								"postalCode": "06024-7783",
+								"city": "Fort Jaronhaven",
+								"country": "IM"
+							},
+							"percentageOfTotalRevenue": 0.1311
 						},
 						{
-							"name": "Luxurious Metal Bike"
+							"nameOfProductionSite": "Larson - Bailey",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Ernser Cape 316",
+								"postalCode": "14837-0302",
+								"city": "Estevanfield",
+								"state": "Ohio",
+								"country": "BI"
+							},
+							"percentageOfTotalRevenue": 0.0002
+						},
+						{
+							"nameOfProductionSite": "Lueilwitz, Leuschke and Boyer",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Botsford Heights 59360",
+								"postalCode": "27022-3472",
+								"city": "Lake Deannastead",
+								"state": "New Jersey",
+								"country": "KE"
+							},
+							"percentageOfTotalRevenue": 0.2347
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": []
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
 				"consumption": {
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 44,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 865,
+					"energyConsumptionHeatingAndHotWater": 366,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 25373847
+					"amountCoveredByInsuranceAgainstNaturalHazards": 22009546,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"EarthQuake",
+						"Wind",
+						"Flooding",
+						"Snow",
+						"Hail"
+					]
 				}
 			}
 		},
@@ -178,125 +230,119 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Sterling Heights",
+			"headquarters": "Dooleymouth",
+			"headquartersPostalCode": "52035-0894",
+			"sector": "niches",
 			"identifiers": {
-				"Lei": [
-					"rwPMFdtNC0cDGCPJmR3L"
-				],
+				"Lei": [],
 				"Isin": [],
 				"PermId": [
-					"5tsXS7J4H3"
+					"mffDefTlxG"
 				],
 				"Ticker": [
-					"KizxAKI"
+					"dIOfH7s"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"TpxQ1v3CW"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"IhXqFLUhFRk0Ayu"
+					"KXu579Hkigj8M6u"
 				]
 			},
-			"countryCode": "MH",
+			"countryCode": "EC",
 			"companyAlternativeNames": [
-				"D'Amore - Konopelski"
+				"Mayert - O'Connell",
+				"Schimmel Group",
+				"Schmitt, Kling and Schimmel"
 			],
-			"companyLegalForm": "AG",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://alienated-bottom-line.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"B",
-						"F",
-						"H",
-						"J",
-						"M"
+						"01.50",
+						"06.2",
+						"23.31",
+						"28.2"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2915,
-					"fiscalYearStart": "2024-04-08"
+					"numberOfEmployees": 6158,
+					"fiscalYearStart": "2023-12-19"
 				},
 				"companyFinancials": {
-					"revenueInEur": 67460952
+					"operatingCostInEur": 55935134
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Leuschke LLC",
 							"addressOfProductionSite": {
-								"city": "Hamillworth",
-								"state": "New Hampshire",
-								"country": "GB"
+								"streetAndHouseNumber": "Bednar Orchard 8745",
+								"postalCode": "41924-2781",
+								"city": "Port Dasia",
+								"state": "Connecticut",
+								"country": "KG"
 							},
-							"percentageOfTotalRevenue": 0.8874
+							"percentageOfTotalRevenue": 0.7436
 						},
 						{
 							"addressOfProductionSite": {
-								"postalCode": "94465-6734",
-								"city": "North Sylvan",
-								"state": "Arizona",
-								"country": "FO"
+								"city": "Weissnatfurt",
+								"state": "New Jersey",
+								"country": "NU"
 							},
-							"percentageOfTotalRevenue": 0.6986
-						},
-						{
-							"nameOfProductionSite": "Lemke and Sons",
-							"addressOfProductionSite": {
-								"postalCode": "21256-2164",
-								"city": "Schultzview",
-								"country": "PL"
-							},
-							"percentageOfTotalRevenue": 0.4477
+							"percentageOfTotalRevenue": 0.516
 						},
 						{
 							"addressOfProductionSite": {
-								"city": "Waukesha",
-								"state": "South Carolina",
-								"country": "GU"
+								"streetAndHouseNumber": "Elissa Falls 686",
+								"postalCode": "74677",
+								"city": "Danielworth",
+								"state": "Nevada",
+								"country": "FK"
 							},
-							"percentageOfTotalRevenue": 0.2716
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Carlee Mews 53172",
-								"city": "East Josieburgh",
-								"state": "Florida",
-								"country": "CH"
-							}
+							"percentageOfTotalRevenue": 0.2574
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Gorgeous Wooden Hat"
+							"name": "Licensed Metal Hat",
+							"percentageOfTotalRevenue": 0.2111
+						},
+						{
+							"name": "Tasty Steel Ball"
+						},
+						{
+							"name": "Fantastic Cotton Hat",
+							"percentageOfTotalRevenue": 0.4621
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 479,
-					"energyConsumptionHeatingAndHotWater": 737,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 849,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 208017,
-					"naturalHazardsCovered": [
-						"Snow",
-						"EarthQuake",
-						"Wind"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23025081
 				}
 			}
 		},

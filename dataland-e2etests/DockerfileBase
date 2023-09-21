@@ -15,5 +15,5 @@ RUN apt-get update && \
 WORKDIR /app
 COPY ./gradle/ ./gradle/
 COPY ./gradlew .
-COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts .
+COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./versions.properties ./
 RUN ./gradlew --no-daemon
