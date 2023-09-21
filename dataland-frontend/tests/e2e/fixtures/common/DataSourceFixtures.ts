@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { type CompanyReportReference } from "@clients/backend";
-import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a random data source referencing a random report from the provided referencedReports
@@ -8,7 +8,7 @@ import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
  * @returns a random data source referencing a random report from the provided referencedReports
  */
 export function generateDataSource(referencedReports: ReferencedDocuments): CompanyReportReference {
-  const chosenReport = faker.helpers.arrayElement(Object.keys(referencedReports));
+  const chosenReport = pickOneElement(Object.keys(referencedReports));
   return {
     page: faker.number.int({ min: 1, max: 1200 }),
     report: chosenReport,
