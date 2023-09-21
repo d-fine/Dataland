@@ -1,6 +1,6 @@
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type SfdrData } from "@clients/backend";
-import { generateOneSfdrDatasetWithManyNulls, generateSfdrData } from "./SfdrDataFixtures";
+import { generateSfdrData } from "./SfdrDataFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 
 type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>;
@@ -105,4 +105,27 @@ function manipulateFixtureForTwoSfdrDataSetsInDifferentYears(input: FixtureData<
 function manipulateFixtureForSfdrDatasetWithLotsOfNulls(fixture: FixtureData<SfdrData>): FixtureData<SfdrData> {
   fixture.companyInformation.companyName = "sfdr-a-lot-of-nulls";
   return fixture;
+}
+
+/**
+ * Generates an SFDR dataset with the value null for some categories, subcategories and field values.
+ * Datasets that were uploaded via the Dataland API can look like this in production.
+ * @returns the dataset
+ */
+function generateOneSfdrDatasetWithManyNulls(): SfdrData {
+  return {
+    general: {
+      general: {
+        dataDate: "27-08-2022",
+        fiscalYearDeviation: "Deviation",
+        fiscalYearEnd: "marker-for-test",
+        scopeOfEntities: null!,
+        referencedReports: null!,
+      },
+    },
+    social: {
+      socialAndEmployeeMatters: null!,
+    },
+    environmental: null!,
+  };
 }

@@ -41,11 +41,11 @@ export default defineComponent({
     return {
       objectives: [
         {
-          name: "Climate mitigation mitigation",
+          name: "Climate change mitigation",
           key: "ClimateChangeMitigation",
         },
         {
-          name: "Climate adaptation adaptation",
+          name: "Climate change adaptation",
           key: "ClimateChangeAdaption",
         },
         {
