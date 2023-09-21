@@ -252,13 +252,13 @@ describe("Component test for ThreeLayerDataTable", () => {
       },
       ammonia: {
         decarbonisation: {
-          energyMix: 0.11,
+          energyMixInPercent: 0.11,
         },
         defossilisation: {},
       },
       cement: {
         energy: {
-          energyMix: 0.22,
+          energyMixInPercent: 0.22,
         },
         technology: {},
         material: {},
@@ -266,10 +266,10 @@ describe("Component test for ThreeLayerDataTable", () => {
     };
 
     const expectedAmmoniaDecarbonisationEnergyMix = roundNumber(
-      assertDefined(p2pData.ammonia?.decarbonisation?.energyMix) * 100,
+      assertDefined(p2pData.ammonia?.decarbonisation?.energyMixInPercent) * 100,
       2,
     );
-    const expectedCementEnergyEnergyMix = roundNumber(assertDefined(p2pData.cement?.energy?.energyMix) * 100, 2);
+    const expectedCementEnergyEnergyMix = roundNumber(assertDefined(p2pData.cement?.energy?.energyMixInPercent) * 100, 2);
 
     cy.mountWithPlugins(ThreeLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
