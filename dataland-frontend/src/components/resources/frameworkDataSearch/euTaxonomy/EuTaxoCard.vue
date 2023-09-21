@@ -7,17 +7,17 @@
           <strong>{{ title }}</strong>
         </div>
         <div v-if="percent !== undefined && percent !== null" class="col-6 text-right text-primary">
-          <span class="font-medium text-3xl" data-test="value">{{ percentFormater }}</span>
+          <span class="font-medium text-3xl" data-test="value">{{ formattedPercent }}</span>
         </div>
         <div v-else-if="total == undefined && amount == undefined" class="col-6 grid align-items-center text-right">
           <span class="pl-4 font-semibold">No data has been reported </span>
         </div>
       </div>
       <PrimeProgressBar
-        :value="percentFormater"
+        :value="formattedPercent"
         :showValue="false"
         class="bg-black-alpha-20 d-progressbar"
-        v-if="percentFormater !== undefined"
+        v-if="formattedPercent !== undefined"
       />
       <div class="grid mt-4">
         <div class="col-12 text-left p-0 pl-2">
@@ -59,7 +59,7 @@ export default defineComponent({
     },
   },
   computed: {
-    percentFormater() {
+    formattedPercent() {
       if (typeof this.percent === "number") {
         return formatPercentageNumberAsString(this.percent);
       } else {
