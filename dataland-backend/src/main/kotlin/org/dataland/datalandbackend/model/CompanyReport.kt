@@ -22,4 +22,4 @@ data class CompanyReport(
     val reportDate: LocalDate? = null,
 
     val currency: String? = null,
-): BaseDocumentReferenceInterface
+) : BaseDocumentReferenceInterface

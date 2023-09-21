@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.interfaces.BaseDocumentReferenceInterface
  * Fields of a generic document reference
  */
 data class BaseDocumentReference(
-    override val fileName: String? =null,
+    override val fileName: String? = null,
     @field:JsonProperty(required = true)
     override val fileReference: String,
 ) : BaseDocumentReferenceInterface
