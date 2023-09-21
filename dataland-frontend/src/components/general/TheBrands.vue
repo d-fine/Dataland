@@ -5,6 +5,8 @@
         {{ brandsSection.text[0] }}
         <span>{{ brandsSection.text[1] }}</span>
       </h2>
+      <!-- <component :is="brandSvg" v-if="brandSvg"></component> -->
+
       <div class="brands__list" role="list">
         <div class="brands__item" v-for="(imgSrc, index) in brandsSection.image" :key="index" role="listitem">
           <img :src="imgSrc" :alt="`Brand ${index + 1}`" :class="`brands__item-image brands__item-image--${index}`" />
@@ -15,14 +17,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, type Ref } from "vue";
 import type { Section } from "@/types/ContentTypes";
 
+// const brandSvg: Ref<string | null> = ref(null);
+// const brandSvg = await import("/src/assets/images/logos/brands_deka.svg");
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const brandsSection = computed(() => {
   return sections?.find((section) => section.title === "Brands") || null;
 });
+// onMounted(async () => {
+//   const svgModule = await import("/src/assets/images/logos/brands_deka.svg");
+//   brandSvg.value = svgModule.default;
+// });
 </script>
 
 <style scoped lang="scss">

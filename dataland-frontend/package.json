@@ -63,7 +63,8 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.1.6",
     "vite": "^4.4.9",
-    "vite-plugin-istanbul": "^4.1.0"
+    "vite-plugin-istanbul": "^4.1.0",
+    "vite-svg-loader": "^4.0.0"
   },
   "prettier": {
     "printWidth": 120

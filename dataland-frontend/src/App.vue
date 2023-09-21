@@ -114,6 +114,9 @@ function openSessionWarningModal(): void {
 </script>
 
 <style lang="scss">
+html {
+  scroll-behavior: smooth;
+}
 #app.lp {
   margin: 0 auto;
   text-align: left;

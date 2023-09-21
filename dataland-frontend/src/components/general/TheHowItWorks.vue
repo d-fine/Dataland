@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from "vue";
+import { ref, computed, onUnmounted, watchEffect } from "vue";
 import type { Section } from "@/types/ContentTypes";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
@@ -52,6 +52,22 @@ const move = (direction: number): void => {
   currentTranslate = currentSlide.value * -440;
   if (slider.value) setSliderPosition(slider.value);
 };
+
+watchEffect(() => {
+  const handleResize = (): void => {
+    if (window.innerWidth > 1800) {
+      currentSlide.value = 0;
+      currentTranslate = 0;
+      if (slider.value) setSliderPosition(slider.value);
+    }
+  };
+
+  window.addEventListener("resize", handleResize);
+
+  onUnmounted(() => {
+    window.removeEventListener("resize", handleResize);
+  });
+});
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
   // Disable dragging for window width greater than 1800px, for example
@@ -183,7 +199,7 @@ onUnmounted(() => {
   &__arrows {
     display: flex;
     gap: 18px;
-    display: none;
+    visibility: hidden;
   }
   &__arrow {
     width: 48px;
@@ -216,6 +232,22 @@ onUnmounted(() => {
       &::before {
         transform: scaleX(-1);
       }
+    }
+  }
+}
+@media (max-width: 1799px) {
+  .howitworks {
+    &__slides {
+      max-width: 1273px;
+      padding-right: 789px;
+      justify-content: flex-start;
+    }
+    &__arrows {
+      visibility: visible;
+      width: 100%;
+      max-width: 1273px;
+      padding-right: 789px;
+      justify-content: flex-start;
     }
   }
 }

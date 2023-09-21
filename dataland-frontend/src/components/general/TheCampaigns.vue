@@ -126,17 +126,20 @@ const campaignSection = computed(() => {
   &__button {
     padding: 14px 32px;
     border-radius: 32px;
-    background-color: #ff6813;
-    color: #fff;
+    background-color: var(--primary-orange);
+    color: var(--default-neutral-white);
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
     line-height: 20px;
     letter-spacing: 0.75px;
     text-transform: uppercase;
-    border: 2px solid #ff6813;
+    border: 2px solid var(--primary-orange);
     cursor: pointer;
-    cursor: pointer;
+    &:hover {
+      background-color: var(--default-neutral-white);
+      color: var(--basic-dark);
+    }
   }
 }
 </style>

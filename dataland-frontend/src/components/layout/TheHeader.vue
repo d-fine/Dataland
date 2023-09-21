@@ -34,8 +34,13 @@ const { landingPage, contentData } = defineProps<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 46px;
-  margin: 16px;
+  padding: 40px 62px 24px;
+  margin: 0 0 16px;
+  position: fixed;
+  width: 100%;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  z-index: 1;
 
   &__logo {
     img {

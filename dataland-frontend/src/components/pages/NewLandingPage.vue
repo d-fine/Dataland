@@ -89,3 +89,9 @@ const openLogoutModal = (): void => {
   });
 };
 </script>
+
+<style lang="scss" scoped>
+main {
+  margin-top: 132px;
+}
+</style>

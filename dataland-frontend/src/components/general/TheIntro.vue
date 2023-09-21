@@ -15,6 +15,7 @@
       </template>
     </h1>
     <TheSearch v-if="introCard" :icon="introCard.icon ?? ''" :placeholderText="introCard.text" />
+    <button class="intro__button">START YOUR DATALAND JOURNEY</button>
   </section>
 </template>
 
@@ -54,6 +55,25 @@ const introCard = computed(() => {
     letter-spacing: 0.25px;
     margin: 0;
     span {
+      color: var(--basic-dark);
+    }
+  }
+  &__button {
+    padding: 14px 32px;
+    border-radius: 32px;
+    background-color: var(--primary-orange);
+    color: var(--default-neutral-white);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+    border: 2px solid var(--primary-orange);
+    cursor: pointer;
+    margin-top: 64px; //spacing
+    &:hover {
+      background-color: var(--default-neutral-white);
       color: var(--basic-dark);
     }
   }

@@ -163,28 +163,32 @@
                 {
                     "title": "Come together",
                     "text": [
-                        "Come together",
-                        " to create a dataset that nobody can create alone while sharing the costs."
+                        "Collaborate on datasets ",
+                        "to share the costs."
                     ],
                     "image": [
                         "Join now!"
                     ],
                     "cards": [
                         {
+                            "icon": "/src/assets/images/elements/Face--add.svg",
                             "title": "10",
-                            "text": "Utilize the search feature to find specific companies within the platform."
+                            "text": "Companies joining every day"
                         },
                         {
+                            "icon": "/src/assets/images/elements/3d-mpr-toggle.svg",
                             "title": "9000",
-                            "text": "Request company’s inclusion in case you can’t find the company you are looking for."
+                            "text": "European Companies"
                         },
                         {
+                            "icon": "/src/assets/images/elements/Certificate.svg",
                             "title": "3",
-                            "text": "Create or join a campaign to get the missing data."
+                            "text": "Active Campaigns"
                         },
                         {
+                            "icon": "/src/assets/images/elements/Area.svg",
                             "title": "5",
-                            "text": "Download either through the platform or through API."
+                            "text": "Frameworks"
                         }
                     ]
                 },

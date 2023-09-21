@@ -8,6 +8,7 @@
       <div class="cometogether__grid" role="grid" aria-labelledby="cometogether-heading">
         <div v-for="(card, index) in comeTogetherSection.cards" :key="index" role="row" class="cometogether__row">
           <div class="cometogether__cell cometogether__cell--icon" role="gridcell">
+            <img :src="card.icon" :alt="card.title" />
             <span>{{ card.title }}</span>
           </div>
           <div role="gridcell" class="cometogether__cell">
@@ -37,9 +38,9 @@ const comeTogetherSection = computed(() => {
 .cometogether {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  padding: 140px 0 80px 296px;
-  background-color: #f6f6f6;
+  align-items: center;
+  padding: 140px 0 80px;
+  background-color: #1f1f1f;
 
   &__wrapper {
     display: flex;
@@ -55,39 +56,46 @@ const comeTogetherSection = computed(() => {
     text-align: left;
     max-width: 672px;
     margin: 0;
+    color: var(--default-neutral-white);
     span {
-      color: #a5a5a5;
+      color: var(--grey-tones-400);
     }
   }
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     align-self: flex-end;
-    margin: 0 120px 0 177px;
     gap: 32px;
   }
   &__row {
-    background-color: #ffffff;
+    border: 1px solid rgba(244, 244, 244, 0.33);
+    background: #262626;
     display: flex;
     border-radius: 16px;
     gap: 16px;
     flex-direction: column;
-    padding: 64px 40px;
-    height: 380px;
+    padding: 46px 40px;
+    height: 369px;
+    max-width: 234px;
   }
   &__cell {
     font-size: 20px;
-    color: #5b5b5b;
+    color: var(--grey-tones-400);
     font-style: normal;
     font-weight: 400;
     line-height: 28px; /* 140% */
     letter-spacing: 0.25px;
     &--icon {
-      color: #ff6813;
+      color: var(--default-neutral-white);
       font-size: 64px;
       font-weight: 700;
       line-height: 78px;
+      img {
+        display: block;
+        width: 48px;
+        margin-bottom: 16px;
+      }
     }
   }
   &__cta {
@@ -97,7 +105,7 @@ const comeTogetherSection = computed(() => {
     line-height: 56px; /* 116.667% */
     letter-spacing: 0.25px;
     text-align: right;
-    padding-right: 120px;
+    color: var(--primary-orange);
   }
 }
 </style>
