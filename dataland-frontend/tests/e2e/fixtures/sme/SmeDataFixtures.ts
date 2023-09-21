@@ -91,7 +91,7 @@ class SmeGenerator extends Generator {
     return this.randomArray((): SmeProduct => {
       return {
         name: faker.commerce.productName(),
-        totalRevenueInPercent: this.randomPercentageValue(),
+        shareOfTotalRevenueInPercent: this.randomPercentageValue(),
       };
     });
   }
@@ -105,7 +105,7 @@ class SmeGenerator extends Generator {
       return {
         nameOfProductionSite: this.valueOrUndefined(faker.company.name()),
         addressOfProductionSite: generateAddress(this.undefinedProbability),
-        totalRevenueInPercent: this.randomPercentageValue(),
+        shareOfTotalRevenueInPercent: this.randomPercentageValue(),
       };
     });
   }

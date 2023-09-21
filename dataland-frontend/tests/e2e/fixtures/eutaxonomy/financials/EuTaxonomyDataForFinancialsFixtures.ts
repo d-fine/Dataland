@@ -58,7 +58,7 @@ export class EuFinancialsGenerator extends Generator {
    */
   generateInsuranceKpis(): InsuranceKpis {
     return {
-      taxonomyEligibleNonLifeInsuranceActivities: this.randomDataPoint(generatePercentageValue()),
+      taxonomyEligibleNonLifeInsuranceActivitiesInPercent: this.randomDataPoint(generatePercentageValue()),
     };
   }
 
@@ -81,10 +81,10 @@ export class EuFinancialsGenerator extends Generator {
     const greenAssetRatioCreditInstitution = this.randomPercentageValue();
 
     return {
-      interbankLoans: this.randomDataPoint(interbankLoans),
-      tradingPortfolio: this.randomDataPoint(tradingPortfolio),
-      tradingPortfolioAndInterbankLoans: this.randomDataPoint(tradingPortfolioAndInterbankLoans),
-      greenAssetRatio: this.randomDataPoint(greenAssetRatioCreditInstitution),
+      interbankLoansInPercent: this.randomDataPoint(interbankLoans),
+      tradingPortfolioInPercent: this.randomDataPoint(tradingPortfolio),
+      tradingPortfolioAndInterbankLoansInPercent: this.randomDataPoint(tradingPortfolioAndInterbankLoans),
+      greenAssetRatioInPercent: this.randomDataPoint(greenAssetRatioCreditInstitution),
     };
   }
 
@@ -94,7 +94,7 @@ export class EuFinancialsGenerator extends Generator {
    */
   generateInvestmentFirmKpis(): InvestmentFirmKpis {
     return {
-      greenAssetRatio: this.randomDataPoint(generatePercentageValue()),
+      greenAssetRatioInPercent: this.randomDataPoint(generatePercentageValue()),
     };
   }
   /**
@@ -103,11 +103,11 @@ export class EuFinancialsGenerator extends Generator {
    */
   generateEligibilityKpis(): EligibilityKpis {
     return {
-      banksAndIssuers: this.randomDataPoint(generatePercentageValue()),
-      derivatives: this.randomDataPoint(generatePercentageValue()),
-      investmentNonNfrd: this.randomDataPoint(generatePercentageValue()),
-      taxonomyEligibleActivity: this.randomDataPoint(generatePercentageValue()),
-      taxonomyNonEligibleActivity: this.randomDataPoint(generatePercentageValue()),
+      banksAndIssuersInPercent: this.randomDataPoint(generatePercentageValue()),
+      derivativesInPercent: this.randomDataPoint(generatePercentageValue()),
+      investmentNonNfrdInPercent: this.randomDataPoint(generatePercentageValue()),
+      taxonomyEligibleActivityInPercent: this.randomDataPoint(generatePercentageValue()),
+      taxonomyNonEligibleActivityInPercent: this.randomDataPoint(generatePercentageValue()),
     };
   }
 }

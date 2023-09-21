@@ -336,7 +336,7 @@ class LksgGenerator extends Generator {
     return {
       procuredProductTypesAndServicesNaceCodes: generateNaceCodes(1),
       numberOfSuppliersPerCountryCode: this.valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
-      totalProcurementInPercent: this.randomPercentageValue(),
+      shareOfTotalProcurementInPercent: this.randomPercentageValue(),
     };
   }
 

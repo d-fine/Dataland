@@ -2,53 +2,51 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Kubbury",
-			"headquartersPostalCode": "74983",
-			"sector": "systems",
+			"headquarters": "Fort Lucileborough",
+			"sector": "methodologies",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"rO6bIPW8dhcbzfL3412t"
+				],
 				"Isin": [
-					"W0B12dbMOt2p"
+					"dSCCMold6OPg",
+					"U6s6V1wjpqKk"
 				],
-				"PermId": [
-					"9ZPInGAuzc"
+				"PermId": [],
+				"Ticker": [
+					"Zy7rnNM"
 				],
-				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"6XDOFvTYd"
+					"kNcprojl7"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"Igqomp7uc7IYtsr"
+				]
 			},
-			"countryCode": "IQ",
+			"countryCode": "TZ",
 			"companyAlternativeNames": [
-				"Hegmann - Rice",
-				"Hermann - Wiza",
-				"Jones - Leannon",
-				"Rowe Group"
+				"Kris - Nitzsche"
 			],
-			"website": "https://our-capability.org",
+			"website": "https://oval-society.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.46",
-						"03.2",
-						"10.31",
-						"20.17",
-						"90.01"
+						"06.20",
+						"07.2",
+						"25.72"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Watsica Way 8890",
-						"postalCode": "26900-2556",
-						"city": "Keelinghaven",
-						"state": "Florida",
-						"country": "PF"
+						"postalCode": "84981",
+						"city": "Hiramville",
+						"state": "Nebraska",
+						"country": "SY"
 					},
-					"numberOfEmployees": 8597,
-					"fiscalYearStart": "2024-02-25"
+					"numberOfEmployees": 5754,
+					"fiscalYearStart": "2023-11-20"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -57,17 +55,43 @@
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {}
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "King - D'Amore",
+							"addressOfProductionSite": {
+								"postalCode": "06612",
+								"city": "Jamisonport",
+								"state": "Utah",
+								"country": "TD"
+							}
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Small Soft Shoes",
+							"shareOfTotalRevenueInPercent": 78.9435
+						},
+						{
+							"name": "Small Steel Bike",
+							"shareOfTotalRevenueInPercent": 25.6124
+						},
+						{
+							"name": "Recycled Bronze Fish"
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 467,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 603,
+					"powerConsumptionInMwh": 1732,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 764,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
@@ -75,7 +99,13 @@
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 10797168
+					"naturalHazardsCovered": [
+						"Flooding",
+						"EarthQuake",
+						"Wind",
+						"Snow",
+						"Avalanche"
+					]
 				}
 			}
 		},
@@ -84,41 +114,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Lake Angelita",
-			"headquartersPostalCode": "17435-9861",
+			"headquarters": "Ernestinestead",
+			"headquartersPostalCode": "39737-9799",
+			"sector": "technologies",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"YO1NL1v3rX01",
-					"7R1yTN9k3ztd"
+					"TXu3fGg943iw",
+					"1bHPL4LDTAsn"
 				],
-				"PermId": [
-					"5kp3k8ptKg"
-				],
-				"Ticker": [
-					"Z6Eb6Qi"
-				],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [
-					"zZx67tTKq"
+					"JTi2v3FoR"
 				],
-				"VatNumber": [
-					"5lbKvQThz"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LI",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://direct-catch.com",
+			"countryCode": "MX",
+			"companyAlternativeNames": [
+				"Bruen, Bernhard and Larson"
+			],
+			"website": "https://wise-compass.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"28.49",
-						"43.34",
-						"62.09"
+						"10.1",
+						"47.53",
+						"50.2",
+						"87"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -127,72 +154,51 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 1749,
-					"fiscalYearStart": "2024-06-05"
+					"numberOfEmployees": 389,
+					"fiscalYearStart": "2024-05-07"
 				},
 				"companyFinancials": {
-					"revenueInEur": 22946634,
-					"operatingCostInEur": 72699294,
-					"capitalAssetsInEur": 30629313
+					"revenueInEur": 24607702,
+					"capitalAssetsInEur": 27954659
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Grady, Boyer and Kuhn",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Trantow Land 46844",
-								"postalCode": "36758-4258",
-								"city": "Rowlett",
-								"state": "South Dakota",
-								"country": "TT"
-							},
-							"totalRevenueInPercent": 63.7471
-						},
-						{
-							"nameOfProductionSite": "Auer, Anderson and Schmeler",
-							"addressOfProductionSite": {
-								"postalCode": "29616-7552",
-								"city": "Victorville",
-								"state": "Massachusetts",
-								"country": "GW"
-							},
-							"totalRevenueInPercent": 67.1982
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Bespoke Soft Table",
-							"totalRevenueInPercent": 8.1439
+							"name": "Luxurious Rubber Gloves",
+							"shareOfTotalRevenueInPercent": 97.0433
 						},
 						{
-							"name": "Generic Frozen Car",
-							"totalRevenueInPercent": 77.5023
-						},
-						{
-							"name": "Oriental Cotton Car",
-							"totalRevenueInPercent": 72.5328
+							"name": "Luxurious Concrete Salad"
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 310,
+					"powerConsumptionInMwh": 739,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 297,
+					"energyConsumptionHeatingAndHotWater": 660,
 					"percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 38010449,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 25015530,
 					"naturalHazardsCovered": [
-						"EarthQuake"
+						"Hail",
+						"Flooding",
+						"EarthQuake",
+						"Wind",
+						"Avalanche"
 					]
 				}
 			}
@@ -202,83 +208,115 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Ziemanntown",
-			"headquartersPostalCode": "95941",
-			"sector": "channels",
+			"headquarters": "Laguna Niguel",
+			"headquartersPostalCode": "17636-4294",
+			"sector": "paradigms",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"74z8LPll5ilBkXLg1m30"
+				],
 				"Isin": [
-					"TKorIzXGAGA9",
-					"3Mf9TPSdjv2R"
+					"iHrkibp0R6hk",
+					"s3dwqw2eRWLI"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"CTjsiDJGA"
-				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"gsd0tFHxSmz9X5u"
+					"tFkO0f0N39ElfxV"
 				]
 			},
-			"countryCode": "AG",
+			"countryCode": "LA",
 			"companyAlternativeNames": [
-				"Parisian - Rolfson"
+				"Lueilwitz and Sons",
+				"Ward - Skiles"
 			],
-			"website": "https://sandy-eicosanoid.com/",
+			"companyLegalForm": "AG",
+			"website": "https://caring-membership.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"81.21"
+						"01.21",
+						"26.7",
+						"77.31",
+						"82.11"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 1313,
-					"fiscalYearStart": "2024-02-17"
+					"numberOfEmployees": 6936,
+					"fiscalYearStart": "2024-06-07"
 				},
 				"companyFinancials": {
-					"revenueInEur": 99757231,
-					"operatingCostInEur": 13839112,
-					"capitalAssetsInEur": 38442535
+					"revenueInEur": 46138880,
+					"capitalAssetsInEur": 66252891
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {
-					"listOfProducts": [
+				"sites": {
+					"listOfProductionSites": [
 						{
-							"name": "Licensed Bronze Gloves",
-							"totalRevenueInPercent": 45.0656
+							"nameOfProductionSite": "Swaniawski, Strosin and Murphy",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Darlene Junctions 7714",
+								"postalCode": "87050",
+								"city": "Labadiecester",
+								"state": "Oklahoma",
+								"country": "CV"
+							},
+							"shareOfTotalRevenueInPercent": 22.0116
 						},
 						{
-							"name": "Unbranded Soft Mouse"
+							"nameOfProductionSite": "Reynolds Inc",
+							"addressOfProductionSite": {
+								"postalCode": "75950",
+								"city": "East Estefania",
+								"country": "TH"
+							},
+							"shareOfTotalRevenueInPercent": 47.07
 						},
 						{
-							"name": "Unbranded Wooden Gloves"
+							"nameOfProductionSite": "Willms Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Veum Burg 9774",
+								"city": "Lake Logan",
+								"state": "West Virginia",
+								"country": "BA"
+							}
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1831,
-					"energyConsumptionHeatingAndHotWater": 978,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": 365,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 209,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 35233065,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 7218670,
 					"naturalHazardsCovered": [
+						"EarthQuake",
+						"Flooding",
+						"Hail",
+						"Snow",
+						"Wind",
 						"Avalanche"
 					]
 				}

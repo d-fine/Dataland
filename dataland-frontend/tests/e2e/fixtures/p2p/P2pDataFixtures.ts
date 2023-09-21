@@ -211,8 +211,8 @@ class P2pGenerator extends Generator {
         renewableHeatingInPercent: this.randomPercentageValue(),
       },
       technology: {
-        useOfDistrictHeatingNetworksInPercent: this.randomPercentageValue(),
-        heatPumpUsageInPercent: this.randomPercentageValue(),
+        useOfDistrictHeatingNetworks: this.randomYesNo(),
+        heatPumpUsage: this.randomYesNo(),
       },
     };
     return this.sectorPresent(sector) ? data : undefined;
@@ -293,7 +293,7 @@ class P2pGenerator extends Generator {
         greenFodderInPercent: this.randomPercentageValue(),
       },
       energy: {
-        renewableElectrictiyInPercent: this.randomPercentageValue(),
+        renewableElectricityInPercent: this.randomPercentageValue(),
         renewableHeatingInPercent: this.randomPercentageValue(),
         electricGasPoweredMachineryVehicleInPercent: this.randomPercentageValue(),
       },
