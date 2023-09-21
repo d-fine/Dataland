@@ -79,9 +79,6 @@ export default defineComponent({
         await qaServiceControllerApi.assignQaStatus(this.dataId, this.qaStatus);
         this.reviewSubmitted = true;
         this.reviewSuccessful = true;
-        setTimeout(() => {
-          this.closeTheDialog();
-        }, 5000);
       } catch (error) {
         console.error(error);
       }
