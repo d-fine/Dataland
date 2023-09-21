@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.eutaxonomy
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.model.CompanyReportReference
+import org.dataland.datalandbackend.model.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 
 /**
@@ -14,5 +14,5 @@ data class AssuranceData(
 
     val provider: String? = null,
 
-    val dataSource: CompanyReportReference? = null,
+    val dataSource: ExtendedDocumentReference? = null,
 )

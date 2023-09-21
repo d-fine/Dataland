@@ -1,12 +1,13 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.interfaces.BaseDataPointInterface
 import org.dataland.datalandbackend.interfaces.ExtendedDataPointInterface
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 
 /**
  * --- API model ---
- * Fields of a generic data point and its source
+ * Fields of a generic base data point and its source
  */
 data class ExtendedDataPoint<T>(
     override val value: T? = null,
