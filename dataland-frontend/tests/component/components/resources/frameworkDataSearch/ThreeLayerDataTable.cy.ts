@@ -16,6 +16,7 @@ import { roundNumber } from "@/utils/NumberConversionUtils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
 import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
 import { formatValueForDisplay } from "@/components/resources/frameworkDataSearch/p2p/P2pFormatValueForDisplay";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 
 describe("Component test for ThreeLayerDataTable", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
@@ -185,7 +186,7 @@ describe("Component test for ThreeLayerDataTable", () => {
       cy.get("table").find(`tr:contains("Minimum safeguards")`);
       cy.get("table").find(`tr:contains("Yes")`);
       cy.get("table").find(`tr:contains("No")`);
-      cy.get("table").find(`tr:contains("${revenueFirstAlignedActivityName}")`);
+      cy.get("table").find(`tr:contains("${activityApiNameToHumanizedName(revenueFirstAlignedActivityName)}")`);
       cy.get("table").find(`tr:contains("${revenueFirstAlignedActivityRelativeShare}")`);
       cy.get("table").find(`tr:contains("${revenueFirstAlignedActivityAbsoluteShare}")`);
     });
@@ -194,7 +195,7 @@ describe("Component test for ThreeLayerDataTable", () => {
   it("Opens the non-aligned activities modal and checks that it works as intended", () => {
     const capexOfDataset = assertDefined(mockedDataForTest[0].data.capex);
     const capexFirstNonAlignedActivity = assertDefined(capexOfDataset.nonAlignedShare?.nonAlignedActivities)[0];
-    assertDefined(capexFirstNonAlignedActivity.activityName);
+    const capexFirstNonAlignedActivityName = assertDefined(capexFirstNonAlignedActivity.activityName);
     const capexNonAlignedShareInPercent = assertDefined(capexOfDataset.nonAlignedShare?.relativeShareInPercent);
     const capexFirstNonAlignedActivityNaceCodes: string = assertDefined(capexFirstNonAlignedActivity.naceCodes)[0];
     const capexFirstNonAlignedActivityRelativeShare = roundNumber(
@@ -219,9 +220,7 @@ describe("Component test for ThreeLayerDataTable", () => {
     ).then(() => {
       expandViewPageAndOpenModal("CapEx", "nonAlignedShare");
       validateExistenceOfCommonColumnHeaders();
-      cy.get("table").find(
-        `tr:contains("Construction, extension and operation of waste water collection and treatment")`,
-      );
+      cy.get("table").find(`tr:contains(${activityApiNameToHumanizedName(capexFirstNonAlignedActivityName)})`);
       cy.get("table").find(`tr:contains("${capexNonAlignedShareInPercent}")`);
       cy.get("table").find(`tr:contains("${capexFirstNonAlignedActivityNaceCodes}")`);
       cy.get("table").find(`tr:contains(${capexFirstNonAlignedActivityRelativeShare})`);
