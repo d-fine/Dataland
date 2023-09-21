@@ -2771,7 +2771,7 @@
           "name": {
             "type": "string"
           },
-          "totalRevenueInPercent": {
+          "shareOfTotalRevenueInPercent": {
             "type": "number"
           }
         }
@@ -2807,7 +2807,7 @@
           "addressOfProductionSite": {
             "$ref": "#/components/schemas/Address"
           },
-          "totalRevenueInPercent": {
+          "shareOfTotalRevenueInPercent": {
             "type": "number"
           }
         }
@@ -3711,16 +3711,16 @@
           "mobilityAndTravelPolicy": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "downstreamCustomerEngagement": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "policymakerEngagement": {
-            "$ref": "#/components/schemas/YesNo"
-          },
           "upstreamSupplierEngagementStrategy": {
             "$ref": "#/components/schemas/YesNo"
           },
           "upstreamSupplierProcurementPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "downstreamCustomerEngagement": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "policymakerEngagement": {
             "$ref": "#/components/schemas/YesNo"
           }
         }
@@ -3863,7 +3863,7 @@
       "P2pLivestockFarmingEnergy": {
         "type": "object",
         "properties": {
-          "renewableElectrictiyInPercent": {
+          "renewableElectricityInPercent": {
             "type": "number"
           },
           "renewableHeatingInPercent": {
@@ -3962,11 +3962,11 @@
       "P2plRealEstateTechnology": {
         "type": "object",
         "properties": {
-          "useOfDistrictHeatingNetworksInPercent": {
-            "type": "number"
+          "useOfDistrictHeatingNetworks": {
+            "$ref": "#/components/schemas/YesNo"
           },
-          "heatPumpUsageInPercent": {
-            "type": "number"
+          "heatPumpUsage": {
+            "$ref": "#/components/schemas/YesNo"
           }
         }
       },
@@ -4535,7 +4535,7 @@
               "format": "int32"
             }
           },
-          "totalProcurementInPercent": {
+          "shareOfTotalProcurementInPercent": {
             "type": "number"
           }
         },
@@ -5364,16 +5364,16 @@
       "CreditInstitutionKpis": {
         "type": "object",
         "properties": {
-          "tradingPortfolio": {
+          "tradingPortfolioInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
-          "interbankLoans": {
+          "interbankLoansInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
-          "tradingPortfolioAndInterbankLoans": {
+          "tradingPortfolioAndInterbankLoansInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
-          "greenAssetRatio": {
+          "greenAssetRatioInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         }
@@ -5401,19 +5401,19 @@
       "EligibilityKpis": {
         "type": "object",
         "properties": {
-          "taxonomyEligibleActivity": {
+          "taxonomyEligibleActivityInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
-          "taxonomyNonEligibleActivity": {
+          "taxonomyNonEligibleActivityInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
-          "derivatives": {
+          "derivativesInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
-          "banksAndIssuers": {
+          "banksAndIssuersInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           },
-          "investmentNonNfrd": {
+          "investmentNonNfrdInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         },
@@ -5573,7 +5573,7 @@
       "InsuranceKpis": {
         "type": "object",
         "properties": {
-          "taxonomyEligibleNonLifeInsuranceActivities": {
+          "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         }
@@ -5581,7 +5581,7 @@
       "InvestmentFirmKpis": {
         "type": "object",
         "properties": {
-          "greenAssetRatio": {
+          "greenAssetRatioInPercent": {
             "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
           }
         }
