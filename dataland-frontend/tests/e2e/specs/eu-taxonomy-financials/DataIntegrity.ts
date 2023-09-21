@@ -104,7 +104,10 @@ describeIf(
       checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
       cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
         .should("contain", "Taxonomy-eligible non-life insurance economic activities")
-        .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent));
+        .should(
+          "contain",
+          formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent),
+        );
     }
 
     /**
@@ -144,7 +147,10 @@ describeIf(
       if (dualFieldSubmission) {
         cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
           .should("contain", "Trading portfolio & on demand interbank loans")
-          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoansInPercent));
+          .should(
+            "contain",
+            formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoansInPercent),
+          );
         if (!individualFieldSubmission) {
           cy.get("body").should("not.contain", /^Trading portfolio$/);
           cy.get("body").should("not.contain", "On demand interbank loans");

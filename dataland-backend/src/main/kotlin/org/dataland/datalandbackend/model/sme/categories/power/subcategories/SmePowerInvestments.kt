@@ -7,5 +7,5 @@ import org.dataland.datalandbackend.model.enums.sme.PercentRangeForInvestmentsIn
  * Fields of the subcategory "Investments" belonging to the category "Power" of the sme framework.
 */
 data class SmePowerInvestments(
-    val percentageForInvestmentsInEnhancingEnergyEfficiency: PercentRangeForInvestmentsInEnergyEfficiency? = null, // TODO changes hopefully
+    val percentageForInvestmentsInEnhancingEnergyEfficiency: PercentRangeForInvestmentsInEnergyEfficiency? = null,
 )

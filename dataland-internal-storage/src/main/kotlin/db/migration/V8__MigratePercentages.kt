@@ -16,6 +16,9 @@ import java.math.BigDecimal
  * and the new version is integrated into the old datatype
  */
 class V8__MigratePercentages : BaseJavaMigration() {
+    companion object {
+        private const val percentageMultiplier = 100
+    }
 
     override fun migrate(context: Context?) {
         val migrationScriptMapping = mapOf(
@@ -38,13 +41,17 @@ class V8__MigratePercentages : BaseJavaMigration() {
         dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
     }
 
-    private fun migrateFinancialShare(migrationHelper: MigrationHelper, financialShareHolder: JSONObject, financialShareName: String) {
+    private fun migrateFinancialShare(
+        migrationHelper: MigrationHelper,
+        financialShareHolder: JSONObject,
+        financialShareName: String,
+    ) {
         val financialShareObject = (financialShareHolder.getOrJavaNull(financialShareName) ?: return) as JSONObject
         migrationHelper.migrateValue(financialShareObject, "relativeShareInPercent", ::transformToPercentage)
     }
 
     private fun transformToPercentage(decimal: BigDecimal): BigDecimal {
-        return decimal * BigDecimal(100)
+        return decimal * BigDecimal(percentageMultiplier)
     }
 
     /**
@@ -57,7 +64,8 @@ class V8__MigratePercentages : BaseJavaMigration() {
                 "creditInstitutionKpis", "investmentFirmKpis", "insuranceKpis",
             )
             financialServiceTypesWithPercentageDataPointsOnly.forEach { financialServiceType ->
-                val financialServiceKpis = (dataObject.getOrJavaNull(financialServiceType) ?: return@forEach) as JSONObject
+                val financialServiceKpis =
+                    (dataObject.getOrJavaNull(financialServiceType) ?: return@forEach) as JSONObject
                 financialServiceKpis.keys().forEach { kpiKey ->
                     migrationHelper.migrateDataPointValueFromToAndQueueForRemoval(
                         financialServiceKpis,
@@ -92,7 +100,12 @@ class V8__MigratePercentages : BaseJavaMigration() {
             val migrationHelper = MigrationHelper()
             listOf("revenue", "capex", "opex").forEach { cashFlowType ->
                 val cashFlowObject = (dataObject.getOrJavaNull(cashFlowType) ?: return@forEach) as JSONObject
-                val financialShareFields = listOf("nonEligibleShare", "eligibleShare", "nonAlignedShare", "alignedShare")
+                val financialShareFields = listOf(
+                    "nonEligibleShare",
+                    "eligibleShare",
+                    "nonAlignedShare",
+                    "alignedShare",
+                )
                 val percentageFields = listOf(
                     "substantialContributionToClimateChangeMitigationInPercent",
                     "substantialContributionToClimateChangeAdaptionInPercent",
@@ -148,7 +161,10 @@ class V8__MigratePercentages : BaseJavaMigration() {
     fun migrateLksg(dataTableEntity: DataTableEntity) {
         migrateDataset(dataTableEntity) { dataObject ->
             val migrationHelper = MigrationHelper()
-            ((dataObject.getOrJavaNull("social") as JSONObject?)?.getOrJsonNull("disregardForFreedomOfAssociation") as JSONObject?)?.also {
+            (
+                (dataObject.getOrJavaNull("social") as JSONObject?)
+                    ?.getOrJsonNull("disregardForFreedomOfAssociation") as JSONObject?
+                )?.also {
                 migrationHelper.migrateValueFromToAndQueueForRemoval(
                     it,
                     "employeeRepresentation",
@@ -166,7 +182,8 @@ class V8__MigratePercentages : BaseJavaMigration() {
                 ?.also { procurementCategories ->
                     (procurementCategories).keys().forEach { procurementCategoryKey ->
                         migrationHelper.migrateValueFromToAndQueueForRemoval(
-                            (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach) as JSONObject,
+                            (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach)
+                                as JSONObject,
                             "percentageOfTotalProcurement",
                             "shareOfTotalProcurementInPercent",
                             ::transformToPercentage,
