@@ -3,6 +3,7 @@ import { type DatasetTableInfo, DatasetStatus } from "@/components/resources/dat
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component test for DatasetOverviewTable", () => {
   const nameOfCompanyAlpha = "Imaginary-Corporate";
@@ -38,7 +39,7 @@ describe("Component test for DatasetOverviewTable", () => {
   function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {
     const keycloakMock = minimalKeycloakMock({
       userId: "Mock-User-Id",
-      roles: ["ROLE_USER", "ROLE_UPLOADER"],
+      roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
     });
     cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
       keycloak: keycloakMock,
