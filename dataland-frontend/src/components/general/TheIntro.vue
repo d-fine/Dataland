@@ -54,6 +54,9 @@ const introCard = computed(() => {
     line-height: 106px;
     letter-spacing: 0.25px;
     margin: 0;
+    transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
     span {
       color: var(--basic-dark);
     }
@@ -75,6 +78,19 @@ const introCard = computed(() => {
     &:hover {
       background-color: var(--default-neutral-white);
       color: var(--basic-dark);
+    }
+  }
+}
+@media only screen and (max-width: $large) {
+  .intro {
+    &__img {
+      margin-bottom: 31px;
+    }
+    &__text {
+      font-size: 64px;
+      line-height: 78px;
+      max-width: 750px;
+      margin: 0 auto;
     }
   }
 }

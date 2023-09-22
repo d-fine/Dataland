@@ -65,7 +65,9 @@ const brandsSection = computed(() => {
   &__list {
     display: flex;
     flex-direction: row;
-    gap: 32px;
+    width: 100%;
+    justify-content: space-evenly;
+    max-width: 1264px;
 
     .brands__item {
       width: 200px;

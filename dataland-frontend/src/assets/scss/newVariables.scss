@@ -35,9 +35,10 @@
   // --space-lg: calc(var(--space-unit) * 1.5);
   // --space-xl: calc(var(--space-unit) * 2);
 
-  /* Breakpoints */
-  // --breakpoint-sm: 576px;
-  // --breakpoint-md: 768px;
-  // --breakpoint-lg: 992px;
-  // --breakpoint-xl: 1200px;
 }
+  /* Breakpoints */
+  // --extra-small: 600px;
+  // --small: 601px;
+  $medium: 1024px;
+  $large: 1440px;
+  $extra-large: 1800px;

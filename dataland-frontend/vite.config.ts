@@ -79,4 +79,11 @@ export default defineConfig({
       usePolling: process.env.POLLING === "true",
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "./src/assets/scss/newVariables.scss";`,
+      },
+    },
+  },
 });

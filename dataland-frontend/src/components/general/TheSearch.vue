@@ -53,4 +53,9 @@ const { icon, placeholderText } = defineProps<{
     pointer-events: none; // Let click events pass through to the input
   }
 }
+@media only screen and (max-width: 1440px) {
+  .search {
+    margin-top: 31px;
+  }
+}
 </style>

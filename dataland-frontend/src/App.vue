@@ -114,6 +114,10 @@ function openSessionWarningModal(): void {
 </script>
 
 <style lang="scss">
+// @import "./assets/scss/newVariables.scss";
+* {
+  border: 1px solid red;
+}
 html {
   scroll-behavior: smooth;
 }
