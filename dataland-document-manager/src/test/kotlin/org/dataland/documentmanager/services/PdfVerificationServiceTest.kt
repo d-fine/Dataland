@@ -74,8 +74,8 @@ class PdfVerificationServiceTest {
         val testFileBytes = loadFileBytes(testPdfFile)
         val ch = '/'
         val testFile = MockMultipartFile(
-            "te${ch}st.pdf",
-            "te${ch}st.pdf",
+            "te:st.pdf",
+            "te:st.pdf",
             MediaType.APPLICATION_PDF_VALUE,
             testFileBytes,
         )
@@ -83,8 +83,9 @@ class PdfVerificationServiceTest {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
         }
         assertEquals(
-            "Please ensure that your filename only contains alphanumeric characters, hyphens, spaces,brackets, " +
-                "underscores and periods up to maximum length of 254 characters.",
+            "Please ensure that your does not contain any of the following characters: " +
+                "column, angle braket, double quotation mark, pipe, question mark, asterisk, forward or backward slash. " +
+                "Also doesn't end in a period or whitespace and has a maximum length of 254 characters.",
             thrown.message,
         )
     }
