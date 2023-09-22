@@ -32,7 +32,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         const revenueOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.revenue);
         const revenueOfDatasetAlphaTotalAmount = assertDefined(revenueOfDatasetAlpha.totalAmount);
         revenueOfDatasetAlphaTotalAmount.value = 0;
-        revenueOfDatasetAlphaTotalAmount.unit = "EUR";
+        revenueOfDatasetAlphaTotalAmount.currency = "EUR";
         capexOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.capex);
 
         capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
