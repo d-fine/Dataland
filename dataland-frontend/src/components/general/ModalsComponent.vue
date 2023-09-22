@@ -2,7 +2,7 @@
   <template v-if="_isModal()">
     <component
       :is="_findModalComponent().triggerComponent"
-      :displayComponent="_findModalComponent().dataComponent"
+      :displayComponent="_findModalComponent().displayComponent"
       :data="data"
     ></component>
   </template>
@@ -26,22 +26,22 @@ type AvailableDataComponents =
 
 type FieldTriggerAndDataComponents = {
   triggerComponent: AvailableTriggerComponents;
-  dataComponent: AvailableDataComponents;
+  displayComponent: AvailableDataComponents;
 };
 
 const genericFieldTriggerAndDataComponent = {
   triggerComponent: GenericDataTableModalLink,
-  dataComponent: DetailsCompanyDataTable,
+  displayComponent: DetailsCompanyDataTable,
 } as const;
 
 const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDataComponents } = {
   AlignedActivitiesDataTable: {
     triggerComponent: GenericDataTableModalLink,
-    dataComponent: AlignedActivitiesDataTable,
+    displayComponent: AlignedActivitiesDataTable,
   },
   NonAlignedActivitiesDataTable: {
     triggerComponent: GenericDataTableModalLink,
-    dataComponent: NonAlignedActivitiesDataTable,
+    displayComponent: NonAlignedActivitiesDataTable,
   },
   NaceCodeFormField: genericFieldTriggerAndDataComponent,
   MostImportantProductsFormField: genericFieldTriggerAndDataComponent,
