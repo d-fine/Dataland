@@ -1,5 +1,5 @@
 import {
-  type AssuranceDataAssuranceEnum,
+  type AssuranceDataPointAssuranceOptionsValueEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
   type EuTaxonomyActivity,
@@ -10,12 +10,12 @@ import {
   type RelativeAndAbsoluteFinancialShare,
   type YesNo,
   type YesNoNa,
-  type DataPointWithUnitBigDecimal,
+  type CurrencyDataPointBigDecimal,
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
 interface EuTaxonomyDetailsPerCashFlowViewModel {
-  totalAmount?: DataPointWithUnitBigDecimal;
+  totalAmount?: CurrencyDataPointBigDecimal;
   nonEligibleShare?: RelativeAndAbsoluteFinancialShare;
   eligibleShare?: RelativeAndAbsoluteFinancialShare;
   nonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };
@@ -45,7 +45,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   };
   assurance?: {
     assurance: {
-      levelOfAssurance: AssuranceDataAssuranceEnum;
+      levelOfAssurance: AssuranceDataPointAssuranceOptionsValueEnum;
       assuranceProvider?: string;
     };
   };
@@ -65,11 +65,11 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
       },
     };
     this.assurance =
-      apiModel.general?.assurance?.assurance == undefined
+      apiModel.general?.assurance?.value == undefined
         ? undefined
         : {
             assurance: {
-              levelOfAssurance: apiModel.general.assurance.assurance,
+              levelOfAssurance: apiModel.general.assurance.value,
               assuranceProvider: apiModel.general.assurance.provider,
             },
           };
@@ -90,7 +90,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
           this.assurance == undefined
             ? undefined
             : {
-                assurance: this.assurance?.assurance.levelOfAssurance,
+                value: this.assurance?.assurance.levelOfAssurance,
                 provider: this.assurance?.assurance.assuranceProvider,
               },
         numberOfEmployees: this.general?.general?.numberOfEmployees,
