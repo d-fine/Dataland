@@ -57,7 +57,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             })
             .then((storedCompany) => {
               const preparedFixture = getPreparedFixture(
-                "eligible-activity-Point-0.26",
+                "eligible-activity-Point-26",
                 euTaxoFinancialPreparedFixtures,
               );
               storedCompanyForManyDatasetsCompany = storedCompany;
@@ -76,7 +76,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
                 .then(() => {
                   const preparedFixture = getPreparedFixture(
-                    "eligible-activity-Point-0.26",
+                    "eligible-activity-Point-26",
                     euTaxoFinancialPreparedFixtures,
                   );
                   return uploadFrameworkData(
