@@ -129,7 +129,8 @@ export const euTaxonomyKpiNameMappings = {
   totalOpEx: "Total OpEx",
 };
 export const euTaxonomyKpiInfoMappings = {
-  investmentNonNfrdInPercent: "For financial companies (FS), the percentage of total assets exposed to non-NFRD entities.",
+  investmentNonNfrdInPercent:
+    "For financial companies (FS), the percentage of total assets exposed to non-NFRD entities.",
   banksAndIssuersInPercent:
     "For financial companies (FS), the percentage of total assets exposed to central governments, central banks, supranational issuers.",
   derivativesInPercent: "For financial companies (FS), the percentage of total assets exposed to derivatives.",

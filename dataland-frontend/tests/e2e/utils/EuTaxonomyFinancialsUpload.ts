@@ -287,7 +287,11 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
     "tradingPortfolioAndInterbankLoansInPercent",
     data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent,
   );
-  fillField("creditInstitutionKpis", "tradingPortfolioInPercent", data.creditInstitutionKpis?.tradingPortfolioInPercent);
+  fillField(
+    "creditInstitutionKpis",
+    "tradingPortfolioInPercent",
+    data.creditInstitutionKpis?.tradingPortfolioInPercent,
+  );
   fillField("creditInstitutionKpis", "interbankLoansInPercent", data.creditInstitutionKpis?.interbankLoansInPercent);
   fillField("creditInstitutionKpis", "greenAssetRatioInPercent", data.creditInstitutionKpis?.greenAssetRatioInPercent);
 }
