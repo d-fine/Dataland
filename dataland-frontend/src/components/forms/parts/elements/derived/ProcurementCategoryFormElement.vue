@@ -22,8 +22,8 @@
             label="Order Volume"
             description="State your order volume per procurement category in the last fiscal year (percentage of total volume) (own operations)"
             :is-required="false"
-            v-model:percentageFieldValueBind="shareOfTotalProcurementValueInPercent"
-            name="shareOfTotalProcurementValueInPercent"
+            v-model:percentageFieldValueBind="shareOfTotalProcurementInPercent"
+            name="shareOfTotalProcurementInPercent"
           />
         </div>
         <div class="form-field border-none">
@@ -121,7 +121,7 @@ export default defineComponent({
     return {
       isItActive: !!this.procurementCategories[this.name],
       procuredProductTypesAndServicesNaceCodesValue: [],
-      shareOfTotalProcurementValueInPercent: "",
+      shareOfTotalProcurementInPercent: "",
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
       selectedCountries: [],
       numberOfSuppliersPerCountryCodeValue: [],
