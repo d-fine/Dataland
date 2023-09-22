@@ -91,7 +91,7 @@ class V8__MigratePercentages : BaseJavaMigration() {
         }
     }
 
-    private fun migrateAllEuTaxonomyFinancialsKpisFor(kpiHolder: JSONObject, ) {
+    private fun migrateAllEuTaxonomyFinancialsKpisFor(kpiHolder: JSONObject) {
         val migrationHelper = MigrationHelper()
         kpiHolder.keys().asSequence().toList().forEach { kpiKey ->
             migrationHelper.migrateDataPointValueFromToAndQueueForRemoval(
@@ -167,13 +167,13 @@ class V8__MigratePercentages : BaseJavaMigration() {
             (dataObject.getOrJavaNull("social") as JSONObject?)
                 ?.getOrJsonNull("disregardForFreedomOfAssociation") as JSONObject?
             )?.also {
-                migrationHelper.migrateValueFromToAndQueueForRemoval(
-                    it,
-                    "employeeRepresentation",
-                    "employeeRepresentationInPercent",
-                    ::transformToPercentage,
-                )
-            }
+            migrationHelper.migrateValueFromToAndQueueForRemoval(
+                it,
+                "employeeRepresentation",
+                "employeeRepresentationInPercent",
+                ::transformToPercentage,
+            )
+        }
         migrationHelper.removeQueuedFields()
     }
 
