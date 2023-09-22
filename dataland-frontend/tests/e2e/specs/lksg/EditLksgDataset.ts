@@ -42,8 +42,8 @@ describeIf(
               mercuryAndMercuryWasteHandlingPolicy: {
                 value: "Yes",
                 dataSource: {
-                  name: "Policy",
-                  reference: "12345",
+                  fileName: "Policy",
+                  fileReference: "12345",
                 },
               },
             },

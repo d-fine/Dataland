@@ -214,7 +214,7 @@ function checkIfUploadedFilesAreReferencedInTheDataset(): void {
     const postedLksgDataset = postedObject.data;
     const referencedReportHash =
       assertDefined(postedLksgDataset).governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!
-        .dataSource!.reference;
+        .dataSource!.fileReference;
     expect(referencedReportHash).to.be.not.empty;
   });
 }

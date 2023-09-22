@@ -135,7 +135,7 @@ describeIf(
               const data = assertDefined(request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data;
               expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.referencedReports)).to.equal(true);
               expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.referencedReports)).to.equal(true);
-              frontendDocumentHash = assertDefined(data.general?.referencedReports)[TEST_PDF_FILE_NAME].reference;
+              frontendDocumentHash = assertDefined(data.general?.referencedReports)[TEST_PDF_FILE_NAME].fileReference;
             }).as("submittedData");
             cy.get('button[data-test="submitButton"]').click();
 
