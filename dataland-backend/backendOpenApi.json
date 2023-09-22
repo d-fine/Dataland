@@ -2749,7 +2749,7 @@
           "primaryEnergySourceForHeatingAndHotWater": {
             "$ref": "#/components/schemas/EnergySourceForHeatingAndHotWater"
           },
-          "percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": {
+          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
             "$ref": "#/components/schemas/PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower"
           }
         }
@@ -2757,7 +2757,7 @@
       "SmePowerInvestments": {
         "type": "object",
         "properties": {
-          "percentageForInvestmentsInEnhancingEnergyEfficiency": {
+          "percentageOfInvestmentsInEnhancingEnergyEfficiency": {
             "$ref": "#/components/schemas/PercentRangeForInvestmentsInEnergyEfficiency"
           }
         }
@@ -3891,7 +3891,7 @@
       "P2pRealEstateBuildingEfficiency": {
         "type": "object",
         "properties": {
-          "buildingSpecificReburbishmentRoadmapInPercent": {
+          "buildingSpecificRefurbishmentRoadmapInPercent": {
             "type": "number"
           },
           "zeroEmissionBuildingShareInPercent": {
@@ -4275,7 +4275,7 @@
                 "numberOfSuppliersPerCountryCode": {
                   "GB": 2
                 },
-                "percentageOfTotalProcurement": 0
+                "shareOfTotalProcurementInPercent": 0
               },
               "Services": {
                 "procuredProductTypesAndServicesNaceCodes": [
@@ -4284,7 +4284,7 @@
                 "numberOfSuppliersPerCountryCode": {
                   "GB": 2
                 },
-                "percentageOfTotalProcurement": 0
+                "shareOfTotalProcurementInPercent": 0
               },
               "RawMaterials": {
                 "procuredProductTypesAndServicesNaceCodes": [
@@ -4293,7 +4293,7 @@
                 "numberOfSuppliersPerCountryCode": {
                   "GB": 2
                 },
-                "percentageOfTotalProcurement": 0
+                "shareOfTotalProcurementInPercent": 0
               }
             }
           }
@@ -4547,7 +4547,7 @@
             "numberOfSuppliersPerCountryCode": {
               "GB": 2
             },
-            "percentageOfTotalProcurement": 0
+            "shareOfTotalProcurementInPercent": 0
           },
           "Services": {
             "procuredProductTypesAndServicesNaceCodes": [
@@ -4556,7 +4556,7 @@
             "numberOfSuppliersPerCountryCode": {
               "GB": 2
             },
-            "percentageOfTotalProcurement": 0
+            "shareOfTotalProcurementInPercent": 0
           },
           "RawMaterials": {
             "procuredProductTypesAndServicesNaceCodes": [
@@ -4565,7 +4565,7 @@
             "numberOfSuppliersPerCountryCode": {
               "GB": 2
             },
-            "percentageOfTotalProcurement": 0
+            "shareOfTotalProcurementInPercent": 0
           }
         }
       },

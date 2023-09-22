@@ -18,6 +18,6 @@ data class SmePowerConsumption(
 
     val primaryEnergySourceForHeatingAndHotWater: EnergySourceForHeatingAndHotWater? = null,
 
-    val percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration:
+    val energyConsumptionCoveredByOwnRenewablePowerGeneration:
     PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower? = null,
 )

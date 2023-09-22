@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * Fields of the P2P questionnaire regarding the building efficiency of the real estate sector
  */
 data class P2pRealEstateBuildingEfficiency(
-    val buildingSpecificReburbishmentRoadmapInPercent: BigDecimal? = null,
+    val buildingSpecificRefurbishmentRoadmapInPercent: BigDecimal? = null,
 
     val zeroEmissionBuildingShareInPercent: BigDecimal? = null,
 

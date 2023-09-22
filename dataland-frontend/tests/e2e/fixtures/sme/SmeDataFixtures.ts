@@ -60,7 +60,7 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
     },
     power: {
       investments: {
-        percentageForInvestmentsInEnhancingEnergyEfficiency:
+        percentageOfInvestmentsInEnhancingEnergyEfficiency:
           dataGenerator.randomPercentageRangeInvestmentEnergyEfficiency(),
       },
       consumption: {
@@ -68,7 +68,7 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
         powerFromRenewableSources: dataGenerator.randomYesNo(),
         energyConsumptionHeatingAndHotWater: dataGenerator.randomInt(1000),
         primaryEnergySourceForHeatingAndHotWater: dataGenerator.randomHeatSource(),
-        percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration:
+        energyConsumptionCoveredByOwnRenewablePowerGeneration:
           dataGenerator.randomPercentageRangeEnergyConsumption(),
       },
     },

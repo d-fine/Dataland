@@ -203,7 +203,7 @@ class P2pGenerator extends Generator {
   getSectorRealEstate(sector: P2pSector): P2pRealEstate | undefined {
     const data: P2pRealEstate = {
       buildingEfficiency: {
-        buildingSpecificReburbishmentRoadmapInPercent: this.randomPercentageValue(),
+        buildingSpecificRefurbishmentRoadmapInPercent: this.randomPercentageValue(),
         zeroEmissionBuildingShareInPercent: this.randomPercentageValue(),
         buildingEnergyEfficiency: this.randomInt(),
       },

@@ -2,51 +2,54 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Fort Lucileborough",
-			"sector": "methodologies",
+			"headquarters": "Luettgenport",
+			"headquartersPostalCode": "25564-7845",
 			"identifiers": {
-				"Lei": [
-					"rO6bIPW8dhcbzfL3412t"
-				],
+				"Lei": [],
 				"Isin": [
-					"dSCCMold6OPg",
-					"U6s6V1wjpqKk"
+					"0AWYzsogP3Dh",
+					"QIZyTa4GCMR8"
 				],
-				"PermId": [],
-				"Ticker": [
-					"Zy7rnNM"
+				"PermId": [
+					"lo9MnaKIE2"
 				],
-				"Duns": [],
+				"Ticker": [],
+				"Duns": [
+					"kl5L8oaol"
+				],
 				"VatNumber": [
-					"kNcprojl7"
+					"0ZyLnHsbO"
 				],
-				"CompanyRegistrationNumber": [
-					"Igqomp7uc7IYtsr"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TZ",
+			"countryCode": "NF",
 			"companyAlternativeNames": [
-				"Kris - Nitzsche"
+				"Harber - Fritsch",
+				"Littel and Sons"
 			],
-			"website": "https://oval-society.com/",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://remorseful-fragrance.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"06.20",
-						"07.2",
-						"25.72"
+						"02.30",
+						"28.22",
+						"49.50",
+						"71.11",
+						"86.21"
 					],
 					"addressOfHeadquarters": {
-						"postalCode": "84981",
-						"city": "Hiramville",
-						"state": "Nebraska",
-						"country": "SY"
+						"streetAndHouseNumber": "Sim Station 297",
+						"postalCode": "08180",
+						"city": "Port Clevelandton",
+						"state": "Missouri",
+						"country": "HR"
 					},
-					"numberOfEmployees": 5754,
-					"fiscalYearStart": "2023-11-20"
+					"numberOfEmployees": 8254,
+					"fiscalYearStart": "2024-03-13"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -55,57 +58,27 @@
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "King - D'Amore",
-							"addressOfProductionSite": {
-								"postalCode": "06612",
-								"city": "Jamisonport",
-								"state": "Utah",
-								"country": "TD"
-							}
-						}
-					]
-				},
+				"sites": {},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Small Soft Shoes",
-							"shareOfTotalRevenueInPercent": 78.9435
-						},
-						{
-							"name": "Small Steel Bike",
-							"shareOfTotalRevenueInPercent": 25.6124
-						},
-						{
-							"name": "Recycled Bronze Fish"
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1732,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 764,
+					"powerConsumptionInMwh": 1191,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 241,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"naturalHazardsCovered": [
-						"Flooding",
-						"EarthQuake",
-						"Wind",
-						"Snow",
-						"Avalanche"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 2449523
 				}
 			}
 		},
@@ -114,38 +87,46 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Ernestinestead",
-			"headquartersPostalCode": "39737-9799",
-			"sector": "technologies",
+			"headquarters": "Oscarburgh",
+			"headquartersPostalCode": "31426-1839",
+			"sector": "infrastructures",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"TXu3fGg943iw",
-					"1bHPL4LDTAsn"
+					"JwAqIFxbaY7Y",
+					"UscjhgD8cTck"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"JTi2v3FoR"
+				"Ticker": [
+					"JjlhQ7r"
 				],
-				"VatNumber": [],
+				"Duns": [
+					"qIYQwGiDx"
+				],
+				"VatNumber": [
+					"B680XDtog"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MX",
+			"countryCode": "GE",
 			"companyAlternativeNames": [
-				"Bruen, Bernhard and Larson"
+				"Flatley - Macejkovic",
+				"Johnston and Sons",
+				"Kiehn, Schultz and Collier"
 			],
-			"website": "https://wise-compass.org",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://alert-lock.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"10.1",
-						"47.53",
-						"50.2",
-						"87"
+						"06.20",
+						"46.31",
+						"55.10",
+						"66.12",
+						"L"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -154,12 +135,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 389,
-					"fiscalYearStart": "2024-05-07"
+					"numberOfEmployees": 8985,
+					"fiscalYearStart": "2024-08-14"
 				},
 				"companyFinancials": {
-					"revenueInEur": 24607702,
-					"capitalAssetsInEur": 27954659
+					"revenueInEur": 34597461,
+					"operatingCostInEur": 45238087,
+					"capitalAssetsInEur": 30761746
 				}
 			},
 			"production": {
@@ -169,35 +151,33 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Luxurious Rubber Gloves",
-							"shareOfTotalRevenueInPercent": 97.0433
+							"name": "Small Granite Bacon",
+							"shareOfTotalRevenueInPercent": 17.4781
 						},
 						{
-							"name": "Luxurious Concrete Salad"
+							"name": "Tasty Fresh Car",
+							"shareOfTotalRevenueInPercent": 1.9337
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 739,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 660,
-					"percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 487,
+					"energyConsumptionHeatingAndHotWater": 0,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 25015530,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 44451278,
 					"naturalHazardsCovered": [
-						"Hail",
 						"Flooding",
+						"Hail",
 						"EarthQuake",
-						"Wind",
 						"Avalanche"
 					]
 				}
@@ -208,116 +188,95 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Laguna Niguel",
-			"headquartersPostalCode": "17636-4294",
-			"sector": "paradigms",
+			"headquarters": "Midwest City",
+			"headquartersPostalCode": "30489",
+			"sector": "niches",
 			"identifiers": {
-				"Lei": [
-					"74z8LPll5ilBkXLg1m30"
-				],
+				"Lei": [],
 				"Isin": [
-					"iHrkibp0R6hk",
-					"s3dwqw2eRWLI"
+					"XvZjWSUzxRvk"
 				],
-				"PermId": [],
+				"PermId": [
+					"2sI628xoy0"
+				],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"I41EsPEIW"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"tFkO0f0N39ElfxV"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LA",
-			"companyAlternativeNames": [
-				"Lueilwitz and Sons",
-				"Ward - Skiles"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://caring-membership.net/",
+			"countryCode": "AW",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.21",
-						"26.7",
-						"77.31",
-						"82.11"
+						"66.30"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6936,
-					"fiscalYearStart": "2024-06-07"
+					"numberOfEmployees": 5820,
+					"fiscalYearStart": "2023-11-28"
 				},
 				"companyFinancials": {
-					"revenueInEur": 46138880,
-					"capitalAssetsInEur": 66252891
+					"revenueInEur": 50494753,
+					"operatingCostInEur": 42383232,
+					"capitalAssetsInEur": 22852929
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Swaniawski, Strosin and Murphy",
+							"nameOfProductionSite": "Morissette, Anderson and Hilpert",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Darlene Junctions 7714",
-								"postalCode": "87050",
-								"city": "Labadiecester",
-								"state": "Oklahoma",
-								"country": "CV"
-							},
-							"shareOfTotalRevenueInPercent": 22.0116
-						},
-						{
-							"nameOfProductionSite": "Reynolds Inc",
-							"addressOfProductionSite": {
-								"postalCode": "75950",
-								"city": "East Estefania",
-								"country": "TH"
-							},
-							"shareOfTotalRevenueInPercent": 47.07
-						},
-						{
-							"nameOfProductionSite": "Willms Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Veum Burg 9774",
-								"city": "Lake Logan",
-								"state": "West Virginia",
-								"country": "BA"
+								"postalCode": "90356",
+								"city": "Lake Luella",
+								"country": "PF"
 							}
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Practical Granite Mouse",
+							"shareOfTotalRevenueInPercent": 56.6448
+						},
+						{
+							"name": "Intelligent Granite Bacon"
+						},
+						{
+							"name": "Refined Steel Chips",
+							"shareOfTotalRevenueInPercent": 14.8883
+						},
+						{
+							"name": "Sleek Cotton Salad"
+						}
+					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 365,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 209,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 332,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 7218670,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 14026340,
 					"naturalHazardsCovered": [
 						"EarthQuake",
 						"Flooding",
-						"Hail",
-						"Snow",
-						"Wind",
-						"Avalanche"
+						"Hail"
 					]
 				}
 			}
