@@ -271,7 +271,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
 
   const companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
 
-  it("Check that warning appears if two pdf files with same name are selected for upload", () => {
+  it("Check that warning appears if two pdf files with same name or illegal character are selected for upload", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithDialog(
       CreateEuTaxonomyForNonFinancials,
@@ -281,6 +281,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
       { companyID: "company-id-does-not-matter-in-this-test" },
     ).then(() => {
       checkFileWithExistingFilenameOpensDialogWithWarning();
+      checkFileWithIllegalCharacterOpensDialogWithWarning();
       checkExistingFilenameDialogDidNotBreakSubsequentSelection();
     });
   });
