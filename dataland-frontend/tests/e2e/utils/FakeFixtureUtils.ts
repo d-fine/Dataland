@@ -62,8 +62,8 @@ export class Generator {
     return this.valueOrUndefined({ value: input, dataSource: document } as GenericBaseDataPoint<T>);
   }
 
-  randomDataPoint<T>(input: T, unit?: string): GenericDataPoint<T> | undefined {
-    return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports, unit));
+  randomDataPoint<T>(input: T, currency?: string): GenericDataPoint<T> | undefined {
+    return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports, currency));
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | undefined {

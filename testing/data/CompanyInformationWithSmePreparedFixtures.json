@@ -2,58 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "South Desmondbury",
-			"headquartersPostalCode": "03327",
-			"sector": "methodologies",
+			"headquarters": "North Mafaldafield",
+			"headquartersPostalCode": "51710-0700",
 			"identifiers": {
 				"Lei": [
-					"iyVfiiPTUn6IKcLKH4SW"
+					"wSvJeK4746RJCIwv7E13"
 				],
 				"Isin": [
-					"xjSHU6kIasmT",
-					"83DdZrxcV1FZ"
+					"mLBX0aV59I56",
+					"IuekdcDhOya3"
 				],
 				"PermId": [
-					"dr2G2XtDnc"
+					"DCu09uPt12"
 				],
-				"Ticker": [
-					"dm8GEN2"
+				"Ticker": [],
+				"Duns": [
+					"vfPzFHgcK"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"NPIvl5vl9"
-				],
-				"CompanyRegistrationNumber": [
-					"5YAnO5ijYj1HNiX"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "UM",
+			"countryCode": "LA",
 			"companyAlternativeNames": [
-				"Feeney LLC",
-				"Walker, Nolan and Boyle"
+				"Franecki, Crona and Bernhard",
+				"Schaden, Robel and Bednar"
 			],
-			"website": "https://ornery-commander.info/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://loving-bay.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"17.11",
-						"47.82",
-						"70",
-						"91.01",
-						"97"
+						"16.1",
+						"92"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Berge Cliffs 435",
-						"postalCode": "12497",
-						"city": "Flagstaff",
-						"state": "New Hampshire",
-						"country": "MQ"
+						"postalCode": "18929-2114",
+						"city": "Allentown",
+						"state": "Arizona",
+						"country": "JP"
 					},
-					"numberOfEmployees": 5260,
-					"fiscalYearStart": "2024-01-09"
+					"numberOfEmployees": 5922,
+					"fiscalYearStart": "2023-12-17"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -65,78 +57,74 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Gutkowski LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Raphaelle Rapids 616",
-								"postalCode": "68062",
-								"city": "Kayleyshire",
-								"state": "Wisconsin",
-								"country": "SH"
+								"streetAndHouseNumber": "Rosendo Loop 145",
+								"postalCode": "14299-6143",
+								"city": "Kingboro",
+								"state": "California",
+								"country": "BZ"
 							},
-							"percentageOfTotalRevenue": 0.9873
+							"percentageOfTotalRevenue": 0.241
+						},
+						{
+							"nameOfProductionSite": "Feil and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Marcellus Trace 4578",
+								"city": "Magdalenastead",
+								"country": "GB"
+							},
+							"percentageOfTotalRevenue": 0.2417
+						},
+						{
+							"nameOfProductionSite": "Hand - Kshlerin",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Milton Valley 465",
+								"postalCode": "24589",
+								"city": "Cathrynville",
+								"state": "Oregon",
+								"country": "NE"
+							},
+							"percentageOfTotalRevenue": 0.085
+						},
+						{
+							"nameOfProductionSite": "Simonis - Predovic",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Corine Falls 434",
+								"postalCode": "23391-6782",
+								"city": "Lake Loyal",
+								"country": "TT"
+							},
+							"percentageOfTotalRevenue": 0.4072
 						},
 						{
 							"addressOfProductionSite": {
-								"postalCode": "09026",
-								"city": "Odellfort",
-								"state": "New Mexico",
-								"country": "PM"
-							},
-							"percentageOfTotalRevenue": 0.7666
-						},
-						{
-							"nameOfProductionSite": "Lesch - Murazik",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Danial Squares 7242",
-								"postalCode": "31904",
-								"city": "Gracielaport",
+								"streetAndHouseNumber": "Kuvalis Track 408",
+								"postalCode": "93045",
+								"city": "Volkmanland",
 								"state": "Georgia",
-								"country": "VE"
+								"country": "AX"
 							},
-							"percentageOfTotalRevenue": 0.2499
+							"percentageOfTotalRevenue": 0.4392
 						}
 					]
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Gorgeous Concrete Chicken",
-							"percentageOfTotalRevenue": 0.7798
-						},
-						{
-							"name": "Incredible Bronze Salad",
-							"percentageOfTotalRevenue": 0.361
-						},
-						{
-							"name": "Rustic Cotton Salad",
-							"percentageOfTotalRevenue": 0.3527
-						},
-						{
-							"name": "Rustic Steel Ball",
-							"percentageOfTotalRevenue": 0.4078
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1464,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 4,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 9494759,
 					"naturalHazardsCovered": [
-						"Avalanche",
 						"Snow",
-						"EarthQuake"
+						"Hail"
 					]
 				}
 			}
@@ -146,41 +134,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Vacaville",
-			"headquartersPostalCode": "61859-4437",
+			"headquarters": "Gutkowskiside",
+			"headquartersPostalCode": "60219",
+			"sector": "e-commerce",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"2daG9jmd1JvgaMxwN3wh"
+				],
 				"Isin": [
-					"SDY0d1SVgfzj"
+					"UUTOZnvpQ1Ib",
+					"K1qgT8WfUf9t"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"u4mxPY0s6"
+				"Duns": [],
+				"VatNumber": [
+					"rrvytGiA5"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"kdLXuKl4RqY9UaQ"
+				]
 			},
-			"countryCode": "KP",
+			"countryCode": "NZ",
 			"companyAlternativeNames": [
-				"Collier Inc",
-				"Gulgowski Inc",
-				"Homenick - Goldner",
-				"Rowe, Torphy and Schneider"
+				"Gerhold - Torp"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://pleasant-aardvark.org/",
+			"website": "https://impeccable-ovary.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"47.21",
-						"62.01",
-						"70.2",
-						"84.13",
-						"98.1"
+						"10.84",
+						"31.03",
+						"46.16",
+						"81.3",
+						"86.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -189,77 +179,62 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 5399,
-					"fiscalYearStart": "2024-06-06"
+					"numberOfEmployees": 2706,
+					"fiscalYearStart": "2024-06-29"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 14787123,
-					"capitalAssetsInEur": 37429866
+					"revenueInEur": 94533535,
+					"operatingCostInEur": 25643443,
+					"capitalAssetsInEur": 63779315
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Dickinson, Halvorson and Feil",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jaida Villages 167",
-								"postalCode": "52511-6581",
-								"city": "League City",
-								"state": "Wisconsin",
-								"country": "YE"
+								"streetAndHouseNumber": "Price Underpass 31559",
+								"city": "Rosarioworth",
+								"state": "Maryland",
+								"country": "GB"
 							},
-							"percentageOfTotalRevenue": 0.1484
+							"percentageOfTotalRevenue": 0.8466
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Rustic Steel Mouse",
-							"percentageOfTotalRevenue": 0.9258
+							"name": "Practical Bronze Pizza",
+							"percentageOfTotalRevenue": 0.3236
 						},
 						{
-							"name": "Unbranded Soft Gloves",
-							"percentageOfTotalRevenue": 0.2779
+							"name": "Bespoke Steel Bike",
+							"percentageOfTotalRevenue": 0.3015
 						},
 						{
-							"name": "Luxurious Rubber Fish",
-							"percentageOfTotalRevenue": 0.2793
-						},
-						{
-							"name": "Rustic Steel Chicken",
-							"percentageOfTotalRevenue": 0.9529
-						},
-						{
-							"name": "Licensed Rubber Car",
-							"percentageOfTotalRevenue": 0.3516
+							"name": "Practical Bronze Keyboard",
+							"percentageOfTotalRevenue": 0.2473
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 1747,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 429,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas"
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 341,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 28179995,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 43126888,
 					"naturalHazardsCovered": [
 						"EarthQuake",
-						"Avalanche",
 						"Flooding",
-						"Wind",
 						"Snow",
-						"Hail"
+						"Avalanche"
 					]
 				}
 			}
@@ -269,95 +244,89 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "West Emmanuelle",
-			"sector": "synergies",
+			"headquarters": "Fort Lelia",
+			"headquartersPostalCode": "12561-2211",
+			"sector": "convergence",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"7RyiWgfhoorS"
+					"hIwPugH5zTQP"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"aKZY72v"
+				],
 				"Duns": [
-					"CK5508Sc2"
+					"00qiVVgEY"
 				],
-				"VatNumber": [
-					"JweQVAnzE"
-				],
-				"CompanyRegistrationNumber": [
-					"DhqjKYqLeZt9MBE"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MR",
+			"countryCode": "VE",
 			"companyAlternativeNames": [
-				"Torp, VonRueden and Boyle"
+				"Blick LLC",
+				"Fritsch LLC",
+				"Kiehn - Hayes",
+				"Kris and Sons"
 			],
-			"website": "https://vital-havoc.org/",
+			"companyLegalForm": "GmbH",
+			"website": "https://tasty-trek.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.21",
-						"16.1",
-						"46.41",
-						"91.0",
-						"94.99"
+						"47.3",
+						"61.1",
+						"82.30",
+						"93.21"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 79,
-					"fiscalYearStart": "2023-11-18"
+					"numberOfEmployees": 3339,
+					"fiscalYearStart": "2024-05-08"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 833243,
-					"capitalAssetsInEur": 47384483
+					"operatingCostInEur": 55230010,
+					"capitalAssetsInEur": 68062384
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Rustic Bronze Shirt",
-							"percentageOfTotalRevenue": 0.3487
-						},
-						{
-							"name": "Recycled Metal Mouse",
-							"percentageOfTotalRevenue": 0.7769
-						},
-						{
-							"name": "Bespoke Frozen Chips",
-							"percentageOfTotalRevenue": 0.506
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Catharine Passage 3529",
+								"postalCode": "99787",
+								"city": "South Sven",
+								"state": "Kentucky",
+								"country": "KM"
+							}
 						}
 					]
-				}
+				},
+				"products": {}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerFromRenewableSources": "Yes",
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 13,
+					"powerFromRenewableSources": "No",
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 45327708,
 					"naturalHazardsCovered": [
-						"Snow",
 						"Hail",
-						"Wind",
-						"Avalanche",
-						"Flooding"
+						"Snow"
 					]
 				}
 			}

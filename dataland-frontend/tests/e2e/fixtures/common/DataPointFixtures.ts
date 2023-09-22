@@ -40,7 +40,7 @@ export function generateReferencedReports(undefinedProbability = DEFAULT_PROBABI
 export function generateDatapoint<T>(
   value: T | undefined,
   reports: ReferencedDocuments,
-  unit?: string,
+  currency?: string,
 ): GenericDataPoint<T> {
   const qualityBucket =
     value === undefined
@@ -54,7 +54,7 @@ export function generateDatapoint<T>(
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
-    unit: unit ?? undefined,
+    currency: currency ?? undefined,
   } as GenericDataPoint<T>;
 }
 
@@ -63,7 +63,7 @@ export interface GenericDataPoint<T> {
   dataSource: ExtendedDocumentReference | undefined;
   quality: QualityOptions;
   comment: string | undefined;
-  unit: string | undefined;
+  currency: string | undefined;
 }
 
 export interface GenericBaseDataPoint<T> {
