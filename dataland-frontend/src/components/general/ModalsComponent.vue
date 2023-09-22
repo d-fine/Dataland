@@ -43,6 +43,7 @@ const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDataComponents 
     triggerComponent: GenericDataTableModalLink,
     dataComponent: NonAlignedActivitiesDataTable,
   },
+  NaceCodeFormField: genericFieldTriggerAndDataComponent,
   MostImportantProductsFormField: genericFieldTriggerAndDataComponent,
   ProcurementCategoriesFormField: genericFieldTriggerAndDataComponent,
   ProductionSitesFormField: genericFieldTriggerAndDataComponent,
