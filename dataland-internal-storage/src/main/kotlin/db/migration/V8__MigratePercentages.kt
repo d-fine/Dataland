@@ -18,6 +18,22 @@ import java.math.BigDecimal
 class V8__MigratePercentages : BaseJavaMigration() {
     companion object {
         private const val percentageMultiplier = 100
+        private val euTaxonomyNonFinancialsFinancialShareFields = listOf(
+            "nonEligibleShare",
+            "eligibleShare",
+            "nonAlignedShare",
+            "alignedShare",
+        )
+        val euTaxonomyNonFinancialsPercentageFields = listOf(
+            "substantialContributionToClimateChangeMitigationInPercent",
+            "substantialContributionToClimateChangeAdaptionInPercent",
+            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
+            "substantialContributionToTransitionToACircularEconomyInPercent",
+            "substantialContributionToPollutionPreventionAndControlInPercent",
+            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+            "enablingShareInPercent",
+            "transitionalShareInPercent",
+        )
     }
 
     override fun migrate(context: Context?) {
@@ -59,37 +75,33 @@ class V8__MigratePercentages : BaseJavaMigration() {
      */
     fun migrateEuTaxonomyFinancials(dataTableEntity: DataTableEntity) {
         migrateDataset(dataTableEntity) { dataObject ->
-            val migrationHelper = MigrationHelper()
             val financialServiceTypesWithPercentageDataPointsOnly = listOf(
                 "creditInstitutionKpis", "investmentFirmKpis", "insuranceKpis",
             )
             financialServiceTypesWithPercentageDataPointsOnly.forEach { financialServiceType ->
                 val financialServiceKpis =
                     (dataObject.getOrJavaNull(financialServiceType) ?: return@forEach) as JSONObject
-                financialServiceKpis.keys().forEach { kpiKey ->
-                    migrationHelper.migrateDataPointValueFromToAndQueueForRemoval(
-                        financialServiceKpis,
-                        kpiKey,
-                        "${kpiKey}InPercent",
-                        ::transformToPercentage,
-                    )
-                }
-                migrationHelper.removeQueuedFields()
+                migrateAllEuTaxonomyFinancialsKpisFor(financialServiceKpis)
             }
             val eligibilityKpis = (dataObject.getOrJavaNull("eligibilityKpis") ?: return@migrateDataset) as JSONObject
             eligibilityKpis.keys().forEach { key ->
                 val financialServiceKpis = (eligibilityKpis.getOrJavaNull(key) ?: return@forEach) as JSONObject
-                financialServiceKpis.keys().asSequence().toList().forEach { kpiKey ->
-                    migrationHelper.migrateDataPointValueFromToAndQueueForRemoval(
-                        financialServiceKpis,
-                        kpiKey,
-                        "${kpiKey}InPercent",
-                        ::transformToPercentage,
-                    )
-                }
-                migrationHelper.removeQueuedFields()
+                migrateAllEuTaxonomyFinancialsKpisFor(financialServiceKpis)
             }
         }
+    }
+
+    private fun migrateAllEuTaxonomyFinancialsKpisFor(kpiHolder: JSONObject, ) {
+        val migrationHelper = MigrationHelper()
+        kpiHolder.keys().asSequence().toList().forEach { kpiKey ->
+            migrationHelper.migrateDataPointValueFromToAndQueueForRemoval(
+                kpiHolder,
+                kpiKey,
+                "${kpiKey}InPercent",
+                ::transformToPercentage,
+            )
+        }
+        migrationHelper.removeQueuedFields()
     }
 
     /**
@@ -100,26 +112,10 @@ class V8__MigratePercentages : BaseJavaMigration() {
             val migrationHelper = MigrationHelper()
             listOf("revenue", "capex", "opex").forEach { cashFlowType ->
                 val cashFlowObject = (dataObject.getOrJavaNull(cashFlowType) ?: return@forEach) as JSONObject
-                val financialShareFields = listOf(
-                    "nonEligibleShare",
-                    "eligibleShare",
-                    "nonAlignedShare",
-                    "alignedShare",
-                )
-                val percentageFields = listOf(
-                    "substantialContributionToClimateChangeMitigationInPercent",
-                    "substantialContributionToClimateChangeAdaptionInPercent",
-                    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
-                    "substantialContributionToTransitionToACircularEconomyInPercent",
-                    "substantialContributionToPollutionPreventionAndControlInPercent",
-                    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
-                    "enablingShareInPercent",
-                    "transitionalShareInPercent",
-                )
-                financialShareFields.forEach {
+                euTaxonomyNonFinancialsFinancialShareFields.forEach {
                     migrateFinancialShare(migrationHelper, cashFlowObject, it)
                 }
-                percentageFields.forEach {
+                euTaxonomyNonFinancialsPercentageFields.forEach {
                     migrationHelper.migrateValue(cashFlowObject, it, ::transformToPercentage)
                 }
                 cashFlowObject.getOrJavaNull("nonAlignedActivities")?.also {
@@ -160,11 +156,17 @@ class V8__MigratePercentages : BaseJavaMigration() {
      */
     fun migrateLksg(dataTableEntity: DataTableEntity) {
         migrateDataset(dataTableEntity) { dataObject ->
-            val migrationHelper = MigrationHelper()
-            (
-                (dataObject.getOrJavaNull("social") as JSONObject?)
-                    ?.getOrJsonNull("disregardForFreedomOfAssociation") as JSONObject?
-                )?.also {
+            migrateLksgSocial(dataObject)
+            migrateLksgProcurmentCategories(dataObject)
+        }
+    }
+
+    private fun migrateLksgSocial(dataObject: JSONObject) {
+        val migrationHelper = MigrationHelper()
+        (
+            (dataObject.getOrJavaNull("social") as JSONObject?)
+                ?.getOrJsonNull("disregardForFreedomOfAssociation") as JSONObject?
+            )?.also {
                 migrationHelper.migrateValueFromToAndQueueForRemoval(
                     it,
                     "employeeRepresentation",
@@ -172,25 +174,29 @@ class V8__MigratePercentages : BaseJavaMigration() {
                     ::transformToPercentage,
                 )
             }
+        migrationHelper.removeQueuedFields()
+    }
+
+    private fun migrateLksgProcurmentCategories(dataObject: JSONObject) {
+        val migrationHelper = MigrationHelper()
+        (
             (
-                (
-                    (dataObject.getOrJavaNull("general") as JSONObject?)
-                        ?.getOrJavaNull("productionSpecificOwnOperations") as JSONObject?
-                    )
-                    ?.getOrJavaNull("productsServicesCategoriesPurchased") as JSONObject?
+                (dataObject.getOrJavaNull("general") as JSONObject?)
+                    ?.getOrJavaNull("productionSpecificOwnOperations") as JSONObject?
                 )
-                ?.also { procurementCategories ->
-                    (procurementCategories).keys().forEach { procurementCategoryKey ->
-                        migrationHelper.migrateValueFromToAndQueueForRemoval(
-                            (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach)
-                                as JSONObject,
-                            "percentageOfTotalProcurement",
-                            "shareOfTotalProcurementInPercent",
-                            ::transformToPercentage,
-                        )
-                    }
+                ?.getOrJavaNull("productsServicesCategoriesPurchased") as JSONObject?
+            )
+            ?.also { procurementCategories ->
+                (procurementCategories).keys().forEach { procurementCategoryKey ->
+                    migrationHelper.migrateValueFromToAndQueueForRemoval(
+                        (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach)
+                            as JSONObject,
+                        "percentageOfTotalProcurement",
+                        "shareOfTotalProcurementInPercent",
+                        ::transformToPercentage,
+                    )
                 }
-            migrationHelper.removeQueuedFields()
-        }
+            }
+        migrationHelper.removeQueuedFields()
     }
 }
