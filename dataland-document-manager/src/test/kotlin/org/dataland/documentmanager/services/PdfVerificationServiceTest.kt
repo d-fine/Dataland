@@ -90,6 +90,18 @@ class PdfVerificationServiceTest {
         )
     }
 
+    @Test
+    fun `verifies that a pdf with non alphanumeric characters can be uploaded`() {
+        val testFileBytes = loadFileBytes(testPdfFile)
+        val testFile = MockMultipartFile(
+            "안녕하세요 세상.pdf",
+            "안녕하세요 세상.pdf",
+            MediaType.APPLICATION_PDF_VALUE,
+            testFileBytes,
+        )
+        pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
+    }
+
     private fun loadFileBytes(path: String): ByteArray {
         val testFileStream = javaClass.getResourceAsStream(path)
         return IOUtils.toByteArray(testFileStream)
