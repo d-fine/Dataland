@@ -18,9 +18,9 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
     createInsuranceCompany,
     createAssetManagementCompany,
     createAllValuesCompany,
-    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.26),
-    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.29),
-    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.292),
+    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(26),
+    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(29),
+    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(29.2),
   ];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
