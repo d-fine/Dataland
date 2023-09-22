@@ -12,7 +12,7 @@ data class AssuranceDataPoint<T>(
     @field:JsonProperty(required = true)
     override val value: T,
 
-    val dataSource: ExtendedDocumentReference? = null,
+    override val dataSource: ExtendedDocumentReference? = null,
 
     val provider: String? = null,
 ) : BaseDataPointInterface<T>
