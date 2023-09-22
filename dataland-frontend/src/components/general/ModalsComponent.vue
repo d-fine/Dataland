@@ -19,22 +19,22 @@ import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivi
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 type AvailableTriggerComponents = typeof GenericDataTableModalLink;
-type AvailableDataComponents =
+type AvailableDisplayComponents =
   | typeof AlignedActivitiesDataTable
   | typeof NonAlignedActivitiesDataTable
   | typeof DetailsCompanyDataTable;
 
-type FieldTriggerAndDataComponents = {
+type FieldTriggerAndDisplayComponents = {
   triggerComponent: AvailableTriggerComponents;
-  displayComponent: AvailableDataComponents;
+  displayComponent: AvailableDisplayComponents;
 };
 
-const genericFieldTriggerAndDataComponent = {
+const genericFieldTriggerAndDisplayComponent = {
   triggerComponent: GenericDataTableModalLink,
   displayComponent: DetailsCompanyDataTable,
 } as const;
 
-const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDataComponents } = {
+const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDisplayComponents } = {
   AlignedActivitiesDataTable: {
     triggerComponent: GenericDataTableModalLink,
     displayComponent: AlignedActivitiesDataTable,
@@ -43,12 +43,12 @@ const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDataComponents 
     triggerComponent: GenericDataTableModalLink,
     displayComponent: NonAlignedActivitiesDataTable,
   },
-  NaceCodeFormField: genericFieldTriggerAndDataComponent,
-  MostImportantProductsFormField: genericFieldTriggerAndDataComponent,
-  ProcurementCategoriesFormField: genericFieldTriggerAndDataComponent,
-  ProductionSitesFormField: genericFieldTriggerAndDataComponent,
-  MultiSelectFormField: genericFieldTriggerAndDataComponent,
-  ComponentName: genericFieldTriggerAndDataComponent,
+  NaceCodeFormField: genericFieldTriggerAndDisplayComponent,
+  MostImportantProductsFormField: genericFieldTriggerAndDisplayComponent,
+  ProcurementCategoriesFormField: genericFieldTriggerAndDisplayComponent,
+  ProductionSitesFormField: genericFieldTriggerAndDisplayComponent,
+  MultiSelectFormField: genericFieldTriggerAndDisplayComponent,
+  ComponentName: genericFieldTriggerAndDisplayComponent,
 } as const;
 
 export type GenericModalData = {
@@ -60,7 +60,7 @@ export type GenericModalData = {
  * @param componentName component name to find
  * @returns defined modal
  */
-export function findModalComponent(componentName: string): FieldTriggerAndDataComponents | undefined {
+export function findModalComponent(componentName: string): FieldTriggerAndDisplayComponents | undefined {
   const found = Object.entries(FieldsWithModalsMap).find(([key]) => key === componentName);
   return found ? found[1] : undefined;
 }
@@ -94,7 +94,7 @@ export default defineComponent({
      * @private
      * @returns defined modal
      */
-    _findModalComponent(): FieldTriggerAndDataComponents {
+    _findModalComponent(): FieldTriggerAndDisplayComponents {
       return assertDefined(findModalComponent(this.componentName));
     },
   },
