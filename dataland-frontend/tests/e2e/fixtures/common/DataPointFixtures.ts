@@ -34,7 +34,7 @@ export function generateReferencedReports(undefinedProbability = DEFAULT_PROBABI
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
  * @param value the decimal value of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
- * @param unit the unit of the datapoint to generate
+ * @param currency the currency of the datapoint to generate
  * @returns the generated datapoint
  */
 export function generateDatapoint<T>(
