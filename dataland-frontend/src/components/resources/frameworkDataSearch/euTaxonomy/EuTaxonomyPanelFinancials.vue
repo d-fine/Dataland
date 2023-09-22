@@ -77,7 +77,8 @@
             class="col-6"
             v-if="
               dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoansInPercent ||
-              (!dataSet.creditInstitutionKpis.tradingPortfolioInPercent && !dataSet.creditInstitutionKpis.interbankLoansInPercent)
+              (!dataSet.creditInstitutionKpis.tradingPortfolioInPercent &&
+                !dataSet.creditInstitutionKpis.interbankLoansInPercent)
             "
           >
             <TaxoCard
