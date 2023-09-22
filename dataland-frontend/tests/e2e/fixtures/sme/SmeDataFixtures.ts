@@ -68,8 +68,7 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
         powerFromRenewableSources: dataGenerator.randomYesNo(),
         energyConsumptionHeatingAndHotWater: dataGenerator.randomInt(1000),
         primaryEnergySourceForHeatingAndHotWater: dataGenerator.randomHeatSource(),
-        energyConsumptionCoveredByOwnRenewablePowerGeneration:
-          dataGenerator.randomPercentageRangeEnergyConsumption(),
+        energyConsumptionCoveredByOwnRenewablePowerGeneration: dataGenerator.randomPercentageRangeEnergyConsumption(),
       },
     },
     insurances: {
