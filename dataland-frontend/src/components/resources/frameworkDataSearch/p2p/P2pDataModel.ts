@@ -175,7 +175,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
+            certificateRequiredIfYes: false,
           },
           {
             name: "downstreamCustomerEngagement",
