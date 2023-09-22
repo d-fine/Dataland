@@ -55,42 +55,6 @@ class PdfVerificationServiceTest {
     }
 
     @Test
-    fun `verifies that a pdf document with wrong name ending does not pass the basic checks`() {
-        val testFileBytes = loadFileBytes(testPdfFile)
-        val testFile = MockMultipartFile(
-            "test",
-            "test",
-            MediaType.APPLICATION_PDF_VALUE,
-            testFileBytes,
-        )
-        val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
-        }
-        assertEquals("We have detected that the file does not have a name ending on '.pdf'", thrown.message)
-    }
-
-    @Test
-    fun `verifies that a pdf document with forbidden characters in the filename does not pass the basic checks`() {
-        val testFileBytes = loadFileBytes(testPdfFile)
-        val ch = '/'
-        val testFile = MockMultipartFile(
-            "te:st.pdf",
-            "te:st.pdf",
-            MediaType.APPLICATION_PDF_VALUE,
-            testFileBytes,
-        )
-        val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
-        }
-        assertEquals(
-            "Please ensure that your does not contain any of the following characters: " +
-                "column, angle braket, double quotation mark, pipe, question mark, asterisk, forward or backward slash. " +
-                "Also doesn't end in a period or whitespace and has a maximum length of 254 characters.",
-            thrown.message,
-        )
-    }
-
-    @Test
     fun `verifies that a pdf with non alphanumeric characters can be uploaded`() {
         val testFileBytes = loadFileBytes(testPdfFile)
         val testFile = MockMultipartFile(

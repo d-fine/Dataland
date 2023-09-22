@@ -1,6 +1,5 @@
 package org.dataland.documentmanager.services
 
-import org.apache.commons.lang3.StringUtils.lowerCase
 import org.apache.pdfbox.Loader
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
@@ -23,8 +22,6 @@ class PdfVerificationService {
     fun assertThatDocumentLooksLikeAPdf(document: MultipartFile, correlationId: String) {
         try {
             checkIfPdfDocumentIsEmpty(document.bytes, correlationId)
-            checkThatDocumentNameEndsOnPdf(document.originalFilename!!, correlationId)
-            checkThatDocumentNameIsValid(document.originalFilename!!, correlationId)
         } catch (ex: IOException) {
             logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(
@@ -47,39 +44,6 @@ class PdfVerificationService {
                     "We have detected that the pdf you uploaded has 0 pages.",
                 )
             }
-        }
-    }
-
-    private fun checkThatDocumentNameEndsOnPdf(name: String, correlationId: String) {
-        if (lowerCase(name.takeLast(expectedFileNameIdentifierLength)) != ".pdf") {
-            logger.info(
-                "PDF document uploaded with correlation ID: $correlationId " +
-                    "does not have a name ending on '.pdf', aborting.",
-            )
-            throw InvalidInputApiException(
-                "You seem to have uploaded an file that is not a pdf file",
-                "We have detected that the file does not have a name ending on '.pdf'",
-            )
-        }
-    }
-
-    /**
-     * We allow any character in file names, except those disallowed in the Windows operating system
-     * up to a maximum length of 254 characters
-     */
-    private val allowedFilenameRegex = Regex("^(?=.{1,254}\$)[^<>:\"|?\\\\/*]+[^<>:\"|?/*\\\\.\\s]\$")
-
-    private fun checkThatDocumentNameIsValid(name: String, correlationId: String) {
-        if (!allowedFilenameRegex.matches(name)) {
-            logger.info(
-                "PDF document uploaded with correlation ID: $correlationId has invalid name, aborting.",
-            )
-            throw InvalidInputApiException(
-                "You seem to have uploaded an file that has an invalid name",
-                "Please ensure that your does not contain any of the following characters: " +
-                    "column, angle braket, double quotation mark, pipe, question mark, asterisk, forward or backward slash. " +
-                    "Also doesn't end in a period or whitespace and has a maximum length of 254 characters.",
-            )
         }
     }
 
