@@ -43,7 +43,6 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * whose name contains an illegal character
    */
   function checkFileWithIllegalCharacterOpensDialogWithWarning(): void {
-    // TODO: Write this test correctly
     uploadDocuments.selectDummyFile("Invalid:Filename", 400, "referencedReports");
     cy.get(".p-dialog-content").should("contain.text", "File names containing illegal characters");
     cy.get(".p-dialog-header-close").click();
