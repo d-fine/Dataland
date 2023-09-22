@@ -6,4 +6,5 @@ package org.dataland.datalandbackend.interfaces
  */
 interface BaseDataPointInterface<T> {
     val value: T?
+    val dataSource :BaseDocumentReferenceInterface?
 }

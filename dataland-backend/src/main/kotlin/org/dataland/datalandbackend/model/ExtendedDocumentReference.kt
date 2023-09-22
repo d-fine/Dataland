@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.interfaces.ExtendedDocumentReferenceInterface
 
 /**
@@ -11,6 +10,6 @@ data class ExtendedDocumentReference(
     override val page: Long? = null,
     override val tagName: String? = null,
     override val fileName: String? = null,
-    //TODO check that the @field:JsonProperty(required = true) can be removed here without problems
+    // TODO check that the @field:JsonProperty(required = true) can be removed here without problems
     override val fileReference: String? = null,
 ) : ExtendedDocumentReferenceInterface

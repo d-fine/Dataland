@@ -10,5 +10,5 @@ import org.dataland.datalandbackend.interfaces.BaseDataPointInterface
 data class BaseDataPoint<T>(
     @field:JsonProperty(required = true)
     override val value: T,
-    val dataSource: BaseDocumentReference?,
+    override val dataSource: BaseDocumentReference? = null,
 ) : BaseDataPointInterface<T>

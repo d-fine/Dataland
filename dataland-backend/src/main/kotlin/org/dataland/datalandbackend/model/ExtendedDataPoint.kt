@@ -13,5 +13,5 @@ data class ExtendedDataPoint<T>(
     @field:JsonProperty(required = true)
     override val quality: QualityOptions,
     override val comment: String? = null,
-    val dataSource: ExtendedDocumentReference? = null,
+    override val dataSource: ExtendedDocumentReference? = null,
 ) : ExtendedDataPointInterface<T>
