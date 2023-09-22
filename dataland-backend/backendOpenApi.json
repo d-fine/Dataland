@@ -2937,9 +2937,6 @@
         }
       },
       "ExtendedDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
         "type": "object",
         "properties": {
           "page": {
@@ -5149,12 +5146,6 @@
               "LimitedAssurance",
               "ReasonableAssurance"
             ]
-          },
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "comment": {
-            "type": "string"
           },
           "dataSource": {
             "$ref": "#/components/schemas/ExtendedDocumentReference"

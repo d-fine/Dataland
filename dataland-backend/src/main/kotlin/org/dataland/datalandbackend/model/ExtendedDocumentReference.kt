@@ -11,6 +11,6 @@ data class ExtendedDocumentReference(
     override val page: Long? = null,
     override val tagName: String? = null,
     override val fileName: String? = null,
-    @field:JsonProperty(required = true)
-    override val fileReference: String,
+    //TODO check that the @field:JsonProperty(required = true) can be removed here without problems
+    override val fileReference: String? = null,
 ) : ExtendedDocumentReferenceInterface

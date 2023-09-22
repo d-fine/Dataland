@@ -191,36 +191,36 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
           totalAmount: {
             quality: "Estimated",
             dataSource: {
-              report: `${TEST_PDF_FILE_NAME}FileCopy`,
+              fileName: `${TEST_PDF_FILE_NAME}FileCopy`,
               page: 12,
             },
             comment: "test",
             value: 12000000,
-            unit: "EUR",
+            currency: "EUR",
           },
         },
         opex: {
           totalAmount: {
             quality: "Estimated",
             dataSource: {
-              report: "None...",
+              fileName: "None...",
               page: 12,
             },
             comment: "test",
             value: 10000000,
-            unit: "EUR",
+            currency: "EUR",
           },
         },
         revenue: {
           totalAmount: {
             quality: "Estimated",
             dataSource: {
-              report: "None...",
+              fileName: "None...",
               page: 12,
             },
             comment: "test",
             value: 40000000,
-            unit: "EUR",
+            currency: "EUR",
           },
         },
         general: {
@@ -230,23 +230,23 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
           nfrdMandatory: "Yes",
           euTaxonomyActivityLevelReporting: "Yes",
           assurance: {
-            assurance: "None",
+            value: "None",
             provider: "Assurance Provider",
             dataSource: {
-              report: TEST_PDF_FILE_NAME,
+              fileName: TEST_PDF_FILE_NAME,
               page: 1,
             },
           },
           numberOfEmployees: 333,
           referencedReports: {
             [`${TEST_PDF_FILE_NAME}FileCopy`]: {
-              reference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               isGroupLevel: "No",
               reportDate: "2023-07-12",
               currency: "EUR",
             },
             [TEST_PDF_FILE_NAME]: {
-              reference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               isGroupLevel: "No",
               reportDate: "2023-07-12",
               currency: "EUR",
