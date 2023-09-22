@@ -3,7 +3,7 @@
     <p>Files with duplicate names:</p>
     <strong>{{ this.duplicateNamesJoinedString }}</strong>
   </div>
-  <br v-if="(this.duplicateNamesJoinedString !== '') && (this.fileNamesWithCharacterViolationsJoinedString !== '')"/>
+  <br v-if="this.duplicateNamesJoinedString !== '' && this.fileNamesWithCharacterViolationsJoinedString !== ''" />
   <div v-if="this.fileNamesWithCharacterViolationsJoinedString !== ''">
     <p>File names containing illegal characters:</p>
     <strong>{{ this.fileNamesWithCharacterViolationsJoinedString }}</strong>
