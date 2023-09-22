@@ -323,7 +323,7 @@ import {
   getKpiFieldNameForOneFinancialServiceType,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
-  AssuranceDataAssuranceEnum,
+  AssuranceDataPointAssuranceOptionsValueEnum,
   type CompanyAssociatedDataEuTaxonomyDataForFinancials,
   type DataMetaInformation,
   type EuTaxonomyDataForFinancials,
@@ -378,9 +378,9 @@ export default defineComponent({
       fiscalYearEnd: "",
       reportingPeriod: undefined as undefined | Date,
       assuranceData: {
-        None: humanizeStringOrNumber(AssuranceDataAssuranceEnum.None),
-        LimitedAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.LimitedAssurance),
-        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.ReasonableAssurance),
+        None: humanizeStringOrNumber(AssuranceDataPointAssuranceOptionsValueEnum.None),
+        LimitedAssurance: humanizeStringOrNumber(AssuranceDataPointAssuranceOptionsValueEnum.LimitedAssurance),
+        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointAssuranceOptionsValueEnum.ReasonableAssurance),
       },
       euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
