@@ -1,15 +1,20 @@
 import { EuTaxonomyDataForFinancialsFinancialServicesTypesEnum } from "@clients/backend";
 
 export const euTaxonomyKPIsModel = {
-  creditInstitutionKpis: ["tradingPortfolio", "interbankLoans", "tradingPortfolioAndInterbankLoans", "greenAssetRatio"],
-  insuranceKpis: ["taxonomyEligibleNonLifeInsuranceActivities"],
-  investmentFirmKpis: ["greenAssetRatio"],
+  creditInstitutionKpis: [
+    "tradingPortfolioInPercent",
+    "interbankLoansInPercent",
+    "tradingPortfolioAndInterbankLoansInPercent",
+    "greenAssetRatioInPercent",
+  ],
+  insuranceKpis: ["taxonomyEligibleNonLifeInsuranceActivitiesInPercent"],
+  investmentFirmKpis: ["greenAssetRatioInPercent"],
   eligibilityKpis: [
-    "taxonomyEligibleActivity",
-    "taxonomyNonEligibleActivity",
-    "derivatives",
-    "banksAndIssuers",
-    "investmentNonNfrd",
+    "taxonomyEligibleActivityInPercent",
+    "taxonomyNonEligibleActivityInPercent",
+    "derivativesInPercent",
+    "banksAndIssuersInPercent",
+    "investmentNonNfrdInPercent",
   ],
   kpisFieldNameToFinancialServiceType: {
     creditInstitutionKpis: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,

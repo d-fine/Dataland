@@ -56,10 +56,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));
             })
             .then((storedCompany) => {
-              const preparedFixture = getPreparedFixture(
-                "eligible-activity-Point-26",
-                euTaxoFinancialPreparedFixtures,
-              );
+              const preparedFixture = getPreparedFixture("eligible-activity-Point-26", euTaxoFinancialPreparedFixtures);
               storedCompanyForManyDatasetsCompany = storedCompany;
               return uploadFrameworkData(
                 DataTypeEnum.EutaxonomyFinancials,
