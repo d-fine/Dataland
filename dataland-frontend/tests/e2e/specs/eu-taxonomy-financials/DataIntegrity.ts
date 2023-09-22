@@ -70,7 +70,7 @@ describeIf(
     function formatPercentNumber(value?: DataPointOneValueBigDecimal): string {
       if (value === undefined || value === null || value.value === undefined || value.value === null)
         return "No data has been reported";
-      return (Math.round(value.value * 100 * 100) / 100).toString();
+      return (Math.round(value.value * 100) / 100).toString();
     }
 
     /**
