@@ -4,7 +4,7 @@
     <TheContent>
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
         <BackButton id="backButton" class="mt-2 pl-3" />
-        <CompanyInformation :companyID="companyID" />
+        <CompanyInformation :companyId="companyID" />
         <component
           :is="frameworkToUploadComponent"
           :companyID="companyID"
@@ -25,6 +25,7 @@ import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonomyForNonFinancials.vue";
+import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
@@ -34,17 +35,12 @@ import { redirectToMyDatasets } from "@/components/resources/uploadDataset/Datas
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { defineComponent } from "vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 
 export default defineComponent({
   name: "UploadFormWrapper",
   components: {
     TheContent,
     AuthorizationWrapper,
-    CreateLksgDataset,
-    CreateSfdrDataset,
-    CreateP2pDataset,
-    CreateEuTaxonomyForNonFinancials,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
@@ -66,14 +62,14 @@ export default defineComponent({
       switch (this.frameworkType) {
         case `${DataTypeEnum.EutaxonomyNonFinancials}`:
           return CreateEuTaxonomyForNonFinancials;
+        case `${DataTypeEnum.EutaxonomyFinancials}`:
+          return CreateEuTaxonomyForFinancials;
         case `${DataTypeEnum.Lksg}`:
           return CreateLksgDataset;
         case `${DataTypeEnum.P2p}`:
           return CreateP2pDataset;
         case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
-        case `${DataTypeEnum.EutaxonomyFinancials}`:
-          return CreateEuTaxonomyForFinancials;
         default:
           return null;
       }

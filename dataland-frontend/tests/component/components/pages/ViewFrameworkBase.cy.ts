@@ -5,6 +5,7 @@ import { shallowMount } from "@vue/test-utils";
 import { nextTick } from "vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component test for ViewFrameworkBase", () => {
   it("Should proper set the component based on data", () => {
@@ -100,7 +101,7 @@ describe("Component test for ViewFrameworkBase", () => {
       "upload permission and framework with edit page",
     () => {
       const keycloakMock = minimalKeycloakMock({
-        roles: ["ROLE_USER", "ROLE_UPLOADER"],
+        roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
       });
       cy.intercept("**/api/metadata**", []);
       cy.mountWithPlugins(ViewFrameworkBase, {
@@ -124,7 +125,7 @@ describe("Component test for ViewFrameworkBase", () => {
       "on framework-view-pages for which no edit functionality has been implemented",
     () => {
       const keycloakMock = minimalKeycloakMock({
-        roles: ["ROLE_USER", "ROLE_UPLOADER"],
+        roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
       });
       cy.intercept("**/api/metadata**", []);
       cy.mountWithPlugins(ViewFrameworkBase, {
