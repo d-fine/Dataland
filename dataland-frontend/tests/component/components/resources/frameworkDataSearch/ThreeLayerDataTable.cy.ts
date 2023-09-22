@@ -292,10 +292,10 @@ describe("Component test for ThreeLayerDataTable", () => {
       toggleCategoryByClick("Cement");
       toggleCategoryByClick("energy");
 
-      cy.get('[data-test="2018_ammonia_energyMix"] span')
+      cy.get('[data-test="2018_ammonia_energyMixInPercent"] span')
         .should("exist")
         .contains(`${expectedAmmoniaDecarbonisationEnergyMix} %`);
-      cy.get('[data-test="2018_cement_energyMix"] span').should("exist").contains(`${expectedCementEnergyEnergyMix} %`);
+      cy.get('[data-test="2018_cement_energyMixInPercent"] span').should("exist").contains(`${expectedCementEnergyEnergyMix} %`);
     });
   });
 });
