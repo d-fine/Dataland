@@ -5,7 +5,8 @@ import org.dataland.datalandbackend.model.FrameworkBase
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
-import org.dataland.datalandbackend.model.eutaxonomy.AssuranceData
+import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
+import org.dataland.datalandbackend.model.eutaxonomy.AssuranceDataPoint
 import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -25,7 +26,7 @@ data class EuTaxonomyGeneral(
 
     override val euTaxonomyActivityLevelReporting: YesNo?,
 
-    override val assurance: AssuranceData?,
+    override val assurance: AssuranceDataPoint<AssuranceOptions>?,
 
     override val numberOfEmployees: BigDecimal?,
 

@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model.eutaxonomy
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
+import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -16,6 +17,6 @@ interface EuTaxonomyCommonFields {
     val scopeOfEntities: YesNoNa?
     val nfrdMandatory: YesNo?
     val euTaxonomyActivityLevelReporting: YesNo?
-    val assurance: AssuranceData?
+    val assurance: AssuranceDataPoint<AssuranceOptions>?
     val numberOfEmployees: BigDecimal?
 }

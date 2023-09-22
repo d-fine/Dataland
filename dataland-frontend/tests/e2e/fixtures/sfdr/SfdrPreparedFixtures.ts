@@ -55,7 +55,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
   input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure = {
     quality: "Audited",
     dataSource: {
-      report: "string",
+      fileReference: "string",
       page: 0,
       tagName: "string",
     },
@@ -65,7 +65,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
   input.t.environmental!.biodiversity!.protectedAreasExposure = {
     quality: "Audited",
     dataSource: {
-      report: "string",
+      fileReference: "string",
       page: 0,
       tagName: "string",
     },
@@ -75,7 +75,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
   input.t.environmental!.biodiversity!.rareOrEndangeredEcosystemsExposure = {
     quality: "Audited",
     dataSource: {
-      report: "string",
+      fileReference: "string",
       page: 0,
       tagName: "string",
     },

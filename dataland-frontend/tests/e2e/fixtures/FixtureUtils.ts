@@ -1,10 +1,10 @@
-import { type CompanyReport, type DocumentReference } from "@clients/backend";
+import { type CompanyReport, type BaseDocumentReference } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { faker } from "@faker-js/faker";
 
-export type ReferencedDocuments = { [key: string]: CompanyReport | DocumentReference };
+export type ReferencedDocuments = { [key: string]: CompanyReport | BaseDocumentReference };
 
 /**
  * Randomly generates a fixture datasets consisting of a specified number of groups of company information datasets, framework datasets and

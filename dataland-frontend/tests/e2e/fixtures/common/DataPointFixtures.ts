@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { type CompanyReportReference, type DocumentReference, QualityOptions } from "@clients/backend";
+import { type ExtendedDocumentReference, type BaseDocumentReference, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { pickSubsetOfElements, pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNoNa } from "./YesNoFixtures";
@@ -21,7 +21,7 @@ export function generateReferencedReports(undefinedProbability = DEFAULT_PROBABI
   const referencedReports: ReferencedDocuments = {};
   for (const reportName of availableReportNames) {
     referencedReports[reportName] = {
-      reference: getReferencedDocumentId(),
+      fileReference: getReferencedDocumentId(),
       isGroupLevel: valueOrUndefined(generateYesNoNa(), undefinedProbability),
       reportDate: valueOrUndefined(generatePastDate(), undefinedProbability),
       currency: generateCurrencyCode(),
@@ -60,7 +60,7 @@ export function generateDatapoint<T>(
 
 export interface GenericDataPoint<T> {
   value: T | undefined;
-  dataSource: CompanyReportReference | undefined;
+  dataSource: ExtendedDocumentReference | undefined;
   quality: QualityOptions;
   comment: string | undefined;
   unit: string | undefined;
@@ -68,7 +68,7 @@ export interface GenericDataPoint<T> {
 
 export interface GenericBaseDataPoint<T> {
   value: T;
-  dataSource: DocumentReference | undefined;
+  dataSource: BaseDocumentReference | undefined;
 }
 
 /**
@@ -80,8 +80,8 @@ export interface GenericBaseDataPoint<T> {
 function generateQualityAndDataSourceAndComment(
   reports: ReferencedDocuments,
   qualityBucket: QualityOptions,
-): { dataSource: CompanyReportReference | undefined; comment: string | undefined } {
-  let dataSource: CompanyReportReference | undefined;
+): { dataSource: ExtendedDocumentReference | undefined; comment: string | undefined } {
+  let dataSource: ExtendedDocumentReference | undefined;
   let comment: string | undefined;
   if (
     qualityBucket === QualityOptions.Audited ||
@@ -92,7 +92,7 @@ function generateQualityAndDataSourceAndComment(
     dataSource = generateDataSource(reports);
     comment = faker.git.commitMessage();
   } else {
-    dataSource = { report: "", page: undefined, tagName: undefined };
+    dataSource = { fileReference: "", page: undefined, tagName: undefined };
   }
   return { dataSource, comment };
 }
