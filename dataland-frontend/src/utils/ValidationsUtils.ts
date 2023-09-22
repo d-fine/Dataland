@@ -5,9 +5,9 @@ import { findAllValuesForKey, type ObjectType } from "@/utils/UpdateObjectUtils"
  * Checks which inputs are not filled correctly
  * @param node - single form field
  */
-export function checkCustomInputs(node: FormKitNode): void {
+export function checkCustomInputs(node: FormKitNode<unknown> | undefined): void {
   const invalidElements: HTMLElement[] = [];
-  node.walk((child: FormKitNode) => {
+  node?.walk((child: FormKitNode) => {
     // Check if this child has errors
     if ((child.ledger.value("blocking") || child.ledger.value("errors")) && child.type !== "group") {
       // We found an input with validation errors

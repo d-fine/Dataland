@@ -30,7 +30,7 @@
               :description="companyDataExplanations.companyAlternativeNames"
             />
             <PrimeButton
-              :disabled="this.enteredCompanyAlternativeName === ''"
+              :disabled="enteredCompanyAlternativeName === ''"
               @click="addCompanyAlternativeName"
               name="addAlternativeName"
               label="Add"

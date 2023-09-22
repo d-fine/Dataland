@@ -1,22 +1,14 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
+    "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
     "build/clients/**/*"
   ],
   "compilerOptions": {
     "composite": true,
-    "types": ["vite/client"],
     "baseUrl": ".",
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
-    // These override some properties in the tsconfig.web.json (and will likely break <script setup> clauses
-    // But are required as otherwise the openApi client won't compile properly
-    "importsNotUsedAsValues": "remove",
-    "preserveValueImports": false,
     "paths": {
       "@/*": [
         "./src/*"

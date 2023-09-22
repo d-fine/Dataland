@@ -136,7 +136,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.ensureLoggedIn();
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(
-            `/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`,
+            `/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`,
           )
             .wait("@companies-meta-information")
             .get("div[class='col-12 text-left']")
@@ -144,14 +144,14 @@ describe("As a user, I expect the search functionality on the /companies page to
             .get("#sector-filter")
             .click()
             .get('input[placeholder="Search sectors"]')
-            .type(`${demoCompanyToTestFor.sector!}`)
+            .type(`${demoCompanyToTestFor.sector}`)
             .get("li")
-            .contains(RegExp(`^${demoCompanyToTestFor.sector!}$`))
+            .contains(RegExp(`^${demoCompanyToTestFor.sector}$`))
             .click()
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyName)
             .should("exist");
-          cy.url().should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector!)}`);
+          cy.url().should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector)}`);
         },
       );
     },

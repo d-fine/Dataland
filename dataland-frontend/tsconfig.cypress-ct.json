@@ -2,6 +2,7 @@
 {
   "extends": "./tsconfig.app.json",
   "include": [
+    "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
     "build/clients/**/*",
@@ -11,7 +12,6 @@
   ],
   "compilerOptions": {
     "composite": true,
-    "types": ["cypress"],
     "paths": {
       "@/*": ["./src/*"],
       "@clients/*": ["./build/clients/*"],

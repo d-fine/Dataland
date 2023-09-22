@@ -7,14 +7,12 @@ describe("Component test for UserProfileDropDown", () => {
     const testImagePath = "https://url.doesnotexist/testImage";
     const profilePictureLoadingErrorSpy = cy.spy().as("onProfilePictureLoadingErrorSpy");
     const profilePictureObtainedSpy = cy.spy().as("onProfilePictureObtainedSpy");
-    cy.mountWithPlugins(UserProfileDropDown, {
-      keycloak: minimalKeycloakMock({
+    cy.getMountingFunction({ keycloak: minimalKeycloakMock({
         idTokenParsed: {
           picture: testImagePath,
         },
-      }),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      })
+    })(UserProfileDropDown, {
       props: {
         onProfilePictureLoadingError: profilePictureLoadingErrorSpy,
         onProfilePictureObtained: profilePictureObtainedSpy,
@@ -31,9 +29,9 @@ describe("Component test for UserProfileDropDown", () => {
     const reviewerKeycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_REVIEWER],
     });
-    cy.mountWithPlugins(UserProfileDropDown, {
+    cy.getMountingFunction({
       keycloak: reviewerKeycloakMock,
-    }).then((mounted) => {
+    })(UserProfileDropDown).then((mounted) => {
       cy.get(profileDropdownToggleSelector).click().get(qaAnchorSelector).should("exist").should("be.visible");
       cy.get(qaAnchorSelector).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/qualityassurance");
@@ -44,9 +42,9 @@ describe("Component test for UserProfileDropDown", () => {
     const reviewerKeycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_USER],
     });
-    cy.mountWithPlugins(UserProfileDropDown, {
-      keycloak: reviewerKeycloakMock,
-    }).then(() => {
+    cy.getMountingFunction({
+        keycloak: reviewerKeycloakMock,
+    })(UserProfileDropDown).then(() => {
       cy.get(profileDropdownToggleSelector).click().get(qaAnchorSelector).should("not.exist");
     });
   });
