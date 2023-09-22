@@ -103,18 +103,22 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
   fillEligibilityKpis("assetManagementKpis", data.eligibilityKpis?.AssetManagement);
   fillField(
     "insuranceKpis",
-    "taxonomyEligibleNonLifeInsuranceActivities",
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent",
     data.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
   );
-  fillField("investmentFirmKpis", "greenAssetRatio", data.investmentFirmKpis?.greenAssetRatioInPercent);
+  fillField("investmentFirmKpis", "greenAssetRatioInPercent", data.investmentFirmKpis?.greenAssetRatioInPercent);
   fillField(
     "creditInstitutionKpis",
-    "tradingPortfolioAndInterbankLoans",
+    "tradingPortfolioAndInterbankLoansInPercent",
     data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent,
   );
-  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolioInPercent);
-  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoansInPercent);
-  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatioInPercent);
+  fillField(
+    "creditInstitutionKpis",
+    "tradingPortfolioInPercent",
+    data.creditInstitutionKpis?.tradingPortfolioInPercent,
+  );
+  fillField("creditInstitutionKpis", "interbankLoansInPercent", data.creditInstitutionKpis?.interbankLoansInPercent);
+  fillField("creditInstitutionKpis", "greenAssetRatioInPercent", data.creditInstitutionKpis?.greenAssetRatioInPercent);
 }
 
 /**
@@ -123,11 +127,11 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
  * @param data the kpi data to use to fill the form
  */
 export function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined): void {
-  fillField(divTag, "taxonomyEligibleActivity", data?.taxonomyEligibleActivityInPercent);
-  fillField(divTag, "taxonomyNonEligibleActivity", data?.taxonomyNonEligibleActivityInPercent);
-  fillField(divTag, "derivatives", data?.derivativesInPercent);
-  fillField(divTag, "banksAndIssuers", data?.banksAndIssuersInPercent);
-  fillField(divTag, "investmentNonNfrd", data?.investmentNonNfrdInPercent);
+  fillField(divTag, "taxonomyEligibleActivityInPercent", data?.taxonomyEligibleActivityInPercent);
+  fillField(divTag, "taxonomyNonEligibleActivityInPercent", data?.taxonomyNonEligibleActivityInPercent);
+  fillField(divTag, "derivativesInPercent", data?.derivativesInPercent);
+  fillField(divTag, "banksAndIssuersInPercent", data?.banksAndIssuersInPercent);
+  fillField(divTag, "investmentNonNfrdInPercent", data?.investmentNonNfrdInPercent);
 }
 
 /**
@@ -280,12 +284,12 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
   fillField(
     "creditInstitutionKpis",
-    "tradingPortfolioAndInterbankLoans",
+    "tradingPortfolioAndInterbankLoansInPercent",
     data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent,
   );
-  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolioInPercent);
-  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoansInPercent);
-  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatioInPercent);
+  fillField("creditInstitutionKpis", "tradingPortfolioInPercent", data.creditInstitutionKpis?.tradingPortfolioInPercent);
+  fillField("creditInstitutionKpis", "interbankLoansInPercent", data.creditInstitutionKpis?.interbankLoansInPercent);
+  fillField("creditInstitutionKpis", "greenAssetRatioInPercent", data.creditInstitutionKpis?.greenAssetRatioInPercent);
 }
 
 /**

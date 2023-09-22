@@ -55,16 +55,16 @@ export function getKpiFieldNameForOneFinancialServiceType(
 }
 
 export const euTaxonomyKpiNameMappings = {
-  investmentNonNfrd: "Exposures To Non-NFRD Entities",
-  banksAndIssuers: "Exposures To Central Governments, Central Banks, Supranational Issuers",
-  derivatives: "Exposures To Derivatives",
-  taxonomyNonEligibleActivity: "Exposures To Taxonomy Non-eligible Economic Activities",
-  taxonomyEligibleActivity: "Exposures To Taxonomy-eligible Economic Activities",
-  taxonomyEligibleNonLifeInsuranceActivities: "Taxonomy-eligible Non-life Insurance Economic Activities",
-  greenAssetRatio: "Green Asset Ratio",
-  tradingPortfolio: "Trading Portfolio",
-  tradingPortfolioAndInterbankLoans: "Trading Portfolio & On-demand Interbank Loans",
-  interbankLoans: "On-demand Interbank Loans",
+  investmentNonNfrdInPercent: "Exposures To Non-NFRD Entities",
+  banksAndIssuersInPercent: "Exposures To Central Governments, Central Banks, Supranational Issuers",
+  derivativesInPercent: "Exposures To Derivatives",
+  taxonomyNonEligibleActivityInPercent: "Exposures To Taxonomy Non-eligible Economic Activities",
+  taxonomyEligibleActivityInPercent: "Exposures To Taxonomy-eligible Economic Activities",
+  taxonomyEligibleNonLifeInsuranceActivitiesInPercent: "Taxonomy-eligible Non-life Insurance Economic Activities",
+  greenAssetRatioInPercent: "Green Asset Ratio",
+  tradingPortfolioInPercent: "Trading Portfolio",
+  tradingPortfolioAndInterbankLoansInPercent: "Trading Portfolio & On-demand Interbank Loans",
+  interbankLoansInPercent: "On-demand Interbank Loans",
   reportDate: "Report Date",
   reportingPeriod: "Reporting Period",
   totalAmount: "Total Amount",
@@ -129,22 +129,22 @@ export const euTaxonomyKpiNameMappings = {
   totalOpEx: "Total OpEx",
 };
 export const euTaxonomyKpiInfoMappings = {
-  investmentNonNfrd: "For financial companies (FS), the percentage of total assets exposed to non-NFRD entities.",
-  banksAndIssuers:
+  investmentNonNfrdInPercent: "For financial companies (FS), the percentage of total assets exposed to non-NFRD entities.",
+  banksAndIssuersInPercent:
     "For financial companies (FS), the percentage of total assets exposed to central governments, central banks, supranational issuers.",
-  derivatives: "For financial companies (FS), the percentage of total assets exposed to derivatives.",
-  taxonomyNonEligibleActivity:
+  derivativesInPercent: "For financial companies (FS), the percentage of total assets exposed to derivatives.",
+  taxonomyNonEligibleActivityInPercent:
     "For financial companies (FS), the percentage of total assets exposed to taxonomy non-eligible economic activities. I.e., to types of economic activity that is not described and does not have technical screening criteria set out in the EU Taxonomy Regulation.",
-  taxonomyEligibleActivity:
+  taxonomyEligibleActivityInPercent:
     "For financial companies (FS), the percentage of total assets exposed to taxonomy-eligible economic activities.",
-  taxonomyEligibleNonLifeInsuranceActivities:
+  taxonomyEligibleNonLifeInsuranceActivitiesInPercent:
     "For Insurance/Reinsurance companies, the percentage of Taxonomy-eligible non-life insurance economics activities. Insurance and reinsurance undertakings other than life insurance undertakings shall calculate the KPI related to underwriting activities and present the ‘gross premiums written’ non-life insurance revenue or, as applicable, reinsurance revenue corresponding to Taxonomy-aligned insurance or reinsurance activities.",
-  greenAssetRatio:
+  greenAssetRatioInPercent:
     "The proportion of assets financing and invested in taxonomy-aligned economic activities as a proportion of total covered assets.",
-  tradingPortfolio: "For Credit Institutions, the trading portfolio as a percentage of total assets.",
-  tradingPortfolioAndInterbankLoans:
+  tradingPortfolioInPercent: "For Credit Institutions, the trading portfolio as a percentage of total assets.",
+  tradingPortfolioAndInterbankLoansInPercent:
     "For Credit Institutions, the trading portfolio and the on demand interbank loans as a percentage of total assets.",
-  interbankLoans: "For Credit Institutions, the on demand interbank loans as a percentage of total assets.",
+  interbankLoansInPercent: "For Credit Institutions, the on demand interbank loans as a percentage of total assets.",
   reportDate: "The date until which the information presented in the report is valid.",
   reportingPeriod: "The reporting period the dataset belongs to (e.g. a fiscal year).",
   nfrdMandatory: "The reporting obligation for companies whose number of employees is greater or equal to 500.",
