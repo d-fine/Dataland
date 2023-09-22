@@ -206,7 +206,7 @@ export default defineComponent({
           const referencedReport = (sourceOfReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
           this.alreadyStoredReports.push({
             reportName: key,
-            reference: referencedReport.reference,
+            fileReference: referencedReport.fileReference,
             currency: referencedReport.currency,
             reportDate: referencedReport.reportDate,
             isGroupLevel: referencedReport.isGroupLevel,

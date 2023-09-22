@@ -227,8 +227,8 @@ export default defineComponent({
     hasDocument(dataPoint: BaseDataPointYesNo): boolean {
       return (
         dataPoint?.value === YesNo.Yes &&
-        dataPoint?.dataSource?.reference != undefined &&
-        dataPoint.dataSource.reference.length > 0
+        dataPoint?.dataSource?.fileReference != undefined &&
+        dataPoint.dataSource.fileReference.length > 0
       );
     },
     /**
