@@ -131,7 +131,7 @@ export default defineComponent({
         return listOfProductionSites.map((productionSite) => ({
           nameOfProductionSite: productionSite.nameOfProductionSite,
           addressOfProductionSite: productionSite.addressOfProductionSite,
-          percentageOfTotalRevenue: productionSite.shareOfTotalRevenueInPercent
+          shareOfTotalRevenueInPercent: productionSite.shareOfTotalRevenueInPercent
             ? formatPercentageNumberAsString(productionSite.shareOfTotalRevenueInPercent)
             : undefined,
         }));
@@ -141,7 +141,7 @@ export default defineComponent({
         const listOfProducts = value as SmeProduct[];
         return listOfProducts.map((product) => ({
           name: product.name,
-          percentageOfTotalRevenue: product.shareOfTotalRevenueInPercent
+          shareOfTotalRevenueInPercent: product.shareOfTotalRevenueInPercent
             ? formatPercentageNumberAsString(product.shareOfTotalRevenueInPercent)
             : undefined,
         }));
