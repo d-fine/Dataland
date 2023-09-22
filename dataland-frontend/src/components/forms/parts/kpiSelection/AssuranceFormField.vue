@@ -85,7 +85,7 @@ import {
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import { AssuranceDataAssuranceEnum } from "@clients/backend";
+import { AssuranceDataPointAssuranceOptionsValueEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "AssuranceFormField",
@@ -101,9 +101,9 @@ export default defineComponent({
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       assuranceData: {
-        None: humanizeStringOrNumber(AssuranceDataAssuranceEnum.None),
-        LimitedAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.LimitedAssurance),
-        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.ReasonableAssurance),
+        None: humanizeStringOrNumber(AssuranceDataPointAssuranceOptionsValueEnum.None),
+        LimitedAssurance: humanizeStringOrNumber(AssuranceDataPointAssuranceOptionsValueEnum.LimitedAssurance),
+        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointAssuranceOptionsValueEnum.ReasonableAssurance),
       },
       currentReportValue: "",
     };
