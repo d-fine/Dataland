@@ -64,10 +64,10 @@ class PdfVerificationService {
     }
 
     /**
-     * We allow alphanumeric characters, hyphens, spaces, brackets, underscores and periods
-     * up to a maximum length of 254 characters in our filenames
+     * We allow any character in file names, except those disallowed in the Windows operating system
+     * up to a maximum length of 254 characters
      */
-    private val allowedFilenameRegex = Regex("/^[^<>:\"|?/*\\]+[^.\s]$/")
+    private val allowedFilenameRegex = Regex("^(?=.{1,254}\$)[^<>:\"|?\\\\/*]+[^<>:\"|?/*\\\\.\\s]\$")
 
     private fun checkThatDocumentNameIsValid(name: String, correlationId: String) {
         if (!allowedFilenameRegex.matches(name)) {
@@ -76,8 +76,9 @@ class PdfVerificationService {
             )
             throw InvalidInputApiException(
                 "You seem to have uploaded an file that has an invalid name",
-                "Please ensure that your filename only contains alphanumeric characters, hyphens, spaces," +
-                    "brackets, underscores and periods up to maximum length of 254 characters.",
+                "Please ensure that your does not contain any of the following characters: " +
+                    "column, angle braket, double quotation mark, pipe, question mark, asterisk, forward or backward slash. " +
+                    "Also doesn't end in a period or whitespace and has a maximum length of 254 characters.",
             )
         }
     }
