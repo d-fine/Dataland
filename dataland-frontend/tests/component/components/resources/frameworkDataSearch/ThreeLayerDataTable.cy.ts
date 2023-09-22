@@ -295,7 +295,9 @@ describe("Component test for ThreeLayerDataTable", () => {
       cy.get('[data-test="2018_ammonia_energyMixInPercent"] span')
         .should("exist")
         .contains(`${expectedAmmoniaDecarbonisationEnergyMix} %`);
-      cy.get('[data-test="2018_cement_energyMixInPercent"] span').should("exist").contains(`${expectedCementEnergyEnergyMix} %`);
+      cy.get('[data-test="2018_cement_energyMixInPercent"] span')
+        .should("exist")
+        .contains(`${expectedCementEnergyEnergyMix} %`);
     });
   });
 });
