@@ -11,7 +11,9 @@ import { pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureU
 export function generateAssuranceData(reports: ReferencedDocuments): AssuranceDataPointAssuranceOptions {
   const assurance = pickOneElement(Object.values(AssuranceDataPointAssuranceOptionsValueEnum));
   const provider =
-    assurance !== AssuranceDataPointAssuranceOptionsValueEnum.None && faker.datatype.boolean() ? faker.company.name() : undefined;
+    assurance !== AssuranceDataPointAssuranceOptionsValueEnum.None && faker.datatype.boolean()
+      ? faker.company.name()
+      : undefined;
 
   const dataSource =
     assurance !== AssuranceDataPointAssuranceOptionsValueEnum.None && faker.datatype.boolean()
