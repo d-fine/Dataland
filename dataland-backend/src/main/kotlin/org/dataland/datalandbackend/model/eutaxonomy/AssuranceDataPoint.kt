@@ -12,7 +12,7 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 data class AssuranceDataPoint<T>(
     @field:JsonProperty(required = true)
     override val value: T,
-
+    @field:JsonProperty(required = true)
     override val quality: QualityOptions,
 
     override val comment: String? = null,
