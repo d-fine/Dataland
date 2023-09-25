@@ -80,7 +80,7 @@ enum FileNameInvalidityReason {
   Duplicate = "Duplicate",
   ForbiddenCharacter = "ForbiddenCharacter",
 }
-type InvalidFileNameWithIndexAndReason = {
+type NameIndexAndReasonOfInvalidFile = {
   fileName: string;
   index: number;
   invalidityReason: FileNameInvalidityReason;
@@ -169,20 +169,20 @@ export default defineComponent({
     handleUpdatedDocumentsSelectedForUpload(selectedDocumentsForUpload: DocumentToUpload[]) {
       this.documentsToUpload = selectedDocumentsForUpload;
 
-      const invalidFileNamesWithIndexAndReason: InvalidFileNameWithIndexAndReason[] = [];
+      const nameIndexAndReasonOfInvalidFiles: NameIndexAndReasonOfInvalidFile[] = [];
       const existingFileNamesCollector = new Set<string>();
 
       for (let i = 0; i < this.documentsToUpload.length; i++) {
         const fileName = this.documentsToUpload[i].fileNameWithoutSuffix;
 
         if (this.hasFileNameForbiddenCharacter(fileName)) {
-          invalidFileNamesWithIndexAndReason.push({
+          nameIndexAndReasonOfInvalidFiles.push({
             fileName: fileName,
             index: i,
             invalidityReason: FileNameInvalidityReason.ForbiddenCharacter,
           });
         } else if (existingFileNamesCollector.has(fileName) || this.namesOfStoredReports.indexOf(fileName) !== -1) {
-          invalidFileNamesWithIndexAndReason.push({
+          nameIndexAndReasonOfInvalidFiles.push({
             fileName: fileName,
             index: i,
             invalidityReason: FileNameInvalidityReason.Duplicate,
@@ -192,25 +192,25 @@ export default defineComponent({
         }
       }
 
-      if (invalidFileNamesWithIndexAndReason.length > 0) {
-        this.handleInvalidFileNames([...invalidFileNamesWithIndexAndReason].reverse());
+      if (nameIndexAndReasonOfInvalidFiles.length > 0) {
+        this.handleInvalidFileNames([...nameIndexAndReasonOfInvalidFiles].reverse());
       } else {
         this.emitReportsUpdatedEvent();
       }
     },
     /**
      * Handles invalid file names in the file selection by removing those files from the file selection.
-     * @param invalidFileNamesWithIndexAndReason invalid file names together with their indexes in the file selection
+     * @param nameIndexAndReasonOfInvalidFiles invalid file names together with their indexes in the file selection
      * list and the reason for their invalidities
      */
-    handleInvalidFileNames(invalidFileNamesWithIndexAndReason: InvalidFileNameWithIndexAndReason[]) {
-      this.namesInFileSelectionThatAreAlreadyTakenByOtherReports = invalidFileNamesWithIndexAndReason
+    handleInvalidFileNames(nameIndexAndReasonOfInvalidFiles: NameIndexAndReasonOfInvalidFile[]) {
+      this.namesInFileSelectionThatAreAlreadyTakenByOtherReports = nameIndexAndReasonOfInvalidFiles
         .filter((it) => it.invalidityReason === FileNameInvalidityReason.Duplicate)
         .map((it) => it.fileName);
-      this.namesInFileSelectionWithForbiddenCharacters = invalidFileNamesWithIndexAndReason
+      this.namesInFileSelectionWithForbiddenCharacters = nameIndexAndReasonOfInvalidFiles
         .filter((it) => it.invalidityReason === FileNameInvalidityReason.ForbiddenCharacter)
         .map((it) => it.fileName);
-      const indexesOfInvalidFileNames = invalidFileNamesWithIndexAndReason.map(
+      const indexesOfInvalidFileNames = nameIndexAndReasonOfInvalidFiles.map(
         (fileNameWithIndexAndReason) => fileNameWithIndexAndReason.index,
       );
       (this.$refs.uploadDocumentsForm.removeDocumentsFromDocumentsToUpload as (indexes: number[]) => void)(
