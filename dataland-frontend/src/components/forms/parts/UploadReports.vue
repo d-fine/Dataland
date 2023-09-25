@@ -161,6 +161,8 @@ export default defineComponent({
     },
     /**
      * Handles selection of files by the user. If invalid file names are found in the selection, this is handled.
+     * File names are invalid if they contain forbidden characters, or if they already exist either in the current
+     * file selection, or among the already uploaded reports (given that the user is in EDIT mode).
      * At the end an event is emitted reflecting that the referenceable reports have updated.
      * @param selectedDocumentsForUpload the list of all selectedDocumentsForUpload for the upload, determined by the selection in the file uploader
      */
