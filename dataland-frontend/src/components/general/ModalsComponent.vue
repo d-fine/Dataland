@@ -11,9 +11,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import GenericDataTableModalLink, {
-  type GenericsDataTableRequiredData,
-} from "@/components/general/GenericDataTableModalLink.vue";
+import GenericDataTableModalLink from "@/components/general/GenericDataTableModalLink.vue";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -50,11 +48,6 @@ const FieldsWithModalsMap: { [fieldName: string]: FieldTriggerAndDisplayComponen
   MultiSelectFormField: genericFieldTriggerAndDisplayComponent,
   ComponentName: genericFieldTriggerAndDisplayComponent,
 } as const;
-
-export type GenericModalData = {
-  modalTitle?: string;
-  dataType?: GenericsDataTableRequiredData;
-};
 
 /**
  * @param componentName component name to find
