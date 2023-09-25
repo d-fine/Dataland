@@ -193,7 +193,7 @@ export default defineComponent({
       }
 
       if (nameIndexAndReasonOfInvalidFiles.length > 0) {
-        this.handleInvalidFileNames([...nameIndexAndReasonOfInvalidFiles].reverse());
+        this.handleFilesWithInvalidNames([...nameIndexAndReasonOfInvalidFiles].reverse());
       } else {
         this.emitReportsUpdatedEvent();
       }
@@ -203,7 +203,7 @@ export default defineComponent({
      * @param nameIndexAndReasonOfInvalidFiles invalid file names together with their indexes in the file selection
      * list and the reason for their invalidities
      */
-    handleInvalidFileNames(nameIndexAndReasonOfInvalidFiles: NameIndexAndReasonOfInvalidFile[]) {
+    handleFilesWithInvalidNames(nameIndexAndReasonOfInvalidFiles: NameIndexAndReasonOfInvalidFile[]) {
       this.namesInFileSelectionThatAreAlreadyTakenByOtherReports = nameIndexAndReasonOfInvalidFiles
         .filter((it) => it.invalidityReason === FileNameInvalidityReason.Duplicate)
         .map((it) => it.fileName);
