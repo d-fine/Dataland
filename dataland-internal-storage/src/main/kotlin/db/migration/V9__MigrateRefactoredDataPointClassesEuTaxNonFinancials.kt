@@ -34,9 +34,8 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
     )
 
     /**
-     * Migrate the data to new variable names in data point structures
+     * Migrates the data to new variable names in data point structures
      */
-
     fun migrateRefactoredDataPointClasses(dataTableEntity: DataTableEntity) {
         val dataObject = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
         val generalCategoryObject = dataObject.getOrJavaNull("general")
@@ -47,6 +46,9 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
     }
 
+    /**
+     * This function migrates the referenced reports by amending variable names
+     */
     private fun migrateReports(generalCategory: JSONObject) {
         val referencedReportsObject = generalCategory.getOrJsonNull("referencedReports")
         if (referencedReportsObject != JSONObject.NULL) {
@@ -62,6 +64,9 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         }
     }
 
+    /**
+     * This function iterates through all cash flow categories in order to migrate the "DataSource" Object
+     */
     private fun iterateThroughCashFlowCategories(dataObject: JSONObject) {
         listOf("revenue", "capex", "opex").forEach { cashFlowType ->
             val categoryObject = dataObject.getOrJavaNull(cashFlowType) ?: return@forEach
@@ -71,6 +76,9 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         }
     }
 
+    /**
+     * This function migrates the "DataSource" Object by amending variable names
+     */
     private fun migrateDataSource(parentObjectOfDataSource: JSONObject, dataObject: JSONObject) {
         val dataSourceObject = parentObjectOfDataSource.getOrJsonNull("dataSource")
         dataSourceObject as JSONObject
@@ -86,6 +94,10 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
             dataSourceObject.remove(it.key)
         }
     }
+
+    /**
+     * This function migrates the "Assurance" Object including a "DataSource" Object
+     */
     private fun migrateAssurance(dataObject: JSONObject) {
         val generalCategoryObject = dataObject.getOrJavaNull("general")
         generalCategoryObject as JSONObject
@@ -100,6 +112,10 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         }
     }
 
+    /**
+     * This function reads the fileReference hash from referenced reports in order to store it
+     * in the "DataSource" Object.
+     */
     private fun getFileReferenceFromReferencedReports(fileName: String, dataObject: JSONObject): String {
         if (fileName != "") {
             val generalCategoryObject = dataObject.getOrJavaNull("general")
