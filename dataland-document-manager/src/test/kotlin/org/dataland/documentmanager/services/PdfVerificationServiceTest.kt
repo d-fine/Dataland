@@ -34,7 +34,7 @@ class PdfVerificationServiceTest {
             pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            "We were unable to load the PDF document you provided." +
+            "The file you uploaded was not able to be parsed as PDF file." +
                 " Please ensure that the file you uploaded has not been corrupted",
             thrown.message,
         )
@@ -48,7 +48,7 @@ class PdfVerificationServiceTest {
             pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            "We were unable to load the PDF document you provided." +
+            "The file you uploaded was not able to be parsed as PDF file." +
                 " Please ensure that the file you uploaded has not been corrupted",
             thrown.message,
         )
