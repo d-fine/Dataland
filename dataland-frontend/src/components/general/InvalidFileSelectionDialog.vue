@@ -36,7 +36,6 @@ export default defineComponent({
     getDataFromParentAndSet() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       const dialogRefData = dialogRefToDisplay.data as {
-        message: string;
         duplicateNamesJoinedString: string;
         fileNamesWithCharacterViolationsJoinedString: string;
       };
