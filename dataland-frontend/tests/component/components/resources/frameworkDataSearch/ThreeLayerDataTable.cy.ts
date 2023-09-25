@@ -269,10 +269,7 @@ describe("Component test for ThreeLayerDataTable", () => {
       assertDefined(p2pData.ammonia?.decarbonisation?.energyMixInPercent),
       2,
     );
-    const expectedCementEnergyEnergyMix = roundNumber(
-      assertDefined(p2pData.cement?.energy?.energyMixInPercent),
-      2,
-    );
+    const expectedCementEnergyEnergyMix = roundNumber(assertDefined(p2pData.cement?.energy?.energyMixInPercent), 2);
 
     cy.mountWithPlugins(ThreeLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
@@ -292,10 +289,14 @@ describe("Component test for ThreeLayerDataTable", () => {
       toggleCategoryByClick("Cement");
       toggleCategoryByClick("energy");
 
-      cy.get('[data-test="2018_ammonia_energyMixInPercent"] span')
-        .should("have.text", `${expectedAmmoniaDecarbonisationEnergyMix} %`);
-      cy.get('[data-test="2018_cement_energyMixInPercent"] span')
-        .should("have.text", `${expectedCementEnergyEnergyMix} %`);
+      cy.get('[data-test="2018_ammonia_energyMixInPercent"] span').should(
+        "have.text",
+        `${expectedAmmoniaDecarbonisationEnergyMix} %`,
+      );
+      cy.get('[data-test="2018_cement_energyMixInPercent"] span').should(
+        "have.text",
+        `${expectedCementEnergyEnergyMix} %`,
+      );
     });
   });
 });
