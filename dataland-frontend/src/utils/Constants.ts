@@ -30,7 +30,7 @@ export const TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS = 2000;
 
 export const UPLOAD_FILE_SIZE_DISPLAY_DECIMALS = 2;
 
-// Same as standard for windows machines. File name can't have one of the special characters <>:"|?/\ and shouldn't end with a whitespace or .
+// Same as standard for windows machines. File name can't have one of the special characters <>:"|?/*\ and shouldn't end with a whitespace or .
 export const REGEX_FOR_FILE_NAMES = /^(?=.{1,254}$)[^<>:"|?/*\\]+[^<>:"|?/*\\.\s]$/;
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
