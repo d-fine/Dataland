@@ -53,7 +53,7 @@ class PdfVerificationService {
      * We allow file names that follow the naming convention of Windows systems.
      */
     private val allowedFilenameRegex =
-        Regex("^[^<>:\"|?/*\\\\s][^<>:\"|?/*\\\\]{0,252}[^<>:\"|?/*\\\\.\\s]\$")
+        Regex("^[^<>:\"|?/*\\\\\\s][^<>:\"|?/*\\\\]{0,252}[^<>:\"|?/*\\\\.\\s]\$")
 
     private fun checkThatFileNameIsWithinNamingConvention(name: String, correlationId: String) {
         if (!allowedFilenameRegex.matches(name)) {
