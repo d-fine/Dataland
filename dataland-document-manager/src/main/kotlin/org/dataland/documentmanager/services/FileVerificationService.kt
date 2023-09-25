@@ -8,32 +8,32 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 
 /**
- * A service for performing basic PDF sanity checks
+ * A service for performing basic sanity checks on files uploaded by user
  */
 @Component
-class PdfVerificationService {
+class FileVerificationService {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * A function that performs surface-level checks to ensure that an uploaded document is indeed a PDF.
+     * A function that performs surface-level checks to ensure that an uploaded file is indeed a PDF.
      * This function does not enforce anything else.
      * In particular a file passing this function is in no way guaranteed to be safe to open.
      */
-    fun assertThatDocumentLooksLikeAPdf(document: MultipartFile, correlationId: String) {
+    fun assertThatFileLooksLikeAPdf(file: MultipartFile, correlationId: String) {
         try {
-            checkIfPdfDocumentIsEmpty(document.bytes, correlationId)
+            checkIfPotentialPdfFileIsEmpty(file.bytes, correlationId)
         } catch (ex: IOException) {
             logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(
-                "Could not parse PDF document",
-                "We were unable to load the PDF document you provided." +
+                "Could not parse file as PDF document",
+                "The file you uploaded was not able to be parsed as PDF file." +
                     " Please ensure that the file you uploaded has not been corrupted",
                 ex,
             )
         }
     }
 
-    private fun checkIfPdfDocumentIsEmpty(blob: ByteArray, correlationId: String) {
+    private fun checkIfPotentialPdfFileIsEmpty(blob: ByteArray, correlationId: String) {
         Loader.loadPDF(blob).use {
             if (it.numberOfPages <= 0) {
                 logger.info(
@@ -41,7 +41,7 @@ class PdfVerificationService {
                 )
                 throw InvalidInputApiException(
                     "You seem to have uploaded an empty PDF",
-                    "We have detected that the pdf you uploaded has 0 pages.",
+                    "We have detected that the PDF you uploaded has 0 pages.",
                 )
             }
         }

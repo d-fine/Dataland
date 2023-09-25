@@ -47,7 +47,7 @@ class DocumentManager(
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val pdfVerificationService: PdfVerificationService,
+    @Autowired private val fileVerificationService: FileVerificationService,
     @Autowired private var objectMapper: ObjectMapper,
 
 ) {
@@ -69,7 +69,7 @@ class DocumentManager(
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
         val documentBody = document.bytes
-        pdfVerificationService.assertThatDocumentLooksLikeAPdf(document, correlationId)
+        fileVerificationService.assertThatFileLooksLikeAPdf(document, correlationId)
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

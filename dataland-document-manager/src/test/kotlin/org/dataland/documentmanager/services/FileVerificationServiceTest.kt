@@ -8,8 +8,8 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 
-class PdfVerificationServiceTest {
-    private val pdfVerificationService = PdfVerificationService()
+class FileVerificationServiceTest {
+    private val fileVerificationService = FileVerificationService()
     private val correlationId = "test-correlation-id"
     private val testPdfFile = "samplePdfs/StandardWordExport.pdf"
     private val testExcelFile = "samplePdfs/EmptyExcelFile.xlsx"
@@ -18,7 +18,7 @@ class PdfVerificationServiceTest {
     fun `verifies that a valid pdf document passes the basic checks`() {
         val testFileBytes = loadFileBytes(testPdfFile)
         val testFile = createPdfFromBytes(testFileBytes)
-        pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
+        fileVerificationService.assertThatFileLooksLikeAPdf(testFile, correlationId)
     }
 
     @Test
@@ -31,7 +31,7 @@ class PdfVerificationServiceTest {
             testFileBytes,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
+            fileVerificationService.assertThatFileLooksLikeAPdf(testFile, correlationId)
         }
         assertEquals(
             "We were unable to load the PDF document you provided." +
@@ -45,7 +45,7 @@ class PdfVerificationServiceTest {
         val testFileBytes = loadFileBytes(testExcelFile)
         val testFile = createPdfFromBytes(testFileBytes)
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
+            fileVerificationService.assertThatFileLooksLikeAPdf(testFile, correlationId)
         }
         assertEquals(
             "We were unable to load the PDF document you provided." +
@@ -63,7 +63,7 @@ class PdfVerificationServiceTest {
             MediaType.APPLICATION_PDF_VALUE,
             testFileBytes,
         )
-        pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
+        fileVerificationService.assertThatFileLooksLikeAPdf(testFile, correlationId)
     }
 
     private fun loadFileBytes(path: String): ByteArray {
