@@ -11,7 +11,7 @@ import java.io.IOException
  * A service for performing basic sanity checks on files uploaded by user
  */
 @Component
-class FileVerificationService {
+class PdfVerificationService {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**

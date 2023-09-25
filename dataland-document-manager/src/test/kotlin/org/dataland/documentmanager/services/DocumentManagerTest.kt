@@ -43,7 +43,7 @@ import java.util.Optional
 @Transactional
 class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired private val fileVerificationService: FileVerificationService,
+    @Autowired private val pdfVerificationService: PdfVerificationService,
     @Autowired private var objectMapper: ObjectMapper,
 ) {
 
@@ -74,7 +74,7 @@ class DocumentManagerTest(
             inMemoryDocumentStore = inMemoryDocumentStore,
             documentMetaInfoRepository = mockDocumentMetaInfoRepository,
             cloudEventMessageHandler = mockCloudEventMessageHandler,
-            fileVerificationService = fileVerificationService,
+            pdfVerificationService = pdfVerificationService,
             storageApi = mockStorageApi,
             objectMapper = objectMapper,
         )
