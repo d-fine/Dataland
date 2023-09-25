@@ -72,7 +72,7 @@
       "unit": "SRD"
     },
     "nonAlignedShare": {
-      "relativeShareInPercent": 39.53,
+      "relativeShareInPercent": null,
       "absoluteShare": {
         "amount": 7209283257,
         "currency": "AUD"
@@ -83,7 +83,8 @@
     },
     "substantialContributionToClimateChangeAdaptionInPercent": 37.68,
     "substantialContributionToPollutionPreventionAndControlInPercent": 61.35,
-    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7.93
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 7.93,
+    "enablingShareInPercent": null
   },
   "revenue": {
     "totalAmount": {
@@ -97,9 +98,7 @@
       "comment": "index multi-byte bus",
       "unit": "LAK"
     },
-    "nonEligibleShare": {
-      "relativeShareInPercent": 2.56
-    },
+    "nonEligibleShare": null,
     "nonAlignedActivities": [
       {
         "activityName": "MaterialRecoveryFromNonHazardousWaste",
