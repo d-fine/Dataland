@@ -32,6 +32,6 @@ export const UPLOAD_FILE_SIZE_DISPLAY_DECIMALS = 2;
 
 // Same as standard for Windows machines. File name can't have one of the special characters <>:"|?/*\
 // and shouldn't start or end with a whitespace or end with the special character .
-export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|?/*\\\s]$/;
+export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|?/*\\.\s]$/;
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
