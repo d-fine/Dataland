@@ -24,11 +24,10 @@
         },
         "RawMaterials": {
           "procuredProductTypesAndServicesNaceCodes": [],
-          "percentageOfTotalProcurement": 0.3808
+          "shareOfTotalProcurementInPercent": 38.08
         },
         "Services": {
-          "procuredProductTypesAndServicesNaceCodes": [],
-          "percentageOfTotalProcurement": null
+          "procuredProductTypesAndServicesNaceCodes": []
         }
       }
     }
@@ -135,8 +134,7 @@
     "disregardForFreedomOfAssociation": {
       "discriminationForTradeUnionMembers": "No",
       "freedomOfAssociationTraining": "Yes",
-      "worksCouncil": "No",
-      "employeeRepresentation": 0.3789
+      "worksCouncil": "No"
     },
     "unequalTreatmentOfEmployment": {
       "unequalTreatmentOfEmployment": "Yes",

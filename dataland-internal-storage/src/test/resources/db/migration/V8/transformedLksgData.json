@@ -25,6 +25,9 @@
         "RawMaterials": {
           "procuredProductTypesAndServicesNaceCodes": [],
           "shareOfTotalProcurementInPercent": 38.08
+        },
+        "Services": {
+          "procuredProductTypesAndServicesNaceCodes": []
         }
       }
     }

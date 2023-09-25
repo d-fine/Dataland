@@ -35,5 +35,15 @@ class V8__MigratePercentagesTest {
             "V8/transformedLksgData.json",
             V8__MigratePercentages()::migrateLksg,
         )
+        TestUtils().testMigrationOfSingleDataset(
+            "V8/originalLksgData2.json",
+            "V8/transformedLksgData2.json",
+            V8__MigratePercentages()::migrateLksg,
+        )
+        TestUtils().testMigrationOfSingleDataset(
+            "V8/originalLksgData3.json",
+            "V8/transformedLksgData3.json",
+            V8__MigratePercentages()::migrateLksg,
+        )
     }
 }

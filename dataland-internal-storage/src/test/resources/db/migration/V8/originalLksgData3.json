@@ -135,8 +135,7 @@
     "disregardForFreedomOfAssociation": {
       "discriminationForTradeUnionMembers": "No",
       "freedomOfAssociationTraining": "Yes",
-      "worksCouncil": "No",
-      "employeeRepresentation": 0.3789
+      "worksCouncil": "No"
     },
     "unequalTreatmentOfEmployment": {
       "unequalTreatmentOfEmployment": "Yes",
