@@ -68,16 +68,14 @@ export default defineComponent({
         columnHeaders: this.data.columnHeaders,
       };
 
-      if (dialogData) {
-        this.$dialog.open(this.displayComponent, {
-          props: {
-            header: this.modalTitle,
-            modal: true,
-            dismissableMask: true,
-          },
-          data: dialogData,
-        });
-      }
+      this.$dialog.open(this.displayComponent, {
+        props: {
+          header: this.modalTitle,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: dialogData,
+      });
     },
   },
 });
