@@ -14,6 +14,13 @@ import java.io.IOException
 class PdfVerificationService {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    val pdfParsingErrorMessage = "The file you uploaded was not able to be parsed as PDF file."
+    val pdfHasZeroPagesErrorMessage = "The PDF you uploaded seems to have 0 pages."
+    val fileNameHasForbiddenCharactersMessage =
+        "Please ensure that your selected file name follows the naming convention for Windows: Avoid using " +
+            "special characters like < > : \" / \\ | ? * and ensure the name does not end or begin with a space, " +
+            "or end with a full stop character."
+
     /**
      * A function that performs surface-level checks to ensure that an uploaded file is indeed a PDF with at least one
      * page and a file name that follows a specific naming convention.
@@ -28,8 +35,7 @@ class PdfVerificationService {
             logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(
                 "Could not parse file as PDF document",
-                "The file you uploaded was not able to be parsed as PDF file." +
-                    " Please ensure that the file you uploaded has not been corrupted",
+                pdfParsingErrorMessage,
                 ex,
             )
         }
@@ -43,7 +49,7 @@ class PdfVerificationService {
                 )
                 throw InvalidInputApiException(
                     "You seem to have uploaded an empty PDF",
-                    "We have detected that the PDF you uploaded has 0 pages.",
+                    pdfHasZeroPagesErrorMessage,
                 )
             }
         }
@@ -62,10 +68,8 @@ class PdfVerificationService {
                     "of Dataland, aborting.",
             )
             throw InvalidInputApiException(
-                "You seem to have uploaded an file that has an invalid name",
-                "Please ensure that your selected file name follows the naming convention for Windows: " +
-                    "Avoid using special characters like < > : \" / \\ | ? * and ensure the name does not " +
-                    "end or begin with a space, or end with a full stop character.",
+                "You seem to have uploaded a file that has an invalid name",
+                fileNameHasForbiddenCharactersMessage,
             )
         }
     }

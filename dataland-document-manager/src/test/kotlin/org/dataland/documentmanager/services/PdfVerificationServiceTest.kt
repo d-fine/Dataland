@@ -22,7 +22,7 @@ class PdfVerificationServiceTest {
     }
 
     @Test
-    fun `verifies that a non pdf document does not pass the basic checks`() {
+    fun `verifies that an xlsx format file does not pass the basic checks because it is not parsable as pdf`() {
         val testFileBytes = loadFileBytes(testExcelFile)
         val testFile = MockMultipartFile(
             "test.xlsx",
@@ -34,28 +34,26 @@ class PdfVerificationServiceTest {
             pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            "The file you uploaded was not able to be parsed as PDF file." +
-                " Please ensure that the file you uploaded has not been corrupted",
+            pdfVerificationService.pdfParsingErrorMessage,
             thrown.message,
         )
     }
 
     @Test
-    fun `verifies that an invalid pdf document does not pass the basic checks`() {
+    fun `verifies that a pdf file with broken content does not pass the basic checks`() {
         val testFileBytes = loadFileBytes(testExcelFile)
         val testFile = createPdfFromBytes(testFileBytes)
         val thrown = assertThrows<InvalidInputApiException> {
             pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            "The file you uploaded was not able to be parsed as PDF file." +
-                " Please ensure that the file you uploaded has not been corrupted",
+            pdfVerificationService.pdfParsingErrorMessage,
             thrown.message,
         )
     }
 
     @Test
-    fun `verifies that a pdf with non alphanumeric characters can be uploaded`() {
+    fun `verifies that a pdf with non alphanumeric characters passes the basic checks`() {
         val testFileBytes = loadFileBytes(testPdfFile)
         val testFile = MockMultipartFile(
             "안녕하세요 세상.pdf",
@@ -64,6 +62,25 @@ class PdfVerificationServiceTest {
             testFileBytes,
         )
         pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
+    }
+
+    @Test
+    fun `verifies that a pdf with forbidden characters in the filename does not pass the basic checks`() {
+        val testFileBytes = loadFileBytes(testPdfFile)
+        val ch = '/'
+        val testFile = MockMultipartFile(
+            "te${ch}st.pdf",
+            "te${ch}st.pdf",
+            MediaType.APPLICATION_PDF_VALUE,
+            testFileBytes,
+        )
+        val thrown = assertThrows<InvalidInputApiException> {
+            pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
+        }
+        assertEquals(
+            pdfVerificationService.fileNameHasForbiddenCharactersMessage,
+            thrown.message,
+        )
     }
 
     private fun loadFileBytes(path: String): ByteArray {
