@@ -12,6 +12,11 @@ class V8__MigratePercentagesTest {
             "V8/transformedEuTaxonomyFinancialsData.json",
             V8__MigratePercentages()::migrateEuTaxonomyFinancials,
         )
+        TestUtils().testMigrationOfSingleDataset(
+            "V8/originalEuTaxonomyFinancialsData2.json",
+            "V8/transformedEuTaxonomyFinancialsData2.json",
+            V8__MigratePercentages()::migrateEuTaxonomyFinancials,
+        )
     }
 
     @Test

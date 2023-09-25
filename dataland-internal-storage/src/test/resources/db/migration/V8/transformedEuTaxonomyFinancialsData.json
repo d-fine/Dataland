@@ -36,7 +36,7 @@
         "comment": "calculate bluetooth array"
       },
       "derivativesInPercent": {
-        "value": 79.65,
+        "value": null,
         "dataSource": {
           "page": 241,
           "report": "IntegratedReport",
@@ -52,15 +52,6 @@
         },
         "quality": "Estimated"
       },
-      "taxonomyEligibleActivityInPercent": {
-        "dataSource": {
-          "page": 809,
-          "report": "IntegratedReport",
-          "tagName": "portals"
-        },
-        "quality": "Reported",
-        "comment": "navigate 1080p driver"
-      },
       "taxonomyNonEligibleActivityInPercent": {
         "value": 57.44,
         "dataSource": {
@@ -68,7 +59,13 @@
         },
         "quality": "Incomplete"
       }
-    }
+    },
+    "otherKpis": {
+      "somethingInPercent": {
+        "value": 24.3
+      }
+    },
+    "brokenKpis": null
   },
   "insuranceKpis": {
     "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
