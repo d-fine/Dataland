@@ -32,18 +32,20 @@ describe("Component test for P2pPanel", () => {
       reportingPeriod: "2023",
       data: pseudoP2pData,
     } as CompanyAssociatedDataPathwaysToParisData);
-    cy.mountWithPlugins(P2pPanel, {
-      keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyId: companyId,
-          singleDataMetaInfoToDisplay: {
-            dataId: "mock-data-id",
-            reportingPeriod: "2023",
-          } as DataMetaInformation,
-        };
+    cy.mountWithDialog(
+      P2pPanel,
+      {
+        keycloak: minimalKeycloakMock({}),
       },
-    });
+      {
+        companyId: companyId,
+        singleDataMetaInfoToDisplay: {
+          dataId: "mock-data-id",
+          reportingPeriod: "2023",
+        } as DataMetaInformation,
+      },
+    );
+    cy.get("span[data-test='2023__general_sectors'] a").should("exist").click();
     cy.get("td:contains('Ammonia')").should("exist");
   });
 
