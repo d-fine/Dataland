@@ -15,13 +15,15 @@ class PdfVerificationService {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * A function that performs surface-level checks to ensure that an uploaded file is indeed a PDF.
+     * A function that performs surface-level checks to ensure that an uploaded file is indeed a PDF with at least one
+     * page and a file name that follows a specific naming convention.
      * This function does not enforce anything else.
      * In particular a file passing this function is in no way guaranteed to be safe to open.
      */
-    fun assertThatFileLooksLikeAPdf(file: MultipartFile, correlationId: String) {
+    fun assertThatFileLooksLikeAValidPdfWithAValidName(file: MultipartFile, correlationId: String) {
         try {
             checkIfPotentialPdfFileIsEmpty(file.bytes, correlationId)
+            checkThatFileNameIsWithinNamingConvention(file.originalFilename!!, correlationId)
         } catch (ex: IOException) {
             logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(
@@ -44,6 +46,27 @@ class PdfVerificationService {
                     "We have detected that the PDF you uploaded has 0 pages.",
                 )
             }
+        }
+    }
+
+    /**
+     * We allow file names that follow the naming convention of Windows systems.
+     */
+    private val allowedFilenameRegex =
+        Regex("^[^<>:\"|?/*\\\\s][^<>:\"|?/*\\\\]{0,252}[^<>:\"|?/*\\\\.\\s]\$")
+
+    private fun checkThatFileNameIsWithinNamingConvention(name: String, correlationId: String) {
+        if (!allowedFilenameRegex.matches(name)) {
+            logger.info(
+                "PDF document uploaded with correlation ID: $correlationId violates the naming convention" +
+                    "of Dataland, aborting.",
+            )
+            throw InvalidInputApiException(
+                "You seem to have uploaded an file that has an invalid name",
+                "Please ensure that your selected file name follows the naming convention for Windows: " +
+                    "Avoid using special characters like < > : \" / \\ | ? * and ensure the name does not " +
+                    "end or begin with a space, or end with a full stop character.",
+            )
         }
     }
 }

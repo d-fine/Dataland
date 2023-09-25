@@ -18,7 +18,7 @@ class PdfVerificationServiceTest {
     fun `verifies that a valid pdf document passes the basic checks`() {
         val testFileBytes = loadFileBytes(testPdfFile)
         val testFile = createPdfFromBytes(testFileBytes)
-        pdfVerificationService.assertThatFileLooksLikeAPdf(testFile, correlationId)
+        pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
     }
 
     @Test
@@ -31,7 +31,7 @@ class PdfVerificationServiceTest {
             testFileBytes,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatFileLooksLikeAPdf(testFile, correlationId)
+            pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
             "We were unable to load the PDF document you provided." +
@@ -45,7 +45,7 @@ class PdfVerificationServiceTest {
         val testFileBytes = loadFileBytes(testExcelFile)
         val testFile = createPdfFromBytes(testFileBytes)
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatFileLooksLikeAPdf(testFile, correlationId)
+            pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
             "We were unable to load the PDF document you provided." +
@@ -63,7 +63,7 @@ class PdfVerificationServiceTest {
             MediaType.APPLICATION_PDF_VALUE,
             testFileBytes,
         )
-        pdfVerificationService.assertThatFileLooksLikeAPdf(testFile, correlationId)
+        pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
     }
 
     private fun loadFileBytes(path: String): ByteArray {

@@ -69,7 +69,7 @@ class DocumentManager(
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
         val documentBody = document.bytes
-        pdfVerificationService.assertThatFileLooksLikeAPdf(document, correlationId)
+        pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(document, correlationId)
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
