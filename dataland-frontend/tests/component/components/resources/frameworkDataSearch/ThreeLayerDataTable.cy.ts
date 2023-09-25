@@ -252,13 +252,13 @@ describe("Component test for ThreeLayerDataTable", () => {
       },
       ammonia: {
         decarbonisation: {
-          energyMixInPercent: 0.11,
+          energyMixInPercent: 3.4,
         },
         defossilisation: {},
       },
       cement: {
         energy: {
-          energyMixInPercent: 0.22,
+          energyMixInPercent: 15.22,
         },
         technology: {},
         material: {},
@@ -266,11 +266,11 @@ describe("Component test for ThreeLayerDataTable", () => {
     };
 
     const expectedAmmoniaDecarbonisationEnergyMix = roundNumber(
-      assertDefined(p2pData.ammonia?.decarbonisation?.energyMixInPercent) * 100,
+      assertDefined(p2pData.ammonia?.decarbonisation?.energyMixInPercent),
       2,
     );
     const expectedCementEnergyEnergyMix = roundNumber(
-      assertDefined(p2pData.cement?.energy?.energyMixInPercent) * 100,
+      assertDefined(p2pData.cement?.energy?.energyMixInPercent),
       2,
     );
 
