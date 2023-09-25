@@ -3,7 +3,7 @@ package db.migration.utils
 import org.json.JSONObject
 
 /**
- * This class provides functionality to help with common issues that might occure while writing a migration script.
+ * This class provides functionality to help with common issues that might occur while writing a migration script.
  * It provides methods to transform data and rename fields.
  * It provides a buffer for fields that should be removed at a later point which is not possible immediately
  * when iterating over an objects keys
