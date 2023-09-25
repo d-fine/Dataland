@@ -166,34 +166,31 @@ export default defineComponent({
      */
     handleUpdatedDocumentsSelectedForUpload(selectedDocumentsForUpload: DocumentToUpload[]) {
       this.documentsToUpload = selectedDocumentsForUpload;
+
       const invalidFileNamesWithIndexAndReason: InvalidFileNameWithIndexAndReason[] = [];
+      const existingFileNamesCollector = new Set<string>();
 
-      if (
-        this.areDuplicatesAmongReferenceableReportNames() ||
-        this.isFileNameWithForbiddenCharacterInListOfFiles(selectedDocumentsForUpload)
-      ) {
-        const existingFileNamesCollector = new Set<string>();
+      for (let i = 0; i < this.documentsToUpload.length; i++) {
+        const fileName = this.documentsToUpload[i].fileNameWithoutSuffix;
 
-        for (let i = 0; i < this.documentsToUpload.length; i++) {
-          const fileName = this.documentsToUpload[i].fileNameWithoutSuffix;
-
-          if (this.hasFileNameForbiddenCharacter(fileName)) {
-            invalidFileNamesWithIndexAndReason.push({
-              fileName: fileName,
-              index: i,
-              invalidityReason: FileNameInvalidityReason.ForbiddenCharacter,
-            });
-          } else if (existingFileNamesCollector.has(fileName) || this.namesOfStoredReports.indexOf(fileName) !== -1) {
-            invalidFileNamesWithIndexAndReason.push({
-              fileName: fileName,
-              index: i,
-              invalidityReason: FileNameInvalidityReason.Duplicate,
-            });
-          } else {
-            existingFileNamesCollector.add(fileName);
-          }
+        if (this.hasFileNameForbiddenCharacter(fileName)) {
+          invalidFileNamesWithIndexAndReason.push({
+            fileName: fileName,
+            index: i,
+            invalidityReason: FileNameInvalidityReason.ForbiddenCharacter,
+          });
+        } else if (existingFileNamesCollector.has(fileName) || this.namesOfStoredReports.indexOf(fileName) !== -1) {
+          invalidFileNamesWithIndexAndReason.push({
+            fileName: fileName,
+            index: i,
+            invalidityReason: FileNameInvalidityReason.Duplicate,
+          });
+        } else {
+          existingFileNamesCollector.add(fileName);
         }
+      }
 
+      if (invalidFileNamesWithIndexAndReason.length > 0) {
         this.handleInvalidFileNames([...invalidFileNamesWithIndexAndReason].reverse());
       } else {
         this.emitReportsUpdatedEvent();
@@ -277,24 +274,6 @@ export default defineComponent({
      */
     hasFileNameForbiddenCharacter(fileName: string) {
       return !REGEX_FOR_FILE_NAMES.test(fileName);
-    },
-
-    /**
-     * Checks if some file in a list of files has a name that contains at least one forbidden character.
-     * @param documents is the list of files to search in
-     * @returns a boolean stating the result of that check
-     */
-    isFileNameWithForbiddenCharacterInListOfFiles(documents: DocumentToUpload[]): boolean {
-      const allFileNames = documents.map((document) => document.fileNameWithoutSuffix);
-      return allFileNames.some((fileName) => this.hasFileNameForbiddenCharacter(fileName));
-    },
-
-    /**
-     * Checks if there is a report name twice in the list of referencable report names
-     * @returns a boolean stating if any file name is duplicated among the reference report names
-     */
-    areDuplicatesAmongReferenceableReportNames(): boolean {
-      return this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size;
     },
   },
 });
