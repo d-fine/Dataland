@@ -8,6 +8,9 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
+/**
+ * Please document @Marcel
+ */
 class V9__MigrateRefactoredDataPointClasses : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
@@ -40,6 +43,9 @@ class V9__MigrateRefactoredDataPointClasses : BaseJavaMigration() {
         }
     }
 
+    /**
+     * Please add documentation @Marcel
+     */
     fun migrateReports(generalCategory: JSONObject) {
         val referencedReportsObject = generalCategory.getOrJsonNull("referencedReports")
         if (referencedReportsObject != JSONObject.NULL) {
@@ -54,6 +60,9 @@ class V9__MigrateRefactoredDataPointClasses : BaseJavaMigration() {
         }
     }
 
+    /**
+     * Please add documentation @Marcel
+     */
     fun iterateThroughCashFlowCategories(dataObject: JSONObject) {
         listOf("revenue", "capex", "opex").forEach { cashFlowType ->
             val category = dataObject.getOrJavaNull(cashFlowType) ?: return@forEach
@@ -61,6 +70,9 @@ class V9__MigrateRefactoredDataPointClasses : BaseJavaMigration() {
         }
     }
 
+    /**
+     * Please add documentation @Marcel
+     */
     fun migrateDataSource(grandParentObjectOfDataSource: JSONObject) {
         val parentOfDataSource = grandParentObjectOfDataSource.getOrJsonNull("totalAmount")
         parentOfDataSource as JSONObject
@@ -71,6 +83,10 @@ class V9__MigrateRefactoredDataPointClasses : BaseJavaMigration() {
             dataSourceObject.put(it.value, dataSourceObject.get(it.key))
         }
     }
+
+    /**
+     * Please add documentation @Marcel
+     */
     fun migrateAssurance(generalCategory: JSONObject) {
         val assuranceParentObject = generalCategory.getOrJsonNull("assurance")
         if (assuranceParentObject != JSONObject.NULL) {

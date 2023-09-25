@@ -7,13 +7,13 @@ import java.math.BigDecimal
 /**
  * --- API model ---
  * Fields of the subcategory "Emissions" belonging to the category "Environmental" of the sfdr framework.
- */
+*/
 data class SfdrEnvironmentalEmissions(
-    val inorganicPollutants: ExtendedDataPoint<BigDecimal>? = null,
+    val inorganicPollutantsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    val airPollutants: ExtendedDataPoint<BigDecimal>? = null,
+    val airPollutantsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    val ozoneDepletionSubstances: ExtendedDataPoint<BigDecimal>? = null,
+    val ozoneDepletionSubstancesInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
     val carbonReductionInitiatives: ExtendedDataPoint<YesNo>? = null,
 )
