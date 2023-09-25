@@ -185,7 +185,7 @@ export default defineComponent({
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
-      this.documentReference = this.referencedDocument?.reference ?? "";
+      this.documentReference = this.referencedDocument?.fileReference ?? "";
       this.$emit("reportsUpdated", this.documentName, this.referencedDocument);
     },
 

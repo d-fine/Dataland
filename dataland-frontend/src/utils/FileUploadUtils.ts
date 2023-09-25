@@ -8,7 +8,7 @@ export interface DocumentToUpload {
   file: File;
   fileNameWithoutSuffix: string;
 
-  reference: string;
+  fileReference: string;
 }
 
 export interface StoredReport extends CompanyReport {
@@ -33,7 +33,7 @@ export async function uploadFiles(
   for (const fileToUpload of files) {
     let fileIsAlreadyInStorage: boolean;
     try {
-      await documentControllerApi.checkDocument(fileToUpload.reference);
+      await documentControllerApi.checkDocument(fileToUpload.fileReference);
       fileIsAlreadyInStorage = true;
     } catch (error) {
       if (error instanceof AxiosError && assertDefined((error as AxiosError).response).status == 404) {
@@ -44,7 +44,7 @@ export async function uploadFiles(
     }
     if (!fileIsAlreadyInStorage) {
       const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file)).data.documentId;
-      if (fileToUpload.reference !== backendComputedHash) {
+      if (fileToUpload.fileReference !== backendComputedHash) {
         throw Error("Locally computed document hash does not concede with the one received by the upload request!");
       }
     }

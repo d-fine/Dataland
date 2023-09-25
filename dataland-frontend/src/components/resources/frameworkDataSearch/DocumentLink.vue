@@ -35,7 +35,7 @@ export default defineComponent({
   props: {
     label: String,
     downloadName: { type: String, required: true },
-    reference: { type: String, required: true },
+    fileReference: { type: String, required: true },
     showIcon: Boolean,
     fontStyle: String,
   },
@@ -44,14 +44,14 @@ export default defineComponent({
      * Method to download available reports
      */
     async downloadDocument() {
-      const reference: string = this.reference;
+      const fileReference: string = this.fileReference;
       try {
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getDocumentControllerApi();
         await documentControllerApi
-          .getDocument(reference, {
+          .getDocument(fileReference, {
             headers: { accept: "application/pdf" },
             responseType: "arraybuffer",
           } as AxiosRequestConfig)
