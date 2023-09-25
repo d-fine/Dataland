@@ -66,8 +66,12 @@ class V8__MigratePercentages : BaseJavaMigration() {
         migrationHelper.migrateValue(financialShareObject, "relativeShareInPercent", ::transformToPercentage)
     }
 
-    private fun transformToPercentage(decimal: BigDecimal): BigDecimal {
-        return decimal * BigDecimal(percentageMultiplier)
+    private fun transformToPercentage(decimal: Number): BigDecimal {
+        return when (decimal) {
+            is Int -> BigDecimal(decimal) * BigDecimal(percentageMultiplier)
+            is BigDecimal -> decimal * BigDecimal(percentageMultiplier)
+            else -> throw NumberFormatException()
+        }
     }
 
     /**
