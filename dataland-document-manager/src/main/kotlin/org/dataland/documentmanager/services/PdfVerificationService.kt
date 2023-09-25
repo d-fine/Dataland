@@ -46,8 +46,4 @@ class PdfVerificationService {
             }
         }
     }
-
-    companion object {
-        const val expectedFileNameIdentifierLength: Int = 4
-    }
 }
