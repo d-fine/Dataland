@@ -69,13 +69,22 @@
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
-import ElementsDialog from "@/components/general/ElementsDialog.vue";
+import InvalidFileSelectionDialog from "@/components/general/InvalidFileSelectionDialog.vue";
 import { type DocumentToUpload, type StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type CompanyReport } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { REGEX_FOR_FILE_NAMES } from "@/utils/Constants";
 
-type DuplicateWithIndex = { document: DocumentToUpload; index: number };
+enum FileNameInvalidityReason {
+  Duplicate = "Duplicate",
+  ForbiddenCharacter = "ForbiddenCharacter",
+}
+type NameIndexAndReasonOfInvalidFile = {
+  fileName: string;
+  index: number;
+  invalidityReason: FileNameInvalidityReason;
+};
 
 export default defineComponent({
   name: "UploadReports",
@@ -96,7 +105,8 @@ export default defineComponent({
     return {
       documentsToUpload: [] as DocumentToUpload[],
       alreadyStoredReports: [] as StoredReport[],
-      namesOfDuplicatesAmongDocumentsToUpload: [] as string[],
+      namesInFileSelectionThatAreAlreadyTakenByOtherReports: [] as string[],
+      namesInFileSelectionWithForbiddenCharacters: [] as string[],
     };
   },
   props: {
@@ -136,8 +146,11 @@ export default defineComponent({
      * Emits event when referenceable reports changed
      */
     emitReportsUpdatedEvent() {
-      if (this.namesOfDuplicatesAmongDocumentsToUpload?.length) {
-        this.openModalToDisplayDuplicateNameError();
+      if (
+        this.namesInFileSelectionThatAreAlreadyTakenByOtherReports?.length ||
+        this.namesInFileSelectionWithForbiddenCharacters?.length
+      ) {
+        this.openModalToDisplayNameErrorsInFileSelectionByUser();
       }
 
       if (this.isEuTaxonomy) {
@@ -147,42 +160,62 @@ export default defineComponent({
       }
     },
     /**
-     * Handles selection of a file by the user. If duplicates are found in the selection, this is handled.
+     * Handles selection of files by the user. If invalid file names are found in the selection, this is handled.
+     * File names are invalid if they contain forbidden characters, or if they already exist either in the current
+     * file selection, or among the already uploaded reports (given that the user is in EDIT mode).
      * At the end an event is emitted reflecting that the referenceable reports have updated.
-     * @param documents the list of all documents for the upload, determined by the selection in the file uploader
+     * @param selectedDocumentsForUpload the list of all selectedDocumentsForUpload for the upload, determined by the selection in the file uploader
      */
-    handleUpdatedDocumentsSelectedForUpload(documents: DocumentToUpload[]) {
-      this.documentsToUpload = documents;
-      const duplicatesWithIndex: DuplicateWithIndex[] = [];
+    handleUpdatedDocumentsSelectedForUpload(selectedDocumentsForUpload: DocumentToUpload[]) {
+      this.documentsToUpload = selectedDocumentsForUpload;
 
-      if (this.areDuplicatesAmongReferenceableReportNames()) {
-        const foundExistingRecords = new Set<string>();
+      const nameIndexAndReasonOfInvalidFiles: NameIndexAndReasonOfInvalidFile[] = [];
+      const existingFileNamesCollector = new Set<string>();
 
-        for (let i = 0; i < this.documentsToUpload.length; i++) {
-          const currentName = this.documentsToUpload[i].fileNameWithoutSuffix;
+      for (let i = 0; i < this.documentsToUpload.length; i++) {
+        const fileName = this.documentsToUpload[i].fileNameWithoutSuffix;
 
-          if (foundExistingRecords.has(currentName) || this.namesOfStoredReports.indexOf(currentName) !== -1) {
-            duplicatesWithIndex.push({ document: this.documentsToUpload[i], index: i });
-          } else {
-            foundExistingRecords.add(currentName);
-          }
+        if (this.hasFileNameForbiddenCharacter(fileName)) {
+          nameIndexAndReasonOfInvalidFiles.push({
+            fileName: fileName,
+            index: i,
+            invalidityReason: FileNameInvalidityReason.ForbiddenCharacter,
+          });
+        } else if (existingFileNamesCollector.has(fileName) || this.namesOfStoredReports.indexOf(fileName) !== -1) {
+          nameIndexAndReasonOfInvalidFiles.push({
+            fileName: fileName,
+            index: i,
+            invalidityReason: FileNameInvalidityReason.Duplicate,
+          });
+        } else {
+          existingFileNamesCollector.add(fileName);
         }
+      }
 
-        this.handleReportDuplicates([...duplicatesWithIndex].reverse());
+      if (nameIndexAndReasonOfInvalidFiles.length > 0) {
+        this.handleFilesWithInvalidNames([...nameIndexAndReasonOfInvalidFiles].reverse());
       } else {
         this.emitReportsUpdatedEvent();
       }
     },
     /**
-     * This handles duplicates in the file selection by removing them from the file selection.
-     * @param duplicatesWithIndex duplicate documents together with their indexes in the file selection list
+     * Handles invalid file names in the file selection by removing those files from the file selection.
+     * @param nameIndexAndReasonOfInvalidFiles invalid file names together with their indexes in the file selection
+     * list and the reason for their invalidities
      */
-    handleReportDuplicates(duplicatesWithIndex: DuplicateWithIndex[]) {
-      const documents: DocumentToUpload[] = duplicatesWithIndex.map(({ document }) => document);
-      const indexes: number[] = duplicatesWithIndex.map(({ index }) => index);
-
-      this.namesOfDuplicatesAmongDocumentsToUpload = documents.map((document) => document.fileNameWithoutSuffix);
-      (this.$refs.uploadDocumentsForm.removeDocumentsFromDocumentsToUpload as (indexes: number[]) => void)(indexes);
+    handleFilesWithInvalidNames(nameIndexAndReasonOfInvalidFiles: NameIndexAndReasonOfInvalidFile[]) {
+      this.namesInFileSelectionThatAreAlreadyTakenByOtherReports = nameIndexAndReasonOfInvalidFiles
+        .filter((it) => it.invalidityReason === FileNameInvalidityReason.Duplicate)
+        .map((it) => it.fileName);
+      this.namesInFileSelectionWithForbiddenCharacters = nameIndexAndReasonOfInvalidFiles
+        .filter((it) => it.invalidityReason === FileNameInvalidityReason.ForbiddenCharacter)
+        .map((it) => it.fileName);
+      const indexesOfInvalidFileNames = nameIndexAndReasonOfInvalidFiles.map(
+        (fileNameWithIndexAndReason) => fileNameWithIndexAndReason.index,
+      );
+      (this.$refs.uploadDocumentsForm.removeDocumentsFromDocumentsToUpload as (indexes: number[]) => void)(
+        indexesOfInvalidFileNames,
+      );
     },
     /**
      * When the X besides existing reports is clicked this function should be called and
@@ -217,34 +250,32 @@ export default defineComponent({
     },
 
     /**
-     * Opens a modal and explains the user that selected files have names for which a report already exists.
+     * Opens a modal and explains the user that (some) selected files have invalid names and cannot be selected.
      */
-    openModalToDisplayDuplicateNameError() {
-      const duplicatesSelectedByUser = [...new Set(this.namesOfDuplicatesAmongDocumentsToUpload)].join(", ");
-
-      this.$dialog.open(ElementsDialog, {
+    openModalToDisplayNameErrorsInFileSelectionByUser() {
+      this.$dialog.open(InvalidFileSelectionDialog, {
         props: {
           modal: true,
           closable: true,
           dismissableMask: true,
-          header: "Invalid File Selection",
+          header: "Files cannot be uploaded",
         },
         data: {
-          message:
-            "The following file(s) cannot be selected because a report with its name is already selected " +
-            "for upload or even already uploaded:",
-          listOfElementNames: [duplicatesSelectedByUser],
+          duplicateNamesJoinedString: this.namesInFileSelectionThatAreAlreadyTakenByOtherReports.join(", "),
+          fileNamesWithCharacterViolationsJoinedString: this.namesInFileSelectionWithForbiddenCharacters.join(", "),
         },
       });
-      this.namesOfDuplicatesAmongDocumentsToUpload = [];
+      this.namesInFileSelectionThatAreAlreadyTakenByOtherReports = [];
+      this.namesInFileSelectionWithForbiddenCharacters = [];
     },
 
     /**
-     * Checks if there is a report name twice in the list of referencable report names
-     * @returns a boolean stating if any file name is duplicated among the reference report names
+     * Checks if a file has a name which contains at least one forbidden character.
+     * @param fileName to check
+     * @returns a boolean stating the result of that check
      */
-    areDuplicatesAmongReferenceableReportNames(): boolean {
-      return this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size;
+    hasFileNameForbiddenCharacter(fileName: string) {
+      return !REGEX_FOR_FILE_NAMES.test(fileName);
     },
   },
 });
