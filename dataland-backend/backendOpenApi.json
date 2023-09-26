@@ -7547,7 +7547,7 @@
         },
         "example": {
           "CreditInstitution": {
-            "taxonomyEligibleActivity": {
+            "taxonomyEligibleActivityInPercent": {
               "value": 0,
               "quality": "Audited",
               "dataSource": {
@@ -7558,7 +7558,7 @@
             }
           },
           "InsuranceOrReinsurance": {
-            "taxonomyEligibleActivity": {
+            "taxonomyEligibleActivityInPercent": {
               "value": 0,
               "quality": "Audited",
               "dataSource": {
@@ -7569,7 +7569,7 @@
             }
           },
           "AssetManagement": {
-            "taxonomyEligibleActivity": {
+            "taxonomyEligibleActivityInPercent": {
               "value": 0,
               "quality": "Audited",
               "dataSource": {
@@ -7580,7 +7580,7 @@
             }
           },
           "InvestmentFirm": {
-            "taxonomyEligibleActivity": {
+            "taxonomyEligibleActivityInPercent": {
               "value": 0,
               "quality": "Audited",
               "dataSource": {
@@ -7616,7 +7616,7 @@
             "nullable": true,
             "example": {
               "CreditInstitution": {
-                "taxonomyEligibleActivity": {
+                "taxonomyEligibleActivityInPercent": {
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
@@ -7627,7 +7627,7 @@
                 }
               },
               "InsuranceOrReinsurance": {
-                "taxonomyEligibleActivity": {
+                "taxonomyEligibleActivityInPercent": {
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
@@ -7638,7 +7638,7 @@
                 }
               },
               "AssetManagement": {
-                "taxonomyEligibleActivity": {
+                "taxonomyEligibleActivityInPercent": {
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
@@ -7649,7 +7649,7 @@
                 }
               },
               "InvestmentFirm": {
-                "taxonomyEligibleActivity": {
+                "taxonomyEligibleActivityInPercent": {
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
