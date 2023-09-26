@@ -4,7 +4,11 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-show="!waitingForData">
-    <MultiLayerDataTable :datasets="mldtDatasets" :config="sfdrDisplayConfiguration" />
+    <MultiLayerDataTable
+      :datasets="mldtDatasets"
+      :config="sfdrDisplayConfiguration"
+      caption="Datasets of the SFDR Framework"
+    />
   </div>
 </template>
 

@@ -2,6 +2,11 @@
   <div class="p-datatable p-component">
     <div class="p-datatable-wrapper" style="overflow: auto">
       <table class="p-datatable-table w-full">
+        <caption>
+          {{
+            caption
+          }}
+        </caption>
         <thead class="p-datatable-thead" style="position: sticky">
           <tr>
             <th class="horizontal-headers-size">
@@ -38,5 +43,6 @@ import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayer
 defineProps<{
   config: MLDTConfig<T>;
   datasets: Array<MLDTDataset<T>>;
+  caption?: string;
 }>();
 </script>
