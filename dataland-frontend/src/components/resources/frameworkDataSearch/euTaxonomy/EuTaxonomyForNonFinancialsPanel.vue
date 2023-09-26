@@ -31,10 +31,10 @@
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { AssuranceDataPointAssuranceOptionsValueEnum } from "@/types/ttt";
 import {
   type AmountWithCurrency,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
+  type AssuranceDataPointAssuranceOptionsValueEnum,
   DataTypeEnum,
   type EuTaxonomyDataForNonFinancials,
   FiscalYearDeviation,

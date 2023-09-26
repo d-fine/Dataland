@@ -26,7 +26,10 @@
           <div class="form-field-label">
             <h3 class="mt-0">{{ documentToUpload.fileNameWithoutSuffix }}</h3>
           </div>
-          <ReportFormElement :name="documentToUpload.fileNameWithoutSuffix" :fileReference="documentToUpload.fileReference" />
+          <ReportFormElement
+            :name="documentToUpload.fileNameWithoutSuffix"
+            :fileReference="documentToUpload.fileReference"
+          />
         </div>
       </div>
     </div>
@@ -56,7 +59,7 @@
           </div>
         </div>
         <ReportFormElement
-          :name="storedReport. reportName"
+          :name="storedReport.reportName"
           :report-date="storedReport.reportDate"
           :fileReference="storedReport.fileReference"
         />
