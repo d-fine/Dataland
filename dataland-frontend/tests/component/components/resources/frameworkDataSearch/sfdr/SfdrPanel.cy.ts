@@ -9,16 +9,17 @@ import {
   type SfdrData,
 } from "@clients/backend";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+
+import * as MLDT from "@ct/components/resources/dataTable/MultiLayerDataTableTestUtils";
 describe("Component tests for SfdrPanel", () => {
   let preparedFixtures: Array<FixtureData<SfdrData>>;
-
   before(function () {
     cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
       preparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
     });
   });
 
-  it("Check Sfdr view page for company with one Sfdr data set", () => {
+  it("Check SFDR view page for company with one SFDR data set", () => {
     const preparedFixture = getPreparedFixture("companyWithOneFilledSfdrSubcategory", preparedFixtures);
     const sfdrData = preparedFixture.t;
 
@@ -27,6 +28,7 @@ describe("Component tests for SfdrPanel", () => {
       reportingPeriod: preparedFixture.reportingPeriod,
       data: sfdrData,
     } as CompanyAssociatedDataSfdrData);
+
     cy.mountWithPlugins(SfdrPanel, {
       keycloak: minimalKeycloakMock({}),
       data() {
@@ -39,15 +41,8 @@ describe("Component tests for SfdrPanel", () => {
         };
       },
     });
-    cy.get("table.p-datatable-table").find(`span:contains(${sfdrData.general.general.fiscalYearEnd})`).should("exist");
 
-    cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("table.p-datatable-table")
-      .find(`span:contains(${sfdrData.general.general.fiscalYearEnd})`)
-      .should("not.exist");
-
-    cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("table.p-datatable-table").find(`span:contains(${sfdrData.general.general.fiscalYearEnd})`).should("exist");
+    MLDT.getCellContainer("Fiscal Year End").should("contain.text", sfdrData.general.general.fiscalYearEnd);
   });
 
   /**
@@ -83,7 +78,7 @@ describe("Component tests for SfdrPanel", () => {
     return sfdrDatasets;
   }
 
-  it("Check Sfdr view page for company with six Sfdr datasets reported in different years", () => {
+  it("Check SFDR view page for company with six SFDR datasets reported in different years", () => {
     const preparedFixture = getPreparedFixture("companyWithOneFilledSfdrSubcategory", preparedFixtures);
     const mockedData = constructCompanyApiResponseForSfdrSixYears(preparedFixture.t);
     cy.intercept("/api/data/sfdr/companies/mock-company-id", mockedData);
@@ -96,38 +91,39 @@ describe("Component tests for SfdrPanel", () => {
         };
       },
     });
-    cy.get("table").find(`tr:contains("Fiscal Year End")`).find(`span`).eq(6).contains("2023-01-01");
+    MLDT.getCellContainer("Fiscal Year End", 5).should("contain.text", "2023-01-01");
 
-    for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
-      cy.get(`span.p-column-title`)
-        .eq(indexOfColumn)
-        .should("contain.text", (2029 - indexOfColumn).toString());
+    for (let indexOfColumn = 0; indexOfColumn < 6; indexOfColumn++) {
+      cy.get(`th[data-dataset-index=${indexOfColumn}]`).should("contain.text", (2028 - indexOfColumn).toString());
     }
   });
 
-  it("Check Sfdr view page for a dataset which has null values", () => {
+  it("Check SFDR view page for a dataset which has null values", () => {
     const preparedFixture = getPreparedFixture("sfdr-a-lot-of-nulls", preparedFixtures);
+    const sfdrData = preparedFixture.t;
+
+    cy.intercept("/api/data/sfdr/mock-data-id", {
+      companyId: "mock-company-id",
+      reportingPeriod: preparedFixture.reportingPeriod,
+      data: sfdrData,
+    } as CompanyAssociatedDataSfdrData);
+
     cy.mountWithPlugins(SfdrPanel, {
+      keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          waitingForData: false,
-          sfdrDataAndMetaInfo: [{ data: preparedFixture.t } as DataAndMetaInformationSfdrData],
+          companyId: "mock-company-id",
+          singleDataMetaInfoToDisplay: {
+            dataId: "mock-data-id",
+            reportingPeriod: preparedFixture.reportingPeriod,
+          } as DataMetaInformation,
         };
       },
-      // The code below is required to complete the component mock yet interferes with the type resolution of the
-      // mountWithPlugins function.
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      created() {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,
-        this.convertSfdrDataToFrontendFormat();
-      },
     });
+
     cy.contains("span", "marker-for-test").should("exist");
     cy.contains("td.headers-bg", "Data Date").should("exist");
-    cy.get("em").its("length").should("equal", 5);
+    cy.get("em").its("length").should("equal", 5); // TODO: Find out why these lines exists and what they test
     cy.get("tr").its("length").should("equal", 7);
   });
 });

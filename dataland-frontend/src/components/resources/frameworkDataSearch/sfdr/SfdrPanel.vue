@@ -7,7 +7,7 @@
     <MultiLayerDataTable
       :datasets="mldtDatasets"
       :config="sfdrDisplayConfiguration"
-      caption="Datasets of the SFDR Framework"
+      ariaLabel="Datasets of the SFDR Framework"
     />
   </div>
 </template>
