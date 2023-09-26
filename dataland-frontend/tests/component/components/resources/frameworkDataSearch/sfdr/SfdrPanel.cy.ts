@@ -10,7 +10,7 @@ import {
 } from "@clients/backend";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
-import * as MLDT from "@ct/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 describe("Component tests for SfdrPanel", () => {
   let preparedFixtures: Array<FixtureData<SfdrData>>;
   before(function () {

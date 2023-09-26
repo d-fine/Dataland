@@ -2,7 +2,11 @@ import { type MLDTConfig, type MLDTDataset } from "@/components/resources/dataTa
 import { MLDTDisplayComponents } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
-import { getCellContainer, getRowHeader, getSectionHead } from "./MultiLayerDataTableTestUtils";
+import {
+  getCellContainer,
+  getRowHeader,
+  getSectionHead,
+} from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 describe("Tests for the MultiLayerDataTable component", () => {
   /**
    * Mounts the MultiLayerDataTable with the demo dataset and the given dataset
