@@ -1,7 +1,4 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
-import TestPage from "@/components/resources/dataTable/TestPage.vue";
-import TestPage2 from "@/components/resources/dataTable/TestPage2.vue";
-import TestPage3 from "@/components/resources/dataTable/TestPage3.vue";
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
@@ -113,18 +110,6 @@ const routes = [
   {
     path: "/:notFound(.*)",
     redirect: "/nocontent",
-  },
-  {
-    path: "/test",
-    component: TestPage, // TODO: REMOVE
-  },
-  {
-    path: "/test2",
-    component: TestPage2, // TODO: REMOVE
-  },
-  {
-    path: "/test3",
-    component: TestPage3, // TODO: REMOVE
   },
 ];
 

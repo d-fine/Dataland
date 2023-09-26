@@ -2,7 +2,6 @@ import { type MLDTConfig, type MLDTDataset } from "@/components/resources/dataTa
 import { MLDTDisplayComponents } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
-import type * as Cypress from "cypress";
 describe("Tests for the MultiLayerDataTable component", () => {
   /**
    * Retrieves the header of the section with the given label
@@ -49,7 +48,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
   }
 
   interface NestingTestDataset {
-    stringOnLevel1: string;
+    stringOnLevel1?: string;
     stringOnLevel2: string;
     stringOnLevel3: string;
   }
@@ -59,7 +58,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       type: "cell",
       label: "Level 1 - String",
       explanation: "This is a test info",
-      shouldDisplay: () => true,
+      shouldDisplay: (dataset) => !!dataset.stringOnLevel1,
       valueGetter: (dataset) => ({
         displayComponent: MLDTDisplayComponents.StringDisplayComponent,
         displayValue: dataset.stringOnLevel1,
@@ -104,7 +103,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       type: "section",
       label: "Section 2",
       expandOnPageLoad: false,
-      shouldDisplay: () => true,
+      shouldDisplay: (dataset) => !!dataset.stringOnLevel1,
       children: [
         {
           type: "cell",
@@ -131,6 +130,14 @@ describe("Tests for the MultiLayerDataTable component", () => {
     headerLabel: "Testing 2",
     dataset: {
       stringOnLevel1: "Dataset 2 - String 1",
+      stringOnLevel2: "Dataset 2 - String 2",
+      stringOnLevel3: "Dataset 2 - String 3",
+    },
+  };
+  const nestingTestDemoDataset3: MLDTDataset<NestingTestDataset> = {
+    headerLabel: "Testing 3",
+    dataset: {
+      stringOnLevel1: undefined,
       stringOnLevel2: "Dataset 2 - String 2",
       stringOnLevel3: "Dataset 2 - String 3",
     },
@@ -180,6 +187,20 @@ describe("Tests for the MultiLayerDataTable component", () => {
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "false").click();
       getSectionHead("Subsection 1").should("be.visible");
       getCellContainer("Level 3 - String").should("be.visible");
+    });
+  });
+
+  describe("Tests that the shouldDisplay directive works", () => {
+    it("Tests that fields and sections get hidden if shouldDisplay is false", () => {
+      mountWithDatasets([nestingTestDemoDataset3]);
+      getCellContainer("Level 1 - String").should("not.exist");
+      getSectionHead("Section 2").should("not.exist");
+    });
+
+    it("Tests that fields and sections should get displayed if at least one of the datasets has shouldDisplay = true", () => {
+      mountWithDatasets([nestingTestDemoDataset1, nestingTestDemoDataset3]);
+      getCellContainer("Level 1 - String").should("be.visible");
+      getSectionHead("Section 2").should("be.visible");
     });
   });
 

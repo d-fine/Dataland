@@ -75,7 +75,7 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
 function formatYesNoValueWhenEvidenceDesiredIsYes(
   elementValue: DataPointOneValueYesNo | undefined,
 ): AvailableDisplayValues {
-  if (!elementValue || !elementValue.value) {
+  if (!elementValue?.value) {
     return {
       displayComponent: MLDTDisplayComponents.StringDisplayComponent,
       displayValue: "",

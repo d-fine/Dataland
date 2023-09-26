@@ -5,6 +5,7 @@ import {
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type DataPointWithUnitBigDecimal } from "@clients/backend";
 import { type Field } from "@/utils/GenericFrameworkTypes";
+import { formatNumberToReadableFormat } from "@/utils/Formatter";
 
 /**
  * Returns a value factory that returns the value of the DataPointFormField
@@ -17,14 +18,14 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
   return (dataset) => {
     const datapoint = getFieldValueFromDataModel(path, dataset) as DataPointWithUnitBigDecimal | undefined;
 
-    if (!datapoint || !datapoint.value) {
+    if (!datapoint?.value) {
       return {
         displayComponent: MLDTDisplayComponents.StringDisplayComponent,
         displayValue: "",
       };
     }
 
-    const datapointValue = datapoint.value;
+    const datapointValue = formatNumberToReadableFormat(datapoint.value);
     let datapointUnitSuffix = "";
 
     if (field.options) {

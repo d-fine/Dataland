@@ -39,6 +39,8 @@ export function getDataModelFieldDisplayConfiguration(path: string, field: Field
       shouldDisplay: field.showIf,
       valueGetter: valueGetterFactory(path, field),
     };
+  } else if (field.component == "UploadReports") {
+    return undefined;
   } else {
     console.log(`!WARNING! - Could not translate component of type ${field.component}`);
     return undefined;
