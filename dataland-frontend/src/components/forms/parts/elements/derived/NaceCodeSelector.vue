@@ -29,6 +29,7 @@
               :modelValue="selectedTreeNodes.has(slotProps.node.key)"
               @update:modelValue="(isChecked: boolean) => handleNodeCheckboxClick(slotProps.node.key, isChecked)"
               :binary="true"
+              :disabled="disableCheckboxesForLksg && slotProps.node.children.length > 0"
             ></Checkbox>
             <div :class="{ invisible: !selectedChildrenCounter.get(slotProps.node.key) }">
               <span class="p-badge p-badge-no-gutter">{{ selectedChildrenCounter.get(slotProps.node.key) || 0 }}</span>
@@ -62,6 +63,10 @@ export default defineComponent({
     modelValue: {
       type: Array as PropType<Array<string>>,
       default: () => [],
+    },
+    disableCheckboxesForLksg: {
+      type: Boolean,
+      default: false,
     },
   },
   components: { Tree, OverlayPanel, InputText, Checkbox },
