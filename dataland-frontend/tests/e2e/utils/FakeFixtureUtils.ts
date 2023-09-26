@@ -56,7 +56,6 @@ export class Generator {
   documents: ReferencedDocuments;
 
   constructor(undefinedProbability = DEFAULT_PROBABILITY, setMissingValuesToNull = false) {
-    // TODO renaming
     this.missingValueProbability = undefinedProbability;
     this.setMissingValuesToNull = setMissingValuesToNull;
     this.reports = generateReferencedReports(undefinedProbability, setMissingValuesToNull);
@@ -96,7 +95,7 @@ export class Generator {
 
   randomDataPoint<T>(input: T, unit?: string): GenericDataPoint<T> | undefined | null {
     const randomInput = this.valueOrMissing(input);
-    return this.valueOrMissing(generateDatapoint(randomInput, this.reports, unit));
+    return this.valueOrMissing(generateDatapoint(randomInput, this.reports, this.setMissingValuesToNull, unit));
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | undefined | null {
