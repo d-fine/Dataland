@@ -4,13 +4,12 @@
 
 <script lang="ts">
 import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import DocumentLinkDisplayComponent from "@/components/resources/dataTable/cells/DocumentLinkDisplayComponent.vue";
 import StringDisplayComponent from "@/components/resources/dataTable/cells/StringDisplayComponent.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "MultiLayerDataTableCell",
-  components: { DocumentLinkDisplayComponent, StringDisplayComponent },
+  components: { StringDisplayComponent },
   props: {
     content: {
       type: Object as () => AvailableDisplayValues,
