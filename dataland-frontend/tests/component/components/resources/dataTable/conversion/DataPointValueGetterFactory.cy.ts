@@ -1,7 +1,10 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type DataPointWithUnitBigDecimal } from "@clients/backend";
 import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
-import { MLDTDisplayComponents } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import {
+  MLDTDisplayComponents,
+  type MLDTDisplayValue,
+} from "@/components/resources/dataTable/MultiLayerDataTableCells";
 describe("Unit test for the DataPointValueGetterFactory", () => {
   describe("Tests when the unit is pre-determined in the data model", () => {
     const field: Field = {
@@ -18,7 +21,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     it("An empty string should be displayed if the data point is undefined", () => {
       const dataset = { data: undefined };
       const value = dataPointValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal({
+      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
         displayComponent: MLDTDisplayComponents.StringDisplayComponent,
         displayValue: "",
       });
@@ -31,7 +34,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = dataPointValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal({
+      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
         displayComponent: MLDTDisplayComponents.StringDisplayComponent,
         displayValue: "",
       });
@@ -44,7 +47,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = dataPointValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal({
+      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
         displayComponent: MLDTDisplayComponents.StringDisplayComponent,
         displayValue: "123 Tonnes",
       });
@@ -79,7 +82,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = dataPointValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal({
+      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
         displayComponent: MLDTDisplayComponents.StringDisplayComponent,
         displayValue: "123",
       });
@@ -93,7 +96,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = dataPointValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal({
+      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
         displayComponent: MLDTDisplayComponents.StringDisplayComponent,
         displayValue: "123 Unit-A",
       });

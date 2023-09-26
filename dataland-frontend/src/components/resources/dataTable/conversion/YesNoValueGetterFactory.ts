@@ -2,13 +2,23 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   type AvailableDisplayValues,
   MLDTDisplayComponents,
-  type MLDTDisplayValue,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { type BaseDataPointYesNo, type BaseDataPointYesNoNa, type DataPointOneValueYesNo } from "@clients/backend";
+import {
+  type BaseDataPointYesNo,
+  type BaseDataPointYesNoNa,
+  type DataPointOneValueYesNo,
+  YesNoNa,
+} from "@clients/backend";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
+
+const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
+  Yes: "Yes",
+  No: "No",
+  NA: "N/A",
+};
 
 /**
  * Formats the value of a YesNoFormField if the field serves as a certificate
@@ -25,21 +35,36 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
     };
   }
 
-  if (elementValue.dataSource) {
-    const dataSource = elementValue.dataSource;
-    return {
-      displayComponent: MLDTDisplayComponents.DocumentLinkDisplayComponent,
-      displayValue: {
-        label: elementValue.value + " (Certified)",
-        reference: dataSource,
-      },
-    };
-  } else {
+  if (elementValue.value == YesNoNa.Yes) {
+    if (elementValue.dataSource) {
+      return {
+        displayComponent: MLDTDisplayComponents.DocumentLinkDisplayComponent,
+        displayValue: {
+          label: "Certified",
+          reference: elementValue.dataSource,
+        },
+      };
+    } else {
+      return {
+        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayValue: "Yes",
+      };
+    }
+  } else if (elementValue.value == YesNoNa.No) {
     return {
       displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-      displayValue: elementValue.value,
+      displayValue: "Uncertified",
+    };
+  } else if (elementValue.value == YesNoNa.Na) {
+    return {
+      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      displayValue: "N/A",
     };
   }
+  return {
+    displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    displayValue: "",
+  };
 }
 
 /**
@@ -50,17 +75,17 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
 function formatYesNoValueWhenEvidenceDesiredIsYes(
   elementValue: DataPointOneValueYesNo | undefined,
 ): AvailableDisplayValues {
-  if (!elementValue) {
+  if (!elementValue || !elementValue.value) {
     return {
       displayComponent: MLDTDisplayComponents.StringDisplayComponent,
       displayValue: "",
     };
   }
 
-  const yesNoValue = elementValue.value ?? "";
+  const yesNoValue = elementValue.value;
   return {
     displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-    displayValue: yesNoValue,
+    displayValue: humanReadableYesNoMap[yesNoValue],
   };
 }
 
@@ -83,9 +108,11 @@ export function yesNoValueGetterFactory(path: string, field: Field): (dataset: a
         getFieldValueFromDataModel(path, dataset) as DataPointOneValueYesNo | undefined,
       );
     } else {
+      const value = getFieldValueFromDataModel(path, dataset) as YesNoNa | undefined;
+      const displayValue = value ? humanReadableYesNoMap[value] : "";
       return {
         displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: getFieldValueFromDataModel(path, dataset) as string | undefined,
+        displayValue: displayValue,
       };
     }
   };
