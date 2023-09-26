@@ -31,9 +31,9 @@
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { AssuranceDataPointAssuranceOptionsValueEnum } from "@/types/ttt";
 import {
   type AmountWithCurrency,
-  AssuranceDataPointAssuranceOptionsValueEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   DataTypeEnum,
   type EuTaxonomyDataForNonFinancials,
