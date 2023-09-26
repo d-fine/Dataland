@@ -37,7 +37,7 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
 
     return {
       displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-      displayValue: `${datapointValue} ${datapointUnitSuffix}`,
+      displayValue: `${datapointValue} ${datapointUnitSuffix}`.trim(),
     };
   };
 }

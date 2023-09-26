@@ -8,8 +8,6 @@ import { numberValueGetterFactory } from "@/components/resources/dataTable/conve
 import { percentageValueGetterFactory } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
 import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
-import { euTaxonomyActivitiesDataTableValueGetterFactory } from "@/components/resources/dataTable/conversion/EuTaxonomyActivitiesDataTableValueGetterFactory";
-import alignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
@@ -29,8 +27,6 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   RadioButtonsFormField: singleSelectValueGetterFactory,
   SingleSelectFormField: singleSelectValueGetterFactory,
   NaceCodeFormField: naceCodeValueGetterFactory,
-  AlignedActivitiesDataTable: euTaxonomyActivitiesDataTableValueGetterFactory,
-  NonAlignedActivitiesDataTable: euTaxonomyActivitiesDataTableValueGetterFactory,
   DataPointFormField: dataPointValueGetterFactory,
 };
 
