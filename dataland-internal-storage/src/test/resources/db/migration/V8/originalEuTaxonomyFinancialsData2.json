@@ -1,0 +1,25 @@
+{
+  "fiscalYearDeviation": "Deviation",
+  "fiscalYearEnd": "2023-04-25",
+  "numberOfEmployees": 46621,
+  "referencedReports": {
+    "IntegratedReport": {
+      "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "isGroupLevel": "Yes",
+      "reportDate": "2022-10-28",
+      "currency": "UAH"
+    }
+  },
+  "assurance": {
+    "assurance": "LimitedAssurance",
+    "dataSource": {
+      "page": 235,
+      "report": "IntegratedReport",
+      "tagName": "content"
+    }
+  },
+  "scopeOfEntities": "Yes",
+  "euTaxonomyActivityLevelReporting": "Yes",
+  "financialServicesTypes": [],
+  "insuranceKpis": null
+}

@@ -21,7 +21,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "fiscalYearDeviation",
             label: "Fiscal Year Deviation",
-            description: "Fiscal Year (Deviation/ No Deviation)",
+            description: "Does the fiscal year deviate from the calender year?",
             unit: "",
             component: "RadioButtonsFormField",
             evidenceDesired: false,
@@ -75,17 +75,18 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "numberOfEmployees",
             label: "Number Of Employees",
-            description: "Total number of employees (including temporary workers)",
+            description: "Total number of employees (including temporary workers with assignment duration >6 months)",
             unit: "",
             component: "NumberFormField",
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nfrdMandatory",
             label: "NFRD Mandatory",
-            description: "The reporting obligation for companies whose number of employees is greater or equal to 500",
+            description: "Is the NFRD mandatory for your company?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: false,
@@ -366,7 +367,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "enablingShareInPercent",
             label: "Enabling Revenue",
-            description: "",
+            description:
+              "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -382,7 +384,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "transitionalShareInPercent",
             label: "Transitional Revenue",
-            description: "",
+            description:
+              "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -628,7 +631,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "enablingShareInPercent",
             label: "Enabling CapEx",
-            description: "",
+            description:
+              "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -644,7 +648,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "transitionalShareInPercent",
             label: "Transitional CapEx",
-            description: "",
+            description:
+              "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -890,7 +895,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "enablingShareInPercent",
             label: "Enabling OpEx",
-            description: "",
+            description:
+              "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -906,7 +912,8 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "transitionalShareInPercent",
             label: "Transitional OpEx",
-            description: "",
+            description:
+              "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
             unit: "",
             component: "PercentageFormField",
             evidenceDesired: false,

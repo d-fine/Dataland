@@ -16,6 +16,7 @@ import { roundNumber } from "@/utils/NumberConversionUtils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
 import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
 import { formatValueForDisplay } from "@/components/resources/frameworkDataSearch/p2p/P2pFormatValueForDisplay";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 
 describe("Component test for ThreeLayerDataTable", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;
@@ -154,7 +155,7 @@ describe("Component test for ThreeLayerDataTable", () => {
     const revenueFirstAlignedActivity = assertDefined(revenueOfDataset.alignedShare?.alignedActivities)[0];
     const revenueFirstAlignedActivityName = assertDefined(revenueFirstAlignedActivity?.activityName);
     const revenueFirstAlignedActivityRelativeShare = roundNumber(
-      assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent) * 100,
+      assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent),
       2,
     );
     const revenueFirstAlignedActivityAbsoluteShare = formatAmountWithCurrency(
@@ -185,7 +186,7 @@ describe("Component test for ThreeLayerDataTable", () => {
       cy.get("table").find(`tr:contains("Minimum safeguards")`);
       cy.get("table").find(`tr:contains("Yes")`);
       cy.get("table").find(`tr:contains("No")`);
-      cy.get("table").find(`tr:contains("${revenueFirstAlignedActivityName}")`);
+      cy.get("table").find(`tr:contains("${activityApiNameToHumanizedName(revenueFirstAlignedActivityName)}")`);
       cy.get("table").find(`tr:contains("${revenueFirstAlignedActivityRelativeShare}")`);
       cy.get("table").find(`tr:contains("${revenueFirstAlignedActivityAbsoluteShare}")`);
     });
@@ -194,11 +195,11 @@ describe("Component test for ThreeLayerDataTable", () => {
   it("Opens the non-aligned activities modal and checks that it works as intended", () => {
     const capexOfDataset = assertDefined(mockedDataForTest[0].data.capex);
     const capexFirstNonAlignedActivity = assertDefined(capexOfDataset.nonAlignedShare?.nonAlignedActivities)[0];
-    assertDefined(capexFirstNonAlignedActivity.activityName);
+    const capexFirstNonAlignedActivityName = assertDefined(capexFirstNonAlignedActivity.activityName);
     const capexNonAlignedShareInPercent = assertDefined(capexOfDataset.nonAlignedShare?.relativeShareInPercent);
     const capexFirstNonAlignedActivityNaceCodes: string = assertDefined(capexFirstNonAlignedActivity.naceCodes)[0];
     const capexFirstNonAlignedActivityRelativeShare = roundNumber(
-      assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent) * 100,
+      assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent),
       2,
     );
     const capexFirstNonAlignedActivityAbsoluteShare = formatAmountWithCurrency(
@@ -219,9 +220,7 @@ describe("Component test for ThreeLayerDataTable", () => {
     ).then(() => {
       expandViewPageAndOpenModal("CapEx", "nonAlignedShare");
       validateExistenceOfCommonColumnHeaders();
-      cy.get("table").find(
-        `tr:contains("Construction, extension and operation of waste water collection and treatment")`,
-      );
+      cy.get("table").find(`tr:contains(${activityApiNameToHumanizedName(capexFirstNonAlignedActivityName)})`);
       cy.get("table").find(`tr:contains("${capexNonAlignedShareInPercent}")`);
       cy.get("table").find(`tr:contains("${capexFirstNonAlignedActivityNaceCodes}")`);
       cy.get("table").find(`tr:contains(${capexFirstNonAlignedActivityRelativeShare})`);
@@ -253,13 +252,13 @@ describe("Component test for ThreeLayerDataTable", () => {
       },
       ammonia: {
         decarbonisation: {
-          energyMix: 0.11,
+          energyMixInPercent: 3.4,
         },
         defossilisation: {},
       },
       cement: {
         energy: {
-          energyMix: 0.22,
+          energyMixInPercent: 15.22,
         },
         technology: {},
         material: {},
@@ -267,10 +266,10 @@ describe("Component test for ThreeLayerDataTable", () => {
     };
 
     const expectedAmmoniaDecarbonisationEnergyMix = roundNumber(
-      assertDefined(p2pData.ammonia?.decarbonisation?.energyMix) * 100,
+      assertDefined(p2pData.ammonia?.decarbonisation?.energyMixInPercent),
       2,
     );
-    const expectedCementEnergyEnergyMix = roundNumber(assertDefined(p2pData.cement?.energy?.energyMix) * 100, 2);
+    const expectedCementEnergyEnergyMix = roundNumber(assertDefined(p2pData.cement?.energy?.energyMixInPercent), 2);
 
     cy.mountWithPlugins(ThreeLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
@@ -290,10 +289,14 @@ describe("Component test for ThreeLayerDataTable", () => {
       toggleCategoryByClick("Cement");
       toggleCategoryByClick("energy");
 
-      cy.get('[data-test="2018_ammonia_energyMix"] span')
-        .should("exist")
-        .contains(`${expectedAmmoniaDecarbonisationEnergyMix} %`);
-      cy.get('[data-test="2018_cement_energyMix"] span').should("exist").contains(`${expectedCementEnergyEnergyMix} %`);
+      cy.get('[data-test="2018_ammonia_energyMixInPercent"] span').should(
+        "have.text",
+        `${expectedAmmoniaDecarbonisationEnergyMix} %`,
+      );
+      cy.get('[data-test="2018_cement_energyMixInPercent"] span').should(
+        "have.text",
+        `${expectedCementEnergyEnergyMix} %`,
+      );
     });
   });
 });

@@ -7,53 +7,42 @@ import {
   NationalOrInternationalMarket,
   ShareOfTemporaryWorkers,
 } from "@clients/backend";
-import { randomYesNo, randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
-import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
-import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
+import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { DEFAULT_PROBABILITY, Generator, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
+import { generateArray, generateFixtureDataset, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { randomFloat, randomInt, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { getRandomIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
-import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
-import { generateBaseDataPoint } from "@e2e/fixtures/common/BaseDataPointFixtures";
+import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
+import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
+import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
-import { valueOrNull } from "@e2e/fixtures/common/DataPointFixtures";
-import { generateListOfRandomNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 
 /**
  * Generates a set number of LKSG fixtures
  * @param numFixtures the number of lksg fixtures to generate
- * @param undefinedProbability the probability of fields to be undefined (number between 0 and 1)
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a set number of LKSG fixtures
  */
-export function generateLksgFixture(numFixtures: number, undefinedProbability = 0.5): FixtureData<LksgData>[] {
+export function generateLksgFixture(
+  numFixtures: number,
+  undefinedProbability = DEFAULT_PROBABILITY,
+): FixtureData<LksgData>[] {
   return generateFixtureDataset<LksgData>(
     () => generateLksgData(undefinedProbability),
     numFixtures,
-    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod(),
+    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || generateReportingPeriod(),
   );
 }
 
 /**
- * Generates a Lksg fixture with a dataset with many null values for categories, subcategories and field values
- * @returns the fixture
- */
-export function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
-  return generateFixtureDataset<LksgData>(
-    () => generateOneLksgDatasetWithManyNulls(),
-    1,
-    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod(),
-  )[0];
-}
-
-/**
  * Generates a random production site
- * @param undefinedProbability the percentage of undefined values in the returned production site
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random production site
  */
-export function generateProductionSite(undefinedProbability = 0.5): LksgProductionSite {
+export function generateProductionSite(undefinedProbability = DEFAULT_PROBABILITY): LksgProductionSite {
   return {
     nameOfProductionSite: valueOrUndefined(faker.company.name(), undefinedProbability),
     addressOfProductionSite: generateAddress(undefinedProbability),
@@ -62,479 +51,327 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
 }
 
 /**
- * Generates a random product
- * @returns a random product
- */
-function generateProduct(): LksgProduct {
-  return {
-    name: faker.commerce.productName(),
-    productionSteps: valueOrUndefined(generateArray(() => `${faker.word.verb()} ${faker.commerce.productMaterial()}`)),
-    relatedCorporateSupplyChain: valueOrUndefined(faker.lorem.sentences()),
-  };
-}
-
-/**
- * Generates a random procurement category
- * @returns random procurement category
- */
-function generateProcurementCategory(): LksgProcurementCategory {
-  const numberOfSuppliersPerCountryCodeAsMap = new Map<string, number>(
-    generateArray(() => [getRandomIso2CountryCode(), valueOrNull(faker.number.int({ min: 0, max: 50 }))!]),
-  );
-  return {
-    procuredProductTypesAndServicesNaceCodes: generateListOfRandomNaceCodes(),
-    numberOfSuppliersPerCountryCode: valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
-    percentageOfTotalProcurement: valueOrUndefined(randomPercentageValue()),
-  };
-}
-
-/**
- * Generates a random map of procurement categories
- * @returns random map of procurement categories
- */
-function generateProcurementCategories(): { [key: string]: LksgProcurementCategory } {
-  const procurementCategories = Object.values(ProcurementCategoryType);
-  const keys = [] as ProcurementCategoryType[];
-  procurementCategories.forEach((category) => {
-    if (faker.datatype.boolean()) {
-      keys.push(category);
-    }
-  });
-  return Object.fromEntries(
-    new Map<string, LksgProcurementCategory>(
-      keys.map((procurementCategoryType) => [procurementCategoryType as string, generateProcurementCategory()]),
-    ),
-  );
-}
-
-/**
  * Generates a random array of goods or services
  * @returns random array of goods or services
  */
-export function generateListOfGoodsOrServices(): string[] {
+function generateListOfGoodsOrServices(): string[] {
   return generateArray(() => faker.commerce.productName(), 1);
 }
 
 /**
- * Randomly returns <10%, 10-25%, 25-50% or >50%
- * @returns one of the four percentage intervals as string
- */
-export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers {
-  return faker.helpers.arrayElement(Object.values(ShareOfTemporaryWorkers));
-}
-
-/**
- * Randomly returns National, International or Both
- * @returns one of the options as string
- */
-export function randomNationalOrInternationalMarket(): NationalOrInternationalMarket {
-  return faker.helpers.arrayElement(Object.values(NationalOrInternationalMarket));
-}
-
-/**
- * Generates an LKSG dataset with the value null for some categories, subcategories and field values.
- * Datasets that were uploaded via the Dataland API can look like this in production.
- * @returns the dataset
- */
-export function generateOneLksgDatasetWithManyNulls(): LksgData {
-  return {
-    general: {
-      masterData: {
-        dataDate: "1999-12-24",
-        headOfficeInGermany: null!,
-        groupOfCompanies: null!,
-        groupOfCompaniesName: null!,
-        industry: null!,
-        numberOfEmployees: null!,
-        seasonalOrMigrantWorkers: null!,
-        shareOfTemporaryWorkers: null!,
-        totalRevenueCurrency: null!,
-        annualTotalRevenue: null!,
-        fixedAndWorkingCapital: null!,
-      },
-      productionSpecific: null!,
-      productionSpecificOwnOperations: null!,
-    },
-    governance: null!,
-    social: null!,
-    environmental: null!,
-  };
-}
-
-/**
  * Generates a random LKSG dataset
- * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
+ * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random LKSG dataset
  */
-export function generateLksgData(undefinedProbability = 0.5): LksgData {
+export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): LksgData {
+  const dataGenerator = new LksgGenerator(undefinedProbability);
   return {
     general: {
       masterData: {
-        dataDate: randomFutureDate(),
-        headOfficeInGermany: valueOrUndefined(randomYesNo(), undefinedProbability),
-        groupOfCompanies: valueOrUndefined(randomYesNo(), undefinedProbability),
-        groupOfCompaniesName: valueOrUndefined(faker.company.name(), undefinedProbability),
-        industry: valueOrUndefined(generateListOfRandomNaceCodes(), undefinedProbability),
-        numberOfEmployees: valueOrUndefined(randomInt(10000), undefinedProbability),
-        seasonalOrMigrantWorkers: valueOrUndefined(randomYesNo(), undefinedProbability),
-        shareOfTemporaryWorkers: valueOrUndefined(randomShareOfTemporaryWorkersInterval(), undefinedProbability),
-        annualTotalRevenue: valueOrUndefined(randomFloat(1000000, 10000000000, 1), undefinedProbability),
-        totalRevenueCurrency: valueOrUndefined(generateIso4217CurrencyCode(), undefinedProbability),
-        fixedAndWorkingCapital: valueOrUndefined(randomInt(10000), undefinedProbability),
+        dataDate: generateFutureDate(),
+        headOfficeInGermany: dataGenerator.randomYesNo(),
+        groupOfCompanies: dataGenerator.randomYesNo(),
+        groupOfCompaniesName: dataGenerator.valueOrUndefined(faker.company.name()),
+        industry: dataGenerator.valueOrUndefined(generateNaceCodes()),
+        numberOfEmployees: dataGenerator.randomInt(),
+        seasonalOrMigrantWorkers: dataGenerator.randomYesNo(),
+        shareOfTemporaryWorkers: dataGenerator.randomShareOfTemporaryWorkersInterval(),
+        annualTotalRevenue: dataGenerator.randomCurrencyValue(),
+        totalRevenueCurrency: dataGenerator.valueOrUndefined(generateCurrencyCode()),
+        fixedAndWorkingCapital: dataGenerator.randomInt(),
       },
       productionSpecific: {
-        manufacturingCompany: valueOrUndefined(randomYesNo(), undefinedProbability),
-        capacity: valueOrUndefined(
-          randomInt(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
-          undefinedProbability,
+        manufacturingCompany: dataGenerator.randomYesNo(),
+        capacity: dataGenerator.valueOrUndefined(
+          generateInt(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
         ),
-        productionViaSubcontracting: valueOrUndefined(randomYesNo(), undefinedProbability),
-        subcontractingCompaniesCountries: valueOrUndefined(
-          generateArray(getRandomIso2CountryCode),
-          undefinedProbability,
-        ),
-        subcontractingCompaniesIndustries: valueOrUndefined(generateListOfRandomNaceCodes(), undefinedProbability),
-        productionSites: valueOrUndefined(randomYesNo(), undefinedProbability),
-        listOfProductionSites: valueOrUndefined(
-          generateArray(() => generateProductionSite(undefinedProbability)),
-          undefinedProbability,
-        ),
-        market: valueOrUndefined(randomNationalOrInternationalMarket(), undefinedProbability),
-        specificProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
+        productionViaSubcontracting: dataGenerator.randomYesNo(),
+        subcontractingCompaniesCountries: dataGenerator.randomArray(generateIso2CountryCode),
+        subcontractingCompaniesIndustries: dataGenerator.valueOrUndefined(generateNaceCodes()),
+        productionSites: dataGenerator.randomYesNo(),
+        listOfProductionSites: dataGenerator.randomArray(() => generateProductionSite(undefinedProbability)),
+        market: dataGenerator.randomNationalOrInternationalMarket(),
+        specificProcurement: dataGenerator.randomYesNo(),
       },
       productionSpecificOwnOperations: {
-        mostImportantProducts: valueOrUndefined(generateArray(generateProduct), undefinedProbability),
-        productsServicesCategoriesPurchased: valueOrUndefined(generateProcurementCategories(), undefinedProbability),
+        mostImportantProducts: dataGenerator.randomArray(() => dataGenerator.generateProduct()),
+        productsServicesCategoriesPurchased: dataGenerator.valueOrUndefined(
+          dataGenerator.generateProcurementCategories(),
+        ),
       },
     },
     governance: {
       riskManagementOwnOperations: {
-        riskManagementSystem: valueOrUndefined(randomYesNo(), undefinedProbability),
-        riskAnalysisInFiscalYear: valueOrUndefined(randomYesNo(), undefinedProbability),
-        risksIdentified: valueOrUndefined(randomYesNo(), undefinedProbability),
-        identifiedRisks: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        counteractingMeasures: valueOrUndefined(randomYesNo(), undefinedProbability),
-        whichCounteractingMeasures: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        regulatedRiskManagementResponsibility: valueOrUndefined(randomYesNo(), undefinedProbability),
-        environmentalManagementSystem: valueOrUndefined(randomYesNo(), undefinedProbability),
-        environmentalManagementSystemInternationalCertification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        environmentalManagementSystemNationalCertification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
+        riskManagementSystem: dataGenerator.randomYesNo(),
+        riskAnalysisInFiscalYear: dataGenerator.randomYesNo(),
+        risksIdentified: dataGenerator.randomYesNo(),
+        identifiedRisks: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        counteractingMeasures: dataGenerator.randomYesNo(),
+        whichCounteractingMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        regulatedRiskManagementResponsibility: dataGenerator.randomYesNo(),
+        environmentalManagementSystem: dataGenerator.randomYesNo(),
+        environmentalManagementSystemInternationalCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        environmentalManagementSystemNationalCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
       grievanceMechanismOwnOperations: {
-        grievanceHandlingMechanism: valueOrUndefined(randomYesNo(), undefinedProbability),
-        grievanceHandlingReportingAccessible: valueOrUndefined(randomYesNo(), undefinedProbability),
-        appropriateGrievanceHandlingInformation: valueOrUndefined(randomYesNo(), undefinedProbability),
-        appropriateGrievanceHandlingSupport: valueOrUndefined(randomYesNo(), undefinedProbability),
-        accessToExpertiseForGrievanceHandling: valueOrUndefined(randomYesNo(), undefinedProbability),
-        grievanceComplaints: valueOrUndefined(randomYesNo(), undefinedProbability),
-        complaintsNumber: valueOrUndefined(randomInt(10000), undefinedProbability),
-        complaintsReason: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        actionsForComplaintsUndertaken: valueOrUndefined(randomYesNo(), undefinedProbability),
-        whichActionsForComplaintsUndertaken: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        publicAccessToGrievanceHandling: valueOrUndefined(randomYesNo(), undefinedProbability),
-        whistleblowerProtection: valueOrUndefined(randomYesNo(), undefinedProbability),
-        dueDiligenceProcessForGrievanceHandling: valueOrUndefined(randomYesNo(), undefinedProbability),
+        grievanceHandlingMechanism: dataGenerator.randomYesNo(),
+        grievanceHandlingReportingAccessible: dataGenerator.randomYesNo(),
+        appropriateGrievanceHandlingInformation: dataGenerator.randomYesNo(),
+        appropriateGrievanceHandlingSupport: dataGenerator.randomYesNo(),
+        accessToExpertiseForGrievanceHandling: dataGenerator.randomYesNo(),
+        grievanceComplaints: dataGenerator.randomYesNo(),
+        complaintsNumber: dataGenerator.randomInt(),
+        complaintsReason: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        actionsForComplaintsUndertaken: dataGenerator.randomYesNo(),
+        whichActionsForComplaintsUndertaken: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        publicAccessToGrievanceHandling: dataGenerator.randomYesNo(),
+        whistleblowerProtection: dataGenerator.randomYesNo(),
+        dueDiligenceProcessForGrievanceHandling: dataGenerator.randomYesNo(),
       },
       certificationsPoliciesAndResponsibilities: {
-        sa8000Certification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        smetaSocialAuditConcept: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        betterWorkProgramCertificate: valueOrUndefined(
-          generateBaseDataPoint(randomYesNoNa(), undefinedProbability),
-          undefinedProbability,
-        ),
-        iso45001Certification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        iso14001Certification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        emasCertification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        iso37001Certification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        iso37301Certification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        riskManagementSystemCertification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        amforiBsciAuditReport: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        responsibleBusinessAssociationCertification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        fairLaborAssociationCertification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        additionalAudits: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        codeOfConduct: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        codeOfConductTraining: valueOrUndefined(randomYesNo(), undefinedProbability),
-        supplierCodeOfConduct: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        policyStatement: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        humanRightsStrategy: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        environmentalImpactPolicy: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        fairWorkingConditionsPolicy: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
+        sa8000Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        smetaSocialAuditConcept: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        betterWorkProgramCertificate: dataGenerator.randomBaseDataPoint(generateYesNoNa()),
+        iso45001Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        iso14001Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        emasCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        iso37001Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        iso37301Certification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        riskManagementSystemCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        amforiBsciAuditReport: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        responsibleBusinessAssociationCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        fairLaborAssociationCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        additionalAudits: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        codeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        codeOfConductTraining: dataGenerator.randomYesNo(),
+        supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        policyStatement: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        humanRightsStrategy: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        environmentalImpactPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        fairWorkingConditionsPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
       generalViolations: {
-        responsibilitiesForFairWorkingConditions: valueOrUndefined(randomYesNo(), undefinedProbability),
-        responsibilitiesForTheEnvironment: valueOrUndefined(randomYesNo(), undefinedProbability),
-        responsibilitiesForOccupationalSafety: valueOrUndefined(randomYesNo(), undefinedProbability),
-        legalProceedings: valueOrUndefined(randomYesNo(), undefinedProbability),
-        humanRightsViolationS: valueOrUndefined(randomYesNo(), undefinedProbability),
-        humanRightsViolations: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        humanRightsViolationAction: valueOrUndefined(randomYesNo(), undefinedProbability),
-        humanRightsViolationActionMeasures: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        highRiskCountriesRawMaterials: valueOrUndefined(randomYesNo(), undefinedProbability),
-        highRiskCountriesRawMaterialsLocation: valueOrUndefined(
-          generateArray(getRandomIso2CountryCode),
-          undefinedProbability,
-        ),
-        highRiskCountriesActivity: valueOrUndefined(randomYesNo(), undefinedProbability),
-        highRiskCountries: valueOrUndefined(generateArray(getRandomIso2CountryCode), undefinedProbability),
-        highRiskCountriesProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
-        highRiskCountriesProcurementName: valueOrUndefined(
-          generateArray(getRandomIso2CountryCode),
-          undefinedProbability,
-        ),
+        responsibilitiesForFairWorkingConditions: dataGenerator.randomYesNo(),
+        responsibilitiesForTheEnvironment: dataGenerator.randomYesNo(),
+        responsibilitiesForOccupationalSafety: dataGenerator.randomYesNo(),
+        legalProceedings: dataGenerator.randomYesNo(),
+        humanRightsViolationS: dataGenerator.randomYesNo(),
+        humanRightsViolations: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        humanRightsViolationAction: dataGenerator.randomYesNo(),
+        humanRightsViolationActionMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        highRiskCountriesRawMaterials: dataGenerator.randomYesNo(),
+        highRiskCountriesRawMaterialsLocation: dataGenerator.randomArray(generateIso2CountryCode),
+        highRiskCountriesActivity: dataGenerator.randomYesNo(),
+        highRiskCountries: dataGenerator.randomArray(generateIso2CountryCode),
+        highRiskCountriesProcurement: dataGenerator.randomYesNo(),
+        highRiskCountriesProcurementName: dataGenerator.randomArray(generateIso2CountryCode),
       },
     },
     social: {
       childLabor: {
-        childLaborPreventionPolicy: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        employeeSUnder18: valueOrUndefined(randomYesNo(), undefinedProbability),
-        employeeSUnder15: valueOrUndefined(randomYesNo(), undefinedProbability),
-        employeeSUnder18InApprenticeship: valueOrUndefined(randomYesNo(), undefinedProbability),
-        worstFormsOfChildLaborProhibition: valueOrUndefined(randomYesNo(), undefinedProbability),
-        worstFormsOfChildLabor: valueOrUndefined(randomYesNo(), undefinedProbability),
-        worstFormsOfChildLaborForms: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        measuresForPreventionOfEmploymentUnderLocalMinimumAge: valueOrUndefined(randomYesNo(), undefinedProbability),
-        employmentUnderLocalMinimumAgePreventionEmploymentContracts: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        employmentUnderLocalMinimumAgePreventionJobDescription: valueOrUndefined(randomYesNo(), undefinedProbability),
-        employmentUnderLocalMinimumAgePreventionIdentityDocuments: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        employmentUnderLocalMinimumAgePreventionTraining: valueOrUndefined(randomYesNo(), undefinedProbability),
-        employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        additionalChildLaborMeasures: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
+        childLaborPreventionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        employeeSUnder18: dataGenerator.randomYesNo(),
+        employeeSUnder15: dataGenerator.randomYesNo(),
+        employeeSUnder18InApprenticeship: dataGenerator.randomYesNo(),
+        worstFormsOfChildLaborProhibition: dataGenerator.randomYesNo(),
+        worstFormsOfChildLabor: dataGenerator.randomYesNo(),
+        worstFormsOfChildLaborForms: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        measuresForPreventionOfEmploymentUnderLocalMinimumAge: dataGenerator.randomYesNo(),
+        employmentUnderLocalMinimumAgePreventionEmploymentContracts: dataGenerator.randomYesNo(),
+        employmentUnderLocalMinimumAgePreventionJobDescription: dataGenerator.randomYesNo(),
+        employmentUnderLocalMinimumAgePreventionIdentityDocuments: dataGenerator.randomYesNo(),
+        employmentUnderLocalMinimumAgePreventionTraining: dataGenerator.randomYesNo(),
+        employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: dataGenerator.randomYesNo(),
+        additionalChildLaborMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
       },
       forcedLaborSlavery: {
-        forcedLaborAndSlaveryPrevention: valueOrUndefined(randomYesNo(), undefinedProbability),
-        forcedLaborAndSlaveryPreventionPractices: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        forcedLaborPreventionPolicy: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        forcedLaborAndSlaveryPreventionMeasures: valueOrUndefined(randomYesNo(), undefinedProbability),
-        forcedLaborAndSlaveryPreventionEmploymentContracts: valueOrUndefined(randomYesNo(), undefinedProbability),
-        forcedLaborAndSlaveryPreventionIdentityDocuments: valueOrUndefined(randomYesNo(), undefinedProbability),
-        forcedLaborAndSlaveryPreventionFreeMovement: valueOrUndefined(randomYesNo(), undefinedProbability),
-        forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        forcedLaborAndSlaveryPreventionTraining: valueOrUndefined(randomYesNo(), undefinedProbability),
-        forcedLaborAndSlaveryPreventionMeasuresOther: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
+        forcedLaborAndSlaveryPrevention: dataGenerator.randomYesNo(),
+        forcedLaborAndSlaveryPreventionPractices: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        forcedLaborPreventionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        forcedLaborAndSlaveryPreventionMeasures: dataGenerator.randomYesNo(),
+        forcedLaborAndSlaveryPreventionEmploymentContracts: dataGenerator.randomYesNo(),
+        forcedLaborAndSlaveryPreventionIdentityDocuments: dataGenerator.randomYesNo(),
+        forcedLaborAndSlaveryPreventionFreeMovement: dataGenerator.randomYesNo(),
+        forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets: dataGenerator.randomYesNo(),
+        forcedLaborAndSlaveryPreventionTraining: dataGenerator.randomYesNo(),
+        forcedLaborAndSlaveryPreventionMeasuresOther: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
       },
       withholdingAdequateWages: {
-        adequateWage: valueOrUndefined(randomYesNo(), undefinedProbability),
-        adequateWagesMeasures: valueOrUndefined(randomYesNo(), undefinedProbability),
-        documentedWorkingHoursAndWages: valueOrUndefined(randomYesNo(), undefinedProbability),
-        adequateLivingWage: valueOrUndefined(randomYesNo(), undefinedProbability),
-        regularWagesProcessFlow: valueOrUndefined(randomYesNo(), undefinedProbability),
-        fixedHourlyWages: valueOrUndefined(randomYesNoNa(), undefinedProbability),
-        fixedPieceworkWages: valueOrUndefined(randomYesNoNa(), undefinedProbability),
-        adequateWageMeasures: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
+        adequateWage: dataGenerator.randomYesNo(),
+        adequateWagesMeasures: dataGenerator.randomYesNo(),
+        documentedWorkingHoursAndWages: dataGenerator.randomYesNo(),
+        adequateLivingWage: dataGenerator.randomYesNo(),
+        regularWagesProcessFlow: dataGenerator.randomYesNo(),
+        fixedHourlyWages: dataGenerator.randomYesNoNa(),
+        fixedPieceworkWages: dataGenerator.randomYesNoNa(),
+        adequateWageMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
       },
       disregardForOccupationalHealthSafety: {
-        lowSkillWork: valueOrUndefined(randomYesNo(), undefinedProbability),
-        hazardousMachines: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshPolicy: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshPolicyPersonalProtectiveEquipment: valueOrUndefined(randomYesNoNa(), undefinedProbability),
-        oshPolicyMachineSafety: valueOrUndefined(randomYesNoNa(), undefinedProbability),
-        oshPolicyDisasterBehavioralResponse: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshPolicyAccidentsBehavioralResponse: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshPolicyWorkplaceErgonomics: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshPolicyAccessToWork: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshPolicyHandlingChemicalsAndOtherHazardousSubstances: valueOrUndefined(randomYesNoNa(), undefinedProbability),
-        oshPolicyFireProtection: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshPolicyWorkingHours: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshPolicyTrainingAddressed: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshPolicyTraining: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshManagementSystem: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshManagementSystemInternationalCertification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        oshManagementSystemNationalCertification: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        under10WorkplaceAccidents: valueOrUndefined(randomYesNo(), undefinedProbability),
-        oshTraining: valueOrUndefined(randomYesNo(), undefinedProbability),
-        healthAndSafetyPolicy: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
+        lowSkillWork: dataGenerator.randomYesNo(),
+        hazardousMachines: dataGenerator.randomYesNo(),
+        oshPolicy: dataGenerator.randomYesNo(),
+        oshPolicyPersonalProtectiveEquipment: dataGenerator.randomYesNoNa(),
+        oshPolicyMachineSafety: dataGenerator.randomYesNoNa(),
+        oshPolicyDisasterBehavioralResponse: dataGenerator.randomYesNo(),
+        oshPolicyAccidentsBehavioralResponse: dataGenerator.randomYesNo(),
+        oshPolicyWorkplaceErgonomics: dataGenerator.randomYesNo(),
+        oshPolicyAccessToWork: dataGenerator.randomYesNo(),
+        oshPolicyHandlingChemicalsAndOtherHazardousSubstances: dataGenerator.randomYesNoNa(),
+        oshPolicyFireProtection: dataGenerator.randomYesNo(),
+        oshPolicyWorkingHours: dataGenerator.randomYesNo(),
+        oshPolicyTrainingAddressed: dataGenerator.randomYesNo(),
+        oshPolicyTraining: dataGenerator.randomYesNo(),
+        oshManagementSystem: dataGenerator.randomYesNo(),
+        oshManagementSystemInternationalCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        oshManagementSystemNationalCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        under10WorkplaceAccidents: dataGenerator.randomYesNo(),
+        oshTraining: dataGenerator.randomYesNo(),
+        healthAndSafetyPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
       disregardForFreedomOfAssociation: {
-        freedomOfAssociation: valueOrUndefined(randomYesNo(), undefinedProbability),
-        employeeRepresentation: valueOrUndefined(randomPercentageValue(), undefinedProbability),
-        discriminationForTradeUnionMembers: valueOrUndefined(randomYesNo(), undefinedProbability),
-        freedomOfOperationForTradeUnion: valueOrUndefined(randomYesNo(), undefinedProbability),
-        freedomOfAssociationTraining: valueOrUndefined(randomYesNo(), undefinedProbability),
-        worksCouncil: valueOrUndefined(randomYesNo(), undefinedProbability),
+        freedomOfAssociation: dataGenerator.randomYesNo(),
+        employeeRepresentationInPercent: dataGenerator.randomPercentageValue(),
+        discriminationForTradeUnionMembers: dataGenerator.randomYesNo(),
+        freedomOfOperationForTradeUnion: dataGenerator.randomYesNo(),
+        freedomOfAssociationTraining: dataGenerator.randomYesNo(),
+        worksCouncil: dataGenerator.randomYesNo(),
       },
       unequalTreatmentOfEmployment: {
-        unequalTreatmentOfEmployment: valueOrUndefined(randomYesNo(), undefinedProbability),
-        diversityAndInclusionRole: valueOrUndefined(randomYesNo(), undefinedProbability),
-        preventionOfMistreatments: valueOrUndefined(randomYesNo(), undefinedProbability),
-        equalOpportunitiesOfficer: valueOrUndefined(randomYesNo(), undefinedProbability),
-        fairAndEthicalRecruitmentPolicy: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        equalOpportunitiesAndNonDiscriminationPolicy: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
+        unequalTreatmentOfEmployment: dataGenerator.randomYesNo(),
+        diversityAndInclusionRole: dataGenerator.randomYesNo(),
+        preventionOfMistreatments: dataGenerator.randomYesNo(),
+        equalOpportunitiesOfficer: dataGenerator.randomYesNo(),
+        fairAndEthicalRecruitmentPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        equalOpportunitiesAndNonDiscriminationPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
       contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption: {
-        harmfulSoilImpact: valueOrUndefined(randomYesNo(), undefinedProbability),
-        soilDegradation: valueOrUndefined(randomYesNo(), undefinedProbability),
-        soilErosion: valueOrUndefined(randomYesNo(), undefinedProbability),
-        soilBorneDiseases: valueOrUndefined(randomYesNo(), undefinedProbability),
-        soilContamination: valueOrUndefined(randomYesNo(), undefinedProbability),
-        soilSalinization: valueOrUndefined(randomYesNo(), undefinedProbability),
-        harmfulWaterPollution: valueOrUndefined(randomYesNo(), undefinedProbability),
-        fertilizersOrPollutants: valueOrUndefined(randomYesNo(), undefinedProbability),
-        wasteWaterFiltration: valueOrUndefined(randomYesNo(), undefinedProbability),
-        harmfulAirPollution: valueOrUndefined(randomYesNo(), undefinedProbability),
-        airFiltration: valueOrUndefined(randomYesNo(), undefinedProbability),
-        harmfulNoiseEmission: valueOrUndefined(randomYesNo(), undefinedProbability),
-        reduceNoiseEmissions: valueOrUndefined(randomYesNo(), undefinedProbability),
-        excessiveWaterConsumption: valueOrUndefined(randomYesNo(), undefinedProbability),
-        waterSavingMeasures: valueOrUndefined(randomYesNo(), undefinedProbability),
-        waterSavingMeasuresName: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        pipeMaintaining: valueOrUndefined(randomYesNo(), undefinedProbability),
-        waterSources: valueOrUndefined(randomYesNo(), undefinedProbability),
-        contaminationMeasures: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
+        harmfulSoilImpact: dataGenerator.randomYesNo(),
+        soilDegradation: dataGenerator.randomYesNo(),
+        soilErosion: dataGenerator.randomYesNo(),
+        soilBorneDiseases: dataGenerator.randomYesNo(),
+        soilContamination: dataGenerator.randomYesNo(),
+        soilSalinization: dataGenerator.randomYesNo(),
+        harmfulWaterPollution: dataGenerator.randomYesNo(),
+        fertilizersOrPollutants: dataGenerator.randomYesNo(),
+        wasteWaterFiltration: dataGenerator.randomYesNo(),
+        harmfulAirPollution: dataGenerator.randomYesNo(),
+        airFiltration: dataGenerator.randomYesNo(),
+        harmfulNoiseEmission: dataGenerator.randomYesNo(),
+        reduceNoiseEmissions: dataGenerator.randomYesNo(),
+        excessiveWaterConsumption: dataGenerator.randomYesNo(),
+        waterSavingMeasures: dataGenerator.randomYesNo(),
+        waterSavingMeasuresName: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        pipeMaintaining: dataGenerator.randomYesNo(),
+        waterSources: dataGenerator.randomYesNo(),
+        contaminationMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
       },
       unlawfulEvictionDeprivationOfLandForestAndWater: {
-        unlawfulEvictionAndTakingOfLand: valueOrUndefined(randomYesNo(), undefinedProbability),
-        unlawfulEvictionAndTakingOfLandRisk: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        unlawfulEvictionAndTakingOfLandStrategies: valueOrUndefined(randomYesNo(), undefinedProbability),
-        unlawfulEvictionAndTakingOfLandStrategiesName: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: valueOrUndefined(randomYesNo(), undefinedProbability),
+        unlawfulEvictionAndTakingOfLand: dataGenerator.randomYesNo(),
+        unlawfulEvictionAndTakingOfLandRisk: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        unlawfulEvictionAndTakingOfLandStrategies: dataGenerator.randomYesNo(),
+        unlawfulEvictionAndTakingOfLandStrategiesName: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: dataGenerator.randomYesNo(),
       },
       useOfPrivatePublicSecurityForcesWithDisregardForHumanRights: {
-        useOfPrivatePublicSecurityForces: valueOrUndefined(randomYesNo(), undefinedProbability),
-        useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        instructionOfSecurityForces: valueOrUndefined(randomYesNo(), undefinedProbability),
-        humanRightsTraining: valueOrUndefined(randomYesNo(), undefinedProbability),
-        stateSecurityForces: valueOrUndefined(randomYesNoNa(), undefinedProbability),
-        privateSecurityForces: valueOrUndefined(randomYesNoNa(), undefinedProbability),
-        useOfPrivatePublicSecurityForcesMeasures: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
+        useOfPrivatePublicSecurityForces: dataGenerator.randomYesNo(),
+        useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: dataGenerator.randomYesNo(),
+        instructionOfSecurityForces: dataGenerator.randomYesNo(),
+        humanRightsTraining: dataGenerator.randomYesNo(),
+        stateSecurityForces: dataGenerator.randomYesNoNa(),
+        privateSecurityForces: dataGenerator.randomYesNoNa(),
+        useOfPrivatePublicSecurityForcesMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
       },
     },
     environmental: {
       useOfMercuryMercuryWasteMinamataConvention: {
-        mercuryAndMercuryWasteHandling: valueOrUndefined(randomYesNo(), undefinedProbability),
-        mercuryAndMercuryWasteHandlingPolicy: valueOrUndefined(
-          generateBaseDataPoint(randomYesNo(), undefinedProbability),
-          undefinedProbability,
-        ),
-        mercuryAddedProductsHandling: valueOrUndefined(randomYesNo(), undefinedProbability),
-        mercuryAddedProductsHandlingRiskOfExposure: valueOrUndefined(randomYesNo(), undefinedProbability),
-        mercuryAddedProductsHandlingRiskOfDisposal: valueOrUndefined(randomYesNo(), undefinedProbability),
-        mercuryAndMercuryCompoundsProductionAndUse: valueOrUndefined(randomYesNo(), undefinedProbability),
-        mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: valueOrUndefined(randomYesNo(), undefinedProbability),
+        mercuryAndMercuryWasteHandling: dataGenerator.randomYesNo(),
+        mercuryAndMercuryWasteHandlingPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        mercuryAddedProductsHandling: dataGenerator.randomYesNo(),
+        mercuryAddedProductsHandlingRiskOfExposure: dataGenerator.randomYesNo(),
+        mercuryAddedProductsHandlingRiskOfDisposal: dataGenerator.randomYesNo(),
+        mercuryAndMercuryCompoundsProductionAndUse: dataGenerator.randomYesNo(),
+        mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: dataGenerator.randomYesNo(),
       },
       productionAndUseOfPersistentOrganicPollutantsPopsConvention: {
-        persistentOrganicPollutantsProductionAndUse: valueOrUndefined(randomYesNo(), undefinedProbability),
-        persistentOrganicPollutantsUsed: valueOrUndefined(faker.company.buzzNoun(), undefinedProbability),
-        persistentOrganicPollutantsProductionAndUseRiskOfExposure: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        persistentOrganicPollutantsProductionAndUseRiskOfDisposal: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        legalRestrictedWasteProcesses: valueOrUndefined(randomYesNo(), undefinedProbability),
+        persistentOrganicPollutantsProductionAndUse: dataGenerator.randomYesNo(),
+        persistentOrganicPollutantsUsed: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        persistentOrganicPollutantsProductionAndUseRiskOfExposure: dataGenerator.randomYesNo(),
+        persistentOrganicPollutantsProductionAndUseRiskOfDisposal: dataGenerator.randomYesNo(),
+        legalRestrictedWasteProcesses: dataGenerator.randomYesNo(),
       },
       exportImportOfHazardousWasteBaselConvention: {
-        persistentOrganicPollutantsProductionAndUseTransboundaryMovements: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        persistentOrganicPollutantsProductionAndUseRiskForImportingState: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein: valueOrUndefined(
-          randomYesNo(),
-          undefinedProbability,
-        ),
-        hazardousWasteDisposal: valueOrUndefined(randomYesNo(), undefinedProbability),
-        hazardousWasteDisposalRiskOfImport: valueOrUndefined(randomYesNo(), undefinedProbability),
-        hazardousWasteDisposalOtherWasteImport: valueOrUndefined(randomYesNo(), undefinedProbability),
+        persistentOrganicPollutantsProductionAndUseTransboundaryMovements: dataGenerator.randomYesNo(),
+        persistentOrganicPollutantsProductionAndUseRiskForImportingState: dataGenerator.randomYesNo(),
+        hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein: dataGenerator.randomYesNo(),
+        hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein: dataGenerator.randomYesNo(),
+        hazardousWasteDisposal: dataGenerator.randomYesNo(),
+        hazardousWasteDisposalRiskOfImport: dataGenerator.randomYesNo(),
+        hazardousWasteDisposalOtherWasteImport: dataGenerator.randomYesNo(),
       },
     },
   };
+}
+
+class LksgGenerator extends Generator {
+  /**
+   * Generates a random product
+   * @returns a random product
+   */
+  generateProduct(): LksgProduct {
+    return {
+      name: faker.commerce.productName(),
+      productionSteps: this.randomArray(() => `${faker.word.verb()} ${faker.commerce.productMaterial()}`),
+      relatedCorporateSupplyChain: this.valueOrUndefined(faker.lorem.sentences()),
+    };
+  }
+
+  /**
+   * Generates a random procurement category
+   * @returns random procurement category
+   */
+  generateProcurementCategory(): LksgProcurementCategory {
+    const numberOfSuppliersPerCountryCodeAsMap = new Map<string, number>(
+      generateArray(() => [generateIso2CountryCode(), this.valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!]),
+    );
+    return {
+      procuredProductTypesAndServicesNaceCodes: generateNaceCodes(1),
+      numberOfSuppliersPerCountryCode: this.valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
+      shareOfTotalProcurementInPercent: this.randomPercentageValue(),
+    };
+  }
+
+  /**
+   * Generates a random map of procurement categories
+   * @returns random map of procurement categories
+   */
+  generateProcurementCategories(): { [key: string]: LksgProcurementCategory } {
+    const procurementCategories = Object.values(ProcurementCategoryType);
+    const keys = [] as ProcurementCategoryType[];
+    procurementCategories.forEach((category) => {
+      if (faker.datatype.boolean()) {
+        keys.push(category);
+      }
+    });
+    return Object.fromEntries(
+      new Map<string, LksgProcurementCategory>(
+        keys.map((procurementCategoryType) => [procurementCategoryType as string, this.generateProcurementCategory()]),
+      ),
+    );
+  }
+
+  /**
+   * Randomly returns <10%, 10-25%, 25-50% or >50%
+   * @returns one of the four percentage intervals as string
+   */
+  randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers | undefined {
+    return this.valueOrUndefined(pickOneElement(Object.values(ShareOfTemporaryWorkers)));
+  }
+
+  /**
+   * Randomly returns National, International or Both
+   * @returns one of the options as string
+   */
+  randomNationalOrInternationalMarket(): NationalOrInternationalMarket | undefined {
+    return this.valueOrUndefined(pickOneElement(Object.values(NationalOrInternationalMarket)));
+  }
 }

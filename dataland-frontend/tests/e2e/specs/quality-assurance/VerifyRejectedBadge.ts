@@ -1,9 +1,10 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { DataTypeEnum, type LksgData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 
 describeIf(
   "Validation for correct display of 'Rejected' badge",
@@ -15,12 +16,11 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
-    let preparedFixture: FixtureData<LksgData>;
+    let lksgFixture: FixtureData<LksgData>;
 
     before(function () {
-      cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-        preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
+      cy.fixture("CompanyInformationWithLksgData").then(function (jsonContent: Array<FixtureData<LksgData>>) {
+        lksgFixture = jsonContent[0];
       });
     });
 
@@ -32,9 +32,9 @@ describeIf(
         return uploadCompanyAndFrameworkData(
           DataTypeEnum.Lksg,
           token,
-          preparedFixture.companyInformation,
-          preparedFixture.t,
-          preparedFixture.reportingPeriod,
+          generateCompanyInformation(),
+          lksgFixture.t,
+          lksgFixture.reportingPeriod,
         ).then((uploadIds) => {
           cy.intercept("**/qa/datasets").as("getDataIdsOfReviewableDatasets");
           cy.intercept(`**/api/metadata/${uploadIds.dataId}`).as("getDataMetaInfoOfPostedDataset");
@@ -44,7 +44,7 @@ describeIf(
           cy.intercept(`**/api/data/lksg/${uploadIds.dataId}`).as("getPostedDataset");
           cy.contains(`${uploadIds.dataId}`).click();
           cy.wait("@getPostedDataset");
-          cy.get("button[aria-label='Reject Dataset']").click();
+          cy.get('[data-test="qaRejectButton"').click();
           cy.intercept("**/api/companies*").as("getMyDatasets");
           cy.visit(`/datasets`);
           cy.wait("@getMyDatasets");

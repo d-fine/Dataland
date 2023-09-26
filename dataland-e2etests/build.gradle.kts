@@ -30,9 +30,9 @@ dependencies {
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.awaitility:awaitility")
+    implementation(Spring.boot.web)
+    testImplementation(Spring.boot.test)
+    testImplementation(libs.awaitility)
 }
 
 tasks.withType<Test> {

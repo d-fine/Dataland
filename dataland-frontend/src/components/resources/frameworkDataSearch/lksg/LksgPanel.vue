@@ -177,7 +177,7 @@ export default defineComponent({
     reformatCountriesValue(kpiValue: KpiValue) {
       return Array.isArray(kpiValue)
         ? kpiValue.map((countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort))
-        : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+        : getCountryNameFromCountryCode(kpiValue as string) ?? (kpiValue as string);
     },
 
     /**
@@ -192,7 +192,7 @@ export default defineComponent({
       if (numberOfSuppliersPerCountryCode != undefined) {
         const readableListOfSuppliersAndCountries = Array.from(numberOfSuppliersPerCountryCode.entries()).map(
           ([countryCode, numberOfSuppliers]) => {
-            const countryName = getCountryNameFromCountryCode(countryCode);
+            const countryName = this.reformatCountriesValue(countryCode) as string;
             if (numberOfSuppliers != undefined) {
               return String(numberOfSuppliers) + " suppliers from " + countryName;
             } else {
@@ -232,9 +232,9 @@ export default defineComponent({
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
             new Map(Object.entries(lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {})),
           ),
-          percentageOfTotalProcurement:
-            lksgProcurementCategory.percentageOfTotalProcurement != null
-              ? formatPercentageNumberAsString(lksgProcurementCategory.percentageOfTotalProcurement)
+          totalProcurementInPercent:
+            lksgProcurementCategory.shareOfTotalProcurementInPercent != null
+              ? formatPercentageNumberAsString(lksgProcurementCategory.shareOfTotalProcurementInPercent)
               : null,
         };
       });
