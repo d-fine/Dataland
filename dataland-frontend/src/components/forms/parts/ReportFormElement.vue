@@ -19,7 +19,7 @@
       <FormKit type="text" :modelValue="hyphenatedDate" name="reportDate" :outer-class="{ 'hidden-input': true }" />
     </div>
 
-    <FormKit type="text" :modelValue="fileReference" name="reference" :outer-class="{ 'hidden-input': true }" />
+    <FormKit type="text" :modelValue="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
 
     <!-- Currency used in the report -->
     <SingleSelectFormField

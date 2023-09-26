@@ -121,7 +121,7 @@
                               />
                               <FormKit
                                 type="select"
-                                name="report"
+                                name="fileName"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
@@ -323,13 +323,13 @@ import {
   getKpiFieldNameForOneFinancialServiceType,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
-  AssuranceDataPointAssuranceOptionsValueEnum,
   type CompanyAssociatedDataEuTaxonomyDataForFinancials,
   type DataMetaInformation,
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
+import { AssuranceDataPointAssuranceOptionsValueEnum } from "@/types/ttt";
 import { type AxiosResponse } from "axios";
 import {
   convertValuesFromDecimalsToPercentages,
