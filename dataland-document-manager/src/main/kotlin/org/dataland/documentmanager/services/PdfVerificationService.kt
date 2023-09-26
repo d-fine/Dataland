@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 
 /**
- * A service for performing basic sanity checks on files uploaded by user
+ * A service for performing basic sanity checks on files uploaded by users
  */
 @Component
 class PdfVerificationService {
