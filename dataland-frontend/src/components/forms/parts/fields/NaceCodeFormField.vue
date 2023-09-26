@@ -1,7 +1,10 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <NaceCodeSelector v-model="selectedNaceCodes" />
+    <NaceCodeSelector
+        v-model="selectedNaceCodes"
+        :disableCheckboxes="shouldDisableCheckboxes"
+    />
     <!--
     Note: It is required to set the id of this div to the FormKit node Id to allow the checkCustomInputs methods
     in the validationUtils.ts file to scroll to this component when an error is detected. This is because the FormKit
@@ -60,6 +63,7 @@ export default defineComponent({
     selectedNaceCodesBind: {
       type: Array,
     },
+    shouldDisableCheckboxes: Boolean,
   },
 });
 </script>
