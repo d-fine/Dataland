@@ -33,9 +33,20 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
       `../${TEST_PDF_FILE_BASEPATH}/more-pdfs-in-seperate-directory/${TEST_PDF_FILE_NAME}.pdf`,
       { force: true },
     );
-    cy.get(".p-dialog-content").should("contain.text", "already uploaded");
+    cy.get(".p-dialog-content").should("contain.text", "Files with duplicate names");
     cy.get(".p-dialog-header-close").click();
     cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("have.length", 1);
+  }
+
+  /**
+   * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
+   * whose name contains an illegal character
+   */
+  function checkFileWithIllegalCharacterOpensDialogWithWarning(): void {
+    uploadDocuments.selectDummyFile("Invalid:Filename", 400, "referencedReports");
+    cy.get(".p-dialog-content").should("contain.text", "File names containing illegal characters");
+    cy.get(".p-dialog-header-close").click();
+    cy.get(`[data-test="Invalid:FilenameToUploadContainer"]`).should("not.exist");
   }
 
   /**
@@ -259,7 +270,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
 
   const companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
 
-  it("Check that warning appears if two pdf files with same name are selected for upload", () => {
+  it("Check that warning appears if two pdf files with same name or illegal character are selected for upload", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithDialog(
       CreateEuTaxonomyForNonFinancials,
@@ -269,6 +280,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
       { companyID: "company-id-does-not-matter-in-this-test" },
     ).then(() => {
       checkFileWithExistingFilenameOpensDialogWithWarning();
+      checkFileWithIllegalCharacterOpensDialogWithWarning();
       checkExistingFilenameDialogDidNotBreakSubsequentSelection();
     });
   });
