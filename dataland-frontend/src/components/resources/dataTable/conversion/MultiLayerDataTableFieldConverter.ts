@@ -3,13 +3,7 @@ import { type MLDTCellConfig } from "@/components/resources/dataTable/MultiLayer
 import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
-import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { percentageValueGetterFactory } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
-import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
-import { euTaxonomyActivitiesDataTableValueGetterFactory } from "@/components/resources/dataTable/conversion/EuTaxonomyActivitiesDataTableValueGetterFactory";
-import alignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
@@ -18,19 +12,11 @@ import { dataPointValueGetterFactory } from "@/components/resources/dataTable/co
 type ValueGetterFactory = (path: string, field: Field) => (dataset: any) => AvailableDisplayValues;
 
 const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
-  AddressFormField: plainStringValueGetterFactory,
   DateFormField: plainStringValueGetterFactory,
-  InputTextFormField: plainStringValueGetterFactory,
+  RadioButtonsFormField: singleSelectValueGetterFactory,
   YesNoFormField: yesNoValueGetterFactory,
   YesNoNaFormField: yesNoValueGetterFactory,
-  MultiSelectFormField: multiSelectValueGetterFactory,
-  NumberFormField: numberValueGetterFactory,
-  PercentageFormField: percentageValueGetterFactory,
-  RadioButtonsFormField: singleSelectValueGetterFactory,
   SingleSelectFormField: singleSelectValueGetterFactory,
-  NaceCodeFormField: naceCodeValueGetterFactory,
-  AlignedActivitiesDataTable: euTaxonomyActivitiesDataTableValueGetterFactory,
-  NonAlignedActivitiesDataTable: euTaxonomyActivitiesDataTableValueGetterFactory,
   DataPointFormField: dataPointValueGetterFactory,
 };
 
