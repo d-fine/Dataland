@@ -331,12 +331,7 @@ import {
   type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { type AxiosResponse } from "axios";
-import {
-  convertValuesFromDecimalsToPercentages,
-  convertValuesFromPercentagesToDecimals,
-  type ObjectType,
-  updateObject,
-} from "@/utils/UpdateObjectUtils";
+import { type ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { type FormKitNode } from "@formkit/core";
@@ -497,18 +492,13 @@ export default defineComponent({
 
               this.extractFinancialServiceTypes(companyAssociatedEuTaxonomyData.data);
 
-              const receivedFormInputsModel = convertValuesFromDecimalsToPercentages(
-                companyAssociatedEuTaxonomyData as ObjectType,
+              (companyAssociatedEuTaxonomyData.data as ObjectType).kpiSections = this.extractKpis(
+                companyAssociatedEuTaxonomyData.data as ObjectType,
               );
-
-              (receivedFormInputsModel.data as ObjectType).kpiSections = this.extractKpis(
-                receivedFormInputsModel.data as ObjectType,
-              );
-
               this.waitingForData = false;
 
               nextTick()
-                .then(() => updateObject(this.formInputsModel as ObjectType, receivedFormInputsModel))
+                .then(() => updateObject(this.formInputsModel as ObjectType, companyAssociatedEuTaxonomyData))
                 .catch((e) => console.log(e));
             })
             .catch((e) => console.log(e)),
@@ -639,13 +629,12 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise),
         );
 
-        const formInputsModelToSend = convertValuesFromPercentagesToDecimals(clonedFormInputsModel);
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForFinancials,
+            clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
           );
         this.$emit("datasetCreated");
       } catch (error) {

@@ -7,7 +7,7 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the materials of the automotive sector
 */
 data class P2pAutomotiveMaterials(
-    val materialUseManagement: BigDecimal? = null,
+    val materialUseManagementInPercent: BigDecimal? = null,
 
-    val useOfSecondaryMaterials: BigDecimal? = null,
+    val useOfSecondaryMaterialsInPercent: BigDecimal? = null,
 )

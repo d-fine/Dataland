@@ -7,5 +7,5 @@ import java.math.BigDecimal
  * Fields of the P2P questionnaire regarding the building energy source of the real estate sector
  */
 data class P2pRealEstateEnergySource(
-    val renewableHeating: BigDecimal? = null,
+    val renewableHeatingInPercent: BigDecimal? = null,
 )

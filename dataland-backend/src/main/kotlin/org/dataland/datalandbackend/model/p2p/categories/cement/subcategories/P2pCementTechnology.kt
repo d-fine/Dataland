@@ -10,5 +10,5 @@ import java.math.BigDecimal
 data class P2pCementTechnology(
     val carbonCaptureAndUseTechnologyUsage: YesNo? = null,
 
-    val electrificationOfProcessHeat: BigDecimal? = null,
+    val electrificationOfProcessHeatInPercent: BigDecimal? = null,
 )
