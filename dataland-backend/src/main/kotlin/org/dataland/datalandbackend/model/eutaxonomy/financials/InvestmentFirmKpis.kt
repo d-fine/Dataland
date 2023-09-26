@@ -9,5 +9,5 @@ import java.math.BigDecimal
  */
 
 data class InvestmentFirmKpis(
-    val greenAssetRatio: ExtendedDataPoint<BigDecimal>? = null,
+    val greenAssetRatioInPercent: ExtendedDataPoint<BigDecimal>? = null,
 )

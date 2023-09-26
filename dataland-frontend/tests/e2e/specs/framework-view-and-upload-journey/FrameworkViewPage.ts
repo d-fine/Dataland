@@ -325,7 +325,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2019",
-                getPreparedFixture("eligible-activity-Point-0.29", euTaxoFinancialPreparedFixtures).t,
+                getPreparedFixture("eligible-activity-Point-29", euTaxoFinancialPreparedFixtures).t,
               ).then((dataMetaInformation) => {
                 dataIdOfSupersededFinancial2019ForAlpha = dataMetaInformation.dataId;
               });
@@ -337,7 +337,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2019",
-                  getPreparedFixture("eligible-activity-Point-0.292", euTaxoFinancialPreparedFixtures).t,
+                  getPreparedFixture("eligible-activity-Point-29.2", euTaxoFinancialPreparedFixtures).t,
                 );
               });
             })
@@ -348,7 +348,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2016",
-                  getPreparedFixture("eligible-activity-Point-0.26", euTaxoFinancialPreparedFixtures).t,
+                  getPreparedFixture("eligible-activity-Point-26", euTaxoFinancialPreparedFixtures).t,
                 );
               });
             })
@@ -512,21 +512,21 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2019");
         validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-        validateEUTaxonomyFinancialsTable("29.2");
+        validateEUTaxonomyFinancialsTable("29.2 %");
 
         selectReportingPeriodInDropdown("2019");
 
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2019");
-        validateEUTaxonomyFinancialsTable("29.2");
+        validateEUTaxonomyFinancialsTable("29.2 %");
 
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
 
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2019");
-        validateEUTaxonomyFinancialsTable("29.2");
+        validateEUTaxonomyFinancialsTable("29.2 %");
 
         selectReportingPeriodInDropdown("2016");
 
@@ -535,7 +535,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2016");
         validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-        validateEUTaxonomyFinancialsTable("26");
+        validateEUTaxonomyFinancialsTable("26 %");
 
         selectFrameworkInDropdown(DataTypeEnum.Sme);
 
@@ -561,7 +561,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2016");
-        validateEUTaxonomyFinancialsTable("26");
+        validateEUTaxonomyFinancialsTable("26 %");
       });
 
       it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
@@ -576,7 +576,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2016");
-        validateEUTaxonomyFinancialsTable("26");
+        validateEUTaxonomyFinancialsTable("26 %");
 
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
@@ -588,7 +588,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2019");
-        validateEUTaxonomyFinancialsTable("29.2");
+        validateEUTaxonomyFinancialsTable("29.2 %");
 
         clickBackButton();
 
@@ -600,7 +600,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2016");
         validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-        validateEUTaxonomyFinancialsTable("26");
+        validateEUTaxonomyFinancialsTable("26 %");
 
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`,
@@ -693,7 +693,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`,
         );
-        validateEUTaxonomyFinancialsTable("29");
+        validateEUTaxonomyFinancialsTable("29 %");
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
 
         cy.url().should(
@@ -702,7 +702,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             DataTypeEnum.EutaxonomyFinancials
           }/reportingPeriods/2019`,
         );
-        validateEUTaxonomyFinancialsTable("29.2");
+        validateEUTaxonomyFinancialsTable("29.2 %");
         getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
         clickBackButton();
 
@@ -712,7 +712,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             DataTypeEnum.EutaxonomyFinancials
           }/${dataIdOfSupersededFinancial2019ForAlpha}`,
         );
-        validateEUTaxonomyFinancialsTable("29");
+        validateEUTaxonomyFinancialsTable("29 %");
       });
     },
   );

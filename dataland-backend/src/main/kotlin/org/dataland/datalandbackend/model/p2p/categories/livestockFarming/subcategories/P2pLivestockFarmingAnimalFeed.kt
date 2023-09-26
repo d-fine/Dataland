@@ -9,7 +9,7 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the animal feed of the livestock farming sector
 */
 data class P2pLivestockFarmingAnimalFeed(
-    val ownFeedPercentage: BigDecimal? = null,
+    val ownFeedInPercent: BigDecimal? = null,
 
     val externalFeedCertification: BaseDataPoint<YesNo>? = null,
 
@@ -19,7 +19,7 @@ data class P2pLivestockFarmingAnimalFeed(
 
     val cropRotation: BigDecimal? = null,
 
-    val climateFriendlyProteinProduction: BigDecimal? = null,
+    val climateFriendlyProteinProductionInPercent: BigDecimal? = null,
 
-    val greenFodderPercentage: BigDecimal? = null,
+    val greenFodderInPercent: BigDecimal? = null,
 )

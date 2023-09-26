@@ -61,12 +61,12 @@ describeIf(
 
           uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
           cy.get(`[data-test="assetManagementKpis"]`)
-            .find(`[data-test="banksAndIssuers"]`)
+            .find(`[data-test="banksAndIssuersInPercent"]`)
             .find('select[name="report"]')
             .select(2);
 
           cy.get(`[data-test="assetManagementKpis"]`)
-            .find(`[data-test="investmentNonNfrd"]`)
+            .find(`[data-test="investmentNonNfrdInPercent"]`)
             .find('select[name="report"]')
             .select(3);
         },
