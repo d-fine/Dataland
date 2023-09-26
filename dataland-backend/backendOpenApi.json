@@ -2687,13 +2687,13 @@
       "SmeGeneralCompanyFinancials": {
         "type": "object",
         "properties": {
-          "revenueInEur": {
+          "revenueInEUR": {
             "type": "number"
           },
-          "operatingCostInEur": {
+          "operatingCostInEUR": {
             "type": "number"
           },
-          "capitalAssetsInEur": {
+          "capitalAssetsInEUR": {
             "type": "number"
           }
         }
@@ -2737,19 +2737,19 @@
       "SmePowerConsumption": {
         "type": "object",
         "properties": {
-          "powerConsumptionInMwh": {
+          "powerConsumptionInMWh": {
             "type": "number"
           },
           "powerFromRenewableSources": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "energyConsumptionHeatingAndHotWater": {
+          "energyConsumptionHeatingAndHotWaterInMWh": {
             "type": "number"
           },
           "primaryEnergySourceForHeatingAndHotWater": {
             "$ref": "#/components/schemas/EnergySourceForHeatingAndHotWater"
           },
-          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
+          "percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": {
             "$ref": "#/components/schemas/PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower"
           }
         }
@@ -2757,7 +2757,7 @@
       "SmePowerInvestments": {
         "type": "object",
         "properties": {
-          "percentageOfInvestmentsInEnhancingEnergyEfficiency": {
+          "percentageRangeForInvestmentsInEnhancingEnergyEfficiency": {
             "$ref": "#/components/schemas/PercentRangeForInvestmentsInEnergyEfficiency"
           }
         }
@@ -5755,10 +5755,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

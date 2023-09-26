@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.sme.categories.production.subcategories
+package org.dataland.datalandbackend.model.sme.categories.production.subcategories.productionObjects
 
 import org.dataland.datalandbackend.model.generics.Address
 import org.dataland.datalandbackend.model.generics.ProductionSiteBase

@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.sme.categories.production.subcategories
+package org.dataland.datalandbackend.model.sme.categories.production.subcategories.productionObjects
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.generics.ProductBase

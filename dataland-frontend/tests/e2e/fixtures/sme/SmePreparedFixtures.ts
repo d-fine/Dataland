@@ -28,13 +28,13 @@ function manipulateFixtureForYearWithMultipleSectors(input: FixtureData<SmeData>
   input.t.general.basicInformation.sector = generateNaceCodes(2);
   input.t.power ??= {};
   input.t.power.investments ??= {};
-  input.t.power.investments.percentageOfInvestmentsInEnhancingEnergyEfficiency = "LessThan1";
+  input.t.power.investments.percentageRangeForInvestmentsInEnhancingEnergyEfficiency = "LessThan1";
   input.t.power.consumption ??= {};
-  input.t.power.consumption.energyConsumptionCoveredByOwnRenewablePowerGeneration = "LessThan25";
+  input.t.power.consumption.percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration = "LessThan25";
   input.t.general.companyFinancials = {
-    revenueInEur: 0,
-    operatingCostInEur: 1000000,
-    capitalAssetsInEur: 2000000,
+    revenueInEUR: 0,
+    operatingCostInEUR: 1000000,
+    capitalAssetsInEUR: 2000000,
   };
   return input;
 }

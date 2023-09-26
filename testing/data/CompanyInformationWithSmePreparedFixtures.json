@@ -2,82 +2,136 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Fort Warren",
-			"headquartersPostalCode": "14696",
-			"sector": "solutions",
+			"headquarters": "Maeveville",
+			"headquartersPostalCode": "73449",
+			"sector": "infrastructures",
 			"identifiers": {
-				"Lei": [
-					"Bmg8XtkecsrbTlwpi8zw"
-				],
+				"Lei": [],
 				"Isin": [
-					"evTz2JFgTxnM",
-					"k9Xud7HDjVQX"
+					"pxobob1qZLET",
+					"feNGBwGmCdv7"
 				],
-				"PermId": [
-					"8XEIr9BF3n"
+				"PermId": [],
+				"Ticker": [
+					"jqTrdir"
 				],
-				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"FhTt1NpNL"
+				],
 				"CompanyRegistrationNumber": [
-					"ZwViaPVy5l853mM"
+					"K97woSgrOUwBig7"
 				]
 			},
-			"countryCode": "SG",
+			"countryCode": "ER",
 			"companyAlternativeNames": [
-				"Cremin, Collier and Ortiz",
-				"Crist - Dare",
-				"Mayer and Sons",
-				"Oberbrunner, Ortiz and Bartoletti"
+				"Hoppe - Greenholt"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://likely-clasp.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"26.30",
-						"60",
-						"63.99",
-						"78.20"
+						"10.89",
+						"46.5"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Veum Union 8102",
-						"postalCode": "61447",
-						"city": "South Devonte",
-						"state": "Georgia",
-						"country": "GH"
+						"streetAndHouseNumber": "DuBuque Rapids 58894",
+						"postalCode": "49382",
+						"city": "East Sarahborough",
+						"country": "TL"
 					},
-					"numberOfEmployees": 753,
-					"fiscalYearStart": "2024-08-26"
+					"numberOfEmployees": 3345,
+					"fiscalYearStart": "2024-01-27"
 				},
 				"companyFinancials": {
-					"revenueInEur": 0,
-					"operatingCostInEur": 1000000,
-					"capitalAssetsInEur": 2000000
+					"revenueInEUR": 0,
+					"operatingCostInEUR": 1000000,
+					"capitalAssetsInEUR": 2000000
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {}
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Bins - Mann",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Stiedemann Burgs 9856",
+								"city": "Lake Viva",
+								"state": "Iowa",
+								"country": "NE"
+							},
+							"percentageOfTotalRevenue": 0.2802
+						},
+						{
+							"nameOfProductionSite": "Heidenreich - Funk",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Thiel Path 43480",
+								"postalCode": "40181",
+								"city": "Beavercreek",
+								"state": "Montana",
+								"country": "GE"
+							},
+							"percentageOfTotalRevenue": 0.1271
+						},
+						{
+							"nameOfProductionSite": "White LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Robin Rest 960",
+								"city": "San Jacinto",
+								"state": "Kentucky",
+								"country": "KR"
+							},
+							"percentageOfTotalRevenue": 0.0206
+						},
+						{
+							"nameOfProductionSite": "Murphy - Reilly",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Bosco Park 8964",
+								"postalCode": "10676",
+								"city": "Stiedemannfield",
+								"state": "Minnesota",
+								"country": "ZA"
+							},
+							"percentageOfTotalRevenue": 0.0127
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Incredible Plastic Salad"
+						},
+						{
+							"name": "Ergonomic Granite Cheese",
+							"percentageOfTotalRevenue": 0.7056
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
+					"powerConsumptionInMWh": 979,
 					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWaterInMWh": 377,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
+					"insuranceAgainstNaturalHazards": "Yes",
 					"naturalHazardsCovered": [
+						"Hail",
 						"Wind",
-						"Avalanche"
+						"Flooding",
+						"EarthQuake"
 					]
 				}
 			}
@@ -87,40 +141,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Ebertland",
-			"headquartersPostalCode": "62012",
-			"sector": "interfaces",
+			"headquarters": "Zulafield",
+			"headquartersPostalCode": "59196-9612",
+			"sector": "eyeballs",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"oqtyeNZhCtUx"
+				"Lei": [
+					"t6GzkHYglwsl8bdNNlAg"
 				],
-				"PermId": [],
+				"Isin": [
+					"7dQP4pdrQHv6"
+				],
+				"PermId": [
+					"lsTkrGujXl"
+				],
 				"Ticker": [],
 				"Duns": [
-					"IEKDMTjcw"
+					"y6jX4QyUb"
 				],
-				"VatNumber": [
-					"nlKkHdTDi"
-				],
-				"CompanyRegistrationNumber": [
-					"91xrlA8UDWX4KUn"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "US",
+			"countryCode": "MP",
 			"companyAlternativeNames": [
-				"Denesik - Kris"
+				"Feil, Mills and Ebert",
+				"Kub Group",
+				"Lueilwitz LLC"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://irritating-sleepiness.biz",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://fair-religion.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"58.21",
-						"68.1"
+						"25.94"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -129,58 +184,75 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 4723,
-					"fiscalYearStart": "2024-06-15"
+					"numberOfEmployees": 7692,
+					"fiscalYearStart": "2024-09-20"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 4826252,
-					"capitalAssetsInEur": 29312050
+					"revenueInEUR": 81696149,
+					"operatingCostInEUR": 3993675,
+					"capitalAssetsInEUR": 32389747
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Nitzsche, Klein and Strosin",
+							"nameOfProductionSite": "Sporer, Schmeler and Howe",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Don Freeway 9508",
-								"postalCode": "31112",
-								"city": "West Magdalen",
-								"country": "TD"
+								"postalCode": "48519-9184",
+								"city": "Darianaboro",
+								"state": "New Jersey",
+								"country": "PA"
 							},
-							"shareOfTotalRevenueInPercent": 10.3693
+							"percentageOfTotalRevenue": 0.7528
+						},
+						{
+							"nameOfProductionSite": "Schimmel and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Sporer Flat 25394",
+								"postalCode": "76474",
+								"city": "Herzogmouth",
+								"country": "CI"
+							},
+							"percentageOfTotalRevenue": 0.4275
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Alexie Brook 749",
-								"postalCode": "80549",
-								"city": "South Charlieberg",
-								"country": "SO"
+								"streetAndHouseNumber": "Runolfsson Keys 55750",
+								"city": "Fresno",
+								"state": "Oregon",
+								"country": "TD"
 							},
-							"shareOfTotalRevenueInPercent": 53.2655
+							"percentageOfTotalRevenue": 0.0817
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Fantastic Cotton Ball",
+							"percentageOfTotalRevenue": 0.2317
+						},
+						{
+							"name": "Oriental Cotton Computer",
+							"percentageOfTotalRevenue": 0.2649
+						}
+					]
+				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 1712,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 126,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMWh": 1992,
+					"energyConsumptionHeatingAndHotWaterInMWh": 458,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 8220722,
-					"naturalHazardsCovered": [
-						"Hail"
-					]
-				}
+				"naturalHazards": {}
 			}
 		},
 		"reportingPeriod": "2021"
@@ -188,59 +260,101 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Elinoremouth",
-			"headquartersPostalCode": "30124",
-			"sector": "markets",
+			"headquarters": "Owensboro",
+			"headquartersPostalCode": "76924",
 			"identifiers": {
-				"Lei": [
-					"EFjOd1dDGvkOQBf42ud7"
-				],
+				"Lei": [],
 				"Isin": [
-					"nrIZnwWufViJ",
-					"7wTNg8Oyktpx"
+					"gUHCtZhHjqkP"
 				],
-				"PermId": [],
+				"PermId": [
+					"NizdP3ygAo"
+				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"Xe0Fvtu1j"
+				],
+				"CompanyRegistrationNumber": [
+					"nKK27aXKBCUtYRI"
+				]
 			},
-			"countryCode": "BN",
+			"countryCode": "MO",
 			"companyAlternativeNames": [],
-			"website": "https://superficial-pile.name",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://periodic-habit.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"28.29",
-						"35.14",
-						"U"
+						"85.53"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 661,
-					"fiscalYearStart": "2023-11-29"
+					"numberOfEmployees": 8238,
+					"fiscalYearStart": "2023-11-23"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 37977247,
-					"capitalAssetsInEur": 45721228
+					"operatingCostInEUR": 73212629,
+					"capitalAssetsInEUR": 26511208
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Armstrong - Skiles",
+							"nameOfProductionSite": "Hilpert - Treutel",
 							"addressOfProductionSite": {
-								"city": "Euniceberg",
-								"state": "New Hampshire",
-								"country": "NI"
+								"streetAndHouseNumber": "Kris Throughway 6426",
+								"postalCode": "14917-0183",
+								"city": "East Eleonoreberg",
+								"state": "South Carolina",
+								"country": "UA"
 							},
-							"shareOfTotalRevenueInPercent": 89.2635
+							"percentageOfTotalRevenue": 0.7095
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Madaline Fords 996",
+								"postalCode": "20050-6501",
+								"city": "South Joanny",
+								"state": "Georgia",
+								"country": "BW"
+							},
+							"percentageOfTotalRevenue": 0.2779
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Roderick Loaf 7550",
+								"postalCode": "14510",
+								"city": "South Anabelle",
+								"state": "Colorado",
+								"country": "AF"
+							}
+						},
+						{
+							"nameOfProductionSite": "Buckridge - Gusikowski",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Dietrich Shores 717",
+								"postalCode": "51051",
+								"city": "Cummingsworth",
+								"state": "Indiana",
+								"country": "BY"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Matilda Rue 98719",
+								"postalCode": "52599-4196",
+								"city": "North Hilarioshire",
+								"state": "Missouri",
+								"country": "NU"
+							},
+							"percentageOfTotalRevenue": 0.5245
 						}
 					]
 				},
@@ -250,23 +364,22 @@
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 391,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 883,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMWh": 1580,
+					"energyConsumptionHeatingAndHotWaterInMWh": 135,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 40353869,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 6943679,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Hail",
-						"Snow"
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}
