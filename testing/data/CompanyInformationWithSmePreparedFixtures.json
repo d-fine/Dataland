@@ -2,60 +2,55 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Dearborn",
-			"headquartersPostalCode": "31094-0489",
-			"sector": "technologies",
+			"headquarters": "Fort Warren",
+			"headquartersPostalCode": "14696",
+			"sector": "solutions",
 			"identifiers": {
 				"Lei": [
-					"OAbVnSaxBsBSoh03uBcv"
+					"Bmg8XtkecsrbTlwpi8zw"
 				],
 				"Isin": [
-					"CgqDdjIr4G9z",
-					"5t1UhuGebiWq"
+					"evTz2JFgTxnM",
+					"k9Xud7HDjVQX"
 				],
 				"PermId": [
-					"eHpiHyvGLH"
+					"8XEIr9BF3n"
 				],
-				"Ticker": [
-					"llyRiz0"
-				],
-				"Duns": [
-					"JTnYSxMPI"
-				],
-				"VatNumber": [
-					"MwqsSVdvB"
-				],
-				"CompanyRegistrationNumber": []
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"ZwViaPVy5l853mM"
+				]
 			},
-			"countryCode": "LT",
+			"countryCode": "SG",
 			"companyAlternativeNames": [
-				"Lesch and Sons",
-				"Murphy - Wiegand",
-				"Olson, Cormier and Willms",
-				"Stark and Sons"
+				"Cremin, Collier and Ortiz",
+				"Crist - Dare",
+				"Mayer and Sons",
+				"Oberbrunner, Ortiz and Bartoletti"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
+			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"14.20",
-						"47.43",
-						"58.19",
-						"66.1",
-						"73.12"
+						"26.30",
+						"60",
+						"63.99",
+						"78.20"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Jaydon Ridge 3274",
-						"postalCode": "08613",
-						"city": "Catalina Foothills",
-						"state": "New York",
-						"country": "CZ"
+						"streetAndHouseNumber": "Veum Union 8102",
+						"postalCode": "61447",
+						"city": "South Devonte",
+						"state": "Georgia",
+						"country": "GH"
 					},
-					"numberOfEmployees": 2108,
-					"fiscalYearStart": "2023-10-02"
+					"numberOfEmployees": 753,
+					"fiscalYearStart": "2024-08-26"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -64,96 +59,25 @@
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Funk - Stokes",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Mosciski Haven 24607",
-								"postalCode": "63937",
-								"city": "Riverton",
-								"state": "Idaho",
-								"country": "BM"
-							},
-							"shareOfTotalRevenueInPercent": 73.3319
-						},
-						{
-							"nameOfProductionSite": "Corwin, Nitzsche and Balistreri",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Euna Cove 96723",
-								"postalCode": "18141",
-								"city": "West Jeanne",
-								"state": "Kentucky",
-								"country": "UA"
-							},
-							"shareOfTotalRevenueInPercent": 24.2214
-						},
-						{
-							"nameOfProductionSite": "Streich - Mann",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Grady Creek 5764",
-								"postalCode": "85397-4020",
-								"city": "West Devon",
-								"country": "GP"
-							},
-							"shareOfTotalRevenueInPercent": 77.3934
-						},
-						{
-							"nameOfProductionSite": "Shields, Gutmann and Ruecker",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lueilwitz Way 41532",
-								"city": "New Giovanni",
-								"state": "Arkansas",
-								"country": "MQ"
-							},
-							"shareOfTotalRevenueInPercent": 34.753
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Heidenreich Passage 8085",
-								"city": "Port Krystina",
-								"state": "Florida",
-								"country": "AT"
-							},
-							"shareOfTotalRevenueInPercent": 9.828
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Handmade Steel Keyboard",
-							"shareOfTotalRevenueInPercent": 64.1202
-						},
-						{
-							"name": "Handcrafted Cotton Chips",
-							"shareOfTotalRevenueInPercent": 30.758
-						}
-					]
-				}
+				"sites": {},
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 232,
 					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 33587945,
 					"naturalHazardsCovered": [
-						"Hail",
-						"Flooding",
-						"Avalanche",
-						"EarthQuake",
-						"Snow",
-						"Wind"
+						"Wind",
+						"Avalanche"
 					]
 				}
 			}
@@ -163,39 +87,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Darius",
-			"headquartersPostalCode": "20714",
-			"sector": "supply-chains",
+			"headquarters": "Ebertland",
+			"headquartersPostalCode": "62012",
+			"sector": "interfaces",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"nqndud4BPUef"
+					"oqtyeNZhCtUx"
 				],
 				"PermId": [],
-				"Ticker": [
-					"CJwPECT"
+				"Ticker": [],
+				"Duns": [
+					"IEKDMTjcw"
 				],
-				"Duns": [],
 				"VatNumber": [
-					"5RzAvflRo"
+					"nlKkHdTDi"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"91xrlA8UDWX4KUn"
+				]
 			},
-			"countryCode": "PG",
+			"countryCode": "US",
 			"companyAlternativeNames": [
-				"Murazik Group",
-				"Nitzsche - Mayer",
-				"Rempel, Wolff and Connelly",
-				"VonRueden, Wolff and Metz"
+				"Denesik - Kris"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://irritating-sleepiness.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"23.69"
+						"58.21",
+						"68.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -204,94 +129,56 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7375,
-					"fiscalYearStart": "2024-01-18"
+					"numberOfEmployees": 4723,
+					"fiscalYearStart": "2024-06-15"
 				},
 				"companyFinancials": {
-					"revenueInEur": 14838228,
-					"operatingCostInEur": 46065891,
-					"capitalAssetsInEur": 60414053
+					"operatingCostInEur": 4826252,
+					"capitalAssetsInEur": 29312050
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Smith - Crist",
+							"nameOfProductionSite": "Nitzsche, Klein and Strosin",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kareem Station 9460",
-								"postalCode": "25691-6526",
-								"city": "Mertzberg",
-								"state": "Minnesota",
-								"country": "CH"
+								"streetAndHouseNumber": "Don Freeway 9508",
+								"postalCode": "31112",
+								"city": "West Magdalen",
+								"country": "TD"
 							},
-							"shareOfTotalRevenueInPercent": 14.7778
-						},
-						{
-							"nameOfProductionSite": "Witting, Balistreri and Wisozk",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Orn Hollow 877",
-								"postalCode": "31319-5952",
-								"city": "Priscillatown",
-								"state": "Georgia",
-								"country": "BZ"
-							},
-							"shareOfTotalRevenueInPercent": 37.5331
+							"shareOfTotalRevenueInPercent": 10.3693
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Emelia Oval 823",
-								"postalCode": "43781",
-								"city": "South Garrick",
-								"state": "Vermont",
-								"country": "PG"
+								"streetAndHouseNumber": "Alexie Brook 749",
+								"postalCode": "80549",
+								"city": "South Charlieberg",
+								"country": "SO"
 							},
-							"shareOfTotalRevenueInPercent": 30.6083
+							"shareOfTotalRevenueInPercent": 53.2655
 						}
 					]
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Rustic Bronze Chips",
-							"shareOfTotalRevenueInPercent": 22.3792
-						},
-						{
-							"name": "Small Fresh Shirt",
-							"shareOfTotalRevenueInPercent": 51.035
-						},
-						{
-							"name": "Elegant Plastic Chips",
-							"shareOfTotalRevenueInPercent": 87.7217
-						},
-						{
-							"name": "Handmade Granite Soap",
-							"shareOfTotalRevenueInPercent": 40.7665
-						},
-						{
-							"name": "Handmade Steel Pants",
-							"shareOfTotalRevenueInPercent": 58.1746
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 540,
-					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 1712,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 126,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 14940716,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 8220722,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Snow"
+						"Hail"
 					]
 				}
 			}
@@ -301,90 +188,84 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Maudstad",
-			"headquartersPostalCode": "62057",
+			"headquarters": "Elinoremouth",
+			"headquartersPostalCode": "30124",
 			"sector": "markets",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"EFjOd1dDGvkOQBf42ud7"
+				],
 				"Isin": [
-					"X95htL4xUISo"
+					"nrIZnwWufViJ",
+					"7wTNg8Oyktpx"
 				],
-				"PermId": [
-					"ZY5Y6yWsOj"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"SnyvBWEUR"
-				],
-				"CompanyRegistrationNumber": [
-					"arE4yazISeJmd3L"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FR",
-			"companyAlternativeNames": [
-				"Bogisich, Ortiz and Smith",
-				"Borer, Stehr and Rempel",
-				"Wiza, Leffler and Wilkinson"
-			],
-			"companyLegalForm": "GmbH",
-			"website": "https://hot-artichoke.com",
+			"countryCode": "BN",
+			"companyAlternativeNames": [],
+			"website": "https://superficial-pile.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"15.11",
-						"28.13",
-						"45",
-						"47.77"
+						"28.29",
+						"35.14",
+						"U"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 5799,
-					"fiscalYearStart": "2024-05-28"
+					"numberOfEmployees": 661,
+					"fiscalYearStart": "2023-11-29"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEur": 21206711
+					"operatingCostInEur": 37977247,
+					"capitalAssetsInEur": 45721228
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Lang, Collins and Bosco",
+							"nameOfProductionSite": "Armstrong - Skiles",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Brakus Forks 77653",
-								"postalCode": "04712",
-								"city": "Howellview",
-								"state": "Texas",
-								"country": "BO"
+								"city": "Euniceberg",
+								"state": "New Hampshire",
+								"country": "NI"
 							},
-							"shareOfTotalRevenueInPercent": 18.2175
+							"shareOfTotalRevenueInPercent": 89.2635
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": []
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 305,
+					"powerConsumptionInMwh": 391,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 883,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 11456677,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 40353869,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Avalanche",
+						"Flooding",
+						"Hail",
 						"Snow"
 					]
 				}
