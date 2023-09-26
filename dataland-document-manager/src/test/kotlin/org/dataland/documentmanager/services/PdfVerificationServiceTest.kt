@@ -18,11 +18,11 @@ class PdfVerificationServiceTest {
     fun `verifies that a valid pdf document passes the basic checks`() {
         val testFileBytes = loadFileBytes(testPdfFile)
         val testFile = createPdfFromBytes(testFileBytes)
-        pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
+        pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
     }
 
     @Test
-    fun `verifies that a non pdf document does not pass the basic checks`() {
+    fun `verifies that an xlsx format file does not pass the basic checks because it is not parsable as pdf`() {
         val testFileBytes = loadFileBytes(testExcelFile)
         val testFile = MockMultipartFile(
             "test.xlsx",
@@ -31,46 +31,41 @@ class PdfVerificationServiceTest {
             testFileBytes,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
+            pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            "We were unable to load the PDF document you provided." +
-                " Please ensure that the file you uploaded has not been corrupted",
+            pdfVerificationService.pdfParsingErrorMessage,
             thrown.message,
         )
     }
 
     @Test
-    fun `verifies that an invalid pdf document does not pass the basic checks`() {
+    fun `verifies that a pdf file with broken content does not pass the basic checks`() {
         val testFileBytes = loadFileBytes(testExcelFile)
         val testFile = createPdfFromBytes(testFileBytes)
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
+            pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            "We were unable to load the PDF document you provided." +
-                " Please ensure that the file you uploaded has not been corrupted",
+            pdfVerificationService.pdfParsingErrorMessage,
             thrown.message,
         )
     }
 
     @Test
-    fun `verifies that a pdf document with wrong name ending does not pass the basic checks`() {
+    fun `verifies that a pdf with non alphanumeric characters passes the basic checks`() {
         val testFileBytes = loadFileBytes(testPdfFile)
         val testFile = MockMultipartFile(
-            "test",
-            "test",
+            "안녕하세요 세상.pdf",
+            "안녕하세요 세상.pdf",
             MediaType.APPLICATION_PDF_VALUE,
             testFileBytes,
         )
-        val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
-        }
-        assertEquals("We have detected that the file does not have a name ending on '.pdf'", thrown.message)
+        pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
     }
 
     @Test
-    fun `verifies that a pdf document with forbidden characters in the filename does not pass the basic checks`() {
+    fun `verifies that a pdf with forbidden characters in the filename does not pass the basic checks`() {
         val testFileBytes = loadFileBytes(testPdfFile)
         val ch = '/'
         val testFile = MockMultipartFile(
@@ -80,11 +75,10 @@ class PdfVerificationServiceTest {
             testFileBytes,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
+            pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            "Please ensure that your filename only contains alphanumeric characters, hyphens, spaces,brackets, " +
-                "underscores and periods up to maximum length of 254 characters.",
+            pdfVerificationService.fileNameHasForbiddenCharactersMessage,
             thrown.message,
         )
     }

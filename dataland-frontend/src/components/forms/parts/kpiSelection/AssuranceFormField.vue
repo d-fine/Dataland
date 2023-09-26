@@ -47,7 +47,7 @@
             />
             <FormKit
               type="select"
-              name="fileReference"
+              name="fileName"
               v-model="currentReportValue"
               placeholder="Select a report"
               :options="['None...', ...injectReportsName]"

@@ -19,7 +19,7 @@
       />
       <FormKit v-if="baseDataPointYesNo.value === 'Yes'" type="group" name="dataSource">
         <FormKit type="hidden" name="name" v-model="documentName" />
-        <FormKit type="text" name="reference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
+        <FormKit type="text" name="fileReference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
       </FormKit>
     </FormKit>
     <div v-else-if="evidenceDesired">
@@ -42,7 +42,7 @@
                 <UploadFormHeader :label="`${label} Report`" :description="'Upload Report'" />
                 <FormKit
                   type="select"
-                  name="report"
+                  name="fileName"
                   v-model="currentReportValue"
                   placeholder="Select a report"
                   :options="['None...', ...injectReportsName]"

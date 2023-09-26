@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.sme.categories.production.subcategorie
 /**
  * --- API model ---
  * Fields of the category "Production" of the sme framework.
- */
+*/
 data class SmeProduction(
     val sites: SmeProductionSites? = null,
 

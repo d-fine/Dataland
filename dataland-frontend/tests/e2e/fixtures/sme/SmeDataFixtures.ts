@@ -39,15 +39,15 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
   return {
     general: {
       basicInformation: {
-        sector: generateNaceCodes(1),
+        sector: generateNaceCodes(1, 1),
         addressOfHeadquarters: generateAddress(dataGenerator.undefinedProbability),
         numberOfEmployees: generateInt(10000),
         fiscalYearStart: generateFutureDate(),
       },
       companyFinancials: {
-        revenueInEur: dataGenerator.randomInt(100000000),
-        operatingCostInEur: dataGenerator.randomInt(80000000),
-        capitalAssetsInEur: dataGenerator.randomInt(70000000),
+        revenueInEUR: dataGenerator.randomInt(100000000),
+        operatingCostInEUR: dataGenerator.randomInt(80000000),
+        capitalAssetsInEUR: dataGenerator.randomInt(70000000),
       },
     },
     production: {
@@ -60,15 +60,16 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
     },
     power: {
       investments: {
-        percentageOfInvestmentsInEnhancingEnergyEfficiency:
+        percentageRangeForInvestmentsInEnhancingEnergyEfficiency:
           dataGenerator.randomPercentageRangeInvestmentEnergyEfficiency(),
       },
       consumption: {
-        powerConsumptionInMwh: dataGenerator.randomInt(2000),
+        powerConsumptionInMWh: dataGenerator.randomInt(2000),
         powerFromRenewableSources: dataGenerator.randomYesNo(),
-        energyConsumptionHeatingAndHotWater: dataGenerator.randomInt(1000),
+        energyConsumptionHeatingAndHotWaterInMWh: dataGenerator.randomInt(1000),
         primaryEnergySourceForHeatingAndHotWater: dataGenerator.randomHeatSource(),
-        energyConsumptionCoveredByOwnRenewablePowerGeneration: dataGenerator.randomPercentageRangeEnergyConsumption(),
+        percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration:
+          dataGenerator.randomPercentageRangeEnergyConsumption(),
       },
     },
     insurances: {
@@ -87,11 +88,11 @@ class SmeGenerator extends Generator {
    * @returns a random product
    */
   randomProduct(): SmeProduct[] | undefined {
-    return this.randomArray(() => {
+    return this.randomArray((): SmeProduct => {
       return {
         name: faker.commerce.productName(),
-        percentageOfTotalRevenue: this.randomPercentageValue(),
-      } as SmeProduct;
+        shareOfTotalRevenueInPercent: this.randomPercentageValue(),
+      };
     });
   }
 
@@ -100,12 +101,12 @@ class SmeGenerator extends Generator {
    * @returns a random production site
    */
   randomProductionSite(): SmeProductionSite[] | undefined {
-    return this.randomArray(() => {
+    return this.randomArray((): SmeProductionSite => {
       return {
         nameOfProductionSite: this.valueOrUndefined(faker.company.name()),
         addressOfProductionSite: generateAddress(this.undefinedProbability),
-        percentageOfTotalRevenue: this.randomPercentageValue(),
-      } as SmeProductionSite;
+        shareOfTotalRevenueInPercent: this.randomPercentageValue(),
+      };
     });
   }
 

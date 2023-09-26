@@ -59,8 +59,7 @@ describeIf(
         .next("td")
         .contains(
           roundNumber(
-            assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent) *
-              100,
+            assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent),
             2,
           ),
         )

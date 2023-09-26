@@ -36,7 +36,7 @@ object JsonExampleFormattingConstants {
         "\"DE\": null," +
         "\"GB\": 2" +
         "}," +
-        "\"percentageOfTotalProcurement\": 0" +
+        "\"shareOfTotalProcurementInPercent\": 0" +
         "}"
 
     const val PROCUREMENT_CATEGORIES_DEFAULT_VALUE: String = "{" +

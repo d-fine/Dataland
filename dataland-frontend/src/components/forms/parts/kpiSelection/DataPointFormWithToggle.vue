@@ -86,7 +86,7 @@
             <UploadFormHeader :label="kpiNameMappings.report ?? ''" :description="kpiInfoMappings.report ?? ''" />
             <FormKit
               type="select"
-              name="report"
+              name="fileName"
               :disabled="!dataPointIsAvailable"
               v-model="currentReportValue"
               placeholder="Select a report"

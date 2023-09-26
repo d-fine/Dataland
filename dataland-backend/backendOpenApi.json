@@ -2687,13 +2687,13 @@
       "SmeGeneralCompanyFinancials": {
         "type": "object",
         "properties": {
-          "revenueInEur": {
+          "revenueInEUR": {
             "type": "number"
           },
-          "operatingCostInEur": {
+          "operatingCostInEUR": {
             "type": "number"
           },
-          "capitalAssetsInEur": {
+          "capitalAssetsInEUR": {
             "type": "number"
           }
         }
@@ -2737,19 +2737,19 @@
       "SmePowerConsumption": {
         "type": "object",
         "properties": {
-          "powerConsumptionInMwh": {
+          "powerConsumptionInMWh": {
             "type": "number"
           },
           "powerFromRenewableSources": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "energyConsumptionHeatingAndHotWater": {
+          "energyConsumptionHeatingAndHotWaterInMWh": {
             "type": "number"
           },
           "primaryEnergySourceForHeatingAndHotWater": {
             "$ref": "#/components/schemas/EnergySourceForHeatingAndHotWater"
           },
-          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
+          "percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": {
             "$ref": "#/components/schemas/PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower"
           }
         }
@@ -2757,7 +2757,7 @@
       "SmePowerInvestments": {
         "type": "object",
         "properties": {
-          "percentageOfInvestmentsInEnhancingEnergyEfficiency": {
+          "percentageRangeForInvestmentsInEnhancingEnergyEfficiency": {
             "$ref": "#/components/schemas/PercentRangeForInvestmentsInEnergyEfficiency"
           }
         }
@@ -2771,7 +2771,7 @@
           "name": {
             "type": "string"
           },
-          "percentageOfTotalRevenue": {
+          "shareOfTotalRevenueInPercent": {
             "type": "number"
           }
         }
@@ -2807,7 +2807,7 @@
           "addressOfProductionSite": {
             "$ref": "#/components/schemas/Address"
           },
-          "percentageOfTotalRevenue": {
+          "shareOfTotalRevenueInPercent": {
             "type": "number"
           }
         }
@@ -3449,13 +3449,13 @@
       "P2pAmmoniaDecarbonisation": {
         "type": "object",
         "properties": {
-          "energyMix": {
+          "energyMixInPercent": {
             "type": "number"
           },
-          "ccsTechnologyAdoption": {
+          "ccsTechnologyAdoptionInPercent": {
             "type": "number"
           },
-          "electrification": {
+          "electrificationInPercent": {
             "type": "number"
           }
         }
@@ -3463,7 +3463,7 @@
       "P2pAmmoniaDefossilisation": {
         "type": "object",
         "properties": {
-          "useOfRenewableFeedstocks": {
+          "useOfRenewableFeedstocksInPercent": {
             "type": "number"
           }
         }
@@ -3488,7 +3488,7 @@
           "productionSiteEnergyConsumption": {
             "type": "number"
           },
-          "energyMix": {
+          "energyMixInPercent": {
             "type": "number"
           }
         }
@@ -3496,10 +3496,10 @@
       "P2pAutomotiveMaterials": {
         "type": "object",
         "properties": {
-          "materialUseManagement": {
+          "materialUseManagementInPercent": {
             "type": "number"
           },
-          "useOfSecondaryMaterials": {
+          "useOfSecondaryMaterialsInPercent": {
             "type": "number"
           }
         }
@@ -3507,7 +3507,7 @@
       "P2pAutomotiveTechnologyValueCreation": {
         "type": "object",
         "properties": {
-          "driveMix": {
+          "driveMixInPercent": {
             "type": "number"
           },
           "icAndHybridEnginePhaseOutDate": {
@@ -3536,16 +3536,16 @@
       "P2pCementEnergy": {
         "type": "object",
         "properties": {
-          "energyMix": {
+          "energyMixInPercent": {
             "type": "number"
           },
-          "fuelMix": {
+          "fuelMixInPercent": {
             "type": "number"
           },
-          "thermalEnergyEfficiency": {
+          "thermalEnergyEfficiencyInPercent": {
             "type": "number"
           },
-          "compositionOfThermalInput": {
+          "compositionOfThermalInputInPercent": {
             "type": "number"
           }
         }
@@ -3556,7 +3556,7 @@
           "clinkerFactorReduction": {
             "type": "number"
           },
-          "preCalcinedClayUsage": {
+          "preCalcinedClayUsageInPercent": {
             "type": "number"
           },
           "circularEconomyContribution": {
@@ -3570,7 +3570,7 @@
           "carbonCaptureAndUseTechnologyUsage": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "electrificationOfProcessHeat": {
+          "electrificationOfProcessHeatInPercent": {
             "type": "number"
           }
         }
@@ -3600,7 +3600,7 @@
           "electricityMixEmissions": {
             "type": "number"
           },
-          "shareOfRenewableElectricity": {
+          "shareOfRenewableElectricityInPercent": {
             "type": "number"
           },
           "naturalGasPhaseOut": {
@@ -3611,7 +3611,7 @@
             "type": "string",
             "format": "date"
           },
-          "storageCapacityExpansion": {
+          "storageCapacityExpansionInPercent": {
             "type": "number"
           }
         }
@@ -3619,20 +3619,20 @@
       "P2pEmissionsPlanning": {
         "type": "object",
         "properties": {
+          "absoluteEmissions": {
+            "type": "number"
+          },
+          "relativeEmissionsInPercent": {
+            "type": "number"
+          },
           "reductionOfAbsoluteEmissions": {
             "type": "number"
           },
-          "absoluteEmissions": {
+          "reductionOfRelativeEmissionsInPercent": {
             "type": "number"
           },
           "climateActionPlan": {
             "$ref": "#/components/schemas/YesNo"
-          },
-          "reductionOfRelativeEmissions": {
-            "type": "number"
-          },
-          "relativeEmissions": {
-            "type": "number"
           },
           "useOfInternalCarbonPrice": {
             "$ref": "#/components/schemas/YesNo"
@@ -3653,7 +3653,7 @@
       "P2pFreightTransportByRoadEnergy": {
         "type": "object",
         "properties": {
-          "fuelMix": {
+          "fuelMixInPercent": {
             "type": "number"
           }
         }
@@ -3661,7 +3661,7 @@
       "P2pFreightTransportByRoadTechnology": {
         "type": "object",
         "properties": {
-          "driveMix": {
+          "driveMixPerFleetSegment": {
             "type": "number"
           },
           "icePhaseOut": {
@@ -3718,13 +3718,13 @@
           "organisationalResponsibilityForParisCompatibility": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "parisCompatibilityInExecutiveRemuneration": {
+          "parisCompatibilityInExecutiveRemunerationInPercent": {
             "type": "number"
           },
-          "parisCompatibilityInAverageRemuneration": {
+          "parisCompatibilityInAverageRemunerationInPercent": {
             "type": "number"
           },
-          "shareOfEmployeesTrainedOnParisCompatibility": {
+          "shareOfEmployeesTrainedOnParisCompatibilityInPercent": {
             "type": "number"
           },
           "qualificationRequirementsOnParisCompatibility": {
@@ -3733,16 +3733,16 @@
           "mobilityAndTravelPolicy": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "downstreamCustomerEngagement": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "policymakerEngagement": {
-            "$ref": "#/components/schemas/YesNo"
-          },
           "upstreamSupplierEngagementStrategy": {
             "$ref": "#/components/schemas/YesNo"
           },
           "upstreamSupplierProcurementPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "downstreamCustomerEngagement": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "policymakerEngagement": {
             "$ref": "#/components/schemas/YesNo"
           }
         }
@@ -3764,10 +3764,10 @@
       "P2pHvcPlasticsDecarbonisation": {
         "type": "object",
         "properties": {
-          "energyMix": {
+          "energyMixInPercent": {
             "type": "number"
           },
-          "electrification": {
+          "electrificationInPercent": {
             "type": "number"
           }
         }
@@ -3775,13 +3775,13 @@
       "P2pHvcPlasticsDefossilisation": {
         "type": "object",
         "properties": {
-          "useOfRenewableFeedstocks": {
+          "useOfRenewableFeedstocksInPercent": {
             "type": "number"
           },
-          "useOfBioplastics": {
+          "useOfBioplasticsInPercent": {
             "type": "number"
           },
-          "useOfCo2FromCarbonCaptureAndReUseTechnologies": {
+          "useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent": {
             "type": "number"
           },
           "carbonCaptureAndUseStorageTechnologies": {
@@ -3795,10 +3795,10 @@
           "contributionToCircularEconomy": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "materialRecycling": {
+          "materialRecyclingInPercent": {
             "type": "number"
           },
-          "chemicalRecycling": {
+          "chemicalRecyclingInPercent": {
             "type": "number"
           }
         }
@@ -3806,16 +3806,16 @@
       "P2pInvestmentPlanning": {
         "type": "object",
         "properties": {
-          "capexShareInGhgIntensivePlants": {
-            "type": "number"
-          },
-          "capexShareInNetZeroSolutions": {
-            "type": "number"
-          },
           "investmentPlanForClimateTargets": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "researchAndDevelopmentExpenditureForNetZeroSolutions": {
+          "capexShareInNetZeroSolutionsInPercent": {
+            "type": "number"
+          },
+          "capexShareInGhgIntensivePlantsInPercent": {
+            "type": "number"
+          },
+          "researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": {
             "type": "number"
           }
         }
@@ -3840,7 +3840,7 @@
       "P2pLivestockFarmingAnimalFeed": {
         "type": "object",
         "properties": {
-          "ownFeedPercentage": {
+          "ownFeedInPercent": {
             "type": "number"
           },
           "externalFeedCertification": {
@@ -3855,10 +3855,10 @@
           "cropRotation": {
             "type": "number"
           },
-          "climateFriendlyProteinProduction": {
+          "climateFriendlyProteinProductionInPercent": {
             "type": "number"
           },
-          "greenFodderPercentage": {
+          "greenFodderInPercent": {
             "type": "number"
           }
         }
@@ -3866,7 +3866,7 @@
       "P2pLivestockFarmingAnimalWelfare": {
         "type": "object",
         "properties": {
-          "mortalityRate": {
+          "mortalityRateInPercent": {
             "type": "number"
           }
         }
@@ -3874,10 +3874,10 @@
       "P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock": {
         "type": "object",
         "properties": {
-          "compostedFermentedManure": {
+          "compostedFermentedManureInPercent": {
             "type": "number"
           },
-          "emissionProofFertiliserStorage": {
+          "emissionProofFertiliserStorageInPercent": {
             "type": "number"
           }
         }
@@ -3885,13 +3885,13 @@
       "P2pLivestockFarmingEnergy": {
         "type": "object",
         "properties": {
-          "renewableElectricityPercentage": {
+          "renewableElectricityInPercent": {
             "type": "number"
           },
-          "renewableHeatingPercentage": {
+          "renewableHeatingInPercent": {
             "type": "number"
           },
-          "electricGasPoweredMachineryVehiclePercentage": {
+          "electricGasPoweredMachineryVehicleInPercent": {
             "type": "number"
           }
         }
@@ -3913,10 +3913,10 @@
       "P2pRealEstateBuildingEfficiency": {
         "type": "object",
         "properties": {
-          "buildingSpecificReburbishmentRoadmap": {
+          "buildingSpecificRefurbishmentRoadmapInPercent": {
             "type": "number"
           },
-          "zeroEmissionBuildingShare": {
+          "zeroEmissionBuildingShareInPercent": {
             "type": "number"
           },
           "buildingEnergyEfficiency": {
@@ -3927,7 +3927,7 @@
       "P2pRealEstateEnergySource": {
         "type": "object",
         "properties": {
-          "renewableHeating": {
+          "renewableHeatingInPercent": {
             "type": "number"
           }
         }
@@ -3973,10 +3973,10 @@
       "P2pSteelTechnology": {
         "type": "object",
         "properties": {
-          "blastFurnacePhaseOut": {
+          "blastFurnacePhaseOutInPercent": {
             "type": "number"
           },
-          "lowCarbonSteelScaleUp": {
+          "lowCarbonSteelScaleUpInPercent": {
             "type": "number"
           }
         }
@@ -4297,7 +4297,7 @@
                 "numberOfSuppliersPerCountryCode": {
                   "GB": 2
                 },
-                "percentageOfTotalProcurement": 0
+                "shareOfTotalProcurementInPercent": 0
               },
               "Services": {
                 "procuredProductTypesAndServicesNaceCodes": [
@@ -4306,7 +4306,7 @@
                 "numberOfSuppliersPerCountryCode": {
                   "GB": 2
                 },
-                "percentageOfTotalProcurement": 0
+                "shareOfTotalProcurementInPercent": 0
               },
               "RawMaterials": {
                 "procuredProductTypesAndServicesNaceCodes": [
@@ -4315,7 +4315,7 @@
                 "numberOfSuppliersPerCountryCode": {
                   "GB": 2
                 },
-                "percentageOfTotalProcurement": 0
+                "shareOfTotalProcurementInPercent": 0
               }
             }
           }
@@ -4557,7 +4557,7 @@
               "format": "int32"
             }
           },
-          "percentageOfTotalProcurement": {
+          "shareOfTotalProcurementInPercent": {
             "type": "number"
           }
         },
@@ -4569,7 +4569,7 @@
             "numberOfSuppliersPerCountryCode": {
               "GB": 2
             },
-            "percentageOfTotalProcurement": 0
+            "shareOfTotalProcurementInPercent": 0
           },
           "Services": {
             "procuredProductTypesAndServicesNaceCodes": [
@@ -4578,7 +4578,7 @@
             "numberOfSuppliersPerCountryCode": {
               "GB": 2
             },
-            "percentageOfTotalProcurement": 0
+            "shareOfTotalProcurementInPercent": 0
           },
           "RawMaterials": {
             "procuredProductTypesAndServicesNaceCodes": [
@@ -4587,7 +4587,7 @@
             "numberOfSuppliersPerCountryCode": {
               "GB": 2
             },
-            "percentageOfTotalProcurement": 0
+            "shareOfTotalProcurementInPercent": 0
           }
         }
       },
@@ -4778,7 +4778,7 @@
           "freedomOfAssociation": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "employeeRepresentation": {
+          "employeeRepresentationInPercent": {
             "type": "number"
           },
           "discriminationForTradeUnionMembers": {
@@ -5386,16 +5386,16 @@
       "CreditInstitutionKpis": {
         "type": "object",
         "properties": {
-          "tradingPortfolio": {
+          "tradingPortfolioInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "interbankLoans": {
+          "interbankLoansInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "tradingPortfolioAndInterbankLoans": {
+          "tradingPortfolioAndInterbankLoansInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "greenAssetRatio": {
+          "greenAssetRatioInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           }
         }
@@ -5403,19 +5403,19 @@
       "EligibilityKpis": {
         "type": "object",
         "properties": {
-          "taxonomyEligibleActivity": {
+          "taxonomyEligibleActivityInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "taxonomyNonEligibleActivity": {
+          "taxonomyNonEligibleActivityInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "derivatives": {
+          "derivativesInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "banksAndIssuers": {
+          "banksAndIssuersInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "investmentNonNfrd": {
+          "investmentNonNfrdInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           }
         },
@@ -5575,7 +5575,7 @@
       "InsuranceKpis": {
         "type": "object",
         "properties": {
-          "taxonomyEligibleNonLifeInsuranceActivities": {
+          "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           }
         }
@@ -5583,7 +5583,7 @@
       "InvestmentFirmKpis": {
         "type": "object",
         "properties": {
-          "greenAssetRatio": {
+          "greenAssetRatioInPercent": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           }
         }
@@ -5755,10 +5755,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
