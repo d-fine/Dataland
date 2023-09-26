@@ -1,8 +1,8 @@
 <template>
   <template v-for="(element, idx) in config" :key="idx">
     <template v-if="isElementVisible(element, datasets)">
-      <tr v-if="element.type == 'cell'" v-show="isVisible">
-        <td class="headers-bg">
+      <tr v-if="element.type == 'cell'" v-show="isVisible" :data-cell-label="element.label">
+        <td class="headers-bg" :data-cell-label="element.label" data-row-header="true">
           <span class="table-left-label">{{ element.label }}</span>
           <em
             v-if="element.explanation"
@@ -15,7 +15,12 @@
             >info</em
           >
         </td>
-        <td v-for="(datasetEntry, idx) in datasets" :key="idx">
+        <td
+          v-for="(datasetEntry, idx) in datasets"
+          :key="idx"
+          :data-cell-label="element.label"
+          :data-dataset-index="idx"
+        >
           <MultiLayerDataTableCell :content="element.valueGetter(datasetEntry.dataset)" />
         </td>
       </tr>
@@ -26,6 +31,8 @@
               ? ['p-rowgroup-header', 'p-topmost-header', 'border-bottom-table']
               : ['p-rowgroup-header', 'border-bottom-table']
           "
+          :data-section-label="element.label"
+          :data-section-expanded="expandedSections.has(idx)"
           @click="toggleSection(idx)"
           v-show="isVisible"
         >

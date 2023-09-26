@@ -9,7 +9,7 @@
                 <span class="p-column-title">KPIs</span>
               </div>
             </th>
-            <th v-for="(dataset, idx) in datasets" :key="idx" class="horizontal-headers-size">
+            <th v-for="(dataset, idx) in datasets" :key="idx" class="horizontal-headers-size" :data-dataset-index="idx">
               <div class="p-column-header-content">
                 <span class="p-column-title">{{ dataset.headerLabel }}</span>
               </div>
