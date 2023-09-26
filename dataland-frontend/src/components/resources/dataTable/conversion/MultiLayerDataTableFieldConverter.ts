@@ -10,6 +10,7 @@ import { singleSelectValueGetterFactory } from "@/components/resources/dataTable
 import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 import { euTaxonomyActivitiesDataTableValueGetterFactory } from "@/components/resources/dataTable/conversion/EuTaxonomyActivitiesDataTableValueGetterFactory";
 import alignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
+import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -30,6 +31,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   NaceCodeFormField: naceCodeValueGetterFactory,
   AlignedActivitiesDataTable: euTaxonomyActivitiesDataTableValueGetterFactory,
   NonAlignedActivitiesDataTable: euTaxonomyActivitiesDataTableValueGetterFactory,
+  DataPointFormField: dataPointValueGetterFactory,
 };
 
 /**

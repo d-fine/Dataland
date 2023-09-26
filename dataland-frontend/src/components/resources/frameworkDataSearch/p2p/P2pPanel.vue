@@ -28,7 +28,6 @@ import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerData
 
 export default defineComponent({
   name: "P2pPanel",
-
   components: { MultiLayerDataTable },
   data() {
     return {

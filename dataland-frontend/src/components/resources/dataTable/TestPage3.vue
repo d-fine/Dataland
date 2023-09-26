@@ -13,469 +13,791 @@ import { type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDat
 
 import { convertDataModel } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { type LksgData } from "@clients/backend";
+import { type LksgData, type SfdrData } from "@clients/backend";
+import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 
-const demoDataset: MLDTDataset<LksgData> = {
+const demoDataset: MLDTDataset<SfdrData> = {
   headerLabel: "Testing",
   dataset: {
     general: {
-      masterData: {
-        dataDate: "2024-07-30",
-        headOfficeInGermany: "Yes",
-        groupOfCompanies: "Yes",
-        groupOfCompaniesName: "Emmerich, Swaniawski and Rosenbaum",
-        industry: ["G", "A"],
-        numberOfEmployees: 9714,
-        seasonalOrMigrantWorkers: "No",
-        shareOfTemporaryWorkers: "Greater50",
-        annualTotalRevenue: 201479614,
-        totalRevenueCurrency: "CAD",
-        fixedAndWorkingCapital: 2870,
-      },
-      productionSpecific: {
-        manufacturingCompany: "No",
-        capacity: "16 Keyboard per Saturday",
-        productionViaSubcontracting: "No",
-        subcontractingCompaniesCountries: ["BR"],
-        subcontractingCompaniesIndustries: ["A", "B", "G", "L"],
-        productionSites: "Yes",
-        listOfProductionSites: [
-          {
-            nameOfProductionSite: "Harvey - Hane",
-            addressOfProductionSite: {
-              streetAndHouseNumber: "Koepp Passage 14188",
-              postalCode: "48955",
-              city: "New Lonieport",
-              state: "Florida",
-              country: "LC",
-            },
-            listOfGoodsOrServices: [
-              "Awesome Concrete Tuna",
-              "Oriental Wooden Chicken",
-              "Unbranded Bronze Gloves",
-              "Handcrafted Soft Tuna",
-              "Refined Wooden Shirt",
-            ],
-          },
-          {
-            nameOfProductionSite: "Wolff - Bernier",
-            addressOfProductionSite: {
-              streetAndHouseNumber: "Russel Fork 4754",
-              postalCode: "27578",
-              city: "Carson",
-              state: "Pennsylvania",
-              country: "ML",
-            },
-            listOfGoodsOrServices: ["Awesome Concrete Bike", "Handcrafted Concrete Ball"],
-          },
-        ],
-        market: "National",
-        specificProcurement: "Yes",
-      },
-      productionSpecificOwnOperations: {
-        mostImportantProducts: [
-          {
-            name: "Handcrafted Rubber Soap",
-          },
-          {
-            name: "Sleek Metal Shirt",
-            relatedCorporateSupplyChain:
-              "Aperiam voluptate suscipit est quia accusantium ad. Unde voluptates accusantium delectus neque architecto doloribus nulla earum.",
-          },
-          {
-            name: "Recycled Metal Salad",
-            relatedCorporateSupplyChain:
-              "Eius quisquam corrupti voluptates reprehenderit autem reprehenderit sunt. Similique harum quaerat tempora quos soluta quod ipsa.",
-          },
-          {
-            name: "Sleek Bronze Car",
-            relatedCorporateSupplyChain:
-              "Dolore natus qui ipsam voluptatum enim ullam necessitatibus. Minus doloribus expedita voluptas vitae non sint expedita nihil.",
-          },
-        ],
-        productsServicesCategoriesPurchased: {
-          Products: {
-            procuredProductTypesAndServicesNaceCodes: ["D", "L", "M"],
-            percentageOfTotalProcurement: 0.1231,
-          },
-        },
-      },
-    },
-    governance: {
-      riskManagementOwnOperations: {
-        riskManagementSystem: "Yes",
-        riskAnalysisInFiscalYear: "No",
-        risksIdentified: "No",
-        identifiedRisks: "functionalities",
-        counteractingMeasures: "No",
-        whichCounteractingMeasures: "synergies",
-        regulatedRiskManagementResponsibility: "No",
-        environmentalManagementSystem: "Yes",
-        environmentalManagementSystemInternationalCertification: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
+      general: {
+        dataDate: "2023-01-20",
+        fiscalYearDeviation: "NoDeviation",
+        fiscalYearEnd: "2023-06-12",
+        referencedReports: {
+          SustainabilityReport: {
             reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            isGroupLevel: "Yes",
+            reportDate: "2023-05-12",
+            currency: "STN",
           },
-        },
-        environmentalManagementSystemNationalCertification: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
+          ESEFReport: {
             reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            isGroupLevel: "No",
+            reportDate: "2022-12-23",
+            currency: "BND",
           },
         },
-      },
-      grievanceMechanismOwnOperations: {
-        grievanceHandlingMechanism: "Yes",
-        grievanceHandlingReportingAccessible: "No",
-        appropriateGrievanceHandlingInformation: "Yes",
-        appropriateGrievanceHandlingSupport: "No",
-        accessToExpertiseForGrievanceHandling: "No",
-        grievanceComplaints: "No",
-        complaintsNumber: 2875,
-        complaintsReason: "infrastructures",
-        actionsForComplaintsUndertaken: "Yes",
-        whichActionsForComplaintsUndertaken: "relationships",
-        publicAccessToGrievanceHandling: "Yes",
-        whistleblowerProtection: "No",
-        dueDiligenceProcessForGrievanceHandling: "No",
-      },
-      certificationsPoliciesAndResponsibilities: {
-        sa8000Certification: {
-          value: "Yes",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        smetaSocialAuditConcept: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        betterWorkProgramCertificate: {
-          value: "NA",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        iso45001Certification: {
-          value: "No",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        iso14001Certification: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        emasCertification: {
-          value: "Yes",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        iso37001Certification: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        iso37301Certification: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        riskManagementSystemCertification: {
-          value: "No",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        amforiBsciAuditReport: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        responsibleBusinessAssociationCertification: {
-          value: "Yes",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        fairLaborAssociationCertification: {
-          value: "No",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        additionalAudits: "solutions",
-        codeOfConduct: {
-          value: "No",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        codeOfConductTraining: "Yes",
-        supplierCodeOfConduct: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        policyStatement: {
-          value: "Yes",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        humanRightsStrategy: "markets",
-        environmentalImpactPolicy: {
-          value: "Yes",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        fairWorkingConditionsPolicy: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-      },
-      generalViolations: {
-        responsibilitiesForFairWorkingConditions: "Yes",
-        responsibilitiesForTheEnvironment: "Yes",
-        responsibilitiesForOccupationalSafety: "Yes",
-        legalProceedings: "Yes",
-        humanRightsViolationS: "Yes",
-        humanRightsViolations: "deliverables",
-        humanRightsViolationAction: "Yes",
-        humanRightsViolationActionMeasures: "markets",
-        highRiskCountriesRawMaterials: "No",
-        highRiskCountriesRawMaterialsLocation: ["GT"],
-        highRiskCountriesActivity: "No",
-        highRiskCountries: ["KN", "MR", "TK", "SN"],
-        highRiskCountriesProcurement: "Yes",
-        highRiskCountriesProcurementName: ["JM", "GB", "PR"],
-      },
-    },
-    social: {
-      childLabor: {
-        childLaborPreventionPolicy: {
-          value: "No",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        employeeSUnder18: "Yes",
-        employeeSUnder15: "Yes",
-        employeeSUnder18InApprenticeship: "No",
-        worstFormsOfChildLaborProhibition: "No",
-        worstFormsOfChildLabor: "No",
-        worstFormsOfChildLaborForms: "relationships",
-        measuresForPreventionOfEmploymentUnderLocalMinimumAge: "Yes",
-        employmentUnderLocalMinimumAgePreventionEmploymentContracts: "Yes",
-        employmentUnderLocalMinimumAgePreventionJobDescription: "Yes",
-        employmentUnderLocalMinimumAgePreventionIdentityDocuments: "No",
-        employmentUnderLocalMinimumAgePreventionTraining: "No",
-        employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: "No",
-        additionalChildLaborMeasures: "action-items",
-      },
-      forcedLaborSlavery: {
-        forcedLaborAndSlaveryPrevention: "No",
-        forcedLaborAndSlaveryPreventionPractices: "content",
-        forcedLaborPreventionPolicy: {
-          value: "No",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        forcedLaborAndSlaveryPreventionMeasures: "Yes",
-        forcedLaborAndSlaveryPreventionEmploymentContracts: "No",
-        forcedLaborAndSlaveryPreventionIdentityDocuments: "No",
-        forcedLaborAndSlaveryPreventionFreeMovement: "No",
-        forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets: "Yes",
-        forcedLaborAndSlaveryPreventionTraining: "No",
-        forcedLaborAndSlaveryPreventionMeasuresOther: "networks",
-      },
-      withholdingAdequateWages: {
-        adequateWage: "Yes",
-        adequateWagesMeasures: "Yes",
-        documentedWorkingHoursAndWages: "Yes",
-        adequateLivingWage: "Yes",
-        regularWagesProcessFlow: "No",
-        fixedHourlyWages: "No",
-        fixedPieceworkWages: "NA",
-        adequateWageMeasures: "portals",
-      },
-      disregardForOccupationalHealthSafety: {
-        lowSkillWork: "Yes",
-        hazardousMachines: "No",
-        oshPolicy: "No",
-        oshPolicyPersonalProtectiveEquipment: "Yes",
-        oshPolicyMachineSafety: "Yes",
-        oshPolicyDisasterBehavioralResponse: "Yes",
-        oshPolicyAccidentsBehavioralResponse: "No",
-        oshPolicyWorkplaceErgonomics: "Yes",
-        oshPolicyAccessToWork: "Yes",
-        oshPolicyHandlingChemicalsAndOtherHazardousSubstances: "Yes",
-        oshPolicyFireProtection: "No",
-        oshPolicyWorkingHours: "Yes",
-        oshPolicyTrainingAddressed: "No",
-        oshPolicyTraining: "No",
-        oshManagementSystem: "No",
-        oshManagementSystemInternationalCertification: {
-          value: "Yes",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        oshManagementSystemNationalCertification: {
-          value: "Yes",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        under10WorkplaceAccidents: "Yes",
-        oshTraining: "No",
-        healthAndSafetyPolicy: {
-          value: "Yes",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-      },
-      disregardForFreedomOfAssociation: {
-        freedomOfAssociation: "Yes",
-        employeeRepresentation: 0.479,
-        discriminationForTradeUnionMembers: "No",
-        freedomOfOperationForTradeUnion: "Yes",
-        freedomOfAssociationTraining: "No",
-        worksCouncil: "No",
-      },
-      unequalTreatmentOfEmployment: {
-        unequalTreatmentOfEmployment: "No",
-        diversityAndInclusionRole: "Yes",
-        preventionOfMistreatments: "No",
-        equalOpportunitiesOfficer: "Yes",
-        fairAndEthicalRecruitmentPolicy: {
-          value: "Yes",
-          dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-        equalOpportunitiesAndNonDiscriminationPolicy: {
-          value: "Yes",
-          dataSource: {
-            name: "Policy",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          },
-        },
-      },
-      contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption: {
-        harmfulSoilImpact: "Yes",
-        soilDegradation: "No",
-        soilErosion: "No",
-        soilBorneDiseases: "No",
-        soilContamination: "Yes",
-        soilSalinization: "No",
-        harmfulWaterPollution: "Yes",
-        fertilizersOrPollutants: "Yes",
-        wasteWaterFiltration: "Yes",
-        harmfulAirPollution: "Yes",
-        airFiltration: "No",
-        harmfulNoiseEmission: "No",
-        reduceNoiseEmissions: "Yes",
-        excessiveWaterConsumption: "Yes",
-        waterSavingMeasures: "Yes",
-        waterSavingMeasuresName: "partnerships",
-        pipeMaintaining: "Yes",
-        waterSources: "No",
-        contaminationMeasures: "ROI",
-      },
-      unlawfulEvictionDeprivationOfLandForestAndWater: {
-        unlawfulEvictionAndTakingOfLand: "No",
-        unlawfulEvictionAndTakingOfLandRisk: "deliverables",
-        unlawfulEvictionAndTakingOfLandStrategies: "Yes",
-        unlawfulEvictionAndTakingOfLandStrategiesName: "methodologies",
-        voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: "Yes",
-      },
-      useOfPrivatePublicSecurityForcesWithDisregardForHumanRights: {
-        useOfPrivatePublicSecurityForces: "No",
-        useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: "Yes",
-        instructionOfSecurityForces: "Yes",
-        humanRightsTraining: "Yes",
-        stateSecurityForces: "Yes",
-        privateSecurityForces: "No",
-        useOfPrivatePublicSecurityForcesMeasures: "markets",
+        scopeOfEntities: "No",
       },
     },
     environmental: {
-      useOfMercuryMercuryWasteMinamataConvention: {
-        mercuryAndMercuryWasteHandling: "No",
-        mercuryAndMercuryWasteHandlingPolicy: {
-          value: "No",
+      greenhouseGasEmissions: {
+        scope1: null,
+        scope2: {
+          quality: "Estimated",
           dataSource: {
-            name: "Certification",
-            reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            report: "ESEFReport",
+            page: 86,
+            tagName: "initiatives",
           },
+          comment: "program haptic pixel",
+          value: 85111.23,
+          unit: null,
         },
-        mercuryAddedProductsHandling: "Yes",
-        mercuryAddedProductsHandlingRiskOfExposure: "No",
-        mercuryAddedProductsHandlingRiskOfDisposal: "Yes",
-        mercuryAndMercuryCompoundsProductionAndUse: "Yes",
-        mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: "No",
+        scope3: {
+          quality: "Audited",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 581,
+            tagName: "mindshare",
+          },
+          comment: "reboot primary alarm",
+          value: 51909.07,
+          unit: null,
+        },
+        enterpriseValue: {
+          quality: "Audited",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 1197,
+            tagName: "schemas",
+          },
+          comment: "quantify virtual bandwidth",
+          value: 7361.56,
+          unit: null,
+        },
+        totalRevenue: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: 88582.66,
+          unit: null,
+        },
+        fossilFuelSectorExposure: null,
       },
-      productionAndUseOfPersistentOrganicPollutantsPopsConvention: {
-        persistentOrganicPollutantsProductionAndUse: "No",
-        persistentOrganicPollutantsUsed: "platforms",
-        persistentOrganicPollutantsProductionAndUseRiskOfExposure: "No",
-        persistentOrganicPollutantsProductionAndUseRiskOfDisposal: "No",
-        legalRestrictedWasteProcesses: "Yes",
+      energyPerformance: {
+        renewableEnergyProduction: {
+          quality: "Reported",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 1133,
+            tagName: "metrics",
+          },
+          comment: "reboot back-end driver",
+          value: 80879.01,
+          unit: null,
+        },
+        renewableEnergyConsumption: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+          unit: null,
+        },
+        nonRenewableEnergyConsumption: {
+          quality: "Reported",
+          dataSource: {
+            report: "ESEFReport",
+            page: 600,
+            tagName: "platforms",
+          },
+          comment: "override solid state array",
+          value: 87582.13,
+          unit: null,
+        },
+        nonRenewableEnergyProduction: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: 66182.73,
+          unit: null,
+        },
+        highImpactClimateSectorEnergyConsumptionNaceA: {
+          quality: "Audited",
+          dataSource: {
+            report: "ESEFReport",
+            page: 390,
+            tagName: "methodologies",
+          },
+          comment: "connect virtual capacitor",
+          value: 89903.52,
+          unit: null,
+        },
+        highImpactClimateSectorEnergyConsumptionNaceB: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+          unit: null,
+        },
+        highImpactClimateSectorEnergyConsumptionNaceC: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+          unit: null,
+        },
+        highImpactClimateSectorEnergyConsumptionNaceD: {
+          quality: "Estimated",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: 81301.25,
+          unit: null,
+        },
+        highImpactClimateSectorEnergyConsumptionNaceE: {
+          quality: "Reported",
+          dataSource: {
+            report: "ESEFReport",
+            page: 265,
+            tagName: "solutions",
+          },
+          comment: "transmit multi-byte program",
+          value: 17278.05,
+          unit: null,
+        },
+        highImpactClimateSectorEnergyConsumptionNaceF: null,
+        highImpactClimateSectorEnergyConsumptionNaceG: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+          unit: null,
+        },
+        highImpactClimateSectorEnergyConsumptionNaceH: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 435,
+            tagName: "initiatives",
+          },
+          comment: "connect virtual card",
+          value: 65606.56,
+          unit: null,
+        },
+        highImpactClimateSectorEnergyConsumptionNaceL: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: 91876.52,
+          unit: null,
+        },
+        totalHighImpactClimateSectorEnergyConsumption: {
+          quality: "Estimated",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: 27863.47,
+          unit: null,
+        },
+        nonRenewableEnergyConsumptionFossilFuels: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: 48734.58,
+          unit: null,
+        },
+        nonRenewableEnergyConsumptionCrudeOil: {
+          quality: "Audited",
+          dataSource: {
+            report: "ESEFReport",
+            page: 116,
+            tagName: "action-items",
+          },
+          comment: "parse optical interface",
+          value: 80224.72,
+          unit: null,
+        },
+        nonRenewableEnergyConsumptionNaturalGas: {
+          quality: "Reported",
+          dataSource: {
+            report: "ESEFReport",
+            page: 307,
+            tagName: "methodologies",
+          },
+          comment: "reboot back-end system",
+          value: 86030.01,
+          unit: null,
+        },
+        nonRenewableEnergyConsumptionLignite: null,
+        nonRenewableEnergyConsumptionCoal: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+          unit: null,
+        },
+        nonRenewableEnergyConsumptionNuclearEnergy: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "ESEFReport",
+            page: 104,
+            tagName: "content",
+          },
+          comment: "quantify wireless sensor",
+          value: 49202.82,
+          unit: null,
+        },
+        nonRenewableEnergyConsumptionOther: {
+          quality: "Estimated",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: 47470.84,
+          unit: null,
+        },
       },
-      exportImportOfHazardousWasteBaselConvention: {
-        persistentOrganicPollutantsProductionAndUseTransboundaryMovements: "No",
-        persistentOrganicPollutantsProductionAndUseRiskForImportingState: "Yes",
-        hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein: "Yes",
-        hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein: "Yes",
-        hazardousWasteDisposal: "Yes",
-        hazardousWasteDisposalRiskOfImport: "No",
-        hazardousWasteDisposalOtherWasteImport: "Yes",
+      biodiversity: {
+        primaryForestAndWoodedLandOfNativeSpeciesExposure: null,
+        protectedAreasExposure: {
+          quality: "Reported",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 721,
+            tagName: "methodologies",
+          },
+          comment: "reboot virtual protocol",
+          value: "Yes",
+        },
+        rareOrEndangeredEcosystemsExposure: {
+          quality: "Reported",
+          dataSource: {
+            report: "ESEFReport",
+            page: 269,
+            tagName: "synergies",
+          },
+          comment: "hack open-source protocol",
+          value: "No",
+        },
+      },
+      water: {
+        emissionsToWater: {
+          quality: "Estimated",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 537,
+            tagName: "platforms",
+          },
+          comment: "synthesize online alarm",
+          value: 56299.51,
+          unit: null,
+        },
+        waterConsumption: {
+          quality: "Audited",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 300,
+            tagName: "e-markets",
+          },
+          comment: "index bluetooth alarm",
+          value: 21928.67,
+          unit: null,
+        },
+        waterReused: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 1199,
+            tagName: "technologies",
+          },
+          comment: "compress bluetooth driver",
+          value: 77201.22,
+          unit: null,
+        },
+        waterManagementPolicy: {
+          quality: "Reported",
+          dataSource: {
+            report: "ESEFReport",
+            page: 309,
+            tagName: "synergies",
+          },
+          comment: "reboot haptic interface",
+          value: "Yes",
+        },
+        waterStressAreaExposure: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+        },
+      },
+      waste: {
+        hazardousWaste: {
+          quality: "Audited",
+          dataSource: {
+            report: "ESEFReport",
+            page: 528,
+            tagName: "mindshare",
+          },
+          comment: "quantify haptic protocol",
+          value: 74513.97,
+          unit: null,
+        },
+        manufactureOfAgrochemicalPesticidesProducts: null,
+        landDegradationDesertificationSoilSealingExposure: {
+          quality: "Audited",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 1052,
+            tagName: "users",
+          },
+          comment: "transmit cross-platform application",
+          value: "No",
+        },
+        sustainableAgriculturePolicy: {
+          quality: "Estimated",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 666,
+            tagName: "applications",
+          },
+          comment: "back up back-end program",
+          value: "Yes",
+        },
+        sustainableOceansAndSeasPolicy: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: "No",
+        },
+        wasteNonRecycled: null,
+        threatenedSpeciesExposure: {
+          quality: "Audited",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 236,
+            tagName: "eyeballs",
+          },
+          comment: "calculate multi-byte interface",
+          value: "No",
+        },
+        biodiversityProtectionPolicy: {
+          quality: "Estimated",
+          dataSource: {
+            report: "ESEFReport",
+            page: 7,
+            tagName: "niches",
+          },
+          comment: "copy mobile port",
+          value: "Yes",
+        },
+        deforestationPolicy: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+        },
+      },
+      emissions: {
+        inorganicPollutants: {
+          quality: "Audited",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 416,
+            tagName: "eyeballs",
+          },
+          comment: "hack wireless pixel",
+          value: 89596.11,
+          unit: null,
+        },
+        airPollutants: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+          unit: null,
+        },
+        ozoneDepletionSubstances: {
+          quality: "Audited",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 989,
+            tagName: "action-items",
+          },
+          comment: "reboot auxiliary card",
+          value: 14101.92,
+          unit: null,
+        },
+        carbonReductionInitiatives: null,
+      },
+    },
+    social: {
+      socialAndEmployeeMatters: {
+        humanRightsLegalProceedings: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 50,
+            tagName: "portals",
+          },
+          comment: "input primary bandwidth",
+          value: "Yes",
+        },
+        iloCoreLabourStandards: null,
+        environmentalPolicy: null,
+        corruptionLegalProceedings: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: "No",
+        },
+        transparencyDisclosurePolicy: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+        },
+        humanRightsDueDiligencePolicy: null,
+        childForcedDiscriminationPolicy: {
+          quality: "Reported",
+          dataSource: {
+            report: "ESEFReport",
+            page: 310,
+            tagName: "action-items",
+          },
+          comment: "quantify solid state firewall",
+          value: "Yes",
+        },
+        iso14001Certificate: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 668,
+            tagName: "systems",
+          },
+          comment: "program neural port",
+          value: "No",
+        },
+        briberyCorruptionPolicy: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "ESEFReport",
+            page: 797,
+            tagName: "functionalities",
+          },
+          comment: "generate online alarm",
+          value: "No",
+        },
+        fairBusinessMarketingAdvertisingPolicy: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: "No",
+        },
+        technologiesExpertiseTransferPolicy: null,
+        fairCompetitionPolicy: {
+          quality: "Audited",
+          dataSource: {
+            report: "ESEFReport",
+            page: 872,
+            tagName: "e-business",
+          },
+          comment: "quantify online bandwidth",
+          value: "Yes",
+        },
+        violationOfTaxRulesAndRegulation: null,
+        unGlobalCompactPrinciplesCompliancePolicy: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+        },
+        oecdGuidelinesForMultinationalEnterprisesPolicy: null,
+        averageGrossHourlyEarningsMaleEmployees: null,
+        averageGrossHourlyEarningsFemaleEmployees: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+          unit: null,
+        },
+        femaleBoardMembers: {
+          quality: "Reported",
+          dataSource: {
+            report: "ESEFReport",
+            page: 1138,
+            tagName: "schemas",
+          },
+          comment: "connect auxiliary system",
+          value: 37796.93,
+          unit: null,
+        },
+        maleBoardMembers: {
+          quality: "Audited",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 404,
+            tagName: "e-markets",
+          },
+          comment: "index mobile bandwidth",
+          value: 90102.92,
+          unit: null,
+        },
+        controversialWeaponsExposure: {
+          quality: "Estimated",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: "Yes",
+        },
+        workplaceAccidentPreventionPolicy: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: "Yes",
+        },
+        rateOfAccidents: {
+          quality: "NA",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: null,
+          unit: null,
+        },
+        workdaysLost: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: 62580.49,
+          unit: null,
+        },
+        supplierCodeOfConduct: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "ESEFReport",
+            page: 955,
+            tagName: "ROI",
+          },
+          comment: "compress wireless protocol",
+          value: "No",
+        },
+        grievanceHandlingMechanism: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 966,
+            tagName: "action-items",
+          },
+          comment: "hack neural transmitter",
+          value: "No",
+        },
+        whistleblowerProtectionPolicy: {
+          quality: "Reported",
+          dataSource: {
+            report: "ESEFReport",
+            page: 1166,
+            tagName: "models",
+          },
+          comment: "reboot back-end capacitor",
+          value: "Yes",
+        },
+        reportedIncidentsOfDiscrimination: {
+          quality: "Estimated",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: 30537.22,
+          unit: null,
+        },
+        sanctionsIncidentsOfDiscrimination: null,
+        ceoToEmployeePayGap: null,
+      },
+      greenSecurities: {
+        securitiesNotCertifiedAsGreen: {
+          quality: "Incomplete",
+          dataSource: {
+            report: "",
+            page: null,
+            tagName: null,
+          },
+          comment: null,
+          value: "Yes",
+        },
+      },
+      humanRights: {
+        humanRightsPolicy: null,
+        humanRightsDueDiligence: null,
+        traffickingInHumanBeingsPolicy: {
+          quality: "Audited",
+          dataSource: {
+            report: "ESEFReport",
+            page: 365,
+            tagName: "markets",
+          },
+          comment: "calculate back-end alarm",
+          value: "Yes",
+        },
+        reportedChildLabourIncidents: {
+          quality: "Reported",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 156,
+            tagName: "markets",
+          },
+          comment: "quantify redundant protocol",
+          value: "Yes",
+        },
+        reportedForcedOrCompulsoryLabourIncidents: {
+          quality: "Estimated",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 1156,
+            tagName: "supply-chains",
+          },
+          comment: "navigate haptic panel",
+          value: "Yes",
+        },
+        reportedIncidentsOfHumanRights: null,
+      },
+      antiCorruptionAndAntiBribery: {
+        reportedCasesOfBriberyCorruption: {
+          quality: "Reported",
+          dataSource: {
+            report: "ESEFReport",
+            page: 503,
+            tagName: "networks",
+          },
+          comment: "index neural protocol",
+          value: 86305.63,
+          unit: null,
+        },
+        reportedConvictionsOfBriberyCorruption: {
+          quality: "Reported",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 639,
+            tagName: "convergence",
+          },
+          comment: "index haptic firewall",
+          value: 10110.31,
+          unit: null,
+        },
+        reportedFinesOfBriberyCorruption: {
+          quality: "Estimated",
+          dataSource: {
+            report: "SustainabilityReport",
+            page: 1123,
+            tagName: "schemas",
+          },
+          comment: "synthesize cross-platform capacitor",
+          value: 9577.85,
+          unit: null,
+        },
       },
     },
   },
 };
 
-const viewConfiguration = convertDataModel(lksgDataModel);
+const viewConfiguration = convertDataModel(sfdrDataModel);
 console.log(viewConfiguration);
 
 export default defineComponent({
