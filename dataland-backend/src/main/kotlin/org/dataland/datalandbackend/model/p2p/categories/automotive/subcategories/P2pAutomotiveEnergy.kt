@@ -9,5 +9,5 @@ import java.math.BigDecimal
 data class P2pAutomotiveEnergy(
     val productionSiteEnergyConsumption: BigDecimal? = null,
 
-    val energyMix: BigDecimal? = null,
+    val energyMixInPercent: BigDecimal? = null,
 )

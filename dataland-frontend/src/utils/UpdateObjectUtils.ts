@@ -21,42 +21,6 @@ export function updateObject(baseObject: ObjectType, objectWithNewData: ObjectTy
 }
 
 /**
- * Changes the "value" named properties of an object from decimals to percentages
- * to maintain different number formatting between backend and frontend
- * @param obj object in which it is looking for the "value" properties to change
- * @returns the modified object
- */
-export function convertValuesFromDecimalsToPercentages(obj: ObjectType): ObjectType {
-  const objectModified = obj;
-  for (const key in objectModified) {
-    if ((key === "value" || key === "valueAsPercentage") && objectModified[key]) {
-      objectModified[key] = (Math.round(+objectModified[key] * 100 * 100) / 100).toString();
-    } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
-      convertValuesFromDecimalsToPercentages(objectModified[key] as unknown as ObjectType);
-    }
-  }
-  return objectModified;
-}
-
-/**
- * Changes the "value" named properties of an object from percentages to decimals
- * to maintain different number formatting between backend and frontend
- * @param obj object in which it is looking for the "value" properties to change
- * @returns the modified object
- */
-export function convertValuesFromPercentagesToDecimals(obj: ObjectType): ObjectType {
-  const objectModified = obj;
-  for (const key in objectModified) {
-    if ((key === "value" || key === "valueAsPercentage") && objectModified[key]) {
-      objectModified[key] = (Math.round(+objectModified[key] * 100) / 100 / 100).toString();
-    } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
-      convertValuesFromPercentagesToDecimals(objectModified[key] as unknown as ObjectType);
-    }
-  }
-  return objectModified;
-}
-
-/**
  * A recursive function that is able to retrieve all values for a provided key in an arbitrarily deeply nested object.
  * Example: the datasource.reference in the EUTaxonomyDataModel occurs for several data points and you might want to get
  * a list of all references in one dataset.

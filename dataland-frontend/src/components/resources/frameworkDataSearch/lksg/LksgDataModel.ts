@@ -93,24 +93,24 @@ export const lksgDataModel = [
             name: "shareOfTemporaryWorkers",
             label: "Share of Temporary Workers",
             description: "What share of the total number of employees in your company is made up by temporary workers?",
-            unit: "Percentage",
+            unit: "",
             component: "RadioButtonsFormField",
             evidenceDesired: false,
             options: [
               {
-                label: "< 10 %",
+                label: "<10%",
                 value: "Smaller10",
               },
               {
-                label: "10-25 %",
+                label: "10-25%",
                 value: "Between10And25",
               },
               {
-                label: "25-50 %",
+                label: "25-50%",
                 value: "Between25And50",
               },
               {
-                label: "> 50 %",
+                label: ">50%",
                 value: "Greater50",
               },
             ],
@@ -1211,7 +1211,7 @@ export const lksgDataModel = [
             name: "forcedLaborAndSlaveryPrevention",
             label: "Forced Labor and Slavery Prevention",
             description:
-              "Does your company have practices that lead or may lead to forced labor and/or slavery?\n \n The following are included:\n O Creating unacceptable working and living conditions by working in hazardous conditions or within unacceptable accommodations provided by the employer\n O Excessive levels of overtime\n O Use of intimidation, threats, and/or punishment\n O Other types of forced labor (e.g. debt bondage, human trafficking)",
+              "Does your company have practices that lead or may lead to forced labor and/or slavery?\n\n The following are included:\n O Creating unacceptable working and living conditions by working in hazardous conditions or within unacceptable accommodations provided by the employer\n O Excessive levels of overtime\n O Use of intimidation, threats, and/or punishment\n O Other types of forced labor (e.g. debt bondage, human trafficking)",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: false,
@@ -1692,10 +1692,10 @@ export const lksgDataModel = [
             certificateRequiredIfYes: false,
           },
           {
-            name: "employeeRepresentation",
+            name: "employeeRepresentationInPercent",
             label: "Employee Representation",
             description: "What is your percentage of employees who are represented by trade unions?",
-            unit: "Percentage",
+            unit: "Percent",
             component: "PercentageFormField",
             evidenceDesired: false,
             required: false,

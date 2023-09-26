@@ -13,7 +13,7 @@ export const lksgModalColumnHeaders = {
     procurementCategory: "Procurement Category",
     definitionsOfProductTypeOrService: "Definitions of Product Type or Service",
     suppliersAndCountries: "Number of Direct Suppliers and Countries",
-    percentageOfTotalProcurement: "Order Volume",
+    shareOfTotalProcurementInPercent: "Order Volume",
   },
   industry: {
     industry: "NACE Code",

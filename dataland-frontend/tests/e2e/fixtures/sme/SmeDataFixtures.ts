@@ -87,11 +87,11 @@ class SmeGenerator extends Generator {
    * @returns a random product
    */
   randomProduct(): SmeProduct[] | undefined {
-    return this.randomArray(() => {
+    return this.randomArray((): SmeProduct => {
       return {
         name: faker.commerce.productName(),
-        percentageOfTotalRevenue: this.randomPercentageValue(),
-      } as SmeProduct;
+        shareOfTotalRevenueInPercent: this.randomPercentageValue(),
+      };
     });
   }
 
@@ -100,12 +100,12 @@ class SmeGenerator extends Generator {
    * @returns a random production site
    */
   randomProductionSite(): SmeProductionSite[] | undefined {
-    return this.randomArray(() => {
+    return this.randomArray((): SmeProductionSite => {
       return {
         nameOfProductionSite: this.valueOrUndefined(faker.company.name()),
         addressOfProductionSite: generateAddress(this.undefinedProbability),
-        percentageOfTotalRevenue: this.randomPercentageValue(),
-      } as SmeProductionSite;
+        shareOfTotalRevenueInPercent: this.randomPercentageValue(),
+      };
     });
   }
 
