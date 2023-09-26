@@ -35,12 +35,15 @@ export function generateSmeFixtures(
  * @returns a random SME dataset
  */
 export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): SmeData {
-  const dataGenerator = new SmeGenerator(undefinedProbability);
+  const dataGenerator = new SmeGenerator(undefinedProbability, true); // TODO hardcoded to "true" to test if it works with "null"
   return {
     general: {
       basicInformation: {
         sector: generateNaceCodes(1),
-        addressOfHeadquarters: generateAddress(dataGenerator.undefinedProbability),
+        addressOfHeadquarters: generateAddress(
+          dataGenerator.missingValueProbability,
+          dataGenerator.setMissingValuesToNull,
+        ),
         numberOfEmployees: generateInt(10000),
         fiscalYearStart: generateFutureDate(),
       },
@@ -86,7 +89,7 @@ class SmeGenerator extends Generator {
    * Generates a random product
    * @returns a random product
    */
-  randomProduct(): SmeProduct[] | undefined {
+  randomProduct(): SmeProduct[] | undefined | null {
     return this.randomArray((): SmeProduct => {
       return {
         name: faker.commerce.productName(),
@@ -99,11 +102,11 @@ class SmeGenerator extends Generator {
    * Generates a random production site
    * @returns a random production site
    */
-  randomProductionSite(): SmeProductionSite[] | undefined {
+  randomProductionSite(): SmeProductionSite[] | undefined | null {
     return this.randomArray((): SmeProductionSite => {
       return {
-        nameOfProductionSite: this.valueOrUndefined(faker.company.name()),
-        addressOfProductionSite: generateAddress(this.undefinedProbability),
+        nameOfProductionSite: this.valueOrMissing(faker.company.name()),
+        addressOfProductionSite: generateAddress(this.missingValueProbability, this.setMissingValuesToNull),
         shareOfTotalRevenueInPercent: this.randomPercentageValue(),
       };
     });
@@ -113,8 +116,11 @@ class SmeGenerator extends Generator {
    * Picks a random percentage range option
    * @returns a random percentage range option
    */
-  randomPercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower | undefined {
-    return this.valueOrUndefined(
+  randomPercentageRangeEnergyConsumption():
+    | PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower
+    | undefined
+    | null {
+    return this.valueOrMissing(
       pickOneElement(Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)),
     );
   }
@@ -123,23 +129,23 @@ class SmeGenerator extends Generator {
    * Picks a random percentage range option
    * @returns a random percentage range option
    */
-  randomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency | undefined {
-    return this.valueOrUndefined(pickOneElement(Object.values(PercentRangeForInvestmentsInEnergyEfficiency)));
+  randomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency | undefined | null {
+    return this.valueOrMissing(pickOneElement(Object.values(PercentRangeForInvestmentsInEnergyEfficiency)));
   }
 
   /**
    * Picks a random heat source
    * @returns a random heat source
    */
-  randomHeatSource(): EnergySourceForHeatingAndHotWater | undefined {
-    return this.valueOrUndefined(pickOneElement(Object.values(EnergySourceForHeatingAndHotWater)));
+  randomHeatSource(): EnergySourceForHeatingAndHotWater | undefined | null {
+    return this.valueOrMissing(pickOneElement(Object.values(EnergySourceForHeatingAndHotWater)));
   }
 
   /**
    * Picks a random natural hazard
    * @returns a random natural hazard
    */
-  randomSelectionOfNaturalHazards(): NaturalHazard[] | undefined {
-    return this.valueOrUndefined(pickSubsetOfElements(Object.values(NaturalHazard)));
+  randomSelectionOfNaturalHazards(): NaturalHazard[] | undefined | null {
+    return this.valueOrMissing(pickSubsetOfElements(Object.values(NaturalHazard)));
   }
 }
