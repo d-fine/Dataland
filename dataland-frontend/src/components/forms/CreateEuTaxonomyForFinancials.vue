@@ -323,13 +323,13 @@ import {
   getKpiFieldNameForOneFinancialServiceType,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
+  AssuranceDataPointAssuranceOptionsValueEnum,
   type CompanyAssociatedDataEuTaxonomyDataForFinancials,
   type DataMetaInformation,
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
-import { AssuranceDataPointAssuranceOptionsValueEnum } from "@/types/ttt";
 import { type AxiosResponse } from "axios";
 import { type ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
