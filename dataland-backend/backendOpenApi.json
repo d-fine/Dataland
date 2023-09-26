@@ -2399,21 +2399,25 @@
           },
           "companyAlternativeNames": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "companyLegalForm": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
             "type": "string"
           },
           "headquartersPostalCode": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "sector": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "identifiers": {
             "type": "object",
@@ -2439,10 +2443,12 @@
             "type": "string"
           },
           "website": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "isTeaserCompany": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -2468,7 +2474,8 @@
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "uploaderUserId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "uploadTime": {
             "type": "integer",
@@ -2519,23 +2526,29 @@
         "type": "object",
         "properties": {
           "inviteId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "fileId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "timeStamp": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "nullable": true
           },
           "wasInviteSuccessful": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "inviteResultMessage": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -2547,16 +2560,19 @@
         "type": "object",
         "properties": {
           "streetAndHouseNumber": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "postalCode": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "city": {
             "type": "string"
           },
           "state": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "country": {
             "type": "string"
@@ -2688,13 +2704,16 @@
         "type": "object",
         "properties": {
           "revenueInEur": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "operatingCostInEur": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "capitalAssetsInEur": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -2713,10 +2732,12 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "amountCoveredByInsuranceAgainstNaturalHazards": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "naturalHazardsCovered": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/NaturalHazard"
             }
@@ -2738,13 +2759,15 @@
         "type": "object",
         "properties": {
           "powerConsumptionInMwh": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "powerFromRenewableSources": {
             "$ref": "#/components/schemas/YesNo"
           },
           "energyConsumptionHeatingAndHotWater": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "primaryEnergySourceForHeatingAndHotWater": {
             "$ref": "#/components/schemas/EnergySourceForHeatingAndHotWater"
@@ -2772,7 +2795,8 @@
             "type": "string"
           },
           "shareOfTotalRevenueInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -2792,6 +2816,7 @@
         "properties": {
           "listOfProducts": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/SmeProduct"
             }
@@ -2802,13 +2827,15 @@
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "addressOfProductionSite": {
             "$ref": "#/components/schemas/Address"
           },
           "shareOfTotalRevenueInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -2817,6 +2844,7 @@
         "properties": {
           "listOfProductionSites": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/SmeProductionSite"
             }
@@ -2863,10 +2891,12 @@
           },
           "reportDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "currency": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -2881,10 +2911,12 @@
           },
           "page": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "nullable": true
           },
           "tagName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -2901,7 +2933,8 @@
             "$ref": "#/components/schemas/CompanyReportReference"
           },
           "comment": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "value": {
             "$ref": "#/components/schemas/YesNo"
@@ -2921,13 +2954,16 @@
             "$ref": "#/components/schemas/CompanyReportReference"
           },
           "comment": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "value": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "unit": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -3196,7 +3232,8 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
-            }
+            },
+            "nullable": true
           },
           "scopeOfEntities": {
             "$ref": "#/components/schemas/YesNoNa"
@@ -3428,13 +3465,16 @@
         "type": "object",
         "properties": {
           "energyMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "ccsTechnologyAdoptionInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "electrificationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3442,7 +3482,8 @@
         "type": "object",
         "properties": {
           "useOfRenewableFeedstocksInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3464,10 +3505,12 @@
         "type": "object",
         "properties": {
           "productionSiteEnergyConsumption": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "energyMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3475,10 +3518,12 @@
         "type": "object",
         "properties": {
           "materialUseManagementInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "useOfSecondaryMaterialsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3486,11 +3531,13 @@
         "type": "object",
         "properties": {
           "driveMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "icAndHybridEnginePhaseOutDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "futureValueCreationStrategy": {
             "$ref": "#/components/schemas/YesNo"
@@ -3515,16 +3562,20 @@
         "type": "object",
         "properties": {
           "energyMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "fuelMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "thermalEnergyEfficiencyInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "compositionOfThermalInputInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3532,10 +3583,12 @@
         "type": "object",
         "properties": {
           "clinkerFactorReduction": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "preCalcinedClayUsageInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "circularEconomyContribution": {
             "$ref": "#/components/schemas/YesNo"
@@ -3549,7 +3602,8 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "electrificationOfProcessHeatInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3576,21 +3630,26 @@
         "type": "object",
         "properties": {
           "electricityMixEmissions": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "shareOfRenewableElectricityInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "naturalGasPhaseOut": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "coalPhaseOut": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "storageCapacityExpansionInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3598,16 +3657,20 @@
         "type": "object",
         "properties": {
           "absoluteEmissions": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "relativeEmissionsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "reductionOfAbsoluteEmissions": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "reductionOfRelativeEmissionsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "climateActionPlan": {
             "$ref": "#/components/schemas/YesNo"
@@ -3632,7 +3695,8 @@
         "type": "object",
         "properties": {
           "fuelMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3640,11 +3704,13 @@
         "type": "object",
         "properties": {
           "driveMixPerFleetSegment": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "icePhaseOut": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -3697,13 +3763,16 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "parisCompatibilityInExecutiveRemunerationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "parisCompatibilityInAverageRemunerationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "shareOfEmployeesTrainedOnParisCompatibilityInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "qualificationRequirementsOnParisCompatibility": {
             "$ref": "#/components/schemas/YesNo"
@@ -3743,10 +3812,12 @@
         "type": "object",
         "properties": {
           "energyMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "electrificationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3754,16 +3825,20 @@
         "type": "object",
         "properties": {
           "useOfRenewableFeedstocksInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "useOfBioplasticsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "carbonCaptureAndUseStorageTechnologies": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3774,10 +3849,12 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "materialRecyclingInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "chemicalRecyclingInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3788,13 +3865,16 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "capexShareInNetZeroSolutionsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "capexShareInGhgIntensivePlantsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3819,25 +3899,31 @@
         "type": "object",
         "properties": {
           "ownFeedInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "externalFeedCertification": {
             "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "originOfExternalFeed": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "excessNitrogen": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "cropRotation": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "climateFriendlyProteinProductionInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "greenFodderInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3845,7 +3931,8 @@
         "type": "object",
         "properties": {
           "mortalityRateInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3853,10 +3940,12 @@
         "type": "object",
         "properties": {
           "compostedFermentedManureInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "emissionProofFertiliserStorageInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3864,13 +3953,16 @@
         "type": "object",
         "properties": {
           "renewableElectricityInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "renewableHeatingInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "electricGasPoweredMachineryVehicleInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3892,13 +3984,16 @@
         "type": "object",
         "properties": {
           "buildingSpecificRefurbishmentRoadmapInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "zeroEmissionBuildingShareInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "buildingEnergyEfficiency": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3906,7 +4001,8 @@
         "type": "object",
         "properties": {
           "renewableHeatingInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3941,7 +4037,8 @@
         "type": "object",
         "properties": {
           "emissionIntensityOfElectricity": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "greenHydrogenUsage": {
             "$ref": "#/components/schemas/YesNo"
@@ -3952,10 +4049,12 @@
         "type": "object",
         "properties": {
           "blastFurnacePhaseOutInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "lowCarbonSteelScaleUpInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -4111,7 +4210,8 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "persistentOrganicPollutantsUsed": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "persistentOrganicPollutantsProductionAndUseRiskOfExposure": {
             "$ref": "#/components/schemas/YesNo"
@@ -4184,16 +4284,19 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "groupOfCompaniesName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "industry": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "numberOfEmployees": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "seasonalOrMigrantWorkers": {
             "$ref": "#/components/schemas/YesNo"
@@ -4202,13 +4305,16 @@
             "$ref": "#/components/schemas/ShareOfTemporaryWorkers"
           },
           "annualTotalRevenue": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "totalRevenueCurrency": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "fixedAndWorkingCapital": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -4219,19 +4325,22 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "capacity": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "productionViaSubcontracting": {
             "$ref": "#/components/schemas/YesNo"
           },
           "subcontractingCompaniesCountries": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "subcontractingCompaniesIndustries": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -4241,6 +4350,7 @@
           },
           "listOfProductionSites": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/LksgProductionSite"
             }
@@ -4258,6 +4368,7 @@
         "properties": {
           "mostImportantProducts": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/LksgProduct"
             }
@@ -4267,6 +4378,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/LksgProcurementCategory"
             },
+            "nullable": true,
             "example": {
               "Products": {
                 "procuredProductTypesAndServicesNaceCodes": [
@@ -4356,7 +4468,8 @@
             "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "additionalAudits": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "codeOfConduct": {
             "$ref": "#/components/schemas/BaseDataPointYesNo"
@@ -4371,7 +4484,8 @@
             "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "humanRightsStrategy": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "environmentalImpactPolicy": {
             "$ref": "#/components/schemas/BaseDataPointYesNo"
@@ -4400,19 +4514,22 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "humanRightsViolations": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "humanRightsViolationAction": {
             "$ref": "#/components/schemas/YesNo"
           },
           "humanRightsViolationActionMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "highRiskCountriesRawMaterials": {
             "$ref": "#/components/schemas/YesNo"
           },
           "highRiskCountriesRawMaterialsLocation": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -4422,6 +4539,7 @@
           },
           "highRiskCountries": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -4431,6 +4549,7 @@
           },
           "highRiskCountriesProcurementName": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -4459,16 +4578,19 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "complaintsNumber": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "complaintsReason": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "actionsForComplaintsUndertaken": {
             "$ref": "#/components/schemas/YesNo"
           },
           "whichActionsForComplaintsUndertaken": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "publicAccessToGrievanceHandling": {
             "$ref": "#/components/schemas/YesNo"
@@ -4494,13 +4616,15 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "identifiedRisks": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "counteractingMeasures": {
             "$ref": "#/components/schemas/YesNo"
           },
           "whichCounteractingMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "regulatedRiskManagementResponsibility": {
             "$ref": "#/components/schemas/YesNo"
@@ -4533,10 +4657,12 @@
             "additionalProperties": {
               "type": "integer",
               "format": "int32"
-            }
+            },
+            "nullable": true
           },
           "shareOfTotalProcurementInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         },
         "example": {
@@ -4580,12 +4706,14 @@
           },
           "productionSteps": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "relatedCorporateSupplyChain": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4596,13 +4724,15 @@
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "addressOfProductionSite": {
             "$ref": "#/components/schemas/Address"
           },
           "listOfGoodsOrServices": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -4663,7 +4793,8 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "worstFormsOfChildLaborForms": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "measuresForPreventionOfEmploymentUnderLocalMinimumAge": {
             "$ref": "#/components/schemas/YesNo"
@@ -4684,7 +4815,8 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "additionalChildLaborMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4737,7 +4869,8 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "waterSavingMeasuresName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "pipeMaintaining": {
             "$ref": "#/components/schemas/YesNo"
@@ -4746,7 +4879,8 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "contaminationMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4757,7 +4891,8 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "employeeRepresentationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "discriminationForTradeUnionMembers": {
             "$ref": "#/components/schemas/YesNo"
@@ -4845,7 +4980,8 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "forcedLaborAndSlaveryPreventionPractices": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "forcedLaborPreventionPolicy": {
             "$ref": "#/components/schemas/BaseDataPointYesNo"
@@ -4869,7 +5005,8 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "forcedLaborAndSlaveryPreventionMeasuresOther": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4903,13 +5040,15 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "unlawfulEvictionAndTakingOfLandRisk": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "unlawfulEvictionAndTakingOfLandStrategies": {
             "$ref": "#/components/schemas/YesNo"
           },
           "unlawfulEvictionAndTakingOfLandStrategiesName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": {
             "$ref": "#/components/schemas/YesNo"
@@ -4938,7 +5077,8 @@
             "$ref": "#/components/schemas/YesNoNa"
           },
           "useOfPrivatePublicSecurityForcesMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4967,7 +5107,8 @@
             "$ref": "#/components/schemas/YesNoNa"
           },
           "adequateWageMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -5104,10 +5245,12 @@
         "type": "object",
         "properties": {
           "amount": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "currency": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -5126,7 +5269,8 @@
             ]
           },
           "provider": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "dataSource": {
             "$ref": "#/components/schemas/CompanyReportReference"
@@ -5160,6 +5304,7 @@
           },
           "naceCodes": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -5177,6 +5322,7 @@
           },
           "naceCodes": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -5185,22 +5331,28 @@
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "substantialContributionToClimateChangeMitigationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToClimateChangeAdaptionInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "dnshToClimateChangeMitigation": {
             "$ref": "#/components/schemas/YesNo"
@@ -5259,6 +5411,7 @@
           },
           "nonAlignedActivities": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/EuTaxonomyActivity"
             }
@@ -5267,34 +5420,43 @@
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "substantialContributionToClimateChangeMitigationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToClimateChangeAdaptionInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "alignedActivities": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
             }
           },
           "enablingShareInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "transitionalShareInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -5306,7 +5468,8 @@
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "scopeOfEntities": {
             "$ref": "#/components/schemas/YesNoNa"
@@ -5321,13 +5484,15 @@
             "$ref": "#/components/schemas/AssuranceData"
           },
           "numberOfEmployees": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "referencedReports": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
-            }
+            },
+            "nullable": true
           }
         }
       },
@@ -5335,7 +5500,8 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "absoluteShare": {
             "$ref": "#/components/schemas/AmountWithCurrency"
@@ -5391,10 +5557,12 @@
             "$ref": "#/components/schemas/CompanyReportReference"
           },
           "comment": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "value": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -5469,6 +5637,7 @@
         "properties": {
           "financialServicesTypes": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string",
               "enum": [
@@ -5484,6 +5653,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/EligibilityKpis"
             },
+            "nullable": true,
             "example": {
               "CreditInstitution": {
                 "taxonomyEligibleActivity": {
@@ -5545,7 +5715,8 @@
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "scopeOfEntities": {
             "$ref": "#/components/schemas/YesNoNa"
@@ -5560,13 +5731,15 @@
             "$ref": "#/components/schemas/AssuranceData"
           },
           "numberOfEmployees": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "referencedReports": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
-            }
+            },
+            "nullable": true
           }
         }
       },
@@ -5590,25 +5763,31 @@
         "type": "object",
         "properties": {
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "companyAlternativeNames": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "companyLegalForm": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "headquartersPostalCode": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "sector": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "identifiers": {
             "type": "object",
@@ -5624,6 +5803,7 @@
                 "example": "{\"Lei\":[\"ExampleLei\"]}"
               }
             },
+            "nullable": true,
             "example": {
               "Lei": [
                 "ExampleLei"
@@ -5631,16 +5811,20 @@
             }
           },
           "countryCode": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "website": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "teaserCompany": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "isTeaserCompany": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -5788,10 +5972,12 @@
         "type": "object",
         "properties": {
           "href": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "templated": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
