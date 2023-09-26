@@ -8,25 +8,22 @@ import org.springframework.stereotype.Component
 @Component
 class NullableIfNotRequiredOpenApiCustomizer : OpenApiCustomizer {
     override fun customise(openApi: OpenAPI) {
-        for (schema in openApi.components.schemas.values) {
+        openApi.components.schemas.values.forEach { schema ->
             if (schema.properties == null) {
-                continue
+                return@forEach
             }
             (schema.properties as Map<String?, Schema<*>>).forEach { (name: String?, value: Schema<*>) ->
                 if (schema.required == null || !schema.required.contains(name)) {
-//                    val prefix = "#/components/schemas"
-//                    if(value.`$ref` != null &&
-//                        value.`$ref`.split("/").dropLast(1).joinToString("/") == prefix) {
-//                        println(value.`$ref`)
-//                        (schema.properties as Map<String?, Schema<*>>).filterKeys {
-//                            it == value.`$ref`.split("/").last()
-//                        }.forEach {
-//                            println("NULL ${value.`$ref`}")
-//                            it.value.nullable = true
-//                        }
-//                    } else {
+                    val prefix = "#/components/schemas"
+                    if(value.`$ref` != null && value.`$ref`.split("/").dropLast(1).joinToString("/") == prefix) {
+                        println(value.`$ref`)
+                        val ref = value.`$ref`
+                        value.`$ref` = null
                         value.nullable = true
-//                    }
+                        value.allOf(listOf(Schema<Any>(value.specVersion).also { it.`$ref` = ref }))
+                    } else {
+                        value.nullable = true
+                    }
                 }
             }
         }
