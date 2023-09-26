@@ -8,15 +8,15 @@ import java.math.BigDecimal
  * Fields of the P2P questionnaire regarding emissions planning
  */
 data class P2pEmissionsPlanning(
-    val reductionOfAbsoluteEmissions: BigDecimal? = null,
-
     val absoluteEmissions: BigDecimal? = null,
 
+    val relativeEmissionsInPercent: BigDecimal? = null,
+
+    val reductionOfAbsoluteEmissions: BigDecimal? = null,
+
+    val reductionOfRelativeEmissionsInPercent: BigDecimal? = null,
+
     val climateActionPlan: YesNo? = null,
-
-    val reductionOfRelativeEmissions: BigDecimal? = null,
-
-    val relativeEmissions: BigDecimal? = null,
 
     val useOfInternalCarbonPrice: YesNo? = null,
 )

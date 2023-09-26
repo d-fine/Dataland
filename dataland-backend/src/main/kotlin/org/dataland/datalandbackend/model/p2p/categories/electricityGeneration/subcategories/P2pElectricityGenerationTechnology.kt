@@ -10,11 +10,11 @@ import java.time.LocalDate
 data class P2pElectricityGenerationTechnology(
     val electricityMixEmissions: BigDecimal? = null,
 
-    val shareOfRenewableElectricity: BigDecimal? = null,
+    val shareOfRenewableElectricityInPercent: BigDecimal? = null,
 
     val naturalGasPhaseOut: LocalDate? = null,
 
     val coalPhaseOut: LocalDate? = null,
 
-    val storageCapacityExpansion: BigDecimal? = null,
+    val storageCapacityExpansionInPercent: BigDecimal? = null,
 )

@@ -43,10 +43,10 @@ describeIf(
       });
       cy.get(".p-dialog").find(".p-dialog-header-icon").click();
       cy.get('td > [data-test="emissionsPlanning"]').click();
-      cy.contains(assertDefined(p2pFixtureForTest.t.general.emissionsPlanning?.relativeEmissions));
+      cy.contains(assertDefined(p2pFixtureForTest.t.general.emissionsPlanning?.relativeEmissionsInPercent));
       cy.contains("CEMENT").click();
       cy.contains("Material").click();
-      cy.contains(assertDefined(p2pFixtureForTest.t.cement?.material?.preCalcinedClayUsage).toFixed(0));
+      cy.contains(assertDefined(p2pFixtureForTest.t.cement?.material?.preCalcinedClayUsageInPercent).toFixed(0));
     }
 
     it("Create a company via api and upload a P2P dataset via the api", () => {

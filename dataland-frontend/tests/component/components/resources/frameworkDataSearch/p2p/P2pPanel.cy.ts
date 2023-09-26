@@ -91,9 +91,9 @@ describe("Component test for P2pPanel", () => {
 
     cy.get(`span[data-test=Ammonia]`).click();
 
-    cy.get("span[data-test=ccsTechnologyAdoption]").should("not.exist");
+    cy.get("span[data-test=ccsTechnologyAdoptionInPercent]").should("not.exist");
     toggleRowGroup("decarbonisation");
-    cy.get("span[data-test=ccsTechnologyAdoption]").should("exist");
+    cy.get("span[data-test=ccsTechnologyAdoptionInPercent]").should("exist");
 
     cy.get(`span[data-test="Livestock farming"]`).click();
     toggleRowGroup("animalFeed");
@@ -101,7 +101,7 @@ describe("Component test for P2pPanel", () => {
 
     cy.get(`span[data-test=Cement]`).click();
     toggleRowGroup("material");
-    cy.get("span[data-test=preCalcinedClayUsage]").should("exist");
+    cy.get("span[data-test=preCalcinedClayUsageInPercent]").should("exist");
 
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").should("contain.text", "Share of pre-calcined");

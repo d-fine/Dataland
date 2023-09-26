@@ -8,13 +8,13 @@ import java.math.BigDecimal
  * KPIs for all companies for the EuTaxonomyForFinancials framework
  */
 data class EligibilityKpis(
-    val taxonomyEligibleActivity: DataPointOneValue<BigDecimal>? = null,
+    val taxonomyEligibleActivityInPercent: DataPointOneValue<BigDecimal>? = null,
 
-    val taxonomyNonEligibleActivity: DataPointOneValue<BigDecimal>? = null,
+    val taxonomyNonEligibleActivityInPercent: DataPointOneValue<BigDecimal>? = null,
 
-    val derivatives: DataPointOneValue<BigDecimal>? = null,
+    val derivativesInPercent: DataPointOneValue<BigDecimal>? = null,
 
-    val banksAndIssuers: DataPointOneValue<BigDecimal>? = null,
+    val banksAndIssuersInPercent: DataPointOneValue<BigDecimal>? = null,
 
-    val investmentNonNfrd: DataPointOneValue<BigDecimal>? = null,
+    val investmentNonNfrdInPercent: DataPointOneValue<BigDecimal>? = null,
 )

@@ -28,7 +28,7 @@ export function generateCurrencyValue(min = 0, max = 1e10, precision = 1e-2): nu
  * @returns a random float between 0 and 1
  */
 export function generatePercentageValue(precision = 1e-4): number {
-  return generateFloat(0, 1, precision);
+  return generateFloat(0, 100, precision);
 }
 
 /**

@@ -35,6 +35,7 @@ import { smeModalColumnHeaders } from "@/components/resources/frameworkDataSearc
 import { convertToMillions } from "@/utils/NumberConversionUtils";
 import { convertNace } from "@/utils/NaceCodeConverter";
 import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
+import { formatPercentageNumberAsString } from "@/utils/Formatter";
 
 export default defineComponent({
   name: "SmePanel",
@@ -130,8 +131,8 @@ export default defineComponent({
         return listOfProductionSites.map((productionSite) => ({
           nameOfProductionSite: productionSite.nameOfProductionSite,
           addressOfProductionSite: productionSite.addressOfProductionSite,
-          percentageOfTotalRevenue: productionSite.percentageOfTotalRevenue
-            ? `${productionSite.percentageOfTotalRevenue} %`
+          shareOfTotalRevenueInPercent: productionSite.shareOfTotalRevenueInPercent
+            ? formatPercentageNumberAsString(productionSite.shareOfTotalRevenueInPercent)
             : undefined,
         }));
       } else if (field.name == "sector") {
@@ -140,8 +141,8 @@ export default defineComponent({
         const listOfProducts = value as SmeProduct[];
         return listOfProducts.map((product) => ({
           name: product.name,
-          percentageOfTotalRevenue: product.percentageOfTotalRevenue
-            ? `${product.percentageOfTotalRevenue} %`
+          shareOfTotalRevenueInPercent: product.shareOfTotalRevenueInPercent
+            ? formatPercentageNumberAsString(product.shareOfTotalRevenueInPercent)
             : undefined,
         }));
       } else if (fieldsToConvertToMillions.includes(field.name)) {
