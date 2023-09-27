@@ -86,7 +86,7 @@
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
                             type="select"
-                            name="assurance"
+                            name="value"
                             placeholder="Please choose..."
                             :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
                             validation="required"
