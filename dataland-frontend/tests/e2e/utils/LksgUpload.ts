@@ -61,8 +61,11 @@ function selectYesOnAllFieldsBrowser(win: Window): boolean {
 function selectANaceCode(fieldName: string): void {
   cy.get(`div[data-test='${fieldName}'] input`).click();
 
+  cy.get("button.p-tree-toggler.p-link").eq(0).click();
+  cy.get("button.p-tree-toggler.p-link").eq(1).click();
+  cy.get("button.p-tree-toggler.p-link").eq(2).click();
   cy.get(".p-treenode-label")
-    .contains("A - AGRICULTURE, FORESTRY AND FISHING")
+    .contains("01.12 - Growing of rice")
     .parents(".p-treenode-label")
     .last()
     .find("div.p-checkbox-box")
@@ -113,12 +116,12 @@ function testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite(): void
  * Fills out all required LKsG fields that are NOT Yes/No/(Na) fields
  */
 function fillRequiredLksgFieldsWithDummyData(): void {
+  selectANaceCode("industry");
+  selectANaceCode("subcontractingCompaniesIndustries");
+
   selectACountryInMultiselect("subcontractingCompaniesCountries");
   selectACountryInMultiselect("highRiskCountries");
   selectACountryInMultiselect("highRiskCountriesRawMaterialsLocation");
-
-  selectANaceCode("industry");
-  selectANaceCode("subcontractingCompaniesIndustries");
 
   cy.get('div[data-test="shareOfTemporaryWorkers"]').find('input[value="Smaller10"]').click().should("be.checked");
   cy.get('div[data-test="market"]').find('input[value="International"]').click().should("be.checked");
