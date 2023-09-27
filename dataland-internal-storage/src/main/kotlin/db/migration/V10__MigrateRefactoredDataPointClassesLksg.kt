@@ -71,20 +71,6 @@ class V10__MigrateRefactoredDataPointClassesLksg {
             socialCategoryObject,
             "unequalTreatmentOfEmployment", "fairAndEthicalRecruitmentPolicy",
         )
-        /**
-         val childLaborCategory = socialCategoryObject.getOrJavaNull("childLabor") ?: return
-         childLaborCategory as JSONObject
-         val childLaborPreventionPolicyObject = childLaborCategory
-         .getOrJavaNull("childLaborPreventionPolicy") ?: return
-         migrateSingleDataSourceObjectFormParentObject(childLaborPreventionPolicyObject as JSONObject)
-
-         val unequalTreatmentOfEmploymentCategory = socialCategoryObject
-         .getOrJavaNull("unequalTreatmentOfEmployment") ?: return
-         unequalTreatmentOfEmploymentCategory as JSONObject
-         val fairAndEthicalRecruitmentPolicyObject = unequalTreatmentOfEmploymentCategory
-         .getOrJavaNull("fairAndEthicalRecruitmentPolicy") ?: return
-         migrateSingleDataSourceObjectFormParentObject(fairAndEthicalRecruitmentPolicyObject as JSONObject)
-         */
     }
 
     private fun enterSubSubcategoriesAndTriggerMigration(
