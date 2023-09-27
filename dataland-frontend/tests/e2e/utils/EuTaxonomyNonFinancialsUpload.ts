@@ -48,21 +48,21 @@ export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(assuranceRep
   cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
   cy.get('input[name="numberOfEmployees"]').clear().type("333");
   cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
-  cy.get('select[name="assurance"]').select(1);
+  cy.get('select[name="value"]').select(1);
   cy.get('input[name="provider"]').type("Some Assurance Provider Company");
-  cy.get('select[name="report"]').eq(0).select(assuranceReportName);
+  cy.get('select[name="fileName"]').eq(0).select(assuranceReportName);
   cy.get('input[name="page"]').eq(0).type("-13");
   cy.get('em[title="Assurance"]').click();
   cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
   cy.get('input[name="page"]').eq(0).clear().type("1");
   cy.get('div[name="revenue"]').within(() => {
     cy.get('input[name="value"]').type("250700");
-    cy.get('select[name="unit"]').select(1);
+    cy.get('select[data-test="datapoint-currency"]').select(1);
     cy.get('select[name="quality"]').select(1);
   });
   cy.get('div[name="capex"]').within(() => {
     cy.get('input[name="value"]').type("450700");
-    cy.get('select[name="unit"]').select(10);
+    cy.get('select[data-test="datapoint-currency"]').select(10);
     cy.get('select[name="quality"]').select(1);
   });
 }

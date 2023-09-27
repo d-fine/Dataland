@@ -92,10 +92,10 @@ describeIf(
       );
       uploadDocuments.fillAllFormsOfReportsSelectedForUpload();
       cy.get('div[name="capex"]').within(() => {
-        cy.get('select[name="report"]').select(differentFileNameForSameFile);
+        cy.get('select[name="fileName"]').select(differentFileNameForSameFile);
       });
       cy.get('div[name="opex"]').within(() => {
-        cy.get('select[name="report"]').select(`${TEST_PDF_FILE_NAME}2`);
+        cy.get('select[name="fileName"]').select(`${TEST_PDF_FILE_NAME}2`);
       });
       cy.intercept({ url: `**/documents/*`, method: "HEAD", times: 1 }).as("documentExists");
       cy.intercept(`**/documents/`, cy.spy().as("postDocument"));
@@ -126,10 +126,10 @@ describeIf(
             uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
             fillAndValidateEuTaxonomyForNonFinancialsUploadForm(`${TEST_PDF_FILE_NAME}2`);
             cy.get('div[name="revenue"]').within(() => {
-              cy.get('select[name="report"]').select(TEST_PDF_FILE_NAME);
+              cy.get('select[name="fileName"]').select(TEST_PDF_FILE_NAME);
             });
             cy.get('div[name="capex"]').within(() => {
-              cy.get('select[name="report"]').select(`${TEST_PDF_FILE_NAME}2`);
+              cy.get('select[name="fileName"]').select(`${TEST_PDF_FILE_NAME}2`);
             });
             cy.intercept({ method: "POST", url: `**/api/data/**`, times: 1 }, (request) => {
               const data = assertDefined(request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data;
