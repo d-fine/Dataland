@@ -48,30 +48,35 @@ const brandsSection = computed(() => {
   padding: 120px 0;
   align-items: center;
   &__wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 1288px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 32px;
+    max-width: 1440px;
     width: 100%;
-    gap: 113px;
+    padding: 0 32px;
   }
   h2 {
+    grid-column: 3 / 15;
     font-size: 160px;
     font-style: normal;
     font-weight: 600;
     line-height: 160px; /* 100% */
     max-width: 1017px;
     margin: 0;
+    transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
     span {
-      color: #ff6813;
+      color: var(--primary-orange);
     }
   }
 
   &__tiles {
+    grid-column: 2 / 16;
     display: flex;
-    justify-content: space-between;
-    width: 100%;
+    justify-content: center; // centers the tiles
     gap: 32px;
+    width: 100%;
   }
 
   &__tile {
@@ -111,6 +116,7 @@ const brandsSection = computed(() => {
     }
   }
   &__button {
+    grid-column: span 16;
     display: inline-block;
     padding: 14px 32px;
     font-size: 16px;
@@ -121,17 +127,36 @@ const brandsSection = computed(() => {
     text-transform: uppercase;
     border-radius: 32px;
     text-align: center;
+    width: fit-content;
+    margin: 0 auto;
     cursor: pointer;
     text-decoration: none;
     &--black {
-      background-color: #1b1b1b;
-      border: 2px solid #1b1b1b;
+      background-color: var(--basic-dark);
+      border: 2px solid var(--basic-dark);
       color: white;
     }
 
     &:hover {
       background-color: transparent;
-      color: #1b1b1b;
+      color: var(--basic-dark);
+    }
+  }
+}
+@media only screen and (max-width: $large) {
+  .mission {
+    h2 {
+      font-size: 100px;
+      font-weight: 700;
+      line-height: 106px; /* 106% */
+      letter-spacing: 0.25px;
+      max-width: 809px;
+    }
+    &__text {
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 48px; /* 120% */
+      letter-spacing: 0.25px;
     }
   }
 }

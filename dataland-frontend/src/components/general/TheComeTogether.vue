@@ -40,23 +40,29 @@ const comeTogetherSection = computed(() => {
   flex-direction: column;
   align-items: center;
   padding: 140px 0 80px;
-  background-color: #1f1f1f;
+  background-color: var(--basic-dark);
 
   &__wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 48px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 32px;
+    max-width: 1440px;
+    width: 100%;
+    padding: 0 32px;
   }
 
   &__title {
-    font-size: 4rem;
+    font-size: 64px;
     font-style: normal;
     font-weight: 700;
-    line-height: 4.875rem; /* 121.875% */
+    line-height: 78px;
     text-align: left;
-    max-width: 672px;
     margin: 0;
     color: var(--default-neutral-white);
+    grid-column: 4 / 11;
+    transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
     span {
       color: var(--grey-tones-400);
     }
@@ -67,6 +73,7 @@ const comeTogetherSection = computed(() => {
     grid-template-columns: repeat(4, 1fr);
     align-self: flex-end;
     gap: 32px;
+    grid-column: 4 / 16;
   }
   &__row {
     border: 1px solid rgba(244, 244, 244, 0.33);
@@ -106,6 +113,28 @@ const comeTogetherSection = computed(() => {
     letter-spacing: 0.25px;
     text-align: right;
     color: var(--primary-orange);
+    grid-column: 4/16;
+  }
+}
+
+@media only screen and (max-width: $large) {
+  .cometogether {
+    &__title {
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 56px; /* 116.667% */
+      letter-spacing: 0.25px;
+    }
+    &__row {
+      padding: 46px 24px;
+    }
+    &__cell {
+      &--icon {
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 48px;
+      }
+    }
   }
 }
 </style>

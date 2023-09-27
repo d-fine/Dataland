@@ -28,8 +28,12 @@ const claimSection = computed(() => {
   justify-content: center;
   align-items: center;
   &__wrapper {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 32px;
+    max-width: 1440px;
     width: 100%;
-    max-width: 1109px;
+    padding: 0 32px;
     margin: 140px auto 21px;
   }
   h2 {
@@ -37,10 +41,27 @@ const claimSection = computed(() => {
     font-style: normal;
     font-weight: 600;
     line-height: 160px; /* 100% */
-    margin: 0 108px;
-
+    grid-column: 3/15;
+    transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
     span {
-      color: #ff6813;
+      color: var(--primary-orange);
+    }
+  }
+}
+@media only screen and (max-width: $large) {
+  .claim {
+    &__wrapper {
+      margin-bottom: 0;
+      h2 {
+        font-size: 100px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 106px; /* 106% */
+        letter-spacing: 0.25px;
+        margin-bottom: 0;
+      }
     }
   }
 }

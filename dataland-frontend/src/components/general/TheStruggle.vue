@@ -31,22 +31,31 @@ const struggleSection = computed(() => {
   background-color: var(--grey-tones-100);
   gap: 68px;
   &__wrapper {
-    max-width: 840px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 32px;
+    max-width: 1440px;
     width: 100%;
+    padding: 32px;
   }
   h2 {
+    grid-column: 4 / 14;
     font-size: 64px;
     font-style: normal;
     font-weight: 700;
     line-height: 78px; /* 121.875% */
     margin: 0 0 68px;
     text-align: left;
+    transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
   }
 
   &__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 48px 32px;
+    grid-column: 4 / 14;
   }
 
   &__cell {
@@ -62,11 +71,12 @@ const struggleSection = computed(() => {
     }
 
     &__title {
-      font-size: 24px;
+      font-size: 32px;
       font-style: normal;
       font-weight: 600;
-      line-height: 32px; /* 133.333% */
+      line-height: 40px; /* 125% */
       letter-spacing: 0.25px;
+
       margin: 0 0 8px;
     }
 
@@ -79,6 +89,23 @@ const struggleSection = computed(() => {
       color: #5b5b5b;
       text-align: left;
       margin: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: $large) {
+  .struggle {
+    h2 {
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 56px; /* 116.667% */
+      letter-spacing: 0.25px;
+    }
+    &__cell {
+      &__icon {
+        width: 40px;
+        height: 40px;
+      }
     }
   }
 }

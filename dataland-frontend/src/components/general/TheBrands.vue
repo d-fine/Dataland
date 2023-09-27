@@ -57,6 +57,9 @@ const brandsSection = computed(() => {
     line-height: 78px; /* 121.875% */
     text-align: left;
     margin: 0 0 40px;
+    transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
     span {
       color: var(--grey-tones-400);
     }
@@ -82,16 +85,25 @@ const brandsSection = computed(() => {
         max-width: 200px;
         height: auto;
       }
-      &-image--0 {
-        fill: #373d41;
-      }
       &:hover {
         background: #ffebe0;
 
         .brands__item-image {
-          fill: #f56a01;
+          filter: invert(42%) sepia(68%) saturate(3014%) hue-rotate(8deg) brightness(103%) contrast(99%);
         }
       }
+    }
+  }
+}
+
+@media only screen and (max-width: $large) {
+  .brands {
+    &__text {
+      font-size: 48px;
+      max-width: 888px;
+      font-weight: 600;
+      line-height: 56px; /* 116.667% */
+      letter-spacing: 0.25px;
     }
   }
 }

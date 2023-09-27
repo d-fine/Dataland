@@ -36,11 +36,11 @@
                         "by top companies"
                     ],
                     "image": [
-                        "/src/assets/images/logos/brands_deka.svg",
-                        "/src/assets/images/logos/brands_ampega.svg",
+                        "/src/assets/images/logos/brands_deka.png",
+                        "/src/assets/images/logos/brands_ampega.png",
                         "/src/assets/images/logos/brands_chom.png",
-                        "/src/assets/images/logos/brands_metzler.svg",
-                        "/src/assets/images/logos/brands_fuerstlich.svg"
+                        "/src/assets/images/logos/brands_metzler.png",
+                        "/src/assets/images/logos/brands_fuerstlich.png"
                     ]
                 },
                 {
@@ -120,7 +120,7 @@
                 {
                     "title": "Claim",
                     "text": [
-                        "In Dataland ",
+                        "In Dataland, ",
                         "you",
                         " have the power."
                     ],

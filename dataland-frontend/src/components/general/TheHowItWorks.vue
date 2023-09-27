@@ -1,5 +1,5 @@
 <template>
-  <section class="howitworks" role="region" aria-labelledby="howitworks-heading">
+  <section v-if="howItWorksSection" class="howitworks" role="region" aria-labelledby="howitworks-heading">
     <div class="howitworks__wrapper">
       <h2 id="howitworks-heading" class="howitworks__title">
         {{ sectionText }}
@@ -235,7 +235,7 @@ onUnmounted(() => {
     }
   }
 }
-@media (max-width: 1799px) {
+@media (max-width: $extra-large) {
   .howitworks {
     &__slides {
       max-width: 1273px;
@@ -248,6 +248,32 @@ onUnmounted(() => {
       max-width: 1273px;
       padding-right: 789px;
       justify-content: flex-start;
+    }
+  }
+}
+@media only screen and (max-width: $large) {
+  .howitworks {
+    &__wrapper {
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      gap: 32px;
+      max-width: 1440px;
+      width: 100%;
+      padding: 0 32px;
+    }
+    &__title {
+      grid-column: 4 / 9;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 56px; /* 116.667% */
+      letter-spacing: 0.25px;
+      color: var(--default-neutral-white);
+      max-width: unset;
+      padding-right: unset;
+    }
+    &__slides,
+    &__arrows {
+      grid-column: 4 / 16;
     }
   }
 }

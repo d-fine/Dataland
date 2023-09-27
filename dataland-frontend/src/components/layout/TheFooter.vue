@@ -44,7 +44,7 @@ const footerText = computed(() => {
   justify-content: space-between;
   background-color: #1b1b1b;
   color: #fff;
-  padding: 80px 120px;
+  padding: 80px 120px 140px;
 
   &__logo-img {
     margin-bottom: 32px;

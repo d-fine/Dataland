@@ -48,19 +48,23 @@ const campaignSection = computed(() => {
   padding: 140px 0 200px;
 
   &__wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 80px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 80px 32px;
+    max-width: 1440px;
+    width: 100%;
+    padding: 0 32px;
   }
 
   &__title {
-    font-size: 4rem;
+    font-size: 64px;
     font-style: normal;
     font-weight: 700;
-    line-height: 4.875rem; /* 121.875% */
-    text-align: left;
-    max-width: 672px;
-    margin: 0;
+    line-height: 78px;
+    grid-column: 4 / 10;
+    transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
     span {
       color: var(--grey-tones-400);
     }
@@ -76,6 +80,7 @@ const campaignSection = computed(() => {
     /* Glass Effect */
     box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(16px);
+    grid-column: 4 / 14;
   }
 
   &__row {
@@ -90,8 +95,7 @@ const campaignSection = computed(() => {
     font-weight: 400;
     line-height: normal;
     letter-spacing: 0.44px;
-    white-space: nowrap;
-    padding: 30px 24px;
+    padding: 30px 24px 24px;
     span {
       font-weight: 700;
     }
@@ -124,14 +128,14 @@ const campaignSection = computed(() => {
   }
 
   &__button {
-    padding: 14px 32px;
+    padding: 10px 24px;
     border-radius: 32px;
     background-color: var(--primary-orange);
     color: var(--default-neutral-white);
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
-    line-height: 20px;
+    line-height: 24px;
     letter-spacing: 0.75px;
     text-transform: uppercase;
     border: 2px solid var(--primary-orange);
@@ -139,6 +143,22 @@ const campaignSection = computed(() => {
     &:hover {
       background-color: var(--default-neutral-white);
       color: var(--basic-dark);
+    }
+  }
+}
+@media only screen and (max-width: $large) {
+  .campaigns {
+    padding-top: 80px;
+    &__wrapper {
+      gap: 58px 32px;
+    }
+    &__title {
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 56px; /* 116.667% */
+      letter-spacing: 0.25px;
+      grid-column: 4 / 12;
+      margin: 0;
     }
   }
 }
