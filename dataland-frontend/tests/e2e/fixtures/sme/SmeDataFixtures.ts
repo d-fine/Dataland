@@ -19,7 +19,7 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 /**
  * Generates a set number of SME fixtures
  * @param numFixtures the number of SME fixtures to generate
- * @param setMissingValuesToNull controls if missing values should be undefined or null
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
  * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a set number of SME fixtures
  */
@@ -36,7 +36,7 @@ export function generateSmeFixtures(
 
 /**
  * Generates a random SME dataset
- * @param setMissingValuesToNull controls if missing values should be undefined or null
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
  * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random SME dataset
  */

@@ -16,17 +16,17 @@ import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
- * @param setMissingValuesToNull controls if missing values should be undefined or null
- * @param missingProbability the probability (as number between 0 and 1) for "undefined"/"null" values in nullable fields
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
+ * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @returns the generated fixture
  */
 export function generateEuTaxonomyDataForNonFinancials(
   setMissingValuesToNull = true,
-  missingProbability = DEFAULT_PROBABILITY,
+  missingValueProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForNonFinancials {
-  const dataGenerator = new EuNonFinancialsGenerator(missingProbability, setMissingValuesToNull);
+  const dataGenerator = new EuNonFinancialsGenerator(missingValueProbability, setMissingValuesToNull);
   return {
-    general: generateEuTaxonomyWithBaseFields(dataGenerator.reports, setMissingValuesToNull, missingProbability),
+    general: generateEuTaxonomyWithBaseFields(dataGenerator.reports, setMissingValuesToNull, missingValueProbability),
     opex: dataGenerator.generateEuTaxonomyPerCashflowType(),
     capex: dataGenerator.generateEuTaxonomyPerCashflowType(),
     revenue: dataGenerator.generateEuTaxonomyPerCashflowType(),

@@ -23,17 +23,17 @@ import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 /**
  * Generates a set number of LKSG fixtures
  * @param numFixtures the number of lksg fixtures to generate
- * @param setMissingValuesToNull controls if missing values should be undefined or null
- * @param missingProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
+ * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @returns a set number of LKSG fixtures
  */
 export function generateLksgFixture(
   numFixtures: number,
   setMissingValuesToNull = true,
-  missingProbability = DEFAULT_PROBABILITY,
+  missingValueProbability = DEFAULT_PROBABILITY,
 ): FixtureData<LksgData>[] {
   return generateFixtureDataset<LksgData>(
-    () => generateLksgData(setMissingValuesToNull, missingProbability),
+    () => generateLksgData(setMissingValuesToNull, missingValueProbability),
     numFixtures,
     (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || generateReportingPeriod(),
   );
@@ -41,18 +41,18 @@ export function generateLksgFixture(
 
 /**
  * Generates a random production site
- * @param setMissingValuesToNull controls if missing values should be undefined or null
- * @param missingProbability the probability (as number between 0 and 1) for "undefined"/"null" values in nullable fields
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
+ * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @returns a random production site
  */
 export function generateProductionSite(
   setMissingValuesToNull: boolean,
-  missingProbability = DEFAULT_PROBABILITY,
+  missingValueProbability = DEFAULT_PROBABILITY,
 ): LksgProductionSite {
   return {
-    nameOfProductionSite: valueOrUndefined(faker.company.name(), missingProbability),
-    addressOfProductionSite: generateAddress(missingProbability, setMissingValuesToNull),
-    listOfGoodsOrServices: valueOrUndefined(generateListOfGoodsOrServices(), missingProbability),
+    nameOfProductionSite: valueOrUndefined(faker.company.name(), missingValueProbability),
+    addressOfProductionSite: generateAddress(missingValueProbability, setMissingValuesToNull),
+    listOfGoodsOrServices: valueOrUndefined(generateListOfGoodsOrServices(), missingValueProbability),
   };
 }
 
@@ -66,12 +66,12 @@ function generateListOfGoodsOrServices(): string[] {
 
 /**
  * Generates a random LKSG dataset
- * @param setMissingValuesToNull controls if missing values should be undefined or null
- * @param missingProbability the probability (as number between 0 and 1) for "undefined"/"null" values in nullable fields
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
+ * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @returns a random LKSG dataset
  */
-export function generateLksgData(setMissingValuesToNull: boolean, missingProbability = DEFAULT_PROBABILITY): LksgData {
-  const dataGenerator = new LksgGenerator(missingProbability, setMissingValuesToNull);
+export function generateLksgData(setMissingValuesToNull: boolean, missingValueProbability = DEFAULT_PROBABILITY): LksgData {
+  const dataGenerator = new LksgGenerator(missingValueProbability, setMissingValuesToNull);
   return {
     general: {
       masterData: {
@@ -97,7 +97,7 @@ export function generateLksgData(setMissingValuesToNull: boolean, missingProbabi
         subcontractingCompaniesIndustries: dataGenerator.valueOrMissing(generateNaceCodes()),
         productionSites: dataGenerator.randomYesNo(),
         listOfProductionSites: dataGenerator.randomArray(() =>
-          generateProductionSite(setMissingValuesToNull, missingProbability),
+          generateProductionSite(setMissingValuesToNull, missingValueProbability),
         ),
         market: dataGenerator.randomNationalOrInternationalMarket(),
         specificProcurement: dataGenerator.randomYesNo(),

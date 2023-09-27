@@ -14,15 +14,15 @@ import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single eutaxonomy-financials fixture
- * @param setMissingValuesToNull controls if missing values should be undefined or null
- * @param missingProbability the probability (as number between 0 and 1) for "undefined"/"null" values in nullable fields
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
+ * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @returns a random eutaxonomy-financials fixture
  */
 export function generateEuTaxonomyDataForFinancials(
   setMissingValuesToNull = true,
-  missingProbability = DEFAULT_PROBABILITY,
+  missingValueProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForFinancials {
-  const dataGenerator = new EuFinancialsGenerator(missingProbability, setMissingValuesToNull);
+  const dataGenerator = new EuFinancialsGenerator(missingValueProbability, setMissingValuesToNull);
   return dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes();
 }
 

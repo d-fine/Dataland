@@ -6,7 +6,7 @@ import { pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureU
 /**
  * Generates random assurance data
  * @param reports the reports that can be referenced as data sources
- * @param setMissingValuesToNull controls if missing values should be undefined or null
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
  * @returns random assurance data
  */
 export function generateAssuranceData(reports: ReferencedDocuments, setMissingValuesToNull: boolean): AssuranceData {
