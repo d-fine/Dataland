@@ -6,7 +6,7 @@ import {
 } from "@e2e/fixtures/common/DataPointFixtures";
 import { type ReferencedDocuments, generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
-import {DocumentReference, type YesNo, type YesNoNa} from "@clients/backend";
+import { type DocumentReference, type YesNo, type YesNoNa } from "@clients/backend";
 import { generateCurrencyValue, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 
@@ -69,7 +69,7 @@ export class Generator {
   }
 
   missingValue(): undefined | null {
-    return this.setMissingValuesToNull ? null : undefined
+    return this.setMissingValuesToNull ? null : undefined;
   }
 
   randomYesNo(): YesNo | undefined | null {
@@ -93,11 +93,12 @@ export class Generator {
   }
 
   randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | undefined | null {
-    const randomDocument = this.valueOrMissing(pickOneElement(
-      Object.values(this.documents).filter((document) =>
-        "name" in document && "reference" in document
-      ).map((document) => document as DocumentReference)
-      )
+    const randomDocument = this.valueOrMissing(
+      pickOneElement(
+        Object.values(this.documents)
+          .filter((document) => "name" in document && "reference" in document)
+          .map((document) => document as DocumentReference),
+      ),
     );
     return this.valueOrMissing({ value: input, dataSource: randomDocument });
   }

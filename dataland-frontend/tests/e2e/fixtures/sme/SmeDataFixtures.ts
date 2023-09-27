@@ -25,10 +25,13 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
  */
 export function generateSmeFixtures(
   numFixtures: number,
-  setMissingValuesToNull: boolean = true,
+  setMissingValuesToNull = true,
   undefinedProbability = DEFAULT_PROBABILITY,
 ): FixtureData<SmeData>[] {
-  return generateFixtureDataset<SmeData>(() => generateSmeData(setMissingValuesToNull, undefinedProbability), numFixtures);
+  return generateFixtureDataset<SmeData>(
+    () => generateSmeData(setMissingValuesToNull, undefinedProbability),
+    numFixtures,
+  );
 }
 
 /**
@@ -37,10 +40,7 @@ export function generateSmeFixtures(
  * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
  * @returns a random SME dataset
  */
-export function generateSmeData(
-  setMissingValuesToNull: boolean,
-  undefinedProbability = DEFAULT_PROBABILITY
-): SmeData {
+export function generateSmeData(setMissingValuesToNull: boolean, undefinedProbability = DEFAULT_PROBABILITY): SmeData {
   const dataGenerator = new SmeGenerator(undefinedProbability, setMissingValuesToNull);
   return {
     general: {

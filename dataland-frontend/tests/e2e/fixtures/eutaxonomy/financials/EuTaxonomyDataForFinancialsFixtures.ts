@@ -19,7 +19,7 @@ import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
  * @returns a random eutaxonomy-financials fixture
  */
 export function generateEuTaxonomyDataForFinancials(
-  setMissingValuesToNull: boolean = true,
+  setMissingValuesToNull = true,
   missingProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForFinancials {
   const dataGenerator = new EuFinancialsGenerator(missingProbability, setMissingValuesToNull);
@@ -48,9 +48,13 @@ export class EuFinancialsGenerator extends Generator {
     returnBase.financialServicesTypes = financialServicesTypes;
     returnBase.eligibilityKpis = eligibilityKpis;
     returnBase.creditInstitutionKpis =
-      financialServicesTypes.indexOf("CreditInstitution") >= 0 ? this.generateCreditInstitutionKpis() : this.missingValue();
+      financialServicesTypes.indexOf("CreditInstitution") >= 0
+        ? this.generateCreditInstitutionKpis()
+        : this.missingValue();
     returnBase.insuranceKpis =
-      financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0 ? this.generateInsuranceKpis() : this.missingValue();
+      financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0
+        ? this.generateInsuranceKpis()
+        : this.missingValue();
     returnBase.investmentFirmKpis =
       financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : this.missingValue();
     return returnBase;

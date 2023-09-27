@@ -29,7 +29,7 @@ import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
  */
 export function generateLksgFixture(
   numFixtures: number,
-  setMissingValuesToNull: boolean = true,
+  setMissingValuesToNull = true,
   missingProbability = DEFAULT_PROBABILITY,
 ): FixtureData<LksgData>[] {
   return generateFixtureDataset<LksgData>(
@@ -47,7 +47,7 @@ export function generateLksgFixture(
  */
 export function generateProductionSite(
   setMissingValuesToNull: boolean,
-  missingProbability = DEFAULT_PROBABILITY
+  missingProbability = DEFAULT_PROBABILITY,
 ): LksgProductionSite {
   return {
     nameOfProductionSite: valueOrUndefined(faker.company.name(), missingProbability),
@@ -96,7 +96,9 @@ export function generateLksgData(setMissingValuesToNull: boolean, missingProbabi
         subcontractingCompaniesCountries: dataGenerator.randomArray(generateIso2CountryCode),
         subcontractingCompaniesIndustries: dataGenerator.valueOrMissing(generateNaceCodes()),
         productionSites: dataGenerator.randomYesNo(),
-        listOfProductionSites: dataGenerator.randomArray(() => generateProductionSite(setMissingValuesToNull, missingProbability)),
+        listOfProductionSites: dataGenerator.randomArray(() =>
+          generateProductionSite(setMissingValuesToNull, missingProbability),
+        ),
         market: dataGenerator.randomNationalOrInternationalMarket(),
         specificProcurement: dataGenerator.randomYesNo(),
       },
@@ -370,7 +372,7 @@ class LksgGenerator extends Generator {
    * Randomly returns <10%, 10-25%, 25-50% or >50%
    * @returns one of the four percentage intervals as string
    */
-  randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers | undefined | null{
+  randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers | undefined | null {
     return this.valueOrMissing(pickOneElement(Object.values(ShareOfTemporaryWorkers)));
   }
 

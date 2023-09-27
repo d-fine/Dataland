@@ -1,9 +1,5 @@
 import { faker } from "@faker-js/faker";
-import {
-  type CompanyReportReference,
-  type DocumentReference,
-  QualityOptions,
-} from "@clients/backend";
+import { type CompanyReportReference, type DocumentReference, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { pickSubsetOfElements, pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNoNa } from "./YesNoFixtures";

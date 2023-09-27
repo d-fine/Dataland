@@ -6,7 +6,7 @@ import { DEFAULT_PROBABILITY, valueOrMissing } from "@e2e/utils/FakeFixtureUtils
 /**
  * Generates a random address
  * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
- * @param setMissingValuesToNull
+ * @param setMissingValuesToNull controls if missing values should be undefined or null
  * @returns a random address
  */
 export function generateAddress(
