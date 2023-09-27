@@ -3,6 +3,7 @@ package db.migration.utils
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 
 typealias CompanyAssociatedDataMigration = (dataTableEntity: DataTableEntity) -> Unit
 
@@ -36,6 +37,8 @@ fun getCompanyAssociatedDatasetsForDataType(context: Context?, dataType: String)
     }
 }
 
+private val logger = LoggerFactory.getLogger("Migration Iterator")
+
 /**
  * Gets all data entries for a specific datatype, modifies them and writes them back to the table
  * @context the context of the migration script
@@ -49,7 +52,7 @@ fun migrateCompanyAssociatedDataOfDatatype(
 ) {
     val dataTableEntities = getCompanyAssociatedDatasetsForDataType(context, dataType)
     dataTableEntities.forEach {
-        println("Migrating dataset with id: ${it.dataId}")
+        logger.info("Migrating dataset with id: ${it.dataId}")
         migrate(it)
         it.executeUpdateQuery(context!!)
     }
