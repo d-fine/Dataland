@@ -7,7 +7,8 @@ import {
   type P2pGeneral,
   type P2pHvcPlastics,
   type P2pLivestockFarming,
-  type P2pRealEstate,
+  type P2pCommercialRealEstate,
+  type P2pResidentialRealEstate,
   P2pSector,
   type P2pSteel,
   type PathwaysToParisData,
@@ -104,7 +105,7 @@ class P2pGenerator extends Generator {
         qualificationRequirementsOnParisCompatibility: this.randomYesNo(),
         mobilityAndTravelPolicy: this.randomYesNo(),
         upstreamSupplierEngagementStrategy: this.randomYesNo(),
-        upstreamSupplierProcurementPolicy: this.randomYesNo(),
+        upstreamSupplierProcurementPolicy: this.randomBaseDataPoint(generateYesNo()),
         downstreamCustomerEngagement: this.randomYesNo(),
         policymakerEngagement: this.randomYesNo(),
       },
@@ -116,7 +117,7 @@ class P2pGenerator extends Generator {
         reductionOfAbsoluteEmissions: this.randomInt(),
         reductionOfRelativeEmissionsInPercent: this.randomPercentageValue(),
         relativeEmissionsInPercent: this.randomPercentageValue(),
-        absoluteEmissions: this.randomInt(),
+        absoluteEmissionsInTonnesCO2e: this.randomInt(),
         climateActionPlan: this.randomYesNo(),
         useOfInternalCarbonPrice: this.randomYesNo(),
       },
@@ -154,7 +155,7 @@ class P2pGenerator extends Generator {
   getSectorAutomotive(): P2pAutomotive | undefined {
     const data: P2pAutomotive = {
       energy: {
-        productionSiteEnergyConsumption: this.randomInt(),
+        productionSiteEnergyConsumptionInMWh: this.randomInt(),
         energyMixInPercent: this.randomPercentageValue(),
       },
       technologyValueCreation: {
@@ -200,19 +201,19 @@ class P2pGenerator extends Generator {
    * @param sector the type of real estate
    * @returns a random P2pRealEstate or undefined
    */
-  getSectorRealEstate(sector: P2pSector): P2pRealEstate | undefined {
-    const data: P2pRealEstate = {
+  getSectorRealEstate(sector: P2pSector): P2pCommercialRealEstate | P2pResidentialRealEstate | undefined {
+    const data: P2pCommercialRealEstate | P2pResidentialRealEstate = {
       buildingEfficiency: {
         buildingSpecificRefurbishmentRoadmapInPercent: this.randomPercentageValue(),
         zeroEmissionBuildingShareInPercent: this.randomPercentageValue(),
-        buildingEnergyEfficiency: this.randomInt(),
+        buildingEnergyEfficiencyInCorrespondingUnit: this.randomInt(),
       },
       energySource: {
         renewableHeatingInPercent: this.randomPercentageValue(),
       },
       technology: {
-        useOfDistrictHeatingNetworks: this.randomYesNo(),
-        heatPumpUsage: this.randomYesNo(),
+        useOfDistrictHeatingNetworksInPercent: this.randomPercentageValue(),
+        heatPumpUsageInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent(sector) ? data : undefined;
@@ -225,7 +226,7 @@ class P2pGenerator extends Generator {
   getSectorSteel(): P2pSteel | undefined {
     const data: P2pSteel = {
       energy: {
-        emissionIntensityOfElectricity: this.randomInt(),
+        emissionIntensityOfElectricityInCorrespondingUnit: this.randomInt(),
         greenHydrogenUsage: this.randomYesNo(),
       },
       technology: {
@@ -260,7 +261,7 @@ class P2pGenerator extends Generator {
   getSectorElectricityGeneration(): P2pElectricityGeneration | undefined {
     const data: P2pElectricityGeneration = {
       technology: {
-        electricityMixEmissions: this.randomInt(),
+        electricityMixEmissionsInCorrespondingUnit: this.randomInt(),
         shareOfRenewableElectricityInPercent: this.randomPercentageValue(),
         naturalGasPhaseOut: this.valueOrUndefined(generateFutureDate()),
         coalPhaseOut: this.valueOrUndefined(generateFutureDate()),
@@ -287,7 +288,7 @@ class P2pGenerator extends Generator {
         ownFeedInPercent: this.randomPercentageValue(),
         externalFeedCertification: this.randomBaseDataPoint(generateYesNo()),
         originOfExternalFeed: faker.company.buzzPhrase(),
-        excessNitrogen: this.randomInt(),
+        excessNitrogenInKilogramPerHectare: this.randomInt(),
         cropRotation: this.randomInt(),
         climateFriendlyProteinProductionInPercent: this.randomPercentageValue(),
         greenFodderInPercent: this.randomPercentageValue(),

@@ -3485,7 +3485,7 @@
       "P2pAutomotiveEnergy": {
         "type": "object",
         "properties": {
-          "productionSiteEnergyConsumption": {
+          "productionSiteEnergyConsumptionInMWh": {
             "type": "number"
           },
           "energyMixInPercent": {
@@ -3575,14 +3575,50 @@
           }
         }
       },
-      "P2pClimateTargets": {
+      "P2pCommercialRealEstate": {
         "type": "object",
         "properties": {
-          "longTermScienceBasedClimateTarget": {
-            "$ref": "#/components/schemas/YesNo"
+          "buildingEfficiency": {
+            "$ref": "#/components/schemas/P2pCommercialRealEstateBuildingEfficiency"
           },
-          "shortTermScienceBasedClimateTarget": {
-            "$ref": "#/components/schemas/YesNo"
+          "energySource": {
+            "$ref": "#/components/schemas/P2pCommercialRealEstateEnergySource"
+          },
+          "technology": {
+            "$ref": "#/components/schemas/P2pCommercialRealEstateTechnology"
+          }
+        }
+      },
+      "P2pCommercialRealEstateBuildingEfficiency": {
+        "type": "object",
+        "properties": {
+          "buildingSpecificRefurbishmentRoadmapInPercent": {
+            "type": "number"
+          },
+          "zeroEmissionBuildingShareInPercent": {
+            "type": "number"
+          },
+          "buildingEnergyEfficiencyInCorrespondingUnit": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pCommercialRealEstateEnergySource": {
+        "type": "object",
+        "properties": {
+          "renewableHeatingInPercent": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pCommercialRealEstateTechnology": {
+        "type": "object",
+        "properties": {
+          "useOfDistrictHeatingNetworksInPercent": {
+            "type": "number"
+          },
+          "heatPumpUsageInPercent": {
+            "type": "number"
           }
         }
       },
@@ -3597,7 +3633,7 @@
       "P2pElectricityGenerationTechnology": {
         "type": "object",
         "properties": {
-          "electricityMixEmissions": {
+          "electricityMixEmissionsInCorrespondingUnit": {
             "type": "number"
           },
           "shareOfRenewableElectricityInPercent": {
@@ -3613,29 +3649,6 @@
           },
           "storageCapacityExpansionInPercent": {
             "type": "number"
-          }
-        }
-      },
-      "P2pEmissionsPlanning": {
-        "type": "object",
-        "properties": {
-          "absoluteEmissions": {
-            "type": "number"
-          },
-          "relativeEmissionsInPercent": {
-            "type": "number"
-          },
-          "reductionOfAbsoluteEmissions": {
-            "type": "number"
-          },
-          "reductionOfRelativeEmissionsInPercent": {
-            "type": "number"
-          },
-          "climateActionPlan": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "useOfInternalCarbonPrice": {
-            "$ref": "#/components/schemas/YesNo"
           }
         }
       },
@@ -3680,16 +3693,50 @@
             "$ref": "#/components/schemas/P2pGeneralGeneral"
           },
           "governance": {
-            "$ref": "#/components/schemas/P2pGovernance"
+            "$ref": "#/components/schemas/P2pGeneralGovernance"
           },
           "climateTargets": {
-            "$ref": "#/components/schemas/P2pClimateTargets"
+            "$ref": "#/components/schemas/P2pGeneralClimateTargets"
           },
           "emissionsPlanning": {
-            "$ref": "#/components/schemas/P2pEmissionsPlanning"
+            "$ref": "#/components/schemas/P2pGeneralEmissionsPlanning"
           },
           "investmentPlanning": {
-            "$ref": "#/components/schemas/P2pInvestmentPlanning"
+            "$ref": "#/components/schemas/P2pGeneralInvestmentPlanning"
+          }
+        }
+      },
+      "P2pGeneralClimateTargets": {
+        "type": "object",
+        "properties": {
+          "shortTermScienceBasedClimateTarget": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "longTermScienceBasedClimateTarget": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "P2pGeneralEmissionsPlanning": {
+        "type": "object",
+        "properties": {
+          "absoluteEmissionsInTonnesCO2e": {
+            "type": "number"
+          },
+          "relativeEmissionsInPercent": {
+            "type": "number"
+          },
+          "reductionOfAbsoluteEmissions": {
+            "type": "number"
+          },
+          "reductionOfRelativeEmissionsInPercent": {
+            "type": "number"
+          },
+          "climateActionPlan": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "useOfInternalCarbonPrice": {
+            "$ref": "#/components/schemas/YesNo"
           }
         }
       },
@@ -3712,7 +3759,7 @@
           }
         }
       },
-      "P2pGovernance": {
+      "P2pGeneralGovernance": {
         "type": "object",
         "properties": {
           "organisationalResponsibilityForParisCompatibility": {
@@ -3737,13 +3784,30 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "upstreamSupplierProcurementPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "downstreamCustomerEngagement": {
             "$ref": "#/components/schemas/YesNo"
           },
           "policymakerEngagement": {
             "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "P2pGeneralInvestmentPlanning": {
+        "type": "object",
+        "properties": {
+          "investmentPlanForClimateTargets": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "capexShareInNetZeroSolutionsInPercent": {
+            "type": "number"
+          },
+          "capexShareInGhgIntensivePlantsInPercent": {
+            "type": "number"
+          },
+          "researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": {
+            "type": "number"
           }
         }
       },
@@ -3803,23 +3867,6 @@
           }
         }
       },
-      "P2pInvestmentPlanning": {
-        "type": "object",
-        "properties": {
-          "investmentPlanForClimateTargets": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "capexShareInNetZeroSolutionsInPercent": {
-            "type": "number"
-          },
-          "capexShareInGhgIntensivePlantsInPercent": {
-            "type": "number"
-          },
-          "researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": {
-            "type": "number"
-          }
-        }
-      },
       "P2pLivestockFarming": {
         "type": "object",
         "properties": {
@@ -3849,7 +3896,7 @@
           "originOfExternalFeed": {
             "type": "string"
           },
-          "excessNitrogen": {
+          "excessNitrogenInKilogramPerHectare": {
             "type": "number"
           },
           "cropRotation": {
@@ -3896,21 +3943,21 @@
           }
         }
       },
-      "P2pRealEstate": {
+      "P2pResidentialRealEstate": {
         "type": "object",
         "properties": {
           "buildingEfficiency": {
-            "$ref": "#/components/schemas/P2pRealEstateBuildingEfficiency"
+            "$ref": "#/components/schemas/P2pResidentialRealEstateBuildingEfficiency"
           },
           "energySource": {
-            "$ref": "#/components/schemas/P2pRealEstateEnergySource"
+            "$ref": "#/components/schemas/P2pResidentialRealEstateEnergySource"
           },
           "technology": {
-            "$ref": "#/components/schemas/P2plRealEstateTechnology"
+            "$ref": "#/components/schemas/P2pResidentialRealEstateTechnology"
           }
         }
       },
-      "P2pRealEstateBuildingEfficiency": {
+      "P2pResidentialRealEstateBuildingEfficiency": {
         "type": "object",
         "properties": {
           "buildingSpecificRefurbishmentRoadmapInPercent": {
@@ -3919,15 +3966,26 @@
           "zeroEmissionBuildingShareInPercent": {
             "type": "number"
           },
-          "buildingEnergyEfficiency": {
+          "buildingEnergyEfficiencyInCorrespondingUnit": {
             "type": "number"
           }
         }
       },
-      "P2pRealEstateEnergySource": {
+      "P2pResidentialRealEstateEnergySource": {
         "type": "object",
         "properties": {
           "renewableHeatingInPercent": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pResidentialRealEstateTechnology": {
+        "type": "object",
+        "properties": {
+          "useOfDistrictHeatingNetworksInPercent": {
+            "type": "number"
+          },
+          "heatPumpUsageInPercent": {
             "type": "number"
           }
         }
@@ -3962,7 +4020,7 @@
       "P2pSteelEnergy": {
         "type": "object",
         "properties": {
-          "emissionIntensityOfElectricity": {
+          "emissionIntensityOfElectricityInCorrespondingUnit": {
             "type": "number"
           },
           "greenHydrogenUsage": {
@@ -3978,17 +4036,6 @@
           },
           "lowCarbonSteelScaleUpInPercent": {
             "type": "number"
-          }
-        }
-      },
-      "P2plRealEstateTechnology": {
-        "type": "object",
-        "properties": {
-          "useOfDistrictHeatingNetworks": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "heatPumpUsage": {
-            "$ref": "#/components/schemas/YesNo"
           }
         }
       },
@@ -4011,10 +4058,10 @@
             "$ref": "#/components/schemas/P2pHvcPlastics"
           },
           "commercialRealEstate": {
-            "$ref": "#/components/schemas/P2pRealEstate"
+            "$ref": "#/components/schemas/P2pCommercialRealEstate"
           },
           "residentialRealEstate": {
-            "$ref": "#/components/schemas/P2pRealEstate"
+            "$ref": "#/components/schemas/P2pResidentialRealEstate"
           },
           "steel": {
             "$ref": "#/components/schemas/P2pSteel"

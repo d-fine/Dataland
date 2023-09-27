@@ -1,13 +1,14 @@
 package org.dataland.datalandbackend.model.p2p.categories.general.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding company policies and governance for all sectors.
- */
-data class P2pGovernance(
+ * Fields of the subcategory "Governance" belonging to the category "General" of the p2p framework.
+*/
+data class P2pGeneralGovernance(
     val organisationalResponsibilityForParisCompatibility: YesNo? = null,
 
     val parisCompatibilityInExecutiveRemunerationInPercent: BigDecimal? = null,
@@ -22,7 +23,7 @@ data class P2pGovernance(
 
     val upstreamSupplierEngagementStrategy: YesNo? = null,
 
-    val upstreamSupplierProcurementPolicy: YesNo? = null,
+    val upstreamSupplierProcurementPolicy: BaseDataPoint<YesNo>? = null,
 
     val downstreamCustomerEngagement: YesNo? = null,
 

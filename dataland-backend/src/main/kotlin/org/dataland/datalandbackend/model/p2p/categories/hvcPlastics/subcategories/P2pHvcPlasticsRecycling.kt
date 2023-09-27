@@ -5,8 +5,8 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding recycling in the HVC Plastics sector
- */
+ * Fields of the subcategory "Recycling" belonging to the category "HVC Plastics" of the p2p framework.
+*/
 data class P2pHvcPlasticsRecycling(
     val contributionToCircularEconomy: YesNo? = null,
 
