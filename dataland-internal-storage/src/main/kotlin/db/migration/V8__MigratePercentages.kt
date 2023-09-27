@@ -10,6 +10,7 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONArray
 import org.json.JSONObject
 import java.math.BigDecimal
+import java.math.BigInteger
 
 /**
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
@@ -67,11 +68,13 @@ class V8__MigratePercentages : BaseJavaMigration() {
     }
 
     private fun transformToPercentage(decimal: Number): BigDecimal {
-        return when (decimal) {
-            is Int -> BigDecimal(decimal) * BigDecimal(percentageMultiplier)
-            is BigDecimal -> decimal * BigDecimal(percentageMultiplier)
-            else -> throw NumberFormatException()
-        }
+        return (when (decimal) {
+            is Int -> BigDecimal(decimal)
+            is Long -> BigDecimal(decimal)
+            is BigInteger -> BigDecimal(decimal)
+            is BigDecimal -> decimal
+            else -> throw NumberFormatException("Unexpected value: $decimal of data type: ${decimal::class.java.name}")
+        }) * BigDecimal(percentageMultiplier)
     }
 
     /**
