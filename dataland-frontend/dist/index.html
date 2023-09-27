@@ -1,29 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <link rel="apple-touch-icon" sizes="180x180" href="./static/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="./static/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="./static/favicon-16x16.png">
-        <link rel="manifest" href="./static/site.webmanifest">
-        <link rel="mask-icon" href="./static/safari-pinned-tab.svg" color="#5bbad5">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="theme-color" content="#ffffff">
-
-
-        <title>Dataland</title>
-      <script type="module" crossorigin src="./assets/index-2a0d7e9b.js"></script>
-      <link rel="stylesheet" href="./assets/index-51c89606.css">
-    </head>
-    <body>
-        <noscript>
-            <strong>We're sorry but Dataland frontend service doesn't work properly without JavaScript enabled.
-                Please enable it to continue.</strong>
-        </noscript>
-
-    <div id="app"></div>
-        
-    </body>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script>
+    // Parse the URL
+    const location = window.location.href;
+    const pathName = location.split("github.io")[1];
+    
+    // Redirect to the home page and then use Vue Router to navigate to the original destination
+    window.location.replace("/Dataland-EO/index.html#" + pathName);
+  </script>
+</head>
+<body>
+</body>
 </html>
