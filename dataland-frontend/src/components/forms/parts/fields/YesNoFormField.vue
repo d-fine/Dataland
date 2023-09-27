@@ -18,7 +18,7 @@
         :file-names-for-prefill="fileNamesForPrefill"
       />
       <FormKit v-if="baseDataPointYesNo.value === 'Yes'" type="group" name="dataSource">
-        <FormKit type="hidden" name="name" v-model="documentName" />
+        <FormKit type="hidden" name="fileName" v-model="documentName" />
         <FormKit type="text" name="fileReference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
       </FormKit>
     </FormKit>
