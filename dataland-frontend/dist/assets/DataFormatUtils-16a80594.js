@@ -1,0 +1,2 @@
+import{Q as i}from"./index-fc17b7c3.js";const o={weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"};function a(t){const n=new Date().getTime(),e=(t-n)/i;return Math.ceil(e)}function c(t){return new Date(t).toLocaleDateString("en-gb",o)}function r(t){const e=new Date().getTime()+t*i;return c(e)}function u(t){const n=t.getTimezoneOffset()*60*1e3,e=t.getTime()-n;return new Date(e).toISOString().substring(0,10)}export{a,r as b,c,u as g};
+//# sourceMappingURL=DataFormatUtils-16a80594.js.map
