@@ -14,7 +14,7 @@
           @blur="handleBlurValue"
         />
         <div v-if="unit" class="form-field-label pb-3">
-          <!--//TODO this needs to be adapted as we now have Percent in the unit fields. That should not be displayed in the frontend -->
+          <FormKit type="hidden" name="currency" :modelValue="unit" />
           <span>in {{ unit }}</span>
         </div>
         <FormKit
@@ -24,6 +24,7 @@
           placeholder="Currency"
           :options="options"
           outer-class="short"
+          data-test="datapoint-currency"
         />
       </div>
     </div>

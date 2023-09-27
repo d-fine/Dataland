@@ -18,10 +18,11 @@
           "nfrdMandatory": "No",
           "euTaxonomyActivityLevelReporting": "No",
           "assurance": {
-            "assurance": "None",
+            "value": "None",
             "provider": null,
             "dataSource": {
-              "report": "",
+              "fileName": "",
+              "fileReference": "",
               "page": null,
               "tagName": null
             }
@@ -29,19 +30,22 @@
           "numberOfEmployees": 18682,
           "referencedReports": {
             "IntegratedReport": {
-              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "isGroupLevel": "NA",
               "reportDate": "2023-04-30",
               "currency": "CHF"
             },
             "ESEFReport": {
-              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "isGroupLevel": "NA",
               "reportDate": "2023-07-22",
               "currency": "ZAR"
             },
             "SustainabilityReport": {
-              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "isGroupLevel": null,
               "reportDate": "2023-08-19",
               "currency": "TMT"
@@ -52,13 +56,14 @@
           "totalAmount": {
             "quality": "Incomplete",
             "dataSource": {
-              "report": "IntegratedReport",
+              "fileName": "IntegratedReport",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "page": 240,
               "tagName": "applications"
             },
             "comment": null,
             "value": 7430892648,
-            "unit": "MNT"
+            "currency": "MNT"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 0.0708,
@@ -144,13 +149,14 @@
           "totalAmount": {
             "quality": "Audited",
             "dataSource": {
-              "report": "AnnualReport",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "AnnualReport",
               "page": 334,
               "tagName": "paradigms"
             },
             "comment": "connect cross-platform bus",
             "value": 9280059693,
-            "unit": "CRC"
+            "currency": "CRC"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 0.9654,
@@ -251,13 +257,14 @@
           "totalAmount": {
             "quality": "Incomplete",
             "dataSource": {
-              "report": "IntegratedReport",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "IntegratedReport",
               "page": 558,
               "tagName": "e-business"
             },
             "comment": null,
             "value": 9655318725,
-            "unit": "BBD"
+            "currency": "BBD"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 0.7046,
@@ -426,10 +433,11 @@
           "nfrdMandatory": "Yes",
           "euTaxonomyActivityLevelReporting": "No",
           "assurance": {
-            "assurance": "None",
+            "value": "None",
             "provider": null,
             "dataSource": {
-              "report": "",
+              "fileName": "",
+              "fileReference": "",
               "page": null,
               "tagName": null
             }
@@ -437,19 +445,22 @@
           "numberOfEmployees": 29286,
           "referencedReports": {
             "IntegratedReport": {
-              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "isGroupLevel": null,
               "reportDate": "2022-12-12",
               "currency": "UAH"
             },
             "SustainabilityReport": {
-              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "isGroupLevel": "No",
               "reportDate": "2022-11-23",
               "currency": "ETB"
             },
             "ESEFReport": {
-              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "isGroupLevel": "Yes",
               "reportDate": null,
               "currency": "ALL"
@@ -466,7 +477,7 @@
             },
             "comment": "transmit virtual application",
             "value": 3505385519,
-            "unit": "SRD"
+            "currency": "SRD"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 0.0443,
@@ -558,7 +569,7 @@
             },
             "comment": "synthesize neural capacitor",
             "value": 4733157393,
-            "unit": "BRL"
+            "currency": "BRL"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 0.3204,
@@ -651,7 +662,7 @@
             },
             "comment": "reboot haptic pixel",
             "value": 8509779631,
-            "unit": "ALL"
+            "currency": "ALL"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 0.8897,
@@ -830,10 +841,11 @@
           "nfrdMandatory": "Yes",
           "euTaxonomyActivityLevelReporting": "No",
           "assurance": {
-            "assurance": "None",
+            "value": "None",
             "provider": null,
             "dataSource": {
-              "report": "",
+              "fileName": "",
+              "fileReference": "",
               "page": null,
               "tagName": null
             }
@@ -841,19 +853,22 @@
           "numberOfEmployees": 29286,
           "referencedReports": {
             "IntegratedReport": {
-              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "isGroupLevel": null,
               "reportDate": "2022-12-12",
               "currency": "UAH"
             },
             "SustainabilityReport": {
-              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "isGroupLevel": "No",
               "reportDate": "2022-11-23",
               "currency": "ETB"
             },
             "ESEFReport": {
-              "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+              "fileName": "",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "isGroupLevel": "Yes",
               "reportDate": null,
               "currency": "ALL"
@@ -870,7 +885,7 @@
             },
             "comment": "transmit virtual application",
             "value": 3505385519,
-            "unit": "SRD"
+            "currency": "SRD"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 0.0443,
@@ -962,7 +977,7 @@
             },
             "comment": "synthesize neural capacitor",
             "value": 4733157393,
-            "unit": "BRL"
+            "currency": "BRL"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 0.3204,
@@ -1055,7 +1070,7 @@
             },
             "comment": "reboot haptic pixel",
             "value": 8509779631,
-            "unit": "ALL"
+            "currency": "ALL"
           },
           "nonEligibleShare": {
             "relativeShareInPercent": 0.8897,
