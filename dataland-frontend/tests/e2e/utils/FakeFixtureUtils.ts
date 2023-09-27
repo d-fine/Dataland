@@ -68,6 +68,10 @@ export class Generator {
       : valueOrUndefined(value, this.missingValueProbability);
   }
 
+  missingValue(): undefined | null {
+    return this.setMissingValuesToNull ? null : undefined
+  }
+
   randomYesNo(): YesNo | undefined | null {
     return this.valueOrMissing(generateYesNo());
   }

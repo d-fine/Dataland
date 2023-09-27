@@ -20,7 +20,7 @@ import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 export function generateEuTaxonomyDataForFinancials(
   undefinedProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForFinancials {
-  const dataGenerator = new EuFinancialsGenerator(undefinedProbability);
+  const dataGenerator = new EuFinancialsGenerator(undefinedProbability, true);
   return dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes();
 }
 
@@ -37,7 +37,7 @@ export class EuFinancialsGenerator extends Generator {
   ): EuTaxonomyDataForFinancials {
     const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields(
       this.reports,
-      this.undefinedProbability,
+      this.missingValueProbability,
     );
     const eligibilityKpis = Object.fromEntries(
       financialServicesTypes.map((it) => [it, this.generateEligibilityKpis()]),
@@ -45,11 +45,11 @@ export class EuFinancialsGenerator extends Generator {
     returnBase.financialServicesTypes = financialServicesTypes;
     returnBase.eligibilityKpis = eligibilityKpis;
     returnBase.creditInstitutionKpis =
-      financialServicesTypes.indexOf("CreditInstitution") >= 0 ? this.generateCreditInstitutionKpis() : undefined;
+      financialServicesTypes.indexOf("CreditInstitution") >= 0 ? this.generateCreditInstitutionKpis() : this.missingValue();
     returnBase.insuranceKpis =
-      financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0 ? this.generateInsuranceKpis() : undefined;
+      financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0 ? this.generateInsuranceKpis() : this.missingValue();
     returnBase.investmentFirmKpis =
-      financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : undefined;
+      financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : this.missingValue();
     return returnBase;
   }
   /**

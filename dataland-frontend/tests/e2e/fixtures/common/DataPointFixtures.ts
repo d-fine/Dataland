@@ -4,7 +4,6 @@ import {
   type CompanyReportReference,
   type DocumentReference,
   QualityOptions,
-  type YesNoNa,
 } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { pickSubsetOfElements, pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
@@ -99,6 +98,7 @@ function generateQualityAndDataSourceAndComment(
   qualityBucket: QualityOptions,
   setMissingValuesToNull: boolean,
 ): { dataSource: CompanyReportReference; comment: string | undefined | null } {
+  const missingValue = setMissingValuesToNull ? null : undefined;
   let dataSource: CompanyReportReference;
   let comment: string | undefined | null;
   if (
@@ -110,10 +110,8 @@ function generateQualityAndDataSourceAndComment(
     dataSource = generateDataSource(reports);
     comment = faker.git.commitMessage();
   } else {
-    dataSource = { report: "", page: undefined, tagName: undefined };
-    if (setMissingValuesToNull) {
-      comment = null;
-    }
+    dataSource = { report: "", page: missingValue, tagName: missingValue };
+    comment = missingValue;
   }
   return { dataSource, comment };
 }
