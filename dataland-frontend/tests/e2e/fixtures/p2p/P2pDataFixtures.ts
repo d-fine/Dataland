@@ -50,7 +50,7 @@ export function generateP2pFixtures(
 function generateP2pData(
   setMissingValuesToNull: boolean,
   missingValueProbability = DEFAULT_PROBABILITY,
-  toggleRandomSectors = true
+  toggleRandomSectors = true,
 ): PathwaysToParisData {
   const dataGenerator = new P2pGenerator(missingValueProbability, setMissingValuesToNull, toggleRandomSectors);
   return {
@@ -71,7 +71,11 @@ function generateP2pData(
 class P2pGenerator extends Generator {
   sectors: Array<P2pSector>;
 
-  constructor(missingValueProbability = DEFAULT_PROBABILITY, setMissingValuesToNull = true, toggleRandomSectors = true) {
+  constructor(
+    missingValueProbability = DEFAULT_PROBABILITY,
+    setMissingValuesToNull = true,
+    toggleRandomSectors = true,
+  ) {
     super(missingValueProbability, setMissingValuesToNull);
     this.sectors = this.generateSectors(toggleRandomSectors);
   }

@@ -70,7 +70,10 @@ function generateListOfGoodsOrServices(): string[] {
  * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @returns a random LKSG dataset
  */
-export function generateLksgData(setMissingValuesToNull: boolean, missingValueProbability = DEFAULT_PROBABILITY): LksgData {
+export function generateLksgData(
+  setMissingValuesToNull: boolean,
+  missingValueProbability = DEFAULT_PROBABILITY,
+): LksgData {
   const dataGenerator = new LksgGenerator(missingValueProbability, setMissingValuesToNull);
   return {
     general: {
