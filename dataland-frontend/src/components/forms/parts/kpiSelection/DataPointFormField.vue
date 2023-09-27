@@ -24,6 +24,7 @@
           placeholder="Currency"
           :options="options"
           outer-class="short"
+          data-test="datapoint-currency"
         />
       </div>
     </div>
