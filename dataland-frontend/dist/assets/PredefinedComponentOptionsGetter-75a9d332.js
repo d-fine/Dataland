@@ -1,0 +1,2 @@
+import{s as o}from"./card.esm-ab7d22cc.js";import{T as r}from"./tooltip.esm-60532e01.js";import{h as a}from"./StringHumanizer-b303955c.js";function m(e){return{name:e,components:{Card:o},directives:{tooltip:r},props:{title:{type:String},value:{type:null},tooltipText:{type:String,default:""}},computed:{humanizedValue(){const t=a(this.value);return t!==""?t:"No data has been reported"}}}}export{m as g};
+//# sourceMappingURL=PredefinedComponentOptionsGetter-75a9d332.js.map
