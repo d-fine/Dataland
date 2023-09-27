@@ -61,7 +61,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
         const postedObject = interception.request.body as CompanyAssociatedDataPathwaysToParisData;
         const postedP2pDataset = postedObject.data;
         const emissionIntensityOfElectricity =
-          assertDefined(postedP2pDataset).steel?.energy?.emissionIntensityOfElectricity;
+          assertDefined(postedP2pDataset).steel?.energy?.emissionIntensityOfElectricityInCorrespondingUnit;
         expect(emissionIntensityOfElectricity).to.equal("222");
         const automotive = postedP2pDataset.automotive;
         expect(automotive).to.be.undefined;
