@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
 import {
-  type CompanyReport,
   type CompanyReportReference,
   type DocumentReference,
   QualityOptions,
@@ -83,7 +82,7 @@ export interface GenericDataPoint<T> {
 
 export interface GenericBaseDataPoint<T> {
   value: T;
-  dataSource: CompanyReport | DocumentReference | undefined | null;
+  dataSource: DocumentReference | undefined | null;
 }
 
 /**
