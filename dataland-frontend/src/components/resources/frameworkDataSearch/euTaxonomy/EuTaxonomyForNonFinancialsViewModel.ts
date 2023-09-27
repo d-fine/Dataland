@@ -10,12 +10,12 @@ import {
   type RelativeAndAbsoluteFinancialShare,
   type YesNo,
   type YesNoNa,
-  type CurrencyDataPointBigDecimal,
+  type CurrencyDataPoint,
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
 interface EuTaxonomyDetailsPerCashFlowViewModel {
-  totalAmount?: CurrencyDataPointBigDecimal;
+  totalAmount?: CurrencyDataPoint;
   nonEligibleShare?: RelativeAndAbsoluteFinancialShare;
   eligibleShare?: RelativeAndAbsoluteFinancialShare;
   nonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };
