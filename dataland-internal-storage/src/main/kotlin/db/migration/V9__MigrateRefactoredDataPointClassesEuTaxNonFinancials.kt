@@ -56,9 +56,11 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
             for (key in referencedReportsObject.keys()) {
                 oldToNewFieldNamesForReports.forEach {
                     val oneReportObject = referencedReportsObject.getJSONObject(key)
-                    oneReportObject.put(it.value, oneReportObject.get(it.key))
-                    oneReportObject.put("fileName", key)
-                    oneReportObject.remove(it.key)
+                    if(oneReportObject.has(it.key)){
+                        oneReportObject.put(it.value, oneReportObject.get(it.key))
+                        oneReportObject.put("fileName", key)
+                        oneReportObject.remove(it.key)
+                    }
                 }
             }
         }
@@ -72,7 +74,8 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
             val categoryObject = dataObject.getOrJavaNull(cashFlowType) ?: return@forEach
             categoryObject as JSONObject
             val parentObjectOfDataSource = categoryObject.getOrJsonNull("totalAmount")
-            migrateDataSource(parentObjectOfDataSource as JSONObject, dataObject)
+            if (parentObjectOfDataSource != JSONObject.NULL)
+                migrateDataSource(parentObjectOfDataSource as JSONObject, dataObject)
         }
     }
 
@@ -82,16 +85,20 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
     private fun migrateDataSource(parentObjectOfDataSource: JSONObject, dataObject: JSONObject) {
         val dataSourceObject = parentObjectOfDataSource.getOrJsonNull("dataSource")
         dataSourceObject as JSONObject
-        val fileNameToSearchInReferencedReports: String = dataSourceObject.get("report") as String
-        dataSourceObject.put(
-            "fileReference",
-            getFileReferenceFromReferencedReports(
-                fileNameToSearchInReferencedReports, dataObject,
-            ),
-        )
+        if (dataSourceObject.has("report")){
+            val fileNameToSearchInReferencedReports: String = dataSourceObject.get("report") as String
+            dataSourceObject.put(
+                "fileReference",
+                getFileReferenceFromReferencedReports(
+                    fileNameToSearchInReferencedReports, dataObject,
+                ),
+            )
+        }
         oldToNewFieldNamesForDocuments.forEach {
-            dataSourceObject.put(it.value, dataSourceObject.get(it.key))
-            dataSourceObject.remove(it.key)
+            if(dataSourceObject.has(it.key)){
+                dataSourceObject.put(it.value, dataSourceObject.get(it.key))
+                dataSourceObject.remove(it.key)
+            }
         }
     }
 
@@ -105,8 +112,10 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         if (assuranceParentObject != JSONObject.NULL) {
             assuranceParentObject as JSONObject
             oldToNewFieldNamesForAssurance.forEach {
-                assuranceParentObject.put(it.value, assuranceParentObject.get(it.key))
-                assuranceParentObject.remove(it.key)
+                if(assuranceParentObject.has(it.key)){
+                    assuranceParentObject.put(it.value, assuranceParentObject.get(it.key))
+                    assuranceParentObject.remove(it.key)
+                }
             }
             migrateDataSource(assuranceParentObject, dataObject)
         }
@@ -123,8 +132,10 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
             val referencedReportsObject = generalCategoryObject.getOrJsonNull("referencedReports")
             referencedReportsObject as JSONObject
             val reportObject = referencedReportsObject.getOrJsonNull(fileName)
-            reportObject as JSONObject
-            return reportObject.getOrJsonNull("fileReference") as String
+            if(reportObject != JSONObject.NULL) {
+                reportObject as JSONObject
+                return reportObject.getOrJsonNull("fileReference") as String
+            }
         }
         return ""
     }
