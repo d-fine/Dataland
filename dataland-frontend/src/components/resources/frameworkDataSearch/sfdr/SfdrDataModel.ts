@@ -59,7 +59,7 @@ export const sfdrDataModel = [
             name: "referencedReports",
             label: "Referenced Reports",
             description:
-              "Does your company have a current annual report, sustainability report, integrated report or ESEF report? If yes, please share the information with us.",
+                "Does your company have a current annual report, sustainability report, integrated report or ESEF report? If yes, please share the information with us.",
             unit: "",
             component: "UploadReports",
             evidenceDesired: false,
@@ -70,7 +70,7 @@ export const sfdrDataModel = [
             name: "scopeOfEntities",
             label: "Scope Of Entities",
             description:
-              "Does a list of legal entities covered by Sust./Annual/Integrated report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
+                "Does a list of legal entities covered by Sust./Annual/Integrated report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
             unit: "",
             component: "YesNoNaFormField",
             evidenceDesired: false,
@@ -93,7 +93,7 @@ export const sfdrDataModel = [
         label: "Greenhouse gas emissions ",
         fields: [
           {
-            name: "scope1",
+            name: "scope1InTonnes",
             label: "Scope 1",
             description: "What is the amount of the company's Scope 1 emissions?",
             unit: "Tonnes",
@@ -103,7 +103,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "scope2",
+            name: "scope2InTonnes",
             label: "Scope 2",
             description: "What is the amount of the company's Scope 2 emissions?",
             unit: "Tonnes",
@@ -113,7 +113,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "scope3",
+            name: "scope3InTonnes",
             label: "Scope 3",
             description: "What is the amount of the company's Scope 3 emissions ?",
             unit: "Tonnes",
@@ -126,9 +126,10 @@ export const sfdrDataModel = [
             name: "enterpriseValue",
             label: "Enterprise Value ",
             description: "Company Enterprise Value",
-            unit: "Currency",
+            unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
+            options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
             required: false,
             showIf: (): boolean => true,
           },
@@ -136,7 +137,7 @@ export const sfdrDataModel = [
             name: "totalRevenue",
             label: "Total Revenue",
             description: "Company Total Revenue ",
-            unit: "Currency",
+            unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
             options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
@@ -161,7 +162,7 @@ export const sfdrDataModel = [
         label: "Energy performance",
         fields: [
           {
-            name: "renewableEnergyProduction",
+            name: "renewableEnergyProductionInGWh",
             label: "Renewable Energy Production",
             description: "Value of energy produced from renewable energy sources ",
             unit: "GWh",
@@ -171,7 +172,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "renewableEnergyConsumption",
+            name: "renewableEnergyConsumptionInGWh",
             label: "Renewable Energy Consumption",
             description: "Value of energy consumed from renewable energy sources ",
             unit: "GWh",
@@ -181,7 +182,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyConsumption",
+            name: "nonRenewableEnergyConsumptionInGWh",
             label: "Non-Renewable Energy Consumption",
             description: "Value of energy consumed from non-renewable energy sources ",
             unit: "GWh",
@@ -191,7 +192,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyProduction",
+            name: "nonRenewableEnergyProductionInGWh",
             label: "Non-Renewable Energy Production",
             description: "Value of energy produced from non-renewable energy sources ",
             unit: "GWh",
@@ -201,7 +202,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "highImpactClimateSectorEnergyConsumptionNaceA",
+            name: "highImpactClimateSectorEnergyConsumptionNaceAInGWh",
             label: "High Impact Climate Sector Energy Consumption NACE A",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -211,7 +212,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "highImpactClimateSectorEnergyConsumptionNaceB",
+            name: "highImpactClimateSectorEnergyConsumptionNaceBInGWh",
             label: "High Impact Climate Sector Energy Consumption NACE B",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -221,7 +222,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "highImpactClimateSectorEnergyConsumptionNaceC",
+            name: "highImpactClimateSectorEnergyConsumptionNaceCInGWh",
             label: "High Impact Climate Sector Energy Consumption NACE C",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -231,7 +232,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "highImpactClimateSectorEnergyConsumptionNaceD",
+            name: "highImpactClimateSectorEnergyConsumptionNaceDInGWh",
             label: "High Impact Climate Sector Energy Consumption NACE D",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -241,7 +242,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "highImpactClimateSectorEnergyConsumptionNaceE",
+            name: "highImpactClimateSectorEnergyConsumptionNaceEInGWh",
             label: "High Impact Climate Sector Energy Consumption NACE E",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -251,7 +252,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "highImpactClimateSectorEnergyConsumptionNaceF",
+            name: "highImpactClimateSectorEnergyConsumptionNaceFInGWh",
             label: "High Impact Climate Sector Energy Consumption NACE F",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -261,7 +262,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "highImpactClimateSectorEnergyConsumptionNaceG",
+            name: "highImpactClimateSectorEnergyConsumptionNaceGInGWh",
             label: "High Impact Climate Sector Energy Consumption NACE G",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -271,7 +272,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "highImpactClimateSectorEnergyConsumptionNaceH",
+            name: "highImpactClimateSectorEnergyConsumptionNaceHInGWh",
             label: "High Impact Climate Sector Energy Consumption NACE H",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -281,7 +282,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "highImpactClimateSectorEnergyConsumptionNaceL",
+            name: "highImpactClimateSectorEnergyConsumptionNaceLInGWh",
             label: "High Impact Climate Sector Energy Consumption NACE L",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -291,7 +292,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "totalHighImpactClimateSectorEnergyConsumption",
+            name: "totalHighImpactClimateSectorEnergyConsumptionInGWh",
             label: "Total High Impact Climate Sector Energy Consumption",
             description: "Total energy consumption per high impact climate sector",
             unit: "GWh",
@@ -301,7 +302,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyConsumptionFossilFuels",
+            name: "nonRenewableEnergyConsumptionFossilFuelsInGWh",
             label: "Non-Renewable Energy Consumption Fossil Fuels",
             description: "Total amount of non-renewable energy consumption",
             unit: "GWh",
@@ -311,7 +312,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyConsumptionCrudeOil",
+            name: "nonRenewableEnergyConsumptionCrudeOilInGWh",
             label: "Non-Renewable Energy Consumption Crude Oil",
             description: "Energy consumption by non-renewable energy sources such as crude oil",
             unit: "GWh",
@@ -321,7 +322,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyConsumptionNaturalGas",
+            name: "nonRenewableEnergyConsumptionNaturalGasInGWh",
             label: "Non-Renewable Energy Consumption Natural Gas",
             description: "Energy consumption by non-renewable energy sources such as natural gas",
             unit: "GWh",
@@ -331,7 +332,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyConsumptionLignite",
+            name: "nonRenewableEnergyConsumptionLigniteInGWh",
             label: "Non-Renewable Energy Consumption Lignite",
             description: "Energy consumption by non-renewable energy sources such as lignite",
             unit: "GWh",
@@ -341,7 +342,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyConsumptionCoal",
+            name: "nonRenewableEnergyConsumptionCoalInGWh",
             label: "Non-Renewable Energy Consumption Coal",
             description: "Energy consumption by non-renewable energy sources such as coal",
             unit: "GWh",
@@ -351,7 +352,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyConsumptionNuclearEnergy",
+            name: "nonRenewableEnergyConsumptionNuclearEnergyInGWh",
             label: "Non-Renewable Energy Consumption Nuclear Energy",
             description: "Energy consumption by non-renewable energy sources such as nuclear energy (Uranium)",
             unit: "GWh",
@@ -361,10 +362,10 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyConsumptionOther",
+            name: "nonRenewableEnergyConsumptionOtherInGWh",
             label: "Non-Renewable Energy Consumption Other",
             description:
-              "Energy consumption by non-renewable energy sources from any other available (used) non-renewable source of energy",
+                "Energy consumption by non-renewable energy sources from any other available (used) non-renewable source of energy",
             unit: "GWh",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -381,7 +382,7 @@ export const sfdrDataModel = [
             name: "primaryForestAndWoodedLandOfNativeSpeciesExposure",
             label: "Primary Forest And Wooded Land Of Native Species Exposure",
             description:
-              "Does the company have sites/operations located in primary forest and other wooded land, that is forest and other wooded land of native species, where there is no clearly visible indication of human activity and the ecological processes are not significantly disturbed - where activities of the company negatively affect those areas?",
+                "Does the company have sites/operations located in primary forest and other wooded land, that is forest and other wooded land of native species, where there is no clearly visible indication of human activity and the ecological processes are not significantly disturbed - where activities of the company negatively affect those areas?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -393,7 +394,7 @@ export const sfdrDataModel = [
             name: "protectedAreasExposure",
             label: "Protected Areas Exposure",
             description:
-              "Does the company have sites/operations located in areas designatedby law or by the relevant competent authority for nature protection purposes, unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes - where activities of the company negatively affect those areas?",
+                "Does the company have sites/operations located in areas designatedby law or by the relevant competent authority for nature protection purposes, unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes - where activities of the company negatively affect those areas?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -405,7 +406,7 @@ export const sfdrDataModel = [
             name: "rareOrEndangeredEcosystemsExposure",
             label: "Rare Or Endangered Ecosystems Exposure",
             description:
-              "Does the company have sites/operations located in  areas designated for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature, subject to their recognition by the Commission (Commission may also recognise areas for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature), unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes  - where activities of the company negatively affect those areas?",
+                "Does the company have sites/operations located in  areas designated for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature, subject to their recognition by the Commission (Commission may also recognise areas for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature), unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes  - where activities of the company negatively affect those areas?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -420,7 +421,7 @@ export const sfdrDataModel = [
         label: "Water",
         fields: [
           {
-            name: "emissionsToWater",
+            name: "emissionsToWaterInTonnes",
             label: "Emissions To Water",
             description: "Tonnes of Emissions To Water generated by the company.",
             unit: "Tonnes",
@@ -430,7 +431,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "waterConsumption",
+            name: "waterConsumptionInCubicMeters",
             label: "Water Consumption",
             description: "Amount of water consumed by the company",
             unit: "Cubic Meters",
@@ -440,7 +441,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "waterReused",
+            name: "waterReusedInCubicMeters",
             label: "Water Reused",
             description: "Amount of water reused/reclaimed by the company",
             unit: "Cubic Meters",
@@ -464,7 +465,7 @@ export const sfdrDataModel = [
             name: "waterStressAreaExposure",
             label: "Water Stress Area Exposure",
             description:
-              "Does the company has sites located in areas of high water stress without a water management policy ?",
+                "Does the company has sites located in areas of high water stress without a water management policy ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -479,7 +480,7 @@ export const sfdrDataModel = [
         label: "Waste",
         fields: [
           {
-            name: "hazardousWaste",
+            name: "hazardousWasteInTonnes",
             label: "Hazardous Waste",
             description: "Tonnes of hazardous waste generated by the company.",
             unit: "Tonnes",
@@ -533,7 +534,7 @@ export const sfdrDataModel = [
             certificateRequiredIfYes: false,
           },
           {
-            name: "wasteNonRecycled",
+            name: "wasteNonRecycledInTonnes",
             label: "Waste Non-Recycled",
             description: "Tonnes of non-recycled waste generated by the company.",
             unit: "Tonnes",
@@ -557,7 +558,7 @@ export const sfdrDataModel = [
             name: "biodiversityProtectionPolicy",
             label: "Biodiversity Protection Policy",
             description:
-              "Does the company have a biodiversity policy in place which covers operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas?",
+                "Does the company have a biodiversity policy in place which covers operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -583,7 +584,7 @@ export const sfdrDataModel = [
         label: "Emissions",
         fields: [
           {
-            name: "inorganicPollutants",
+            name: "inorganicPollutantsInTonnes",
             label: "Inorganic Pollutants",
             description: "Amount of emissions of Inorganic Pollutants",
             unit: "Tonnes",
@@ -593,7 +594,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "airPollutants",
+            name: "airPollutantsInTonnes",
             label: "Air Pollutants",
             description: "Amount of emissions of Air Pollutants",
             unit: "Tonnes",
@@ -603,7 +604,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "ozoneDepletionSubstances",
+            name: "ozoneDepletionSubstancesInTonnes",
             label: "Ozone Depletion Substances",
             description: "Amount of emissions of Ozone Depletion Substances",
             unit: "Tonnes",
@@ -616,7 +617,7 @@ export const sfdrDataModel = [
             name: "carbonReductionInitiatives",
             label: "Carbon Reduction Initiatives",
             description:
-              "Does the company have carbon emission reduction initiatives aimed at aligning with the Paris Agreement in place?",
+                "Does the company have carbon emission reduction initiatives aimed at aligning with the Paris Agreement in place?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -697,7 +698,7 @@ export const sfdrDataModel = [
             name: "humanRightsDueDiligencePolicy",
             label: "Human Rights Due Diligence Policy",
             description:
-              "Does the company have a policies and procedures to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact ?",
+                "Does the company have a policies and procedures to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -709,7 +710,7 @@ export const sfdrDataModel = [
             name: "childForcedDiscriminationPolicy",
             label: "Child Forced Discrimination Policy",
             description:
-              "Does the company have a policies and procedures to abolish all forms of child labour, forced labour and eliminate discrimination in the workplace ?",
+                "Does the company have a policies and procedures to abolish all forms of child labour, forced labour and eliminate discrimination in the workplace ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -743,7 +744,7 @@ export const sfdrDataModel = [
             name: "fairBusinessMarketingAdvertisingPolicy",
             label: "Fair Business Marketing Advertising Policy",
             description:
-              "Does the company have a policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services ? ",
+                "Does the company have a policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services ? ",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -755,7 +756,7 @@ export const sfdrDataModel = [
             name: "technologiesExpertiseTransferPolicy",
             label: "Technologies Expertise Transfer Policy",
             description:
-              "Does the company have a policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise ?",
+                "Does the company have a policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -767,7 +768,7 @@ export const sfdrDataModel = [
             name: "fairCompetitionPolicy",
             label: "Fair Competition Policy",
             description:
-              "Does the company have a policies and procedures in place related to fair competition and anti-competitive cartels ?",
+                "Does the company have a policies and procedures in place related to fair competition and anti-competitive cartels ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -779,7 +780,7 @@ export const sfdrDataModel = [
             name: "violationOfTaxRulesAndRegulation",
             label: "Violation Of Tax Rules And Regulation",
             description:
-              "Does the company makes contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries and co-operate with the tax authorities?",
+                "Does the company makes contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries and co-operate with the tax authorities?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -791,7 +792,7 @@ export const sfdrDataModel = [
             name: "unGlobalCompactPrinciplesCompliancePolicy",
             label: "UN Global Compact Principles Compliance Policy",
             description:
-              "Does the company have policies and procedures in place to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises or grievance /complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises ?",
+                "Does the company have policies and procedures in place to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises or grievance /complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -803,7 +804,7 @@ export const sfdrDataModel = [
             name: "oecdGuidelinesForMultinationalEnterprisesPolicy",
             label: "OECD Guidelines For Multinational Enterprises Policy",
             description:
-              "Does the company have policies and procedures in place to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises or grievance /complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?",
+                "Does the company have policies and procedures in place to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises or grievance /complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -837,7 +838,7 @@ export const sfdrDataModel = [
             name: "femaleBoardMembers",
             label: "Female Board Members",
             description:
-              "Number of females on the board. Board means the administrative, management or supervisory body of a company",
+                "Number of females on the board. Board means the administrative, management or supervisory body of a company",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -848,7 +849,7 @@ export const sfdrDataModel = [
             name: "maleBoardMembers",
             label: "Male Board Members",
             description:
-              "Number of males on the board. Board means the administrative, management or supervisory body of a company",
+                "Number of males on the board. Board means the administrative, management or supervisory body of a company",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -859,7 +860,7 @@ export const sfdrDataModel = [
             name: "controversialWeaponsExposure",
             label: "Controversial Weapons Exposure",
             description:
-              "Does the company involved in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons ?",
+                "Does the company involved in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -889,7 +890,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "workdaysLost",
+            name: "workdaysLostInDays",
             label: "Workdays Lost",
             description: "Number of workdays lost to injuries, accidents, fatalities or illness",
             unit: "Days",
@@ -902,7 +903,7 @@ export const sfdrDataModel = [
             name: "supplierCodeOfConduct",
             label: "Supplier Code Of Conduct",
             description:
-              "Does the company have a Supplier Code Of Conduct (against unsafe working conditions, precarious work, child labour and forced labour)?",
+                "Does the company have a Supplier Code Of Conduct (against unsafe working conditions, precarious work, child labour and forced labour)?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -946,7 +947,7 @@ export const sfdrDataModel = [
             name: "sanctionsIncidentsOfDiscrimination",
             label: "Sanctions Incidents Of Discrimination",
             description:
-              "Number of discrimination related incidents reported that lead to any kind of penalty and/or fine",
+                "Number of discrimination related incidents reported that lead to any kind of penalty and/or fine",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -957,7 +958,7 @@ export const sfdrDataModel = [
             name: "ceoToEmployeePayGap",
             label: "CEO to Employee Pay Gap",
             description:
-              "Ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
+                "Ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -974,7 +975,7 @@ export const sfdrDataModel = [
             name: "securitiesNotCertifiedAsGreen",
             label: "Securities Not Certified As Green",
             description:
-              "Does the company have investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?",
+                "Does the company have investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -1003,7 +1004,7 @@ export const sfdrDataModel = [
             name: "humanRightsDueDiligence",
             label: "Human Rights Due Diligence ",
             description:
-              "Does the company have a due diligence process to identify, prevent, mitigate and address adverse human rights impacts?",
+                "Does the company have a due diligence process to identify, prevent, mitigate and address adverse human rights impacts?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -1026,7 +1027,7 @@ export const sfdrDataModel = [
             name: "reportedChildLabourIncidents",
             label: "Reported Child Labour Incidents",
             description:
-              "Does the company exposed to operations and suppliers at significant risk of incidents of child labour exposed to hazardous work, in terms of of geographic areas or type of operation?",
+                "Does the company exposed to operations and suppliers at significant risk of incidents of child labour exposed to hazardous work, in terms of of geographic areas or type of operation?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -1038,7 +1039,7 @@ export const sfdrDataModel = [
             name: "reportedForcedOrCompulsoryLabourIncidents",
             label: "Reported Forced Or Compulsory Labour Incidents",
             description:
-              "Does the company exposed to operations and suppliers at significant risk of incidents of forced or compulsory labour in terms in terms of geographic areas and/or the type of operation?",
+                "Does the company exposed to operations and suppliers at significant risk of incidents of forced or compulsory labour in terms in terms of geographic areas and/or the type of operation?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -1066,7 +1067,7 @@ export const sfdrDataModel = [
             name: "reportedCasesOfBriberyCorruption",
             label: "Reported Cases Of Bribery Corruption",
             description:
-              "Number of cases with identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery",
+                "Number of cases with identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,

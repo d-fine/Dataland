@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
+import org.dataland.datalandbackend.model.CurrencyDataPoint
 import org.dataland.datalandbackend.model.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -39,9 +40,9 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val oecdGuidelinesForMultinationalEnterprisesPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val averageGrossHourlyEarningsMaleEmployees: ExtendedDataPoint<BigDecimal>? = null,
+    val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    val averageGrossHourlyEarningsFemaleEmployees: ExtendedDataPoint<BigDecimal>? = null,
+    val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
     val femaleBoardMembers: ExtendedDataPoint<BigDecimal>? = null,
 
@@ -53,7 +54,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val rateOfAccidents: ExtendedDataPoint<BigDecimal>? = null,
 
-    val workdaysLost: ExtendedDataPoint<BigDecimal>? = null,
+    val workdaysLostInDays: ExtendedDataPoint<BigDecimal>? = null,
 
     val supplierCodeOfConduct: ExtendedDataPoint<YesNo>? = null,
 
