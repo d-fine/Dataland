@@ -111,14 +111,14 @@ export default defineComponent({
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
       const fieldsToConvertToMillions = [
-        "revenueInEur",
-        "operatingCostInEur",
-        "capitalAssetsInEur",
+        "revenueInEUR",
+        "operatingCostInEUR",
+        "capitalAssetsInEUR",
         "amountCoveredByInsuranceAgainstNaturalHazards",
       ];
       const optionFields = [
-        "percentageOfInvestmentsInEnhancingEnergyEfficiency",
-        "energyConsumptionCoveredByOwnRenewablePowerGeneration",
+        "percentageRangeForInvestmentsInEnhancingEnergyEfficiency",
+        "percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration",
       ];
       if (value == null) {
         return value;
