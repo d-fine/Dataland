@@ -14,13 +14,15 @@ import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single eutaxonomy-financials fixture
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param setMissingValuesToNull controls if missing values should be undefined or null
+ * @param missingProbability the probability (as number between 0 and 1) for "undefined"/"null" values in nullable fields
  * @returns a random eutaxonomy-financials fixture
  */
 export function generateEuTaxonomyDataForFinancials(
-  undefinedProbability = DEFAULT_PROBABILITY,
+  setMissingValuesToNull: boolean = true,
+  missingProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForFinancials {
-  const dataGenerator = new EuFinancialsGenerator(undefinedProbability, true);
+  const dataGenerator = new EuFinancialsGenerator(missingProbability, setMissingValuesToNull);
   return dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes();
 }
 
@@ -37,6 +39,7 @@ export class EuFinancialsGenerator extends Generator {
   ): EuTaxonomyDataForFinancials {
     const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields(
       this.reports,
+      this.setMissingValuesToNull,
       this.missingValueProbability,
     );
     const eligibilityKpis = Object.fromEntries(
