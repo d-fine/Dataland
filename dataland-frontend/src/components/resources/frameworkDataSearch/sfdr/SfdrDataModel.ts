@@ -59,7 +59,7 @@ export const sfdrDataModel = [
             name: "referencedReports",
             label: "Referenced Reports",
             description:
-                "Does your company have a current annual report, sustainability report, integrated report or ESEF report? If yes, please share the information with us.",
+              "Does your company have a current annual report, sustainability report, integrated report or ESEF report? If yes, please share the information with us.",
             unit: "",
             component: "UploadReports",
             evidenceDesired: false,
@@ -70,7 +70,7 @@ export const sfdrDataModel = [
             name: "scopeOfEntities",
             label: "Scope Of Entities",
             description:
-                "Does a list of legal entities covered by Sust./Annual/Integrated report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
+              "Does a list of legal entities covered by Sust./Annual/Integrated report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
             unit: "",
             component: "YesNoNaFormField",
             evidenceDesired: false,
@@ -365,7 +365,7 @@ export const sfdrDataModel = [
             name: "nonRenewableEnergyConsumptionOtherInGWh",
             label: "Non-Renewable Energy Consumption Other",
             description:
-                "Energy consumption by non-renewable energy sources from any other available (used) non-renewable source of energy",
+              "Energy consumption by non-renewable energy sources from any other available (used) non-renewable source of energy",
             unit: "GWh",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -382,7 +382,7 @@ export const sfdrDataModel = [
             name: "primaryForestAndWoodedLandOfNativeSpeciesExposure",
             label: "Primary Forest And Wooded Land Of Native Species Exposure",
             description:
-                "Does the company have sites/operations located in primary forest and other wooded land, that is forest and other wooded land of native species, where there is no clearly visible indication of human activity and the ecological processes are not significantly disturbed - where activities of the company negatively affect those areas?",
+              "Does the company have sites/operations located in primary forest and other wooded land, that is forest and other wooded land of native species, where there is no clearly visible indication of human activity and the ecological processes are not significantly disturbed - where activities of the company negatively affect those areas?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -394,7 +394,7 @@ export const sfdrDataModel = [
             name: "protectedAreasExposure",
             label: "Protected Areas Exposure",
             description:
-                "Does the company have sites/operations located in areas designatedby law or by the relevant competent authority for nature protection purposes, unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes - where activities of the company negatively affect those areas?",
+              "Does the company have sites/operations located in areas designatedby law or by the relevant competent authority for nature protection purposes, unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes - where activities of the company negatively affect those areas?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -406,7 +406,7 @@ export const sfdrDataModel = [
             name: "rareOrEndangeredEcosystemsExposure",
             label: "Rare Or Endangered Ecosystems Exposure",
             description:
-                "Does the company have sites/operations located in  areas designated for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature, subject to their recognition by the Commission (Commission may also recognise areas for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature), unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes  - where activities of the company negatively affect those areas?",
+              "Does the company have sites/operations located in  areas designated for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature, subject to their recognition by the Commission (Commission may also recognise areas for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature), unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes  - where activities of the company negatively affect those areas?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -465,7 +465,7 @@ export const sfdrDataModel = [
             name: "waterStressAreaExposure",
             label: "Water Stress Area Exposure",
             description:
-                "Does the company has sites located in areas of high water stress without a water management policy ?",
+              "Does the company has sites located in areas of high water stress without a water management policy ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -558,7 +558,7 @@ export const sfdrDataModel = [
             name: "biodiversityProtectionPolicy",
             label: "Biodiversity Protection Policy",
             description:
-                "Does the company have a biodiversity policy in place which covers operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas?",
+              "Does the company have a biodiversity policy in place which covers operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -617,7 +617,7 @@ export const sfdrDataModel = [
             name: "carbonReductionInitiatives",
             label: "Carbon Reduction Initiatives",
             description:
-                "Does the company have carbon emission reduction initiatives aimed at aligning with the Paris Agreement in place?",
+              "Does the company have carbon emission reduction initiatives aimed at aligning with the Paris Agreement in place?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -698,7 +698,7 @@ export const sfdrDataModel = [
             name: "humanRightsDueDiligencePolicy",
             label: "Human Rights Due Diligence Policy",
             description:
-                "Does the company have a policies and procedures to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact ?",
+              "Does the company have a policies and procedures to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -710,7 +710,7 @@ export const sfdrDataModel = [
             name: "childForcedDiscriminationPolicy",
             label: "Child Forced Discrimination Policy",
             description:
-                "Does the company have a policies and procedures to abolish all forms of child labour, forced labour and eliminate discrimination in the workplace ?",
+              "Does the company have a policies and procedures to abolish all forms of child labour, forced labour and eliminate discrimination in the workplace ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -744,7 +744,7 @@ export const sfdrDataModel = [
             name: "fairBusinessMarketingAdvertisingPolicy",
             label: "Fair Business Marketing Advertising Policy",
             description:
-                "Does the company have a policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services ? ",
+              "Does the company have a policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services ? ",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -756,7 +756,7 @@ export const sfdrDataModel = [
             name: "technologiesExpertiseTransferPolicy",
             label: "Technologies Expertise Transfer Policy",
             description:
-                "Does the company have a policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise ?",
+              "Does the company have a policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -768,7 +768,7 @@ export const sfdrDataModel = [
             name: "fairCompetitionPolicy",
             label: "Fair Competition Policy",
             description:
-                "Does the company have a policies and procedures in place related to fair competition and anti-competitive cartels ?",
+              "Does the company have a policies and procedures in place related to fair competition and anti-competitive cartels ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -780,7 +780,7 @@ export const sfdrDataModel = [
             name: "violationOfTaxRulesAndRegulation",
             label: "Violation Of Tax Rules And Regulation",
             description:
-                "Does the company makes contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries and co-operate with the tax authorities?",
+              "Does the company makes contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries and co-operate with the tax authorities?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -792,7 +792,7 @@ export const sfdrDataModel = [
             name: "unGlobalCompactPrinciplesCompliancePolicy",
             label: "UN Global Compact Principles Compliance Policy",
             description:
-                "Does the company have policies and procedures in place to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises or grievance /complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises ?",
+              "Does the company have policies and procedures in place to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises or grievance /complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -804,7 +804,7 @@ export const sfdrDataModel = [
             name: "oecdGuidelinesForMultinationalEnterprisesPolicy",
             label: "OECD Guidelines For Multinational Enterprises Policy",
             description:
-                "Does the company have policies and procedures in place to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises or grievance /complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?",
+              "Does the company have policies and procedures in place to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises or grievance /complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -838,7 +838,7 @@ export const sfdrDataModel = [
             name: "femaleBoardMembers",
             label: "Female Board Members",
             description:
-                "Number of females on the board. Board means the administrative, management or supervisory body of a company",
+              "Number of females on the board. Board means the administrative, management or supervisory body of a company",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -849,7 +849,7 @@ export const sfdrDataModel = [
             name: "maleBoardMembers",
             label: "Male Board Members",
             description:
-                "Number of males on the board. Board means the administrative, management or supervisory body of a company",
+              "Number of males on the board. Board means the administrative, management or supervisory body of a company",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -860,7 +860,7 @@ export const sfdrDataModel = [
             name: "controversialWeaponsExposure",
             label: "Controversial Weapons Exposure",
             description:
-                "Does the company involved in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons ?",
+              "Does the company involved in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons ?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -903,7 +903,7 @@ export const sfdrDataModel = [
             name: "supplierCodeOfConduct",
             label: "Supplier Code Of Conduct",
             description:
-                "Does the company have a Supplier Code Of Conduct (against unsafe working conditions, precarious work, child labour and forced labour)?",
+              "Does the company have a Supplier Code Of Conduct (against unsafe working conditions, precarious work, child labour and forced labour)?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -947,7 +947,7 @@ export const sfdrDataModel = [
             name: "sanctionsIncidentsOfDiscrimination",
             label: "Sanctions Incidents Of Discrimination",
             description:
-                "Number of discrimination related incidents reported that lead to any kind of penalty and/or fine",
+              "Number of discrimination related incidents reported that lead to any kind of penalty and/or fine",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -958,7 +958,7 @@ export const sfdrDataModel = [
             name: "ceoToEmployeePayGap",
             label: "CEO to Employee Pay Gap",
             description:
-                "Ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
+              "Ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
@@ -975,7 +975,7 @@ export const sfdrDataModel = [
             name: "securitiesNotCertifiedAsGreen",
             label: "Securities Not Certified As Green",
             description:
-                "Does the company have investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?",
+              "Does the company have investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -1004,7 +1004,7 @@ export const sfdrDataModel = [
             name: "humanRightsDueDiligence",
             label: "Human Rights Due Diligence ",
             description:
-                "Does the company have a due diligence process to identify, prevent, mitigate and address adverse human rights impacts?",
+              "Does the company have a due diligence process to identify, prevent, mitigate and address adverse human rights impacts?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -1027,7 +1027,7 @@ export const sfdrDataModel = [
             name: "reportedChildLabourIncidents",
             label: "Reported Child Labour Incidents",
             description:
-                "Does the company exposed to operations and suppliers at significant risk of incidents of child labour exposed to hazardous work, in terms of of geographic areas or type of operation?",
+              "Does the company exposed to operations and suppliers at significant risk of incidents of child labour exposed to hazardous work, in terms of of geographic areas or type of operation?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -1039,7 +1039,7 @@ export const sfdrDataModel = [
             name: "reportedForcedOrCompulsoryLabourIncidents",
             label: "Reported Forced Or Compulsory Labour Incidents",
             description:
-                "Does the company exposed to operations and suppliers at significant risk of incidents of forced or compulsory labour in terms in terms of geographic areas and/or the type of operation?",
+              "Does the company exposed to operations and suppliers at significant risk of incidents of forced or compulsory labour in terms in terms of geographic areas and/or the type of operation?",
             unit: "",
             component: "YesNoFormField",
             evidenceDesired: true,
@@ -1067,7 +1067,7 @@ export const sfdrDataModel = [
             name: "reportedCasesOfBriberyCorruption",
             label: "Reported Cases Of Bribery Corruption",
             description:
-                "Number of cases with identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery",
+              "Number of cases with identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery",
             unit: "",
             component: "DataPointFormField",
             evidenceDesired: true,
