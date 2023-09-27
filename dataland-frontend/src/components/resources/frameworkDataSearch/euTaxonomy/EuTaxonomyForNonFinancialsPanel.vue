@@ -34,7 +34,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type AmountWithCurrency,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-  type AssuranceDataPointAssuranceOptionsValueEnum,
+  AssuranceDataPointAssuranceOptionsValueEnum,
   DataTypeEnum,
   type EuTaxonomyDataForNonFinancials,
   FiscalYearDeviation,
