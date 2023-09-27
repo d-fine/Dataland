@@ -5,8 +5,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the animal feed of the livestock farming sector
+ * --- API model ---
+ * Fields of the subcategory "Animal feed" belonging to the category "Livestock farming" of the p2p framework.
 */
 data class P2pLivestockFarmingAnimalFeed(
     val ownFeedInPercent: BigDecimal? = null,
@@ -15,7 +15,7 @@ data class P2pLivestockFarmingAnimalFeed(
 
     val originOfExternalFeed: String? = null,
 
-    val excessNitrogen: BigDecimal? = null,
+    val excessNitrogenInKilogramPerHectare: BigDecimal? = null,
 
     val cropRotation: BigDecimal? = null,
 

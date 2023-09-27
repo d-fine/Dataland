@@ -5,10 +5,10 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding emissions planning
- */
-data class P2pEmissionsPlanning(
-    val absoluteEmissions: BigDecimal? = null,
+ * Fields of the subcategory "Emissions planning" belonging to the category "General" of the p2p framework.
+*/
+data class P2pGeneralEmissionsPlanning(
+    val absoluteEmissionsInTonnesCO2e: BigDecimal? = null,
 
     val relativeEmissionsInPercent: BigDecimal? = null,
 

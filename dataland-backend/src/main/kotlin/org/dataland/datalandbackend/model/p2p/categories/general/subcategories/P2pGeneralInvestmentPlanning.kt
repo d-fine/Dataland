@@ -5,9 +5,9 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding investment planning.
- */
-data class P2pInvestmentPlanning(
+ * Fields of the subcategory "Investment planning" belonging to the category "General" of the p2p framework.
+*/
+data class P2pGeneralInvestmentPlanning(
     val investmentPlanForClimateTargets: YesNo? = null,
 
     val capexShareInNetZeroSolutionsInPercent: BigDecimal? = null,

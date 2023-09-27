@@ -4,8 +4,8 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding the defossilisation of the HVC Plastics sector
- */
+ * Fields of the subcategory "Defossilisation" belonging to the category "HVC Plastics" of the p2p framework.
+*/
 data class P2pHvcPlasticsDefossilisation(
     val useOfRenewableFeedstocksInPercent: BigDecimal? = null,
 

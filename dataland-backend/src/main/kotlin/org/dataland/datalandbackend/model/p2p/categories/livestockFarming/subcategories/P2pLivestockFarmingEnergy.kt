@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.model.p2p.categories.livestockFarming.subca
 import java.math.BigDecimal
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the energy of the livestock farming sector
+ * --- API model ---
+ * Fields of the subcategory "Energy" belonging to the category "Livestock farming" of the p2p framework.
 */
 data class P2pLivestockFarmingEnergy(
     val renewableElectricityInPercent: BigDecimal? = null,

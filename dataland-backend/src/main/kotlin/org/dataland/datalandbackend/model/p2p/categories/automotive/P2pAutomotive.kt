@@ -6,8 +6,8 @@ import org.dataland.datalandbackend.model.p2p.categories.automotive.subcategorie
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding the automotive sector
- */
+ * Fields of the category "Automotive" of the p2p framework.
+*/
 data class P2pAutomotive(
     val energy: P2pAutomotiveEnergy? = null,
 

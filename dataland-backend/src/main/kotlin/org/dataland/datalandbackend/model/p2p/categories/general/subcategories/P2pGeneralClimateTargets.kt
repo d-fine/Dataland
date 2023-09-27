@@ -4,10 +4,10 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding climate targets
- */
-data class P2pClimateTargets(
-    val longTermScienceBasedClimateTarget: YesNo? = null,
-
+ * Fields of the subcategory "Climate Targets" belonging to the category "General" of the p2p framework.
+*/
+data class P2pGeneralClimateTargets(
     val shortTermScienceBasedClimateTarget: YesNo? = null,
+
+    val longTermScienceBasedClimateTarget: YesNo? = null,
 )
