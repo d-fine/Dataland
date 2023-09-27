@@ -14,7 +14,7 @@
           @blur="handleBlurValue"
         />
         <div v-if="unit" class="form-field-label pb-3">
-          <FormKit type="hidden" name="currency" :modelValue="unit" />
+          <FormKit type="hidden" name="currency" />
           <span>in {{ unit }}</span>
         </div>
         <FormKit
