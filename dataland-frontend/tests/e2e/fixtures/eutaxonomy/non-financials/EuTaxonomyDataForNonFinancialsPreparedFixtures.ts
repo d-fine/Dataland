@@ -35,6 +35,6 @@ function createDatasetThatHasAllFieldsDefined(
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
   input.companyInformation.companyName = "all-fields-defined-for-eu-taxo-non-financials";
-  input.t = generateEuTaxonomyDataForNonFinancials(0);
+  input.t = generateEuTaxonomyDataForNonFinancials(false, 0);
   return input;
 }

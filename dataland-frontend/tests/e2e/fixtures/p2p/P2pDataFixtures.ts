@@ -29,7 +29,7 @@ import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
  */
 export function generateP2pFixtures(
   numFixtures: number,
-  setMissingValuesToNull = true,
+  setMissingValuesToNull = false,
   missingValueProbability = DEFAULT_PROBABILITY,
   toggleRandomSectors = true,
 ): FixtureData<PathwaysToParisData>[] {

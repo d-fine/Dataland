@@ -12,8 +12,8 @@ import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   const preparedFixtures = [];
   preparedFixtures.push(manipulateFixtureForSixLksgDataSetsInDifferentYears(generateLksgFixture(1)[0]));
-  preparedFixtures.push(manipulateFixtureForOneLksgDataSetWithProductionSites(generateLksgFixture(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForAllFields(generateLksgFixture(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForOneLksgDataSetWithProductionSites(generateLksgFixture(1, false, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForAllFields(generateLksgFixture(1, false, 0)[0]));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-04-18"));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-06-22"));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2022-07-30"));
@@ -41,7 +41,7 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
-  const twoProductionSites = [generateProductionSite(), generateProductionSite()];
+  const twoProductionSites = [generateProductionSite(false), generateProductionSite(false)];
   input.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
   input.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;
   input.t.governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!.value = YesNo.Yes;
@@ -71,7 +71,10 @@ function manipulateFixtureForDate(input: FixtureData<LksgData>, date: string): F
 function manipulateFixtureForAllFields(fixture: FixtureData<LksgData>): FixtureData<LksgData> {
   fixture.companyInformation.companyName = "lksg-all-fields";
   fixture.t.general.productionSpecific!.productionSites = "Yes";
-  fixture.t.general.productionSpecific!.listOfProductionSites = [generateProductionSite(0), generateProductionSite(0)];
+  fixture.t.general.productionSpecific!.listOfProductionSites = [
+    generateProductionSite(false, 0),
+    generateProductionSite(false, 0),
+  ];
   return fixture;
 }
 

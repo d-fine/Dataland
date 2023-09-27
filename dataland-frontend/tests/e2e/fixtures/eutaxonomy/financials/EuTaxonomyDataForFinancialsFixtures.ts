@@ -19,7 +19,7 @@ import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
  * @returns a random eutaxonomy-financials fixture
  */
 export function generateEuTaxonomyDataForFinancials(
-  setMissingValuesToNull = true,
+  setMissingValuesToNull = false,
   missingValueProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForFinancials {
   const dataGenerator = new EuFinancialsGenerator(missingValueProbability, setMissingValuesToNull);

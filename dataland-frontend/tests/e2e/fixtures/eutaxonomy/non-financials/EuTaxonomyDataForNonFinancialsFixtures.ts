@@ -21,7 +21,7 @@ import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
  * @returns the generated fixture
  */
 export function generateEuTaxonomyDataForNonFinancials(
-  setMissingValuesToNull = true,
+  setMissingValuesToNull = false,
   missingValueProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForNonFinancials {
   const dataGenerator = new EuNonFinancialsGenerator(missingValueProbability, setMissingValuesToNull);

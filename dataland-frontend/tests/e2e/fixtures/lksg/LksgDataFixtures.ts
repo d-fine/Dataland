@@ -29,7 +29,7 @@ import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
  */
 export function generateLksgFixture(
   numFixtures: number,
-  setMissingValuesToNull = true,
+  setMissingValuesToNull = false,
   missingValueProbability = DEFAULT_PROBABILITY,
 ): FixtureData<LksgData>[] {
   return generateFixtureDataset<LksgData>(

@@ -25,7 +25,7 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
  */
 export function generateSmeFixtures(
   numFixtures: number,
-  setMissingValuesToNull = true,
+  setMissingValuesToNull = false,
   undefinedProbability = DEFAULT_PROBABILITY,
 ): FixtureData<SmeData>[] {
   return generateFixtureDataset<SmeData>(

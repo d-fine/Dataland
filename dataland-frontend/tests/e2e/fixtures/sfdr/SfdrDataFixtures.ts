@@ -12,7 +12,7 @@ import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
  * @returns SFDR object with populated properties
  */
 export function generateSfdrData(
-  setMissingValuesToNull = true,
+  setMissingValuesToNull = false,
   missingValueProbability = DEFAULT_PROBABILITY,
 ): SfdrData {
   const dataGenerator = new Generator(missingValueProbability, setMissingValuesToNull);
