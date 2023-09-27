@@ -1,0 +1,119 @@
+{
+  "fiscalYearDeviation": "Deviation",
+  "fiscalYearEnd": "2023-04-25",
+  "numberOfEmployees": 46621,
+  "referencedReports": {
+    "IntegratedReport": {
+      "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "isGroupLevel": "Yes",
+      "reportDate": "2022-10-28",
+      "currency": "UAH"
+    }
+  },
+  "assurance": {
+    "assurance": "LimitedAssurance",
+    "dataSource": {
+      "page": 235,
+      "report": "IntegratedReport",
+      "tagName": "content"
+    }
+  },
+  "scopeOfEntities": "Yes",
+  "euTaxonomyActivityLevelReporting": "Yes",
+  "financialServicesTypes": [
+    "InsuranceOrReinsurance"
+  ],
+  "eligibilityKpis": {
+    "InsuranceOrReinsurance": {
+      "banksAndIssuers": {
+        "value": 0.9996,
+        "dataSource": {
+          "page": 1020,
+          "report": "IntegratedReport",
+          "tagName": "metrics"
+        },
+        "quality": "Incomplete",
+        "comment": "calculate bluetooth array"
+      },
+      "derivatives": {
+        "value": null,
+        "dataSource": {
+          "page": 241,
+          "report": "IntegratedReport",
+          "tagName": "paradigms"
+        },
+        "quality": "Audited",
+        "comment": "generate bluetooth hard drive"
+      },
+      "investmentNonNfrd": {
+        "value": 12345678900,
+        "dataSource": {
+          "report": ""
+        },
+        "quality": "Estimated"
+      },
+      "taxonomyEligibleActivity": null,
+      "taxonomyNonEligibleActivity": {
+        "value": 0.5744,
+        "dataSource": {
+          "report": ""
+        },
+        "quality": "Incomplete"
+      }
+    },
+    "otherKpis": {
+      "something": {
+        "value": 0.243
+      }
+    },
+    "brokenKpis": null
+  },
+  "insuranceKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivities": {
+      "value": 0.3914,
+      "dataSource": {
+        "page": 507,
+        "report": "IntegratedReport",
+        "tagName": "deliverables"
+      },
+      "quality": "Reported",
+      "comment": "index open-source card"
+    }
+  },
+  "investmentFirmKpis": {
+    "whatever": {
+      "value": 0.3924,
+      "dataSource": {
+        "page": 507,
+        "report": "IntegratedReport",
+        "tagName": "deliverables"
+      },
+      "quality": "Reported",
+      "comment": "index open-source card"
+    }
+  },
+  "creditInstitutionKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivities": {
+      "value": null,
+      "dataSource": {
+        "page": 507,
+        "report": "IntegratedReport",
+        "tagName": "deliverables"
+      },
+      "quality": "Reported",
+      "comment": "index open-source card"
+    }
+  },
+  "nonExistingKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivities": {
+      "value": 0.3914,
+      "dataSource": {
+        "page": 507,
+        "report": "IntegratedReport",
+        "tagName": "deliverables"
+      },
+      "quality": "Reported",
+      "comment": "index open-source card"
+    }
+  }
+}

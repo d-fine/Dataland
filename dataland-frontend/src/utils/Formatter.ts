@@ -12,7 +12,7 @@ export function formatPercentageNumberAsString(percentageNumber?: number, precis
   if (percentageNumber == undefined) {
     return "";
   }
-  return `${roundNumber(percentageNumber * 100, precision)} %`;
+  return `${roundNumber(percentageNumber, precision)} %`;
 }
 
 /**

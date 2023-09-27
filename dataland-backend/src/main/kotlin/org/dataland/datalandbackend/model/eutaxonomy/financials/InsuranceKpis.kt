@@ -8,5 +8,5 @@ import java.math.BigDecimal
  * KPIs for Insurance / Reinsurance companies for the EuTaxonomyForFinancials framework
  */
 data class InsuranceKpis(
-    val taxonomyEligibleNonLifeInsuranceActivities: DataPointOneValue<BigDecimal>? = null,
+    val taxonomyEligibleNonLifeInsuranceActivitiesInPercent: DataPointOneValue<BigDecimal>? = null,
 )
