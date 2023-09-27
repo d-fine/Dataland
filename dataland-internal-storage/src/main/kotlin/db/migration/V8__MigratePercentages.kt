@@ -68,13 +68,17 @@ class V8__MigratePercentages : BaseJavaMigration() {
     }
 
     private fun transformToPercentage(decimal: Number): BigDecimal {
-        return (when (decimal) {
-            is Int -> BigDecimal(decimal)
-            is Long -> BigDecimal(decimal)
-            is BigInteger -> BigDecimal(decimal)
-            is BigDecimal -> decimal
-            else -> throw NumberFormatException("Unexpected value: $decimal of data type: ${decimal::class.java.name}")
-        }) * BigDecimal(percentageMultiplier)
+        return (
+            when (decimal) {
+                is Int -> BigDecimal(decimal)
+                is Long -> BigDecimal(decimal)
+                is BigInteger -> BigDecimal(decimal)
+                is BigDecimal -> decimal
+                else -> throw NumberFormatException(
+                    "Unexpected value: $decimal of data type: ${decimal::class.java.name}",
+                )
+            }
+            ) * BigDecimal(percentageMultiplier)
     }
 
     /**
