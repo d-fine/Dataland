@@ -94,8 +94,8 @@
                 >
                   <DocumentLink
                     :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
-                    :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.name"
-                    :reference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.reference"
+                    :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.fileName"
+                    :reference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.fileReference"
                     show-icon
                   />
                 </span>
