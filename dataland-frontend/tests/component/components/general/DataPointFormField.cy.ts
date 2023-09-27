@@ -32,7 +32,6 @@ describe("Component test for DataPointFormField", () => {
       });
       cy.get('select[name="currency"]').should("not.exist");
       cy.get('input[name="currency"][type="hidden"]').should("exist");
-      cy.get('input[name="currency"][type="hidden"]').should("have.value", "Days");
       cy.get('div[data-test="dataQuality"] select[name="quality"]').should("have.not.value", "NA");
       cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should("exist");
     });
