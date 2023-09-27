@@ -91,7 +91,7 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
 
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  cy.get('[data-test="assuranceSection"] select[name="fileName"]').select(1);
   cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
   cy.get('em[title="Assurance"]').click();
   cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
@@ -146,7 +146,7 @@ export function fillField(divTag: string, inputsTag: string, value?: ExtendedDat
     if (divTag === "") {
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(valueAsString);
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type("13");
-      cy.get(`[data-test="${inputsTag}"]`).find('select[name="report"]').select(1);
+      cy.get(`[data-test="${inputsTag}"]`).find('select[name="fileName"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`).find('select[name="quality"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`)
         .find('textarea[name="comment"]')
@@ -160,7 +160,7 @@ export function fillField(divTag: string, inputsTag: string, value?: ExtendedDat
         .find(`[data-test="${inputsTag}"]`)
         .find('input[name="page"]')
         .type(`${value.dataSource?.page ?? "13"}`);
-      cy.get(`[data-test="${divTag}"]`).find(`[data-test="${inputsTag}"]`).find('select[name="report"]').select(1);
+      cy.get(`[data-test="${divTag}"]`).find(`[data-test="${inputsTag}"]`).find('select[name="fileName"]').select(1);
       cy.get(`[data-test="${divTag}"]`).find(`[data-test="${inputsTag}"]`).find('select[name="quality"]').select(1);
       cy.get(`[data-test="${divTag}"]`)
         .find(`[data-test="${inputsTag}"]`)
@@ -261,7 +261,7 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
 
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  cy.get('[data-test="assuranceSection"] select[name="fileName"]').select(1);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
