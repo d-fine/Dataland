@@ -23,6 +23,7 @@ export const smeDataModel = [
             required: true,
             showIf: (): boolean => true,
             validation: "required|length:1",
+            shouldDisableCheckboxes: false,
           },
           {
             name: "addressOfHeadquarters",

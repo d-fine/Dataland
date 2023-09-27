@@ -66,6 +66,7 @@ export const lksgDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            shouldDisableCheckboxes: true,
           },
           {
             name: "numberOfEmployees",
