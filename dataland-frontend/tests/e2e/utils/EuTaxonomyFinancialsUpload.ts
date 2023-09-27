@@ -89,7 +89,7 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     .type(`${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`);
   cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
-  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
+  cy.get('[data-test="assuranceSection"] select[name="value"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
   cy.get('[data-test="assuranceSection"] select[name="fileName"]').select(1);
   cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
@@ -259,7 +259,7 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
     `${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`,
   );
 
-  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
+  cy.get('[data-test="assuranceSection"] select[name="value"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
   cy.get('[data-test="assuranceSection"] select[name="fileName"]').select(1);
 
