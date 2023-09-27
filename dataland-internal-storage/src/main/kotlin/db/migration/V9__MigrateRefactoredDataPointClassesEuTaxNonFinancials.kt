@@ -53,14 +53,21 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         val referencedReportsObject = generalCategory.getOrJsonNull("referencedReports")
         if (referencedReportsObject != JSONObject.NULL) {
             referencedReportsObject as JSONObject
-            for (key in referencedReportsObject.keys()) {
-                oldToNewFieldNamesForReports.forEach {
-                    val oneReportObject = referencedReportsObject.getJSONObject(key)
-                    if(oneReportObject.has(it.key)){
-                        oneReportObject.put(it.value, oneReportObject.get(it.key))
-                        oneReportObject.put("fileName", key)
-                        oneReportObject.remove(it.key)
-                    }
+            iterateThroughReferencedReports(referencedReportsObject)
+        }
+    }
+
+    /**
+     * Iterates through all referenced reports to migrate reports
+     */
+    private fun iterateThroughReferencedReports(referencedReportsObject: JSONObject) {
+        for (key in referencedReportsObject.keys()) {
+            oldToNewFieldNamesForReports.forEach {
+                val oneReportObject = referencedReportsObject.getJSONObject(key)
+                if (oneReportObject.has(it.key)) {
+                    oneReportObject.put(it.value, oneReportObject.get(it.key))
+                    oneReportObject.put("fileName", key)
+                    oneReportObject.remove(it.key)
                 }
             }
         }
@@ -74,8 +81,9 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
             val categoryObject = dataObject.getOrJavaNull(cashFlowType) ?: return@forEach
             categoryObject as JSONObject
             val parentObjectOfDataSource = categoryObject.getOrJsonNull("totalAmount")
-            if (parentObjectOfDataSource != JSONObject.NULL)
+            if (parentObjectOfDataSource != JSONObject.NULL) {
                 migrateDataSource(parentObjectOfDataSource as JSONObject, dataObject)
+            }
         }
     }
 
@@ -85,7 +93,7 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
     private fun migrateDataSource(parentObjectOfDataSource: JSONObject, dataObject: JSONObject) {
         val dataSourceObject = parentObjectOfDataSource.getOrJsonNull("dataSource")
         dataSourceObject as JSONObject
-        if (dataSourceObject.has("report")){
+        if (dataSourceObject.has("report")) {
             val fileNameToSearchInReferencedReports: String = dataSourceObject.get("report") as String
             dataSourceObject.put(
                 "fileReference",
@@ -95,7 +103,7 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
             )
         }
         oldToNewFieldNamesForDocuments.forEach {
-            if(dataSourceObject.has(it.key)){
+            if (dataSourceObject.has(it.key)) {
                 dataSourceObject.put(it.value, dataSourceObject.get(it.key))
                 dataSourceObject.remove(it.key)
             }
@@ -112,7 +120,7 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         if (assuranceParentObject != JSONObject.NULL) {
             assuranceParentObject as JSONObject
             oldToNewFieldNamesForAssurance.forEach {
-                if(assuranceParentObject.has(it.key)){
+                if (assuranceParentObject.has(it.key)) {
                     assuranceParentObject.put(it.value, assuranceParentObject.get(it.key))
                     assuranceParentObject.remove(it.key)
                 }
@@ -132,7 +140,7 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
             val referencedReportsObject = generalCategoryObject.getOrJsonNull("referencedReports")
             referencedReportsObject as JSONObject
             val reportObject = referencedReportsObject.getOrJsonNull(fileName)
-            if(reportObject != JSONObject.NULL) {
+            if (reportObject != JSONObject.NULL) {
                 reportObject as JSONObject
                 return reportObject.getOrJsonNull("fileReference") as String
             }
