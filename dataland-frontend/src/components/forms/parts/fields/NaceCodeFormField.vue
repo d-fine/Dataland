@@ -63,7 +63,11 @@ export default defineComponent({
     selectedNaceCodesBind: {
       type: Array,
     },
-    shouldDisableCheckboxes: Boolean,
+    shouldDisableCheckboxes: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 });
 </script>
