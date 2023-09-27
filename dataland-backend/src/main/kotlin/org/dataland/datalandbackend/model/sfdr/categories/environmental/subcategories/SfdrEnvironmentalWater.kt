@@ -9,11 +9,11 @@ import java.math.BigDecimal
  * Fields of the subcategory "Water" belonging to the category "Environmental" of the sfdr framework.
  */
 data class SfdrEnvironmentalWater(
-    val emissionsToWater: ExtendedDataPoint<BigDecimal>? = null,
+    val emissionsToWaterInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    val waterConsumption: ExtendedDataPoint<BigDecimal>? = null,
+    val waterConsumptionInCubicMeters: ExtendedDataPoint<BigDecimal>? = null,
 
-    val waterReused: ExtendedDataPoint<BigDecimal>? = null,
+    val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal>? = null,
 
     val waterManagementPolicy: ExtendedDataPoint<YesNo>? = null,
 

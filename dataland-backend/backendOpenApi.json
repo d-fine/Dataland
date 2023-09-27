@@ -2873,7 +2873,7 @@
           }
         }
       },
-      "CurrencyDataPointBigDecimal": {
+      "CurrencyDataPoint": {
         "required": [
           "quality"
         ],
@@ -3028,13 +3028,13 @@
       "SfdrEnvironmentalEmissions": {
         "type": "object",
         "properties": {
-          "inorganicPollutants": {
+          "inorganicPollutantsInTonnes": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "airPollutants": {
+          "airPollutantsInTonnes": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "ozoneDepletionSubstances": {
+          "ozoneDepletionSubstancesInTonnes": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
           "carbonReductionInitiatives": {
@@ -3045,88 +3045,88 @@
       "SfdrEnvironmentalEnergyPerformance": {
         "type": "object",
         "properties": {
-          "renewableEnergyProduction": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "renewableEnergyProductionInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "renewableEnergyConsumption": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "renewableEnergyConsumptionInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "nonRenewableEnergyConsumption": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "nonRenewableEnergyConsumptionInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "nonRenewableEnergyProduction": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "nonRenewableEnergyProductionInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionNaceA": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceAInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionNaceB": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceBInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionNaceC": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceCInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionNaceD": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceDInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionNaceE": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceEInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionNaceF": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceFInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionNaceG": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceGInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionNaceH": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceHInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionNaceL": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceLInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "totalHighImpactClimateSectorEnergyConsumption": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "nonRenewableEnergyConsumptionFossilFuels": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "nonRenewableEnergyConsumptionCrudeOil": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "nonRenewableEnergyConsumptionCrudeOilInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "nonRenewableEnergyConsumptionNaturalGas": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "nonRenewableEnergyConsumptionNaturalGasInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "nonRenewableEnergyConsumptionLignite": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "nonRenewableEnergyConsumptionLigniteInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "nonRenewableEnergyConsumptionCoal": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "nonRenewableEnergyConsumptionCoalInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "nonRenewableEnergyConsumptionNuclearEnergy": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "nonRenewableEnergyConsumptionOther": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+          "nonRenewableEnergyConsumptionOtherInGWh": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           }
         }
       },
       "SfdrEnvironmentalGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
-          "scope1": {
+          "scope1InTonnes": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "scope2": {
+          "scope2InTonnes": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "scope3": {
+          "scope3InTonnes": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
           "enterpriseValue": {
-            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+            "$ref": "#/components/schemas/CurrencyDataPoint"
           },
           "totalRevenue": {
-            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+            "$ref": "#/components/schemas/CurrencyDataPoint"
           },
           "fossilFuelSectorExposure": {
             "$ref": "#/components/schemas/ExtendedDataPointYesNo"
@@ -3136,7 +3136,7 @@
       "SfdrEnvironmentalWaste": {
         "type": "object",
         "properties": {
-          "hazardousWaste": {
+          "hazardousWasteInTonnes": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
           "manufactureOfAgrochemicalPesticidesProducts": {
@@ -3151,7 +3151,7 @@
           "sustainableOceansAndSeasPolicy": {
             "$ref": "#/components/schemas/ExtendedDataPointYesNo"
           },
-          "wasteNonRecycled": {
+          "wasteNonRecycledInTonnes": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
           "threatenedSpeciesExposure": {
@@ -3168,13 +3168,13 @@
       "SfdrEnvironmentalWater": {
         "type": "object",
         "properties": {
-          "emissionsToWater": {
+          "emissionsToWaterInTonnes": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "waterConsumption": {
+          "waterConsumptionInCubicMeters": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "waterReused": {
+          "waterReusedInCubicMeters": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
           "waterManagementPolicy": {
@@ -3253,7 +3253,7 @@
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
           "reportedFinesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+            "$ref": "#/components/schemas/CurrencyDataPoint"
           }
         }
       },
@@ -3337,10 +3337,10 @@
             "$ref": "#/components/schemas/ExtendedDataPointYesNo"
           },
           "averageGrossHourlyEarningsMaleEmployees": {
-            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+            "$ref": "#/components/schemas/CurrencyDataPoint"
           },
           "averageGrossHourlyEarningsFemaleEmployees": {
-            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+            "$ref": "#/components/schemas/CurrencyDataPoint"
           },
           "femaleBoardMembers": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
@@ -3357,7 +3357,7 @@
           "rateOfAccidents": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
-          "workdaysLost": {
+          "workdaysLostInDays": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
           },
           "supplierCodeOfConduct": {
@@ -5268,7 +5268,7 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/CurrencyDataPointBigDecimal"
+            "$ref": "#/components/schemas/CurrencyDataPoint"
           },
           "nonEligibleShare": {
             "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
@@ -5755,10 +5755,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
