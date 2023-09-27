@@ -22,17 +22,19 @@ import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 /**
  * Generates a set number of P2P fixtures
  * @param numFixtures the number of P2P fixtures to generate
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
+ * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
  * @returns a set number of P2P fixtures
  */
 export function generateP2pFixtures(
   numFixtures: number,
-  undefinedProbability = DEFAULT_PROBABILITY,
+  setMissingValuesToNull = true,
+  missingValueProbability = DEFAULT_PROBABILITY,
   toggleRandomSectors = true,
 ): FixtureData<PathwaysToParisData>[] {
   return generateFixtureDataset<PathwaysToParisData>(
-    () => generateP2pData(undefinedProbability, toggleRandomSectors),
+    () => generateP2pData(setMissingValuesToNull, missingValueProbability, toggleRandomSectors),
     numFixtures,
     (dataSet: PathwaysToParisData) => dataSet.general.general.dataDate.substring(0, 4),
   );
@@ -40,12 +42,17 @@ export function generateP2pFixtures(
 
 /**
  * Generates a random P2P dataset
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
+ * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
  * @returns a random P2P dataset
  */
-function generateP2pData(undefinedProbability = DEFAULT_PROBABILITY, toggleRandomSectors = true): PathwaysToParisData {
-  const dataGenerator = new P2pGenerator(undefinedProbability, toggleRandomSectors);
+function generateP2pData(
+  setMissingValuesToNull: boolean,
+  missingValueProbability = DEFAULT_PROBABILITY,
+  toggleRandomSectors = true
+): PathwaysToParisData {
+  const dataGenerator = new P2pGenerator(missingValueProbability, setMissingValuesToNull, toggleRandomSectors);
   return {
     general: dataGenerator.generateSectorGeneral(),
     ammonia: dataGenerator.getSectorAmmonia(),
@@ -64,8 +71,8 @@ function generateP2pData(undefinedProbability = DEFAULT_PROBABILITY, toggleRando
 class P2pGenerator extends Generator {
   sectors: Array<P2pSector>;
 
-  constructor(undefinedProbability = DEFAULT_PROBABILITY, toggleRandomSectors = true) {
-    super(undefinedProbability);
+  constructor(missingValueProbability = DEFAULT_PROBABILITY, setMissingValuesToNull = true, toggleRandomSectors = true) {
+    super(missingValueProbability, setMissingValuesToNull);
     this.sectors = this.generateSectors(toggleRandomSectors);
   }
 
@@ -159,7 +166,7 @@ class P2pGenerator extends Generator {
       },
       technologyValueCreation: {
         driveMixInPercent: this.randomPercentageValue(),
-        icAndHybridEnginePhaseOutDate: this.valueOrUndefined(generateFutureDate()),
+        icAndHybridEnginePhaseOutDate: this.valueOrMissing(generateFutureDate()),
         futureValueCreationStrategy: this.randomYesNo(),
       },
       materials: {
@@ -244,7 +251,7 @@ class P2pGenerator extends Generator {
     const data: P2pFreightTransportByRoad = {
       technology: {
         driveMixPerFleetSegment: this.randomPercentageValue(),
-        icePhaseOut: this.valueOrUndefined(generateFutureDate()),
+        icePhaseOut: this.valueOrMissing(generateFutureDate()),
       },
       energy: {
         fuelMixInPercent: this.randomPercentageValue(),
@@ -262,8 +269,8 @@ class P2pGenerator extends Generator {
       technology: {
         electricityMixEmissions: this.randomInt(),
         shareOfRenewableElectricityInPercent: this.randomPercentageValue(),
-        naturalGasPhaseOut: this.valueOrUndefined(generateFutureDate()),
-        coalPhaseOut: this.valueOrUndefined(generateFutureDate()),
+        naturalGasPhaseOut: this.valueOrMissing(generateFutureDate()),
+        coalPhaseOut: this.valueOrMissing(generateFutureDate()),
         storageCapacityExpansionInPercent: this.randomPercentageValue(),
       },
     };
