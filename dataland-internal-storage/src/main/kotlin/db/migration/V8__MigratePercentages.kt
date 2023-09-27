@@ -9,7 +9,9 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONArray
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 import java.math.BigDecimal
+import java.math.BigInteger
 
 /**
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
@@ -35,6 +37,8 @@ class V8__MigratePercentages : BaseJavaMigration() {
             "transitionalShareInPercent",
         )
     }
+
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun migrate(context: Context?) {
         val migrationScriptMapping = mapOf(
@@ -67,11 +71,21 @@ class V8__MigratePercentages : BaseJavaMigration() {
     }
 
     private fun transformToPercentage(decimal: Number): BigDecimal {
-        return when (decimal) {
-            is Int -> BigDecimal(decimal) * BigDecimal(percentageMultiplier)
-            is BigDecimal -> decimal * BigDecimal(percentageMultiplier)
-            else -> throw NumberFormatException()
+        val transformedValue = (
+            when (decimal) {
+                is Int -> BigDecimal(decimal)
+                is Long -> BigDecimal(decimal)
+                is BigInteger -> BigDecimal(decimal)
+                is BigDecimal -> decimal
+                else -> throw NumberFormatException(
+                    "Unexpected value: $decimal of data type: ${decimal::class.java.name}",
+                )
+            }
+            ) * BigDecimal(percentageMultiplier)
+        if (transformedValue < BigDecimal(0) || transformedValue > BigDecimal(percentageMultiplier)) {
+            logger.warn("Unexpected percentage: $transformedValue lies not between 0 and 100.")
         }
+        return transformedValue
     }
 
     /**
