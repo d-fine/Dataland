@@ -9,6 +9,7 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONArray
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -36,6 +37,8 @@ class V8__MigratePercentages : BaseJavaMigration() {
             "transitionalShareInPercent",
         )
     }
+
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun migrate(context: Context?) {
         val migrationScriptMapping = mapOf(
@@ -68,7 +71,7 @@ class V8__MigratePercentages : BaseJavaMigration() {
     }
 
     private fun transformToPercentage(decimal: Number): BigDecimal {
-        return (
+        val transformedValue = (
             when (decimal) {
                 is Int -> BigDecimal(decimal)
                 is Long -> BigDecimal(decimal)
@@ -79,6 +82,10 @@ class V8__MigratePercentages : BaseJavaMigration() {
                 )
             }
             ) * BigDecimal(percentageMultiplier)
+        if (transformedValue < BigDecimal(0) || transformedValue > BigDecimal(percentageMultiplier)) {
+            logger.warn("Unexpected percentage: $transformedValue lies not between 0 and 100.")
+        }
+        return transformedValue
     }
 
     /**
