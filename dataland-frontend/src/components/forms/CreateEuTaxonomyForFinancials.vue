@@ -323,7 +323,7 @@ import {
   getKpiFieldNameForOneFinancialServiceType,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
-    AssuranceDataPointValueEnum,
+  AssuranceDataPointValueEnum,
   type CompanyAssociatedDataEuTaxonomyDataForFinancials,
   type DataMetaInformation,
   type EuTaxonomyDataForFinancials,
