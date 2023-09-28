@@ -11,9 +11,6 @@ import {
 } from "@clients/backend";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 
-// The effort of making this file type-safe greatly outweighs the benefit.
-/* eslint @typescript-eslint/no-explicit-any: 0 */
-
 const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
   Yes: "Yes",
   No: "No",

@@ -9,7 +9,7 @@ import {
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 describe("Tests for the MultiLayerDataTable component", () => {
   /**
-   * Mounts the MultiLayerDataTable with the demo dataset and the given dataset
+   * Mounts the MultiLayerDataTable with the given dataset
    * @param datasets the datasets to mount
    * @returns the component mounting chainable
    */
