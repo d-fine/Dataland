@@ -86,7 +86,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       onlyExecuteOnDatabaseReset: true,
     },
     () => {
-      it.only(
+      it(
         "Checks that the country-code filter synchronises between the search bar and the drop down and works",
         { scrollBehavior: false },
         () => {
