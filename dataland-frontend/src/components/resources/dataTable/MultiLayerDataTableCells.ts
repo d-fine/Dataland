@@ -10,9 +10,9 @@ export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: DocumentReference };
 };
 
-export type AvailableDisplayValues =
-  | MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>
-  | MLDTDisplayValue<MLDTDisplayComponents.DocumentLinkDisplayComponent>;
+export type AvailableDisplayValues = {
+  [K in MLDTDisplayComponents]: MLDTDisplayValue<K>;
+}[MLDTDisplayComponents];
 
 export interface MLDTDisplayValue<DisplayComponent extends MLDTDisplayComponents> {
   displayComponent: DisplayComponent;

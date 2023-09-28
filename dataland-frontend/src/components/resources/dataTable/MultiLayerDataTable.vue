@@ -1,8 +1,8 @@
 <template>
   <div class="p-datatable p-component">
-    <div class="p-datatable-wrapper" style="overflow: auto">
+    <div class="p-datatable-wrapper overflow-auto">
       <table class="p-datatable-table w-full" :aria-label="ariaLabel">
-        <thead class="p-datatable-thead" style="position: sticky">
+        <thead class="p-datatable-thead">
           <tr>
             <th class="horizontal-headers-size">
               <div class="p-column-header-content">

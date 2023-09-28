@@ -74,7 +74,7 @@ const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
 
 /**
- * Toggles the visibility of the section at the given index in the configuration
+ * Toggle the visibility of the section at the given index in the configuration
  * @param idx the index of the element whose visibility should be toggled
  */
 function toggleSection(idx: number): void {
@@ -82,6 +82,18 @@ function toggleSection(idx: number): void {
     expandedSections.value.delete(idx);
   } else {
     expandedSections.value.add(idx);
+  }
+}
+
+/**
+ * Expand all sections with "expandOnPageLoad" set to true
+ */
+function expandSectionsOnPageLoad(): void {
+  for (let i = 0; i < props.config.length; i++) {
+    const element = props.config[i];
+    if (element.type == "section" && element.expandOnPageLoad) {
+      expandedSections.value.add(i);
+    }
   }
 }
 
@@ -93,11 +105,6 @@ const props = defineProps<{
 }>();
 
 onMounted(() => {
-  for (let i = 0; i < props.config.length; i++) {
-    const element = props.config[i];
-    if (element.type == "section" && element.expandOnPageLoad) {
-      expandedSections.value.add(i);
-    }
-  }
+  expandSectionsOnPageLoad();
 });
 </script>
