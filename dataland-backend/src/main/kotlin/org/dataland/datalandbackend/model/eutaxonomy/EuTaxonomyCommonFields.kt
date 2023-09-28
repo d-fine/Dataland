@@ -17,6 +17,6 @@ interface EuTaxonomyCommonFields {
     val scopeOfEntities: YesNoNa?
     val nfrdMandatory: YesNo?
     val euTaxonomyActivityLevelReporting: YesNo?
-    val assurance: AssuranceDataPoint<AssuranceOptions>?
+    val assurance: AssuranceDataPoint?
     val numberOfEmployees: BigDecimal?
 }

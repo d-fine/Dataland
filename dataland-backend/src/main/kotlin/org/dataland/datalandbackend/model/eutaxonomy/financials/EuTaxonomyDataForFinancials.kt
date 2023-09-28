@@ -43,7 +43,7 @@ data class EuTaxonomyDataForFinancials(
 
     override val euTaxonomyActivityLevelReporting: YesNo? = null,
 
-    override val assurance: AssuranceDataPoint<AssuranceOptions>? = null,
+    override val assurance: AssuranceDataPoint? = null,
 
     override val numberOfEmployees: BigDecimal? = null,
 

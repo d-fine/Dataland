@@ -26,7 +26,7 @@ data class EuTaxonomyGeneral(
 
     override val euTaxonomyActivityLevelReporting: YesNo?,
 
-    override val assurance: AssuranceDataPoint<AssuranceOptions>?,
+    override val assurance: AssuranceDataPoint?,
 
     override val numberOfEmployees: BigDecimal?,
 
