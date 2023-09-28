@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 
 /**
  * --- API model ---
- * Fields of a generic base data point and its source
+ * Fields of a generic extended data point which extends the base data point and its source
  */
 data class ExtendedDataPoint<T>(
     override val value: T? = null,
