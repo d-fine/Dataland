@@ -24,10 +24,10 @@ export function generateReferencedReports(
 ): ReferencedDocuments {
   const availableReportNames = pickSubsetOfElements(possibleReports);
   requiredReportNames?.forEach((reportName) => {
-    if(!availableReportNames.includes(reportName)) {
-      availableReportNames.push(reportName)
+    if (!availableReportNames.includes(reportName)) {
+      availableReportNames.push(reportName);
     }
-  })
+  });
 
   const referencedReports: ReferencedDocuments = {};
   for (const reportName of availableReportNames) {

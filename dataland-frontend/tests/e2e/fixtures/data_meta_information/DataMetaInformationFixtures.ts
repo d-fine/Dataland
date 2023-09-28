@@ -22,7 +22,7 @@ export class DataMetaInformationGenerator extends Generator {
    * @returns a random reporting period
    */
   generateReportingPeriodRecentYear(): string {
-    return pickOneElement(["2023", "2022", "2021", "2020"])
+    return pickOneElement(["2023", "2022", "2021", "2020"]);
   }
 
   /**

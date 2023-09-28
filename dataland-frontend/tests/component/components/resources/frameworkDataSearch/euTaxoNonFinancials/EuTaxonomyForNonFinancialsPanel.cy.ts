@@ -88,10 +88,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
 
       cy.get(`[data-test='Revenue']`).click();
 
-      cy.get('tr:has(td > span:contains("Total Revenue"))')
-        .next("tr")
-        .find("span")
-        .should("contain", "Value");
+      cy.get('tr:has(td > span:contains("Total Revenue"))').next("tr").find("span").should("contain", "Value");
 
       cy.get('tr:has(td > span:contains("Total Revenue"))')
         .next("tr")
