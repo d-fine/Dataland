@@ -1,5 +1,5 @@
 import {
-  type AssuranceDataPointAssuranceOptionsValueEnum,
+  type AssuranceDataPointValueEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
   type EuTaxonomyActivity,
@@ -45,7 +45,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   };
   assurance?: {
     assurance: {
-      levelOfAssurance: AssuranceDataPointAssuranceOptionsValueEnum;
+      levelOfAssurance: AssuranceDataPointValueEnum;
       assuranceProvider?: string;
     };
   };
