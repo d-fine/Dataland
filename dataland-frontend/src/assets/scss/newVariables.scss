@@ -1,0 +1,39 @@
+/* newVariables.scss */
+:root {
+  /* Color Palette */
+  --primary-orange: #FF6813;
+  --basic-dark: #1b1b1b;
+  --default-neutral-white: #FFF;
+  --grey-tones-100: #F6F6F6;
+  --grey-tones-400: #A5A5A5;
+  
+  /* Derived Colors */
+  // --primary-color-light: calc(var(--primary-color) + 20);
+  // --primary-color-dark: calc(var(--primary-color) - 20);
+
+  /* Typography */
+  // --font-family-base: 'Helvetica, Arial, sans-serif';
+  // --font-size-base: 1rem; /* 16px */
+  // --line-height-base: 1.5;
+
+  /* Derived Typography */
+  // --font-size-lg: calc(var(--font-size-base) * 1.5);
+  // --font-size-sm: calc(var(--font-size-base) * 0.75);
+
+  /* Spacing */
+  // --space-unit: 8px;
+  
+  /* Derived Spacing */
+  // --space-xs: calc(var(--space-unit) * 0.25);
+  // --space-sm: calc(var(--space-unit) * 0.5);
+  // --space-md: calc(var(--space-unit) * 1);
+  // --space-lg: calc(var(--space-unit) * 1.5);
+  // --space-xl: calc(var(--space-unit) * 2);
+
+}
+  /* Breakpoints */
+  // --extra-small: 600px;
+  // --small: 601px;
+  $medium: 1024px;
+  $large: 1440px;
+  $extra-large: 1800px;
