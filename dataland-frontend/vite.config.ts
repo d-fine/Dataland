@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import path from "path";
 import vue from "@vitejs/plugin-vue";
 import istanbul from "vite-plugin-istanbul";
-import svgLoader from "vite-svg-loader";
 
 export default defineConfig({
   //This section is to prevent the vite cold start issue https://github.com/cypress-io/cypress/issues/22557
@@ -50,7 +49,6 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    svgLoader(),
     istanbul({
       include: "src/*",
       exclude: ["node_modules", "tests"],
