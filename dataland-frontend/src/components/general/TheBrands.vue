@@ -42,21 +42,21 @@ const brandsSection = computed(() => {
   gap: 40px;
 
   &__wrap {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 40px 32px;
+    max-width: 1440px;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 0 32px;
   }
 
   &__text {
-    max-width: 1060px;
-    padding: 0px 220px 0px 172px;
     font-size: 64px;
     font-style: normal;
     font-weight: 700;
     line-height: 78px; /* 121.875% */
     text-align: left;
-    margin: 0 0 40px;
+    grid-column: 4 / 11;
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
@@ -70,27 +70,18 @@ const brandsSection = computed(() => {
     flex-direction: row;
     width: 100%;
     justify-content: space-evenly;
-    max-width: 1264px;
+    max-width: 1440px;
+    grid-column: 1 / -1;
 
     .brands__item {
-      width: 200px;
+      width: 190px;
       height: 124px;
-      padding: 16px;
-      background-color: var(--grey-tones-100);
-      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       &-image {
-        max-width: 200px;
+        max-width: 190px;
         height: auto;
-      }
-      &:hover {
-        background: #ffebe0;
-
-        .brands__item-image {
-          filter: invert(42%) sepia(68%) saturate(3014%) hue-rotate(8deg) brightness(103%) contrast(99%);
-        }
       }
     }
   }
@@ -100,10 +91,19 @@ const brandsSection = computed(() => {
   .brands {
     &__text {
       font-size: 48px;
-      max-width: 888px;
+      min-width: 420px;
       font-weight: 600;
-      line-height: 56px; /* 116.667% */
+      line-height: 56px;
       letter-spacing: 0.25px;
+      grid-column: 3/13;
+      max-width: 500px;
+    }
+    &__list {
+      flex-wrap: wrap;
+      width: calc((190px * 3) + (24px * 2)); // Width of 3 items plus two 24px gaps
+      justify-content: flex-start;
+      gap: 40px 24px;
+      grid-column: 3 /15;
     }
   }
 }

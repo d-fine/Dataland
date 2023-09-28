@@ -29,7 +29,6 @@ const { landingPage, contentData } = defineProps<{
 </script>
 
 <style lang="scss" scoped>
-/* Block: Header */
 .header {
   display: flex;
   justify-content: space-between;
