@@ -2,50 +2,53 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Doylestad",
-			"headquartersPostalCode": "29870",
-			"sector": "metrics",
+			"headquarters": "Leannonchester",
+			"headquartersPostalCode": "11199",
+			"sector": "platforms",
 			"identifiers": {
-				"Lei": [
-					"lLOpFdyKJCzsqhljx3RE"
-				],
+				"Lei": [],
 				"Isin": [
-					"CzW17DkPEzJl"
+					"KounNv6suSf2"
 				],
-				"PermId": [
-					"wocElr4eqb"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"WrGjiGYbw"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"o7hAxpjdvBKPiAR"
+				]
 			},
-			"countryCode": "NC",
+			"countryCode": "GB",
 			"companyAlternativeNames": [
-				"Welch and Sons"
+				"Johns - Buckridge",
+				"Okuneva Inc",
+				"Schinner Group",
+				"Walter, Feest and Mueller"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://responsible-sunroom.biz/",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://black-guilty.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.14",
-						"01.63",
-						"24.20",
-						"26.4"
+						"09.9",
+						"13",
+						"27.4",
+						"49"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Precious Meadow 936",
-						"postalCode": "36233-8589",
-						"city": "Michaelview",
-						"state": "Vermont",
-						"country": "RS"
+						"streetAndHouseNumber": "Cummings Bridge 14010",
+						"postalCode": "04106",
+						"city": "Port Franciscaworth",
+						"state": "Pennsylvania",
+						"country": "AS"
 					},
-					"numberOfEmployees": 6804,
-					"fiscalYearStart": "2024-09-16"
+					"numberOfEmployees": 3098,
+					"fiscalYearStart": "2024-07-31"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -57,32 +60,66 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Steuber Group",
+							"nameOfProductionSite": "Luettgen, Lemke and Dooley",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Augusta Village 5242",
-								"postalCode": "69478",
-								"city": "Lowecester",
-								"state": "New York",
-								"country": "BY"
+								"streetAndHouseNumber": "Margot Cove 88846",
+								"city": "Kovacekbury",
+								"country": "AX"
+							},
+							"shareOfTotalRevenueInPercent": 68.4843
+						},
+						{
+							"nameOfProductionSite": "Runte - Feest",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Glover Divide 749",
+								"postalCode": "94591-2943",
+								"city": "Koelpincester",
+								"country": "AG"
 							}
+						},
+						{
+							"nameOfProductionSite": "Schmeler - Metz",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Elody Trafficway 4974",
+								"postalCode": "26091",
+								"city": "Fort Otilia",
+								"state": "Hawaii",
+								"country": "AO"
+							},
+							"shareOfTotalRevenueInPercent": 72.0691
+						},
+						{
+							"nameOfProductionSite": "Beatty LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Eudora Glens 7507",
+								"postalCode": "85533-2470",
+								"city": "Cristalbury",
+								"state": "Maryland",
+								"country": "TT"
+							},
+							"shareOfTotalRevenueInPercent": 76.9585
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Generic Bronze Sausages",
-							"shareOfTotalRevenueInPercent": 60.5903
+							"name": "Luxurious Steel Tuna",
+							"shareOfTotalRevenueInPercent": 63.5398
 						},
 						{
-							"name": "Generic Frozen Keyboard",
-							"shareOfTotalRevenueInPercent": 59.5431
+							"name": "Modern Granite Bike",
+							"shareOfTotalRevenueInPercent": 59.2299
 						},
 						{
-							"name": "Sleek Granite Pizza"
+							"name": "Luxurious Rubber Keyboard",
+							"shareOfTotalRevenueInPercent": 14.0952
 						},
 						{
-							"name": "Ergonomic Granite Pants"
+							"name": "Small Bronze Bacon"
+						},
+						{
+							"name": "Oriental Fresh Tuna"
 						}
 					]
 				}
@@ -92,23 +129,14 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1448,
-					"energyConsumptionHeatingAndHotWaterInMWh": 180,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionHeatingAndHotWaterInMWh": 935,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 8712207,
-					"naturalHazardsCovered": [
-						"Wind",
-						"Flooding",
-						"Snow",
-						"Hail",
-						"EarthQuake"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 21309402
 				}
 			}
 		},
@@ -117,40 +145,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Dale City",
-			"headquartersPostalCode": "36502-9912",
-			"sector": "schemas",
+			"headquarters": "Fort Muriel",
+			"headquartersPostalCode": "02137-0594",
+			"sector": "paradigms",
 			"identifiers": {
 				"Lei": [
-					"NeQMbJF6uRURUFbe9VJB"
+					"3nU1DOw3u59Lbf5kkT6n"
 				],
 				"Isin": [
-					"PGZUeWZyjWXG"
+					"XdkGSsfHYm60"
 				],
 				"PermId": [
-					"solePSCozX"
+					"i1wqnbvubp"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"YKPvo9k"
+				],
 				"Duns": [],
-				"VatNumber": [
-					"4ckVfXVh0"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"g0wBBY6Bi3oGGxe"
+					"BKa58I5D4ChNmUX"
 				]
 			},
-			"countryCode": "EG",
+			"countryCode": "KY",
 			"companyAlternativeNames": [
-				"Collier, Reinger and Heaney"
+				"Homenick Group",
+				"Waelchi, Bins and Klein"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://oval-circadian.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"13.92"
+						"05.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -159,63 +188,48 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 9181,
-					"fiscalYearStart": "2024-07-18"
+					"numberOfEmployees": 428,
+					"fiscalYearStart": "2024-08-19"
 				},
 				"companyFinancials": {
-					"operatingCostInEUR": 29412392,
-					"capitalAssetsInEUR": 13444403
+					"capitalAssetsInEUR": 10736889
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Wilkinson, Russel and Gibson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Alden Prairie 5419",
-								"postalCode": "76775",
-								"city": "Pittsburg",
-								"state": "Alaska",
-								"country": "AM"
-							},
-							"shareOfTotalRevenueInPercent": 99.9542
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Small Concrete Table",
-							"shareOfTotalRevenueInPercent": 31.547
-						},
-						{
-							"name": "Gorgeous Plastic Keyboard",
-							"shareOfTotalRevenueInPercent": 58.7414
-						},
-						{
-							"name": "Tasty Steel Computer",
-							"shareOfTotalRevenueInPercent": 85.5768
+							"name": "Elegant Rubber Mouse",
+							"shareOfTotalRevenueInPercent": 0.7749
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1402,
+					"powerConsumptionInMWh": 266,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 388,
+					"energyConsumptionHeatingAndHotWaterInMWh": 122,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 293635
+					"amountCoveredByInsuranceAgainstNaturalHazards": 46356899,
+					"naturalHazardsCovered": [
+						"Hail",
+						"Wind",
+						"Snow",
+						"Avalanche"
+					]
 				}
 			}
 		},
@@ -224,86 +238,131 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Rathhaven",
-			"headquartersPostalCode": "66190",
-			"sector": "action-items",
+			"headquarters": "New Devonteton",
+			"headquartersPostalCode": "29997-9012",
 			"identifiers": {
 				"Lei": [
-					"KgGI5iCsQxfnO62VyH1t"
+					"85lo462gP4c8KZ0eekbV"
 				],
 				"Isin": [
-					"ZpTCfUvPwQTo"
+					"Vsryr8XASs1Y"
 				],
 				"PermId": [
-					"oqsZMw1NdC"
+					"bFKmqLBQyN"
 				],
-				"Ticker": [
-					"0RUNsqy"
-				],
+				"Ticker": [],
 				"Duns": [
-					"HGJStEhj7"
+					"UkY32pQmv"
 				],
-				"VatNumber": [
-					"Fz0SwOBpk"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"MJe6FR1poZgjCx4"
+					"uYHoE1iSNHGCrML"
 				]
 			},
-			"countryCode": "IM",
+			"countryCode": "RE",
 			"companyAlternativeNames": [
-				"Kerluke - Oberbrunner",
-				"Mueller and Sons"
+				"Boyle - Sauer",
+				"Hammes - Grant",
+				"O'Conner LLC",
+				"Schimmel - Hoppe"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://slushy-phosphate.info/",
+			"companyLegalForm": "GmbH",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"32.9"
+						"65.20"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 9537,
-					"fiscalYearStart": "2024-01-24"
+					"numberOfEmployees": 4432,
+					"fiscalYearStart": "2024-04-07"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 94767859,
-					"operatingCostInEUR": 33429933,
-					"capitalAssetsInEUR": 65408936
+					"revenueInEUR": 18468237,
+					"operatingCostInEUR": 70301942,
+					"capitalAssetsInEUR": 53123041
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Schinner Crossing 6796",
+								"postalCode": "10447",
+								"city": "South Trinityberg",
+								"state": "Wyoming",
+								"country": "AU"
+							}
+						},
+						{
+							"nameOfProductionSite": "Ruecker - Will",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Berry Via 6980",
+								"postalCode": "53302-3053",
+								"city": "Krajcikfort",
+								"state": "North Dakota",
+								"country": "KG"
+							},
+							"shareOfTotalRevenueInPercent": 59.4505
+						},
+						{
+							"nameOfProductionSite": "Krajcik, Hauck and Grimes",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Lafayette Freeway 160",
+								"city": "Hammesshire",
+								"state": "Massachusetts",
+								"country": "AR"
+							},
+							"shareOfTotalRevenueInPercent": 7.0864
+						}
+					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Practical Concrete Ball",
+							"shareOfTotalRevenueInPercent": 49.8203
+						},
+						{
+							"name": "Recycled Granite Soap",
+							"shareOfTotalRevenueInPercent": 12.5955
+						},
+						{
+							"name": "Luxurious Wooden Car",
+							"shareOfTotalRevenueInPercent": 44.5074
+						},
+						{
+							"name": "Incredible Soft Tuna",
+							"shareOfTotalRevenueInPercent": 49.2825
+						},
+						{
+							"name": "Intelligent Metal Pizza",
+							"shareOfTotalRevenueInPercent": 52.191
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 15,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating"
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 857,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 42330657,
-					"naturalHazardsCovered": [
-						"Wind",
-						"EarthQuake",
-						"Flooding"
-					]
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 34222663
 				}
 			}
 		},
