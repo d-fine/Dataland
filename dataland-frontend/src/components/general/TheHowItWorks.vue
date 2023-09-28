@@ -246,7 +246,6 @@ onUnmounted(() => {
       visibility: visible;
       width: 100%;
       max-width: 1273px;
-      padding-right: 789px;
       justify-content: flex-start;
     }
   }
