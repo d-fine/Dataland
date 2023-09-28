@@ -66,11 +66,11 @@ export class Generator {
   randomDataPoint<T>(input: T, currency?: string): GenericDataPoint<T> | undefined {
     return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports, currency));
   }
-
+/*
   randomExtendedDataPoint<T>(input: T): ExtendedDataPointBigDecimal<T> | undefined {
     return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports));
   }
-
+*/
   randomCurrencyDataPoint<T>(input: T): GenericDataPoint<T> | undefined {
     const localCurrency = generateCurrencyCode();
     return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports, localCurrency));
