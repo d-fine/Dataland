@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.model.FrameworkBase
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
-import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceDataPoint
 import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
 import java.math.BigDecimal
