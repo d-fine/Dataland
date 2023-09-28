@@ -15,5 +15,6 @@ data class CurrencyDataPoint(
     override val quality: QualityOptions,
     override val comment: String? = null,
     override val dataSource: ExtendedDocumentReference? = null,
-    val currency: String? = null,
+    @field:JsonProperty(required = true)
+    val currency: String,
 ) : ExtendedDataPointInterface<BigDecimal>
