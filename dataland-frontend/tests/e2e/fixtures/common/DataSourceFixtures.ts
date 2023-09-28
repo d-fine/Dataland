@@ -8,10 +8,12 @@ import { pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureU
  * @returns a random data source referencing a random report from the provided referencedReports
  */
 export function generateDataSource(referencedReports: ReferencedDocuments): ExtendedDocumentReference {
-  const chosenReport = pickOneElement(Object.keys(referencedReports));
+  const chosenReport = pickOneElement(Object.keys(referencedReports))
+  const chosenReportReference = referencedReports[chosenReport]
   return {
     page: faker.number.int({ min: 1, max: 1200 }),
-    fileReference: chosenReport,
+    fileName: chosenReport,
+    fileReference: chosenReportReference.fileReference,
     tagName: faker.company.buzzNoun(),
   };
 }
