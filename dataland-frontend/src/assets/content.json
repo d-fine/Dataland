@@ -10,7 +10,7 @@
                         "This is the main introduction of our homepage."
                     ],
                     "image": [
-                        "/src/assets/images/logos/gfx_logo_dataland_orange_S.svg"
+                        "/static/gfx_logo_dataland_orange_S.svg"
                     ]
                 },
                 {
