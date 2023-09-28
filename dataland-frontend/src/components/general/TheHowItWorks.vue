@@ -222,7 +222,7 @@ onUnmounted(() => {
         display: block;
         width: 24px;
         height: 24px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='47' height='47' viewBox='0 0 47 47' fill='none'%3E%3Crect width='46' height='46' transform='translate(0.666992 0.315918)' fill='white' fill-opacity='0.01' style='mix-blend-mode:multiply'/%3E%3Cpath d='M26.542 8.94092L24.4864 10.9434L35.3826 21.8784H6.41699V24.7534H35.3826L24.4864 35.6396L26.542 37.6909L40.917 23.3159L26.542 8.94092Z' fill='%23161616'/%3E%3C/svg%3E");
+        background-image: url("/static/icons/Arrow--right.svg");
         background-size: contain;
         background-repeat: no-repeat;
       }
