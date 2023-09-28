@@ -1,5 +1,5 @@
 import fs from "fs";
-import { type DataAndMetaInformationEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import {type DataAndMetaInformationEuTaxonomyDataForNonFinancials, QualityOptions} from "@clients/backend";
 import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
 import {
   EuNonFinancialsGenerator,
@@ -7,8 +7,9 @@ import {
 } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
 import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
-import { generateArray } from "@e2e/fixtures/FixtureUtils";
+import {generateArray, pickOneElement} from "@e2e/fixtures/FixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import {generateReferencedReports} from "@e2e/fixtures/common/DataPointFixtures";
 
 /**
  * Generates and exports fake fixtures for the LKSG framework
@@ -27,14 +28,22 @@ export function exportServerResponses(): void {
 function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformationEuTaxonomyDataForNonFinancials[] {
   const dataMetaInfoGenerator = new DataMetaInformationGenerator(true);
   const generatedDataAndMetaInfo = Array.from(Array(3).keys()).map(
-    (): DataAndMetaInformationEuTaxonomyDataForNonFinancials => ({
-      metaInfo: dataMetaInfoGenerator.generateDataMetaInformation(),
-      data: generateEuTaxonomyDataForNonFinancials(true),
-    }),
+    (index): DataAndMetaInformationEuTaxonomyDataForNonFinancials => {
+      const metaInfo = dataMetaInfoGenerator.generateDataMetaInformation()
+      metaInfo.reportingPeriod = "202" + (3-index)
+      return{
+        metaInfo: metaInfo,
+        data: generateEuTaxonomyDataForNonFinancials(true),
+      }
+    },
   );
   const euTaxonomyNonFinancialsGenerator = new EuNonFinancialsGenerator(0, true);
-  const data = generatedDataAndMetaInfo[0].data;
+  var data = generateEuTaxonomyDataForNonFinancials(true, 0);
+  data.general ??= {}
+  data.general.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, true, ["IntegratedReport"])
   data.revenue = euTaxonomyNonFinancialsGenerator.generateEuTaxonomyPerCashflowType();
+  data.revenue.totalAmount ??= { quality: pickOneElement(Object.values(QualityOptions)) }
+  data.revenue.totalAmount.value = 0;
   data.opex = euTaxonomyNonFinancialsGenerator.generateEuTaxonomyPerCashflowType();
   data.capex = euTaxonomyNonFinancialsGenerator.generateEuTaxonomyPerCashflowType();
   euTaxonomyNonFinancialsGenerator.missingValueProbability = DEFAULT_PROBABILITY;
@@ -46,5 +55,14 @@ function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformationEuTaxo
   data.capex.nonAlignedShare ??= {};
   data.capex.nonAlignedShare.relativeShareInPercent ??= generatePercentageValue();
   generatedDataAndMetaInfo[0].data = data;
+
+  data = generateEuTaxonomyDataForNonFinancials(true, 0);
+  generatedDataAndMetaInfo[1].data = data;
+
+  data = generateEuTaxonomyDataForNonFinancials(true, 0);
+  data.capex ??= {}
+  data.capex.alignedActivities = generateArray(() => euTaxonomyNonFinancialsGenerator.generateAlignedActivity(), 1)
+  generatedDataAndMetaInfo[2].data = data;
+
   return generatedDataAndMetaInfo;
 }

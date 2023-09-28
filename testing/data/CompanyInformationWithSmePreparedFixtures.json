@@ -2,48 +2,56 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "West Rylancester",
-			"headquartersPostalCode": "68942-4109",
-			"sector": "communities",
+			"headquarters": "Fort Gwendolynton",
+			"headquartersPostalCode": "60560-6303",
+			"sector": "e-markets",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"mY4baaOnCRmMoUlYdKV1"
+				],
 				"Isin": [
-					"UUCdFe4a8Vwd"
+					"h02YCrzyq5f6",
+					"t5qJs9Ae3B3l"
 				],
 				"PermId": [
-					"psktlPwucL"
+					"H8feQlgk1W"
 				],
 				"Ticker": [
-					"dnXqlyf"
+					"2fWmVtl"
 				],
-				"Duns": [],
-				"VatNumber": [],
+				"Duns": [
+					"TDoyAAq02"
+				],
+				"VatNumber": [
+					"PLzBQTCch"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "VC",
+			"countryCode": "NU",
 			"companyAlternativeNames": [
-				"Bayer - Block",
-				"Hills Group",
-				"Stanton Group"
+				"Moore, Swaniawski and Lubowitz"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://alive-chit-chat.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"20.3",
-						"56.21"
+						"28.22",
+						"45.31",
+						"47.2",
+						"94"
 					],
 					"addressOfHeadquarters": {
-						"postalCode": "36799-7786",
-						"city": "East Maida",
-						"state": "Connecticut",
-						"country": "HN"
+						"streetAndHouseNumber": "Willie Fords 78824",
+						"postalCode": "37713",
+						"city": "East Effieton",
+						"country": "SZ"
 					},
-					"numberOfEmployees": 2272,
-					"fiscalYearStart": "2024-01-29"
+					"numberOfEmployees": 8504,
+					"fiscalYearStart": "2023-12-04"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -52,46 +60,19 @@
 				}
 			},
 			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Stanton - Hammes",
-							"addressOfProductionSite": {
-								"city": "Keyshawncester",
-								"state": "Massachusetts",
-								"country": "NO"
-							},
-							"shareOfTotalRevenueInPercent": 93.4529
-						},
-						{
-							"nameOfProductionSite": "Glover - Koch",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kertzmann Valleys 59158",
-								"postalCode": "06484-6753",
-								"city": "Port Jermeybury",
-								"state": "Virginia",
-								"country": "AG"
-							},
-							"shareOfTotalRevenueInPercent": 89.5784
-						}
-					]
-				},
+				"sites": {},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Recycled Bronze Salad",
-							"shareOfTotalRevenueInPercent": 5.1331
+							"name": "Intelligent Rubber Shirt",
+							"shareOfTotalRevenueInPercent": 60.4089
 						},
 						{
-							"name": "Practical Frozen Mouse"
+							"name": "Electronic Rubber Salad"
 						},
 						{
-							"name": "Sleek Soft Sausages",
-							"shareOfTotalRevenueInPercent": 18.3293
-						},
-						{
-							"name": "Luxurious Bronze Bike",
-							"shareOfTotalRevenueInPercent": 60.7764
+							"name": "Refined Granite Cheese",
+							"shareOfTotalRevenueInPercent": 10.2362
 						}
 					]
 				}
@@ -101,21 +82,20 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 460,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 254,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 1211,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 462,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 18218623,
 					"naturalHazardsCovered": [
 						"Avalanche",
-						"Wind",
-						"Hail",
-						"Snow",
+						"Flooding",
 						"EarthQuake"
 					]
 				}
@@ -126,43 +106,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Oak Lawn",
-			"headquartersPostalCode": "69838",
-			"sector": "ROI",
+			"headquarters": "East Rosetta",
+			"sector": "methodologies",
 			"identifiers": {
 				"Lei": [
-					"VvPIbV2pKvPgms7xUSjE"
+					"QVpNBTAI2X7vh2zBXqg4"
 				],
 				"Isin": [
-					"i6nIZnW0NtXH"
+					"MaWWSt0pusJX"
 				],
 				"PermId": [],
-				"Ticker": [
-					"7SOswaq"
-				],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"R7eEUevx7"
-				],
-				"CompanyRegistrationNumber": [
-					"BBrRWih5fBfOdo8"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BE",
+			"countryCode": "TM",
 			"companyAlternativeNames": [
-				"Lindgren - Cummings",
-				"Parker LLC"
+				"Feil - Bayer"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://stable-finer.biz",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://spicy-grasp.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"38.1",
-						"81.10"
+						"23.2",
+						"46.34",
+						"47.71",
+						"77.35",
+						"G"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -171,32 +146,110 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3443,
-					"fiscalYearStart": "2023-12-31"
+					"numberOfEmployees": 6424,
+					"fiscalYearStart": "2024-03-16"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEur": 35902740
+					"revenueInEur": 24091795,
+					"capitalAssetsInEur": 36876605
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {}
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Bednar - Schuppe",
+							"addressOfProductionSite": {
+								"postalCode": "01094-4242",
+								"city": "Carrollton",
+								"country": "IS"
+							},
+							"shareOfTotalRevenueInPercent": 69.7354
+						},
+						{
+							"nameOfProductionSite": "Tillman LLC",
+							"addressOfProductionSite": {
+								"city": "Port Doviefort",
+								"state": "Florida",
+								"country": "AX"
+							},
+							"shareOfTotalRevenueInPercent": 76.3119
+						},
+						{
+							"nameOfProductionSite": "Erdman, Nolan and Orn",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Jackson Forge 640",
+								"city": "North Delphinechester",
+								"state": "Montana",
+								"country": "FM"
+							},
+							"shareOfTotalRevenueInPercent": 93.3877
+						},
+						{
+							"nameOfProductionSite": "Johns Group",
+							"addressOfProductionSite": {
+								"postalCode": "14378-4282",
+								"city": "Lenexa",
+								"state": "Wisconsin",
+								"country": "CK"
+							},
+							"shareOfTotalRevenueInPercent": 73.5245
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Estefania Fords 319",
+								"postalCode": "78101-6431",
+								"city": "Dariotown",
+								"country": "FJ"
+							},
+							"shareOfTotalRevenueInPercent": 56.0973
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Ergonomic Plastic Pants",
+							"shareOfTotalRevenueInPercent": 17.78
+						},
+						{
+							"name": "Refined Granite Shirt",
+							"shareOfTotalRevenueInPercent": 55.45
+						},
+						{
+							"name": "Luxurious Bronze Soap",
+							"shareOfTotalRevenueInPercent": 59.0491
+						},
+						{
+							"name": "Electronic Cotton Towels",
+							"shareOfTotalRevenueInPercent": 92.5098
+						},
+						{
+							"name": "Elegant Plastic Soap",
+							"shareOfTotalRevenueInPercent": 51.2952
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 582,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 1362,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 187,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 32195230
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 10761848,
+					"naturalHazardsCovered": [
+						"Snow"
+					]
 				}
 			}
 		},
@@ -205,112 +258,117 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Lake Shea",
-			"headquartersPostalCode": "44550",
-			"sector": "supply-chains",
+			"headquarters": "Fort Gracielamouth",
+			"sector": "paradigms",
 			"identifiers": {
 				"Lei": [
-					"ktscdRIEiK8wN8YZIYCR"
+					"9ijL37zWDiqNo5QyD0YJ"
 				],
 				"Isin": [
-					"hF1AutJ3tVmm",
-					"CE7QznLCgoBK"
+					"Xk359TEQLukm"
 				],
-				"PermId": [
-					"Tcb5aQrRXc"
-				],
+				"PermId": [],
 				"Ticker": [
-					"hgL4I15"
+					"UbQRZU0"
 				],
-				"Duns": [
-					"gYlo8aDWr"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"c0QW19uMd"
+					"i79iJyi3y"
 				],
-				"CompanyRegistrationNumber": [
-					"9GzKiZVSQENHbqE"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PL",
-			"companyAlternativeNames": [],
-			"website": "https://lasting-dashboard.name",
+			"countryCode": "WF",
+			"companyAlternativeNames": [
+				"Murazik, Lemke and Reichel"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://trained-anger.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"20.4",
-						"65.12",
-						"84",
-						"95"
+						"17.29",
+						"46.22"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8431,
-					"fiscalYearStart": "2023-11-05"
+					"numberOfEmployees": 5809,
+					"fiscalYearStart": "2023-12-15"
 				},
 				"companyFinancials": {
-					"revenueInEur": 98960522,
-					"operatingCostInEur": 3163014,
-					"capitalAssetsInEur": 69786734
+					"revenueInEur": 9746467
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Block - Nikolaus",
+							"nameOfProductionSite": "Friesen and Sons",
 							"addressOfProductionSite": {
-								"postalCode": "48645",
-								"city": "Jakubowskistead",
-								"state": "Idaho",
-								"country": "RE"
-							},
-							"shareOfTotalRevenueInPercent": 10.6203
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Solon Estate 2232",
-								"city": "Coleworth",
-								"state": "New York",
-								"country": "TM"
-							},
-							"shareOfTotalRevenueInPercent": 95.6153
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jaskolski Gateway 18993",
-								"postalCode": "70830",
-								"city": "East Evert",
-								"state": "Oklahoma",
-								"country": "LR"
+								"streetAndHouseNumber": "Mattie Plaza 2499",
+								"city": "Bartonstad",
+								"state": "Illinois",
+								"country": "LV"
 							}
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Emmy Forest 268",
+								"postalCode": "25678-3079",
+								"city": "Meggieborough",
+								"country": "CN"
+							},
+							"shareOfTotalRevenueInPercent": 41.6861
+						},
+						{
+							"addressOfProductionSite": {
+								"city": "North Marcelobury",
+								"state": "Montana",
+								"country": "GD"
+							},
+							"shareOfTotalRevenueInPercent": 4.1677
+						},
+						{
+							"nameOfProductionSite": "Corwin - Koss",
+							"addressOfProductionSite": {
+								"postalCode": "51348",
+								"city": "Visalia",
+								"state": "Hawaii",
+								"country": "VU"
+							},
+							"shareOfTotalRevenueInPercent": 61.5193
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Electronic Metal Car"
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1845,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 479,
+					"energyConsumptionHeatingAndHotWater": 876,
 					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 21191352,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 48183511,
 					"naturalHazardsCovered": [
+						"Wind",
 						"Avalanche"
 					]
 				}
