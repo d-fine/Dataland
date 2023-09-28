@@ -118,6 +118,7 @@ import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
+import DriveMixFormField from "@/components/forms/parts/fields/DriveMixFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -127,6 +128,7 @@ export default defineComponent({
   },
   name: "CreateP2pDataset",
   components: {
+    DriveMixFormField,
     FormKit,
     UploadFormHeader,
     InputTextFormField,

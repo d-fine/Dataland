@@ -3,7 +3,7 @@
     <h5>{{ label }}</h5>
     <span class="asterisk" v-if="isRequired">*</span>
     <em
-      v-if="description !== ''"
+      v-if="description"
       class="material-icons info-icon"
       aria-hidden="true"
       :title="label"
