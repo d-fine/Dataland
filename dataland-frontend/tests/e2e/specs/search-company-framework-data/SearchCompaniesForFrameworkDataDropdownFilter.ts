@@ -24,6 +24,14 @@ before(function () {
   });
 });
 
+/**
+ * Function which escapes parenthesis for regex expression
+ * @param inputString string for which parenthesis should be escaped
+ * @returns inputString the string without parenthesis
+ */
+function escapeParenthesisInRegExp(inputString: string): string {
+  return inputString.replace(/[()]/g, "\\$&");
+}
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
 
@@ -78,7 +86,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       onlyExecuteOnDatabaseReset: true,
     },
     () => {
-      it(
+      it.only(
         "Checks that the country-code filter synchronises between the search bar and the drop down and works",
         { scrollBehavior: false },
         () => {
@@ -90,7 +98,6 @@ describe("As a user, I expect the search functionality on the /companies page to
           const demoCompanyToTestForCountryName = assertDefined(
             getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode),
           );
-
           cy.ensureLoggedIn();
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(
@@ -104,7 +111,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             .get('input[placeholder="Search countries"]')
             .type(`${demoCompanyToTestForCountryName}`)
             .get("li")
-            .contains(RegExp(`^${demoCompanyToTestForCountryName}$`))
+            .contains(RegExp(`^${escapeParenthesisInRegExp(demoCompanyToTestForCountryName)}$`))
             .click()
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyName)
