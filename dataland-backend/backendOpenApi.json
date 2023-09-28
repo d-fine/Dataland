@@ -5180,7 +5180,7 @@
           }
         }
       },
-      "AssuranceDataPointAssuranceOptions": {
+      "AssuranceDataPoint": {
         "required": [
           "value"
         ],
@@ -5387,7 +5387,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "assurance": {
-            "$ref": "#/components/schemas/AssuranceDataPointAssuranceOptions"
+            "$ref": "#/components/schemas/AssuranceDataPoint"
           },
           "numberOfEmployees": {
             "type": "number"
@@ -5606,7 +5606,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "assurance": {
-            "$ref": "#/components/schemas/AssuranceDataPointAssuranceOptions"
+            "$ref": "#/components/schemas/AssuranceDataPoint"
           },
           "numberOfEmployees": {
             "type": "number"

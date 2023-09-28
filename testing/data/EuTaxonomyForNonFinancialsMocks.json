@@ -471,7 +471,8 @@
           "totalAmount": {
             "quality": "Estimated",
             "dataSource": {
-              "report": "IntegratedReport",
+              "fileName": "IntegratedReport",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "page": 358,
               "tagName": "action-items"
             },
@@ -563,7 +564,8 @@
           "totalAmount": {
             "quality": "Incomplete",
             "dataSource": {
-              "report": "ESEFReport",
+              "fileName": "ESEFReport",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "page": 194,
               "tagName": "deliverables"
             },
@@ -656,7 +658,8 @@
           "totalAmount": {
             "quality": "Reported",
             "dataSource": {
-              "report": "IntegratedReport",
+              "fileName": "IntegratedReport",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "page": 442,
               "tagName": "action-items"
             },
@@ -879,7 +882,8 @@
           "totalAmount": {
             "quality": "Estimated",
             "dataSource": {
-              "report": "ESEFReport",
+              "fileName": "ESEFReport",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "page": 1151,
               "tagName": "users"
             },
@@ -971,7 +975,8 @@
           "totalAmount": {
             "quality": "Incomplete",
             "dataSource": {
-              "report": "ESEFReport",
+              "fileName": "ESEFReport",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "page": 194,
               "tagName": "deliverables"
             },
@@ -1064,7 +1069,8 @@
           "totalAmount": {
             "quality": "Reported",
             "dataSource": {
-              "report": "IntegratedReport",
+              "fileName": "IntegratedReport",
+              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
               "page": 442,
               "tagName": "action-items"
             },

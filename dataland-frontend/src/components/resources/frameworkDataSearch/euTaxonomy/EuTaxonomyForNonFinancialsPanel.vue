@@ -34,7 +34,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type AmountWithCurrency,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-  AssuranceDataPointAssuranceOptionsValueEnum,
+    AssuranceDataPointValueEnum,
   DataTypeEnum,
   type EuTaxonomyDataForNonFinancials,
   FiscalYearDeviation,
@@ -167,8 +167,8 @@ export default defineComponent({
      */
     isKpiObjectAssuranceLevel(kpiValue: KpiValue): boolean {
       if (typeof kpiValue === "string") {
-        return Object.values(AssuranceDataPointAssuranceOptionsValueEnum).includes(
-          kpiValue as AssuranceDataPointAssuranceOptionsValueEnum,
+        return Object.values(AssuranceDataPointValueEnum).includes(
+          kpiValue as AssuranceDataPointValueEnum,
         );
       } else {
         return false;

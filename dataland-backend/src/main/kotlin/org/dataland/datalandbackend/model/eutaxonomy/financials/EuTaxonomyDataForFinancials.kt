@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.model.FrameworkBase
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
-import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 import org.dataland.datalandbackend.model.enums.eutaxonomy.financials.FinancialServicesType
 import org.dataland.datalandbackend.model.eutaxonomy.AssuranceDataPoint
 import org.dataland.datalandbackend.model.eutaxonomy.EuTaxonomyCommonFields
@@ -43,7 +42,7 @@ data class EuTaxonomyDataForFinancials(
 
     override val euTaxonomyActivityLevelReporting: YesNo? = null,
 
-    override val assurance: AssuranceDataPoint<AssuranceOptions>? = null,
+    override val assurance: AssuranceDataPoint? = null,
 
     override val numberOfEmployees: BigDecimal? = null,
 
