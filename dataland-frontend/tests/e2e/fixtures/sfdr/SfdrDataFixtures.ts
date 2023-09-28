@@ -1,5 +1,5 @@
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { generateFloat } from "@e2e/fixtures/common/NumberFixtures";
+import { generateCurrencyValue, generateFloat } from "@e2e/fixtures/common/NumberFixtures";
 import { type SfdrData } from "@clients/backend";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
@@ -28,14 +28,8 @@ export function generateSfdrData(undefinedProbability = DEFAULT_PROBABILITY): Sf
         scope1InTonnes: dataGenerator.randomDataPoint(generateFloat()),
         scope2InTonnes: dataGenerator.randomDataPoint(generateFloat()),
         scope3InTonnes: dataGenerator.randomDataPoint(generateFloat()),
-        enterpriseValue: dataGenerator.randomDataPoint(
-          generateFloat(),
-          dataGenerator.valueOrUndefined(generateCurrencyCode()),
-        ),
-        totalRevenue: dataGenerator.randomDataPoint(
-          generateFloat(),
-          dataGenerator.valueOrUndefined(generateCurrencyCode()),
-        ),
+        enterpriseValue: dataGenerator.randomCurrencyDataPoint(generateCurrencyValue()),
+        totalRevenue: dataGenerator.randomCurrencyDataPoint(generateCurrencyValue()),
         fossilFuelSectorExposure: dataGenerator.randomDataPoint(generateYesNo()),
       },
       energyPerformance: {
