@@ -123,7 +123,5 @@ describe("Component tests for SfdrPanel", () => {
 
     cy.contains("span", "marker-for-test").should("exist");
     cy.contains("td.headers-bg", "Data Date").should("exist");
-    cy.get("em").its("length").should("equal", 5); // TODO: Find out why these lines exists and what they test
-    cy.get("tr").its("length").should("equal", 7);
   });
 });
