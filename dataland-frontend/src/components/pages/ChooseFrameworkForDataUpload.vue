@@ -4,7 +4,7 @@
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <TheContent>
         <BackButton id="backButton" label="BACK" />
-        <CompanyInformation :companyID="companyID" />
+        <CompanyInformation :companyId="companyID" />
         <Card class="col-12 text-left page-wrapper-card">
           <template #title> New Dataset - Framework </template>
           <template #content>

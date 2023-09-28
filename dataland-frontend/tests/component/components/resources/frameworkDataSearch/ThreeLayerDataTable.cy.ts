@@ -155,7 +155,7 @@ describe("Component test for ThreeLayerDataTable", () => {
     const revenueFirstAlignedActivity = assertDefined(revenueOfDataset.alignedShare?.alignedActivities)[0];
     const revenueFirstAlignedActivityName = assertDefined(revenueFirstAlignedActivity?.activityName);
     const revenueFirstAlignedActivityRelativeShare = roundNumber(
-      assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent) * 100,
+      assertDefined(revenueFirstAlignedActivity?.share?.relativeShareInPercent),
       2,
     );
     const revenueFirstAlignedActivityAbsoluteShare = formatAmountWithCurrency(
@@ -199,7 +199,7 @@ describe("Component test for ThreeLayerDataTable", () => {
     const capexNonAlignedShareInPercent = assertDefined(capexOfDataset.nonAlignedShare?.relativeShareInPercent);
     const capexFirstNonAlignedActivityNaceCodes: string = assertDefined(capexFirstNonAlignedActivity.naceCodes)[0];
     const capexFirstNonAlignedActivityRelativeShare = roundNumber(
-      assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent) * 100,
+      assertDefined(capexFirstNonAlignedActivity.share?.relativeShareInPercent),
       2,
     );
     const capexFirstNonAlignedActivityAbsoluteShare = formatAmountWithCurrency(
@@ -252,13 +252,13 @@ describe("Component test for ThreeLayerDataTable", () => {
       },
       ammonia: {
         decarbonisation: {
-          energyMix: 0.11,
+          energyMixInPercent: 3.4,
         },
         defossilisation: {},
       },
       cement: {
         energy: {
-          energyMix: 0.22,
+          energyMixInPercent: 15.22,
         },
         technology: {},
         material: {},
@@ -266,10 +266,10 @@ describe("Component test for ThreeLayerDataTable", () => {
     };
 
     const expectedAmmoniaDecarbonisationEnergyMix = roundNumber(
-      assertDefined(p2pData.ammonia?.decarbonisation?.energyMix) * 100,
+      assertDefined(p2pData.ammonia?.decarbonisation?.energyMixInPercent),
       2,
     );
-    const expectedCementEnergyEnergyMix = roundNumber(assertDefined(p2pData.cement?.energy?.energyMix) * 100, 2);
+    const expectedCementEnergyEnergyMix = roundNumber(assertDefined(p2pData.cement?.energy?.energyMixInPercent), 2);
 
     cy.mountWithPlugins(ThreeLayerDataTable, {
       keycloak: minimalKeycloakMock({}),
@@ -289,10 +289,14 @@ describe("Component test for ThreeLayerDataTable", () => {
       toggleCategoryByClick("Cement");
       toggleCategoryByClick("energy");
 
-      cy.get('[data-test="2018_ammonia_energyMix"] span')
-        .should("exist")
-        .contains(`${expectedAmmoniaDecarbonisationEnergyMix} %`);
-      cy.get('[data-test="2018_cement_energyMix"] span').should("exist").contains(`${expectedCementEnergyEnergyMix} %`);
+      cy.get('[data-test="2018_ammonia_energyMixInPercent"] span').should(
+        "have.text",
+        `${expectedAmmoniaDecarbonisationEnergyMix} %`,
+      );
+      cy.get('[data-test="2018_cement_energyMixInPercent"] span').should(
+        "have.text",
+        `${expectedCementEnergyEnergyMix} %`,
+      );
     });
   });
 });

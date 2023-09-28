@@ -25,25 +25,26 @@ export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promi
     return resolvedKeycloakPromise.realmAccess.roles;
   } else return [];
 }
-
+export const KEYCLOAK_ROLE_USER = "ROLE_USER";
 export const KEYCLOAK_ROLE_UPLOADER = "ROLE_UPLOADER";
 export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
+export const KEYCLOAK_ROLE_ADMIN = "ROLE_ADMIN";
 
 /**
  * Derives the roles from the resolved Keycloak-promise of a logged in user
  * and checks if the provided role is included.
- * @param keycloakRole the keycloak user role to test for
+ * @param expectedKeycloakRole the keycloak user role to test for
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-promise
  * @returns a promise, which resolves to a boolean
  */
 export async function checkIfUserHasRole(
-  keycloakRole: string,
+  expectedKeycloakRole: string,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<boolean> {
   if (keycloakPromiseGetter) {
-    const roles = await getKeycloakRolesForUser(keycloakPromiseGetter);
-    if (roles) {
-      return roles.includes(keycloakRole);
+    const rolesOfUser = await getKeycloakRolesForUser(keycloakPromiseGetter);
+    if (rolesOfUser) {
+      return rolesOfUser.includes(expectedKeycloakRole);
     } else {
       return false;
     }

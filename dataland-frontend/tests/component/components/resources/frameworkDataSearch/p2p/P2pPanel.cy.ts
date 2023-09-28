@@ -32,18 +32,20 @@ describe("Component test for P2pPanel", () => {
       reportingPeriod: "2023",
       data: pseudoP2pData,
     } as CompanyAssociatedDataPathwaysToParisData);
-    cy.mountWithPlugins(P2pPanel, {
-      keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyId: companyId,
-          singleDataMetaInfoToDisplay: {
-            dataId: "mock-data-id",
-            reportingPeriod: "2023",
-          } as DataMetaInformation,
-        };
+    cy.mountWithDialog(
+      P2pPanel,
+      {
+        keycloak: minimalKeycloakMock({}),
       },
-    });
+      {
+        companyId: companyId,
+        singleDataMetaInfoToDisplay: {
+          dataId: "mock-data-id",
+          reportingPeriod: "2023",
+        } as DataMetaInformation,
+      },
+    );
+    cy.get("span[data-test='2023__general_sectors'] a").should("exist").click();
     cy.get("td:contains('Ammonia')").should("exist");
   });
 
@@ -89,9 +91,9 @@ describe("Component test for P2pPanel", () => {
 
     cy.get(`span[data-test=Ammonia]`).click();
 
-    cy.get("span[data-test=ccsTechnologyAdoption]").should("not.exist");
+    cy.get("span[data-test=ccsTechnologyAdoptionInPercent]").should("not.exist");
     toggleRowGroup("decarbonisation");
-    cy.get("span[data-test=ccsTechnologyAdoption]").should("exist");
+    cy.get("span[data-test=ccsTechnologyAdoptionInPercent]").should("exist");
 
     cy.get(`span[data-test="Livestock farming"]`).click();
     toggleRowGroup("animalFeed");
@@ -99,7 +101,7 @@ describe("Component test for P2pPanel", () => {
 
     cy.get(`span[data-test=Cement]`).click();
     toggleRowGroup("material");
-    cy.get("span[data-test=preCalcinedClayUsage]").should("exist");
+    cy.get("span[data-test=preCalcinedClayUsageInPercent]").should("exist");
 
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").should("contain.text", "Share of pre-calcined");

@@ -1,5 +1,6 @@
 import type Keycloak from "keycloak-js";
 import { type KeycloakInitOptions } from "keycloak-js";
+import { KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 export interface KeycloakMockConfiguration {
   userId?: string;
@@ -21,7 +22,7 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
       sub: config.userId ?? "mock-user-id",
     },
     realmAccess: {
-      roles: config.roles ?? ["ROLE_USER"],
+      roles: config.roles ?? [KEYCLOAK_ROLE_USER],
     },
     /*
       The updateToken method is invoked several times on the Keycloak object (e.g. implicitly in the ApiClients.ts).

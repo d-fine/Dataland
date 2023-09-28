@@ -9,7 +9,7 @@ import java.time.LocalDate
  * Fields of the P2P questionnaire regarding the value creation of the automotive sector
  */
 data class P2pAutomotiveTechnologyValueCreation(
-    val driveMix: BigDecimal? = null,
+    val driveMixInPercent: BigDecimal? = null,
 
     val icAndHybridEnginePhaseOutDate: LocalDate? = null,
 

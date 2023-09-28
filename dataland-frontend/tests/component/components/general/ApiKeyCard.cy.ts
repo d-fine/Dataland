@@ -1,4 +1,5 @@
 import ApiKeyCard from "@/components/general/apiKey/ApiKeyCard.vue";
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component test for ApiKeyCard", () => {
   it("Should contain text 'The API Key expired' when Api Key is expired", () => {
@@ -6,7 +7,7 @@ describe("Component test for ApiKeyCard", () => {
       data() {
         return {
           viewDeleteConfirmation: false,
-          userRoles: ["ROLE_USER", "ROLE_ADMIN"],
+          userRoles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_ADMIN],
           expiryDateInMilliseconds: 1,
         };
       },
@@ -19,7 +20,7 @@ describe("Component test for ApiKeyCard", () => {
       data() {
         return {
           viewDeleteConfirmation: false,
-          userRoles: ["ROLE_USER", "ROLE_ADMIN"],
+          userRoles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_ADMIN],
           expiryDateInMilliseconds: null,
         };
       },
