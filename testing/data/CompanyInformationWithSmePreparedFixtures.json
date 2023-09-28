@@ -2,56 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Fort Gwendolynton",
-			"headquartersPostalCode": "60560-6303",
-			"sector": "e-markets",
+			"headquarters": "Lamarland",
+			"headquartersPostalCode": "24736",
+			"sector": "platforms",
 			"identifiers": {
 				"Lei": [
-					"mY4baaOnCRmMoUlYdKV1"
+					"ejDQ1ns6aQrp4xbLtUaC"
 				],
 				"Isin": [
-					"h02YCrzyq5f6",
-					"t5qJs9Ae3B3l"
+					"hnU4Gwq2yOR3",
+					"p5gbLQtKfVRu"
 				],
-				"PermId": [
-					"H8feQlgk1W"
-				],
+				"PermId": [],
 				"Ticker": [
-					"2fWmVtl"
+					"NqbvL5N"
 				],
 				"Duns": [
-					"TDoyAAq02"
+					"c0ofwVPOY"
 				],
-				"VatNumber": [
-					"PLzBQTCch"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NU",
-			"companyAlternativeNames": [
-				"Moore, Swaniawski and Lubowitz"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://alive-chit-chat.info",
+			"countryCode": "ZM",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://prize-obstacle.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"28.22",
-						"45.31",
-						"47.2",
-						"94"
+						"10.6",
+						"26.5",
+						"32.50",
+						"46.37"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Willie Fords 78824",
-						"postalCode": "37713",
-						"city": "East Effieton",
-						"country": "SZ"
+						"streetAndHouseNumber": "Kristopher Villages 514",
+						"city": "North Amaniside",
+						"state": "Massachusetts",
+						"country": "LK"
 					},
-					"numberOfEmployees": 8504,
-					"fiscalYearStart": "2023-12-04"
+					"numberOfEmployees": 5569,
+					"fiscalYearStart": "2023-11-04"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -61,42 +55,25 @@
 			},
 			"production": {
 				"sites": {},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Intelligent Rubber Shirt",
-							"shareOfTotalRevenueInPercent": 60.4089
-						},
-						{
-							"name": "Electronic Rubber Salad"
-						},
-						{
-							"name": "Refined Granite Cheese",
-							"shareOfTotalRevenueInPercent": 10.2362
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1211,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 462,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": 1152,
+					"powerFromRenewableSources": "Yes",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 18218623,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 595291,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Flooding",
-						"EarthQuake"
+						"Wind",
+						"Flooding"
 					]
 				}
 			}
@@ -106,38 +83,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "East Rosetta",
-			"sector": "methodologies",
+			"headquarters": "East Abelfield",
+			"headquartersPostalCode": "94539-1975",
+			"sector": "schemas",
 			"identifiers": {
 				"Lei": [
-					"QVpNBTAI2X7vh2zBXqg4"
+					"kLjlXAtWnV8HKCklAaal"
 				],
 				"Isin": [
-					"MaWWSt0pusJX"
+					"euLcS8DVA9Wf"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"Duns": [
+					"LOEFQeqi0"
+				],
+				"VatNumber": [
+					"GOQ3IjEiY"
+				],
+				"CompanyRegistrationNumber": [
+					"Z5ty1PLHNrRzT4I"
+				]
 			},
-			"countryCode": "TM",
+			"countryCode": "BG",
 			"companyAlternativeNames": [
-				"Feil - Bayer"
+				"Casper LLC"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://spicy-grasp.info/",
+			"companyLegalForm": "GmbH & Co. KG",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"23.2",
-						"46.34",
-						"47.71",
-						"77.35",
-						"G"
+						"27.90",
+						"60.20"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -146,208 +126,61 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 6424,
-					"fiscalYearStart": "2024-03-16"
+					"numberOfEmployees": 3334,
+					"fiscalYearStart": "2024-09-22"
 				},
 				"companyFinancials": {
-					"revenueInEur": 24091795,
-					"capitalAssetsInEur": 36876605
+					"revenueInEur": 41725833,
+					"operatingCostInEur": 11437357,
+					"capitalAssetsInEur": 44364144
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Bednar - Schuppe",
+							"nameOfProductionSite": "Parisian, Nikolaus and Torp",
 							"addressOfProductionSite": {
-								"postalCode": "01094-4242",
-								"city": "Carrollton",
-								"country": "IS"
+								"streetAndHouseNumber": "Schneider Cliff 511",
+								"postalCode": "83824-5446",
+								"city": "Palatine",
+								"state": "New Jersey",
+								"country": "MS"
 							},
-							"shareOfTotalRevenueInPercent": 69.7354
-						},
-						{
-							"nameOfProductionSite": "Tillman LLC",
-							"addressOfProductionSite": {
-								"city": "Port Doviefort",
-								"state": "Florida",
-								"country": "AX"
-							},
-							"shareOfTotalRevenueInPercent": 76.3119
-						},
-						{
-							"nameOfProductionSite": "Erdman, Nolan and Orn",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jackson Forge 640",
-								"city": "North Delphinechester",
-								"state": "Montana",
-								"country": "FM"
-							},
-							"shareOfTotalRevenueInPercent": 93.3877
-						},
-						{
-							"nameOfProductionSite": "Johns Group",
-							"addressOfProductionSite": {
-								"postalCode": "14378-4282",
-								"city": "Lenexa",
-								"state": "Wisconsin",
-								"country": "CK"
-							},
-							"shareOfTotalRevenueInPercent": 73.5245
+							"shareOfTotalRevenueInPercent": 60.9763
 						},
 						{
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Estefania Fords 319",
-								"postalCode": "78101-6431",
-								"city": "Dariotown",
-								"country": "FJ"
+								"streetAndHouseNumber": "Briana Hills 12253",
+								"postalCode": "77656-3339",
+								"city": "South Elouisehaven",
+								"state": "Pennsylvania",
+								"country": "GS"
 							},
-							"shareOfTotalRevenueInPercent": 56.0973
+							"shareOfTotalRevenueInPercent": 13.4945
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Ergonomic Plastic Pants",
-							"shareOfTotalRevenueInPercent": 17.78
+							"name": "Licensed Bronze Cheese",
+							"shareOfTotalRevenueInPercent": 13.3338
 						},
 						{
-							"name": "Refined Granite Shirt",
-							"shareOfTotalRevenueInPercent": 55.45
+							"name": "Gorgeous Soft Computer",
+							"shareOfTotalRevenueInPercent": 73.8296
 						},
 						{
-							"name": "Luxurious Bronze Soap",
-							"shareOfTotalRevenueInPercent": 59.0491
+							"name": "Generic Concrete Salad",
+							"shareOfTotalRevenueInPercent": 58.0692
 						},
 						{
-							"name": "Electronic Cotton Towels",
-							"shareOfTotalRevenueInPercent": 92.5098
+							"name": "Small Rubber Sausages",
+							"shareOfTotalRevenueInPercent": 61.2664
 						},
 						{
-							"name": "Elegant Plastic Soap",
-							"shareOfTotalRevenueInPercent": 51.2952
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 1362,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 187,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 10761848,
-					"naturalHazardsCovered": [
-						"Snow"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "Fort Gracielamouth",
-			"sector": "paradigms",
-			"identifiers": {
-				"Lei": [
-					"9ijL37zWDiqNo5QyD0YJ"
-				],
-				"Isin": [
-					"Xk359TEQLukm"
-				],
-				"PermId": [],
-				"Ticker": [
-					"UbQRZU0"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"i79iJyi3y"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "WF",
-			"companyAlternativeNames": [
-				"Murazik, Lemke and Reichel"
-			],
-			"companyLegalForm": "GmbH",
-			"website": "https://trained-anger.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"17.29",
-						"46.22"
-					],
-					"addressOfHeadquarters": {
-						"city": "City 17",
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 5809,
-					"fiscalYearStart": "2023-12-15"
-				},
-				"companyFinancials": {
-					"revenueInEur": 9746467
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Friesen and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Mattie Plaza 2499",
-								"city": "Bartonstad",
-								"state": "Illinois",
-								"country": "LV"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Emmy Forest 268",
-								"postalCode": "25678-3079",
-								"city": "Meggieborough",
-								"country": "CN"
-							},
-							"shareOfTotalRevenueInPercent": 41.6861
-						},
-						{
-							"addressOfProductionSite": {
-								"city": "North Marcelobury",
-								"state": "Montana",
-								"country": "GD"
-							},
-							"shareOfTotalRevenueInPercent": 4.1677
-						},
-						{
-							"nameOfProductionSite": "Corwin - Koss",
-							"addressOfProductionSite": {
-								"postalCode": "51348",
-								"city": "Visalia",
-								"state": "Hawaii",
-								"country": "VU"
-							},
-							"shareOfTotalRevenueInPercent": 61.5193
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Electronic Metal Car"
+							"name": "Practical Concrete Shirt"
 						}
 					]
 				}
@@ -357,19 +190,117 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
+					"powerConsumptionInMwh": 1981,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 876,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 258,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 48183511,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 21748294
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "Makennacester",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [
+					"qNTbRaJK3PNJPUn8K39N"
+				],
+				"Isin": [
+					"3o4kvxHLKdeU",
+					"zARetx8a53gU"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"Xyb19rq7seVwh8B"
+				]
+			},
+			"countryCode": "IL",
+			"companyAlternativeNames": [
+				"Ernser, Cormier and Bergnaum",
+				"Smitham - Yundt"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"47.59",
+						"78.3",
+						"84.30"
+					],
+					"addressOfHeadquarters": {
+						"city": "City 17",
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 2058,
+					"fiscalYearStart": "2024-09-02"
+				},
+				"companyFinancials": {
+					"revenueInEur": 70772967,
+					"operatingCostInEur": 32143025,
+					"capitalAssetsInEur": 30896749
+				}
+			},
+			"production": {
+				"sites": {},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Ergonomic Granite Soap",
+							"shareOfTotalRevenueInPercent": 53.5442
+						},
+						{
+							"name": "Generic Steel Chair",
+							"shareOfTotalRevenueInPercent": 50.9861
+						},
+						{
+							"name": "Recycled Bronze Keyboard",
+							"shareOfTotalRevenueInPercent": 94.2149
+						},
+						{
+							"name": "Practical Rubber Chair",
+							"shareOfTotalRevenueInPercent": 29.3915
+						},
+						{
+							"name": "Ergonomic Concrete Table",
+							"shareOfTotalRevenueInPercent": 59.2384
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": 770,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 11,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"amountCoveredByInsuranceAgainstNaturalHazards": 25001309,
 					"naturalHazardsCovered": [
-						"Wind",
-						"Avalanche"
+						"Flooding",
+						"EarthQuake",
+						"Hail"
 					]
 				}
 			}
