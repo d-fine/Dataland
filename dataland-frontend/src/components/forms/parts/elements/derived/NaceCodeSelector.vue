@@ -64,7 +64,7 @@ export default defineComponent({
       type: Array as PropType<Array<string>>,
       default: () => [],
     },
-    ShouldDisableCheckboxes: {
+    shouldDisableCheckboxes: {
       type: Boolean,
       default: false,
     },
