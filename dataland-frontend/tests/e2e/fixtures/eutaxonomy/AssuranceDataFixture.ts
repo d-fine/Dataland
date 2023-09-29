@@ -16,8 +16,7 @@ export function generateAssuranceData(reports: ReferencedDocuments): AssuranceDa
   const dataSource =
     assurance !== AssuranceDataPointValueEnum.None && faker.datatype.boolean()
       ? generateDataSource(reports)
-      : { fileReference: "", page: undefined, tagName: undefined };
-
+      : undefined;
   return {
     value: assurance,
     provider: provider,
