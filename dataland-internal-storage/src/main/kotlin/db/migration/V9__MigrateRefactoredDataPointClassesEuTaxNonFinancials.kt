@@ -129,7 +129,7 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
      */
     private fun getFileReferenceFromReferencedReports(fileName: String, dataObject: JSONObject): String {
         if (fileName != "") {
-            val generalCategoryObject = dataObject.getOrJavaNull("general")
+            val generalCategoryObject = dataObject.getOrJsonNull("general")
             generalCategoryObject as JSONObject
             val referencedReportsObject = generalCategoryObject.getOrJsonNull("referencedReports")
             referencedReportsObject as JSONObject
