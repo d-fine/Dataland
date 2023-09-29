@@ -9,7 +9,11 @@
       placeholder="Value in %"
       v-model="percentageFieldValue"
       :innerClass="innerClass"
-    />
+    >
+      <template #suffix>
+        %
+      </template>
+    </FormKit>
   </div>
 </template>
 
