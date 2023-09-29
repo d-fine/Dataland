@@ -10,9 +10,7 @@
       v-model="percentageFieldValue"
       :innerClass="innerClass"
     >
-      <template #suffix>
-        %
-      </template>
+      <template #suffix> % </template>
     </FormKit>
   </div>
 </template>
