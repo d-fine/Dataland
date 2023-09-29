@@ -2,23 +2,18 @@ import {
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  type PathwaysToParisData,
   P2pDataControllerApi,
-  type SmeData,
   SmeDataControllerApi,
-  type LksgData,
   LksgDataControllerApi,
-  type SfdrData,
   SfdrDataControllerApi,
-  type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsControllerApi,
-  type EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsControllerApi,
   type CompanyInformation,
 } from "@clients/backend";
 import { type AxiosPromise } from "axios";
 import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 
 interface CompanyAssociatedFrameworkData<FrameworkDataType> {
   companyId: string;
@@ -35,33 +30,6 @@ interface FrameworkUploadConfiguration<ApiClientType, FrameworkDataType> {
   apiConstructor: new (configuration: Configuration | undefined) => ApiClientType;
   uploaderFactory: (client: ApiClientType) => FrameworkDataUploadFunction<FrameworkDataType>;
 }
-
-export type FrameworkDataTypes = {
-  [DataTypeEnum.P2p]: {
-    data: PathwaysToParisData;
-    api: P2pDataControllerApi;
-  };
-  [DataTypeEnum.Sme]: {
-    data: SmeData;
-    api: SmeDataControllerApi;
-  };
-  [DataTypeEnum.Lksg]: {
-    data: LksgData;
-    api: LksgDataControllerApi;
-  };
-  [DataTypeEnum.Sfdr]: {
-    data: SfdrData;
-    api: SfdrDataControllerApi;
-  };
-  [DataTypeEnum.EutaxonomyFinancials]: {
-    data: EuTaxonomyDataForFinancials;
-    api: EuTaxonomyDataForFinancialsControllerApi;
-  };
-  [DataTypeEnum.EutaxonomyNonFinancials]: {
-    data: EuTaxonomyDataForNonFinancials;
-    api: EuTaxonomyDataForNonFinancialsControllerApi;
-  };
-};
 
 const frameworkUploadConfigurations: {
   [Key in keyof FrameworkDataTypes]: FrameworkUploadConfiguration<

@@ -23,6 +23,10 @@ import { QaControllerApi } from "@clients/qaservice";
 import type Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
+import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
+import { type FrameworkDataApi, translateFrameworkApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { assertNever } from "@/utils/TypeScriptUtils";
+import { DataTypeEnum } from "@clients/backend";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -57,6 +61,39 @@ export class ApiClientProvider {
 
   async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
     return this.getConstructedApi(CompanyDataControllerApi);
+  }
+
+  /**
+   * This function returns a promise to an api controller adaption that is unified across frameworks to allow
+   * for creation of generic components that work framework-independent.
+   * @param framework The identified of the framework
+   * @returns the unified API client
+   */
+  async getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
+    framework: K,
+  ): Promise<FrameworkDataApi<FrameworkDataTypes[K]["data"]>> {
+    switch (framework) {
+      case DataTypeEnum.Lksg:
+        return translateFrameworkApi<typeof DataTypeEnum.Lksg>("LksgData", await this.getLksgDataControllerApi());
+      case DataTypeEnum.Sfdr:
+        return translateFrameworkApi<typeof DataTypeEnum.Sfdr>("SfdrData", await this.getSfdrDataControllerApi());
+      case DataTypeEnum.P2p:
+        return translateFrameworkApi<typeof DataTypeEnum.P2p>("P2pData", await this.getP2pDataControllerApi());
+      case DataTypeEnum.Sme:
+        return translateFrameworkApi<typeof DataTypeEnum.Sme>("SmeData", await this.getSmeDataControllerApi());
+      case DataTypeEnum.EutaxonomyFinancials:
+        return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyFinancials>(
+          "EuTaxonomyDataForFinancials",
+          await this.getEuTaxonomyDataForFinancialsControllerApi(),
+        );
+      case DataTypeEnum.EutaxonomyNonFinancials:
+        return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyNonFinancials>(
+          "EuTaxonomyDataForNonFinancials",
+          await this.getEuTaxonomyDataForNonFinancialsControllerApi(),
+        );
+      default:
+        return assertNever(framework);
+    }
   }
 
   async getEuTaxonomyDataForNonFinancialsControllerApi(): Promise<EuTaxonomyDataForNonFinancialsControllerApiInterface> {

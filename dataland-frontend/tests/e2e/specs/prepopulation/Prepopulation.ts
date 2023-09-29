@@ -4,8 +4,9 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
-import { type FrameworkDataTypes, uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { frameworkFixtureMap } from "@e2e/utils/FixtureMap";
+import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 
 const chunkSize = 15;
 
