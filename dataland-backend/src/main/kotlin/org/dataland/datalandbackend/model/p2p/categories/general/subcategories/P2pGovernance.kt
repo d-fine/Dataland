@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.p2p.categories.general.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -22,7 +23,7 @@ data class P2pGovernance(
 
     val upstreamSupplierEngagementStrategy: YesNo? = null,
 
-    val upstreamSupplierProcurementPolicy: YesNo? = null,
+    val upstreamSupplierProcurementPolicy: BaseDataPoint<YesNo>? = null,
 
     val downstreamCustomerEngagement: YesNo? = null,
 
