@@ -51,7 +51,7 @@ export function generateProductionSite(
 ): LksgProductionSite {
   return {
     nameOfProductionSite: valueOrUndefined(faker.company.name(), missingValueProbability),
-    addressOfProductionSite: generateAddress(missingValueProbability, setMissingValuesToNull),
+    addressOfProductionSite: generateAddress(setMissingValuesToNull, missingValueProbability),
     listOfGoodsOrServices: valueOrUndefined(generateListOfGoodsOrServices(), missingValueProbability),
   };
 }

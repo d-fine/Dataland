@@ -50,8 +50,8 @@ export function generateSmeData(
       basicInformation: {
         sector: generateNaceCodes(1),
         addressOfHeadquarters: generateAddress(
-          dataGenerator.missingValueProbability,
           dataGenerator.setMissingValuesToNull,
+          dataGenerator.missingValueProbability,
         ),
         numberOfEmployees: generateInt(10000),
         fiscalYearStart: generateFutureDate(),
@@ -115,7 +115,7 @@ class SmeGenerator extends Generator {
     return this.randomArray((): SmeProductionSite => {
       return {
         nameOfProductionSite: this.valueOrMissing(faker.company.name()),
-        addressOfProductionSite: generateAddress(this.missingValueProbability, this.setMissingValuesToNull),
+        addressOfProductionSite: generateAddress(this.setMissingValuesToNull, this.missingValueProbability),
         shareOfTotalRevenueInPercent: this.randomPercentageValue(),
       };
     });

@@ -58,7 +58,7 @@ export class Generator {
   constructor(undefinedProbability = DEFAULT_PROBABILITY, setMissingValuesToNull = false) {
     this.missingValueProbability = undefinedProbability;
     this.setMissingValuesToNull = setMissingValuesToNull;
-    this.reports = generateReferencedReports(undefinedProbability, setMissingValuesToNull);
+    this.reports = generateReferencedReports(setMissingValuesToNull, undefinedProbability);
     this.documents = generateReferencedDocuments();
   }
 

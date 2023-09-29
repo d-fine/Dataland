@@ -12,14 +12,14 @@ const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedRepo
 
 /**
  * Generates a random non-empty set of reports that can be referenced
- * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
+ * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @param requiredReportNames reports with names that must occur
  * @returns a random non-empty set of reports
  */
 export function generateReferencedReports(
-  missingValueProbability = DEFAULT_PROBABILITY,
   setMissingValuesToNull: boolean,
+  missingValueProbability = DEFAULT_PROBABILITY,
   requiredReportNames?: string[],
 ): ReferencedDocuments {
   const availableReportNames = pickSubsetOfElements(possibleReports);

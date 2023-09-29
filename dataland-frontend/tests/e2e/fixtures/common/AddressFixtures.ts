@@ -5,13 +5,13 @@ import { DEFAULT_PROBABILITY, valueOrMissing } from "@e2e/utils/FakeFixtureUtils
 
 /**
  * Generates a random address
- * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
+ * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
  * @returns a random address
  */
 export function generateAddress(
-  missingValueProbability = DEFAULT_PROBABILITY,
   setMissingValuesToNull: boolean,
+  missingValueProbability = DEFAULT_PROBABILITY,
 ): Address {
   return {
     streetAndHouseNumber: valueOrMissing(
