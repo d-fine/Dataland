@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.model.generics.ProductBase
+import org.dataland.datalandbackend.interfaces.ProductBaseInterface
 
 /**
  * --- API model ---
@@ -14,4 +14,4 @@ data class LksgProduct(
     val productionSteps: List<String>?,
 
     val relatedCorporateSupplyChain: String?,
-) : ProductBase(name)
+) : ProductBaseInterface
