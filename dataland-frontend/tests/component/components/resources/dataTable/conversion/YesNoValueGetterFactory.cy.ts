@@ -1,5 +1,6 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
+  EmptyDisplayValue,
   MLDTDisplayComponents,
   type MLDTDisplayValue,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
@@ -23,10 +24,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     it("An empty string should be displayed if the data point is undefined", () => {
       const dataset = { data: undefined };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: "",
-      });
+      expect(value).to.deep.equal(EmptyDisplayValue);
     });
 
     it("'Yes' should be displayed if the value is Yes", () => {
@@ -73,10 +71,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     it("An empty string should be displayed if the data point is undefined", () => {
       const dataset = { data: undefined };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: "",
-      });
+      expect(value).to.deep.equal(EmptyDisplayValue);
     });
 
     it("'Yes' should be displayed if no certificate is provided", () => {
@@ -154,10 +149,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     it("An empty string should be displayed if the data point is undefined", () => {
       const dataset = { data: undefined };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: "",
-      });
+      expect(value).to.deep.equal(EmptyDisplayValue);
     });
 
     it("An empty string should be displayed if the data point's value is undefined", () => {
@@ -166,10 +158,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: "",
-      });
+      expect(value).to.deep.equal(EmptyDisplayValue);
     });
 
     it("'Yes' should be displayed if the value is Yes", () => {

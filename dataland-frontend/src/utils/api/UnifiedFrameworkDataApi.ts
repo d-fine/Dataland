@@ -42,6 +42,56 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
   ) => AxiosPromise<DataMetaInformation>;
 };
 
+class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
+  implements FrameworkDataApi<FrameworkDataTypes[K]["data"]>
+{
+  private readonly apiSuffix: FrameworkDataTypes[K]["apiSuffix"];
+  private readonly openApiDataController: OpenApiDataControllerApi<
+    FrameworkNameObjectTranslation<FrameworkDataTypes[K]["apiSuffix"]>,
+    FrameworkDataTypes[K]["data"]
+  >;
+
+  constructor(
+    apiSuffix: FrameworkDataTypes[K]["apiSuffix"],
+    openApiDataController: OpenApiDataControllerApi<
+      FrameworkNameObjectTranslation<FrameworkDataTypes[K]["apiSuffix"]>,
+      FrameworkDataTypes[K]["data"]
+    >,
+  ) {
+    this.apiSuffix = apiSuffix;
+    this.openApiDataController = openApiDataController;
+  }
+
+  getAllCompanyData(
+    companyId: string,
+    showOnlyActive?: boolean,
+    reportingPeriod?: string,
+    options?: AxiosRequestConfig,
+  ): AxiosPromise<Array<DataAndMetaInformation<FrameworkDataTypes[K]["data"]>>> {
+    return this.openApiDataController[`getAllCompany${this.apiSuffix}`](
+      companyId,
+      showOnlyActive,
+      reportingPeriod,
+      options,
+    );
+  }
+
+  getFrameworkData(
+    dataId: string,
+    options?: AxiosRequestConfig,
+  ): AxiosPromise<CompanyAssociatedData<FrameworkDataTypes[K]["data"]>> {
+    return this.openApiDataController[`getCompanyAssociated${this.apiSuffix}`](dataId, options);
+  }
+
+  postFrameworkData(
+    data: CompanyAssociatedData<FrameworkDataTypes[K]["data"]>,
+    bypassQa?: boolean,
+    options?: AxiosRequestConfig,
+  ): AxiosPromise<DataMetaInformation> {
+    return this.openApiDataController[`postCompanyAssociated${this.apiSuffix}`](data, bypassQa, options);
+  }
+}
+
 type FrameworkNameObjectTranslation<K extends string> = {
   [key in K]: string;
 };
@@ -60,9 +110,5 @@ export function translateFrameworkApi<K extends keyof FrameworkDataTypes>(
     FrameworkDataTypes[K]["data"]
   >,
 ): FrameworkDataApi<FrameworkDataTypes[K]["data"]> {
-  return {
-    getAllCompanyData: openApiDataController[`getAllCompany${apiSuffix}`],
-    getFrameworkData: openApiDataController[`getCompanyAssociated${apiSuffix}`],
-    postFrameworkData: openApiDataController[`postCompanyAssociated${apiSuffix}`],
-  };
+  return new OpenApiUnificationAdapter(apiSuffix, openApiDataController);
 }

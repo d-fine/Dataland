@@ -26,14 +26,18 @@
               :companyId="companyId"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
             />
-            <LksgPanel
+            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.Lksg"
+              :frameworkIdentifier="DataTypeEnum.Lksg"
               :companyId="companyId"
+              :display-configuration="convertDataModel(lksgDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
             />
-            <SfdrPanel
+            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.Sfdr"
+              :frameworkIdentifier="DataTypeEnum.Sfdr"
               :companyId="companyId"
+              :display-configuration="convertDataModel(sfdrDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
             />
             <P2pPanel
@@ -80,8 +84,6 @@ import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { defineComponent, inject } from "vue";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
-import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { type AxiosError } from "axios";
@@ -90,21 +92,33 @@ import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataS
 import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
 import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
+import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
+import { convertDataModel } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
+import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
+  computed: {
+    lksgDataModel() {
+      return lksgDataModel;
+    },
+    sfdrDataModel() {
+      return sfdrDataModel;
+    },
+  },
   components: {
+    MultiLayerDataTableFrameworkPanel,
     EuTaxonomyForNonFinancialsPanel,
     P2pPanel,
     DatasetDisplayStatusIndicator,
-    SfdrPanel,
-    LksgPanel,
     ViewFrameworkBase,
     SmePanel,
   },
   props: {
     companyId: {
       type: String,
+      required: true,
     },
     dataType: {
       type: String,
@@ -170,6 +184,7 @@ export default defineComponent({
   },
 
   methods: {
+    convertDataModel,
     /**
      * Method to set flags that indicate found data
      */
