@@ -2,21 +2,20 @@ import fs from "fs";
 import {
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
-  DataTypeEnum,
+  DataTypeEnum, EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType,
   QaStatus,
-  QualityOptions,
 } from "@clients/backend";
 import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
 import {
   EuNonFinancialsGenerator,
-  generateEuTaxonomyDataForNonFinancials,
 } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
-import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
-import { generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import {generateCurrencyValue, generatePercentageValue} from "@e2e/fixtures/common/NumberFixtures";
+import {DEFAULT_PROBABILITY} from "@e2e/utils/FakeFixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateDataPoint, generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { faker } from "@faker-js/faker";
+import {generateEuTaxonomyWithBaseFields} from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
+import {generateCurrencyCode} from "@e2e/fixtures/common/CurrencyFixtures";
 
 /**
  * Generates and exports fake fixtures for the LKSG framework
@@ -40,47 +39,63 @@ export function exportCustomMocks(): void {
   );
 }
 
+class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
+  generateMinimumAcceptedEuTaxonomyForNonFinancialsData(): EuTaxonomyDataForNonFinancials {
+    return {
+      general: generateEuTaxonomyWithBaseFields(this.reports, this.setMissingValuesToNull, 0),
+      revenue: this.generateMinimumAcceptedDetailsPerCashFlowType(),
+      capex: this.generateMinimumAcceptedDetailsPerCashFlowType(),
+      opex: this.generateMinimumAcceptedDetailsPerCashFlowType(),
+    }
+  }
+
+  generateMinimumAcceptedDetailsPerCashFlowType(): EuTaxonomyDetailsPerCashFlowType {
+    return {
+      totalAmount: generateDataPoint(this.valueOrMissing(generateCurrencyValue()), this.reports, this.setMissingValuesToNull, generateCurrencyCode()),
+      nonEligibleShare: this.generateFinancialShare(),
+      eligibleShare: this.generateFinancialShare(),
+      nonAlignedShare: this.generateFinancialShare(),
+      nonAlignedActivities: this.randomArray(() => this.generateActivity(), 1, 2),
+      alignedShare: this.generateFinancialShare(),
+      substantialContributionToClimateChangeMitigationInPercent: generatePercentageValue(),
+      substantialContributionToClimateChangeAdaptionInPercent: generatePercentageValue(),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+        generatePercentageValue(),
+      substantialContributionToTransitionToACircularEconomyInPercent: generatePercentageValue(),
+      substantialContributionToPollutionPreventionAndControlInPercent: generatePercentageValue(),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+        generatePercentageValue(),
+      alignedActivities: this.randomArray(() => this.generateAlignedActivity(), 1, 2),
+      enablingShareInPercent: generatePercentageValue(),
+      transitionalShareInPercent: generatePercentageValue(),
+    };
+  }
+}
+
 /**
  * Generates a list of data and meta information with EU taxonomy for non financials data
  * @returns a list of data and meta information with EU taxonomy for non financials data
  */
 function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformationEuTaxonomyDataForNonFinancials[] {
   const dataMetaInfoGenerator = new DataMetaInformationGenerator(true);
+  const dataGenerator = new MinimumAcceptedEuNonFinancialsGenerator(DEFAULT_PROBABILITY, true);
   const generatedDataAndMetaInfo = range(3).map((index): DataAndMetaInformationEuTaxonomyDataForNonFinancials => {
     const metaInfo = dataMetaInfoGenerator.generateDataMetaInformation();
     metaInfo.reportingPeriod = "202" + (3 - index).toString();
     return {
       metaInfo: metaInfo,
-      data: generateEuTaxonomyDataForNonFinancials(true),
+      data: dataGenerator.generateMinimumAcceptedEuTaxonomyForNonFinancialsData(),
     };
   });
-  const euTaxonomyNonFinancialsGenerator = new EuNonFinancialsGenerator(0, true);
-  let data = generateEuTaxonomyDataForNonFinancials(true, 0);
-  data.general ??= {};
-  data.general.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, true, ["IntegratedReport"]);
-  data.revenue = euTaxonomyNonFinancialsGenerator.generateEuTaxonomyPerCashflowType();
-  data.revenue.totalAmount ??= { quality: pickOneElement(Object.values(QualityOptions)) };
-  data.revenue.totalAmount.value = 0;
-  data.opex = euTaxonomyNonFinancialsGenerator.generateEuTaxonomyPerCashflowType();
-  data.capex = euTaxonomyNonFinancialsGenerator.generateEuTaxonomyPerCashflowType();
-  euTaxonomyNonFinancialsGenerator.missingValueProbability = DEFAULT_PROBABILITY;
-  data.capex.nonAlignedActivities = generateArray(() => euTaxonomyNonFinancialsGenerator.generateActivity(), 1);
-  data.capex.nonAlignedActivities[0].naceCodes = generateNaceCodes(1);
-  data.capex.nonAlignedActivities[0].share ??= {};
-  data.capex.nonAlignedActivities[0].share.relativeShareInPercent = generatePercentageValue();
-  data.capex.nonAlignedActivities[0].share.absoluteShare ??=
-    euTaxonomyNonFinancialsGenerator.generateAmountWithCurrency();
-  data.capex.nonAlignedShare ??= {};
-  data.capex.nonAlignedShare.relativeShareInPercent ??= generatePercentageValue();
+  let data = generatedDataAndMetaInfo[0].data;
+  data.general!.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, true, ["IntegratedReport"]);
+  data.revenue!.totalAmount!.value = 0;
+  data.capex!.nonAlignedActivities![0].naceCodes = generateNaceCodes(1);
+  data.capex!.nonAlignedActivities![0].share ??= {};
+  data.capex!.nonAlignedActivities![0].share.relativeShareInPercent = generatePercentageValue();
+  data.capex!.nonAlignedActivities![0].share.absoluteShare ??= dataGenerator.generateAmountWithCurrency();
+  data.capex!.nonAlignedShare!.relativeShareInPercent ??= generatePercentageValue();
   generatedDataAndMetaInfo[0].data = data;
-
-  data = generateEuTaxonomyDataForNonFinancials(true, 0);
-  generatedDataAndMetaInfo[1].data = data;
-
-  data = generateEuTaxonomyDataForNonFinancials(true, 0);
-  data.capex ??= {};
-  data.capex.alignedActivities = generateArray(() => euTaxonomyNonFinancialsGenerator.generateAlignedActivity(), 1);
-  generatedDataAndMetaInfo[2].data = data;
 
   return generatedDataAndMetaInfo;
 }
@@ -117,6 +132,8 @@ function generateListOfMetaInformationForOneCompany(): DataMetaInformation[] {
   return listOfMetaInfo;
 }
 
+type MetaInfoAssociatedWithReportingPeriodByFranework = { [key in DataTypeEnum]?: (string | DataMetaInformation)[][] }
+
 /**
  * Extracts data meta information with data type "EU taxonomy for financials" and "LkSG" and stores them in a custom format
  * @param listOfMetaInformationForOneCompany the list of data meta information to parse
@@ -124,8 +141,8 @@ function generateListOfMetaInformationForOneCompany(): DataMetaInformation[] {
  */
 function extractMetaInfoForEuFinancialsAndLksg(
   listOfMetaInformationForOneCompany: DataMetaInformation[],
-): (string | DataMetaInformation)[][] {
-  const holdingObject: { [key in DataTypeEnum]?: (string | DataMetaInformation)[][] } = {};
+): MetaInfoAssociatedWithReportingPeriodByFranework {
+  const holdingObject: MetaInfoAssociatedWithReportingPeriodByFranework = {};
   [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {
     holdingObject[dataType] = listOfMetaInformationForOneCompany
       .filter((metaInfo) => metaInfo.dataType == dataType)

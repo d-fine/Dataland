@@ -47,13 +47,21 @@ export class EuNonFinancialsGenerator extends Generator {
 
   /**
    * Generates a random financial share
-   * @returns a financial share
+   * @returns a financial share or the missing value
    */
   randomFinancialShare(): RelativeAndAbsoluteFinancialShare | undefined | null {
-    return this.valueOrMissing({
+    return this.valueOrMissing(this.generateFinancialShare());
+  }
+
+  /**
+   * Generates a random financial share
+   * @returns a financial share
+   */
+  generateFinancialShare(): RelativeAndAbsoluteFinancialShare {
+    return {
       relativeShareInPercent: this.randomPercentageValue(),
       absoluteShare: this.valueOrMissing(this.generateAmountWithCurrency()),
-    });
+    };
   }
 
   /**

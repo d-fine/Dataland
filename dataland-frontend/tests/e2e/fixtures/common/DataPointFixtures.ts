@@ -49,7 +49,7 @@ export function generateReferencedReports(
  * @param unit the unit of the datapoint to generate
  * @returns the generated datapoint
  */
-export function generateDatapoint<T>(
+export function generateDataPoint<T>(
   value: T | undefined | null,
   reports: ReferencedDocuments,
   setMissingValuesToNull: boolean,

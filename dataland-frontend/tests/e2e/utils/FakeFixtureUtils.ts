@@ -1,5 +1,5 @@
 import {
-  generateDatapoint,
+  generateDataPoint,
   generateReferencedReports,
   type GenericDataPoint,
   type GenericBaseDataPoint,
@@ -105,7 +105,7 @@ export class Generator {
 
   randomDataPoint<T>(input: T, unit?: string): GenericDataPoint<T> | undefined | null {
     const randomInput = this.valueOrMissing(input);
-    return this.valueOrMissing(generateDatapoint(randomInput, this.reports, this.setMissingValuesToNull, unit));
+    return this.valueOrMissing(generateDataPoint(randomInput, this.reports, this.setMissingValuesToNull, unit));
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | undefined | null {
