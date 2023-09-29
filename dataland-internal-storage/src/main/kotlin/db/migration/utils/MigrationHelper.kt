@@ -147,7 +147,11 @@ class MigrationHelper {
     /**
      * Iterates through all referenced reports to migrate reports
      */
-    private fun iterateThroughReferencedReports(referencedReportsObject: JSONObject, fieldNamesToMigrate: Map<String, String>) {
+    private fun iterateThroughReferencedReports(
+        referencedReportsObject: JSONObject,
+        fieldNamesToMigrate: Map<String,
+            String,>,
+    ) {
         for (key in referencedReportsObject.keys()) {
             fieldNamesToMigrate.forEach {
                 val oneReportObject = referencedReportsObject.getJSONObject(key)
