@@ -1,3 +1,5 @@
+import { type DataAndMetaInformation } from "@/components/resources/ViewModel";
+
 /**
  * Sorts dates to ensure that Sfdr and LkSG datasets are displayed chronologically in the table in terms of reporting
  * periods (strings starting with numbers should at least be listed before those that do not)
@@ -10,6 +12,21 @@ export function sortReportingPeriodsToDisplayAsColumns(
 ): ReportingPeriodOfDataSetWithId[] {
   return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) =>
     compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod),
+  );
+}
+
+/**
+ * Sorts dates to ensure that Sfdr and LkSG datasets are displayed chronologically in the table in terms of reporting
+ * periods (strings starting with numbers should at least be listed before those that do not)
+ * @param  dataList list of objects to sort
+ * Shortens the test-function and avoids code duplications.
+ * @returns list of sorted objects
+ */
+export function sortCompanyAssociatedDataByReportingPeriod<T>(
+  dataList: DataAndMetaInformation<T>[],
+): DataAndMetaInformation<T>[] {
+  return dataList.sort((dataSetA, dataSetB) =>
+    compareReportingPeriods(dataSetA.metaInfo.reportingPeriod, dataSetB.metaInfo.reportingPeriod),
   );
 }
 
