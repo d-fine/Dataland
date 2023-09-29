@@ -2073,7 +2073,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CompanyIdAndName"
+                    "$ref": "#/components/schemas/CompanyIdAndNameInterface"
                   }
                 }
               }
@@ -3575,53 +3575,6 @@
           }
         }
       },
-      "P2pCommercialRealEstate": {
-        "type": "object",
-        "properties": {
-          "buildingEfficiency": {
-            "$ref": "#/components/schemas/P2pCommercialRealEstateBuildingEfficiency"
-          },
-          "energySource": {
-            "$ref": "#/components/schemas/P2pCommercialRealEstateEnergySource"
-          },
-          "technology": {
-            "$ref": "#/components/schemas/P2pCommercialRealEstateTechnology"
-          }
-        }
-      },
-      "P2pCommercialRealEstateBuildingEfficiency": {
-        "type": "object",
-        "properties": {
-          "buildingSpecificRefurbishmentRoadmapInPercent": {
-            "type": "number"
-          },
-          "zeroEmissionBuildingShareInPercent": {
-            "type": "number"
-          },
-          "buildingEnergyEfficiencyInCorrespondingUnit": {
-            "type": "number"
-          }
-        }
-      },
-      "P2pCommercialRealEstateEnergySource": {
-        "type": "object",
-        "properties": {
-          "renewableHeatingInPercent": {
-            "type": "number"
-          }
-        }
-      },
-      "P2pCommercialRealEstateTechnology": {
-        "type": "object",
-        "properties": {
-          "useOfDistrictHeatingNetworksInPercent": {
-            "type": "number"
-          },
-          "heatPumpUsageInPercent": {
-            "type": "number"
-          }
-        }
-      },
       "P2pElectricityGeneration": {
         "type": "object",
         "properties": {
@@ -3943,21 +3896,21 @@
           }
         }
       },
-      "P2pResidentialRealEstate": {
+      "P2pRealEstate": {
         "type": "object",
         "properties": {
           "buildingEfficiency": {
-            "$ref": "#/components/schemas/P2pResidentialRealEstateBuildingEfficiency"
+            "$ref": "#/components/schemas/P2pRealEstateBuildingEfficiency"
           },
           "energySource": {
-            "$ref": "#/components/schemas/P2pResidentialRealEstateEnergySource"
+            "$ref": "#/components/schemas/P2pRealEstateEnergySource"
           },
           "technology": {
-            "$ref": "#/components/schemas/P2pResidentialRealEstateTechnology"
+            "$ref": "#/components/schemas/P2plRealEstateTechnology"
           }
         }
       },
-      "P2pResidentialRealEstateBuildingEfficiency": {
+      "P2pRealEstateBuildingEfficiency": {
         "type": "object",
         "properties": {
           "buildingSpecificRefurbishmentRoadmapInPercent": {
@@ -3971,21 +3924,10 @@
           }
         }
       },
-      "P2pResidentialRealEstateEnergySource": {
+      "P2pRealEstateEnergySource": {
         "type": "object",
         "properties": {
           "renewableHeatingInPercent": {
-            "type": "number"
-          }
-        }
-      },
-      "P2pResidentialRealEstateTechnology": {
-        "type": "object",
-        "properties": {
-          "useOfDistrictHeatingNetworksInPercent": {
-            "type": "number"
-          },
-          "heatPumpUsageInPercent": {
             "type": "number"
           }
         }
@@ -4039,6 +3981,17 @@
           }
         }
       },
+      "P2plRealEstateTechnology": {
+        "type": "object",
+        "properties": {
+          "useOfDistrictHeatingNetworksInPercent": {
+            "type": "number"
+          },
+          "heatPumpUsageInPercent": {
+            "type": "number"
+          }
+        }
+      },
       "PathwaysToParisData": {
         "required": [
           "general"
@@ -4058,10 +4011,10 @@
             "$ref": "#/components/schemas/P2pHvcPlastics"
           },
           "commercialRealEstate": {
-            "$ref": "#/components/schemas/P2pCommercialRealEstate"
+            "$ref": "#/components/schemas/P2pRealEstate"
           },
           "residentialRealEstate": {
-            "$ref": "#/components/schemas/P2pResidentialRealEstate"
+            "$ref": "#/components/schemas/P2pRealEstate"
           },
           "steel": {
             "$ref": "#/components/schemas/P2pSteel"
@@ -5795,7 +5748,7 @@
           }
         }
       },
-      "CompanyIdAndName": {
+      "CompanyIdAndNameInterface": {
         "required": [
           "companyId",
           "companyName"

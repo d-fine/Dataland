@@ -98,7 +98,7 @@ export class EuNonFinancialsGenerator extends Generator {
    */
   generateEuTaxonomyPerCashflowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: this.randomDataPoint(generateCurrencyValue(), generateCurrencyCode()),
+      totalAmount: this.randomCurrencyDataPoint(generateCurrencyValue()),
       nonEligibleShare: this.randomFinancialShare(),
       eligibleShare: this.randomFinancialShare(),
       nonAlignedShare: this.randomFinancialShare(),

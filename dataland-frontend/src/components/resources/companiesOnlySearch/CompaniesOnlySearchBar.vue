@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import AutoComplete, { type AutoCompleteCompleteEvent, type AutoCompleteItemSelectEvent } from "primevue/autocomplete";
-import { type CompanyIdAndName } from "@clients/backend";
+import { type CompanyIdAndNameInterface } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
@@ -81,7 +81,7 @@ export default defineComponent({
      * @param event.value the stored company object
      */
     async pushToChooseFrameworkForDataUploadPageForItem(event: AutoCompleteItemSelectEvent) {
-      await this.$router.push(`/companies/${(event.value as CompanyIdAndName).companyId}/frameworks/upload`);
+      await this.$router.push(`/companies/${(event.value as CompanyIdAndNameInterface).companyId}/frameworks/upload`);
     },
     /**
      * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray

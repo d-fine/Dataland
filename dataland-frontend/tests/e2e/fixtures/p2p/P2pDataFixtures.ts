@@ -7,8 +7,7 @@ import {
   type P2pGeneral,
   type P2pHvcPlastics,
   type P2pLivestockFarming,
-  type P2pCommercialRealEstate,
-  type P2pResidentialRealEstate,
+  type P2pRealEstate,
   P2pSector,
   type P2pSteel,
   type PathwaysToParisData,
@@ -201,8 +200,8 @@ class P2pGenerator extends Generator {
    * @param sector the type of real estate
    * @returns a random P2pRealEstate or undefined
    */
-  getSectorRealEstate(sector: P2pSector): P2pCommercialRealEstate | P2pResidentialRealEstate | undefined {
-    const data: P2pCommercialRealEstate | P2pResidentialRealEstate = {
+  getSectorRealEstate(sector: P2pSector): P2pRealEstate | undefined {
+    const data: P2pRealEstate = {
       buildingEfficiency: {
         buildingSpecificRefurbishmentRoadmapInPercent: this.randomPercentageValue(),
         zeroEmissionBuildingShareInPercent: this.randomPercentageValue(),

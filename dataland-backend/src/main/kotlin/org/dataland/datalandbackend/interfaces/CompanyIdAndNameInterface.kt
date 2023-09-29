@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model
+package org.dataland.datalandbackend.interfaces
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * --- API model ---
  * Class containing only a company's id and name
  */
-interface CompanyIdAndName {
+interface CompanyIdAndNameInterface {
     @get:JsonProperty(required = true)
     val companyId: String
 

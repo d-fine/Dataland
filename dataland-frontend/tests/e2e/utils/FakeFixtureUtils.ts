@@ -6,7 +6,7 @@ import {
 } from "@e2e/fixtures/common/DataPointFixtures";
 import { type ReferencedDocuments, generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
-import { type ExtendedDataPointBigDecimal, type YesNo, type YesNoNa } from "@clients/backend";
+import { type CurrencyDataPoint, type YesNo, type YesNoNa } from "@clients/backend";
 import { generateCurrencyValue, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
@@ -63,15 +63,11 @@ export class Generator {
     return this.valueOrUndefined({ value: input, dataSource: document } as GenericBaseDataPoint<T>);
   }
 
-  randomDataPoint<T>(input: T, currency?: string): GenericDataPoint<T> | undefined {
-    return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports, currency));
-  }
-
-  randomExtendedDataPoint(input: number): ExtendedDataPointBigDecimal | undefined {
+  randomExtendedDataPoint<T>(input: T): GenericDataPoint<T> | undefined {
     return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports));
   }
 
-  randomCurrencyDataPoint<T>(input: T): GenericDataPoint<T> | undefined {
+  randomCurrencyDataPoint(input: number): CurrencyDataPoint | undefined {
     const localCurrency = generateCurrencyCode();
     return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports, localCurrency));
   }
