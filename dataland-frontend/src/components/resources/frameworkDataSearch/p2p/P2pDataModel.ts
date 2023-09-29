@@ -262,7 +262,7 @@ export const p2pDataModel = [
             description:
               "Use of a science-based, sector-specific Paris-compatible GHG emission reduction trajectory (Scopes 1-3) to meet climate targets and net-zero commitments represented in absolute emissions (t CO2e)",
             unit: "",
-            component: "PercentageFormField",
+            component: "NumberFormField",
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
