@@ -19,15 +19,17 @@ interface EuTaxonomyDetailsPerCashFlowViewModel {
   nonEligibleShare?: RelativeAndAbsoluteFinancialShare | null;
   eligibleShare?: RelativeAndAbsoluteFinancialShare | null;
   nonAlignedShare?: (RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] | null }) | null;
-  alignedShare?: (RelativeAndAbsoluteFinancialShare & {
-    alignedActivities?: EuTaxonomyAlignedActivity[] | null;
-    substantialContributionToClimateChangeMitigationInPercent?: number | null;
-    substantialContributionToClimateChangeAdaptionInPercent?: number | null;
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent?: number | null;
-    substantialContributionToTransitionToACircularEconomyInPercent?: number | null;
-    substantialContributionToPollutionPreventionAndControlInPercent?: number | null;
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent?: number | null;
-  }) | null;
+  alignedShare?:
+    | (RelativeAndAbsoluteFinancialShare & {
+        alignedActivities?: EuTaxonomyAlignedActivity[] | null;
+        substantialContributionToClimateChangeMitigationInPercent?: number | null;
+        substantialContributionToClimateChangeAdaptionInPercent?: number | null;
+        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent?: number | null;
+        substantialContributionToTransitionToACircularEconomyInPercent?: number | null;
+        substantialContributionToPollutionPreventionAndControlInPercent?: number | null;
+        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent?: number | null;
+      })
+    | null;
   enablingShare?: { enablingShareInPercent?: number | null } | null;
   transitionalShare?: { transitionalShareInPercent?: number | null } | null;
 }

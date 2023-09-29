@@ -246,7 +246,7 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   dateFormElement.validateDay("fiscalYearEnd", 12);
 
   if (data.nfrdMandatory !== undefined) {
-    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory?.toString()}]`).check();
+    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory?.toString() ?? ""}]`).check();
   }
 
   cy.get(
