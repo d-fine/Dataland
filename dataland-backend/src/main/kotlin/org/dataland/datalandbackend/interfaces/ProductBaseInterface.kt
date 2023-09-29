@@ -3,6 +3,6 @@ package org.dataland.datalandbackend.interfaces
 /**
  * Base class for a Product in frameworks
  */
-interface ProductBaseInterface{
+interface ProductBaseInterface {
     val name: String
 }

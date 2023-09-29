@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.interfaces.CompanyIdAndNameInterface
+import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.DataType

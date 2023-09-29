@@ -2073,7 +2073,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CompanyIdAndName"
+                    "$ref": "#/components/schemas/CompanyIdAndNameInterface"
                   }
                 }
               }
@@ -5795,7 +5795,7 @@
           }
         }
       },
-      "CompanyIdAndName": {
+      "CompanyIdAndNameInterface": {
         "required": [
           "companyId",
           "companyName"

@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.sme.categories.production.subcategories.productionObjects
 
-import org.dataland.datalandbackend.model.generics.Address
 import org.dataland.datalandbackend.interfaces.ProductionSiteInterface
+import org.dataland.datalandbackend.model.generics.Address
 import java.math.BigDecimal
 
 /**
