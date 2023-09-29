@@ -9,7 +9,7 @@ class V11__MigrateRefactoredDataPointClassesEuTaxoFinancialsTest {
         TestUtils().testMigrationOfSingleDataset(
             "V11/oldOriginalDatabaseEntry.json",
             "V11/expectedTransformedDatabaseEntry.json",
-            V11_MigrateRefactoredDataPointClassesEuTaxoFinancials()::migrateRefactoredDataPointClasses,
+            V11__MigrateRefactoredDataPointClassesEuTaxoFinancials()::migrateRefactoredDataPointClasses,
         )
     }
 }

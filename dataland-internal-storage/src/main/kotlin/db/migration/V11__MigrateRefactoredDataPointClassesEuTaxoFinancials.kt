@@ -8,7 +8,7 @@ import org.json.JSONObject
 /**
  * Performs the migration of the refactored data point classes for the eu taxonomy non fiancials framework
  */
-class V11_MigrateRefactoredDataPointClassesEuTaxoFinancials {
+class V11__MigrateRefactoredDataPointClassesEuTaxoFinancials {
     /**
      * Performs the migration of the refactored data point classes for eu taxonomy financials data
      */
