@@ -50,7 +50,7 @@ const brandsSection = computed(() => {
   &__wrapper {
     display: grid;
     grid-template-columns: repeat(16, 1fr);
-    gap: 32px;
+    gap: 113px 32px;
     max-width: 1440px;
     width: 100%;
     padding: 0 32px;

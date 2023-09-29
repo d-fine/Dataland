@@ -61,7 +61,8 @@ const campaignSection = computed(() => {
     font-style: normal;
     font-weight: 700;
     line-height: 78px;
-    grid-column: 4 / 10;
+    grid-column: 4 / 11;
+    margin: 0;
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;

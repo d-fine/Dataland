@@ -41,6 +41,7 @@ const claimSection = computed(() => {
     font-style: normal;
     font-weight: 600;
     line-height: 160px; /* 100% */
+    margin: 0;
     grid-column: 3/15;
     transition:
       font-size 0.4s ease,

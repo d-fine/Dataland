@@ -52,6 +52,7 @@ const brandsSection = computed(() => {
 
   &__text {
     font-size: 64px;
+    margin: 0;
     font-style: normal;
     font-weight: 700;
     line-height: 78px; /* 121.875% */
