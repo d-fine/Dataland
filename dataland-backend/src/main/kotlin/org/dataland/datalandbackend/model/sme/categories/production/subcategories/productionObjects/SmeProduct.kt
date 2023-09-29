@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.sme.categories.production.subcategories.productionObjects
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.model.generics.ProductBase
+import org.dataland.datalandbackend.interfaces.ProductBaseInterface
 import java.math.BigDecimal
 
 /**
@@ -13,4 +13,4 @@ data class SmeProduct(
     override val name: String,
 
     val shareOfTotalRevenueInPercent: BigDecimal?,
-) : ProductBase(name)
+) : ProductBaseInterface

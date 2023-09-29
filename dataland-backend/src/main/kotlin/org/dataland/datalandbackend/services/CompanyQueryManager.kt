@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.CompanyIdAndName
+import org.dataland.datalandbackend.interfaces.CompanyIdAndNameInterface
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -65,7 +65,7 @@ class CompanyQueryManager(
     @Transactional
     fun searchCompaniesByNameOrIdentifierAndGetApiModel(
         searchString: String,
-    ): List<CompanyIdAndName> {
+    ): List<CompanyIdAndNameInterface> {
         return companyRepository.searchCompaniesByNameOrIdentifier(
             searchString,
         )

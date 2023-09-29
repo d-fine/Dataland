@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
-import org.dataland.datalandbackend.model.CompanyIdAndName
+import org.dataland.datalandbackend.interfaces.CompanyIdAndNameInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.DataType
@@ -72,7 +72,7 @@ class CompanyDataController(
 
     override fun getCompaniesBySearchString(
         searchString: String,
-    ): ResponseEntity<List<CompanyIdAndName>> {
+    ): ResponseEntity<List<CompanyIdAndNameInterface>> {
         return ResponseEntity.ok(
             companyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
                 searchString,
