@@ -26,10 +26,10 @@
         <template #default="slotProps">
           <div class="flex align-items-center">
             <Checkbox
-                v-if="!(shouldDisableCheckboxes && slotProps.node.children.length > 0)"
-                :modelValue="selectedTreeNodes.has(slotProps.node.key)"
-                @update:modelValue="(isChecked: boolean) => handleNodeCheckboxClick(slotProps.node.key, isChecked)"
-                :binary="true"
+              v-if="!(shouldDisableCheckboxes && slotProps.node.children.length > 0)"
+              :modelValue="selectedTreeNodes.has(slotProps.node.key)"
+              @update:modelValue="(isChecked: boolean) => handleNodeCheckboxClick(slotProps.node.key, isChecked)"
+              :binary="true"
             ></Checkbox>
             <div :class="{ invisible: !selectedChildrenCounter.get(slotProps.node.key) }">
               <span class="p-badge p-badge-no-gutter">{{ selectedChildrenCounter.get(slotProps.node.key) || 0 }}</span>
