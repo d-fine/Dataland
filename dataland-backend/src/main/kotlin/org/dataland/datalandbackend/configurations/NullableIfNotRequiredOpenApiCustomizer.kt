@@ -5,6 +5,10 @@ import io.swagger.v3.oas.models.media.Schema
 import org.springdoc.core.customizers.OpenApiCustomizer
 import org.springframework.stereotype.Component
 
+/**
+ * This class customises the generated open api docs
+ * by setting the nullable flag to properties that are nullable in the API model
+ */
 @Component
 class NullableIfNotRequiredOpenApiCustomizer : OpenApiCustomizer {
     override fun customise(openApi: OpenAPI) {
@@ -14,18 +18,21 @@ class NullableIfNotRequiredOpenApiCustomizer : OpenApiCustomizer {
             }
             (schema.properties as Map<String?, Schema<*>>).forEach { (name: String?, value: Schema<*>) ->
                 if (schema.required == null || !schema.required.contains(name)) {
-                    val prefix = "#/components/schemas"
-                    if(value.`$ref` != null && value.`$ref`.split("/").dropLast(1).joinToString("/") == prefix) {
-                        println(value.`$ref`)
-                        val ref = value.`$ref`
-                        value.`$ref` = null
-                        value.nullable = true
-                        value.allOf(listOf(Schema<Any>(value.specVersion).also { it.`$ref` = ref }))
-                    } else {
-                        value.nullable = true
-                    }
+                    setPropertyNullable(value)
                 }
             }
+        }
+    }
+
+    private fun setPropertyNullable(property: Schema<*>) {
+        val prefix = "#/components/schemas"
+        if (property.`$ref` != null && property.`$ref`.split("/").dropLast(1).joinToString("/") == prefix) {
+            val ref = property.`$ref`
+            property.`$ref` = null
+            property.nullable = true
+            property.allOf(listOf(Schema<Any>(property.specVersion).also { it.`$ref` = ref }))
+        } else {
+            property.nullable = true
         }
     }
 }
