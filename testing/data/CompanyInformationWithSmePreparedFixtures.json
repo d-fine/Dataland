@@ -2,53 +2,53 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Leannonchester",
-			"headquartersPostalCode": "11199",
-			"sector": "platforms",
+			"headquarters": "Port Laurynbury",
+			"headquartersPostalCode": "13925",
+			"sector": "schemas",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"KounNv6suSf2"
+					"qqrFACwOVgrG",
+					"AXcZhANR0M06"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"WrGjiGYbw"
+				"Ticker": [
+					"1UUzhJf"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"o7hAxpjdvBKPiAR"
-				]
+				"Duns": [
+					"Mmo33hn1y"
+				],
+				"VatNumber": [
+					"t4ZK1PVWG"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GB",
+			"countryCode": "VC",
 			"companyAlternativeNames": [
-				"Johns - Buckridge",
-				"Okuneva Inc",
-				"Schinner Group",
-				"Walter, Feest and Mueller"
+				"Bergnaum - Connelly",
+				"Corwin Inc",
+				"Kohler Inc",
+				"Stroman, Mosciski and Moen"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://black-guilty.org",
+			"companyLegalForm": "GmbH",
+			"website": "https://digital-wasabi.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"09.9",
-						"13",
-						"27.4",
-						"49"
+						"11.07",
+						"17.24",
+						"92.0"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Cummings Bridge 14010",
-						"postalCode": "04106",
-						"city": "Port Franciscaworth",
-						"state": "Pennsylvania",
-						"country": "AS"
+						"city": "Fort Cynthia",
+						"state": "Maryland",
+						"country": "UZ"
 					},
-					"numberOfEmployees": 3098,
-					"fiscalYearStart": "2024-07-31"
+					"numberOfEmployees": 4448,
+					"fiscalYearStart": "2024-05-26"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -60,83 +60,38 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Luettgen, Lemke and Dooley",
+							"nameOfProductionSite": "Lehner, Jast and Kovacek",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Margot Cove 88846",
-								"city": "Kovacekbury",
-								"country": "AX"
+								"postalCode": "68423-2259",
+								"city": "Ameliaburgh",
+								"state": "Missouri",
+								"country": "NE"
 							},
-							"shareOfTotalRevenueInPercent": 68.4843
-						},
-						{
-							"nameOfProductionSite": "Runte - Feest",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Glover Divide 749",
-								"postalCode": "94591-2943",
-								"city": "Koelpincester",
-								"country": "AG"
-							}
-						},
-						{
-							"nameOfProductionSite": "Schmeler - Metz",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Elody Trafficway 4974",
-								"postalCode": "26091",
-								"city": "Fort Otilia",
-								"state": "Hawaii",
-								"country": "AO"
-							},
-							"shareOfTotalRevenueInPercent": 72.0691
-						},
-						{
-							"nameOfProductionSite": "Beatty LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Eudora Glens 7507",
-								"postalCode": "85533-2470",
-								"city": "Cristalbury",
-								"state": "Maryland",
-								"country": "TT"
-							},
-							"shareOfTotalRevenueInPercent": 76.9585
+							"shareOfTotalRevenueInPercent": 73.1695
 						}
 					]
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Luxurious Steel Tuna",
-							"shareOfTotalRevenueInPercent": 63.5398
-						},
-						{
-							"name": "Modern Granite Bike",
-							"shareOfTotalRevenueInPercent": 59.2299
-						},
-						{
-							"name": "Luxurious Rubber Keyboard",
-							"shareOfTotalRevenueInPercent": 14.0952
-						},
-						{
-							"name": "Small Bronze Bacon"
-						},
-						{
-							"name": "Oriental Fresh Tuna"
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWaterInMWh": 935,
+					"powerConsumptionInMWh": 1784,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 470,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 21309402
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 45006066,
+					"naturalHazardsCovered": [
+						"Flooding"
+					]
 				}
 			}
 		},
@@ -145,41 +100,37 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Muriel",
-			"headquartersPostalCode": "02137-0594",
-			"sector": "paradigms",
+			"headquarters": "Lake Forest",
 			"identifiers": {
 				"Lei": [
-					"3nU1DOw3u59Lbf5kkT6n"
+					"Y4NNhuIosQa2sUpoyxSP"
 				],
 				"Isin": [
-					"XdkGSsfHYm60"
+					"lBiGmrNSE1iT"
 				],
-				"PermId": [
-					"i1wqnbvubp"
-				],
+				"PermId": [],
 				"Ticker": [
-					"YKPvo9k"
+					"oQWJLrA"
 				],
-				"Duns": [],
+				"Duns": [
+					"pCQrU2W0E"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"BKa58I5D4ChNmUX"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KY",
+			"countryCode": "NZ",
 			"companyAlternativeNames": [
-				"Homenick Group",
-				"Waelchi, Bins and Klein"
+				"Baumbach - Altenwerth",
+				"Kihn, Ankunding and Berge",
+				"Weber Inc"
 			],
-			"website": "https://oval-circadian.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"05.1"
+						"85.51"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -188,11 +139,11 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 428,
-					"fiscalYearStart": "2024-08-19"
+					"numberOfEmployees": 9144,
+					"fiscalYearStart": "2024-01-13"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEUR": 10736889
+					"operatingCostInEUR": 36516780
 				}
 			},
 			"production": {
@@ -202,34 +153,34 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Elegant Rubber Mouse",
-							"shareOfTotalRevenueInPercent": 0.7749
+							"name": "Electronic Plastic Car",
+							"shareOfTotalRevenueInPercent": 27.798
+						},
+						{
+							"name": "Small Frozen Shirt"
+						},
+						{
+							"name": "Intelligent Metal Computer",
+							"shareOfTotalRevenueInPercent": 45.0799
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 266,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 122,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMWh": 1646,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 266,
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 46356899,
-					"naturalHazardsCovered": [
-						"Hail",
-						"Wind",
-						"Snow",
-						"Avalanche"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 31682055
 				}
 			}
 		},
@@ -238,131 +189,137 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "New Devonteton",
-			"headquartersPostalCode": "29997-9012",
+			"headquarters": "North Guidochester",
+			"headquartersPostalCode": "60107-8304",
+			"sector": "schemas",
 			"identifiers": {
-				"Lei": [
-					"85lo462gP4c8KZ0eekbV"
-				],
+				"Lei": [],
 				"Isin": [
-					"Vsryr8XASs1Y"
+					"k6NsiRuWEqJl",
+					"rZ7vKKoxmELG"
 				],
 				"PermId": [
-					"bFKmqLBQyN"
+					"np5SxoTFca"
 				],
 				"Ticker": [],
 				"Duns": [
-					"UkY32pQmv"
+					"J5HLCy5NJ"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"uYHoE1iSNHGCrML"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "RE",
+			"countryCode": "BT",
 			"companyAlternativeNames": [
-				"Boyle - Sauer",
-				"Hammes - Grant",
-				"O'Conner LLC",
-				"Schimmel - Hoppe"
+				"Hartmann - Lindgren",
+				"Rau Inc",
+				"Volkman, Gulgowski and Bogisich"
 			],
-			"companyLegalForm": "GmbH",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"65.20"
+						"46.21"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 4432,
-					"fiscalYearStart": "2024-04-07"
+					"numberOfEmployees": 1296,
+					"fiscalYearStart": "2024-04-19"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 18468237,
-					"operatingCostInEUR": 70301942,
-					"capitalAssetsInEUR": 53123041
+					"revenueInEUR": 16194772,
+					"operatingCostInEUR": 49664881,
+					"capitalAssetsInEUR": 28012354
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "VonRueden, Pollich and Walter",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Schinner Crossing 6796",
-								"postalCode": "10447",
-								"city": "South Trinityberg",
-								"state": "Wyoming",
-								"country": "AU"
+								"streetAndHouseNumber": "Thiel Rue 8936",
+								"postalCode": "96043-5323",
+								"city": "Pocatello",
+								"state": "Nebraska",
+								"country": "AG"
+							},
+							"shareOfTotalRevenueInPercent": 71.2992
+						},
+						{
+							"nameOfProductionSite": "Emmerich, Auer and Volkman",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Domenico Track 4967",
+								"postalCode": "32169-1914",
+								"city": "Schusterview",
+								"state": "Wisconsin",
+								"country": "DE"
+							},
+							"shareOfTotalRevenueInPercent": 40.8156
+						},
+						{
+							"nameOfProductionSite": "Donnelly, Graham and O'Kon",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "O'Kon Meadow 3911",
+								"postalCode": "34820",
+								"city": "Mohrborough",
+								"country": "NE"
 							}
 						},
 						{
-							"nameOfProductionSite": "Ruecker - Will",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Berry Via 6980",
-								"postalCode": "53302-3053",
-								"city": "Krajcikfort",
-								"state": "North Dakota",
-								"country": "KG"
+								"postalCode": "09403",
+								"city": "Westland",
+								"country": "GP"
 							},
-							"shareOfTotalRevenueInPercent": 59.4505
-						},
-						{
-							"nameOfProductionSite": "Krajcik, Hauck and Grimes",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lafayette Freeway 160",
-								"city": "Hammesshire",
-								"state": "Massachusetts",
-								"country": "AR"
-							},
-							"shareOfTotalRevenueInPercent": 7.0864
+							"shareOfTotalRevenueInPercent": 29.5073
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Practical Concrete Ball",
-							"shareOfTotalRevenueInPercent": 49.8203
+							"name": "Electronic Cotton Chicken",
+							"shareOfTotalRevenueInPercent": 15.5856
 						},
 						{
-							"name": "Recycled Granite Soap",
-							"shareOfTotalRevenueInPercent": 12.5955
+							"name": "Electronic Wooden Cheese",
+							"shareOfTotalRevenueInPercent": 80.7446
 						},
 						{
-							"name": "Luxurious Wooden Car",
-							"shareOfTotalRevenueInPercent": 44.5074
+							"name": "Practical Metal Chicken",
+							"shareOfTotalRevenueInPercent": 84.6294
 						},
 						{
-							"name": "Incredible Soft Tuna",
-							"shareOfTotalRevenueInPercent": 49.2825
+							"name": "Elegant Concrete Ball",
+							"shareOfTotalRevenueInPercent": 63.271
 						},
 						{
-							"name": "Intelligent Metal Pizza",
-							"shareOfTotalRevenueInPercent": 52.191
+							"name": "Incredible Steel Hat"
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
+					"powerConsumptionInMWh": 1995,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 857,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 34222663
+					"amountCoveredByInsuranceAgainstNaturalHazards": 13774681,
+					"naturalHazardsCovered": [
+						"Wind"
+					]
 				}
 			}
 		},
