@@ -5,7 +5,7 @@ package org.dataland.datalandbackend.utils
  */
 object JsonExampleFormattingConstants {
     private const val taxonomyEligibilityActivity = "{" +
-        "\"taxonomyEligibleActivity\": {" +
+        "\"taxonomyEligibleActivityInPercent\": {" +
         "\"value\": 0," +
         "\"quality\": \"Audited\"," +
         "\"dataSource\": {" +
