@@ -1,6 +1,7 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
+import db.migration.utils.MigrationHelper
 import db.migration.utils.getOrJavaNull
 import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
@@ -37,38 +38,14 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
      * Migrates the data to new variable names in data point structures
      */
     fun migrateRefactoredDataPointClasses(dataTableEntity: DataTableEntity) {
+        val migrationHelper = MigrationHelper()
         val dataObject = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
         val generalCategoryObject = dataObject.getOrJavaNull("general")
         generalCategoryObject as JSONObject
-        migrateReports(generalCategoryObject)
+        migrationHelper.migrateReferencedReports(generalCategoryObject, oldToNewFieldNamesForReports)
         migrateAssurance(dataObject)
         iterateThroughCashFlowCategories(dataObject)
         dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
-    }
-
-    /**
-     * This function migrates the referenced reports by amending variable names
-     */
-    private fun migrateReports(generalCategory: JSONObject) {
-        val referencedReportsObject = generalCategory.getOrJavaNull("referencedReports") ?: return
-        referencedReportsObject as JSONObject
-        iterateThroughReferencedReports(referencedReportsObject)
-    }
-
-    /**
-     * Iterates through all referenced reports to migrate reports
-     */
-    private fun iterateThroughReferencedReports(referencedReportsObject: JSONObject) {
-        for (key in referencedReportsObject.keys()) {
-            oldToNewFieldNamesForReports.forEach {
-                val oneReportObject = referencedReportsObject.getJSONObject(key)
-                if (oneReportObject.has(it.key)) {
-                    oneReportObject.put(it.value, oneReportObject.get(it.key))
-                    oneReportObject.put("fileName", key)
-                    oneReportObject.remove(it.key)
-                }
-            }
-        }
     }
 
     /**

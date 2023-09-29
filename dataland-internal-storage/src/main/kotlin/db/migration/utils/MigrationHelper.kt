@@ -130,4 +130,33 @@ class MigrationHelper {
         migrateValueFromTo(newDataPointObject, "value", "value", transformation)
         dataPointHolder.put(newDataPointName, newDataPointObject)
     }
+
+    /**
+     * This function migrates the referenced reports by amending variable names
+     */
+    fun migrateReferencedReports(
+        parentCategoryOfReferencedReports: JSONObject,
+        fieldNamesToMigrate: Map<String, String>,
+    ) {
+        val referencedReportsObject = parentCategoryOfReferencedReports
+            .getOrJavaNull("referencedReports") ?: return
+        referencedReportsObject as JSONObject
+        iterateThroughReferencedReports(referencedReportsObject, fieldNamesToMigrate)
+    }
+
+    /**
+     * Iterates through all referenced reports to migrate reports
+     */
+    private fun iterateThroughReferencedReports(referencedReportsObject: JSONObject, fieldNamesToMigrate: Map<String, String>) {
+        for (key in referencedReportsObject.keys()) {
+            fieldNamesToMigrate.forEach {
+                val oneReportObject = referencedReportsObject.getJSONObject(key)
+                if (oneReportObject.has(it.key)) {
+                    oneReportObject.put(it.value, oneReportObject.get(it.key))
+                    oneReportObject.put("fileName", key)
+                    oneReportObject.remove(it.key)
+                }
+            }
+        }
+    }
 }
