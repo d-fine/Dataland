@@ -2,50 +2,54 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Marlonport",
-			"headquartersPostalCode": "96964-9371",
+			"headquarters": "Antioch",
+			"headquartersPostalCode": "77852",
+			"sector": "supply-chains",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"TBHlJw3mtWdkFRcXkIAV"
+				],
 				"Isin": [
-					"ToRWIsc7OrBd"
+					"CwJYW9eDr5Es",
+					"zcmJDQHdZabL"
 				],
 				"PermId": [
-					"U52zctRCbg"
+					"vwsGCJcEFi"
 				],
-				"Ticker": [
-					"WVX97nc"
-				],
-				"Duns": [
-					"V1Y9o9SDU"
-				],
-				"VatNumber": [
-					"HII29Jzgm"
-				],
-				"CompanyRegistrationNumber": []
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"sVQWRNz7zb7FM94"
+				]
 			},
-			"countryCode": "OM",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://victorious-racer.net",
+			"countryCode": "WF",
+			"companyAlternativeNames": [
+				"Bruen - Muller",
+				"Buckridge, Cassin and Maggio",
+				"Lang, Marvin and Stanton"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://spiffy-blackberry.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.23",
-						"26.2",
-						"30.99",
-						"46.16"
+						"17.22",
+						"49.32",
+						"63.12"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Fisher Lake 988",
-						"city": "East Borisburgh",
-						"state": "Pennsylvania",
-						"country": "CF"
+						"streetAndHouseNumber": "Gusikowski Hill 714",
+						"postalCode": "01104-0458",
+						"city": "Leschhaven",
+						"state": "California",
+						"country": "SZ"
 					},
-					"numberOfEmployees": 3551,
-					"fiscalYearStart": "2024-03-08"
+					"numberOfEmployees": 187,
+					"fiscalYearStart": "2024-07-02"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -54,19 +58,52 @@
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Orn - Bechtelar",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Muller Viaduct 3433",
+								"postalCode": "05232",
+								"city": "Carolinacester",
+								"country": "NZ"
+							},
+							"shareOfTotalRevenueInPercent": 79.026
+						},
+						{
+							"nameOfProductionSite": "Lueilwitz, Leuschke and Raynor",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Olson Keys 6554",
+								"postalCode": "58124",
+								"city": "Curtischester",
+								"state": "New York",
+								"country": "MH"
+							},
+							"shareOfTotalRevenueInPercent": 3.799
+						}
+					]
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Sleek Plastic Chicken",
-							"shareOfTotalRevenueInPercent": 38.2446
+							"name": "Unbranded Metal Computer",
+							"shareOfTotalRevenueInPercent": 25.8261
 						},
 						{
-							"name": "Fantastic Cotton Chair",
-							"shareOfTotalRevenueInPercent": 62.3624
+							"name": "Gorgeous Granite Soap",
+							"shareOfTotalRevenueInPercent": 98.682
 						},
 						{
-							"name": "Incredible Steel Ball"
+							"name": "Licensed Rubber Table",
+							"shareOfTotalRevenueInPercent": 16.3219
+						},
+						{
+							"name": "Fantastic Metal Sausages",
+							"shareOfTotalRevenueInPercent": 51.3418
+						},
+						{
+							"name": "Fantastic Granite Pizza",
+							"shareOfTotalRevenueInPercent": 6.5826
 						}
 					]
 				}
@@ -76,18 +113,21 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1768,
+					"powerConsumptionInMwh": 1445,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 328,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionHeatingAndHotWater": 570,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 6601626,
 					"naturalHazardsCovered": [
+						"Hail",
 						"Wind",
-						"Snow"
+						"Avalanche"
 					]
 				}
 			}
@@ -97,46 +137,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "West Sidneybury",
-			"headquartersPostalCode": "64590-3189",
-			"sector": "e-commerce",
+			"headquarters": "Flatleyworth",
+			"headquartersPostalCode": "06019",
+			"sector": "technologies",
 			"identifiers": {
-				"Lei": [
-					"ZuGbWJcsgGJNPeApqN9x"
-				],
+				"Lei": [],
 				"Isin": [
-					"iZZw4Uexux9g"
+					"M1idbALybexr"
 				],
-				"PermId": [
-					"iw0KlpxBkL"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"TBE7TEAII"
+				"Duns": [
+					"fPFs8as0G"
 				],
-				"CompanyRegistrationNumber": [
-					"YwOQ0ktvgro12nh"
-				]
+				"VatNumber": [
+					"d3keaXLoH"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "EG",
+			"countryCode": "VI",
 			"companyAlternativeNames": [
-				"Mayer Group",
-				"Mohr - Armstrong",
-				"Roberts, Mante and Altenwerth"
+				"Schmidt, Schumm and Kertzmann",
+				"Sporer, Dooley and Rowe"
 			],
 			"companyLegalForm": "Sole Trader",
-			"website": "https://absolute-diamond.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"17.2",
-						"28.30",
-						"42.9",
-						"95.21"
+						"53.1",
+						"61.9",
+						"63.11"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -145,69 +178,87 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3391,
-					"fiscalYearStart": "2023-11-02"
+					"numberOfEmployees": 8378,
+					"fiscalYearStart": "2024-07-27"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 47782092,
-					"capitalAssetsInEur": 55417160
+					"operatingCostInEur": 41952219,
+					"capitalAssetsInEur": 23738402
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Hammes and Sons",
+							"nameOfProductionSite": "Heidenreich - Dickens",
 							"addressOfProductionSite": {
-								"postalCode": "13522",
-								"city": "Lake Jeniferberg",
-								"state": "California",
-								"country": "VE"
-							}
-						},
-						{
-							"nameOfProductionSite": "Hodkiewicz LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kenyon Garden 852",
-								"postalCode": "18585-2804",
-								"city": "Tallahassee",
-								"state": "West Virginia",
-								"country": "TL"
-							}
-						},
-						{
-							"nameOfProductionSite": "Vandervort Group",
-							"addressOfProductionSite": {
-								"postalCode": "49512",
-								"city": "Port Ludiemouth",
-								"state": "Nevada",
-								"country": "LT"
+								"streetAndHouseNumber": "Rempel Station 13383",
+								"postalCode": "91742",
+								"city": "West Lynn",
+								"state": "Iowa",
+								"country": "GH"
 							},
-							"shareOfTotalRevenueInPercent": 93.7144
+							"shareOfTotalRevenueInPercent": 52.8272
+						},
+						{
+							"nameOfProductionSite": "Johnston, Kling and Corwin",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Strosin Forest 98038",
+								"postalCode": "53363-5641",
+								"city": "Stiedemannborough",
+								"state": "South Carolina",
+								"country": "AQ"
+							},
+							"shareOfTotalRevenueInPercent": 9.6962
+						},
+						{
+							"nameOfProductionSite": "Leannon - Ernser",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Zula Cape 245",
+								"postalCode": "97698",
+								"city": "South Edisonbury",
+								"state": "Pennsylvania",
+								"country": "BY"
+							},
+							"shareOfTotalRevenueInPercent": 26.8948
+						},
+						{
+							"nameOfProductionSite": "Grimes and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Bahringer Haven 165",
+								"postalCode": "83602",
+								"city": "New Kody",
+								"state": "North Carolina",
+								"country": "CU"
+							},
+							"shareOfTotalRevenueInPercent": 13.0186
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Gorgeous Rubber Bike",
+							"shareOfTotalRevenueInPercent": 30.6217
+						}
+					]
+				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 1767,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 791,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 40493449,
 					"naturalHazardsCovered": [
-						"Snow",
 						"Avalanche",
-						"Hail",
-						"EarthQuake"
+						"Hail"
 					]
 				}
 			}
@@ -217,107 +268,123 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "North Madelynn",
-			"headquartersPostalCode": "19016",
-			"sector": "functionalities",
+			"headquarters": "Jenkinsborough",
+			"sector": "e-business",
 			"identifiers": {
-				"Lei": [
-					"IFIrFFoxC0AacHX15Lxv"
-				],
+				"Lei": [],
 				"Isin": [
-					"7Spb8NRx7020",
-					"CLMKOZ0FaWfT"
+					"S51B3oxnf09A"
 				],
-				"PermId": [],
-				"Ticker": [
-					"onnYsBd"
+				"PermId": [
+					"6KU4L3Hmlm"
 				],
+				"Ticker": [],
 				"Duns": [
-					"0U8Vk0SSb"
+					"lIr8baLl3"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"QMzhkcLNi"
+				],
 				"CompanyRegistrationNumber": [
-					"wdIVEcj8U156sUh"
+					"XsgK30GuUvCgrAH"
 				]
 			},
-			"countryCode": "MH",
+			"countryCode": "GD",
 			"companyAlternativeNames": [
-				"Boyer Inc",
-				"Kutch, Mohr and Kuhic",
-				"Olson, Langworth and Hamill",
-				"Windler Group"
+				"Batz - Goldner",
+				"Gleason - Bednar",
+				"Miller - Gleason",
+				"Shanahan - Tromp"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://speedy-perennial.info/",
+			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"23.31",
-						"46.76"
+						"28.25",
+						"28.93"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8355,
-					"fiscalYearStart": "2023-10-03"
+					"numberOfEmployees": 8279,
+					"fiscalYearStart": "2024-07-11"
 				},
 				"companyFinancials": {
-					"revenueInEur": 47330410
+					"revenueInEur": 96319136,
+					"operatingCostInEur": 34576718
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Thompson, Gutmann and Bergnaum",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Pasquale Club 7314",
-								"postalCode": "38475",
-								"city": "New York",
-								"state": "Colorado",
-								"country": "SA"
+								"city": "Frederick",
+								"country": "SX"
 							},
-							"shareOfTotalRevenueInPercent": 63.0885
-						},
-						{
-							"nameOfProductionSite": "Adams - Hudson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Clotilde Harbors 7285",
-								"postalCode": "83331-5637",
-								"city": "Mireyabury",
-								"state": "Wisconsin",
-								"country": "JE"
-							}
+							"shareOfTotalRevenueInPercent": 61.5744
 						},
 						{
 							"addressOfProductionSite": {
-								"city": "Franzchester",
-								"state": "Texas",
-								"country": "HR"
+								"streetAndHouseNumber": "Lehner Forest 40740",
+								"city": "Rochester",
+								"state": "Alabama",
+								"country": "TW"
 							}
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Handmade Concrete Computer",
+							"shareOfTotalRevenueInPercent": 77.9531
+						},
+						{
+							"name": "Incredible Granite Mouse",
+							"shareOfTotalRevenueInPercent": 82.9575
+						},
+						{
+							"name": "Awesome Bronze Cheese"
+						},
+						{
+							"name": "Incredible Rubber Pizza",
+							"shareOfTotalRevenueInPercent": 95.0398
+						},
+						{
+							"name": "Refined Concrete Tuna",
+							"shareOfTotalRevenueInPercent": 0.2911
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1152,
+					"powerConsumptionInMwh": 876,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 406,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"energyConsumptionHeatingAndHotWater": 976,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No"
+					"amountCoveredByInsuranceAgainstNaturalHazards": 19281552,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Snow",
+						"Flooding",
+						"Wind",
+						"EarthQuake",
+						"Hail"
+					]
 				}
 			}
 		},
