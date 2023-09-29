@@ -2,50 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Lamarland",
-			"headquartersPostalCode": "24736",
-			"sector": "platforms",
+			"headquarters": "Marlonport",
+			"headquartersPostalCode": "96964-9371",
 			"identifiers": {
-				"Lei": [
-					"ejDQ1ns6aQrp4xbLtUaC"
-				],
+				"Lei": [],
 				"Isin": [
-					"hnU4Gwq2yOR3",
-					"p5gbLQtKfVRu"
+					"ToRWIsc7OrBd"
 				],
-				"PermId": [],
+				"PermId": [
+					"U52zctRCbg"
+				],
 				"Ticker": [
-					"NqbvL5N"
+					"WVX97nc"
 				],
 				"Duns": [
-					"c0ofwVPOY"
+					"V1Y9o9SDU"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"HII29Jzgm"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ZM",
+			"countryCode": "OM",
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://prize-obstacle.name/",
+			"website": "https://victorious-racer.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"10.6",
-						"26.5",
-						"32.50",
-						"46.37"
+						"01.23",
+						"26.2",
+						"30.99",
+						"46.16"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Kristopher Villages 514",
-						"city": "North Amaniside",
-						"state": "Massachusetts",
-						"country": "LK"
+						"streetAndHouseNumber": "Fisher Lake 988",
+						"city": "East Borisburgh",
+						"state": "Pennsylvania",
+						"country": "CF"
 					},
-					"numberOfEmployees": 5569,
-					"fiscalYearStart": "2023-11-04"
+					"numberOfEmployees": 3551,
+					"fiscalYearStart": "2024-03-08"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -55,25 +55,39 @@
 			},
 			"production": {
 				"sites": {},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Sleek Plastic Chicken",
+							"shareOfTotalRevenueInPercent": 38.2446
+						},
+						{
+							"name": "Fantastic Cotton Chair",
+							"shareOfTotalRevenueInPercent": 62.3624
+						},
+						{
+							"name": "Incredible Steel Ball"
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1152,
+					"powerConsumptionInMwh": 1768,
 					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 328,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 595291,
 					"naturalHazardsCovered": [
 						"Wind",
-						"Flooding"
+						"Snow"
 					]
 				}
 			}
@@ -83,41 +97,46 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "East Abelfield",
-			"headquartersPostalCode": "94539-1975",
-			"sector": "schemas",
+			"headquarters": "West Sidneybury",
+			"headquartersPostalCode": "64590-3189",
+			"sector": "e-commerce",
 			"identifiers": {
 				"Lei": [
-					"kLjlXAtWnV8HKCklAaal"
+					"ZuGbWJcsgGJNPeApqN9x"
 				],
 				"Isin": [
-					"euLcS8DVA9Wf"
+					"iZZw4Uexux9g"
 				],
-				"PermId": [],
+				"PermId": [
+					"iw0KlpxBkL"
+				],
 				"Ticker": [],
-				"Duns": [
-					"LOEFQeqi0"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"GOQ3IjEiY"
+					"TBE7TEAII"
 				],
 				"CompanyRegistrationNumber": [
-					"Z5ty1PLHNrRzT4I"
+					"YwOQ0ktvgro12nh"
 				]
 			},
-			"countryCode": "BG",
+			"countryCode": "EG",
 			"companyAlternativeNames": [
-				"Casper LLC"
+				"Mayer Group",
+				"Mohr - Armstrong",
+				"Roberts, Mante and Altenwerth"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://absolute-diamond.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"27.90",
-						"60.20"
+						"17.2",
+						"28.30",
+						"42.9",
+						"95.21"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -126,80 +145,70 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3334,
-					"fiscalYearStart": "2024-09-22"
+					"numberOfEmployees": 3391,
+					"fiscalYearStart": "2023-11-02"
 				},
 				"companyFinancials": {
-					"revenueInEur": 41725833,
-					"operatingCostInEur": 11437357,
-					"capitalAssetsInEur": 44364144
+					"operatingCostInEur": 47782092,
+					"capitalAssetsInEur": 55417160
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Parisian, Nikolaus and Torp",
+							"nameOfProductionSite": "Hammes and Sons",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Schneider Cliff 511",
-								"postalCode": "83824-5446",
-								"city": "Palatine",
-								"state": "New Jersey",
-								"country": "MS"
-							},
-							"shareOfTotalRevenueInPercent": 60.9763
+								"postalCode": "13522",
+								"city": "Lake Jeniferberg",
+								"state": "California",
+								"country": "VE"
+							}
 						},
 						{
+							"nameOfProductionSite": "Hodkiewicz LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Briana Hills 12253",
-								"postalCode": "77656-3339",
-								"city": "South Elouisehaven",
-								"state": "Pennsylvania",
-								"country": "GS"
+								"streetAndHouseNumber": "Kenyon Garden 852",
+								"postalCode": "18585-2804",
+								"city": "Tallahassee",
+								"state": "West Virginia",
+								"country": "TL"
+							}
+						},
+						{
+							"nameOfProductionSite": "Vandervort Group",
+							"addressOfProductionSite": {
+								"postalCode": "49512",
+								"city": "Port Ludiemouth",
+								"state": "Nevada",
+								"country": "LT"
 							},
-							"shareOfTotalRevenueInPercent": 13.4945
+							"shareOfTotalRevenueInPercent": 93.7144
 						}
 					]
 				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Licensed Bronze Cheese",
-							"shareOfTotalRevenueInPercent": 13.3338
-						},
-						{
-							"name": "Gorgeous Soft Computer",
-							"shareOfTotalRevenueInPercent": 73.8296
-						},
-						{
-							"name": "Generic Concrete Salad",
-							"shareOfTotalRevenueInPercent": 58.0692
-						},
-						{
-							"name": "Small Rubber Sausages",
-							"shareOfTotalRevenueInPercent": 61.2664
-						},
-						{
-							"name": "Practical Concrete Shirt"
-						}
-					]
-				}
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1981,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 258,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric"
+					"powerConsumptionInMwh": 1767,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 21748294
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 40493449,
+					"naturalHazardsCovered": [
+						"Snow",
+						"Avalanche",
+						"Hail",
+						"EarthQuake"
+					]
 				}
 			}
 		},
@@ -208,100 +217,107 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Makennacester",
-			"sector": "metrics",
+			"headquarters": "North Madelynn",
+			"headquartersPostalCode": "19016",
+			"sector": "functionalities",
 			"identifiers": {
 				"Lei": [
-					"qNTbRaJK3PNJPUn8K39N"
+					"IFIrFFoxC0AacHX15Lxv"
 				],
 				"Isin": [
-					"3o4kvxHLKdeU",
-					"zARetx8a53gU"
+					"7Spb8NRx7020",
+					"CLMKOZ0FaWfT"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"Ticker": [
+					"onnYsBd"
+				],
+				"Duns": [
+					"0U8Vk0SSb"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"Xyb19rq7seVwh8B"
+					"wdIVEcj8U156sUh"
 				]
 			},
-			"countryCode": "IL",
+			"countryCode": "MH",
 			"companyAlternativeNames": [
-				"Ernser, Cormier and Bergnaum",
-				"Smitham - Yundt"
+				"Boyer Inc",
+				"Kutch, Mohr and Kuhic",
+				"Olson, Langworth and Hamill",
+				"Windler Group"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"companyLegalForm": "GmbH",
+			"website": "https://speedy-perennial.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"47.59",
-						"78.3",
-						"84.30"
+						"23.31",
+						"46.76"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2058,
-					"fiscalYearStart": "2024-09-02"
+					"numberOfEmployees": 8355,
+					"fiscalYearStart": "2023-10-03"
 				},
 				"companyFinancials": {
-					"revenueInEur": 70772967,
-					"operatingCostInEur": 32143025,
-					"capitalAssetsInEur": 30896749
+					"revenueInEur": 47330410
 				}
 			},
 			"production": {
-				"sites": {},
-				"products": {
-					"listOfProducts": [
+				"sites": {
+					"listOfProductionSites": [
 						{
-							"name": "Ergonomic Granite Soap",
-							"shareOfTotalRevenueInPercent": 53.5442
+							"nameOfProductionSite": "Thompson, Gutmann and Bergnaum",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Pasquale Club 7314",
+								"postalCode": "38475",
+								"city": "New York",
+								"state": "Colorado",
+								"country": "SA"
+							},
+							"shareOfTotalRevenueInPercent": 63.0885
 						},
 						{
-							"name": "Generic Steel Chair",
-							"shareOfTotalRevenueInPercent": 50.9861
+							"nameOfProductionSite": "Adams - Hudson",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Clotilde Harbors 7285",
+								"postalCode": "83331-5637",
+								"city": "Mireyabury",
+								"state": "Wisconsin",
+								"country": "JE"
+							}
 						},
 						{
-							"name": "Recycled Bronze Keyboard",
-							"shareOfTotalRevenueInPercent": 94.2149
-						},
-						{
-							"name": "Practical Rubber Chair",
-							"shareOfTotalRevenueInPercent": 29.3915
-						},
-						{
-							"name": "Ergonomic Concrete Table",
-							"shareOfTotalRevenueInPercent": 59.2384
+							"addressOfProductionSite": {
+								"city": "Franzchester",
+								"state": "Texas",
+								"country": "HR"
+							}
 						}
 					]
-				}
+				},
+				"products": {}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 770,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 11,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMwh": 1152,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 406,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 25001309,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"EarthQuake",
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "No"
 				}
 			}
 		},

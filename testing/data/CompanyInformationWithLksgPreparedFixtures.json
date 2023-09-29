@@ -2,102 +2,157 @@
 	{
 		"companyInformation": {
 			"companyName": "six-lksg-data-sets-in-different-years",
-			"headquarters": "Lake Bryonfurt",
-			"headquartersPostalCode": "40993-7658",
-			"sector": "content",
+			"headquarters": "South Dora",
+			"headquartersPostalCode": "79715",
+			"sector": "web services",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"R1COZejNfT3n"
+					"QUrjWaN1SOLu"
 				],
 				"PermId": [],
 				"Ticker": [
-					"mDHokrI"
+					"Um38lEh"
 				],
 				"Duns": [
-					"wZgMPRt6J"
+					"hj0vkgg6v"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"qCQ3eGvLm"
+				],
 				"CompanyRegistrationNumber": [
-					"Y16jtu7i57kSPLn"
+					"bh24lqcUIgCRW2Q"
 				]
 			},
-			"countryCode": "BF",
+			"countryCode": "ST",
 			"companyAlternativeNames": [
-				"Kshlerin and Sons",
-				"Lockman, Schmidt and Terry",
-				"Pagac Group"
+				"Leuschke Group",
+				"Reynolds - Zboncak",
+				"Schmitt, Bayer and Walsh",
+				"Stokes Inc"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://mysterious-calorie.info/",
+			"companyLegalForm": "AG",
+			"website": "https://white-lender.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"masterData": {
 					"dataDate": "2022-01-01",
+					"headOfficeInGermany": "Yes",
 					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "O'Reilly LLC",
 					"industry": [
-						"98.2"
+						"01.44",
+						"07.29",
+						"51.10",
+						"84",
+						"87.9"
 					],
-					"numberOfEmployees": 1369,
+					"numberOfEmployees": 7619,
 					"seasonalOrMigrantWorkers": "No",
-					"shareOfTemporaryWorkers": "Smaller10",
-					"annualTotalRevenue": 5193668405.99,
-					"totalRevenueCurrency": "HUF",
-					"fixedAndWorkingCapital": 2945
+					"shareOfTemporaryWorkers": "Between25And50",
+					"annualTotalRevenue": 8695960857.44,
+					"totalRevenueCurrency": "WST",
+					"fixedAndWorkingCapital": 848
 				},
 				"productionSpecific": {
 					"manufacturingCompany": "No",
-					"capacity": "22 Cheese per Wednesday",
-					"productionViaSubcontracting": "Yes",
-					"subcontractingCompaniesCountries": [
-						"BJ",
-						"GH",
-						"BY"
-					],
+					"capacity": "19 Chips per Monday",
+					"productionViaSubcontracting": "No",
+					"subcontractingCompaniesCountries": [],
+					"subcontractingCompaniesIndustries": [],
+					"productionSites": "No",
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Lind Inc",
+							"nameOfProductionSite": "Hammes - Rosenbaum",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Greenholt Shoal 9282",
-								"postalCode": "79645",
-								"city": "Port Emorymouth",
-								"state": "Connecticut",
-								"country": "ES"
+								"streetAndHouseNumber": "Walsh Pass 41139",
+								"postalCode": "30999-4815",
+								"city": "Feilchester",
+								"state": "Minnesota",
+								"country": "MF"
 							},
 							"listOfGoodsOrServices": [
-								"Bespoke Fresh Pants"
+								"Rustic Concrete Tuna",
+								"Awesome Plastic Hat",
+								"Sleek Granite Soap",
+								"Oriental Concrete Ball",
+								"Sleek Rubber Soap"
+							]
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Vernon Valleys 36789",
+								"postalCode": "77890",
+								"city": "Boyerstead",
+								"state": "Ohio",
+								"country": "CZ"
+							},
+							"listOfGoodsOrServices": [
+								"Oriental Frozen Hat",
+								"Licensed Fresh Computer",
+								"Sleek Wooden Mouse",
+								"Handcrafted Bronze Ball"
 							]
 						}
 					],
-					"market": "International",
+					"market": "National",
 					"specificProcurement": "Yes"
 				},
-				"productionSpecificOwnOperations": {}
+				"productionSpecificOwnOperations": {
+					"mostImportantProducts": [],
+					"productsServicesCategoriesPurchased": {
+						"Services": {
+							"procuredProductTypesAndServicesNaceCodes": [
+								"01.5",
+								"46.15",
+								"47.53",
+								"73.12",
+								"84.21"
+							],
+							"numberOfSuppliersPerCountryCode": {
+								"SI": 40,
+								"MA": 2,
+								"TO": 17
+							},
+							"shareOfTotalProcurementInPercent": 5.3128
+						}
+					}
+				}
 			},
 			"governance": {
 				"riskManagementOwnOperations": {
-					"riskManagementSystem": "Yes",
+					"riskManagementSystem": "No",
 					"riskAnalysisInFiscalYear": "No",
-					"identifiedRisks": "e-business",
-					"counteractingMeasures": "Yes",
-					"whichCounteractingMeasures": "synergies",
-					"environmentalManagementSystem": "No",
+					"risksIdentified": "Yes",
+					"identifiedRisks": "models",
+					"whichCounteractingMeasures": "content",
+					"regulatedRiskManagementResponsibility": "No",
+					"environmentalManagementSystem": "Yes",
 					"environmentalManagementSystemInternationalCertification": {
-						"value": "No"
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
 					},
 					"environmentalManagementSystemNationalCertification": {
-						"value": "Yes"
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
 					}
 				},
 				"grievanceMechanismOwnOperations": {
-					"grievanceHandlingMechanism": "No",
 					"grievanceHandlingReportingAccessible": "Yes",
-					"grievanceComplaints": "Yes",
-					"complaintsNumber": 3948,
-					"complaintsReason": "ROI",
-					"actionsForComplaintsUndertaken": "No",
+					"appropriateGrievanceHandlingSupport": "No",
+					"accessToExpertiseForGrievanceHandling": "No",
+					"complaintsNumber": 2945,
+					"complaintsReason": "channels",
+					"actionsForComplaintsUndertaken": "Yes",
+					"whichActionsForComplaintsUndertaken": "e-markets",
 					"publicAccessToGrievanceHandling": "No",
 					"whistleblowerProtection": "No",
 					"dueDiligenceProcessForGrievanceHandling": "Yes"
@@ -106,30 +161,19 @@
 					"sa8000Certification": {
 						"value": "No",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"smetaSocialAuditConcept": {
-						"value": "No",
+					"betterWorkProgramCertificate": {
+						"value": "NA",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"iso45001Certification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"emasCertification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
+						"value": "No"
 					},
 					"iso37001Certification": {
 						"value": "Yes",
@@ -145,39 +189,495 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"riskManagementSystemCertification": {
-						"value": "No",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
 					"amforiBsciAuditReport": {
 						"value": "Yes"
 					},
 					"responsibleBusinessAssociationCertification": {
 						"value": "Yes"
 					},
-					"fairLaborAssociationCertification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"additionalAudits": "lifetime value",
+					"additionalAudits": "action-items",
 					"codeOfConduct": {
+						"value": "Yes"
+					},
+					"codeOfConductTraining": "Yes",
+					"policyStatement": {
 						"value": "No",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"codeOfConductTraining": "Yes",
-					"supplierCodeOfConduct": {
+					"humanRightsStrategy": "content",
+					"environmentalImpactPolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"fairWorkingConditionsPolicy": {
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					}
+				},
+				"generalViolations": {
+					"responsibilitiesForOccupationalSafety": "Yes",
+					"legalProceedings": "Yes",
+					"humanRightsViolationS": "Yes",
+					"humanRightsViolations": "web services",
+					"highRiskCountriesRawMaterials": "Yes",
+					"highRiskCountriesRawMaterialsLocation": [
+						"TL",
+						"AO",
+						"CM",
+						"CN",
+						"NU"
+					],
+					"highRiskCountriesActivity": "No",
+					"highRiskCountries": [
+						"PL",
+						"PG"
+					],
+					"highRiskCountriesProcurementName": [
+						"AG",
+						"HN"
+					]
+				}
+			},
+			"social": {
+				"childLabor": {
+					"childLaborPreventionPolicy": {
+						"value": "Yes"
+					},
+					"employeeSUnder18": "Yes",
+					"employeeSUnder15": "No",
+					"employeeSUnder18InApprenticeship": "No",
+					"worstFormsOfChildLaborProhibition": "Yes",
+					"worstFormsOfChildLabor": "Yes",
+					"worstFormsOfChildLaborForms": "synergies",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No",
+					"employmentUnderLocalMinimumAgePreventionJobDescription": "Yes",
+					"employmentUnderLocalMinimumAgePreventionIdentityDocuments": "No",
+					"employmentUnderLocalMinimumAgePreventionTraining": "Yes",
+					"additionalChildLaborMeasures": "markets"
+				},
+				"forcedLaborSlavery": {
+					"forcedLaborAndSlaveryPrevention": "No",
+					"forcedLaborAndSlaveryPreventionPractices": "ROI",
+					"forcedLaborPreventionPolicy": {
+						"value": "Yes"
+					},
+					"forcedLaborAndSlaveryPreventionMeasures": "No",
+					"forcedLaborAndSlaveryPreventionEmploymentContracts": "No",
+					"forcedLaborAndSlaveryPreventionIdentityDocuments": "No",
+					"forcedLaborAndSlaveryPreventionFreeMovement": "No",
+					"forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "Yes"
+				},
+				"withholdingAdequateWages": {
+					"adequateWagesMeasures": "No",
+					"documentedWorkingHoursAndWages": "No",
+					"regularWagesProcessFlow": "Yes",
+					"fixedHourlyWages": "Yes",
+					"fixedPieceworkWages": "No",
+					"adequateWageMeasures": "communities"
+				},
+				"disregardForOccupationalHealthSafety": {
+					"lowSkillWork": "Yes",
+					"hazardousMachines": "Yes",
+					"oshPolicyPersonalProtectiveEquipment": "Yes",
+					"oshPolicyAccidentsBehavioralResponse": "Yes",
+					"oshPolicyAccessToWork": "No",
+					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "Yes",
+					"oshPolicyFireProtection": "Yes",
+					"oshPolicyWorkingHours": "No",
+					"oshPolicyTraining": "No",
+					"oshManagementSystemInternationalCertification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"oshManagementSystemNationalCertification": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"under10WorkplaceAccidents": "No",
+					"oshTraining": "Yes"
+				},
+				"disregardForFreedomOfAssociation": {
+					"employeeRepresentationInPercent": 88.9507,
+					"discriminationForTradeUnionMembers": "No",
+					"freedomOfOperationForTradeUnion": "Yes",
+					"worksCouncil": "Yes"
+				},
+				"unequalTreatmentOfEmployment": {
+					"unequalTreatmentOfEmployment": "Yes",
+					"preventionOfMistreatments": "Yes",
+					"equalOpportunitiesOfficer": "Yes"
+				},
+				"contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
+					"soilErosion": "No",
+					"soilBorneDiseases": "No",
+					"soilContamination": "No",
+					"harmfulWaterPollution": "No",
+					"fertilizersOrPollutants": "Yes",
+					"wasteWaterFiltration": "Yes",
+					"harmfulAirPollution": "No",
+					"harmfulNoiseEmission": "Yes",
+					"excessiveWaterConsumption": "Yes",
+					"waterSavingMeasures": "No",
+					"waterSavingMeasuresName": "paradigms",
+					"pipeMaintaining": "No",
+					"contaminationMeasures": "e-commerce"
+				},
+				"unlawfulEvictionDeprivationOfLandForestAndWater": {
+					"unlawfulEvictionAndTakingOfLand": "Yes",
+					"unlawfulEvictionAndTakingOfLandRisk": "web services",
+					"unlawfulEvictionAndTakingOfLandStrategies": "No",
+					"unlawfulEvictionAndTakingOfLandStrategiesName": "web services",
+					"voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": "Yes"
+				},
+				"useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
+					"useOfPrivatePublicSecurityForces": "No",
+					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "No",
+					"instructionOfSecurityForces": "No",
+					"humanRightsTraining": "Yes",
+					"stateSecurityForces": "NA",
+					"useOfPrivatePublicSecurityForcesMeasures": "models"
+				}
+			},
+			"environmental": {
+				"useOfMercuryMercuryWasteMinamataConvention": {
+					"mercuryAndMercuryWasteHandling": "No",
+					"mercuryAndMercuryWasteHandlingPolicy": {
 						"value": "No",
 						"dataSource": {
 							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"mercuryAddedProductsHandling": "No",
+					"mercuryAddedProductsHandlingRiskOfExposure": "Yes",
+					"mercuryAndMercuryCompoundsProductionAndUse": "Yes",
+					"mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": "Yes"
+				},
+				"productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
+					"persistentOrganicPollutantsUsed": "eyeballs",
+					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "No"
+				},
+				"exportImportOfHazardousWasteBaselConvention": {
+					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "Yes",
+					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "Yes",
+					"hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": "No",
+					"hazardousWasteDisposalRiskOfImport": "Yes",
+					"hazardousWasteDisposalOtherWasteImport": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "one-lksg-data-set-with-two-production-sites",
+			"headquarters": "Schambergerstad",
+			"sector": "eyeballs",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"qGVMOgnCUt6c"
+				],
+				"PermId": [],
+				"Ticker": [
+					"5hjFbc5"
+				],
+				"Duns": [
+					"rc9cD94l3"
+				],
+				"VatNumber": [
+					"TULYAsdQq"
+				],
+				"CompanyRegistrationNumber": [
+					"e9A2FJ5TXaqcDSO"
+				]
+			},
+			"countryCode": "GS",
+			"companyAlternativeNames": [
+				"Deckow Inc",
+				"Douglas - Swaniawski",
+				"Hoppe - Mraz",
+				"Wiza LLC"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://qualified-warren.com",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-03-26",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "Considine - Heaney",
+					"industry": [
+						"23.12"
+					],
+					"numberOfEmployees": 9482,
+					"seasonalOrMigrantWorkers": "No",
+					"shareOfTemporaryWorkers": "Between25And50",
+					"annualTotalRevenue": 2378739786.8,
+					"totalRevenueCurrency": "ZWL",
+					"fixedAndWorkingCapital": 4991
+				},
+				"productionSpecific": {
+					"manufacturingCompany": "Yes",
+					"capacity": "11 Cheese per Sunday",
+					"productionViaSubcontracting": "Yes",
+					"subcontractingCompaniesCountries": [
+						"AE",
+						"TC",
+						"MC",
+						"AQ"
+					],
+					"subcontractingCompaniesIndustries": [
+						"16.2",
+						"25.3",
+						"47.5",
+						"86.22"
+					],
+					"productionSites": "No",
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Oberbrunner LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kertzmann Turnpike 6183",
+								"postalCode": "68166-4933",
+								"city": "North Theronport",
+								"state": "Nevada",
+								"country": "CC"
+							}
+						},
+						{
+							"nameOfProductionSite": "Hermiston Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Bergnaum Throughway 51853",
+								"city": "Kiehnview",
+								"country": "CO"
+							},
+							"listOfGoodsOrServices": [
+								"Ergonomic Wooden Chicken"
+							]
+						}
+					],
+					"market": "Both",
+					"specificProcurement": "No"
+				},
+				"productionSpecificOwnOperations": {
+					"mostImportantProducts": [
+						{
+							"name": "Gorgeous Fresh Chair",
+							"productionSteps": [
+								"suss Granite",
+								"communicate Soft",
+								"personalise Rubber"
+							],
+							"relatedCorporateSupplyChain": "Saepe sequi repellendus delectus accusamus quod. Eos ab provident molestias impedit modi omnis fugiat. Neque a sunt. Culpa vel pariatur quibusdam consequuntur. Tempora magnam sequi quidem. Nobis vitae modi."
+						},
+						{
+							"name": "Handmade Plastic Bacon",
+							"productionSteps": [
+								"traffic Metal"
+							],
+							"relatedCorporateSupplyChain": "Magni rerum natus vel. Reprehenderit odit sapiente. Suscipit dolores blanditiis. Dolorem nostrum eaque unde in. Atque repudiandae perferendis repellat quis dolore facilis veritatis."
+						},
+						{
+							"name": "Ergonomic Cotton Keyboard",
+							"productionSteps": [
+								"husk Metal",
+								"espy Bronze",
+								"yomp Soft",
+								"recover Cotton"
+							],
+							"relatedCorporateSupplyChain": "Natus non veniam modi quia magnam aliquam. Labore ducimus fugit consectetur ullam dolores. Ducimus quae saepe vitae totam deleniti. Explicabo dolorum repellendus minima sequi. Voluptatem ad et ullam illum ea repellendus fugit ab. Fugiat cumque quasi inventore officiis veniam laudantium dolorum quod repellendus."
+						},
+						{
+							"name": "Tasty Granite Pizza",
+							"productionSteps": [
+								"waddle Granite",
+								"heel Concrete",
+								"dumbfound Fresh",
+								"televise Rubber",
+								"plug Cotton"
+							],
+							"relatedCorporateSupplyChain": "Nesciunt nemo laboriosam vel quasi et. Delectus animi explicabo doloribus optio error vel. Quis ipsa esse ipsa tenetur aspernatur. Eius nemo illo occaecati. Atque possimus ea aut. Repellat dolor velit tenetur magni laborum repellat dolore exercitationem."
+						},
+						{
+							"name": "Refined Concrete Soap",
+							"productionSteps": [],
+							"relatedCorporateSupplyChain": "Autem soluta rerum quisquam quae. Enim nam consectetur iste quisquam placeat. Reprehenderit eaque corrupti vero veniam ipsa quod tenetur nesciunt. Ex sit delectus perferendis facere id sed porro. Adipisci reiciendis aperiam provident ex. Vitae alias praesentium assumenda cumque commodi repellendus consequatur esse magni."
+						}
+					],
+					"productsServicesCategoriesPurchased": {
+						"RawMaterials": {
+							"procuredProductTypesAndServicesNaceCodes": [
+								"58.12"
+							],
+							"numberOfSuppliersPerCountryCode": {
+								"CI": 26,
+								"UZ": 10,
+								"BR": 24,
+								"DE": 40
+							},
+							"shareOfTotalProcurementInPercent": 17.8762
+						}
+					}
+				}
+			},
+			"governance": {
+				"riskManagementOwnOperations": {
+					"riskManagementSystem": "Yes",
+					"riskAnalysisInFiscalYear": "Yes",
+					"risksIdentified": "Yes",
+					"identifiedRisks": "models",
+					"counteractingMeasures": "No",
+					"whichCounteractingMeasures": "architectures",
+					"regulatedRiskManagementResponsibility": "No",
+					"environmentalManagementSystem": "No",
+					"environmentalManagementSystemInternationalCertification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"environmentalManagementSystemNationalCertification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					}
+				},
+				"grievanceMechanismOwnOperations": {
+					"grievanceHandlingMechanism": "Yes",
+					"grievanceHandlingReportingAccessible": "No",
+					"appropriateGrievanceHandlingInformation": "Yes",
+					"appropriateGrievanceHandlingSupport": "No",
+					"accessToExpertiseForGrievanceHandling": "No",
+					"grievanceComplaints": "No",
+					"complaintsNumber": 6573,
+					"complaintsReason": "web services",
+					"actionsForComplaintsUndertaken": "No",
+					"whichActionsForComplaintsUndertaken": "paradigms",
+					"publicAccessToGrievanceHandling": "No",
+					"whistleblowerProtection": "Yes",
+					"dueDiligenceProcessForGrievanceHandling": "Yes"
+				},
+				"certificationsPoliciesAndResponsibilities": {
+					"sa8000Certification": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"smetaSocialAuditConcept": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"betterWorkProgramCertificate": {
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"iso45001Certification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"iso14001Certification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"emasCertification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"iso37001Certification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"iso37301Certification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"riskManagementSystemCertification": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"amforiBsciAuditReport": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"responsibleBusinessAssociationCertification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"fairLaborAssociationCertification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"additionalAudits": "infrastructures",
+					"codeOfConduct": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"codeOfConductTraining": "Yes",
+					"supplierCodeOfConduct": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
@@ -188,6 +688,7 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
+					"humanRightsStrategy": "initiatives",
 					"environmentalImpactPolicy": {
 						"value": "Yes",
 						"dataSource": {
@@ -205,43 +706,60 @@
 				},
 				"generalViolations": {
 					"responsibilitiesForFairWorkingConditions": "No",
-					"responsibilitiesForTheEnvironment": "Yes",
+					"responsibilitiesForTheEnvironment": "No",
+					"responsibilitiesForOccupationalSafety": "Yes",
+					"legalProceedings": "No",
+					"humanRightsViolationS": "No",
+					"humanRightsViolations": "synergies",
 					"humanRightsViolationAction": "No",
-					"humanRightsViolationActionMeasures": "applications",
+					"humanRightsViolationActionMeasures": "lifetime value",
 					"highRiskCountriesRawMaterials": "Yes",
 					"highRiskCountriesRawMaterialsLocation": [
-						"MH",
-						"AO",
-						"CF"
+						"IS",
+						"VN",
+						"CH"
 					],
+					"highRiskCountriesActivity": "No",
 					"highRiskCountries": [
-						"UA",
-						"AG",
-						"CX",
-						"MM",
-						"LT"
+						"BJ",
+						"FM",
+						"GB"
 					],
-					"highRiskCountriesProcurement": "No"
+					"highRiskCountriesProcurement": "No",
+					"highRiskCountriesProcurementName": [
+						"EH",
+						"LS",
+						"EH",
+						"FO"
+					]
 				}
 			},
 			"social": {
 				"childLabor": {
+					"childLaborPreventionPolicy": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
 					"employeeSUnder18": "No",
-					"employeeSUnder15": "No",
-					"employeeSUnder18InApprenticeship": "Yes",
-					"worstFormsOfChildLaborProhibition": "No",
+					"employeeSUnder15": "Yes",
+					"employeeSUnder18InApprenticeship": "No",
+					"worstFormsOfChildLaborProhibition": "Yes",
 					"worstFormsOfChildLabor": "No",
-					"worstFormsOfChildLaborForms": "channels",
+					"worstFormsOfChildLaborForms": "relationships",
 					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
-					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes",
+					"employmentUnderLocalMinimumAgePreventionJobDescription": "No",
 					"employmentUnderLocalMinimumAgePreventionIdentityDocuments": "Yes",
 					"employmentUnderLocalMinimumAgePreventionTraining": "No",
 					"employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "No",
-					"additionalChildLaborMeasures": "functionalities"
+					"additionalChildLaborMeasures": "infrastructures"
 				},
 				"forcedLaborSlavery": {
 					"forcedLaborAndSlaveryPrevention": "Yes",
-					"forcedLaborAndSlaveryPreventionPractices": "mindshare",
+					"forcedLaborAndSlaveryPreventionPractices": "action-items",
 					"forcedLaborPreventionPolicy": {
 						"value": "Yes",
 						"dataSource": {
@@ -251,110 +769,155 @@
 					},
 					"forcedLaborAndSlaveryPreventionMeasures": "Yes",
 					"forcedLaborAndSlaveryPreventionEmploymentContracts": "Yes",
-					"forcedLaborAndSlaveryPreventionFreeMovement": "No",
+					"forcedLaborAndSlaveryPreventionIdentityDocuments": "Yes",
+					"forcedLaborAndSlaveryPreventionFreeMovement": "Yes",
 					"forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "No",
-					"forcedLaborAndSlaveryPreventionTraining": "No",
-					"forcedLaborAndSlaveryPreventionMeasuresOther": "interfaces"
+					"forcedLaborAndSlaveryPreventionTraining": "Yes",
+					"forcedLaborAndSlaveryPreventionMeasuresOther": "technologies"
 				},
 				"withholdingAdequateWages": {
+					"adequateWage": "No",
 					"adequateWagesMeasures": "No",
 					"documentedWorkingHoursAndWages": "Yes",
-					"adequateLivingWage": "No",
+					"adequateLivingWage": "Yes",
+					"regularWagesProcessFlow": "No",
 					"fixedHourlyWages": "No",
 					"fixedPieceworkWages": "No",
-					"adequateWageMeasures": "content"
+					"adequateWageMeasures": "methodologies"
 				},
 				"disregardForOccupationalHealthSafety": {
 					"lowSkillWork": "No",
-					"hazardousMachines": "Yes",
-					"oshPolicyPersonalProtectiveEquipment": "NA",
+					"hazardousMachines": "No",
+					"oshPolicy": "No",
+					"oshPolicyPersonalProtectiveEquipment": "No",
 					"oshPolicyMachineSafety": "Yes",
 					"oshPolicyDisasterBehavioralResponse": "Yes",
-					"oshPolicyAccidentsBehavioralResponse": "No",
-					"oshPolicyWorkplaceErgonomics": "No",
-					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "Yes",
+					"oshPolicyAccidentsBehavioralResponse": "Yes",
+					"oshPolicyWorkplaceErgonomics": "Yes",
+					"oshPolicyAccessToWork": "Yes",
+					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "NA",
 					"oshPolicyFireProtection": "Yes",
-					"oshPolicyWorkingHours": "Yes",
+					"oshPolicyWorkingHours": "No",
 					"oshPolicyTrainingAddressed": "No",
-					"oshPolicyTraining": "Yes",
-					"under10WorkplaceAccidents": "No",
-					"oshTraining": "No"
-				},
-				"disregardForFreedomOfAssociation": {
-					"freedomOfAssociation": "Yes",
-					"employeeRepresentationInPercent": 61.2237,
-					"discriminationForTradeUnionMembers": "No",
-					"freedomOfOperationForTradeUnion": "Yes",
-					"freedomOfAssociationTraining": "Yes",
-					"worksCouncil": "Yes"
-				},
-				"unequalTreatmentOfEmployment": {
-					"unequalTreatmentOfEmployment": "No",
-					"diversityAndInclusionRole": "Yes",
-					"equalOpportunitiesOfficer": "No",
-					"equalOpportunitiesAndNonDiscriminationPolicy": {
+					"oshPolicyTraining": "No",
+					"oshManagementSystem": "No",
+					"oshManagementSystemInternationalCertification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"oshManagementSystemNationalCertification": {
 						"value": "Yes",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"under10WorkplaceAccidents": "No",
+					"oshTraining": "No",
+					"healthAndSafetyPolicy": {
+						"value": "No",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					}
 				},
+				"disregardForFreedomOfAssociation": {
+					"freedomOfAssociation": "No",
+					"employeeRepresentationInPercent": 32.348,
+					"discriminationForTradeUnionMembers": "Yes",
+					"freedomOfOperationForTradeUnion": "Yes",
+					"freedomOfAssociationTraining": "Yes",
+					"worksCouncil": "Yes"
+				},
+				"unequalTreatmentOfEmployment": {
+					"unequalTreatmentOfEmployment": "No",
+					"diversityAndInclusionRole": "No",
+					"preventionOfMistreatments": "Yes",
+					"equalOpportunitiesOfficer": "Yes",
+					"fairAndEthicalRecruitmentPolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"equalOpportunitiesAndNonDiscriminationPolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					}
+				},
 				"contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
-					"harmfulSoilImpact": "Yes",
-					"soilDegradation": "Yes",
+					"harmfulSoilImpact": "No",
+					"soilDegradation": "No",
 					"soilErosion": "No",
-					"soilBorneDiseases": "No",
-					"soilContamination": "Yes",
+					"soilBorneDiseases": "Yes",
+					"soilContamination": "No",
 					"soilSalinization": "No",
-					"harmfulWaterPollution": "Yes",
+					"harmfulWaterPollution": "No",
 					"fertilizersOrPollutants": "Yes",
 					"wasteWaterFiltration": "No",
-					"airFiltration": "No",
-					"harmfulNoiseEmission": "No",
+					"harmfulAirPollution": "Yes",
+					"airFiltration": "Yes",
+					"harmfulNoiseEmission": "Yes",
 					"reduceNoiseEmissions": "No",
 					"excessiveWaterConsumption": "Yes",
-					"waterSavingMeasures": "No",
-					"waterSavingMeasuresName": "lifetime value",
-					"pipeMaintaining": "Yes",
+					"waterSavingMeasures": "Yes",
+					"waterSavingMeasuresName": "platforms",
+					"pipeMaintaining": "No",
 					"waterSources": "Yes",
-					"contaminationMeasures": "networks"
+					"contaminationMeasures": "lifetime value"
 				},
 				"unlawfulEvictionDeprivationOfLandForestAndWater": {
-					"unlawfulEvictionAndTakingOfLandRisk": "ROI",
+					"unlawfulEvictionAndTakingOfLand": "Yes",
+					"unlawfulEvictionAndTakingOfLandRisk": "networks",
 					"unlawfulEvictionAndTakingOfLandStrategies": "Yes",
-					"unlawfulEvictionAndTakingOfLandStrategiesName": "technologies",
-					"voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": "Yes"
+					"unlawfulEvictionAndTakingOfLandStrategiesName": "ROI",
+					"voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": "No"
 				},
 				"useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
-					"useOfPrivatePublicSecurityForces": "No",
-					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "Yes",
-					"instructionOfSecurityForces": "Yes",
+					"useOfPrivatePublicSecurityForces": "Yes",
+					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "No",
+					"instructionOfSecurityForces": "No",
 					"humanRightsTraining": "No",
 					"stateSecurityForces": "No",
-					"privateSecurityForces": "Yes",
-					"useOfPrivatePublicSecurityForcesMeasures": "architectures"
+					"privateSecurityForces": "NA",
+					"useOfPrivatePublicSecurityForcesMeasures": "methodologies"
 				}
 			},
 			"environmental": {
 				"useOfMercuryMercuryWasteMinamataConvention": {
 					"mercuryAndMercuryWasteHandling": "No",
-					"mercuryAddedProductsHandling": "No",
-					"mercuryAddedProductsHandlingRiskOfExposure": "No",
-					"mercuryAddedProductsHandlingRiskOfDisposal": "No",
-					"mercuryAndMercuryCompoundsProductionAndUse": "Yes",
-					"mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": "No"
+					"mercuryAndMercuryWasteHandlingPolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"mercuryAddedProductsHandling": "Yes",
+					"mercuryAddedProductsHandlingRiskOfExposure": "Yes",
+					"mercuryAddedProductsHandlingRiskOfDisposal": "Yes",
+					"mercuryAndMercuryCompoundsProductionAndUse": "No",
+					"mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": "Yes"
 				},
 				"productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
-					"persistentOrganicPollutantsProductionAndUse": "No",
-					"persistentOrganicPollutantsUsed": "solutions",
-					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "No",
-					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "Yes",
-					"legalRestrictedWasteProcesses": "Yes"
+					"persistentOrganicPollutantsProductionAndUse": "Yes",
+					"persistentOrganicPollutantsUsed": "synergies",
+					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "Yes",
+					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "No",
+					"legalRestrictedWasteProcesses": "No"
 				},
 				"exportImportOfHazardousWasteBaselConvention": {
 					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "Yes",
-					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "Yes",
+					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "No",
+					"hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": "Yes",
 					"hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": "Yes",
 					"hazardousWasteDisposal": "Yes",
 					"hazardousWasteDisposalRiskOfImport": "No",
@@ -362,135 +925,170 @@
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
-			"companyName": "one-lksg-data-set-with-two-production-sites",
-			"headquarters": "South Francescoville",
-			"headquartersPostalCode": "02328",
-			"sector": "niches",
+			"companyName": "lksg-all-fields",
+			"headquarters": "Larryfield",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"gvW24NciRvAJ1WkG3RBY"
+				],
 				"Isin": [
-					"wXoeTheJeSnM",
-					"7NeHWmc4yScw"
+					"ArfYJBYsnI6U",
+					"6vh58ieqSu2G"
 				],
 				"PermId": [
-					"kULx8qWnKD"
+					"XyH3EHOHuR"
 				],
 				"Ticker": [
-					"3egLCiY"
+					"FGXGH9l"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"kkfxXtyph"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"uqTsRa8FvDBD5OU"
+					"IXIrMxk9bi2ytjP"
 				]
 			},
-			"countryCode": "MG",
+			"countryCode": "VC",
 			"companyAlternativeNames": [
-				"Bogan - Paucek",
-				"Hoppe - Collier",
-				"Sporer Group"
+				"Borer LLC",
+				"Kulas, Ankunding and Frami",
+				"O'Reilly, Wunsch and Emard"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://favorable-horseradish.info/",
+			"companyLegalForm": "GmbH",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"masterData": {
-					"dataDate": "2024-03-03",
+					"dataDate": "2024-07-22",
 					"headOfficeInGermany": "Yes",
 					"groupOfCompanies": "Yes",
-					"groupOfCompaniesName": "Oberbrunner - Goldner",
+					"groupOfCompaniesName": "Jones Inc",
 					"industry": [
-						"72.20"
+						"11",
+						"24.33",
+						"33.2",
+						"99"
 					],
-					"numberOfEmployees": 9401,
+					"numberOfEmployees": 7061,
 					"seasonalOrMigrantWorkers": "No",
 					"shareOfTemporaryWorkers": "Between10And25",
-					"annualTotalRevenue": 8984889856.08,
-					"totalRevenueCurrency": "BIF",
-					"fixedAndWorkingCapital": 7754
+					"annualTotalRevenue": 4450647793.71,
+					"totalRevenueCurrency": "RON",
+					"fixedAndWorkingCapital": 9503
 				},
 				"productionSpecific": {
-					"manufacturingCompany": "No",
-					"capacity": "10 Bike per Tuesday",
+					"manufacturingCompany": "Yes",
+					"capacity": "12 Salad per Saturday",
 					"productionViaSubcontracting": "No",
 					"subcontractingCompaniesCountries": [
-						"GR",
-						"PY",
-						"UG"
+						"IN"
 					],
 					"subcontractingCompaniesIndustries": [
-						"46.45",
-						"97.00"
+						"58.29",
+						"95.22",
+						"98.10"
 					],
 					"productionSites": "Yes",
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Labadie Group",
+							"nameOfProductionSite": "Friesen LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Reilly Club 4280",
-								"postalCode": "51664-7560",
-								"city": "Bradfordfort",
-								"country": "SE"
-							}
+								"streetAndHouseNumber": "Nicolas Oval 556",
+								"postalCode": "53929-3824",
+								"city": "Blandaburgh",
+								"state": "Virginia",
+								"country": "SV"
+							},
+							"listOfGoodsOrServices": [
+								"Fantastic Concrete Cheese"
+							]
 						},
 						{
+							"nameOfProductionSite": "Smitham, Padberg and Purdy",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Weissnat Trace 924",
-								"city": "Fort Eduardo",
-								"state": "Indiana",
-								"country": "MF"
-							}
+								"streetAndHouseNumber": "Ezra Avenue 83761",
+								"postalCode": "97489",
+								"city": "Port Janacester",
+								"state": "Delaware",
+								"country": "GH"
+							},
+							"listOfGoodsOrServices": [
+								"Unbranded Frozen Mouse",
+								"Elegant Concrete Mouse",
+								"Ergonomic Steel Car",
+								"Licensed Wooden Shoes",
+								"Rustic Soft Table"
+							]
 						}
 					],
-					"market": "International",
-					"specificProcurement": "Yes"
+					"market": "National",
+					"specificProcurement": "No"
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [
 						{
-							"name": "Gorgeous Frozen Bacon",
+							"name": "Luxurious Cotton Ball",
 							"productionSteps": [
-								"alight Fresh",
-								"fertilize Plastic",
-								"disillusion Granite",
-								"solemnize Bronze"
+								"hoon Frozen",
+								"compartmentalise Steel",
+								"cite Cotton",
+								"debunk Wooden",
+								"sledge Steel"
 							],
-							"relatedCorporateSupplyChain": "Architecto dolorem corporis. Quisquam facilis quaerat pariatur cum ex quaerat cum. Quia quibusdam quidem natus iusto culpa consequatur."
+							"relatedCorporateSupplyChain": "Eius sed corporis laboriosam. Quidem iusto officiis itaque sed tempora officia placeat eaque. Blanditiis sapiente dignissimos animi voluptatibus nostrum omnis aut."
 						},
 						{
-							"name": "Electronic Bronze Keyboard",
+							"name": "Intelligent Bronze Computer",
 							"productionSteps": [
-								"fulfil Wooden"
+								"slur Concrete",
+								"garden Rubber"
 							],
-							"relatedCorporateSupplyChain": "Non ut itaque voluptates ab veritatis ab ea incidunt. Occaecati quaerat quos quo dolor reiciendis ducimus. Beatae quaerat quo iusto itaque iure adipisci praesentium accusamus. Quibusdam illum aperiam quia id aspernatur esse facilis maiores temporibus. Sint architecto fugiat eveniet excepturi. Nobis ab labore iure."
+							"relatedCorporateSupplyChain": "Est magni voluptatum corporis. Cupiditate tenetur laudantium iure quisquam. Vitae architecto architecto dolorum consequuntur dignissimos necessitatibus recusandae."
 						},
 						{
-							"name": "Luxurious Concrete Mouse",
+							"name": "Licensed Granite Shoes",
 							"productionSteps": [
-								"partake Metal",
-								"extradite Bronze",
-								"stable Soft",
-								"square Plastic",
-								"overbalance Steel"
+								"reconfigure Cotton",
+								"pander Plastic",
+								"pry Metal"
 							],
-							"relatedCorporateSupplyChain": "Consequuntur voluptate officia rem officiis illo aspernatur. Perspiciatis labore adipisci ex non ad enim. Libero non maxime expedita eum adipisci eligendi laborum vero. Impedit ea officiis sequi voluptatibus a. Nostrum doloribus inventore voluptates corrupti perspiciatis. Rem est odit eius dolores consequuntur minus excepturi natus assumenda."
+							"relatedCorporateSupplyChain": "Blanditiis iusto sint vero consequatur. Sit ad ipsa. Doloribus excepturi exercitationem dolore corporis. Itaque exercitationem odit blanditiis eum. Harum quas dolorem provident perspiciatis labore fugiat. Eligendi cumque repellat quis ducimus."
+						},
+						{
+							"name": "Electronic Frozen Keyboard",
+							"productionSteps": [
+								"glint Rubber",
+								"wade Plastic",
+								"decode Granite",
+								"temper Granite",
+								"unbalance Steel"
+							],
+							"relatedCorporateSupplyChain": "Magnam mollitia nesciunt consequatur. Et voluptatem reiciendis dolorem. Occaecati eaque mollitia placeat eaque repellat soluta eos quasi. Cum provident impedit voluptatibus labore sint ad in fugit quo."
+						},
+						{
+							"name": "Elegant Fresh Hat",
+							"productionSteps": [
+								"kick Steel",
+								"unfold Granite"
+							],
+							"relatedCorporateSupplyChain": "Repellendus eveniet fugiat. Delectus inventore id."
 						}
 					],
 					"productsServicesCategoriesPurchased": {
 						"Services": {
 							"procuredProductTypesAndServicesNaceCodes": [
-								"77.40"
+								"46.37",
+								"47.22"
 							],
-							"numberOfSuppliersPerCountryCode": {},
-							"shareOfTotalProcurementInPercent": 46.8322
+							"numberOfSuppliersPerCountryCode": {
+								"MO": 23,
+								"NG": 39
+							},
+							"shareOfTotalProcurementInPercent": 24.5142
 						}
 					}
 				}
@@ -498,15 +1096,15 @@
 			"governance": {
 				"riskManagementOwnOperations": {
 					"riskManagementSystem": "Yes",
-					"riskAnalysisInFiscalYear": "No",
-					"risksIdentified": "No",
-					"identifiedRisks": "eyeballs",
+					"riskAnalysisInFiscalYear": "Yes",
+					"risksIdentified": "Yes",
+					"identifiedRisks": "solutions",
 					"counteractingMeasures": "No",
-					"whichCounteractingMeasures": "synergies",
+					"whichCounteractingMeasures": "experiences",
 					"regulatedRiskManagementResponsibility": "Yes",
 					"environmentalManagementSystem": "No",
 					"environmentalManagementSystemInternationalCertification": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -515,31 +1113,31 @@
 					"environmentalManagementSystemNationalCertification": {
 						"value": "Yes",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					}
 				},
 				"grievanceMechanismOwnOperations": {
-					"grievanceHandlingMechanism": "Yes",
+					"grievanceHandlingMechanism": "No",
 					"grievanceHandlingReportingAccessible": "Yes",
 					"appropriateGrievanceHandlingInformation": "Yes",
 					"appropriateGrievanceHandlingSupport": "No",
 					"accessToExpertiseForGrievanceHandling": "Yes",
 					"grievanceComplaints": "No",
-					"complaintsNumber": 2317,
-					"complaintsReason": "partnerships",
+					"complaintsNumber": 3086,
+					"complaintsReason": "convergence",
 					"actionsForComplaintsUndertaken": "Yes",
-					"whichActionsForComplaintsUndertaken": "metrics",
-					"publicAccessToGrievanceHandling": "Yes",
-					"whistleblowerProtection": "Yes",
-					"dueDiligenceProcessForGrievanceHandling": "No"
+					"whichActionsForComplaintsUndertaken": "initiatives",
+					"publicAccessToGrievanceHandling": "No",
+					"whistleblowerProtection": "No",
+					"dueDiligenceProcessForGrievanceHandling": "Yes"
 				},
 				"certificationsPoliciesAndResponsibilities": {
 					"sa8000Certification": {
 						"value": "Yes",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
@@ -560,14 +1158,14 @@
 					"iso45001Certification": {
 						"value": "No",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"iso14001Certification": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
@@ -579,7 +1177,7 @@
 						}
 					},
 					"iso37001Certification": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -593,21 +1191,21 @@
 						}
 					},
 					"riskManagementSystemCertification": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"amforiBsciAuditReport": {
 						"value": "Yes",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"responsibleBusinessAssociationCertification": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -620,17 +1218,17 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"additionalAudits": "synergies",
+					"additionalAudits": "niches",
 					"codeOfConduct": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"codeOfConductTraining": "Yes",
+					"codeOfConductTraining": "No",
 					"supplierCodeOfConduct": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -643,7 +1241,7 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"humanRightsStrategy": "functionalities",
+					"humanRightsStrategy": "methodologies",
 					"environmentalImpactPolicy": {
 						"value": "No",
 						"dataSource": {
@@ -652,7 +1250,7 @@
 						}
 					},
 					"fairWorkingConditionsPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -660,103 +1258,105 @@
 					}
 				},
 				"generalViolations": {
-					"responsibilitiesForFairWorkingConditions": "Yes",
-					"responsibilitiesForTheEnvironment": "No",
+					"responsibilitiesForFairWorkingConditions": "No",
+					"responsibilitiesForTheEnvironment": "Yes",
 					"responsibilitiesForOccupationalSafety": "No",
-					"legalProceedings": "Yes",
-					"humanRightsViolationS": "Yes",
-					"humanRightsViolations": "networks",
-					"humanRightsViolationAction": "Yes",
-					"humanRightsViolationActionMeasures": "web services",
-					"highRiskCountriesRawMaterials": "No",
+					"legalProceedings": "No",
+					"humanRightsViolationS": "No",
+					"humanRightsViolations": "web services",
+					"humanRightsViolationAction": "No",
+					"humanRightsViolationActionMeasures": "solutions",
+					"highRiskCountriesRawMaterials": "Yes",
 					"highRiskCountriesRawMaterialsLocation": [
-						"GG",
-						"TJ",
-						"UA",
-						"ET",
-						"BO"
+						"TH",
+						"NG",
+						"AU",
+						"UM",
+						"PF"
 					],
 					"highRiskCountriesActivity": "Yes",
 					"highRiskCountries": [
-						"UZ",
-						"KI",
-						"MK",
-						"BW",
-						"IM"
+						"HR",
+						"SB",
+						"KY",
+						"IM",
+						"NP"
 					],
 					"highRiskCountriesProcurement": "Yes",
 					"highRiskCountriesProcurementName": [
-						"CH"
+						"AU",
+						"LB",
+						"VE"
 					]
 				}
 			},
 			"social": {
 				"childLabor": {
 					"childLaborPreventionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"employeeSUnder18": "No",
-					"employeeSUnder15": "No",
-					"employeeSUnder18InApprenticeship": "No",
+					"employeeSUnder15": "Yes",
+					"employeeSUnder18InApprenticeship": "Yes",
 					"worstFormsOfChildLaborProhibition": "No",
 					"worstFormsOfChildLabor": "Yes",
-					"worstFormsOfChildLaborForms": "relationships",
-					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"worstFormsOfChildLaborForms": "supply-chains",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
 					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No",
 					"employmentUnderLocalMinimumAgePreventionJobDescription": "No",
 					"employmentUnderLocalMinimumAgePreventionIdentityDocuments": "No",
 					"employmentUnderLocalMinimumAgePreventionTraining": "Yes",
-					"employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "Yes",
-					"additionalChildLaborMeasures": "lifetime value"
+					"employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "No",
+					"additionalChildLaborMeasures": "web services"
 				},
 				"forcedLaborSlavery": {
 					"forcedLaborAndSlaveryPrevention": "Yes",
-					"forcedLaborAndSlaveryPreventionPractices": "infrastructures",
+					"forcedLaborAndSlaveryPreventionPractices": "e-commerce",
 					"forcedLaborPreventionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"forcedLaborAndSlaveryPreventionMeasures": "No",
 					"forcedLaborAndSlaveryPreventionEmploymentContracts": "Yes",
 					"forcedLaborAndSlaveryPreventionIdentityDocuments": "Yes",
-					"forcedLaborAndSlaveryPreventionFreeMovement": "No",
+					"forcedLaborAndSlaveryPreventionFreeMovement": "Yes",
 					"forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "Yes",
-					"forcedLaborAndSlaveryPreventionTraining": "No",
-					"forcedLaborAndSlaveryPreventionMeasuresOther": "partnerships"
+					"forcedLaborAndSlaveryPreventionTraining": "Yes",
+					"forcedLaborAndSlaveryPreventionMeasuresOther": "networks"
 				},
 				"withholdingAdequateWages": {
-					"adequateWage": "Yes",
-					"adequateWagesMeasures": "No",
-					"documentedWorkingHoursAndWages": "No",
-					"adequateLivingWage": "No",
+					"adequateWage": "No",
+					"adequateWagesMeasures": "Yes",
+					"documentedWorkingHoursAndWages": "Yes",
+					"adequateLivingWage": "Yes",
 					"regularWagesProcessFlow": "Yes",
-					"fixedHourlyWages": "NA",
-					"fixedPieceworkWages": "No",
-					"adequateWageMeasures": "relationships"
+					"fixedHourlyWages": "Yes",
+					"fixedPieceworkWages": "Yes",
+					"adequateWageMeasures": "bandwidth"
 				},
 				"disregardForOccupationalHealthSafety": {
-					"lowSkillWork": "Yes",
-					"hazardousMachines": "Yes",
-					"oshPolicy": "No",
+					"lowSkillWork": "No",
+					"hazardousMachines": "No",
+					"oshPolicy": "Yes",
 					"oshPolicyPersonalProtectiveEquipment": "Yes",
-					"oshPolicyMachineSafety": "NA",
-					"oshPolicyDisasterBehavioralResponse": "No",
+					"oshPolicyMachineSafety": "Yes",
+					"oshPolicyDisasterBehavioralResponse": "Yes",
 					"oshPolicyAccidentsBehavioralResponse": "No",
 					"oshPolicyWorkplaceErgonomics": "Yes",
 					"oshPolicyAccessToWork": "Yes",
-					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "NA",
+					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "No",
 					"oshPolicyFireProtection": "Yes",
-					"oshPolicyWorkingHours": "No",
-					"oshPolicyTrainingAddressed": "No",
-					"oshPolicyTraining": "No",
-					"oshManagementSystem": "Yes",
+					"oshPolicyWorkingHours": "Yes",
+					"oshPolicyTrainingAddressed": "Yes",
+					"oshPolicyTraining": "Yes",
+					"oshManagementSystem": "No",
 					"oshManagementSystemInternationalCertification": {
 						"value": "No",
 						"dataSource": {
@@ -765,39 +1365,39 @@
 						}
 					},
 					"oshManagementSystemNationalCertification": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"under10WorkplaceAccidents": "No",
+					"under10WorkplaceAccidents": "Yes",
 					"oshTraining": "Yes",
 					"healthAndSafetyPolicy": {
 						"value": "No",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					}
 				},
 				"disregardForFreedomOfAssociation": {
 					"freedomOfAssociation": "No",
-					"employeeRepresentationInPercent": 39.9476,
-					"discriminationForTradeUnionMembers": "No",
-					"freedomOfOperationForTradeUnion": "Yes",
-					"freedomOfAssociationTraining": "Yes",
-					"worksCouncil": "Yes"
+					"employeeRepresentationInPercent": 96.0226,
+					"discriminationForTradeUnionMembers": "Yes",
+					"freedomOfOperationForTradeUnion": "No",
+					"freedomOfAssociationTraining": "No",
+					"worksCouncil": "No"
 				},
 				"unequalTreatmentOfEmployment": {
-					"unequalTreatmentOfEmployment": "Yes",
+					"unequalTreatmentOfEmployment": "No",
 					"diversityAndInclusionRole": "No",
-					"preventionOfMistreatments": "No",
+					"preventionOfMistreatments": "Yes",
 					"equalOpportunitiesOfficer": "No",
 					"fairAndEthicalRecruitmentPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
@@ -812,67 +1412,67 @@
 				"contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
 					"harmfulSoilImpact": "No",
 					"soilDegradation": "Yes",
-					"soilErosion": "Yes",
+					"soilErosion": "No",
 					"soilBorneDiseases": "Yes",
 					"soilContamination": "No",
-					"soilSalinization": "No",
+					"soilSalinization": "Yes",
 					"harmfulWaterPollution": "Yes",
-					"fertilizersOrPollutants": "No",
-					"wasteWaterFiltration": "Yes",
+					"fertilizersOrPollutants": "Yes",
+					"wasteWaterFiltration": "No",
 					"harmfulAirPollution": "No",
-					"airFiltration": "Yes",
-					"harmfulNoiseEmission": "Yes",
+					"airFiltration": "No",
+					"harmfulNoiseEmission": "No",
 					"reduceNoiseEmissions": "Yes",
-					"excessiveWaterConsumption": "No",
+					"excessiveWaterConsumption": "Yes",
 					"waterSavingMeasures": "No",
-					"waterSavingMeasuresName": "interfaces",
-					"pipeMaintaining": "Yes",
-					"waterSources": "Yes",
-					"contaminationMeasures": "eyeballs"
+					"waterSavingMeasuresName": "action-items",
+					"pipeMaintaining": "No",
+					"waterSources": "No",
+					"contaminationMeasures": "systems"
 				},
 				"unlawfulEvictionDeprivationOfLandForestAndWater": {
-					"unlawfulEvictionAndTakingOfLand": "No",
-					"unlawfulEvictionAndTakingOfLandRisk": "e-business",
+					"unlawfulEvictionAndTakingOfLand": "Yes",
+					"unlawfulEvictionAndTakingOfLandRisk": "metrics",
 					"unlawfulEvictionAndTakingOfLandStrategies": "Yes",
-					"unlawfulEvictionAndTakingOfLandStrategiesName": "interfaces",
+					"unlawfulEvictionAndTakingOfLandStrategiesName": "mindshare",
 					"voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": "No"
 				},
 				"useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
 					"useOfPrivatePublicSecurityForces": "Yes",
 					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "No",
 					"instructionOfSecurityForces": "Yes",
-					"humanRightsTraining": "Yes",
-					"stateSecurityForces": "NA",
+					"humanRightsTraining": "No",
+					"stateSecurityForces": "No",
 					"privateSecurityForces": "Yes",
-					"useOfPrivatePublicSecurityForcesMeasures": "infrastructures"
+					"useOfPrivatePublicSecurityForcesMeasures": "partnerships"
 				}
 			},
 			"environmental": {
 				"useOfMercuryMercuryWasteMinamataConvention": {
 					"mercuryAndMercuryWasteHandling": "No",
 					"mercuryAndMercuryWasteHandlingPolicy": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"mercuryAddedProductsHandling": "No",
-					"mercuryAddedProductsHandlingRiskOfExposure": "Yes",
+					"mercuryAddedProductsHandling": "Yes",
+					"mercuryAddedProductsHandlingRiskOfExposure": "No",
 					"mercuryAddedProductsHandlingRiskOfDisposal": "No",
 					"mercuryAndMercuryCompoundsProductionAndUse": "No",
 					"mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": "No"
 				},
 				"productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
-					"persistentOrganicPollutantsProductionAndUse": "No",
-					"persistentOrganicPollutantsUsed": "functionalities",
-					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "No",
-					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "No",
+					"persistentOrganicPollutantsProductionAndUse": "Yes",
+					"persistentOrganicPollutantsUsed": "models",
+					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "Yes",
+					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "Yes",
 					"legalRestrictedWasteProcesses": "Yes"
 				},
 				"exportImportOfHazardousWasteBaselConvention": {
-					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "No",
-					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "Yes",
+					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "Yes",
+					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "No",
 					"hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": "No",
 					"hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": "Yes",
 					"hazardousWasteDisposal": "No",
@@ -885,230 +1485,193 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "lksg-all-fields",
-			"headquarters": "Estrellashire",
-			"headquartersPostalCode": "49802",
+			"companyName": "LkSG-date-2023-04-18",
+			"headquarters": "Dibbertworth",
+			"headquartersPostalCode": "57059",
+			"sector": "eyeballs",
 			"identifiers": {
-				"Lei": [
-					"EIyDg9UFbb18MuBqEGDD"
-				],
+				"Lei": [],
 				"Isin": [
-					"8ACEfbD8Rl7y",
-					"xDt98HujuXC8"
+					"pUyxDUkauGsy"
 				],
-				"PermId": [
-					"EloGpYRsR4"
-				],
+				"PermId": [],
 				"Ticker": [
-					"cIbIKgI"
+					"fcDFEPt"
 				],
 				"Duns": [
-					"fzeo6rRf7"
+					"uwYiwlu8r"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AR",
+			"countryCode": "LT",
 			"companyAlternativeNames": [
-				"Bauch - Smitham",
-				"Considine - Block",
-				"Toy LLC",
-				"Wunsch - Mann"
+				"Grimes LLC",
+				"Kassulke - Moore",
+				"Pacocha Group"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://downright-mascara.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"masterData": {
-					"dataDate": "2023-10-14",
+					"dataDate": "2023-04-18",
 					"headOfficeInGermany": "Yes",
 					"groupOfCompanies": "No",
-					"groupOfCompaniesName": "Hills, Towne and Walsh",
+					"groupOfCompaniesName": "Wisozk - Weissnat",
 					"industry": [
-						"39"
+						"05.2",
+						"13.94",
+						"93.29"
 					],
-					"numberOfEmployees": 6989,
+					"numberOfEmployees": 5526,
 					"seasonalOrMigrantWorkers": "No",
-					"shareOfTemporaryWorkers": "Between25And50",
-					"annualTotalRevenue": 6690780927.89,
-					"totalRevenueCurrency": "XOF",
-					"fixedAndWorkingCapital": 9579
+					"shareOfTemporaryWorkers": "Between10And25",
+					"annualTotalRevenue": 6256070449.02,
+					"totalRevenueCurrency": "AFN",
+					"fixedAndWorkingCapital": 6539
 				},
 				"productionSpecific": {
 					"manufacturingCompany": "Yes",
-					"capacity": "3 Sausages per Wednesday",
-					"productionViaSubcontracting": "Yes",
-					"subcontractingCompaniesCountries": [],
-					"subcontractingCompaniesIndustries": [
-						"14.20",
-						"46.71",
-						"56.2",
-						"E"
+					"capacity": "9 Keyboard per Saturday",
+					"productionViaSubcontracting": "No",
+					"subcontractingCompaniesCountries": [
+						"MD"
 					],
-					"productionSites": "Yes",
+					"subcontractingCompaniesIndustries": [
+						"09.90",
+						"45.20",
+						"45.31",
+						"46.3",
+						"47.5"
+					],
+					"productionSites": "No",
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Schamberger and Sons",
+							"nameOfProductionSite": "Pacocha - Brown",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Wiegand Roads 6735",
-								"postalCode": "58160-5467",
-								"city": "Port Eve",
-								"state": "Idaho",
-								"country": "TV"
-							},
-							"listOfGoodsOrServices": [
-								"Rustic Bronze Salad",
-								"Ergonomic Soft Fish",
-								"Modern Rubber Soap"
-							]
-						},
-						{
-							"nameOfProductionSite": "Runolfsson, Gibson and Marks",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Stamm Hollow 83557",
-								"postalCode": "23481",
-								"city": "Bechtelarfort",
-								"state": "Tennessee",
-								"country": "MN"
-							},
-							"listOfGoodsOrServices": [
-								"Gorgeous Concrete Chicken",
-								"Electronic Fresh Chicken",
-								"Elegant Concrete Keyboard",
-								"Electronic Cotton Cheese",
-								"Electronic Concrete Soap"
-							]
+								"city": "Emardburgh",
+								"state": "Alabama",
+								"country": "CV"
+							}
 						}
-					],
-					"market": "International",
-					"specificProcurement": "No"
+					]
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [
 						{
-							"name": "Rustic Granite Fish",
-							"productionSteps": [],
-							"relatedCorporateSupplyChain": "Doloribus non distinctio explicabo eaque totam. Veritatis iusto non nobis non voluptatum. Aliquid laboriosam labore consequuntur deleniti tempora. Illum eum fugiat. Magnam possimus repellat culpa ipsa."
-						},
-						{
-							"name": "Unbranded Metal Pizza",
-							"productionSteps": [],
-							"relatedCorporateSupplyChain": "Pariatur aut fuga nostrum. Nisi ipsam error odit. Facere fuga quaerat eligendi quidem suscipit aperiam quos."
-						},
-						{
-							"name": "Electronic Fresh Chair",
-							"productionSteps": [],
-							"relatedCorporateSupplyChain": "Eius tempora cumque dolores reprehenderit. Veniam libero vel voluptas temporibus eum. Repellat labore consectetur facere accusantium sapiente. Eveniet culpa optio nam corrupti molestias hic provident a. Impedit vel eum reiciendis eos rem maiores."
-						},
-						{
-							"name": "Generic Wooden Chicken",
+							"name": "Generic Cotton Hat",
 							"productionSteps": [
-								"captivate Frozen",
-								"snack Soft"
-							],
-							"relatedCorporateSupplyChain": "Eius recusandae nostrum illum laboriosam ex error placeat. Ipsa mollitia officia eos quidem ratione accusantium. Explicabo officia neque blanditiis voluptate a aspernatur sequi. Voluptatibus quam ea sequi sequi pariatur corporis deserunt. Ab nostrum quisquam ad magni ex maxime neque quis. Et ducimus consectetur quod tempora eos dolor."
+								"commence Rubber"
+							]
 						},
 						{
-							"name": "Sleek Metal Sausages",
+							"name": "Modern Fresh Pizza",
+							"relatedCorporateSupplyChain": "Libero nam atque. Quidem modi inventore blanditiis voluptas autem dolore culpa maxime. Cupiditate consectetur praesentium amet ex. Maxime fuga laboriosam accusamus aut ex provident sapiente porro atque. Nam enim mollitia."
+						},
+						{
+							"name": "Elegant Rubber Car",
+							"relatedCorporateSupplyChain": "Ipsum enim facere similique fugiat amet fugit odio. Quos soluta quas vel quos error ut quam possimus. Numquam porro inventore libero repellat distinctio amet ea. Quaerat quae impedit officiis magnam. Voluptas voluptas dolorem laboriosam esse sed nemo ipsa magnam. Consectetur laudantium perspiciatis omnis doloremque tempora."
+						},
+						{
+							"name": "Electronic Fresh Bacon",
 							"productionSteps": [
-								"chlorinate Steel",
-								"validate Granite"
+								"initialize Metal",
+								"pirate Concrete",
+								"sublet Bronze"
 							],
-							"relatedCorporateSupplyChain": "Qui consequuntur iure placeat consectetur debitis asperiores nesciunt. Eligendi ab excepturi voluptatem ullam. Doloribus fugiat ullam quae dolorem minima voluptas. Similique quae repellendus temporibus atque dolorem illo odit doloremque ex. Praesentium nobis neque consectetur."
+							"relatedCorporateSupplyChain": "Aut magnam praesentium. A repellendus molestias dolore iusto."
+						},
+						{
+							"name": "Practical Plastic Shirt",
+							"relatedCorporateSupplyChain": "Sunt dolorem perferendis voluptas ratione veritatis error. Praesentium sapiente numquam. Repellendus fugiat expedita."
 						}
 					],
 					"productsServicesCategoriesPurchased": {
-						"RawMaterials": {
+						"Products": {
 							"procuredProductTypesAndServicesNaceCodes": [
-								"24",
-								"47.41",
-								"61",
-								"77"
+								"01",
+								"20.42",
+								"62"
 							],
-							"numberOfSuppliersPerCountryCode": {
-								"TK": 36,
-								"CA": 22,
-								"LI": 30,
-								"RW": 22,
-								"NA": 48
-							},
-							"shareOfTotalProcurementInPercent": 27.2103
+							"shareOfTotalProcurementInPercent": 63.5543
 						},
 						"Services": {
 							"procuredProductTypesAndServicesNaceCodes": [
-								"27.90",
-								"65.30"
+								"13.10",
+								"46.18",
+								"46.72",
+								"64.3",
+								"98.2"
 							],
 							"numberOfSuppliersPerCountryCode": {
-								"BJ": 50,
-								"WS": 47,
-								"IT": 7
-							},
-							"shareOfTotalProcurementInPercent": 33.3045
+								"TV": 36,
+								"ES": 2,
+								"LK": 44,
+								"EE": 49
+							}
 						}
 					}
 				}
 			},
 			"governance": {
 				"riskManagementOwnOperations": {
-					"riskManagementSystem": "Yes",
 					"riskAnalysisInFiscalYear": "Yes",
-					"risksIdentified": "No",
-					"identifiedRisks": "applications",
+					"risksIdentified": "Yes",
+					"identifiedRisks": "e-markets",
 					"counteractingMeasures": "No",
-					"whichCounteractingMeasures": "action-items",
-					"regulatedRiskManagementResponsibility": "No",
-					"environmentalManagementSystem": "No",
+					"whichCounteractingMeasures": "metrics",
+					"regulatedRiskManagementResponsibility": "Yes",
+					"environmentalManagementSystem": "Yes",
 					"environmentalManagementSystemInternationalCertification": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"environmentalManagementSystemNationalCertification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					}
-				},
-				"grievanceMechanismOwnOperations": {
-					"grievanceHandlingMechanism": "Yes",
-					"grievanceHandlingReportingAccessible": "Yes",
-					"appropriateGrievanceHandlingInformation": "Yes",
-					"appropriateGrievanceHandlingSupport": "Yes",
-					"accessToExpertiseForGrievanceHandling": "Yes",
-					"grievanceComplaints": "No",
-					"complaintsNumber": 8097,
-					"complaintsReason": "models",
-					"actionsForComplaintsUndertaken": "No",
-					"whichActionsForComplaintsUndertaken": "content",
-					"publicAccessToGrievanceHandling": "Yes",
-					"whistleblowerProtection": "No",
-					"dueDiligenceProcessForGrievanceHandling": "No"
-				},
-				"certificationsPoliciesAndResponsibilities": {
-					"sa8000Certification": {
 						"value": "No",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
+					}
+				},
+				"grievanceMechanismOwnOperations": {
+					"grievanceHandlingReportingAccessible": "Yes",
+					"appropriateGrievanceHandlingInformation": "No",
+					"appropriateGrievanceHandlingSupport": "Yes",
+					"grievanceComplaints": "No",
+					"complaintsNumber": 9381,
+					"complaintsReason": "bandwidth",
+					"actionsForComplaintsUndertaken": "Yes",
+					"whichActionsForComplaintsUndertaken": "functionalities",
+					"publicAccessToGrievanceHandling": "No",
+					"whistleblowerProtection": "Yes",
+					"dueDiligenceProcessForGrievanceHandling": "Yes"
+				},
+				"certificationsPoliciesAndResponsibilities": {
+					"sa8000Certification": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
 					},
 					"smetaSocialAuditConcept": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"betterWorkProgramCertificate": {
-						"value": "No",
+						"value": "NA",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
@@ -1120,14 +1683,14 @@
 						}
 					},
 					"iso14001Certification": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"emasCertification": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -1141,28 +1704,28 @@
 						}
 					},
 					"iso37301Certification": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"riskManagementSystemCertification": {
-						"value": "No",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"amforiBsciAuditReport": {
 						"value": "Yes",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"responsibleBusinessAssociationCertification": {
+					"riskManagementSystemCertification": {
 						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"amforiBsciAuditReport": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"responsibleBusinessAssociationCertification": {
+						"value": "Yes",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -1175,75 +1738,37 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"additionalAudits": "e-commerce",
 					"codeOfConduct": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
+						"value": "Yes"
 					},
 					"codeOfConductTraining": "No",
-					"supplierCodeOfConduct": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
 					"policyStatement": {
 						"value": "Yes",
 						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"humanRightsStrategy": "niches",
-					"environmentalImpactPolicy": {
-						"value": "No",
-						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
+					},
+					"humanRightsStrategy": "convergence",
+					"environmentalImpactPolicy": {
+						"value": "No"
 					},
 					"fairWorkingConditionsPolicy": {
-						"value": "No",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
+						"value": "No"
 					}
 				},
 				"generalViolations": {
-					"responsibilitiesForFairWorkingConditions": "Yes",
-					"responsibilitiesForTheEnvironment": "Yes",
+					"responsibilitiesForFairWorkingConditions": "No",
+					"responsibilitiesForTheEnvironment": "No",
 					"responsibilitiesForOccupationalSafety": "Yes",
-					"legalProceedings": "Yes",
-					"humanRightsViolationS": "Yes",
+					"legalProceedings": "No",
+					"humanRightsViolationS": "No",
 					"humanRightsViolations": "markets",
-					"humanRightsViolationAction": "Yes",
-					"humanRightsViolationActionMeasures": "users",
-					"highRiskCountriesRawMaterials": "No",
-					"highRiskCountriesRawMaterialsLocation": [
-						"AL",
-						"BL",
-						"TR",
-						"IR",
-						"TW"
-					],
-					"highRiskCountriesActivity": "No",
-					"highRiskCountries": [
-						"ET",
-						"GL",
-						"RS"
-					],
+					"humanRightsViolationActionMeasures": "lifetime value",
+					"highRiskCountriesActivity": "Yes",
 					"highRiskCountriesProcurement": "Yes",
 					"highRiskCountriesProcurementName": [
-						"DZ",
-						"TW",
-						"RS",
-						"LT",
-						"CU"
+						"RU"
 					]
 				}
 			},
@@ -1252,68 +1777,55 @@
 					"childLaborPreventionPolicy": {
 						"value": "No",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"employeeSUnder18": "Yes",
-					"employeeSUnder15": "No",
+					"employeeSUnder18": "No",
+					"employeeSUnder15": "Yes",
 					"employeeSUnder18InApprenticeship": "Yes",
-					"worstFormsOfChildLaborProhibition": "No",
-					"worstFormsOfChildLabor": "Yes",
-					"worstFormsOfChildLaborForms": "e-markets",
-					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"worstFormsOfChildLaborProhibition": "Yes",
+					"worstFormsOfChildLaborForms": "communities",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
 					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes",
-					"employmentUnderLocalMinimumAgePreventionJobDescription": "Yes",
+					"employmentUnderLocalMinimumAgePreventionJobDescription": "No",
 					"employmentUnderLocalMinimumAgePreventionIdentityDocuments": "Yes",
-					"employmentUnderLocalMinimumAgePreventionTraining": "No",
-					"employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "Yes",
-					"additionalChildLaborMeasures": "initiatives"
+					"employmentUnderLocalMinimumAgePreventionTraining": "Yes",
+					"employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "No",
+					"additionalChildLaborMeasures": "systems"
 				},
 				"forcedLaborSlavery": {
 					"forcedLaborAndSlaveryPrevention": "No",
-					"forcedLaborAndSlaveryPreventionPractices": "bandwidth",
 					"forcedLaborPreventionPolicy": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
+						"value": "Yes"
 					},
 					"forcedLaborAndSlaveryPreventionMeasures": "No",
 					"forcedLaborAndSlaveryPreventionEmploymentContracts": "No",
 					"forcedLaborAndSlaveryPreventionIdentityDocuments": "No",
-					"forcedLaborAndSlaveryPreventionFreeMovement": "Yes",
-					"forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "No",
-					"forcedLaborAndSlaveryPreventionTraining": "Yes",
-					"forcedLaborAndSlaveryPreventionMeasuresOther": "niches"
+					"forcedLaborAndSlaveryPreventionMeasuresOther": "experiences"
 				},
 				"withholdingAdequateWages": {
 					"adequateWage": "Yes",
-					"adequateWagesMeasures": "Yes",
 					"documentedWorkingHoursAndWages": "No",
 					"adequateLivingWage": "Yes",
-					"regularWagesProcessFlow": "Yes",
-					"fixedHourlyWages": "No",
+					"fixedHourlyWages": "NA",
 					"fixedPieceworkWages": "No",
-					"adequateWageMeasures": "synergies"
+					"adequateWageMeasures": "communities"
 				},
 				"disregardForOccupationalHealthSafety": {
 					"lowSkillWork": "No",
-					"hazardousMachines": "No",
+					"hazardousMachines": "Yes",
 					"oshPolicy": "No",
-					"oshPolicyPersonalProtectiveEquipment": "No",
-					"oshPolicyMachineSafety": "No",
-					"oshPolicyDisasterBehavioralResponse": "No",
+					"oshPolicyPersonalProtectiveEquipment": "Yes",
+					"oshPolicyMachineSafety": "Yes",
 					"oshPolicyAccidentsBehavioralResponse": "No",
 					"oshPolicyWorkplaceErgonomics": "Yes",
 					"oshPolicyAccessToWork": "Yes",
-					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "Yes",
-					"oshPolicyFireProtection": "No",
+					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "No",
+					"oshPolicyFireProtection": "Yes",
 					"oshPolicyWorkingHours": "No",
-					"oshPolicyTrainingAddressed": "No",
-					"oshPolicyTraining": "Yes",
-					"oshManagementSystem": "No",
+					"oshPolicyTrainingAddressed": "Yes",
+					"oshPolicyTraining": "No",
 					"oshManagementSystemInternationalCertification": {
 						"value": "Yes",
 						"dataSource": {
@@ -1321,87 +1833,63 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"oshManagementSystemNationalCertification": {
+					"under10WorkplaceAccidents": "Yes",
+					"oshTraining": "Yes",
+					"healthAndSafetyPolicy": {
+						"value": "No"
+					}
+				},
+				"disregardForFreedomOfAssociation": {
+					"freedomOfAssociation": "Yes",
+					"employeeRepresentationInPercent": 47.8203,
+					"discriminationForTradeUnionMembers": "Yes",
+					"freedomOfOperationForTradeUnion": "Yes"
+				},
+				"unequalTreatmentOfEmployment": {
+					"unequalTreatmentOfEmployment": "No",
+					"preventionOfMistreatments": "Yes",
+					"equalOpportunitiesOfficer": "Yes",
+					"fairAndEthicalRecruitmentPolicy": {
+						"value": "No"
+					},
+					"equalOpportunitiesAndNonDiscriminationPolicy": {
 						"value": "Yes",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					},
-					"under10WorkplaceAccidents": "Yes",
-					"oshTraining": "Yes",
-					"healthAndSafetyPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					}
-				},
-				"disregardForFreedomOfAssociation": {
-					"freedomOfAssociation": "Yes",
-					"employeeRepresentationInPercent": 4.8575,
-					"discriminationForTradeUnionMembers": "Yes",
-					"freedomOfOperationForTradeUnion": "No",
-					"freedomOfAssociationTraining": "Yes",
-					"worksCouncil": "Yes"
-				},
-				"unequalTreatmentOfEmployment": {
-					"unequalTreatmentOfEmployment": "No",
-					"diversityAndInclusionRole": "No",
-					"preventionOfMistreatments": "Yes",
-					"equalOpportunitiesOfficer": "No",
-					"fairAndEthicalRecruitmentPolicy": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"equalOpportunitiesAndNonDiscriminationPolicy": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
 					}
 				},
 				"contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
-					"harmfulSoilImpact": "No",
+					"harmfulSoilImpact": "Yes",
 					"soilDegradation": "Yes",
 					"soilErosion": "No",
 					"soilBorneDiseases": "No",
 					"soilContamination": "Yes",
-					"soilSalinization": "No",
-					"harmfulWaterPollution": "No",
+					"soilSalinization": "Yes",
 					"fertilizersOrPollutants": "No",
 					"wasteWaterFiltration": "Yes",
 					"harmfulAirPollution": "No",
 					"airFiltration": "Yes",
 					"harmfulNoiseEmission": "Yes",
-					"reduceNoiseEmissions": "Yes",
-					"excessiveWaterConsumption": "No",
-					"waterSavingMeasures": "No",
-					"waterSavingMeasuresName": "paradigms",
-					"pipeMaintaining": "No",
-					"waterSources": "No",
-					"contaminationMeasures": "mindshare"
+					"waterSavingMeasures": "Yes",
+					"waterSavingMeasuresName": "content",
+					"waterSources": "No"
 				},
 				"unlawfulEvictionDeprivationOfLandForestAndWater": {
 					"unlawfulEvictionAndTakingOfLand": "Yes",
-					"unlawfulEvictionAndTakingOfLandRisk": "platforms",
-					"unlawfulEvictionAndTakingOfLandStrategies": "Yes",
+					"unlawfulEvictionAndTakingOfLandRisk": "web services",
+					"unlawfulEvictionAndTakingOfLandStrategies": "No",
 					"unlawfulEvictionAndTakingOfLandStrategiesName": "portals",
-					"voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": "No"
+					"voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": "Yes"
 				},
 				"useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
 					"useOfPrivatePublicSecurityForces": "No",
-					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "Yes",
+					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "No",
 					"instructionOfSecurityForces": "Yes",
-					"humanRightsTraining": "No",
-					"stateSecurityForces": "No",
-					"privateSecurityForces": "NA",
-					"useOfPrivatePublicSecurityForcesMeasures": "lifetime value"
+					"humanRightsTraining": "Yes",
+					"stateSecurityForces": "NA",
+					"useOfPrivatePublicSecurityForcesMeasures": "methodologies"
 				}
 			},
 			"environmental": {
@@ -1410,419 +1898,26 @@
 					"mercuryAndMercuryWasteHandlingPolicy": {
 						"value": "No",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"mercuryAddedProductsHandling": "No",
-					"mercuryAddedProductsHandlingRiskOfExposure": "No",
+					"mercuryAddedProductsHandling": "Yes",
 					"mercuryAddedProductsHandlingRiskOfDisposal": "No",
-					"mercuryAndMercuryCompoundsProductionAndUse": "Yes",
-					"mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": "Yes"
+					"mercuryAndMercuryCompoundsProductionAndUse": "No"
 				},
 				"productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
-					"persistentOrganicPollutantsProductionAndUse": "Yes",
-					"persistentOrganicPollutantsUsed": "platforms",
+					"persistentOrganicPollutantsProductionAndUse": "No",
+					"persistentOrganicPollutantsUsed": "applications",
 					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "No",
-					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "No",
-					"legalRestrictedWasteProcesses": "No"
+					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "No"
 				},
 				"exportImportOfHazardousWasteBaselConvention": {
-					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "No",
 					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "No",
 					"hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": "Yes",
-					"hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": "Yes",
-					"hazardousWasteDisposal": "Yes",
-					"hazardousWasteDisposalRiskOfImport": "Yes",
-					"hazardousWasteDisposalOtherWasteImport": "Yes"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "LkSG-date-2023-04-18",
-			"headquarters": "New Kayceehaven",
-			"headquartersPostalCode": "77437-5309",
-			"sector": "communities",
-			"identifiers": {
-				"Lei": [
-					"uEQtCp5L4iGXCZKXyaJf"
-				],
-				"Isin": [
-					"qY7Artj4GRmu"
-				],
-				"PermId": [],
-				"Ticker": [
-					"cqZN62O"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"ojwkAwfBr"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "CR",
-			"companyAlternativeNames": [
-				"Konopelski and Sons",
-				"McClure Inc",
-				"McClure LLC",
-				"Paucek, Dach and Jaskolski"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://energetic-synod.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"masterData": {
-					"dataDate": "2023-04-18",
-					"groupOfCompanies": "No",
-					"groupOfCompaniesName": "Prosacco Group",
-					"industry": [
-						"09.90",
-						"77.3"
-					],
-					"numberOfEmployees": 2906,
-					"shareOfTemporaryWorkers": "Greater50",
-					"annualTotalRevenue": 9618669336.2,
-					"totalRevenueCurrency": "HUF"
-				},
-				"productionSpecific": {
-					"manufacturingCompany": "No",
-					"capacity": "1 Salad per Friday",
-					"productionViaSubcontracting": "No",
-					"subcontractingCompaniesCountries": [
-						"ID"
-					],
-					"subcontractingCompaniesIndustries": [
-						"52.29",
-						"94.12"
-					],
-					"productionSites": "Yes",
-					"listOfProductionSites": [],
-					"market": "Both",
-					"specificProcurement": "Yes"
-				},
-				"productionSpecificOwnOperations": {
-					"mostImportantProducts": [
-						{
-							"name": "Refined Fresh Keyboard",
-							"productionSteps": [
-								"decry Concrete"
-							],
-							"relatedCorporateSupplyChain": "Omnis ab quaerat accusantium repudiandae aut tempora similique ipsam. Dolores perferendis libero nihil itaque quaerat rem."
-						},
-						{
-							"name": "Licensed Wooden Shirt",
-							"productionSteps": [
-								"divorce Rubber"
-							],
-							"relatedCorporateSupplyChain": "Fugit eos accusantium pariatur. Ut dicta laborum officiis omnis. Totam facilis non provident provident occaecati perferendis ab."
-						},
-						{
-							"name": "Modern Cotton Ball",
-							"productionSteps": [],
-							"relatedCorporateSupplyChain": "Vitae suscipit eveniet quod quam voluptatibus quam aut iste. Soluta inventore nesciunt nostrum perspiciatis placeat dicta dolor dolor. Molestias rem molestiae amet voluptatum expedita porro ratione unde neque. Doloribus nobis minima expedita et magni autem et. Ad excepturi commodi voluptatibus. Fugiat vitae commodi error."
-						}
-					],
-					"productsServicesCategoriesPurchased": {
-						"Products": {
-							"procuredProductTypesAndServicesNaceCodes": [
-								"10.20",
-								"46.22",
-								"47.77"
-							],
-							"numberOfSuppliersPerCountryCode": {},
-							"shareOfTotalProcurementInPercent": 7.638
-						}
-					}
-				}
-			},
-			"governance": {
-				"riskManagementOwnOperations": {
-					"riskManagementSystem": "Yes",
-					"riskAnalysisInFiscalYear": "No",
-					"risksIdentified": "No",
-					"identifiedRisks": "convergence",
-					"regulatedRiskManagementResponsibility": "No",
-					"environmentalManagementSystemInternationalCertification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					}
-				},
-				"grievanceMechanismOwnOperations": {
-					"grievanceHandlingMechanism": "Yes",
-					"appropriateGrievanceHandlingInformation": "Yes",
-					"appropriateGrievanceHandlingSupport": "No",
-					"accessToExpertiseForGrievanceHandling": "No",
-					"grievanceComplaints": "Yes",
-					"complaintsNumber": 1294,
-					"complaintsReason": "communities",
-					"actionsForComplaintsUndertaken": "Yes",
-					"whichActionsForComplaintsUndertaken": "relationships",
-					"publicAccessToGrievanceHandling": "Yes",
-					"whistleblowerProtection": "No"
-				},
-				"certificationsPoliciesAndResponsibilities": {
-					"sa8000Certification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"smetaSocialAuditConcept": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"betterWorkProgramCertificate": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"iso14001Certification": {
-						"value": "No"
-					},
-					"iso37001Certification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"iso37301Certification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"amforiBsciAuditReport": {
-						"value": "No"
-					},
-					"responsibleBusinessAssociationCertification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"fairLaborAssociationCertification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"additionalAudits": "technologies",
-					"codeOfConduct": {
-						"value": "Yes"
-					},
-					"codeOfConductTraining": "No",
-					"supplierCodeOfConduct": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"policyStatement": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"humanRightsStrategy": "architectures",
-					"environmentalImpactPolicy": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"fairWorkingConditionsPolicy": {
-						"value": "No"
-					}
-				},
-				"generalViolations": {
-					"responsibilitiesForTheEnvironment": "Yes",
-					"responsibilitiesForOccupationalSafety": "No",
-					"legalProceedings": "No",
-					"humanRightsViolationS": "No",
-					"humanRightsViolations": "interfaces",
-					"humanRightsViolationAction": "Yes",
-					"humanRightsViolationActionMeasures": "content",
-					"highRiskCountriesRawMaterials": "No",
-					"highRiskCountriesRawMaterialsLocation": [],
-					"highRiskCountriesActivity": "No",
-					"highRiskCountriesProcurement": "Yes",
-					"highRiskCountriesProcurementName": [
-						"CD",
-						"KP"
-					]
-				}
-			},
-			"social": {
-				"childLabor": {
-					"employeeSUnder18": "Yes",
-					"employeeSUnder15": "No",
-					"employeeSUnder18InApprenticeship": "Yes",
-					"worstFormsOfChildLaborProhibition": "Yes",
-					"worstFormsOfChildLaborForms": "applications",
-					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
-					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes",
-					"employmentUnderLocalMinimumAgePreventionJobDescription": "Yes",
-					"employmentUnderLocalMinimumAgePreventionIdentityDocuments": "No",
-					"employmentUnderLocalMinimumAgePreventionTraining": "Yes",
-					"employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "No",
-					"additionalChildLaborMeasures": "e-markets"
-				},
-				"forcedLaborSlavery": {
-					"forcedLaborAndSlaveryPrevention": "Yes",
-					"forcedLaborAndSlaveryPreventionPractices": "lifetime value",
-					"forcedLaborPreventionPolicy": {
-						"value": "No",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"forcedLaborAndSlaveryPreventionMeasures": "Yes",
-					"forcedLaborAndSlaveryPreventionIdentityDocuments": "No",
-					"forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "Yes",
-					"forcedLaborAndSlaveryPreventionTraining": "Yes",
-					"forcedLaborAndSlaveryPreventionMeasuresOther": "systems"
-				},
-				"withholdingAdequateWages": {
-					"adequateWagesMeasures": "Yes",
-					"documentedWorkingHoursAndWages": "No",
-					"adequateLivingWage": "No",
-					"regularWagesProcessFlow": "Yes",
-					"adequateWageMeasures": "web services"
-				},
-				"disregardForOccupationalHealthSafety": {
-					"lowSkillWork": "Yes",
-					"hazardousMachines": "Yes",
-					"oshPolicy": "Yes",
-					"oshPolicyPersonalProtectiveEquipment": "No",
-					"oshPolicyMachineSafety": "NA",
-					"oshPolicyAccidentsBehavioralResponse": "No",
-					"oshPolicyWorkplaceErgonomics": "Yes",
-					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "No",
-					"oshPolicyFireProtection": "No",
-					"oshPolicyTrainingAddressed": "No",
-					"oshPolicyTraining": "Yes",
-					"oshManagementSystem": "Yes",
-					"oshManagementSystemInternationalCertification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"under10WorkplaceAccidents": "No",
-					"oshTraining": "Yes",
-					"healthAndSafetyPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					}
-				},
-				"disregardForFreedomOfAssociation": {
-					"freedomOfAssociation": "No",
-					"discriminationForTradeUnionMembers": "No",
-					"freedomOfOperationForTradeUnion": "Yes",
-					"freedomOfAssociationTraining": "No"
-				},
-				"unequalTreatmentOfEmployment": {
-					"unequalTreatmentOfEmployment": "No",
-					"diversityAndInclusionRole": "No",
-					"preventionOfMistreatments": "No",
-					"equalOpportunitiesOfficer": "No",
-					"fairAndEthicalRecruitmentPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"equalOpportunitiesAndNonDiscriminationPolicy": {
-						"value": "No",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					}
-				},
-				"contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
-					"harmfulSoilImpact": "No",
-					"soilDegradation": "Yes",
-					"soilBorneDiseases": "Yes",
-					"soilContamination": "No",
-					"soilSalinization": "No",
-					"fertilizersOrPollutants": "No",
-					"wasteWaterFiltration": "No",
-					"harmfulAirPollution": "Yes",
-					"reduceNoiseEmissions": "No",
-					"waterSavingMeasures": "Yes",
-					"waterSavingMeasuresName": "supply-chains",
-					"pipeMaintaining": "Yes",
-					"waterSources": "No",
-					"contaminationMeasures": "e-commerce"
-				},
-				"unlawfulEvictionDeprivationOfLandForestAndWater": {
-					"unlawfulEvictionAndTakingOfLand": "Yes",
-					"unlawfulEvictionAndTakingOfLandRisk": "applications",
-					"unlawfulEvictionAndTakingOfLandStrategies": "No",
-					"unlawfulEvictionAndTakingOfLandStrategiesName": "portals"
-				},
-				"useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
-					"useOfPrivatePublicSecurityForces": "No",
-					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "Yes",
-					"humanRightsTraining": "No",
-					"privateSecurityForces": "NA",
-					"useOfPrivatePublicSecurityForcesMeasures": "eyeballs"
-				}
-			},
-			"environmental": {
-				"useOfMercuryMercuryWasteMinamataConvention": {
-					"mercuryAndMercuryWasteHandling": "Yes",
-					"mercuryAndMercuryWasteHandlingPolicy": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"mercuryAddedProductsHandlingRiskOfExposure": "No",
-					"mercuryAddedProductsHandlingRiskOfDisposal": "No",
-					"mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": "Yes"
-				},
-				"productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
-					"persistentOrganicPollutantsProductionAndUse": "Yes",
-					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "Yes",
-					"legalRestrictedWasteProcesses": "Yes"
-				},
-				"exportImportOfHazardousWasteBaselConvention": {
-					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "Yes",
-					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "Yes",
-					"hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": "No",
-					"hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": "Yes",
-					"hazardousWasteDisposal": "Yes",
-					"hazardousWasteDisposalRiskOfImport": "No"
+					"hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": "No",
+					"hazardousWasteDisposal": "No",
+					"hazardousWasteDisposalOtherWasteImport": "No"
 				}
 			}
 		},
@@ -1831,34 +1926,37 @@
 	{
 		"companyInformation": {
 			"companyName": "LkSG-date-2023-06-22",
-			"headquarters": "Ziemannville",
-			"headquartersPostalCode": "68822-1618",
-			"sector": "e-business",
+			"headquarters": "Rockford",
+			"headquartersPostalCode": "48986-4889",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"5JhVnTB1uxkY8UtEx4LW"
+				],
 				"Isin": [
-					"olKdhpNl68ZR"
+					"SKMxU6BFzjtj"
 				],
 				"PermId": [
-					"rsJksyfkg5"
+					"vq79oXzWEG"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"FkHFmbS"
+				],
 				"Duns": [
-					"bgzHPINld"
+					"WPyuOE2Y6"
 				],
-				"VatNumber": [
-					"tj3qryK7D"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"yJUR03xqkvkqJ6R"
+				]
 			},
-			"countryCode": "CG",
+			"countryCode": "BF",
 			"companyAlternativeNames": [
-				"Moore and Sons",
-				"Stokes Group",
-				"Streich - Gottlieb"
+				"Dicki - Medhurst",
+				"Fahey, Kunze and Stehr",
+				"Upton, Bednar and Cummerata"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://thankful-lilac.name",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://gripping-tactics.org",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -1866,129 +1964,44 @@
 				"masterData": {
 					"dataDate": "2023-06-22",
 					"headOfficeInGermany": "No",
-					"groupOfCompanies": "No",
-					"groupOfCompaniesName": "Macejkovic Inc",
-					"industry": [
-						"32.30"
-					],
-					"numberOfEmployees": 7651,
+					"industry": [],
+					"numberOfEmployees": 1192,
 					"seasonalOrMigrantWorkers": "Yes",
-					"shareOfTemporaryWorkers": "Smaller10",
-					"totalRevenueCurrency": "RUB",
-					"fixedAndWorkingCapital": 6561
+					"shareOfTemporaryWorkers": "Between10And25",
+					"annualTotalRevenue": 3475112773.01,
+					"totalRevenueCurrency": "MZN",
+					"fixedAndWorkingCapital": 2401
 				},
 				"productionSpecific": {
-					"manufacturingCompany": "No",
-					"capacity": "0 Shirt per Saturday",
-					"productionViaSubcontracting": "No",
-					"subcontractingCompaniesCountries": [
-						"GA"
-					],
+					"manufacturingCompany": "Yes",
+					"capacity": "2 Salad per Sunday",
+					"productionViaSubcontracting": "Yes",
 					"subcontractingCompaniesIndustries": [
-						"08.99",
-						"63.91"
+						"60"
 					],
 					"productionSites": "Yes",
-					"listOfProductionSites": [
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kian Road 2207",
-								"postalCode": "33378-5104",
-								"city": "South Bartonstad",
-								"state": "Alaska",
-								"country": "SX"
-							}
-						},
-						{
-							"nameOfProductionSite": "White - Glover",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Maxine Grove 1869",
-								"postalCode": "67828",
-								"city": "Immanuelstad",
-								"country": "IQ"
-							},
-							"listOfGoodsOrServices": [
-								"Handmade Wooden Bacon",
-								"Intelligent Metal Tuna"
-							]
-						},
-						{
-							"nameOfProductionSite": "Herzog - Hand",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Liza Landing 27142",
-								"postalCode": "22149-2345",
-								"city": "Cruickshankfield",
-								"state": "Ohio",
-								"country": "NR"
-							},
-							"listOfGoodsOrServices": [
-								"Handcrafted Fresh Bike",
-								"Tasty Steel Salad",
-								"Bespoke Frozen Car"
-							]
-						},
-						{
-							"nameOfProductionSite": "Franey Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kunde Highway 975",
-								"postalCode": "13288-6892",
-								"city": "Port Colinborough",
-								"state": "Tennessee",
-								"country": "NO"
-							},
-							"listOfGoodsOrServices": [
-								"Small Fresh Computer",
-								"Gorgeous Cotton Fish",
-								"Generic Granite Bacon",
-								"Tasty Plastic Salad"
-							]
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Tina Park 157",
-								"postalCode": "02276",
-								"city": "Lake Virgilside",
-								"state": "Missouri",
-								"country": "AO"
-							},
-							"listOfGoodsOrServices": [
-								"Elegant Soft Bacon",
-								"Generic Concrete Bike",
-								"Unbranded Soft Pants"
-							]
-						}
-					],
-					"market": "National",
-					"specificProcurement": "Yes"
+					"listOfProductionSites": []
 				},
 				"productionSpecificOwnOperations": {
-					"mostImportantProducts": [
-						{
-							"name": "Generic Fresh Sausages",
-							"productionSteps": [],
-							"relatedCorporateSupplyChain": "Quas veniam iste ad provident dolorum adipisci cupiditate esse. Itaque culpa voluptatem harum voluptatem autem. Maiores possimus doloribus eligendi eos dicta aut deleniti architecto blanditiis. Incidunt aliquam odit itaque laboriosam magnam."
-						}
-					],
+					"mostImportantProducts": [],
 					"productsServicesCategoriesPurchased": {
-						"Products": {
+						"RawMaterials": {
 							"procuredProductTypesAndServicesNaceCodes": [
-								"10.20",
-								"43.99",
-								"46.34",
-								"46.62",
-								"69.20"
+								"36.0",
+								"M"
 							],
 							"numberOfSuppliersPerCountryCode": {},
-							"shareOfTotalProcurementInPercent": 90.8707
+							"shareOfTotalProcurementInPercent": 63.0977
 						},
 						"Services": {
 							"procuredProductTypesAndServicesNaceCodes": [
-								"22.2",
-								"25.91",
-								"35.23",
-								"45.20"
+								"27"
 							],
-							"shareOfTotalProcurementInPercent": 77.0392
+							"numberOfSuppliersPerCountryCode": {
+								"NF": 12,
+								"KI": 1
+							},
+							"shareOfTotalProcurementInPercent": 36.2175
 						}
 					}
 				}
@@ -1996,12 +2009,12 @@
 			"governance": {
 				"riskManagementOwnOperations": {
 					"riskManagementSystem": "Yes",
-					"riskAnalysisInFiscalYear": "Yes",
+					"riskAnalysisInFiscalYear": "No",
 					"risksIdentified": "Yes",
-					"identifiedRisks": "lifetime value",
+					"identifiedRisks": "metrics",
 					"counteractingMeasures": "Yes",
-					"whichCounteractingMeasures": "users",
-					"regulatedRiskManagementResponsibility": "No",
+					"whichCounteractingMeasures": "content",
+					"regulatedRiskManagementResponsibility": "Yes",
 					"environmentalManagementSystem": "Yes",
 					"environmentalManagementSystemInternationalCertification": {
 						"value": "No",
@@ -2011,7 +2024,7 @@
 						}
 					},
 					"environmentalManagementSystemNationalCertification": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -2019,38 +2032,24 @@
 					}
 				},
 				"grievanceMechanismOwnOperations": {
-					"grievanceHandlingMechanism": "Yes",
 					"grievanceHandlingReportingAccessible": "Yes",
 					"appropriateGrievanceHandlingInformation": "No",
-					"appropriateGrievanceHandlingSupport": "Yes",
-					"accessToExpertiseForGrievanceHandling": "No",
-					"complaintsNumber": 8258,
-					"complaintsReason": "niches",
-					"actionsForComplaintsUndertaken": "Yes",
-					"whichActionsForComplaintsUndertaken": "blockchains",
-					"publicAccessToGrievanceHandling": "No",
-					"whistleblowerProtection": "Yes",
-					"dueDiligenceProcessForGrievanceHandling": "Yes"
+					"accessToExpertiseForGrievanceHandling": "Yes",
+					"grievanceComplaints": "No",
+					"complaintsNumber": 3691,
+					"complaintsReason": "deliverables",
+					"whichActionsForComplaintsUndertaken": "interfaces",
+					"publicAccessToGrievanceHandling": "No"
 				},
 				"certificationsPoliciesAndResponsibilities": {
 					"sa8000Certification": {
-						"value": "Yes"
-					},
-					"smetaSocialAuditConcept": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"betterWorkProgramCertificate": {
-						"value": "NA",
+						"value": "Yes",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"iso45001Certification": {
+					"betterWorkProgramCertificate": {
 						"value": "Yes",
 						"dataSource": {
 							"name": "Policy",
@@ -2058,17 +2057,14 @@
 						}
 					},
 					"iso14001Certification": {
-						"value": "Yes"
-					},
-					"emasCertification": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"iso37001Certification": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -2077,83 +2073,75 @@
 					"iso37301Certification": {
 						"value": "No",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"riskManagementSystemCertification": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"name": "Certification",
+							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"amforiBsciAuditReport": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"responsibleBusinessAssociationCertification": {
-						"value": "No",
+					"fairLaborAssociationCertification": {
+						"value": "Yes",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"additionalAudits": "supply-chains",
+					"additionalAudits": "relationships",
 					"codeOfConduct": {
 						"value": "Yes"
 					},
-					"codeOfConductTraining": "Yes",
+					"codeOfConductTraining": "No",
 					"supplierCodeOfConduct": {
 						"value": "No",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"policyStatement": {
-						"value": "No",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"humanRightsStrategy": "systems",
-					"environmentalImpactPolicy": {
 						"value": "Yes",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
+					"humanRightsStrategy": "functionalities",
 					"fairWorkingConditionsPolicy": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
+						"value": "Yes"
 					}
 				},
 				"generalViolations": {
-					"responsibilitiesForFairWorkingConditions": "Yes",
+					"responsibilitiesForFairWorkingConditions": "No",
+					"responsibilitiesForTheEnvironment": "Yes",
+					"responsibilitiesForOccupationalSafety": "No",
+					"legalProceedings": "Yes",
 					"humanRightsViolationS": "Yes",
-					"humanRightsViolations": "content",
+					"humanRightsViolations": "convergence",
 					"humanRightsViolationAction": "No",
-					"humanRightsViolationActionMeasures": "synergies",
+					"humanRightsViolationActionMeasures": "portals",
 					"highRiskCountriesRawMaterials": "No",
 					"highRiskCountriesRawMaterialsLocation": [],
 					"highRiskCountriesActivity": "Yes",
 					"highRiskCountries": [
-						"GN",
-						"UZ",
-						"NP",
-						"BI"
+						"ER",
+						"HM"
 					],
 					"highRiskCountriesProcurement": "Yes",
-					"highRiskCountriesProcurementName": []
+					"highRiskCountriesProcurementName": [
+						"NG"
+					]
 				}
 			},
 			"social": {
@@ -2161,60 +2149,60 @@
 					"childLaborPreventionPolicy": {
 						"value": "No",
 						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"employeeSUnder18": "Yes",
+					"worstFormsOfChildLaborProhibition": "Yes",
+					"worstFormsOfChildLaborForms": "technologies",
+					"employmentUnderLocalMinimumAgePreventionJobDescription": "Yes",
+					"employmentUnderLocalMinimumAgePreventionIdentityDocuments": "Yes",
+					"employmentUnderLocalMinimumAgePreventionTraining": "No",
+					"additionalChildLaborMeasures": "deliverables"
+				},
+				"forcedLaborSlavery": {
+					"forcedLaborAndSlaveryPreventionPractices": "eyeballs",
+					"forcedLaborPreventionPolicy": {
+						"value": "No",
+						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"employeeSUnder18": "No",
-					"worstFormsOfChildLaborProhibition": "Yes",
-					"worstFormsOfChildLabor": "No",
-					"worstFormsOfChildLaborForms": "initiatives",
-					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
-					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes",
-					"employmentUnderLocalMinimumAgePreventionJobDescription": "No",
-					"employmentUnderLocalMinimumAgePreventionTraining": "No",
-					"employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "Yes",
-					"additionalChildLaborMeasures": "schemas"
-				},
-				"forcedLaborSlavery": {
-					"forcedLaborAndSlaveryPrevention": "No",
-					"forcedLaborAndSlaveryPreventionPractices": "channels",
 					"forcedLaborAndSlaveryPreventionMeasures": "No",
-					"forcedLaborAndSlaveryPreventionEmploymentContracts": "Yes",
-					"forcedLaborAndSlaveryPreventionIdentityDocuments": "Yes",
-					"forcedLaborAndSlaveryPreventionFreeMovement": "Yes",
-					"forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "Yes",
-					"forcedLaborAndSlaveryPreventionTraining": "Yes"
+					"forcedLaborAndSlaveryPreventionEmploymentContracts": "No",
+					"forcedLaborAndSlaveryPreventionIdentityDocuments": "No",
+					"forcedLaborAndSlaveryPreventionFreeMovement": "No",
+					"forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "No",
+					"forcedLaborAndSlaveryPreventionTraining": "No",
+					"forcedLaborAndSlaveryPreventionMeasuresOther": "supply-chains"
 				},
 				"withholdingAdequateWages": {
-					"adequateWage": "No",
+					"adequateWage": "Yes",
 					"adequateWagesMeasures": "Yes",
-					"documentedWorkingHoursAndWages": "Yes",
+					"documentedWorkingHoursAndWages": "No",
 					"adequateLivingWage": "No",
 					"regularWagesProcessFlow": "No",
 					"fixedHourlyWages": "Yes",
-					"fixedPieceworkWages": "NA",
-					"adequateWageMeasures": "solutions"
+					"fixedPieceworkWages": "Yes"
 				},
 				"disregardForOccupationalHealthSafety": {
-					"lowSkillWork": "No",
 					"hazardousMachines": "Yes",
-					"oshPolicy": "No",
-					"oshPolicyPersonalProtectiveEquipment": "NA",
-					"oshPolicyMachineSafety": "No",
-					"oshPolicyDisasterBehavioralResponse": "No",
-					"oshPolicyAccidentsBehavioralResponse": "No",
-					"oshPolicyWorkplaceErgonomics": "No",
+					"oshPolicy": "Yes",
+					"oshPolicyPersonalProtectiveEquipment": "No",
+					"oshPolicyMachineSafety": "NA",
+					"oshPolicyWorkplaceErgonomics": "Yes",
 					"oshPolicyAccessToWork": "No",
-					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "Yes",
-					"oshPolicyFireProtection": "Yes",
-					"oshPolicyWorkingHours": "No",
+					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "No",
+					"oshPolicyFireProtection": "No",
+					"oshPolicyWorkingHours": "Yes",
 					"oshPolicyTrainingAddressed": "No",
 					"oshPolicyTraining": "No",
 					"oshManagementSystemInternationalCertification": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
@@ -2226,80 +2214,93 @@
 						}
 					},
 					"under10WorkplaceAccidents": "No",
-					"oshTraining": "No"
+					"oshTraining": "No",
+					"healthAndSafetyPolicy": {
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					}
 				},
 				"disregardForFreedomOfAssociation": {
-					"freedomOfAssociation": "No",
-					"employeeRepresentationInPercent": 28.5475,
-					"freedomOfAssociationTraining": "No",
-					"worksCouncil": "No"
+					"discriminationForTradeUnionMembers": "Yes",
+					"freedomOfOperationForTradeUnion": "No",
+					"freedomOfAssociationTraining": "Yes",
+					"worksCouncil": "Yes"
 				},
 				"unequalTreatmentOfEmployment": {
 					"unequalTreatmentOfEmployment": "Yes",
-					"diversityAndInclusionRole": "No",
-					"preventionOfMistreatments": "Yes",
-					"equalOpportunitiesOfficer": "No",
+					"diversityAndInclusionRole": "Yes",
+					"equalOpportunitiesOfficer": "Yes",
 					"fairAndEthicalRecruitmentPolicy": {
-						"value": "Yes"
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
 					},
 					"equalOpportunitiesAndNonDiscriminationPolicy": {
-						"value": "No"
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
 					}
 				},
 				"contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
-					"soilDegradation": "Yes",
-					"soilErosion": "No",
-					"soilBorneDiseases": "No",
-					"soilContamination": "No",
-					"harmfulWaterPollution": "No",
+					"harmfulSoilImpact": "No",
+					"soilDegradation": "No",
+					"soilContamination": "Yes",
 					"fertilizersOrPollutants": "No",
-					"wasteWaterFiltration": "No",
 					"harmfulAirPollution": "Yes",
-					"airFiltration": "Yes",
+					"airFiltration": "No",
 					"harmfulNoiseEmission": "No",
+					"reduceNoiseEmissions": "Yes",
 					"excessiveWaterConsumption": "No",
 					"waterSavingMeasures": "No",
-					"waterSavingMeasuresName": "users",
-					"pipeMaintaining": "Yes",
+					"waterSavingMeasuresName": "communities",
 					"waterSources": "No",
-					"contaminationMeasures": "paradigms"
+					"contaminationMeasures": "platforms"
 				},
 				"unlawfulEvictionDeprivationOfLandForestAndWater": {
-					"unlawfulEvictionAndTakingOfLand": "Yes",
-					"unlawfulEvictionAndTakingOfLandRisk": "metrics",
-					"unlawfulEvictionAndTakingOfLandStrategies": "Yes"
+					"unlawfulEvictionAndTakingOfLandRisk": "eyeballs",
+					"unlawfulEvictionAndTakingOfLandStrategies": "No",
+					"unlawfulEvictionAndTakingOfLandStrategiesName": "synergies",
+					"voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": "No"
 				},
 				"useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
-					"useOfPrivatePublicSecurityForces": "No",
+					"useOfPrivatePublicSecurityForces": "Yes",
 					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "Yes",
-					"instructionOfSecurityForces": "No",
+					"instructionOfSecurityForces": "Yes",
 					"humanRightsTraining": "No",
-					"stateSecurityForces": "NA",
-					"privateSecurityForces": "Yes",
-					"useOfPrivatePublicSecurityForcesMeasures": "ROI"
+					"privateSecurityForces": "NA",
+					"useOfPrivatePublicSecurityForcesMeasures": "e-markets"
 				}
 			},
 			"environmental": {
 				"useOfMercuryMercuryWasteMinamataConvention": {
-					"mercuryAddedProductsHandling": "Yes",
-					"mercuryAddedProductsHandlingRiskOfExposure": "No",
+					"mercuryAndMercuryWasteHandling": "Yes",
+					"mercuryAndMercuryWasteHandlingPolicy": {
+						"value": "Yes"
+					},
+					"mercuryAddedProductsHandling": "No",
 					"mercuryAddedProductsHandlingRiskOfDisposal": "No",
-					"mercuryAndMercuryCompoundsProductionAndUse": "Yes",
-					"mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": "Yes"
+					"mercuryAndMercuryCompoundsProductionAndUse": "Yes"
 				},
 				"productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
-					"persistentOrganicPollutantsProductionAndUse": "No",
-					"persistentOrganicPollutantsUsed": "relationships",
+					"persistentOrganicPollutantsUsed": "solutions",
 					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "Yes",
 					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "Yes",
-					"legalRestrictedWasteProcesses": "Yes"
+					"legalRestrictedWasteProcesses": "No"
 				},
 				"exportImportOfHazardousWasteBaselConvention": {
-					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "No",
+					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "Yes",
 					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "Yes",
-					"hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": "Yes",
-					"hazardousWasteDisposal": "Yes",
-					"hazardousWasteDisposalRiskOfImport": "No"
+					"hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": "No",
+					"hazardousWasteDisposal": "No",
+					"hazardousWasteDisposalRiskOfImport": "Yes",
+					"hazardousWasteDisposalOtherWasteImport": "No"
 				}
 			}
 		},
@@ -2308,102 +2309,124 @@
 	{
 		"companyInformation": {
 			"companyName": "LkSG-date-2022-07-30",
-			"headquarters": "Ellaville",
-			"headquartersPostalCode": "89256-6260",
-			"sector": "e-markets",
+			"headquarters": "Thomasstad",
+			"headquartersPostalCode": "74512-6680",
+			"sector": "content",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"KnMlpqGVEqaA",
-					"1IYqMBfbu9Ak"
+					"hYmjNDVDQocS",
+					"xfuh2FFrt1x4"
 				],
 				"PermId": [
-					"hTj45dX10i"
+					"hKqt1xBtJm"
 				],
 				"Ticker": [
-					"77yJL6m"
+					"6FeKW7G"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"CAiQl3rSb"
+				"Duns": [
+					"UT9nRAXDJ"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PT",
-			"companyAlternativeNames": [
-				"Boyer Group",
-				"Krajcik, Hand and Leannon",
-				"O'Reilly, Veum and Murphy",
-				"Yost, Frami and Schneider"
-			],
+			"countryCode": "KG",
+			"companyAlternativeNames": [],
 			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://menacing-bower.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"masterData": {
 					"dataDate": "2022-07-30",
-					"headOfficeInGermany": "Yes",
-					"groupOfCompanies": "Yes",
-					"industry": [],
-					"numberOfEmployees": 5148,
-					"annualTotalRevenue": 9475932409.99,
-					"fixedAndWorkingCapital": 5272
+					"industry": [
+						"25.6",
+						"25.92",
+						"43.9",
+						"N"
+					],
+					"numberOfEmployees": 6352,
+					"shareOfTemporaryWorkers": "Greater50",
+					"totalRevenueCurrency": "SEK",
+					"fixedAndWorkingCapital": 5126
 				},
 				"productionSpecific": {
-					"manufacturingCompany": "No",
-					"capacity": "12 Chair per Monday",
+					"productionViaSubcontracting": "No",
 					"subcontractingCompaniesCountries": [
-						"LA",
-						"MR",
-						"VE",
-						"NI",
-						"LA"
-					],
-					"subcontractingCompaniesIndustries": [
-						"10.1",
-						"70.10"
+						"SE",
+						"CI",
+						"KG",
+						"GM",
+						"MO"
 					],
 					"productionSites": "Yes",
-					"market": "International",
-					"specificProcurement": "No"
+					"market": "Both"
 				},
 				"productionSpecificOwnOperations": {
-					"mostImportantProducts": [],
-					"productsServicesCategoriesPurchased": {
-						"Products": {
-							"procuredProductTypesAndServicesNaceCodes": [
-								"47.1"
+					"mostImportantProducts": [
+						{
+							"name": "Awesome Cotton Car",
+							"productionSteps": [
+								"joggle Soft",
+								"reinvest Wooden",
+								"bay Cotton",
+								"opine Frozen"
 							],
-							"shareOfTotalProcurementInPercent": 25.1417
+							"relatedCorporateSupplyChain": "Exercitationem corporis quibusdam voluptas aliquam debitis nihil mollitia perspiciatis earum. Excepturi cumque necessitatibus sit placeat rerum accusamus enim corrupti. At suscipit quidem quae tenetur similique unde reprehenderit. Corrupti atque est atque inventore minima mollitia assumenda illum. Sint autem eligendi quasi eos ab."
+						},
+						{
+							"name": "Intelligent Steel Shoes",
+							"productionSteps": [],
+							"relatedCorporateSupplyChain": "Quos facilis facilis odio veritatis. Vel eaque corporis voluptas blanditiis at beatae. Ab iste cupiditate possimus magnam totam ipsa delectus unde. Inventore ad error sint ab a. Quia sed autem delectus ratione aut culpa magnam nesciunt alias. Nam numquam libero consequatur consequatur quidem ipsam placeat minima sunt."
+						},
+						{
+							"name": "Bespoke Bronze Car",
+							"relatedCorporateSupplyChain": "Vero officia perferendis commodi aperiam ut praesentium accusamus impedit tempora. Vel doloremque doloribus."
+						},
+						{
+							"name": "Luxurious Fresh Hat",
+							"productionSteps": [
+								"democratise Steel"
+							],
+							"relatedCorporateSupplyChain": "Ducimus magni libero molestiae itaque totam et. A sequi tempore ad esse eligendi quis. Recusandae distinctio nesciunt. Ipsa aperiam architecto quia beatae tempora. Sint facilis omnis voluptatibus excepturi nam quis tempore nulla."
 						}
-					}
+					]
 				}
 			},
 			"governance": {
 				"riskManagementOwnOperations": {
-					"riskManagementSystem": "No",
-					"riskAnalysisInFiscalYear": "Yes",
+					"riskManagementSystem": "Yes",
+					"riskAnalysisInFiscalYear": "No",
 					"risksIdentified": "Yes",
-					"identifiedRisks": "architectures",
-					"counteractingMeasures": "Yes",
-					"whichCounteractingMeasures": "lifetime value",
+					"identifiedRisks": "web services",
+					"counteractingMeasures": "No",
 					"regulatedRiskManagementResponsibility": "Yes",
 					"environmentalManagementSystem": "No",
 					"environmentalManagementSystemInternationalCertification": {
-						"value": "Yes"
+						"value": "No",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"environmentalManagementSystemNationalCertification": {
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
 					}
 				},
 				"grievanceMechanismOwnOperations": {
-					"grievanceHandlingMechanism": "No",
-					"grievanceHandlingReportingAccessible": "No",
+					"grievanceHandlingMechanism": "Yes",
+					"appropriateGrievanceHandlingInformation": "Yes",
 					"appropriateGrievanceHandlingSupport": "No",
 					"accessToExpertiseForGrievanceHandling": "No",
-					"complaintsNumber": 4673,
-					"complaintsReason": "web services",
-					"whichActionsForComplaintsUndertaken": "interfaces",
-					"publicAccessToGrievanceHandling": "No",
+					"grievanceComplaints": "No",
+					"complaintsNumber": 1809,
+					"complaintsReason": "markets",
+					"actionsForComplaintsUndertaken": "Yes",
+					"whichActionsForComplaintsUndertaken": "supply-chains",
 					"whistleblowerProtection": "Yes",
 					"dueDiligenceProcessForGrievanceHandling": "No"
 				},
@@ -2411,12 +2434,16 @@
 					"sa8000Certification": {
 						"value": "No",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"smetaSocialAuditConcept": {
-						"value": "Yes"
+						"value": "No",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
 					},
 					"betterWorkProgramCertificate": {
 						"value": "Yes",
@@ -2425,15 +2452,22 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
+					"iso45001Certification": {
+						"value": "No"
+					},
 					"iso14001Certification": {
 						"value": "Yes",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"emasCertification": {
-						"value": "Yes"
+						"value": "Yes",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
 					},
 					"iso37001Certification": {
 						"value": "No",
@@ -2443,7 +2477,11 @@
 						}
 					},
 					"iso37301Certification": {
-						"value": "Yes"
+						"value": "Yes",
+						"dataSource": {
+							"name": "Policy",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
 					},
 					"riskManagementSystemCertification": {
 						"value": "No",
@@ -2452,17 +2490,10 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"amforiBsciAuditReport": {
+					"responsibleBusinessAssociationCertification": {
 						"value": "No",
 						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"responsibleBusinessAssociationCertification": {
-						"value": "Yes",
-						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
@@ -2473,28 +2504,32 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"additionalAudits": "content",
-					"supplierCodeOfConduct": {
-						"value": "No",
-						"dataSource": {
-							"name": "Policy",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"policyStatement": {
-						"value": "No",
+					"additionalAudits": "markets",
+					"codeOfConduct": {
+						"value": "Yes",
 						"dataSource": {
 							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"humanRightsStrategy": "action-items",
-					"environmentalImpactPolicy": {
+					"codeOfConductTraining": "No",
+					"supplierCodeOfConduct": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"policyStatement": {
 						"value": "Yes",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
+					},
+					"humanRightsStrategy": "portals",
+					"environmentalImpactPolicy": {
+						"value": "No"
 					},
 					"fairWorkingConditionsPolicy": {
 						"value": "Yes",
@@ -2506,77 +2541,89 @@
 				},
 				"generalViolations": {
 					"responsibilitiesForFairWorkingConditions": "Yes",
-					"responsibilitiesForTheEnvironment": "Yes",
+					"responsibilitiesForTheEnvironment": "No",
 					"responsibilitiesForOccupationalSafety": "Yes",
+					"legalProceedings": "Yes",
 					"humanRightsViolationS": "Yes",
-					"humanRightsViolations": "e-markets",
-					"humanRightsViolationAction": "No",
-					"highRiskCountriesRawMaterials": "No",
+					"humanRightsViolations": "bandwidth",
+					"humanRightsViolationAction": "Yes",
+					"humanRightsViolationActionMeasures": "content",
+					"highRiskCountriesRawMaterials": "Yes",
 					"highRiskCountriesRawMaterialsLocation": [
-						"JE",
-						"MS",
-						"IO",
-						"LI",
-						"EE"
+						"GB",
+						"UZ",
+						"CM"
 					],
-					"highRiskCountriesActivity": "Yes",
 					"highRiskCountries": [
-						"AG",
-						"WS"
+						"TT",
+						"NE"
 					],
-					"highRiskCountriesProcurement": "No"
+					"highRiskCountriesProcurementName": [
+						"AR"
+					]
 				}
 			},
 			"social": {
 				"childLabor": {
 					"childLaborPreventionPolicy": {
-						"value": "No"
-					},
-					"employeeSUnder18": "No",
-					"employeeSUnder15": "No",
-					"worstFormsOfChildLabor": "Yes",
-					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
-					"employmentUnderLocalMinimumAgePreventionJobDescription": "Yes",
-					"employmentUnderLocalMinimumAgePreventionIdentityDocuments": "Yes",
-					"additionalChildLaborMeasures": "initiatives"
-				},
-				"forcedLaborSlavery": {
-					"forcedLaborAndSlaveryPrevention": "No",
-					"forcedLaborPreventionPolicy": {
 						"value": "No",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
+					"employeeSUnder18": "No",
+					"employeeSUnder15": "No",
+					"employeeSUnder18InApprenticeship": "Yes",
+					"worstFormsOfChildLaborProhibition": "Yes",
+					"worstFormsOfChildLabor": "No",
+					"worstFormsOfChildLaborForms": "applications",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionJobDescription": "No",
+					"employmentUnderLocalMinimumAgePreventionIdentityDocuments": "No",
+					"employmentUnderLocalMinimumAgePreventionTraining": "No",
+					"employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "No",
+					"additionalChildLaborMeasures": "interfaces"
+				},
+				"forcedLaborSlavery": {
+					"forcedLaborAndSlaveryPrevention": "No",
+					"forcedLaborAndSlaveryPreventionPractices": "technologies",
 					"forcedLaborAndSlaveryPreventionMeasures": "No",
-					"forcedLaborAndSlaveryPreventionEmploymentContracts": "Yes",
 					"forcedLaborAndSlaveryPreventionFreeMovement": "Yes",
 					"forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "Yes",
 					"forcedLaborAndSlaveryPreventionTraining": "Yes",
-					"forcedLaborAndSlaveryPreventionMeasuresOther": "networks"
+					"forcedLaborAndSlaveryPreventionMeasuresOther": "e-commerce"
 				},
 				"withholdingAdequateWages": {
+					"adequateWage": "Yes",
 					"adequateWagesMeasures": "Yes",
-					"adequateLivingWage": "Yes",
-					"regularWagesProcessFlow": "Yes",
-					"fixedPieceworkWages": "Yes",
-					"adequateWageMeasures": "solutions"
+					"documentedWorkingHoursAndWages": "Yes",
+					"adequateLivingWage": "No",
+					"fixedHourlyWages": "Yes",
+					"adequateWageMeasures": "e-markets"
 				},
 				"disregardForOccupationalHealthSafety": {
-					"lowSkillWork": "No",
+					"lowSkillWork": "Yes",
 					"hazardousMachines": "No",
-					"oshPolicy": "No",
-					"oshPolicyPersonalProtectiveEquipment": "Yes",
+					"oshPolicyPersonalProtectiveEquipment": "No",
 					"oshPolicyMachineSafety": "No",
 					"oshPolicyDisasterBehavioralResponse": "Yes",
+					"oshPolicyAccidentsBehavioralResponse": "No",
+					"oshPolicyWorkplaceErgonomics": "No",
 					"oshPolicyAccessToWork": "Yes",
-					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "Yes",
+					"oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "No",
 					"oshPolicyFireProtection": "Yes",
 					"oshPolicyWorkingHours": "No",
-					"oshPolicyTrainingAddressed": "No",
+					"oshPolicyTrainingAddressed": "Yes",
 					"oshPolicyTraining": "Yes",
-					"oshManagementSystem": "No",
+					"oshManagementSystem": "Yes",
+					"oshManagementSystemInternationalCertification": {
+						"value": "Yes",
+						"dataSource": {
+							"name": "Certification",
+							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
 					"oshManagementSystemNationalCertification": {
 						"value": "No",
 						"dataSource": {
@@ -2584,26 +2631,28 @@
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"under10WorkplaceAccidents": "No",
-					"oshTraining": "Yes"
-				},
-				"disregardForFreedomOfAssociation": {
-					"freedomOfAssociation": "Yes",
-					"employeeRepresentationInPercent": 8.2894,
-					"discriminationForTradeUnionMembers": "Yes"
-				},
-				"unequalTreatmentOfEmployment": {
-					"diversityAndInclusionRole": "Yes",
-					"equalOpportunitiesOfficer": "No",
-					"fairAndEthicalRecruitmentPolicy": {
+					"under10WorkplaceAccidents": "Yes",
+					"oshTraining": "No",
+					"healthAndSafetyPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"name": "Policy",
+							"name": "Certification",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					},
-					"equalOpportunitiesAndNonDiscriminationPolicy": {
-						"value": "No",
+					}
+				},
+				"disregardForFreedomOfAssociation": {
+					"freedomOfAssociation": "No",
+					"employeeRepresentationInPercent": 84.6956,
+					"freedomOfOperationForTradeUnion": "Yes",
+					"worksCouncil": "Yes"
+				},
+				"unequalTreatmentOfEmployment": {
+					"unequalTreatmentOfEmployment": "No",
+					"diversityAndInclusionRole": "No",
+					"preventionOfMistreatments": "No",
+					"fairAndEthicalRecruitmentPolicy": {
+						"value": "Yes",
 						"dataSource": {
 							"name": "Policy",
 							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -2611,63 +2660,58 @@
 					}
 				},
 				"contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
+					"harmfulSoilImpact": "Yes",
 					"soilDegradation": "Yes",
+					"soilErosion": "No",
 					"soilBorneDiseases": "No",
-					"soilSalinization": "No",
 					"harmfulWaterPollution": "No",
-					"fertilizersOrPollutants": "No",
-					"wasteWaterFiltration": "No",
-					"harmfulAirPollution": "No",
+					"fertilizersOrPollutants": "Yes",
+					"wasteWaterFiltration": "Yes",
+					"harmfulAirPollution": "Yes",
 					"airFiltration": "Yes",
 					"harmfulNoiseEmission": "Yes",
-					"reduceNoiseEmissions": "No",
+					"reduceNoiseEmissions": "Yes",
 					"excessiveWaterConsumption": "Yes",
-					"waterSavingMeasures": "Yes",
-					"waterSavingMeasuresName": "experiences",
-					"pipeMaintaining": "No",
-					"waterSources": "No"
+					"waterSavingMeasures": "No",
+					"waterSavingMeasuresName": "functionalities"
 				},
 				"unlawfulEvictionDeprivationOfLandForestAndWater": {
-					"unlawfulEvictionAndTakingOfLandRisk": "e-markets",
+					"unlawfulEvictionAndTakingOfLand": "No",
+					"unlawfulEvictionAndTakingOfLandRisk": "relationships",
 					"unlawfulEvictionAndTakingOfLandStrategies": "Yes",
-					"unlawfulEvictionAndTakingOfLandStrategiesName": "synergies"
+					"unlawfulEvictionAndTakingOfLandStrategiesName": "convergence"
 				},
 				"useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
 					"useOfPrivatePublicSecurityForces": "No",
 					"useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "Yes",
-					"stateSecurityForces": "NA",
-					"privateSecurityForces": "NA",
-					"useOfPrivatePublicSecurityForcesMeasures": "blockchains"
+					"instructionOfSecurityForces": "Yes",
+					"humanRightsTraining": "No",
+					"stateSecurityForces": "Yes",
+					"privateSecurityForces": "Yes",
+					"useOfPrivatePublicSecurityForcesMeasures": "e-business"
 				}
 			},
 			"environmental": {
 				"useOfMercuryMercuryWasteMinamataConvention": {
 					"mercuryAndMercuryWasteHandling": "No",
-					"mercuryAndMercuryWasteHandlingPolicy": {
-						"value": "No",
-						"dataSource": {
-							"name": "Certification",
-							"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"mercuryAddedProductsHandling": "Yes",
+					"mercuryAddedProductsHandling": "No",
 					"mercuryAddedProductsHandlingRiskOfExposure": "No",
-					"mercuryAddedProductsHandlingRiskOfDisposal": "Yes",
 					"mercuryAndMercuryCompoundsProductionAndUse": "Yes"
 				},
 				"productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
-					"persistentOrganicPollutantsUsed": "deliverables",
-					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "Yes",
-					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "Yes",
+					"persistentOrganicPollutantsUsed": "communities",
+					"persistentOrganicPollutantsProductionAndUseRiskOfExposure": "No",
+					"persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "No",
 					"legalRestrictedWasteProcesses": "Yes"
 				},
 				"exportImportOfHazardousWasteBaselConvention": {
 					"persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "Yes",
-					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "No",
+					"persistentOrganicPollutantsProductionAndUseRiskForImportingState": "Yes",
 					"hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": "No",
-					"hazardousWasteDisposal": "Yes",
-					"hazardousWasteDisposalRiskOfImport": "Yes",
-					"hazardousWasteDisposalOtherWasteImport": "Yes"
+					"hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": "Yes",
+					"hazardousWasteDisposal": "No",
+					"hazardousWasteDisposalRiskOfImport": "No",
+					"hazardousWasteDisposalOtherWasteImport": "No"
 				}
 			}
 		},
@@ -2676,32 +2720,35 @@
 	{
 		"companyInformation": {
 			"companyName": "lksg-a-lot-of-nulls",
-			"headquarters": "Bruenview",
-			"headquartersPostalCode": "39675",
-			"sector": "paradigms",
+			"headquarters": "East Annetta",
 			"identifiers": {
 				"Lei": [
-					"6WQXOO8YNS1MmzUeRdAt"
+					"sToJ5vXOluBwnRpaBvDw"
 				],
 				"Isin": [
-					"uHQMtTeBbRr5"
+					"EJVX5jU9fWU7",
+					"9rF1fsEAqpeu"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"6Whv1dOmf"
+				"PermId": [
+					"k4Tv1g0Zl6"
 				],
-				"CompanyRegistrationNumber": [
-					"sHJo9lH3U8mrOVH"
-				]
+				"Ticker": [
+					"ODejnAi"
+				],
+				"Duns": [
+					"U63oA2cz1"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NF",
+			"countryCode": "MS",
 			"companyAlternativeNames": [
-				"Dickens LLC"
+				"Hyatt LLC",
+				"Murray LLC",
+				"Witting, Upton and Jacobi"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://conscious-birdcage.net/",
+			"companyLegalForm": "AG",
+			"website": "https://secondary-powder.name/",
 			"isTeaserCompany": false
 		},
 		"t": {

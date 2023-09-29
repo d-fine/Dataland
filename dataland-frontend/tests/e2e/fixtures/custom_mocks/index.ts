@@ -16,6 +16,7 @@ import { generateDataPoint, generateReferencedReports } from "@e2e/fixtures/comm
 import { faker } from "@faker-js/faker";
 import {generateEuTaxonomyWithBaseFields} from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import {generateCurrencyCode} from "@e2e/fixtures/common/CurrencyFixtures";
+import {generateArray} from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates and exports fake fixtures for the LKSG framework
@@ -55,7 +56,7 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
       nonEligibleShare: this.generateFinancialShare(),
       eligibleShare: this.generateFinancialShare(),
       nonAlignedShare: this.generateFinancialShare(),
-      nonAlignedActivities: this.randomArray(() => this.generateActivity(), 1, 2),
+      nonAlignedActivities: generateArray(() => this.generateActivity(), 1, 2),
       alignedShare: this.generateFinancialShare(),
       substantialContributionToClimateChangeMitigationInPercent: generatePercentageValue(),
       substantialContributionToClimateChangeAdaptionInPercent: generatePercentageValue(),
@@ -65,7 +66,7 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
       substantialContributionToPollutionPreventionAndControlInPercent: generatePercentageValue(),
       substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
         generatePercentageValue(),
-      alignedActivities: this.randomArray(() => this.generateAlignedActivity(), 1, 2),
+      alignedActivities: generateArray(() => this.generateAlignedActivity(), 1, 2),
       enablingShareInPercent: generatePercentageValue(),
       transitionalShareInPercent: generatePercentageValue(),
     };
@@ -90,13 +91,15 @@ function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformationEuTaxo
   let data = generatedDataAndMetaInfo[0].data;
   data.general!.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, true, ["IntegratedReport"]);
   data.revenue!.totalAmount!.value = 0;
+  data.revenue!.alignedActivities![0].share ??= {};
+  data.revenue!.alignedActivities![0].share.relativeShareInPercent = generatePercentageValue();
+  data.revenue!.alignedActivities![0].share.absoluteShare ??= dataGenerator.generateAmountWithCurrency();
   data.capex!.nonAlignedActivities![0].naceCodes = generateNaceCodes(1);
   data.capex!.nonAlignedActivities![0].share ??= {};
   data.capex!.nonAlignedActivities![0].share.relativeShareInPercent = generatePercentageValue();
   data.capex!.nonAlignedActivities![0].share.absoluteShare ??= dataGenerator.generateAmountWithCurrency();
   data.capex!.nonAlignedShare!.relativeShareInPercent ??= generatePercentageValue();
   generatedDataAndMetaInfo[0].data = data;
-
   return generatedDataAndMetaInfo;
 }
 
