@@ -26,10 +26,10 @@
         <template #default="slotProps">
           <div class="flex align-items-center">
             <Checkbox
-              :modelValue="selectedTreeNodes.has(slotProps.node.key)"
-              @update:modelValue="(isChecked: boolean) => handleNodeCheckboxClick(slotProps.node.key, isChecked)"
-              :binary="true"
-              :disabled="disableCheckboxes && slotProps.node.children.length > 0"
+                v-if="!(shouldDisableCheckboxes && slotProps.node.children.length > 0)"
+                :modelValue="selectedTreeNodes.has(slotProps.node.key)"
+                @update:modelValue="(isChecked: boolean) => handleNodeCheckboxClick(slotProps.node.key, isChecked)"
+                :binary="true"
             ></Checkbox>
             <div :class="{ invisible: !selectedChildrenCounter.get(slotProps.node.key) }">
               <span class="p-badge p-badge-no-gutter">{{ selectedChildrenCounter.get(slotProps.node.key) || 0 }}</span>
@@ -64,7 +64,7 @@ export default defineComponent({
       type: Array as PropType<Array<string>>,
       default: () => [],
     },
-    disableCheckboxes: {
+    ShouldDisableCheckboxes: {
       type: Boolean,
       default: false,
     },

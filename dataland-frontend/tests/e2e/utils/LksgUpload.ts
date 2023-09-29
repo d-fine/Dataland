@@ -116,12 +116,12 @@ function testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite(): void
  * Fills out all required LKsG fields that are NOT Yes/No/(Na) fields
  */
 function fillRequiredLksgFieldsWithDummyData(): void {
-  selectANaceCode("industry");
-  selectANaceCode("subcontractingCompaniesIndustries");
-
   selectACountryInMultiselect("subcontractingCompaniesCountries");
   selectACountryInMultiselect("highRiskCountries");
   selectACountryInMultiselect("highRiskCountriesRawMaterialsLocation");
+
+  selectANaceCode("industry");
+  selectANaceCode("subcontractingCompaniesIndustries");
 
   cy.get('div[data-test="shareOfTemporaryWorkers"]').find('input[value="Smaller10"]').click().should("be.checked");
   cy.get('div[data-test="market"]').find('input[value="International"]').click().should("be.checked");
