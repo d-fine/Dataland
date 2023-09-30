@@ -211,8 +211,8 @@ class P2pGenerator extends Generator {
         renewableHeatingInPercent: this.randomPercentageValue(),
       },
       technology: {
-        useOfDistrictHeatingNetworks: this.randomYesNo(),
-        heatPumpUsage: this.randomYesNo(),
+        useOfDistrictHeatingNetworksInPercent: this.randomPercentageValue(),
+        heatPumpUsageInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent(sector) ? data : undefined;
