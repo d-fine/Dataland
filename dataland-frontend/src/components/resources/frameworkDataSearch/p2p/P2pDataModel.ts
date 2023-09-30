@@ -238,9 +238,6 @@ export const p2pDataModel = [
             name: "absoluteEmissions",
             label: "Absolute emissions",
             description:
-              "Transparent accounting & disclosure of all greenhouse gas emissions (Scope 1, Scope 2, Scope 3) along the following metric: absolute emissions (t CO2e)",
-            unit: "",
-            description:
               "Transparent accounting & disclosure of all greenhouse gas emissions (Scope 1, Scope 2, Scope 3) along the following metric: absolute emissions",
             unit: "t CO2e",
             component: "NumberFormField",
@@ -262,9 +259,6 @@ export const p2pDataModel = [
           {
             name: "reductionOfAbsoluteEmissions",
             label: "Reduction of absolute emissions",
-            description:
-              "Use of a science-based, sector-specific Paris-compatible GHG emission reduction trajectory (Scopes 1-3) to meet climate targets and net-zero commitments represented in absolute emissions (t CO2e)",
-            unit: "",
             description:
               "Use of a science-based, sector-specific Paris-compatible GHG emission reduction trajectory (Scopes 1-3) to meet climate targets and net-zero commitments represented in absolute emissions",
             unit: "t CO2e",
@@ -434,8 +428,6 @@ export const p2pDataModel = [
           {
             name: "productionSiteEnergyConsumption",
             label: "Production site energy consumption",
-            description: "Absolute total energy consumption of the company's production sites (MWh)",
-            unit: "",
             description: "Absolute total energy consumption of the company's production sites",
             unit: "MWh",
             component: "NumberFormField",
@@ -500,7 +492,6 @@ export const p2pDataModel = [
           {
             name: "materialUseManagementInPercent",
             label: "Material use management",
-            description: "Share of CO2-free or low-carbon metals in total material use (%)",
             description: "Share of CO2-free or low-carbon metals in total material use",
             unit: "Percent",
             component: "PercentageFormField",
@@ -655,8 +646,6 @@ export const p2pDataModel = [
           {
             name: "buildingSpecificRefurbishmentRoadmapInPercent",
             label: "Building-specific refurbishment roadmap",
-            name: "buildingSpecificRefurbishmentRoadmapInPercent",
-            label: "Building-specific refurbishment roadmap",
             description:
               "Share of buildings with a building-specific refurbishment roadmap that corresponds to the GHG emission reduction trajectory in total commercial buildings portfolio",
             unit: "Percent",
@@ -678,8 +667,6 @@ export const p2pDataModel = [
           {
             name: "buildingEnergyEfficiency",
             label: "Building energy efficiency",
-            description: "Average energy requirement in kWh/m²a",
-            unit: "",
             description: "Average energy requirement",
             unit: "kWh/m²a",
             component: "NumberFormField",
@@ -768,8 +755,6 @@ export const p2pDataModel = [
           {
             name: "buildingEnergyEfficiency",
             label: "Building energy efficiency",
-            description: "Average energy requirement in kWh/m²a",
-            unit: "",
             description: "Average energy requirement",
             unit: "kWh / m² a",
             component: "NumberFormField",
@@ -837,8 +822,6 @@ export const p2pDataModel = [
           {
             name: "emissionIntensityOfElectricity",
             label: "Emission intensity of electricity",
-            description: "Applies especially for use of electric arc furnace (EAF) (gCO2e/kWh)",
-            unit: "",
             description: "Applies especially for use of electric arc furnace (EAF)",
             unit: "gCO2e/kWh",
             component: "NumberFormField",
@@ -1096,8 +1079,6 @@ export const p2pDataModel = [
           {
             name: "excessNitrogen",
             label: "Excess nitrogen",
-            description: "Excess nitrogen in kg/ha",
-            unit: "",
             description: "Excess nitrogen",
             unit: "kg / ha",
             component: "NumberFormField",
