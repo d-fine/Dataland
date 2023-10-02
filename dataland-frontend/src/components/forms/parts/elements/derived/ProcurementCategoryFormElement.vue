@@ -14,6 +14,7 @@
             description="Define the procured product types/services per category (own operations)"
             name="procuredProductTypesAndServicesNaceCodes"
             v-model:selectedNaceCodesBind="procuredProductTypesAndServicesNaceCodesValue"
+            :shouldDisableCheckboxes="true"
           />
         </div>
 
