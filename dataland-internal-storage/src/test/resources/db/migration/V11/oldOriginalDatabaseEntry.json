@@ -47,8 +47,7 @@
           "value": 22.8905,
           "dataSource": {
             "page": 623,
-            "fileName": "IntegratedReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "IntegratedReport",
             "tagName": "applications"
           },
           "quality": "Audited",
@@ -63,8 +62,7 @@
           "value": 54.3507,
           "dataSource": {
             "page": 317,
-            "fileName": "IntegratedReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "IntegratedReport",
             "tagName": "lifetime value"
           },
           "quality": "Audited",
@@ -77,8 +75,7 @@
           "value": 19.2076,
           "dataSource": {
             "page": 566,
-            "fileName": "IntegratedReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "IntegratedReport",
             "tagName": "relationships"
           },
           "quality": "Audited",
@@ -92,8 +89,7 @@
           "value": 41.7538,
           "dataSource": {
             "page": 950,
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "AnnualReport",
             "tagName": "users"
           },
           "quality": "Reported",
@@ -108,8 +104,7 @@
           "value": 0.5233,
           "dataSource": {
             "page": 160,
-            "fileName": "IntegratedReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "IntegratedReport",
             "tagName": "networks"
           },
           "quality": "Audited",
@@ -119,8 +114,7 @@
           "value": 21.5039,
           "dataSource": {
             "page": 451,
-            "fileName": "SustainabilityReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "SustainabilityReport",
             "tagName": "schemas"
           },
           "quality": "Reported",
@@ -130,8 +124,7 @@
           "value": 71.7035,
           "dataSource": {
             "page": 1200,
-            "fileName": "SustainabilityReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "SustainabilityReport",
             "tagName": "schemas"
           },
           "quality": "Reported",
@@ -143,8 +136,7 @@
           "value": 53.6334,
           "dataSource": {
             "page": 1035,
-            "fileName": "IntegratedReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "IntegratedReport",
             "tagName": "systems"
           },
           "quality": "Incomplete",
@@ -154,8 +146,7 @@
           "value": 24.4602,
           "dataSource": {
             "page": 577,
-            "fileName": "IntegratedReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "IntegratedReport",
             "tagName": "schemas"
           },
           "quality": "Audited",
@@ -165,8 +156,7 @@
           "value": 25.8228,
           "dataSource": {
             "page": 1130,
-            "fileName": "SustainabilityReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "SustainabilityReport",
             "tagName": "action-items"
           },
           "quality": "Reported",
@@ -176,8 +166,7 @@
           "value": 86.2031,
           "dataSource": {
             "page": 710,
-            "fileName": "SustainabilityReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "report": "SustainabilityReport",
             "tagName": "eyeballs"
           },
           "quality": "Reported",
@@ -204,8 +193,7 @@
         "value": 79.1985,
         "dataSource": {
           "page": 1095,
-          "fileName": "AnnualReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "report": "AnnualReport",
           "tagName": "schemas"
         },
         "quality": "Audited",
@@ -217,8 +205,7 @@
         "value": 54.491,
         "dataSource": {
           "page": 311,
-          "fileName": "AnnualReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "report": "AnnualReport",
           "tagName": "e-commerce"
         },
         "quality": "Audited",
