@@ -3715,7 +3715,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "upstreamSupplierProcurementPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "downstreamCustomerEngagement": {
             "$ref": "#/components/schemas/YesNo"
@@ -3962,11 +3962,11 @@
       "P2plRealEstateTechnology": {
         "type": "object",
         "properties": {
-          "useOfDistrictHeatingNetworks": {
-            "$ref": "#/components/schemas/YesNo"
+          "useOfDistrictHeatingNetworksInPercent": {
+            "type": "number"
           },
-          "heatPumpUsage": {
-            "$ref": "#/components/schemas/YesNo"
+          "heatPumpUsageInPercent": {
+            "type": "number"
           }
         }
       },

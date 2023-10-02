@@ -104,7 +104,7 @@ class P2pGenerator extends Generator {
         qualificationRequirementsOnParisCompatibility: this.randomYesNo(),
         mobilityAndTravelPolicy: this.randomYesNo(),
         upstreamSupplierEngagementStrategy: this.randomYesNo(),
-        upstreamSupplierProcurementPolicy: this.randomYesNo(),
+        upstreamSupplierProcurementPolicy: this.randomBaseDataPoint(generateYesNo()),
         downstreamCustomerEngagement: this.randomYesNo(),
         policymakerEngagement: this.randomYesNo(),
       },
