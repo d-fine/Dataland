@@ -3,14 +3,9 @@ import {
   type AvailableDisplayValues,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import {
-  type BaseDataPointYesNo,
-  type BaseDataPointYesNoNa,
-  type DataPointOneValueYesNo,
-  YesNoNa,
-} from "@clients/backend";
+import { type BaseDataPointYesNo, type BaseDataPointYesNoNa, YesNoNa } from "@clients/backend";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
-
+import { type GenericBaseDataPoint } from "tests/e2e/fixtures/common/DataPointFixtures";
 const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
   Yes: "Yes",
   No: "No",
@@ -70,7 +65,7 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
  * @returns the formatted display value
  */
 function formatYesNoValueWhenEvidenceDesiredIsYes(
-  elementValue: DataPointOneValueYesNo | undefined,
+  elementValue: GenericBaseDataPoint<YesNoNa> | undefined,
 ): AvailableDisplayValues {
   if (!elementValue?.value) {
     return {
@@ -102,7 +97,7 @@ export function yesNoValueGetterFactory(path: string, field: Field): (dataset: a
       );
     } else if (field.evidenceDesired) {
       return formatYesNoValueWhenEvidenceDesiredIsYes(
-        getFieldValueFromDataModel(path, dataset) as DataPointOneValueYesNo | undefined,
+        getFieldValueFromDataModel(path, dataset) as GenericBaseDataPoint<YesNoNa> | undefined,
       );
     } else {
       const value = getFieldValueFromDataModel(path, dataset) as YesNoNa | undefined;

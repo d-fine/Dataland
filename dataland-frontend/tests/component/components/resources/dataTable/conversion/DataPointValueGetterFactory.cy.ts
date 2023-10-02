@@ -1,5 +1,5 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
-import { type DataPointWithUnitBigDecimal } from "@clients/backend";
+import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 import {
   MLDTDisplayComponents,
@@ -28,7 +28,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     });
 
     it("An empty string should be displayed if the data points value is undefined or null", () => {
-      const datapoint: DataPointWithUnitBigDecimal = {
+      const datapoint: ExtendedDataPointBigDecimal = {
         value: undefined,
         quality: "NA",
       };
@@ -41,7 +41,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     });
 
     it("The value should be displayed with a static unit suffix if set", () => {
-      const datapoint: DataPointWithUnitBigDecimal = {
+      const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,
         quality: "NA",
       };
@@ -76,7 +76,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     };
 
     it("The value should be displayed with no unit suffix if no unit is provided", () => {
-      const datapoint: DataPointWithUnitBigDecimal = {
+      const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,
         quality: "NA",
       };
@@ -89,7 +89,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     });
 
     it("The value should be displayed with the unit suffix if a unit is provided", () => {
-      const datapoint: DataPointWithUnitBigDecimal = {
+      const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,
         unit: "A",
         quality: "NA",
