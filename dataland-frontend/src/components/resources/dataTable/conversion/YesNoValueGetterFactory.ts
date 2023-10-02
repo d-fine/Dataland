@@ -6,7 +6,8 @@ import {
 import {
   type BaseDataPointYesNo,
   type BaseDataPointYesNoNa,
-  type DataPointOneValueYesNo, DocumentReference,
+  type DataPointOneValueYesNo,
+  type DocumentReference,
   YesNoNa,
 } from "@clients/backend";
 import {

@@ -133,6 +133,7 @@ import MostImportantProductsFormField from "@/components/forms/parts/fields/Most
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
+import HighImpactClimateSectorsFormField from "@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -168,6 +169,7 @@ export default defineComponent({
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
     UploadReports,
+    HighImpactClimateSectorsFormField,
   },
   directives: {
     tooltip: Tooltip,
