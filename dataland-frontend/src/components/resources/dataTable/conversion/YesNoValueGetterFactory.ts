@@ -6,7 +6,7 @@ import {
 import {
   type BaseDataPointYesNo,
   type BaseDataPointYesNoNa,
-  type DataPointOneValueYesNo,
+  type DataPointOneValueYesNo, DocumentReference,
   YesNoNa,
 } from "@clients/backend";
 import {
@@ -89,7 +89,7 @@ function formatYesNoValueWhenEvidenceDesiredIsYes(
   const yesNoValue = elementValue.value;
   if (hasDataPointValidReference(elementValue)) {
     const documentReference = getGloballyReferencableDocuments(dataset).find(
-      (document) => document.name == elementValue.dataSource?.report,
+      (document: DocumentReference) => document.name == elementValue.dataSource?.report,
     );
     if (documentReference == undefined) {
       throw Error(
@@ -103,7 +103,7 @@ function formatYesNoValueWhenEvidenceDesiredIsYes(
       displayValue: {
         label: humanReadableYesNoMap[yesNoValue],
         reference: documentReference,
-        page: elementValue.dataSource.page ?? undefined,
+        page: elementValue.dataSource?.page ?? undefined,
       },
     };
   } else {
