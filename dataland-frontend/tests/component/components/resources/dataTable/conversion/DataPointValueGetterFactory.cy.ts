@@ -89,7 +89,8 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     });
 
     /**
-     * Test doesn't make sense anymore, because unit is not stored in the ExtendedDataPointBigDecimal. Is this correct?
+     * Test doesn't make sense anymore, because unit is not stored in the ExtendedDataPointBigDecimal.
+     * //TODO verify that this doesnt make sense
     it("The value should be displayed with the unit suffix if a unit is provided", () => {
       const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,
