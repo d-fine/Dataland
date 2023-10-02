@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.p2p.categories.hvcPlastics.subcategories
 
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
 /**
@@ -13,5 +14,5 @@ data class P2pHvcPlasticsDefossilisation(
 
     val useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent: BigDecimal? = null,
 
-    val carbonCaptureAndUseStorageTechnologies: BigDecimal? = null,
+    val carbonCaptureAndUseStorageTechnologies: YesNo? = null,
 )

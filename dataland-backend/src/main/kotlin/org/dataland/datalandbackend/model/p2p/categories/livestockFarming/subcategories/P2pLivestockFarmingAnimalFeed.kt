@@ -15,7 +15,7 @@ data class P2pLivestockFarmingAnimalFeed(
 
     val originOfExternalFeed: String? = null,
 
-    val excessNitrogenInKilogramPerHectare: BigDecimal? = null,
+    val excessNitrogenInKilogramsPerHectare: BigDecimal? = null,
 
     val cropRotation: BigDecimal? = null,
 

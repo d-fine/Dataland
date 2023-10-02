@@ -8,7 +8,7 @@ import java.time.LocalDate
  * Fields of the subcategory "Technology" belonging to the category "Freight transport by road" of the p2p framework.
 */
 data class P2pFreightTransportByRoadTechnology(
-    val driveMixPerFleetSegment: BigDecimal? = null,
+    val driveMixPerFleetSegmentInPercent: BigDecimal? = null,
 
     val icePhaseOut: LocalDate? = null,
 )
