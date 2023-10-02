@@ -15,7 +15,8 @@ import { generateArray } from "@e2e/fixtures/FixtureUtils";
 import { range } from "@/utils/ArrayUtils";
 
 /**
- * This class is a generator for prepared fixtures for specific tests which require all rows to exist
+ * This class is a generator for prepared fixtures
+ * with minimum changes done for specific tests which require all rows to exist
  */
 class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
   generateMinimumAcceptedEuTaxonomyForNonFinancialsData(): EuTaxonomyDataForNonFinancials {
