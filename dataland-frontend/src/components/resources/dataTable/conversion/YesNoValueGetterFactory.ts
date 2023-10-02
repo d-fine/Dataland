@@ -5,7 +5,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { type BaseDataPointYesNo, type BaseDataPointYesNoNa, YesNoNa } from "@clients/backend";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
-import { type GenericBaseDataPoint } from "tests/e2e/fixtures/common/DataPointFixtures.ts";
+import { type GenericBaseDataPoint } from "tests/e2e/fixtures/common/DataPointFixtures";
 const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
   Yes: "Yes",
   No: "No",
