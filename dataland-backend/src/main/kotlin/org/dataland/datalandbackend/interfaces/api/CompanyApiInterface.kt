@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.api
+package org.dataland.datalandbackend.interfaces.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping("/companies")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface CompanyApi {
+interface CompanyApiInterface {
 
     /**
      * A method to create a new company entry in dataland

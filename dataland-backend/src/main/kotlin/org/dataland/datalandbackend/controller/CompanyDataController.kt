@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.api.CompanyApi
+import org.dataland.datalandbackend.interfaces.api.CompanyApiInterface
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndNameInterface
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
+import org.dataland.datalandbackend.interfaces.CompanyIdentifierRepositoryInterface
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.RestController
 class CompanyDataController(
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val companyQueryManager: CompanyQueryManager,
-    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
-) : CompanyApi {
+    @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepositoryInterface,
+) : CompanyApiInterface {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
@@ -82,7 +82,7 @@ class CompanyDataController(
 
     override fun existsIdentifier(identifierType: IdentifierType, identifier: String) {
         try {
-            companyIdentifierRepository.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
+            companyIdentifierRepositoryInterface.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
         } catch (e: JpaObjectRetrievalFailureException) {
             throw ResourceNotFoundApiException(
                 "Company identifier does not exist",

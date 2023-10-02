@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.api
+package org.dataland.datalandbackend.interfaces.api
 
 import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.http.ResponseEntity
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  */
 @Hidden
 @RequestMapping("/testing")
-fun interface TestApi {
+fun interface TestApiInterface {
     /**
      * A dummy function that returns a 500 response to test the internal server error handling behaviour
      */

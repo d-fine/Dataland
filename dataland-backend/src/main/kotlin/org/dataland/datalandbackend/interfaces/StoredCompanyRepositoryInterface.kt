@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.repositories
+package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndNameInterface
@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param
  * A JPA repository for accessing the StoredCompany Entity
  */
 
-interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
+interface StoredCompanyRepositoryInterface : JpaRepository<StoredCompanyEntity, String> {
     /**
      * A function for querying companies by various filters:
      * - dataTypeFilter: If set, only companies with at least one datapoint

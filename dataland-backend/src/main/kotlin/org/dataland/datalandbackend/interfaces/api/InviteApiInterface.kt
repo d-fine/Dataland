@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.api
+package org.dataland.datalandbackend.interfaces.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-fun interface InviteApi {
+fun interface InviteApiInterface {
     /**
      * A method to initiate an invitation request to Dataland from the infos of the uploaded excel file
      * @param excelFile is the Excel file which contains the invite info
