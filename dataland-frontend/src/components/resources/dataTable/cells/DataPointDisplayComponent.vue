@@ -28,8 +28,8 @@ export default defineComponent({
   },
   computed: {
     formattedPageNumber() {
-      if(this.content.displayValue.page || this.content.displayValue.page === 0) {
-        return `page ${this.content.displayValue.page}`
+      if (this.content.displayValue.page || this.content.displayValue.page === 0) {
+        return `page ${this.content.displayValue.page}`;
       } else {
         return "";
       }

@@ -9,7 +9,7 @@ export enum MLDTDisplayComponents {
 export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponents.StringDisplayComponent]: string | undefined | null;
   [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: DocumentReference };
-  [MLDTDisplayComponents.DataPointDisplayComponent]: { label: string; reference: DocumentReference, page?: number };
+  [MLDTDisplayComponents.DataPointDisplayComponent]: { label: string; reference: DocumentReference; page?: number };
 };
 
 export type AvailableDisplayValues = {

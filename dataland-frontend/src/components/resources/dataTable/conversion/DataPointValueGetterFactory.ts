@@ -2,8 +2,12 @@ import {
   type AvailableDisplayValues,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
-import {type DataPointWithUnitBigDecimal, SfdrData} from "@clients/backend";
+import {
+  getFieldValueFromDataModel,
+  getGloballyReferencableDocuments,
+  hasDataPointValidReference,
+} from "@/components/resources/dataTable/conversion/Utils";
+import { type DataPointWithUnitBigDecimal } from "@clients/backend";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
 
@@ -37,19 +41,20 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
       datapointUnitSuffix = field.unit ?? "";
     }
 
-    const formattedValue = `${datapointValue} ${datapointUnitSuffix}`.trim()
-    if (datapoint.dataSource?.report && datapoint.dataSource.report?.trim().length > 0) {
-      const referencableDocuments = Object.entries((dataset as SfdrData)?.general?.general?.referencedReports ?? {});
-      const documentReference: string = referencableDocuments.find((document) => document[0] == datapoint.dataSource?.report)[1].reference;
+    const formattedValue = `${datapointValue} ${datapointUnitSuffix}`.trim();
+    if (hasDataPointValidReference(datapoint)) {
+      const documentReference = getGloballyReferencableDocuments(dataset).find(
+        (document) => document.name == datapoint.dataSource?.report,
+      );
+      if (documentReference == undefined) {
+        throw Error(`There is no document with name ${elementValue.dataSource?.report} referenced in this dataset`);
+      }
       return {
         displayComponent: MLDTDisplayComponents.DataPointDisplayComponent,
         displayValue: {
           label: formattedValue,
-          reference: {
-            name: datapoint.dataSource?.report,
-            reference: documentReference
-          },
-          page: datapoint.dataSource?.page ?? undefined
+          reference: documentReference,
+          page: datapoint.dataSource?.page ?? undefined,
         },
       };
     } else {
