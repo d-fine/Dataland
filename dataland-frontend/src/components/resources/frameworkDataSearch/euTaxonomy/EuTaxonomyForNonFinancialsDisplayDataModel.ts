@@ -9,7 +9,7 @@ content from the auto-generated file in the devtools repo.
 
 export const euTaxonomyForNonFinancialsDisplayDataModel = [
   {
-    name: "general",
+    name: "general ",
     label: "General",
     color: "orange",
     showIf: (): boolean => true,
