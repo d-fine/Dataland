@@ -38,7 +38,7 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
     }
 
     const formattedValue = `${datapointValue} ${datapointUnitSuffix}`.trim()
-    if (datapoint.dataSource?.report) {
+    if (datapoint.dataSource?.report && datapoint.dataSource.report?.trim().length > 0) {
       const referencableDocuments = Object.entries((dataset as SfdrData)?.general?.general?.referencedReports ?? {});
       const documentReference: string = referencableDocuments.find((document) => document[0] == datapoint.dataSource?.report)[1].reference;
       return {
