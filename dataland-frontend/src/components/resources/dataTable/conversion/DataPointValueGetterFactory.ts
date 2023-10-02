@@ -47,7 +47,9 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
         (document) => document.name == datapoint.dataSource?.report,
       );
       if (documentReference == undefined) {
-        throw Error(`There is no document with name ${elementValue.dataSource?.report} referenced in this dataset`);
+        throw Error(
+          `There is no document with name ${datapoint.dataSource?.report ?? "NOT PROVIDED"} referenced in this dataset`,
+        );
       }
       return {
         displayComponent: MLDTDisplayComponents.DataPointDisplayComponent,

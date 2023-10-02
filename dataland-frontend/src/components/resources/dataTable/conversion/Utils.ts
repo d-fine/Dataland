@@ -40,6 +40,7 @@ export function hasDataPointValidReference(dataPoint: {
  * @param dataset the dataset containing the document references
  * @returns the document references
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getGloballyReferencableDocuments(dataset: any): DocumentReference[] {
   return Object.entries((dataset as SfdrData)?.general?.general?.referencedReports ?? {}).map(
     (document): DocumentReference => ({ name: document[0], reference: document[1].reference }),

@@ -92,7 +92,11 @@ function formatYesNoValueWhenEvidenceDesiredIsYes(
       (document) => document.name == elementValue.dataSource?.report,
     );
     if (documentReference == undefined) {
-      throw Error(`There is no document with name ${elementValue.dataSource?.report} referenced in this dataset`);
+      throw Error(
+        `There is no document with name ${
+          elementValue.dataSource?.report ?? "NOT PROVIDED"
+        } referenced in this dataset`,
+      );
     }
     return {
       displayComponent: MLDTDisplayComponents.DataPointDisplayComponent,
