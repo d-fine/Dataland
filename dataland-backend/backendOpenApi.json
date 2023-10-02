@@ -3627,7 +3627,7 @@
       "P2pFreightTransportByRoadTechnology": {
         "type": "object",
         "properties": {
-          "driveMixPerFleetSegment": {
+          "driveMixPerFleetSegmentInPercent": {
             "type": "number"
           },
           "icePhaseOut": {
@@ -3802,7 +3802,7 @@
             "type": "number"
           },
           "carbonCaptureAndUseStorageTechnologies": {
-            "type": "number"
+            "$ref": "#/components/schemas/YesNo"
           }
         }
       },
@@ -3849,7 +3849,7 @@
           "originOfExternalFeed": {
             "type": "string"
           },
-          "excessNitrogenInKilogramPerHectare": {
+          "excessNitrogenInKilogramsPerHectare": {
             "type": "number"
           },
           "cropRotation": {

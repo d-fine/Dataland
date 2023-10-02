@@ -184,7 +184,7 @@ class P2pGenerator extends Generator {
         useOfRenewableFeedstocksInPercent: this.randomPercentageValue(),
         useOfBioplasticsInPercent: this.randomPercentageValue(),
         useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent: this.randomPercentageValue(),
-        carbonCaptureAndUseStorageTechnologies: this.randomPercentageValue(),
+        carbonCaptureAndUseStorageTechnologies: this.randomYesNo(),
       },
       recycling: {
         contributionToCircularEconomy: this.randomYesNo(),
@@ -243,7 +243,7 @@ class P2pGenerator extends Generator {
   getSectorFreightTransportByRoad(): P2pFreightTransportByRoad | undefined {
     const data: P2pFreightTransportByRoad = {
       technology: {
-        driveMixPerFleetSegment: this.randomPercentageValue(),
+        driveMixPerFleetSegmentInPercent: this.randomPercentageValue(),
         icePhaseOut: this.valueOrUndefined(generateFutureDate()),
       },
       energy: {
@@ -287,7 +287,7 @@ class P2pGenerator extends Generator {
         ownFeedInPercent: this.randomPercentageValue(),
         externalFeedCertification: this.randomBaseDataPoint(generateYesNo()),
         originOfExternalFeed: faker.company.buzzPhrase(),
-        excessNitrogenInKilogramPerHectare: this.randomInt(),
+        excessNitrogenInKilogramsPerHectare: this.randomInt(),
         cropRotation: this.randomInt(),
         climateFriendlyProteinProductionInPercent: this.randomPercentageValue(),
         greenFodderInPercent: this.randomPercentageValue(),
