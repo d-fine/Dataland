@@ -61,6 +61,13 @@ function selectYesOnAllFieldsBrowser(win: Window): boolean {
 function selectANaceCode(fieldName: string): void {
   cy.get(`div[data-test='${fieldName}'] input`).click();
 
+  cy.get(".p-treenode-label")
+      .contains("A - AGRICULTURE, FORESTRY AND FISHING")
+      .parents(".p-treenode-label")
+      .last()
+      .find("div.p-checkbox-box")
+      .should('not.exist');
+
   cy.get("button.p-tree-toggler.p-link").eq(0).click();
   cy.get("button.p-tree-toggler.p-link").eq(1).click();
   cy.get("button.p-tree-toggler.p-link").eq(2).click();
