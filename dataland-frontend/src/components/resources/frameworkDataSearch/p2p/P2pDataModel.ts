@@ -251,7 +251,7 @@ export const p2pDataModel = [
             description:
               "Transparent accounting & disclosure of all greenhouse gas emissions (Scope 1, Scope 2, Scope 3) along the following metric: relative emissions (if applicable) (t CO2e / output unit)",
             unit: "Percent",
-            component: "NumberFormField",
+            component: "PercentageFormField",
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
@@ -262,7 +262,7 @@ export const p2pDataModel = [
             description:
               "Use of a science-based, sector-specific Paris-compatible GHG emission reduction trajectory (Scopes 1-3) to meet climate targets and net-zero commitments represented in absolute emissions",
             unit: "t CO2e",
-            component: "PercentageFormField",
+            component: "NumberFormField",
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
@@ -273,7 +273,7 @@ export const p2pDataModel = [
             description:
               "Use of a science-based, sector-specific Paris-compatible GHG emission reduction trajectory (Scopes 1-3) to meet climate targets and net-zero commitments represented in relative emissions (if applicable) (t CO2e / output unit)",
             unit: "Percent",
-            component: "NumberFormField",
+            component: "PercentageFormField",
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
