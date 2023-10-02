@@ -66,6 +66,16 @@ function selectANaceCode(fieldName: string): void {
     .parents(".p-treenode-label")
     .last()
     .find("div.p-checkbox-box")
+    .should("not.exist");
+
+  cy.get("button.p-tree-toggler.p-link").eq(0).click();
+  cy.get("button.p-tree-toggler.p-link").eq(1).click();
+  cy.get("button.p-tree-toggler.p-link").eq(2).click();
+  cy.get(".p-treenode-label")
+    .contains("01.12 - Growing of rice")
+    .parents(".p-treenode-label")
+    .last()
+    .find("div.p-checkbox-box")
     .click();
 
   cy.get(`div[data-test='${fieldName}']`).click();
