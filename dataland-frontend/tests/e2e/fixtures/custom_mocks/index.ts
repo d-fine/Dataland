@@ -4,7 +4,7 @@ import { generateListOfMetaInformationForOneCompany } from "@e2e/fixtures/custom
 import { generateEuTaxonomyForNonFinancialsMocks } from "@e2e/fixtures/custom_mocks/AllEuNonFinancialsDataServerResponse";
 
 /**
- * Generates and exports fake fixtures for the LKSG framework
+ * Generates mocks that are not only dataset mocks
  */
 export function exportCustomMocks(): void {
   fs.writeFileSync(
