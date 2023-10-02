@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.api.TemporarilyCachedDataApi
+import org.dataland.datalandbackend.interfaces.api.TemporarilyCachedDataApiInterface
 import org.dataland.datalandbackend.services.DataManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class TemporarilyCachedDataController(
     @Autowired var dataManager: DataManager,
-) : TemporarilyCachedDataApi {
+) : TemporarilyCachedDataApiInterface {
 
     override fun getReceivedData(dataId: String): ResponseEntity<String> {
         return ResponseEntity.ok(dataManager.selectDataSetFromTemporaryStorage(dataId))

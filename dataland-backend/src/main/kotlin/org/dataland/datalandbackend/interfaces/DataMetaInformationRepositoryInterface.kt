@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.repositories
+package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param
 /**
  * A JPA repository for accessing DataMetaInformationEntities
  */
-interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntity, String> {
+interface DataMetaInformationRepositoryInterface : JpaRepository<DataMetaInformationEntity, String> {
 
     /**
      * A function for searching for dataMetaInformation by dataType and companyId.

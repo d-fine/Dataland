@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.api
+package org.dataland.datalandbackend.interfaces.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  * Defines the restful dataland-backend API regarding internal data exchange
  */
 @RequestMapping("/internal/cached")
-fun interface TemporarilyCachedDataApi {
+fun interface TemporarilyCachedDataApiInterface {
 
     /**
      * This method retrieves data entries from the temporary storage

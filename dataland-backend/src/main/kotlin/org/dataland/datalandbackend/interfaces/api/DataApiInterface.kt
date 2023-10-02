@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.api
+package org.dataland.datalandbackend.interfaces.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam
 
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface DataApi<T> {
+interface DataApiInterface<T> {
     /**
      * A method to store data via Dataland into a data store
      * @param companyAssociatedData consisting of the ID of the company and the data to be stored

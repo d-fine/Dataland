@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.api.InviteApi
+import org.dataland.datalandbackend.interfaces.api.InviteApiInterface
 import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
 import org.dataland.datalandbackend.services.InviteManager
 import org.slf4j.LoggerFactory
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 class InviteController(
     @Autowired var inviteManager: InviteManager,
-) : InviteApi {
+) : InviteApiInterface {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun submitInvite(

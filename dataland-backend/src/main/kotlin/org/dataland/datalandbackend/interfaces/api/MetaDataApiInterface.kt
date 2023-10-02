@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.api
+package org.dataland.datalandbackend.interfaces.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping("/metadata")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface MetaDataApi {
+interface MetaDataApiInterface {
 
     /**
      * A method to search for meta info about data sets registered by Dataland

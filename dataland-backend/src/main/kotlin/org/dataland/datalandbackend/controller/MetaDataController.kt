@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.LogMessageBuilder
-import org.dataland.datalandbackend.api.MetaDataApi
+import org.dataland.datalandbackend.interfaces.api.MetaDataApiInterface
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.services.DataMetaInformationManager
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
-) : MetaDataApi {
+) : MetaDataApiInterface {
 
     override fun getListOfDataMetaInfo(
         companyId: String?,

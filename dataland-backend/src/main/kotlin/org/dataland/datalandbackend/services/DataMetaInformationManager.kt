@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
+import org.dataland.datalandbackend.interfaces.DataMetaInformationRepositoryInterface
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
  */
 @Component("DataMetaInformationManager")
 class DataMetaInformationManager(
-    @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
+    @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepositoryInterface,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
 
@@ -24,7 +24,7 @@ class DataMetaInformationManager(
     fun storeDataMetaInformation(
         dataMetaInformation: DataMetaInformationEntity,
     ): DataMetaInformationEntity {
-        return dataMetaInformationRepository.save(dataMetaInformation)
+        return dataMetaInformationRepositoryInterface.save(dataMetaInformation)
     }
 
     /**
@@ -35,14 +35,14 @@ class DataMetaInformationManager(
         if (dataMetaInfo.currentlyActive == true) {
             return
         }
-        val metaInfoOfCurrentlyActiveDataset = dataMetaInformationRepository.getActiveDataset(
+        val metaInfoOfCurrentlyActiveDataset = dataMetaInformationRepositoryInterface.getActiveDataset(
             dataMetaInfo.company,
             dataMetaInfo.dataType,
             dataMetaInfo.reportingPeriod,
         )
         if (metaInfoOfCurrentlyActiveDataset != null) {
             metaInfoOfCurrentlyActiveDataset.currentlyActive = null
-            dataMetaInformationRepository.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
+            dataMetaInformationRepositoryInterface.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
         }
         dataMetaInfo.currentlyActive = true
     }
@@ -53,7 +53,7 @@ class DataMetaInformationManager(
      * @return meta info about data behind the dataId
      */
     fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity {
-        return dataMetaInformationRepository.findById(dataId).orElseThrow {
+        return dataMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
             ResourceNotFoundApiException(
                 "Dataset not found",
                 "No dataset with the id: $dataId could be found in the data store.",
@@ -87,6 +87,6 @@ class DataMetaInformationManager(
             onlyActive = showOnlyActive,
         )
 
-        return dataMetaInformationRepository.searchDataMetaInformation(filter)
+        return dataMetaInformationRepositoryInterface.searchDataMetaInformation(filter)
     }
 }

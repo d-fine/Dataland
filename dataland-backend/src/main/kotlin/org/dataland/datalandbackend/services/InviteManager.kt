@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
 import org.dataland.datalandbackend.model.InviteResult
-import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
+import org.dataland.datalandbackend.interfaces.InviteMetaInfoRepositoryInterface
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
@@ -20,7 +20,7 @@ import java.time.Instant
 @Component("FileManager")
 class InviteManager(
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val inviteMetaInfoRepository: InviteMetaInfoRepository,
+    @Autowired private val inviteMetaInfoRepositoryInterface: InviteMetaInfoRepositoryInterface,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -112,6 +112,6 @@ class InviteManager(
             inviteResult.isInviteSuccessful,
             inviteResult.inviteResultMessage,
         )
-        return inviteMetaInfoRepository.save(newInviteMetaInfoEntity)
+        return inviteMetaInfoRepositoryInterface.save(newInviteMetaInfoEntity)
     }
 }

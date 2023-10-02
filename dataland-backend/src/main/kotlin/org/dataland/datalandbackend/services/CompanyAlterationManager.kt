@@ -7,8 +7,8 @@ import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
-import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.interfaces.CompanyIdentifierRepositoryInterface
+import org.dataland.datalandbackend.interfaces.StoredCompanyRepositoryInterface
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.hibernate.exception.ConstraintViolationException
@@ -21,12 +21,12 @@ import org.springframework.transaction.annotation.Transactional
 /**
  * Implementation of a company manager for Dataland
  * @param companyRepository  JPA for company data
- * @param companyIdentifierRepository JPA repository for company identifiers
+ * @param companyIdentifierRepositoryInterface JPA repository for company identifiers
  */
 @Service
 class CompanyAlterationManager(
-    @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
+    @Autowired private val companyRepository: StoredCompanyRepositoryInterface,
+    @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepositoryInterface,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -54,7 +54,7 @@ class CompanyAlterationManager(
     }
 
     private fun assertNoDuplicateIdentifiersExist(identifierMap: Map<IdentifierType, List<String>>) {
-        val duplicateIdentifiers = companyIdentifierRepository.findAllById(
+        val duplicateIdentifiers = companyIdentifierRepositoryInterface.findAllById(
             identifierMap.flatMap { identifierPair ->
                 identifierPair.value.map {
                     CompanyIdentifierEntityId(
@@ -85,7 +85,7 @@ class CompanyAlterationManager(
             }
         }
         try {
-            return companyIdentifierRepository.saveAllAndFlush(newIdentifiers).toList()
+            return companyIdentifierRepositoryInterface.saveAllAndFlush(newIdentifiers).toList()
         } catch (ex: DataIntegrityViolationException) {
             val cause = ex.cause
             if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
@@ -118,7 +118,7 @@ class CompanyAlterationManager(
         identifierType: IdentifierType,
         newIdentifiers: List<String>,
     ) {
-        companyIdentifierRepository.deleteAllByCompanyAndIdentifierType(companyEntity, identifierType)
+        companyIdentifierRepositoryInterface.deleteAllByCompanyAndIdentifierType(companyEntity, identifierType)
         createAndAssociateIdentifiers(companyEntity, mapOf(identifierType to newIdentifiers))
     }
 
@@ -177,7 +177,7 @@ class CompanyAlterationManager(
         storedCompanyEntity.website = companyInformation.website
         storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany
         storedCompanyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
-        companyIdentifierRepository.deleteAllByCompany(
+        companyIdentifierRepositoryInterface.deleteAllByCompany(
             storedCompanyEntity,
         )
         createAndAssociateIdentifiers(storedCompanyEntity, companyInformation.identifiers)

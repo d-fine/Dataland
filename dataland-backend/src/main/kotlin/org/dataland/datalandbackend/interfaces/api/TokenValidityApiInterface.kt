@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.api
+package org.dataland.datalandbackend.interfaces.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
  */
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-fun interface TokenValidityApi {
+fun interface TokenValidityApiInterface {
     /**
      * Returns 200 if called with a valid token
      */
