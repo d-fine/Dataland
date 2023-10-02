@@ -91,7 +91,6 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     it("The value should be displayed with the unit suffix if a unit is provided", () => {
       const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,
-        unit: "A",
         quality: "NA",
       };
       const dataset = { data: datapoint };
