@@ -3,9 +3,8 @@ import {
   type AvailableDisplayValues,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { type YesNo, YesNoNa } from "@clients/backend";
+import { type BaseDataPointYesNoNa, type BaseDataPointYesNo, YesNoNa } from "@clients/backend";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
-import { type GenericDataPoint } from "tests/e2e/fixtures/common/DataPointFixtures";
 
 const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
   Yes: "Yes",
@@ -19,7 +18,7 @@ const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
  * @returns the formatted display value
  */
 function formatYesNoValueWhenCertificateRequiredIsYes(
-  elementValue: GenericDataPoint<YesNo> | GenericDataPoint<YesNoNa> | undefined,
+  elementValue: BaseDataPointYesNoNa | BaseDataPointYesNo | undefined,
 ): AvailableDisplayValues {
   if (!elementValue) {
     return {
@@ -66,7 +65,7 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
  * @returns the formatted display value
  */
 function formatYesNoValueWhenEvidenceDesiredIsYes(
-  elementValue: GenericDataPoint<YesNoNa> | undefined,
+  elementValue: BaseDataPointYesNoNa | undefined,
 ): AvailableDisplayValues {
   if (!elementValue?.value) {
     return {
@@ -94,11 +93,11 @@ export function yesNoValueGetterFactory(path: string, field: Field): (dataset: a
   return (dataset) => {
     if (field.certificateRequiredIfYes) {
       return formatYesNoValueWhenCertificateRequiredIsYes(
-        getFieldValueFromDataModel(path, dataset) as GenericDataPoint<YesNo> | GenericDataPoint<YesNoNa> | undefined,
+        getFieldValueFromDataModel(path, dataset) as BaseDataPointYesNo | BaseDataPointYesNoNa | undefined,
       );
     } else if (field.evidenceDesired) {
       return formatYesNoValueWhenEvidenceDesiredIsYes(
-        getFieldValueFromDataModel(path, dataset) as GenericDataPoint<YesNoNa> | undefined,
+        getFieldValueFromDataModel(path, dataset) as BaseDataPointYesNoNa | undefined,
       );
     } else {
       const value = getFieldValueFromDataModel(path, dataset) as YesNoNa | undefined;
