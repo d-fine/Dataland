@@ -161,15 +161,18 @@ export default defineComponent({
             reportingPeriod: reportingPeriod,
           });
           for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data)) {
-            if (categoryKey == "toApiModel") continue; // ignore toApiModel() Function as it is not a KPI
-            if (categoryObject == null) continue;
+            if (categoryKey == "toApiModel") {
+              continue;
+            } // ignore toApiModel() Function as it is not a KPI
+            if (categoryObject == null) {
+              continue;
+            }
             const listOfDataObjects: Array<KpiDataObject> = [];
             const frameworkCategoryData = assertDefined(
               this.dataModel.find((category) => category.name === categoryKey),
             );
             this.iterateThroughSubcategories(
               categoryObject as object,
-              categoryKey,
               frameworkCategoryData,
               dataId,
               listOfDataObjects,
@@ -188,7 +191,6 @@ export default defineComponent({
     /**
      * Iterates through all subcategories of a category
      * @param categoryDataObject the data object of the framework's category
-     * @param categoryKey the key of the corresponding framework's category
      * @param category  the category object of the framework's category
      * @param dataId  the ID of the dataset
      * @param listOfKpiDataObjects collector for the kpi data objects
@@ -196,17 +198,24 @@ export default defineComponent({
      */
     iterateThroughSubcategories(
       categoryDataObject: object,
-      categoryKey: string,
       category: Category,
       dataId: string,
       listOfKpiDataObjects: Array<KpiDataObject>,
       currentViewModelDataset: FrameworkViewModel,
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryDataObject)) {
+        let adaptedSubCategoryObject: object = subCategoryObject;
         if (subCategoryObject == null) continue;
+        if (subCategoryKey == "totalAmount") {
+          adaptedSubCategoryObject = {
+            value: { amount: subCategoryObject.value ?? "", currency: subCategoryObject.currency ?? "" },
+            comment: subCategoryObject.comment ?? "",
+            dataSource: subCategoryObject.dataSource ?? "",
+            quality: subCategoryObject.quality ?? "",
+          };
+        }
         this.iterateThroughSubcategoryKpis(
-          subCategoryObject as object,
-          categoryKey,
+          adaptedSubCategoryObject,
           subCategoryKey,
           category,
           dataId,
@@ -218,7 +227,6 @@ export default defineComponent({
     /**
      * Builds the result Kpi Data Object and adds it to the result list
      * @param subCategoryDataObject the data object of the framework's subcategory
-     * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
      * @param category the category object of the framework's category
      * @param dataId the ID of the dataset
@@ -227,7 +235,6 @@ export default defineComponent({
      */
     iterateThroughSubcategoryKpis(
       subCategoryDataObject: object,
-      categoryKey: string,
       subCategoryKey: string,
       category: Category,
       dataId: string,
