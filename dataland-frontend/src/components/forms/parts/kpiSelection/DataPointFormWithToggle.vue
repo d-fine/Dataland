@@ -93,6 +93,7 @@
               :options="['None...', ...reportsName]"
               :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
+            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
           <div>
             <UploadFormHeader :label="kpiNameMappings.page ?? ''" :description="kpiInfoMappings.page ?? ''" />
@@ -179,6 +180,18 @@ export default defineComponent({
       }
     },
   },
+  computed: {
+    reportsName(): string[] {
+      if (this.reportsNameAndReferences) {
+        return Object.keys(this.reportsNameAndReferences);
+      } else {
+        return [];
+      }
+    },
+    fileReferenceAccordingToName(): string {
+      return this.reportsNameAndReferences[this.currentReportValue];
+    },
+  },
   props: {
     name: {
       type: String,
@@ -195,9 +208,9 @@ export default defineComponent({
       type: String as () => "percent" | "number",
       default: "percent",
     },
-    reportsName: {
-      type: Array,
-      default: () => [],
+    reportsNameAndReferences: {
+      type: Object,
+      default: () => ({}),
     },
     showSecondInput: {
       type: Boolean,

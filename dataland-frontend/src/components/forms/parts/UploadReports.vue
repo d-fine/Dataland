@@ -131,14 +131,25 @@ export default defineComponent({
     },
   },
   computed: {
-    namesOfDocumentsToUpload() {
-      return this.documentsToUpload.map((documentToUpload) => documentToUpload.fileNameWithoutSuffix);
+    namesAndReferencesOfDocumentsToUpload(): ObjectType {
+      const referenceableReport = {} as ObjectType;
+      for (let i = 0; i < this.documentsToUpload.length; i++) {
+        const reportName = this.documentsToUpload[i].fileNameWithoutSuffix;
+        referenceableReport[reportName] = this.documentsToUpload[i].fileReference;
+      }
+      return referenceableReport;
     },
-    namesOfStoredReports() {
-      return this.alreadyStoredReports.map((storedReport) => storedReport.reportName);
+
+    namesAndReferencesOfStoredReports(): ObjectType {
+      const referenceableReport = {} as ObjectType;
+      for (let i = 0; i < this.alreadyStoredReports.length; i++) {
+        const reportName = this.alreadyStoredReports[i].reportName;
+        referenceableReport[reportName] = this.alreadyStoredReports[i].fileReference;
+      }
+      return referenceableReport;
     },
-    allReferenceableReportNames(): string[] {
-      return this.namesOfDocumentsToUpload.concat(this.namesOfStoredReports);
+    allReferenceableReportNamesAndReferences(): ObjectType {
+      return { ...this.namesAndReferencesOfDocumentsToUpload, ...this.namesAndReferencesOfStoredReports };
     },
   },
   mounted() {
@@ -157,9 +168,9 @@ export default defineComponent({
       }
 
       if (this.isEuTaxonomy) {
-        this.$emit("reportsUpdated", this.allReferenceableReportNames);
+        this.$emit("reportsUpdated", this.allReferenceableReportNamesAndReferences);
       } else {
-        this.$emit("reportsUpdated", this.allReferenceableReportNames, this.documentsToUpload);
+        this.$emit("reportsUpdated", this.allReferenceableReportNamesAndReferences, this.documentsToUpload);
       }
     },
     /**
@@ -184,7 +195,10 @@ export default defineComponent({
             index: i,
             invalidityReason: FileNameInvalidityReason.ForbiddenCharacter,
           });
-        } else if (existingFileNamesCollector.has(fileName) || this.namesOfStoredReports.indexOf(fileName) !== -1) {
+        } else if (
+          existingFileNamesCollector.has(fileName) ||
+          Object.keys(this.namesAndReferencesOfStoredReports).indexOf(fileName) !== -1
+        ) {
           nameIndexAndReasonOfInvalidFiles.push({
             fileName: fileName,
             index: i,

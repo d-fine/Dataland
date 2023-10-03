@@ -41,8 +41,9 @@
               name="fileName"
               v-model="currentReportValue"
               placeholder="Select a report"
-              :options="['None...', ...injectReportsName]"
+              :options="['None...', ...reportsName]"
             />
+            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
           <div>
             <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
@@ -96,14 +97,15 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "DataPointFormField",
   components: { UploadFormHeader, FormKit },
   inject: {
-    injectReportsName: {
-      from: "namesOfAllCompanyReportsForTheDataset",
-      default: [] as string[],
+    injectReportsNameAndReferences: {
+      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
+      default: {} as ObjectType,
     },
   },
   computed: {
@@ -116,6 +118,16 @@ export default defineComponent({
       } else {
         return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
       }
+    },
+    reportsName(): string[] {
+      if (this.injectReportsNameAndReferences) {
+        return Object.keys(this.injectReportsNameAndReferences);
+      } else {
+        return [];
+      }
+    },
+    fileReferenceAccordingToName(): string {
+      return this.injectReportsNameAndReferences[this.currentReportValue];
     },
   },
   data() {

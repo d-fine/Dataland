@@ -218,7 +218,7 @@ export default defineComponent({
       checkCustomInputs,
       documents: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
-      namesOfAllCompanyReportsForTheDataset: [] as string[],
+      namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
       editMode: false,
     };
@@ -289,7 +289,7 @@ export default defineComponent({
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEuTaxonomyDataForNonFinancials.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset,
+            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
           );
 
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
@@ -320,19 +320,19 @@ export default defineComponent({
     },
     /**
      * updates the list of documents that were uploaded
-     * @param reportsNames repots names
+     * @param reportsNamesAndReferences repots names and references
      * @param reportsToUpload reports to upload
      */
-    updateDocumentsList(reportsNames: string[], reportsToUpload: DocumentToUpload[]) {
-      this.namesOfAllCompanyReportsForTheDataset = reportsNames;
+    updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
       this.documents = new Map();
       reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
     },
   },
   provide() {
     return {
-      namesOfAllCompanyReportsForTheDataset: computed(() => {
-        return this.namesOfAllCompanyReportsForTheDataset;
+      namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
+        return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
       }),
       referencedReportsForPrefill: computed(() => {
         return this.referencedReportsForPrefill;

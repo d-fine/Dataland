@@ -50,8 +50,9 @@
               name="fileName"
               v-model="currentReportValue"
               placeholder="Select a report"
-              :options="['None...', ...injectReportsName]"
+              :options="['None...', ...reportsName]"
             />
+            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
           <div>
             <UploadFormHeader
@@ -86,13 +87,14 @@ import {
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { AssuranceDataPointValueEnum } from "@clients/backend";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "AssuranceFormField",
   inject: {
-    injectReportsName: {
-      from: "namesOfAllCompanyReportsForTheDataset",
-      default: [] as string[],
+    injectReportsNameAndReferences: {
+      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
+      default: {} as ObjectType,
     },
   },
   components: { FormKit, UploadFormHeader },
@@ -107,6 +109,18 @@ export default defineComponent({
       },
       currentReportValue: "",
     };
+  },
+  computed: {
+    reportsName(): string[] {
+      if (this.injectReportsNameAndReferences) {
+        return Object.keys(this.injectReportsNameAndReferences);
+      } else {
+        return [];
+      }
+    },
+    fileReferenceAccordingToName(): string {
+      return this.injectReportsNameAndReferences[this.currentReportValue];
+    },
   },
   props: BaseFormFieldProps,
 });

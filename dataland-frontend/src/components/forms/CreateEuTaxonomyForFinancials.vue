@@ -58,7 +58,7 @@
                   ref="UploadReports"
                   :isEuTaxonomy="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports"
-                  @reportsUpdated="handleChangeOfReferenceableReportNames"
+                  @reportsUpdated="handleChangeOfReferenceableReportNamesAndReferences"
                 />
 
                 <EuTaxonomyBasicInformation
@@ -124,9 +124,11 @@
                                 name="fileName"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
+                                v-model="currentReportValue"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
+                              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
                             </div>
                             <div>
                               <UploadFormHeader
@@ -240,7 +242,7 @@
                                   :name="kpiType ?? ''"
                                   :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                   :kpiNameMappings="euTaxonomyKpiNameMappings"
-                                  :reportsName="namesOfAllCompanyReportsForTheDataset"
+                                  :reportsNameAndReferences="namesAndReferencesOfAllCompanyReportsForTheDataset"
                                 />
                               </div>
                             </FormKit>
@@ -264,7 +266,7 @@
                                   :name="kpiTypeEligibility ?? ''"
                                   :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                   :kpiNameMappings="euTaxonomyKpiNameMappings"
-                                  :reportsName="namesOfAllCompanyReportsForTheDataset"
+                                  :reportsNameAndReferences="namesAndReferencesOfAllCompanyReportsForTheDataset"
                                 />
                               </div>
                             </FormKit>
@@ -371,6 +373,7 @@ export default defineComponent({
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
       fiscalYearEnd: "",
+      currentReportValue: "",
       reportingPeriod: undefined as undefined | Date,
       assuranceData: {
         None: humanizeStringOrNumber(AssuranceDataPointValueEnum.None),
@@ -424,7 +427,7 @@ export default defineComponent({
       confirmedSelectedFinancialServiceOptions: [] as { label: string; value: string }[],
       confirmedSelectedFinancialServiceTypes: [] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum[],
       message: "",
-      namesOfAllCompanyReportsForTheDataset: [] as string[],
+      namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
     };
   },
@@ -434,6 +437,12 @@ export default defineComponent({
         return this.reportingPeriod.getFullYear();
       }
       return 0;
+    },
+    namesOfAllCompanyReportsForTheDataset(): string[] {
+      return Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
+    },
+    fileReferenceAccordingToName(): string {
+      return this.namesAndReferencesOfAllCompanyReportsForTheDataset[this.currentReportValue];
     },
   },
   watch: {
@@ -621,7 +630,7 @@ export default defineComponent({
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
-          this.namesOfAllCompanyReportsForTheDataset,
+          Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
         );
 
         await uploadFiles(
@@ -680,10 +689,10 @@ export default defineComponent({
     },
     /**
      * Updates the local list of names of referenceable reports
-     * @param reportNames new list of the referenceable reports' names
+     * @param reportNamesAndReferences new list of the referenceable reports' names and references
      */
-    handleChangeOfReferenceableReportNames(reportNames: string[]) {
-      this.namesOfAllCompanyReportsForTheDataset = reportNames;
+    handleChangeOfReferenceableReportNamesAndReferences(reportNamesAndReferences: object) {
+      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportNamesAndReferences;
     },
   },
 });
