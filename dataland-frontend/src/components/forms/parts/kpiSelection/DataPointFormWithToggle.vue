@@ -188,8 +188,8 @@ export default defineComponent({
         return [];
       }
     },
-    fileReferenceAccordingToName(): string {
-      return this.reportsNameAndReferences[this.currentReportValue];
+    fileReferenceAccordingToName() {
+      return this.reportsNameAndReferences[this.currentReportValue] as string;
     },
   },
   props: {

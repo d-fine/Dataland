@@ -127,7 +127,13 @@ export default defineComponent({
       }
     },
     fileReferenceAccordingToName(): string {
-      return this.injectReportsNameAndReferences[this.currentReportValue];
+      if (this.injectReportsNameAndReferences) {
+        return this.injectReportsNameAndReferences[
+          this.currentReportValue as keyof typeof this.injectReportsNameAndReferences
+        ];
+      } else {
+        return "";
+      }
     },
   },
   data() {

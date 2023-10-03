@@ -442,7 +442,13 @@ export default defineComponent({
       return Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     fileReferenceAccordingToName(): string {
-      return this.namesAndReferencesOfAllCompanyReportsForTheDataset[this.currentReportValue];
+      if (this.namesAndReferencesOfAllCompanyReportsForTheDataset) {
+        return this.namesAndReferencesOfAllCompanyReportsForTheDataset[
+          this.currentReportValue as keyof typeof this.namesAndReferencesOfAllCompanyReportsForTheDataset
+        ];
+      } else {
+        return "";
+      }
     },
   },
   watch: {

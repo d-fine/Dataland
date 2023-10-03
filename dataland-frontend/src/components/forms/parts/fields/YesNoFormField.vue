@@ -112,7 +112,7 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPointYesNo, QualityOptions } from "@clients/backend";
-import { type ObjectType} from "@/utils/UpdateObjectUtils";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "YesNoFormField",
@@ -169,7 +169,13 @@ export default defineComponent({
       }
     },
     fileReferenceAccordingToName(): string {
-      return this.injectReportsNameAndReferences[this.currentReportValue];
+      if (this.injectReportsNameAndReferences) {
+        return this.injectReportsNameAndReferences[
+          this.currentReportValue as keyof typeof this.injectReportsNameAndReferences
+        ];
+      } else {
+        return "";
+      }
     },
   },
   emits: ["reportsUpdated"],
