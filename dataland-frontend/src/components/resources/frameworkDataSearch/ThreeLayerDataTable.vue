@@ -59,7 +59,8 @@ import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
-import { CurrencyDataPoint } from "@clients/backend";
+import { type CurrencyDataPoint } from "@clients/backend";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "ThreeLayerTable",
@@ -205,7 +206,7 @@ export default defineComponent({
       currentViewModelDataset: FrameworkViewModel,
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryDataObject)) {
-        let adaptedSubCategoryObject: object = subCategoryObject;
+        let adaptedSubCategoryObject = subCategoryObject as ObjectType;
         if (subCategoryObject == null) {
           continue;
         }
