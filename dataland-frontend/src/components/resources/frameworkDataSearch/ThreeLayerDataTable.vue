@@ -59,6 +59,7 @@ import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
+import { CurrencyDataPoint } from "@clients/backend";
 
 export default defineComponent({
   name: "ThreeLayerTable",
@@ -205,13 +206,19 @@ export default defineComponent({
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryDataObject)) {
         let adaptedSubCategoryObject: object = subCategoryObject;
-        if (subCategoryObject == null) continue;
+        if (subCategoryObject == null) {
+          continue;
+        }
         if (subCategoryKey == "totalAmount") {
+          const totalAmountSubCategoryObject = subCategoryObject as CurrencyDataPoint;
           adaptedSubCategoryObject = {
-            value: { amount: subCategoryObject.value ?? "", currency: subCategoryObject.currency ?? "" },
-            comment: subCategoryObject.comment ?? "",
-            dataSource: subCategoryObject.dataSource ?? "",
-            quality: subCategoryObject.quality ?? "",
+            value: {
+              amount: totalAmountSubCategoryObject.value ?? "",
+              currency: totalAmountSubCategoryObject.currency ?? "",
+            },
+            comment: totalAmountSubCategoryObject.comment ?? "",
+            dataSource: totalAmountSubCategoryObject.dataSource ?? "",
+            quality: totalAmountSubCategoryObject.quality ?? "",
           };
         }
         this.iterateThroughSubcategoryKpis(
@@ -275,8 +282,11 @@ export default defineComponent({
      * @param key element for which the check should be run
      */
     toggleExpansion(key: number) {
-      if (this.expandedGroup.has(key)) this.expandedGroup.delete(key);
-      else this.expandedGroup.add(key);
+      if (this.expandedGroup.has(key)) {
+        this.expandedGroup.delete(key);
+      } else {
+        this.expandedGroup.add(key);
+      }
     },
 
     /**
