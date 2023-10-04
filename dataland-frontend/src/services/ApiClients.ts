@@ -74,32 +74,52 @@ export class ApiClientProvider {
   ): Promise<FrameworkDataApi<FrameworkDataTypes[K]["data"]>> {
     switch (framework) {
       case DataTypeEnum.Lksg:
-        return translateFrameworkApi<typeof DataTypeEnum.Lksg>("LksgData", await this.getLksgDataControllerApi());
+        return translateFrameworkApi<typeof DataTypeEnum.Lksg>(
+          "LksgData",
+          await this.getConstructedApi(LksgDataControllerApi),
+        );
       case DataTypeEnum.Sfdr:
-        return translateFrameworkApi<typeof DataTypeEnum.Sfdr>("SfdrData", await this.getSfdrDataControllerApi());
+        return translateFrameworkApi<typeof DataTypeEnum.Sfdr>(
+          "SfdrData",
+          await this.getConstructedApi(SfdrDataControllerApi),
+        );
       case DataTypeEnum.P2p:
-        return translateFrameworkApi<typeof DataTypeEnum.P2p>("P2pData", await this.getP2pDataControllerApi());
+        return translateFrameworkApi<typeof DataTypeEnum.P2p>(
+          "P2pData",
+          await this.getConstructedApi(P2pDataControllerApi),
+        );
       case DataTypeEnum.Sme:
-        return translateFrameworkApi<typeof DataTypeEnum.Sme>("SmeData", await this.getSmeDataControllerApi());
+        return translateFrameworkApi<typeof DataTypeEnum.Sme>(
+          "SmeData",
+          await this.getConstructedApi(SmeDataControllerApi),
+        );
       case DataTypeEnum.EutaxonomyFinancials:
         return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyFinancials>(
           "EuTaxonomyDataForFinancials",
-          await this.getEuTaxonomyDataForFinancialsControllerApi(),
+          await this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi),
         );
       case DataTypeEnum.EutaxonomyNonFinancials:
         return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyNonFinancials>(
           "EuTaxonomyDataForNonFinancials",
-          await this.getEuTaxonomyDataForNonFinancialsControllerApi(),
+          await this.getConstructedApi(EuTaxonomyDataForNonFinancialsControllerApi),
         );
       default:
         return assertNever(framework);
     }
   }
 
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get Framework-Specific API Controllers.
+   * @returns a framework-specific API Controller
+   */
   async getEuTaxonomyDataForNonFinancialsControllerApi(): Promise<EuTaxonomyDataForNonFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForNonFinancialsControllerApi);
   }
 
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get Framework-Specific API Controllers.
+   * @returns a framework-specific API Controller
+   */
   async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
   }
@@ -108,18 +128,34 @@ export class ApiClientProvider {
     return this.getConstructedApi(MetaDataControllerApi);
   }
 
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
+   * @returns a framework-specific API Controller
+   */
   async getLksgDataControllerApi(): Promise<LksgDataControllerApiInterface> {
     return this.getConstructedApi(LksgDataControllerApi);
   }
 
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
+   * @returns a framework-specific API Controller
+   */
   async getSfdrDataControllerApi(): Promise<SfdrDataControllerApiInterface> {
     return this.getConstructedApi(SfdrDataControllerApi);
   }
 
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
+   * @returns a framework-specific API Controller
+   */
   async getP2pDataControllerApi(): Promise<P2pDataControllerApiInterface> {
     return this.getConstructedApi(P2pDataControllerApi);
   }
 
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
+   * @returns a framework-specific API Controller
+   */
   async getSmeDataControllerApi(): Promise<SmeDataControllerApiInterface> {
     return this.getConstructedApi(SmeDataControllerApi);
   }
