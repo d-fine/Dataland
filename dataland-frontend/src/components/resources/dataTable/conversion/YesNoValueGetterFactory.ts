@@ -18,45 +18,46 @@ const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
   NA: "N/A",
 };
 
+const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
+  Yes: "Certified",
+  No: "Uncertified",
+  NA: "N/A",
+};
+
 /**
  * Formats the value of a YesNoFormField if the field serves as a certificate
  * @param elementValue the value of the field
+ * @param field the YesNoFormField
  * @returns the formatted display value
  */
 function formatYesNoValueWhenCertificateRequiredIsYes(
   elementValue: BaseDataPointYesNo | BaseDataPointYesNoNa | undefined,
+  field: Field,
 ): AvailableDisplayValues {
   if (!elementValue) {
     return EmptyDisplayValue;
   }
+  const lowerFieldLabel = field.label.toLowerCase();
+  const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
 
-  if (elementValue.value == YesNoNa.Yes) {
-    if (elementValue.dataSource) {
-      return {
-        displayComponent: MLDTDisplayComponents.DocumentLinkDisplayComponent,
-        displayValue: {
-          label: "Certified",
-          reference: elementValue.dataSource,
-        },
-      };
-    } else {
-      return {
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: "Yes",
-      };
-    }
-  } else if (elementValue.value == YesNoNa.No) {
+  const displayValue = isCertificationField
+    ? certificateHumanReadableYesNoMap[elementValue.value]
+    : humanReadableYesNoMap[elementValue.value];
+
+  if (elementValue.value == YesNoNa.Yes && elementValue.dataSource) {
     return {
-      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-      displayValue: "Uncertified",
+      displayComponent: MLDTDisplayComponents.DocumentLinkDisplayComponent,
+      displayValue: {
+        label: displayValue,
+        reference: elementValue.dataSource,
+      },
     };
-  } else if (elementValue.value == YesNoNa.Na) {
+  } else {
     return {
       displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-      displayValue: "N/A",
+      displayValue: displayValue,
     };
   }
-  return EmptyDisplayValue;
 }
 
 /**
@@ -91,6 +92,7 @@ export function yesNoValueGetterFactory(path: string, field: Field): (dataset: a
     if (field.certificateRequiredIfYes) {
       return formatYesNoValueWhenCertificateRequiredIsYes(
         getFieldValueFromDataModel(path, dataset) as BaseDataPointYesNo | BaseDataPointYesNoNa | undefined,
+        field,
       );
     } else if (field.evidenceDesired) {
       return formatYesNoValueWhenEvidenceDesiredIsYes(
