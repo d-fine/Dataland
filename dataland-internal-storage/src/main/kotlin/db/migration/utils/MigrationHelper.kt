@@ -145,6 +145,52 @@ class MigrationHelper {
     }
 
     /**
+     * This function migrates the "DataSource" Object by amending variable names
+     */
+    fun migrateOneSingleObjectOfDataSource(
+        parentObjectOfDataSource: JSONObject,
+        dataObject: JSONObject,
+        migrationFieldNames: Map<String, String>,
+    ) {
+        val dataSourceObject = parentObjectOfDataSource.getOrJavaNull("dataSource") ?: return
+        dataSourceObject as JSONObject
+        if (dataSourceObject.has("report")) {
+            val fileNameToSearchInReferencedReports: String = dataSourceObject.get("report") as String
+            dataSourceObject.put(
+                "fileReference",
+                getFileReferenceFromReferencedReports(
+                    fileNameToSearchInReferencedReports, dataObject,
+                ),
+            )
+        }
+        migrationFieldNames.forEach {
+            if (dataSourceObject.has(it.key)) {
+                dataSourceObject.put(it.value, dataSourceObject.get(it.key))
+                dataSourceObject.remove(it.key)
+            }
+        }
+    }
+
+    /**
+     * This function reads the fileReference hash from referenced reports in order to store it
+     * in the "DataSource" Object.
+     */
+    private fun getFileReferenceFromReferencedReports(fileName: String, dataObject: JSONObject): String {
+        if (fileName != "") {
+            val generalCategoryObject = dataObject.getOrJsonNull("general")
+            generalCategoryObject as JSONObject
+            val referencedReportsObject = generalCategoryObject.getOrJsonNull("referencedReports")
+            referencedReportsObject as JSONObject
+            val reportObject = referencedReportsObject.getOrJsonNull(fileName)
+            if (reportObject != JSONObject.NULL) {
+                reportObject as JSONObject
+                return reportObject.getOrJsonNull("fileReference") as String
+            }
+        }
+        return ""
+    }
+
+    /**
      * Iterates through all referenced reports to migrate reports
      */
     private fun iterateThroughReferencedReports(
