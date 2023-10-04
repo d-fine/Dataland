@@ -129,8 +129,8 @@ describeIf(
       const lksgData = lksgDataFixture.t;
       if (lksgData.general?.productionSpecific?.listOfProductionSites) {
         lksgData.general.productionSpecific.listOfProductionSites = [
-          generateProductionSite(false),
-          generateProductionSite(false),
+          generateProductionSite(),
+          generateProductionSite(),
         ];
       }
       cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/companies/*`, {
