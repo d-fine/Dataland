@@ -196,7 +196,7 @@
         "banksAndIssuersInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "report": "",
+            "report": "some-document2",
             "page": 876,
             "tagName": null
           },

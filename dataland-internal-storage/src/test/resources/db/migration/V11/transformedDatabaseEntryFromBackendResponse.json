@@ -11,9 +11,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 414,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "copy 1080p array",
           "value": 41.5188
@@ -22,9 +22,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 1166,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "reboot multi-byte feed",
           "value": 85.5525
@@ -33,9 +33,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 13,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "comment",
           "value": 69.8722
@@ -44,9 +44,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 159,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "bypass solid state sensor",
           "value": 42.7754
@@ -55,9 +55,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 13,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "comment",
           "value": 2.2527
@@ -68,9 +68,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 538,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "input virtual matrix",
           "value": 12.2204
@@ -79,9 +79,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 874,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "override haptic circuit",
           "value": 73.7567
@@ -90,9 +90,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 188,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "input online program",
           "value": 63.8227
@@ -101,9 +101,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 188,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "reboot virtual port",
           "value": 78.7088
@@ -112,9 +112,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 1006,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "hack virtual panel",
           "value": 24.0069
@@ -125,9 +125,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 569,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "hack virtual feed",
           "value": 54.8237
@@ -136,9 +136,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 928,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "bypass multi-byte circuit",
           "value": 31.4616
@@ -147,9 +147,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 369,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "generate solid state bandwidth",
           "value": 36.2758
@@ -158,9 +158,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 13,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "comment",
           "value": 80.6694
@@ -169,9 +169,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 1051,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "navigate solid state transmitter",
           "value": 91.7963
@@ -182,9 +182,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 251,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "copy mobile card",
           "value": 9.5846
@@ -193,9 +193,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 894,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "copy digital driver",
           "value": 18.2192
@@ -204,9 +204,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 1010,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "transmit redundant microchip",
           "value": 30.8527
@@ -215,9 +215,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 876,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "override auxiliary hard drive",
           "value": 82.7784
@@ -226,9 +226,9 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 224,
-            "tagName": null
+            "tagName": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
           },
           "comment": "hack primary panel",
           "value": 92.6354
@@ -240,9 +240,9 @@
         "quality": "Audited",
         "dataSource": {
           "fileName": "some-document2",
-          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 1134,
-          "tagName": null
+          "tagName": null,
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
         },
         "comment": "program 1080p transmitter",
         "value": 97.0335
@@ -251,9 +251,9 @@
         "quality": "Audited",
         "dataSource": {
           "fileName": "some-document2",
-          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 995,
-          "tagName": null
+          "tagName": null,
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
         },
         "comment": "copy virtual application",
         "value": 32.1835
@@ -262,9 +262,9 @@
         "quality": "Audited",
         "dataSource": {
           "fileName": "some-document2",
-          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 85,
-          "tagName": null
+          "tagName": null,
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
         },
         "comment": "reboot virtual program",
         "value": 52.0076
@@ -272,10 +272,9 @@
       "greenAssetRatioInPercent": {
         "quality": "Audited",
         "dataSource": {
-          "fileName": "some-document2",
-          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
-          "page": 806,
-          "tagName": null
+          "fileName": "some-document2", "page": 806,
+          "tagName": null,
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
         },
         "comment": "input neural microchip",
         "value": 56.373
@@ -286,9 +285,9 @@
         "quality": "Audited",
         "dataSource": {
           "fileName": "some-document2",
-          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 13,
-          "tagName": null
+          "tagName": null,
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
         },
         "comment": "comment",
         "value": 81.1588
@@ -299,9 +298,9 @@
         "quality": "Audited",
         "dataSource": {
           "fileName": "some-document2",
-          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 93,
-          "tagName": null
+          "tagName": null,
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7"
         },
         "comment": "bypass mobile system",
         "value": 31.1898
@@ -313,14 +312,14 @@
     "nfrdMandatory": "Yes",
     "euTaxonomyActivityLevelReporting": "No",
     "assurance": {
-      "value": "LimitedAssurance",
       "provider": "Assurance Provider",
       "dataSource": {
         "fileName": "some-document2",
         "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
         "page": 1,
         "tagName": null
-      }
+      },
+      "value": "LimitedAssurance"
     },
     "numberOfEmployees": 81152,
     "referencedReports": {

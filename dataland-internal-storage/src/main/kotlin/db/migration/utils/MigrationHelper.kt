@@ -174,7 +174,7 @@ class MigrationHelper {
         }
         migrationHelper.migrateOneSingleObjectOfDataSource(
             assuranceParentObject, dataObject,
-            migrationFieldNamesForReports, framework = framework,
+            migrationFieldNamesForReports, framework,
         )
     }
 
