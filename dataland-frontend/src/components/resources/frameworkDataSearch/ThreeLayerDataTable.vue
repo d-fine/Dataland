@@ -214,8 +214,8 @@ export default defineComponent({
           const totalAmountSubCategoryObject = subCategoryObject as CurrencyDataPoint;
           adaptedSubCategoryObject = {
             value: {
-              amount: totalAmountSubCategoryObject.value ?? "",
-              currency: totalAmountSubCategoryObject.currency ?? "",
+              amount: totalAmountSubCategoryObject.value ?? null,
+              currency: totalAmountSubCategoryObject.currency ?? null,
             },
             comment: totalAmountSubCategoryObject.comment ?? "",
             dataSource: totalAmountSubCategoryObject.dataSource ?? "",
