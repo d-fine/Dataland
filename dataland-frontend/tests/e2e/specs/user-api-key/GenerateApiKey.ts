@@ -68,7 +68,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("h1").should("contain.text", "Create new API Key");
   }
 
-  it("Check Api Key functionalities", () => {
+  it("Check Api Key functionalities", { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*").as("getApiKeyMetaInfoForUser");
     cy.intercept("GET", "**/api-keys/generateApiKey*").as("generateApiKey");
