@@ -20,7 +20,7 @@ import java.time.Instant
 @Component("FileManager")
 class InviteManager(
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val inviteMetaInfoRepositoryInterface: InviteMetaInfoRepository,
+    @Autowired private val inviteMetaInfoRepository: InviteMetaInfoRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -112,6 +112,6 @@ class InviteManager(
             inviteResult.isInviteSuccessful,
             inviteResult.inviteResultMessage,
         )
-        return inviteMetaInfoRepositoryInterface.save(newInviteMetaInfoEntity)
+        return inviteMetaInfoRepository.save(newInviteMetaInfoEntity)
     }
 }

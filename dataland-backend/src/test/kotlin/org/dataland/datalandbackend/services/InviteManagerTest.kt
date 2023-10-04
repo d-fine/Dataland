@@ -2,8 +2,8 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
-import org.dataland.datalandbackend.interfaces.InviteMetaInfoRepositoryInterface
 import org.dataland.datalandbackend.model.email.Email
+import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -30,7 +30,7 @@ class InviteManagerTest {
 
     @Mock lateinit var mockEmailSender: EmailSender
 
-    @Mock lateinit var mockInviteMetaInfoRepositoryInterface: InviteMetaInfoRepositoryInterface
+    @Mock lateinit var mockInviteMetaInfoRepository: InviteMetaInfoRepository
 
     @Mock lateinit var mockSecurityContext: SecurityContext
 
@@ -42,7 +42,7 @@ class InviteManagerTest {
             false,
         )
 
-        Mockito.`when`(mockInviteMetaInfoRepositoryInterface.save(any(InviteMetaInfoEntity::class.java)))
+        Mockito.`when`(mockInviteMetaInfoRepository.save(any(InviteMetaInfoEntity::class.java)))
             .thenAnswer { invocation -> invocation.arguments[0] }
 
         val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
