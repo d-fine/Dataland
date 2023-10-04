@@ -106,10 +106,9 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
-import { AxiosError } from "axios";
 import { type CompanyAssociatedDataSfdrData, type CompanyReport } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
@@ -134,6 +133,7 @@ import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 import HighImpactClimateSectorsFormField from "@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue";
+import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 
 export default defineComponent({
   setup() {
@@ -253,6 +253,10 @@ export default defineComponent({
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
+          checkIfAllUploadedReportsAreReferencedInDataModel(
+            this.companyAssociatedSfdrData.data as ObjectType,
+            this.namesOfAllCompanyReportsForTheDataset,
+          );
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
@@ -266,8 +270,8 @@ export default defineComponent({
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
+        if (error.message) {
+          this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
             "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
