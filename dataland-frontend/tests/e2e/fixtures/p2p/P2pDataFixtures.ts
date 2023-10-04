@@ -75,7 +75,7 @@ class P2pGenerator extends Generator {
 
   /**
    * Method to generate the sectors for a p2p dataset
-   * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selections
+   * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
    * @returns the sectors used for generating fixtures
    */
   generateSectors(toggleRandomSectors: boolean): P2pSector[] {
