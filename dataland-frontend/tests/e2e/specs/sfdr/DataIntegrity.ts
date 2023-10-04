@@ -57,8 +57,7 @@ describeIf(
       cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('select[name="quality"]').select(3);
     }
     it(
-      "Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form",
-      { scrollBehavior: "center" },
+      "Create a company and a SFDR dataset via the api, then edit the SFDR dataset and " + "re-upload it via the form",
       () => {
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
