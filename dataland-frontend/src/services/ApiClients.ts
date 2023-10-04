@@ -10,7 +10,6 @@ import {
   type MetaDataControllerApiInterface,
   LksgDataControllerApi,
   type LksgDataControllerApiInterface,
-  SfdrDataControllerApi,
   type P2pDataControllerApiInterface,
   P2pDataControllerApi,
   type SmeDataControllerApiInterface,
@@ -23,9 +22,8 @@ import type Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
-import { type FrameworkDataApi, translateFrameworkApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { assertNever } from "@/utils/TypeScriptUtils";
-import { DataTypeEnum } from "@clients/backend";
+import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -71,40 +69,8 @@ export class ApiClientProvider {
   async getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
     framework: K,
   ): Promise<FrameworkDataApi<FrameworkDataTypes[K]["data"]>> {
-    switch (framework) {
-      case DataTypeEnum.Lksg:
-        return translateFrameworkApi<typeof DataTypeEnum.Lksg>(
-          "LksgData",
-          await this.getConstructedApi(LksgDataControllerApi),
-        );
-      case DataTypeEnum.Sfdr:
-        return translateFrameworkApi<typeof DataTypeEnum.Sfdr>(
-          "SfdrData",
-          await this.getConstructedApi(SfdrDataControllerApi),
-        );
-      case DataTypeEnum.P2p:
-        return translateFrameworkApi<typeof DataTypeEnum.P2p>(
-          "P2pData",
-          await this.getConstructedApi(P2pDataControllerApi),
-        );
-      case DataTypeEnum.Sme:
-        return translateFrameworkApi<typeof DataTypeEnum.Sme>(
-          "SmeData",
-          await this.getConstructedApi(SmeDataControllerApi),
-        );
-      case DataTypeEnum.EutaxonomyFinancials:
-        return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyFinancials>(
-          "EuTaxonomyDataForFinancials",
-          await this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi),
-        );
-      case DataTypeEnum.EutaxonomyNonFinancials:
-        return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyNonFinancials>(
-          "EuTaxonomyDataForNonFinancials",
-          await this.getConstructedApi(EuTaxonomyDataForNonFinancialsControllerApi),
-        );
-      default:
-        return assertNever(framework);
-    }
+    const configuration = await this.getConfiguration();
+    return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
   }
 
   /**
