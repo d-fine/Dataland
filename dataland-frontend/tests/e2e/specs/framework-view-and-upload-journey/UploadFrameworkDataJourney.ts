@@ -102,7 +102,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         });
       });
 
-      it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
+      it("Go through the whole dataset creation process for a newly created company and verify pages and elements", {scrollBehavior: "center"}, function () {
         cy.visitAndCheckAppMount("/companies");
         verifySearchResultTable();
 
@@ -119,7 +119,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         });
       });
 
-      it("Check that the error message is correctly displayed if a PermId is typed in that was already stored in dataland", function () {
+      it("Check that the error message is correctly displayed if a PermId is typed in that was already stored in dataland", {scrollBehavior: "center"}, function () {
         cy.visitAndCheckAppMount("/companies/choose");
         const identifierDoesExistMessage = "There already exists a company with this ID";
         cy.contains(identifierDoesExistMessage).should("not.exist");
