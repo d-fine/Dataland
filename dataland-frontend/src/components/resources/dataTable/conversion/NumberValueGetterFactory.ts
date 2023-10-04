@@ -1,6 +1,6 @@
 import {
-    type AvailableDisplayValues,
-    MLDTDisplayComponents,
+  type AvailableDisplayValues,
+  MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
@@ -12,8 +12,8 @@ import { formatNumberToReadableFormat } from "@/utils/Formatter";
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function numberValueGetterFactory(path: string): (dataset: any) => AvailableDisplayValues {
-    return (dataset) => ({
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: formatNumberToReadableFormat(getFieldValueFromDataModel(path, dataset) as number),
-    });
+  return (dataset) => ({
+    displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    displayValue: formatNumberToReadableFormat(getFieldValueFromDataModel(path, dataset) as number),
+  });
 }
