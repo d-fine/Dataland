@@ -140,14 +140,6 @@ export class ApiClientProvider {
    * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
    * @returns a framework-specific API Controller
    */
-  async getSfdrDataControllerApi(): Promise<SfdrDataControllerApiInterface> {
-    return this.getConstructedApi(SfdrDataControllerApi);
-  }
-
-  /**
-   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
-   * @returns a framework-specific API Controller
-   */
   async getP2pDataControllerApi(): Promise<P2pDataControllerApiInterface> {
     return this.getConstructedApi(P2pDataControllerApi);
   }
