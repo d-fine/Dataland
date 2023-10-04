@@ -51,7 +51,7 @@
       },
       "comment": null,
       "value": 7430892648,
-      "unit": "MNT"
+      "currency": "MNT"
     },
     "nonEligibleShare": {
       "relativeShareInPercent": 0.0708,
@@ -144,7 +144,7 @@
       },
       "comment": "connect cross-platform bus",
       "value": 9280059693,
-      "unit": "CRC"
+      "currency": "CRC"
     },
     "nonEligibleShare": {
       "relativeShareInPercent": 0.9654,
@@ -252,7 +252,7 @@
       },
       "comment": null,
       "value": 9655318725,
-      "unit": "BBD"
+      "currency": "BBD"
     },
     "nonEligibleShare": {
       "relativeShareInPercent": 0.7046,

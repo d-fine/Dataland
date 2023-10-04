@@ -145,12 +145,47 @@ class MigrationHelper {
     }
 
     /**
+     * This function migrates the "Assurance" Object including a "DataSource" Object
+     */
+    fun migrateAssurance(
+        dataObject: JSONObject,
+        migrationFieldNamesForAssurance: Map<String, String>,
+        migrationFieldNamesForReports: Map<String, String>,
+        migrationHelper: MigrationHelper,
+        framework: String,
+    ) {
+        var parentObject = dataObject
+        if (framework == "euTaxonomyNonFinancials") {
+            val generalCategoryObject = dataObject.getOrJavaNull("general") ?: return
+            generalCategoryObject as JSONObject
+            parentObject = generalCategoryObject
+        } else {
+            if (framework != "euTaxonomyFinancials") {
+                throw IllegalStateException("Migration of assurance may not be implemented for this framework")
+            }
+        }
+        val assuranceParentObject = parentObject.getOrJavaNull("assurance") ?: return
+        assuranceParentObject as JSONObject
+        migrationFieldNamesForAssurance.forEach {
+            if (assuranceParentObject.has(it.key)) {
+                assuranceParentObject.put(it.value, assuranceParentObject.get(it.key))
+                assuranceParentObject.remove(it.key)
+            }
+        }
+        migrationHelper.migrateOneSingleObjectOfDataSource(
+            assuranceParentObject, dataObject,
+            migrationFieldNamesForReports, framework = framework,
+        )
+    }
+
+    /**
      * This function migrates the "DataSource" Object by amending variable names
      */
     fun migrateOneSingleObjectOfDataSource(
         parentObjectOfDataSource: JSONObject,
         dataObject: JSONObject,
         migrationFieldNames: Map<String, String>,
+        framework: String,
     ) {
         val dataSourceObject = parentObjectOfDataSource.getOrJavaNull("dataSource") ?: return
         dataSourceObject as JSONObject
@@ -159,7 +194,7 @@ class MigrationHelper {
             dataSourceObject.put(
                 "fileReference",
                 getFileReferenceFromReferencedReports(
-                    fileNameToSearchInReferencedReports, dataObject,
+                    fileNameToSearchInReferencedReports, dataObject, framework,
                 ),
             )
         }
@@ -175,11 +210,23 @@ class MigrationHelper {
      * This function reads the fileReference hash from referenced reports in order to store it
      * in the "DataSource" Object.
      */
-    private fun getFileReferenceFromReferencedReports(fileName: String, dataObject: JSONObject): String {
+    private fun getFileReferenceFromReferencedReports(fileName: String, dataObject: JSONObject, framework: String):
+        String {
         if (fileName != "") {
-            val generalCategoryObject = dataObject.getOrJsonNull("general")
-            generalCategoryObject as JSONObject
-            val referencedReportsObject = generalCategoryObject.getOrJsonNull("referencedReports")
+            var parentObject = dataObject
+            if (framework == "euTaxonomyNonFinancials") {
+                val generalCategoryObject = dataObject.getOrJsonNull("general")
+                generalCategoryObject as JSONObject
+                parentObject = generalCategoryObject
+            } else {
+                if (framework != "euTaxonomyFinancials") {
+                    throw IllegalStateException(
+                        "Retrieval of reference from reports may not be implemented" +
+                            " for this framework",
+                    )
+                }
+            }
+            val referencedReportsObject = parentObject.getOrJsonNull("referencedReports")
             referencedReportsObject as JSONObject
             val reportObject = referencedReportsObject.getOrJsonNull(fileName)
             if (reportObject != JSONObject.NULL) {

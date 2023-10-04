@@ -33,6 +33,10 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         "assurance" to "value",
     )
 
+    private val oldToNewFieldNamesForCurrencyDataPoint = mapOf(
+        "unit" to "currency",
+    )
+
     /**
      * Migrates the data to new variable names in data point structures
      */
@@ -42,7 +46,10 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         val generalCategoryObject = dataObject.getOrJavaNull("general")
         generalCategoryObject as JSONObject
         migrationHelper.migrateReferencedReports(generalCategoryObject, oldToNewFieldNamesForReports)
-        migrateAssurance(dataObject, oldToNewFieldNamesForDocuments, migrationHelper)
+        migrationHelper.migrateAssurance(
+            dataObject, oldToNewFieldNamesForAssurance, oldToNewFieldNamesForDocuments,
+            migrationHelper, framework = "euTaxonomyNonFinancials",
+        )
         iterateThroughCashFlowCategories(dataObject, oldToNewFieldNamesForDocuments, migrationHelper)
         dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
     }
@@ -61,29 +68,16 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
             val parentObjectOfDataSource = categoryObject.getOrJavaNull("totalAmount") ?: return
             migrationHelper.migrateOneSingleObjectOfDataSource(
                 parentObjectOfDataSource as JSONObject, dataObject,
-                migrationFieldNames,
+                migrationFieldNames, "euTaxonomyNonFinancials",
             )
+            migrateUnitToCurrency(parentObjectOfDataSource)
         }
     }
 
-    /**
-     * This function migrates the "Assurance" Object including a "DataSource" Object
-     */
-    private fun migrateAssurance(
-        dataObject: JSONObject,
-        migrationFieldNames: Map<String, String>,
-        migrationHelper: MigrationHelper,
-    ) {
-        val generalCategoryObject = dataObject.getOrJavaNull("general") ?: return
-        generalCategoryObject as JSONObject
-        val assuranceParentObject = generalCategoryObject.getOrJavaNull("assurance") ?: return
-        assuranceParentObject as JSONObject
-        oldToNewFieldNamesForAssurance.forEach {
-            if (assuranceParentObject.has(it.key)) {
-                assuranceParentObject.put(it.value, assuranceParentObject.get(it.key))
-                assuranceParentObject.remove(it.key)
-            }
+    private fun migrateUnitToCurrency(totalAmountObject: JSONObject) {
+        oldToNewFieldNamesForCurrencyDataPoint.forEach {
+            totalAmountObject.put(it.value, totalAmountObject.get(it.key))
+            totalAmountObject.remove(it.key)
         }
-        migrationHelper.migrateOneSingleObjectOfDataSource(assuranceParentObject, dataObject, migrationFieldNames)
     }
 }
