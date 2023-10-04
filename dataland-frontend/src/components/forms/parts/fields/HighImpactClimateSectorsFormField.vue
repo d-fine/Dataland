@@ -6,20 +6,28 @@
       <MultiSelect
         v-model="selections"
         :options="options"
-        :placeholder="'TODO'"
+        :placeholder="label"
         option-label="label"
         option-value="value"
         :show-toggle-all="false"
       />
       <div v-for="selection of selections" :key="selection">
         <h4>{{ options.find((option) => option.value == selection).label }}</h4>
-        <NumberFormField
-          :name="`sector${selection}EnergyConsumption`"
-          :label="`Sector ${selection} Energy Consumption`"
-          :placeholder="`Sector ${selection} Energy Consumption`"
-          description="Total energy consumption per high impact climate sector"
-          inner-class=""
+        <UploadFormHeader
+            :label="`Sector ${selection} Energy Consumption`"
+            :description="`Total energy consumption for high impact climate sector ${selection}`"
+            :is-required="true"
         />
+        <div class="next-to-each-other">
+          <FormKit
+            type="text"
+            :name="`sector${selection}EnergyConsumption`"
+            :placeholder="`Sector ${selection} Energy Consumption`"
+            validation-label="Energy Consumption"
+            validation="number"
+          />
+          <span>in GWh</span>
+        </div>
       </div>
     </div>
   </div>
