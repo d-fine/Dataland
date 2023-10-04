@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.sme.categories.production.subcategories.productionObjects
 
-import org.dataland.datalandbackend.interfaces.ProductionSiteInterface
+import org.dataland.datalandbackend.interfaces.frameworks.ProductionSite
 import org.dataland.datalandbackend.model.generics.Address
 import java.math.BigDecimal
 
@@ -11,4 +11,4 @@ data class SmeProductionSite(
     override val nameOfProductionSite: String?,
     override val addressOfProductionSite: Address,
     val shareOfTotalRevenueInPercent: BigDecimal?,
-) : ProductionSiteInterface
+) : ProductionSite

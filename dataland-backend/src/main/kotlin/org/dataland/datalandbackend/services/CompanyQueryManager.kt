@@ -2,9 +2,9 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.interfaces.CompanyIdAndNameInterface
-import org.dataland.datalandbackend.interfaces.StoredCompanyRepositoryInterface
+import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("CompanyQueryManager")
 class CompanyQueryManager(
-    @Autowired private val companyRepository: StoredCompanyRepositoryInterface,
+    @Autowired private val companyRepository: StoredCompanyRepository,
 ) {
     /**
      * Method to verify that a given company exists in the company store
@@ -65,7 +65,7 @@ class CompanyQueryManager(
     @Transactional
     fun searchCompaniesByNameOrIdentifierAndGetApiModel(
         searchString: String,
-    ): List<CompanyIdAndNameInterface> {
+    ): List<CompanyIdAndName> {
         return companyRepository.searchCompaniesByNameOrIdentifier(
             searchString,
         )

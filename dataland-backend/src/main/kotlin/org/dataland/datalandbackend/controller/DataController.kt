@@ -2,12 +2,12 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.LogMessageBuilder
-import org.dataland.datalandbackend.interfaces.api.DataApiInterface
-import org.dataland.datalandbackend.model.CompanyAssociatedData
-import org.dataland.datalandbackend.model.DataAndMetaInformation
-import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.canUserBypassQa
@@ -31,7 +31,7 @@ abstract class DataController<T>(
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>,
-) : DataApiInterface<T> {
+) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()

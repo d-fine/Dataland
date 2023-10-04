@@ -2,9 +2,9 @@ package org.dataland.datalandbackend.model.eutaxonomy.financials
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.interfaces.EuTaxonomyCommonFieldsInterface
-import org.dataland.datalandbackend.interfaces.FrameworkBaseInterface
-import org.dataland.datalandbackend.model.CompanyReport
+import org.dataland.datalandbackend.interfaces.frameworks.EuTaxonomyCommonFields
+import org.dataland.datalandbackend.interfaces.frameworks.FrameworkBase
+import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
@@ -47,4 +47,4 @@ data class EuTaxonomyDataForFinancials(
     override val numberOfEmployees: BigDecimal? = null,
 
     override val referencedReports: Map<String, CompanyReport>? = null,
-) : EuTaxonomyCommonFieldsInterface, FrameworkBaseInterface
+) : EuTaxonomyCommonFields, FrameworkBase

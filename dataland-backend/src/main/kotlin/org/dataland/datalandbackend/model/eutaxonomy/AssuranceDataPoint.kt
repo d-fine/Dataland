@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.model.eutaxonomy
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.interfaces.BaseDataPointInterface
-import org.dataland.datalandbackend.model.ExtendedDocumentReference
+import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
+import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 
 /**
@@ -16,4 +16,4 @@ data class AssuranceDataPoint(
     override val dataSource: ExtendedDocumentReference? = null,
 
     val provider: String? = null,
-) : BaseDataPointInterface<AssuranceOptions>
+) : BaseDataPoint<AssuranceOptions>

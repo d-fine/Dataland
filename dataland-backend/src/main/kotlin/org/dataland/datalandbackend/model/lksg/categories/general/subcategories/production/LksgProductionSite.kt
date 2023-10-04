@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.interfaces.ProductionSiteInterface
+import org.dataland.datalandbackend.interfaces.frameworks.ProductionSite
 import org.dataland.datalandbackend.model.generics.Address
 
 /**
@@ -15,4 +15,4 @@ data class LksgProductionSite(
     override val addressOfProductionSite: Address,
 
     val listOfGoodsOrServices: List<String>?,
-) : ProductionSiteInterface
+) : ProductionSite

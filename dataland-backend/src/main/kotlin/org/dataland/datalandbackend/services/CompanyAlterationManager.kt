@@ -4,11 +4,11 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
-import org.dataland.datalandbackend.interfaces.CompanyIdentifierRepositoryInterface
-import org.dataland.datalandbackend.interfaces.StoredCompanyRepositoryInterface
-import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.CompanyInformationPatch
+import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
+import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.hibernate.exception.ConstraintViolationException
@@ -25,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service
 class CompanyAlterationManager(
-    @Autowired private val companyRepository: StoredCompanyRepositoryInterface,
-    @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepositoryInterface,
+    @Autowired private val companyRepository: StoredCompanyRepository,
+    @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)

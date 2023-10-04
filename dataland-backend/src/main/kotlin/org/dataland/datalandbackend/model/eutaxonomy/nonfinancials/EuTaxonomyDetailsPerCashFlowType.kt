@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
-import org.dataland.datalandbackend.model.CurrencyDataPoint
+import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import java.math.BigDecimal
 
 /**
