@@ -80,9 +80,8 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
         if (this.singleDataMetaInfoToDisplay) {
-          const singleSfdrData = (
-            await sfdrDataControllerApi.getFrameworkData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data;
+          const singleSfdrData = (await sfdrDataControllerApi.getFrameworkData(this.singleDataMetaInfoToDisplay.dataId))
+            .data.data;
           this.sfdrDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSfdrData }];
         } else {
           this.sfdrDataAndMetaInfo = (

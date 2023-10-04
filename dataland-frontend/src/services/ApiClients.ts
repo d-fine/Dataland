@@ -11,7 +11,6 @@ import {
   LksgDataControllerApi,
   type LksgDataControllerApiInterface,
   SfdrDataControllerApi,
-  type SfdrDataControllerApiInterface,
   type P2pDataControllerApiInterface,
   P2pDataControllerApi,
   type SmeDataControllerApiInterface,
