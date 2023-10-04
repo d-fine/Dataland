@@ -14,15 +14,13 @@ import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single eutaxonomy-financials fixture
- * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
- * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random eutaxonomy-financials fixture
  */
 export function generateEuTaxonomyDataForFinancials(
-  setMissingValuesToNull = false,
-  missingValueProbability = DEFAULT_PROBABILITY,
+  nullProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForFinancials {
-  const dataGenerator = new EuFinancialsGenerator(missingValueProbability, setMissingValuesToNull);
+  const dataGenerator = new EuFinancialsGenerator(nullProbability);
   return dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes();
 }
 
@@ -39,8 +37,7 @@ export class EuFinancialsGenerator extends Generator {
   ): EuTaxonomyDataForFinancials {
     const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields(
       this.reports,
-      this.setMissingValuesToNull,
-      this.missingValueProbability,
+      this.nullProbability,
     );
     const eligibilityKpis = Object.fromEntries(
       financialServicesTypes.map((it) => [it, this.generateEligibilityKpis()]),
@@ -48,15 +45,11 @@ export class EuFinancialsGenerator extends Generator {
     returnBase.financialServicesTypes = financialServicesTypes;
     returnBase.eligibilityKpis = eligibilityKpis;
     returnBase.creditInstitutionKpis =
-      financialServicesTypes.indexOf("CreditInstitution") >= 0
-        ? this.generateCreditInstitutionKpis()
-        : this.missingValue();
+      financialServicesTypes.indexOf("CreditInstitution") >= 0 ? this.generateCreditInstitutionKpis() : null;
     returnBase.insuranceKpis =
-      financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0
-        ? this.generateInsuranceKpis()
-        : this.missingValue();
+      financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0 ? this.generateInsuranceKpis() : null;
     returnBase.investmentFirmKpis =
-      financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : this.missingValue();
+      financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : null;
     return returnBase;
   }
   /**
@@ -74,9 +67,9 @@ export class EuFinancialsGenerator extends Generator {
    * @returns random credit institution KPIs
    */
   generateCreditInstitutionKpis(): CreditInstitutionKpis {
-    let tradingPortfolioAndInterbankLoans = undefined;
-    let interbankLoans = undefined;
-    let tradingPortfolio = undefined;
+    let tradingPortfolioAndInterbankLoans = null;
+    let interbankLoans = null;
+    let tradingPortfolio = null;
 
     const singleOrDualField = faker.datatype.boolean();
     if (singleOrDualField) {

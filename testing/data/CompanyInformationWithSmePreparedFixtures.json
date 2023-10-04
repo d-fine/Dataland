@@ -2,54 +2,53 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Antioch",
-			"headquartersPostalCode": "77852",
-			"sector": "supply-chains",
+			"headquarters": "Balistrerifield",
+			"headquartersPostalCode": null,
+			"sector": "schemas",
 			"identifiers": {
-				"Lei": [
-					"TBHlJw3mtWdkFRcXkIAV"
-				],
+				"Lei": [],
 				"Isin": [
-					"CwJYW9eDr5Es",
-					"zcmJDQHdZabL"
+					"6eRS4Eaw3KVD",
+					"0iXc2QsaJrS5"
 				],
 				"PermId": [
-					"vwsGCJcEFi"
+					"9uoV3wRE27"
 				],
-				"Ticker": [],
-				"Duns": [],
+				"Ticker": [
+					"eQKzsOf"
+				],
+				"Duns": [
+					"4wNyJqR3O"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"sVQWRNz7zb7FM94"
+					"UhR9OdDBa0jqDhG"
 				]
 			},
-			"countryCode": "WF",
-			"companyAlternativeNames": [
-				"Bruen - Muller",
-				"Buckridge, Cassin and Maggio",
-				"Lang, Marvin and Stanton"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://spiffy-blackberry.biz",
+			"countryCode": "NF",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://gentle-checkroom.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"17.22",
-						"49.32",
-						"63.12"
+						"24.44",
+						"58.13",
+						"84.30",
+						"95.11"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Gusikowski Hill 714",
-						"postalCode": "01104-0458",
-						"city": "Leschhaven",
-						"state": "California",
-						"country": "SZ"
+						"streetAndHouseNumber": "Hansen Spur 588",
+						"postalCode": null,
+						"city": "Whitestad",
+						"state": "Indiana",
+						"country": "PH"
 					},
-					"numberOfEmployees": 187,
-					"fiscalYearStart": "2024-07-02"
+					"numberOfEmployees": 8300,
+					"fiscalYearStart": "2024-07-14"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -59,51 +58,25 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Orn - Bechtelar",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Muller Viaduct 3433",
-								"postalCode": "05232",
-								"city": "Carolinacester",
-								"country": "NZ"
-							},
-							"shareOfTotalRevenueInPercent": 79.026
-						},
-						{
-							"nameOfProductionSite": "Lueilwitz, Leuschke and Raynor",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Olson Keys 6554",
-								"postalCode": "58124",
-								"city": "Curtischester",
-								"state": "New York",
-								"country": "MH"
-							},
-							"shareOfTotalRevenueInPercent": 3.799
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Unbranded Metal Computer",
-							"shareOfTotalRevenueInPercent": 25.8261
+							"name": "Modern Bronze Sausages",
+							"shareOfTotalRevenueInPercent": 9.3814
 						},
 						{
-							"name": "Gorgeous Granite Soap",
-							"shareOfTotalRevenueInPercent": 98.682
+							"name": "Generic Cotton Bacon",
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Licensed Rubber Table",
-							"shareOfTotalRevenueInPercent": 16.3219
+							"name": "Recycled Cotton Table",
+							"shareOfTotalRevenueInPercent": 95.3172
 						},
 						{
-							"name": "Fantastic Metal Sausages",
-							"shareOfTotalRevenueInPercent": 51.3418
-						},
-						{
-							"name": "Fantastic Granite Pizza",
-							"shareOfTotalRevenueInPercent": 6.5826
+							"name": "Generic Soft Cheese",
+							"shareOfTotalRevenueInPercent": 1.7218
 						}
 					]
 				}
@@ -113,22 +86,18 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1445,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 570,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMwh": 481,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWater": 60,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 6601626,
-					"naturalHazardsCovered": [
-						"Hail",
-						"Wind",
-						"Avalanche"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 12694589,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -137,39 +106,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Flatleyworth",
-			"headquartersPostalCode": "06019",
-			"sector": "technologies",
+			"headquarters": "Sigridfort",
+			"headquartersPostalCode": "14038",
+			"sector": "blockchains",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"M1idbALybexr"
+				"Lei": [
+					"cu3to952rvUAT1Xrz0PW"
 				],
-				"PermId": [],
+				"Isin": [
+					"PTc4edCeN10C",
+					"0Z2gbM6Hf40Y"
+				],
+				"PermId": [
+					"FXTPceZAms"
+				],
 				"Ticker": [],
 				"Duns": [
-					"fPFs8as0G"
+					"L2YiatrqH"
 				],
 				"VatNumber": [
-					"d3keaXLoH"
+					"qaMFesbiQ"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "VI",
+			"countryCode": "CC",
 			"companyAlternativeNames": [
-				"Schmidt, Schumm and Kertzmann",
-				"Sporer, Dooley and Rowe"
+				"Dietrich Group"
 			],
-			"companyLegalForm": "Sole Trader",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"53.1",
-						"61.9",
-						"63.11"
+						"27.51",
+						"46.71"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -178,87 +151,82 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8378,
-					"fiscalYearStart": "2024-07-27"
+					"numberOfEmployees": 2691,
+					"fiscalYearStart": "2024-04-28"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 41952219,
-					"capitalAssetsInEur": 23738402
+					"revenueInEur": null,
+					"operatingCostInEur": 78811448,
+					"capitalAssetsInEur": 65899500
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Heidenreich - Dickens",
+							"nameOfProductionSite": "Haley - Schuppe",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Rempel Station 13383",
-								"postalCode": "91742",
-								"city": "West Lynn",
-								"state": "Iowa",
-								"country": "GH"
+								"streetAndHouseNumber": "Wayne Manors 537",
+								"postalCode": "72883-4593",
+								"city": "Lake Angel",
+								"state": "Idaho",
+								"country": "NF"
 							},
-							"shareOfTotalRevenueInPercent": 52.8272
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"nameOfProductionSite": "Johnston, Kling and Corwin",
+							"nameOfProductionSite": "Herzog - Yundt",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Strosin Forest 98038",
-								"postalCode": "53363-5641",
-								"city": "Stiedemannborough",
-								"state": "South Carolina",
-								"country": "AQ"
+								"streetAndHouseNumber": "Eloise Ridges 7832",
+								"postalCode": "60381",
+								"city": "New Pierreberg",
+								"state": "Virginia",
+								"country": "AM"
 							},
-							"shareOfTotalRevenueInPercent": 9.6962
-						},
-						{
-							"nameOfProductionSite": "Leannon - Ernser",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Zula Cape 245",
-								"postalCode": "97698",
-								"city": "South Edisonbury",
-								"state": "Pennsylvania",
-								"country": "BY"
-							},
-							"shareOfTotalRevenueInPercent": 26.8948
-						},
-						{
-							"nameOfProductionSite": "Grimes and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bahringer Haven 165",
-								"postalCode": "83602",
-								"city": "New Kody",
-								"state": "North Carolina",
-								"country": "CU"
-							},
-							"shareOfTotalRevenueInPercent": 13.0186
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Gorgeous Rubber Bike",
-							"shareOfTotalRevenueInPercent": 30.6217
+							"name": "Luxurious Granite Hat",
+							"shareOfTotalRevenueInPercent": 79.9515
+						},
+						{
+							"name": "Recycled Bronze Chair",
+							"shareOfTotalRevenueInPercent": 90.2693
+						},
+						{
+							"name": "Recycled Plastic Gloves",
+							"shareOfTotalRevenueInPercent": 18.0143
+						},
+						{
+							"name": "Sleek Steel Mouse",
+							"shareOfTotalRevenueInPercent": 14.5768
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
+				},
 				"consumption": {
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 791,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWater": 496,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 20655636,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Hail"
+						"Wind",
+						"Avalanche"
 					]
 				}
 			}
@@ -268,122 +236,140 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Jenkinsborough",
-			"sector": "e-business",
+			"headquarters": "Fort Selena",
+			"headquartersPostalCode": "56129",
+			"sector": null,
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"UHrNGdlZ1ElVXaWFlb83"
+				],
 				"Isin": [
-					"S51B3oxnf09A"
+					"cTRuh29t083u"
 				],
 				"PermId": [
-					"6KU4L3Hmlm"
+					"PFU9b9KnVR"
 				],
-				"Ticker": [],
-				"Duns": [
-					"lIr8baLl3"
+				"Ticker": [
+					"nlgouIr"
 				],
-				"VatNumber": [
-					"QMzhkcLNi"
-				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"XsgK30GuUvCgrAH"
+					"soUZRcLJHhouXVn"
 				]
 			},
-			"countryCode": "GD",
+			"countryCode": "BM",
 			"companyAlternativeNames": [
-				"Batz - Goldner",
-				"Gleason - Bednar",
-				"Miller - Gleason",
-				"Shanahan - Tromp"
+				"Luettgen - Stoltenberg",
+				"Olson - Feest",
+				"Stroman - Grant",
+				"Watsica - O'Keefe"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"companyLegalForm": null,
+			"website": "https://striking-eggnog.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"28.25",
-						"28.93"
+						"16.24",
+						"18.20",
+						"26.80",
+						"55.3"
 					],
 					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
 						"city": "City 17",
+						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8279,
-					"fiscalYearStart": "2024-07-11"
+					"numberOfEmployees": 584,
+					"fiscalYearStart": "2024-07-25"
 				},
 				"companyFinancials": {
-					"revenueInEur": 96319136,
-					"operatingCostInEur": 34576718
+					"revenueInEur": 46770942,
+					"operatingCostInEur": 29156193,
+					"capitalAssetsInEur": 7324308
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Hirthe LLC",
 							"addressOfProductionSite": {
-								"city": "Frederick",
-								"country": "SX"
+								"streetAndHouseNumber": "Kerluke Common 35396",
+								"postalCode": "53935",
+								"city": "West Carlie",
+								"state": "Idaho",
+								"country": "AE"
 							},
-							"shareOfTotalRevenueInPercent": 61.5744
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lehner Forest 40740",
-								"city": "Rochester",
-								"state": "Alabama",
-								"country": "TW"
-							}
+								"streetAndHouseNumber": null,
+								"postalCode": "47253",
+								"city": "Lake Callie",
+								"state": "New Mexico",
+								"country": "FO"
+							},
+							"shareOfTotalRevenueInPercent": 73.8178
+						},
+						{
+							"nameOfProductionSite": "Heathcote Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kitty Centers 9808",
+								"postalCode": null,
+								"city": "South Donnychester",
+								"state": "Colorado",
+								"country": "SC"
+							},
+							"shareOfTotalRevenueInPercent": 71.4669
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "56707-3987",
+								"city": "East Herbert",
+								"state": null,
+								"country": "LC"
+							},
+							"shareOfTotalRevenueInPercent": 31.8098
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Handmade Concrete Computer",
-							"shareOfTotalRevenueInPercent": 77.9531
-						},
-						{
-							"name": "Incredible Granite Mouse",
-							"shareOfTotalRevenueInPercent": 82.9575
-						},
-						{
-							"name": "Awesome Bronze Cheese"
-						},
-						{
-							"name": "Incredible Rubber Pizza",
-							"shareOfTotalRevenueInPercent": 95.0398
-						},
-						{
-							"name": "Refined Concrete Tuna",
-							"shareOfTotalRevenueInPercent": 0.2911
+							"name": "Small Frozen Chicken",
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 876,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 976,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMwh": 1081,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 901,
+					"primaryEnergySourceForHeatingAndHotWater": null,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 19281552,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 27120910,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Snow",
-						"Flooding",
-						"Wind",
-						"EarthQuake",
-						"Hail"
+						"Wind"
 					]
 				}
 			}

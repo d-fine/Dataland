@@ -9,7 +9,7 @@ import { range } from "@/utils/ArrayUtils";
  */
 export function generateListOfMetaInformationForOneCompany(): DataMetaInformation[] {
   const listOfMetaInfo: DataMetaInformation[] = [];
-  const metaInfoGenerator = new DataMetaInformationGenerator(true);
+  const metaInfoGenerator = new DataMetaInformationGenerator();
   const companyId = faker.string.uuid();
   let yearCounter = 2014;
 

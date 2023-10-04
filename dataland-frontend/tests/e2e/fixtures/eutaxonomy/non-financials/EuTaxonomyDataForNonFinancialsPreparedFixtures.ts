@@ -27,7 +27,7 @@ export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
 }
 
 /**
- * Creates a prepared fixture that has only defined fields and no undefined fields
+ * Creates a prepared fixture that has only defined fields and no fields with missing values
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
@@ -35,6 +35,6 @@ function createDatasetThatHasAllFieldsDefined(
   input: FixtureData<EuTaxonomyDataForNonFinancials>,
 ): FixtureData<EuTaxonomyDataForNonFinancials> {
   input.companyInformation.companyName = "all-fields-defined-for-eu-taxo-non-financials";
-  input.t = generateEuTaxonomyDataForNonFinancials(false, 0);
+  input.t = generateEuTaxonomyDataForNonFinancials(0);
   return input;
 }

@@ -7,15 +7,11 @@ import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 
 /**
  * Generates a random SFDR dataset
- * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
- * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns SFDR object with populated properties
  */
-export function generateSfdrData(
-  setMissingValuesToNull = false,
-  missingValueProbability = DEFAULT_PROBABILITY,
-): SfdrData {
-  const dataGenerator = new Generator(missingValueProbability, setMissingValuesToNull);
+export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrData {
+  const dataGenerator = new Generator(nullProbability);
   return {
     general: {
       general: {

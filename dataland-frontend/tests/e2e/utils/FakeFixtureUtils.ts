@@ -13,16 +13,6 @@ import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 export const DEFAULT_PROBABILITY = 0.2;
 
 /**
- * Randomly returns the specified value or undefined
- * @param value the value to return
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in optional fields
- * @returns the value or undefined
- */
-export function valueOrUndefined<T>(value: T, undefinedProbability = DEFAULT_PROBABILITY): T | undefined {
-  return Math.random() > undefinedProbability ? value : undefined;
-}
-
-/**
  * Randomly returns the specified value or null
  * @param value the value to return
  * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
@@ -32,83 +22,58 @@ export function valueOrNull<T>(value: T, nullProbability = DEFAULT_PROBABILITY):
   return Math.random() > nullProbability ? value : null;
 }
 
-/**
- * Randomly returns the specified value or a missing value, which can be represented by "null" or "undefined".
- * @param value the value to (potentially) return
- * @param missingValueProbability the probability (as number between 0 and 1) for a missing value in optional fields
- * @param setMissingValuesToNull sets missing values to "null" if set to "true", else to "undefined"
- * @returns the value or null or undefined
- */
-export function valueOrMissing<T>(
-  value: T,
-  missingValueProbability: number,
-  setMissingValuesToNull = false,
-): T | undefined | null {
-  return setMissingValuesToNull
-    ? valueOrNull(value, missingValueProbability)
-    : valueOrUndefined(value, missingValueProbability);
-}
-
 export class Generator {
-  missingValueProbability: number;
-  setMissingValuesToNull: boolean;
+  nullProbability: number;
   reports: ReferencedDocuments;
   documents: ReferencedDocuments;
 
-  constructor(undefinedProbability = DEFAULT_PROBABILITY, setMissingValuesToNull = false) {
-    this.missingValueProbability = undefinedProbability;
-    this.setMissingValuesToNull = setMissingValuesToNull;
-    this.reports = generateReferencedReports(setMissingValuesToNull, undefinedProbability);
+  constructor(nullProbability = DEFAULT_PROBABILITY) {
+    this.nullProbability = nullProbability;
+    this.reports = generateReferencedReports(nullProbability);
     this.documents = generateReferencedDocuments();
   }
 
-  valueOrMissing<T>(value: T): T | undefined | null {
-    return this.setMissingValuesToNull
-      ? valueOrNull(value, this.missingValueProbability)
-      : valueOrUndefined(value, this.missingValueProbability);
+  valueOrNull<T>(value: T): T | null {
+    return valueOrNull(value, this.nullProbability);
   }
 
-  missingValue(): undefined | null {
-    return this.setMissingValuesToNull ? null : undefined;
+  randomYesNo(): YesNo | null {
+    return this.valueOrNull(generateYesNo());
   }
 
-  randomYesNo(): YesNo | undefined | null {
-    return this.valueOrMissing(generateYesNo());
+  randomYesNoNa(): YesNoNa | null {
+    return this.valueOrNull(generateYesNoNa());
   }
 
-  randomYesNoNa(): YesNoNa | undefined | null {
-    return this.valueOrMissing(generateYesNoNa());
+  randomPercentageValue(): number | null {
+    return this.valueOrNull(generatePercentageValue());
   }
 
-  randomPercentageValue(): number | undefined | null {
-    return this.valueOrMissing(generatePercentageValue());
+  randomInt(max = 10000): number | null {
+    return this.valueOrNull(generateInt(max));
   }
 
-  randomInt(max = 10000): number | undefined | null {
-    return this.valueOrMissing(generateInt(max));
+  randomCurrencyValue(): number | null {
+    return this.valueOrNull(generateCurrencyValue());
   }
 
-  randomCurrencyValue(): number | undefined | null {
-    return this.valueOrMissing(generateCurrencyValue());
-  }
-
-  randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | undefined | null {
-    const randomDocument = this.valueOrMissing(
+  randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | null {
+    const randomDocument = this.valueOrNull(
       pickOneElement(
         Object.values(this.documents)
           .filter((document) => "name" in document && "reference" in document)
           .map((document) => document as DocumentReference),
       ),
     );
-    return this.valueOrMissing({ value: input, dataSource: randomDocument });
+    return this.valueOrNull({ value: input, dataSource: randomDocument });
   }
 
-  randomDataPoint<T>(input: T, unit?: string): GenericDataPoint<T> | undefined | null {
-    const randomInput = this.valueOrMissing(input);
-    return this.valueOrMissing(generateDataPoint(randomInput, this.reports, this.setMissingValuesToNull, unit));
+  randomDataPoint<T>(input: T, unit?: string): GenericDataPoint<T> | null {
+    const randomInput = this.valueOrNull(input);
+    return this.valueOrNull(generateDataPoint(randomInput, this.reports, unit));
   }
 
-  randomArray<T>(generator: () => T, min = 0, max = 5): T[] | undefined | null {
-    return this.valueOrMissing(generateArray(generator, min, max));
+  randomArray<T>(generator: () => T, min = 0, max = 5): T[] | null {
+    return this.valueOrNull(generateArray(generator, min, max));
   }
 }

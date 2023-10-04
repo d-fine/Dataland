@@ -21,7 +21,7 @@ import { range } from "@/utils/ArrayUtils";
 class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
   generateMinimumAcceptedEuTaxonomyForNonFinancialsData(): EuTaxonomyDataForNonFinancials {
     return {
-      general: generateEuTaxonomyWithBaseFields(this.reports, this.setMissingValuesToNull, 0),
+      general: generateEuTaxonomyWithBaseFields(this.reports, 0),
       revenue: this.generateMinimumAcceptedDetailsPerCashFlowType(),
       capex: this.generateMinimumAcceptedDetailsPerCashFlowType(),
       opex: this.generateMinimumAcceptedDetailsPerCashFlowType(),
@@ -30,12 +30,7 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
 
   generateMinimumAcceptedDetailsPerCashFlowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: generateDataPoint(
-        this.valueOrMissing(generateCurrencyValue()),
-        this.reports,
-        this.setMissingValuesToNull,
-        generateCurrencyCode(),
-      ),
+      totalAmount: generateDataPoint(this.valueOrNull(generateCurrencyValue()), this.reports, generateCurrencyCode()),
       nonEligibleShare: this.generateFinancialShare(),
       eligibleShare: this.generateFinancialShare(),
       nonAlignedShare: this.generateFinancialShare(),
@@ -59,8 +54,8 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
  * @returns a list of data and meta information with EU taxonomy for non financials data
  */
 export function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformationEuTaxonomyDataForNonFinancials[] {
-  const dataMetaInfoGenerator = new DataMetaInformationGenerator(true);
-  const dataGenerator = new MinimumAcceptedEuNonFinancialsGenerator(DEFAULT_PROBABILITY, true);
+  const dataMetaInfoGenerator = new DataMetaInformationGenerator();
+  const dataGenerator = new MinimumAcceptedEuNonFinancialsGenerator(DEFAULT_PROBABILITY);
   const generatedDataAndMetaInfo = range(3).map((index): DataAndMetaInformationEuTaxonomyDataForNonFinancials => {
     const metaInfo = dataMetaInfoGenerator.generateDataMetaInformation();
     metaInfo.reportingPeriod = "202" + (3 - index).toString();
@@ -70,7 +65,7 @@ export function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformatio
     };
   });
   const data = generatedDataAndMetaInfo[0].data;
-  data.general!.referencedReports = generateReferencedReports(true, DEFAULT_PROBABILITY, ["IntegratedReport"]);
+  data.general!.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, ["IntegratedReport"]);
   data.revenue!.totalAmount!.value = 0;
   data.revenue!.alignedActivities![0].share ??= {};
   data.revenue!.alignedActivities![0].share.relativeShareInPercent = generatePercentageValue();

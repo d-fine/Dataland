@@ -19,40 +19,28 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 /**
  * Generates a set number of SME fixtures
  * @param numFixtures the number of SME fixtures to generate
- * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
- * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a set number of SME fixtures
  */
 export function generateSmeFixtures(
   numFixtures: number,
-  setMissingValuesToNull = false,
-  missingValueProbability = DEFAULT_PROBABILITY,
+  nullProbability = DEFAULT_PROBABILITY,
 ): FixtureData<SmeData>[] {
-  return generateFixtureDataset<SmeData>(
-    () => generateSmeData(setMissingValuesToNull, missingValueProbability),
-    numFixtures,
-  );
+  return generateFixtureDataset<SmeData>(() => generateSmeData(nullProbability), numFixtures);
 }
 
 /**
  * Generates a random SME dataset
- * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
- * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random SME dataset
  */
-export function generateSmeData(
-  setMissingValuesToNull: boolean,
-  missingValueProbability = DEFAULT_PROBABILITY,
-): SmeData {
-  const dataGenerator = new SmeGenerator(missingValueProbability, setMissingValuesToNull);
+export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData {
+  const dataGenerator = new SmeGenerator(nullProbability);
   return {
     general: {
       basicInformation: {
         sector: generateNaceCodes(1),
-        addressOfHeadquarters: generateAddress(
-          dataGenerator.setMissingValuesToNull,
-          dataGenerator.missingValueProbability,
-        ),
+        addressOfHeadquarters: generateAddress(dataGenerator.nullProbability),
         numberOfEmployees: generateInt(10000),
         fiscalYearStart: generateFutureDate(),
       },
@@ -98,7 +86,7 @@ class SmeGenerator extends Generator {
    * Generates a random product
    * @returns a random product
    */
-  randomProduct(): SmeProduct[] | undefined | null {
+  randomProduct(): SmeProduct[] | null {
     return this.randomArray((): SmeProduct => {
       return {
         name: faker.commerce.productName(),
@@ -111,11 +99,11 @@ class SmeGenerator extends Generator {
    * Generates a random production site
    * @returns a random production site
    */
-  randomProductionSite(): SmeProductionSite[] | undefined | null {
+  randomProductionSite(): SmeProductionSite[] | null {
     return this.randomArray((): SmeProductionSite => {
       return {
-        nameOfProductionSite: this.valueOrMissing(faker.company.name()),
-        addressOfProductionSite: generateAddress(this.setMissingValuesToNull, this.missingValueProbability),
+        nameOfProductionSite: this.valueOrNull(faker.company.name()),
+        addressOfProductionSite: generateAddress(this.nullProbability),
         shareOfTotalRevenueInPercent: this.randomPercentageValue(),
       };
     });
@@ -125,36 +113,31 @@ class SmeGenerator extends Generator {
    * Picks a random percentage range option
    * @returns a random percentage range option
    */
-  randomPercentageRangeEnergyConsumption():
-    | PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower
-    | undefined
-    | null {
-    return this.valueOrMissing(
-      pickOneElement(Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)),
-    );
+  randomPercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower | null {
+    return this.valueOrNull(pickOneElement(Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)));
   }
 
   /**
    * Picks a random percentage range option
    * @returns a random percentage range option
    */
-  randomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency | undefined | null {
-    return this.valueOrMissing(pickOneElement(Object.values(PercentRangeForInvestmentsInEnergyEfficiency)));
+  randomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency | null {
+    return this.valueOrNull(pickOneElement(Object.values(PercentRangeForInvestmentsInEnergyEfficiency)));
   }
 
   /**
    * Picks a random heat source
    * @returns a random heat source
    */
-  randomHeatSource(): EnergySourceForHeatingAndHotWater | undefined | null {
-    return this.valueOrMissing(pickOneElement(Object.values(EnergySourceForHeatingAndHotWater)));
+  randomHeatSource(): EnergySourceForHeatingAndHotWater | null {
+    return this.valueOrNull(pickOneElement(Object.values(EnergySourceForHeatingAndHotWater)));
   }
 
   /**
    * Picks a random natural hazard
    * @returns a random natural hazard
    */
-  randomSelectionOfNaturalHazards(): NaturalHazard[] | undefined | null {
-    return this.valueOrMissing(pickSubsetOfElements(Object.values(NaturalHazard)));
+  randomSelectionOfNaturalHazards(): NaturalHazard[] | null {
+    return this.valueOrNull(pickSubsetOfElements(Object.values(NaturalHazard)));
   }
 }

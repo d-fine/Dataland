@@ -1,14 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { type DataMetaInformation, DataTypeEnum, QaStatus } from "@clients/backend";
 import { generateBoolean, generateInt } from "@e2e/fixtures/common/NumberFixtures";
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { Generator } from "@e2e/utils/FakeFixtureUtils";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 export class DataMetaInformationGenerator extends Generator {
-  constructor(setMissingValuesToNull = false) {
-    super(DEFAULT_PROBABILITY, setMissingValuesToNull);
-  }
-
   /**
    * Generates a random ID
    * @returns a random ID
@@ -41,7 +37,7 @@ export class DataMetaInformationGenerator extends Generator {
       currentlyActive: currentlyActive,
       qaStatus: currentlyActive ? QaStatus.Accepted : pickOneElement(Object.values(QaStatus)),
       uploadTime: generateInt(Number.MAX_SAFE_INTEGER),
-      uploaderUserId: canSeeUploader ? this.generateId() : this.missingValue(),
+      uploaderUserId: canSeeUploader ? this.generateId() : null,
     };
   }
 }

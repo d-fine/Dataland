@@ -1,27 +1,19 @@
 import { faker } from "@faker-js/faker";
 import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { type Address } from "@clients/backend";
-import { DEFAULT_PROBABILITY, valueOrMissing } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random address
- * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
- * @param missingValueProbability the probability (as number between 0 and 1) for missing values in optional fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random address
  */
-export function generateAddress(
-  setMissingValuesToNull: boolean,
-  missingValueProbability = DEFAULT_PROBABILITY,
-): Address {
+export function generateAddress(nullProbability = DEFAULT_PROBABILITY): Address {
   return {
-    streetAndHouseNumber: valueOrMissing(
-      faker.location.street() + " " + faker.location.buildingNumber(),
-      missingValueProbability,
-      setMissingValuesToNull,
-    ),
-    postalCode: valueOrMissing(faker.location.zipCode(), missingValueProbability, setMissingValuesToNull),
+    streetAndHouseNumber: valueOrNull(faker.location.street() + " " + faker.location.buildingNumber(), nullProbability),
+    postalCode: valueOrNull(faker.location.zipCode(), nullProbability),
     city: faker.location.city(),
-    state: valueOrMissing(faker.location.state(), missingValueProbability, setMissingValuesToNull),
+    state: valueOrNull(faker.location.state(), nullProbability),
     country: generateIso2CountryCode(),
   };
 }

@@ -5,25 +5,21 @@ import { generateP2pFixtures } from "./P2pDataFixtures";
 /**
  * Generates Pathway To Paris prepared fixtures by generating random Pathway To Paris datasets and afterwards manipulating some fields
  * via manipulator-functions to set specific values for those fields.
- * @param undefinedProbability probability for a field to be undefined
+ * @param nullProbability probability for a field to be "null"
  * @param toggleRandomSectors determines if the sector list should include all possible sectors or a randomized selection
  * @returns the prepared fixtures
  */
 export function generateP2pPreparedFixtures(
-  undefinedProbability: number,
+  nullProbability: number,
   toggleRandomSectors = true,
 ): Array<FixtureData<PathwaysToParisData>> {
   const preparedFixtures = [];
   preparedFixtures.push(
-    manipulateFixtureForSixP2pDataSetsInDifferentYears(
-      generateP2pFixtures(1, false, undefinedProbability, toggleRandomSectors)[0],
-    ),
+    manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0]),
   );
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, false, undefinedProbability)[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, nullProbability)[0], "2023-04-18"));
   preparedFixtures.push(
-    manipulateFixtureForOneP2pDataSetWithThreeSectors(
-      generateP2pFixtures(1, false, undefinedProbability, toggleRandomSectors)[0],
-    ),
+    manipulateFixtureForOneP2pDataSetWithThreeSectors(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0]),
   );
   return preparedFixtures;
 }

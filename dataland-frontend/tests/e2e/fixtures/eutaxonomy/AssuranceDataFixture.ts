@@ -6,19 +6,17 @@ import { pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureU
 /**
  * Generates random assurance data
  * @param reports the reports that can be referenced as data sources
- * @param setMissingValuesToNull decides whether missing values are represented by "undefined" or "null"
  * @returns random assurance data
  */
-export function generateAssuranceData(reports: ReferencedDocuments, setMissingValuesToNull: boolean): AssuranceData {
-  const missingValue = setMissingValuesToNull ? null : undefined;
+export function generateAssuranceData(reports: ReferencedDocuments): AssuranceData {
   const assurance = pickOneElement(Object.values(AssuranceDataAssuranceEnum));
   const provider =
-    assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean() ? faker.company.name() : missingValue;
+    assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean() ? faker.company.name() : null;
 
   const dataSource =
     assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean()
       ? generateDataSource(reports)
-      : { report: "", page: missingValue, tagName: missingValue };
+      : { report: "", page: null, tagName: null };
 
   return {
     assurance: assurance,
