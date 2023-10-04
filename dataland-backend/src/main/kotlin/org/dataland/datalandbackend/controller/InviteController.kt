@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.interfaces.api.InviteApiInterface
 import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
+import org.dataland.datalandbackend.interfaces.api.InviteApiInterface
 import org.dataland.datalandbackend.services.InviteManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

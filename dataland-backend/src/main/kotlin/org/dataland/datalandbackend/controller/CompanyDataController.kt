@@ -1,15 +1,15 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.interfaces.api.CompanyApiInterface
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndNameInterface
+import org.dataland.datalandbackend.interfaces.CompanyIdentifierRepositoryInterface
+import org.dataland.datalandbackend.interfaces.api.CompanyApiInterface
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.interfaces.CompanyIdentifierRepositoryInterface
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyQueryManager

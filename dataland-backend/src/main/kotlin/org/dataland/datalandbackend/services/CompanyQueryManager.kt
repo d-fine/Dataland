@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndNameInterface
-import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.interfaces.StoredCompanyRepositoryInterface
+import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication

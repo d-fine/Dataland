@@ -59,7 +59,10 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
             val categoryObject = dataObject.getOrJavaNull(cashFlowType) ?: return@forEach
             categoryObject as JSONObject
             val parentObjectOfDataSource = categoryObject.getOrJavaNull("totalAmount") ?: return
-            migrationHelper.migrateOneSingleObjectOfDataSource(parentObjectOfDataSource as JSONObject, dataObject, migrationFieldNames)
+            migrationHelper.migrateOneSingleObjectOfDataSource(
+                parentObjectOfDataSource as JSONObject, dataObject,
+                migrationFieldNames,
+            )
         }
     }
 

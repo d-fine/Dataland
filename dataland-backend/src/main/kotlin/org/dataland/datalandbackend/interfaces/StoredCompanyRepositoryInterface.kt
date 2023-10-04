@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.interfaces
 
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.interfaces.CompanyIdAndNameInterface
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query

@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
-import org.dataland.datalandbackend.model.InviteResult
 import org.dataland.datalandbackend.interfaces.InviteMetaInfoRepositoryInterface
+import org.dataland.datalandbackend.model.InviteResult
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException

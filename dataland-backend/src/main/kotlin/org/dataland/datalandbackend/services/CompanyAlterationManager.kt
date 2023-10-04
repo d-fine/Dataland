@@ -4,11 +4,11 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
+import org.dataland.datalandbackend.interfaces.CompanyIdentifierRepositoryInterface
+import org.dataland.datalandbackend.interfaces.StoredCompanyRepositoryInterface
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.interfaces.CompanyIdentifierRepositoryInterface
-import org.dataland.datalandbackend.interfaces.StoredCompanyRepositoryInterface
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.hibernate.exception.ConstraintViolationException

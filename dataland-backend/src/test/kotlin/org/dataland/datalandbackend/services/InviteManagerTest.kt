@@ -2,8 +2,8 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
-import org.dataland.datalandbackend.model.email.Email
 import org.dataland.datalandbackend.interfaces.InviteMetaInfoRepositoryInterface
+import org.dataland.datalandbackend.model.email.Email
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertFalse
