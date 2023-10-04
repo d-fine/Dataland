@@ -2,53 +2,54 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Balistrerifield",
-			"headquartersPostalCode": null,
-			"sector": "schemas",
+			"headquarters": "Port Henderson",
+			"headquartersPostalCode": "46565-3000",
+			"sector": "channels",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"6eRS4Eaw3KVD",
-					"0iXc2QsaJrS5"
+					"4CHr5HgBMWwA"
 				],
 				"PermId": [
-					"9uoV3wRE27"
+					"zZaJBP6vZb"
 				],
-				"Ticker": [
-					"eQKzsOf"
-				],
+				"Ticker": [],
 				"Duns": [
-					"4wNyJqR3O"
+					"vwofYYTeF"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"UhR9OdDBa0jqDhG"
-				]
+				"VatNumber": [
+					"vdNMpIwwv"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NF",
-			"companyAlternativeNames": [],
+			"countryCode": "SY",
+			"companyAlternativeNames": [
+				"Buckridge - Beahan",
+				"Parisian LLC",
+				"Yost Group"
+			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://gentle-checkroom.org",
+			"website": "https://concerned-safeguard.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"24.44",
-						"58.13",
-						"84.30",
-						"95.11"
+						"01.3",
+						"45.40",
+						"47.78",
+						"94.1"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Hansen Spur 588",
-						"postalCode": null,
-						"city": "Whitestad",
-						"state": "Indiana",
-						"country": "PH"
+						"streetAndHouseNumber": "Kertzmann Shoal 2572",
+						"postalCode": "49516-6563",
+						"city": "Fort Ryannport",
+						"state": null,
+						"country": "SH"
 					},
-					"numberOfEmployees": 8300,
-					"fiscalYearStart": "2024-07-14"
+					"numberOfEmployees": 7391,
+					"fiscalYearStart": "2024-08-02"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -58,25 +59,160 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Kuhn - Spinka",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Derek Camp 18450",
+								"postalCode": "00984",
+								"city": "Fort Duaneborough",
+								"state": "Kansas",
+								"country": "GY"
+							},
+							"shareOfTotalRevenueInPercent": 48.6191
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Eli Circles 78247",
+								"postalCode": "32670-4914",
+								"city": "Port Orlandoborough",
+								"state": "West Virginia",
+								"country": "BN"
+							},
+							"shareOfTotalRevenueInPercent": 74.6951
+						},
+						{
+							"nameOfProductionSite": "Klocko, White and Kub",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kiana Court 172",
+								"postalCode": "26001-8266",
+								"city": "West Tressafield",
+								"state": "Maine",
+								"country": "DZ"
+							},
+							"shareOfTotalRevenueInPercent": 21.8028
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": []
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": 136,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWater": 991,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Flooding",
+						"Snow",
+						"Hail",
+						"Avalanche",
+						"EarthQuake"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "Harrisonburg",
+			"headquartersPostalCode": "55889",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"foRzJm6qGH1a"
+				],
+				"PermId": [
+					"8PJf6vbkHM"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IN",
+			"companyAlternativeNames": [
+				"Haley LLC",
+				"Sipes and Sons",
+				"Will, Hackett and Collins"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://tinted-panpipe.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"08.9",
+						"36",
+						"68.31"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
+					},
+					"numberOfEmployees": 8484,
+					"fiscalYearStart": "2024-08-13"
+				},
+				"companyFinancials": {
+					"revenueInEur": 57153526,
+					"operatingCostInEur": 16675508,
+					"capitalAssetsInEur": 6622464
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Volkman LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Bailee Mill 7803",
+								"postalCode": "20781",
+								"city": "Schroederland",
+								"state": "Utah",
+								"country": "MN"
+							},
+							"shareOfTotalRevenueInPercent": 50.1185
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Spencer Points 33641",
+								"postalCode": "05471",
+								"city": "Lebsackland",
+								"state": "Maryland",
+								"country": "LK"
+							},
+							"shareOfTotalRevenueInPercent": 28.6605
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Modern Bronze Sausages",
-							"shareOfTotalRevenueInPercent": 9.3814
-						},
-						{
-							"name": "Generic Cotton Bacon",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Recycled Cotton Table",
-							"shareOfTotalRevenueInPercent": 95.3172
-						},
-						{
-							"name": "Generic Soft Cheese",
-							"shareOfTotalRevenueInPercent": 1.7218
+							"name": "Gorgeous Granite Sausages",
+							"shareOfTotalRevenueInPercent": 19.054
 						}
 					]
 				}
@@ -86,148 +222,18 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 481,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWater": 60,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": 37,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": null,
+					"primaryEnergySourceForHeatingAndHotWater": null,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 12694589,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "Sigridfort",
-			"headquartersPostalCode": "14038",
-			"sector": "blockchains",
-			"identifiers": {
-				"Lei": [
-					"cu3to952rvUAT1Xrz0PW"
-				],
-				"Isin": [
-					"PTc4edCeN10C",
-					"0Z2gbM6Hf40Y"
-				],
-				"PermId": [
-					"FXTPceZAms"
-				],
-				"Ticker": [],
-				"Duns": [
-					"L2YiatrqH"
-				],
-				"VatNumber": [
-					"qaMFesbiQ"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "CC",
-			"companyAlternativeNames": [
-				"Dietrich Group"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"27.51",
-						"46.71"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 2691,
-					"fiscalYearStart": "2024-04-28"
-				},
-				"companyFinancials": {
-					"revenueInEur": null,
-					"operatingCostInEur": 78811448,
-					"capitalAssetsInEur": 65899500
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Haley - Schuppe",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Wayne Manors 537",
-								"postalCode": "72883-4593",
-								"city": "Lake Angel",
-								"state": "Idaho",
-								"country": "NF"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Herzog - Yundt",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Eloise Ridges 7832",
-								"postalCode": "60381",
-								"city": "New Pierreberg",
-								"state": "Virginia",
-								"country": "AM"
-							},
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Luxurious Granite Hat",
-							"shareOfTotalRevenueInPercent": 79.9515
-						},
-						{
-							"name": "Recycled Bronze Chair",
-							"shareOfTotalRevenueInPercent": 90.2693
-						},
-						{
-							"name": "Recycled Plastic Gloves",
-							"shareOfTotalRevenueInPercent": 18.0143
-						},
-						{
-							"name": "Sleek Steel Mouse",
-							"shareOfTotalRevenueInPercent": 14.5768
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWater": 496,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 20655636,
-					"naturalHazardsCovered": [
-						"Wind",
-						"Avalanche"
-					]
 				}
 			}
 		},
@@ -236,47 +242,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Fort Selena",
-			"headquartersPostalCode": "56129",
-			"sector": null,
+			"headquarters": "Howetown",
+			"headquartersPostalCode": "36012",
+			"sector": "e-business",
 			"identifiers": {
-				"Lei": [
-					"UHrNGdlZ1ElVXaWFlb83"
-				],
+				"Lei": [],
 				"Isin": [
-					"cTRuh29t083u"
+					"4GL0QMTQBK0e",
+					"jEQQUkmRatUK"
 				],
-				"PermId": [
-					"PFU9b9KnVR"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"l4NDVdxEf"
 				],
-				"Ticker": [
-					"nlgouIr"
+				"VatNumber": [
+					"EXK380Ab1"
 				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"soUZRcLJHhouXVn"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BM",
-			"companyAlternativeNames": [
-				"Luettgen - Stoltenberg",
-				"Olson - Feest",
-				"Stroman - Grant",
-				"Watsica - O'Keefe"
-			],
+			"countryCode": "GY",
+			"companyAlternativeNames": [],
 			"companyLegalForm": null,
-			"website": "https://striking-eggnog.name",
+			"website": "https://silky-chain.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"16.24",
-						"18.20",
-						"26.80",
-						"55.3"
+						"30.9",
+						"46.1",
+						"47.54",
+						"56.1",
+						"85.20"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -285,71 +284,33 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 584,
-					"fiscalYearStart": "2024-07-25"
+					"numberOfEmployees": 2261,
+					"fiscalYearStart": "2024-05-03"
 				},
 				"companyFinancials": {
-					"revenueInEur": 46770942,
-					"operatingCostInEur": 29156193,
-					"capitalAssetsInEur": 7324308
+					"revenueInEur": 33429295,
+					"operatingCostInEur": 51302595,
+					"capitalAssetsInEur": 57440232
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Hirthe LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kerluke Common 35396",
-								"postalCode": "53935",
-								"city": "West Carlie",
-								"state": "Idaho",
-								"country": "AE"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
 							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
-								"postalCode": "47253",
-								"city": "Lake Callie",
-								"state": "New Mexico",
-								"country": "FO"
+								"postalCode": "25678",
+								"city": "Charlottesville",
+								"state": "Maine",
+								"country": "TO"
 							},
-							"shareOfTotalRevenueInPercent": 73.8178
-						},
-						{
-							"nameOfProductionSite": "Heathcote Inc",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kitty Centers 9808",
-								"postalCode": null,
-								"city": "South Donnychester",
-								"state": "Colorado",
-								"country": "SC"
-							},
-							"shareOfTotalRevenueInPercent": 71.4669
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "56707-3987",
-								"city": "East Herbert",
-								"state": null,
-								"country": "LC"
-							},
-							"shareOfTotalRevenueInPercent": 31.8098
+							"shareOfTotalRevenueInPercent": 0.2444
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Small Frozen Chicken",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
@@ -357,19 +318,19 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1081,
+					"powerConsumptionInMwh": null,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 901,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"energyConsumptionHeatingAndHotWater": 896,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 27120910,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Wind"
+						"EarthQuake"
 					]
 				}
 			}
