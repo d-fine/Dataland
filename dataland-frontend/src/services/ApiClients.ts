@@ -109,7 +109,7 @@ export class ApiClientProvider {
   }
 
   /**
-   * @deprecated Please use getUnifiedFrameworkDataController to get Framework-Specific API Controllers.
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
    * @returns a framework-specific API Controller
    */
   async getEuTaxonomyDataForNonFinancialsControllerApi(): Promise<EuTaxonomyDataForNonFinancialsControllerApiInterface> {
@@ -117,7 +117,7 @@ export class ApiClientProvider {
   }
 
   /**
-   * @deprecated Please use getUnifiedFrameworkDataController to get Framework-Specific API Controllers.
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
    * @returns a framework-specific API Controller
    */
   async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
