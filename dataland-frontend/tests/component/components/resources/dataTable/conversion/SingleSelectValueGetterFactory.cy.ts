@@ -1,5 +1,4 @@
 import {
-  EmptyDisplayValue,
   MLDTDisplayComponents,
   type MLDTDisplayValue,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
@@ -31,7 +30,10 @@ describe("Unit test for the SingleSelectValueGetterFactory", () => {
   it("An empty string should be displayed if the data point is undefined", () => {
     const dataset = { data: undefined };
     const value = singleSelectValueGetterFactory("data", field)(dataset);
-    expect(value).to.deep.equal(EmptyDisplayValue);
+    expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
+      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      displayValue: "",
+    });
   });
 
   it("The human-readable name of the field should be displayed otherwise", () => {

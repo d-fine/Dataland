@@ -1,5 +1,4 @@
 import {
-  EmptyDisplayValue,
   MLDTDisplayComponents,
   type MLDTDisplayValue,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
@@ -8,7 +7,10 @@ describe("Unit test for the PlainStringValueGetterFactory", () => {
   it("An empty string should be displayed if the data point is undefined", () => {
     const dataset = { data: undefined };
     const value = plainStringValueGetterFactory("data")(dataset);
-    expect(value).to.deep.equal(EmptyDisplayValue);
+    expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
+      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      displayValue: "",
+    });
   });
 
   it("The value of the input should be displayed as a string if defined", () => {
