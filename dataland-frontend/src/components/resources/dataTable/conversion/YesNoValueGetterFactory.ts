@@ -1,7 +1,6 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   type AvailableDisplayValues,
-  EmptyDisplayValue,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import {
@@ -27,7 +26,10 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
   elementValue: BaseDataPointYesNo | BaseDataPointYesNoNa | undefined,
 ): AvailableDisplayValues {
   if (!elementValue) {
-    return EmptyDisplayValue;
+    return {
+      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      displayValue: "",
+    };
   }
 
   if (elementValue.value == YesNoNa.Yes) {
@@ -56,7 +58,10 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
       displayValue: "N/A",
     };
   }
-  return EmptyDisplayValue;
+  return {
+    displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    displayValue: "",
+  };
 }
 
 /**
@@ -68,7 +73,10 @@ function formatYesNoValueWhenEvidenceDesiredIsYes(
   elementValue: DataPointOneValueYesNo | undefined,
 ): AvailableDisplayValues {
   if (!elementValue?.value) {
-    return EmptyDisplayValue;
+    return {
+      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      displayValue: "",
+    };
   }
 
   const yesNoValue = elementValue.value;

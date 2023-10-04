@@ -1,6 +1,5 @@
 import {
   type AvailableDisplayValues,
-  EmptyDisplayValue,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
@@ -18,7 +17,10 @@ export function singleSelectValueGetterFactory(path: string, field: Field): (dat
   return (dataset) => {
     const selectedElement = getFieldValueFromDataModel(path, dataset) as string | undefined;
     if (!selectedElement) {
-      return EmptyDisplayValue;
+      return {
+        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayValue: "",
+      };
     }
 
     const matchingOption = field.options?.find((it) => it.value == selectedElement);

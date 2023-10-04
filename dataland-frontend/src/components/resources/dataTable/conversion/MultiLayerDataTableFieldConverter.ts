@@ -5,12 +5,6 @@ import { plainStringValueGetterFactory } from "@/components/resources/dataTable/
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
 import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
-import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
-import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { percentageValueGetterFactory } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
-import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
-import { getModalGetterFactory } from "@/components/resources/dataTable/conversion/GenericModalValueGetterFactory";
-import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -26,13 +20,6 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   RadioButtonsFormField: singleSelectValueGetterFactory,
   SingleSelectFormField: singleSelectValueGetterFactory,
   DataPointFormField: dataPointValueGetterFactory,
-  NaceCodeFormField: naceCodeValueGetterFactory,
-  NumberFormField: numberValueGetterFactory,
-  PercentageFormField: percentageValueGetterFactory,
-  MultiSelectFormField: multiSelectValueGetterFactory,
-  ProductionSitesFormField: getModalGetterFactory("listOfProductionSites", lksgModalColumnHeaders),
-  MostImportantProductsFormField: getModalGetterFactory("mostImportantProducts", lksgModalColumnHeaders),
-  ProcurementCategoriesFormField: getModalGetterFactory("procurementCategories", lksgModalColumnHeaders),
 };
 
 /**

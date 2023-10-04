@@ -1,6 +1,5 @@
 import {
   type AvailableDisplayValues,
-  EmptyDisplayValue,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
@@ -20,7 +19,10 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
     const datapoint = getFieldValueFromDataModel(path, dataset) as DataPointWithUnitBigDecimal | undefined;
 
     if (!datapoint?.value) {
-      return EmptyDisplayValue;
+      return {
+        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayValue: "",
+      };
     }
 
     const datapointValue = formatNumberToReadableFormat(datapoint.value);
