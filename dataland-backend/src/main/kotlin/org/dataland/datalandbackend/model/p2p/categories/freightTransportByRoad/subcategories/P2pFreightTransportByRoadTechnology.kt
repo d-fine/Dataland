@@ -1,6 +1,9 @@
 package org.dataland.datalandbackend.model.p2p.categories.freightTransportByRoad.subcategories
 
-import java.math.BigDecimal
+import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackend.model.enums.p2p.DriveMixType
+import org.dataland.datalandbackend.model.p2p.categories.freightTransportByRoad.subcategories.P2pDriveMix
+import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.time.LocalDate
 
 /**
@@ -8,7 +11,8 @@ import java.time.LocalDate
 * Fields of the P2P questionnaire regarding the technology of the freight transport by road sector
 */
 data class P2pFreightTransportByRoadTechnology(
-    val driveMixPerFleetSegment: BigDecimal? = null,
+    @field:Schema(example = JsonExampleFormattingConstants.DRIVE_MIX_DEFAULT_VALUE)
+    val driveMixPerFleetSegment: Map<DriveMixType, P2pDriveMix>? = null,
 
     val icePhaseOut: LocalDate? = null,
 )
