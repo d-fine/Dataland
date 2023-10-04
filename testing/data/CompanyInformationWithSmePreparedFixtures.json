@@ -2,54 +2,59 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Port Henderson",
-			"headquartersPostalCode": "46565-3000",
-			"sector": "channels",
+			"headquarters": "Bertramton",
+			"headquartersPostalCode": "07323",
+			"sector": "technologies",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"4CHr5HgBMWwA"
+					"9idXY9bocdHQ",
+					"I7OF5ygUoHhs"
 				],
 				"PermId": [
-					"zZaJBP6vZb"
+					"0NnYfj8LdY"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"aUwEz8d"
+				],
 				"Duns": [
-					"vwofYYTeF"
+					"QkP6yeVBy"
 				],
 				"VatNumber": [
-					"vdNMpIwwv"
+					"yPKFh4SDc"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"zgKR1HfLeWLJXKr"
+				]
 			},
-			"countryCode": "SY",
+			"countryCode": "MQ",
 			"companyAlternativeNames": [
-				"Buckridge - Beahan",
-				"Parisian LLC",
-				"Yost Group"
+				"Abernathy LLC",
+				"Emard and Sons",
+				"Rosenbaum and Sons",
+				"Senger LLC"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://concerned-safeguard.com",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://superficial-midden.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.3",
-						"45.40",
-						"47.78",
-						"94.1"
+						"81.21",
+						"84.13",
+						"91.01"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Kertzmann Shoal 2572",
-						"postalCode": "49516-6563",
-						"city": "Fort Ryannport",
-						"state": null,
-						"country": "SH"
+						"streetAndHouseNumber": null,
+						"postalCode": null,
+						"city": "Centennial",
+						"state": "Kentucky",
+						"country": "MF"
 					},
-					"numberOfEmployees": 7391,
-					"fiscalYearStart": "2024-08-02"
+					"numberOfEmployees": 5988,
+					"fiscalYearStart": "2023-12-03"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -61,42 +66,37 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Kuhn - Spinka",
+							"nameOfProductionSite": "Wiegand Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Derek Camp 18450",
-								"postalCode": "00984",
-								"city": "Fort Duaneborough",
-								"state": "Kansas",
-								"country": "GY"
+								"streetAndHouseNumber": "Jabari Park 222",
+								"postalCode": "11682",
+								"city": "South Sarahborough",
+								"state": "Vermont",
+								"country": "BO"
 							},
-							"shareOfTotalRevenueInPercent": 48.6191
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Eli Circles 78247",
-								"postalCode": "32670-4914",
-								"city": "Port Orlandoborough",
-								"state": "West Virginia",
-								"country": "BN"
-							},
-							"shareOfTotalRevenueInPercent": 74.6951
-						},
-						{
-							"nameOfProductionSite": "Klocko, White and Kub",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kiana Court 172",
-								"postalCode": "26001-8266",
-								"city": "West Tressafield",
-								"state": "Maine",
-								"country": "DZ"
-							},
-							"shareOfTotalRevenueInPercent": 21.8028
+							"shareOfTotalRevenueInPercent": 18.4583
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Ergonomic Cotton Chips",
+							"shareOfTotalRevenueInPercent": 57.7692
+						},
+						{
+							"name": "Intelligent Steel Computer",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Sleek Cotton Fish",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Sleek Rubber Shoes",
+							"shareOfTotalRevenueInPercent": 81.2332
+						}
+					]
 				}
 			},
 			"power": {
@@ -104,23 +104,22 @@
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 136,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWater": 991,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMwh": 666,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 372,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 24964642,
 					"naturalHazardsCovered": [
 						"Wind",
 						"Flooding",
-						"Snow",
-						"Hail",
 						"Avalanche",
+						"Hail",
 						"EarthQuake"
 					]
 				}
@@ -131,39 +130,46 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Harrisonburg",
-			"headquartersPostalCode": "55889",
-			"sector": "users",
+			"headquarters": "East Honolulu",
+			"headquartersPostalCode": "93348-9589",
+			"sector": "solutions",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"foRzJm6qGH1a"
+					"lCMcC3e9166J",
+					"QUbS4GqLaDr0"
 				],
-				"PermId": [
-					"8PJf6vbkHM"
+				"PermId": [],
+				"Ticker": [
+					"CR0kCRh"
 				],
-				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"XgbMkNtwM"
+				],
+				"CompanyRegistrationNumber": [
+					"6lIDhslBLcw6crz"
+				]
 			},
-			"countryCode": "IN",
+			"countryCode": "NL",
 			"companyAlternativeNames": [
-				"Haley LLC",
-				"Sipes and Sons",
-				"Will, Hackett and Collins"
+				"Hickle - Leffler",
+				"Mills LLC",
+				"Schmitt Inc"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://tinted-panpipe.info",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://double-peacock.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"08.9",
-						"36",
-						"68.31"
+						"08",
+						"17.24",
+						"23.7",
+						"28.22",
+						"68.10"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -172,68 +178,44 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8484,
-					"fiscalYearStart": "2024-08-13"
+					"numberOfEmployees": 7933,
+					"fiscalYearStart": "2023-12-17"
 				},
 				"companyFinancials": {
-					"revenueInEur": 57153526,
-					"operatingCostInEur": 16675508,
-					"capitalAssetsInEur": 6622464
+					"revenueInEur": null,
+					"operatingCostInEur": 41945891,
+					"capitalAssetsInEur": 51994585
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Volkman LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bailee Mill 7803",
-								"postalCode": "20781",
-								"city": "Schroederland",
-								"state": "Utah",
-								"country": "MN"
-							},
-							"shareOfTotalRevenueInPercent": 50.1185
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Spencer Points 33641",
-								"postalCode": "05471",
-								"city": "Lebsackland",
-								"state": "Maryland",
-								"country": "LK"
-							},
-							"shareOfTotalRevenueInPercent": 28.6605
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Gorgeous Granite Sausages",
-							"shareOfTotalRevenueInPercent": 19.054
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 37,
+					"powerConsumptionInMwh": 1922,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": null,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 546,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
-					"naturalHazardsCovered": null
+					"amountCoveredByInsuranceAgainstNaturalHazards": 4349401,
+					"naturalHazardsCovered": [
+						"Snow",
+						"Wind",
+						"Flooding"
+					]
 				}
 			}
 		},
@@ -242,40 +224,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Howetown",
-			"headquartersPostalCode": "36012",
-			"sector": "e-business",
+			"headquarters": "Port Margie",
+			"headquartersPostalCode": "44257-7333",
+			"sector": null,
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"4GL0QMTQBK0e",
-					"jEQQUkmRatUK"
+					"dpeLNlpS9Jc9"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"l4NDVdxEf"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"EXK380Ab1"
+					"Svaf6shUH"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"K34aL2iVobFaRxW"
+				]
 			},
-			"countryCode": "GY",
-			"companyAlternativeNames": [],
-			"companyLegalForm": null,
-			"website": "https://silky-chain.org",
+			"countryCode": "SD",
+			"companyAlternativeNames": [
+				"Hammes - Franey"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://fearless-stitcher.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"30.9",
-						"46.1",
-						"47.54",
-						"56.1",
-						"85.20"
+						"24.43",
+						"25.7",
+						"95.21"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -284,53 +265,113 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2261,
-					"fiscalYearStart": "2024-05-03"
+					"numberOfEmployees": 4043,
+					"fiscalYearStart": "2023-10-28"
 				},
 				"companyFinancials": {
-					"revenueInEur": 33429295,
-					"operatingCostInEur": 51302595,
-					"capitalAssetsInEur": 57440232
+					"revenueInEur": null,
+					"operatingCostInEur": 7403784,
+					"capitalAssetsInEur": 22188441
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": null,
+							"nameOfProductionSite": "Dickens, Donnelly and VonRueden",
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
-								"postalCode": "25678",
-								"city": "Charlottesville",
-								"state": "Maine",
-								"country": "TO"
+								"postalCode": null,
+								"city": "Perth Amboy",
+								"state": "Kansas",
+								"country": "PA"
 							},
-							"shareOfTotalRevenueInPercent": 0.2444
+							"shareOfTotalRevenueInPercent": 5.8694
+						},
+						{
+							"nameOfProductionSite": "Frami - Fisher",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Charles Centers 1413",
+								"postalCode": "02349-2806",
+								"city": "Crookschester",
+								"state": null,
+								"country": "CL"
+							},
+							"shareOfTotalRevenueInPercent": 54.8393
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Granville Way 65502",
+								"postalCode": "17600",
+								"city": "Fontana",
+								"state": "Washington",
+								"country": "RE"
+							},
+							"shareOfTotalRevenueInPercent": 10.3187
+						},
+						{
+							"nameOfProductionSite": "Conn, Rodriguez and Abshire",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Lesch Hills 811",
+								"postalCode": null,
+								"city": "Ricefort",
+								"state": "Iowa",
+								"country": "MH"
+							},
+							"shareOfTotalRevenueInPercent": 7.0339
+						},
+						{
+							"nameOfProductionSite": "Buckridge - Bergstrom",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Bosco Rapid 2546",
+								"postalCode": "26290",
+								"city": "Port Dixiefield",
+								"state": "Texas",
+								"country": "TK"
+							},
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Electronic Wooden Soap",
+							"shareOfTotalRevenueInPercent": 34.6593
+						},
+						{
+							"name": "Modern Wooden Ball",
+							"shareOfTotalRevenueInPercent": 63.7269
+						},
+						{
+							"name": "Generic Fresh Cheese",
+							"shareOfTotalRevenueInPercent": 75.0507
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 896,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": 1387,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 789,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 9809023,
 					"naturalHazardsCovered": [
-						"EarthQuake"
+						"Hail",
+						"Snow",
+						"Wind",
+						"Avalanche"
 					]
 				}
 			}

@@ -68,7 +68,7 @@ export class Generator {
     return this.valueOrNull({ value: input, dataSource: randomDocument });
   }
 
-  randomDataPoint<T>(input: T, unit?: string): GenericDataPoint<T> | null {
+  randomDataPoint<T>(input: T, unit?: string | null): GenericDataPoint<T> | null {
     const randomInput = this.valueOrNull(input);
     return this.valueOrNull(generateDataPoint(randomInput, this.reports, unit));
   }

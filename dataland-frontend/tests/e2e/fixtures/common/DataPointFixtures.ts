@@ -49,7 +49,7 @@ export function generateReferencedReports(
 export function generateDataPoint<T>(
   value: T | null,
   reports: ReferencedDocuments,
-  unit?: string,
+  unit?: string | null,
 ): GenericDataPoint<T> {
   const qualityBucket =
     value === null
@@ -63,7 +63,7 @@ export function generateDataPoint<T>(
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
-    unit: unit ?? null,
+    unit: unit,
   };
 }
 
@@ -72,7 +72,7 @@ export interface GenericDataPoint<T> {
   dataSource: CompanyReportReference;
   quality: QualityOptions;
   comment: string | null;
-  unit: string | null;
+  unit?: string | null;
 }
 
 export interface GenericBaseDataPoint<T> {
