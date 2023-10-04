@@ -1,7 +1,4 @@
 {
-  "companyId": "215d0389-094a-46e6-afbb-2d7ea56ecb55",
-  "reportingPeriod": "2023",
-  "data": {
     "financialServicesTypes": [
       "CreditInstitution",
       "InsuranceOrReinsurance",
@@ -13,8 +10,8 @@
         "taxonomyEligibleActivityInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 414,
             "tagName": null
           },
@@ -24,8 +21,8 @@
         "taxonomyNonEligibleActivityInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 1166,
             "tagName": null
           },
@@ -35,8 +32,8 @@
         "derivativesInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 13,
             "tagName": null
           },
@@ -46,8 +43,8 @@
         "banksAndIssuersInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 159,
             "tagName": null
           },
@@ -57,8 +54,8 @@
         "investmentNonNfrdInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 13,
             "tagName": null
           },
@@ -70,8 +67,8 @@
         "taxonomyEligibleActivityInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 538,
             "tagName": null
           },
@@ -81,8 +78,8 @@
         "taxonomyNonEligibleActivityInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 874,
             "tagName": null
           },
@@ -92,8 +89,8 @@
         "derivativesInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 188,
             "tagName": null
           },
@@ -103,7 +100,8 @@
         "banksAndIssuersInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 188,
             "tagName": null
           },
@@ -113,7 +111,8 @@
         "investmentNonNfrdInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 1006,
             "tagName": null
           },
@@ -125,8 +124,8 @@
         "taxonomyEligibleActivityInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 569,
             "tagName": null
           },
@@ -136,8 +135,8 @@
         "taxonomyNonEligibleActivityInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 928,
             "tagName": null
           },
@@ -147,8 +146,8 @@
         "derivativesInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 369,
             "tagName": null
           },
@@ -158,8 +157,8 @@
         "banksAndIssuersInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 13,
             "tagName": null
           },
@@ -169,8 +168,8 @@
         "investmentNonNfrdInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 1051,
             "tagName": null
           },
@@ -182,8 +181,8 @@
         "taxonomyEligibleActivityInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 251,
             "tagName": null
           },
@@ -193,8 +192,8 @@
         "taxonomyNonEligibleActivityInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 894,
             "tagName": null
           },
@@ -204,8 +203,8 @@
         "derivativesInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "None...",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 1010,
             "tagName": null
           },
@@ -215,8 +214,8 @@
         "banksAndIssuersInPercent": {
           "quality": "Audited",
           "dataSource": {
-            "fileName": "",
-            "fileReference": null,
+            "fileName": "some-document2",
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 876,
             "tagName": null
           },
@@ -227,7 +226,7 @@
           "quality": "Audited",
           "dataSource": {
             "fileName": "some-document2",
-            "fileReference": null,
+            "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
             "page": 224,
             "tagName": null
           },
@@ -240,7 +239,8 @@
       "tradingPortfolioInPercent": {
         "quality": "Audited",
         "dataSource": {
-          "fileName": "None...",
+          "fileName": "some-document2",
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 1134,
           "tagName": null
         },
@@ -250,7 +250,8 @@
       "interbankLoansInPercent": {
         "quality": "Audited",
         "dataSource": {
-          "fileName": "None...",
+          "fileName": "some-document2",
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 995,
           "tagName": null
         },
@@ -260,7 +261,8 @@
       "tradingPortfolioAndInterbankLoansInPercent": {
         "quality": "Audited",
         "dataSource": {
-          "fileName": "None...",
+          "fileName": "some-document2",
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 85,
           "tagName": null
         },
@@ -270,7 +272,8 @@
       "greenAssetRatioInPercent": {
         "quality": "Audited",
         "dataSource": {
-          "fileName": "None...",
+          "fileName": "some-document2",
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 806,
           "tagName": null
         },
@@ -282,8 +285,8 @@
       "greenAssetRatioInPercent": {
         "quality": "Audited",
         "dataSource": {
-          "fileName": "None...",
-          "fileReference": null,
+          "fileName": "some-document2",
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 13,
           "tagName": null
         },
@@ -295,8 +298,8 @@
       "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
         "quality": "Audited",
         "dataSource": {
-          "fileName": "None...",
-          "fileReference": null,
+          "fileName": "some-document2",
+          "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
           "page": 93,
           "tagName": null
         },
@@ -310,11 +313,11 @@
     "nfrdMandatory": "Yes",
     "euTaxonomyActivityLevelReporting": "No",
     "assurance": {
-      "assurance": "LimitedAssurance",
+      "value": "LimitedAssurance",
       "provider": "Assurance Provider",
       "dataSource": {
-        "fileName": "None...",
-        "fileReference": null,
+        "fileName": "some-document2",
+        "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
         "page": 1,
         "tagName": null
       }
@@ -322,11 +325,11 @@
     "numberOfEmployees": 81152,
     "referencedReports": {
       "some-document2": {
-        "reference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+        "fileReference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+        "fileName" : "some-document2",
         "isGroupLevel": "No",
         "reportDate": "2023-08-12",
         "currency": "EUR"
       }
     }
   }
-}

@@ -7,8 +7,8 @@ class V11__MigrateRefactoredDataPointClassesEuTaxoFinancialsTest {
     @Test
     fun `test migration of refactored data point classes in Eu Taxonomy financials framework`() {
         TestUtils().testMigrationOfSingleDataset(
-            "V11/oldOriginalDatabaseEntry.json",
-            "V11/expectedTransformedDatabaseEntry.json",
+            "V11/oldDatabaseEntryFromBackendResponse.json",
+            "V11/transformedDatabaseEntryFromBackendResponse.json",
             V11__MigrateRefactoredDataPointClassesEuTaxoFinancials()::migrateRefactoredDataPointClasses,
         )
     }
