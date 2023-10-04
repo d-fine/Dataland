@@ -64,7 +64,7 @@ export function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformatio
       data: dataGenerator.generateMinimumAcceptedEuTaxonomyForNonFinancialsData(),
     };
   });
-  const data = generatedDataAndMetaInfo[0].data;
+  var data = generatedDataAndMetaInfo[0].data;
   data.general!.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, ["IntegratedReport"]);
   data.revenue!.totalAmount!.value = 0;
   data.revenue!.alignedActivities![0].share ??= {};
@@ -76,5 +76,9 @@ export function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformatio
   data.capex!.nonAlignedActivities![0].share.absoluteShare ??= dataGenerator.generateAmountWithCurrency();
   data.capex!.nonAlignedShare!.relativeShareInPercent ??= generatePercentageValue();
   generatedDataAndMetaInfo[0].data = data;
+  data = generatedDataAndMetaInfo[2].data;
+  data.capex!.alignedShare!.relativeShareInPercent ??= generatePercentageValue();
+  data.capex!.alignedShare!.absoluteShare ??= dataGenerator.generateAmountWithCurrency();
+  generatedDataAndMetaInfo[2].data = data;
   return generatedDataAndMetaInfo;
 }
