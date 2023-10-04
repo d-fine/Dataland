@@ -888,7 +888,7 @@ export const p2pDataModel = [
             label: "Drive mix per fleet segment",
             description: "Share of alternative drive types per fleet segment",
             unit: "",
-            component: "PercentageFormField",
+            component: "DriveMixFormField",
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
