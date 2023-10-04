@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.interfaces.DataMetaInformationRepositoryInterface
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
  */
 @Component("DataMetaInformationManager")
 class DataMetaInformationManager(
-    @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepositoryInterface,
+    @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
 
