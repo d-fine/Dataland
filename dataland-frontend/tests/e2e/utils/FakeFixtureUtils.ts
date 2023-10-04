@@ -67,7 +67,7 @@ export class Generator {
     return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports));
   }
 
-  randomCurrencyDataPoint(input: number): CurrencyDataPoint | undefined {
+  randomCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint | undefined {
     const localCurrency = generateCurrencyCode();
     return this.valueOrUndefined(generateDatapoint(this.valueOrUndefined(input), this.reports, localCurrency));
   }
