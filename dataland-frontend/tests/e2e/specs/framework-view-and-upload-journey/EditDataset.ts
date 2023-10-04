@@ -10,6 +10,7 @@ import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
+import {faker} from "@faker-js/faker";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -24,6 +25,7 @@ describeIf(
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
         preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
+        preparedFixture.companyInformation.identifiers = { "Lei": [faker.string.uuid()] }
         getKeycloakToken(admin_name, admin_pw)
           .then(async (token: string) =>
             uploadCompanyAndFrameworkData(
