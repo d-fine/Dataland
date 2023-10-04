@@ -64,7 +64,7 @@ export function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformatio
       data: dataGenerator.generateMinimumAcceptedEuTaxonomyForNonFinancialsData(),
     };
   });
-  var data = generatedDataAndMetaInfo[0].data;
+  let data = generatedDataAndMetaInfo[0].data;
   data.general!.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, ["IntegratedReport"]);
   data.revenue!.totalAmount!.value = 0;
   data.revenue!.alignedActivities![0].share ??= {};
