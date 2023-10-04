@@ -43,7 +43,7 @@ export function generateReferencedReports(
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
  * @param value the value of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
- * @param unit the unit of the datapoint to generate
+ * @param unit the unit of the datapoint to generate. For datapoint types without unit this must be left out.
  * @returns the generated datapoint
  */
 export function generateDataPoint<T>(
