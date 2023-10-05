@@ -14,9 +14,9 @@
       <div v-for="selection of selections" :key="selection">
         <h4>{{ options.find((option) => option.value == selection).label }}</h4>
         <UploadFormHeader
-            :label="`Sector ${selection} Energy Consumption`"
-            :description="`Total energy consumption for high impact climate sector ${selection}`"
-            :is-required="true"
+          :label="`Sector ${selection} Energy Consumption`"
+          :description="`Total energy consumption for high impact climate sector ${selection}`"
+          :is-required="true"
         />
         <div class="next-to-each-other">
           <FormKit
@@ -37,13 +37,12 @@
 import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 import MultiSelect from "primevue/multiselect";
 import { naceCodeTree } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 
 export default defineComponent({
   name: "HighImpactClimateSectorsFormField",
-  components: { NumberFormField, MultiSelect, UploadFormHeader },
+  components: { MultiSelect, UploadFormHeader },
   props: BaseFormFieldProps,
   data() {
     return {

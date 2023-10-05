@@ -106,7 +106,6 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
-import { AxiosError } from "axios";
 import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
