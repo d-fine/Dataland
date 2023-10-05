@@ -9,13 +9,13 @@
           v-model="currentValue"
           :validation-label="validationLabel ?? label"
           :validation="`number|${validation}`"
-          placeholder="Value"
+          :placeholder=" unit ? `Value in ${unit}` : 'Value' "
           outer-class="short"
           @blur="handleBlurValue"
         />
         <div v-if="unit" class="form-field-label pb-3">
           <FormKit type="hidden" name="currency" />
-          <span>in {{ unit }}</span>
+          <span>{{ unit }}</span>
         </div>
         <FormKit
           v-else-if="options"
