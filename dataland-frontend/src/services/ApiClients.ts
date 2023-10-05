@@ -10,8 +10,6 @@ import {
   type MetaDataControllerApiInterface,
   LksgDataControllerApi,
   type LksgDataControllerApiInterface,
-  SfdrDataControllerApi,
-  type SfdrDataControllerApiInterface,
   type P2pDataControllerApiInterface,
   P2pDataControllerApi,
   type SmeDataControllerApiInterface,
@@ -23,6 +21,9 @@ import { QaControllerApi } from "@clients/qaservice";
 import type Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
+import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
+import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -59,10 +60,31 @@ export class ApiClientProvider {
     return this.getConstructedApi(CompanyDataControllerApi);
   }
 
+  /**
+   * This function returns a promise to an api controller adaption that is unified across frameworks to allow
+   * for creation of generic components that work framework-independent.
+   * @param framework The identified of the framework
+   * @returns the unified API client
+   */
+  async getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
+    framework: K,
+  ): Promise<FrameworkDataApi<FrameworkDataTypes[K]["data"]>> {
+    const configuration = await this.getConfiguration();
+    return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
+  }
+
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
+   * @returns a framework-specific API Controller
+   */
   async getEuTaxonomyDataForNonFinancialsControllerApi(): Promise<EuTaxonomyDataForNonFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForNonFinancialsControllerApi);
   }
 
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
+   * @returns a framework-specific API Controller
+   */
   async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
   }
@@ -71,18 +93,26 @@ export class ApiClientProvider {
     return this.getConstructedApi(MetaDataControllerApi);
   }
 
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
+   * @returns a framework-specific API Controller
+   */
   async getLksgDataControllerApi(): Promise<LksgDataControllerApiInterface> {
     return this.getConstructedApi(LksgDataControllerApi);
   }
 
-  async getSfdrDataControllerApi(): Promise<SfdrDataControllerApiInterface> {
-    return this.getConstructedApi(SfdrDataControllerApi);
-  }
-
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
+   * @returns a framework-specific API Controller
+   */
   async getP2pDataControllerApi(): Promise<P2pDataControllerApiInterface> {
     return this.getConstructedApi(P2pDataControllerApi);
   }
 
+  /**
+   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
+   * @returns a framework-specific API Controller
+   */
   async getSmeDataControllerApi(): Promise<SmeDataControllerApiInterface> {
     return this.getConstructedApi(SmeDataControllerApi);
   }
