@@ -2,6 +2,7 @@ import {
   type P2pAmmonia,
   type P2pAutomotive,
   type P2pCement,
+  type P2pDriveMix,
   type P2pElectricityGeneration,
   type P2pFreightTransportByRoad,
   type P2pGeneral,
@@ -18,6 +19,7 @@ import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { faker } from "@faker-js/faker";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
+import { DriveMixType } from "@/api-models/DriveMixType";
 
 /**
  * Generates a set number of P2P fixtures
@@ -243,7 +245,7 @@ class P2pGenerator extends Generator {
   getSectorFreightTransportByRoad(): P2pFreightTransportByRoad | undefined {
     const data: P2pFreightTransportByRoad = {
       technology: {
-        driveMixPerFleetSegment: this.randomPercentageValue(),
+        driveMixPerFleetSegment: this.valueOrUndefined(this.generateDriveMix()),
         icePhaseOut: this.valueOrUndefined(generateFutureDate()),
       },
       energy: {
@@ -324,5 +326,33 @@ class P2pGenerator extends Generator {
       },
     };
     return this.sectorPresent("Cement") ? data : undefined;
+  }
+
+  /**
+   * Generates a random drive mix
+   * @returns random drive mix
+   */
+  generateDriveMixInfo(): P2pDriveMix {
+    return {
+      driveMixPerFleetSegmentInPercent: this.randomPercentageValue(),
+      totalAmountOfVehicles: this.randomInt(),
+    };
+  }
+
+  /**
+   * Generates a random map of drive mix
+   * @returns random map of drive mix
+   */
+  generateDriveMix(): { [key: string]: P2pDriveMix } {
+    const driveMix = Object.values(DriveMixType);
+    const keys = [] as DriveMixType[];
+    driveMix.forEach((category) => {
+      if (faker.datatype.boolean()) {
+        keys.push(category);
+      }
+    });
+    return Object.fromEntries(
+      new Map<string, P2pDriveMix>(keys.map((driveMixType) => [driveMixType as string, this.generateDriveMixInfo()])),
+    );
   }
 }

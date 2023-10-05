@@ -2,48 +2,48 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Long Beach",
+			"headquarters": "Miltonfield",
+			"sector": "methodologies",
 			"identifiers": {
-				"Lei": [
-					"ZT2cCE8qPkRbrteL5NC3"
-				],
+				"Lei": [],
 				"Isin": [
-					"JFXXyzYVQaOr"
+					"97uIYEQSNQ8X"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"RwAh4UWVw"
+				"PermId": [
+					"LoZIhr6rui"
 				],
+				"Ticker": [
+					"ZBgnNB3"
+				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KP",
+			"countryCode": "PT",
 			"companyAlternativeNames": [
-				"Cummerata, Nolan and Vandervort",
-				"Daniel - Gutkowski"
+				"Barton, Yundt and Koepp",
+				"Lynch, Witting and Ullrich"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://luminous-sundae.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.1",
-						"14",
-						"46",
-						"73.2",
-						"B"
+						"06.2",
+						"56.3",
+						"60.1",
+						"62.03",
+						"80"
 					],
 					"addressOfHeadquarters": {
-						"postalCode": "78657-9906",
-						"city": "New Jeanville",
-						"state": "Georgia",
-						"country": "FI"
+						"postalCode": "51617-7433",
+						"city": "South Justyn",
+						"country": "ZM"
 					},
-					"numberOfEmployees": 422,
-					"fiscalYearStart": "2024-08-12"
+					"numberOfEmployees": 8936,
+					"fiscalYearStart": "2024-08-30"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -53,38 +53,59 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Generic Granite Shoes",
-							"shareOfTotalRevenueInPercent": 69.1391
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Effertz Junctions 71909",
+								"postalCode": "89436",
+								"city": "Fort Jessicaland",
+								"state": "New Hampshire",
+								"country": "MX"
+							}
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Cassin Lock 728",
+								"postalCode": "68274",
+								"city": "New Gino",
+								"state": "South Dakota",
+								"country": "CD"
+							},
+							"shareOfTotalRevenueInPercent": 81.3257
+						},
+						{
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Waters Cape 111",
+								"postalCode": "28979",
+								"city": "Urbandale",
+								"state": "Massachusetts",
+								"country": "IO"
+							}
 						}
 					]
-				}
+				},
+				"products": {}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 646,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 778,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": 1105,
+					"energyConsumptionHeatingAndHotWater": 121,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 31131289,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 42578469,
 					"naturalHazardsCovered": [
-						"Snow",
 						"Hail",
+						"Wind",
+						"Avalanche",
 						"EarthQuake",
-						"Wind"
+						"Snow"
 					]
 				}
 			}
@@ -94,38 +115,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Emardshire",
-			"sector": "action-items",
+			"headquarters": "Florencemouth",
+			"headquartersPostalCode": "32284-3085",
+			"sector": "channels",
 			"identifiers": {
-				"Lei": [
-					"Y2iV3KhpD11VZkZdoGZb"
-				],
+				"Lei": [],
 				"Isin": [
-					"M3CUc5TJ7BmC",
-					"AfQ0hkmbbzGR"
+					"tD2qmY4QzT8T",
+					"iKk2RIkKFiDG"
 				],
-				"PermId": [],
-				"Ticker": [],
+				"PermId": [
+					"Sg5E2KSLj2"
+				],
+				"Ticker": [
+					"MAzq5sF"
+				],
 				"Duns": [],
-				"VatNumber": [
-					"0PSdSwNRV"
-				],
-				"CompanyRegistrationNumber": [
-					"8GjNE07XGlcsBuB"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KE",
+			"countryCode": "PY",
 			"companyAlternativeNames": [
-				"Collier Inc"
+				"Fisher - Cruickshank",
+				"Green Group",
+				"Hegmann - Welch"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"companyLegalForm": "GmbH",
+			"website": "https://virtuous-harpsichord.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"50.30"
+						"20.15",
+						"22.1",
+						"55.20",
+						"73.11"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -134,55 +160,81 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 5335,
-					"fiscalYearStart": "2024-06-04"
+					"numberOfEmployees": 267,
+					"fiscalYearStart": "2024-02-28"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 18646785
+					"revenueInEur": 48202082,
+					"operatingCostInEur": 73109966,
+					"capitalAssetsInEur": 4172119
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Haley Inc",
+							"addressOfProductionSite": {
+								"postalCode": "98350",
+								"city": "Port Quentin",
+								"country": "TF"
+							},
+							"shareOfTotalRevenueInPercent": 49.0146
+						},
+						{
+							"nameOfProductionSite": "Grimes, Kreiger and Schaden",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Elizabeth Way 871",
+								"postalCode": "05727-7542",
+								"city": "Schummborough",
+								"state": "Idaho",
+								"country": "NR"
+							},
+							"shareOfTotalRevenueInPercent": 86.4689
+						},
+						{
+							"nameOfProductionSite": "Reichel - Hartmann",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Merlin Extension 64270",
+								"postalCode": "64469-4303",
+								"city": "Quitzonchester",
+								"country": "KR"
+							},
+							"shareOfTotalRevenueInPercent": 40.9001
+						}
+					]
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Oriental Metal Chips",
-							"shareOfTotalRevenueInPercent": 76.0456
+							"name": "Oriental Plastic Chips",
+							"shareOfTotalRevenueInPercent": 66.2252
 						},
 						{
-							"name": "Bespoke Frozen Chair",
-							"shareOfTotalRevenueInPercent": 7.0851
+							"name": "Handmade Concrete Shoes",
+							"shareOfTotalRevenueInPercent": 79.5159
 						},
 						{
-							"name": "Oriental Granite Hat",
-							"shareOfTotalRevenueInPercent": 90.787
+							"name": "Handcrafted Cotton Tuna",
+							"shareOfTotalRevenueInPercent": 93.8005
+						},
+						{
+							"name": "Fantastic Wooden Mouse"
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 805,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 436,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWater": 497,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 45851879,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Flooding",
-						"Hail",
-						"Snow",
-						"Avalanche",
-						"Wind"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 235343
 				}
 			}
 		},
@@ -191,82 +243,117 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "New Brook",
-			"headquartersPostalCode": "99542-7659",
-			"sector": "content",
+			"headquarters": "Fort Dianachester",
+			"sector": "deliverables",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"3KIFgwgSeipc",
-					"eKpT1cw2qs5H"
+					"HOZWYHViKGrI"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"OfdtA9p"
+				],
 				"Duns": [],
 				"VatNumber": [
-					"YRD784lZP"
+					"jNMYORlGl"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AF",
+			"countryCode": "UZ",
 			"companyAlternativeNames": [
-				"Gleichner and Sons",
-				"Jones and Sons",
-				"Stracke - Hayes"
+				"Balistreri, Skiles and Stoltenberg",
+				"White, Hyatt and Willms"
 			],
 			"companyLegalForm": "AG",
+			"website": "https://unequaled-developing.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"32.20",
-						"46.48",
-						"77.12",
-						"85.42"
+						"31.01"
 					],
 					"addressOfHeadquarters": {
 						"city": "City 17",
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8110,
-					"fiscalYearStart": "2024-07-08"
+					"numberOfEmployees": 8427,
+					"fiscalYearStart": "2024-05-24"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 58815147,
-					"capitalAssetsInEur": 51556931
+					"revenueInEur": 41457582,
+					"operatingCostInEur": 25845827,
+					"capitalAssetsInEur": 67940658
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Rempel and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Marty Groves 988",
+								"postalCode": "10927",
+								"city": "East Alayna",
+								"state": "North Carolina",
+								"country": "CI"
+							}
+						},
+						{
+							"nameOfProductionSite": "Williamson - Morissette",
+							"addressOfProductionSite": {
+								"postalCode": "20147-8456",
+								"city": "Port Normaville",
+								"state": "Nevada",
+								"country": "AE"
+							}
+						},
+						{
+							"nameOfProductionSite": "Friesen, Grant and Brakus",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Hauck Views 5193",
+								"postalCode": "52576-0298",
+								"city": "Norman",
+								"state": "Montana",
+								"country": "DO"
+							},
+							"shareOfTotalRevenueInPercent": 91.6245
+						},
+						{
+							"nameOfProductionSite": "Bradtke and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Ryder Field 3524",
+								"postalCode": "40059-3135",
+								"city": "East Dereckton",
+								"state": "New Hampshire",
+								"country": "ZM"
+							},
+							"shareOfTotalRevenueInPercent": 73.561
+						}
+					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Sleek Concrete Computer",
+							"shareOfTotalRevenueInPercent": 81.5462
+						}
+					]
 				}
 			},
 			"power": {
-				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
-				},
+				"investments": {},
 				"consumption": {
-					"powerConsumptionInMwh": 1026,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 668,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMwh": 1856,
+					"energyConsumptionHeatingAndHotWater": 733
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 10384096,
-					"naturalHazardsCovered": [
-						"Hail",
-						"EarthQuake",
-						"Wind"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 40373490
 				}
 			}
 		},

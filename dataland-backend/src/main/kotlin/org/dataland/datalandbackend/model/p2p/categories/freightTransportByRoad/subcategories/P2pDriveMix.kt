@@ -8,7 +8,6 @@ import java.math.BigDecimal
  * Fields of the P2p questionnaire regarding a single drive mix type
  */
 data class P2pDriveMix(
-    @field:JsonProperty(required = true)
     val driveMixPerFleetSegmentInPercent: BigDecimal?,
 
     val totalAmountOfVehicles: BigDecimal?,

@@ -3564,6 +3564,31 @@
           }
         }
       },
+      "P2pDriveMix": {
+        "type": "object",
+        "properties": {
+          "driveMixPerFleetSegmentInPercent": {
+            "type": "number"
+          },
+          "totalAmountOfVehicles": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "SmallTrucks": {
+            "driveMixPerFleetSegmentInPercent": 0,
+            "totalAmountOfVehicles": 0
+          },
+          "MediumTrucks": {
+            "driveMixPerFleetSegmentInPercent": 0,
+            "totalAmountOfVehicles": 0
+          },
+          "LargeTrucks": {
+            "driveMixPerFleetSegmentInPercent": 0,
+            "totalAmountOfVehicles": 0
+          }
+        }
+      },
       "P2pElectricityGeneration": {
         "type": "object",
         "properties": {
@@ -3640,7 +3665,24 @@
         "type": "object",
         "properties": {
           "driveMixPerFleetSegment": {
-            "type": "number"
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/P2pDriveMix"
+            },
+            "example": {
+              "SmallTrucks": {
+                "driveMixPerFleetSegmentInPercent": 0,
+                "totalAmountOfVehicles": 0
+              },
+              "MediumTrucks": {
+                "driveMixPerFleetSegmentInPercent": 0,
+                "totalAmountOfVehicles": 0
+              },
+              "LargeTrucks": {
+                "driveMixPerFleetSegmentInPercent": 0,
+                "totalAmountOfVehicles": 0
+              }
+            }
           },
           "icePhaseOut": {
             "type": "string",
