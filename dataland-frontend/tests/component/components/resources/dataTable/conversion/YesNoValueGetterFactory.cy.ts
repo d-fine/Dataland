@@ -56,7 +56,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
   });
 
   describe("Tests when the field has the certificateRequiredIfYes property set", () => {
-    const field: Field = {
+    const baseFieldCertificate: Field = {
       name: "environmentalManagementSystemNationalCertification",
       label: "Environmental Management System National Certification",
       description: "Is the environmental management system nationally recognized and certified?",
@@ -68,69 +68,84 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
       certificateRequiredIfYes: true,
     };
 
+    let baseFieldNoCertificate: Field = {
+      name: "normal-field",
+      label: "Just a normal field",
+      description: "No certificate here",
+      unit: "",
+      component: "YesNoNaFormField",
+      evidenceDesired: false,
+      required: false,
+      showIf: (): boolean => true,
+      certificateRequiredIfYes: true,
+    };
+
     it("An empty string should be displayed if the data point is undefined", () => {
       const dataset = { data: undefined };
-      const value = yesNoValueGetterFactory("data", field)(dataset);
+      const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
       expect(value).to.deep.equal(EmptyDisplayValue);
     });
 
-    it("'Yes' should be displayed if no certificate is provided", () => {
-      const datapoint: BaseDataPointYesNoNa = {
-        value: YesNoNa.Yes,
-      };
-      const dataset = { data: datapoint };
-      const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: "Yes",
-      });
-    });
-
-    it("'N/A' should be displayed if no certificate is provided", () => {
+    it("'N/A' should be displayed if the value is N/A", () => {
       const datapoint: BaseDataPointYesNoNa = {
         value: YesNoNa.Na,
       };
       const dataset = { data: datapoint };
-      const value = yesNoValueGetterFactory("data", field)(dataset);
+      const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
         displayComponent: MLDTDisplayComponents.StringDisplayComponent,
         displayValue: "N/A",
       });
     });
 
-    it("'Uncertified' should be displayed if no certificate is provided and the value is No", () => {
-      const datapoint: BaseDataPointYesNoNa = {
-        value: YesNoNa.No,
-      };
-      const dataset = { data: datapoint };
-      const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: "Uncertified",
-      });
-    });
-
-    it("'Certified' with a link to the document should be displayed if a certificate is provided and the value is Yes", () => {
-      const datapoint: BaseDataPointYesNoNa = {
-        value: YesNoNa.Yes,
-        dataSource: {
-          name: "Hello",
-          reference: "TestReference",
-        },
-      };
-      const dataset = { data: datapoint };
-      const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.DocumentLinkDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.DocumentLinkDisplayComponent,
-        displayValue: {
-          label: "Certified",
-          reference: {
+    describe("Tests cases for when 'certificate' is in the field name", () => {
+      it("'Certified' with a link to the document should be displayed if a certificate is provided and the value is Yes", () => {
+        const datapoint: BaseDataPointYesNoNa = {
+          value: YesNoNa.Yes,
+          dataSource: {
             name: "Hello",
             reference: "TestReference",
           },
-        },
+        };
+        const dataset = { data: datapoint };
+        const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
+        expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.DocumentLinkDisplayComponent>>{
+          displayComponent: MLDTDisplayComponents.DocumentLinkDisplayComponent,
+          displayValue: {
+            label: "Certified",
+            reference: {
+              name: "Hello",
+              reference: "TestReference",
+            },
+          },
+        });
       });
-    });
+      it("'Uncertified' should be displayed if no certificate is provided and the value is No", () => {
+        const datapoint: BaseDataPointYesNoNa = {
+          value: YesNoNa.No,
+        };
+        const dataset = { data: datapoint };
+        const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
+        expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
+          displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+          displayValue: "Uncertified",
+        });
+      });
+    })
+
+    describe("Test cases for when 'certificate' is not in the field name", () => {
+      it("'Yes' should be displayed if no certificate is provided", () => {
+        const datapoint: BaseDataPointYesNoNa = {
+          value: YesNoNa.Yes,
+        };
+        const dataset = { data: datapoint };
+        const value = yesNoValueGetterFactory("data", baseFieldNoCertificate)(dataset);
+        expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
+          displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+          displayValue: "Yes",
+        });
+      });
+    })
   });
 
   describe("Tests when the field has the evidenceDesired property set", () => {
