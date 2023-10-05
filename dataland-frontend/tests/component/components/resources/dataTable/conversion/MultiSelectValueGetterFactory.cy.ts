@@ -9,8 +9,8 @@ import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelec
 
 describe("Unit test for the MultiSelectValueGetterFactory", () => {
   const sampleMultiSelectFormField: Field = {
-    name: "Test-Field",
-    label: "Test-Field",
+    name: "MultiSelectFormField-Test",
+    label: "MultiSelectFormField-Test",
     component: "MultiSelectFormField",
     showIf: () => true,
     description: "Test-Field",
@@ -48,12 +48,12 @@ describe("Unit test for the MultiSelectValueGetterFactory", () => {
         modalComponent: MultiSelectModal,
         modalOptions: {
           props: {
-            header: "Test-Field",
+            header: "MultiSelectFormField-Test",
             modal: true,
             dismissableMask: true,
           },
           data: {
-            label: "Test-Field",
+            label: "MultiSelectFormField-Test",
             values: ["Option A Label"],
           },
         },
@@ -71,12 +71,12 @@ describe("Unit test for the MultiSelectValueGetterFactory", () => {
         modalComponent: MultiSelectModal,
         modalOptions: {
           props: {
-            header: "Test-Field",
+            header: "MultiSelectFormField-Test",
             modal: true,
             dismissableMask: true,
           },
           data: {
-            label: "Test-Field",
+            label: "MultiSelectFormField-Test",
             values: ["Option A Label", "Option B Label"],
           },
         },

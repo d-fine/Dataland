@@ -9,8 +9,8 @@ import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelec
 
 describe("Unit test for the MultiSelectValueGetterFactory", () => {
   const sampleMultiSelectFormField: Field = {
-    name: "Test-Field",
-    label: "Test-Field",
+    name: "NaceCodeFormField-Test",
+    label: "NaceCodeFormField-Test",
     component: "NaceCodeFormField",
     showIf: () => true,
     description: "Test-Field",
@@ -38,12 +38,12 @@ describe("Unit test for the MultiSelectValueGetterFactory", () => {
         modalComponent: MultiSelectModal,
         modalOptions: {
           props: {
-            header: "Test-Field",
+            header: "NaceCodeFormField-Test",
             modal: true,
             dismissableMask: true,
           },
           data: {
-            label: "Test-Field",
+            label: "NaceCodeFormField-Test",
             values: ["A - AGRICULTURE, FORESTRY AND FISHING"],
           },
         },
