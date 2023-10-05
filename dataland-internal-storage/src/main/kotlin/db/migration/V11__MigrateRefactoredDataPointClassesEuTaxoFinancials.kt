@@ -23,7 +23,6 @@ class V11__MigrateRefactoredDataPointClassesEuTaxoFinancials {
     }
     private val oldToNewFieldNamesForAssurance = mapOf(
         "assurance" to "value",
-        "tagName" to "tagName",
     )
 
     private val oldToNewFieldNamesForReports = mapOf(
