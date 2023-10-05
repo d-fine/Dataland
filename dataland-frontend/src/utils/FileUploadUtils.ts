@@ -13,7 +13,7 @@ export interface DocumentToUpload {
 }
 //TODO remove storedReport and use compnayReport
 export interface StoredReport extends CompanyReport {
-  reportName: string;
+  fileName: string;
 }
 
 /**
@@ -103,7 +103,7 @@ export function calculateReferenceableFiles(inputArray: DocumentToUpload[] | Sto
     if ((<DocumentToUpload>inputArray[i]).fileNameWithoutSuffix) {
       reportName = (<DocumentToUpload>inputArray[i]).fileNameWithoutSuffix;
     } else {
-      reportName = (<StoredReport>inputArray[i]).reportName;
+      reportName = (<StoredReport>inputArray[i]).fileName;
     }
     referenceableReport[reportName] = inputArray[i].fileReference;
   }
