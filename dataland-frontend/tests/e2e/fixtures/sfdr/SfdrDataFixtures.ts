@@ -1,5 +1,5 @@
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { generateCurrencyValue, generateFloat } from "@e2e/fixtures/common/NumberFixtures";
+import { generateFloat } from "@e2e/fixtures/common/NumberFixtures";
 import { type SfdrData } from "@clients/backend";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";

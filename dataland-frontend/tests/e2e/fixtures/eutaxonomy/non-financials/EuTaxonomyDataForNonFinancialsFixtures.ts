@@ -11,7 +11,6 @@ import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTax
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { generateCurrencyValue } from "@e2e/fixtures/common/NumberFixtures";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
