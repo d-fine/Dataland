@@ -24,7 +24,7 @@
             :name="`sector${selection}EnergyConsumption`"
             :placeholder="`Sector ${selection} Energy Consumption`"
             validation-label="Energy Consumption"
-            validation="number"
+            validation="number|required"
           />
           <span>in GWh</span>
         </div>
