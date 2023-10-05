@@ -1,4 +1,4 @@
-import { type DataAndMetaInformation } from "@/components/resources/ViewModel";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 /**
  * Sorts dates to ensure that Sfdr and LkSG datasets are displayed chronologically in the table in terms of reporting
