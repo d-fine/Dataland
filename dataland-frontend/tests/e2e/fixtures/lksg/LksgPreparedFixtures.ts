@@ -1,6 +1,6 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type LksgData, YesNo } from "@clients/backend";
-import { generateLksgFixture, generateProductionSite } from "./LksgDataFixtures";
+import { generateLksgFixture, generateProductionSite, LksgGenerator } from "./LksgDataFixtures";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 
@@ -42,9 +42,16 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
  */
 function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
   const twoProductionSites = [generateProductionSite(), generateProductionSite()];
+  const lksgGeneratorNoUndefined = new LksgGenerator(0);
+
   input.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
+
+  input.t.governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification =
+    lksgGeneratorNoUndefined.randomBaseDataPoint(YesNo.Yes);
+
+  input.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
+  input.t.general.productionSpecific!.productionSites = YesNo.Yes;
   input.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;
-  input.t.governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!.value = YesNo.Yes;
   return input;
 }
 

@@ -312,7 +312,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
   };
 }
 
-class LksgGenerator extends Generator {
+export class LksgGenerator extends Generator {
   /**
    * Generates a random product
    * @returns a random product
