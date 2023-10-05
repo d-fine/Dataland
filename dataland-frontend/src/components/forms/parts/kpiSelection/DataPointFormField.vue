@@ -9,7 +9,7 @@
           v-model="currentValue"
           :validation-label="validationLabel ?? label"
           :validation="`number|${validation}`"
-          :placeholder=" unit ? `Value in ${unit}` : 'Value' "
+          :placeholder="unit ? `Value in ${unit}` : 'Value'"
           outer-class="short"
           @blur="handleBlurValue"
         />
@@ -127,10 +127,8 @@ export default defineComponent({
       }
     },
     fileReferenceAccordingToName(): string {
-      if (this.injectReportsNameAndReferences) {
-        return this.injectReportsNameAndReferences[
-          this.currentReportValue as keyof typeof this.injectReportsNameAndReferences
-        ];
+      if (this.currentReportValue in this.injectReportsNameAndReferences) {
+        return this.injectReportsNameAndReferences[this.currentReportValue];
       } else {
         return "";
       }

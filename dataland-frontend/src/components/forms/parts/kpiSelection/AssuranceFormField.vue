@@ -119,10 +119,8 @@ export default defineComponent({
       }
     },
     fileReferenceAccordingToName(): string {
-      if (this.injectReportsNameAndReferences) {
-        return this.injectReportsNameAndReferences[
-          this.currentReportValue as keyof typeof this.injectReportsNameAndReferences
-        ];
+      if (this.currentReportValue in this.injectReportsNameAndReferences) {
+        return this.injectReportsNameAndReferences[this.currentReportValue];
       } else {
         return "";
       }
