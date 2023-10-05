@@ -10,11 +10,13 @@ import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsCol
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { convertDataModel } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { mountMLDTFrameworkPanelFromFakeFixture } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
+import {
+  mountMLDTFrameworkPanelFromFakeFixture,
+  mountMLDTFrameworkPanel,
+} from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
 
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
-import { mountMLDTFrameworkPanel } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
 
 describe("Component test for the LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
