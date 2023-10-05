@@ -7,7 +7,6 @@ import {
 import { type ReferencedDocuments, generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { type CurrencyDataPoint, type YesNo, type YesNoNa } from "@clients/backend";
-import { type DocumentReference, type YesNo, type YesNoNa } from "@clients/backend";
 import { generateCurrencyValue, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
@@ -60,14 +59,8 @@ export class Generator {
   }
 
   randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | null {
-    const randomDocument = this.valueOrNull(
-      pickOneElement(
-        Object.values(this.documents)
-          .filter((document) => "name" in document && "reference" in document)
-          .map((document) => document as DocumentReference),
-      ),
-    );
-    return this.valueOrNull({ value: input, dataSource: randomDocument });
+    const document = this.valueOrNull(pickOneElement(Object.values(this.documents)));
+    return this.valueOrNull({ value: input, dataSource: document } as GenericBaseDataPoint<T>);
   }
 
   randomExtendedDataPoint<T>(input: T): GenericDataPoint<T> | null {

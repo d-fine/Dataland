@@ -69,7 +69,7 @@ export function generateDataPoint<T>(
 
 export interface GenericDataPoint<T> {
   value: T | null;
-  dataSource: CompanyReportReference;
+  dataSource: ExtendedDocumentReference | null;
   quality: QualityOptions;
   comment: string | null;
   currency?: string | null;
@@ -89,9 +89,9 @@ export interface GenericBaseDataPoint<T> {
 function generateQualityAndDataSourceAndComment(
   reports: ReferencedDocuments,
   qualityBucket: QualityOptions,
-): { dataSource: CompanyReportReference; comment: string | null } {
-  let dataSource: CompanyReportReference;
-  let comment: string | null;
+): { dataSource: ExtendedDocumentReference | null; comment: string | null } {
+  let dataSource: ExtendedDocumentReference | null = null;
+  let comment: string | null = null;
   if (
     qualityBucket === QualityOptions.Audited ||
     qualityBucket === QualityOptions.Reported ||
@@ -100,9 +100,6 @@ function generateQualityAndDataSourceAndComment(
   ) {
     dataSource = generateDataSource(reports);
     comment = faker.git.commitMessage();
-  } else {
-    dataSource = { report: "", page: null, tagName: null };
-    comment = null;
   }
   return { dataSource, comment };
 }

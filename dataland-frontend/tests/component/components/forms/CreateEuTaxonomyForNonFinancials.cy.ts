@@ -203,6 +203,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
             quality: "Estimated",
             dataSource: {
               fileName: `${TEST_PDF_FILE_NAME}FileCopy`,
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 12,
             },
             comment: "test",
@@ -215,6 +216,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
             quality: "Estimated",
             dataSource: {
               fileName: "None...",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 12,
             },
             comment: "test",
@@ -227,6 +229,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
             quality: "Estimated",
             dataSource: {
               fileName: "None...",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 12,
             },
             comment: "test",
@@ -245,6 +248,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
             provider: "Assurance Provider",
             dataSource: {
               fileName: TEST_PDF_FILE_NAME,
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 1,
             },
           },

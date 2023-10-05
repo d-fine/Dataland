@@ -40,7 +40,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
     general: {
       basicInformation: {
         sector: generateNaceCodes(1, 1),
-        addressOfHeadquarters: generateAddress(dataGenerator.undefinedProbability),
+        addressOfHeadquarters: generateAddress(dataGenerator.nullProbability),
         numberOfEmployees: generateInt(10000),
         fiscalYearStart: generateFutureDate(),
       },

@@ -2723,15 +2723,15 @@
       "SmeGeneralCompanyFinancials": {
         "type": "object",
         "properties": {
-          "revenueInEur": {
+          "revenueInEUR": {
             "type": "number",
             "nullable": true
           },
-          "operatingCostInEur": {
+          "operatingCostInEUR": {
             "type": "number",
             "nullable": true
           },
-          "capitalAssetsInEur": {
+          "capitalAssetsInEUR": {
             "type": "number",
             "nullable": true
           }
@@ -2798,7 +2798,7 @@
       "SmePowerConsumption": {
         "type": "object",
         "properties": {
-          "powerConsumptionInMwh": {
+          "powerConsumptionInMWh": {
             "type": "number",
             "nullable": true
           },
@@ -2810,7 +2810,7 @@
               }
             ]
           },
-          "energyConsumptionHeatingAndHotWater": {
+          "energyConsumptionHeatingAndHotWaterInMWh": {
             "type": "number",
             "nullable": true
           },
@@ -2822,7 +2822,7 @@
               }
             ]
           },
-          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
+          "percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": {
             "nullable": true,
             "allOf": [
               {
@@ -2835,7 +2835,7 @@
       "SmePowerInvestments": {
         "type": "object",
         "properties": {
-          "percentageOfInvestmentsInEnhancingEnergyEfficiency": {
+          "percentageRangeForInvestmentsInEnhancingEnergyEfficiency": {
             "nullable": true,
             "allOf": [
               {
@@ -2954,12 +2954,16 @@
       },
       "CompanyReport": {
         "required": [
-          "reference"
+          "fileReference"
         ],
         "type": "object",
         "properties": {
-          "reference": {
+          "fileReference": {
             "type": "string"
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
           },
           "isGroupLevel": {
             "nullable": true,
@@ -2980,15 +2984,101 @@
           }
         }
       },
-      "CompanyReportReference": {
+      "CurrencyDataPoint": {
         "required": [
-          "report"
+          "quality"
         ],
         "type": "object",
         "properties": {
-          "report": {
-            "type": "string"
+          "value": {
+            "type": "number",
+            "nullable": true
           },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ExtendedDataPointBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointYesNo": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
           "page": {
             "type": "integer",
             "format": "int64",
@@ -2997,68 +3087,13 @@
           "tagName": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "DataPointOneValueYesNo": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
           },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanyReportReference"
-              }
-            ]
-          },
-          "comment": {
+          "fileName": {
             "type": "string",
             "nullable": true
           },
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          }
-        }
-      },
-      "DataPointWithUnitBigDecimal": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanyReportReference"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "unit": {
-            "type": "string",
-            "nullable": true
+          "fileReference": {
+            "type": "string"
           }
         }
       },
@@ -3166,7 +3201,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3174,7 +3209,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3182,7 +3217,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           }
@@ -3191,27 +3226,27 @@
       "SfdrEnvironmentalEmissions": {
         "type": "object",
         "properties": {
-          "inorganicPollutants": {
+          "inorganicPollutantsInTonnes": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "airPollutants": {
+          "airPollutantsInTonnes": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "ozoneDepletionSubstances": {
+          "ozoneDepletionSubstancesInTonnes": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3219,7 +3254,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           }
@@ -3228,171 +3263,171 @@
       "SfdrEnvironmentalEnergyPerformance": {
         "type": "object",
         "properties": {
-          "renewableEnergyProduction": {
+          "renewableEnergyProductionInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "renewableEnergyConsumption": {
+          "renewableEnergyConsumptionInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "nonRenewableEnergyConsumption": {
+          "nonRenewableEnergyConsumptionInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "nonRenewableEnergyProduction": {
+          "nonRenewableEnergyProductionInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceA": {
+          "highImpactClimateSectorEnergyConsumptionNaceAInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceB": {
+          "highImpactClimateSectorEnergyConsumptionNaceBInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceC": {
+          "highImpactClimateSectorEnergyConsumptionNaceCInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceD": {
+          "highImpactClimateSectorEnergyConsumptionNaceDInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceE": {
+          "highImpactClimateSectorEnergyConsumptionNaceEInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceF": {
+          "highImpactClimateSectorEnergyConsumptionNaceFInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceG": {
+          "highImpactClimateSectorEnergyConsumptionNaceGInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceH": {
+          "highImpactClimateSectorEnergyConsumptionNaceHInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceL": {
+          "highImpactClimateSectorEnergyConsumptionNaceLInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "totalHighImpactClimateSectorEnergyConsumption": {
+          "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "nonRenewableEnergyConsumptionFossilFuels": {
+          "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "nonRenewableEnergyConsumptionCrudeOil": {
+          "nonRenewableEnergyConsumptionCrudeOilInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "nonRenewableEnergyConsumptionNaturalGas": {
+          "nonRenewableEnergyConsumptionNaturalGasInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "nonRenewableEnergyConsumptionLignite": {
+          "nonRenewableEnergyConsumptionLigniteInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "nonRenewableEnergyConsumptionCoal": {
+          "nonRenewableEnergyConsumptionCoalInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "nonRenewableEnergyConsumptionNuclearEnergy": {
+          "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "nonRenewableEnergyConsumptionOther": {
+          "nonRenewableEnergyConsumptionOtherInGWh": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -3401,27 +3436,27 @@
       "SfdrEnvironmentalGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
-          "scope1": {
+          "scope1InTonnes": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "scope2": {
+          "scope2InTonnes": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "scope3": {
+          "scope3InTonnes": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3429,7 +3464,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -3437,7 +3472,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -3445,7 +3480,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           }
@@ -3454,11 +3489,11 @@
       "SfdrEnvironmentalWaste": {
         "type": "object",
         "properties": {
-          "hazardousWaste": {
+          "hazardousWasteInTonnes": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3466,7 +3501,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3474,7 +3509,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3482,7 +3517,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3490,15 +3525,15 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
-          "wasteNonRecycled": {
+          "wasteNonRecycledInTonnes": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3506,7 +3541,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3514,7 +3549,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3522,7 +3557,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           }
@@ -3531,27 +3566,27 @@
       "SfdrEnvironmentalWater": {
         "type": "object",
         "properties": {
-          "emissionsToWater": {
+          "emissionsToWaterInTonnes": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "waterConsumption": {
+          "waterConsumptionInCubicMeters": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "waterReused": {
+          "waterReusedInCubicMeters": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3559,7 +3594,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3567,7 +3602,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           }
@@ -3664,7 +3699,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3672,7 +3707,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3680,7 +3715,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -3693,7 +3728,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           }
@@ -3706,7 +3741,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3714,7 +3749,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3722,7 +3757,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3730,7 +3765,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3738,7 +3773,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3746,7 +3781,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -3759,7 +3794,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3767,7 +3802,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3775,7 +3810,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3783,7 +3818,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3791,7 +3826,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3799,7 +3834,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3807,7 +3842,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3815,7 +3850,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3823,7 +3858,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3831,7 +3866,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3839,7 +3874,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3847,7 +3882,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3855,7 +3890,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3863,7 +3898,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3871,7 +3906,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3879,7 +3914,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -3887,7 +3922,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -3895,7 +3930,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3903,7 +3938,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3911,7 +3946,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3919,7 +3954,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3927,15 +3962,15 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "workdaysLost": {
+          "workdaysLostInDays": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3943,7 +3978,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3951,7 +3986,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3959,7 +3994,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -3967,7 +4002,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3975,7 +4010,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -3983,7 +4018,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -4010,9 +4045,24 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DocumentReference"
+                "$ref": "#/components/schemas/BaseDocumentReference"
               }
             ]
+          }
+        }
+      },
+      "BaseDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
           }
         }
       },
@@ -4032,21 +4082,6 @@
           },
           "data": {
             "$ref": "#/components/schemas/PathwaysToParisData"
-          }
-        }
-      },
-      "DocumentReference": {
-        "required": [
-          "name",
-          "reference"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "reference": {
-            "type": "string"
           }
         }
       },
@@ -4129,7 +4164,7 @@
       "P2pAutomotiveEnergy": {
         "type": "object",
         "properties": {
-          "productionSiteEnergyConsumption": {
+          "productionSiteEnergyConsumptionInMWh": {
             "type": "number",
             "nullable": true
           },
@@ -4262,27 +4297,6 @@
           }
         }
       },
-      "P2pClimateTargets": {
-        "type": "object",
-        "properties": {
-          "longTermScienceBasedClimateTarget": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "shortTermScienceBasedClimateTarget": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          }
-        }
-      },
       "P2pElectricityGeneration": {
         "type": "object",
         "properties": {
@@ -4299,7 +4313,7 @@
       "P2pElectricityGenerationTechnology": {
         "type": "object",
         "properties": {
-          "electricityMixEmissions": {
+          "electricityMixEmissionsInCorrespondingUnit": {
             "type": "number",
             "nullable": true
           },
@@ -4320,43 +4334,6 @@
           "storageCapacityExpansionInPercent": {
             "type": "number",
             "nullable": true
-          }
-        }
-      },
-      "P2pEmissionsPlanning": {
-        "type": "object",
-        "properties": {
-          "absoluteEmissions": {
-            "type": "number",
-            "nullable": true
-          },
-          "relativeEmissionsInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "reductionOfAbsoluteEmissions": {
-            "type": "number",
-            "nullable": true
-          },
-          "reductionOfRelativeEmissionsInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "climateActionPlan": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "useOfInternalCarbonPrice": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
           }
         }
       },
@@ -4393,7 +4370,7 @@
       "P2pFreightTransportByRoadTechnology": {
         "type": "object",
         "properties": {
-          "driveMixPerFleetSegment": {
+          "driveMixPerFleetSegmentInPercent": {
             "type": "number",
             "nullable": true
           },
@@ -4417,7 +4394,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/P2pGovernance"
+                "$ref": "#/components/schemas/P2pGeneralGovernance"
               }
             ]
           },
@@ -4425,7 +4402,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/P2pClimateTargets"
+                "$ref": "#/components/schemas/P2pGeneralClimateTargets"
               }
             ]
           },
@@ -4433,7 +4410,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/P2pEmissionsPlanning"
+                "$ref": "#/components/schemas/P2pGeneralEmissionsPlanning"
               }
             ]
           },
@@ -4441,7 +4418,65 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/P2pInvestmentPlanning"
+                "$ref": "#/components/schemas/P2pGeneralInvestmentPlanning"
+              }
+            ]
+          }
+        }
+      },
+      "P2pGeneralClimateTargets": {
+        "type": "object",
+        "properties": {
+          "shortTermScienceBasedClimateTarget": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "longTermScienceBasedClimateTarget": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "P2pGeneralEmissionsPlanning": {
+        "type": "object",
+        "properties": {
+          "absoluteEmissionsInTonnesCO2e": {
+            "type": "number",
+            "nullable": true
+          },
+          "relativeEmissionsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "reductionOfAbsoluteEmissions": {
+            "type": "number",
+            "nullable": true
+          },
+          "reductionOfRelativeEmissionsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "climateActionPlan": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "useOfInternalCarbonPrice": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           }
@@ -4466,7 +4501,7 @@
           }
         }
       },
-      "P2pGovernance": {
+      "P2pGeneralGovernance": {
         "type": "object",
         "properties": {
           "organisationalResponsibilityForParisCompatibility": {
@@ -4517,7 +4552,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -4536,6 +4571,31 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          }
+        }
+      },
+      "P2pGeneralInvestmentPlanning": {
+        "type": "object",
+        "properties": {
+          "investmentPlanForClimateTargets": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "capexShareInNetZeroSolutionsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "capexShareInGhgIntensivePlantsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -4597,8 +4657,12 @@
             "nullable": true
           },
           "carbonCaptureAndUseStorageTechnologies": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -4618,31 +4682,6 @@
             "nullable": true
           },
           "chemicalRecyclingInPercent": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "P2pInvestmentPlanning": {
-        "type": "object",
-        "properties": {
-          "investmentPlanForClimateTargets": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "capexShareInNetZeroSolutionsInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "capexShareInGhgIntensivePlantsInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": {
             "type": "number",
             "nullable": true
           }
@@ -4704,7 +4743,7 @@
             "type": "string",
             "nullable": true
           },
-          "excessNitrogen": {
+          "excessNitrogenInKilogramsPerHectare": {
             "type": "number",
             "nullable": true
           },
@@ -4801,7 +4840,7 @@
             "type": "number",
             "nullable": true
           },
-          "buildingEnergyEfficiency": {
+          "buildingEnergyEfficiencyInCorrespondingUnit": {
             "type": "number",
             "nullable": true
           }
@@ -4856,7 +4895,7 @@
       "P2pSteelEnergy": {
         "type": "object",
         "properties": {
-          "emissionIntensityOfElectricity": {
+          "emissionIntensityOfElectricityInCorrespondingUnit": {
             "type": "number",
             "nullable": true
           },
@@ -4886,21 +4925,13 @@
       "P2plRealEstateTechnology": {
         "type": "object",
         "properties": {
-          "useOfDistrictHeatingNetworks": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+          "useOfDistrictHeatingNetworksInPercent": {
+            "type": "number",
+            "nullable": true
           },
-          "heatPumpUsage": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+          "heatPumpUsageInPercent": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -5008,7 +5039,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DocumentReference"
+                "$ref": "#/components/schemas/BaseDocumentReference"
               }
             ]
           }
@@ -7029,13 +7060,13 @@
           }
         }
       },
-      "AssuranceData": {
+      "AssuranceDataPoint": {
         "required": [
-          "assurance"
+          "value"
         ],
         "type": "object",
         "properties": {
-          "assurance": {
+          "value": {
             "type": "string",
             "enum": [
               "None",
@@ -7043,17 +7074,17 @@
               "ReasonableAssurance"
             ]
           },
-          "provider": {
-            "type": "string",
-            "nullable": true
-          },
           "dataSource": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/CompanyReportReference"
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
               }
             ]
+          },
+          "provider": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -7256,7 +7287,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -7384,7 +7415,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AssuranceData"
+                "$ref": "#/components/schemas/AssuranceDataPoint"
               }
             ]
           },
@@ -7444,7 +7475,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -7452,7 +7483,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -7460,7 +7491,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -7468,36 +7499,9 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
-          }
-        }
-      },
-      "DataPointOneValueBigDecimal": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanyReportReference"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "type": "number",
-            "nullable": true
           }
         }
       },
@@ -7508,7 +7512,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -7516,7 +7520,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -7524,7 +7528,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -7532,7 +7536,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
@@ -7540,7 +7544,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -7726,7 +7730,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AssuranceData"
+                "$ref": "#/components/schemas/AssuranceDataPoint"
               }
             ]
           },
@@ -7750,7 +7754,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -7763,7 +7767,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
