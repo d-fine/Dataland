@@ -90,7 +90,7 @@
 </template>
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
-import { defineComponent, inject } from "vue";
+import { computed, defineComponent, inject } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
@@ -249,6 +249,13 @@ export default defineComponent({
         this.postP2pDataProcessed = true;
       }
     },
+  },
+  provide() {
+    return {
+      driveMixPerFleetSegment: computed(() => {
+        return this.companyAssociatedP2pData.data?.freightTransportByRoad?.technology?.driveMixPerFleetSegment;
+      }),
+    };
   },
 });
 </script>

@@ -9,6 +9,7 @@
       :data-and-meta-info="p2pDataAndMetaInfo.map((it) => getViewModelWithIdentityApiModel(it))"
       @data-converted="handleFinishedDataConversion"
       :format-value-for-display="formatValueForDisplay"
+      :modal-column-headers="p2pModalColumnHeaders"
     />
   </div>
 </template>
@@ -25,6 +26,7 @@ import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
 import { formatValueForDisplay } from "@/components/resources/frameworkDataSearch/p2p/P2pFormatValueForDisplay";
+import { p2pModalColumnHeaders } from "@/components/resources/frameworkDataSearch/p2p/P2pModalColumnHeaders";
 
 export default defineComponent({
   name: "P2pPanel",
@@ -33,6 +35,7 @@ export default defineComponent({
   data() {
     return {
       DataTypeEnum,
+      p2pModalColumnHeaders,
       firstRender: true,
       waitingForData: true,
       p2pDataAndMetaInfo: [] as Array<DataAndMetaInformationPathwaysToParisData>,

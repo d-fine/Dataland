@@ -50,10 +50,25 @@ export default defineComponent({
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
-      listOfRowContents: Array<object | string>;
+      listOfRowContents: object | Array<object | string>;
       kpiKeyOfTable: string;
       columnHeaders: object;
     };
+    if (dialogRefData.kpiKeyOfTable == "driveMixPerFleetSegment") {
+      const outputArray = [];
+      for (const key in dialogRefData.listOfRowContents) {
+        const newObj = {
+          vehiclesType: key,
+          driveMixPerFleetSegmentInPercent: dialogRefData.listOfRowContents[
+            key as keyof typeof dialogRefData.listOfRowContents
+          ].driveMixPerFleetSegmentInPercent as string,
+          totalAmountOfVehicles: dialogRefData.listOfRowContents[key as keyof typeof dialogRefData.listOfRowContents]
+            .totalAmountOfVehicles as string,
+        };
+        outputArray.push(newObj);
+      }
+      dialogRefData.listOfRowContents = outputArray;
+    }
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;
     if (typeof dialogRefData.listOfRowContents[0] === "string") {
@@ -72,7 +87,9 @@ export default defineComponent({
     generateColsNames(): void {
       const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
         for (const key of Object.keys(rowContent)) {
-          if (keyList.indexOf(key) === -1) keyList.push(key);
+          if (keyList.indexOf(key) === -1) {
+            keyList.push(key);
+          }
         }
         return keyList;
       }, []);
