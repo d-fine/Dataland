@@ -4,6 +4,9 @@ import { exportFixturesLksg } from "./lksg";
 import { exportFixturesSfdrData } from "./sfdr";
 import { exportFixturesSme } from "./sme";
 import { exportFixturesP2p } from "@e2e/fixtures/p2p";
+import { exportCustomMocks } from "@e2e/fixtures/custom_mocks";
+
+export const FAKE_FIXTURES_PER_FRAMEWORK = 50;
 
 /**
  * The main entrypoint of the fake fixture generator
@@ -15,6 +18,8 @@ function main(): void {
   exportFixturesSfdrData();
   exportFixturesSme();
   exportFixturesP2p();
+
+  exportCustomMocks();
 }
 
 main();

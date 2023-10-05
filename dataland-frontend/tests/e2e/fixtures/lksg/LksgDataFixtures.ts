@@ -9,7 +9,7 @@ import {
 } from "@clients/backend";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { DEFAULT_PROBABILITY, Generator, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY, Generator, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateArray, generateFixtureDataset, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
@@ -23,15 +23,15 @@ import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 /**
  * Generates a set number of LKSG fixtures
  * @param numFixtures the number of lksg fixtures to generate
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a set number of LKSG fixtures
  */
 export function generateLksgFixture(
   numFixtures: number,
-  undefinedProbability = DEFAULT_PROBABILITY,
+  nullProbability = DEFAULT_PROBABILITY,
 ): FixtureData<LksgData>[] {
   return generateFixtureDataset<LksgData>(
-    () => generateLksgData(undefinedProbability),
+    () => generateLksgData(nullProbability),
     numFixtures,
     (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || generateReportingPeriod(),
   );
@@ -39,14 +39,14 @@ export function generateLksgFixture(
 
 /**
  * Generates a random production site
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random production site
  */
-export function generateProductionSite(undefinedProbability = DEFAULT_PROBABILITY): LksgProductionSite {
+export function generateProductionSite(nullProbability = DEFAULT_PROBABILITY): LksgProductionSite {
   return {
-    nameOfProductionSite: valueOrUndefined(faker.company.name(), undefinedProbability),
-    addressOfProductionSite: generateAddress(undefinedProbability),
-    listOfGoodsOrServices: valueOrUndefined(generateListOfGoodsOrServices(), undefinedProbability),
+    nameOfProductionSite: valueOrNull(faker.company.name(), nullProbability),
+    addressOfProductionSite: generateAddress(nullProbability),
+    listOfGoodsOrServices: valueOrNull(generateListOfGoodsOrServices(), nullProbability),
   };
 }
 
@@ -60,44 +60,42 @@ function generateListOfGoodsOrServices(): string[] {
 
 /**
  * Generates a random LKSG dataset
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random LKSG dataset
  */
-export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): LksgData {
-  const dataGenerator = new LksgGenerator(undefinedProbability);
+export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgData {
+  const dataGenerator = new LksgGenerator(nullProbability);
   return {
     general: {
       masterData: {
         dataDate: generateFutureDate(),
         headOfficeInGermany: dataGenerator.randomYesNo(),
         groupOfCompanies: dataGenerator.randomYesNo(),
-        groupOfCompaniesName: dataGenerator.valueOrUndefined(faker.company.name()),
-        industry: dataGenerator.valueOrUndefined(generateNaceCodes()),
+        groupOfCompaniesName: dataGenerator.valueOrNull(faker.company.name()),
+        industry: dataGenerator.valueOrNull(generateNaceCodes()),
         numberOfEmployees: dataGenerator.randomInt(),
         seasonalOrMigrantWorkers: dataGenerator.randomYesNo(),
         shareOfTemporaryWorkers: dataGenerator.randomShareOfTemporaryWorkersInterval(),
         annualTotalRevenue: dataGenerator.randomCurrencyValue(),
-        totalRevenueCurrency: dataGenerator.valueOrUndefined(generateCurrencyCode()),
+        totalRevenueCurrency: dataGenerator.valueOrNull(generateCurrencyCode()),
         fixedAndWorkingCapital: dataGenerator.randomInt(),
       },
       productionSpecific: {
         manufacturingCompany: dataGenerator.randomYesNo(),
-        capacity: dataGenerator.valueOrUndefined(
+        capacity: dataGenerator.valueOrNull(
           generateInt(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
         ),
         productionViaSubcontracting: dataGenerator.randomYesNo(),
         subcontractingCompaniesCountries: dataGenerator.randomArray(generateIso2CountryCode),
-        subcontractingCompaniesIndustries: dataGenerator.valueOrUndefined(generateNaceCodes()),
+        subcontractingCompaniesIndustries: dataGenerator.valueOrNull(generateNaceCodes()),
         productionSites: dataGenerator.randomYesNo(),
-        listOfProductionSites: dataGenerator.randomArray(() => generateProductionSite(undefinedProbability)),
+        listOfProductionSites: dataGenerator.randomArray(() => generateProductionSite(nullProbability)),
         market: dataGenerator.randomNationalOrInternationalMarket(),
         specificProcurement: dataGenerator.randomYesNo(),
       },
       productionSpecificOwnOperations: {
         mostImportantProducts: dataGenerator.randomArray(() => dataGenerator.generateProduct()),
-        productsServicesCategoriesPurchased: dataGenerator.valueOrUndefined(
-          dataGenerator.generateProcurementCategories(),
-        ),
+        productsServicesCategoriesPurchased: dataGenerator.valueOrNull(dataGenerator.generateProcurementCategories()),
       },
     },
     governance: {
@@ -105,9 +103,9 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         riskManagementSystem: dataGenerator.randomYesNo(),
         riskAnalysisInFiscalYear: dataGenerator.randomYesNo(),
         risksIdentified: dataGenerator.randomYesNo(),
-        identifiedRisks: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        identifiedRisks: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         counteractingMeasures: dataGenerator.randomYesNo(),
-        whichCounteractingMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        whichCounteractingMeasures: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         regulatedRiskManagementResponsibility: dataGenerator.randomYesNo(),
         environmentalManagementSystem: dataGenerator.randomYesNo(),
         environmentalManagementSystemInternationalCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
@@ -121,9 +119,9 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         accessToExpertiseForGrievanceHandling: dataGenerator.randomYesNo(),
         grievanceComplaints: dataGenerator.randomYesNo(),
         complaintsNumber: dataGenerator.randomInt(),
-        complaintsReason: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        complaintsReason: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         actionsForComplaintsUndertaken: dataGenerator.randomYesNo(),
-        whichActionsForComplaintsUndertaken: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        whichActionsForComplaintsUndertaken: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         publicAccessToGrievanceHandling: dataGenerator.randomYesNo(),
         whistleblowerProtection: dataGenerator.randomYesNo(),
         dueDiligenceProcessForGrievanceHandling: dataGenerator.randomYesNo(),
@@ -141,12 +139,12 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         amforiBsciAuditReport: dataGenerator.randomBaseDataPoint(generateYesNo()),
         responsibleBusinessAssociationCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
         fairLaborAssociationCertification: dataGenerator.randomBaseDataPoint(generateYesNo()),
-        additionalAudits: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        additionalAudits: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         codeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
         codeOfConductTraining: dataGenerator.randomYesNo(),
         supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
         policyStatement: dataGenerator.randomBaseDataPoint(generateYesNo()),
-        humanRightsStrategy: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        humanRightsStrategy: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         environmentalImpactPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         fairWorkingConditionsPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
@@ -156,9 +154,9 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         responsibilitiesForOccupationalSafety: dataGenerator.randomYesNo(),
         legalProceedings: dataGenerator.randomYesNo(),
         humanRightsViolationS: dataGenerator.randomYesNo(),
-        humanRightsViolations: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        humanRightsViolations: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         humanRightsViolationAction: dataGenerator.randomYesNo(),
-        humanRightsViolationActionMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        humanRightsViolationActionMeasures: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         highRiskCountriesRawMaterials: dataGenerator.randomYesNo(),
         highRiskCountriesRawMaterialsLocation: dataGenerator.randomArray(generateIso2CountryCode),
         highRiskCountriesActivity: dataGenerator.randomYesNo(),
@@ -175,18 +173,18 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         employeeSUnder18InApprenticeship: dataGenerator.randomYesNo(),
         worstFormsOfChildLaborProhibition: dataGenerator.randomYesNo(),
         worstFormsOfChildLabor: dataGenerator.randomYesNo(),
-        worstFormsOfChildLaborForms: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        worstFormsOfChildLaborForms: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         measuresForPreventionOfEmploymentUnderLocalMinimumAge: dataGenerator.randomYesNo(),
         employmentUnderLocalMinimumAgePreventionEmploymentContracts: dataGenerator.randomYesNo(),
         employmentUnderLocalMinimumAgePreventionJobDescription: dataGenerator.randomYesNo(),
         employmentUnderLocalMinimumAgePreventionIdentityDocuments: dataGenerator.randomYesNo(),
         employmentUnderLocalMinimumAgePreventionTraining: dataGenerator.randomYesNo(),
         employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: dataGenerator.randomYesNo(),
-        additionalChildLaborMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        additionalChildLaborMeasures: dataGenerator.valueOrNull(faker.company.buzzNoun()),
       },
       forcedLaborSlavery: {
         forcedLaborAndSlaveryPrevention: dataGenerator.randomYesNo(),
-        forcedLaborAndSlaveryPreventionPractices: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        forcedLaborAndSlaveryPreventionPractices: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         forcedLaborPreventionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         forcedLaborAndSlaveryPreventionMeasures: dataGenerator.randomYesNo(),
         forcedLaborAndSlaveryPreventionEmploymentContracts: dataGenerator.randomYesNo(),
@@ -194,7 +192,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         forcedLaborAndSlaveryPreventionFreeMovement: dataGenerator.randomYesNo(),
         forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets: dataGenerator.randomYesNo(),
         forcedLaborAndSlaveryPreventionTraining: dataGenerator.randomYesNo(),
-        forcedLaborAndSlaveryPreventionMeasuresOther: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        forcedLaborAndSlaveryPreventionMeasuresOther: dataGenerator.valueOrNull(faker.company.buzzNoun()),
       },
       withholdingAdequateWages: {
         adequateWage: dataGenerator.randomYesNo(),
@@ -204,7 +202,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         regularWagesProcessFlow: dataGenerator.randomYesNo(),
         fixedHourlyWages: dataGenerator.randomYesNoNa(),
         fixedPieceworkWages: dataGenerator.randomYesNoNa(),
-        adequateWageMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        adequateWageMeasures: dataGenerator.valueOrNull(faker.company.buzzNoun()),
       },
       disregardForOccupationalHealthSafety: {
         lowSkillWork: dataGenerator.randomYesNo(),
@@ -260,16 +258,16 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         reduceNoiseEmissions: dataGenerator.randomYesNo(),
         excessiveWaterConsumption: dataGenerator.randomYesNo(),
         waterSavingMeasures: dataGenerator.randomYesNo(),
-        waterSavingMeasuresName: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        waterSavingMeasuresName: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         pipeMaintaining: dataGenerator.randomYesNo(),
         waterSources: dataGenerator.randomYesNo(),
-        contaminationMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        contaminationMeasures: dataGenerator.valueOrNull(faker.company.buzzNoun()),
       },
       unlawfulEvictionDeprivationOfLandForestAndWater: {
         unlawfulEvictionAndTakingOfLand: dataGenerator.randomYesNo(),
-        unlawfulEvictionAndTakingOfLandRisk: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        unlawfulEvictionAndTakingOfLandRisk: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         unlawfulEvictionAndTakingOfLandStrategies: dataGenerator.randomYesNo(),
-        unlawfulEvictionAndTakingOfLandStrategiesName: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        unlawfulEvictionAndTakingOfLandStrategiesName: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: dataGenerator.randomYesNo(),
       },
       useOfPrivatePublicSecurityForcesWithDisregardForHumanRights: {
@@ -279,7 +277,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
         humanRightsTraining: dataGenerator.randomYesNo(),
         stateSecurityForces: dataGenerator.randomYesNoNa(),
         privateSecurityForces: dataGenerator.randomYesNoNa(),
-        useOfPrivatePublicSecurityForcesMeasures: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        useOfPrivatePublicSecurityForcesMeasures: dataGenerator.valueOrNull(faker.company.buzzNoun()),
       },
     },
     environmental: {
@@ -294,7 +292,7 @@ export function generateLksgData(undefinedProbability = DEFAULT_PROBABILITY): Lk
       },
       productionAndUseOfPersistentOrganicPollutantsPopsConvention: {
         persistentOrganicPollutantsProductionAndUse: dataGenerator.randomYesNo(),
-        persistentOrganicPollutantsUsed: dataGenerator.valueOrUndefined(faker.company.buzzNoun()),
+        persistentOrganicPollutantsUsed: dataGenerator.valueOrNull(faker.company.buzzNoun()),
         persistentOrganicPollutantsProductionAndUseRiskOfExposure: dataGenerator.randomYesNo(),
         persistentOrganicPollutantsProductionAndUseRiskOfDisposal: dataGenerator.randomYesNo(),
         legalRestrictedWasteProcesses: dataGenerator.randomYesNo(),
@@ -321,7 +319,7 @@ export class LksgGenerator extends Generator {
     return {
       name: faker.commerce.productName(),
       productionSteps: this.randomArray(() => `${faker.word.verb()} ${faker.commerce.productMaterial()}`),
-      relatedCorporateSupplyChain: this.valueOrUndefined(faker.lorem.sentences()),
+      relatedCorporateSupplyChain: this.valueOrNull(faker.lorem.sentences()),
     };
   }
 
@@ -331,11 +329,11 @@ export class LksgGenerator extends Generator {
    */
   generateProcurementCategory(): LksgProcurementCategory {
     const numberOfSuppliersPerCountryCodeAsMap = new Map<string, number>(
-      generateArray(() => [generateIso2CountryCode(), this.valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!]),
+      generateArray(() => [generateIso2CountryCode(), this.valueOrNull(faker.number.int({ min: 0, max: 50 }))!]),
     );
     return {
       procuredProductTypesAndServicesNaceCodes: generateNaceCodes(1),
-      numberOfSuppliersPerCountryCode: this.valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
+      numberOfSuppliersPerCountryCode: this.valueOrNull(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
       shareOfTotalProcurementInPercent: this.randomPercentageValue(),
     };
   }
@@ -363,15 +361,15 @@ export class LksgGenerator extends Generator {
    * Randomly returns <10%, 10-25%, 25-50% or >50%
    * @returns one of the four percentage intervals as string
    */
-  randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers | undefined {
-    return this.valueOrUndefined(pickOneElement(Object.values(ShareOfTemporaryWorkers)));
+  randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers | null {
+    return this.valueOrNull(pickOneElement(Object.values(ShareOfTemporaryWorkers)));
   }
 
   /**
    * Randomly returns National, International or Both
    * @returns one of the options as string
    */
-  randomNationalOrInternationalMarket(): NationalOrInternationalMarket | undefined {
-    return this.valueOrUndefined(pickOneElement(Object.values(NationalOrInternationalMarket)));
+  randomNationalOrInternationalMarket(): NationalOrInternationalMarket | null {
+    return this.valueOrNull(pickOneElement(Object.values(NationalOrInternationalMarket)));
   }
 }
