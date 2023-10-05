@@ -61,12 +61,12 @@ describe("Unit test for the MultiSelectValueGetterFactory", () => {
         modalComponent: MultiSelectModal,
         modalOptions: {
           props: {
-            header: "Test-Field",
+            header: "NaceCodeFormField-Test",
             modal: true,
             dismissableMask: true,
           },
           data: {
-            label: "Test-Field",
+            label: "NaceCodeFormField-Test",
             values: ["A - AGRICULTURE, FORESTRY AND FISHING", "B - MINING AND QUARRYING"],
           },
         },
