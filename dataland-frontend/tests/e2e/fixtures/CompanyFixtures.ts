@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { type CompanyInformation } from "@clients/backend";
-import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { valueOrNull } from "@e2e/utils/FakeFixtureUtils";
 import { pickSubsetOfElements, pickOneOrNoElement, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 const legalForms = [
@@ -38,15 +38,15 @@ export function generateCompanyInformation(): CompanyInformation {
   return {
     companyName: faker.company.name(),
     headquarters: faker.location.city(),
-    headquartersPostalCode: valueOrUndefined(faker.location.zipCode()),
-    sector: valueOrUndefined(faker.company.buzzNoun()),
+    headquartersPostalCode: valueOrNull(faker.location.zipCode()),
+    sector: valueOrNull(faker.company.buzzNoun()),
     identifiers: getRandomIdentifiers(),
     countryCode: faker.location.countryCode(),
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
     }).sort((a, b) => a.localeCompare(b)),
-    companyLegalForm: valueOrUndefined(pickOneElement(legalForms)),
-    website: valueOrUndefined(faker.internet.url()),
+    companyLegalForm: valueOrNull(pickOneElement(legalForms)),
+    website: valueOrNull(faker.internet.url()),
     isTeaserCompany: false,
   };
 }
