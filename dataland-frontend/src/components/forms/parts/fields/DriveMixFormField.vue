@@ -1,7 +1,7 @@
 <template>
-  <div data-test="" class="form-field">
+  <div class="form-field" data-test="DriveMixFormField">
     <UploadFormHeader label="Drive mix" description="" :is-required="required" />
-    <FormKit type="group" name="productsServicesCategoriesPurchased">
+    <FormKit type="group" name="driveMixPerFleetSegment">
       <DriveMixFormElement :name="DriveMixType.SmallTrucks" label="Small trucks (< 3.5t)" />
       <DriveMixFormElement :name="DriveMixType.MediumTrucks" label="Medium trucks (3.5t < x < 7.5t)" />
       <DriveMixFormElement :name="DriveMixType.LargeTrucks" label="Large trucks (> 7.5t)" />
@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts">
+import { FormKit } from "@formkit/vue";
 import { defineComponent } from "vue";
 import DriveMixFormElement from "@/components/forms/parts/elements/derived/DriveMixFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -23,7 +24,11 @@ export default defineComponent({
       DriveMixType,
     };
   },
-  components: { UploadFormHeader, DriveMixFormElement },
+  components: {
+    UploadFormHeader,
+    DriveMixFormElement,
+    FormKit,
+  },
   props: BaseFormFieldProps,
 });
 </script>

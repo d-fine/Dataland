@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.p2p.categories.freightTransportByRoad.subcategories
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import java.math.BigDecimal
 
 /**
