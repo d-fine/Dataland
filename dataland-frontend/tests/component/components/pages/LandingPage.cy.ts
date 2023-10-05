@@ -6,21 +6,28 @@ describe("Component test for the landing page", () => {
   it("Check if essential elements are present", () => {
     cy.mountWithPlugins(NewLandingPage, {
       keycloak: minimalKeycloakMock({}),
+    }).then((mounted) => {
+      const landingPagePath = mounted.component.$route.path;
+      validateTopBar();
+      validateIntroSection();
+      validateBrandsSection();
+      checkLinkByTarget("/mission", "OUR MISSION");
+      // TODO slide show test
+
+      // TODO test targets
+      cy.get("button.campaigns__button").should("have.length", 4);
+      cy.get("button.campaigns__button").each((element) => {
+        expect(element.text()).to.equal("JOIN");
+        element.click();
+        cy.wait(100);
+        cy.wrap(mounted.component).its("$route.path").should("eq", landingPagePath);
+      });
+
+      checkNewFooter();
+
+      // TODO check redirecting buttons that work for redirection
+      // TODO unfunctional buttons for staying on the page or being disabled
     });
-
-    validateTopBar();
-    validateIntroSection();
-    validateBrandsSection();
-    checkLinkByTarget("/mission", "OUR MISSION");
-    // TODO slide show test
-
-    // TODO test targets
-    cy.get("button.campaigns__button").should("have.length", 4);
-
-    checkNewFooter();
-
-    // TODO check redirecting buttons that work for redirection
-    // TODO unfunctional buttons for staying on the page
   });
 });
 
