@@ -3,6 +3,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import type Keycloak from "keycloak-js";
 import { AxiosError } from "axios";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export interface DocumentToUpload {
   file: File;
@@ -10,14 +11,9 @@ export interface DocumentToUpload {
 
   fileReference: string;
 }
-
+//TODO remove storedReport and use compnayReport
 export interface StoredReport extends CompanyReport {
   reportName: string;
-}
-
-export interface ReportToUpload extends CompanyReport {
-  file: File;
-  fileNameWithoutSuffix: string;
 }
 
 /**
@@ -94,3 +90,23 @@ function toHex(buffer: ArrayBuffer): string {
 export function removeFileTypeExtension(fileName: string): string {
   return fileName.split(".").slice(0, -1).join(".");
 }
+
+/**
+ * This functions returns the array of available reports
+ * @param inputArray array of files which should be made referenceable
+ * @returns the object of referenceable reports
+ */
+export function calculateReferenceableFiles(inputArray: DocumentToUpload[] | StoredReport[]): ObjectType {
+  const referenceableReport = {} as ObjectType;
+  let reportName: string;
+  for (let i = 0; i < inputArray.length; i++) {
+    if ((<DocumentToUpload>inputArray[i]).fileNameWithoutSuffix) {
+      reportName = (<DocumentToUpload>inputArray[i]).fileNameWithoutSuffix;
+    } else {
+      reportName = (<StoredReport>inputArray[i]).reportName;
+    }
+    referenceableReport[reportName] = inputArray[i].fileReference;
+  }
+  return referenceableReport;
+}
+
