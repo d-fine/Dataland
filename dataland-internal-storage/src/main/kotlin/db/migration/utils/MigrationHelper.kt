@@ -160,7 +160,10 @@ class MigrationHelper {
             generalCategoryObject as JSONObject
             parentObject = generalCategoryObject
         } else {
-            check(framework == "euTaxonomyFinancials") { "Migration of assurance may not be implemented for this framework" }
+            check(framework == "euTaxonomyFinancials") {
+                "Migration of assurance may not be implemented for " +
+                    "this framework"
+            }
         }
         val assuranceParentObject = parentObject.getOrJavaNull("assurance") ?: return
         assuranceParentObject as JSONObject
