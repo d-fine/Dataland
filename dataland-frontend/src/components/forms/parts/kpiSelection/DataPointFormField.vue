@@ -98,6 +98,7 @@ import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "DataPointFormField",
@@ -120,18 +121,10 @@ export default defineComponent({
       }
     },
     reportsName(): string[] {
-      if (this.injectReportsNameAndReferences) {
-        return Object.keys(this.injectReportsNameAndReferences);
-      } else {
-        return [];
-      }
+      return getFileName(this.injectReportsNameAndReferences);
     },
     fileReferenceAccordingToName(): string {
-      if (this.currentReportValue in this.injectReportsNameAndReferences) {
-        return this.injectReportsNameAndReferences[this.currentReportValue];
-      } else {
-        return "";
-      }
+      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
     },
   },
   data() {

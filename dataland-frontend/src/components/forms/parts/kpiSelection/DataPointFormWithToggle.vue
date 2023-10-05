@@ -152,6 +152,7 @@ import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
+import { getFileName } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "DataPointFormWithToggle",
@@ -182,11 +183,7 @@ export default defineComponent({
   },
   computed: {
     reportsName(): string[] {
-      if (this.reportsNameAndReferences) {
-        return Object.keys(this.reportsNameAndReferences);
-      } else {
-        return [];
-      }
+      return getFileName(this.reportsNameAndReferences);
     },
     fileReferenceAccordingToName() {
       return this.reportsNameAndReferences[this.currentReportValue] as string;

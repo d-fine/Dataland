@@ -110,3 +110,32 @@ export function calculateReferenceableFiles(inputArray: DocumentToUpload[] | Sto
   return referenceableReport;
 }
 
+/**
+ * The method returns the fileReference for a given fileName
+ * @param currentReportValue name of the report for which the fileReference should be retrieved
+ * @param injectReportsNameAndReferences map containing fileNames and corresponding FileReferences
+ * @returns fileReference of the given fileName
+ */
+export function getFileReferenceByFileName(
+  currentReportValue: string,
+  injectReportsNameAndReferences: ObjectType,
+): string {
+  if (currentReportValue in injectReportsNameAndReferences) {
+    return injectReportsNameAndReferences[currentReportValue].toString();
+  } else {
+    return "";
+  }
+}
+
+/**
+ * Retrieves the all fileNames of the map
+ * @param injectReportsNameAndReferences map from which the fileNames should be retrieved
+ * @returns fileNames of all entries in the map
+ */
+export function getFileName(injectReportsNameAndReferences: ObjectType): string[] {
+  if (injectReportsNameAndReferences) {
+    return Object.keys(injectReportsNameAndReferences);
+  } else {
+    return [];
+  }
+}
