@@ -27,8 +27,8 @@ export function generateSfdrData(undefinedProbability = DEFAULT_PROBABILITY): Sf
         scope1InTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         scope2InTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         scope3InTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        enterpriseValue: dataGenerator.randomCurrencyDataPoint(generateCurrencyValue()),
-        totalRevenue: dataGenerator.randomCurrencyDataPoint(generateCurrencyValue()),
+        enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
+        totalRevenue: dataGenerator.randomCurrencyDataPoint(),
         fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
       },
       energyPerformance: {
@@ -101,8 +101,8 @@ export function generateSfdrData(undefinedProbability = DEFAULT_PROBABILITY): Sf
         violationOfTaxRulesAndRegulation: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         oecdGuidelinesForMultinationalEnterprisesPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(generateCurrencyValue()),
-        averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(generateCurrencyValue()),
+        averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
+        averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
         femaleBoardMembers: dataGenerator.randomExtendedDataPoint(generateFloat()),
         maleBoardMembers: dataGenerator.randomExtendedDataPoint(generateFloat()),
         controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
@@ -130,7 +130,7 @@ export function generateSfdrData(undefinedProbability = DEFAULT_PROBABILITY): Sf
       antiCorruptionAndAntiBribery: {
         reportedCasesOfBriberyCorruption: dataGenerator.randomExtendedDataPoint(generateFloat()),
         reportedConvictionsOfBriberyCorruption: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        reportedFinesOfBriberyCorruption: dataGenerator.randomCurrencyDataPoint(generateCurrencyValue()),
+        reportedFinesOfBriberyCorruption: dataGenerator.randomCurrencyDataPoint(),
       },
     },
   };
