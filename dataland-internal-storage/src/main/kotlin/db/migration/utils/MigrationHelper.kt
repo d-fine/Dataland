@@ -160,15 +160,13 @@ class MigrationHelper {
             generalCategoryObject as JSONObject
             parentObject = generalCategoryObject
         } else {
-            if (framework != "euTaxonomyFinancials") {
-                throw IllegalStateException("Migration of assurance may not be implemented for this framework")
-            }
+            check(framework == "euTaxonomyFinancials") { "Migration of assurance may not be implemented for this framework" }
         }
         val assuranceParentObject = parentObject.getOrJavaNull("assurance") ?: return
         assuranceParentObject as JSONObject
         migrationFieldNamesForAssurance.forEach {
             if (assuranceParentObject.has(it.key)) {
-                assuranceParentObject.put(it.value, assuranceParentObject.get(it.key))
+                assuranceParentObject.put(it.value, assuranceParentObject[it.key])
                 assuranceParentObject.remove(it.key)
             }
         }
@@ -190,7 +188,7 @@ class MigrationHelper {
         val dataSourceObject = parentObjectOfDataSource.getOrJavaNull("dataSource") ?: return
         dataSourceObject as JSONObject
         if (dataSourceObject.has("report")) {
-            val fileNameToSearchInReferencedReports: String = dataSourceObject.get("report") as String
+            val fileNameToSearchInReferencedReports: String = dataSourceObject["report"] as String
             dataSourceObject.put(
                 "fileReference",
                 getFileReferenceFromReferencedReports(
@@ -200,7 +198,7 @@ class MigrationHelper {
         }
         migrationFieldNames.forEach {
             if (dataSourceObject.has(it.key)) {
-                dataSourceObject.put(it.value, dataSourceObject.get(it.key))
+                dataSourceObject.put(it.value, dataSourceObject[it.key])
                 dataSourceObject.remove(it.key)
             }
         }
@@ -219,11 +217,9 @@ class MigrationHelper {
                 generalCategoryObject as JSONObject
                 parentObject = generalCategoryObject
             } else {
-                if (framework != "euTaxonomyFinancials") {
-                    throw IllegalStateException(
-                        "Retrieval of reference from reports may not be implemented" +
-                            " for this framework",
-                    )
+                check(framework == "euTaxonomyFinancials") {
+                    "Retrieval of reference from reports may not be implemented" +
+                        " for this framework"
                 }
             }
             val referencedReportsObject = parentObject.getOrJsonNull("referencedReports")
@@ -249,7 +245,7 @@ class MigrationHelper {
             fieldNamesToMigrate.forEach {
                 val oneReportObject = referencedReportsObject.getJSONObject(key)
                 if (oneReportObject.has(it.key)) {
-                    oneReportObject.put(it.value, oneReportObject.get(it.key))
+                    oneReportObject.put(it.value, oneReportObject[it.key])
                     oneReportObject.put("fileName", key)
                     oneReportObject.remove(it.key)
                 }
