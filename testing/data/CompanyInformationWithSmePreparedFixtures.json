@@ -2,55 +2,53 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Fort Shyanne",
-			"sector": "models",
+			"headquarters": "Donstad",
+			"headquartersPostalCode": "92821",
+			"sector": "content",
 			"identifiers": {
-				"Lei": [
-					"oabejiBnVZtwrxf5PKUW"
-				],
+				"Lei": [],
 				"Isin": [
-					"hfBFFcNFDCEf"
+					"2KQajpB1Mif8",
+					"thAwJjEuFlfy"
 				],
 				"PermId": [
-					"uCRfbo0OC0"
+					"tAMgApbEmy"
 				],
 				"Ticker": [],
-				"Duns": [
-					"8rMuFbLNK"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"tY7XAaiZO"
+					"wdhZXX0IN"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"z4N3MeJpYZMEmGr"
+				]
 			},
-			"countryCode": "AW",
+			"countryCode": "LV",
 			"companyAlternativeNames": [
-				"Haag - Balistreri",
-				"Krajcik Inc",
-				"Walter Inc"
+				"Batz, Grady and Corkery",
+				"Herman - Hodkiewicz",
+				"Kreiger - Koelpin"
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://mundane-movie.biz/",
+			"website": "https://incomparable-caboose.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.23",
-						"23.1",
-						"25.5",
-						"53.10"
+						"03",
+						"38"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Dion Forest 7115",
-						"postalCode": "22026",
-						"city": "Treutelland",
-						"state": "California",
-						"country": "KY"
+						"streetAndHouseNumber": null,
+						"postalCode": "37188-6591",
+						"city": "Moenfield",
+						"state": "Kansas",
+						"country": "PR"
 					},
-					"numberOfEmployees": 7394,
-					"fiscalYearStart": "2024-05-22"
+					"numberOfEmployees": 9383,
+					"fiscalYearStart": "2024-06-10"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -60,26 +58,32 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": null
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": null
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1609,
-					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 242,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 20032888,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Snow"
+						"Flooding",
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}
@@ -89,47 +93,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Laurynburgh",
-			"headquartersPostalCode": "48412",
-			"sector": "convergence",
+			"headquarters": "South Brittanyburgh",
+			"headquartersPostalCode": "56759",
+			"sector": "models",
 			"identifiers": {
 				"Lei": [
-					"epxTMrCYsvBt5Ut3zaQv"
+					"yYV7IISE2k4RwyFz88QO"
 				],
 				"Isin": [
-					"IJbjz20BicFr"
+					"bk5U1PSKV0lu"
 				],
 				"PermId": [
-					"qDkhavxcsG"
+					"TG8nTQTUKY"
 				],
 				"Ticker": [],
 				"Duns": [
-					"TcCr9L4uJ"
+					"DUMwxLKrj"
 				],
-				"VatNumber": [
-					"6vkhu914Z"
-				],
-				"CompanyRegistrationNumber": [
-					"iO3T8YJL643JoQq"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MW",
+			"countryCode": "VI",
 			"companyAlternativeNames": [
-				"Hintz Group",
-				"McGlynn - Greenholt"
+				"Wyman, VonRueden and Gislason"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://unlucky-survival.name/",
+			"companyLegalForm": "GmbH",
+			"website": "https://calm-entertainment.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"20.1",
-						"20.41",
-						"52.21",
-						"77.21"
+						"01.28",
+						"21.2",
+						"47.11",
+						"50.20",
+						"65.2"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -138,43 +138,51 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8145,
-					"fiscalYearStart": "2024-09-20"
+					"numberOfEmployees": 3796,
+					"fiscalYearStart": "2024-01-04"
 				},
 				"companyFinancials": {
-					"operatingCostInEur": 77491278,
-					"capitalAssetsInEur": 42910735
+					"revenueInEur": 94022186,
+					"operatingCostInEur": 50655226,
+					"capitalAssetsInEur": 7963273
 				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": []
+				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Handmade Frozen Cheese",
-							"shareOfTotalRevenueInPercent": 98.2547
-						},
-						{
-							"name": "Gorgeous Wooden Gloves",
-							"shareOfTotalRevenueInPercent": 69.2284
+							"name": "Incredible Rubber Towels",
+							"shareOfTotalRevenueInPercent": 88.2278
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 957,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMwh": 454,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 200,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 20599463
+					"amountCoveredByInsuranceAgainstNaturalHazards": 44528316,
+					"naturalHazardsCovered": [
+						"Hail",
+						"Flooding",
+						"Wind",
+						"Snow",
+						"Avalanche"
+					]
 				}
 			}
 		},
@@ -183,76 +191,147 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Urbana",
-			"headquartersPostalCode": "41575-6165",
+			"headquarters": "North Carol",
+			"headquartersPostalCode": "85402-4281",
+			"sector": "eyeballs",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"axDkzew2e1Ottl4ltFHV"
+				],
 				"Isin": [
-					"FpcgSXxlvghy",
-					"dSEAGdib9oru"
+					"PITvQuJUmUY2",
+					"SCRPADzT2TBU"
 				],
 				"PermId": [
-					"dpkfiubTva"
+					"FWL2ZbQmbk"
 				],
-				"Ticker": [
-					"SFRc5H0"
+				"Ticker": [],
+				"Duns": [
+					"I3RWf3PN7"
 				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"9D42RqB3NKmIt7o"
-				]
+				"VatNumber": [
+					"0k5OA2CUZ"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TG",
+			"countryCode": "NR",
 			"companyAlternativeNames": [
-				"Hudson, Effertz and Bauch"
+				"Frami - Funk",
+				"Gottlieb Inc",
+				"McLaughlin - Ebert",
+				"Mosciski, Lowe and Gutmann"
 			],
 			"companyLegalForm": "Sole Trader",
+			"website": "https://responsible-shore.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.26",
-						"16.23",
-						"46.49",
-						"47.61"
+						"22.11"
 					],
 					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
 						"city": "City 17",
+						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 7145,
-					"fiscalYearStart": "2023-11-01"
+					"numberOfEmployees": 569,
+					"fiscalYearStart": "2024-01-21"
 				},
 				"companyFinancials": {
-					"revenueInEur": 60349778,
-					"operatingCostInEur": 49377234,
-					"capitalAssetsInEur": 29242271
+					"revenueInEur": null,
+					"operatingCostInEur": 11643619,
+					"capitalAssetsInEur": null
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Kertzmann, Davis and Legros",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Otilia Heights 71341",
+								"postalCode": "21817",
+								"city": "Port Jalen",
+								"state": "West Virginia",
+								"country": "GG"
+							},
+							"shareOfTotalRevenueInPercent": 65.1121
+						},
+						{
+							"nameOfProductionSite": "Hilll Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Koch River 35912",
+								"postalCode": null,
+								"city": "Efrenstad",
+								"state": "North Carolina",
+								"country": "FJ"
+							},
+							"shareOfTotalRevenueInPercent": 99.2164
+						},
+						{
+							"nameOfProductionSite": "Tromp - Keeling",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "29393",
+								"city": "Hermannstead",
+								"state": "Oregon",
+								"country": "FM"
+							},
+							"shareOfTotalRevenueInPercent": 98.0085
+						},
+						{
+							"nameOfProductionSite": "Hoppe - Champlin",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Smith Landing 47344",
+								"postalCode": null,
+								"city": "Bahringerfurt",
+								"state": null,
+								"country": "SI"
+							},
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Awesome Plastic Fish",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Rustic Frozen Computer",
+							"shareOfTotalRevenueInPercent": 39.9941
+						},
+						{
+							"name": "Intelligent Wooden Bacon",
+							"shareOfTotalRevenueInPercent": 80.7607
+						}
+					]
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1693,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 695,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMwh": 1976,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWater": 813,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 17753956
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 10330712,
+					"naturalHazardsCovered": [
+						"Wind"
+					]
 				}
 			}
 		},
