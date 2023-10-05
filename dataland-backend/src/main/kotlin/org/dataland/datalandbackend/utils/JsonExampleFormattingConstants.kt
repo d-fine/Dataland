@@ -46,13 +46,13 @@ object JsonExampleFormattingConstants {
         "}"
 
     private const val driveMix = "{" +
-            "\"driveMixPerFleetSegmentInPercent\": 0," +
-            "\"totalAmountOfVehicles\": 0" +
-            "}"
+        "\"driveMixPerFleetSegmentInPercent\": 0," +
+        "\"totalAmountOfVehicles\": 0" +
+        "}"
 
     const val DRIVE_MIX_DEFAULT_VALUE: String = "{" +
-            "\"SmallTrucks\": $driveMix," +
-            "\"MediumTrucks\": $driveMix," +
-            "\"LargeTrucks\": $driveMix" +
-            "}"
+        "\"SmallTrucks\": $driveMix," +
+        "\"MediumTrucks\": $driveMix," +
+        "\"LargeTrucks\": $driveMix" +
+        "}"
 }

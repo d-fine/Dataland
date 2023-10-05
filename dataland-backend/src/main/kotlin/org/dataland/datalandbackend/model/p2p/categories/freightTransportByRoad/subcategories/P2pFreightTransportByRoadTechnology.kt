@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.model.p2p.categories.freightTransportByRoad
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.p2p.DriveMixType
-import org.dataland.datalandbackend.model.p2p.categories.freightTransportByRoad.subcategories.P2pDriveMix
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.time.LocalDate
 
