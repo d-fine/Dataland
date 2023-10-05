@@ -6,12 +6,12 @@ import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 
 /**
- *
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * Generates a random SFDR dataset
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns SFDR object with populated properties
  */
-export function generateSfdrData(undefinedProbability = DEFAULT_PROBABILITY): SfdrData {
-  const dataGenerator = new Generator(undefinedProbability);
+export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrData {
+  const dataGenerator = new Generator(nullProbability);
   return {
     general: {
       general: {
