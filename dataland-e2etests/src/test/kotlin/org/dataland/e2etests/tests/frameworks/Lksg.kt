@@ -25,7 +25,7 @@ class Lksg {
         fixedDataSet.general.productionSpecificOwnOperations?.productsServicesCategoriesPurchased?.forEach {
             val keysOfEntriesToDelete = mutableListOf<String>()
             it.value.numberOfSuppliersPerCountryCode?.forEach { numberOfSuppliersPerCountry ->
-                if(numberOfSuppliersPerCountry.value == null) {
+                if (numberOfSuppliersPerCountry.value == null) {
                     keysOfEntriesToDelete.add(numberOfSuppliersPerCountry.key)
                 }
             }
