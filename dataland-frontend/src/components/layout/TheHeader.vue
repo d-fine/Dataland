@@ -11,14 +11,12 @@
     </div>
     <TheNavi :contentData="contentData" />
     <AuthSection />
-    <!-- <LandingLoginMobile v-if="isMobile" /> -->
   </header>
 </template>
 
 <script setup lang="ts">
 import AuthSection from "@/components/resources/newLandingPage/AuthSection.vue";
 import TheNavi from "@/components/general/TheNavi.vue";
-// import LandingLoginMobile from "@/components/resources/landing/LandingLoginMobile.vue";
 
 import type { Content, Page } from "@/types/ContentTypes";
 

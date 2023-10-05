@@ -18,7 +18,7 @@ describe("Component test for the landing page", () => {
       cy.get("button.campaigns__button").should("have.length", 4);
       cy.get("button.campaigns__button").each((element) => {
         expect(element.text()).to.equal("JOIN");
-        element.click();
+        element.trigger("click");
         cy.wait(100);
         cy.wrap(mounted.component).its("$route.path").should("eq", landingPagePath);
       });

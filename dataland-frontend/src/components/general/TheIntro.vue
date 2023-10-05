@@ -27,11 +27,11 @@ import TheSearch from "./TheSearch.vue";
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const introSection = computed(() => {
-  return sections?.find((section) => section.title === "Intro") || null;
+  return sections?.find((section) => section.title === "Intro") ?? null;
 });
 
 const introCard = computed(() => {
-  return introSection.value?.cards?.find((card) => card.icon && card.text) || null;
+  return introSection.value?.cards?.find((card) => card.icon && card.text) ?? null;
 });
 </script>
 

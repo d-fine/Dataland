@@ -29,8 +29,8 @@ import type { Section } from "@/types/ContentTypes";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 const howItWorksSection = computed(() => sections?.find((s) => s.title === "How it works"));
-const sectionText = computed(() => howItWorksSection.value?.text.join(" ") || "");
-const slides = computed(() => sections?.find((s) => s.title === "How it works")?.cards || []);
+const sectionText = computed(() => howItWorksSection.value?.text.join(" ") ?? "");
+const slides = computed(() => sections?.find((s) => s.title === "How it works")?.cards ?? []);
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
 

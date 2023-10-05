@@ -19,7 +19,7 @@ import type { Section } from "@/types/ContentTypes";
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const struggleSection = computed(() => {
-  return sections?.find((section) => section.title === "Struggle") || null;
+  return sections?.find((section) => section.title === "Struggle") ?? null;
 });
 </script>
 <style scoped lang="scss">
