@@ -22,11 +22,15 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val humanRightsDueDiligencePolicy: DataPointOneValue<YesNo>? = null,
 
-    val childForcedDiscriminationPolicy: DataPointOneValue<YesNo>? = null,
+    val policyAgainstChildLabour: DataPointOneValue<YesNo>? = null,
+
+    val policyAgainstForcedLabour: DataPointOneValue<YesNo>? = null,
+
+    val policyAgainstDiscriminationInTheWorkplace: DataPointOneValue<YesNo>? = null,
 
     val iso14001Certificate: DataPointOneValue<YesNo>? = null,
 
-    val briberyCorruptionPolicy: DataPointOneValue<YesNo>? = null,
+    val policyAgainstBriberyAndCorruption: DataPointOneValue<YesNo>? = null,
 
     val fairBusinessMarketingAdvertisingPolicy: DataPointOneValue<YesNo>? = null,
 
@@ -38,7 +42,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val unGlobalCompactPrinciplesCompliancePolicy: DataPointOneValue<YesNo>? = null,
 
-    val oecdGuidelinesForMultinationalEnterprisesPolicy: DataPointOneValue<YesNo>? = null,
+    val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: DataPointOneValue<YesNo>? = null,
 
     val averageGrossHourlyEarningsMaleEmployees: DataPointWithUnit<BigDecimal>? = null,
 
@@ -52,9 +56,9 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val workplaceAccidentPreventionPolicy: DataPointOneValue<YesNo>? = null,
 
-    val rateOfAccidents: DataPointWithUnit<BigDecimal>? = null,
+    val rateOfAccidentsInPercent: DataPointWithUnit<BigDecimal>? = null,
 
-    val workdaysLost: DataPointWithUnit<BigDecimal>? = null,
+    val workdaysLostInDays: DataPointWithUnit<BigDecimal>? = null,
 
     val supplierCodeOfConduct: DataPointOneValue<YesNo>? = null,
 
@@ -64,7 +68,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val reportedIncidentsOfDiscrimination: DataPointWithUnit<BigDecimal>? = null,
 
-    val sanctionsIncidentsOfDiscrimination: DataPointWithUnit<BigDecimal>? = null,
+    val sanctionedIncidentsOfDiscrimination: DataPointWithUnit<BigDecimal>? = null,
 
-    val ceoToEmployeePayGap: DataPointWithUnit<BigDecimal>? = null,
+    val ceoToEmployeePayGapRatio: DataPointWithUnit<BigDecimal>? = null,
 )
