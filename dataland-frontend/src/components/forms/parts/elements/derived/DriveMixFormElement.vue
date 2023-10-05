@@ -13,8 +13,8 @@
             label="Drive mix per fleet segment"
             description="Share of alternative drive types per fleet segment"
             :is-required="false"
-            v-model:percentageFieldValueBind="driveMixPerFleetSegment"
-            name="driveMixPerFleetSegment"
+            v-model:percentageFieldValueBind="driveMixPerFleetSegmentInPercent"
+            name="driveMixPerFleetSegmentInPercent"
           />
         </div>
 
@@ -44,6 +44,7 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 
 export default defineComponent({
   name: "DriveMixFormElement",
+
   components: {
     UploadFormHeader,
     PercentageFormField,
@@ -54,7 +55,7 @@ export default defineComponent({
   data() {
     return {
       isItActive: false,
-      driveMixPerFleetSegment: "",
+      driveMixPerFleetSegmentInPercent: "",
       totalAmountOfVehicles: "",
     };
   },
