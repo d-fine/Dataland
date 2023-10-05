@@ -21,7 +21,7 @@ import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { sortCompanyAssociatedDataByReportingPeriod } from "@/utils/DataTableDisplay";
+import { sortDatasetsByReportingPeriod } from "@/utils/DataTableDisplay";
 import { convertDataModel } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
@@ -40,7 +40,7 @@ export default defineComponent({
   },
   computed: {
     mldtDatasets(): Array<MLDTDataset<SfdrData>> {
-      const sortedDataAndMetaInformation = sortCompanyAssociatedDataByReportingPeriod(this.sfdrDataAndMetaInfo);
+      const sortedDataAndMetaInformation = sortDatasetsByReportingPeriod(this.sfdrDataAndMetaInfo);
       return sortedDataAndMetaInformation.map((it) => ({
         headerLabel: it.metaInfo.reportingPeriod,
         dataset: it.data,
