@@ -29,8 +29,9 @@ class Lksg {
                     keysOfEntriesToDelete.add(numberOfSuppliersPerCountry.key)
                 }
             }
-            keysOfEntriesToDelete.forEach  { key ->
-                (it.value?.numberOfSuppliersPerCountryCode as? MutableMap<String, LksgProcurementCategory>)?.remove(key)
+            keysOfEntriesToDelete.forEach { key ->
+                (it.
+                value?.numberOfSuppliersPerCountryCode as? MutableMap<String, LksgProcurementCategory>)?.remove(key)
             }
         }
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
