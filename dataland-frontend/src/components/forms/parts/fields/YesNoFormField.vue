@@ -110,7 +110,7 @@ import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldPr
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { type DocumentToUpload } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { type BaseDataPointYesNo, QualityOptions } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
@@ -162,20 +162,10 @@ export default defineComponent({
       }
     },
     reportsName(): string[] {
-      if (this.injectReportsNameAndReferences) {
-        return Object.keys(this.injectReportsNameAndReferences);
-      } else {
-        return [];
-      }
+      return getFileName(this.injectReportsNameAndReferences);
     },
     fileReferenceAccordingToName(): string {
-      if (this.injectReportsNameAndReferences) {
-        return this.injectReportsNameAndReferences[
-          this.currentReportValue as keyof typeof this.injectReportsNameAndReferences
-        ];
-      } else {
-        return "";
-      }
+      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
     },
   },
   emits: ["reportsUpdated"],

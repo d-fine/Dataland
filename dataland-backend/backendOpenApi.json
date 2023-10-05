@@ -2937,6 +2937,9 @@
         }
       },
       "ExtendedDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
         "type": "object",
         "properties": {
           "page": {

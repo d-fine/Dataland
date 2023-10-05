@@ -9,13 +9,13 @@
           v-model="currentValue"
           :validation-label="validationLabel ?? label"
           :validation="`number|${validation}`"
-          placeholder="Value"
+          :placeholder="unit ? `Value in ${unit}` : 'Value'"
           outer-class="short"
           @blur="handleBlurValue"
         />
         <div v-if="unit" class="form-field-label pb-3">
           <FormKit type="hidden" name="currency" />
-          <span>in {{ unit }}</span>
+          <span>{{ unit }}</span>
         </div>
         <FormKit
           v-else-if="options"
@@ -98,6 +98,7 @@ import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "DataPointFormField",
@@ -120,20 +121,10 @@ export default defineComponent({
       }
     },
     reportsName(): string[] {
-      if (this.injectReportsNameAndReferences) {
-        return Object.keys(this.injectReportsNameAndReferences);
-      } else {
-        return [];
-      }
+      return getFileName(this.injectReportsNameAndReferences);
     },
     fileReferenceAccordingToName(): string {
-      if (this.injectReportsNameAndReferences) {
-        return this.injectReportsNameAndReferences[
-          this.currentReportValue as keyof typeof this.injectReportsNameAndReferences
-        ];
-      } else {
-        return "";
-      }
+      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
     },
   },
   data() {

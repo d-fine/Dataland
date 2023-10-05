@@ -88,6 +88,7 @@ import {
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { AssuranceDataPointValueEnum } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "AssuranceFormField",
@@ -112,20 +113,10 @@ export default defineComponent({
   },
   computed: {
     reportsName(): string[] {
-      if (this.injectReportsNameAndReferences) {
-        return Object.keys(this.injectReportsNameAndReferences);
-      } else {
-        return [];
-      }
+      return getFileName(this.injectReportsNameAndReferences);
     },
     fileReferenceAccordingToName(): string {
-      if (this.injectReportsNameAndReferences) {
-        return this.injectReportsNameAndReferences[
-          this.currentReportValue as keyof typeof this.injectReportsNameAndReferences
-        ];
-      } else {
-        return "";
-      }
+      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
     },
   },
   props: BaseFormFieldProps,
