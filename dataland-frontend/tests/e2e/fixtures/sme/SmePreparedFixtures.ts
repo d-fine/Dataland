@@ -66,10 +66,10 @@ function manipulateFixtureForMinimumAddress(input: FixtureData<SmeData>): Fixtur
   input.companyInformation.companyName = "SME-minimum-address";
   input.reportingPeriod = "2022";
   input.t.general.basicInformation.addressOfHeadquarters = {
-    streetAndHouseNumber: undefined,
-    postalCode: undefined,
+    streetAndHouseNumber: null,
+    postalCode: null,
     city: "City 17",
-    state: undefined,
+    state: null,
     country: "Uninspired",
   };
   return input;

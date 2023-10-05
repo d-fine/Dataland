@@ -1,10 +1,5 @@
-import { type DataMetaInformation } from "@clients/backend";
 import { type FrameworkData } from "@/utils/GenericFrameworkTypes";
-
-export interface DataAndMetaInformation<T> {
-  metaInfo: DataMetaInformation;
-  data: T;
-}
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 export type DataAndMetaInformationViewModel<T extends FrameworkViewModel> = DataAndMetaInformation<T>;
 

@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationLksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.LksgProcurementCategory
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -17,9 +18,24 @@ class Lksg {
 
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
+        val fixedDataSet = listOfOneLksgDataSet[0].copy()
+        // The following block is a workaround to circumvent a bug in the generated clients
+        // which do not allow for null entries as map values but retain them at the same time.
+        // On upload, however, they are not being serialized.
+        fixedDataSet.general.productionSpecificOwnOperations?.productsServicesCategoriesPurchased?.forEach {
+            val keysOfEntriesToDelete = mutableListOf<String>()
+            it.value.numberOfSuppliersPerCountryCode?.forEach { numberOfSuppliersPerCountry ->
+                if (numberOfSuppliersPerCountry.value == null) {
+                    keysOfEntriesToDelete.add(numberOfSuppliersPerCountry.key)
+                }
+            }
+            keysOfEntriesToDelete.forEach { key ->
+                (it.value.numberOfSuppliersPerCountryCode as? MutableMap<String, LksgProcurementCategory>)?.remove(key)
+            }
+        }
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
-            listOfOneLksgDataSet,
+            listOf(fixedDataSet),
             apiAccessor::lksgUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -30,7 +46,7 @@ class Lksg {
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(listOfOneLksgDataSet[0], downloadedAssociatedData.data)
+        assertEquals(fixedDataSet, downloadedAssociatedData.data)
     }
 
     @Test

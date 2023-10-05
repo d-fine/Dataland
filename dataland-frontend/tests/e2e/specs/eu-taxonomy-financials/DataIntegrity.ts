@@ -67,7 +67,7 @@ describeIf(
      * @param value the value of the datapoint to format as a percentage
      * @returns the formatted string
      */
-    function formatPercentNumber(value?: ExtendedDataPointBigDecimal): string {
+    function formatPercentNumber(value?: ExtendedDataPointBigDecimal | null): string {
       if (value === undefined || value === null || value.value === undefined || value.value === null)
         return "No data has been reported";
       return (Math.round(value.value * 100) / 100).toString();

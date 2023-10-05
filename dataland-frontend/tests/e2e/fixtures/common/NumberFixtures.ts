@@ -39,3 +39,11 @@ export function generatePercentageValue(precision = 1e-4): number {
 export function generateInt(max: number): number {
   return faker.number.int(max);
 }
+
+/**
+ * Generates a random boolean
+ * @returns a random boolean
+ */
+export function generateBoolean(): boolean {
+  return faker.datatype.boolean();
+}

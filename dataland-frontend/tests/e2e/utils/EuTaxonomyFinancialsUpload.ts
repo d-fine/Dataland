@@ -57,7 +57,7 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     .eq(1)
     .find('[data-test="dataPointToggleTitle"]')
     .should("contain.text", "Data point is available");
-  if (data.nfrdMandatory !== undefined) {
+  if (data.nfrdMandatory != undefined) {
     cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory.toString()}]`).check();
   }
   cy.get(
@@ -140,7 +140,7 @@ export function fillEligibilityKpis(divTag: string, data: EligibilityKpis | unde
  * @param inputsTag value of the parent div data-test attribute to fill in
  * @param value the value to fill in
  */
-export function fillField(divTag: string, inputsTag: string, value?: ExtendedDataPointBigDecimal): void {
+export function fillField(divTag: string, inputsTag: string, value?: ExtendedDataPointBigDecimal | null): void {
   if (value?.value) {
     const valueAsString = value.value.toString();
     if (divTag === "") {
@@ -246,7 +246,7 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   dateFormElement.validateDay("fiscalYearEnd", 12);
 
   if (data.nfrdMandatory !== undefined) {
-    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory.toString()}]`).check();
+    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory?.toString() ?? ""}]`).check();
   }
 
   cy.get(

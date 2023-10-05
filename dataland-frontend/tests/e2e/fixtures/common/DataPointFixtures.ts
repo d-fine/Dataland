@@ -3,7 +3,7 @@ import { type ExtendedDocumentReference, type BaseDocumentReference, QualityOpti
 import { generateDataSource } from "./DataSourceFixtures";
 import { pickSubsetOfElements, pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNoNa } from "./YesNoFixtures";
-import { DEFAULT_PROBABILITY, valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
@@ -12,19 +12,28 @@ const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedRepo
 
 /**
  * Generates a random non-empty set of reports that can be referenced
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
+ * @param requiredReportNames reports with names that must occur
  * @returns a random non-empty set of reports
  */
-export function generateReferencedReports(undefinedProbability = DEFAULT_PROBABILITY): ReferencedDocuments {
+export function generateReferencedReports(
+  nullProbability = DEFAULT_PROBABILITY,
+  requiredReportNames?: string[],
+): ReferencedDocuments {
   const availableReportNames = pickSubsetOfElements(possibleReports);
+  requiredReportNames?.forEach((reportName) => {
+    if (!availableReportNames.includes(reportName)) {
+      availableReportNames.push(reportName);
+    }
+  });
 
   const referencedReports: ReferencedDocuments = {};
   for (const reportName of availableReportNames) {
     referencedReports[reportName] = {
       fileReference: getReferencedDocumentId(),
-      isGroupLevel: valueOrUndefined(generateYesNoNa(), undefinedProbability),
-      reportDate: valueOrUndefined(generatePastDate(), undefinedProbability),
-      currency: valueOrUndefined(generateCurrencyCode(), undefinedProbability),
+      isGroupLevel: valueOrNull(generateYesNoNa(), nullProbability),
+      reportDate: valueOrNull(generatePastDate(), nullProbability),
+      currency: generateCurrencyCode(),
     };
   }
   return referencedReports;
@@ -32,24 +41,57 @@ export function generateReferencedReports(undefinedProbability = DEFAULT_PROBABI
 
 /**
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
- * @param value the decimal value of the datapoint to generate
+ * @param value the value of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
  * @param currency the currency of the datapoint to generate
  * @returns the generated datapoint
  */
-export function generateDatapoint<T>(
-  value: T | undefined,
+export function generateDataPoint<T>(
+  value: T | null,
   reports: ReferencedDocuments,
-  currency?: string,
+  currency?: string | null,
 ): GenericDataPoint<T> {
   const qualityBucket =
-    value === undefined
+    value === null
       ? QualityOptions.Na
       : pickOneElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
-  let dataSource: ExtendedDocumentReference | undefined = undefined;
-  let comment: string | undefined = undefined;
+  const { dataSource, comment } = generateQualityAndDataSourceAndComment(reports, qualityBucket);
 
+  return {
+    value: value,
+    dataSource: dataSource,
+    quality: qualityBucket,
+    comment: comment,
+    currency: currency,
+  } as GenericDataPoint<T>;
+}
+
+export interface GenericDataPoint<T> {
+  value: T | null;
+  dataSource: CompanyReportReference;
+  quality: QualityOptions;
+  comment: string | null;
+  currency?: string | null;
+}
+
+export interface GenericBaseDataPoint<T> {
+  value: T;
+  dataSource: BaseDocumentReference | null;
+}
+
+/**
+ * This method constructs the data source and the comment for the fake datapoint
+ * @param reports the reports that can be referenced as data sources
+ * @param qualityBucket the quality bucket of the datapoint
+ * @returns the generated data source and comment of the datapoint
+ */
+function generateQualityAndDataSourceAndComment(
+  reports: ReferencedDocuments,
+  qualityBucket: QualityOptions,
+): { dataSource: CompanyReportReference; comment: string | null } {
+  let dataSource: CompanyReportReference;
+  let comment: string | null;
   if (
     qualityBucket === QualityOptions.Audited ||
     qualityBucket === QualityOptions.Reported ||
@@ -58,26 +100,9 @@ export function generateDatapoint<T>(
   ) {
     dataSource = generateDataSource(reports);
     comment = faker.git.commitMessage();
+  } else {
+    dataSource = { report: "", page: null, tagName: null };
+    comment = null;
   }
-
-  return {
-    value: value ?? undefined,
-    dataSource: dataSource,
-    quality: qualityBucket,
-    comment: comment,
-    currency: currency ?? undefined,
-  } as GenericDataPoint<T>;
-}
-
-export interface GenericDataPoint<T> {
-  value: T | undefined;
-  dataSource: ExtendedDocumentReference | undefined;
-  quality: QualityOptions;
-  comment: string | undefined;
-  currency: string | undefined;
-}
-
-export interface GenericBaseDataPoint<T> {
-  value: T;
-  dataSource: BaseDocumentReference | undefined;
+  return { dataSource, comment };
 }

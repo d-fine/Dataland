@@ -2,95 +2,105 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Port Laurynbury",
-			"headquartersPostalCode": "13925",
-			"sector": "schemas",
+			"headquarters": "Fort Valentin",
+			"headquartersPostalCode": null,
+			"sector": "supply-chains",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"qqrFACwOVgrG",
-					"AXcZhANR0M06"
+					"2vbZ7EY9PzAm"
 				],
-				"PermId": [],
+				"PermId": [
+					"aMxXuIFf0L"
+				],
 				"Ticker": [
-					"1UUzhJf"
+					"KrYGbZd"
 				],
 				"Duns": [
-					"Mmo33hn1y"
+					"SpNqD6XSi"
 				],
 				"VatNumber": [
-					"t4ZK1PVWG"
+					"l3bVq9aXh"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"SsM2HTvu3lhap7U"
+				]
 			},
-			"countryCode": "VC",
+			"countryCode": "PG",
 			"companyAlternativeNames": [
-				"Bergnaum - Connelly",
-				"Corwin Inc",
-				"Kohler Inc",
-				"Stroman, Mosciski and Moen"
+				"Prosacco, Nitzsche and Leannon",
+				"Terry Inc",
+				"Walker and Sons"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://digital-wasabi.biz/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://disguised-gazelle.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"11.07",
-						"17.24",
-						"92.0"
+						"01.30",
+						"03.1",
+						"25.9",
+						"58.2"
 					],
 					"addressOfHeadquarters": {
-						"city": "Fort Cynthia",
-						"state": "Maryland",
-						"country": "UZ"
+						"streetAndHouseNumber": "Mekhi Estates 515",
+						"postalCode": "56103",
+						"city": "Bridgeport",
+						"state": "Montana",
+						"country": "VI"
 					},
-					"numberOfEmployees": 4448,
-					"fiscalYearStart": "2024-05-26"
+					"numberOfEmployees": 4909,
+					"fiscalYearStart": "2024-02-08"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 0,
-					"operatingCostInEUR": 1000000,
-					"capitalAssetsInEUR": 2000000
+					"revenueInEur": 0,
+					"operatingCostInEur": 1000000,
+					"capitalAssetsInEur": 2000000
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Lehner, Jast and Kovacek",
+							"nameOfProductionSite": "McKenzie LLC",
 							"addressOfProductionSite": {
-								"postalCode": "68423-2259",
-								"city": "Ameliaburgh",
-								"state": "Missouri",
-								"country": "NE"
+								"streetAndHouseNumber": "Aiyana Circle 32363",
+								"postalCode": "88760",
+								"city": "Schinnertown",
+								"state": "California",
+								"country": "AG"
 							},
-							"shareOfTotalRevenueInPercent": 73.1695
+							"shareOfTotalRevenueInPercent": 89.0803
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": null
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1784,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 470,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": 277,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWater": 388,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 45006066,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Flooding"
+						"EarthQuake",
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}
@@ -100,37 +110,48 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Lake Forest",
+			"headquarters": "Bayerstead",
+			"headquartersPostalCode": "08890",
+			"sector": "action-items",
 			"identifiers": {
 				"Lei": [
-					"Y4NNhuIosQa2sUpoyxSP"
+					"6RRVA64VKGYiH4EJaTIx"
 				],
 				"Isin": [
-					"lBiGmrNSE1iT"
+					"0IVyzxpvwJbQ"
 				],
-				"PermId": [],
-				"Ticker": [
-					"oQWJLrA"
+				"PermId": [
+					"uelWoLkdMG"
 				],
+				"Ticker": [],
 				"Duns": [
-					"pCQrU2W0E"
+					"R7pOdYUZ4"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"D8iEB8X4s"
+				],
+				"CompanyRegistrationNumber": [
+					"pPX1ZomFrYpM7He"
+				]
 			},
-			"countryCode": "NZ",
+			"countryCode": "NR",
 			"companyAlternativeNames": [
-				"Baumbach - Altenwerth",
-				"Kihn, Ankunding and Berge",
-				"Weber Inc"
+				"Hirthe, Kerluke and Mitchell",
+				"King, Berge and Towne",
+				"Satterfield Group"
 			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://true-sneakers.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"85.51"
+						"06.2",
+						"38.3",
+						"47.43",
+						"58.12"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -139,48 +160,56 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 9144,
-					"fiscalYearStart": "2024-01-13"
+					"numberOfEmployees": 6506,
+					"fiscalYearStart": "2024-04-09"
 				},
 				"companyFinancials": {
-					"operatingCostInEUR": 36516780
+					"revenueInEur": 26268156,
+					"operatingCostInEur": 20610343,
+					"capitalAssetsInEur": 38813017
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Electronic Plastic Car",
-							"shareOfTotalRevenueInPercent": 27.798
-						},
-						{
-							"name": "Small Frozen Shirt"
-						},
-						{
-							"name": "Intelligent Metal Computer",
-							"shareOfTotalRevenueInPercent": 45.0799
+							"nameOfProductionSite": "Smith - Wiegand",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Stokes Parks 2375",
+								"postalCode": "96091-0659",
+								"city": "Nelliefield",
+								"state": "Maine",
+								"country": "ML"
+							},
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1646,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 266,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMwh": 646,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWater": 519,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 31682055
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 39399091,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Hail",
+						"Avalanche"
+					]
 				}
 			}
 		},
@@ -189,136 +218,116 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "North Guidochester",
-			"headquartersPostalCode": "60107-8304",
-			"sector": "schemas",
+			"headquarters": "Meaganview",
+			"headquartersPostalCode": null,
+			"sector": "systems",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"k6NsiRuWEqJl",
-					"rZ7vKKoxmELG"
+					"UGt3p9NtIYHr",
+					"TqyyzTFhywlT"
 				],
-				"PermId": [
-					"np5SxoTFca"
+				"PermId": [],
+				"Ticker": [
+					"22O7pNW"
 				],
-				"Ticker": [],
 				"Duns": [
-					"J5HLCy5NJ"
+					"ezAWoseAF"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"6zodI7wQq"
+				],
+				"CompanyRegistrationNumber": [
+					"i5jzZcoNDdnwlMU"
+				]
 			},
-			"countryCode": "BT",
+			"countryCode": "SB",
 			"companyAlternativeNames": [
-				"Hartmann - Lindgren",
-				"Rau Inc",
-				"Volkman, Gulgowski and Bogisich"
+				"Stoltenberg LLC",
+				"Swift - Johnson",
+				"Yost Group"
 			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://super-baby.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"46.21"
+						"85.52"
 					],
 					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
 						"city": "City 17",
+						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 1296,
-					"fiscalYearStart": "2024-04-19"
+					"numberOfEmployees": 8313,
+					"fiscalYearStart": "2024-07-16"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 16194772,
-					"operatingCostInEUR": 49664881,
-					"capitalAssetsInEUR": 28012354
+					"revenueInEur": 48326272,
+					"operatingCostInEur": 3582253,
+					"capitalAssetsInEur": 64352005
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "VonRueden, Pollich and Walter",
+							"nameOfProductionSite": "Kuhic, Leannon and Koelpin",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Thiel Rue 8936",
-								"postalCode": "96043-5323",
-								"city": "Pocatello",
-								"state": "Nebraska",
-								"country": "AG"
+								"streetAndHouseNumber": "Bruen Hills 979",
+								"postalCode": "46724",
+								"city": "Port Jaida",
+								"state": null,
+								"country": "KR"
 							},
-							"shareOfTotalRevenueInPercent": 71.2992
-						},
-						{
-							"nameOfProductionSite": "Emmerich, Auer and Volkman",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Domenico Track 4967",
-								"postalCode": "32169-1914",
-								"city": "Schusterview",
-								"state": "Wisconsin",
-								"country": "DE"
-							},
-							"shareOfTotalRevenueInPercent": 40.8156
-						},
-						{
-							"nameOfProductionSite": "Donnelly, Graham and O'Kon",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "O'Kon Meadow 3911",
-								"postalCode": "34820",
-								"city": "Mohrborough",
-								"country": "NE"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"postalCode": "09403",
-								"city": "Westland",
-								"country": "GP"
-							},
-							"shareOfTotalRevenueInPercent": 29.5073
+							"shareOfTotalRevenueInPercent": 10.1839
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Electronic Cotton Chicken",
-							"shareOfTotalRevenueInPercent": 15.5856
+							"name": "Handmade Soft Fish",
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Electronic Wooden Cheese",
-							"shareOfTotalRevenueInPercent": 80.7446
+							"name": "Handmade Frozen Chips",
+							"shareOfTotalRevenueInPercent": 98.5617
 						},
 						{
-							"name": "Practical Metal Chicken",
-							"shareOfTotalRevenueInPercent": 84.6294
+							"name": "Handcrafted Bronze Bacon",
+							"shareOfTotalRevenueInPercent": 49.8036
 						},
 						{
-							"name": "Elegant Concrete Ball",
-							"shareOfTotalRevenueInPercent": 63.271
-						},
-						{
-							"name": "Incredible Steel Hat"
+							"name": "Awesome Frozen Bacon",
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1995,
-					"powerFromRenewableSources": "No",
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 577,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 13774681,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Wind"
+						"EarthQuake"
 					]
 				}
 			}

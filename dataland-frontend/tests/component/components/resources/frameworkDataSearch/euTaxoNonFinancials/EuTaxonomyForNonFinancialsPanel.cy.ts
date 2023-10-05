@@ -183,7 +183,7 @@ export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
     }
   }
   const allReports: Array<{ [p: string]: CompanyReport } | undefined> = dataAndMetaInfoSets.map(
-    (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
+    (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports ?? undefined,
   );
   return [allReports, reportingPeriods];
 }
