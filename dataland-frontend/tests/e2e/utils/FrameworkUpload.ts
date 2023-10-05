@@ -1,99 +1,8 @@
-import {
-  Configuration,
-  type DataMetaInformation,
-  DataTypeEnum,
-  type PathwaysToParisData,
-  P2pDataControllerApi,
-  type SmeData,
-  SmeDataControllerApi,
-  type LksgData,
-  LksgDataControllerApi,
-  type SfdrData,
-  SfdrDataControllerApi,
-  type EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsControllerApi,
-  type EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForNonFinancialsControllerApi,
-  type CompanyInformation,
-} from "@clients/backend";
-import { type AxiosPromise } from "axios";
+import { Configuration, type DataMetaInformation, type CompanyInformation } from "@clients/backend";
 import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-
-interface CompanyAssociatedFrameworkData<FrameworkDataType> {
-  companyId: string;
-  reportingPeriod: string;
-  data: FrameworkDataType;
-}
-
-type FrameworkDataUploadFunction<FrameworkDataType> = (
-  companyAssociatedData: CompanyAssociatedFrameworkData<FrameworkDataType>,
-  bypassQa?: boolean,
-) => AxiosPromise<DataMetaInformation>;
-
-interface FrameworkUploadConfiguration<ApiClientType, FrameworkDataType> {
-  apiConstructor: new (configuration: Configuration | undefined) => ApiClientType;
-  uploaderFactory: (client: ApiClientType) => FrameworkDataUploadFunction<FrameworkDataType>;
-}
-
-export type FrameworkDataTypes = {
-  [DataTypeEnum.P2p]: {
-    data: PathwaysToParisData;
-    api: P2pDataControllerApi;
-  };
-  [DataTypeEnum.Sme]: {
-    data: SmeData;
-    api: SmeDataControllerApi;
-  };
-  [DataTypeEnum.Lksg]: {
-    data: LksgData;
-    api: LksgDataControllerApi;
-  };
-  [DataTypeEnum.Sfdr]: {
-    data: SfdrData;
-    api: SfdrDataControllerApi;
-  };
-  [DataTypeEnum.EutaxonomyFinancials]: {
-    data: EuTaxonomyDataForFinancials;
-    api: EuTaxonomyDataForFinancialsControllerApi;
-  };
-  [DataTypeEnum.EutaxonomyNonFinancials]: {
-    data: EuTaxonomyDataForNonFinancials;
-    api: EuTaxonomyDataForNonFinancialsControllerApi;
-  };
-};
-
-const frameworkUploadConfigurations: {
-  [Key in keyof FrameworkDataTypes]: FrameworkUploadConfiguration<
-    FrameworkDataTypes[Key]["api"],
-    FrameworkDataTypes[Key]["data"]
-  >;
-} = {
-  [DataTypeEnum.P2p]: {
-    apiConstructor: P2pDataControllerApi,
-    uploaderFactory: (client) => client.postCompanyAssociatedP2pData.bind(client),
-  },
-  [DataTypeEnum.Sme]: {
-    apiConstructor: SmeDataControllerApi,
-    uploaderFactory: (client) => client.postCompanyAssociatedSmeData.bind(client),
-  },
-  [DataTypeEnum.Lksg]: {
-    apiConstructor: LksgDataControllerApi,
-    uploaderFactory: (client) => client.postCompanyAssociatedLksgData.bind(client),
-  },
-  [DataTypeEnum.Sfdr]: {
-    apiConstructor: SfdrDataControllerApi,
-    uploaderFactory: (client) => client.postCompanyAssociatedSfdrData.bind(client),
-  },
-  [DataTypeEnum.EutaxonomyFinancials]: {
-    apiConstructor: EuTaxonomyDataForFinancialsControllerApi,
-    uploaderFactory: (client) => client.postCompanyAssociatedEuTaxonomyDataForFinancials.bind(client),
-  },
-  [DataTypeEnum.EutaxonomyNonFinancials]: {
-    apiConstructor: EuTaxonomyDataForNonFinancialsControllerApi,
-    uploaderFactory: (client) => client.postCompanyAssociatedEuTaxonomyDataForNonFinancials.bind(client),
-  },
-};
+import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
+import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 
 /**
  * Uploads a single framework entry for a company
@@ -113,9 +22,12 @@ export async function uploadFrameworkData<K extends keyof FrameworkDataTypes>(
   data: FrameworkDataTypes[K]["data"],
   bypassQa = true,
 ): Promise<DataMetaInformation> {
-  const frameworkConfig = frameworkUploadConfigurations[framework];
-  const apiClient = new frameworkConfig.apiConstructor(new Configuration({ accessToken: token }));
-  const response = await frameworkConfig.uploaderFactory(apiClient)(
+  const apiClient = getUnifiedFrameworkDataControllerFromConfiguration(
+    framework,
+    new Configuration({ accessToken: token }),
+  );
+
+  const response = await apiClient.postFrameworkData(
     {
       companyId,
       reportingPeriod,

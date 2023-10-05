@@ -78,15 +78,14 @@ export default defineComponent({
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getSfdrDataControllerApi();
+        ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
         if (this.singleDataMetaInfoToDisplay) {
-          const singleSfdrData = (
-            await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data;
+          const singleSfdrData = (await sfdrDataControllerApi.getFrameworkData(this.singleDataMetaInfoToDisplay.dataId))
+            .data.data;
           this.sfdrDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSfdrData }];
         } else {
           this.sfdrDataAndMetaInfo = (
-            await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
+            await sfdrDataControllerApi.getAllCompanyData(assertDefined(this.companyId))
           ).data;
         }
         this.waitingForData = false;
