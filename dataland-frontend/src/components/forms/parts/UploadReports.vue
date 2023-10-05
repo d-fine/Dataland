@@ -73,7 +73,7 @@ import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import InvalidFileSelectionDialog from "@/components/general/InvalidFileSelectionDialog.vue";
-import { type DocumentToUpload, type StoredReport } from "@/utils/FileUploadUtils";
+import { calculateReferenceableFiles, type DocumentToUpload, type StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type CompanyReport } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
@@ -132,21 +132,11 @@ export default defineComponent({
   },
   computed: {
     namesAndReferencesOfDocumentsToUpload(): ObjectType {
-      const referenceableReport = {} as ObjectType;
-      for (let i = 0; i < this.documentsToUpload.length; i++) {
-        const reportName = this.documentsToUpload[i].fileNameWithoutSuffix;
-        referenceableReport[reportName] = this.documentsToUpload[i].fileReference;
-      }
-      return referenceableReport;
+      return calculateReferenceableFiles(this.documentsToUpload);
     },
 
     namesAndReferencesOfStoredReports(): ObjectType {
-      const referenceableReport = {} as ObjectType;
-      for (let i = 0; i < this.alreadyStoredReports.length; i++) {
-        const reportName = this.alreadyStoredReports[i].reportName;
-        referenceableReport[reportName] = this.alreadyStoredReports[i].fileReference;
-      }
-      return referenceableReport;
+      return calculateReferenceableFiles(this.alreadyStoredReports);
     },
     allReferenceableReportNamesAndReferences(): ObjectType {
       return { ...this.namesAndReferencesOfDocumentsToUpload, ...this.namesAndReferencesOfStoredReports };
