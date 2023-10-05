@@ -27,14 +27,6 @@ describeIf(
     });
 
     /**
-     * Toggles the data-table row group with the given key
-     * @param groupKey the key of the row group to expand
-     */
-    function toggleRowGroup(groupKey: string): void {
-      cy.get(`span[data-test=${groupKey}]`).siblings("button").last().click();
-    }
-
-    /**
      * validates that the data uploaded via the function `uploadLksgDataViaForm` is displayed correctly for a company
      * @param storedCompany the company associated to the data uploaded via form
      */
@@ -43,9 +35,11 @@ describeIf(
       cy.visit("/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg);
       cy.wait("@fetchLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
       cy.get("h1").should("contain", storedCompany.companyInformation.companyName);
-      MLDT.getSectionHead("Production-specific - Own Operations").should("have.attr", "data-section-expanded", "false").click();
+      MLDT.getSectionHead("Production-specific - Own Operations")
+        .should("have.attr", "data-section-expanded", "false")
+        .click();
 
-      cy.contains('Show Most Important Products').click();
+      cy.contains("Show Most Important Products").click();
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Most Important Products");
       cy.get(".p-dialog th").eq(0).should("have.text", "Product Name");
       cy.get(".p-dialog th").eq(1).should("have.text", "Production Steps");

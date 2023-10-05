@@ -68,7 +68,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
       certificateRequiredIfYes: true,
     };
 
-    let baseFieldNoCertificate: Field = {
+    const baseFieldNoCertificate: Field = {
       name: "normal-field",
       label: "Just a normal field",
       description: "No certificate here",
@@ -131,7 +131,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
           displayValue: "Uncertified",
         });
       });
-    })
+    });
 
     describe("Test cases for when 'certificate' is not in the field name", () => {
       it("'Yes' should be displayed if no certificate is provided", () => {
@@ -145,7 +145,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
           displayValue: "Yes",
         });
       });
-    })
+    });
   });
 
   describe("Tests when the field has the evidenceDesired property set", () => {
