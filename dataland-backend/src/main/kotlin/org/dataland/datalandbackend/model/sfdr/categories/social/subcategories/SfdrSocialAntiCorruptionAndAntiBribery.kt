@@ -9,9 +9,9 @@ import java.math.BigDecimal
  * framework.
  */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
-    val reportedCasesOfBriberyCorruption: DataPointWithUnit<BigDecimal>? = null,
+    val casesOfInsufficientActionAgainstBriberyAndCorruption: DataPointWithUnit<BigDecimal>? = null,
 
-    val reportedConvictionsOfBriberyCorruption: DataPointWithUnit<BigDecimal>? = null,
+    val reportedConvictionsOfBriberyAndCorruption: DataPointWithUnit<BigDecimal>? = null,
 
-    val reportedFinesOfBriberyCorruption: DataPointWithUnit<BigDecimal>? = null,
+    val reportedFinesOfBriberyAndCorruption: DataPointWithUnit<BigDecimal>? = null,
 )

@@ -20,5 +20,5 @@ data class SfdrSocialHumanRights(
 
     val reportedForcedOrCompulsoryLabourIncidents: DataPointOneValue<YesNo>? = null,
 
-    val reportedIncidentsOfHumanRights: DataPointWithUnit<BigDecimal>? = null,
+    val numberOfReportedIncidentsOfHumanRightsViolations: DataPointWithUnit<BigDecimal>? = null,
 )
