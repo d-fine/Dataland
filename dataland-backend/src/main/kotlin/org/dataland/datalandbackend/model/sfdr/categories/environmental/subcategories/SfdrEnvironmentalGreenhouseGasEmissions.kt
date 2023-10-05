@@ -11,11 +11,11 @@ import java.math.BigDecimal
  * framework.
  */
 data class SfdrEnvironmentalGreenhouseGasEmissions(
-    val scope1: DataPointWithUnit<BigDecimal>? = null,
+    val scope1GhgEmissionsInTonnes: DataPointWithUnit<BigDecimal>? = null,
 
-    val scope2: DataPointWithUnit<BigDecimal>? = null,
+    val scope2GhgEmissionsInTonnes: DataPointWithUnit<BigDecimal>? = null,
 
-    val scope3: DataPointWithUnit<BigDecimal>? = null,
+    val scope3GhgEmissionsInTonnes: DataPointWithUnit<BigDecimal>? = null,
 
     val enterpriseValue: DataPointWithUnit<BigDecimal>? = null,
 

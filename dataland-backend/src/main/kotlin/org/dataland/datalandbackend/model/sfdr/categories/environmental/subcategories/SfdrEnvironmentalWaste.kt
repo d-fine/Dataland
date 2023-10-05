@@ -10,7 +10,7 @@ import java.math.BigDecimal
  * Fields of the subcategory "Waste" belonging to the category "Environmental" of the sfdr framework.
  */
 data class SfdrEnvironmentalWaste(
-    val hazardousWaste: DataPointWithUnit<BigDecimal>? = null,
+    val hazardousAndRadioactiveWasteInTonnes: DataPointWithUnit<BigDecimal>? = null,
 
     val manufactureOfAgrochemicalPesticidesProducts: DataPointOneValue<YesNo>? = null,
 
@@ -20,7 +20,7 @@ data class SfdrEnvironmentalWaste(
 
     val sustainableOceansAndSeasPolicy: DataPointOneValue<YesNo>? = null,
 
-    val wasteNonRecycled: DataPointWithUnit<BigDecimal>? = null,
+    val nonRecycledWasteInTonnes: DataPointWithUnit<BigDecimal>? = null,
 
     val threatenedSpeciesExposure: DataPointOneValue<YesNo>? = null,
 

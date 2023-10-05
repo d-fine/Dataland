@@ -13,4 +13,6 @@ data class SfdrEnvironmentalBiodiversity(
     val protectedAreasExposure: DataPointOneValue<YesNo>? = null,
 
     val rareOrEndangeredEcosystemsExposure: DataPointOneValue<YesNo>? = null,
+
+    val highlyBiodiverseGrasslandExposure: DataPointOneValue<YesNo>? = null,
 )
