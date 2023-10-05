@@ -27,7 +27,7 @@ export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
 }
 
 /**
- * Creates a prepared fixture that has only defined fields and no undefined fields
+ * Creates a prepared fixture that has only defined fields and no fields with missing values
  * @param input the base fixture to modify
  * @returns the modified fixture
  */

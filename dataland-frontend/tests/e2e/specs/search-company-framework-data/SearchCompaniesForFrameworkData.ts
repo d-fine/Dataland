@@ -161,7 +161,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         return assertDefined(
           companiesWithEuTaxonomyDataForFinancials.find((it) => {
             return (
-              it.companyInformation.companyAlternativeNames !== undefined &&
+              it.companyInformation.companyAlternativeNames != undefined &&
               it.companyInformation.companyAlternativeNames.length > 0
             );
           }),

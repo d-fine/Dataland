@@ -88,14 +88,9 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
 
       cy.get(`[data-test='Revenue']`).click();
 
-      cy.get('tr:has(td > span:contains("Total Revenue"))')
-        .next("tr")
-        .next("tr")
-        .find("span")
-        .should("contain", "Value");
+      cy.get('tr:has(td > span:contains("Total Revenue"))').next("tr").find("span").should("contain", "Value");
 
       cy.get('tr:has(td > span:contains("Total Revenue"))')
-        .next("tr")
         .next("tr")
         .find("td")
         .eq(1)
@@ -188,7 +183,7 @@ export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
     }
   }
   const allReports: Array<{ [p: string]: CompanyReport } | undefined> = dataAndMetaInfoSets.map(
-    (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
+    (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports ?? undefined,
   );
   return [allReports, reportingPeriods];
 }
