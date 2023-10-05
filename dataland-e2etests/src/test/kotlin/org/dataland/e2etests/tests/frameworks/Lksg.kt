@@ -30,8 +30,7 @@ class Lksg {
                 }
             }
             keysOfEntriesToDelete.forEach { key ->
-                (it.
-                value?.numberOfSuppliersPerCountryCode as? MutableMap<String, LksgProcurementCategory>)?.remove(key)
+                (it.value.numberOfSuppliersPerCountryCode as? MutableMap<String, LksgProcurementCategory>)?.remove(key)
             }
         }
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
