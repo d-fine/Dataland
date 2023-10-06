@@ -11,7 +11,7 @@ describe("As a user I want to be able to register for an account and be able to 
     cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
     cy.visitAndCheckAppMount("/")
       // .wait("@youtube") TODO readd
-      .get("button[name='join_dataland_button']")
+      .get("button[name='signup_dataland_button']")
       .click()
       .get("#email")
       .should("exist")
