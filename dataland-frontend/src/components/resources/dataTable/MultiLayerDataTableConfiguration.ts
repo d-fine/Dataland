@@ -9,7 +9,7 @@ export interface MLDTDataset<FrameworkDataType> {
   dataset: FrameworkDataType;
 }
 
-export type BadgeColors = "yellow" | "green" | "red" | "blue" | "purple" | "gray" | "brown" | "orange";
+export type BadgeColor = "yellow" | "green" | "red" | "blue" | "purple" | "gray" | "brown" | "orange";
 
 export interface MLDTCellConfig<FrameworkDataType> {
   type: "cell";
@@ -22,7 +22,7 @@ export interface MLDTCellConfig<FrameworkDataType> {
 export interface MLDTSectionConfig<FrameworkDataType> {
   type: "section";
   label: string;
-  labelBadgeColor?: BadgeColors;
+  labelBadgeColor?: BadgeColor;
   expandOnPageLoad: boolean;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   children: MLDTConfig<FrameworkDataType>;

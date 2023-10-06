@@ -1,6 +1,6 @@
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import {
-  type BadgeColors,
+  type BadgeColor,
   type MLDTConfig,
   type MLDTSectionConfig,
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
@@ -15,7 +15,7 @@ import { getDataModelFieldDisplayConfiguration } from "@/components/resources/da
  * @returns the converted category
  */
 function convertCategory(category: Category): MLDTSectionConfig<any> {
-  const mldtCategoryChildren: MLDTConfig<any> = category.subcategories.map((it) => convertSubCategory(category, it));
+  const mldtCategoryChildren = category.subcategories.map((it) => convertSubCategory(category, it));
 
   return {
     type: "section",
@@ -23,7 +23,7 @@ function convertCategory(category: Category): MLDTSectionConfig<any> {
     expandOnPageLoad: category.name === "general",
     children: mldtCategoryChildren,
     shouldDisplay: category.showIf,
-    labelBadgeColor: category.color as BadgeColors,
+    labelBadgeColor: category.color as BadgeColor,
   };
 }
 /**
@@ -60,5 +60,5 @@ function convertSubCategory(category: Category, subcategory: Subcategory): MLDTS
  * @returns the view configuration
  */
 export function convertDataModel(dataModel: Array<Category>): MLDTConfig<any> {
-  return dataModel.map((it) => convertCategory(it));
+  return dataModel.map((category) => convertCategory(category));
 }
