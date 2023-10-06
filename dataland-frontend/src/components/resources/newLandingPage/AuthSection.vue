@@ -3,7 +3,6 @@
     <a
       aria-label="Login to preview account"
       class="header__authsection-login"
-      name="login_dataland_button"
       @click="login"
     >
       Login

@@ -11,7 +11,6 @@
     </div>
     <!-- <TheNavi :contentData="contentData" /> -->
     <AuthSection />
-    <!-- <LandingLoginMobile v-if="isMobile" /> -->
   </header>
 </template>
 

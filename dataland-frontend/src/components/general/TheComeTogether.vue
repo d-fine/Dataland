@@ -30,7 +30,7 @@ import type { Section } from "@/types/ContentTypes";
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const comeTogetherSection = computed(() => {
-  return sections?.find((section) => section.title === "Come together") || null;
+  return sections?.find((section) => section.title === "Come together") ?? null;
 });
 </script>
 

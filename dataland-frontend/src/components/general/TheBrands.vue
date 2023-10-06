@@ -21,8 +21,12 @@ import type { Section } from "@/types/ContentTypes";
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const brandsSection = computed(() => {
-  return sections?.find((section) => section.title === "Brands") || null;
+  return sections?.find((section) => section.title === "Brands") ?? null;
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> e06028902a1522742dfc374ba02d4f4c8e4f7c53
 </script>
 
 <style scoped lang="scss">

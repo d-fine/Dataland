@@ -28,11 +28,11 @@ import type { Section } from "@/types/ContentTypes";
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const footerSection = computed(() => {
-  return sections?.find((section) => section.title === "Footer") || null;
+  return sections?.find((section) => section.title === "Footer") ?? null;
 });
 
 const footerText = computed(() => {
-  if (!footerSection.value || !footerSection.value.text) return "";
+  if (!footerSection.value?.text) return "";
   const currentYear = new Date().getFullYear();
   return `${footerSection.value.text[0]}${currentYear}${footerSection.value.text[1]}`;
 });
