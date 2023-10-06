@@ -98,13 +98,13 @@ export function removeFileTypeExtension(fileName: string): string {
 export function calculateReferenceableFiles(inputArray: DocumentToUpload[] | StoredReport[]): ObjectType {
   const referenceableReport = {} as ObjectType;
   let reportName: string;
-  for (let i = 0; i < inputArray.length; i++) {
-    if ((<DocumentToUpload>inputArray[i]).fileNameWithoutSuffix) {
-      reportName = (<DocumentToUpload>inputArray[i]).fileNameWithoutSuffix;
+  for (const element of inputArray) {
+    if ((<DocumentToUpload>element).fileNameWithoutSuffix) {
+      reportName = (<DocumentToUpload>element).fileNameWithoutSuffix;
     } else {
-      reportName = (<StoredReport>inputArray[i]).fileName;
+      reportName = (<StoredReport>element).fileName;
     }
-    referenceableReport[reportName] = inputArray[i].fileReference;
+    referenceableReport[reportName] = element.fileReference;
   }
   return referenceableReport;
 }
