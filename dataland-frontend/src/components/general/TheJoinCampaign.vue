@@ -7,7 +7,7 @@
         >{{ joinCampaignSection.text[2] }}
       </h2>
       <p class="joincampaign__paragraph" v-if="joinCampaignSection.text[3]">{{ joinCampaignSection.text[3] }}</p>
-      <button class="joincampaign__button">I AM INTERESTED</button>
+      <email-button :sections="sections" />
 
       <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">
         <div v-for="(card, index) in joinCampaignSection.cards" :key="index" role="row" class="joincampaign__row">
@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
+import EmailButton from "@/components/resources/newLandingPage/emailButton.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 

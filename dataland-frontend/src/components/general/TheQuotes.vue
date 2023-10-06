@@ -12,13 +12,14 @@
       <button @click="move(-1)" aria-label="Previous slide" class="quotes__arrow quotes__arrow--left"></button>
       <button @click="move(1)" aria-label="Next slide" class="quotes__arrow quotes__arrow--right"></button>
     </div>
-    <button class="quotes__button">{{ quotesSection.text[0] }}</button>
+    <register-button :buttonText="quotesSection.text[0]" />
   </section>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from "vue";
 import type { Section } from "@/types/ContentTypes";
+import RegisterButton from "@/components/resources/newLandingPage/RegisterButton.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes"));

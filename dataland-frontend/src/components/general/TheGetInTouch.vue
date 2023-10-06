@@ -16,7 +16,7 @@
       <div class="getintouch__text" grid-column="15 / 17">
         <p class="getintouch__text-title">{{ getInTouchSection.cards[1].title }}</p>
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
-        <button class="getintouch__text-button">{{ getInTouchSection.text[0] }}</button>
+        <button class="getintouch__text-button" @click="openEmailClient">{{ getInTouchSection.text[0] }}</button>
       </div>
     </div>
   </section>
@@ -31,6 +31,21 @@ const { sections } = defineProps<{ sections?: Section[] }>();
 const getInTouchSection = computed(() => {
   return sections?.find((section) => section.title === "Get in touch") || null;
 });
+
+const openEmailClient = (): void => {
+  if (getInTouchSection.value && getInTouchSection.value.cards) {
+    const cards = getInTouchSection.value.cards;
+
+    const email = cards[2]?.icon || "";
+    const subject = cards[2]?.title || "";
+    const body = cards[2]?.text || "";
+
+    if (email && subject && body) {
+      const mailtoString = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoString;
+    }
+  }
+};
 </script>
 
 <style scoped lang="scss">
