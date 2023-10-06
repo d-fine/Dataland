@@ -297,7 +297,7 @@ jobs:
           name: lcovResults
           path: fe-coverage
       - name: Prepare Repo for Sonar
-        if: always()
+        if: ${{ !cancelled() }}
         run: |
           ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build \
           -x detekt -x ktlintCheck -x jacocoTestReport -x kaptKotlin -x kaptTestKotlin -x kaptGenerateStubsTestKotlin -x kaptGenerateStubsKotlin \
@@ -305,14 +305,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: jacocoTestReport
-        if: always()
+        if: ${{ !cancelled() }}
         # jacocoTestReport must be executed in a gradle-job that is started AFTER classes are compiled - because
         # the build.gradle.kts only looks for .class files at start of gradle (and not at start of task).
         run: ./gradlew jacocoTestReport --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Sonar
-        if: always()
+        if: ${{ !cancelled() }}
         run: |
           touch ./build/reports/sonarProperties.txt
           ./gradlew sonar -D"sonar.scanner.dumpToFile"="./build/reports/sonarProperties.txt" --no-daemon --stacktrace
@@ -321,7 +321,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Upload Reports
-        if: always()
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
           name: SonarStageReports
