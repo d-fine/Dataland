@@ -33,7 +33,7 @@ export function generateReferencedReports(
       fileReference: getReferencedDocumentId(),
       isGroupLevel: valueOrNull(generateYesNoNa(), nullProbability),
       reportDate: valueOrNull(generatePastDate(), nullProbability),
-      currency: valueOrNull(generateCurrencyCode(), nullProbability),
+      currency: generateCurrencyCode(),
     };
   }
   return referencedReports;
@@ -56,18 +56,7 @@ export function generateDataPoint<T>(
       ? QualityOptions.Na
       : pickOneElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
-  let dataSource: ExtendedDocumentReference | null = null;
-  let comment: string | null = null;
-
-  if (
-    qualityBucket === QualityOptions.Audited ||
-    qualityBucket === QualityOptions.Reported ||
-    ((qualityBucket === QualityOptions.Estimated || qualityBucket === QualityOptions.Incomplete) &&
-      faker.datatype.boolean())
-  ) {
-    dataSource = generateDataSource(reports);
-    comment = faker.git.commitMessage();
-  }
+  const { dataSource, comment } = generateQualityAndDataSourceAndComment(reports, qualityBucket);
 
   return {
     value: value,
@@ -89,4 +78,28 @@ export interface GenericDataPoint<T> {
 export interface GenericBaseDataPoint<T> {
   value: T;
   dataSource: BaseDocumentReference | null;
+}
+
+/**
+ * This method constructs the data source and the comment for the fake datapoint
+ * @param reports the reports that can be referenced as data sources
+ * @param qualityBucket the quality bucket of the datapoint
+ * @returns the generated data source and comment of the datapoint
+ */
+function generateQualityAndDataSourceAndComment(
+  reports: ReferencedDocuments,
+  qualityBucket: QualityOptions,
+): { dataSource: ExtendedDocumentReference | null; comment: string | null } {
+  let dataSource: ExtendedDocumentReference | null = null;
+  let comment: string | null = null;
+  if (
+    qualityBucket === QualityOptions.Audited ||
+    qualityBucket === QualityOptions.Reported ||
+    ((qualityBucket === QualityOptions.Estimated || qualityBucket === QualityOptions.Incomplete) &&
+      faker.datatype.boolean())
+  ) {
+    dataSource = generateDataSource(reports);
+    comment = faker.git.commitMessage();
+  }
+  return { dataSource, comment };
 }
