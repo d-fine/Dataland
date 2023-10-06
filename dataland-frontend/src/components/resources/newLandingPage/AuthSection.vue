@@ -1,7 +1,12 @@
 <template>
   <div class="header__authsection">
     <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
-    <button aria-label="Sign up to preview account" class="header__authsection-button" name="signup_dataland_button">
+    <button
+      aria-label="Sign up to preview account"
+      class="header__authsection-button"
+      name="signup_dataland_button"
+      @click="register"
+    >
       Sign Up
     </button>
   </div>
@@ -10,7 +15,7 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 import type Keycloak from "keycloak-js";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
@@ -23,6 +28,19 @@ const login = (): void => {
     .then((keycloak) => {
       if (!keycloak.authenticated) {
         loginAndRedirectToSearchPage(keycloak);
+      }
+    })
+    .catch((error) => console.log(error));
+};
+
+/**
+ * Sends the user to the keycloak register page (if not authenticated already)
+ */
+const register = (): void => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      if (!keycloak.authenticated) {
+        registerAndRedirectToSearchPage(keycloak);
       }
     })
     .catch((error) => console.log(error));
