@@ -24,7 +24,6 @@ export function checkButton(name: string, message: string, parentElement: Cypres
 
 /**
  * Checks if a link is present
- * @param name the "name" identifier of the button
  * @param message the string expected to be contained
  * @param parentElement the element whose content to search for the link
  * @returns the chainable on the link element

@@ -7,12 +7,11 @@ describe("Component test for the landing page", () => {
     cy.mountWithPlugins(NewLandingPage, {
       keycloak: minimalKeycloakMock({}),
     }).then((mounted) => {
-      const landingPagePath = mounted.component.$route.path;
       validateTopBar();
       validateIntroSection();
       validateBrandsSection();
       // checkLinkByTarget("/mission", "OUR MISSION");
-      cy.get("button:contains('START YOUR DATALAND JOURNEY')")// TODO .should("be.disabled");
+      cy.get("button:contains('START YOUR DATALAND JOURNEY')"); // TODO .should("be.disabled");
       // TODO slide show test
       // TODO test I AM INTERESTED button
       // TODO test get in contact button
@@ -26,7 +25,7 @@ describe("Component test for the landing page", () => {
       //   cy.wrap(mounted.component).its("$route.path").should("eq", landingPagePath);
       // });
 
-      validateHowItWorksSlides()
+      validateHowItWorksSlides();
       checkNewFooter();
 
       // TODO check redirecting buttons that work for redirection
@@ -59,8 +58,6 @@ function validateTopBar(): void {
  * Validates the elements of the intro section
  */
 function validateIntroSection(): void {
-  const title1 = "Liberate Data";
-  const title2 = "Empower Autonomy. Break Monopolies.";
   checkImage("Liberate Data -  Empower Autonomy. Dataland, the Open ESG Data Platform.", "gfx_logo_d_orange_S.svg");
   cy.get("h1").should("contain.text", "Liberate Data");
   cy.get("h1").should("contain.text", "Empower Autonomy");
@@ -109,15 +106,14 @@ function validateHowItWorksSlides(): void {
    * @returns the "How it works" element
    */
   function getSlidesWrapper(): Cypress.Chainable {
-    return cy.get("div.howitworks__wrapper")
+    return cy.get("div.howitworks__wrapper");
   }
 
   getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "none");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click()
+  getSlidesWrapper().find("button[aria-label='Next slide']").click();
   getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click()
+  getSlidesWrapper().find("button[aria-label='Next slide']").click();
   getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -880, 0)");
-  getSlidesWrapper().find("button[aria-label='Previous slide']").click()
+  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
   getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
-
 }
