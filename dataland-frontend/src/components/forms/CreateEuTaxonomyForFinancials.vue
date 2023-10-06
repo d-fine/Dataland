@@ -342,7 +342,7 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import {uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName} from "@/utils/FileUploadUtils";
+import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -439,12 +439,15 @@ export default defineComponent({
       }
       return 0;
     },
-      namesOfAllCompanyReportsForTheDataset(): string[] {
-          return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
-      },
-      fileReferenceAccordingToName(): string {
-          return getFileReferenceByFileName(this.currentReportValue, this.namesAndReferencesOfAllCompanyReportsForTheDataset);
-      },
+    namesOfAllCompanyReportsForTheDataset(): string[] {
+      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
+    },
+    fileReferenceAccordingToName(): string {
+      return getFileReferenceByFileName(
+        this.currentReportValue,
+        this.namesAndReferencesOfAllCompanyReportsForTheDataset,
+      );
+    },
   },
   watch: {
     confirmedSelectedFinancialServiceOptions: function (newValue: { label: string; value: string }[]) {
