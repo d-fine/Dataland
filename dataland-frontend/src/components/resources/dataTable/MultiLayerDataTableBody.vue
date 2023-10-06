@@ -71,6 +71,7 @@ import MultiLayerDataTableCell from "@/components/resources/dataTable/MultiLayer
 import Tooltip from "primevue/tooltip";
 
 const expandedSections = ref(new Set<number>());
+const vTooltip = Tooltip;
 
 /**
  * Toggle the visibility of the section at the given index in the configuration
