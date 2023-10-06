@@ -3331,6 +3331,42 @@
                 "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
               }
             ]
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceA": {
+            "type": "number",
+            "nullable": true
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceB": {
+            "type": "number",
+            "nullable": true
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceC": {
+            "type": "number",
+            "nullable": true
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceD": {
+            "type": "number",
+            "nullable": true
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceE": {
+            "type": "number",
+            "nullable": true
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceF": {
+            "type": "number",
+            "nullable": true
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceG": {
+            "type": "number",
+            "nullable": true
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceH": {
+            "type": "number",
+            "nullable": true
+          },
+          "highImpactClimateSectorEnergyConsumptionNaceL": {
+            "type": "number",
+            "nullable": true
           }
         }
       },

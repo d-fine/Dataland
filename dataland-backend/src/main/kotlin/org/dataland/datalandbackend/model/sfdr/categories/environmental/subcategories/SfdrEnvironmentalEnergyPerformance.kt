@@ -31,4 +31,14 @@ data class SfdrEnvironmentalEnergyPerformance(
     val nonRenewableEnergyConsumptionNuclearEnergyInGWh: DataPointWithUnit<BigDecimal>? = null,
 
     val nonRenewableEnergyConsumptionOtherInGWh: DataPointWithUnit<BigDecimal>? = null,
+
+    val highImpactClimateSectorEnergyConsumptionNaceA: BigDecimal? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceB: BigDecimal? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceC: BigDecimal? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceD: BigDecimal? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceE: BigDecimal? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceF: BigDecimal? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceG: BigDecimal? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceH: BigDecimal? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceL: BigDecimal? = null,
 )

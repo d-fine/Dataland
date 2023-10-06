@@ -51,7 +51,7 @@ export function highImpactClimateGetterFactory(path: string, field: Field): (dat
               highImpactClimateSectorEnergyConsumptionNaceG: "Sector G",
               highImpactClimateSectorEnergyConsumptionNaceH: "Sector H",
               highImpactClimateSectorEnergyConsumptionNaceL: "Sector L",
-            }
+            },
           },
         },
       },
