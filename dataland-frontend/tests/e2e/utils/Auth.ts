@@ -14,7 +14,7 @@ export function logout(): void {
     .wait(1000)
     .url()
     .should("eq", getBaseUrl() + "/")
-    .get("button[name='login_dataland_button']")
+    .get("a[aria-label='Login to preview account']")
     .should("exist")
     .should("be.visible");
 }
