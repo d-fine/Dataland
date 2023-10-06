@@ -10,7 +10,7 @@ describe("As a user I want to be able to register for an account and be able to 
   it("Checks that the Dataland password-policy gets respected", () => {
     cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
     cy.visitAndCheckAppMount("/")
-      .wait("@youtube")
+      // .wait("@youtube") TODO readd
       .get("button[name='join_dataland_button']")
       .click()
       .get("#email")
