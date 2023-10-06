@@ -1,5 +1,4 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
-const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
 const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
 const NewMissionPage = (): Promise<RouteComponent> => import("@/components/pages/NewMissionPage.vue");
 
@@ -26,14 +25,6 @@ const routes = [
     path: "/",
     name: "Welcome to Dataland",
     component: NewLandingPage,
-  },
-  {
-    path: "/lp",
-    name: "New Landing Page",
-    component: WelcomeDataland,
-    props: {
-      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
-    },
   },
   {
     path: "/mission",
