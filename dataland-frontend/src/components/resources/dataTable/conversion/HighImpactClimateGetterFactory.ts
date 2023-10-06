@@ -1,4 +1,7 @@
-import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import {
+  type AvailableDisplayValues,
+  MLDTDisplayComponents
+} from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
@@ -29,28 +32,31 @@ export function highImpactClimateGetterFactory(path: string, field: Field): (dat
       };
     });
     return {
-      label: field.label,
-      modalComponent: DetailsCompanyDataTable,
-      modalOptions: {
-        props: {
-          header: field.label,
-          modal: true,
-          dismissableMask: true,
-        },
-        data: {
-          listOfRowContents: accumulatedData,
-          kpiKeyOfTable: "highImpactSectorEnergyConsumptions",
-          columnHeaders: {
-            highImpactSectorEnergyConsumptions: {
-              highImpactClimateSectorEnergyConsumptionNaceA: "Sector A",
-              highImpactClimateSectorEnergyConsumptionNaceB: "Sector B",
-              highImpactClimateSectorEnergyConsumptionNaceC: "Sector C",
-              highImpactClimateSectorEnergyConsumptionNaceD: "Sector D",
-              highImpactClimateSectorEnergyConsumptionNaceE: "Sector E",
-              highImpactClimateSectorEnergyConsumptionNaceF: "Sector F",
-              highImpactClimateSectorEnergyConsumptionNaceG: "Sector G",
-              highImpactClimateSectorEnergyConsumptionNaceH: "Sector H",
-              highImpactClimateSectorEnergyConsumptionNaceL: "Sector L",
+      displayComponent: MLDTDisplayComponents.ModalLinkDisplayComponent,
+      displayValue: {
+        label: field.label,
+        modalComponent: DetailsCompanyDataTable,
+        modalOptions: {
+          props: {
+            header: field.label,
+            modal: true,
+            dismissableMask: true,
+          },
+          data: {
+            listOfRowContents: accumulatedData,
+            kpiKeyOfTable: "highImpactSectorEnergyConsumptions",
+            columnHeaders: {
+              highImpactSectorEnergyConsumptions: {
+                highImpactClimateSectorEnergyConsumptionNaceA: "Sector A",
+                highImpactClimateSectorEnergyConsumptionNaceB: "Sector B",
+                highImpactClimateSectorEnergyConsumptionNaceC: "Sector C",
+                highImpactClimateSectorEnergyConsumptionNaceD: "Sector D",
+                highImpactClimateSectorEnergyConsumptionNaceE: "Sector E",
+                highImpactClimateSectorEnergyConsumptionNaceF: "Sector F",
+                highImpactClimateSectorEnergyConsumptionNaceG: "Sector G",
+                highImpactClimateSectorEnergyConsumptionNaceH: "Sector H",
+                highImpactClimateSectorEnergyConsumptionNaceL: "Sector L",
+              },
             },
           },
         },
