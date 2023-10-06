@@ -25,15 +25,15 @@ const routes = [
   {
     path: "/",
     name: "Welcome to Dataland",
-    component: WelcomeDataland,
-    props: {
-      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
-    },
+    component: NewLandingPage,
   },
   {
     path: "/lp",
     name: "New Landing Page",
-    component: NewLandingPage,
+    component: WelcomeDataland,
+    props: {
+      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|OperaMini/i.test(navigator.userAgent),
+    },
   },
   {
     path: "/mission",

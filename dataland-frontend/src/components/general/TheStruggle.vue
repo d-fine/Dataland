@@ -1,7 +1,10 @@
 <template>
   <section v-if="struggleSection" class="struggle" role="region" aria-label="Struggle Statement">
     <div class="struggle__wrapper">
-      <h2 id="struggle-heading" aria-labelledby="struggle-heading">{{ struggleSection.text[0] }}</h2>
+      <h2 id="struggle-heading" aria-labelledby="struggle-heading">
+        <span>{{ struggleSection.text[0] }}</span>
+        {{ struggleSection.text[1] }}
+      </h2>
       <div class="struggle__grid" role="list">
         <div v-for="(card, index) in struggleSection.cards" :key="index" class="struggle__cell" role="listitem">
           <img :src="card.icon" :alt="card.title" class="struggle__cell__icon" />
@@ -40,15 +43,20 @@ const struggleSection = computed(() => {
   }
   h2 {
     grid-column: 4 / 14;
-    font-size: 64px;
+    font-size: 100px;
     font-style: normal;
     font-weight: 700;
-    line-height: 78px; /* 121.875% */
+    line-height: 106px; /* 106% */
+    letter-spacing: 0.25px;
+
     margin: 0 0 68px;
     text-align: left;
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
+    span {
+      color: var(--primary-orange);
+    }
   }
 
   &__grid {

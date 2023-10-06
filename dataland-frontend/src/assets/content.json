@@ -17,7 +17,8 @@
                     "title": "Intro",
                     "text": [
                         "Liberate Data - ",
-                        "Empower Autonomy. Break Monopolies."
+                        "Empower Autonomy.",
+                        "Dataland, the Open ESG Data Platform."
                     ],
                     "image": [
                         "/static/logos/gfx_logo_d_orange_S.svg"
@@ -26,6 +27,29 @@
                         {
                             "icon": "/static/icons/Search.svg",
                             "text": "Search for a company to view or request data..."
+                        }
+                    ]
+                },
+                {
+                    "title": "Quotes",
+                    "text": [
+                        "START YOUR DATALAND JOURNEY"
+                    ],
+                    "cards": [
+                        {
+                            "icon": "/static/icons/Airline--rapid-board.svg",
+                            "title": "Marie Jemm, CEO of Ampega",
+                            "text": "..."
+                        },
+                        {
+                            "icon": "/static/icons/Airline--rapid-board.svg",
+                            "title": "James Kann, CEO of Deka Asset Management",
+                            "text": "\"Dataland is the bridge that connects us to data independency and unlimited possibilities.\""
+                        },
+                        {
+                            "icon": "/static/icons/Airline--rapid-board.svg",
+                            "title": "John Jonnhy, CEO of Castell-Bank",
+                            "text": "..."
                         }
                     ]
                 },
@@ -69,7 +93,8 @@
                 {
                     "title": "Struggle",
                     "text": [
-                        "86% of companies world wide struggle with"
+                        "Dataland fixes",
+                        " four main data issues"
                     ],
                     "cards": [
                         {
@@ -187,6 +212,54 @@
                             "icon": "/static/icons/Area.svg",
                             "title": "5",
                             "text": "Frameworks"
+                        }
+                    ]
+                },
+                {
+                    "title": "Join a campaign",
+                    "text": [
+                        "Create or join a campaign to",
+                        " to get the missing ",
+                        "data.",
+                        "The Proof of Concepts are a simple way for you to get better data coverage and improved data quality, while testing Dataland."
+                    ],
+                    "cards": [
+                        {
+                            "title": "Pathway to Paris",
+                            "text": "Explanatory text goes here",
+                            "date": "14th of August"
+                        },
+                        {
+                            "title": "LksG",
+                            "text": "Explanatory text goes here"
+                        },
+                        {
+                            "title": "EU Taxonomy",
+                            "text": "Explanatory text goes here"
+                        },
+                        {
+                            "title": "SFDR",
+                            "text": "Explanatory text goes here"
+                        }
+                    ]
+                },
+                {
+                    "title": "Get in touch",
+                    "text": [
+                        "Get in touch"
+                    ],
+                    "cards": [
+                        {
+                            "icon": "Email",
+                            "title": "Your message",
+                            "text": "Get in touch",
+                            "date": "By clicking Get in Touch,  you agree to our Terms of use and that you have read our Privacy Policy."
+                        },
+                        {
+                            "icon": "/static/images/927A7415 1.jpg",
+                            "title": "Erik Breen,",
+                            "text": "Managing Director of Dataland",
+                            "date": "erik.breen@dataland.com"
                         }
                     ]
                 },

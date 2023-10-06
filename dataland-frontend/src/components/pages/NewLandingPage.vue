@@ -2,13 +2,16 @@
   <TheHeader :landingPage="landingPage" :contentData="content" />
   <main role="main">
     <TheIntro :sections="landingPage?.sections" />
+    <TheQuotes :sections="landingPage?.sections" />
     <TheBrands :sections="landingPage?.sections" />
-    <TheMission :sections="landingPage?.sections" />
+    <!-- <TheMission :sections="landingPage?.sections" /> -->
     <TheStruggle :sections="landingPage?.sections" />
     <TheHowItWorks :sections="landingPage?.sections" />
-    <TheClaim :sections="landingPage?.sections" />
-    <TheCampaigns :sections="landingPage?.sections" />
-    <TheComeTogether :sections="landingPage?.sections" />
+    <!-- <TheClaim :sections="landingPage?.sections" />
+    <TheCampaigns :sections="landingPage?.sections" /> 
+    <TheComeTogether :sections="landingPage?.sections" />-->
+    <TheJoinCampaign :sections="landingPage?.sections" />
+    <TheGetInTouch :sections="landingPage?.sections" />
   </main>
   <TheFooter :sections="landingPage?.sections" />
 </template>
@@ -25,13 +28,16 @@ import { SessionDialogMode } from "@/utils/SessionTimeoutUtils";
 
 import TheHeader from "@/components/layout/TheHeader.vue";
 import TheIntro from "@/components/general/TheIntro.vue";
+import TheQuotes from "@/components/general/TheQuotes.vue";
 import TheBrands from "@/components/general/TheBrands.vue";
-import TheMission from "@/components/general/TheMission.vue";
+// import TheMission from "@/components/general/TheMission.vue";
 import TheStruggle from "@/components/general/TheStruggle.vue";
 import TheHowItWorks from "@/components/general/TheHowItWorks.vue";
-import TheClaim from "@/components/general/TheClaim.vue";
-import TheCampaigns from "@/components/general/TheCampaigns.vue";
-import TheComeTogether from "@/components/general/TheComeTogether.vue";
+// import TheClaim from "@/components/general/TheClaim.vue";
+// import TheCampaigns from "@/components/general/TheCampaigns.vue";
+// import TheComeTogether from "@/components/general/TheComeTogether.vue";
+import TheJoinCampaign from "@/components/general/TheJoinCampaign.vue";
+import TheGetInTouch from "@/components/general/TheGetInTouch.vue";
 import TheFooter from "@/components/layout/TheFooter.vue";
 
 // Import the JSON content and types
