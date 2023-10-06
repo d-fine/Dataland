@@ -71,9 +71,11 @@ export default defineComponent({
     }
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;
-    if (typeof dialogRefData.listOfRowContents[0] === "string") {
+    if (Array.isArray(dialogRefData.listOfRowContents) && typeof dialogRefData.listOfRowContents[0] === "string") {
       this.keysOfValuesForColumnDisplay.push(this.kpiKeyOfTable);
-      this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
+      this.listOfRowContents = dialogRefData.listOfRowContents.map((o: object | string) => ({
+        [this.kpiKeyOfTable]: o,
+      }));
     } else {
       this.listOfRowContents = dialogRefData.listOfRowContents;
       this.generateColsNames();
