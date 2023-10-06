@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.p2p.categories.electricityGeneration
 
-import org.dataland.datalandbackend.model.p2p.categories.electricityGeneration.subcategories.P2pElectricityGenerationTechnology
+import org.dataland.datalandbackend.model.p2p.categories.electricityGeneration.subcategories
+    .P2pElectricityGenerationTechnology
 
 /**
  * --- API model ---
