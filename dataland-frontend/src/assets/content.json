@@ -218,7 +218,7 @@
                 {
                     "title": "Join a campaign",
                     "text": [
-                        "Create or join a campaign to",
+                        "Join a campaign to",
                         " to get the missing ",
                         "data.",
                         "The Proof of Concepts are a simple way for you to get better data coverage and improved data quality, while testing Dataland."
@@ -258,8 +258,17 @@
                         {
                             "icon": "/static/images/927A74151.jpg",
                             "title": "Erik Breen,",
-                            "text": "Managing Director of Dataland",
-                            "date": "erik.breen@dataland.com"
+                            "text": "Managing Director of Dataland"
+                        },
+                        {
+                            "icon": "erik.breen@dataland.com",
+                            "title": "I am interested in Dataland’s campaigns 📣 ",
+                            "text": "Dear Erik,\n \nI am sick and tired of data gaps and bad data quality. Therefore, I am very much interested in the SFDR Campaign.\n \nPlease keep me updated.\n \nBest regards, "
+                        },
+                        {
+                            "icon": "erik.breen@dataland.com",
+                            "title": "Eliminate Data Gaps: Your Path to High-Quality Data Starts Here!",
+                            "text": "Dear Erik,\n \nI am interested in Dataland.\n \nBest regards, "
                         }
                     ]
                 },
