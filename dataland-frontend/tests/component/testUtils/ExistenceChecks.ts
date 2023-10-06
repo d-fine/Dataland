@@ -29,12 +29,11 @@ export function checkButton(name: string, message: string, parentElement: Cypres
  * @param parentElement the element whose content to search for the link
  * @returns the chainable on the link element
  */
-export function checkLinkByName(
-  name: string,
+export function checkLinkByContent(
   message: string,
   parentElement: Cypress.Chainable = cy.get("body"),
 ): Cypress.Chainable {
-  return parentElement.find(`a[name="${name}"]`).should("be.visible").should("contain.text", message);
+  return parentElement.find(`a:contains('${message}')`).should("be.visible");
 }
 
 /**
