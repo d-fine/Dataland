@@ -132,7 +132,11 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDataModel.ts";
-import { type CompanyAssociatedDataEuTaxonomyDataForNonFinancials, type CompanyReport } from "@clients/backend";
+import {
+  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  type CompanyReport,
+  DataTypeEnum,
+} from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -265,10 +269,9 @@ export default defineComponent({
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getEuTaxonomyDataForNonFinancialsControllerApi();
+      ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
 
-      const dataResponse =
-        await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId);
+      const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(dataId);
       const euTaxonomyForNonFinancialsResponseData = dataResponse.data;
       if (euTaxonomyForNonFinancialsResponseData?.reportingPeriod) {
         this.reportingPeriod = new Date(euTaxonomyForNonFinancialsResponseData.reportingPeriod);
@@ -297,8 +300,8 @@ export default defineComponent({
 
         const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+        ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
+        await euTaxonomyForNonFinancialsDataControllerApi.postFrameworkData(
           this.companyAssociatedEuTaxonomyDataForNonFinancials,
         );
         this.$emit("datasetCreated");

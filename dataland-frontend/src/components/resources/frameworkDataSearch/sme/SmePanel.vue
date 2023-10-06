@@ -82,16 +82,13 @@ export default defineComponent({
         this.waitingForData = true;
         const smeDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getSmeDataControllerApi();
+        ).getUnifiedFrameworkDataController(DataTypeEnum.Sme);
         if (this.singleDataMetaInfoToDisplay) {
-          const singleSmeData = (
-            await smeDataControllerApi.getCompanyAssociatedSmeData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data;
+          const singleSmeData = (await smeDataControllerApi.getFrameworkData(this.singleDataMetaInfoToDisplay.dataId))
+            .data.data;
           this.smeDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSmeData }];
         } else {
-          this.smeDataAndMetaInfo = (
-            await smeDataControllerApi.getAllCompanySmeData(assertDefined(this.companyId))
-          ).data;
+          this.smeDataAndMetaInfo = (await smeDataControllerApi.getAllCompanyData(assertDefined(this.companyId))).data;
         }
       } catch (error) {
         console.error(error);

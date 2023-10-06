@@ -328,6 +328,7 @@ import {
   AssuranceDataPointValueEnum,
   type CompanyAssociatedDataEuTaxonomyDataForFinancials,
   type DataMetaInformation,
+  DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type EuTaxonomyDataForNonFinancials,
@@ -491,10 +492,10 @@ export default defineComponent({
     fetchTemplateData(dataId: string): void {
       this.waitingForData = true;
       new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-        .getEuTaxonomyDataForFinancialsControllerApi()
+        .getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials)
         .then((euTaxonomyDataForFinancialsControllerApiInterface) =>
           euTaxonomyDataForFinancialsControllerApiInterface
-            .getCompanyAssociatedEuTaxonomyDataForFinancials(dataId)
+            .getFrameworkData(dataId)
             .then((resolvedPromise) => {
               const companyAssociatedEuTaxonomyData = resolvedPromise.data;
               if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
@@ -646,11 +647,10 @@ export default defineComponent({
 
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getEuTaxonomyDataForFinancialsControllerApi();
-        this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-          );
+        ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
+        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
+          clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
+        );
         this.$emit("datasetCreated");
       } catch (error) {
         this.messageCount++;
