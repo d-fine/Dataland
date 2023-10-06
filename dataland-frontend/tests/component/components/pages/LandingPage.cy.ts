@@ -6,7 +6,7 @@ describe("Component test for the landing page", () => {
   it("Check if essential elements are present", () => {
     cy.mountWithPlugins(NewLandingPage, {
       keycloak: minimalKeycloakMock({}),
-    }).then((mounted) => {
+    }).then(() => {
       validateTopBar();
       validateIntroSection();
       validateBrandsSection();
