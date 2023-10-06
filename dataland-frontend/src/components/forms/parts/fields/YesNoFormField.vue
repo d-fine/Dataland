@@ -18,8 +18,8 @@
         :file-names-for-prefill="fileNamesForPrefill"
       />
       <FormKit v-if="baseDataPointYesNo.value === 'Yes'" type="group" name="dataSource">
-        <FormKit type="hidden" name="name" v-model="documentName" />
-        <FormKit type="text" name="reference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
+        <FormKit type="hidden" name="fileName" v-model="documentName" />
+        <FormKit type="hidden" name="fileReference" v-model="documentReference" />
       </FormKit>
     </FormKit>
     <div v-else-if="evidenceDesired">
@@ -42,11 +42,12 @@
                 <UploadFormHeader :label="`${label} Report`" :description="'Upload Report'" />
                 <FormKit
                   type="select"
-                  name="report"
+                  name="fileName"
                   v-model="currentReportValue"
                   placeholder="Select a report"
-                  :options="['None...', ...injectReportsName]"
+                  :options="['None...', ...reportsName]"
                 />
+                <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
               </div>
               <div>
                 <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
@@ -109,17 +110,18 @@ import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldPr
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { type DocumentToUpload } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { type BaseDataPointYesNo, QualityOptions } from "@clients/backend";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "YesNoFormField",
   components: { RadioButtonsFormElement, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
   inject: {
-    injectReportsName: {
-      from: "namesOfAllCompanyReportsForTheDataset",
-      default: [] as string[],
+    injectReportsNameAndReferences: {
+      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
+      default: {} as ObjectType,
     },
   },
   props: {
@@ -159,6 +161,12 @@ export default defineComponent({
         return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
       }
     },
+    reportsName(): string[] {
+      return getFileName(this.injectReportsNameAndReferences);
+    },
+    fileReferenceAccordingToName(): string {
+      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
+    },
   },
   emits: ["reportsUpdated"],
   mounted() {
@@ -185,7 +193,7 @@ export default defineComponent({
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
-      this.documentReference = this.referencedDocument?.reference ?? "";
+      this.documentReference = this.referencedDocument?.fileReference ?? "";
       this.$emit("reportsUpdated", this.documentName, this.referencedDocument);
     },
 

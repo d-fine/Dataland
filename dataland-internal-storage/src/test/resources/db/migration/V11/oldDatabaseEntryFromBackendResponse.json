@@ -1,0 +1,307 @@
+{
+    "financialServicesTypes": [
+      "CreditInstitution",
+      "InsuranceOrReinsurance",
+      "AssetManagement",
+      "InvestmentFirm"
+    ],
+    "eligibilityKpis": {
+      "CreditInstitution": {
+        "taxonomyEligibleActivityInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 414,
+            "tagName": null
+          },
+          "comment": "copy 1080p array",
+          "value": 41.5188
+        },
+        "taxonomyNonEligibleActivityInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 1166,
+            "tagName": null
+          },
+          "comment": "reboot multi-byte feed",
+          "value": 85.5525
+        },
+        "derivativesInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 13,
+            "tagName": null
+          },
+          "comment": "comment",
+          "value": 69.8722
+        },
+        "banksAndIssuersInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 159,
+            "tagName": null
+          },
+          "comment": "bypass solid state sensor",
+          "value": 42.7754
+        },
+        "investmentNonNfrdInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 13,
+            "tagName": null
+          },
+          "comment": "comment",
+          "value": 2.2527
+        }
+      },
+      "InvestmentFirm": {
+        "taxonomyEligibleActivityInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 538,
+            "tagName": null
+          },
+          "comment": "input virtual matrix",
+          "value": 12.2204
+        },
+        "taxonomyNonEligibleActivityInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 874,
+            "tagName": null
+          },
+          "comment": "override haptic circuit",
+          "value": 73.7567
+        },
+        "derivativesInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 188,
+            "tagName": null
+          },
+          "comment": "input online program",
+          "value": 63.8227
+        },
+        "banksAndIssuersInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 188,
+            "tagName": null
+          },
+          "comment": "reboot virtual port",
+          "value": 78.7088
+        },
+        "investmentNonNfrdInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 1006,
+            "tagName": null
+          },
+          "comment": "hack virtual panel",
+          "value": 24.0069
+        }
+      },
+      "InsuranceOrReinsurance": {
+        "taxonomyEligibleActivityInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 569,
+            "tagName": null
+          },
+          "comment": "hack virtual feed",
+          "value": 54.8237
+        },
+        "taxonomyNonEligibleActivityInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 928,
+            "tagName": null
+          },
+          "comment": "bypass multi-byte circuit",
+          "value": 31.4616
+        },
+        "derivativesInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 369,
+            "tagName": null
+          },
+          "comment": "generate solid state bandwidth",
+          "value": 36.2758
+        },
+        "banksAndIssuersInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 13,
+            "tagName": null
+          },
+          "comment": "comment",
+          "value": 80.6694
+        },
+        "investmentNonNfrdInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 1051,
+            "tagName": null
+          },
+          "comment": "navigate solid state transmitter",
+          "value": 91.7963
+        }
+      },
+      "AssetManagement": {
+        "taxonomyEligibleActivityInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 251,
+            "tagName": null
+          },
+          "comment": "copy mobile card",
+          "value": 9.5846
+        },
+        "taxonomyNonEligibleActivityInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 894,
+            "tagName": null
+          },
+          "comment": "copy digital driver",
+          "value": 18.2192
+        },
+        "derivativesInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 1010,
+            "tagName": null
+          },
+          "comment": "transmit redundant microchip",
+          "value": 30.8527
+        },
+        "banksAndIssuersInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 876,
+            "tagName": null
+          },
+          "comment": "override auxiliary hard drive",
+          "value": 82.7784
+        },
+        "investmentNonNfrdInPercent": {
+          "quality": "Audited",
+          "dataSource": {
+            "report": "some-document2",
+            "page": 224,
+            "tagName": null
+          },
+          "comment": "hack primary panel",
+          "value": 92.6354
+        }
+      }
+    },
+    "creditInstitutionKpis": {
+      "tradingPortfolioInPercent": {
+        "quality": "Audited",
+        "dataSource": {
+          "report": "some-document2",
+          "page": 1134,
+          "tagName": null
+        },
+        "comment": "program 1080p transmitter",
+        "value": 97.0335
+      },
+      "interbankLoansInPercent": {
+        "quality": "Audited",
+        "dataSource": {
+          "report": "some-document2",
+          "page": 995,
+          "tagName": null
+        },
+        "comment": "copy virtual application",
+        "value": 32.1835
+      },
+      "tradingPortfolioAndInterbankLoansInPercent": {
+        "quality": "Audited",
+        "dataSource": {
+          "report": "some-document2",
+          "page": 85,
+          "tagName": null
+        },
+        "comment": "reboot virtual program",
+        "value": 52.0076
+      },
+      "greenAssetRatioInPercent": {
+        "quality": "Audited",
+        "dataSource": {
+          "report": "some-document2",
+          "page": 806,
+          "tagName": null
+        },
+        "comment": "input neural microchip",
+        "value": 56.373
+      }
+    },
+    "investmentFirmKpis": {
+      "greenAssetRatioInPercent": {
+        "quality": "Audited",
+        "dataSource": {
+          "report": "some-document2",
+          "page": 13,
+          "tagName": null
+        },
+        "comment": "comment",
+        "value": 81.1588
+      }
+    },
+    "insuranceKpis": {
+      "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+        "quality": "Audited",
+        "dataSource": {
+          "report": "some-document2",
+          "page": 93,
+          "tagName": null
+        },
+        "comment": "bypass mobile system",
+        "value": 31.1898
+      }
+    },
+    "fiscalYearDeviation": "NoDeviation",
+    "fiscalYearEnd": "2023-10-12",
+    "scopeOfEntities": "No",
+    "nfrdMandatory": "Yes",
+    "euTaxonomyActivityLevelReporting": "No",
+    "assurance": {
+      "assurance": "LimitedAssurance",
+      "provider": "Assurance Provider",
+      "dataSource": {
+        "report": "some-document2",
+        "page": 1,
+        "tagName": null
+      }
+    },
+    "numberOfEmployees": 81152,
+    "referencedReports": {
+      "some-document2": {
+        "reference": "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+        "isGroupLevel": "No",
+        "reportDate": "2023-08-12",
+        "currency": "EUR"
+      }
+    }
+  }

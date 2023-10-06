@@ -21,7 +21,12 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { type Subcategory, type Field } from "@/utils/GenericFrameworkTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { type DataAndMetaInformationLksgData, type LksgData, type LksgProcurementCategory } from "@clients/backend";
+import {
+  type DataAndMetaInformationLksgData,
+  DataTypeEnum,
+  type LksgData,
+  type LksgProcurementCategory,
+} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
 import { type ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
@@ -76,16 +81,15 @@ export default defineComponent({
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getLksgDataControllerApi();
+        ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
         if (this.singleDataMetaInfoToDisplay) {
-          const singleLksgData = (
-            await lksgDataControllerApi.getCompanyAssociatedLksgData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data;
+          const singleLksgData = (await lksgDataControllerApi.getFrameworkData(this.singleDataMetaInfoToDisplay.dataId))
+            .data.data;
 
           this.lksgDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleLksgData }];
         } else {
           this.lksgDataAndMetaInfo = (
-            await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
+            await lksgDataControllerApi.getAllCompanyData(assertDefined(this.companyId))
           ).data;
         }
         this.convertLksgDataToFrontendFormat();

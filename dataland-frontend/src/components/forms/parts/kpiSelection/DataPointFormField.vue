@@ -9,21 +9,22 @@
           v-model="currentValue"
           :validation-label="validationLabel ?? label"
           :validation="`number|${validation}`"
-          placeholder="Value"
+          :placeholder="unit ? `Value in ${unit}` : 'Value'"
           outer-class="short"
           @blur="handleBlurValue"
         />
         <div v-if="unit" class="form-field-label pb-3">
-          <FormKit type="hidden" name="unit" :modelValue="unit" />
-          <span>in {{ unit }}</span>
+          <FormKit type="hidden" name="currency" />
+          <span>{{ unit }}</span>
         </div>
         <FormKit
           v-else-if="options"
           type="select"
-          name="unit"
+          name="currency"
           placeholder="Currency"
           :options="options"
           outer-class="short"
+          data-test="datapoint-currency"
         />
       </div>
     </div>
@@ -37,11 +38,12 @@
             />
             <FormKit
               type="select"
-              name="report"
+              name="fileName"
               v-model="currentReportValue"
               placeholder="Select a report"
-              :options="['None...', ...injectReportsName]"
+              :options="['None...', ...reportsName]"
             />
+            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
           <div>
             <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
@@ -95,14 +97,16 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "DataPointFormField",
   components: { UploadFormHeader, FormKit },
   inject: {
-    injectReportsName: {
-      from: "namesOfAllCompanyReportsForTheDataset",
-      default: [] as string[],
+    injectReportsNameAndReferences: {
+      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
+      default: {} as ObjectType,
     },
   },
   computed: {
@@ -115,6 +119,12 @@ export default defineComponent({
       } else {
         return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
       }
+    },
+    reportsName(): string[] {
+      return getFileName(this.injectReportsNameAndReferences);
+    },
+    fileReferenceAccordingToName(): string {
+      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
     },
   },
   data() {

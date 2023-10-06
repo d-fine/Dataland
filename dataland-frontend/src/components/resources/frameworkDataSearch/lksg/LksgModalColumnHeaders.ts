@@ -30,10 +30,4 @@ export const lksgModalColumnHeaders = {
   subcontractingCompaniesCountries: {
     subcontractingCompaniesCountries: "Countries",
   },
-  productsServicesCategoriesPurchased: {
-    procurementCategory: "Procurement Category",
-    procuredProductTypesAndServicesNaceCodes: "Procured Product Types and Services NACE codes",
-    suppliersAndCountries: "Suppliers and Countries",
-    percentageOfTotalProcurement: "Percentage of Total Procurement",
-  },
 };

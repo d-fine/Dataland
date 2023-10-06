@@ -1,4 +1,4 @@
-import { type DocumentReference } from "@clients/backend";
+import { type BaseDocumentReference } from "@clients/backend";
 
 export enum MLDTDisplayComponents {
   StringDisplayComponent = "StringDisplayComponent",
@@ -7,7 +7,7 @@ export enum MLDTDisplayComponents {
 
 export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponents.StringDisplayComponent]: string | undefined | null;
-  [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: DocumentReference };
+  [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: BaseDocumentReference };
 };
 
 export type AvailableDisplayValues = {

@@ -75,8 +75,8 @@ function manipulateFixtureForOneP2pDataSetWithThreeSectors(
   input.t.livestockFarming!.animalFeed!.externalFeedCertification = {
     value: "Yes",
     dataSource: {
-      name: "Policy",
-      reference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      fileName: "Policy",
+      fileReference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
     },
   };
   return input;

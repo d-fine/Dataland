@@ -155,7 +155,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { type EuTaxonomyDataForFinancials } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForFinancials } from "@clients/backend";
 import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
 import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
 import ShowReportsBanner from "@/components/resources/frameworkDataSearch/ShowReportsBanner.vue";
@@ -206,11 +206,10 @@ export default defineComponent({
         if (this.dataID != "loading") {
           const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)(),
-          ).getEuTaxonomyDataForFinancialsControllerApi();
-          const companyAssociatedData =
-            await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-              assertDefined(this.dataID),
-            );
+          ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
+          const companyAssociatedData = await euTaxonomyDataForFinancialsControllerApi.getFrameworkData(
+            assertDefined(this.dataID),
+          );
           this.dataSet = companyAssociatedData.data.data;
           this.waitingForData = false;
         }

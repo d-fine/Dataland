@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { type CompanyReportReference, type DocumentReference, QualityOptions } from "@clients/backend";
+import { type ExtendedDocumentReference, type BaseDocumentReference, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { pickSubsetOfElements, pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNoNa } from "./YesNoFixtures";
@@ -30,7 +30,7 @@ export function generateReferencedReports(
   const referencedReports: ReferencedDocuments = {};
   for (const reportName of availableReportNames) {
     referencedReports[reportName] = {
-      reference: getReferencedDocumentId(),
+      fileReference: getReferencedDocumentId(),
       isGroupLevel: valueOrNull(generateYesNoNa(), nullProbability),
       reportDate: valueOrNull(generatePastDate(), nullProbability),
       currency: generateCurrencyCode(),
@@ -43,13 +43,13 @@ export function generateReferencedReports(
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
  * @param value the value of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
- * @param unit the unit of the datapoint to generate. For datapoint types without unit this must be left out.
+ * @param currency the currency of the datapoint to generate
  * @returns the generated datapoint
  */
 export function generateDataPoint<T>(
   value: T | null,
   reports: ReferencedDocuments,
-  unit?: string | null,
+  currency?: string | null,
 ): GenericDataPoint<T> {
   const qualityBucket =
     value === null
@@ -63,21 +63,21 @@ export function generateDataPoint<T>(
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
-    unit: unit,
-  };
+    currency: currency,
+  } as GenericDataPoint<T>;
 }
 
 export interface GenericDataPoint<T> {
   value: T | null;
-  dataSource: CompanyReportReference;
+  dataSource: ExtendedDocumentReference | null;
   quality: QualityOptions;
   comment: string | null;
-  unit?: string | null;
+  currency?: string | null;
 }
 
 export interface GenericBaseDataPoint<T> {
   value: T;
-  dataSource: DocumentReference | null;
+  dataSource: BaseDocumentReference | null;
 }
 
 /**
@@ -89,9 +89,9 @@ export interface GenericBaseDataPoint<T> {
 function generateQualityAndDataSourceAndComment(
   reports: ReferencedDocuments,
   qualityBucket: QualityOptions,
-): { dataSource: CompanyReportReference; comment: string | null } {
-  let dataSource: CompanyReportReference;
-  let comment: string | null;
+): { dataSource: ExtendedDocumentReference | null; comment: string | null } {
+  let dataSource: ExtendedDocumentReference | null = null;
+  let comment: string | null = null;
   if (
     qualityBucket === QualityOptions.Audited ||
     qualityBucket === QualityOptions.Reported ||
@@ -100,9 +100,6 @@ function generateQualityAndDataSourceAndComment(
   ) {
     dataSource = generateDataSource(reports);
     comment = faker.git.commitMessage();
-  } else {
-    dataSource = { report: "", page: null, tagName: null };
-    comment = null;
   }
   return { dataSource, comment };
 }

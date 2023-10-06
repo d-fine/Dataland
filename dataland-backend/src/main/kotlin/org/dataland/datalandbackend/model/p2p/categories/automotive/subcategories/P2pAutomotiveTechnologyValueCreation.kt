@@ -6,8 +6,8 @@ import java.time.LocalDate
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding the value creation of the automotive sector
- */
+ * Fields of the subcategory "Technology/value creation" belonging to the category "Automotive" of the p2p framework.
+*/
 data class P2pAutomotiveTechnologyValueCreation(
     val driveMixInPercent: BigDecimal? = null,
 

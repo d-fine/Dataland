@@ -10,7 +10,7 @@
         <DocumentLink
           data-test="documentLinkTest"
           :download-name="name"
-          :reference="report.reference"
+          :fileReference="report.fileReference"
           font-style="font-semibold"
         />
       </span>
@@ -91,7 +91,9 @@ export default defineComponent({
      * @returns returns a boolean wheter a report has been found
      */
     doPreviousReportsExist(reports: Array<{ [p: string]: CompanyReport }>, indexOfNewestReport: number): boolean {
-      if (!reports) return false;
+      if (!reports) {
+        return false;
+      }
       let reportsFound = false;
       reports.forEach((report, index) => {
         if (index != indexOfNewestReport) {
