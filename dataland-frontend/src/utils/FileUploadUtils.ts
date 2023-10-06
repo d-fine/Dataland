@@ -11,7 +11,6 @@ export interface DocumentToUpload {
 
   fileReference: string;
 }
-//TODO remove storedReport and use compnayReport
 export interface StoredReport extends CompanyReport {
   fileName: string;
 }
