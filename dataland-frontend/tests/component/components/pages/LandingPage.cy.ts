@@ -12,7 +12,10 @@ describe("Component test for the landing page", () => {
       validateIntroSection();
       validateBrandsSection();
       // checkLinkByTarget("/mission", "OUR MISSION");
+      cy.get("button:contains('START YOUR DATALAND JOURNEY')")// TODO .should("be.disabled");
       // TODO slide show test
+      // TODO test I AM INTERESTED button
+      // TODO test get in contact button
 
       // TODO test targets
       // cy.get("button.campaigns__button").should("have.length", 4);
@@ -23,6 +26,7 @@ describe("Component test for the landing page", () => {
       //   cy.wrap(mounted.component).its("$route.path").should("eq", landingPagePath);
       // });
 
+      validateHowItWorksSlides()
       checkNewFooter();
 
       // TODO check redirecting buttons that work for redirection
@@ -94,4 +98,26 @@ function checkNewFooter(): void {
   checkLinkByTarget("/legal", "Legal", getFooter());
   checkLinkByTarget("/imprint", "Imprint", getFooter());
   checkLinkByTarget("/dataprivacy", "Data Privacy", getFooter());
+}
+
+/**
+ * Validates that the slide show on "How it works" works as expected
+ */
+function validateHowItWorksSlides(): void {
+  /**
+   * Gets the "How it works" element
+   * @returns the "How it works" element
+   */
+  function getSlidesWrapper(): Cypress.Chainable {
+    return cy.get("div.howitworks__wrapper")
+  }
+
+  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "none");
+  getSlidesWrapper().find("button[aria-label='Next slide']").click()
+  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
+  getSlidesWrapper().find("button[aria-label='Next slide']").click()
+  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -880, 0)");
+  getSlidesWrapper().find("button[aria-label='Previous slide']").click()
+  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
+
 }
