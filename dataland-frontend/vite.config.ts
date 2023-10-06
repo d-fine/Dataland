@@ -29,6 +29,7 @@ export default defineConfig({
       "primevue/inputtext",
       "primevue/inputswitch",
       "primevue/dynamicdialog",
+      "primevue/usedialog",
       "primevue/dialog",
       "primevue/textarea",
       "primevue/dropdown",
