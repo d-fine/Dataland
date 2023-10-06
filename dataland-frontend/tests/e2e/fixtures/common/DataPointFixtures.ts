@@ -33,7 +33,7 @@ export function generateReferencedReports(
       fileReference: getReferencedDocumentId(),
       isGroupLevel: valueOrNull(generateYesNoNa(), nullProbability),
       reportDate: valueOrNull(generatePastDate(), nullProbability),
-      currency: valueOrNull(generateCurrencyCode(), nullProbability),
+      currency: generateCurrencyCode(),
     };
   }
   return referencedReports;
