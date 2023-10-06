@@ -2,33 +2,30 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "New Isaiahcester",
-			"headquartersPostalCode": "42346-5392",
+			"headquarters": "Crooksmouth",
+			"headquartersPostalCode": "78836",
 			"sector": null,
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"JGcXZx6khFRfdkjYORu4"
+				],
 				"Isin": [
-					"G4T8m7Mi8H6U"
+					"ppMcKW6rWCuc"
 				],
-				"PermId": [
-					"DkzKsOCMXS"
-				],
+				"PermId": [],
 				"Ticker": [
-					"SPI2zwM"
+					"oB2Vs8R"
 				],
-				"Duns": [
-					"Fdu23IoHU"
+				"Duns": [],
+				"VatNumber": [
+					"5uPncW0nM"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"yQIrWTSaA1dZbRw"
+				]
 			},
-			"countryCode": "TC",
-			"companyAlternativeNames": [
-				"Bashirian - Nikolaus",
-				"Gulgowski - Kuhn",
-				"Klein, Senger and Block",
-				"Mosciski, Becker and Lueilwitz"
-			],
+			"countryCode": "GH",
+			"companyAlternativeNames": [],
 			"companyLegalForm": null,
 			"website": null,
 			"isTeaserCompany": false
@@ -37,20 +34,21 @@
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"19.20",
-						"25.72",
-						"26",
-						"69.20"
+						"13.91",
+						"32.50",
+						"50.10",
+						"60.10",
+						"82.19"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": "94809",
-						"city": "Danielburgh",
-						"state": "Maine",
-						"country": "SX"
+						"streetAndHouseNumber": "Dare Ways 47903",
+						"postalCode": null,
+						"city": "Stratford",
+						"state": "New Hampshire",
+						"country": "CM"
 					},
-					"numberOfEmployees": 4380,
-					"fiscalYearStart": "2024-04-13"
+					"numberOfEmployees": 9670,
+					"fiscalYearStart": "2024-08-18"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -60,31 +58,22 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Licensed Wooden Towels",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Unbranded Fresh Shirt",
-							"shareOfTotalRevenueInPercent": 95.8446
-						},
-						{
-							"name": "Electronic Wooden Ball",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Bespoke Frozen Gloves",
-							"shareOfTotalRevenueInPercent": 72.4189
-						},
-						{
-							"name": "Electronic Wooden Sausages",
-							"shareOfTotalRevenueInPercent": 42.1885
+							"nameOfProductionSite": "Bahringer - Schinner",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Crooks Village 58722",
+								"postalCode": "18024-0370",
+								"city": "Armstrongburgh",
+								"state": "Nevada",
+								"country": "RE"
+							},
+							"shareOfTotalRevenueInPercent": 39.9224
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": null
 				}
 			},
 			"power": {
@@ -92,9 +81,9 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1460,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 750,
+					"powerConsumptionInMWh": 1002,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 853,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
@@ -102,14 +91,13 @@
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 26628365,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 29526361,
 					"naturalHazardsCovered": [
-						"Wind",
-						"Flooding",
 						"Hail",
-						"EarthQuake",
+						"Avalanche",
+						"Flooding",
 						"Snow",
-						"Avalanche"
+						"EarthQuake"
 					]
 				}
 			}
@@ -119,44 +107,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Port Emmie",
-			"headquartersPostalCode": "84888-1515",
-			"sector": "interfaces",
+			"headquarters": "New Reymundo",
+			"headquartersPostalCode": "11877-5245",
+			"sector": "bandwidth",
 			"identifiers": {
-				"Lei": [
-					"ExZCMUgQrWYjrYleVp3C"
-				],
+				"Lei": [],
 				"Isin": [
-					"jjgZK7hfemlt",
-					"SSRj1euNNwRQ"
+					"XAbZqijCIMrN",
+					"P3Rz8upxfWzu"
 				],
-				"PermId": [
-					"93TCAlpmFS"
-				],
+				"PermId": [],
 				"Ticker": [
-					"PK9n4z2"
+					"lEbyfaN"
 				],
 				"Duns": [
-					"W5ggnVsvh"
+					"lhbh7zo85"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"zLlM1jbo0"
+				],
+				"CompanyRegistrationNumber": [
+					"j4jxB0dlnSnvgQ1"
+				]
 			},
-			"countryCode": "IN",
+			"countryCode": "CN",
 			"companyAlternativeNames": [
-				"Adams and Sons",
-				"Borer - Barrows",
-				"O'Conner - Feest"
+				"Beier LLC",
+				"Hettinger Group"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://silky-date.com",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://staid-skirt.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"J"
+						"09.9"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -165,13 +152,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7629,
-					"fiscalYearStart": "2024-06-10"
+					"numberOfEmployees": 8804,
+					"fiscalYearStart": "2024-09-18"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 44724745,
-					"capitalAssetsInEUR": 20630515
+					"revenueInEUR": 55637307,
+					"operatingCostInEUR": 21094529,
+					"capitalAssetsInEUR": 59861326
 				}
 			},
 			"production": {
@@ -181,40 +168,37 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Fantastic Steel Fish",
-							"shareOfTotalRevenueInPercent": null
+							"name": "Unbranded Bronze Bike",
+							"shareOfTotalRevenueInPercent": 51.5105
 						},
 						{
-							"name": "Tasty Bronze Bacon",
-							"shareOfTotalRevenueInPercent": 57.9953
+							"name": "Awesome Granite Pizza",
+							"shareOfTotalRevenueInPercent": 73.4583
 						},
 						{
-							"name": "Generic Metal Mouse",
-							"shareOfTotalRevenueInPercent": null
+							"name": "Incredible Cotton Hat",
+							"shareOfTotalRevenueInPercent": 51.2837
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 489,
+					"powerConsumptionInMWh": null,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 102,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"energyConsumptionHeatingAndHotWaterInMWh": 3,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 2279508,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Hail",
-						"Snow",
 						"Flooding"
 					]
 				}
@@ -225,43 +209,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Port Nikkimouth",
-			"headquartersPostalCode": "91646-0181",
-			"sector": "blockchains",
+			"headquarters": "East Christellefort",
+			"headquartersPostalCode": "51364-9459",
+			"sector": "web services",
 			"identifiers": {
 				"Lei": [
-					"OCHdV2IflbTXjgtNMoSs"
+					"HwlVfVWAvWyqnIwVhpVZ"
 				],
 				"Isin": [
-					"VTii4eTcNhdg"
+					"K1x0BPVhlgng"
 				],
-				"PermId": [],
+				"PermId": [
+					"R1dJYdE5D8"
+				],
 				"Ticker": [
-					"I9liYNv"
+					"ZLlkqKM"
 				],
-				"Duns": [
-					"MwalmLKzU"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"Hz5RbeGu9"
+					"K0ZLZlTtQ"
 				],
-				"CompanyRegistrationNumber": [
-					"NTjoY8EIfZebYKJ"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IO",
+			"countryCode": "SS",
 			"companyAlternativeNames": [
-				"Farrell Group"
+				"Dietrich - Carroll",
+				"Legros Group",
+				"Osinski, Cummings and Jast"
 			],
 			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://partial-apology.net",
+			"website": "https://rectangular-microwave.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"27.1"
+						"55.30"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -270,12 +254,12 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2427,
-					"fiscalYearStart": "2024-02-12"
+					"numberOfEmployees": 1140,
+					"fiscalYearStart": "2024-09-19"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": null,
+					"revenueInEUR": 65695236,
+					"operatingCostInEUR": 20802716,
 					"capitalAssetsInEUR": null
 				}
 			},
@@ -283,44 +267,87 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "Kreiger Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "77660",
+								"city": "Lake Judahshire",
+								"state": null,
+								"country": "LI"
+							},
+							"shareOfTotalRevenueInPercent": 50.7136
+						},
+						{
+							"nameOfProductionSite": "Strosin - Deckow",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Dibbert Meadows 2387",
+								"postalCode": "04153",
+								"city": "East Hartford",
+								"state": "Oklahoma",
+								"country": "VE"
+							},
+							"shareOfTotalRevenueInPercent": 33.138
+						},
+						{
 							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Crona Ways 73901",
-								"postalCode": "31589",
-								"city": "Victoria",
-								"state": "Alabama",
-								"country": "MN"
+								"streetAndHouseNumber": "Alexane Cliffs 48458",
+								"postalCode": "09745-2221",
+								"city": "Shanelstead",
+								"state": "Georgia",
+								"country": "AM"
 							},
-							"shareOfTotalRevenueInPercent": 78.7395
+							"shareOfTotalRevenueInPercent": 60.0453
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Bespoke Frozen Tuna",
+							"shareOfTotalRevenueInPercent": 77.8074
+						},
+						{
+							"name": "Small Metal Soap",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Generic Fresh Computer",
+							"shareOfTotalRevenueInPercent": 95.1891
+						},
+						{
+							"name": "Small Concrete Soap",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Gorgeous Bronze Fish",
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1681,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 805,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMWh": 447,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 974,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 3499232,
 					"naturalHazardsCovered": [
-						"Snow",
-						"Hail",
 						"EarthQuake",
-						"Wind",
-						"Avalanche"
+						"Hail",
+						"Flooding",
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}
