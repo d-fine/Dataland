@@ -31,8 +31,8 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
   cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
   cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
   cy.visitAndCheckAppMount("/")
-    .wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
-    .get("button[name='login_dataland_button']")
+    // .wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+    .get("a[aria-label='Login to preview account']")
     .click()
     .get("#username")
     .should("exist")
