@@ -11,12 +11,12 @@ import { pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureU
 export function generateAssuranceData(reports: ReferencedDocuments): AssuranceData {
   const assurance = pickOneElement(Object.values(AssuranceDataAssuranceEnum));
   const provider =
-    assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean() ? faker.company.name() : undefined;
+    assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean() ? faker.company.name() : null;
 
   const dataSource =
     assurance !== AssuranceDataAssuranceEnum.None && faker.datatype.boolean()
       ? generateDataSource(reports)
-      : { report: "", page: undefined, tagName: undefined };
+      : { report: "", page: null, tagName: null };
 
   return {
     assurance: assurance,

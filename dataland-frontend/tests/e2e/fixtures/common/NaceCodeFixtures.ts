@@ -20,7 +20,7 @@ export function generateNaceCodes(min = 0, max = 5): string[] {
  * @param activityName name of the activity to return NACE codes for
  * @returns a random number of valid NACE codes
  */
-export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: string): string[] | undefined {
+export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: string): string[] | null {
   for (const node of activityTree) {
     if (node.type === "header" && node.children) {
       for (const childNode of node.children) {
@@ -36,10 +36,10 @@ export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: stri
 /**
  * Gets a random number of NACE codes for one specific childNode if it actually contains NACE codes.
  * @param childNode node in the activity tree to get potential NACE codes from
- * @returns a random number of valid NACE codes or undefined
+ * @returns a random number of valid NACE codes or null
  */
-function getRandomNumberOfNaceCodes(childNode: TreeNode): string[] | undefined {
-  let naceCodesToReturn;
+function getRandomNumberOfNaceCodes(childNode: TreeNode): string[] | null {
+  let naceCodesToReturn: string[] | null = null;
   if (Array.isArray(childNode.naceCodes) && childNode.naceCodes.every((item) => typeof item === "string")) {
     const allNaceCodesForActivity = childNode.naceCodes as string[];
     const listWithRandomNumberOfNaceCodes = Array.from(

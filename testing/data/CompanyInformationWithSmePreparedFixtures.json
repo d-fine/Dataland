@@ -2,48 +2,58 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Miltonfield",
-			"sector": "methodologies",
+			"headquarters": "Fort Valentin",
+			"headquartersPostalCode": null,
+			"sector": "supply-chains",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"97uIYEQSNQ8X"
+					"2vbZ7EY9PzAm"
 				],
 				"PermId": [
-					"LoZIhr6rui"
+					"aMxXuIFf0L"
 				],
 				"Ticker": [
-					"ZBgnNB3"
+					"KrYGbZd"
 				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"Duns": [
+					"SpNqD6XSi"
+				],
+				"VatNumber": [
+					"l3bVq9aXh"
+				],
+				"CompanyRegistrationNumber": [
+					"SsM2HTvu3lhap7U"
+				]
 			},
-			"countryCode": "PT",
+			"countryCode": "PG",
 			"companyAlternativeNames": [
-				"Barton, Yundt and Koepp",
-				"Lynch, Witting and Ullrich"
+				"Prosacco, Nitzsche and Leannon",
+				"Terry Inc",
+				"Walker and Sons"
 			],
-			"website": "https://luminous-sundae.net",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://disguised-gazelle.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"06.2",
-						"56.3",
-						"60.1",
-						"62.03",
-						"80"
+						"01.30",
+						"03.1",
+						"25.9",
+						"58.2"
 					],
 					"addressOfHeadquarters": {
-						"postalCode": "51617-7433",
-						"city": "South Justyn",
-						"country": "ZM"
+						"streetAndHouseNumber": "Mekhi Estates 515",
+						"postalCode": "56103",
+						"city": "Bridgeport",
+						"state": "Montana",
+						"country": "VI"
 					},
-					"numberOfEmployees": 8936,
-					"fiscalYearStart": "2024-08-30"
+					"numberOfEmployees": 4909,
+					"fiscalYearStart": "2024-02-08"
 				},
 				"companyFinancials": {
 					"revenueInEur": 0,
@@ -55,57 +65,42 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
+							"nameOfProductionSite": "McKenzie LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Effertz Junctions 71909",
-								"postalCode": "89436",
-								"city": "Fort Jessicaland",
-								"state": "New Hampshire",
-								"country": "MX"
-							}
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Cassin Lock 728",
-								"postalCode": "68274",
-								"city": "New Gino",
-								"state": "South Dakota",
-								"country": "CD"
+								"streetAndHouseNumber": "Aiyana Circle 32363",
+								"postalCode": "88760",
+								"city": "Schinnertown",
+								"state": "California",
+								"country": "AG"
 							},
-							"shareOfTotalRevenueInPercent": 81.3257
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Waters Cape 111",
-								"postalCode": "28979",
-								"city": "Urbandale",
-								"state": "Massachusetts",
-								"country": "IO"
-							}
+							"shareOfTotalRevenueInPercent": 89.0803
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": null
+				}
 			},
 			"power": {
 				"investments": {
 					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1105,
-					"energyConsumptionHeatingAndHotWater": 121,
+					"powerConsumptionInMwh": 277,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWater": 388,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 42578469,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Hail",
-						"Wind",
-						"Avalanche",
 						"EarthQuake",
-						"Snow"
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}
@@ -115,43 +110,48 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Florencemouth",
-			"headquartersPostalCode": "32284-3085",
-			"sector": "channels",
+			"headquarters": "Bayerstead",
+			"headquartersPostalCode": "08890",
+			"sector": "action-items",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"6RRVA64VKGYiH4EJaTIx"
+				],
 				"Isin": [
-					"tD2qmY4QzT8T",
-					"iKk2RIkKFiDG"
+					"0IVyzxpvwJbQ"
 				],
 				"PermId": [
-					"Sg5E2KSLj2"
+					"uelWoLkdMG"
 				],
-				"Ticker": [
-					"MAzq5sF"
+				"Ticker": [],
+				"Duns": [
+					"R7pOdYUZ4"
 				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"D8iEB8X4s"
+				],
+				"CompanyRegistrationNumber": [
+					"pPX1ZomFrYpM7He"
+				]
 			},
-			"countryCode": "PY",
+			"countryCode": "NR",
 			"companyAlternativeNames": [
-				"Fisher - Cruickshank",
-				"Green Group",
-				"Hegmann - Welch"
+				"Hirthe, Kerluke and Mitchell",
+				"King, Berge and Towne",
+				"Satterfield Group"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://virtuous-harpsichord.info/",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://true-sneakers.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"20.15",
-						"22.1",
-						"55.20",
-						"73.11"
+						"06.2",
+						"38.3",
+						"47.43",
+						"58.12"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -160,81 +160,56 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 267,
-					"fiscalYearStart": "2024-02-28"
+					"numberOfEmployees": 6506,
+					"fiscalYearStart": "2024-04-09"
 				},
 				"companyFinancials": {
-					"revenueInEur": 48202082,
-					"operatingCostInEur": 73109966,
-					"capitalAssetsInEur": 4172119
+					"revenueInEur": 26268156,
+					"operatingCostInEur": 20610343,
+					"capitalAssetsInEur": 38813017
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Haley Inc",
+							"nameOfProductionSite": "Smith - Wiegand",
 							"addressOfProductionSite": {
-								"postalCode": "98350",
-								"city": "Port Quentin",
-								"country": "TF"
+								"streetAndHouseNumber": "Stokes Parks 2375",
+								"postalCode": "96091-0659",
+								"city": "Nelliefield",
+								"state": "Maine",
+								"country": "ML"
 							},
-							"shareOfTotalRevenueInPercent": 49.0146
-						},
-						{
-							"nameOfProductionSite": "Grimes, Kreiger and Schaden",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Elizabeth Way 871",
-								"postalCode": "05727-7542",
-								"city": "Schummborough",
-								"state": "Idaho",
-								"country": "NR"
-							},
-							"shareOfTotalRevenueInPercent": 86.4689
-						},
-						{
-							"nameOfProductionSite": "Reichel - Hartmann",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Merlin Extension 64270",
-								"postalCode": "64469-4303",
-								"city": "Quitzonchester",
-								"country": "KR"
-							},
-							"shareOfTotalRevenueInPercent": 40.9001
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Oriental Plastic Chips",
-							"shareOfTotalRevenueInPercent": 66.2252
-						},
-						{
-							"name": "Handmade Concrete Shoes",
-							"shareOfTotalRevenueInPercent": 79.5159
-						},
-						{
-							"name": "Handcrafted Cotton Tuna",
-							"shareOfTotalRevenueInPercent": 93.8005
-						},
-						{
-							"name": "Fantastic Wooden Mouse"
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
+				},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 497,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMwh": 646,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWater": 519,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 235343
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 39399091,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Hail",
+						"Avalanche"
+					]
 				}
 			}
 		},
@@ -243,117 +218,117 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Fort Dianachester",
-			"sector": "deliverables",
+			"headquarters": "Meaganview",
+			"headquartersPostalCode": null,
+			"sector": "systems",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"HOZWYHViKGrI"
+					"UGt3p9NtIYHr",
+					"TqyyzTFhywlT"
 				],
 				"PermId": [],
 				"Ticker": [
-					"OfdtA9p"
+					"22O7pNW"
 				],
-				"Duns": [],
+				"Duns": [
+					"ezAWoseAF"
+				],
 				"VatNumber": [
-					"jNMYORlGl"
+					"6zodI7wQq"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"i5jzZcoNDdnwlMU"
+				]
 			},
-			"countryCode": "UZ",
+			"countryCode": "SB",
 			"companyAlternativeNames": [
-				"Balistreri, Skiles and Stoltenberg",
-				"White, Hyatt and Willms"
+				"Stoltenberg LLC",
+				"Swift - Johnson",
+				"Yost Group"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://unequaled-developing.name/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://super-baby.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"31.01"
+						"85.52"
 					],
 					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
 						"city": "City 17",
+						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8427,
-					"fiscalYearStart": "2024-05-24"
+					"numberOfEmployees": 8313,
+					"fiscalYearStart": "2024-07-16"
 				},
 				"companyFinancials": {
-					"revenueInEur": 41457582,
-					"operatingCostInEur": 25845827,
-					"capitalAssetsInEur": 67940658
+					"revenueInEur": 48326272,
+					"operatingCostInEur": 3582253,
+					"capitalAssetsInEur": 64352005
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Rempel and Sons",
+							"nameOfProductionSite": "Kuhic, Leannon and Koelpin",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Marty Groves 988",
-								"postalCode": "10927",
-								"city": "East Alayna",
-								"state": "North Carolina",
-								"country": "CI"
-							}
-						},
-						{
-							"nameOfProductionSite": "Williamson - Morissette",
-							"addressOfProductionSite": {
-								"postalCode": "20147-8456",
-								"city": "Port Normaville",
-								"state": "Nevada",
-								"country": "AE"
-							}
-						},
-						{
-							"nameOfProductionSite": "Friesen, Grant and Brakus",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Hauck Views 5193",
-								"postalCode": "52576-0298",
-								"city": "Norman",
-								"state": "Montana",
-								"country": "DO"
+								"streetAndHouseNumber": "Bruen Hills 979",
+								"postalCode": "46724",
+								"city": "Port Jaida",
+								"state": null,
+								"country": "KR"
 							},
-							"shareOfTotalRevenueInPercent": 91.6245
-						},
-						{
-							"nameOfProductionSite": "Bradtke and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ryder Field 3524",
-								"postalCode": "40059-3135",
-								"city": "East Dereckton",
-								"state": "New Hampshire",
-								"country": "ZM"
-							},
-							"shareOfTotalRevenueInPercent": 73.561
+							"shareOfTotalRevenueInPercent": 10.1839
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Sleek Concrete Computer",
-							"shareOfTotalRevenueInPercent": 81.5462
+							"name": "Handmade Soft Fish",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Handmade Frozen Chips",
+							"shareOfTotalRevenueInPercent": 98.5617
+						},
+						{
+							"name": "Handcrafted Bronze Bacon",
+							"shareOfTotalRevenueInPercent": 49.8036
+						},
+						{
+							"name": "Awesome Frozen Bacon",
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageOfInvestmentsInEnhancingEnergyEfficiency": null
+				},
 				"consumption": {
-					"powerConsumptionInMwh": 1856,
-					"energyConsumptionHeatingAndHotWater": 733
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWater": 577,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 40373490
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"naturalHazardsCovered": [
+						"EarthQuake"
+					]
 				}
 			}
 		},

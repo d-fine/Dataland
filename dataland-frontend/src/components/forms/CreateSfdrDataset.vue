@@ -107,7 +107,7 @@ import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 import { AxiosError } from "axios";
-import { type CompanyAssociatedDataSfdrData, type CompanyReport } from "@clients/backend";
+import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -235,9 +235,9 @@ export default defineComponent({
       this.waitingForData = true;
       const sfdrDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getSfdrDataControllerApi();
+      ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
 
-      const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
+      const dataResponse = await sfdrDataControllerApi.getFrameworkData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
       this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
@@ -256,8 +256,8 @@ export default defineComponent({
 
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getSfdrDataControllerApi();
-        await sfdrDataControllerApi.postCompanyAssociatedSfdrData(this.companyAssociatedSfdrData);
+        ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
+        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
