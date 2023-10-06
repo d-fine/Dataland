@@ -1,12 +1,6 @@
 <template>
   <div class="header__authsection">
-    <a
-      aria-label="Login to preview account"
-      class="header__authsection-login"
-      @click="login"
-    >
-      Login
-    </a>
+    <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
     <button aria-label="Sign up to preview account" class="header__authsection-button" name="signup_dataland_button">
       Sign Up
     </button>

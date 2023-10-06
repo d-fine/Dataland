@@ -29,15 +29,9 @@ const introSection = computed(() => {
   return sections?.find((section) => section.title === "Intro") ?? null;
 });
 
-<<<<<<< HEAD
 // const introCard = computed(() => {
 //   return introSection.value?.cards?.find((card) => card.icon && card.text) || null;
 // });
-=======
-const introCard = computed(() => {
-  return introSection.value?.cards?.find((card) => card.icon && card.text) ?? null;
-});
->>>>>>> e06028902a1522742dfc374ba02d4f4c8e4f7c53
 </script>
 
 <style scoped lang="scss">
