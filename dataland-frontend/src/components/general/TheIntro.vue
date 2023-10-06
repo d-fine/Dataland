@@ -10,19 +10,18 @@
 
     <h1 class="intro__text">
       <template v-for="(part, index) in introSection.text" :key="index">
-        <span v-if="index === 0">{{ part }}</span>
+        <span v-if="index === 0 || index === 2">{{ part }}</span>
         <template v-else>{{ part }}</template>
       </template>
     </h1>
-    <TheSearch v-if="introCard" :icon="introCard.icon ?? ''" :placeholderText="introCard.text" />
-    <button class="intro__button">START YOUR DATALAND JOURNEY</button>
+    <!-- <TheSearch v-if="introCard" :icon="introCard.icon ?? ''" :placeholderText="introCard.text" /> -->
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
-import TheSearch from "./TheSearch.vue";
+// import TheSearch from "./TheSearch.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
@@ -30,9 +29,15 @@ const introSection = computed(() => {
   return sections?.find((section) => section.title === "Intro") ?? null;
 });
 
+<<<<<<< HEAD
+// const introCard = computed(() => {
+//   return introSection.value?.cards?.find((card) => card.icon && card.text) || null;
+// });
+=======
 const introCard = computed(() => {
   return introSection.value?.cards?.find((card) => card.icon && card.text) ?? null;
 });
+>>>>>>> e06028902a1522742dfc374ba02d4f4c8e4f7c53
 </script>
 
 <style scoped lang="scss">
@@ -57,27 +62,14 @@ const introCard = computed(() => {
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
-    span {
+    span:first-of-type {
       color: var(--basic-dark);
     }
-  }
-  &__button {
-    padding: 14px 32px;
-    border-radius: 32px;
-    background-color: var(--primary-orange);
-    color: var(--default-neutral-white);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: 0.75px;
-    text-transform: uppercase;
-    border: 2px solid var(--primary-orange);
-    cursor: pointer;
-    margin-top: 64px; //spacing
-    &:hover {
-      background-color: var(--default-neutral-white);
-      color: var(--basic-dark);
+    span:last-of-type {
+      display: block;
+      font-size: 48px;
+      line-height: 56px; /* 116.667% */
+      margin-top: 80px;
     }
   }
 }

@@ -9,20 +9,19 @@
         />
       </router-link>
     </div>
-    <TheNavi :contentData="contentData" />
+    <!-- <TheNavi :contentData="contentData" /> -->
     <AuthSection />
   </header>
 </template>
 
 <script setup lang="ts">
 import AuthSection from "@/components/resources/newLandingPage/AuthSection.vue";
-import TheNavi from "@/components/general/TheNavi.vue";
+// import TheNavi from "@/components/general/TheNavi.vue";
 
-import type { Content, Page } from "@/types/ContentTypes";
+import type { Page } from "@/types/ContentTypes";
 
-const { landingPage, contentData } = defineProps<{
+const { landingPage } = defineProps<{
   landingPage?: Page;
-  contentData: Content;
 }>();
 </script>
 

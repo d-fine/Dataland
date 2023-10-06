@@ -1,36 +1,30 @@
 <template>
-  <section v-if="howItWorksSection" class="howitworks" role="region" aria-labelledby="howitworks-heading">
-    <div class="howitworks__wrapper">
-      <h2 id="howitworks-heading" class="howitworks__title">
-        {{ sectionText }}
-      </h2>
-      <div ref="slider" role="list" class="howitworks__slides" @pointerdown="dragStart" @touchstart="dragStart">
-        <div v-for="(slide, index) in slides" :key="index" role="listitem" class="howitworks__slide">
-          <h3 class="howitworks__slide-title">{{ slide.title }}</h3>
-          <p class="howitworks__slide-text">{{ slide.text }}</p>
-          <p class="howitworks__slide-index">0{{ index + 1 }}</p>
-        </div>
-      </div>
-      <div class="howitworks__arrows">
-        <button
-          @click="move(-1)"
-          aria-label="Previous slide"
-          class="howitworks__arrow howitworks__arrow--left"
-        ></button>
-        <button @click="move(1)" aria-label="Next slide" class="howitworks__arrow howitworks__arrow--right"></button>
+  <section v-if="quotesSection" class="quotes" role="region" aria-label="The Quotes">
+    <div ref="slider" role="list" class="quotes__slides" @pointerdown="dragStart" @touchstart="dragStart">
+      <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
+        <img :src="card.icon" class="quotes__slide-icon" />
+        <h3 class="quotes__slide-title">{{ card.title }}</h3>
+        <p class="quotes__slide-text">{{ card.text }}</p>
+        <p class="quotes__slide-index">0{{ index + 1 }}</p>
       </div>
     </div>
+    <div class="quotes__arrows">
+      <button @click="move(-1)" aria-label="Previous slide" class="quotes__arrow quotes__arrow--left"></button>
+      <button @click="move(1)" aria-label="Next slide" class="quotes__arrow quotes__arrow--right"></button>
+    </div>
+    <button class="quotes__button">{{ quotesSection.text[0] }}</button>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted, watchEffect } from "vue";
+import { ref, computed, onUnmounted } from "vue";
 import type { Section } from "@/types/ContentTypes";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
-const howItWorksSection = computed(() => sections?.find((s) => s.title === "How it works"));
-const sectionText = computed(() => howItWorksSection.value?.text.join(" ") ?? "");
-const slides = computed(() => sections?.find((s) => s.title === "How it works")?.cards ?? []);
+const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes"));
+const cards = computed(() => quotesSection.value?.cards || []);
+
+const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards || []);
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
 
@@ -42,36 +36,26 @@ let prevTranslate = 0;
 const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => {
   if (animate) sliderElement.style.transition = "transform 0.3s ease-out";
   sliderElement.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
+  console.log(`Slider is at translate3d(${currentTranslate}px, 0, 0)`);
 };
 
 const move = (direction: number): void => {
-  const slideCount = slides.value.length;
+  const slideCount = slides.value.length - 1;
+  console.log(`Current Slide: ${currentSlide.value}, Direction: ${direction}`);
+
   if (direction === 1 && currentSlide.value < slideCount - 1) currentSlide.value++;
-  if (direction === -1 && currentSlide.value > 0) currentSlide.value--;
+  if (direction === -1 && currentSlide.value >= 0) currentSlide.value--;
 
   currentTranslate = currentSlide.value * -440;
   if (slider.value) setSliderPosition(slider.value);
 };
-
-watchEffect(() => {
-  const handleResize = (): void => {
-    if (window.innerWidth > 1800) {
-      currentSlide.value = 0;
-      currentTranslate = 0;
-      if (slider.value) setSliderPosition(slider.value);
-    }
-  };
-
-  window.addEventListener("resize", handleResize);
-
-  onUnmounted(() => {
-    window.removeEventListener("resize", handleResize);
-  });
-});
+// const goToSlide = (index: number): void => {
+//   currentSlide.value = index - 1;
+//   currentTranslate = currentSlide.value * -440;
+//   if (slider.value) setSliderPosition(slider.value);
+// };
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
-  // Disable dragging for window width greater than 1800px, for example
-  if (window.innerWidth > 1800) return;
   isDragging = true;
   startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
 
@@ -103,8 +87,8 @@ const dragEnd = (): void => {
   isDragging = false;
 
   const movedBy = currentTranslate - prevTranslate;
-  if (movedBy < -100 && currentSlide.value < slides.value.length - 1) currentSlide.value++;
-  if (movedBy > 100 && currentSlide.value > 0) currentSlide.value--;
+  if (movedBy < -100 && currentSlide.value < slides.value.length - 2) currentSlide.value++;
+  if (movedBy > 100 && currentSlide.value >= 0) currentSlide.value--;
 
   // Set currentTranslate based on the new slide index
   currentTranslate = currentSlide.value * -440;
@@ -128,29 +112,14 @@ onUnmounted(() => {
 });
 </script>
 
-<style lang="scss">
-.howitworks {
-  padding: 200px 0;
-  background-color: var(--primary-orange);
-  &__wrapper {
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 56px;
-  }
-  &__title {
-    font-size: 64px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 78px;
-    margin: 0;
-    max-width: 1273px;
-    padding-right: 789px;
-    text-align: left;
-  }
-
+<style scoped lang="scss">
+.quotes {
+  margin: calc(64px + 120px) auto 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+  overflow: hidden;
   &__slides {
     display: flex;
     transition: transform 0.3s ease-out;
@@ -162,7 +131,7 @@ onUnmounted(() => {
   }
 
   &__slide {
-    flex: 0 0 408px;
+    flex: 0 0 440px;
     border-radius: 16px;
     display: flex;
     padding: 64px 40px 32px 40px;
@@ -170,7 +139,6 @@ onUnmounted(() => {
     background: #f6f6f6;
     gap: 24px;
     cursor: grab;
-    text-align: left;
 
     &-title {
       font-size: 48px;
@@ -201,7 +169,6 @@ onUnmounted(() => {
   &__arrows {
     display: flex;
     gap: 18px;
-    visibility: hidden;
   }
   &__arrow {
     width: 48px;
@@ -236,46 +203,27 @@ onUnmounted(() => {
       }
     }
   }
-}
-@media (max-width: $extra-large) {
-  .howitworks {
-    &__slides {
-      max-width: 1273px;
-      padding-right: 789px;
-      justify-content: flex-start;
-    }
-    &__arrows {
-      visibility: visible;
-      width: 100%;
-      max-width: 1273px;
-      justify-content: flex-start;
+
+  &__button {
+    padding: 14px 32px;
+    border-radius: 32px;
+    background-color: var(--primary-orange);
+    color: var(--default-neutral-white);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+    border: 2px solid var(--primary-orange);
+    cursor: pointer;
+    margin-top: 64px; //spacing
+    &:hover {
+      background-color: var(--default-neutral-white);
+      color: var(--basic-dark);
     }
   }
 }
 @media only screen and (max-width: $large) {
-  .howitworks {
-    &__wrapper {
-      display: grid;
-      grid-template-columns: repeat(16, 1fr);
-      gap: 32px;
-      max-width: 1440px;
-      width: 100%;
-      padding: 0 32px;
-    }
-    &__title {
-      grid-column: 4 / 9;
-      font-size: 48px;
-      font-weight: 600;
-      line-height: 56px; /* 116.667% */
-      letter-spacing: 0.25px;
-      color: var(--default-neutral-white);
-      max-width: unset;
-      padding-right: unset;
-    }
-    &__slides,
-    &__arrows {
-      grid-column: 4 / 16;
-    }
-  }
 }
 </style>
