@@ -43,15 +43,15 @@
       </div>
       <div
         v-for="(storedReport, index) of alreadyStoredReports"
-        :key="storedReport.reportName"
+        :key="storedReport.fileName"
         :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
         data-test="report-uploaded-form"
       >
-        <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
+        <div :data-test="storedReport.fileName + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
-            <h3 class="mt-0">{{ storedReport.reportName }}</h3>
+            <h3 class="mt-0">{{ storedReport.fileName }}</h3>
             <PrimeButton
-              :data-test="'remove-' + storedReport.reportName"
+              :data-test="'remove-' + storedReport.fileName"
               @click="removeReportFromStoredReports(index)"
               icon="pi pi-times"
               class="p-button-edit-reports"
@@ -59,7 +59,7 @@
           </div>
         </div>
         <ReportFormElement
-          :name="storedReport.reportName"
+          :name="storedReport.fileName"
           :report-date="storedReport.reportDate"
           :fileReference="storedReport.fileReference"
         />
@@ -245,7 +245,7 @@ export default defineComponent({
         for (const key in sourceOfReferencedReportsForPrefill) {
           const referencedReport = (sourceOfReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
           this.alreadyStoredReports.push({
-            reportName: key,
+            fileName: key,
             fileReference: referencedReport.fileReference,
             currency: referencedReport.currency,
             reportDate: referencedReport.reportDate,
