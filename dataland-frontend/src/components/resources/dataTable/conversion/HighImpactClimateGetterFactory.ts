@@ -1,6 +1,6 @@
 import {
   type AvailableDisplayValues,
-  MLDTDisplayComponents
+  MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
