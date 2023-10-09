@@ -20,7 +20,7 @@ const getInTouchSection = computed(() => {
 });
 
 const openEmailClient = (): void => {
-  if (getInTouchSection.value && getInTouchSection.value.cards) {
+  if (getInTouchSection.value?.cards) {
     const cards = getInTouchSection.value.cards;
 
     const email = cards[3]?.icon ?? "";
