@@ -47,15 +47,15 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
 function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "companyWithOneFilledSfdrSubcategory";
   input.t.general.general.fiscalYearEnd = "2020-01-03";
-  input.t.environmental!.energyPerformance = undefined;
-  input.t.environmental!.waste = undefined;
-  input.t.environmental!.water = undefined;
-  input.t.environmental!.emissions = undefined;
-  input.t.environmental!.greenhouseGasEmissions = undefined;
+  input.t.environmental!.energyPerformance = null;
+  input.t.environmental!.waste = null;
+  input.t.environmental!.water = null;
+  input.t.environmental!.emissions = null;
+  input.t.environmental!.greenhouseGasEmissions = null;
   input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure = {
     quality: "Audited",
     dataSource: {
-      report: "string",
+      fileReference: "string",
       page: 0,
       tagName: "string",
     },
@@ -65,7 +65,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
   input.t.environmental!.biodiversity!.protectedAreasExposure = {
     quality: "Audited",
     dataSource: {
-      report: "string",
+      fileReference: "string",
       page: 0,
       tagName: "string",
     },
@@ -75,7 +75,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
   input.t.environmental!.biodiversity!.rareOrEndangeredEcosystemsExposure = {
     quality: "Audited",
     dataSource: {
-      report: "string",
+      fileReference: "string",
       page: 0,
       tagName: "string",
     },
@@ -83,7 +83,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
     value: "Yes",
   };
 
-  input.t.social = undefined;
+  input.t.social = null;
   return input;
 }
 /**

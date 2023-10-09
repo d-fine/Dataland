@@ -32,7 +32,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         const revenueOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.revenue);
         const revenueOfDatasetAlphaTotalAmount = assertDefined(revenueOfDatasetAlpha.totalAmount);
         revenueOfDatasetAlphaTotalAmount.value = 0;
-        revenueOfDatasetAlphaTotalAmount.unit = "EUR";
+        revenueOfDatasetAlphaTotalAmount.currency = "EUR";
         capexOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.capex);
 
         capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
@@ -88,19 +88,14 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
 
       cy.get(`[data-test='Revenue']`).click();
 
-      cy.get('tr:has(td > span:contains("Total Revenue"))')
-        .next("tr")
-        .next("tr")
-        .find("span")
-        .should("contain", "Value");
+      cy.get('tr:has(td > span:contains("Total Revenue"))').next("tr").find("span").should("contain", "Value");
 
       cy.get('tr:has(td > span:contains("Total Revenue"))')
-        .next("tr")
         .next("tr")
         .find("td")
         .eq(1)
         .invoke("text")
-        .should("match", /^0$/);
+        .should("match", /^0.00 EUR$/);
 
       cy.get('[data-test="CapEx"]').click();
       cy.get('tr:has(td > span:contains("Aligned CapEx"))')
@@ -188,7 +183,7 @@ export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
     }
   }
   const allReports: Array<{ [p: string]: CompanyReport } | undefined> = dataAndMetaInfoSets.map(
-    (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
+    (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports ?? undefined,
   );
   return [allReports, reportingPeriods];
 }

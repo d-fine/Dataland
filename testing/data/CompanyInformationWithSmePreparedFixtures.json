@@ -2,158 +2,114 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Dearborn",
-			"headquartersPostalCode": "31094-0489",
-			"sector": "technologies",
+			"headquarters": "New Isaiahcester",
+			"headquartersPostalCode": "42346-5392",
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"OAbVnSaxBsBSoh03uBcv"
-				],
+				"Lei": [],
 				"Isin": [
-					"CgqDdjIr4G9z",
-					"5t1UhuGebiWq"
+					"G4T8m7Mi8H6U"
 				],
 				"PermId": [
-					"eHpiHyvGLH"
+					"DkzKsOCMXS"
 				],
 				"Ticker": [
-					"llyRiz0"
+					"SPI2zwM"
 				],
 				"Duns": [
-					"JTnYSxMPI"
+					"Fdu23IoHU"
 				],
-				"VatNumber": [
-					"MwqsSVdvB"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LT",
+			"countryCode": "TC",
 			"companyAlternativeNames": [
-				"Lesch and Sons",
-				"Murphy - Wiegand",
-				"Olson, Cormier and Willms",
-				"Stark and Sons"
+				"Bashirian - Nikolaus",
+				"Gulgowski - Kuhn",
+				"Klein, Senger and Block",
+				"Mosciski, Becker and Lueilwitz"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
+			"companyLegalForm": null,
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"14.20",
-						"47.43",
-						"58.19",
-						"66.1",
-						"73.12"
+						"19.20",
+						"25.72",
+						"26",
+						"69.20"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Jaydon Ridge 3274",
-						"postalCode": "08613",
-						"city": "Catalina Foothills",
-						"state": "New York",
-						"country": "CZ"
+						"streetAndHouseNumber": null,
+						"postalCode": "94809",
+						"city": "Danielburgh",
+						"state": "Maine",
+						"country": "SX"
 					},
-					"numberOfEmployees": 2108,
-					"fiscalYearStart": "2023-10-02"
+					"numberOfEmployees": 4380,
+					"fiscalYearStart": "2024-04-13"
 				},
 				"companyFinancials": {
-					"revenueInEur": 0,
-					"operatingCostInEur": 1000000,
-					"capitalAssetsInEur": 2000000
+					"revenueInEUR": 0,
+					"operatingCostInEUR": 1000000,
+					"capitalAssetsInEUR": 2000000
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Funk - Stokes",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Mosciski Haven 24607",
-								"postalCode": "63937",
-								"city": "Riverton",
-								"state": "Idaho",
-								"country": "BM"
-							},
-							"shareOfTotalRevenueInPercent": 73.3319
-						},
-						{
-							"nameOfProductionSite": "Corwin, Nitzsche and Balistreri",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Euna Cove 96723",
-								"postalCode": "18141",
-								"city": "West Jeanne",
-								"state": "Kentucky",
-								"country": "UA"
-							},
-							"shareOfTotalRevenueInPercent": 24.2214
-						},
-						{
-							"nameOfProductionSite": "Streich - Mann",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Grady Creek 5764",
-								"postalCode": "85397-4020",
-								"city": "West Devon",
-								"country": "GP"
-							},
-							"shareOfTotalRevenueInPercent": 77.3934
-						},
-						{
-							"nameOfProductionSite": "Shields, Gutmann and Ruecker",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lueilwitz Way 41532",
-								"city": "New Giovanni",
-								"state": "Arkansas",
-								"country": "MQ"
-							},
-							"shareOfTotalRevenueInPercent": 34.753
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Heidenreich Passage 8085",
-								"city": "Port Krystina",
-								"state": "Florida",
-								"country": "AT"
-							},
-							"shareOfTotalRevenueInPercent": 9.828
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Handmade Steel Keyboard",
-							"shareOfTotalRevenueInPercent": 64.1202
+							"name": "Licensed Wooden Towels",
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Handcrafted Cotton Chips",
-							"shareOfTotalRevenueInPercent": 30.758
+							"name": "Unbranded Fresh Shirt",
+							"shareOfTotalRevenueInPercent": 95.8446
+						},
+						{
+							"name": "Electronic Wooden Ball",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Bespoke Frozen Gloves",
+							"shareOfTotalRevenueInPercent": 72.4189
+						},
+						{
+							"name": "Electronic Wooden Sausages",
+							"shareOfTotalRevenueInPercent": 42.1885
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 232,
-					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": 1460,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 750,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 33587945,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 26628365,
 					"naturalHazardsCovered": [
-						"Hail",
+						"Wind",
 						"Flooding",
-						"Avalanche",
+						"Hail",
 						"EarthQuake",
 						"Snow",
-						"Wind"
+						"Avalanche"
 					]
 				}
 			}
@@ -163,39 +119,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Darius",
-			"headquartersPostalCode": "20714",
-			"sector": "supply-chains",
+			"headquarters": "Port Emmie",
+			"headquartersPostalCode": "84888-1515",
+			"sector": "interfaces",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"ExZCMUgQrWYjrYleVp3C"
+				],
 				"Isin": [
-					"nqndud4BPUef"
+					"jjgZK7hfemlt",
+					"SSRj1euNNwRQ"
 				],
-				"PermId": [],
+				"PermId": [
+					"93TCAlpmFS"
+				],
 				"Ticker": [
-					"CJwPECT"
+					"PK9n4z2"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"5RzAvflRo"
+				"Duns": [
+					"W5ggnVsvh"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PG",
+			"countryCode": "IN",
 			"companyAlternativeNames": [
-				"Murazik Group",
-				"Nitzsche - Mayer",
-				"Rempel, Wolff and Connelly",
-				"VonRueden, Wolff and Metz"
+				"Adams and Sons",
+				"Borer - Barrows",
+				"O'Conner - Feest"
 			],
 			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://silky-date.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"23.69"
+						"J"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -204,94 +165,57 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7375,
-					"fiscalYearStart": "2024-01-18"
+					"numberOfEmployees": 7629,
+					"fiscalYearStart": "2024-06-10"
 				},
 				"companyFinancials": {
-					"revenueInEur": 14838228,
-					"operatingCostInEur": 46065891,
-					"capitalAssetsInEur": 60414053
+					"revenueInEUR": null,
+					"operatingCostInEUR": 44724745,
+					"capitalAssetsInEUR": 20630515
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Smith - Crist",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kareem Station 9460",
-								"postalCode": "25691-6526",
-								"city": "Mertzberg",
-								"state": "Minnesota",
-								"country": "CH"
-							},
-							"shareOfTotalRevenueInPercent": 14.7778
-						},
-						{
-							"nameOfProductionSite": "Witting, Balistreri and Wisozk",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Orn Hollow 877",
-								"postalCode": "31319-5952",
-								"city": "Priscillatown",
-								"state": "Georgia",
-								"country": "BZ"
-							},
-							"shareOfTotalRevenueInPercent": 37.5331
-						},
-						{
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Emelia Oval 823",
-								"postalCode": "43781",
-								"city": "South Garrick",
-								"state": "Vermont",
-								"country": "PG"
-							},
-							"shareOfTotalRevenueInPercent": 30.6083
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Rustic Bronze Chips",
-							"shareOfTotalRevenueInPercent": 22.3792
+							"name": "Fantastic Steel Fish",
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Small Fresh Shirt",
-							"shareOfTotalRevenueInPercent": 51.035
+							"name": "Tasty Bronze Bacon",
+							"shareOfTotalRevenueInPercent": 57.9953
 						},
 						{
-							"name": "Elegant Plastic Chips",
-							"shareOfTotalRevenueInPercent": 87.7217
-						},
-						{
-							"name": "Handmade Granite Soap",
-							"shareOfTotalRevenueInPercent": 40.7665
-						},
-						{
-							"name": "Handmade Steel Pants",
-							"shareOfTotalRevenueInPercent": 58.1746
+							"name": "Generic Metal Mouse",
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 540,
+					"powerConsumptionInMWh": 489,
 					"powerFromRenewableSources": "No",
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWaterInMWh": 102,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 14940716,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Snow"
+						"Avalanche",
+						"Hail",
+						"Snow",
+						"Flooding"
 					]
 				}
 			}
@@ -301,91 +225,102 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Maudstad",
-			"headquartersPostalCode": "62057",
-			"sector": "markets",
+			"headquarters": "Port Nikkimouth",
+			"headquartersPostalCode": "91646-0181",
+			"sector": "blockchains",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"OCHdV2IflbTXjgtNMoSs"
+				],
 				"Isin": [
-					"X95htL4xUISo"
+					"VTii4eTcNhdg"
 				],
-				"PermId": [
-					"ZY5Y6yWsOj"
+				"PermId": [],
+				"Ticker": [
+					"I9liYNv"
 				],
-				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"MwalmLKzU"
+				],
 				"VatNumber": [
-					"SnyvBWEUR"
+					"Hz5RbeGu9"
 				],
 				"CompanyRegistrationNumber": [
-					"arE4yazISeJmd3L"
+					"NTjoY8EIfZebYKJ"
 				]
 			},
-			"countryCode": "FR",
+			"countryCode": "IO",
 			"companyAlternativeNames": [
-				"Bogisich, Ortiz and Smith",
-				"Borer, Stehr and Rempel",
-				"Wiza, Leffler and Wilkinson"
+				"Farrell Group"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://hot-artichoke.com",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://partial-apology.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"15.11",
-						"28.13",
-						"45",
-						"47.77"
+						"27.1"
 					],
 					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
 						"city": "City 17",
+						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 5799,
-					"fiscalYearStart": "2024-05-28"
+					"numberOfEmployees": 2427,
+					"fiscalYearStart": "2024-02-12"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEur": 21206711
+					"revenueInEUR": null,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Lang, Collins and Bosco",
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Brakus Forks 77653",
-								"postalCode": "04712",
-								"city": "Howellview",
-								"state": "Texas",
-								"country": "BO"
+								"streetAndHouseNumber": "Crona Ways 73901",
+								"postalCode": "31589",
+								"city": "Victoria",
+								"state": "Alabama",
+								"country": "MN"
 							},
-							"shareOfTotalRevenueInPercent": 18.2175
+							"shareOfTotalRevenueInPercent": 78.7395
 						}
 					]
 				},
-				"products": {}
+				"products": {
+					"listOfProducts": null
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 305,
+					"powerConsumptionInMWh": 1681,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWaterInMWh": 805,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 11456677,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
+						"Snow",
+						"Hail",
 						"EarthQuake",
-						"Avalanche",
-						"Snow"
+						"Wind",
+						"Avalanche"
 					]
 				}
 			}

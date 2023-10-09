@@ -2399,21 +2399,25 @@
           },
           "companyAlternativeNames": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "companyLegalForm": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
             "type": "string"
           },
           "headquartersPostalCode": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "sector": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "identifiers": {
             "type": "object",
@@ -2439,10 +2443,12 @@
             "type": "string"
           },
           "website": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "isTeaserCompany": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -2468,7 +2474,8 @@
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "uploaderUserId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "uploadTime": {
             "type": "integer",
@@ -2519,23 +2526,29 @@
         "type": "object",
         "properties": {
           "inviteId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "fileId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "timeStamp": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "nullable": true
           },
           "wasInviteSuccessful": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "inviteResultMessage": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -2547,16 +2560,19 @@
         "type": "object",
         "properties": {
           "streetAndHouseNumber": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "postalCode": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "city": {
             "type": "string"
           },
           "state": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "country": {
             "type": "string"
@@ -2633,13 +2649,28 @@
             "$ref": "#/components/schemas/SmeGeneral"
           },
           "production": {
-            "$ref": "#/components/schemas/SmeProduction"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeProduction"
+              }
+            ]
           },
           "power": {
-            "$ref": "#/components/schemas/SmePower"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmePower"
+              }
+            ]
           },
           "insurances": {
-            "$ref": "#/components/schemas/SmeInsurances"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeInsurances"
+              }
+            ]
           }
         }
       },
@@ -2653,7 +2684,12 @@
             "$ref": "#/components/schemas/SmeGeneralBasicInformation"
           },
           "companyFinancials": {
-            "$ref": "#/components/schemas/SmeGeneralCompanyFinancials"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeGeneralCompanyFinancials"
+              }
+            ]
           }
         }
       },
@@ -2687,14 +2723,17 @@
       "SmeGeneralCompanyFinancials": {
         "type": "object",
         "properties": {
-          "revenueInEur": {
-            "type": "number"
+          "revenueInEUR": {
+            "type": "number",
+            "nullable": true
           },
-          "operatingCostInEur": {
-            "type": "number"
+          "operatingCostInEUR": {
+            "type": "number",
+            "nullable": true
           },
-          "capitalAssetsInEur": {
-            "type": "number"
+          "capitalAssetsInEUR": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -2702,7 +2741,12 @@
         "type": "object",
         "properties": {
           "naturalHazards": {
-            "$ref": "#/components/schemas/SmeInsurancesNaturalHazards"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeInsurancesNaturalHazards"
+              }
+            ]
           }
         }
       },
@@ -2710,13 +2754,20 @@
         "type": "object",
         "properties": {
           "insuranceAgainstNaturalHazards": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "amountCoveredByInsuranceAgainstNaturalHazards": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "naturalHazardsCovered": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/NaturalHazard"
             }
@@ -2727,38 +2778,70 @@
         "type": "object",
         "properties": {
           "investments": {
-            "$ref": "#/components/schemas/SmePowerInvestments"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmePowerInvestments"
+              }
+            ]
           },
           "consumption": {
-            "$ref": "#/components/schemas/SmePowerConsumption"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmePowerConsumption"
+              }
+            ]
           }
         }
       },
       "SmePowerConsumption": {
         "type": "object",
         "properties": {
-          "powerConsumptionInMwh": {
-            "type": "number"
+          "powerConsumptionInMWh": {
+            "type": "number",
+            "nullable": true
           },
           "powerFromRenewableSources": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
-          "energyConsumptionHeatingAndHotWater": {
-            "type": "number"
+          "energyConsumptionHeatingAndHotWaterInMWh": {
+            "type": "number",
+            "nullable": true
           },
           "primaryEnergySourceForHeatingAndHotWater": {
-            "$ref": "#/components/schemas/EnergySourceForHeatingAndHotWater"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EnergySourceForHeatingAndHotWater"
+              }
+            ]
           },
-          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
-            "$ref": "#/components/schemas/PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower"
+          "percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower"
+              }
+            ]
           }
         }
       },
       "SmePowerInvestments": {
         "type": "object",
         "properties": {
-          "percentageOfInvestmentsInEnhancingEnergyEfficiency": {
-            "$ref": "#/components/schemas/PercentRangeForInvestmentsInEnergyEfficiency"
+          "percentageRangeForInvestmentsInEnhancingEnergyEfficiency": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PercentRangeForInvestmentsInEnergyEfficiency"
+              }
+            ]
           }
         }
       },
@@ -2772,7 +2855,8 @@
             "type": "string"
           },
           "shareOfTotalRevenueInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -2780,10 +2864,20 @@
         "type": "object",
         "properties": {
           "sites": {
-            "$ref": "#/components/schemas/SmeProductionSites"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeProductionSites"
+              }
+            ]
           },
           "products": {
-            "$ref": "#/components/schemas/SmeProductionProducts"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeProductionProducts"
+              }
+            ]
           }
         }
       },
@@ -2792,6 +2886,7 @@
         "properties": {
           "listOfProducts": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/SmeProduct"
             }
@@ -2802,13 +2897,20 @@
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "addressOfProductionSite": {
-            "$ref": "#/components/schemas/Address"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ]
           },
           "shareOfTotalRevenueInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -2817,6 +2919,7 @@
         "properties": {
           "listOfProductionSites": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/SmeProductionSite"
             }
@@ -2851,82 +2954,145 @@
       },
       "CompanyReport": {
         "required": [
-          "reference"
+          "fileReference"
         ],
         "type": "object",
         "properties": {
-          "reference": {
+          "fileReference": {
             "type": "string"
           },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
           "isGroupLevel": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "reportDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "currency": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
-      "CompanyReportReference": {
+      "CurrencyDataPoint": {
         "required": [
-          "report"
+          "quality"
         ],
         "type": "object",
         "properties": {
-          "report": {
-            "type": "string"
+          "value": {
+            "type": "number",
+            "nullable": true
           },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ExtendedDataPointBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointYesNo": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
           "page": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "nullable": true
           },
           "tagName": {
-            "type": "string"
-          }
-        }
-      },
-      "DataPointOneValueYesNo": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
+            "type": "string",
+            "nullable": true
           },
-          "dataSource": {
-            "$ref": "#/components/schemas/CompanyReportReference"
+          "fileName": {
+            "type": "string",
+            "nullable": true
           },
-          "comment": {
-            "type": "string"
-          },
-          "value": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "DataPointWithUnitBigDecimal": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/CompanyReportReference"
-          },
-          "comment": {
-            "type": "string"
-          },
-          "value": {
-            "type": "number"
-          },
-          "unit": {
+          "fileReference": {
             "type": "string"
           }
         }
@@ -2958,10 +3124,20 @@
             "$ref": "#/components/schemas/SfdrGeneral"
           },
           "environmental": {
-            "$ref": "#/components/schemas/SfdrEnvironmental"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrEnvironmental"
+              }
+            ]
           },
           "social": {
-            "$ref": "#/components/schemas/SfdrSocial"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrSocial"
+              }
+            ]
           }
         }
       },
@@ -2969,22 +3145,52 @@
         "type": "object",
         "properties": {
           "greenhouseGasEmissions": {
-            "$ref": "#/components/schemas/SfdrEnvironmentalGreenhouseGasEmissions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrEnvironmentalGreenhouseGasEmissions"
+              }
+            ]
           },
           "energyPerformance": {
-            "$ref": "#/components/schemas/SfdrEnvironmentalEnergyPerformance"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrEnvironmentalEnergyPerformance"
+              }
+            ]
           },
           "biodiversity": {
-            "$ref": "#/components/schemas/SfdrEnvironmentalBiodiversity"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrEnvironmentalBiodiversity"
+              }
+            ]
           },
           "water": {
-            "$ref": "#/components/schemas/SfdrEnvironmentalWater"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrEnvironmentalWater"
+              }
+            ]
           },
           "waste": {
-            "$ref": "#/components/schemas/SfdrEnvironmentalWaste"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrEnvironmentalWaste"
+              }
+            ]
           },
           "emissions": {
-            "$ref": "#/components/schemas/SfdrEnvironmentalEmissions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrEnvironmentalEmissions"
+              }
+            ]
           }
         }
       },
@@ -2992,173 +3198,413 @@
         "type": "object",
         "properties": {
           "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "protectedAreasExposure": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "rareOrEndangeredEcosystemsExposure": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           }
         }
       },
       "SfdrEnvironmentalEmissions": {
         "type": "object",
         "properties": {
-          "inorganicPollutants": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "inorganicPollutantsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "airPollutants": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "airPollutantsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "ozoneDepletionSubstances": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "ozoneDepletionSubstancesInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "carbonReductionInitiatives": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           }
         }
       },
       "SfdrEnvironmentalEnergyPerformance": {
         "type": "object",
         "properties": {
-          "renewableEnergyProduction": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "renewableEnergyProductionInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "renewableEnergyConsumption": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "renewableEnergyConsumptionInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "nonRenewableEnergyConsumption": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "nonRenewableEnergyConsumptionInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "nonRenewableEnergyProduction": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "nonRenewableEnergyProductionInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceA": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceAInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceB": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceBInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceC": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceCInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceD": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceDInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceE": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceEInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceF": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceFInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceG": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceGInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceH": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceHInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceL": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "highImpactClimateSectorEnergyConsumptionNaceLInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "totalHighImpactClimateSectorEnergyConsumption": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "nonRenewableEnergyConsumptionFossilFuels": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "nonRenewableEnergyConsumptionCrudeOil": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "nonRenewableEnergyConsumptionCrudeOilInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "nonRenewableEnergyConsumptionNaturalGas": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "nonRenewableEnergyConsumptionNaturalGasInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "nonRenewableEnergyConsumptionLignite": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "nonRenewableEnergyConsumptionLigniteInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "nonRenewableEnergyConsumptionCoal": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "nonRenewableEnergyConsumptionCoalInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "nonRenewableEnergyConsumptionNuclearEnergy": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "nonRenewableEnergyConsumptionOther": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "nonRenewableEnergyConsumptionOtherInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },
       "SfdrEnvironmentalGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
-          "scope1": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "scope1InTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "scope2": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "scope2InTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "scope3": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "scope3InTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "enterpriseValue": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           },
           "totalRevenue": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           },
           "fossilFuelSectorExposure": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           }
         }
       },
       "SfdrEnvironmentalWaste": {
         "type": "object",
         "properties": {
-          "hazardousWaste": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "hazardousWasteInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "manufactureOfAgrochemicalPesticidesProducts": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "landDegradationDesertificationSoilSealingExposure": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "sustainableAgriculturePolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "sustainableOceansAndSeasPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
-          "wasteNonRecycled": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "wasteNonRecycledInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "threatenedSpeciesExposure": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "biodiversityProtectionPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "deforestationPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           }
         }
       },
       "SfdrEnvironmentalWater": {
         "type": "object",
         "properties": {
-          "emissionsToWater": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "emissionsToWaterInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "waterConsumption": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "waterConsumptionInCubicMeters": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "waterReused": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "waterReusedInCubicMeters": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "waterManagementPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "waterStressAreaExposure": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           }
         }
       },
@@ -3196,10 +3642,16 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
-            }
+            },
+            "nullable": true
           },
           "scopeOfEntities": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           }
         }
       },
@@ -3207,16 +3659,36 @@
         "type": "object",
         "properties": {
           "socialAndEmployeeMatters": {
-            "$ref": "#/components/schemas/SfdrSocialSocialAndEmployeeMatters"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrSocialSocialAndEmployeeMatters"
+              }
+            ]
           },
           "greenSecurities": {
-            "$ref": "#/components/schemas/SfdrSocialGreenSecurities"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrSocialGreenSecurities"
+              }
+            ]
           },
           "humanRights": {
-            "$ref": "#/components/schemas/SfdrSocialHumanRights"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrSocialHumanRights"
+              }
+            ]
           },
           "antiCorruptionAndAntiBribery": {
-            "$ref": "#/components/schemas/SfdrSocialAntiCorruptionAndAntiBribery"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrSocialAntiCorruptionAndAntiBribery"
+              }
+            ]
           }
         }
       },
@@ -3224,13 +3696,28 @@
         "type": "object",
         "properties": {
           "reportedCasesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "reportedConvictionsOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "reportedFinesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           }
         }
       },
@@ -3238,7 +3725,12 @@
         "type": "object",
         "properties": {
           "securitiesNotCertifiedAsGreen": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           }
         }
       },
@@ -3246,22 +3738,52 @@
         "type": "object",
         "properties": {
           "humanRightsPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "humanRightsDueDiligence": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "traffickingInHumanBeingsPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "reportedChildLabourIncidents": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "reportedForcedOrCompulsoryLabourIncidents": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "reportedIncidentsOfHumanRights": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },
@@ -3269,91 +3791,236 @@
         "type": "object",
         "properties": {
           "humanRightsLegalProceedings": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "iloCoreLabourStandards": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "environmentalPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "corruptionLegalProceedings": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "transparencyDisclosurePolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "humanRightsDueDiligencePolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "childForcedDiscriminationPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "iso14001Certificate": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "briberyCorruptionPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "fairBusinessMarketingAdvertisingPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "technologiesExpertiseTransferPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "fairCompetitionPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "violationOfTaxRulesAndRegulation": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "unGlobalCompactPrinciplesCompliancePolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "oecdGuidelinesForMultinationalEnterprisesPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "averageGrossHourlyEarningsMaleEmployees": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           },
           "averageGrossHourlyEarningsFemaleEmployees": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           },
           "femaleBoardMembers": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "maleBoardMembers": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "controversialWeaponsExposure": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "workplaceAccidentPreventionPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "rateOfAccidents": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
-          "workdaysLost": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+          "workdaysLostInDays": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "supplierCodeOfConduct": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "grievanceHandlingMechanism": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "whistleblowerProtectionPolicy": {
-            "$ref": "#/components/schemas/DataPointOneValueYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           },
           "reportedIncidentsOfDiscrimination": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "sanctionsIncidentsOfDiscrimination": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "ceoToEmployeePayGap": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },
@@ -3375,7 +4042,27 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "dataSource": {
-            "$ref": "#/components/schemas/DocumentReference"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "BaseDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
           }
         }
       },
@@ -3398,29 +4085,24 @@
           }
         }
       },
-      "DocumentReference": {
-        "required": [
-          "name",
-          "reference"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "reference": {
-            "type": "string"
-          }
-        }
-      },
       "P2pAmmonia": {
         "type": "object",
         "properties": {
           "decarbonisation": {
-            "$ref": "#/components/schemas/P2pAmmoniaDecarbonisation"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pAmmoniaDecarbonisation"
+              }
+            ]
           },
           "defossilisation": {
-            "$ref": "#/components/schemas/P2pAmmoniaDefossilisation"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pAmmoniaDefossilisation"
+              }
+            ]
           }
         }
       },
@@ -3428,13 +4110,16 @@
         "type": "object",
         "properties": {
           "energyMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "ccsTechnologyAdoptionInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "electrificationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3442,7 +4127,8 @@
         "type": "object",
         "properties": {
           "useOfRenewableFeedstocksInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3450,24 +4136,41 @@
         "type": "object",
         "properties": {
           "energy": {
-            "$ref": "#/components/schemas/P2pAutomotiveEnergy"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pAutomotiveEnergy"
+              }
+            ]
           },
           "technologyValueCreation": {
-            "$ref": "#/components/schemas/P2pAutomotiveTechnologyValueCreation"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pAutomotiveTechnologyValueCreation"
+              }
+            ]
           },
           "materials": {
-            "$ref": "#/components/schemas/P2pAutomotiveMaterials"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pAutomotiveMaterials"
+              }
+            ]
           }
         }
       },
       "P2pAutomotiveEnergy": {
         "type": "object",
         "properties": {
-          "productionSiteEnergyConsumption": {
-            "type": "number"
+          "productionSiteEnergyConsumptionInMWh": {
+            "type": "number",
+            "nullable": true
           },
           "energyMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3475,10 +4178,12 @@
         "type": "object",
         "properties": {
           "materialUseManagementInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "useOfSecondaryMaterialsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3486,14 +4191,21 @@
         "type": "object",
         "properties": {
           "driveMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "icAndHybridEnginePhaseOutDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "futureValueCreationStrategy": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -3501,13 +4213,28 @@
         "type": "object",
         "properties": {
           "energy": {
-            "$ref": "#/components/schemas/P2pCementEnergy"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pCementEnergy"
+              }
+            ]
           },
           "technology": {
-            "$ref": "#/components/schemas/P2pCementTechnology"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pCementTechnology"
+              }
+            ]
           },
           "material": {
-            "$ref": "#/components/schemas/P2pCementMaterial"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pCementMaterial"
+              }
+            ]
           }
         }
       },
@@ -3515,16 +4242,20 @@
         "type": "object",
         "properties": {
           "energyMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "fuelMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "thermalEnergyEfficiencyInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "compositionOfThermalInputInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3532,13 +4263,20 @@
         "type": "object",
         "properties": {
           "clinkerFactorReduction": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "preCalcinedClayUsageInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "circularEconomyContribution": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -3546,21 +4284,16 @@
         "type": "object",
         "properties": {
           "carbonCaptureAndUseTechnologyUsage": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "electrificationOfProcessHeatInPercent": {
-            "type": "number"
-          }
-        }
-      },
-      "P2pClimateTargets": {
-        "type": "object",
-        "properties": {
-          "longTermScienceBasedClimateTarget": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "shortTermScienceBasedClimateTarget": {
-            "$ref": "#/components/schemas/YesNo"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3568,52 +4301,39 @@
         "type": "object",
         "properties": {
           "technology": {
-            "$ref": "#/components/schemas/P2pElectricityGenerationTechnology"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pElectricityGenerationTechnology"
+              }
+            ]
           }
         }
       },
       "P2pElectricityGenerationTechnology": {
         "type": "object",
         "properties": {
-          "electricityMixEmissions": {
-            "type": "number"
+          "electricityMixEmissionsInCorrespondingUnit": {
+            "type": "number",
+            "nullable": true
           },
           "shareOfRenewableElectricityInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "naturalGasPhaseOut": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "coalPhaseOut": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "storageCapacityExpansionInPercent": {
-            "type": "number"
-          }
-        }
-      },
-      "P2pEmissionsPlanning": {
-        "type": "object",
-        "properties": {
-          "absoluteEmissions": {
-            "type": "number"
-          },
-          "relativeEmissionsInPercent": {
-            "type": "number"
-          },
-          "reductionOfAbsoluteEmissions": {
-            "type": "number"
-          },
-          "reductionOfRelativeEmissionsInPercent": {
-            "type": "number"
-          },
-          "climateActionPlan": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "useOfInternalCarbonPrice": {
-            "$ref": "#/components/schemas/YesNo"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3621,10 +4341,20 @@
         "type": "object",
         "properties": {
           "technology": {
-            "$ref": "#/components/schemas/P2pFreightTransportByRoadTechnology"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pFreightTransportByRoadTechnology"
+              }
+            ]
           },
           "energy": {
-            "$ref": "#/components/schemas/P2pFreightTransportByRoadEnergy"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pFreightTransportByRoadEnergy"
+              }
+            ]
           }
         }
       },
@@ -3632,19 +4362,22 @@
         "type": "object",
         "properties": {
           "fuelMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
       "P2pFreightTransportByRoadTechnology": {
         "type": "object",
         "properties": {
-          "driveMixPerFleetSegment": {
-            "type": "number"
+          "driveMixPerFleetSegmentInPercent": {
+            "type": "number",
+            "nullable": true
           },
           "icePhaseOut": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -3658,16 +4391,94 @@
             "$ref": "#/components/schemas/P2pGeneralGeneral"
           },
           "governance": {
-            "$ref": "#/components/schemas/P2pGovernance"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pGeneralGovernance"
+              }
+            ]
           },
           "climateTargets": {
-            "$ref": "#/components/schemas/P2pClimateTargets"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pGeneralClimateTargets"
+              }
+            ]
           },
           "emissionsPlanning": {
-            "$ref": "#/components/schemas/P2pEmissionsPlanning"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pGeneralEmissionsPlanning"
+              }
+            ]
           },
           "investmentPlanning": {
-            "$ref": "#/components/schemas/P2pInvestmentPlanning"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pGeneralInvestmentPlanning"
+              }
+            ]
+          }
+        }
+      },
+      "P2pGeneralClimateTargets": {
+        "type": "object",
+        "properties": {
+          "shortTermScienceBasedClimateTarget": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "longTermScienceBasedClimateTarget": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "P2pGeneralEmissionsPlanning": {
+        "type": "object",
+        "properties": {
+          "absoluteEmissionsInTonnesCO2e": {
+            "type": "number",
+            "nullable": true
+          },
+          "relativeEmissionsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "reductionOfAbsoluteEmissions": {
+            "type": "number",
+            "nullable": true
+          },
+          "reductionOfRelativeEmissionsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "climateActionPlan": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "useOfInternalCarbonPrice": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -3690,38 +4501,101 @@
           }
         }
       },
-      "P2pGovernance": {
+      "P2pGeneralGovernance": {
         "type": "object",
         "properties": {
           "organisationalResponsibilityForParisCompatibility": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "parisCompatibilityInExecutiveRemunerationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "parisCompatibilityInAverageRemunerationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "shareOfEmployeesTrainedOnParisCompatibilityInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "qualificationRequirementsOnParisCompatibility": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "mobilityAndTravelPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "upstreamSupplierEngagementStrategy": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "upstreamSupplierProcurementPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "downstreamCustomerEngagement": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "policymakerEngagement": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "P2pGeneralInvestmentPlanning": {
+        "type": "object",
+        "properties": {
+          "investmentPlanForClimateTargets": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "capexShareInNetZeroSolutionsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "capexShareInGhgIntensivePlantsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3729,13 +4603,28 @@
         "type": "object",
         "properties": {
           "decarbonisation": {
-            "$ref": "#/components/schemas/P2pHvcPlasticsDecarbonisation"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pHvcPlasticsDecarbonisation"
+              }
+            ]
           },
           "defossilisation": {
-            "$ref": "#/components/schemas/P2pHvcPlasticsDefossilisation"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pHvcPlasticsDefossilisation"
+              }
+            ]
           },
           "recycling": {
-            "$ref": "#/components/schemas/P2pHvcPlasticsRecycling"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pHvcPlasticsRecycling"
+              }
+            ]
           }
         }
       },
@@ -3743,10 +4632,12 @@
         "type": "object",
         "properties": {
           "energyMixInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "electrificationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3754,16 +4645,24 @@
         "type": "object",
         "properties": {
           "useOfRenewableFeedstocksInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "useOfBioplasticsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "carbonCaptureAndUseStorageTechnologies": {
-            "type": "number"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -3771,30 +4670,20 @@
         "type": "object",
         "properties": {
           "contributionToCircularEconomy": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "materialRecyclingInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "chemicalRecyclingInPercent": {
-            "type": "number"
-          }
-        }
-      },
-      "P2pInvestmentPlanning": {
-        "type": "object",
-        "properties": {
-          "investmentPlanForClimateTargets": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "capexShareInNetZeroSolutionsInPercent": {
-            "type": "number"
-          },
-          "capexShareInGhgIntensivePlantsInPercent": {
-            "type": "number"
-          },
-          "researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3802,16 +4691,36 @@
         "type": "object",
         "properties": {
           "emissionsFromManureAndFertiliserAndLivestock": {
-            "$ref": "#/components/schemas/P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock"
+              }
+            ]
           },
           "animalWelfare": {
-            "$ref": "#/components/schemas/P2pLivestockFarmingAnimalWelfare"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pLivestockFarmingAnimalWelfare"
+              }
+            ]
           },
           "animalFeed": {
-            "$ref": "#/components/schemas/P2pLivestockFarmingAnimalFeed"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pLivestockFarmingAnimalFeed"
+              }
+            ]
           },
           "energy": {
-            "$ref": "#/components/schemas/P2pLivestockFarmingEnergy"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pLivestockFarmingEnergy"
+              }
+            ]
           }
         }
       },
@@ -3819,25 +4728,36 @@
         "type": "object",
         "properties": {
           "ownFeedInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "externalFeedCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "originOfExternalFeed": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
-          "excessNitrogen": {
-            "type": "number"
+          "excessNitrogenInKilogramsPerHectare": {
+            "type": "number",
+            "nullable": true
           },
           "cropRotation": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "climateFriendlyProteinProductionInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "greenFodderInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3845,7 +4765,8 @@
         "type": "object",
         "properties": {
           "mortalityRateInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3853,10 +4774,12 @@
         "type": "object",
         "properties": {
           "compostedFermentedManureInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "emissionProofFertiliserStorageInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3864,13 +4787,16 @@
         "type": "object",
         "properties": {
           "renewableElectricityInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "renewableHeatingInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "electricGasPoweredMachineryVehicleInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3878,13 +4804,28 @@
         "type": "object",
         "properties": {
           "buildingEfficiency": {
-            "$ref": "#/components/schemas/P2pRealEstateBuildingEfficiency"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pRealEstateBuildingEfficiency"
+              }
+            ]
           },
           "energySource": {
-            "$ref": "#/components/schemas/P2pRealEstateEnergySource"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pRealEstateEnergySource"
+              }
+            ]
           },
           "technology": {
-            "$ref": "#/components/schemas/P2plRealEstateTechnology"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2plRealEstateTechnology"
+              }
+            ]
           }
         }
       },
@@ -3892,13 +4833,16 @@
         "type": "object",
         "properties": {
           "buildingSpecificRefurbishmentRoadmapInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "zeroEmissionBuildingShareInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
-          "buildingEnergyEfficiency": {
-            "type": "number"
+          "buildingEnergyEfficiencyInCorrespondingUnit": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3906,7 +4850,8 @@
         "type": "object",
         "properties": {
           "renewableHeatingInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3930,21 +4875,37 @@
         "type": "object",
         "properties": {
           "energy": {
-            "$ref": "#/components/schemas/P2pSteelEnergy"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pSteelEnergy"
+              }
+            ]
           },
           "technology": {
-            "$ref": "#/components/schemas/P2pSteelTechnology"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pSteelTechnology"
+              }
+            ]
           }
         }
       },
       "P2pSteelEnergy": {
         "type": "object",
         "properties": {
-          "emissionIntensityOfElectricity": {
-            "type": "number"
+          "emissionIntensityOfElectricityInCorrespondingUnit": {
+            "type": "number",
+            "nullable": true
           },
           "greenHydrogenUsage": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -3952,21 +4913,25 @@
         "type": "object",
         "properties": {
           "blastFurnacePhaseOutInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "lowCarbonSteelScaleUpInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
       "P2plRealEstateTechnology": {
         "type": "object",
         "properties": {
-          "useOfDistrictHeatingNetworks": {
-            "$ref": "#/components/schemas/YesNo"
+          "useOfDistrictHeatingNetworksInPercent": {
+            "type": "number",
+            "nullable": true
           },
-          "heatPumpUsage": {
-            "$ref": "#/components/schemas/YesNo"
+          "heatPumpUsageInPercent": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -3980,34 +4945,84 @@
             "$ref": "#/components/schemas/P2pGeneral"
           },
           "ammonia": {
-            "$ref": "#/components/schemas/P2pAmmonia"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pAmmonia"
+              }
+            ]
           },
           "automotive": {
-            "$ref": "#/components/schemas/P2pAutomotive"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pAutomotive"
+              }
+            ]
           },
           "hvcPlastics": {
-            "$ref": "#/components/schemas/P2pHvcPlastics"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pHvcPlastics"
+              }
+            ]
           },
           "commercialRealEstate": {
-            "$ref": "#/components/schemas/P2pRealEstate"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pRealEstate"
+              }
+            ]
           },
           "residentialRealEstate": {
-            "$ref": "#/components/schemas/P2pRealEstate"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pRealEstate"
+              }
+            ]
           },
           "steel": {
-            "$ref": "#/components/schemas/P2pSteel"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pSteel"
+              }
+            ]
           },
           "freightTransportByRoad": {
-            "$ref": "#/components/schemas/P2pFreightTransportByRoad"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pFreightTransportByRoad"
+              }
+            ]
           },
           "electricityGeneration": {
-            "$ref": "#/components/schemas/P2pElectricityGeneration"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pElectricityGeneration"
+              }
+            ]
           },
           "livestockFarming": {
-            "$ref": "#/components/schemas/P2pLivestockFarming"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pLivestockFarming"
+              }
+            ]
           },
           "cement": {
-            "$ref": "#/components/schemas/P2pCement"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/P2pCement"
+              }
+            ]
           }
         }
       },
@@ -4021,7 +5036,12 @@
             "$ref": "#/components/schemas/YesNoNa"
           },
           "dataSource": {
-            "$ref": "#/components/schemas/DocumentReference"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
           }
         }
       },
@@ -4054,13 +5074,28 @@
             "$ref": "#/components/schemas/LksgGeneral"
           },
           "governance": {
-            "$ref": "#/components/schemas/LksgGovernance"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgGovernance"
+              }
+            ]
           },
           "social": {
-            "$ref": "#/components/schemas/LksgSocial"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocial"
+              }
+            ]
           },
           "environmental": {
-            "$ref": "#/components/schemas/LksgEnvironmental"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgEnvironmental"
+              }
+            ]
           }
         }
       },
@@ -4068,13 +5103,28 @@
         "type": "object",
         "properties": {
           "useOfMercuryMercuryWasteMinamataConvention": {
-            "$ref": "#/components/schemas/LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention"
+              }
+            ]
           },
           "productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
-            "$ref": "#/components/schemas/LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention"
+              }
+            ]
           },
           "exportImportOfHazardousWasteBaselConvention": {
-            "$ref": "#/components/schemas/LksgEnvironmentalExportImportOfHazardousWasteBaselConvention"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgEnvironmentalExportImportOfHazardousWasteBaselConvention"
+              }
+            ]
           }
         }
       },
@@ -4082,25 +5132,60 @@
         "type": "object",
         "properties": {
           "persistentOrganicPollutantsProductionAndUseTransboundaryMovements": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "persistentOrganicPollutantsProductionAndUseRiskForImportingState": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "hazardousWasteDisposal": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "hazardousWasteDisposalRiskOfImport": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "hazardousWasteDisposalOtherWasteImport": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -4108,19 +5193,40 @@
         "type": "object",
         "properties": {
           "persistentOrganicPollutantsProductionAndUse": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "persistentOrganicPollutantsUsed": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "persistentOrganicPollutantsProductionAndUseRiskOfExposure": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "persistentOrganicPollutantsProductionAndUseRiskOfDisposal": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "legalRestrictedWasteProcesses": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -4128,25 +5234,60 @@
         "type": "object",
         "properties": {
           "mercuryAndMercuryWasteHandling": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "mercuryAndMercuryWasteHandlingPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "mercuryAddedProductsHandling": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "mercuryAddedProductsHandlingRiskOfExposure": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "mercuryAddedProductsHandlingRiskOfDisposal": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "mercuryAndMercuryCompoundsProductionAndUse": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -4160,10 +5301,20 @@
             "$ref": "#/components/schemas/LksgGeneralMasterData"
           },
           "productionSpecific": {
-            "$ref": "#/components/schemas/LksgGeneralProductionSpecific"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgGeneralProductionSpecific"
+              }
+            ]
           },
           "productionSpecificOwnOperations": {
-            "$ref": "#/components/schemas/LksgGeneralProductionSpecificOwnOperations"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgGeneralProductionSpecificOwnOperations"
+              }
+            ]
           }
         }
       },
@@ -4178,37 +5329,63 @@
             "format": "date"
           },
           "headOfficeInGermany": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "groupOfCompanies": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "groupOfCompaniesName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "industry": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "numberOfEmployees": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "seasonalOrMigrantWorkers": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "shareOfTemporaryWorkers": {
-            "$ref": "#/components/schemas/ShareOfTemporaryWorkers"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShareOfTemporaryWorkers"
+              }
+            ]
           },
           "annualTotalRevenue": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "totalRevenueCurrency": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "fixedAndWorkingCapital": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -4216,40 +5393,69 @@
         "type": "object",
         "properties": {
           "manufacturingCompany": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "capacity": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "productionViaSubcontracting": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "subcontractingCompaniesCountries": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "subcontractingCompaniesIndustries": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "productionSites": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "listOfProductionSites": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/LksgProductionSite"
             }
           },
           "market": {
-            "$ref": "#/components/schemas/NationalOrInternationalMarket"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NationalOrInternationalMarket"
+              }
+            ]
           },
           "specificProcurement": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -4258,6 +5464,7 @@
         "properties": {
           "mostImportantProducts": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/LksgProduct"
             }
@@ -4267,6 +5474,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/LksgProcurementCategory"
             },
+            "nullable": true,
             "example": {
               "Products": {
                 "procuredProductTypesAndServicesNaceCodes": [
@@ -4303,16 +5511,36 @@
         "type": "object",
         "properties": {
           "riskManagementOwnOperations": {
-            "$ref": "#/components/schemas/LksgGovernanceRiskManagementOwnOperations"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgGovernanceRiskManagementOwnOperations"
+              }
+            ]
           },
           "grievanceMechanismOwnOperations": {
-            "$ref": "#/components/schemas/LksgGovernanceGrievanceMechanismOwnOperations"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgGovernanceGrievanceMechanismOwnOperations"
+              }
+            ]
           },
           "certificationsPoliciesAndResponsibilities": {
-            "$ref": "#/components/schemas/LksgGovernanceCertificationsPoliciesAndResponsibilities"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgGovernanceCertificationsPoliciesAndResponsibilities"
+              }
+            ]
           },
           "generalViolations": {
-            "$ref": "#/components/schemas/LksgGovernanceGeneralViolations"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgGovernanceGeneralViolations"
+              }
+            ]
           }
         }
       },
@@ -4320,64 +5548,156 @@
         "type": "object",
         "properties": {
           "sa8000Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "smetaSocialAuditConcept": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "betterWorkProgramCertificate": {
-            "$ref": "#/components/schemas/BaseDataPointYesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNoNa"
+              }
+            ]
           },
           "iso45001Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "iso14001Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "emasCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "iso37001Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "iso37301Certification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "riskManagementSystemCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "amforiBsciAuditReport": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "responsibleBusinessAssociationCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "fairLaborAssociationCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "additionalAudits": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "codeOfConduct": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "codeOfConductTraining": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "supplierCodeOfConduct": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "policyStatement": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "humanRightsStrategy": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "environmentalImpactPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "fairWorkingConditionsPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           }
         }
       },
@@ -4385,52 +5705,102 @@
         "type": "object",
         "properties": {
           "responsibilitiesForFairWorkingConditions": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "responsibilitiesForTheEnvironment": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "responsibilitiesForOccupationalSafety": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "legalProceedings": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "humanRightsViolationS": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "humanRightsViolations": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "humanRightsViolationAction": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "humanRightsViolationActionMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "highRiskCountriesRawMaterials": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "highRiskCountriesRawMaterialsLocation": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "highRiskCountriesActivity": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "highRiskCountries": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "highRiskCountriesProcurement": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "highRiskCountriesProcurementName": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -4441,43 +5811,96 @@
         "type": "object",
         "properties": {
           "grievanceHandlingMechanism": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "grievanceHandlingReportingAccessible": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "appropriateGrievanceHandlingInformation": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "appropriateGrievanceHandlingSupport": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "accessToExpertiseForGrievanceHandling": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "grievanceComplaints": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "complaintsNumber": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "complaintsReason": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "actionsForComplaintsUndertaken": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "whichActionsForComplaintsUndertaken": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "publicAccessToGrievanceHandling": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "whistleblowerProtection": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "dueDiligenceProcessForGrievanceHandling": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -4485,34 +5908,76 @@
         "type": "object",
         "properties": {
           "riskManagementSystem": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "riskAnalysisInFiscalYear": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "risksIdentified": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "identifiedRisks": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "counteractingMeasures": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "whichCounteractingMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "regulatedRiskManagementResponsibility": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "environmentalManagementSystem": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "environmentalManagementSystemInternationalCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "environmentalManagementSystemNationalCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           }
         }
       },
@@ -4533,10 +5998,12 @@
             "additionalProperties": {
               "type": "integer",
               "format": "int32"
-            }
+            },
+            "nullable": true
           },
           "shareOfTotalProcurementInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         },
         "example": {
@@ -4580,12 +6047,14 @@
           },
           "productionSteps": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "relatedCorporateSupplyChain": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4596,13 +6065,15 @@
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "addressOfProductionSite": {
             "$ref": "#/components/schemas/Address"
           },
           "listOfGoodsOrServices": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -4613,31 +6084,76 @@
         "type": "object",
         "properties": {
           "childLabor": {
-            "$ref": "#/components/schemas/LksgSocialChildLabor"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocialChildLabor"
+              }
+            ]
           },
           "forcedLaborSlavery": {
-            "$ref": "#/components/schemas/LksgSocialForcedLaborSlavery"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocialForcedLaborSlavery"
+              }
+            ]
           },
           "withholdingAdequateWages": {
-            "$ref": "#/components/schemas/LksgSocialWithholdingAdequateWages"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocialWithholdingAdequateWages"
+              }
+            ]
           },
           "disregardForOccupationalHealthSafety": {
-            "$ref": "#/components/schemas/LksgSocialDisregardForOccupationalHealthSafety"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocialDisregardForOccupationalHealthSafety"
+              }
+            ]
           },
           "disregardForFreedomOfAssociation": {
-            "$ref": "#/components/schemas/LksgSocialDisregardForFreedomOfAssociation"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocialDisregardForFreedomOfAssociation"
+              }
+            ]
           },
           "unequalTreatmentOfEmployment": {
-            "$ref": "#/components/schemas/LksgSocialUnequalTreatmentOfEmployment"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocialUnequalTreatmentOfEmployment"
+              }
+            ]
           },
           "contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
-            "$ref": "#/components/schemas/LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption"
+              }
+            ]
           },
           "unlawfulEvictionDeprivationOfLandForestAndWater": {
-            "$ref": "#/components/schemas/LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater"
+              }
+            ]
           },
           "useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
-            "$ref": "#/components/schemas/LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights"
+              }
+            ]
           }
         }
       },
@@ -4645,46 +6161,108 @@
         "type": "object",
         "properties": {
           "childLaborPreventionPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "employeeSUnder18": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "employeeSUnder15": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "employeeSUnder18InApprenticeship": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "worstFormsOfChildLaborProhibition": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "worstFormsOfChildLabor": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "worstFormsOfChildLaborForms": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "measuresForPreventionOfEmploymentUnderLocalMinimumAge": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "employmentUnderLocalMinimumAgePreventionEmploymentContracts": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "employmentUnderLocalMinimumAgePreventionJobDescription": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "employmentUnderLocalMinimumAgePreventionIdentityDocuments": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "employmentUnderLocalMinimumAgePreventionTraining": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "additionalChildLaborMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4692,61 +6270,148 @@
         "type": "object",
         "properties": {
           "harmfulSoilImpact": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "soilDegradation": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "soilErosion": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "soilBorneDiseases": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "soilContamination": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "soilSalinization": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "harmfulWaterPollution": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "fertilizersOrPollutants": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "wasteWaterFiltration": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "harmfulAirPollution": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "airFiltration": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "harmfulNoiseEmission": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "reduceNoiseEmissions": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "excessiveWaterConsumption": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "waterSavingMeasures": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "waterSavingMeasuresName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "pipeMaintaining": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "waterSources": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "contaminationMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4754,22 +6419,48 @@
         "type": "object",
         "properties": {
           "freedomOfAssociation": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "employeeRepresentationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "discriminationForTradeUnionMembers": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "freedomOfOperationForTradeUnion": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "freedomOfAssociationTraining": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "worksCouncil": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -4777,64 +6468,164 @@
         "type": "object",
         "properties": {
           "lowSkillWork": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "hazardousMachines": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshPolicyPersonalProtectiveEquipment": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "oshPolicyMachineSafety": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "oshPolicyDisasterBehavioralResponse": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshPolicyAccidentsBehavioralResponse": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshPolicyWorkplaceErgonomics": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshPolicyAccessToWork": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "oshPolicyFireProtection": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshPolicyWorkingHours": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshPolicyTrainingAddressed": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshPolicyTraining": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshManagementSystem": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshManagementSystemInternationalCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "oshManagementSystemNationalCertification": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "under10WorkplaceAccidents": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "oshTraining": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "healthAndSafetyPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           }
         }
       },
@@ -4842,34 +6633,76 @@
         "type": "object",
         "properties": {
           "forcedLaborAndSlaveryPrevention": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "forcedLaborAndSlaveryPreventionPractices": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "forcedLaborPreventionPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "forcedLaborAndSlaveryPreventionMeasures": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "forcedLaborAndSlaveryPreventionEmploymentContracts": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "forcedLaborAndSlaveryPreventionIdentityDocuments": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "forcedLaborAndSlaveryPreventionFreeMovement": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "forcedLaborAndSlaveryPreventionTraining": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "forcedLaborAndSlaveryPreventionMeasuresOther": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4877,22 +6710,52 @@
         "type": "object",
         "properties": {
           "unequalTreatmentOfEmployment": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "diversityAndInclusionRole": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "preventionOfMistreatments": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "equalOpportunitiesOfficer": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "fairAndEthicalRecruitmentPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "equalOpportunitiesAndNonDiscriminationPolicy": {
-            "$ref": "#/components/schemas/BaseDataPointYesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           }
         }
       },
@@ -4900,19 +6763,36 @@
         "type": "object",
         "properties": {
           "unlawfulEvictionAndTakingOfLand": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "unlawfulEvictionAndTakingOfLandRisk": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "unlawfulEvictionAndTakingOfLandStrategies": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "unlawfulEvictionAndTakingOfLandStrategiesName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -4920,25 +6800,56 @@
         "type": "object",
         "properties": {
           "useOfPrivatePublicSecurityForces": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "instructionOfSecurityForces": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "humanRightsTraining": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "stateSecurityForces": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "privateSecurityForces": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "useOfPrivatePublicSecurityForcesMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4946,28 +6857,64 @@
         "type": "object",
         "properties": {
           "adequateWage": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "adequateWagesMeasures": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "documentedWorkingHoursAndWages": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "adequateLivingWage": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "regularWagesProcessFlow": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "fixedHourlyWages": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "fixedPieceworkWages": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "adequateWageMeasures": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -5104,20 +7051,22 @@
         "type": "object",
         "properties": {
           "amount": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "currency": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
-      "AssuranceData": {
+      "AssuranceDataPoint": {
         "required": [
-          "assurance"
+          "value"
         ],
         "type": "object",
         "properties": {
-          "assurance": {
+          "value": {
             "type": "string",
             "enum": [
               "None",
@@ -5125,11 +7074,17 @@
               "ReasonableAssurance"
             ]
           },
-          "provider": {
-            "type": "string"
-          },
           "dataSource": {
-            "$ref": "#/components/schemas/CompanyReportReference"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          },
+          "provider": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -5156,16 +7111,27 @@
         "type": "object",
         "properties": {
           "activityName": {
-            "$ref": "#/components/schemas/Activity"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Activity"
+              }
+            ]
           },
           "naceCodes": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "share": {
-            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
           }
         }
       },
@@ -5173,55 +7139,107 @@
         "type": "object",
         "properties": {
           "activityName": {
-            "$ref": "#/components/schemas/Activity"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Activity"
+              }
+            ]
           },
           "naceCodes": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "share": {
-            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToClimateChangeAdaptionInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "dnshToClimateChangeMitigation": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "dnshToClimateChangeAdaption": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "dnshToTransitionToACircularEconomy": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "dnshToPollutionPreventionAndControl": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "minimumSafeguards": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -5229,16 +7247,36 @@
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/EuTaxonomyGeneral"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyGeneral"
+              }
+            ]
           },
           "revenue": {
-            "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+              }
+            ]
           },
           "capex": {
-            "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+              }
+            ]
           },
           "opex": {
-            "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+              }
+            ]
           }
         }
       },
@@ -5246,55 +7284,90 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/DataPointWithUnitBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           },
           "nonEligibleShare": {
-            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
           },
           "eligibleShare": {
-            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
           },
           "nonAlignedShare": {
-            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
           },
           "nonAlignedActivities": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/EuTaxonomyActivity"
             }
           },
           "alignedShare": {
-            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToClimateChangeAdaptionInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "alignedActivities": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
             }
           },
           "enablingShareInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "transitionalShareInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -5302,32 +7375,60 @@
         "type": "object",
         "properties": {
           "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/FiscalYearDeviation"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FiscalYearDeviation"
+              }
+            ]
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "scopeOfEntities": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "nfrdMandatory": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "euTaxonomyActivityLevelReporting": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "assurance": {
-            "$ref": "#/components/schemas/AssuranceData"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssuranceDataPoint"
+              }
+            ]
           },
           "numberOfEmployees": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "referencedReports": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
-            }
+            },
+            "nullable": true
           }
         }
       },
@@ -5335,10 +7436,16 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/AmountWithCurrency"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -5365,36 +7472,36 @@
         "type": "object",
         "properties": {
           "tradingPortfolioInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "interbankLoansInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "tradingPortfolioAndInterbankLoansInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "greenAssetRatioInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
-          }
-        }
-      },
-      "DataPointOneValueBigDecimal": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/CompanyReportReference"
-          },
-          "comment": {
-            "type": "string"
-          },
-          "value": {
-            "type": "number"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },
@@ -5402,19 +7509,44 @@
         "type": "object",
         "properties": {
           "taxonomyEligibleActivityInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "taxonomyNonEligibleActivityInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "derivativesInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "banksAndIssuersInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "investmentNonNfrdInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         },
         "example": {
@@ -5469,6 +7601,7 @@
         "properties": {
           "financialServicesTypes": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string",
               "enum": [
@@ -5484,6 +7617,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/EligibilityKpis"
             },
+            "nullable": true,
             "example": {
               "CreditInstitution": {
                 "taxonomyEligibleActivityInPercent": {
@@ -5532,41 +7666,84 @@
             }
           },
           "creditInstitutionKpis": {
-            "$ref": "#/components/schemas/CreditInstitutionKpis"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreditInstitutionKpis"
+              }
+            ]
           },
           "investmentFirmKpis": {
-            "$ref": "#/components/schemas/InvestmentFirmKpis"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InvestmentFirmKpis"
+              }
+            ]
           },
           "insuranceKpis": {
-            "$ref": "#/components/schemas/InsuranceKpis"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InsuranceKpis"
+              }
+            ]
           },
           "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/FiscalYearDeviation"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FiscalYearDeviation"
+              }
+            ]
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "scopeOfEntities": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "nfrdMandatory": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "euTaxonomyActivityLevelReporting": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "assurance": {
-            "$ref": "#/components/schemas/AssuranceData"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssuranceDataPoint"
+              }
+            ]
           },
           "numberOfEmployees": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "referencedReports": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
-            }
+            },
+            "nullable": true
           }
         }
       },
@@ -5574,7 +7751,12 @@
         "type": "object",
         "properties": {
           "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },
@@ -5582,7 +7764,12 @@
         "type": "object",
         "properties": {
           "greenAssetRatioInPercent": {
-            "$ref": "#/components/schemas/DataPointOneValueBigDecimal"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },
@@ -5590,25 +7777,31 @@
         "type": "object",
         "properties": {
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "companyAlternativeNames": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "companyLegalForm": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "headquartersPostalCode": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "sector": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "identifiers": {
             "type": "object",
@@ -5624,6 +7817,7 @@
                 "example": "{\"Lei\":[\"ExampleLei\"]}"
               }
             },
+            "nullable": true,
             "example": {
               "Lei": [
                 "ExampleLei"
@@ -5631,16 +7825,20 @@
             }
           },
           "countryCode": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "website": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "teaserCompany": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "isTeaserCompany": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -5788,10 +7986,12 @@
         "type": "object",
         "properties": {
           "href": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "templated": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           }
         }
       },

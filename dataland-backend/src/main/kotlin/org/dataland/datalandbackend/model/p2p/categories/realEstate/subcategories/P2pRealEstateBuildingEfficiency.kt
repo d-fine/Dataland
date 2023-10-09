@@ -11,5 +11,5 @@ data class P2pRealEstateBuildingEfficiency(
 
     val zeroEmissionBuildingShareInPercent: BigDecimal? = null,
 
-    val buildingEnergyEfficiency: BigDecimal? = null,
+    val buildingEnergyEfficiencyInCorrespondingUnit: BigDecimal? = null,
 )

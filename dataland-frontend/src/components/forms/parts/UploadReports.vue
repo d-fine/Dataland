@@ -26,7 +26,10 @@
           <div class="form-field-label">
             <h3 class="mt-0">{{ documentToUpload.fileNameWithoutSuffix }}</h3>
           </div>
-          <ReportFormElement :name="documentToUpload.fileNameWithoutSuffix" :reference="documentToUpload.reference" />
+          <ReportFormElement
+            :name="documentToUpload.fileNameWithoutSuffix"
+            :fileReference="documentToUpload.fileReference"
+          />
         </div>
       </div>
     </div>
@@ -40,15 +43,15 @@
       </div>
       <div
         v-for="(storedReport, index) of alreadyStoredReports"
-        :key="storedReport.reportName"
+        :key="storedReport.fileName"
         :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
         data-test="report-uploaded-form"
       >
-        <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
+        <div :data-test="storedReport.fileName + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
-            <h3 class="mt-0">{{ storedReport.reportName }}</h3>
+            <h3 class="mt-0">{{ storedReport.fileName }}</h3>
             <PrimeButton
-              :data-test="'remove-' + storedReport.reportName"
+              :data-test="'remove-' + storedReport.fileName"
               @click="removeReportFromStoredReports(index)"
               icon="pi pi-times"
               class="p-button-edit-reports"
@@ -56,9 +59,9 @@
           </div>
         </div>
         <ReportFormElement
-          :name="storedReport.reportName"
+          :name="storedReport.fileName"
           :report-date="storedReport.reportDate"
-          :reference="storedReport.reference"
+          :fileReference="storedReport.fileReference"
         />
       </div>
     </div>
@@ -70,7 +73,7 @@ import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import InvalidFileSelectionDialog from "@/components/general/InvalidFileSelectionDialog.vue";
-import { type DocumentToUpload, type StoredReport } from "@/utils/FileUploadUtils";
+import { calculateReferenceableFiles, type DocumentToUpload, type StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type CompanyReport } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
@@ -128,14 +131,15 @@ export default defineComponent({
     },
   },
   computed: {
-    namesOfDocumentsToUpload() {
-      return this.documentsToUpload.map((documentToUpload) => documentToUpload.fileNameWithoutSuffix);
+    namesAndReferencesOfDocumentsToUpload(): ObjectType {
+      return calculateReferenceableFiles(this.documentsToUpload);
     },
-    namesOfStoredReports() {
-      return this.alreadyStoredReports.map((storedReport) => storedReport.reportName);
+
+    namesAndReferencesOfStoredReports(): ObjectType {
+      return calculateReferenceableFiles(this.alreadyStoredReports);
     },
-    allReferenceableReportNames(): string[] {
-      return this.namesOfDocumentsToUpload.concat(this.namesOfStoredReports);
+    allReferenceableReportNamesAndReferences(): ObjectType {
+      return { ...this.namesAndReferencesOfDocumentsToUpload, ...this.namesAndReferencesOfStoredReports };
     },
   },
   mounted() {
@@ -154,9 +158,9 @@ export default defineComponent({
       }
 
       if (this.isEuTaxonomy) {
-        this.$emit("reportsUpdated", this.allReferenceableReportNames);
+        this.$emit("reportsUpdated", this.allReferenceableReportNamesAndReferences);
       } else {
-        this.$emit("reportsUpdated", this.allReferenceableReportNames, this.documentsToUpload);
+        this.$emit("reportsUpdated", this.allReferenceableReportNamesAndReferences, this.documentsToUpload);
       }
     },
     /**
@@ -181,7 +185,10 @@ export default defineComponent({
             index: i,
             invalidityReason: FileNameInvalidityReason.ForbiddenCharacter,
           });
-        } else if (existingFileNamesCollector.has(fileName) || this.namesOfStoredReports.indexOf(fileName) !== -1) {
+        } else if (
+          existingFileNamesCollector.has(fileName) ||
+          Object.keys(this.namesAndReferencesOfStoredReports).indexOf(fileName) !== -1
+        ) {
           nameIndexAndReasonOfInvalidFiles.push({
             fileName: fileName,
             index: i,
@@ -238,8 +245,8 @@ export default defineComponent({
         for (const key in sourceOfReferencedReportsForPrefill) {
           const referencedReport = (sourceOfReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
           this.alreadyStoredReports.push({
-            reportName: key,
-            reference: referencedReport.reference,
+            fileName: key,
+            fileReference: referencedReport.fileReference,
             currency: referencedReport.currency,
             reportDate: referencedReport.reportDate,
             isGroupLevel: referencedReport.isGroupLevel,

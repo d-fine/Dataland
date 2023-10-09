@@ -59,6 +59,8 @@ import { defineComponent } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
+import { type CurrencyDataPoint } from "@clients/backend";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "ThreeLayerTable",
@@ -161,15 +163,18 @@ export default defineComponent({
             reportingPeriod: reportingPeriod,
           });
           for (const [categoryKey, categoryObject] of Object.entries(currentDataset.data)) {
-            if (categoryKey == "toApiModel") continue; // ignore toApiModel() Function as it is not a KPI
-            if (categoryObject == null) continue;
+            if (categoryKey == "toApiModel") {
+              continue;
+            } // ignore toApiModel() Function as it is not a KPI
+            if (categoryObject == null) {
+              continue;
+            }
             const listOfDataObjects: Array<KpiDataObject> = [];
             const frameworkCategoryData = assertDefined(
               this.dataModel.find((category) => category.name === categoryKey),
             );
             this.iterateThroughSubcategories(
               categoryObject as object,
-              categoryKey,
               frameworkCategoryData,
               dataId,
               listOfDataObjects,
@@ -188,7 +193,6 @@ export default defineComponent({
     /**
      * Iterates through all subcategories of a category
      * @param categoryDataObject the data object of the framework's category
-     * @param categoryKey the key of the corresponding framework's category
      * @param category  the category object of the framework's category
      * @param dataId  the ID of the dataset
      * @param listOfKpiDataObjects collector for the kpi data objects
@@ -196,17 +200,30 @@ export default defineComponent({
      */
     iterateThroughSubcategories(
       categoryDataObject: object,
-      categoryKey: string,
       category: Category,
       dataId: string,
       listOfKpiDataObjects: Array<KpiDataObject>,
       currentViewModelDataset: FrameworkViewModel,
     ) {
       for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryDataObject)) {
-        if (subCategoryObject == null) continue;
+        let adaptedSubCategoryObject = subCategoryObject as ObjectType;
+        if (subCategoryObject == null) {
+          continue;
+        }
+        if (subCategoryKey == "totalAmount") {
+          const totalAmountSubCategoryObject = subCategoryObject as CurrencyDataPoint;
+          adaptedSubCategoryObject = {
+            value: {
+              amount: totalAmountSubCategoryObject.value ?? null,
+              currency: totalAmountSubCategoryObject.currency ?? null,
+            },
+            comment: totalAmountSubCategoryObject.comment ?? "",
+            dataSource: totalAmountSubCategoryObject.dataSource ?? "",
+            quality: totalAmountSubCategoryObject.quality ?? "",
+          };
+        }
         this.iterateThroughSubcategoryKpis(
-          subCategoryObject as object,
-          categoryKey,
+          adaptedSubCategoryObject,
           subCategoryKey,
           category,
           dataId,
@@ -218,7 +235,6 @@ export default defineComponent({
     /**
      * Builds the result Kpi Data Object and adds it to the result list
      * @param subCategoryDataObject the data object of the framework's subcategory
-     * @param categoryKey the key of the corresponding framework's category
      * @param subCategoryKey the key of the corresponding framework's subcategory
      * @param category the category object of the framework's category
      * @param dataId the ID of the dataset
@@ -227,7 +243,6 @@ export default defineComponent({
      */
     iterateThroughSubcategoryKpis(
       subCategoryDataObject: object,
-      categoryKey: string,
       subCategoryKey: string,
       category: Category,
       dataId: string,
@@ -268,8 +283,11 @@ export default defineComponent({
      * @param key element for which the check should be run
      */
     toggleExpansion(key: number) {
-      if (this.expandedGroup.has(key)) this.expandedGroup.delete(key);
-      else this.expandedGroup.add(key);
+      if (this.expandedGroup.has(key)) {
+        this.expandedGroup.delete(key);
+      } else {
+        this.expandedGroup.add(key);
+      }
     },
 
     /**

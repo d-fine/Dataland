@@ -8,7 +8,7 @@ import java.util.*
 /**
  * --- API model ---
  * Fields of the subcategory "General" belonging to the category "General" of the p2p framework.
- */
+*/
 data class P2pGeneralGeneral(
     @field:JsonProperty(required = true)
     val dataDate: LocalDate,

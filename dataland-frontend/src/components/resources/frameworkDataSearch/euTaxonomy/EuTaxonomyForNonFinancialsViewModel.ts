@@ -1,5 +1,5 @@
 import {
-  type AssuranceDataAssuranceEnum,
+  type AssuranceDataPointValueEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
   type EuTaxonomyActivity,
@@ -10,43 +10,45 @@ import {
   type RelativeAndAbsoluteFinancialShare,
   type YesNo,
   type YesNoNa,
-  type DataPointWithUnitBigDecimal,
+  type CurrencyDataPoint,
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
 interface EuTaxonomyDetailsPerCashFlowViewModel {
-  totalAmount?: DataPointWithUnitBigDecimal;
-  nonEligibleShare?: RelativeAndAbsoluteFinancialShare;
-  eligibleShare?: RelativeAndAbsoluteFinancialShare;
-  nonAlignedShare?: RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] };
-  alignedShare?: RelativeAndAbsoluteFinancialShare & {
-    alignedActivities?: EuTaxonomyAlignedActivity[];
-    substantialContributionToClimateChangeMitigationInPercent?: number;
-    substantialContributionToClimateChangeAdaptionInPercent?: number;
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent?: number;
-    substantialContributionToTransitionToACircularEconomyInPercent?: number;
-    substantialContributionToPollutionPreventionAndControlInPercent?: number;
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent?: number;
-  };
-  enablingShare?: { enablingShareInPercent?: number };
-  transitionalShare?: { transitionalShareInPercent?: number };
+  totalAmount?: CurrencyDataPoint | null;
+  nonEligibleShare?: RelativeAndAbsoluteFinancialShare | null;
+  eligibleShare?: RelativeAndAbsoluteFinancialShare | null;
+  nonAlignedShare?: (RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] | null }) | null;
+  alignedShare?:
+    | (RelativeAndAbsoluteFinancialShare & {
+        alignedActivities?: EuTaxonomyAlignedActivity[] | null;
+        substantialContributionToClimateChangeMitigationInPercent?: number | null;
+        substantialContributionToClimateChangeAdaptionInPercent?: number | null;
+        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent?: number | null;
+        substantialContributionToTransitionToACircularEconomyInPercent?: number | null;
+        substantialContributionToPollutionPreventionAndControlInPercent?: number | null;
+        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent?: number | null;
+      })
+    | null;
+  enablingShare?: { enablingShareInPercent?: number | null } | null;
+  transitionalShare?: { transitionalShareInPercent?: number | null } | null;
 }
 
 export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   general?: {
     general: {
-      fiscalYearDeviation?: FiscalYearDeviation;
-      fiscalYearEnd?: string;
-      scopeOfEntities?: YesNoNa;
-      nfrdMandatory?: YesNo;
-      euTaxonomyActivityLevelReporting?: YesNo;
-      numberOfEmployees?: number;
+      fiscalYearDeviation?: FiscalYearDeviation | null;
+      fiscalYearEnd?: string | null;
+      scopeOfEntities?: YesNoNa | null;
+      nfrdMandatory?: YesNo | null;
+      euTaxonomyActivityLevelReporting?: YesNo | null;
+      numberOfEmployees?: number | null;
     };
   };
   assurance?: {
     assurance: {
-      levelOfAssurance: AssuranceDataAssuranceEnum;
-      assuranceProvider?: string;
+      levelOfAssurance: AssuranceDataPointValueEnum;
+      assuranceProvider?: string | null;
     };
   };
   revenue?: EuTaxonomyDetailsPerCashFlowViewModel;
@@ -65,11 +67,11 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
       },
     };
     this.assurance =
-      apiModel.general?.assurance?.assurance == undefined
+      apiModel.general?.assurance?.value == undefined
         ? undefined
         : {
             assurance: {
-              levelOfAssurance: apiModel.general.assurance.assurance,
+              levelOfAssurance: apiModel.general.assurance.value,
               assuranceProvider: apiModel.general.assurance.provider,
             },
           };
@@ -90,7 +92,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
           this.assurance == undefined
             ? undefined
             : {
-                assurance: this.assurance?.assurance.levelOfAssurance,
+                value: this.assurance?.assurance.levelOfAssurance,
                 provider: this.assurance?.assurance.assuranceProvider,
               },
         numberOfEmployees: this.general?.general?.numberOfEmployees,
@@ -102,7 +104,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   }
 
   private static convertDetailsPerCashFlowApiModelToViewModel(
-    apiModel?: EuTaxonomyDetailsPerCashFlowType,
+    apiModel?: EuTaxonomyDetailsPerCashFlowType | null,
   ): EuTaxonomyDetailsPerCashFlowViewModel | undefined {
     if (apiModel == undefined) {
       return undefined;
@@ -137,7 +139,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   }
 
   private static convertDetailsPerCashFlowViewModelToApiModel(
-    viewModel?: EuTaxonomyDetailsPerCashFlowViewModel,
+    viewModel?: EuTaxonomyDetailsPerCashFlowViewModel | null,
   ): EuTaxonomyDetailsPerCashFlowType | undefined {
     if (viewModel == undefined) {
       return undefined;

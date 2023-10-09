@@ -2,7 +2,7 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import {
   type CompanyInformation,
-  type DataPointOneValueBigDecimal,
+  type ExtendedDataPointBigDecimal,
   DataTypeEnum,
   type EligibilityKpis,
   type EuTaxonomyDataForFinancials,
@@ -67,7 +67,7 @@ describeIf(
      * @param value the value of the datapoint to format as a percentage
      * @returns the formatted string
      */
-    function formatPercentNumber(value?: DataPointOneValueBigDecimal): string {
+    function formatPercentNumber(value?: ExtendedDataPointBigDecimal | null): string {
       if (value === undefined || value === null || value.value === undefined || value.value === null)
         return "No data has been reported";
       return (Math.round(value.value * 100) / 100).toString();

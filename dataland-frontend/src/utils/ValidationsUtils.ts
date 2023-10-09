@@ -32,7 +32,7 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
   dataModel: ObjectType,
   uploadedReports: string[],
 ): void {
-  const referencedReports = findAllValuesForKey(dataModel, "report");
+  const referencedReports = findAllValuesForKey(dataModel, "fileName");
   const unusedReports: string[] = [];
   uploadedReports.forEach((report) => {
     if (!referencedReports.some((refReport) => refReport === report)) {

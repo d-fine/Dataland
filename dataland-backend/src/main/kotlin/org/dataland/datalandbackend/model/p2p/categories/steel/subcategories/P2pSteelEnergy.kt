@@ -4,11 +4,11 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the energy of the steel sector
+ * --- API model ---
+ * Fields of the subcategory "Energy" belonging to the category "Steel" of the p2p framework.
 */
 data class P2pSteelEnergy(
-    val emissionIntensityOfElectricity: BigDecimal? = null,
+    val emissionIntensityOfElectricityInCorrespondingUnit: BigDecimal? = null,
 
     val greenHydrogenUsage: YesNo? = null,
 )

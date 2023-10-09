@@ -1,10 +1,10 @@
-import { type CompanyReport, type DocumentReference } from "@clients/backend";
+import { type CompanyReport, type BaseDocumentReference } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { faker } from "@faker-js/faker";
 
-export type ReferencedDocuments = { [key: string]: CompanyReport | DocumentReference };
+export type ReferencedDocuments = { [key: string]: CompanyReport | BaseDocumentReference };
 
 /**
  * Randomly generates a fixture datasets consisting of a specified number of groups of company information datasets, framework datasets and
@@ -36,16 +36,16 @@ export function generateFixtureDataset<T>(
  * @param generator generator for a single entry
  * @param min the minimum number of entries
  * @param max the maximum number of entries
- * @param undefinedProbabilityInGenerator the probability of undefined values to use inside the generator
+ * @param nullProbabilityInGenerator the probability of "null" values to use inside the generator
  * @returns the generated array
  */
 export function generateArray<T>(
-  generator: (undefinedProbabilityInGenerator?: number) => T,
+  generator: (nullProbabilityInGenerator?: number) => T,
   min = 0,
   max = 5,
-  undefinedProbabilityInGenerator?: number,
+  nullProbabilityInGenerator?: number,
 ): T[] {
-  return Array.from({ length: faker.number.int({ min, max }) }, () => generator(undefinedProbabilityInGenerator));
+  return Array.from({ length: faker.number.int({ min, max }) }, () => generator(nullProbabilityInGenerator));
 }
 
 /**

@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
-import org.dataland.datalandbackend.model.DataPointOneValue
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal
 
 /**
@@ -8,11 +8,11 @@ import java.math.BigDecimal
  * KPIs for credit institutions for the EuTaxonomyForFinancials framework
  */
 data class CreditInstitutionKpis(
-    val tradingPortfolioInPercent: DataPointOneValue<BigDecimal>? = null,
+    val tradingPortfolioInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    val interbankLoansInPercent: DataPointOneValue<BigDecimal>? = null,
+    val interbankLoansInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    val tradingPortfolioAndInterbankLoansInPercent: DataPointOneValue<BigDecimal>? = null,
+    val tradingPortfolioAndInterbankLoansInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    val greenAssetRatioInPercent: DataPointOneValue<BigDecimal>? = null,
+    val greenAssetRatioInPercent: ExtendedDataPoint<BigDecimal>? = null,
 )
