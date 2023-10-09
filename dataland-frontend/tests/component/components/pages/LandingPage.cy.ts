@@ -24,16 +24,9 @@ describe("Component test for the landing page", () => {
  * Validates the elements of the top bar
  */
 function validateTopBar(): void {
-  /**
-   * Gets the top bar element
-   * @returns the top bar element
-   */
-  function getTopBar(): Cypress.Chainable {
-    return cy.get("header");
-  }
-  checkImage("Dataland banner logo", "gfx_logo_dataland_orange_S.svg", getTopBar());
-  checkButton("signup_dataland_button", "Sign Up", getTopBar());
-  checkAnchorByContent("Login", getTopBar());
+  checkImage("Dataland banner logo", "gfx_logo_dataland_orange_S.svg");
+  checkButton("signup_dataland_button", "Sign Up");
+  checkAnchorByContent("Login");
 }
 
 /**
@@ -69,11 +62,11 @@ function checkNewFooter(): void {
     return cy.get("footer");
   }
   getFooter().should("exist");
-  checkImage("Copyright ©   Dataland", "gfx_logo_dataland_orange_S.svg", getFooter());
+  checkImage("Copyright ©   Dataland", "gfx_logo_dataland_orange_S.svg");
   cy.get(".footer__copyright").should("contain.text", "Copyright © 2023 Dataland");
 
-  checkAnchorByTarget("/imprint", "Imprint", getFooter());
-  checkAnchorByTarget("/dataprivacy", "Data Privacy", getFooter());
+  checkAnchorByTarget("/imprint", "Imprint");
+  checkAnchorByTarget("/dataprivacy", "Data Privacy");
 }
 
 /**
