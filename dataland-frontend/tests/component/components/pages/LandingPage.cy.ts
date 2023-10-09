@@ -81,20 +81,20 @@ function checkNewFooter(): void {
  */
 function validateQuotesSlides(): void {
   const slidesSelector = "section.quotes .quotes__slides";
-  const leftButtonSelector = "section.quotes button[aria-label='Previous slide']"
-  const rightButtonSelector = "section.quotes button[aria-label='Next slide']"
+  const leftButtonSelector = "section.quotes button[aria-label='Previous slide']";
+  const rightButtonSelector = "section.quotes button[aria-label='Next slide']";
 
-  assertSlidesPosition(slidesSelector)
+  assertSlidesPosition(slidesSelector);
   cy.get(rightButtonSelector).click();
-  assertSlidesPosition(slidesSelector, 1, 1)
+  assertSlidesPosition(slidesSelector, 1, 1);
   cy.get(rightButtonSelector).click();
-  assertSlidesPosition(slidesSelector, 2, 1)
+  assertSlidesPosition(slidesSelector, 2, 1);
   cy.get(leftButtonSelector).click();
-  assertSlidesPosition(slidesSelector, 1, 1)
+  assertSlidesPosition(slidesSelector, 1, 1);
   cy.get(leftButtonSelector).click();
-  assertSlidesPosition(slidesSelector, 0, 1)
+  assertSlidesPosition(slidesSelector, 0, 1);
   cy.get(leftButtonSelector).click();
-  assertSlidesPosition(slidesSelector, 0, 1)
+  assertSlidesPosition(slidesSelector, 0, 1);
 }
 
 /**
@@ -102,19 +102,20 @@ function validateQuotesSlides(): void {
  */
 function validateHowItWorksSlides(): void {
   const slidesSelector = "div.howitworks__wrapper .howitworks__slides";
-  const leftButtonSelector = "div.howitworks__wrapper button[aria-label='Previous slide']"
-  const rightButtonSelector = "div.howitworks__wrapper button[aria-label='Next slide']"
+  const leftButtonSelector = "div.howitworks__wrapper button[aria-label='Previous slide']";
+  const rightButtonSelector = "div.howitworks__wrapper button[aria-label='Next slide']";
 
-  assertSlidesPosition(slidesSelector)
+  assertSlidesPosition(slidesSelector);
   cy.get(rightButtonSelector).click();
-  assertSlidesPosition(slidesSelector, 1)
+  assertSlidesPosition(slidesSelector, 1);
   cy.get(rightButtonSelector).click();
-  assertSlidesPosition(slidesSelector, 2)
+  assertSlidesPosition(slidesSelector, 2);
   cy.get(leftButtonSelector).click();
-  assertSlidesPosition(slidesSelector, 1)
+  assertSlidesPosition(slidesSelector, 1);
 }
 
-function assertSlidesPosition(slidesSelector: string, position?: number, centerElement: number = 0): void {
-  const expectedTransformValue = position == undefined ? "none" : `matrix(1, 0, 0, 1, ${-440 * (position - centerElement)}, 0)`
+function assertSlidesPosition(slidesSelector: string, position?: number, centerElement = 0): void {
+  const expectedTransformValue =
+    position == undefined ? "none" : `matrix(1, 0, 0, 1, ${-440 * (position - centerElement)}, 0)`;
   cy.get(slidesSelector).should("have.css", "transform", expectedTransformValue);
 }

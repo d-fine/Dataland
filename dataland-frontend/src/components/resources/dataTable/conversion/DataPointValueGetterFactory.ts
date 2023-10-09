@@ -3,7 +3,6 @@ import {
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
-import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
 /**
@@ -15,7 +14,7 @@ import { formatNumberToReadableFormat } from "@/utils/Formatter";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function dataPointValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableDisplayValues {
   return (dataset) => {
-    const datapoint = getFieldValueFromDataModel(path, dataset) as ExtendedDataPointBigDecimal | undefined;
+    const datapoint = getFieldValueFromDataModel(path, dataset);
 
     if (!datapoint?.value) {
       return {
