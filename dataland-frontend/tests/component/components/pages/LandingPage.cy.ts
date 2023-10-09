@@ -5,31 +5,19 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 describe("Component test for the landing page", () => {
   it("Check if essential elements are present", () => {
     cy.mountWithPlugins(NewLandingPage, {
-      keycloak: minimalKeycloakMock({}),
+      keycloak: minimalKeycloakMock({
+        authenticated: false,
+      }),
     }).then(() => {
       validateTopBar();
       validateIntroSection();
       validateBrandsSection();
-      // checkLinkByTarget("/mission", "OUR MISSION");
-      cy.get("button:contains('START YOUR DATALAND JOURNEY')"); // TODO .should("be.disabled");
-      // TODO slide show test
       // TODO test I AM INTERESTED button
       // TODO test get in contact button
 
-      // TODO test targets
-      // cy.get("button.campaigns__button").should("have.length", 4);
-      // cy.get("button.campaigns__button").each((element) => {
-      //   expect(element.text()).to.equal("JOIN");
-      //   element.trigger("click");
-      //   cy.wait(100);
-      //   cy.wrap(mounted.component).its("$route.path").should("eq", landingPagePath);
-      // });
-
+      validateQuotesSlides();
       validateHowItWorksSlides();
       checkNewFooter();
-
-      // TODO check redirecting buttons that work for redirection
-      // TODO unfunctional buttons for staying on the page or being disabled
     });
   });
 });
@@ -46,12 +34,8 @@ function validateTopBar(): void {
     return cy.get("header");
   }
   checkImage("Dataland banner logo", "gfx_logo_dataland_orange_S.svg", getTopBar());
-  // TODO validate targets after clicking
   checkButton("signup_dataland_button", "Sign Up", getTopBar());
   checkLinkByContent("Login", getTopBar());
-  // checkLinkByTarget("/mission", "Mission", getTopBar());
-  // checkLinkByTarget("/community", "Community", getTopBar());
-  // checkLinkByTarget("/campaigns", "Campaigns", getTopBar());
 }
 
 /**
@@ -61,7 +45,6 @@ function validateIntroSection(): void {
   checkImage("Liberate Data -  Empower Autonomy. Dataland, the Open ESG Data Platform.", "gfx_logo_d_orange_S.svg");
   cy.get("h1").should("contain.text", "Liberate Data");
   cy.get("h1").should("contain.text", "Empower Autonomy");
-  // TODO check searchbar and button
 }
 
 /**
@@ -91,10 +74,34 @@ function checkNewFooter(): void {
   checkImage("Copyright ©   Dataland", "gfx_logo_dataland_orange_S.svg", getFooter());
   cy.get(".footer__copyright").should("contain.text", "Copyright © 2023 Dataland");
 
-  // TODO check targets
   checkLinkByTarget("/legal", "Legal", getFooter());
   checkLinkByTarget("/imprint", "Imprint", getFooter());
   checkLinkByTarget("/dataprivacy", "Data Privacy", getFooter());
+}
+
+/**
+ * Validates that the slide show on "Quotes" works as expected
+ */
+function validateQuotesSlides(): void {
+  /**
+   * Gets the "Quotes" element
+   * @returns the "Quotes" element
+   */
+  function getSlidesWrapper(): Cypress.Chainable {
+    return cy.get("section.quotes");
+  }
+
+  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "none");
+  getSlidesWrapper().find("button[aria-label='Next slide']").click();
+  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
+  getSlidesWrapper().find("button[aria-label='Next slide']").click();
+  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
+  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
+  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, 0, 0)");
+  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
+  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, 440, 0)");
+  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
+  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, 440, 0)");
 }
 
 /**
