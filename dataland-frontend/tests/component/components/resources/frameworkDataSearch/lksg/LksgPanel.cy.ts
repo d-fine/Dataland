@@ -74,6 +74,23 @@ describe("Component test for the LksgPanel", () => {
     MLDT.getCellContainer("List Of Production Sites").contains("a").should("be.visible");
   });
 
+  it("Validate that the procurement category modal is displayed and contains the correct headers", () => {
+    const preparedFixture = getPreparedFixture("lksg-with-procurement-categories", preparedFixtures);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+
+    MLDT.getSectionHead("Production-specific - Own Operations")
+      .should("have.attr", "data-section-expanded", "false")
+      .click();
+    MLDT.getCellContainer("Products/Services Categories purchased").find("a").should("be.visible").click();
+
+    cy.get("div.p-dialog").within(() => {
+      cy.get("th").eq(0).should("have.text", "Procurement Category");
+      cy.get("th").eq(1).should("have.text", "Procured Products/Services");
+      cy.get("th").eq(2).should("have.text", "Number of Direct Suppliers and Countries");
+      cy.get("th").eq(3).should("have.text", "Order Volume");
+    });
+  });
+
   /**
    * This functions imitates an api response of the /data/lksg/companies/mock-company-id endpoint
    * to include 6 active Lksg datasets from different years to test the simultaneous display of multiple Lksg

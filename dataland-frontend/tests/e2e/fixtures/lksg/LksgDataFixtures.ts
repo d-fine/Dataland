@@ -346,7 +346,7 @@ export class LksgGenerator extends Generator {
     const procurementCategories = Object.values(ProcurementCategoryType);
     const keys = [] as ProcurementCategoryType[];
     procurementCategories.forEach((category) => {
-      if (faker.datatype.boolean()) {
+      if (!faker.datatype.boolean({ probability: this.nullProbability })) {
         keys.push(category);
       }
     });

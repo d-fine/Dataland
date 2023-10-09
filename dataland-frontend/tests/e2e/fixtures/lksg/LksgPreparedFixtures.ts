@@ -18,7 +18,25 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-06-22"));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2022-07-30"));
   preparedFixtures.push(manipulateFixtureForLksgDatasetWithLotsOfNulls(generateOneLksgFixtureWithManyNulls()));
+  preparedFixtures.push(manipulateFixtureToContainProcurementCategories(generateLksgFixture(1, 0)[0]));
   return preparedFixtures;
+}
+/**
+ * Ensures that the fixture contains procurement categories that are displayed (respecting show-if)
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureToContainProcurementCategories(input: FixtureData<LksgData>): FixtureData<LksgData> {
+  input.companyInformation.companyName = "lksg-with-procurement-categories";
+  input.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
+  if (
+    Object.keys(input.t.general.productionSpecificOwnOperations!.productsServicesCategoriesPurchased ?? {}).length < 1
+  ) {
+    throw Error(
+      "The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!",
+    );
+  }
+  return input;
 }
 
 /**

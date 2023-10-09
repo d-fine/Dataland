@@ -55,14 +55,15 @@ export function mountMLDTFrameworkPanel<Framework extends keyof FrameworkDataTyp
   companyId = "mock-company-id",
 ): Cypress.Chainable {
   cy.intercept(`/api/data/${frameworkIdentifier}/companies/${companyId}`, datasetsToDisplay);
-  return cy.mountWithPlugins(MultiLayerDataTableFrameworkPanel, {
-    keycloak: minimalKeycloakMock({}),
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    props: {
+  return cy.mountWithDialog(
+    MultiLayerDataTableFrameworkPanel,
+    {
+      keycloak: minimalKeycloakMock({}),
+    },
+    {
       companyId: companyId,
       frameworkIdentifier: frameworkIdentifier,
       displayConfiguration: displayConfiguration,
     },
-  });
+  );
 }
