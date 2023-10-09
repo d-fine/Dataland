@@ -13,6 +13,7 @@ import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import {humanizeStringOrNumber} from "@/utils/StringHumanizer";
 
 type LksgProcurementType = { [key in keyof ProcurementCategoryType]: LksgProcurementCategory | undefined };
 
@@ -56,7 +57,7 @@ function convertLksgProcumentTypeToListForModal(
     if (!lksgProcurementCategory) continue;
 
     listForModal.push({
-      procurementCategory: procurementCategoryType,
+      procurementCategory: humanizeStringOrNumber(procurementCategoryType),
       procuredProductTypesAndServicesNaceCodes: (
         lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes ?? []
       ).map(convertSingleNaceCode),

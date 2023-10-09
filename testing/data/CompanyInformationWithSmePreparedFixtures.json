@@ -2,57 +2,52 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Mckaylachester",
-			"headquartersPostalCode": "15474",
-			"sector": "solutions",
+			"headquarters": "South Mireille",
+			"headquartersPostalCode": "33173-0774",
+			"sector": "synergies",
 			"identifiers": {
 				"Lei": [
-					"Wg1HPqjZsnz5wWqBBucl"
+					"l4KcYQTSEJTByOZsuoGd"
 				],
 				"Isin": [
-					"2IgzeIuAOn7Y",
-					"R8VhZpHIDius"
+					"fsB5EsNiejhm"
 				],
-				"PermId": [],
+				"PermId": [
+					"CYm4yPtVVL"
+				],
 				"Ticker": [
-					"U3JXous"
+					"zViQKrL"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"2IHHF6Ctv"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"b6ZFtrUW1GyEYbe"
+					"WWO7JzhC7LDAeai"
 				]
 			},
-			"countryCode": "PF",
+			"countryCode": "BY",
 			"companyAlternativeNames": [
-				"Parker - Renner",
-				"Pfannerstill, Cremin and Pouros"
+				"Schaden - Bednar"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://instructive-elevation.org/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://lovely-pack.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"13.96",
-						"19.10",
-						"25.1",
-						"43.9",
-						"46.38"
+						"13.94",
+						"24.32"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Schaefer Glen 10719",
-						"postalCode": null,
-						"city": "Leannonberg",
-						"state": "Arizona",
-						"country": "IL"
+						"streetAndHouseNumber": null,
+						"postalCode": "42654",
+						"city": "New Leonora",
+						"state": "Indiana",
+						"country": "SL"
 					},
-					"numberOfEmployees": 2377,
-					"fiscalYearStart": "2024-04-02"
+					"numberOfEmployees": 3938,
+					"fiscalYearStart": "2024-03-03"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -64,31 +59,44 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "MacGyver, Abernathy and Hermiston",
+							"nameOfProductionSite": "Wuckert, Lockman and Heaney",
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
-								"postalCode": null,
-								"city": "Port Devintown",
-								"state": "Mississippi",
-								"country": "HN"
-							},
-							"shareOfTotalRevenueInPercent": 99.1787
-						},
-						{
-							"nameOfProductionSite": "Harris, Toy and DuBuque",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Klein Via 82655",
-								"postalCode": "66361",
-								"city": "Mesa",
-								"state": "Louisiana",
-								"country": "TR"
+								"postalCode": "38722",
+								"city": "North Tatum",
+								"state": "Oregon",
+								"country": "UZ"
 							},
 							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Casper, Bauch and Hahn",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kshlerin Bridge 4318",
+								"postalCode": "49944-0270",
+								"city": "Franciscafurt",
+								"state": "Alaska",
+								"country": "DZ"
+							},
+							"shareOfTotalRevenueInPercent": 84.9415
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Small Rubber Soap",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Ergonomic Frozen Gloves",
+							"shareOfTotalRevenueInPercent": 19.7669
+						},
+						{
+							"name": "Tasty Wooden Sausages",
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				}
 			},
 			"power": {
@@ -96,25 +104,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 544,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 268,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 822,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 45732327,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Hail",
-						"EarthQuake",
-						"Flooding",
-						"Wind",
-						"Snow"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 11891870,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -123,38 +124,37 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Jenkinsboro",
-			"headquartersPostalCode": "51700-4438",
-			"sector": "lifetime value",
+			"headquarters": "Schuppechester",
+			"headquartersPostalCode": null,
+			"sector": "schemas",
 			"identifiers": {
-				"Lei": [
-					"niB1akd7MCRX3aUpM3n4"
-				],
+				"Lei": [],
 				"Isin": [
-					"2UDagzVo8y1f",
-					"62bFIr0BTpZO"
+					"rYBx7qBZX8xu"
 				],
-				"PermId": [],
-				"Ticker": [
-					"8Wbi9eH"
+				"PermId": [
+					"LC6qkpPPrP"
 				],
-				"Duns": [],
+				"Ticker": [],
+				"Duns": [
+					"TK29jhEdF"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"QKTTp9o1vU8NO6g"
+				]
 			},
-			"countryCode": "NP",
-			"companyAlternativeNames": [
-				"Murazik Group"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://uncommon-gem.org",
+			"countryCode": "ER",
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://tan-longboat.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"09.90"
+						"50.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -163,115 +163,63 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 6951,
-					"fiscalYearStart": "2023-12-21"
+					"numberOfEmployees": 7521,
+					"fiscalYearStart": "2023-10-09"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 10342817
+					"revenueInEUR": 141850,
+					"operatingCostInEUR": 7545198,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Spinka - Mayert",
+							"nameOfProductionSite": "Runolfsdottir, Abshire and Quitzon",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "69682-0539",
-								"city": "Lake Keyonshire",
-								"state": "Arkansas",
-								"country": "VU"
+								"streetAndHouseNumber": "Krajcik Prairie 53663",
+								"postalCode": "58939-5557",
+								"city": "Masonport",
+								"state": null,
+								"country": "ES"
 							},
-							"shareOfTotalRevenueInPercent": 41.944
+							"shareOfTotalRevenueInPercent": 55.732
 						},
 						{
-							"nameOfProductionSite": "Emmerich - Armstrong",
+							"nameOfProductionSite": "Williamson - Predovic",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "32307",
-								"city": "Joneshaven",
-								"state": "Florida",
-								"country": "IR"
+								"streetAndHouseNumber": "Hegmann Meadows 867",
+								"postalCode": "96809",
+								"city": "Mobile",
+								"state": "Minnesota",
+								"country": "GP"
 							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Wehner, Quitzon and Wolf",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Buckridge Harbors 881",
-								"postalCode": "91037",
-								"city": "Boylehaven",
-								"state": "Arizona",
-								"country": "EC"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Gislason, Considine and King",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Tito View 78447",
-								"postalCode": "49190",
-								"city": "Jersey City",
-								"state": "Oregon",
-								"country": "MS"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Gleichner - Zulauf",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Sandra Crest 34798",
-								"postalCode": "96391-6909",
-								"city": "Azusa",
-								"state": "Ohio",
-								"country": "LK"
-							},
-							"shareOfTotalRevenueInPercent": 48.4896
+							"shareOfTotalRevenueInPercent": 3.3388
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Gorgeous Frozen Chips",
-							"shareOfTotalRevenueInPercent": 57.2688
-						},
-						{
-							"name": "Rustic Steel Pants",
-							"shareOfTotalRevenueInPercent": 21.3204
-						},
-						{
-							"name": "Practical Fresh Chair",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Gorgeous Bronze Tuna",
-							"shareOfTotalRevenueInPercent": 97.7826
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1850,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 46,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": 1973,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 901,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 47031870,
-					"naturalHazardsCovered": [
-						"Avalanche"
-					]
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23273961,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -280,43 +228,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Lake Kianworth",
-			"headquartersPostalCode": null,
-			"sector": null,
+			"headquarters": "Santee",
+			"headquartersPostalCode": "83367-7000",
+			"sector": "content",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"fCdmyzLDUWjQ",
-					"ibppZJbK1cmM"
+					"UtK8xq6Cw7OX",
+					"C0Ohlcsq3aN4"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"RwJFEK0"
+				],
 				"Duns": [
-					"16UZaFbVc"
+					"yQj3LSVdl"
 				],
 				"VatNumber": [
-					"gFb0WF7Y2"
+					"1intH38H6"
 				],
 				"CompanyRegistrationNumber": [
-					"ZN6JMrUnxAgwIai"
+					"Hfg9nQhpL8yUJLp"
 				]
 			},
-			"countryCode": "GU",
+			"countryCode": "AU",
 			"companyAlternativeNames": [
-				"Kihn Group",
-				"Marquardt - Osinski",
-				"Monahan, Keeling and Bartoletti",
-				"Moore, Lindgren and Runolfsdottir"
+				"Gislason - Torphy"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": null,
+			"companyLegalForm": null,
+			"website": "https://extraneous-scotch.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"46.5"
+						"M"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -325,98 +272,49 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 9969,
-					"fiscalYearStart": "2024-09-16"
+					"numberOfEmployees": 8789,
+					"fiscalYearStart": "2024-08-10"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 73711864,
-					"operatingCostInEUR": 14145494,
-					"capitalAssetsInEUR": 33389102
+					"revenueInEUR": 72282948,
+					"operatingCostInEUR": 36556378,
+					"capitalAssetsInEUR": 68338168
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Gerhold, Huels and Brekke",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kareem Islands 51764",
-								"postalCode": "58569",
-								"city": "North Kavon",
-								"state": null,
-								"country": "SO"
-							},
-							"shareOfTotalRevenueInPercent": 19.6389
-						},
-						{
-							"nameOfProductionSite": "Bosco Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": null,
-								"city": "Bruenland",
-								"state": null,
-								"country": "VA"
-							},
-							"shareOfTotalRevenueInPercent": 77.3926
-						},
-						{
-							"nameOfProductionSite": "Dicki - Mills",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Halvorson Bridge 373",
-								"postalCode": "14349-4019",
-								"city": "Kiehnstad",
-								"state": "Connecticut",
-								"country": "ZW"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Toby Pike 9600",
-								"postalCode": "11622",
-								"city": "Lake Gennarotown",
-								"state": "Ohio",
-								"country": "BV"
-							},
-							"shareOfTotalRevenueInPercent": 65.6474
-						},
-						{
-							"nameOfProductionSite": "Trantow Inc",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lori Viaduct 466",
-								"postalCode": "42508-1047",
-								"city": "New Dannie",
-								"state": "Oklahoma",
-								"country": "PL"
-							},
-							"shareOfTotalRevenueInPercent": 38.1478
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Practical Wooden Car",
+							"shareOfTotalRevenueInPercent": 68.1026
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
 				},
 				"consumption": {
 					"powerConsumptionInMWh": 1798,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 938,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"energyConsumptionHeatingAndHotWaterInMWh": 671,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 17049820,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Hail",
-						"EarthQuake"
+						"Flooding",
+						"Avalanche",
+						"Wind",
+						"Snow"
 					]
 				}
 			}
