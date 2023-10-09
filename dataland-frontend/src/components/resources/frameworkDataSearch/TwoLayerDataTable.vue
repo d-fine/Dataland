@@ -174,6 +174,7 @@ import { defineComponent, type PropType } from "vue";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
+import { formatPercentageNumberAsString } from "@/utils/Formatter";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
@@ -282,8 +283,9 @@ export default defineComponent({
         for (const key in dataToConvert) {
           const newObj = {
             vehiclesType: key,
-            driveMixPerFleetSegmentInPercent: dataToConvert[key as keyof typeof dataToConvert]
-              .driveMixPerFleetSegmentInPercent as string,
+            driveMixPerFleetSegmentInPercent: formatPercentageNumberAsString(
+              dataToConvert[key as keyof typeof dataToConvert].driveMixPerFleetSegmentInPercent as number,
+            ),
             totalAmountOfVehicles: dataToConvert[key as keyof typeof dataToConvert].totalAmountOfVehicles as string,
           };
           outputArray.push(newObj);
