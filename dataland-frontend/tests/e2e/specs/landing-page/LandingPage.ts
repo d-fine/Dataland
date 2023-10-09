@@ -14,10 +14,6 @@ describe("Check that the Landing Page to work properly", () => {
     cy.url().should("include", "/keycloak/realms/datalandsecurity/protocol/openid-connect/registrations");
     cy.get("span:contains('HOME')").click();
 
-    cy.get("a[href='/legal']").click();
-    cy.url().should("include", `nocontent`);
-    cy.get("a[href='/']").first().click();
-
     cy.get("a[href='/imprint']").click();
     cy.get("h2:contains('Imprint')");
     cy.get("span:contains('BACK')").click();
