@@ -91,6 +91,39 @@ describe("Component test for the LksgPanel", () => {
     });
   });
 
+  it("Validate that show-if hidden fields are not displayed in standard mode", () => {
+    const preparedFixture = getPreparedFixture(
+      "lksg-not-a-manufacturing-company-but-has-production-sites",
+      preparedFixtures,
+    );
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+
+    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+
+    MLDT.getCellContainer("Manufacturing Company").should("have.text", "No");
+    MLDT.getCellContainer("List Of Production Sites").should("not.exist");
+  });
+
+  it("Validate that show-if hidden fields are displayed and highlighted in review mode", () => {
+    const preparedFixture = getPreparedFixture(
+      "lksg-not-a-manufacturing-company-but-has-production-sites",
+      preparedFixtures,
+    );
+    mountMLDTFrameworkPanelFromFakeFixture(
+      DataTypeEnum.Lksg,
+      lksgDisplayConfiguration,
+      [preparedFixture],
+      "mock-company-id",
+      true,
+    );
+
+    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+
+    MLDT.getCellContainer("Manufacturing Company").should("have.text", "No");
+    MLDT.getCellContainer("List Of Production Sites").should("be.visible");
+    MLDT.getCellContainer("List Of Production Sites").find("i[data-test=hidden-icon]").should("be.visible");
+  });
+
   /**
    * This functions imitates an api response of the /data/lksg/companies/mock-company-id endpoint
    * to include 6 active Lksg datasets from different years to test the simultaneous display of multiple Lksg

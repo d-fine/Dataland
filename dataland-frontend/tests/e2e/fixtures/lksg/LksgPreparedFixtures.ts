@@ -19,8 +19,26 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2022-07-30"));
   preparedFixtures.push(manipulateFixtureForLksgDatasetWithLotsOfNulls(generateOneLksgFixtureWithManyNulls()));
   preparedFixtures.push(manipulateFixtureToContainProcurementCategories(generateLksgFixture(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureToNotBeAManufacturingCompany(generateLksgFixture(1, 0)[0]));
   return preparedFixtures;
 }
+
+/**
+ * Ensures that the fixture contains production sites but is not a manufacturing company (to test show-if)
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureToNotBeAManufacturingCompany(input: FixtureData<LksgData>): FixtureData<LksgData> {
+  input.companyInformation.companyName = "lksg-not-a-manufacturing-company-but-has-production-sites";
+  const twoProductionSites = [generateProductionSite(), generateProductionSite()];
+
+  input.t.general.productionSpecific!.manufacturingCompany = YesNo.No;
+  input.t.general.productionSpecific!.productionSites = YesNo.No;
+  input.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;
+
+  return input;
+}
+
 /**
  * Ensures that the fixture contains procurement categories that are displayed (respecting show-if)
  * @param input Fixture data to be manipulated

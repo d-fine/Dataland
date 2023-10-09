@@ -12,6 +12,7 @@ import { minimalKeycloakMock } from "./Keycloak";
  * @param displayConfiguration the MLDT display configuration for the framework
  * @param datasetsToDisplay the datasets to mount
  * @param companyId the company ID of the mocked requests
+ * @param reviewMode mount the company in reviewer mode?
  * @returns the component mounting chainable
  */
 export function mountMLDTFrameworkPanelFromFakeFixture<Framework extends keyof FrameworkDataTypes>(
@@ -19,6 +20,7 @@ export function mountMLDTFrameworkPanelFromFakeFixture<Framework extends keyof F
   displayConfiguration: MLDTConfig<FrameworkDataTypes[Framework]["data"]>,
   datasetsToDisplay: Array<FixtureData<FrameworkDataTypes[Framework]["data"]>>,
   companyId = "mock-company-id",
+  reviewMode = false,
 ): Cypress.Chainable {
   const convertedDataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataTypes[Framework]["data"]>> =
     datasetsToDisplay.map((it, idx) => {
@@ -37,7 +39,13 @@ export function mountMLDTFrameworkPanelFromFakeFixture<Framework extends keyof F
       };
     });
 
-  return mountMLDTFrameworkPanel(frameworkIdentifier, displayConfiguration, convertedDataAndMetaInformation, companyId);
+  return mountMLDTFrameworkPanel(
+    frameworkIdentifier,
+    displayConfiguration,
+    convertedDataAndMetaInformation,
+    companyId,
+    reviewMode,
+  );
 }
 
 /**
@@ -46,6 +54,7 @@ export function mountMLDTFrameworkPanelFromFakeFixture<Framework extends keyof F
  * @param displayConfiguration the MLDT display configuration for the framework
  * @param datasetsToDisplay the datasets to mount
  * @param companyId the company ID of the mocked requests
+ * @param reviewMode mount the company in reviewer mode?
  * @returns the component mounting chainable
  */
 export function mountMLDTFrameworkPanel<Framework extends keyof FrameworkDataTypes>(
@@ -53,6 +62,7 @@ export function mountMLDTFrameworkPanel<Framework extends keyof FrameworkDataTyp
   displayConfiguration: MLDTConfig<FrameworkDataTypes[Framework]["data"]>,
   datasetsToDisplay: Array<DataAndMetaInformation<FrameworkDataTypes[Framework]["data"]>>,
   companyId = "mock-company-id",
+  reviewMode = false,
 ): Cypress.Chainable {
   cy.intercept(`/api/data/${frameworkIdentifier}/companies/${companyId}`, datasetsToDisplay);
   return cy.mountWithDialog(
@@ -64,6 +74,7 @@ export function mountMLDTFrameworkPanel<Framework extends keyof FrameworkDataTyp
       companyId: companyId,
       frameworkIdentifier: frameworkIdentifier,
       displayConfiguration: displayConfiguration,
+      inReviewMode: reviewMode,
     },
   );
 }

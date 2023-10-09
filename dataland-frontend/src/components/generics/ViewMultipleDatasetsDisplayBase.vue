@@ -6,7 +6,7 @@
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
     :viewInPreviewMode="viewInPreviewMode"
   >
-    <template v-slot:content>
+    <template v-slot:content="slotProps">
       <div v-if="isListOfDataIdsToDisplayFound">
         <DatasetDisplayStatusIndicator
           :displayed-dataset="singleDataMetaInfoToDisplay"
@@ -32,6 +32,7 @@
               :companyId="companyId"
               :display-configuration="convertDataModel(lksgDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :inReviewMode="slotProps.inReviewMode"
             />
             <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.Sfdr"
@@ -39,6 +40,7 @@
               :companyId="companyId"
               :display-configuration="convertDataModel(sfdrDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :inReviewMode="slotProps.inReviewMode"
             />
             <P2pPanel
               v-if="dataType === DataTypeEnum.P2p"

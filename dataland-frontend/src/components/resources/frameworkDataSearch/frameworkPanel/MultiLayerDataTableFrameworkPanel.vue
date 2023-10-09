@@ -4,9 +4,19 @@
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-show="status == 'DisplayingDatasets'">
+    <p v-if="inReviewMode">
+      You are viewing this page in review mode. Therefore, <b>all</b> possible fields are displayed even if they are not
+      going to be visible in the final view page. Normally hidden fields are highlighted (start with a
+      <i class="pi pi-eye-slash pl-1text-red-500" aria-hidden="true" />) and should be empty.
+    </p>
+
     <MultiLayerDataTable
       :datasets="mldtDatasets"
-      :config="displayConfiguration"
+      :config="
+        inReviewMode
+          ? convertMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
+          : displayConfiguration
+      "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />
   </div>
@@ -27,6 +37,7 @@ import { type DataMetaInformation } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { convertMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/dataTable/cells/MultiLayerDataTableQaHighlight";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -37,9 +48,11 @@ const props = defineProps<{
   singleDataMetaInfoToDisplay?: DataMetaInformation;
   frameworkIdentifier: Framework;
   displayConfiguration: MLDTConfig<FrameworkDataTypes[Framework]["data"]>;
+  inReviewMode: boolean;
 }>();
 
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
+
 const mldtDatasets = computed(() => {
   const sortedDataAndMetaInformation = sortCompanyAssociatedDataByReportingPeriod(
     dataAndMetaInformationForDisplay.value,

@@ -5,6 +5,7 @@ export enum MLDTDisplayComponents {
   StringDisplayComponent = "StringDisplayComponent",
   DocumentLinkDisplayComponent = "DocumentLinkDisplayComponent",
   ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
+  HighlightHiddenCellDisplayComponent = "HighlightHiddenCellDisplayComponent",
 }
 
 export type MLDTDisplayComponentTypes = {
@@ -16,6 +17,9 @@ export type MLDTDisplayComponentTypes = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modalComponent: any;
     modalOptions?: DynamicDialogOptions;
+  };
+  [MLDTDisplayComponents.HighlightHiddenCellDisplayComponent]: {
+    innerContents: AvailableDisplayValues;
   };
 };
 
