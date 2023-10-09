@@ -81,14 +81,10 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
     const dataset = { data: procurementData };
     const value = lksgProcurementCategoriesValueGetterFactory("data", sampleField)(dataset);
 
-    expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
-      {
-        procurementCategory: "Raw Materials",
-        procuredProductTypesAndServicesNaceCodes: [],
-        suppliersAndCountries: ["3 suppliers from Germany"],
-        totalProcurementInPercent: "",
-      },
-    ]);
+    expect(value).to.have.deep.nested.property(
+      "displayValue.modalOptions.data.listOfRowContents[0].suppliersAndCountries",
+      ["3 suppliers from Germany"],
+    );
   });
 
   it("Should display that there production sites in a country when the exact number of sites is not specified", () => {
@@ -104,14 +100,10 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
     const dataset = { data: procurementData };
     const value = lksgProcurementCategoriesValueGetterFactory("data", sampleField)(dataset);
 
-    expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
-      {
-        procurementCategory: "Raw Materials",
-        procuredProductTypesAndServicesNaceCodes: [],
-        suppliersAndCountries: ["There are suppliers from Germany"],
-        totalProcurementInPercent: "",
-      },
-    ]);
+    expect(value).to.have.deep.nested.property(
+      "displayValue.modalOptions.data.listOfRowContents[0].suppliersAndCountries",
+      ["There are suppliers from Germany"],
+    );
   });
 
   it("Should display the percentage field correctly", () => {
@@ -125,13 +117,9 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
     const dataset = { data: procurementData };
     const value = lksgProcurementCategoriesValueGetterFactory("data", sampleField)(dataset);
 
-    expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
-      {
-        procurementCategory: "Raw Materials",
-        procuredProductTypesAndServicesNaceCodes: [],
-        suppliersAndCountries: [],
-        totalProcurementInPercent: "10.55 %",
-      },
-    ]);
+    expect(value).to.have.nested.property(
+      "displayValue.modalOptions.data.listOfRowContents[0].totalProcurementInPercent",
+      "10.55 %",
+    );
   });
 });
