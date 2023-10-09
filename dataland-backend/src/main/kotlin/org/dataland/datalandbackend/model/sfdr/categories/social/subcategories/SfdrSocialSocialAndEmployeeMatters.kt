@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
-import org.dataland.datalandbackend.model.DataPointOneValue
-import org.dataland.datalandbackend.model.DataPointWithUnit
+import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -10,65 +10,65 @@ import java.math.BigDecimal
  * Fields of the subcategory "Social and employee matters" belonging to the category "Social" of the sfdr framework.
  */
 data class SfdrSocialSocialAndEmployeeMatters(
-    val humanRightsLegalProceedings: DataPointOneValue<YesNo>? = null,
+    val humanRightsLegalProceedings: ExtendedDataPoint<YesNo>? = null,
 
-    val iloCoreLabourStandards: DataPointOneValue<YesNo>? = null,
+    val iloCoreLabourStandards: ExtendedDataPoint<YesNo>? = null,
 
-    val environmentalPolicy: DataPointOneValue<YesNo>? = null,
+    val environmentalPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val corruptionLegalProceedings: DataPointOneValue<YesNo>? = null,
+    val corruptionLegalProceedings: ExtendedDataPoint<YesNo>? = null,
 
-    val transparencyDisclosurePolicy: DataPointOneValue<YesNo>? = null,
+    val transparencyDisclosurePolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val humanRightsDueDiligencePolicy: DataPointOneValue<YesNo>? = null,
+    val humanRightsDueDiligencePolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val policyAgainstChildLabour: DataPointOneValue<YesNo>? = null,
+    val policyAgainstChildLabour: ExtendedDataPoint<YesNo>? = null,
 
-    val policyAgainstForcedLabour: DataPointOneValue<YesNo>? = null,
+    val policyAgainstForcedLabour: ExtendedDataPoint<YesNo>? = null,
 
-    val policyAgainstDiscriminationInTheWorkplace: DataPointOneValue<YesNo>? = null,
+    val policyAgainstDiscriminationInTheWorkplace: ExtendedDataPoint<YesNo>? = null,
 
-    val iso14001Certificate: DataPointOneValue<YesNo>? = null,
+    val iso14001Certificate: ExtendedDataPoint<YesNo>? = null,
 
-    val policyAgainstBriberyAndCorruption: DataPointOneValue<YesNo>? = null,
+    val policyAgainstBriberyAndCorruption: ExtendedDataPoint<YesNo>? = null,
 
-    val fairBusinessMarketingAdvertisingPolicy: DataPointOneValue<YesNo>? = null,
+    val fairBusinessMarketingAdvertisingPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val technologiesExpertiseTransferPolicy: DataPointOneValue<YesNo>? = null,
+    val technologiesExpertiseTransferPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val fairCompetitionPolicy: DataPointOneValue<YesNo>? = null,
+    val fairCompetitionPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val violationOfTaxRulesAndRegulation: DataPointOneValue<YesNo>? = null,
+    val violationOfTaxRulesAndRegulation: ExtendedDataPoint<YesNo>? = null,
 
-    val unGlobalCompactPrinciplesCompliancePolicy: DataPointOneValue<YesNo>? = null,
+    val unGlobalCompactPrinciplesCompliancePolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: DataPointOneValue<YesNo>? = null,
+    val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo>? = null,
 
-    val averageGrossHourlyEarningsMaleEmployees: DataPointWithUnit<BigDecimal>? = null,
+    val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    val averageGrossHourlyEarningsFemaleEmployees: DataPointWithUnit<BigDecimal>? = null,
+    val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
-    val femaleBoardMembers: DataPointWithUnit<BigDecimal>? = null,
+    val femaleBoardMembers: ExtendedDataPoint<BigDecimal>? = null,
 
-    val maleBoardMembers: DataPointWithUnit<BigDecimal>? = null,
+    val maleBoardMembers: ExtendedDataPoint<BigDecimal>? = null,
 
-    val controversialWeaponsExposure: DataPointOneValue<YesNo>? = null,
+    val controversialWeaponsExposure: ExtendedDataPoint<YesNo>? = null,
 
-    val workplaceAccidentPreventionPolicy: DataPointOneValue<YesNo>? = null,
+    val workplaceAccidentPreventionPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val rateOfAccidentsInPercent: DataPointWithUnit<BigDecimal>? = null,
+    val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    val workdaysLostInDays: DataPointWithUnit<BigDecimal>? = null,
+    val workdaysLostInDays: ExtendedDataPoint<BigDecimal>? = null,
 
-    val supplierCodeOfConduct: DataPointOneValue<YesNo>? = null,
+    val supplierCodeOfConduct: ExtendedDataPoint<YesNo>? = null,
 
-    val grievanceHandlingMechanism: DataPointOneValue<YesNo>? = null,
+    val grievanceHandlingMechanism: ExtendedDataPoint<YesNo>? = null,
 
-    val whistleblowerProtectionPolicy: DataPointOneValue<YesNo>? = null,
+    val whistleblowerProtectionPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val reportedIncidentsOfDiscrimination: DataPointWithUnit<BigDecimal>? = null,
+    val reportedIncidentsOfDiscrimination: ExtendedDataPoint<BigDecimal>? = null,
 
-    val sanctionedIncidentsOfDiscrimination: DataPointWithUnit<BigDecimal>? = null,
+    val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<BigDecimal>? = null,
 
-    val ceoToEmployeePayGapRatio: DataPointWithUnit<BigDecimal>? = null,
+    val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
 )

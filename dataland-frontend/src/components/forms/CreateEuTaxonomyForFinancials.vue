@@ -58,7 +58,7 @@
                   ref="UploadReports"
                   :isEuTaxonomy="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports"
-                  @reportsUpdated="handleChangeOfReferenceableReportNames"
+                  @reportsUpdated="handleChangeOfReferenceableReportNamesAndReferences"
                 />
 
                 <EuTaxonomyBasicInformation
@@ -86,7 +86,7 @@
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
                             type="select"
-                            name="assurance"
+                            name="value"
                             placeholder="Please choose..."
                             :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
                             validation="required"
@@ -121,12 +121,14 @@
                               />
                               <FormKit
                                 type="select"
-                                name="report"
+                                name="fileName"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
+                                v-model="currentReportValue"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
+                              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
                             </div>
                             <div>
                               <UploadFormHeader
@@ -240,7 +242,7 @@
                                   :name="kpiType ?? ''"
                                   :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                   :kpiNameMappings="euTaxonomyKpiNameMappings"
-                                  :reportsName="namesOfAllCompanyReportsForTheDataset"
+                                  :reportsNameAndReferences="namesAndReferencesOfAllCompanyReportsForTheDataset"
                                 />
                               </div>
                             </FormKit>
@@ -264,7 +266,7 @@
                                   :name="kpiTypeEligibility ?? ''"
                                   :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                   :kpiNameMappings="euTaxonomyKpiNameMappings"
-                                  :reportsName="namesOfAllCompanyReportsForTheDataset"
+                                  :reportsNameAndReferences="namesAndReferencesOfAllCompanyReportsForTheDataset"
                                 />
                               </div>
                             </FormKit>
@@ -323,9 +325,10 @@ import {
   getKpiFieldNameForOneFinancialServiceType,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
-  AssuranceDataAssuranceEnum,
+  AssuranceDataPointValueEnum,
   type CompanyAssociatedDataEuTaxonomyDataForFinancials,
   type DataMetaInformation,
+  DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type EuTaxonomyDataForNonFinancials,
@@ -339,7 +342,7 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import { uploadFiles, type DocumentToUpload } from "@/utils/FileUploadUtils";
+import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -371,11 +374,12 @@ export default defineComponent({
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
       fiscalYearEnd: "",
+      currentReportValue: "",
       reportingPeriod: undefined as undefined | Date,
       assuranceData: {
-        None: humanizeStringOrNumber(AssuranceDataAssuranceEnum.None),
-        LimitedAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.LimitedAssurance),
-        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.ReasonableAssurance),
+        None: humanizeStringOrNumber(AssuranceDataPointValueEnum.None),
+        LimitedAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.LimitedAssurance),
+        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
       },
       euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
@@ -424,7 +428,7 @@ export default defineComponent({
       confirmedSelectedFinancialServiceOptions: [] as { label: string; value: string }[],
       confirmedSelectedFinancialServiceTypes: [] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum[],
       message: "",
-      namesOfAllCompanyReportsForTheDataset: [] as string[],
+      namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
     };
   },
@@ -434,6 +438,15 @@ export default defineComponent({
         return this.reportingPeriod.getFullYear();
       }
       return 0;
+    },
+    namesOfAllCompanyReportsForTheDataset(): string[] {
+      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
+    },
+    fileReferenceAccordingToName(): string {
+      return getFileReferenceByFileName(
+        this.currentReportValue,
+        this.namesAndReferencesOfAllCompanyReportsForTheDataset,
+      );
     },
   },
   watch: {
@@ -476,10 +489,10 @@ export default defineComponent({
     fetchTemplateData(dataId: string): void {
       this.waitingForData = true;
       new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-        .getEuTaxonomyDataForFinancialsControllerApi()
+        .getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials)
         .then((euTaxonomyDataForFinancialsControllerApiInterface) =>
           euTaxonomyDataForFinancialsControllerApiInterface
-            .getCompanyAssociatedEuTaxonomyDataForFinancials(dataId)
+            .getFrameworkData(dataId)
             .then((resolvedPromise) => {
               const companyAssociatedEuTaxonomyData = resolvedPromise.data;
               if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
@@ -621,7 +634,7 @@ export default defineComponent({
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
-          this.namesOfAllCompanyReportsForTheDataset,
+          Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
         );
 
         await uploadFiles(
@@ -631,11 +644,10 @@ export default defineComponent({
 
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getEuTaxonomyDataForFinancialsControllerApi();
-        this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-          );
+        ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
+        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
+          clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
+        );
         this.$emit("datasetCreated");
       } catch (error) {
         this.messageCount++;
@@ -680,10 +692,10 @@ export default defineComponent({
     },
     /**
      * Updates the local list of names of referenceable reports
-     * @param reportNames new list of the referenceable reports' names
+     * @param reportNamesAndReferences new list of the referenceable reports' names and references
      */
-    handleChangeOfReferenceableReportNames(reportNames: string[]) {
-      this.namesOfAllCompanyReportsForTheDataset = reportNames;
+    handleChangeOfReferenceableReportNamesAndReferences(reportNamesAndReferences: object) {
+      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportNamesAndReferences;
     },
   },
 });

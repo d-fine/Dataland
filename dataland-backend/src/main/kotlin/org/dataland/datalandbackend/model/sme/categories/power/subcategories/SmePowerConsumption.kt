@@ -10,14 +10,14 @@ import java.math.BigDecimal
  * Fields of the subcategory "Consumption" belonging to the category "Power" of the sme framework.
 */
 data class SmePowerConsumption(
-    val powerConsumptionInMwh: BigDecimal? = null,
+    val powerConsumptionInMWh: BigDecimal? = null,
 
     val powerFromRenewableSources: YesNo? = null,
 
-    val energyConsumptionHeatingAndHotWater: BigDecimal? = null,
+    val energyConsumptionHeatingAndHotWaterInMWh: BigDecimal? = null,
 
     val primaryEnergySourceForHeatingAndHotWater: EnergySourceForHeatingAndHotWater? = null,
 
-    val energyConsumptionCoveredByOwnRenewablePowerGeneration:
+    val percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration:
     PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower? = null,
 )

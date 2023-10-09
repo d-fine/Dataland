@@ -3,7 +3,8 @@ import {
   MLDTDisplayComponents,
   type MLDTDisplayValue,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { type BaseDataPointYesNoNa, type DataPointOneValueYesNo, QualityOptions, YesNoNa } from "@clients/backend";
+import { YesNoNa } from "@clients/backend";
+import type { BaseDataPointYesNoNa } from "@clients/backend";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 
 describe("Unit test for the YesNoValueGetterFactory", () => {
@@ -119,8 +120,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
       const datapoint: BaseDataPointYesNoNa = {
         value: YesNoNa.Yes,
         dataSource: {
-          name: "Hello",
-          reference: "TestReference",
+          fileName: "Hello",
+          fileReference: "TestReference",
         },
       };
       const dataset = { data: datapoint };
@@ -130,8 +131,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
         displayValue: {
           label: "Certified",
           reference: {
-            name: "Hello",
-            reference: "TestReference",
+            fileName: "Hello",
+            fileReference: "TestReference",
           },
         },
       });
@@ -161,9 +162,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     });
 
     it("An empty string should be displayed if the data point's value is undefined", () => {
-      const datapoint: DataPointOneValueYesNo = {
-        quality: QualityOptions.Na,
-      };
+      const datapoint = undefined;
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
@@ -173,9 +172,12 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     });
 
     it("'Yes' should be displayed if the value is Yes", () => {
-      const datapoint: DataPointOneValueYesNo = {
+      const datapoint: BaseDataPointYesNoNa = {
         value: YesNoNa.Yes,
-        quality: QualityOptions.Na,
+        dataSource: {
+          fileName: "Hello",
+          fileReference: "TestReference",
+        },
       };
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);
@@ -186,9 +188,12 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     });
 
     it("'No' should be displayed if the value is No", () => {
-      const datapoint: DataPointOneValueYesNo = {
+      const datapoint: BaseDataPointYesNoNa = {
         value: YesNoNa.No,
-        quality: QualityOptions.Na,
+        dataSource: {
+          fileName: "Hello",
+          fileReference: "TestReference",
+        },
       };
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);
@@ -201,7 +206,10 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     it("'N/A' should be displayed if the value is NA", () => {
       const datapoint = {
         value: YesNoNa.Na,
-        quality: QualityOptions.Na,
+        dataSource: {
+          fileName: "Hello",
+          fileReference: "TestReference",
+        },
       };
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);

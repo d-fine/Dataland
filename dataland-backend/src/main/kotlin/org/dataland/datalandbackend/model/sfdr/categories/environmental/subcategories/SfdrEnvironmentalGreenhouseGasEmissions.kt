@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
-import org.dataland.datalandbackend.model.DataPointOneValue
-import org.dataland.datalandbackend.model.DataPointWithUnit
+import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -11,15 +11,15 @@ import java.math.BigDecimal
  * framework.
  */
 data class SfdrEnvironmentalGreenhouseGasEmissions(
-    val scope1GhgEmissionsInTonnes: DataPointWithUnit<BigDecimal>? = null,
+    val scope1GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    val scope2GhgEmissionsInTonnes: DataPointWithUnit<BigDecimal>? = null,
+    val scope2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    val scope3GhgEmissionsInTonnes: DataPointWithUnit<BigDecimal>? = null,
+    val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    val enterpriseValue: DataPointWithUnit<BigDecimal>? = null,
+    val enterpriseValue: CurrencyDataPoint? = null,
 
-    val totalRevenue: DataPointWithUnit<BigDecimal>? = null,
+    val totalRevenue: CurrencyDataPoint? = null,
 
-    val fossilFuelSectorExposure: DataPointOneValue<YesNo>? = null,
+    val fossilFuelSectorExposure: ExtendedDataPoint<YesNo>? = null,
 )

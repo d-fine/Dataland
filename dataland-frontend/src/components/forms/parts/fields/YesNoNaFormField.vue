@@ -17,8 +17,8 @@
         :file-names-for-prefill="fileNamesForPrefill"
       />
       <FormKit v-if="baseDataPointYesNoNa.value === 'Yes'" type="group" name="dataSource">
-        <FormKit type="hidden" name="name" v-model="documentName" />
-        <FormKit type="text" name="reference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
+        <FormKit type="hidden" name="fileName" v-model="documentName" />
+        <FormKit type="hidden" name="fileReference" v-model="documentReference" />
       </FormKit>
     </FormKit>
 
@@ -87,7 +87,7 @@ export default defineComponent({
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
-      this.documentReference = this.referencedDocument?.reference ?? "";
+      this.documentReference = this.referencedDocument?.fileReference ?? "";
       this.$emit("documentUpdated", this.name, this.referencedDocument);
     },
 

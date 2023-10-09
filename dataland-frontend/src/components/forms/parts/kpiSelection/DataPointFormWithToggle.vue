@@ -86,13 +86,14 @@
             <UploadFormHeader :label="kpiNameMappings.report ?? ''" :description="kpiInfoMappings.report ?? ''" />
             <FormKit
               type="select"
-              name="report"
+              name="fileName"
               :disabled="!dataPointIsAvailable"
               v-model="currentReportValue"
               placeholder="Select a report"
               :options="['None...', ...reportsName]"
               :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
+            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
           <div>
             <UploadFormHeader :label="kpiNameMappings.page ?? ''" :description="kpiInfoMappings.page ?? ''" />
@@ -151,6 +152,7 @@ import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
+import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "DataPointFormWithToggle",
@@ -179,6 +181,14 @@ export default defineComponent({
       }
     },
   },
+  computed: {
+    reportsName(): string[] {
+      return getFileName(this.reportsNameAndReferences);
+    },
+    fileReferenceAccordingToName() {
+      return getFileReferenceByFileName(this.currentReportValue, this.reportsNameAndReferences);
+    },
+  },
   props: {
     name: {
       type: String,
@@ -195,9 +205,9 @@ export default defineComponent({
       type: String as () => "percent" | "number",
       default: "percent",
     },
-    reportsName: {
-      type: Array,
-      default: () => [],
+    reportsNameAndReferences: {
+      type: Object,
+      default: () => ({}),
     },
     showSecondInput: {
       type: Boolean,

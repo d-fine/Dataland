@@ -206,7 +206,7 @@ export const sfdrDataModel = [
             label: "Applicable High Impact Climate Sector",
             description: "Total energy consumption per high impact climate sector",
             unit: "",
-            component: "DataPointFormField",
+            component: "HighImpactClimateSectorsFormField",
             evidenceDesired: true,
             required: false,
             showIf: (): boolean => true,

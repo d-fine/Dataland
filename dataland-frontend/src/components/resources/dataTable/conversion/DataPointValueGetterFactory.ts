@@ -2,12 +2,13 @@ import {
   type AvailableDisplayValues,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
+import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 import {
   getFieldValueFromDataModel,
   getGloballyReferencableDocuments,
   hasDataPointValidReference,
 } from "@/components/resources/dataTable/conversion/Utils";
-import { type DataPointWithUnitBigDecimal } from "@clients/backend";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
 
@@ -20,7 +21,7 @@ import { formatNumberToReadableFormat } from "@/utils/Formatter";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function dataPointValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableDisplayValues {
   return (dataset) => {
-    const datapoint = getFieldValueFromDataModel(path, dataset) as DataPointWithUnitBigDecimal | undefined;
+    const datapoint = getFieldValueFromDataModel(path, dataset) as ExtendedDataPointBigDecimal | undefined;
 
     if (!datapoint?.value) {
       return {
@@ -29,12 +30,11 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
       };
     }
 
-    // TODO why assume this is a number?
     const datapointValue = formatNumberToReadableFormat(datapoint.value);
     let datapointUnitSuffix;
 
     if (field.options) {
-      const datapointUnitRaw = datapoint.unit ?? "";
+      const datapointUnitRaw = field.unit ?? "";
       const matchingEntry = field.options.find((it) => it.value == datapointUnitRaw);
       datapointUnitSuffix = matchingEntry?.label ?? datapointUnitRaw;
     } else {

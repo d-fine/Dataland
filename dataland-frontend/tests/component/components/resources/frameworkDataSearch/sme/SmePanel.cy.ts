@@ -65,9 +65,9 @@ describe("Component tests for SmePanel", () => {
     cy.get(".p-dialog-header-close").trigger("click");
 
     threeLayerTable.toggleSubcategory("Company Financials");
-    threeLayerTable.getFieldByTestIdentifier("revenueInEur").should("contain.text", "0 MM");
-    threeLayerTable.getFieldByTestIdentifier("operatingCostInEur").should("contain.text", "1 MM");
-    threeLayerTable.getFieldByTestIdentifier("capitalAssetsInEur").should("contain.text", "2 MM");
+    threeLayerTable.getFieldByTestIdentifier("revenueInEUR").should("contain.text", "0 MM");
+    threeLayerTable.getFieldByTestIdentifier("operatingCostInEUR").should("contain.text", "1 MM");
+    threeLayerTable.getFieldByTestIdentifier("capitalAssetsInEUR").should("contain.text", "2 MM");
   });
 
   /**
@@ -152,13 +152,13 @@ describe("Component tests for SmePanel", () => {
       PercentRangeForInvestmentsInEnergyEfficiency,
       "power",
       "investments",
-      "percentageOfInvestmentsInEnhancingEnergyEfficiency",
+      "percentageRangeForInvestmentsInEnhancingEnergyEfficiency",
     );
     assertBackendModelEqualsGeneratedDataModel(
       PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower,
       "power",
       "consumption",
-      "energyConsumptionCoveredByOwnRenewablePowerGeneration",
+      "percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration",
     );
   });
 });

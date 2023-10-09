@@ -11,14 +11,14 @@ describe("Component test for DataPointFormField", () => {
           { label: "3", value: "4" },
         ],
       });
-      cy.get('select[name="unit"]').should("exist");
-      cy.get('select[name="unit"]').should("contain", "3");
-      cy.get('input[name="unit"][type="hidden"]').should("not.exist");
+      cy.get('select[name="currency"]').should("exist");
+      cy.get('select[name="currency"]').should("contain", "3");
+      cy.get('input[name="currency"][type="hidden"]').should("not.exist");
       cy.get('div[data-test="dataQuality"] select[name="quality"]').should("have.value", "NA");
       cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should("not.exist");
     });
   });
-  it("Unit field should not visible when unit is hardcoded and Quality field should have no value if the value field has value", () => {
+  it("Currency field should not visible when unit is hardcoded and Quality field should have no value if the value field has value", () => {
     cy.mountWithPlugins(DataPointFormField, {
       data() {
         return {
@@ -30,9 +30,8 @@ describe("Component test for DataPointFormField", () => {
         evidenceDesired: true,
         unit: "Days",
       });
-      cy.get('select[name="unit"]').should("not.exist");
-      cy.get('input[name="unit"][type="hidden"]').should("exist");
-      cy.get('input[name="unit"][type="hidden"]').should("have.value", "Days");
+      cy.get('select[name="currency"]').should("not.exist");
+      cy.get('input[name="currency"][type="hidden"]').should("exist");
       cy.get('div[data-test="dataQuality"] select[name="quality"]').should("have.not.value", "NA");
       cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should("exist");
     });

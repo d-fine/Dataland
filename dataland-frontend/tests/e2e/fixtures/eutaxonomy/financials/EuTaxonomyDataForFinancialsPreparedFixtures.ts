@@ -46,9 +46,9 @@ function createCreditInstitutionDualFieldSubmission(
   input.companyInformation.companyName = "credit-institution-dual-field-submission";
   input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
-    interbankLoansInPercent: dataGenerator.randomDataPoint(generatePercentageValue()),
-    tradingPortfolioInPercent: dataGenerator.randomDataPoint(generatePercentageValue()),
-    greenAssetRatioInPercent: dataGenerator.randomDataPoint(generatePercentageValue()),
+    interbankLoansInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
+    tradingPortfolioInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
+    greenAssetRatioInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
   };
   return input;
 }
@@ -66,8 +66,8 @@ function createCreditInstitutionSingleFieldSubmission(
   input.companyInformation.companyName = "credit-institution-single-field-submission";
   input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
-    tradingPortfolioAndInterbankLoansInPercent: dataGenerator.randomDataPoint(generatePercentageValue()),
-    greenAssetRatioInPercent: dataGenerator.randomDataPoint(generatePercentageValue()),
+    tradingPortfolioAndInterbankLoansInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
+    greenAssetRatioInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
   };
   return input;
 }
@@ -132,10 +132,10 @@ function createAllValuesCompany(
   ]);
   //Overwrite the section for Credit Institution since the tests require dual and single field submission at once
   input.t.creditInstitutionKpis = {
-    interbankLoansInPercent: dataGenerator.randomDataPoint(generatePercentageValue()),
-    tradingPortfolioInPercent: dataGenerator.randomDataPoint(generatePercentageValue()),
-    tradingPortfolioAndInterbankLoansInPercent: dataGenerator.randomDataPoint(generatePercentageValue()),
-    greenAssetRatioInPercent: dataGenerator.randomDataPoint(generatePercentageValue()),
+    interbankLoansInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
+    tradingPortfolioInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
+    tradingPortfolioAndInterbankLoansInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
+    greenAssetRatioInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
   };
   return input;
 }
