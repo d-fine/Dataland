@@ -13,9 +13,9 @@ import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
-import {humanizeStringOrNumber} from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 
-type LksgProcurementType = { [key in keyof ProcurementCategoryType]: LksgProcurementCategory | undefined };
+export type LksgProcurementType = { [key in ProcurementCategoryType]?: LksgProcurementCategory };
 
 /**
  * Generates a list of readable strings (or just a single one) combining suppliers and their associated countries
