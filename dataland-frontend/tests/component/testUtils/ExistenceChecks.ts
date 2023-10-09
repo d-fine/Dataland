@@ -17,9 +17,14 @@ export function checkImage(name: string, fileName: string, parentElement: Cypres
  * @param name the "name" identifier of the button
  * @param message the string expected to be contained
  * @param parentElement the element whose content to search for the button
+ * @returns the chainable on the button element
  */
-export function checkButton(name: string, message: string, parentElement: Cypress.Chainable = cy.get("body")): void {
-  parentElement.find(`button[name="${name}"]`).should("be.visible").should("contain.text", message);
+export function checkButton(
+  name: string,
+  message: string,
+  parentElement: Cypress.Chainable = cy.get("body"),
+): Cypress.Chainable {
+  return parentElement.find(`button[name="${name}"]`).should("be.visible").should("contain.text", message);
 }
 
 /**

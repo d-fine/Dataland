@@ -8,20 +8,16 @@ describe("Component test for the landing page", () => {
       keycloak: minimalKeycloakMock({
         authenticated: false,
       }),
-    }).then((mounted) => {
+    }).then(() => {
       validateTopBar();
       validateIntroSection();
       validateBrandsSection();
-      // TODO cy.get("button:contains('START YOUR DATALAND JOURNEY')");
       // TODO test I AM INTERESTED button
       // TODO test get in contact button
 
       validateQuotesSlides();
       validateHowItWorksSlides();
       checkNewFooter();
-
-      // TODO check redirecting buttons that work for redirection
-      // TODO unfunctional buttons for staying on the page or being disabled
     });
   });
 });
@@ -38,7 +34,6 @@ function validateTopBar(): void {
     return cy.get("header");
   }
   checkImage("Dataland banner logo", "gfx_logo_dataland_orange_S.svg", getTopBar());
-  // TODO validate targets after clicking
   checkButton("signup_dataland_button", "Sign Up", getTopBar());
   checkLinkByContent("Login", getTopBar());
 }
@@ -79,7 +74,6 @@ function checkNewFooter(): void {
   checkImage("Copyright ©   Dataland", "gfx_logo_dataland_orange_S.svg", getFooter());
   cy.get(".footer__copyright").should("contain.text", "Copyright © 2023 Dataland");
 
-  // TODO check targets
   checkLinkByTarget("/legal", "Legal", getFooter());
   checkLinkByTarget("/imprint", "Imprint", getFooter());
   checkLinkByTarget("/dataprivacy", "Data Privacy", getFooter());
