@@ -15,19 +15,4 @@ export const lksgModalColumnHeaders = {
     suppliersAndCountries: "Number of Direct Suppliers and Countries",
     totalProcurementInPercent: "Order Volume",
   },
-  industry: {
-    industry: "NACE Code",
-  },
-  subcontractingCompaniesIndustries: {
-    subcontractingCompaniesIndustries: "NACE Code",
-  },
-  highRiskCountriesRawMaterialsLocation: {
-    highRiskCountriesRawMaterialsLocation: "Countries",
-  },
-  highRiskCountries: {
-    highRiskCountries: "Countries",
-  },
-  subcontractingCompaniesCountries: {
-    subcontractingCompaniesCountries: "Countries",
-  },
 };
