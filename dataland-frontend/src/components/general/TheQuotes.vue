@@ -5,7 +5,7 @@
         <div class="quotes__slide-videoContainer">
           <iframe
             :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
-            frameborder="0"
+            title="Youtube video player"
             allowfullscreen
             class="quotes__slide-video"
           ></iframe>
@@ -30,9 +30,9 @@ import RegisterButton from "@/components/resources/newLandingPage/RegisterButton
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes"));
-const cards = computed(() => quotesSection.value?.cards || []);
+const cards = computed(() => quotesSection.value?.cards ?? []);
 
-const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards || []);
+const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards ?? []);
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
 
@@ -157,6 +157,7 @@ onUnmounted(() => {
     &-video {
       width: 100%;
       height: 100%;
+      border-width: 0;
     }
 
     // &-title {
