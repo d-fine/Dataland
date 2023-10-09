@@ -50,6 +50,7 @@
                           :required="field.required"
                           :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
+                          :unit="field.unit"
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :ref="field.name"
