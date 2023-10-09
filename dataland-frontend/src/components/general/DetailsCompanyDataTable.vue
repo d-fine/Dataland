@@ -50,32 +50,15 @@ export default defineComponent({
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
-      listOfRowContents: object | Array<object | string>;
+      listOfRowContents: Array<object | string>;
       kpiKeyOfTable: string;
       columnHeaders: object;
     };
-    if (dialogRefData.kpiKeyOfTable == "driveMixPerFleetSegment") {
-      const outputArray = [];
-      for (const key in dialogRefData.listOfRowContents) {
-        const newObj = {
-          vehiclesType: key,
-          driveMixPerFleetSegmentInPercent: dialogRefData.listOfRowContents[
-            key as keyof typeof dialogRefData.listOfRowContents
-          ].driveMixPerFleetSegmentInPercent as string,
-          totalAmountOfVehicles: dialogRefData.listOfRowContents[key as keyof typeof dialogRefData.listOfRowContents]
-            .totalAmountOfVehicles as string,
-        };
-        outputArray.push(newObj);
-      }
-      dialogRefData.listOfRowContents = outputArray;
-    }
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;
-    if (Array.isArray(dialogRefData.listOfRowContents) && typeof dialogRefData.listOfRowContents[0] === "string") {
+    if (typeof dialogRefData.listOfRowContents[0] === "string") {
       this.keysOfValuesForColumnDisplay.push(this.kpiKeyOfTable);
-      this.listOfRowContents = dialogRefData.listOfRowContents.map((o: object | string) => ({
-        [this.kpiKeyOfTable]: o,
-      }));
+      this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {
       this.listOfRowContents = dialogRefData.listOfRowContents;
       this.generateColsNames();
