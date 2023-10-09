@@ -42,6 +42,8 @@ export default defineConfig({
       "primevue/row",
       "primevue/columngroup",
       "primevue/radiobutton",
+      "primevue/icons/chevrondown",
+      "primevue/icons/chevronleft",
       "@formkit/vue",
       "axios",
       "i18n-iso-countries",
