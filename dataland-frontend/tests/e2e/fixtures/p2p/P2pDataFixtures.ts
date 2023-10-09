@@ -115,7 +115,7 @@ class P2pGenerator extends Generator {
         longTermScienceBasedClimateTarget: this.randomYesNo(),
       },
       emissionsPlanning: {
-        reductionOfAbsoluteEmissions: this.randomInt(),
+        reductionOfAbsoluteEmissionsInTonnesCO2e: this.randomInt(),
         reductionOfRelativeEmissionsInPercent: this.randomPercentageValue(),
         relativeEmissionsInPercent: this.randomPercentageValue(),
         absoluteEmissionsInTonnesCO2e: this.randomInt(),

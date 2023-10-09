@@ -2,47 +2,53 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Ratkeshire",
-			"headquartersPostalCode": "79934",
-			"sector": "e-business",
+			"headquarters": "San Rafael",
+			"headquartersPostalCode": "85075-9697",
+			"sector": "applications",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"lQpzKgFMVCEm",
-					"n9hnxHnDqwg3"
+				"Lei": [
+					"LibqIqp15BVp9mKnOcOD"
 				],
-				"PermId": [],
-				"Ticker": [],
+				"Isin": [
+					"Iyj4LbB6VoSa"
+				],
+				"PermId": [
+					"uQpMLSZUH6"
+				],
+				"Ticker": [
+					"s4PISra"
+				],
 				"Duns": [
-					"xGyvZHQsu"
+					"JYV2xoGr0"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"BuSgb6KEvP2tlga"
+				]
 			},
-			"countryCode": "KP",
+			"countryCode": "UA",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": null,
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://free-transom.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"27.31",
-						"33.2",
-						"43.29",
-						"N"
+						"01.45",
+						"47.54",
+						"G"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Pagac Curve 811",
+						"streetAndHouseNumber": "Maxime Harbors 4129",
 						"postalCode": null,
-						"city": "Kenner",
-						"state": "North Carolina",
-						"country": "BL"
+						"city": "Fort Lavernastad",
+						"state": "Kentucky",
+						"country": "MY"
 					},
-					"numberOfEmployees": 4064,
-					"fiscalYearStart": "2024-05-29"
+					"numberOfEmployees": 1951,
+					"fiscalYearStart": "2024-06-22"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -54,31 +60,25 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": null,
+							"nameOfProductionSite": "Donnelly, Zemlak and Fritsch",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Spencer Locks 612",
-								"postalCode": "35067-4075",
-								"city": "Hayward",
-								"state": null,
-								"country": "MV"
+								"streetAndHouseNumber": "Vergie Turnpike 74584",
+								"postalCode": "93358",
+								"city": "Wylie",
+								"state": "Maine",
+								"country": "GY"
 							},
-							"shareOfTotalRevenueInPercent": 68.8419
-						},
-						{
-							"nameOfProductionSite": "Kirlin Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ledner Courts 925",
-								"postalCode": "51156-4401",
-								"city": "North Prince",
-								"state": "Arizona",
-								"country": "PN"
-							},
-							"shareOfTotalRevenueInPercent": 89.5832
+							"shareOfTotalRevenueInPercent": 34.7789
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Ergonomic Bronze Shoes",
+							"shareOfTotalRevenueInPercent": 45.2635
+						}
+					]
 				}
 			},
 			"power": {
@@ -86,23 +86,21 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1118,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 574,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMWh": 201,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 639,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 29740983,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 31701124,
 					"naturalHazardsCovered": [
+						"Snow",
 						"Hail",
-						"Flooding",
-						"EarthQuake",
-						"Wind",
-						"Avalanche"
+						"EarthQuake"
 					]
 				}
 			}
@@ -112,39 +110,37 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Janieside",
-			"headquartersPostalCode": "52682",
-			"sector": "architectures",
+			"headquarters": "Port Sterlingfort",
+			"headquartersPostalCode": "48435",
+			"sector": "markets",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"1NuoQ4AM3bVKmEyHfOxT"
+				],
 				"Isin": [
-					"ApBVPpygHx8D",
-					"sh94or4YVR5Z"
+					"Idm5aKPUK66C"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"utrREqO19"
+					"iqFfvIh4c"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"KB1eqln3DOGF7tT"
+				]
 			},
-			"countryCode": "BM",
-			"companyAlternativeNames": [
-				"Ebert, Harris and Upton",
-				"Grimes, Kris and Terry",
-				"O'Hara - Champlin",
-				"Romaguera, Abbott and Predovic"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": null,
+			"countryCode": "MS",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://authentic-cadet.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"92.00"
+						"14.11"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -153,88 +149,93 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 1011,
-					"fiscalYearStart": "2024-03-20"
+					"numberOfEmployees": 9209,
+					"fiscalYearStart": "2024-01-20"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 12392954,
-					"operatingCostInEUR": 54576869,
-					"capitalAssetsInEUR": 25574044
+					"revenueInEUR": 88613284,
+					"operatingCostInEUR": 38038444,
+					"capitalAssetsInEUR": 23457977
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Mante LLC",
+							"nameOfProductionSite": "Greenholt, Bauch and Bashirian",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Dina Cliffs 308",
-								"postalCode": null,
-								"city": "San Jose",
-								"state": "Kansas",
-								"country": "WF"
+								"streetAndHouseNumber": "Block Common 591",
+								"postalCode": "99469",
+								"city": "Larissatown",
+								"state": "Washington",
+								"country": "MM"
 							},
-							"shareOfTotalRevenueInPercent": 52.2345
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"nameOfProductionSite": null,
+							"nameOfProductionSite": "Lubowitz Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Boyer Wall 231",
-								"postalCode": "08312-3995",
-								"city": "South Edgar",
-								"state": "Indiana",
-								"country": "LA"
+								"streetAndHouseNumber": "Breanna Crest 34788",
+								"postalCode": null,
+								"city": "Rogerside",
+								"state": "Vermont",
+								"country": "LR"
 							},
-							"shareOfTotalRevenueInPercent": 28.2021
+							"shareOfTotalRevenueInPercent": 87.0859
 						},
 						{
-							"nameOfProductionSite": "Heidenreich Inc",
+							"nameOfProductionSite": "Oberbrunner - Hermann",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Parker Cape 52580",
-								"postalCode": null,
-								"city": "South Jaylen",
-								"state": "New York",
-								"country": "GB"
+								"streetAndHouseNumber": null,
+								"postalCode": "29267-5262",
+								"city": "North Sunny",
+								"state": "North Carolina",
+								"country": "YT"
 							},
-							"shareOfTotalRevenueInPercent": 86.2842
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Generic Cotton Chair",
-							"shareOfTotalRevenueInPercent": 65.6275
-						},
-						{
-							"name": "Oriental Soft Towels",
+							"name": "Gorgeous Cotton Salad",
 							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Modern Soft Towels",
-							"shareOfTotalRevenueInPercent": 42.644
+							"name": "Elegant Frozen Salad",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Intelligent Cotton Shoes",
+							"shareOfTotalRevenueInPercent": 43.4817
+						},
+						{
+							"name": "Unbranded Concrete Shoes",
+							"shareOfTotalRevenueInPercent": 26.3083
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 119,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 813,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": 1590,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 825,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 3324704,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 19634789,
 					"naturalHazardsCovered": [
-						"EarthQuake"
+						"Avalanche",
+						"Flooding"
 					]
 				}
 			}
@@ -244,38 +245,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "North Jonathonside",
-			"headquartersPostalCode": "37578",
-			"sector": "ROI",
+			"headquarters": "Port Emely",
+			"headquartersPostalCode": "20180-1985",
+			"sector": "portals",
 			"identifiers": {
 				"Lei": [
-					"UuYcS1d7BdZdogB8Y3Tr"
+					"dlVbmNkd684lPXmp91RF"
 				],
 				"Isin": [
-					"Dx0Hhvi8sAi7",
-					"EKkqnFhs1HjL"
+					"Gkzkml4H1mJT"
 				],
 				"PermId": [],
-				"Ticker": [
-					"LRgPlpL"
-				],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"nEKHcza9B"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"1zZYY66eCmKRJwE"
+				]
 			},
-			"countryCode": "SI",
-			"companyAlternativeNames": [],
+			"countryCode": "GF",
+			"companyAlternativeNames": [
+				"Aufderhar - Kling",
+				"Hayes - Lakin"
+			],
 			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://competent-citrus.name/",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"10.2"
+						"73.20"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -284,50 +285,53 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 3027,
-					"fiscalYearStart": "2024-04-29"
+					"numberOfEmployees": 2921,
+					"fiscalYearStart": "2023-12-29"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 87680714,
-					"operatingCostInEUR": 61628478,
-					"capitalAssetsInEUR": 37834182
+					"revenueInEUR": 34111690,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 50113011
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Intelligent Granite Computer",
-							"shareOfTotalRevenueInPercent": 25.7287
+							"nameOfProductionSite": "Klocko, Spencer and Hessel",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Osinski Throughway 52949",
+								"postalCode": "96304",
+								"city": "Creolaland",
+								"state": "Vermont",
+								"country": "LU"
+							},
+							"shareOfTotalRevenueInPercent": 63.0576
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1671,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMWh": 413,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 585,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 7055899,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 16762410,
 					"naturalHazardsCovered": [
-						"Hail",
-						"EarthQuake",
-						"Flooding",
-						"Wind",
-						"Snow"
+						"Avalanche"
 					]
 				}
 			}
