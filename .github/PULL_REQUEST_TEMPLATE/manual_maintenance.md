@@ -173,6 +173,7 @@ check that all ssh-keys are set and erased from people that have left
   - [ ] It's verified that the CD run is green
   - [ ] It's verified that everything seems to be working fine by manually using the website
   - [ ] All implemented Social Logins have been tested manually in the UI
+  - [ ] The "mailto:*" buttons ("I am interested" and "Get in touch") on the landing page work.
   - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
     authorization has worked by assuring that you get a 200 response
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
