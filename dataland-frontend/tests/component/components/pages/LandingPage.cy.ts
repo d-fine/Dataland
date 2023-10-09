@@ -51,12 +51,12 @@ function validateIntroSection(): void {
  * Validates the images of the brands trusting in dataland
  */
 function validateBrandsSection(): void {
-  checkImage("Brand 1", "img_chom_capital.png");
-  checkImage("Brand 2", "img_envoria.png");
-  checkImage("Brand 3", "img_fuerstl_bank.png");
-  checkImage("Brand 4", "img_ampega.png");
-  checkImage("Brand 5", "img_metzler.png");
-  checkImage("Brand 6", "img_deka.png");
+  checkImage("Brand 1", "img_deka.png");
+  checkImage("Brand 2", "img_ampega.png");
+  checkImage("Brand 3", "img_chom_capital.png");
+  checkImage("Brand 4", "img_metzler.png");
+  checkImage("Brand 5", "img_fuerstl_bank.png");
+  checkImage("Brand 6", "img_envoria.png");
 }
 
 /**
@@ -74,7 +74,6 @@ function checkNewFooter(): void {
   checkImage("Copyright ©   Dataland", "gfx_logo_dataland_orange_S.svg", getFooter());
   cy.get(".footer__copyright").should("contain.text", "Copyright © 2023 Dataland");
 
-  checkLinkByTarget("/legal", "Legal", getFooter());
   checkLinkByTarget("/imprint", "Imprint", getFooter());
   checkLinkByTarget("/dataprivacy", "Data Privacy", getFooter());
 }
