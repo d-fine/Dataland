@@ -69,28 +69,6 @@
                     ]
                 },
                 {
-                    "title": "Mission",
-                    "text": [
-                        "In Dataland ",
-                        "we",
-                        " create change."
-                    ],
-                    "cards": [
-                        {
-                            "icon": "/static/icons/Strategy--summit.svg",
-                            "text": "We are purpose driven"
-                        },
-                        {
-                            "icon": "/static/icons/data--insights.svg",
-                            "text": "We are a thriving community"
-                        },
-                        {
-                            "icon": "/static/icons/productivity.svg",
-                            "text": "We advocate for equal opportunities"
-                        }
-                    ]
-                },
-                {
                     "title": "Struggle",
                     "text": [
                         "Dataland fixes",
@@ -149,70 +127,6 @@
                         "In Dataland, ",
                         "you",
                         " have the power."
-                    ]
-                },
-                {
-                    "title": "Campaigns",
-                    "text": [
-                        "Create or join a campaign",
-                        " to get the missing data."
-                    ],
-                    "cards": [
-                        {
-                            "icon": "/static/icons/Crop-growth.svg",
-                            "title": "SFDR",
-                            "text": "101",
-                            "date": "14th of August"
-                        },
-                        {
-                            "icon": "/static/icons/Diagram--reference.svg",
-                            "title": "EU Taxonomy",
-                            "text": "269"
-                        },
-                        {
-                            "icon": "/static/icons/Dashboard--reference.svg",
-                            "title": "LksG",
-                            "text": "101",
-                            "date": "14th of August"
-                        },
-                        {
-                            "icon": "/static/icons/Explore.svg",
-                            "title": "Pathway to Paris",
-                            "text": "101",
-                            "date": "Starting soon!"
-                        }
-                    ]
-                },
-                {
-                    "title": "Come together",
-                    "text": [
-                        "Collaborate on datasets ",
-                        "to share the costs."
-                    ],
-                    "image": [
-                        "Join now!"
-                    ],
-                    "cards": [
-                        {
-                            "icon": "/static/icons/Face--add.svg",
-                            "title": "10",
-                            "text": "Companies joining every day"
-                        },
-                        {
-                            "icon": "/static/icons/3d-mpr-toggle.svg",
-                            "title": "9000",
-                            "text": "European Companies"
-                        },
-                        {
-                            "icon": "/static/icons/Certificate.svg",
-                            "title": "3",
-                            "text": "Active Campaigns"
-                        },
-                        {
-                            "icon": "/static/icons/Area.svg",
-                            "title": "5",
-                            "text": "Frameworks"
-                        }
                     ]
                 },
                 {
@@ -280,94 +194,6 @@
                     ],
                     "image": [
                         "/static/logos/gfx_logo_dataland_orange_S.svg"
-                    ]
-                }
-            ]
-        },
-        {
-            "title": "Mission",
-            "url": "/mission",
-            "sections": [
-                {
-                    "title": "Mission",
-                    "text": [
-                        "Soon you will find our data privacy information here."
-                    ]
-                },
-                {
-                    "title": "Struggle",
-                    "text": [
-                        "86% of compaines struggle with"
-                    ],
-                    "cards": [
-                        {
-                            "icon": "/static/icons/Diagram.svg",
-                            "title": "Data Gaps",
-                            "text": "Valuable insights remain hidden, preventing businesses from harnessing the full potential of their data."
-                        },
-                        {
-                            "icon": "/static/icons/Badge.svg",
-                            "title": "Data Quality",
-                            "text": "Inaccurate, inconsistent, or outdated data jeopardizes the integrity of analytics and decision processes, leading to misguided strategies."
-                        },
-                        {
-                            "icon": "/static/icons/3d-mpr-toggle.svg",
-                            "title": "Data Usage Rights",
-                            "text": "Companies must ensure they have the legal permissions to collect, store, process, and share data while adhering to regulations and privacy laws. "
-                        },
-                        {
-                            "icon": "/static/icons/Airline--rapid-board.svg",
-                            "title": "Data Usage",
-                            "text": "Many organizations struggle with underutilization. Data analysis tools might be intimidating or inaccessible to certain teams, limiting the ability to extract valuable insights. "
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "title": "Imprint",
-            "url": "/imprint",
-            "sections": [
-                {
-                    "title": "Imprint",
-                    "text": [
-                        ""
-                    ]
-                }
-            ]
-        },
-        {
-            "title": "Data Privacy",
-            "url": "/dataprivacy",
-            "sections": [
-                {
-                    "title": "Data Privacy",
-                    "text": [
-                        "Soon you will find our data privacy information here."
-                    ]
-                }
-            ]
-        },
-        {
-            "title": "Community",
-            "url": "/community",
-            "sections": [
-                {
-                    "title": "Main",
-                    "text": [
-                        "Soon you will find our data privacy information here."
-                    ]
-                }
-            ]
-        },
-        {
-            "title": "Campaigns",
-            "url": "/campaigns",
-            "sections": [
-                {
-                    "title": "Main",
-                    "text": [
-                        "Soon you will find our data privacy information here."
                     ]
                 }
             ]

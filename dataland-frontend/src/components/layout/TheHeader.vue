@@ -9,14 +9,13 @@
         />
       </router-link>
     </div>
-    <!-- <TheNavi :contentData="contentData" /> -->
+
     <AuthSection />
   </header>
 </template>
 
 <script setup lang="ts">
 import AuthSection from "@/components/resources/newLandingPage/AuthSection.vue";
-// import TheNavi from "@/components/general/TheNavi.vue";
 
 import type { Page } from "@/types/ContentTypes";
 
