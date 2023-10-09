@@ -27,6 +27,13 @@ describeIf(
     });
 
     /**
+     * Validates that the view page is not in review mode by ensuring that no hidden-field icon is displayed
+     */
+    function validateThatViewPageIsNotInReviewMode(): void {
+      cy.get("i[data-test=hidden-icon]").should("not.exist")
+    }
+
+    /**
      * validates that the data uploaded via the function `uploadLksgDataViaForm` is displayed correctly for a company
      * @param storedCompany the company associated to the data uploaded via form
      */
@@ -51,6 +58,8 @@ describeIf(
       cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(1).should("have.text", "second");
       cy.get(".p-dialog tr").eq(1).find("td").eq(2).should("have.text", "Description of something");
       cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
+
+      validateThatViewPageIsNotInReviewMode()
     }
 
     it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
