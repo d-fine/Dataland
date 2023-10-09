@@ -105,7 +105,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
 /**
  * Validates that the view page is in review mode by ensuring that at least one hidden-field icon is displayed
  */
-function validateThatViewPageIsNotInReviewMode(): void {
+function validateThatViewPageIsInReviewMode(): void {
   cy.get("i[data-test=hidden-icon]").should("exist");
 }
 
@@ -124,7 +124,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 
   cy.contains("td", dataMetaInfo.dataId).click();
 
-  validateThatViewPageIsNotInReviewMode();
+  validateThatViewPageIsInReviewMode();
   cy.get('[data-test="qaRejectButton"').should("exist").click();
 
   safeLogout();
