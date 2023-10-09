@@ -11,7 +11,7 @@ import {
 /**
  * For QA it is desirable that all fields are displayed even if they should not normally be visible. This function
  * converts a standard view-configuration to one that displays all cells but highlights cells that would
- * nor normally be displayed
+ * not normally be displayed
  * @param config the input view configuration
  * @returns the modified hidden-highlighting view-config
  */

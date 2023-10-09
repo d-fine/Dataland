@@ -7,7 +7,7 @@
     <p v-if="inReviewMode">
       You are viewing this page in review mode. Therefore, <b>all</b> possible fields are displayed even if they are not
       going to be visible in the final view page. Normally hidden fields are highlighted (start with a
-      <i class="pi pi-eye-slash pl-1text-red-500" aria-hidden="true" />) and should be empty.
+      <i class="pi pi-eye-slash pl-1 text-red-500" aria-hidden="true" />) and should be empty.
     </p>
 
     <MultiLayerDataTable
@@ -37,7 +37,7 @@ import { type DataMetaInformation } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { convertMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/dataTable/cells/MultiLayerDataTableQaHighlight";
+import { convertMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlight";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
