@@ -15,42 +15,42 @@ export function checkImage(name: string, fileName: string, parentElement: Cypres
 /**
  * Checks if a button is present
  * @param name the "name" identifier of the button
- * @param message the string expected to be contained
+ * @param buttonText the string expected to be contained
  * @param parentElement the element whose content to search for the button
  * @returns the chainable on the button element
  */
 export function checkButton(
   name: string,
-  message: string,
+  buttonText: string,
   parentElement: Cypress.Chainable = cy.get("body"),
 ): Cypress.Chainable {
-  return parentElement.find(`button[name="${name}"]`).should("be.visible").should("contain.text", message);
+  return parentElement.find(`button[name="${name}"]`).should("be.visible").should("contain.text", buttonText);
 }
 
 /**
  * Checks if a link is present
- * @param message the string expected to be contained
+ * @param anchorText the string expected to be contained
  * @param parentElement the element whose content to search for the link
  * @returns the chainable on the link element
  */
-export function checkLinkByContent(
-  message: string,
+export function checkAnchorByContent(
+  anchorText: string,
   parentElement: Cypress.Chainable = cy.get("body"),
 ): Cypress.Chainable {
-  return parentElement.find(`a:contains('${message}')`).should("be.visible");
+  return parentElement.find(`a:contains('${anchorText}')`).should("be.visible");
 }
 
 /**
  * Checks if a link is present
  * @param href the "href" identifier of the button
- * @param message the string expected to be contained
+ * @param anchorText the string expected to be contained
  * @param parentElement the element whose content to search for the link
  * @returns the chainable on the link element
  */
-export function checkLinkByTarget(
+export function checkAnchorByTarget(
   href: string,
-  message: string,
+  anchorText: string,
   parentElement: Cypress.Chainable = cy.get("body"),
 ): Cypress.Chainable {
-  return parentElement.find(`a[href="${href}"]`).should("be.visible").should("contain.text", message);
+  return parentElement.find(`a[href="${href}"]`).should("be.visible").should("contain.text", anchorText);
 }

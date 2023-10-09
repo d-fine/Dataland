@@ -1,4 +1,4 @@
-import { checkButton, checkImage, checkLinkByContent, checkLinkByTarget } from "@ct/testUtils/ExistenceChecks";
+import { checkButton, checkImage, checkAnchorByContent, checkAnchorByTarget } from "@ct/testUtils/ExistenceChecks";
 import NewLandingPage from "@/components/pages/NewLandingPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
@@ -33,7 +33,7 @@ function validateTopBar(): void {
   }
   checkImage("Dataland banner logo", "gfx_logo_dataland_orange_S.svg", getTopBar());
   checkButton("signup_dataland_button", "Sign Up", getTopBar());
-  checkLinkByContent("Login", getTopBar());
+  checkAnchorByContent("Login", getTopBar());
 }
 
 /**
@@ -72,8 +72,8 @@ function checkNewFooter(): void {
   checkImage("Copyright ©   Dataland", "gfx_logo_dataland_orange_S.svg", getFooter());
   cy.get(".footer__copyright").should("contain.text", "Copyright © 2023 Dataland");
 
-  checkLinkByTarget("/imprint", "Imprint", getFooter());
-  checkLinkByTarget("/dataprivacy", "Data Privacy", getFooter());
+  checkAnchorByTarget("/imprint", "Imprint", getFooter());
+  checkAnchorByTarget("/dataprivacy", "Data Privacy", getFooter());
 }
 
 /**
