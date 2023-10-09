@@ -2,34 +2,26 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "New Isaiahcester",
-			"headquartersPostalCode": "42346-5392",
-			"sector": null,
+			"headquarters": "Ratkeshire",
+			"headquartersPostalCode": "79934",
+			"sector": "e-business",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"G4T8m7Mi8H6U"
+					"lQpzKgFMVCEm",
+					"n9hnxHnDqwg3"
 				],
-				"PermId": [
-					"DkzKsOCMXS"
-				],
-				"Ticker": [
-					"SPI2zwM"
-				],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [
-					"Fdu23IoHU"
+					"xGyvZHQsu"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TC",
-			"companyAlternativeNames": [
-				"Bashirian - Nikolaus",
-				"Gulgowski - Kuhn",
-				"Klein, Senger and Block",
-				"Mosciski, Becker and Lueilwitz"
-			],
-			"companyLegalForm": null,
+			"countryCode": "KP",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
 			"website": null,
 			"isTeaserCompany": false
 		},
@@ -37,20 +29,20 @@
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"19.20",
-						"25.72",
-						"26",
-						"69.20"
+						"27.31",
+						"33.2",
+						"43.29",
+						"N"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": "94809",
-						"city": "Danielburgh",
-						"state": "Maine",
-						"country": "SX"
+						"streetAndHouseNumber": "Pagac Curve 811",
+						"postalCode": null,
+						"city": "Kenner",
+						"state": "North Carolina",
+						"country": "BL"
 					},
-					"numberOfEmployees": 4380,
-					"fiscalYearStart": "2024-04-13"
+					"numberOfEmployees": 4064,
+					"fiscalYearStart": "2024-05-29"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -60,31 +52,33 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Licensed Wooden Towels",
-							"shareOfTotalRevenueInPercent": null
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Spencer Locks 612",
+								"postalCode": "35067-4075",
+								"city": "Hayward",
+								"state": null,
+								"country": "MV"
+							},
+							"shareOfTotalRevenueInPercent": 68.8419
 						},
 						{
-							"name": "Unbranded Fresh Shirt",
-							"shareOfTotalRevenueInPercent": 95.8446
-						},
-						{
-							"name": "Electronic Wooden Ball",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Bespoke Frozen Gloves",
-							"shareOfTotalRevenueInPercent": 72.4189
-						},
-						{
-							"name": "Electronic Wooden Sausages",
-							"shareOfTotalRevenueInPercent": 42.1885
+							"nameOfProductionSite": "Kirlin Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Ledner Courts 925",
+								"postalCode": "51156-4401",
+								"city": "North Prince",
+								"state": "Arizona",
+								"country": "PN"
+							},
+							"shareOfTotalRevenueInPercent": 89.5832
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": []
 				}
 			},
 			"power": {
@@ -92,23 +86,22 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1460,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 750,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMWh": 1118,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 574,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 26628365,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 29740983,
 					"naturalHazardsCovered": [
-						"Wind",
-						"Flooding",
 						"Hail",
+						"Flooding",
 						"EarthQuake",
-						"Snow",
+						"Wind",
 						"Avalanche"
 					]
 				}
@@ -119,44 +112,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Port Emmie",
-			"headquartersPostalCode": "84888-1515",
-			"sector": "interfaces",
+			"headquarters": "Janieside",
+			"headquartersPostalCode": "52682",
+			"sector": "architectures",
 			"identifiers": {
-				"Lei": [
-					"ExZCMUgQrWYjrYleVp3C"
-				],
+				"Lei": [],
 				"Isin": [
-					"jjgZK7hfemlt",
-					"SSRj1euNNwRQ"
+					"ApBVPpygHx8D",
+					"sh94or4YVR5Z"
 				],
-				"PermId": [
-					"93TCAlpmFS"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"utrREqO19"
 				],
-				"Ticker": [
-					"PK9n4z2"
-				],
-				"Duns": [
-					"W5ggnVsvh"
-				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IN",
+			"countryCode": "BM",
 			"companyAlternativeNames": [
-				"Adams and Sons",
-				"Borer - Barrows",
-				"O'Conner - Feest"
+				"Ebert, Harris and Upton",
+				"Grimes, Kris and Terry",
+				"O'Hara - Champlin",
+				"Romaguera, Abbott and Predovic"
 			],
 			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://silky-date.com",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"J"
+						"92.00"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -165,32 +153,66 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7629,
-					"fiscalYearStart": "2024-06-10"
+					"numberOfEmployees": 1011,
+					"fiscalYearStart": "2024-03-20"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 44724745,
-					"capitalAssetsInEUR": 20630515
+					"revenueInEUR": 12392954,
+					"operatingCostInEUR": 54576869,
+					"capitalAssetsInEUR": 25574044
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Mante LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Dina Cliffs 308",
+								"postalCode": null,
+								"city": "San Jose",
+								"state": "Kansas",
+								"country": "WF"
+							},
+							"shareOfTotalRevenueInPercent": 52.2345
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Boyer Wall 231",
+								"postalCode": "08312-3995",
+								"city": "South Edgar",
+								"state": "Indiana",
+								"country": "LA"
+							},
+							"shareOfTotalRevenueInPercent": 28.2021
+						},
+						{
+							"nameOfProductionSite": "Heidenreich Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Parker Cape 52580",
+								"postalCode": null,
+								"city": "South Jaylen",
+								"state": "New York",
+								"country": "GB"
+							},
+							"shareOfTotalRevenueInPercent": 86.2842
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Fantastic Steel Fish",
+							"name": "Generic Cotton Chair",
+							"shareOfTotalRevenueInPercent": 65.6275
+						},
+						{
+							"name": "Oriental Soft Towels",
 							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Tasty Bronze Bacon",
-							"shareOfTotalRevenueInPercent": 57.9953
-						},
-						{
-							"name": "Generic Metal Mouse",
-							"shareOfTotalRevenueInPercent": null
+							"name": "Modern Soft Towels",
+							"shareOfTotalRevenueInPercent": 42.644
 						}
 					]
 				}
@@ -200,22 +222,19 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 489,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 102,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMWh": 119,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 813,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 3324704,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Hail",
-						"Snow",
-						"Flooding"
+						"EarthQuake"
 					]
 				}
 			}
@@ -225,43 +244,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Port Nikkimouth",
-			"headquartersPostalCode": "91646-0181",
-			"sector": "blockchains",
+			"headquarters": "North Jonathonside",
+			"headquartersPostalCode": "37578",
+			"sector": "ROI",
 			"identifiers": {
 				"Lei": [
-					"OCHdV2IflbTXjgtNMoSs"
+					"UuYcS1d7BdZdogB8Y3Tr"
 				],
 				"Isin": [
-					"VTii4eTcNhdg"
+					"Dx0Hhvi8sAi7",
+					"EKkqnFhs1HjL"
 				],
 				"PermId": [],
 				"Ticker": [
-					"I9liYNv"
+					"LRgPlpL"
 				],
-				"Duns": [
-					"MwalmLKzU"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"Hz5RbeGu9"
+					"nEKHcza9B"
 				],
-				"CompanyRegistrationNumber": [
-					"NTjoY8EIfZebYKJ"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IO",
-			"companyAlternativeNames": [
-				"Farrell Group"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://partial-apology.net",
+			"countryCode": "SI",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://competent-citrus.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"27.1"
+						"10.2"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -270,57 +284,50 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2427,
-					"fiscalYearStart": "2024-02-12"
+					"numberOfEmployees": 3027,
+					"fiscalYearStart": "2024-04-29"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": null
+					"revenueInEUR": 87680714,
+					"operatingCostInEUR": 61628478,
+					"capitalAssetsInEUR": 37834182
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Crona Ways 73901",
-								"postalCode": "31589",
-								"city": "Victoria",
-								"state": "Alabama",
-								"country": "MN"
-							},
-							"shareOfTotalRevenueInPercent": 78.7395
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Intelligent Granite Computer",
+							"shareOfTotalRevenueInPercent": 25.7287
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1681,
+					"powerConsumptionInMWh": 1671,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 805,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 7055899,
 					"naturalHazardsCovered": [
-						"Snow",
 						"Hail",
 						"EarthQuake",
+						"Flooding",
 						"Wind",
-						"Avalanche"
+						"Snow"
 					]
 				}
 			}
