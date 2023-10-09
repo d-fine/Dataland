@@ -80,44 +80,41 @@ function checkNewFooter(): void {
  * Validates that the slide show on "Quotes" works as expected
  */
 function validateQuotesSlides(): void {
-  /**
-   * Gets the "Quotes" element
-   * @returns the "Quotes" element
-   */
-  function getSlidesWrapper(): Cypress.Chainable {
-    return cy.get("section.quotes");
-  }
+  const slidesSelector = "section.quotes .quotes__slides";
+  const leftButtonSelector = "section.quotes button[aria-label='Previous slide']"
+  const rightButtonSelector = "section.quotes button[aria-label='Next slide']"
 
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "none");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
-  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, 0, 0)");
-  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, 440, 0)");
-  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, 440, 0)");
+  assertSlidesPosition(slidesSelector)
+  cy.get(rightButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 1, 1)
+  cy.get(rightButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 2, 1)
+  cy.get(leftButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 1, 1)
+  cy.get(leftButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 0, 1)
+  cy.get(leftButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 0, 1)
 }
 
 /**
  * Validates that the slide show on "How it works" works as expected
  */
 function validateHowItWorksSlides(): void {
-  /**
-   * Gets the "How it works" element
-   * @returns the "How it works" element
-   */
-  function getSlidesWrapper(): Cypress.Chainable {
-    return cy.get("div.howitworks__wrapper");
-  }
+  const slidesSelector = "div.howitworks__wrapper .howitworks__slides";
+  const leftButtonSelector = "div.howitworks__wrapper button[aria-label='Previous slide']"
+  const rightButtonSelector = "div.howitworks__wrapper button[aria-label='Next slide']"
 
-  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "none");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click();
-  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click();
-  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -880, 0)");
-  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
-  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
+  assertSlidesPosition(slidesSelector)
+  cy.get(rightButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 1)
+  cy.get(rightButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 2)
+  cy.get(leftButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 1)
+}
+
+function assertSlidesPosition(slidesSelector: string, position?: number, centerElement: number = 0): void {
+  const expectedTransformValue = position == undefined ? "none" : `matrix(1, 0, 0, 1, ${-440 * (position - centerElement)}, 0)`
+  cy.get(slidesSelector).should("have.css", "transform", expectedTransformValue);
 }
