@@ -11,6 +11,7 @@ import { percentageValueGetterFactory } from "@/components/resources/dataTable/c
 import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getModalGetterFactory } from "@/components/resources/dataTable/conversion/GenericModalValueGetterFactory";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
+import { lksgProcurementCategoriesValueGetterFactory } from "@/components/resources/dataTable/conversion/LksgProcurementCategoriesValueGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -32,7 +33,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   MultiSelectFormField: multiSelectValueGetterFactory,
   ProductionSitesFormField: getModalGetterFactory("listOfProductionSites", lksgModalColumnHeaders),
   MostImportantProductsFormField: getModalGetterFactory("mostImportantProducts", lksgModalColumnHeaders),
-  ProcurementCategoriesFormField: getModalGetterFactory("procurementCategories", lksgModalColumnHeaders),
+  ProcurementCategoriesFormField: lksgProcurementCategoriesValueGetterFactory,
 };
 
 /**

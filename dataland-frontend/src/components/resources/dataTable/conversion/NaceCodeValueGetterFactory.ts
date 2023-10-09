@@ -7,7 +7,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
-import { convertNace } from "@/utils/NaceCodeConverter";
+import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 
 /**
  * Returns a value factory that returns the value of the Nae code form field.
@@ -36,7 +36,7 @@ export function naceCodeValueGetterFactory(path: string, field: Field): (dataset
             },
             data: {
               label: field.label,
-              values: selectionValue.map((it) => convertNace(it)),
+              values: selectionValue.map(convertSingleNaceCode),
             },
           },
         },

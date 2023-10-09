@@ -11,9 +11,9 @@ export const lksgModalColumnHeaders = {
   },
   procurementCategories: {
     procurementCategory: "Procurement Category",
-    definitionsOfProductTypeOrService: "Definitions of Product Type or Service",
+    procuredProductTypesAndServicesNaceCodes: "Procured Products/Services",
     suppliersAndCountries: "Number of Direct Suppliers and Countries",
-    shareOfTotalProcurementInPercent: "Order Volume",
+    totalProcurementInPercent: "Order Volume",
   },
   industry: {
     industry: "NACE Code",

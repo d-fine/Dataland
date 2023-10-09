@@ -1,8 +1,8 @@
 <template>
   <DocumentLink
     :label="content.displayValue.label"
-    :download-name="content.displayValue.reference.name"
-    :reference="content.displayValue.reference.reference"
+    :download-name="content.displayValue.reference.fileName"
+    :file-reference="content.displayValue.reference.fileReference"
     show-icon
   />
 </template>
