@@ -12,8 +12,6 @@ describe("Component test for the landing page", () => {
       validateTopBar();
       validateIntroSection();
       validateBrandsSection();
-      // TODO test I AM INTERESTED button
-      // TODO test get in contact button
 
       validateQuotesSlides();
       validateHowItWorksSlides();
