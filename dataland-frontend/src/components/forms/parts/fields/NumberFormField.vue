@@ -5,13 +5,13 @@
       <FormKit
           type="text"
           name="value"
-          v-model="currentValue"
+          :unit="unit"
           :validation-label="validationLabel ?? label"
           :validation="`number|${validation}`"
           :placeholder="unit ? `Value in ${unit}` : 'Value'"
           outer-class="short"
       />
-      <div>
+      <div class="form-field-label pb-3">
         <span>{{ unit }}</span>
       </div>
     </div>
@@ -27,6 +27,9 @@ import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/F
 export default defineComponent({
   name: "NumberFormField",
   components: { FormKit, UploadFormHeader },
-  props: FormFieldPropsWithPlaceholder,
+  props: {
+    ...FormFieldPropsWithPlaceholder,
+    unit: String,
+  }
 });
 </script>
