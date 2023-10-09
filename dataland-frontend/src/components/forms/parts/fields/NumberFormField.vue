@@ -3,13 +3,13 @@
     <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
     <div class="next-to-each-other">
       <FormKit
-          type="text"
-          name="value"
-          :unit="unit"
-          :validation-label="validationLabel ?? label"
-          :validation="`number|${validation}`"
-          :placeholder="unit ? `Value in ${unit}` : 'Value'"
-          outer-class="short"
+        type="text"
+        name="value"
+        :unit="unit"
+        :validation-label="validationLabel ?? label"
+        :validation="`number|${validation}`"
+        :placeholder="unit ? `Value in ${unit}` : 'Value'"
+        outer-class="short"
       />
       <div class="form-field-label pb-3">
         <span>{{ unit }}</span>
@@ -30,6 +30,6 @@ export default defineComponent({
   props: {
     ...FormFieldPropsWithPlaceholder,
     unit: String,
-  }
+  },
 });
 </script>
