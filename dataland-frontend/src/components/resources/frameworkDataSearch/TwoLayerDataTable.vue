@@ -74,6 +74,12 @@
               </template>
               <template v-else-if="isModalComponentsName.includes(slotProps.data.kpiFormFieldComponent)">
                 <a
+                  v-if="
+                    slotProps.data.content[reportingPeriodWithDataId.dataId] !== null &&
+                    slotProps.data.content[reportingPeriodWithDataId.dataId] !== undefined &&
+                    slotProps.data.content[reportingPeriodWithDataId.dataId] !== '' &&
+                    Object.keys(slotProps.data.content[reportingPeriodWithDataId.dataId]).length !== 0
+                  "
                   @click="
                     openModalAndDisplayValuesInSubTable(
                       slotProps.data.content[reportingPeriodWithDataId.dataId],
