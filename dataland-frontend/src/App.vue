@@ -112,10 +112,3 @@ function openSessionWarningModal(): void {
   });
 }
 </script>
-
-<style lang="scss">
-#app.lp {
-  margin: 0 auto;
-  text-align: left;
-}
-</style>

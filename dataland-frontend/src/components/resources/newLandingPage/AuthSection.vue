@@ -47,10 +47,6 @@ const register = (): void => {
 };
 </script>
 <style scoped lang="scss">
-.d-text-register {
-  color: #5a4f36;
-}
-
 .header {
   &__authsection {
     display: flex;

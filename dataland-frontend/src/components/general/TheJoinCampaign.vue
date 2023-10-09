@@ -147,7 +147,4 @@ const joinCampaignSection = computed(() => {
     text-align: right;
   }
 }
-
-@media only screen and (max-width: $large) {
-}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <header class="header" role="banner">
     <div class="header__logo">
-      <router-link to="/lp" aria-label="Go to the Landing Page" aria-current="page">
+      <router-link to="/" aria-label="Go to the Landing Page" aria-current="page">
         <img
           v-if="landingPage?.sections[0]?.image?.[0]"
           :src="landingPage.sections[0].image[0]"
