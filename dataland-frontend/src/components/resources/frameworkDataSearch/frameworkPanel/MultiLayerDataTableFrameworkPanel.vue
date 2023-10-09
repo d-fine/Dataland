@@ -96,7 +96,7 @@ async function reloadDisplayData(currentCounter: number): Promise<void> {
 }
 
 /**
- * Fetches all datasets that should be displayed (does not update the
+ * Fetches all datasets that should be displayed
  * @param companyId the id of the company to retrieve data for
  * @param singleDataMetaInfoToDisplay If set, only display the dataset belonging to this single entry
  * @returns the datasets that should be displayed

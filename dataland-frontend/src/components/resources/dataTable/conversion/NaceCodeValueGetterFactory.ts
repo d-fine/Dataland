@@ -10,7 +10,7 @@ import { getFieldValueFromDataModel } from "@/components/resources/dataTable/con
 import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 
 /**
- * Returns a value factory that returns the value of the Nae code form field.
+ * Returns a value factory that returns the value of the NACE code form field.
  * If multiple values are selected, it returns a cell with a modal link. The modal displays all selected values.
  * @param path the path to the field
  * @param field the field
