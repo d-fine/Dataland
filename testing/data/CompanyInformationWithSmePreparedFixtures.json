@@ -2,49 +2,56 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Irmastad",
-			"headquartersPostalCode": null,
-			"sector": "action-items",
+			"headquarters": "South Lawrence",
+			"headquartersPostalCode": "69413-9729",
+			"sector": "architectures",
 			"identifiers": {
-				"Lei": [
-					"s6PwA4DDkVbJOPhtuavY"
-				],
+				"Lei": [],
 				"Isin": [
-					"LmCrWxgkJ0wK",
-					"DQYvTYpx5boc"
+					"Wkg8MgXZS5yx"
 				],
-				"PermId": [
-					"7SWnfr2YQm"
+				"PermId": [],
+				"Ticker": [
+					"CT4JCii"
 				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
+				"Duns": [
+					"F4HHDwv3h"
+				],
+				"VatNumber": [
+					"wJWrCiHDf"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "HT",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://hospitable-survivor.name",
+			"countryCode": "BF",
+			"companyAlternativeNames": [
+				"Heathcote Group",
+				"Keeling - Schaefer",
+				"McLaughlin Group",
+				"Wisoky - Ankunding"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://careful-cushion.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"19.1",
-						"20",
-						"28.23",
-						"93.2"
+						"20.4",
+						"22.29",
+						"24.46",
+						"66.22",
+						"85.59"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
-						"postalCode": "90851-8152",
-						"city": "Rogers",
+						"postalCode": "17983",
+						"city": "Mariettaberg",
 						"state": null,
-						"country": "NP"
+						"country": "YE"
 					},
-					"numberOfEmployees": 9422,
-					"fiscalYearStart": "2024-08-27"
+					"numberOfEmployees": 3901,
+					"fiscalYearStart": "2024-09-20"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -56,48 +63,59 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Kovacek - Bogan",
+							"nameOfProductionSite": "Durgan Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Tromp Crossing 9949",
-								"postalCode": "26017",
-								"city": "Shreveport",
-								"state": "Hawaii",
-								"country": "BT"
+								"streetAndHouseNumber": "Boyle Cape 882",
+								"postalCode": null,
+								"city": "Lake Calista",
+								"state": "Connecticut",
+								"country": "CL"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 87.2262
 						},
 						{
-							"nameOfProductionSite": "Walsh - Sauer",
+							"nameOfProductionSite": "Wyman, Cormier and Gulgowski",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Fred Motorway 34785",
-								"postalCode": "07310",
-								"city": "East Al",
-								"state": "Tennessee",
-								"country": "TD"
+								"streetAndHouseNumber": null,
+								"postalCode": "07527-5000",
+								"city": "Norwalk",
+								"state": "North Carolina",
+								"country": "DK"
 							},
-							"shareOfTotalRevenueInPercent": 16.6236
-						},
-						{
-							"nameOfProductionSite": "Schaden - Skiles",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Heller View 817",
-								"postalCode": "92460-1847",
-								"city": "Ferryhaven",
-								"state": "Oklahoma",
-								"country": "VA"
-							},
-							"shareOfTotalRevenueInPercent": 58.4523
+							"shareOfTotalRevenueInPercent": 70.9791
 						},
 						{
 							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Huel Junctions 682",
-								"postalCode": "30975-8406",
-								"city": "North Wayneville",
-								"state": "Alaska",
-								"country": "NZ"
+								"streetAndHouseNumber": "Cole Unions 34298",
+								"postalCode": "87131",
+								"city": "Bethlehem",
+								"state": null,
+								"country": "TN"
 							},
-							"shareOfTotalRevenueInPercent": 32.0368
+							"shareOfTotalRevenueInPercent": 61.5701
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Runte Walks 951",
+								"postalCode": "77777",
+								"city": "Seanstad",
+								"state": "Missouri",
+								"country": "NU"
+							},
+							"shareOfTotalRevenueInPercent": 38.3912
+						},
+						{
+							"nameOfProductionSite": "Zboncak - Yundt",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "59266-7300",
+								"city": "Tremaineland",
+								"state": "Maryland",
+								"country": "PM"
+							},
+							"shareOfTotalRevenueInPercent": 64.5335
 						}
 					]
 				},
@@ -110,18 +128,20 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMWh": 1427,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 615,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 47736030,
-					"naturalHazardsCovered": null
+					"amountCoveredByInsuranceAgainstNaturalHazards": 40931339,
+					"naturalHazardsCovered": [
+						"Avalanche"
+					]
 				}
 			}
 		},
@@ -130,41 +150,35 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Damionstead",
-			"headquartersPostalCode": "13025-5790",
-			"sector": "bandwidth",
+			"headquarters": "Bradtkecester",
+			"headquartersPostalCode": null,
+			"sector": null,
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"pejQCEMlD25s",
-					"ta1OWV0ltfkW"
+					"aHMSka5fdYk4"
 				],
 				"PermId": [
-					"XoCzzG58tg"
+					"JyQAyTv4C5"
 				],
 				"Ticker": [],
 				"Duns": [
-					"8ncDyNtiw"
+					"ShHsw4ypk"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"wtKRsFCJCeU8l4W"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KE",
-			"companyAlternativeNames": [
-				"Cole - McClure",
-				"Rodriguez LLC"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://sandy-board.name/",
+			"countryCode": "VA",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://hospitable-circumstance.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"35.22"
+						"25.7"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -173,12 +187,12 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 4451,
-					"fiscalYearStart": "2023-12-08"
+					"numberOfEmployees": 4621,
+					"fiscalYearStart": "2024-10-07"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 31146372,
-					"operatingCostInEUR": null,
+					"revenueInEUR": null,
+					"operatingCostInEUR": 59744834,
 					"capitalAssetsInEUR": null
 				}
 			},
@@ -186,103 +200,57 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Leuschke - Jast",
+							"nameOfProductionSite": "Williamson - Kunde",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "07565-9592",
-								"city": "Royfort",
-								"state": "Maryland",
-								"country": "US"
-							},
-							"shareOfTotalRevenueInPercent": 18.9818
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bailey Neck 309",
-								"postalCode": "43391-1121",
-								"city": "Ahmadshire",
-								"state": "Alabama",
-								"country": "KZ"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Fadel - Borer",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Carleton Causeway 2131",
-								"postalCode": null,
-								"city": "North Louieburgh",
-								"state": "Virginia",
-								"country": "BQ"
-							},
-							"shareOfTotalRevenueInPercent": 79.0772
-						},
-						{
-							"nameOfProductionSite": "Swift, Stoltenberg and Ryan",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Chasity Trafficway 7692",
-								"postalCode": "46356-5025",
-								"city": "New Naomie",
+								"streetAndHouseNumber": "Bradtke Spurs 35312",
+								"postalCode": "79509-2276",
+								"city": "South Hannahmouth",
 								"state": "Wyoming",
-								"country": "ZM"
+								"country": "MG"
 							},
-							"shareOfTotalRevenueInPercent": 55.0952
+							"shareOfTotalRevenueInPercent": 54.3876
 						},
 						{
-							"nameOfProductionSite": "Hoeger, Hamill and Fadel",
+							"nameOfProductionSite": "Leuschke - Stiedemann",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "68138-4606",
-								"city": "West Kaylieboro",
-								"state": null,
-								"country": "ZM"
+								"streetAndHouseNumber": "Fernando Oval 5585",
+								"postalCode": "98256-4636",
+								"city": "Santa Maria",
+								"state": "California",
+								"country": "CY"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 30.9556
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Licensed Steel Towels",
-							"shareOfTotalRevenueInPercent": 30.3842
-						},
-						{
-							"name": "Recycled Frozen Cheese",
-							"shareOfTotalRevenueInPercent": 48.8864
-						},
-						{
-							"name": "Luxurious Rubber Computer",
-							"shareOfTotalRevenueInPercent": 21.9728
-						},
-						{
-							"name": "Bespoke Fresh Towels",
-							"shareOfTotalRevenueInPercent": 33.5844
+							"name": "Handcrafted Plastic Tuna",
+							"shareOfTotalRevenueInPercent": 78.7439
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 474,
+					"powerConsumptionInMWh": 1840,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 455,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWaterInMWh": 217,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 32258971,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 2849673,
 					"naturalHazardsCovered": [
-						"Hail",
-						"EarthQuake",
-						"Avalanche"
+						"Wind",
+						"Snow"
 					]
 				}
 			}
@@ -292,39 +260,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "West Eli",
-			"headquartersPostalCode": "35422",
-			"sector": "platforms",
+			"headquarters": "Corwinworth",
+			"headquartersPostalCode": "13993",
+			"sector": "channels",
 			"identifiers": {
-				"Lei": [
-					"q7hUpd2fUNXS014M2w8r"
-				],
+				"Lei": [],
 				"Isin": [
-					"0xjiMyB2RlSM"
+					"JK05J8G9C7vJ",
+					"s3XY2MAmsZbq"
 				],
 				"PermId": [
-					"ipxt4TEARO"
+					"nT33i131hs"
 				],
 				"Ticker": [
-					"IfK1qNe"
+					"okhM06G"
 				],
-				"Duns": [],
+				"Duns": [
+					"Ic6qE8Ffx"
+				],
 				"VatNumber": [
-					"XuHAE42I6"
+					"6lmqSQdaW"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BN",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": null,
+			"countryCode": "JO",
+			"companyAlternativeNames": [
+				"Osinski, Turcotte and Brekke",
+				"Schaden and Sons",
+				"Schoen, Witting and Brown"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://apprehensive-conductor.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"25"
+						"10.89"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -333,42 +306,21 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 9674,
-					"fiscalYearStart": "2024-07-05"
+					"numberOfEmployees": 3289,
+					"fiscalYearStart": "2023-11-02"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 29556257,
-					"operatingCostInEUR": 40196501,
-					"capitalAssetsInEUR": 26081073
+					"revenueInEUR": null,
+					"operatingCostInEUR": 77636248,
+					"capitalAssetsInEUR": 41404775
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Gorgeous Concrete Keyboard",
-							"shareOfTotalRevenueInPercent": 32.0601
-						},
-						{
-							"name": "Tasty Wooden Soap",
-							"shareOfTotalRevenueInPercent": 9.8799
-						},
-						{
-							"name": "Luxurious Metal Cheese",
-							"shareOfTotalRevenueInPercent": 77.3594
-						},
-						{
-							"name": "Tasty Metal Chips",
-							"shareOfTotalRevenueInPercent": 82.5285
-						},
-						{
-							"name": "Fantastic Concrete Bacon",
-							"shareOfTotalRevenueInPercent": 20.1783
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
@@ -376,21 +328,22 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1391,
+					"powerConsumptionInMWh": 1449,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 834,
+					"energyConsumptionHeatingAndHotWaterInMWh": 29,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 3287486,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 21747842,
 					"naturalHazardsCovered": [
 						"Hail",
-						"Avalanche",
-						"Wind"
+						"Wind",
+						"Snow",
+						"Avalanche"
 					]
 				}
 			}
