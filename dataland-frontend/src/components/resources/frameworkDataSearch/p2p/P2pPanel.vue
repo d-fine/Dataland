@@ -75,16 +75,13 @@ export default defineComponent({
         this.waitingForData = true;
         const p2pDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getP2pDataControllerApi();
+        ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
         if (this.singleDataMetaInfoToDisplay) {
-          const singleP2pData = (
-            await p2pDataControllerApi.getCompanyAssociatedP2pData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data;
+          const singleP2pData = (await p2pDataControllerApi.getFrameworkData(this.singleDataMetaInfoToDisplay.dataId))
+            .data.data;
           this.p2pDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleP2pData }];
         } else {
-          this.p2pDataAndMetaInfo = (
-            await p2pDataControllerApi.getAllCompanyP2pData(assertDefined(this.companyId))
-          ).data;
+          this.p2pDataAndMetaInfo = (await p2pDataControllerApi.getAllCompanyData(assertDefined(this.companyId))).data;
         }
       } catch (error) {
         console.error(error);

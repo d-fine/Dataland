@@ -2,18 +2,8 @@ import { Configuration } from "@clients/backend/configuration";
 import {
   CompanyDataControllerApi,
   type CompanyDataControllerApiInterface,
-  EuTaxonomyDataForNonFinancialsControllerApi,
-  type EuTaxonomyDataForNonFinancialsControllerApiInterface,
-  EuTaxonomyDataForFinancialsControllerApi,
-  type EuTaxonomyDataForFinancialsControllerApiInterface,
   MetaDataControllerApi,
   type MetaDataControllerApiInterface,
-  LksgDataControllerApi,
-  type LksgDataControllerApiInterface,
-  type P2pDataControllerApiInterface,
-  P2pDataControllerApi,
-  type SmeDataControllerApiInterface,
-  SmeDataControllerApi,
   InviteControllerApi,
 } from "@clients/backend/api";
 import { DocumentControllerApi } from "@clients/documentmanager";
@@ -73,48 +63,8 @@ export class ApiClientProvider {
     return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
   }
 
-  /**
-   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
-   * @returns a framework-specific API Controller
-   */
-  async getEuTaxonomyDataForNonFinancialsControllerApi(): Promise<EuTaxonomyDataForNonFinancialsControllerApiInterface> {
-    return this.getConstructedApi(EuTaxonomyDataForNonFinancialsControllerApi);
-  }
-
-  /**
-   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
-   * @returns a framework-specific API Controller
-   */
-  async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
-    return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
-  }
-
   async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {
     return this.getConstructedApi(MetaDataControllerApi);
-  }
-
-  /**
-   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
-   * @returns a framework-specific API Controller
-   */
-  async getLksgDataControllerApi(): Promise<LksgDataControllerApiInterface> {
-    return this.getConstructedApi(LksgDataControllerApi);
-  }
-
-  /**
-   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
-   * @returns a framework-specific API Controller
-   */
-  async getP2pDataControllerApi(): Promise<P2pDataControllerApiInterface> {
-    return this.getConstructedApi(P2pDataControllerApi);
-  }
-
-  /**
-   * @deprecated Please use getUnifiedFrameworkDataController to get framework-specific API controllers.
-   * @returns a framework-specific API Controller
-   */
-  async getSmeDataControllerApi(): Promise<SmeDataControllerApiInterface> {
-    return this.getConstructedApi(SmeDataControllerApi);
   }
 
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {

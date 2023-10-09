@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
-import org.dataland.datalandbackend.model.DataPointWithUnit
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal
 
 /**
@@ -8,45 +8,45 @@ import java.math.BigDecimal
  * Fields of the subcategory "Energy performance" belonging to the category "Environmental" of the sfdr framework.
  */
 data class SfdrEnvironmentalEnergyPerformance(
-    val renewableEnergyProduction: DataPointWithUnit<BigDecimal>? = null,
+    val renewableEnergyProductionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val renewableEnergyConsumption: DataPointWithUnit<BigDecimal>? = null,
+    val renewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumption: DataPointWithUnit<BigDecimal>? = null,
+    val nonRenewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyProduction: DataPointWithUnit<BigDecimal>? = null,
+    val nonRenewableEnergyProductionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceA: DataPointWithUnit<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceAInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceB: DataPointWithUnit<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceBInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceC: DataPointWithUnit<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceCInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceD: DataPointWithUnit<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceDInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceE: DataPointWithUnit<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceEInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceF: DataPointWithUnit<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceFInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceG: DataPointWithUnit<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceGInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceH: DataPointWithUnit<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceHInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceL: DataPointWithUnit<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceLInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val totalHighImpactClimateSectorEnergyConsumption: DataPointWithUnit<BigDecimal>? = null,
+    val totalHighImpactClimateSectorEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionFossilFuels: DataPointWithUnit<BigDecimal>? = null,
+    val nonRenewableEnergyConsumptionFossilFuelsInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionCrudeOil: DataPointWithUnit<BigDecimal>? = null,
+    val nonRenewableEnergyConsumptionCrudeOilInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionNaturalGas: DataPointWithUnit<BigDecimal>? = null,
+    val nonRenewableEnergyConsumptionNaturalGasInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionLignite: DataPointWithUnit<BigDecimal>? = null,
+    val nonRenewableEnergyConsumptionLigniteInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionCoal: DataPointWithUnit<BigDecimal>? = null,
+    val nonRenewableEnergyConsumptionCoalInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionNuclearEnergy: DataPointWithUnit<BigDecimal>? = null,
+    val nonRenewableEnergyConsumptionNuclearEnergyInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionOther: DataPointWithUnit<BigDecimal>? = null,
+    val nonRenewableEnergyConsumptionOtherInGWh: ExtendedDataPoint<BigDecimal>? = null,
 )

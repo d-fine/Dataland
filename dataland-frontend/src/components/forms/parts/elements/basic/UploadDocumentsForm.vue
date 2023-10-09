@@ -110,7 +110,7 @@ export default defineComponent({
           selectedFilesByUser.map(async (file) => {
             return {
               file: file,
-              reference: await calculateSha256HashFromFile(file),
+              fileReference: await calculateSha256HashFromFile(file),
               fileNameWithoutSuffix: removeFileTypeExtension(file.name),
             };
           }),

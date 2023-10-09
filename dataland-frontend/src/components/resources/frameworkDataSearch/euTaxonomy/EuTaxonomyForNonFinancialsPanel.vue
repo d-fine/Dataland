@@ -33,8 +33,8 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type AmountWithCurrency,
-  AssuranceDataAssuranceEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
+  AssuranceDataPointValueEnum,
   DataTypeEnum,
   type EuTaxonomyDataForNonFinancials,
   FiscalYearDeviation,
@@ -108,12 +108,10 @@ export default defineComponent({
         this.waitingForData = true;
         const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getEuTaxonomyDataForNonFinancialsControllerApi();
+        ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
         if (this.singleDataMetaInfoToDisplay) {
           const singleEuTaxonomyForNonFinancialsDataData = (
-            await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-              this.singleDataMetaInfoToDisplay.dataId,
-            )
+            await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(this.singleDataMetaInfoToDisplay.dataId)
           ).data.data;
           fetchedData = [
             { metaInfo: this.singleDataMetaInfoToDisplay, data: singleEuTaxonomyForNonFinancialsDataData },
@@ -122,9 +120,7 @@ export default defineComponent({
           this.dataAndMetaInfoSets = fetchedData;
         } else {
           fetchedData = (
-            await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyEuTaxonomyDataForNonFinancials(
-              assertDefined(this.companyId),
-            )
+            await euTaxonomyForNonFinancialsDataControllerApi.getAllCompanyData(assertDefined(this.companyId))
           ).data;
           this.dataAndMetaInfoSets = fetchedData;
         }
@@ -167,7 +163,7 @@ export default defineComponent({
      */
     isKpiObjectAssuranceLevel(kpiValue: KpiValue): boolean {
       if (typeof kpiValue === "string") {
-        return Object.values(AssuranceDataAssuranceEnum).includes(kpiValue as AssuranceDataAssuranceEnum);
+        return Object.values(AssuranceDataPointValueEnum).includes(kpiValue as AssuranceDataPointValueEnum);
       } else {
         return false;
       }

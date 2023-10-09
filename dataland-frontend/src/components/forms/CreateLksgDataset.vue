@@ -105,7 +105,7 @@ import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { AxiosError } from "axios";
-import { type CompanyAssociatedDataLksgData } from "@clients/backend";
+import { type CompanyAssociatedDataLksgData, DataTypeEnum } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -223,9 +223,9 @@ export default defineComponent({
       this.waitingForData = true;
       const lkSGDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getLksgDataControllerApi();
+      ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
 
-      const lksgDataset = (await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId)).data;
+      const lksgDataset = (await lkSGDataControllerApi.getFrameworkData(dataId)).data;
       const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
@@ -244,8 +244,8 @@ export default defineComponent({
         }
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getLksgDataControllerApi();
-        await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
+        ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
+        await lkSGDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";

@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.springframework.beans.factory.annotation.Autowired

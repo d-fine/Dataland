@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
 
-import org.dataland.datalandbackend.model.BaseDataPoint
+import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**

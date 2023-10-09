@@ -132,7 +132,11 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDataModel.ts";
-import { type CompanyAssociatedDataEuTaxonomyDataForNonFinancials, type CompanyReport } from "@clients/backend";
+import {
+  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  type CompanyReport,
+  DataTypeEnum,
+} from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -218,7 +222,7 @@ export default defineComponent({
       checkCustomInputs,
       documents: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
-      namesOfAllCompanyReportsForTheDataset: [] as string[],
+      namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
       editMode: false,
     };
@@ -265,10 +269,9 @@ export default defineComponent({
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getEuTaxonomyDataForNonFinancialsControllerApi();
+      ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
 
-      const dataResponse =
-        await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId);
+      const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(dataId);
       const euTaxonomyForNonFinancialsResponseData = dataResponse.data;
       if (euTaxonomyForNonFinancialsResponseData?.reportingPeriod) {
         this.reportingPeriod = new Date(euTaxonomyForNonFinancialsResponseData.reportingPeriod);
@@ -289,7 +292,7 @@ export default defineComponent({
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEuTaxonomyDataForNonFinancials.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset,
+            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
           );
 
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
@@ -297,8 +300,8 @@ export default defineComponent({
 
         const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        await euTaxonomyForNonFinancialsDataControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+        ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
+        await euTaxonomyForNonFinancialsDataControllerApi.postFrameworkData(
           this.companyAssociatedEuTaxonomyDataForNonFinancials,
         );
         this.$emit("datasetCreated");
@@ -320,19 +323,19 @@ export default defineComponent({
     },
     /**
      * updates the list of documents that were uploaded
-     * @param reportsNames repots names
+     * @param reportsNamesAndReferences repots names and references
      * @param reportsToUpload reports to upload
      */
-    updateDocumentsList(reportsNames: string[], reportsToUpload: DocumentToUpload[]) {
-      this.namesOfAllCompanyReportsForTheDataset = reportsNames;
+    updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
       this.documents = new Map();
       reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
     },
   },
   provide() {
     return {
-      namesOfAllCompanyReportsForTheDataset: computed(() => {
-        return this.namesOfAllCompanyReportsForTheDataset;
+      namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
+        return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
       }),
       referencedReportsForPrefill: computed(() => {
         return this.referencedReportsForPrefill;

@@ -12,7 +12,7 @@
       <div class="lg:col-4 md:col-6 col-12 p-0">
         <FormKit
           type="select"
-          name="assurance"
+          name="value"
           placeholder="Please choose..."
           :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
           validation="required"
@@ -47,11 +47,12 @@
             />
             <FormKit
               type="select"
-              name="report"
+              name="fileName"
               v-model="currentReportValue"
               placeholder="Select a report"
-              :options="['None...', ...injectReportsName]"
+              :options="['None...', ...reportsName]"
             />
+            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
           <div>
             <UploadFormHeader
@@ -85,14 +86,16 @@ import {
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import { AssuranceDataAssuranceEnum } from "@clients/backend";
+import { AssuranceDataPointValueEnum } from "@clients/backend";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "AssuranceFormField",
   inject: {
-    injectReportsName: {
-      from: "namesOfAllCompanyReportsForTheDataset",
-      default: [] as string[],
+    injectReportsNameAndReferences: {
+      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
+      default: {} as ObjectType,
     },
   },
   components: { FormKit, UploadFormHeader },
@@ -101,12 +104,20 @@ export default defineComponent({
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       assuranceData: {
-        None: humanizeStringOrNumber(AssuranceDataAssuranceEnum.None),
-        LimitedAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.LimitedAssurance),
-        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataAssuranceEnum.ReasonableAssurance),
+        None: humanizeStringOrNumber(AssuranceDataPointValueEnum.None),
+        LimitedAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.LimitedAssurance),
+        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
       },
       currentReportValue: "",
     };
+  },
+  computed: {
+    reportsName(): string[] {
+      return getFileName(this.injectReportsNameAndReferences);
+    },
+    fileReferenceAccordingToName(): string {
+      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
+    },
   },
   props: BaseFormFieldProps,
 });

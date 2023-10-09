@@ -4,11 +4,11 @@ import java.math.BigDecimal
 import java.time.LocalDate
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the technology of the electricity generation sector
+ * --- API model ---
+ * Fields of the subcategory "Technology" belonging to the category "Electricity generation" of the p2p framework.
 */
 data class P2pElectricityGenerationTechnology(
-    val electricityMixEmissions: BigDecimal? = null,
+    val electricityMixEmissionsInCorrespondingUnit: BigDecimal? = null,
 
     val shareOfRenewableElectricityInPercent: BigDecimal? = null,
 

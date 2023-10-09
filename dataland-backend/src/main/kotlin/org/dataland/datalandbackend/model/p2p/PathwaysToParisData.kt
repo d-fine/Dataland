@@ -15,8 +15,8 @@ import org.dataland.datalandbackend.model.p2p.categories.steel.P2pSteel
 
 /**
  * --- API model ---
- * The Pathways to Paris (P2P) Framework Questionaire
- */
+ * Fields of the p2p framework.
+*/
 @DataType("p2p")
 data class PathwaysToParisData(
     @field:JsonProperty(required = true)

@@ -104,7 +104,7 @@ import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { AxiosError } from "axios";
-import { type CompanyAssociatedDataPathwaysToParisData } from "@clients/backend";
+import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum } from "@clients/backend";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
@@ -210,9 +210,9 @@ export default defineComponent({
       this.waitingForData = true;
       const p2pDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getP2pDataControllerApi();
+      ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
 
-      const p2pDataset = (await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId)).data;
+      const p2pDataset = (await p2pDataControllerApi.getFrameworkData(dataId)).data;
       const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
@@ -230,8 +230,8 @@ export default defineComponent({
       try {
         const p2pDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getP2pDataControllerApi();
-        await p2pDataControllerApi.postCompanyAssociatedP2pData(this.companyAssociatedP2pData);
+        ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
+        await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
