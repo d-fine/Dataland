@@ -4,7 +4,7 @@
     <div class="next-to-each-other">
       <FormKit
         type="text"
-        name="value"
+        :name="name"
         :unit="unit"
         :validation-label="validationLabel ?? label"
         :validation="`number|${validation}`"
