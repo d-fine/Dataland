@@ -3220,13 +3220,21 @@
                 "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
+          },
+          "highlyBiodiverseGrasslandExposure": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           }
         }
       },
       "SfdrEnvironmentalEmissions": {
         "type": "object",
         "properties": {
-          "inorganicPollutantsInTonnes": {
+          "emissionsOfInorganicPollutantsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3234,7 +3242,7 @@
               }
             ]
           },
-          "airPollutantsInTonnes": {
+          "emissionsOfAirPollutantsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3242,7 +3250,7 @@
               }
             ]
           },
-          "ozoneDepletionSubstancesInTonnes": {
+          "emissionsOfOzoneDepletionSubstancesInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3279,6 +3287,14 @@
               }
             ]
           },
+          "nonRenewableEnergyProductionInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "nonRenewableEnergyConsumptionInGWh": {
             "nullable": true,
             "allOf": [
@@ -3287,7 +3303,63 @@
               }
             ]
           },
-          "nonRenewableEnergyProductionInGWh": {
+          "applicableHighImpactClimateSector": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "nonRenewableEnergyConsumptionCrudeOilInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "nonRenewableEnergyConsumptionNaturalGasInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "nonRenewableEnergyConsumptionLigniteInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "nonRenewableEnergyConsumptionCoalInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "nonRenewableEnergyConsumptionOtherInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3366,77 +3438,13 @@
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
-          },
-          "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "nonRenewableEnergyConsumptionCrudeOilInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "nonRenewableEnergyConsumptionNaturalGasInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "nonRenewableEnergyConsumptionLigniteInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "nonRenewableEnergyConsumptionCoalInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "nonRenewableEnergyConsumptionOtherInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
           }
         }
       },
       "SfdrEnvironmentalGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
-          "scope1InTonnes": {
+          "scope1GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3444,7 +3452,7 @@
               }
             ]
           },
-          "scope2InTonnes": {
+          "scope2GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3452,7 +3460,7 @@
               }
             ]
           },
-          "scope3InTonnes": {
+          "scope3GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3489,7 +3497,7 @@
       "SfdrEnvironmentalWaste": {
         "type": "object",
         "properties": {
-          "hazardousWasteInTonnes": {
+          "hazardousAndRadioactiveWasteInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3529,7 +3537,7 @@
               }
             ]
           },
-          "wasteNonRecycledInTonnes": {
+          "nonRecycledWasteInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3598,7 +3606,7 @@
               }
             ]
           },
-          "waterStressAreaExposure": {
+          "highWaterStressAreaExposure": {
             "nullable": true,
             "allOf": [
               {
@@ -3695,7 +3703,7 @@
       "SfdrSocialAntiCorruptionAndAntiBribery": {
         "type": "object",
         "properties": {
-          "reportedCasesOfBriberyCorruption": {
+          "casesOfInsufficientActionAgainstBriberyAndCorruption": {
             "nullable": true,
             "allOf": [
               {
@@ -3703,7 +3711,7 @@
               }
             ]
           },
-          "reportedConvictionsOfBriberyCorruption": {
+          "reportedConvictionsOfBriberyAndCorruption": {
             "nullable": true,
             "allOf": [
               {
@@ -3711,7 +3719,7 @@
               }
             ]
           },
-          "reportedFinesOfBriberyCorruption": {
+          "totalAmountOfReportedFinesOfBriberyAndCorruption": {
             "nullable": true,
             "allOf": [
               {
@@ -3777,7 +3785,7 @@
               }
             ]
           },
-          "reportedIncidentsOfHumanRights": {
+          "numberOfReportedIncidentsOfHumanRightsViolations": {
             "nullable": true,
             "allOf": [
               {
@@ -3838,7 +3846,23 @@
               }
             ]
           },
-          "childForcedDiscriminationPolicy": {
+          "policyAgainstChildLabour": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "policyAgainstForcedLabour": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "policyAgainstDiscriminationInTheWorkplace": {
             "nullable": true,
             "allOf": [
               {
@@ -3854,7 +3878,7 @@
               }
             ]
           },
-          "briberyCorruptionPolicy": {
+          "policyAgainstBriberyAndCorruption": {
             "nullable": true,
             "allOf": [
               {
@@ -3902,7 +3926,7 @@
               }
             ]
           },
-          "oecdGuidelinesForMultinationalEnterprisesPolicy": {
+          "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
             "nullable": true,
             "allOf": [
               {
@@ -3958,7 +3982,7 @@
               }
             ]
           },
-          "rateOfAccidents": {
+          "rateOfAccidentsInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -4006,7 +4030,7 @@
               }
             ]
           },
-          "sanctionsIncidentsOfDiscrimination": {
+          "sanctionedIncidentsOfDiscrimination": {
             "nullable": true,
             "allOf": [
               {
@@ -4014,7 +4038,7 @@
               }
             ]
           },
-          "ceoToEmployeePayGap": {
+          "ceoToEmployeePayGapRatio": {
             "nullable": true,
             "allOf": [
               {

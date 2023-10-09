@@ -32,13 +32,13 @@ data class SfdrEnvironmentalEnergyPerformance(
 
     val nonRenewableEnergyConsumptionOtherInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val highImpactClimateSectorEnergyConsumptionNaceA: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceB: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceC: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceD: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceE: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceF: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceG: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceH: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceL: ExtendedDataPoint<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceAInGWh: ExtendedDataPoint<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceBInGWh: ExtendedDataPoint<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceCInGWh: ExtendedDataPoint<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceDInGWh: ExtendedDataPoint<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceEInGWh: ExtendedDataPoint<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceFInGWh: ExtendedDataPoint<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceGInGWh: ExtendedDataPoint<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceHInGWh: ExtendedDataPoint<BigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionNaceLInGWh: ExtendedDataPoint<BigDecimal>? = null,
 )

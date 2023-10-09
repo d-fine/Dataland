@@ -14,5 +14,5 @@ data class SfdrSocialAntiCorruptionAndAntiBribery(
 
     val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<BigDecimal>? = null,
 
-    val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint = null,
+    val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
 )
