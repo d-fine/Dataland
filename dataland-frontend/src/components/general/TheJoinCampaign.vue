@@ -31,7 +31,7 @@ import EmailButton from "@/components/resources/newLandingPage/EmailButton.vue";
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const joinCampaignSection = computed(() => {
-  return sections?.find((section) => section.title === "Join a campaign") || null;
+  return sections?.find((section) => section.title === "Join a campaign") ?? null;
 });
 </script>
 
@@ -112,7 +112,6 @@ const joinCampaignSection = computed(() => {
     box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(16px);
     display: flex;
-    border-radius: 16px;
     gap: 16px;
     flex-direction: column;
     padding: 46px 40px;
