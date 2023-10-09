@@ -7,7 +7,7 @@
       </h2>
       <div class="brands__list" role="list">
         <div class="brands__item" v-for="(imgSrc, index) in brandsSection.image" :key="index" role="listitem">
-          <img :src="imgSrc" :alt="`Brand ${index + 1}`" :class="`brands__item-image brands__item-image--${index}`" />
+          <img :src="imgSrc" :alt="`Brand ${index + 1}`" class="brands__item-image" />
         </div>
       </div>
     </div>
@@ -67,13 +67,12 @@ const brandsSection = computed(() => {
     grid-column: 1 / -1;
 
     .brands__item {
-      width: 190px;
       height: 124px;
       display: flex;
       align-items: center;
       justify-content: center;
       &-image {
-        max-width: 190px;
+        max-width: 200px;
         height: auto;
       }
     }
@@ -95,8 +94,13 @@ const brandsSection = computed(() => {
       flex-wrap: wrap;
       width: calc((190px * 3) + (24px * 2));
       justify-content: flex-start;
-      gap: 40px 24px;
+      gap: 24px;
       grid-column: 3 /15;
+      .brands__item {
+        &-image {
+          width: 190px;
+        }
+      }
     }
   }
 }

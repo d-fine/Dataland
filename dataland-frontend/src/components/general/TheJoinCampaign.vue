@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
-import EmailButton from "@/components/resources/newLandingPage/emailButton.vue";
+import EmailButton from "@/components/resources/newLandingPage/EmailButton.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
@@ -149,23 +149,5 @@ const joinCampaignSection = computed(() => {
 }
 
 @media only screen and (max-width: $large) {
-  .joincampaign {
-    &__title {
-      font-size: 48px;
-      font-weight: 600;
-      line-height: 56px; /* 116.667% */
-      letter-spacing: 0.25px;
-    }
-    &__row {
-      padding: 46px 24px;
-    }
-    &__cell {
-      &--icon {
-        font-size: 40px;
-        font-weight: 700;
-        line-height: 48px;
-      }
-    }
-  }
 }
 </style>

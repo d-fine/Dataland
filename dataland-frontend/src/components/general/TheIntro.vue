@@ -14,24 +14,18 @@
         <template v-else>{{ part }}</template>
       </template>
     </h1>
-    <!-- <TheSearch v-if="introCard" :icon="introCard.icon ?? ''" :placeholderText="introCard.text" /> -->
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
-// import TheSearch from "./TheSearch.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const introSection = computed(() => {
   return sections?.find((section) => section.title === "Intro") ?? null;
 });
-
-// const introCard = computed(() => {
-//   return introSection.value?.cards?.find((card) => card.icon && card.text) || null;
-// });
 </script>
 
 <style scoped lang="scss">

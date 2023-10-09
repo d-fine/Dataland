@@ -2,10 +2,17 @@
   <section v-if="quotesSection" class="quotes" role="region" aria-label="The Quotes">
     <div ref="slider" role="list" class="quotes__slides" @pointerdown="dragStart" @touchstart="dragStart">
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
-        <img :src="card.icon" class="quotes__slide-icon" />
-        <h3 class="quotes__slide-title">{{ card.title }}</h3>
+        <div class="quotes__slide-videoContainer">
+          <iframe
+            :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
+            frameborder="0"
+            allowfullscreen
+            class="quotes__slide-video"
+          ></iframe>
+        </div>
+        <!-- <h3 class="quotes__slide-title">{{ card.title }}</h3>
         <p class="quotes__slide-text">{{ card.text }}</p>
-        <p class="quotes__slide-index">0{{ index + 1 }}</p>
+        <p class="quotes__slide-index">0{{ index + 1 }}</p> -->
       </div>
     </div>
     <div class="quotes__arrows">
@@ -141,31 +148,42 @@ onUnmounted(() => {
     gap: 24px;
     cursor: grab;
 
-    &-title {
-      font-size: 48px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 56px; /* 116.667% */
-      letter-spacing: 0.25px;
-      margin: 0;
+    &-videoContainer {
+      aspect-ratio: 9 / 16;
+      width: 100%;
+      overflow: hidden;
     }
-    &-text {
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 28px; /* 140% */
-      letter-spacing: 0.25px;
-      color: #585858;
+
+    &-video {
+      width: 100%;
+      height: 100%;
     }
-    &-index {
-      margin: auto 0 0;
-      font-size: 48px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 56px; /* 116.667% */
-      letter-spacing: 0.25px;
-      color: #ff5c00;
-    }
+
+    // &-title {
+    //   font-size: 48px;
+    //   font-style: normal;
+    //   font-weight: 600;
+    //   line-height: 56px; /* 116.667% */
+    //   letter-spacing: 0.25px;
+    //   margin: 0;
+    // }
+    // &-text {
+    //   font-size: 20px;
+    //   font-style: normal;
+    //   font-weight: 400;
+    //   line-height: 28px; /* 140% */
+    //   letter-spacing: 0.25px;
+    //   color: #585858;
+    // }
+    // &-index {
+    //   margin: auto 0 0;
+    //   font-size: 48px;
+    //   font-style: normal;
+    //   font-weight: 600;
+    //   line-height: 56px; /* 116.667% */
+    //   letter-spacing: 0.25px;
+    //   color: #ff5c00;
+    // }
   }
   &__arrows {
     display: flex;

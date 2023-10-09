@@ -37,17 +37,17 @@
                     ],
                     "cards": [
                         {
-                            "icon": "/static/icons/Airline--rapid-board.svg",
+                            "icon": "GaUte84IN0g",
                             "title": "Marie Jemm, CEO of Ampega",
                             "text": "..."
                         },
                         {
-                            "icon": "/static/icons/Airline--rapid-board.svg",
+                            "icon": "",
                             "title": "James Kann, CEO of Deka Asset Management",
                             "text": "\"Dataland is the bridge that connects us to data independency and unlimited possibilities.\""
                         },
                         {
-                            "icon": "/static/icons/Airline--rapid-board.svg",
+                            "icon": "",
                             "title": "John Jonnhy, CEO of Castell-Bank",
                             "text": "..."
                         }
@@ -60,12 +60,12 @@
                         "by top companies"
                     ],
                     "image": [
-                        "/static/logos/img_chom_capital.png",
-                        "/static/logos/img_envoria.png",
-                        "/static/logos/img_fuerstl_bank.png",
+                        "/static/logos/img_deka.png",
                         "/static/logos/img_ampega.png",
+                        "/static/logos/img_chom_capital.png",
                         "/static/logos/img_metzler.png",
-                        "/static/logos/img_deka.png"
+                        "/static/logos/img_fuerstl_bank.png",
+                        "/static/logos/img_envoria.png"
                     ]
                 },
                 {
@@ -77,7 +77,7 @@
                     ],
                     "cards": [
                         {
-                            "icon": "/static/icons/Vector.svg",
+                            "icon": "/static/icons/Strategy--summit.svg",
                             "text": "We are purpose driven"
                         },
                         {
@@ -256,7 +256,7 @@
                             "date": "By clicking Get in Touch,  you agree to our Terms of use and that you have read our Privacy Policy."
                         },
                         {
-                            "icon": "/static/images/927A74151.jpg",
+                            "icon": "/static/images/Erik_Breen.jpg",
                             "title": "Erik Breen,",
                             "text": "Managing Director of Dataland"
                         },
