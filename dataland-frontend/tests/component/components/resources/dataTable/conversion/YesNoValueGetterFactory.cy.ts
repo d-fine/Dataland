@@ -104,8 +104,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
         const datapoint: BaseDataPointYesNoNa = {
           value: YesNoNa.Yes,
           dataSource: {
-              fileName: "Hello",
-              fileReference: "TestReference",
+            fileName: "Hello",
+            fileReference: "TestReference",
           },
         };
         const dataset = { data: datapoint };
@@ -115,8 +115,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
           displayValue: {
             label: "Certified",
             reference: {
-                fileName: "Hello",
-                fileReference: "TestReference",
+              fileName: "Hello",
+              fileReference: "TestReference",
             },
           },
         });
