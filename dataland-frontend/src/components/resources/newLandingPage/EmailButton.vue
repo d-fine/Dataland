@@ -1,5 +1,12 @@
 <template>
-  <button class="joincampaign__button" @click="openEmailClient">I AM INTERESTED</button>
+  <button
+    class="joincampaign__button"
+    @click="openEmailClient"
+    aria-label="Indicate interest by opening email client"
+    role="button"
+  >
+    I AM INTERESTED
+  </button>
 </template>
 
 <script setup lang="ts">
