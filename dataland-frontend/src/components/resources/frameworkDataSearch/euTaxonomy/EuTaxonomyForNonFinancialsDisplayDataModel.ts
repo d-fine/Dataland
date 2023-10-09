@@ -183,7 +183,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
             showIf: (): boolean => false,
           },
           {
-            name: "unit",
+            name: "currency",
             label: "Currency",
             description: "",
             unit: "",
@@ -447,7 +447,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
             showIf: (): boolean => false,
           },
           {
-            name: "unit",
+            name: "currency",
             label: "Currency",
             description: "",
             unit: "",
@@ -711,7 +711,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
             showIf: (): boolean => false,
           },
           {
-            name: "unit",
+            name: "currency",
             label: "Currency",
             description: "",
             unit: "",

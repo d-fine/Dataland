@@ -1,4 +1,4 @@
-import { type DocumentReference } from "@clients/backend";
+import { type BaseDocumentReference } from "@clients/backend";
 import { type DynamicDialogOptions } from "primevue/dynamicdialogoptions";
 
 export enum MLDTDisplayComponents {
@@ -9,7 +9,7 @@ export enum MLDTDisplayComponents {
 
 export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponents.StringDisplayComponent]: string | undefined | null;
-  [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: DocumentReference };
+  [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: BaseDocumentReference };
   [MLDTDisplayComponents.ModalLinkDisplayComponent]: {
     label: string;
     // Ignored as "any" type comes from DynamicDialog

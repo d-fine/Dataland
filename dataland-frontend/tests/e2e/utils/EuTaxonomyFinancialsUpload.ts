@@ -2,7 +2,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type CompanyAssociatedDataEuTaxonomyDataForFinancials,
   type CompanyInformation,
-  type DataPointOneValueBigDecimal,
+  type ExtendedDataPointBigDecimal,
   DataTypeEnum,
   type EligibilityKpis,
   type EuTaxonomyDataForFinancials,
@@ -89,9 +89,9 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     .type(`${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`);
   cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
-  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
+  cy.get('[data-test="assuranceSection"] select[name="value"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  cy.get('[data-test="assuranceSection"] select[name="fileName"]').select(1);
   cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
   cy.get('em[title="Assurance"]').click();
   cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
@@ -140,13 +140,13 @@ export function fillEligibilityKpis(divTag: string, data: EligibilityKpis | unde
  * @param inputsTag value of the parent div data-test attribute to fill in
  * @param value the value to fill in
  */
-export function fillField(divTag: string, inputsTag: string, value?: DataPointOneValueBigDecimal | null): void {
+export function fillField(divTag: string, inputsTag: string, value?: ExtendedDataPointBigDecimal | null): void {
   if (value?.value) {
     const valueAsString = value.value.toString();
     if (divTag === "") {
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(valueAsString);
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type("13");
-      cy.get(`[data-test="${inputsTag}"]`).find('select[name="report"]').select(1);
+      cy.get(`[data-test="${inputsTag}"]`).find('select[name="fileName"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`).find('select[name="quality"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`)
         .find('textarea[name="comment"]')
@@ -160,7 +160,7 @@ export function fillField(divTag: string, inputsTag: string, value?: DataPointOn
         .find(`[data-test="${inputsTag}"]`)
         .find('input[name="page"]')
         .type(`${value.dataSource?.page ?? "13"}`);
-      cy.get(`[data-test="${divTag}"]`).find(`[data-test="${inputsTag}"]`).find('select[name="report"]').select(1);
+      cy.get(`[data-test="${divTag}"]`).find(`[data-test="${inputsTag}"]`).find('select[name="fileName"]').select(1);
       cy.get(`[data-test="${divTag}"]`).find(`[data-test="${inputsTag}"]`).find('select[name="quality"]').select(1);
       cy.get(`[data-test="${divTag}"]`)
         .find(`[data-test="${inputsTag}"]`)
@@ -259,9 +259,9 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
     `${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`,
   );
 
-  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
+  cy.get('[data-test="assuranceSection"] select[name="value"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  cy.get('[data-test="assuranceSection"] select[name="fileName"]').select(1);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()

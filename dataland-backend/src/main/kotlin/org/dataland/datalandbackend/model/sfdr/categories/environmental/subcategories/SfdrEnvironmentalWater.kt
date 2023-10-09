@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
-import org.dataland.datalandbackend.model.DataPointOneValue
-import org.dataland.datalandbackend.model.DataPointWithUnit
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -10,13 +9,13 @@ import java.math.BigDecimal
  * Fields of the subcategory "Water" belonging to the category "Environmental" of the sfdr framework.
  */
 data class SfdrEnvironmentalWater(
-    val emissionsToWater: DataPointWithUnit<BigDecimal>? = null,
+    val emissionsToWaterInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    val waterConsumption: DataPointWithUnit<BigDecimal>? = null,
+    val waterConsumptionInCubicMeters: ExtendedDataPoint<BigDecimal>? = null,
 
-    val waterReused: DataPointWithUnit<BigDecimal>? = null,
+    val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal>? = null,
 
-    val waterManagementPolicy: DataPointOneValue<YesNo>? = null,
+    val waterManagementPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val waterStressAreaExposure: DataPointOneValue<YesNo>? = null,
+    val waterStressAreaExposure: ExtendedDataPoint<YesNo>? = null,
 )

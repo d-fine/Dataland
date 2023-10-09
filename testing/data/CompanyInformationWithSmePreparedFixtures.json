@@ -2,111 +2,114 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Germantown",
-			"headquartersPostalCode": "78384-6443",
-			"sector": "interfaces",
+			"headquarters": "New Isaiahcester",
+			"headquartersPostalCode": "42346-5392",
+			"sector": null,
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"EjSx8UqgSamn",
-					"bKPZYcFtNLXM"
+					"G4T8m7Mi8H6U"
 				],
 				"PermId": [
-					"5KIVXr5Atu"
+					"DkzKsOCMXS"
 				],
 				"Ticker": [
-					"5gqsvK3"
+					"SPI2zwM"
 				],
 				"Duns": [
-					"3G7dkKGKA"
+					"Fdu23IoHU"
 				],
-				"VatNumber": [
-					"46WP3e8JJ"
-				],
-				"CompanyRegistrationNumber": [
-					"30FnJcSvR66TPBZ"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LI",
+			"countryCode": "TC",
 			"companyAlternativeNames": [
-				"Welch, Hudson and Wisoky"
+				"Bashirian - Nikolaus",
+				"Gulgowski - Kuhn",
+				"Klein, Senger and Block",
+				"Mosciski, Becker and Lueilwitz"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://front-immortal.name/",
+			"companyLegalForm": null,
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"30.99",
-						"42",
-						"78",
-						"90.04"
+						"19.20",
+						"25.72",
+						"26",
+						"69.20"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Robel Key 743",
-						"postalCode": "83311",
-						"city": "Stockton",
-						"state": "Idaho",
-						"country": "US"
+						"streetAndHouseNumber": null,
+						"postalCode": "94809",
+						"city": "Danielburgh",
+						"state": "Maine",
+						"country": "SX"
 					},
-					"numberOfEmployees": 8680,
-					"fiscalYearStart": "2024-08-10"
+					"numberOfEmployees": 4380,
+					"fiscalYearStart": "2024-04-13"
 				},
 				"companyFinancials": {
-					"revenueInEur": 0,
-					"operatingCostInEur": 1000000,
-					"capitalAssetsInEur": 2000000
+					"revenueInEUR": 0,
+					"operatingCostInEUR": 1000000,
+					"capitalAssetsInEUR": 2000000
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Orn - Bogan",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Feest Haven 6301",
-								"postalCode": "88413",
-								"city": "Millsland",
-								"state": null,
-								"country": "MK"
-							},
-							"shareOfTotalRevenueInPercent": 3.9055
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Electronic Rubber Gloves",
+							"name": "Licensed Wooden Towels",
 							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Unbranded Fresh Shirt",
+							"shareOfTotalRevenueInPercent": 95.8446
+						},
+						{
+							"name": "Electronic Wooden Ball",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Bespoke Frozen Gloves",
+							"shareOfTotalRevenueInPercent": 72.4189
+						},
+						{
+							"name": "Electronic Wooden Sausages",
+							"shareOfTotalRevenueInPercent": 42.1885
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 422,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": 1460,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 750,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 44209410,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 26628365,
 					"naturalHazardsCovered": [
-						"EarthQuake",
+						"Wind",
 						"Flooding",
-						"Avalanche",
 						"Hail",
-						"Wind"
+						"EarthQuake",
+						"Snow",
+						"Avalanche"
 					]
 				}
 			}
@@ -116,39 +119,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Lake Sydneyboro",
-			"headquartersPostalCode": "73370",
-			"sector": null,
+			"headquarters": "Port Emmie",
+			"headquartersPostalCode": "84888-1515",
+			"sector": "interfaces",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"ExZCMUgQrWYjrYleVp3C"
+				],
 				"Isin": [
-					"XRcyw17dp4eQ"
+					"jjgZK7hfemlt",
+					"SSRj1euNNwRQ"
 				],
-				"PermId": [],
+				"PermId": [
+					"93TCAlpmFS"
+				],
 				"Ticker": [
-					"mJEoLcr"
+					"PK9n4z2"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"6GgdCbmwn"
+				"Duns": [
+					"W5ggnVsvh"
 				],
-				"CompanyRegistrationNumber": [
-					"01Etzap2oGbsVxf"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "EE",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://jam-packed-hippodrome.net/",
+			"countryCode": "IN",
+			"companyAlternativeNames": [
+				"Adams and Sons",
+				"Borer - Barrows",
+				"O'Conner - Feest"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://silky-date.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"16.22",
-						"73.12",
-						"87.10"
+						"J"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -157,50 +165,31 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 1234,
-					"fiscalYearStart": "2024-05-02"
+					"numberOfEmployees": 7629,
+					"fiscalYearStart": "2024-06-10"
 				},
 				"companyFinancials": {
-					"revenueInEur": 5065698,
-					"operatingCostInEur": 25914526,
-					"capitalAssetsInEur": 7993255
+					"revenueInEUR": null,
+					"operatingCostInEUR": 44724745,
+					"capitalAssetsInEUR": 20630515
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Predovic, Wuckert and Flatley",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Wava Run 808",
-								"postalCode": "84180-2424",
-								"city": "Gonzaloworth",
-								"state": "Nebraska",
-								"country": "AI"
-							},
-							"shareOfTotalRevenueInPercent": 28.136
-						},
-						{
-							"nameOfProductionSite": "Steuber, Dickinson and Reichert",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Sawayn Wall 9630",
-								"postalCode": "71818",
-								"city": "East Wava",
-								"state": "Indiana",
-								"country": "MH"
-							},
-							"shareOfTotalRevenueInPercent": 44.6255
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Fantastic Granite Fish",
-							"shareOfTotalRevenueInPercent": 85.1568
+							"name": "Fantastic Steel Fish",
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Generic Fresh Ball",
+							"name": "Tasty Bronze Bacon",
+							"shareOfTotalRevenueInPercent": 57.9953
+						},
+						{
+							"name": "Generic Metal Mouse",
 							"shareOfTotalRevenueInPercent": null
 						}
 					]
@@ -208,22 +197,25 @@
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 1292,
+					"powerConsumptionInMWh": 489,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": null,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWaterInMWh": 102,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 49043115,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"EarthQuake"
+						"Avalanche",
+						"Hail",
+						"Snow",
+						"Flooding"
 					]
 				}
 			}
@@ -233,44 +225,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Harberworth",
-			"headquartersPostalCode": "20162-5734",
-			"sector": "eyeballs",
+			"headquarters": "Port Nikkimouth",
+			"headquartersPostalCode": "91646-0181",
+			"sector": "blockchains",
 			"identifiers": {
 				"Lei": [
-					"dn2bDsjHRW6fZza0kFDN"
+					"OCHdV2IflbTXjgtNMoSs"
 				],
 				"Isin": [
-					"wimU84354TiN"
+					"VTii4eTcNhdg"
 				],
-				"PermId": [
-					"gLX3KwsfNi"
-				],
+				"PermId": [],
 				"Ticker": [
-					"tVOZW0f"
+					"I9liYNv"
 				],
 				"Duns": [
-					"SWDAVo3Nk"
+					"MwalmLKzU"
 				],
 				"VatNumber": [
-					"fAKt7jM3D"
+					"Hz5RbeGu9"
 				],
 				"CompanyRegistrationNumber": [
-					"fe8KS4Uw4lE9OG5"
+					"NTjoY8EIfZebYKJ"
 				]
 			},
-			"countryCode": "JM",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://profuse-politics.org/",
+			"countryCode": "IO",
+			"companyAlternativeNames": [
+				"Farrell Group"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://partial-apology.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"25.93",
-						"73"
+						"27.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -279,97 +270,57 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 1576,
-					"fiscalYearStart": "2024-09-03"
+					"numberOfEmployees": 2427,
+					"fiscalYearStart": "2024-02-12"
 				},
 				"companyFinancials": {
-					"revenueInEur": null,
-					"operatingCostInEur": 73735986,
-					"capitalAssetsInEur": null
+					"revenueInEUR": null,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Stehr, Crist and Bogan",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Janie Lakes 62985",
-								"postalCode": "97948",
-								"city": "East Wellingtonport",
-								"state": null,
-								"country": "US"
-							},
-							"shareOfTotalRevenueInPercent": 26.2027
-						},
-						{
 							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "39259",
-								"city": "East Junebury",
-								"state": "Oregon",
-								"country": "MF"
+								"streetAndHouseNumber": "Crona Ways 73901",
+								"postalCode": "31589",
+								"city": "Victoria",
+								"state": "Alabama",
+								"country": "MN"
 							},
-							"shareOfTotalRevenueInPercent": 28.0892
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jake Falls 1695",
-								"postalCode": "31590",
-								"city": "New Retha",
-								"state": null,
-								"country": "OM"
-							},
-							"shareOfTotalRevenueInPercent": 44.1971
+							"shareOfTotalRevenueInPercent": 78.7395
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Luxurious Metal Salad",
-							"shareOfTotalRevenueInPercent": 12.5263
-						},
-						{
-							"name": "Small Cotton Cheese",
-							"shareOfTotalRevenueInPercent": 0.4899
-						},
-						{
-							"name": "Electronic Bronze Computer",
-							"shareOfTotalRevenueInPercent": 19.4363
-						},
-						{
-							"name": "Bespoke Granite Salad",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": null,
+					"powerConsumptionInMWh": 1681,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWater": 259,
+					"energyConsumptionHeatingAndHotWaterInMWh": 805,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 16466541,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Hail",
-						"Flooding",
-						"Avalanche",
-						"EarthQuake",
 						"Snow",
-						"Wind"
+						"Hail",
+						"EarthQuake",
+						"Wind",
+						"Avalanche"
 					]
 				}
 			}

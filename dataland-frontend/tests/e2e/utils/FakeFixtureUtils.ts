@@ -6,9 +6,10 @@ import {
 } from "@e2e/fixtures/common/DataPointFixtures";
 import { type ReferencedDocuments, generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
-import { type DocumentReference, type YesNo, type YesNoNa } from "@clients/backend";
+import { type CurrencyDataPoint, type YesNo, type YesNoNa } from "@clients/backend";
 import { generateCurrencyValue, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
+import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 
 export const DEFAULT_PROBABILITY = 0.2;
 
@@ -58,19 +59,17 @@ export class Generator {
   }
 
   randomBaseDataPoint<T>(input: T): GenericBaseDataPoint<T> | null {
-    const randomDocument = this.valueOrNull(
-      pickOneElement(
-        Object.values(this.documents)
-          .filter((document) => "name" in document && "reference" in document)
-          .map((document) => document as DocumentReference),
-      ),
-    );
-    return this.valueOrNull({ value: input, dataSource: randomDocument });
+    const document = this.valueOrNull(pickOneElement(Object.values(this.documents)));
+    return this.valueOrNull({ value: input, dataSource: document } as GenericBaseDataPoint<T>);
   }
 
-  randomDataPoint<T>(input: T, unit?: string | null): GenericDataPoint<T> | null {
-    const randomInput = this.valueOrNull(input);
-    return this.valueOrNull(generateDataPoint(randomInput, this.reports, unit));
+  randomExtendedDataPoint<T>(input: T): GenericDataPoint<T> | null {
+    return this.valueOrNull(generateDataPoint(this.valueOrNull(input), this.reports));
+  }
+
+  randomCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint | null {
+    const localCurrency = generateCurrencyCode();
+    return this.valueOrNull(generateDataPoint(this.valueOrNull(input), this.reports, localCurrency));
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | null {

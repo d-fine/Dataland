@@ -109,9 +109,9 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
     cy.get('input[name="numberOfEmployees"]').clear().type("333");
     cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
-    cy.get('select[name="assurance"]').select(2);
+    cy.get('select[name="value"]').select(2);
     cy.get('input[name="provider"]').clear().type("Assurance Provider");
-    cy.get('div[label="General"] select[name="report"]').select(reports);
+    cy.get('div[label="General"] select[name="fileName"]').select(reports);
     cy.get('div[label="General"] input[name="page"]').clear().type("-13");
     cy.get('div[label="General"] em[title="Page"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
@@ -124,8 +124,8 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    */
   function fillAndValidateOtherSections(reports: string[]): void {
     cy.get('div[label="Revenue"] input[name="value"]').clear().type("130000");
-    cy.get('div[label="Revenue"] select[name="unit"]').select(1);
-    cy.get('div[label="Revenue"] select[name="report"]').select(reports[0]);
+    cy.get('div[label="Revenue"] select[data-test="datapoint-currency"]').select(1);
+    cy.get('div[label="Revenue"] select[name="fileName"]').select(reports[0]);
     cy.get('div[label="Revenue"] input[name="page"]').clear().type("5");
     cy.get('div[label="Revenue"] select[name="quality"]').select(2);
     cy.get('div[label="Revenue"] textarea[name="comment"]').clear().type("just a comment");
@@ -202,36 +202,39 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
           totalAmount: {
             quality: "Estimated",
             dataSource: {
-              report: `${TEST_PDF_FILE_NAME}FileCopy`,
+              fileName: `${TEST_PDF_FILE_NAME}FileCopy`,
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 12,
             },
             comment: "test",
             value: 12000000,
-            unit: "EUR",
+            currency: "EUR",
           },
         },
         opex: {
           totalAmount: {
             quality: "Estimated",
             dataSource: {
-              report: "None...",
+              fileName: "None...",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 12,
             },
             comment: "test",
             value: 10000000,
-            unit: "EUR",
+            currency: "EUR",
           },
         },
         revenue: {
           totalAmount: {
             quality: "Estimated",
             dataSource: {
-              report: "None...",
+              fileName: "None...",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 12,
             },
             comment: "test",
             value: 40000000,
-            unit: "EUR",
+            currency: "EUR",
           },
         },
         general: {
@@ -241,23 +244,24 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
           nfrdMandatory: "Yes",
           euTaxonomyActivityLevelReporting: "Yes",
           assurance: {
-            assurance: "None",
+            value: "None",
             provider: "Assurance Provider",
             dataSource: {
-              report: TEST_PDF_FILE_NAME,
+              fileName: TEST_PDF_FILE_NAME,
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 1,
             },
           },
           numberOfEmployees: 333,
           referencedReports: {
             [`${TEST_PDF_FILE_NAME}FileCopy`]: {
-              reference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               isGroupLevel: "No",
               reportDate: "2023-07-12",
               currency: "EUR",
             },
             [TEST_PDF_FILE_NAME]: {
-              reference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               isGroupLevel: "No",
               reportDate: "2023-07-12",
               currency: "EUR",

@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
-import org.dataland.datalandbackend.model.DataPointOneValue
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -8,5 +8,5 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the subcategory "Green securities" belonging to the category "Social" of the sfdr framework.
  */
 data class SfdrSocialGreenSecurities(
-    val securitiesNotCertifiedAsGreen: DataPointOneValue<YesNo>? = null,
+    val securitiesNotCertifiedAsGreen: ExtendedDataPoint<YesNo>? = null,
 )

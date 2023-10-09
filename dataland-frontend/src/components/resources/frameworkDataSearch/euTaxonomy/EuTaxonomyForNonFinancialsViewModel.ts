@@ -1,5 +1,5 @@
 import {
-  type AssuranceDataAssuranceEnum,
+  type AssuranceDataPointValueEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type DataMetaInformation,
   type EuTaxonomyActivity,
@@ -10,12 +10,12 @@ import {
   type RelativeAndAbsoluteFinancialShare,
   type YesNo,
   type YesNoNa,
-  type DataPointWithUnitBigDecimal,
+  type CurrencyDataPoint,
 } from "@clients/backend";
 import { type DataAndMetaInformationViewModel, type FrameworkViewModel } from "@/components/resources/ViewModel";
 
 interface EuTaxonomyDetailsPerCashFlowViewModel {
-  totalAmount?: DataPointWithUnitBigDecimal | null;
+  totalAmount?: CurrencyDataPoint | null;
   nonEligibleShare?: RelativeAndAbsoluteFinancialShare | null;
   eligibleShare?: RelativeAndAbsoluteFinancialShare | null;
   nonAlignedShare?: (RelativeAndAbsoluteFinancialShare & { nonAlignedActivities?: EuTaxonomyActivity[] | null }) | null;
@@ -47,13 +47,13 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
   };
   assurance?: {
     assurance: {
-      levelOfAssurance: AssuranceDataAssuranceEnum;
+      levelOfAssurance: AssuranceDataPointValueEnum;
       assuranceProvider?: string | null;
     };
   };
-  revenue?: EuTaxonomyDetailsPerCashFlowViewModel | null;
-  capex?: EuTaxonomyDetailsPerCashFlowViewModel | null;
-  opex?: EuTaxonomyDetailsPerCashFlowViewModel | null;
+  revenue?: EuTaxonomyDetailsPerCashFlowViewModel;
+  capex?: EuTaxonomyDetailsPerCashFlowViewModel;
+  opex?: EuTaxonomyDetailsPerCashFlowViewModel;
 
   constructor(apiModel: EuTaxonomyDataForNonFinancials) {
     this.general = {
@@ -67,11 +67,11 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
       },
     };
     this.assurance =
-      apiModel.general?.assurance?.assurance == undefined
+      apiModel.general?.assurance?.value == undefined
         ? undefined
         : {
             assurance: {
-              levelOfAssurance: apiModel.general.assurance.assurance,
+              levelOfAssurance: apiModel.general.assurance.value,
               assuranceProvider: apiModel.general.assurance.provider,
             },
           };
@@ -92,7 +92,7 @@ export class EuTaxonomyForNonFinancialsViewModel implements FrameworkViewModel {
           this.assurance == undefined
             ? undefined
             : {
-                assurance: this.assurance?.assurance.levelOfAssurance,
+                value: this.assurance?.assurance.levelOfAssurance,
                 provider: this.assurance?.assurance.assuranceProvider,
               },
         numberOfEmployees: this.general?.general?.numberOfEmployees,

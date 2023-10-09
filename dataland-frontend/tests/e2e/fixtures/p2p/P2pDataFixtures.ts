@@ -104,7 +104,7 @@ class P2pGenerator extends Generator {
         qualificationRequirementsOnParisCompatibility: this.randomYesNo(),
         mobilityAndTravelPolicy: this.randomYesNo(),
         upstreamSupplierEngagementStrategy: this.randomYesNo(),
-        upstreamSupplierProcurementPolicy: this.randomYesNo(),
+        upstreamSupplierProcurementPolicy: this.randomBaseDataPoint(generateYesNo()),
         downstreamCustomerEngagement: this.randomYesNo(),
         policymakerEngagement: this.randomYesNo(),
       },
@@ -116,7 +116,7 @@ class P2pGenerator extends Generator {
         reductionOfAbsoluteEmissions: this.randomInt(),
         reductionOfRelativeEmissionsInPercent: this.randomPercentageValue(),
         relativeEmissionsInPercent: this.randomPercentageValue(),
-        absoluteEmissions: this.randomInt(),
+        absoluteEmissionsInTonnesCO2e: this.randomInt(),
         climateActionPlan: this.randomYesNo(),
         useOfInternalCarbonPrice: this.randomYesNo(),
       },
@@ -154,7 +154,7 @@ class P2pGenerator extends Generator {
   getSectorAutomotive(): P2pAutomotive | null {
     const data: P2pAutomotive = {
       energy: {
-        productionSiteEnergyConsumption: this.randomInt(),
+        productionSiteEnergyConsumptionInMWh: this.randomInt(),
         energyMixInPercent: this.randomPercentageValue(),
       },
       technologyValueCreation: {
@@ -184,7 +184,7 @@ class P2pGenerator extends Generator {
         useOfRenewableFeedstocksInPercent: this.randomPercentageValue(),
         useOfBioplasticsInPercent: this.randomPercentageValue(),
         useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent: this.randomPercentageValue(),
-        carbonCaptureAndUseStorageTechnologies: this.randomPercentageValue(),
+        carbonCaptureAndUseStorageTechnologies: this.randomYesNo(),
       },
       recycling: {
         contributionToCircularEconomy: this.randomYesNo(),
@@ -205,14 +205,14 @@ class P2pGenerator extends Generator {
       buildingEfficiency: {
         buildingSpecificRefurbishmentRoadmapInPercent: this.randomPercentageValue(),
         zeroEmissionBuildingShareInPercent: this.randomPercentageValue(),
-        buildingEnergyEfficiency: this.randomInt(),
+        buildingEnergyEfficiencyInCorrespondingUnit: this.randomInt(),
       },
       energySource: {
         renewableHeatingInPercent: this.randomPercentageValue(),
       },
       technology: {
-        useOfDistrictHeatingNetworks: this.randomYesNo(),
-        heatPumpUsage: this.randomYesNo(),
+        useOfDistrictHeatingNetworksInPercent: this.randomPercentageValue(),
+        heatPumpUsageInPercent: this.randomPercentageValue(),
       },
     };
     return this.sectorPresent(sector) ? data : null;
@@ -225,7 +225,7 @@ class P2pGenerator extends Generator {
   getSectorSteel(): P2pSteel | null {
     const data: P2pSteel = {
       energy: {
-        emissionIntensityOfElectricity: this.randomInt(),
+        emissionIntensityOfElectricityInCorrespondingUnit: this.randomInt(),
         greenHydrogenUsage: this.randomYesNo(),
       },
       technology: {
@@ -243,7 +243,7 @@ class P2pGenerator extends Generator {
   getSectorFreightTransportByRoad(): P2pFreightTransportByRoad | null {
     const data: P2pFreightTransportByRoad = {
       technology: {
-        driveMixPerFleetSegment: this.randomPercentageValue(),
+        driveMixPerFleetSegmentInPercent: this.randomPercentageValue(),
         icePhaseOut: this.valueOrNull(generateFutureDate()),
       },
       energy: {
@@ -260,7 +260,7 @@ class P2pGenerator extends Generator {
   getSectorElectricityGeneration(): P2pElectricityGeneration | null {
     const data: P2pElectricityGeneration = {
       technology: {
-        electricityMixEmissions: this.randomInt(),
+        electricityMixEmissionsInCorrespondingUnit: this.randomInt(),
         shareOfRenewableElectricityInPercent: this.randomPercentageValue(),
         naturalGasPhaseOut: this.valueOrNull(generateFutureDate()),
         coalPhaseOut: this.valueOrNull(generateFutureDate()),
@@ -287,7 +287,7 @@ class P2pGenerator extends Generator {
         ownFeedInPercent: this.randomPercentageValue(),
         externalFeedCertification: this.randomBaseDataPoint(generateYesNo()),
         originOfExternalFeed: faker.company.buzzPhrase(),
-        excessNitrogen: this.randomInt(),
+        excessNitrogenInKilogramsPerHectare: this.randomInt(),
         cropRotation: this.randomInt(),
         climateFriendlyProteinProductionInPercent: this.randomPercentageValue(),
         greenFodderInPercent: this.randomPercentageValue(),

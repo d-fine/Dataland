@@ -5,8 +5,8 @@ import org.dataland.datalandbackend.model.p2p.categories.cement.subcategories.P2
 import org.dataland.datalandbackend.model.p2p.categories.cement.subcategories.P2pCementTechnology
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the cement sector
+ * --- API model ---
+ * Fields of the category "Cement" of the p2p framework.
 */
 data class P2pCement(
     val energy: P2pCementEnergy? = null,
