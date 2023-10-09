@@ -1,14 +1,20 @@
 <template>
-  <div class="form-field" :data-test="name">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <FormKit
-      type="text"
-      :name="name"
-      :validation-label="validationLabel ?? label"
-      :validation="`number|${validation}`"
-      :placeholder="placeholder"
-      :inner-class="innerClass"
-    />
+  <div class="mb-3">
+    <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
+    <div class="next-to-each-other">
+      <FormKit
+          type="text"
+          name="value"
+          v-model="currentValue"
+          :validation-label="validationLabel ?? label"
+          :validation="`number|${validation}`"
+          :placeholder="unit ? `Value in ${unit}` : 'Value'"
+          outer-class="short"
+      />
+      <div>
+        <span>{{ unit }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
