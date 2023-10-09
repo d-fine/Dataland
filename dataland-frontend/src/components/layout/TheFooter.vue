@@ -14,7 +14,6 @@
     </div>
 
     <nav class="footer__right" role="navigation" aria-label="Footer Navigation">
-      <router-link to="/legal" class="footer__right-link" aria-label="Legal">Legal</router-link>
       <router-link to="/imprint" class="footer__right-link" aria-label="Imprint">Imprint</router-link>
       <router-link to="/dataprivacy" class="footer__right-link" aria-label="Data Privacy">Data Privacy</router-link>
     </nav>
@@ -65,7 +64,7 @@ const footerText = computed(() => {
     display: flex;
     flex-direction: column;
     height: 108px;
-    justify-content: space-between;
+    justify-content: center;
     width: 320px;
 
     &-link {
