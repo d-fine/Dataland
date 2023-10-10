@@ -36,9 +36,9 @@ const openEmailClient = (): void => {
   if (getInTouchSection.value && getInTouchSection.value.cards) {
     const cards = getInTouchSection.value.cards;
 
-    const email = cards[2]?.icon ?? "";
-    const subject = cards[2]?.title ?? "";
-    const body = cards[2]?.text ?? "";
+    const email = cards[3]?.icon ?? "";
+    const subject = cards[3]?.title ?? "";
+    const body = cards[3]?.text ?? "";
 
     if (email && subject && body) {
       const mailtoString = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

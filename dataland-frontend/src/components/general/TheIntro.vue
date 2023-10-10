@@ -59,6 +59,11 @@ const introSection = computed(() => {
       line-height: 56px; /* 116.667% */
       margin-top: 80px;
     }
+    span {
+      transition:
+        font-size 0.4s ease,
+        line-height 0.4s ease;
+    }
   }
 }
 @media only screen and (max-width: $large) {
@@ -71,6 +76,12 @@ const introSection = computed(() => {
       line-height: 78px;
       max-width: 750px;
       margin: 0 auto;
+      span:last-of-type {
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 48px; /* 120% */
+        letter-spacing: 0.25px;
+      }
     }
   }
 }
