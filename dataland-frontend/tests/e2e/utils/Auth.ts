@@ -28,7 +28,7 @@ let globalJwt = "";
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
-  cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
+  cy.intercept("https://www.youtube.com/**", { forceNetworkError: false }).as("youtube");
   cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
   cy.visitAndCheckAppMount("/")
     // .wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number }) TODO readd
