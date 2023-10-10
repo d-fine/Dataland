@@ -12,6 +12,7 @@ export enum MLDTDisplayComponents {
 export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponents.StringDisplayComponent]: string | undefined | null;
   [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: BaseDocumentReference };
+  [MLDTDisplayComponents.DataPointDisplayComponent]: { label: string; reference: BaseDocumentReference; page?: number };
   [MLDTDisplayComponents.ModalLinkDisplayComponent]: {
     label: string;
     // Ignored as "any" type comes from DynamicDialog
@@ -21,15 +22,6 @@ export type MLDTDisplayComponentTypes = {
   };
   [MLDTDisplayComponents.HighlightHiddenCellDisplayComponent]: {
     innerContents: AvailableDisplayValues;
-  };
-  [MLDTDisplayComponents.DocumentLinkDisplayComponent]: { label: string; reference: DocumentReference };
-  [MLDTDisplayComponents.DataPointDisplayComponent]: { label: string; reference: DocumentReference; page?: number };
-  [MLDTDisplayComponents.ModalLinkDisplayComponent]: {
-    label: string;
-    // Ignored as "any" type comes from DynamicDialog
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    modalComponent: any;
-    modalOptions?: DynamicDialogOptions;
   };
 };
 

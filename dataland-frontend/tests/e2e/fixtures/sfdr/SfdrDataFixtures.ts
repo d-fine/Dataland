@@ -103,7 +103,9 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         fairCompetitionPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         violationOfTaxRulesAndRegulation: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: dataGenerator.randomExtendedDataPoint(
+          generateYesNo(),
+        ),
         averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(generateFloat()),
         averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(generateFloat()),
         femaleBoardMembers: dataGenerator.randomExtendedDataPoint(generateFloat()),

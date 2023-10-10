@@ -3,7 +3,6 @@ import {
   EmptyDisplayValue,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 import {
   getFieldValueFromDataModel,
@@ -42,11 +41,13 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
     const formattedValue = `${datapointValue} ${datapointUnitSuffix}`.trim();
     if (hasDataPointValidReference(datapoint)) {
       const documentReference = getGloballyReferencableDocuments(dataset).find(
-        (document) => document.name == datapoint.dataSource?.report,
+        (document) => document.fileName == datapoint.dataSource?.fileReference,
       );
       if (documentReference == undefined) {
         throw Error(
-          `There is no document with name ${datapoint.dataSource?.report ?? "NOT PROVIDED"} referenced in this dataset`,
+          `There is no document with name ${
+            datapoint.dataSource?.fileReference ?? "NOT PROVIDED"
+          } referenced in this dataset`,
         );
       }
       return {

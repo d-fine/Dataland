@@ -1,4 +1,4 @@
-import { type DocumentReference, type SfdrData } from "@clients/backend";
+import { type BaseDocumentReference, type SfdrData } from "@clients/backend";
 
 /**
  * Retrieves a deeply nested value from an object by an identifier.
@@ -27,11 +27,11 @@ export function getFieldValueFromDataModel(identifier: string, dataModel: any): 
  * @returns true if the reference is properly set
  */
 export function hasDataPointValidReference(dataPoint: {
-  dataSource?: { reference?: string | null; report?: string | null } | null;
+  dataSource?: { fileReference?: string | null; fileName?: string | null } | null;
 }): boolean {
   return (
-    (dataPoint.dataSource?.reference != null && dataPoint.dataSource.reference.trim().length > 0) ||
-    (dataPoint.dataSource?.report != null && dataPoint.dataSource.report.trim().length > 0)
+    (dataPoint.dataSource?.fileReference != null && dataPoint.dataSource.fileReference.trim().length > 0) ||
+    (dataPoint.dataSource?.fileName != null && dataPoint.dataSource.fileName.trim().length > 0)
   );
 }
 
@@ -41,8 +41,8 @@ export function hasDataPointValidReference(dataPoint: {
  * @returns the document references
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getGloballyReferencableDocuments(dataset: any): DocumentReference[] {
+export function getGloballyReferencableDocuments(dataset: any): BaseDocumentReference[] {
   return Object.entries((dataset as SfdrData)?.general?.general?.referencedReports ?? {}).map(
-    (document): DocumentReference => ({ name: document[0], reference: document[1].reference }),
+    (document): BaseDocumentReference => ({ fileName: document[0], fileReference: document[1].fileReference }),
   );
 }
