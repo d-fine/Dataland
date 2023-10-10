@@ -4,7 +4,7 @@
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
           <iframe
-            :src="'https://www.youtube-nocookie.com/embed/' + card.icon + '?rel=0'"
+            :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
             title="Youtube video player"
             allowfullscreen
             class="quotes__slide-video"
