@@ -13,7 +13,7 @@ let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
 before(function () {
   cy.fixture("CompanyInformationWithP2pPreparedFixtures").then(function (jsonContent) {
     const preparedFixturesP2p = jsonContent as Array<FixtureData<PathwaysToParisData>>;
-    p2pFixtureForTest = getPreparedFixture("one-p2p-data-set-with-three-sectors", preparedFixturesP2p);
+    p2pFixtureForTest = getPreparedFixture("one-p2p-data-set-with-four-sectors", preparedFixturesP2p);
   });
 });
 

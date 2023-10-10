@@ -49,7 +49,7 @@ describe("Component test for P2pPanel", () => {
   });
 
   it("Check P2p view page for company with one P2p data set", () => {
-    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-three-sectors", preparedFixtures);
+    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-four-sectors", preparedFixtures);
     const p2pData = preparedFixture.t;
 
     cy.intercept("/api/data/p2p/mock-data-id", {
@@ -97,6 +97,9 @@ describe("Component test for P2pPanel", () => {
     cy.get(`span[data-test="Livestock farming"]`).click();
     toggleRowGroup("animalFeed");
     cy.get("span[data-test=Report-Download-Policy]").find("i[data-test=download-icon]").should("be.visible");
+
+    cy.get(`span[data-test="Freight transport by road"]`).click();
+    toggleRowGroup("technology");
 
     cy.get(`span[data-test=Cement]`).click();
     toggleRowGroup("material");
