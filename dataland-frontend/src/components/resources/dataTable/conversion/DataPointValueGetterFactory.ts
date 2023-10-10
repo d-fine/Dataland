@@ -1,5 +1,6 @@
 import {
   type AvailableDisplayValues,
+  EmptyDisplayValue,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
@@ -17,10 +18,7 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
     const datapoint = getFieldValueFromDataModel(path, dataset);
 
     if (!datapoint?.value) {
-      return {
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-        displayValue: "",
-      };
+      return EmptyDisplayValue;
     }
 
     const datapointValue = formatNumberToReadableFormat(datapoint.value);
