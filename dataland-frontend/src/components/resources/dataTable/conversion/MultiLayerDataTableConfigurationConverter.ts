@@ -9,6 +9,8 @@ import { getDataModelFieldDisplayConfiguration } from "@/components/resources/da
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
+const autoExpandingCategoryNames = new Set(["general", "masterData"]);
+
 /**
  * Converts a Data-Model-Ts Category to a MLDTSectionConfig
  * @param category the category to convert
@@ -20,12 +22,13 @@ function convertCategory(category: Category): MLDTSectionConfig<any> {
   return {
     type: "section",
     label: category.label,
-    expandOnPageLoad: category.name === "general",
+    expandOnPageLoad: autoExpandingCategoryNames.has(category.name),
     children: mldtCategoryChildren,
     shouldDisplay: category.showIf,
     labelBadgeColor: category.color as BadgeColor,
   };
 }
+
 /**
  * Converts a Data-Model-Ts Subcategory to a MLDTSectionConfig
  * @param category the parent category
@@ -48,7 +51,7 @@ function convertSubCategory(category: Category, subcategory: Subcategory): MLDTS
   return {
     type: "section",
     label: subcategory.label,
-    expandOnPageLoad: subcategory.name === "general",
+    expandOnPageLoad: autoExpandingCategoryNames.has(subcategory.name),
     children: mldtSubcategoryChildren,
     shouldDisplay: () => true,
   };

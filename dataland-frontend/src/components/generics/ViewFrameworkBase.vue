@@ -82,7 +82,7 @@
         </div>
       </MarginWrapper>
       <MarginWrapper style="margin-right: 0">
-        <slot name="content"></slot>
+        <slot name="content" :inReviewMode="isReviewableByCurrentUser"></slot>
       </MarginWrapper>
     </div>
     <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
