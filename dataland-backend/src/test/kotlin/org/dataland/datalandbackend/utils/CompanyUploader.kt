@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.springframework.http.MediaType

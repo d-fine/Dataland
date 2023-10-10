@@ -1,4 +1,4 @@
-import { checkButton, checkImage, checkLinkByContent, checkLinkByTarget } from "@ct/testUtils/ExistenceChecks";
+import { checkButton, checkImage, checkAnchorByContent, checkAnchorByTarget } from "@ct/testUtils/ExistenceChecks";
 import NewLandingPage from "@/components/pages/NewLandingPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
@@ -12,8 +12,6 @@ describe("Component test for the landing page", () => {
       validateTopBar();
       validateIntroSection();
       validateBrandsSection();
-      // TODO test I AM INTERESTED button
-      // TODO test get in contact button
 
       validateQuotesSlides();
       validateHowItWorksSlides();
@@ -26,16 +24,9 @@ describe("Component test for the landing page", () => {
  * Validates the elements of the top bar
  */
 function validateTopBar(): void {
-  /**
-   * Gets the top bar element
-   * @returns the top bar element
-   */
-  function getTopBar(): Cypress.Chainable {
-    return cy.get("header");
-  }
-  checkImage("Dataland banner logo", "gfx_logo_dataland_orange_S.svg", getTopBar());
-  checkButton("signup_dataland_button", "Sign Up", getTopBar());
-  checkLinkByContent("Login", getTopBar());
+  checkImage("Dataland banner logo", "gfx_logo_dataland_orange_S.svg");
+  checkButton("signup_dataland_button", "Sign Up");
+  checkAnchorByContent("Login");
 }
 
 /**
@@ -51,12 +42,12 @@ function validateIntroSection(): void {
  * Validates the images of the brands trusting in dataland
  */
 function validateBrandsSection(): void {
-  checkImage("Brand 1", "img_chom_capital.png");
-  checkImage("Brand 2", "img_envoria.png");
-  checkImage("Brand 3", "img_fuerstl_bank.png");
-  checkImage("Brand 4", "img_ampega.png");
-  checkImage("Brand 5", "img_metzler.png");
-  checkImage("Brand 6", "img_deka.png");
+  checkImage("Brand 1", "img_deka.png");
+  checkImage("Brand 2", "img_ampega.png");
+  checkImage("Brand 3", "img_chom_capital.png");
+  checkImage("Brand 4", "img_metzler.png");
+  checkImage("Brand 5", "img_fuerstl_bank.png");
+  checkImage("Brand 6", "img_envoria.png");
 }
 
 /**
@@ -71,56 +62,53 @@ function checkNewFooter(): void {
     return cy.get("footer");
   }
   getFooter().should("exist");
-  checkImage("Copyright ©   Dataland", "gfx_logo_dataland_orange_S.svg", getFooter());
+  checkImage("Copyright ©   Dataland", "gfx_logo_dataland_orange_S.svg");
   cy.get(".footer__copyright").should("contain.text", "Copyright © 2023 Dataland");
 
-  checkLinkByTarget("/legal", "Legal", getFooter());
-  checkLinkByTarget("/imprint", "Imprint", getFooter());
-  checkLinkByTarget("/dataprivacy", "Data Privacy", getFooter());
+  checkAnchorByTarget("/imprint", "Imprint");
+  checkAnchorByTarget("/dataprivacy", "Data Privacy");
 }
 
 /**
  * Validates that the slide show on "Quotes" works as expected
  */
 function validateQuotesSlides(): void {
-  /**
-   * Gets the "Quotes" element
-   * @returns the "Quotes" element
-   */
-  function getSlidesWrapper(): Cypress.Chainable {
-    return cy.get("section.quotes");
-  }
+  const slidesSelector = "section.quotes .quotes__slides";
+  const leftButtonSelector = "section.quotes button[aria-label='Previous slide']";
+  const rightButtonSelector = "section.quotes button[aria-label='Next slide']";
 
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "none");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
-  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, 0, 0)");
-  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, 440, 0)");
-  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
-  getSlidesWrapper().find(".quotes__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, 440, 0)");
+  assertSlidesPosition(slidesSelector);
+  cy.get(rightButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 1, 1);
+  cy.get(rightButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 2, 1);
+  cy.get(leftButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 1, 1);
+  cy.get(leftButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 0, 1);
+  cy.get(leftButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 0, 1);
 }
 
 /**
  * Validates that the slide show on "How it works" works as expected
  */
 function validateHowItWorksSlides(): void {
-  /**
-   * Gets the "How it works" element
-   * @returns the "How it works" element
-   */
-  function getSlidesWrapper(): Cypress.Chainable {
-    return cy.get("div.howitworks__wrapper");
-  }
+  const slidesSelector = "div.howitworks__wrapper .howitworks__slides";
+  const leftButtonSelector = "div.howitworks__wrapper button[aria-label='Previous slide']";
+  const rightButtonSelector = "div.howitworks__wrapper button[aria-label='Next slide']";
 
-  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "none");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click();
-  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
-  getSlidesWrapper().find("button[aria-label='Next slide']").click();
-  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -880, 0)");
-  getSlidesWrapper().find("button[aria-label='Previous slide']").click();
-  getSlidesWrapper().find(".howitworks__slides").should("have.css", "transform", "matrix(1, 0, 0, 1, -440, 0)");
+  assertSlidesPosition(slidesSelector);
+  cy.get(rightButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 1);
+  cy.get(rightButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 2);
+  cy.get(leftButtonSelector).click();
+  assertSlidesPosition(slidesSelector, 1);
+}
+
+function assertSlidesPosition(slidesSelector: string, position?: number, centerElement = 0): void {
+  const expectedTransformValue =
+    position == undefined ? "none" : `matrix(1, 0, 0, 1, ${-440 * (position - centerElement)}, 0)`;
+  cy.get(slidesSelector).should("have.css", "transform", expectedTransformValue);
 }

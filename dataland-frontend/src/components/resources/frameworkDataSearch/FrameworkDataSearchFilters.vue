@@ -2,7 +2,7 @@
   <div class="flex">
     <div class="flex flex-column">
       <span class="d-section-heading mb-2" v-if="showHeading">Filter by company</span>
-      <div>
+      <div class="next-to-each-other">
         <FrameworkDataSearchDropdownFilter
           v-model="selectedSectorsInt"
           ref="sectorFilter"

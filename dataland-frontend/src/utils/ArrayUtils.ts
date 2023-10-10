@@ -10,3 +10,12 @@ export function arraySetEquals<T>(a: Array<T>, b: Array<T>): boolean {
   if (aSet.size !== bSet.size) return false;
   return [...aSet].every((element) => bSet.has(element));
 }
+
+/**
+ * Generates an array of numbers from 0 to [numElements]-1
+ * @param numElements the number of elements the array should hold
+ * @returns the generated array
+ */
+export function range(numElements: number): number[] {
+  return Array.from(Array(numElements).keys());
+}

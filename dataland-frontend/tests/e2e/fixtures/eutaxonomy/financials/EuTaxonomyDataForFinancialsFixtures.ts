@@ -14,13 +14,13 @@ import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single eutaxonomy-financials fixture
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random eutaxonomy-financials fixture
  */
 export function generateEuTaxonomyDataForFinancials(
-  undefinedProbability = DEFAULT_PROBABILITY,
+  nullProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForFinancials {
-  const dataGenerator = new EuFinancialsGenerator(undefinedProbability);
+  const dataGenerator = new EuFinancialsGenerator(nullProbability);
   return dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes();
 }
 
@@ -37,7 +37,7 @@ export class EuFinancialsGenerator extends Generator {
   ): EuTaxonomyDataForFinancials {
     const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields(
       this.reports,
-      this.undefinedProbability,
+      this.nullProbability,
     );
     const eligibilityKpis = Object.fromEntries(
       financialServicesTypes.map((it) => [it, this.generateEligibilityKpis()]),
@@ -45,11 +45,11 @@ export class EuFinancialsGenerator extends Generator {
     returnBase.financialServicesTypes = financialServicesTypes;
     returnBase.eligibilityKpis = eligibilityKpis;
     returnBase.creditInstitutionKpis =
-      financialServicesTypes.indexOf("CreditInstitution") >= 0 ? this.generateCreditInstitutionKpis() : undefined;
+      financialServicesTypes.indexOf("CreditInstitution") >= 0 ? this.generateCreditInstitutionKpis() : null;
     returnBase.insuranceKpis =
-      financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0 ? this.generateInsuranceKpis() : undefined;
+      financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0 ? this.generateInsuranceKpis() : null;
     returnBase.investmentFirmKpis =
-      financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : undefined;
+      financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : null;
     return returnBase;
   }
   /**
@@ -58,7 +58,7 @@ export class EuFinancialsGenerator extends Generator {
    */
   generateInsuranceKpis(): InsuranceKpis {
     return {
-      taxonomyEligibleNonLifeInsuranceActivitiesInPercent: this.randomDataPoint(generatePercentageValue()),
+      taxonomyEligibleNonLifeInsuranceActivitiesInPercent: this.randomExtendedDataPoint(generatePercentageValue()),
     };
   }
 
@@ -67,9 +67,9 @@ export class EuFinancialsGenerator extends Generator {
    * @returns random credit institution KPIs
    */
   generateCreditInstitutionKpis(): CreditInstitutionKpis {
-    let tradingPortfolioAndInterbankLoans = undefined;
-    let interbankLoans = undefined;
-    let tradingPortfolio = undefined;
+    let tradingPortfolioAndInterbankLoans = null;
+    let interbankLoans = null;
+    let tradingPortfolio = null;
 
     const singleOrDualField = faker.datatype.boolean();
     if (singleOrDualField) {
@@ -81,10 +81,10 @@ export class EuFinancialsGenerator extends Generator {
     const greenAssetRatioCreditInstitution = this.randomPercentageValue();
 
     return {
-      interbankLoansInPercent: this.randomDataPoint(interbankLoans),
-      tradingPortfolioInPercent: this.randomDataPoint(tradingPortfolio),
-      tradingPortfolioAndInterbankLoansInPercent: this.randomDataPoint(tradingPortfolioAndInterbankLoans),
-      greenAssetRatioInPercent: this.randomDataPoint(greenAssetRatioCreditInstitution),
+      interbankLoansInPercent: this.randomExtendedDataPoint(interbankLoans),
+      tradingPortfolioInPercent: this.randomExtendedDataPoint(tradingPortfolio),
+      tradingPortfolioAndInterbankLoansInPercent: this.randomExtendedDataPoint(tradingPortfolioAndInterbankLoans),
+      greenAssetRatioInPercent: this.randomExtendedDataPoint(greenAssetRatioCreditInstitution),
     };
   }
 
@@ -94,7 +94,7 @@ export class EuFinancialsGenerator extends Generator {
    */
   generateInvestmentFirmKpis(): InvestmentFirmKpis {
     return {
-      greenAssetRatioInPercent: this.randomDataPoint(generatePercentageValue()),
+      greenAssetRatioInPercent: this.randomExtendedDataPoint(generatePercentageValue()),
     };
   }
   /**
@@ -103,11 +103,11 @@ export class EuFinancialsGenerator extends Generator {
    */
   generateEligibilityKpis(): EligibilityKpis {
     return {
-      banksAndIssuersInPercent: this.randomDataPoint(generatePercentageValue()),
-      derivativesInPercent: this.randomDataPoint(generatePercentageValue()),
-      investmentNonNfrdInPercent: this.randomDataPoint(generatePercentageValue()),
-      taxonomyEligibleActivityInPercent: this.randomDataPoint(generatePercentageValue()),
-      taxonomyNonEligibleActivityInPercent: this.randomDataPoint(generatePercentageValue()),
+      banksAndIssuersInPercent: this.randomExtendedDataPoint(generatePercentageValue()),
+      derivativesInPercent: this.randomExtendedDataPoint(generatePercentageValue()),
+      investmentNonNfrdInPercent: this.randomExtendedDataPoint(generatePercentageValue()),
+      taxonomyEligibleActivityInPercent: this.randomExtendedDataPoint(generatePercentageValue()),
+      taxonomyNonEligibleActivityInPercent: this.randomExtendedDataPoint(generatePercentageValue()),
     };
   }
 }

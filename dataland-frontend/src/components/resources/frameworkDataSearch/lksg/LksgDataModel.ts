@@ -1695,7 +1695,7 @@ export const lksgDataModel = [
             name: "employeeRepresentationInPercent",
             label: "Employee Representation",
             description: "What is your percentage of employees who are represented by trade unions?",
-            unit: "Percent",
+            unit: "%",
             component: "PercentageFormField",
             evidenceDesired: false,
             required: false,

@@ -7,8 +7,8 @@ import org.dataland.datalandbackend.model.p2p.categories
 import org.dataland.datalandbackend.model.p2p.categories.livestockFarming.subcategories.P2pLivestockFarmingEnergy
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the livestock farming sector
+ * --- API model ---
+ * Fields of the category "Livestock farming" of the p2p framework.
 */
 data class P2pLivestockFarming(
     val emissionsFromManureAndFertiliserAndLivestock:

@@ -130,4 +130,129 @@ class MigrationHelper {
         migrateValueFromTo(newDataPointObject, "value", "value", transformation)
         dataPointHolder.put(newDataPointName, newDataPointObject)
     }
+
+    /**
+     * This function migrates the referenced reports by amending variable names
+     */
+    fun migrateReferencedReports(
+        parentCategoryOfReferencedReports: JSONObject,
+        fieldNamesToMigrate: Map<String, String>,
+    ) {
+        val referencedReportsObject = parentCategoryOfReferencedReports
+            .getOrJavaNull("referencedReports") ?: return
+        referencedReportsObject as JSONObject
+        iterateThroughReferencedReports(referencedReportsObject, fieldNamesToMigrate)
+    }
+
+    /**
+     * This function migrates the "Assurance" Object including a "DataSource" Object
+     */
+    fun migrateAssurance(
+        dataObject: JSONObject,
+        migrationFieldNamesForAssurance: Map<String, String>,
+        migrationFieldNamesForReports: Map<String, String>,
+        migrationHelper: MigrationHelper,
+        framework: String,
+    ) {
+        var parentObject = dataObject
+        if (framework == "euTaxonomyNonFinancials") {
+            val generalCategoryObject = dataObject.getOrJavaNull("general") ?: return
+            generalCategoryObject as JSONObject
+            parentObject = generalCategoryObject
+        } else {
+            check(framework == "euTaxonomyFinancials") {
+                "Migration of assurance may not be implemented for " +
+                    "this framework"
+            }
+        }
+        val assuranceParentObject = parentObject.getOrJavaNull("assurance") ?: return
+        assuranceParentObject as JSONObject
+        migrationFieldNamesForAssurance.forEach {
+            if (assuranceParentObject.has(it.key)) {
+                assuranceParentObject.put(it.value, assuranceParentObject[it.key])
+                assuranceParentObject.remove(it.key)
+            }
+        }
+        migrationHelper.migrateOneSingleObjectOfDataSource(
+            assuranceParentObject, dataObject,
+            migrationFieldNamesForReports, framework,
+        )
+    }
+
+    /**
+     * This function migrates the "DataSource" Object by amending variable names
+     */
+    fun migrateOneSingleObjectOfDataSource(
+        parentObjectOfDataSource: JSONObject,
+        dataObject: JSONObject,
+        migrationFieldNames: Map<String, String>,
+        framework: String,
+    ) {
+        val dataSourceObject = parentObjectOfDataSource.getOrJavaNull("dataSource") ?: return
+        dataSourceObject as JSONObject
+        if (dataSourceObject.has("report")) {
+            val fileNameToSearchInReferencedReports: String = dataSourceObject["report"] as String
+            dataSourceObject.put(
+                "fileReference",
+                getFileReferenceFromReferencedReports(
+                    fileNameToSearchInReferencedReports, dataObject, framework,
+                ),
+            )
+        }
+        migrationFieldNames.forEach {
+            if (dataSourceObject.has(it.key)) {
+                dataSourceObject.put(it.value, dataSourceObject[it.key])
+                dataSourceObject.remove(it.key)
+            }
+        }
+    }
+
+    /**
+     * This function reads the fileReference hash from referenced reports in order to store it
+     * in the "DataSource" Object.
+     */
+    private fun getFileReferenceFromReferencedReports(fileName: String, dataObject: JSONObject, framework: String):
+        String {
+        if (fileName != "") {
+            var parentObject = dataObject
+            if (framework == "euTaxonomyNonFinancials") {
+                val generalCategoryObject = dataObject.getOrJsonNull("general")
+                generalCategoryObject as JSONObject
+                parentObject = generalCategoryObject
+            } else {
+                check(framework == "euTaxonomyFinancials") {
+                    "Retrieval of reference from reports may not be implemented" +
+                        " for this framework"
+                }
+            }
+            val referencedReportsObject = parentObject.getOrJsonNull("referencedReports")
+            referencedReportsObject as JSONObject
+            val reportObject = referencedReportsObject.getOrJsonNull(fileName)
+            if (reportObject != JSONObject.NULL) {
+                reportObject as JSONObject
+                return reportObject.getOrJsonNull("fileReference") as String
+            }
+        }
+        return ""
+    }
+
+    /**
+     * Iterates through all referenced reports to migrate reports
+     */
+    private fun iterateThroughReferencedReports(
+        referencedReportsObject: JSONObject,
+        fieldNamesToMigrate: Map<String,
+            String,>,
+    ) {
+        for (key in referencedReportsObject.keys()) {
+            fieldNamesToMigrate.forEach {
+                val oneReportObject = referencedReportsObject.getJSONObject(key)
+                if (oneReportObject.has(it.key)) {
+                    oneReportObject.put(it.value, oneReportObject[it.key])
+                    oneReportObject.put("fileName", key)
+                    oneReportObject.remove(it.key)
+                }
+            }
+        }
+    }
 }

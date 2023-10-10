@@ -2,12 +2,12 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
-import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
-import org.dataland.datalandbackend.model.CompanyIdAndName
-import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.CompanyInformationPatch
+import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController
 class CompanyDataController(
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val companyQueryManager: CompanyQueryManager,
-    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
+    @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
 ) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -82,7 +82,7 @@ class CompanyDataController(
 
     override fun existsIdentifier(identifierType: IdentifierType, identifier: String) {
         try {
-            companyIdentifierRepository.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
+            companyIdentifierRepositoryInterface.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
         } catch (e: JpaObjectRetrievalFailureException) {
             throw ResourceNotFoundApiException(
                 "Company identifier does not exist",

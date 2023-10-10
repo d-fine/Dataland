@@ -31,19 +31,19 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       pickDate();
 
       cy.get('button[data-test="submitButton"]').should("have.class", "button-disabled").click();
-      cy.get('div[data-test="productionSiteEnergyConsumption"]').should("not.exist");
+      cy.get('div[data-test="productionSiteEnergyConsumptionInMWh"]').should("not.exist");
       cy.contains("span", "AUTOMOTIVE").should("not.exist");
 
       clickOnSectorInSectorsDropdown("Automotive");
 
       cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled");
       cy.contains("span", "AUTOMOTIVE").should("exist");
-      cy.get('div[data-test="productionSiteEnergyConsumption"]').should("exist");
+      cy.get('div[data-test="productionSiteEnergyConsumptionInMWh"]').should("exist");
 
       clickOnSectorInSectorsDropdown("Automotive");
 
       cy.get('button[data-test="submitButton"]').should("have.class", "button-disabled").click();
-      cy.get('div[data-test="productionSiteEnergyConsumption"]').should("not.exist");
+      cy.get('div[data-test="productionSiteEnergyConsumptionInMWh"]').should("not.exist");
       cy.contains("span", "AUTOMOTIVE").should("not.exist");
 
       clickOnSectorInSectorsDropdown("Steel");
@@ -51,7 +51,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled");
       cy.contains("span", "STEEL").should("exist");
 
-      cy.get('div[data-test="emissionIntensityOfElectricity"] input').type("222");
+      cy.get('div[data-test="emissionIntensityOfElectricityInCorrespondingUnit"] input').type("222");
 
       cy.intercept("POST", "**/api/data/p2p", (request) => {
         request.reply(200, {});
@@ -60,9 +60,9 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       cy.wait("@postP2pData").then((interception) => {
         const postedObject = interception.request.body as CompanyAssociatedDataPathwaysToParisData;
         const postedP2pDataset = postedObject.data;
-        const emissionIntensityOfElectricity =
-          assertDefined(postedP2pDataset).steel?.energy?.emissionIntensityOfElectricity;
-        expect(emissionIntensityOfElectricity).to.equal("222");
+        const emissionIntensityOfElectricityInCorrespondingUnit =
+          assertDefined(postedP2pDataset).steel?.energy?.emissionIntensityOfElectricityInCorrespondingUnit;
+        expect(emissionIntensityOfElectricityInCorrespondingUnit).to.equal("222");
         const automotive = postedP2pDataset.automotive;
         expect(automotive).to.be.undefined;
       });
@@ -82,10 +82,10 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       },
     }).then(() => {
       cy.contains("span", "AUTOMOTIVE").should("exist");
-      cy.get('div[data-test="productionSiteEnergyConsumption"]').should("exist");
+      cy.get('div[data-test="productionSiteEnergyConsumptionInMWh"]').should("exist");
 
       cy.contains("span", "STEEL").should("exist");
-      cy.get('div[data-test="emissionIntensityOfElectricity"]').should("exist");
+      cy.get('div[data-test="emissionIntensityOfElectricityInCorrespondingUnit"]').should("exist");
 
       cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled");
     });

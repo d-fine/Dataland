@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 
 /**
  * --- API model ---

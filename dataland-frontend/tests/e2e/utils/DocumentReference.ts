@@ -22,8 +22,8 @@ export function generateReferencedDocuments(): ReferencedDocuments {
   const referencedDocuments: ReferencedDocuments = {};
   for (const documentName of possibleDocuments) {
     referencedDocuments[documentName] = {
-      name: documentName,
-      reference: getReferencedDocumentId(),
+      fileName: documentName,
+      fileReference: getReferencedDocumentId(),
     };
   }
   return referencedDocuments;

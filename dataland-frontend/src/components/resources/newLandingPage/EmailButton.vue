@@ -16,16 +16,16 @@ import type { Section } from "@/types/ContentTypes";
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const getInTouchSection = computed(() => {
-  return sections?.find((section) => section.title === "Get in touch") || null;
+  return sections?.find((section) => section.title === "Get in touch") ?? null;
 });
 
 const openEmailClient = (): void => {
-  if (getInTouchSection.value && getInTouchSection.value.cards) {
+  if (getInTouchSection.value?.cards) {
     const cards = getInTouchSection.value.cards;
 
-    const email = cards[3]?.icon || "";
-    const subject = cards[3]?.title || "";
-    const body = cards[3]?.text || "";
+    const email = cards[3]?.icon ?? "";
+    const subject = cards[3]?.title ?? "";
+    const body = cards[3]?.text ?? "";
 
     if (email && subject && body) {
       const mailtoString = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

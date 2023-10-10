@@ -1,15 +1,21 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="`${label} (%)`" :description="description" :is-required="required" />
-    <FormKit
-      type="text"
-      :name="name"
-      :validation-label="validationLabel ?? label"
-      :validation="`number|between:0,100|${validation}`"
-      placeholder="Value in %"
-      v-model="percentageFieldValue"
-      :innerClass="innerClass"
-    />
+    <div class="next-to-each-other">
+      <FormKit
+        type="text"
+        :name="name"
+        :validation-label="validationLabel ?? label"
+        :validation="`number|between:0,100|${validation}`"
+        placeholder="Value in %"
+        v-model="percentageFieldValue"
+        :outerClass="innerClass"
+      >
+      </FormKit>
+      <div class="form-field-label pb-3">
+        <span>%</span>
+      </div>
+    </div>
   </div>
 </template>
 

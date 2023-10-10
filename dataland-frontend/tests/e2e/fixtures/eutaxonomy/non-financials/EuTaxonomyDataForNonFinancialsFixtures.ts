@@ -11,20 +11,19 @@ import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTax
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { generateCurrencyValue } from "@e2e/fixtures/common/NumberFixtures";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns the generated fixture
  */
 export function generateEuTaxonomyDataForNonFinancials(
-  undefinedProbability = DEFAULT_PROBABILITY,
+  nullProbability = DEFAULT_PROBABILITY,
 ): EuTaxonomyDataForNonFinancials {
-  const dataGenerator = new EuNonFinancialsGenerator(undefinedProbability);
+  const dataGenerator = new EuNonFinancialsGenerator(nullProbability);
   return {
-    general: generateEuTaxonomyWithBaseFields(dataGenerator.reports, undefinedProbability),
+    general: generateEuTaxonomyWithBaseFields(dataGenerator.reports, nullProbability),
     opex: dataGenerator.generateEuTaxonomyPerCashflowType(),
     capex: dataGenerator.generateEuTaxonomyPerCashflowType(),
     revenue: dataGenerator.generateEuTaxonomyPerCashflowType(),
@@ -39,19 +38,27 @@ export class EuNonFinancialsGenerator extends Generator {
   generateAmountWithCurrency(): AmountWithCurrency {
     return {
       amount: this.randomCurrencyValue(),
-      currency: this.valueOrUndefined(generateCurrencyCode()),
+      currency: this.valueOrNull(generateCurrencyCode()),
     };
+  }
+
+  /**
+   * Generates a random financial share
+   * @returns a financial share or "null"
+   */
+  randomFinancialShare(): RelativeAndAbsoluteFinancialShare | null {
+    return this.valueOrNull(this.generateFinancialShare());
   }
 
   /**
    * Generates a random financial share
    * @returns a financial share
    */
-  randomFinancialShare(): RelativeAndAbsoluteFinancialShare | undefined {
-    return this.valueOrUndefined({
+  generateFinancialShare(): RelativeAndAbsoluteFinancialShare {
+    return {
       relativeShareInPercent: this.randomPercentageValue(),
-      absoluteShare: this.valueOrUndefined(this.generateAmountWithCurrency()),
-    });
+      absoluteShare: this.valueOrNull(this.generateAmountWithCurrency()),
+    };
   }
 
   /**
@@ -62,7 +69,7 @@ export class EuNonFinancialsGenerator extends Generator {
     const randomActivityName: Activity = pickOneElement(Object.values(Activity));
     return {
       activityName: randomActivityName,
-      naceCodes: this.valueOrUndefined(getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName)),
+      naceCodes: this.valueOrNull(getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName)),
       share: this.randomFinancialShare(),
     };
   }
@@ -98,7 +105,7 @@ export class EuNonFinancialsGenerator extends Generator {
    */
   generateEuTaxonomyPerCashflowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: this.randomDataPoint(generateCurrencyValue(), generateCurrencyCode()),
+      totalAmount: this.randomCurrencyDataPoint(),
       nonEligibleShare: this.randomFinancialShare(),
       eligibleShare: this.randomFinancialShare(),
       nonAlignedShare: this.randomFinancialShare(),

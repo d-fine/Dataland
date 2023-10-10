@@ -19,35 +19,35 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 /**
  * Generates a set number of SME fixtures
  * @param numFixtures the number of SME fixtures to generate
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a set number of SME fixtures
  */
 export function generateSmeFixtures(
   numFixtures: number,
-  undefinedProbability = DEFAULT_PROBABILITY,
+  nullProbability = DEFAULT_PROBABILITY,
 ): FixtureData<SmeData>[] {
-  return generateFixtureDataset<SmeData>(() => generateSmeData(undefinedProbability), numFixtures);
+  return generateFixtureDataset<SmeData>(() => generateSmeData(nullProbability), numFixtures);
 }
 
 /**
  * Generates a random SME dataset
- * @param undefinedProbability the probability (as number between 0 and 1) for "undefined" values in nullable fields
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random SME dataset
  */
-export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): SmeData {
-  const dataGenerator = new SmeGenerator(undefinedProbability);
+export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData {
+  const dataGenerator = new SmeGenerator(nullProbability);
   return {
     general: {
       basicInformation: {
-        sector: generateNaceCodes(1),
-        addressOfHeadquarters: generateAddress(dataGenerator.undefinedProbability),
+        sector: generateNaceCodes(1, 1),
+        addressOfHeadquarters: generateAddress(dataGenerator.nullProbability),
         numberOfEmployees: generateInt(10000),
         fiscalYearStart: generateFutureDate(),
       },
       companyFinancials: {
-        revenueInEur: dataGenerator.randomInt(100000000),
-        operatingCostInEur: dataGenerator.randomInt(80000000),
-        capitalAssetsInEur: dataGenerator.randomInt(70000000),
+        revenueInEUR: dataGenerator.randomInt(100000000),
+        operatingCostInEUR: dataGenerator.randomInt(80000000),
+        capitalAssetsInEUR: dataGenerator.randomInt(70000000),
       },
     },
     production: {
@@ -60,15 +60,16 @@ export function generateSmeData(undefinedProbability = DEFAULT_PROBABILITY): Sme
     },
     power: {
       investments: {
-        percentageOfInvestmentsInEnhancingEnergyEfficiency:
+        percentageRangeForInvestmentsInEnhancingEnergyEfficiency:
           dataGenerator.randomPercentageRangeInvestmentEnergyEfficiency(),
       },
       consumption: {
-        powerConsumptionInMwh: dataGenerator.randomInt(2000),
+        powerConsumptionInMWh: dataGenerator.randomInt(2000),
         powerFromRenewableSources: dataGenerator.randomYesNo(),
-        energyConsumptionHeatingAndHotWater: dataGenerator.randomInt(1000),
+        energyConsumptionHeatingAndHotWaterInMWh: dataGenerator.randomInt(1000),
         primaryEnergySourceForHeatingAndHotWater: dataGenerator.randomHeatSource(),
-        energyConsumptionCoveredByOwnRenewablePowerGeneration: dataGenerator.randomPercentageRangeEnergyConsumption(),
+        percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration:
+          dataGenerator.randomPercentageRangeEnergyConsumption(),
       },
     },
     insurances: {
@@ -86,7 +87,7 @@ class SmeGenerator extends Generator {
    * Generates a random product
    * @returns a random product
    */
-  randomProduct(): SmeProduct[] | undefined {
+  randomProduct(): SmeProduct[] | null {
     return this.randomArray((): SmeProduct => {
       return {
         name: faker.commerce.productName(),
@@ -99,11 +100,11 @@ class SmeGenerator extends Generator {
    * Generates a random production site
    * @returns a random production site
    */
-  randomProductionSite(): SmeProductionSite[] | undefined {
+  randomProductionSite(): SmeProductionSite[] | null {
     return this.randomArray((): SmeProductionSite => {
       return {
-        nameOfProductionSite: this.valueOrUndefined(faker.company.name()),
-        addressOfProductionSite: generateAddress(this.undefinedProbability),
+        nameOfProductionSite: this.valueOrNull(faker.company.name()),
+        addressOfProductionSite: generateAddress(this.nullProbability),
         shareOfTotalRevenueInPercent: this.randomPercentageValue(),
       };
     });
@@ -113,33 +114,31 @@ class SmeGenerator extends Generator {
    * Picks a random percentage range option
    * @returns a random percentage range option
    */
-  randomPercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower | undefined {
-    return this.valueOrUndefined(
-      pickOneElement(Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)),
-    );
+  randomPercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower | null {
+    return this.valueOrNull(pickOneElement(Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)));
   }
 
   /**
    * Picks a random percentage range option
    * @returns a random percentage range option
    */
-  randomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency | undefined {
-    return this.valueOrUndefined(pickOneElement(Object.values(PercentRangeForInvestmentsInEnergyEfficiency)));
+  randomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency | null {
+    return this.valueOrNull(pickOneElement(Object.values(PercentRangeForInvestmentsInEnergyEfficiency)));
   }
 
   /**
    * Picks a random heat source
    * @returns a random heat source
    */
-  randomHeatSource(): EnergySourceForHeatingAndHotWater | undefined {
-    return this.valueOrUndefined(pickOneElement(Object.values(EnergySourceForHeatingAndHotWater)));
+  randomHeatSource(): EnergySourceForHeatingAndHotWater | null {
+    return this.valueOrNull(pickOneElement(Object.values(EnergySourceForHeatingAndHotWater)));
   }
 
   /**
    * Picks a random natural hazard
    * @returns a random natural hazard
    */
-  randomSelectionOfNaturalHazards(): NaturalHazard[] | undefined {
-    return this.valueOrUndefined(pickSubsetOfElements(Object.values(NaturalHazard)));
+  randomSelectionOfNaturalHazards(): NaturalHazard[] | null {
+    return this.valueOrNull(pickSubsetOfElements(Object.values(NaturalHazard)));
   }
 }
