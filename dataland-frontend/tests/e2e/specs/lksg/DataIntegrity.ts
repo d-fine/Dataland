@@ -13,6 +13,7 @@ import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { generateProductionSite } from "@e2e/fixtures/lksg/LksgDataFixtures";
+import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describeIf(
   "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
@@ -26,11 +27,10 @@ describeIf(
     });
 
     /**
-     * Toggles the data-table row group with the given key
-     * @param groupKey the key of the row group to expand
+     * Validates that the view page is not in review mode by ensuring that no hidden-field icon is displayed
      */
-    function toggleRowGroup(groupKey: string): void {
-      cy.get(`span[data-test=${groupKey}]`).siblings("button").last().click();
+    function validateThatViewPageIsNotInReviewMode(): void {
+      cy.get("i[data-test=hidden-icon]").should("not.exist");
     }
 
     /**
@@ -42,8 +42,11 @@ describeIf(
       cy.visit("/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg);
       cy.wait("@fetchLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
       cy.get("h1").should("contain", storedCompany.companyInformation.companyName);
-      cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
-      cy.contains('Show "Most Important Products"').click();
+      MLDT.getSectionHead("Production-specific - Own Operations")
+        .should("have.attr", "data-section-expanded", "false")
+        .click();
+
+      cy.contains("Show Most Important Products").click();
       cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Most Important Products");
       cy.get(".p-dialog th").eq(0).should("have.text", "Product Name");
       cy.get(".p-dialog th").eq(1).should("have.text", "Production Steps");
@@ -55,6 +58,8 @@ describeIf(
       cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(1).should("have.text", "second");
       cy.get(".p-dialog tr").eq(1).find("td").eq(2).should("have.text", "Description of something");
       cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
+
+      validateThatViewPageIsNotInReviewMode();
     }
 
     it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
@@ -88,8 +93,9 @@ describeIf(
             (metaInfos as DataMetaInformation[])[0],
           );
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
-          toggleRowGroup("productionSpecific");
-          cy.get(`a:contains(Show "List Of Production Sites")`).click();
+          MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+
+          cy.get(`a:contains(Show List Of Production Sites)`).click();
           lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
             if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
               cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);

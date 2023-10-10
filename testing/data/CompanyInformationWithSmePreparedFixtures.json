@@ -2,53 +2,56 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "San Rafael",
-			"headquartersPostalCode": "85075-9697",
-			"sector": "applications",
+			"headquarters": "South Lawrence",
+			"headquartersPostalCode": "69413-9729",
+			"sector": "architectures",
 			"identifiers": {
-				"Lei": [
-					"LibqIqp15BVp9mKnOcOD"
-				],
+				"Lei": [],
 				"Isin": [
-					"Iyj4LbB6VoSa"
+					"Wkg8MgXZS5yx"
 				],
-				"PermId": [
-					"uQpMLSZUH6"
-				],
+				"PermId": [],
 				"Ticker": [
-					"s4PISra"
+					"CT4JCii"
 				],
 				"Duns": [
-					"JYV2xoGr0"
+					"F4HHDwv3h"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"BuSgb6KEvP2tlga"
-				]
+				"VatNumber": [
+					"wJWrCiHDf"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "UA",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://free-transom.org/",
+			"countryCode": "BF",
+			"companyAlternativeNames": [
+				"Heathcote Group",
+				"Keeling - Schaefer",
+				"McLaughlin Group",
+				"Wisoky - Ankunding"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://careful-cushion.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.45",
-						"47.54",
-						"G"
+						"20.4",
+						"22.29",
+						"24.46",
+						"66.22",
+						"85.59"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Maxime Harbors 4129",
-						"postalCode": null,
-						"city": "Fort Lavernastad",
-						"state": "Kentucky",
-						"country": "MY"
+						"streetAndHouseNumber": null,
+						"postalCode": "17983",
+						"city": "Mariettaberg",
+						"state": null,
+						"country": "YE"
 					},
-					"numberOfEmployees": 1951,
-					"fiscalYearStart": "2024-06-22"
+					"numberOfEmployees": 3901,
+					"fiscalYearStart": "2024-09-20"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -60,25 +63,64 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Donnelly, Zemlak and Fritsch",
+							"nameOfProductionSite": "Durgan Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Vergie Turnpike 74584",
-								"postalCode": "93358",
-								"city": "Wylie",
-								"state": "Maine",
-								"country": "GY"
+								"streetAndHouseNumber": "Boyle Cape 882",
+								"postalCode": null,
+								"city": "Lake Calista",
+								"state": "Connecticut",
+								"country": "CL"
 							},
-							"shareOfTotalRevenueInPercent": 34.7789
+							"shareOfTotalRevenueInPercent": 87.2262
+						},
+						{
+							"nameOfProductionSite": "Wyman, Cormier and Gulgowski",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "07527-5000",
+								"city": "Norwalk",
+								"state": "North Carolina",
+								"country": "DK"
+							},
+							"shareOfTotalRevenueInPercent": 70.9791
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Cole Unions 34298",
+								"postalCode": "87131",
+								"city": "Bethlehem",
+								"state": null,
+								"country": "TN"
+							},
+							"shareOfTotalRevenueInPercent": 61.5701
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Runte Walks 951",
+								"postalCode": "77777",
+								"city": "Seanstad",
+								"state": "Missouri",
+								"country": "NU"
+							},
+							"shareOfTotalRevenueInPercent": 38.3912
+						},
+						{
+							"nameOfProductionSite": "Zboncak - Yundt",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "59266-7300",
+								"city": "Tremaineland",
+								"state": "Maryland",
+								"country": "PM"
+							},
+							"shareOfTotalRevenueInPercent": 64.5335
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Ergonomic Bronze Shoes",
-							"shareOfTotalRevenueInPercent": 45.2635
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
@@ -86,9 +128,9 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 201,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 639,
+					"powerConsumptionInMWh": 1427,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 615,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
@@ -96,11 +138,9 @@
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 31701124,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 40931339,
 					"naturalHazardsCovered": [
-						"Snow",
-						"Hail",
-						"EarthQuake"
+						"Avalanche"
 					]
 				}
 			}
@@ -110,37 +150,35 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Port Sterlingfort",
-			"headquartersPostalCode": "48435",
-			"sector": "markets",
+			"headquarters": "Bradtkecester",
+			"headquartersPostalCode": null,
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"1NuoQ4AM3bVKmEyHfOxT"
-				],
+				"Lei": [],
 				"Isin": [
-					"Idm5aKPUK66C"
+					"aHMSka5fdYk4"
 				],
-				"PermId": [],
+				"PermId": [
+					"JyQAyTv4C5"
+				],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"iqFfvIh4c"
+				"Duns": [
+					"ShHsw4ypk"
 				],
-				"CompanyRegistrationNumber": [
-					"KB1eqln3DOGF7tT"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MS",
+			"countryCode": "VA",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://authentic-cadet.biz",
+			"companyLegalForm": "GmbH",
+			"website": "https://hospitable-circumstance.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"14.11"
+						"25.7"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -149,93 +187,70 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 9209,
-					"fiscalYearStart": "2024-01-20"
+					"numberOfEmployees": 4621,
+					"fiscalYearStart": "2024-10-07"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 88613284,
-					"operatingCostInEUR": 38038444,
-					"capitalAssetsInEUR": 23457977
+					"revenueInEUR": null,
+					"operatingCostInEUR": 59744834,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Greenholt, Bauch and Bashirian",
+							"nameOfProductionSite": "Williamson - Kunde",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Block Common 591",
-								"postalCode": "99469",
-								"city": "Larissatown",
-								"state": "Washington",
-								"country": "MM"
+								"streetAndHouseNumber": "Bradtke Spurs 35312",
+								"postalCode": "79509-2276",
+								"city": "South Hannahmouth",
+								"state": "Wyoming",
+								"country": "MG"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 54.3876
 						},
 						{
-							"nameOfProductionSite": "Lubowitz Group",
+							"nameOfProductionSite": "Leuschke - Stiedemann",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Breanna Crest 34788",
-								"postalCode": null,
-								"city": "Rogerside",
-								"state": "Vermont",
-								"country": "LR"
+								"streetAndHouseNumber": "Fernando Oval 5585",
+								"postalCode": "98256-4636",
+								"city": "Santa Maria",
+								"state": "California",
+								"country": "CY"
 							},
-							"shareOfTotalRevenueInPercent": 87.0859
-						},
-						{
-							"nameOfProductionSite": "Oberbrunner - Hermann",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "29267-5262",
-								"city": "North Sunny",
-								"state": "North Carolina",
-								"country": "YT"
-							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 30.9556
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Gorgeous Cotton Salad",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Elegant Frozen Salad",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Intelligent Cotton Shoes",
-							"shareOfTotalRevenueInPercent": 43.4817
-						},
-						{
-							"name": "Unbranded Concrete Shoes",
-							"shareOfTotalRevenueInPercent": 26.3083
+							"name": "Handcrafted Plastic Tuna",
+							"shareOfTotalRevenueInPercent": 78.7439
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1590,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 825,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMWh": 1840,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 217,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 19634789,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 2849673,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Flooding"
+						"Wind",
+						"Snow"
 					]
 				}
 			}
@@ -245,38 +260,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Port Emely",
-			"headquartersPostalCode": "20180-1985",
-			"sector": "portals",
+			"headquarters": "Corwinworth",
+			"headquartersPostalCode": "13993",
+			"sector": "channels",
 			"identifiers": {
-				"Lei": [
-					"dlVbmNkd684lPXmp91RF"
-				],
+				"Lei": [],
 				"Isin": [
-					"Gkzkml4H1mJT"
+					"JK05J8G9C7vJ",
+					"s3XY2MAmsZbq"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"1zZYY66eCmKRJwE"
-				]
+				"PermId": [
+					"nT33i131hs"
+				],
+				"Ticker": [
+					"okhM06G"
+				],
+				"Duns": [
+					"Ic6qE8Ffx"
+				],
+				"VatNumber": [
+					"6lmqSQdaW"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GF",
+			"countryCode": "JO",
 			"companyAlternativeNames": [
-				"Aufderhar - Kling",
-				"Hayes - Lakin"
+				"Osinski, Turcotte and Brekke",
+				"Schaden and Sons",
+				"Schoen, Witting and Brown"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": null,
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://apprehensive-conductor.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"73.20"
+						"10.89"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -285,52 +306,43 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2921,
-					"fiscalYearStart": "2023-12-29"
+					"numberOfEmployees": 3289,
+					"fiscalYearStart": "2023-11-02"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 34111690,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 50113011
+					"revenueInEUR": null,
+					"operatingCostInEUR": 77636248,
+					"capitalAssetsInEUR": 41404775
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Klocko, Spencer and Hessel",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Osinski Throughway 52949",
-								"postalCode": "96304",
-								"city": "Creolaland",
-								"state": "Vermont",
-								"country": "LU"
-							},
-							"shareOfTotalRevenueInPercent": 63.0576
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 413,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 585,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"powerConsumptionInMWh": 1449,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 29,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 16762410,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 21747842,
 					"naturalHazardsCovered": [
+						"Hail",
+						"Wind",
+						"Snow",
 						"Avalanche"
 					]
 				}

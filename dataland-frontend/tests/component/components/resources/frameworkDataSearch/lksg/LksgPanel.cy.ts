@@ -1,8 +1,5 @@
-import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
-  type CompanyAssociatedDataLksgData,
   type DataAndMetaInformationLksgData,
   type DataMetaInformation,
   DataTypeEnum,
@@ -10,10 +7,20 @@ import {
   QaStatus,
 } from "@clients/backend";
 import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+import { convertDataModel } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
+import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import {
+  mountMLDTFrameworkPanelFromFakeFixture,
+  mountMLDTFrameworkPanel,
+} from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
 
-describe("Component test for LksgPanel", () => {
+import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+
+describe("Component test for the LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
+  const lksgDisplayConfiguration = convertDataModel(lksgDataModel) as MLDTConfig<LksgData>;
 
   before(function () {
     cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
@@ -21,107 +28,100 @@ describe("Component test for LksgPanel", () => {
     });
   });
 
-  it("Should display the total revenue kpi in the correct format", () => {
-    const pseudoLksgData = {
-      general: { masterData: { dataDate: "2023-01-01", totalRevenueCurrency: 1234567.89 } },
-    } as unknown;
-
-    cy.mountWithPlugins(LksgPanel, {
-      data() {
-        return {
-          waitingForData: false,
-          lksgDataAndMetaInfo: [{ data: pseudoLksgData } as DataAndMetaInformationLksgData],
-        };
-      },
-      // The code below is required to complete the component mock yet interferes with the type resolution of the
-      // mountWithPlugins function.
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      created() {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,
-        this.convertLksgDataToFrontendFormat();
-      },
-    });
-  });
-
   it("Should be able to handle null values in a Lksg dataset and display rows for those values", () => {
     const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
-    cy.mountWithPlugins(LksgPanel, {
-      data() {
-        return {
-          waitingForData: false,
-          lksgDataAndMetaInfo: [{ data: preparedFixture.t } as DataAndMetaInformationLksgData],
-        };
-      },
-      // The code below is required to complete the component mock yet interferes with the type resolution of the
-      // mountWithPlugins function.
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      created() {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,
-        this.convertLksgDataToFrontendFormat();
-      },
-    });
-    // make sure only dataDate is there and other cards aren't
-    cy.contains("span", "1999-12-24").should("exist");
-    cy.contains("td.headers-bg", "Industry").should("exist");
-    cy.get("em").its("length").should("equal", 11);
-    cy.get("tr").its("length").should("equal", 13);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+
+    MLDT.getCellContainer("Data Date").should("contain.text", "1999-12-24");
+    MLDT.getCellContainer("Industry").should("exist");
   });
 
-  it("Check Lksg view page for company with one Lksg data set", () => {
+  it("Check that the Master Data section is auto-expanded on page load and can be collapsed", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
 
-    cy.intercept("/api/data/lksg/mock-data-id", {
-      companyId: "mock-company-id",
-      reportingPeriod: preparedFixture.reportingPeriod,
-      data: lksgData,
-    } as CompanyAssociatedDataLksgData);
-    cy.mountWithPlugins(LksgPanel, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        stubs: {
-          transition: false,
-        },
-      },
-      data() {
-        return {
-          companyId: "mock-company-id",
-          singleDataMetaInfoToDisplay: {
-            dataId: "mock-data-id",
-            reportingPeriod: preparedFixture.reportingPeriod,
-          } as DataMetaInformation,
-        };
-      },
-    });
+    MLDT.getCellContainer("Data Date")
+      .should("contain.text", lksgData.general.masterData.dataDate)
+      .should("be.visible");
+    MLDT.getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true").click();
+    MLDT.getCellContainer("Data Date").should("not.be.visible");
+    MLDT.getSectionHead("Master Data").should("have.attr", "data-section-expanded", "false").click();
+    MLDT.getCellContainer("Data Date")
+      .should("contain.text", lksgData.general.masterData.dataDate)
+      .should("be.visible");
+  });
+
+  it("Validate that certificate links are displayed correctly", () => {
+    const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+
+    MLDT.getSectionHead("Governance").should("have.attr", "data-section-expanded", "false").click();
+    MLDT.getSectionHead("Certifications, policies and responsibilities")
+      .should("have.attr", "data-section-expanded", "false")
+      .click();
+
+    MLDT.getCellContainer("SA8000 Certification").find("i[data-test=download-icon]").should("be.visible");
+  });
+
+  it("Validate that the list of production sites is displayed", () => {
+    const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+    const lksgData = preparedFixture.t;
 
     cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
-    cy.get("tbody").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("exist");
+    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    MLDT.getCellContainer("List Of Production Sites").contains("a").should("be.visible");
+  });
 
-    toggleRowGroup("_masterData");
-    cy.get("tbody").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("not.exist");
+  it("Validate that the procurement category modal is displayed and contains the correct headers", () => {
+    const preparedFixture = getPreparedFixture("lksg-with-procurement-categories", preparedFixtures);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    toggleRowGroup("_masterData");
-    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("exist");
+    MLDT.getSectionHead("Production-specific - Own Operations")
+      .should("have.attr", "data-section-expanded", "false")
+      .click();
+    MLDT.getCellContainer("Products/Services Categories purchased").find("a").should("be.visible").click();
 
-    cy.get("span[data-test=employeeSUnder18]").should("not.exist");
-    toggleRowGroup("childLabor");
-    cy.get("span[data-test=employeeSUnder18]").should("exist");
+    cy.get("div.p-dialog").within(() => {
+      cy.get("th").eq(0).should("have.text", "Procurement Category");
+      cy.get("th").eq(1).should("have.text", "Procured Products/Services");
+      cy.get("th").eq(2).should("have.text", "Number of Direct Suppliers and Countries");
+      cy.get("th").eq(3).should("have.text", "Order Volume");
+    });
+  });
 
-    toggleRowGroup("productionSpecific");
-    cy.get(`a:contains(Show "List Of Production Sites")`).should("be.visible");
+  it("Validate that show-if hidden fields are not displayed in standard mode", () => {
+    const preparedFixture = getPreparedFixture(
+      "lksg-not-a-manufacturing-company-but-has-production-sites",
+      preparedFixtures,
+    );
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    cy.get("em[title='Data Date']").trigger("mouseenter", "center");
-    cy.get(".p-tooltip").should("be.visible").contains("The date until when");
-    cy.get("em[title='Data Date']").trigger("mouseleave");
+    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
 
-    toggleRowGroup("certificationsPoliciesAndResponsibilities");
-    cy.get("span[data-test=Report-Download-Certification]").find("i[data-test=download-icon]").should("be.visible");
+    MLDT.getCellContainer("Manufacturing Company").should("have.text", "No");
+    MLDT.getCellContainer("List Of Production Sites").should("not.exist");
+  });
+
+  it("Validate that show-if hidden fields are displayed and highlighted in review mode", () => {
+    const preparedFixture = getPreparedFixture(
+      "lksg-not-a-manufacturing-company-but-has-production-sites",
+      preparedFixtures,
+    );
+    mountMLDTFrameworkPanelFromFakeFixture(
+      DataTypeEnum.Lksg,
+      lksgDisplayConfiguration,
+      [preparedFixture],
+      "mock-company-id",
+      true,
+    );
+
+    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+
+    MLDT.getCellContainer("Manufacturing Company").should("have.text", "No");
+    MLDT.getCellContainer("List Of Production Sites").should("be.visible");
+    MLDT.getCellContainer("List Of Production Sites").find("i[data-test=hidden-icon]").should("be.visible");
   });
 
   /**
@@ -131,7 +131,7 @@ describe("Component test for LksgPanel", () => {
    * @param baseDataset the lksg dataset used as a basis for constructing the 6 mocked ones
    * @returns a mocked api response
    */
-  function constructCompanyApiResponseForLksgForSixYears(baseDataset: LksgData): DataAndMetaInformationLksgData[] {
+  function constructCompanyApiResponseForLksgForSixYears(baseDataset: LksgData): DataAndMetaInformation<LksgData>[] {
     const lksgDatasets: DataAndMetaInformationLksgData[] = [];
     for (let i = 0; i < 6; i++) {
       const reportingYear = 2023 + i;
@@ -160,16 +160,8 @@ describe("Component test for LksgPanel", () => {
   it("Check Lksg view page for company with six Lksg data sets reported in different years ", () => {
     const preparedFixture = getPreparedFixture("six-lksg-data-sets-in-different-years", preparedFixtures);
     const mockedData = constructCompanyApiResponseForLksgForSixYears(preparedFixture.t);
-    cy.intercept("/api/data/lksg/companies/mock-company-id", mockedData);
+    mountMLDTFrameworkPanel(DataTypeEnum.Lksg, lksgDisplayConfiguration, mockedData);
 
-    cy.mountWithPlugins(LksgPanel, {
-      keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyId: "mock-company-id",
-        };
-      },
-    });
     cy.get("table").find(`tr:contains("Data Date")`).find(`span`).eq(6).get("span").contains("2023");
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
