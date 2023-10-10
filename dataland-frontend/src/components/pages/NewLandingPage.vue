@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :landingPage="landingPage" :contentData="content" />
+  <TheHeader :landingPage="landingPage" />
   <main role="main">
     <TheIntro :sections="landingPage?.sections" />
     <TheQuotes :sections="landingPage?.sections" />
@@ -37,7 +37,7 @@ import contentData from "@/assets/content.json";
 import type { Content, Page } from "@/types/ContentTypes";
 
 const content: Content = contentData;
-const landingPage: Page | undefined = content.pages.find((page) => page.url === "/lp");
+const landingPage: Page | undefined = content.pages.find((page) => page.url === "/");
 
 const dialog = useDialog();
 const injectedAuthenticated = inject<boolean>("authenticated");

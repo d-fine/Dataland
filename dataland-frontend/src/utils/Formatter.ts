@@ -2,7 +2,7 @@ import { type AmountWithCurrency } from "@clients/backend";
 import { roundNumber } from "@/utils/NumberConversionUtils";
 
 /**
- * Formats a percentage number by multiplying it with 100, rounding it and afterward making it a string with a
+ * Formats a percentage number by rounding it and afterward making it a string with a
  * percent symbol at the end.
  * @param percentageNumber is the percentage number to format
  * @param precision is the precision for the rounding of the percentage number

@@ -76,9 +76,13 @@ export function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformatio
   data.capex!.nonAlignedActivities![0].share.absoluteShare ??= dataGenerator.generateAmountWithCurrency();
   data.capex!.nonAlignedShare!.relativeShareInPercent ??= generatePercentageValue();
   generatedDataAndMetaInfo[0].data = data;
+
+  generatedDataAndMetaInfo[1].data.capex!.alignedShare!.relativeShareInPercent ??= generatePercentageValue();
+
   data = generatedDataAndMetaInfo[2].data;
   data.capex!.alignedShare!.relativeShareInPercent ??= generatePercentageValue();
   data.capex!.alignedShare!.absoluteShare ??= dataGenerator.generateAmountWithCurrency();
+
   generatedDataAndMetaInfo[2].data = data;
   return generatedDataAndMetaInfo;
 }

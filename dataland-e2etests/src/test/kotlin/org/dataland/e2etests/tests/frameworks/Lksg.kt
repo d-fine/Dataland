@@ -16,9 +16,8 @@ class Lksg {
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForLksgData
         .getCompanyInformationWithoutIdentifiers(1)
 
-    @Test
-    fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
-        val fixedDataSet = listOfOneLksgDataSet[0].copy()
+    private fun removeNullMapEntriesFromSupplierCountryCount(dataset: LksgData): LksgData {
+        val fixedDataSet = dataset.copy()
         // The following block is a workaround to circumvent a bug in the generated clients
         // which do not allow for null entries as map values but retain them at the same time.
         // On upload, however, they are not being serialized.
@@ -33,6 +32,13 @@ class Lksg {
                 (it.value.numberOfSuppliersPerCountryCode as? MutableMap<String, LksgProcurementCategory>)?.remove(key)
             }
         }
+
+        return fixedDataSet
+    }
+
+    @Test
+    fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
+        val fixedDataSet = removeNullMapEntriesFromSupplierCountryCount(listOfOneLksgDataSet[0])
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOf(fixedDataSet),
@@ -102,8 +108,13 @@ class Lksg {
     private fun uploadFourDatasetsForACompany(): Pair<String, List<LksgData>> {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val lksgData = apiAccessor.testDataProviderForLksgData.getTData(2)
+        val firstDataset = removeNullMapEntriesFromSupplierCountryCount(lksgData[0])
+        val secondDataset = removeNullMapEntriesFromSupplierCountryCount(lksgData[1])
         val uploadPairs = listOf(
-            Pair(lksgData[0], "2022"), Pair(lksgData[0], "2022"), Pair(lksgData[1], "2023"), Pair(lksgData[1], "2023"),
+            Pair(firstDataset, "2022"),
+            Pair(firstDataset, "2022"),
+            Pair(secondDataset, "2023"),
+            Pair(secondDataset, "2023"),
         )
         uploadPairs.forEach { pair ->
             apiAccessor.uploadWithWait(

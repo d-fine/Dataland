@@ -2,7 +2,7 @@
     "pages": [
         {
             "title": "Landing Page",
-            "url": "/lp",
+            "url": "/",
             "sections": [
                 {
                     "title": "Welcome to Dataland",
@@ -17,7 +17,7 @@
                     "title": "Intro",
                     "text": [
                         "Liberate Data - ",
-                        "Empower Autonomy.",
+                        "Empower Autonomy.  ",
                         "Dataland, the Open ESG Data Platform."
                     ],
                     "image": [
