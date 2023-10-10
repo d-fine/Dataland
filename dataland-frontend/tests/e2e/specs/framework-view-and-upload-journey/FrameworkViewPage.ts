@@ -12,6 +12,7 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -244,18 +245,9 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param expectedDataDates The expected values in the row of the Data Date field
        */
       function validateDataDatesOfDisplayedLksgDatasets(expectedDataDates: string[]): void {
-        cy.get('span[data-test="dataDate"]')
-          .parents("tr")
-          .last()
-          .find("td > span")
-          .each((element, index, elements) => {
-            expect(elements).to.have.length(expectedDataDates.length + 1);
-            if (index == 0) {
-              expect(element.attr("data-test")).to.equal("dataDate");
-            } else {
-              expect(element.text()).to.equal(expectedDataDates[index - 1]);
-            }
-          });
+        for (let i = 0; i < expectedDataDates.length; i++) {
+          MLDT.getCellContainer("Data Date", i).should("have.text", expectedDataDates[i]);
+        }
       }
 
       /**
