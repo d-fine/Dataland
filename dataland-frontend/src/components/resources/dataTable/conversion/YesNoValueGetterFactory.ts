@@ -4,7 +4,12 @@ import {
   EmptyDisplayValue,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { type BaseDataPointYesNoNa, type BaseDataPointYesNo, YesNoNa } from "@clients/backend";
+import {
+  type BaseDataPointYesNoNa,
+  type BaseDataPointYesNo,
+  YesNoNa,
+  BaseDocumentReference,
+} from "@clients/backend";
 import {
   getFieldValueFromDataModel,
   getGloballyReferencableDocuments,
@@ -77,12 +82,12 @@ function formatYesNoValueWhenEvidenceDesiredIsYes(
   const yesNoValue = elementValue.value;
   if (hasDataPointValidReference(elementValue)) {
     const documentReference = getGloballyReferencableDocuments(dataset).find(
-      (document: DocumentReference) => document.name == elementValue.dataSource?.report,
+      (document: BaseDocumentReference) => document.fileName == elementValue.dataSource?.fileName,
     );
     if (documentReference == undefined) {
       throw Error(
         `There is no document with name ${
-          elementValue.dataSource?.report ?? "NOT PROVIDED"
+          elementValue.dataSource?.fileName ?? "NOT PROVIDED"
         } referenced in this dataset`,
       );
     }
@@ -91,7 +96,8 @@ function formatYesNoValueWhenEvidenceDesiredIsYes(
       displayValue: {
         label: humanReadableYesNoMap[yesNoValue],
         reference: documentReference,
-        page: elementValue.dataSource?.page ?? undefined,
+        //TODO Check if the datasource here should be of the kind BaseDocumentReference, ExtendedDocumentReference or CompanyReport
+        //page: elementValue.dataSource?.page ?? undefined,
       },
     };
   } else {
