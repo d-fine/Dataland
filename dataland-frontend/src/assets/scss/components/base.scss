@@ -201,6 +201,11 @@ body {
   font-size: $fs-xxl
 }
 
+//font-weight
+.fw-normal { font-weight: $normal-weight }; // 400
+.fw-light-bold { font-weight: $fw-medium }; // 400
+.fw-semi-bold { font-weight: $fw-semibold }; // 400
+
 
 // Typography //
 .gray-text {
@@ -283,7 +288,18 @@ ul.unstyled-ul-list {
   gap: 1rem;
 }
 
-.grid4 {
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  @media screen and (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+  @media screen and (min-width: 1920px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  grid-gap: 10px;
+}
+.grid3 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 10px;
