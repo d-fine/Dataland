@@ -54,7 +54,7 @@ describeIf(
         assertDefined(
           p2pFixtureForTest.t.freightTransportByRoad?.technology?.driveMixPerFleetSegment?.SmallTrucks
             ?.driveMixPerFleetSegmentInPercent,
-        ).toFixed(0),
+        ).toFixed(2),
       );
     }
 
