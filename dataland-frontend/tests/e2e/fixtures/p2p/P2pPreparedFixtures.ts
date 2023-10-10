@@ -68,16 +68,15 @@ function manipulateFixtureForOneP2pDataSetWithThreeSectors(
   input.companyInformation.companyName = "one-p2p-data-set-with-three-sectors";
   input.t.general.general.dataDate = "2022-01-01";
   input.reportingPeriod = "2022";
-  input.t.general.general.sectors = ["Ammonia", "Cement", "LivestockFarming"];
+  input.t.general.general.sectors = ["Ammonia", "Cement", "FreightTransportByRoad"];
   input.t.general.emissionsPlanning!.relativeEmissionsInPercent = 12;
   input.t.ammonia!.decarbonisation!.ccsTechnologyAdoptionInPercent = 54;
   input.t.cement!.material!.preCalcinedClayUsageInPercent = 23;
-  input.t.livestockFarming!.animalFeed!.externalFeedCertification = {
-    value: "Yes",
-    dataSource: {
-      fileName: "Policy",
-      fileReference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-    },
+  input.t.freightTransportByRoad!.technology!.driveMixPerFleetSegment = {
+    "SmallTrucks": {
+      "driveMixPerFleetSegmentInPercent": 77.5327,
+          "totalAmountOfVehicles": 1234,
+    }
   };
   return input;
 }
