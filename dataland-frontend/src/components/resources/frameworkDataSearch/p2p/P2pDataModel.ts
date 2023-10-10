@@ -238,7 +238,7 @@ export const p2pDataModel = [
             name: "absoluteEmissionsInTonnesCO2e",
             label: "Absolute emissions",
             description:
-              "Transparent accounting & disclosure of all greenhouse gas emissions (Scope 1, Scope 2, Scope 3) along the following metric: absolute emissions",
+              "Transparent accounting & disclosure of all greenhouse gas emissions (Scope 1, Scope 2, Scope 3) along the following metric: absolute emissions (t CO2e)",
             unit: "tonnes CO2e",
             component: "NumberFormField",
             evidenceDesired: false,
@@ -260,7 +260,7 @@ export const p2pDataModel = [
             name: "reductionOfAbsoluteEmissionsInTonnesCO2e",
             label: "Reduction of absolute emissions",
             description:
-              "Use of a science-based, sector-specific Paris-compatible GHG emission reduction trajectory (Scopes 1-3) to meet climate targets and net-zero commitments represented in absolute emissions",
+              "Use of a science-based, sector-specific Paris-compatible GHG emission reduction trajectory (Scopes 1-3) to meet climate targets and net-zero commitments represented in absolute emissions (t CO2e)",
             unit: "tonnes CO2e",
             component: "NumberFormField",
             evidenceDesired: false,
@@ -428,7 +428,7 @@ export const p2pDataModel = [
           {
             name: "productionSiteEnergyConsumptionInMWh",
             label: "Production site energy consumption",
-            description: "Absolute total energy consumption of the company's production sites",
+            description: "Absolute total energy consumption of the company's production sites (MWh)",
             unit: "MWh",
             component: "NumberFormField",
             evidenceDesired: false,
@@ -668,7 +668,7 @@ export const p2pDataModel = [
           {
             name: "buildingEnergyEfficiencyInCorrespondingUnit",
             label: "Building energy efficiency",
-            description: "Average energy requirement",
+            description: "Average energy requirement in kWh/m²a",
             unit: "kWh/m²a",
             component: "NumberFormField",
             evidenceDesired: false,
@@ -756,7 +756,7 @@ export const p2pDataModel = [
           {
             name: "buildingEnergyEfficiencyInCorrespondingUnit",
             label: "Building energy efficiency",
-            description: "Average energy requirement",
+            description: "Average energy requirement in kWh/m²a",
             unit: "kWh/m²a",
             component: "NumberFormField",
             evidenceDesired: false,
@@ -823,7 +823,7 @@ export const p2pDataModel = [
           {
             name: "emissionIntensityOfElectricityInCorrespondingUnit",
             label: "Emission intensity of electricity",
-            description: "Applies especially for use of electric arc furnace (EAF)",
+            description: "Applies especially for use of electric arc furnace (EAF) (gCO2e/kWh)",
             unit: "gCO2e/kWh",
             component: "NumberFormField",
             evidenceDesired: false,
@@ -938,7 +938,7 @@ export const p2pDataModel = [
           {
             name: "electricityMixEmissionsInCorrespondingUnit",
             label: "Electricity mix emissions",
-            description: "Emission intensity of the created electricity mix",
+            description: "Emission intensity of the created electricity mix (t CO2e /MWh)",
             unit: "tCO2e/MWh",
             component: "NumberFormField",
             evidenceDesired: false,
@@ -1080,7 +1080,7 @@ export const p2pDataModel = [
           {
             name: "excessNitrogenInKilogramsPerHectare",
             label: "Excess nitrogen",
-            description: "Excess nitrogen",
+            description: "Excess nitrogen in kg/ha",
             unit: "kg/ha",
             component: "NumberFormField",
             evidenceDesired: false,
