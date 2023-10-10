@@ -51,10 +51,10 @@ describeIf(
       cy.contains("Technology").click();
       cy.get("td > span > a").contains("Drive mix per fleet segment").click();
       cy.get(".p-dialog").contains(
-          assertDefined(
-              p2pFixtureForTest.t.freightTransportByRoad?.technology?.driveMixPerFleetSegment?.SmallTrucks
-                  ?.driveMixPerFleetSegmentInPercent,
-          ).toFixed(0),
+        assertDefined(
+          p2pFixtureForTest.t.freightTransportByRoad?.technology?.driveMixPerFleetSegment?.SmallTrucks
+            ?.driveMixPerFleetSegmentInPercent,
+        ).toFixed(0),
       );
     }
 

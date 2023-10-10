@@ -68,7 +68,7 @@ function manipulateFixtureForOneP2pDataSetWithFourSectors(
   input.companyInformation.companyName = "one-p2p-data-set-with-four-sectors";
   input.t.general.general.dataDate = "2022-01-01";
   input.reportingPeriod = "2022";
-  input.t.general.general.sectors = ["Ammonia", "Cement",  "LivestockFarming", "FreightTransportByRoad"];
+  input.t.general.general.sectors = ["Ammonia", "Cement", "LivestockFarming", "FreightTransportByRoad"];
   input.t.general.emissionsPlanning!.relativeEmissionsInPercent = 12;
   input.t.ammonia!.decarbonisation!.ccsTechnologyAdoptionInPercent = 54;
   input.t.cement!.material!.preCalcinedClayUsageInPercent = 23;
@@ -80,9 +80,9 @@ function manipulateFixtureForOneP2pDataSetWithFourSectors(
     },
   };
   input.t.freightTransportByRoad!.technology!.driveMixPerFleetSegment = {
-    "SmallTrucks": {
-      "driveMixPerFleetSegmentInPercent": 77.5327,
-          "totalAmountOfVehicles": 1234,
+    SmallTrucks: {
+      driveMixPerFleetSegmentInPercent: 77.5327,
+      totalAmountOfVehicles: 1234,
     },
   };
   return input;
