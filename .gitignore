@@ -34,5 +34,3 @@ local
 
 gitinfo
 .envrc
-dataland-frontend/src/App.vue
-dataland-frontend/vite.config.ts
