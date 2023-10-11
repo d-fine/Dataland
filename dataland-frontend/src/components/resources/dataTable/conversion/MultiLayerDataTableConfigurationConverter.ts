@@ -18,7 +18,8 @@ const autoExpandingCategoryNames = new Set(["general", "masterData"]);
  */
 function convertCategoryToMLDTSectionConfig(category: Category): MLDTSectionConfig<any> {
   const mldtCategoryChildren: MLDTConfig<any> = category.subcategories.map((subcategory) =>
-      convertSubCategoryToMLDTSectionConfig(category, subcategory));
+    convertSubCategoryToMLDTSectionConfig(category, subcategory),
+  );
 
   return {
     type: "section",
@@ -40,10 +41,7 @@ function convertSubCategoryToMLDTSectionConfig(category: Category, subcategory: 
   const mldtSubcategoryChildren: MLDTConfig<any> = [];
 
   for (const field of subcategory.fields) {
-    const cellConfig = getDataModelFieldCellConfig(
-      category.name + "." + subcategory.name + "." + field.name,
-      field,
-    );
+    const cellConfig = getDataModelFieldCellConfig(category.name + "." + subcategory.name + "." + field.name, field);
     if (cellConfig) {
       mldtSubcategoryChildren.push(cellConfig);
     }

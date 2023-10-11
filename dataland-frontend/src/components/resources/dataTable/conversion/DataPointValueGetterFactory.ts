@@ -14,7 +14,10 @@ import { formatNumberToReadableFormat } from "@/utils/Formatter";
  * @returns the created getter
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function dataPointValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableMLDTDisplayObjectTypes {
+export function dataPointValueGetterFactory(
+  path: string,
+  field: Field,
+): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | undefined;
 

@@ -14,7 +14,10 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
  * @returns the created getter
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function singleSelectValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableMLDTDisplayObjectTypes {
+export function singleSelectValueGetterFactory(
+  path: string,
+  field: Field,
+): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const selectedElement = getFieldValueFromFrameworkDataset(path, dataset) as string | undefined;
     if (!selectedElement) {

@@ -36,5 +36,3 @@ export const MLDTDisplayObjectForEmptyString: AvailableMLDTDisplayObjectTypes = 
   displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
   displayValue: "",
 };
-
-
