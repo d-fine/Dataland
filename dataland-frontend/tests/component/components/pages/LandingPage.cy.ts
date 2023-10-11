@@ -1,6 +1,10 @@
 import { checkButton, checkImage, checkAnchorByContent, checkAnchorByTarget } from "@ct/testUtils/ExistenceChecks";
 import NewLandingPage from "@/components/pages/NewLandingPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import content from "@/assets/content.json"
+import {Page} from "../../../../src/types/ContentTypes";
+import {assertDefined} from "../../../../src/utils/TypeScriptUtils";
+import {browserThen} from "../../../e2e/utils/Cypress";
 
 describe("Component test for the landing page", () => {
   it("Check if essential elements are present", () => {
@@ -33,7 +37,7 @@ function validateTopBar(): void {
  * Validates the elements of the intro section
  */
 function validateIntroSection(): void {
-  checkImage("Liberate Data -  Empower Autonomy. Dataland, the Open ESG Data Platform.", "gfx_logo_d_orange_S.svg");
+  checkImage("Liberate Data -  Empower Autonomy.   Dataland, the Open ESG Data Platform.", "gfx_logo_d_orange_S.svg");
   cy.get("h1").should("contain.text", "Liberate Data");
   cy.get("h1").should("contain.text", "Empower Autonomy");
 }
@@ -42,12 +46,15 @@ function validateIntroSection(): void {
  * Validates the images of the brands trusting in dataland
  */
 function validateBrandsSection(): void {
-  checkImage("Brand 1", "img_deka.png");
-  checkImage("Brand 2", "img_ampega.png");
-  checkImage("Brand 3", "img_chom_capital.png");
-  checkImage("Brand 4", "img_metzler.png");
-  checkImage("Brand 5", "img_fuerstl_bank.png");
-  checkImage("Brand 6", "img_envoria.png");
+  const images = (content.pages?.find((page) => page.title == "Landing Page") as Page | undefined)
+    ?.sections.find((section) => section.title == "Brands")
+    ?.image;
+  assertDefined(images);
+  expect(images.length).to.eq(6);
+  images.forEach((image, index) => {
+    const filename = image.split("/").slice(-1)[0];
+    checkImage(`Brand ${index + 1}`, filename);
+  });
 }
 
 /**
