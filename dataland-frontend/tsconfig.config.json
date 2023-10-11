@@ -2,8 +2,7 @@
   "extends": "@vue/tsconfig/tsconfig.node.json",
   "include": [
     "vite.config.*",
-    "cypress.config.*",
-    "src/assets/content.json"
+    "cypress.config.*"
   ],
   "compilerOptions": {
     "composite": true,
