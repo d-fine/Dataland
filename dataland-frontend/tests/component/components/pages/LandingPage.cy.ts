@@ -2,9 +2,8 @@ import { checkButton, checkImage, checkAnchorByContent, checkAnchorByTarget } fr
 import NewLandingPage from "@/components/pages/NewLandingPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import content from "@/assets/content.json"
-import {Page} from "../../../../src/types/ContentTypes";
+import {Page, Section} from "../../../../src/types/ContentTypes";
 import {assertDefined} from "../../../../src/utils/TypeScriptUtils";
-import {browserThen} from "../../../e2e/utils/Cypress";
 
 describe("Component test for the landing page", () => {
   it("Check if essential elements are present", () => {
@@ -28,7 +27,7 @@ describe("Component test for the landing page", () => {
  * Validates the elements of the top bar
  */
 function validateTopBar(): void {
-  checkImage("Dataland banner logo", "gfx_logo_dataland_orange_S.svg");
+  checkImage("Dataland banner logo", getSingleImageNameInSection("Welcome to Dataland"));
   checkButton("signup_dataland_button", "Sign Up");
   checkAnchorByContent("Login");
 }
@@ -37,7 +36,7 @@ function validateTopBar(): void {
  * Validates the elements of the intro section
  */
 function validateIntroSection(): void {
-  checkImage("Liberate Data -  Empower Autonomy.   Dataland, the Open ESG Data Platform.", "gfx_logo_d_orange_S.svg");
+  checkImage("Liberate Data -  Empower Autonomy.   The alternative to data monopolies.", getSingleImageNameInSection("Intro"));
   cy.get("h1").should("contain.text", "Liberate Data");
   cy.get("h1").should("contain.text", "Empower Autonomy");
 }
@@ -46,12 +45,9 @@ function validateIntroSection(): void {
  * Validates the images of the brands trusting in dataland
  */
 function validateBrandsSection(): void {
-  const images = (content.pages?.find((page) => page.title == "Landing Page") as Page | undefined)
-    ?.sections.find((section) => section.title == "Brands")
-    ?.image;
-  assertDefined(images);
-  expect(images.length).to.eq(6);
-  images.forEach((image, index) => {
+  const images = getLandingPageSection("Brands").image;
+  expect(images?.length).to.eq(6);
+  images!.forEach((image, index) => {
     const filename = image.split("/").slice(-1)[0];
     checkImage(`Brand ${index + 1}`, filename);
   });
@@ -69,11 +65,30 @@ function checkNewFooter(): void {
     return cy.get("footer");
   }
   getFooter().should("exist");
-  checkImage("Copyright ©   Dataland", "gfx_logo_dataland_orange_S.svg");
-  cy.get(".footer__copyright").should("contain.text", "Copyright © 2023 Dataland");
+  checkImage("Copyright ©   Dataland", getSingleImageNameInSection("Footer"));
+  cy.get(".footer__copyright").should("contain.text", `Copyright © ${new Date().getFullYear()} Dataland`);
 
   checkAnchorByTarget("/imprint", "Imprint");
   checkAnchorByTarget("/dataprivacy", "Data Privacy");
+}
+
+/**
+ * Gets the section of the landing page with the specified title
+ * @param sectionTitle the title of the section to find
+ * @returns the section with the given title
+ */
+function getLandingPageSection(sectionTitle: string): Section {
+  return assertDefined((content.pages?.find((page) => page.title == "Landing Page") as Page | undefined)
+    ?.sections.find((section) => section.title == sectionTitle))
+}
+
+/**
+ * Gets the first image in the section of the landing page with the specified title
+ * @param sectionTitle the title of the section to find
+ * @returns the filename of the found image
+ */
+function getSingleImageNameInSection(sectionTitle: string): string {
+  return assertDefined(getLandingPageSection(sectionTitle)?.image?.[0]).split("/").slice(-1)[0]
 }
 
 /**
