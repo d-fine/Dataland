@@ -1,9 +1,9 @@
 import { checkButton, checkImage, checkAnchorByContent, checkAnchorByTarget } from "@ct/testUtils/ExistenceChecks";
 import NewLandingPage from "@/components/pages/NewLandingPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import content from "@/assets/content.json"
-import {Page, Section} from "../../../../src/types/ContentTypes";
-import {assertDefined} from "../../../../src/utils/TypeScriptUtils";
+import content from "@/assets/content.json";
+import { type Page, type Section } from "@/types/ContentTypes";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describe("Component test for the landing page", () => {
   it("Check if essential elements are present", () => {
@@ -36,7 +36,10 @@ function validateTopBar(): void {
  * Validates the elements of the intro section
  */
 function validateIntroSection(): void {
-  checkImage("Liberate Data -  Empower Autonomy.   The alternative to data monopolies.", getSingleImageNameInSection("Intro"));
+  checkImage(
+    "Liberate Data -  Empower Autonomy.   The alternative to data monopolies.",
+    getSingleImageNameInSection("Intro"),
+  );
   cy.get("h1").should("contain.text", "Liberate Data");
   cy.get("h1").should("contain.text", "Empower Autonomy");
 }
@@ -78,8 +81,11 @@ function checkNewFooter(): void {
  * @returns the section with the given title
  */
 function getLandingPageSection(sectionTitle: string): Section {
-  return assertDefined((content.pages?.find((page) => page.title == "Landing Page") as Page | undefined)
-    ?.sections.find((section) => section.title == sectionTitle))
+  return assertDefined(
+    (content.pages?.find((page) => page.title == "Landing Page") as Page | undefined)?.sections.find(
+      (section) => section.title == sectionTitle,
+    ),
+  );
 }
 
 /**
@@ -88,7 +94,9 @@ function getLandingPageSection(sectionTitle: string): Section {
  * @returns the filename of the found image
  */
 function getSingleImageNameInSection(sectionTitle: string): string {
-  return assertDefined(getLandingPageSection(sectionTitle)?.image?.[0]).split("/").slice(-1)[0]
+  return assertDefined(getLandingPageSection(sectionTitle)?.image?.[0])
+    .split("/")
+    .slice(-1)[0];
 }
 
 /**
@@ -129,6 +137,12 @@ function validateHowItWorksSlides(): void {
   assertSlidesPosition(slidesSelector, 1);
 }
 
+/**
+ * Checks that a slide show is centered at a given slide
+ * @param slidesSelector the selector for the slides wrapper
+ * @param position the index of the slide that is expected to be in the center
+ * @param centerElement the index of the slide that was centered initially
+ */
 function assertSlidesPosition(slidesSelector: string, position?: number, centerElement = 0): void {
   const expectedTransformValue =
     position == undefined ? "none" : `matrix(1, 0, 0, 1, ${-440 * (position - centerElement)}, 0)`;

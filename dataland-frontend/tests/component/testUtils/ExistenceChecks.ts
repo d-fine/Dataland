@@ -16,10 +16,7 @@ export function checkImage(alternativeText: string, fileName: string): void {
  * @param buttonText the string expected to be contained
  * @returns the chainable on the button element
  */
-export function checkButton(
-  name: string,
-  buttonText: string,
-): Cypress.Chainable {
+export function checkButton(name: string, buttonText: string): Cypress.Chainable {
   return cy.get(`button[name="${name}"]`).should("be.visible").should("contain.text", buttonText);
 }
 
@@ -28,9 +25,7 @@ export function checkButton(
  * @param anchorText the string expected to be contained
  * @returns the chainable on the link element
  */
-export function checkAnchorByContent(
-  anchorText: string,
-): Cypress.Chainable {
+export function checkAnchorByContent(anchorText: string): Cypress.Chainable {
   return cy.get(`a:contains('${anchorText}')`).should("be.visible");
 }
 
@@ -40,9 +35,6 @@ export function checkAnchorByContent(
  * @param anchorText the string expected to be contained
  * @returns the chainable on the link element
  */
-export function checkAnchorByTarget(
-  href: string,
-  anchorText: string,
-): Cypress.Chainable {
+export function checkAnchorByTarget(href: string, anchorText: string): Cypress.Chainable {
   return cy.get(`a[href="${href}"]`).should("be.visible").should("contain.text", anchorText);
 }
