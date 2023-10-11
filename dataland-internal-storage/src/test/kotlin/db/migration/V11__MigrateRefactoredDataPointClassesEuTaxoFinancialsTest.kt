@@ -17,8 +17,8 @@ class V11__MigrateRefactoredDataPointClassesEuTaxoFinancialsTest {
             V11__MigrateRefactoredDataPointClassesEuTaxoFinancials()::migrateRefactoredDataPointClasses,
         )
         TestUtils().testMigrationOfSingleDataset(
-            "V11/brokenJson2.json",
-            "V11/transformedBrokenJson2.json",
+            "V11/brokenJson.json",
+            "V11/transformedBrokenJson.json",
             V11__MigrateRefactoredDataPointClassesEuTaxoFinancials()::migrateRefactoredDataPointClasses,
         )
     }
