@@ -18,7 +18,7 @@
                     "text": [
                         "Liberate Data - ",
                         "Empower Autonomy.  ",
-                        "Dataland, the Open ESG Data Platform."
+                        "The alternative to data monopolies."
                     ],
                     "image": [
                         "/static/logos/gfx_logo_d_orange_S.svg"
@@ -140,20 +140,20 @@
                     "cards": [
                         {
                             "title": "Pathway to Paris",
-                            "text": "Explanatory text goes here",
+                            "text": "Captures companies’ progress on Paris-compatible transformation paths that are necessary to achieve the goals of the Paris climate protection agreement.",
                             "date": "14th of August"
                         },
                         {
                             "title": "LksG",
-                            "text": "Explanatory text goes here"
+                            "text": "The Lieferkettensorgfalts-pflichtengesetz is a German law requiring companies to monitor human rights and environmental risks in their supply chains."
                         },
                         {
                             "title": "EU Taxonomy",
-                            "text": "Explanatory text goes here"
+                            "text": "The EU Taxonomy Regulation supports companies to capture their environmentally sustainable economic activities."
                         },
                         {
                             "title": "SFDR",
-                            "text": "Explanatory text goes here"
+                            "text": "SFDR helps investors to properly assess how sustainability risks are integrated in the investment decision process."
                         }
                     ]
                 },

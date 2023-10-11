@@ -110,20 +110,19 @@ const joinCampaignSection = computed(() => {
     border: 1px solid rgba(244, 244, 244, 0.33);
     background: var(--basic-white, #fff);
     box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.08);
-    backdrop-filter: blur(16px);
     display: flex;
     gap: 16px;
     flex-direction: column;
-    padding: 46px 40px;
-    height: 309px;
+    padding: 32px 40px;
     text-align: left;
+    min-width: 232px;
   }
   &__cell {
-    font-size: 20px;
-    color: var(--grey-tones-400);
+    color: var(--grey-tones-900);
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 28px; /* 140% */
+    line-height: 24px; /* 150% */
     letter-spacing: 0.25px;
     &--icon {
       color: var(--basic-dark);

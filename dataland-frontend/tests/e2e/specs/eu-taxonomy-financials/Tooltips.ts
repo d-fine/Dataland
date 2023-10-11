@@ -31,16 +31,18 @@ describeIf(
   "As a user, I expect informative tooltips to be shown on the EuTaxonomy result page",
   { executionEnvironments: ["developmentLocal", "ci", "developmentCd"], onlyExecuteOnDatabaseReset: true },
   () => {
-    it("Tooltips are present and contain text as expected", function () {
+    it("Tooltips are present and contain text as expected", { scrollBehavior: false }, function () {
+      // TODO Emanuel: The scrollBehaviour setting to false is ONLY needed, if we keep the setting 'scrollBehavior:
+      //  "center"' in our cypress.config.ts.  If we remove that, we can also remove the scrollBehaviour setting here.
       const nfrdText = "Non financial disclosure directive";
       const assuranceText = "Level of Assurance specifies the confidence level";
       cy.ensureLoggedIn();
       getKeycloakToken(reader_name, reader_pw).then((token) => {
         cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (storedCompanies) => {
+          (storedCompaniesWithEuTaxoNonFinancialsData) => {
             const testCompany = getCompanyWithNfrdMandatoryAndAssurance();
             const companyId = assertDefined(
-              storedCompanies.find((storedCompany) => {
+              storedCompaniesWithEuTaxoNonFinancialsData.find((storedCompany) => {
                 return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
               })?.companyId,
             );
