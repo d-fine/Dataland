@@ -16,10 +16,10 @@ import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
  * @param field the field
  * @returns the created getter
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function naceCodeValueGetterFactory(
   path: string,
   field: Field,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const selectionValue = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;

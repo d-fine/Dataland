@@ -14,10 +14,10 @@ import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTa
  * @param field the field
  * @returns the created getter
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function multiSelectValueGetterFactory(
   path: string,
   field: Field,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   const nameMap = new Map<string, string>();
   for (const option of field.options ?? []) {

@@ -13,10 +13,10 @@ import { formatNumberToReadableFormat } from "@/utils/Formatter";
  * @param field the field from the data model
  * @returns the created getter
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function dataPointValueGetterFactory(
   path: string,
   field: Field,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | undefined;
