@@ -255,7 +255,7 @@ export default defineComponent({
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedSfdrData.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset,
+            this.namesOfAllCompanyReportsForTheDataset as string[],
           );
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }

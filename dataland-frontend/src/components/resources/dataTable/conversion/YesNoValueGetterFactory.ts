@@ -4,11 +4,11 @@ import {
   EmptyDisplayValue,
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import type { BaseDocumentReference } from "@clients/backend";
 import {
   type BaseDataPointYesNoNa,
   type BaseDataPointYesNo,
   YesNoNa,
-  BaseDocumentReference,
 } from "@clients/backend";
 import {
   getFieldValueFromDataModel,
