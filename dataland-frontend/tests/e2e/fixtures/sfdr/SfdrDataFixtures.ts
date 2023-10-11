@@ -1,9 +1,11 @@
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { generateFloat } from "@e2e/fixtures/common/NumberFixtures";
-import { type SfdrData } from "@clients/backend";
+import { type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backend";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { faker } from "@faker-js/faker";
+import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
 
 /**
  * Generates a random SFDR dataset
@@ -11,7 +13,7 @@ import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
  * @returns SFDR object with populated properties
  */
 export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrData {
-  const dataGenerator = new Generator(nullProbability);
+  const dataGenerator = new SfdrGenerator(nullProbability);
   return {
     general: {
       general: {
@@ -36,7 +38,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         renewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        applicableHighImpactClimateSector: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        applicableHighImpactClimateSector: dataGenerator.generateHighImpactClimateSectors(),
         nonRenewableEnergyConsumptionFossilFuelsInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionCrudeOilInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionNaturalGasInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
@@ -44,15 +46,6 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         nonRenewableEnergyConsumptionCoalInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionNuclearEnergyInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionOtherInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceAInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceBInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceCInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceDInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceEInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceFInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceGInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceHInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceLInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
       },
       biodiversity: {
         primaryForestAndWoodedLandOfNativeSpeciesExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
@@ -106,8 +99,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: dataGenerator.randomExtendedDataPoint(
           generateYesNo(),
         ),
-        averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(generateFloat()),
-        averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(generateFloat()),
+        averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
+        averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
         femaleBoardMembers: dataGenerator.randomExtendedDataPoint(generateFloat()),
         maleBoardMembers: dataGenerator.randomExtendedDataPoint(generateFloat()),
         controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
@@ -135,8 +128,32 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
       antiCorruptionAndAntiBribery: {
         casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateFloat()),
         reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(generateFloat()),
+        totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(),
       },
     },
   };
+}
+
+class SfdrGenerator extends Generator {
+  /**
+   * Generates a random map of procurement categories
+   * @returns random map of procurement categories
+   */
+  generateHighImpactClimateSectors(): { [key: string]: ExtendedDataPointBigDecimal } {
+    const highImpactClimateSectors = Object.values(HighImpactClimateSector);
+    const keys = [] as HighImpactClimateSector[];
+    highImpactClimateSectors.forEach((naceCode) => {
+      if (faker.datatype.boolean()) {
+        keys.push(naceCode);
+      }
+    });
+    return Object.fromEntries(
+      new Map<string, ExtendedDataPointBigDecimal>(
+        keys.map((naceCode) => [
+          naceCode as string,
+          this.randomExtendedDataPoint(generateFloat()) as ExtendedDataPointBigDecimal,
+        ]),
+      ),
+    );
+  }
 }

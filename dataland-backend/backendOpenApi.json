@@ -3304,12 +3304,112 @@
             ]
           },
           "applicableHighImpactClimateSector": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+            },
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+            "example": {
+              "NaceCodeAInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeBInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeCInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeDInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeEInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeFInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeGInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeHInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeLInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
               }
-            ]
+            }
           },
           "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
             "nullable": true,
@@ -3360,78 +3460,6 @@
             ]
           },
           "nonRenewableEnergyConsumptionOtherInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceAInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceBInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceCInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceDInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceEInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceFInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceGInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceHInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceLInGWh": {
             "nullable": true,
             "allOf": [
               {
