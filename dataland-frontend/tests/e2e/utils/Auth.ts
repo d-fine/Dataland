@@ -5,13 +5,13 @@ import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
  */
 export function logout(): void {
-  cy.visitAndCheckAppMount("/companies")
+  cy.intercept({ times: 1, url: "**/api-keys/getApiKeyMetaInfoForUser" }).as("apikey");
+  cy.visitAndCheckAppMount("/api-key")
+    .wait("@apikey")
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
-
     .get("a[id='profile-picture-dropdown-logout-anchor']")
     .click()
-    .wait(1000)
     .url()
     .should("eq", getBaseUrl() + "/")
     .get("a[aria-label='Login to preview account']")
