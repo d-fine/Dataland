@@ -44,4 +44,28 @@ object JsonExampleFormattingConstants {
         "\"Services\": $procurementCategory," +
         "\"RawMaterials\": $procurementCategory" +
         "}"
+
+    private const val extendedDataPointBigDecimal = "{" +
+        "\"quality\": \"Audited\"," +
+        "\"dataSource\": {" +
+        "\"page\": 0," +
+        "\"tagName\": \"string\"," +
+        "\"fileName\": \"string\"," +
+        "\"fileReference\": \"string\"" +
+        "}," +
+        "\"comment\": \"string\"," +
+        "\"value\": 0" +
+        "}"
+
+    const val HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE: String = "{" +
+        "\"NaceCodeAInGWh\": $extendedDataPointBigDecimal," +
+        "\"NaceCodeBInGWh\": $extendedDataPointBigDecimal," +
+        "\"NaceCodeCInGWh\": $extendedDataPointBigDecimal," +
+        "\"NaceCodeDInGWh\": $extendedDataPointBigDecimal," +
+        "\"NaceCodeEInGWh\": $extendedDataPointBigDecimal," +
+        "\"NaceCodeFInGWh\": $extendedDataPointBigDecimal," +
+        "\"NaceCodeGInGWh\": $extendedDataPointBigDecimal," +
+        "\"NaceCodeHInGWh\": $extendedDataPointBigDecimal," +
+        "\"NaceCodeLInGWh\": $extendedDataPointBigDecimal" +
+        "}"
 }

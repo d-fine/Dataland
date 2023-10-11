@@ -1,6 +1,9 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
+import org.dataland.datalandbackend.model.enums.sfdr.HighImpactClimateSector
+import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
 
 /**
@@ -16,7 +19,11 @@ data class SfdrEnvironmentalEnergyPerformance(
 
     val nonRenewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val applicableHighImpactClimateSector: ExtendedDataPoint<BigDecimal>? = null,
+    @field:Schema(
+        implementation = Map::class,
+        example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE,
+    )
+    val applicableHighImpactClimateSector: Map<HighImpactClimateSector, ExtendedDataPoint<BigDecimal>>? = null,
 
     val nonRenewableEnergyConsumptionFossilFuelsInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
@@ -31,14 +38,4 @@ data class SfdrEnvironmentalEnergyPerformance(
     val nonRenewableEnergyConsumptionNuclearEnergyInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
     val nonRenewableEnergyConsumptionOtherInGWh: ExtendedDataPoint<BigDecimal>? = null,
-
-    val highImpactClimateSectorEnergyConsumptionNaceAInGWh: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceBInGWh: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceCInGWh: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceDInGWh: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceEInGWh: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceFInGWh: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceGInGWh: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceHInGWh: ExtendedDataPoint<BigDecimal>? = null,
-    val highImpactClimateSectorEnergyConsumptionNaceLInGWh: ExtendedDataPoint<BigDecimal>? = null,
 )
