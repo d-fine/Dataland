@@ -18,7 +18,7 @@ class V11__MigrateRefactoredDataPointClassesEuTaxoFinancials : BaseJavaMigration
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context,
-            "lksg",
+            "eutaxonomy-financials",
             this::migrateRefactoredDataPointClasses,
         )
     }
