@@ -6,11 +6,7 @@
       "CreditInstitution": {
         "taxonomyEligibleActivityInPercent": {
           "quality": "Reported",
-          "dataSource": {
-            "report": "DE0005408116_SustainabilityReport",
-            "page": 42,
-            "tagName": null
-          },
+          "dataSource": null,
           "comment": null,
           "value": 2
         },
