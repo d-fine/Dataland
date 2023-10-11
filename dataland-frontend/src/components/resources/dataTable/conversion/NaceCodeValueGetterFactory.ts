@@ -2,9 +2,9 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   type AvailableDisplayValues,
   EmptyDisplayValue,
-  MLDTDisplayComponents,
+  MLDTDisplayComponentName,
   type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
@@ -23,8 +23,8 @@ export function naceCodeValueGetterFactory(path: string, field: Field): (dataset
     if (!selectionValue || selectionValue.length == 0) {
       return EmptyDisplayValue;
     } else {
-      return <MLDTDisplayValue<MLDTDisplayComponents.ModalLinkDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.ModalLinkDisplayComponent,
+      return <MLDTDisplayValue<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+        displayComponent: MLDTDisplayComponentName.ModalLinkDisplayComponent,
         displayValue: {
           label: `Show ${selectionValue.length} NACE code${selectionValue.length > 1 ? "s" : ""}`,
           modalComponent: MultiSelectModal,

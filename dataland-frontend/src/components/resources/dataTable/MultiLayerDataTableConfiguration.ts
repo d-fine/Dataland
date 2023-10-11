@@ -1,4 +1,4 @@
-import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
 export type MLDTConfig<FrameworkDataType> = Array<
   MLDTCellConfig<FrameworkDataType> | MLDTSectionConfig<FrameworkDataType>

@@ -1,7 +1,7 @@
 import {
   type AvailableDisplayValues,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 
 /**
@@ -13,7 +13,7 @@ import { getFieldValueFromDataModel } from "@/components/resources/dataTable/con
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function plainStringValueGetterFactory(path: string): (dataset: any) => AvailableDisplayValues {
   return (dataset) => ({
-    displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
     displayValue: (getFieldValueFromDataModel(path, dataset) || "") as string,
   });
 }

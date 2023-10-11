@@ -1,8 +1,8 @@
 import {
   type AvailableDisplayValues,
   EmptyDisplayValue,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 
@@ -24,12 +24,12 @@ export function singleSelectValueGetterFactory(path: string, field: Field): (dat
     const matchingOption = field.options?.find((it) => it.value == selectedElement);
     if (matchingOption) {
       return {
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: matchingOption.label,
       };
     } else {
       return {
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: selectedElement,
       };
     }

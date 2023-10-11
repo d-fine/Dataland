@@ -1,6 +1,6 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type MLDTCellConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";

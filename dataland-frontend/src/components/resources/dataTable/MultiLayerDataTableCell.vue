@@ -9,8 +9,8 @@
 <script lang="ts">
 import {
   type AvailableDisplayValues,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DocumentLinkDisplayComponent from "@/components/resources/dataTable/cells/DocumentLinkDisplayComponent.vue";
 import StringDisplayComponent from "@/components/resources/dataTable/cells/StringDisplayComponent.vue";
 import { defineComponent } from "vue";
@@ -20,7 +20,7 @@ export default defineComponent({
   name: "MultiLayerDataTableCell",
   computed: {
     MLDTDisplayComponents() {
-      return MLDTDisplayComponents;
+      return MLDTDisplayComponentName;
     },
   },
   components: { StringDisplayComponent, DocumentLinkDisplayComponent, ModalLinkDisplayComponent },

@@ -2,9 +2,9 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   type AvailableDisplayValues,
   EmptyDisplayValue,
-  MLDTDisplayComponents,
+  MLDTDisplayComponentName,
   type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 
@@ -51,8 +51,8 @@ function getDisplayValueForModal(
     return EmptyDisplayValue;
   }
 
-  return <MLDTDisplayValue<MLDTDisplayComponents.ModalLinkDisplayComponent>>{
-    displayComponent: MLDTDisplayComponents.ModalLinkDisplayComponent,
+  return <MLDTDisplayValue<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    displayComponent: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${field.label}`,
       modalComponent: DetailsCompanyDataTable,

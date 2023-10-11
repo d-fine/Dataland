@@ -14,6 +14,7 @@
 </template>
 
 <script lang="ts">
+// TODO delete at the very end
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";

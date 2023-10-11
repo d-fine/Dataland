@@ -1,4 +1,7 @@
-import { EmptyDisplayValue, MLDTDisplayComponents } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import {
+  EmptyDisplayValue,
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   lksgProcurementCategoriesValueGetterFactory,
@@ -35,7 +38,7 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
     const dataset = { data: procurementData };
     const value = lksgProcurementCategoriesValueGetterFactory("data", sampleField)(dataset);
 
-    expect(value).to.have.property("displayComponent", MLDTDisplayComponents.ModalLinkDisplayComponent);
+    expect(value).to.have.property("displayComponent", MLDTDisplayComponentName.ModalLinkDisplayComponent);
     expect(value).to.have.nested.property("displayValue.label", "Show Products/Services Categories purchased");
     expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
       {

@@ -1,5 +1,5 @@
 import { type MLDTConfig, type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { MLDTDisplayComponents } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import { MLDTDisplayComponentName } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 import {
@@ -37,7 +37,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       explanation: "This is a test info",
       shouldDisplay: (dataset) => !!dataset.stringOnLevel1,
       valueGetter: (dataset) => ({
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: dataset.stringOnLevel1,
       }),
     },
@@ -53,7 +53,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
           label: "Level 2 - String",
           shouldDisplay: () => true,
           valueGetter: (dataset) => ({
-            displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+            displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
             displayValue: dataset.stringOnLevel2,
           }),
         },
@@ -68,7 +68,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
               label: "Level 3 - String",
               shouldDisplay: () => true,
               valueGetter: (dataset) => ({
-                displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+                displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
                 displayValue: dataset.stringOnLevel3,
               }),
             },
@@ -87,7 +87,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
           label: "Static Value Cell",
           shouldDisplay: () => true,
           valueGetter: () => ({
-            displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+            displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
             displayValue: "This is static",
           }),
         },

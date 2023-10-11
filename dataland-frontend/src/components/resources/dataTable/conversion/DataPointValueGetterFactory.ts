@@ -1,8 +1,8 @@
 import {
   type AvailableDisplayValues,
   EmptyDisplayValue,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 import { type Field } from "@/utils/GenericFrameworkTypes";
@@ -34,7 +34,7 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
     }
 
     return {
-      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: `${datapointValue} ${datapointUnitSuffix}`.trim(),
     };
   };

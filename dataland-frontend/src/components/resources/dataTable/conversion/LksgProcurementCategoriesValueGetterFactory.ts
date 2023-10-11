@@ -1,9 +1,9 @@
 import {
   type AvailableDisplayValues,
   EmptyDisplayValue,
-  MLDTDisplayComponents,
+  MLDTDisplayComponentName,
   type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type LksgProcurementCategory } from "@clients/backend";
@@ -93,8 +93,8 @@ export function lksgProcurementCategoriesValueGetterFactory(
 
     const convertedValueForModal = convertLksgProcumentTypeToListForModal(datasetValue);
 
-    return <MLDTDisplayValue<MLDTDisplayComponents.ModalLinkDisplayComponent>>{
-      displayComponent: MLDTDisplayComponents.ModalLinkDisplayComponent,
+    return <MLDTDisplayValue<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponent: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${field.label}`,
         modalComponent: DetailsCompanyDataTable,

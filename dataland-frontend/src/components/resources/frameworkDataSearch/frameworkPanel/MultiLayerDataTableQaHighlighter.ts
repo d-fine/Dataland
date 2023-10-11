@@ -5,8 +5,8 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
   type AvailableDisplayValues,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
 /**
  * For QA it is desirable that all fields are displayed even if they should not normally be visible. This function
@@ -53,7 +53,7 @@ function wrapMultiLayerDataTableCellForHighlightingHiddenFields<T>(cellConfig: M
         return originalDisplayValue;
       } else {
         return {
-          displayComponent: MLDTDisplayComponents.HighlightHiddenCellDisplayComponent,
+          displayComponent: MLDTDisplayComponentName.HighlightHiddenCellDisplayComponent,
           displayValue: {
             innerContents: originalDisplayValue,
           },

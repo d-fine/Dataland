@@ -1,7 +1,7 @@
 import {
   type AvailableDisplayValues,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 
@@ -13,7 +13,7 @@ import { formatPercentageNumberAsString } from "@/utils/Formatter";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function percentageValueGetterFactory(path: string): (dataset: any) => AvailableDisplayValues {
   return (dataset) => ({
-    displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
     displayValue: formatPercentageNumberAsString(getFieldValueFromDataModel(path, dataset) as number),
   });
 }

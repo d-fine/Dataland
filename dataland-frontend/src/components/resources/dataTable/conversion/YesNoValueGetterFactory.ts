@@ -2,8 +2,8 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   type AvailableDisplayValues,
   EmptyDisplayValue,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type BaseDataPointYesNoNa, type BaseDataPointYesNo, YesNoNa } from "@clients/backend";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 
@@ -41,7 +41,7 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
 
   if (elementValue.value == YesNoNa.Yes && elementValue.dataSource) {
     return {
-      displayComponent: MLDTDisplayComponents.DocumentLinkDisplayComponent,
+      displayComponent: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
       displayValue: {
         label: displayValue,
         reference: elementValue.dataSource,
@@ -49,7 +49,7 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
     };
   } else {
     return {
-      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: displayValue,
     };
   }
@@ -69,7 +69,7 @@ function formatYesNoValueWhenEvidenceDesiredIsYes(
 
   const yesNoValue = elementValue.value;
   return {
-    displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
     displayValue: humanReadableYesNoMap[yesNoValue],
   };
 }
@@ -97,7 +97,7 @@ export function yesNoValueGetterFactory(path: string, field: Field): (dataset: a
       const value = getFieldValueFromDataModel(path, dataset) as YesNoNa | undefined;
       const displayValue = value ? humanReadableYesNoMap[value] : "";
       return {
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: displayValue,
       };
     }

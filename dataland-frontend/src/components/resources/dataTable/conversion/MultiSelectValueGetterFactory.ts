@@ -1,9 +1,9 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   type AvailableDisplayValues,
-  MLDTDisplayComponents,
+  MLDTDisplayComponentName,
   type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 
@@ -25,12 +25,12 @@ export function multiSelectValueGetterFactory(path: string, field: Field): (data
     const selectionValue = getFieldValueFromDataModel(path, dataset) as Array<string>;
     if (!selectionValue || selectionValue.length == 0) {
       return {
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: "",
       };
     } else {
-      return <MLDTDisplayValue<MLDTDisplayComponents.ModalLinkDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.ModalLinkDisplayComponent,
+      return <MLDTDisplayValue<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+        displayComponent: MLDTDisplayComponentName.ModalLinkDisplayComponent,
         displayValue: {
           label: `Show ${selectionValue.length} value${selectionValue.length > 1 ? "s" : ""}`,
           modalComponent: MultiSelectModal,

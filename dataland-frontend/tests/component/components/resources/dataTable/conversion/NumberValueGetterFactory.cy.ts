@@ -1,8 +1,8 @@
 import {
   EmptyDisplayValue,
-  MLDTDisplayComponents,
+  MLDTDisplayComponentName,
   type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 
 describe("Unit test for the NumberValueGetterFactory", () => {
@@ -15,8 +15,8 @@ describe("Unit test for the NumberValueGetterFactory", () => {
   it("The value of the input should be displayed if it exists", () => {
     const dataset = { data: 10 };
     const value = numberValueGetterFactory("data")(dataset);
-    expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponentName.StringDisplayComponent>>{
+      displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: "10",
     });
   });
@@ -24,8 +24,8 @@ describe("Unit test for the NumberValueGetterFactory", () => {
   it("The value of the input should be displayed with a percent sign rounded to two decimal places", () => {
     const dataset = { data: 10.223 };
     const value = numberValueGetterFactory("data")(dataset);
-    expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponentName.StringDisplayComponent>>{
+      displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: "10.22",
     });
   });
@@ -33,8 +33,8 @@ describe("Unit test for the NumberValueGetterFactory", () => {
   it("The value of the input should contain thousands separators", () => {
     const dataset = { data: 1023 };
     const value = numberValueGetterFactory("data")(dataset);
-    expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponentName.StringDisplayComponent>>{
+      displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: "1,023",
     });
   });
