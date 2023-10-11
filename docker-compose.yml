@@ -14,7 +14,7 @@ x-max-number-of-days-selectable-for-api-key-validity: &max-number-of-days-select
 x-data-request-upload-max-file-size-in-megabytes: &data-request-upload-max-file-size-in-megabytes
   DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: 2
 x-document-upload-max-file-size-in-megabytes: &document-upload-max-file-size-in-megabytes
-  DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: 100
+  DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: 150
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
   RABBITMQ_USER: ${RABBITMQ_USER}
   RABBITMQ_PASS: ${RABBITMQ_PASS}
