@@ -5,6 +5,8 @@ import content from "@/assets/content.json";
 import { type Page, type Section } from "@/types/ContentTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
+const SLIDE_DELTA = 440;
+
 describe("Component test for the landing page", () => {
   it("Check if essential elements are present", () => {
     cy.mountWithPlugins(NewLandingPage, {
@@ -118,6 +120,10 @@ function validateQuotesSlides(): void {
   assertSlidesPosition(slidesSelector, 0, 1);
   cy.get(leftButtonSelector).click();
   assertSlidesPosition(slidesSelector, 0, 1);
+  dragCenterSlideLeft(".quotes__slide", 0);
+  assertSlidesPosition(slidesSelector, 1, 1);
+  dragCenterSlideRight(".quotes__slide", 1);
+  assertSlidesPosition(slidesSelector, 0, 1);
 }
 
 /**
@@ -144,12 +150,12 @@ function validateHowItWorksSlides(): void {
 /**
  * Checks that a slide show is centered at a given slide
  * @param slidesSelector the selector for the slides wrapper
- * @param position the index of the slide that is expected to be in the center
- * @param centerElement the index of the slide that was centered initially
+ * @param centerSlide the index of the slide that is expected to be in the center
+ * @param initialCenterSlide the index of the slide that was centered initially
  */
-function assertSlidesPosition(slidesSelector: string, position?: number, centerElement = 0): void {
+function assertSlidesPosition(slidesSelector: string, centerSlide?: number, initialCenterSlide = 0): void {
   const expectedTransformValue =
-    position == undefined ? "none" : `matrix(1, 0, 0, 1, ${-440 * (position - centerElement)}, 0)`;
+    centerSlide == undefined ? "none" : `matrix(1, 0, 0, 1, ${-SLIDE_DELTA * (centerSlide - initialCenterSlide)}, 0)`;
   cy.get(slidesSelector).should("have.css", "transform", expectedTransformValue);
 }
 
@@ -161,7 +167,7 @@ function assertSlidesPosition(slidesSelector: string, position?: number, centerE
 function dragCenterSlideLeft(genericSlideSelector: string, centerSlide: number): void {
   const viewportWidth = Cypress.config("viewportWidth");
   const viewportHeight = Cypress.config("viewportHeight");
-  dragSlideTo(genericSlideSelector, centerSlide, viewportWidth / 2 - 440, viewportHeight / 2);
+  dragSlideTo(genericSlideSelector, centerSlide, viewportWidth / 2 - SLIDE_DELTA, viewportHeight / 2);
 }
 
 /**
@@ -172,7 +178,7 @@ function dragCenterSlideLeft(genericSlideSelector: string, centerSlide: number):
 function dragCenterSlideRight(genericSlideSelector: string, centerSlide: number): void {
   const viewportWidth = Cypress.config("viewportWidth");
   const viewportHeight = Cypress.config("viewportHeight");
-  dragSlideTo(genericSlideSelector, centerSlide, viewportWidth / 2 + 440, viewportHeight / 2);
+  dragSlideTo(genericSlideSelector, centerSlide, viewportWidth / 2 + SLIDE_DELTA, viewportHeight / 2);
 }
 
 /**
@@ -186,7 +192,7 @@ function dragSlideTo(genericSlideSelector: string, slideIndex: number, targetX: 
   cy.get(genericSlideSelector).eq(slideIndex).click();
   cy.get(genericSlideSelector)
     .eq(slideIndex)
-    .trigger("pointerdown", { button: 0 })
+    .trigger("pointerdown", 10, 10, { button: 0 })
     .trigger("pointermove", {
       eventConstructor: "MouseEvent",
       clientX: targetX,
