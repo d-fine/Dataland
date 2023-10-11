@@ -1,4 +1,4 @@
-import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
 export type MLDTConfig<FrameworkDataType> = Array<
   MLDTCellConfig<FrameworkDataType> | MLDTSectionConfig<FrameworkDataType>
@@ -16,7 +16,7 @@ export interface MLDTCellConfig<FrameworkDataType> {
   label: string;
   explanation?: string;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
-  valueGetter: (dataset: FrameworkDataType) => AvailableDisplayValues;
+  valueGetter: (dataset: FrameworkDataType) => AvailableMLDTDisplayObjectTypes;
 }
 
 export interface MLDTSectionConfig<FrameworkDataType> {

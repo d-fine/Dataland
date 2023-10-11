@@ -46,8 +46,8 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise")
 const props = defineProps<{
   companyId: string;
   singleDataMetaInfoToDisplay?: DataMetaInformation;
-  frameworkIdentifier: Framework;
-  displayConfiguration: MLDTConfig<FrameworkDataTypes[Framework]["data"]>;
+  frameworkIdentifier: Framework; // TODO Emanuel: at the end: try to type this as an actual DataTypeEnum
+  displayConfiguration: MLDTConfig<FrameworkDataTypes[Framework]["data"]>; // TODO this too?
   inReviewMode: boolean;
 }>();
 

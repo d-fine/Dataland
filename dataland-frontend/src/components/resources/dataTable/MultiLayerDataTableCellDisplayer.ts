@@ -19,20 +19,22 @@ export type MLDTDisplayComponentTypes = {
     modalOptions?: DynamicDialogOptions;
   };
   [MLDTDisplayComponentName.HighlightHiddenCellDisplayComponent]: {
-    innerContents: AvailableDisplayValues;
+    innerContents: AvailableMLDTDisplayObjectTypes;
   };
 };
 
-export type AvailableDisplayValues = {
-  [K in MLDTDisplayComponentName]: MLDTDisplayValue<K>;
+export interface MLDTDisplayObject<DisplayComponentName extends MLDTDisplayComponentName> {
+  displayComponentName: DisplayComponentName;
+  displayValue: MLDTDisplayComponentTypes[DisplayComponentName];
+}
+
+export type AvailableMLDTDisplayObjectTypes = {
+  [DisplayComponentName in MLDTDisplayComponentName]: MLDTDisplayObject<DisplayComponentName>;
 }[MLDTDisplayComponentName];
 
-export const EmptyDisplayValue: AvailableDisplayValues = {
-  displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
+export const MLDTDisplayObjectForEmptyString: AvailableMLDTDisplayObjectTypes = {
+  displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
   displayValue: "",
 };
 
-export interface MLDTDisplayValue<DisplayComponent extends MLDTDisplayComponentName> {
-  displayComponent: DisplayComponent;
-  displayValue: MLDTDisplayComponentTypes[DisplayComponent];
-}
+

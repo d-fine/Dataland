@@ -1,10 +1,10 @@
 import {
-  type AvailableDisplayValues,
-  EmptyDisplayValue,
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
-  type MLDTDisplayValue,
+  type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
+import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type LksgProcurementCategory } from "@clients/backend";
 import { type ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
@@ -84,17 +84,17 @@ export function lksgProcurementCategoriesValueGetterFactory(
   path: string,
   field: Field,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): (dataset: any) => AvailableDisplayValues {
+): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const datasetValue = getFieldValueFromDataModel(path, dataset) as LksgProcurementType | undefined;
+    const datasetValue = getFieldValueFromFrameworkDataset(path, dataset) as LksgProcurementType | undefined;
     if (!datasetValue || Object.keys(datasetValue).length == 0) {
-      return EmptyDisplayValue;
+      return MLDTDisplayObjectForEmptyString;
     }
 
     const convertedValueForModal = convertLksgProcumentTypeToListForModal(datasetValue);
 
-    return <MLDTDisplayValue<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
-      displayComponent: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${field.label}`,
         modalComponent: DetailsCompanyDataTable,

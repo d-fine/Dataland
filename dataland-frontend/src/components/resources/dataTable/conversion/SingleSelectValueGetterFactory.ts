@@ -1,9 +1,9 @@
 import {
-  type AvailableDisplayValues,
-  EmptyDisplayValue,
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
+import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 
 /**
@@ -14,22 +14,22 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
  * @returns the created getter
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function singleSelectValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableDisplayValues {
+export function singleSelectValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const selectedElement = getFieldValueFromDataModel(path, dataset) as string | undefined;
+    const selectedElement = getFieldValueFromFrameworkDataset(path, dataset) as string | undefined;
     if (!selectedElement) {
-      return EmptyDisplayValue;
+      return MLDTDisplayObjectForEmptyString;
     }
 
     const matchingOption = field.options?.find((it) => it.value == selectedElement);
     if (matchingOption) {
       return {
-        displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: matchingOption.label,
       };
     } else {
       return {
-        displayComponent: MLDTDisplayComponentName.StringDisplayComponent,
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: selectedElement,
       };
     }

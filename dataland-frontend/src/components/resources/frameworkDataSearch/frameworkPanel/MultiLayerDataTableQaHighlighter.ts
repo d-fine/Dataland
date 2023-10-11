@@ -4,7 +4,7 @@ import {
   type MLDTSectionConfig,
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
-  type AvailableDisplayValues,
+  type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
@@ -46,14 +46,14 @@ function wrapMultiLayerDataTableCellForHighlightingHiddenFields<T>(cellConfig: M
   return {
     ...cellConfig,
     shouldDisplay: () => true,
-    valueGetter: (dataset: T): AvailableDisplayValues => {
+    valueGetter: (dataset: T): AvailableMLDTDisplayObjectTypes => {
       const originalDisplayValue = cellConfig.valueGetter(dataset);
 
       if (cellConfig.shouldDisplay(dataset)) {
         return originalDisplayValue;
       } else {
         return {
-          displayComponent: MLDTDisplayComponentName.HighlightHiddenCellDisplayComponent,
+          displayComponentName: MLDTDisplayComponentName.HighlightHiddenCellDisplayComponent,
           displayValue: {
             innerContents: originalDisplayValue,
           },

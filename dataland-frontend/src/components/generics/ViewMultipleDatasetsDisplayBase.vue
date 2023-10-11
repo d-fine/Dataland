@@ -30,7 +30,7 @@
               v-if="dataType === DataTypeEnum.Lksg"
               :frameworkIdentifier="DataTypeEnum.Lksg"
               :companyId="companyId"
-              :display-configuration="convertDataModel(lksgDataModel)"
+              :display-configuration="convertDataModelToMLDTConfig(lksgDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
             />
@@ -38,7 +38,7 @@
               v-if="dataType === DataTypeEnum.Sfdr"
               :frameworkIdentifier="DataTypeEnum.Sfdr"
               :companyId="companyId"
-              :display-configuration="convertDataModel(sfdrDataModel)"
+              :display-configuration="convertDataModelToMLDTConfig(sfdrDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
             />
@@ -46,7 +46,7 @@
               v-if="dataType === DataTypeEnum.P2p"
               :frameworkIdentifier="DataTypeEnum.P2p"
               :companyId="companyId"
-              :display-configuration="convertDataModel(p2pDataModel)"
+              :display-configuration="convertDataModelToMLDTConfig(p2pDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
             />
@@ -97,7 +97,7 @@ import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataS
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
 import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
 import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
-import { convertDataModel } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
+import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
@@ -191,7 +191,7 @@ export default defineComponent({
   },
 
   methods: {
-    convertDataModel,
+    convertDataModelToMLDTConfig,
     /**
      * Method to set flags that indicate found data
      */

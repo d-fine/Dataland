@@ -1,14 +1,14 @@
 <template>
-  <div class="flex" v-if="content.displayComponent == MLDTDisplayComponents.HighlightHiddenCellDisplayComponent">
+  <div class="flex" v-if="content.displayComponentName == MLDTDisplayComponents.HighlightHiddenCellDisplayComponent">
     <i class="pi pi-eye-slash pr-1 text-red-500" aria-hidden="true" data-test="hidden-icon" />
     <MultiLayerDataTableCell :content="content.displayValue.innerContents" />
   </div>
-  <component v-else :is="content.displayComponent" :content="content" />
+  <component v-else :is="content.displayComponentName" :content="content" />
 </template>
 
 <script lang="ts">
 import {
-  type AvailableDisplayValues,
+  type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DocumentLinkDisplayComponent from "@/components/resources/dataTable/cells/DocumentLinkDisplayComponent.vue";
@@ -26,7 +26,7 @@ export default defineComponent({
   components: { StringDisplayComponent, DocumentLinkDisplayComponent, ModalLinkDisplayComponent },
   props: {
     content: {
-      type: Object as () => AvailableDisplayValues,
+      type: Object as () => AvailableMLDTDisplayObjectTypes,
       required: true,
     },
   },

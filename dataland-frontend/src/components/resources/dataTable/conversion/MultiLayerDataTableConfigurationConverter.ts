@@ -4,7 +4,7 @@ import {
   type MLDTConfig,
   type MLDTSectionConfig,
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { getDataModelFieldDisplayConfiguration } from "@/components/resources/dataTable/conversion/MultiLayerDataTableFieldConverter";
+import { getDataModelFieldCellConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableFieldConverter";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -16,8 +16,9 @@ const autoExpandingCategoryNames = new Set(["general", "masterData"]);
  * @param category the category to convert
  * @returns the converted category
  */
-function convertCategory(category: Category): MLDTSectionConfig<any> {
-  const mldtCategoryChildren: MLDTConfig<any> = category.subcategories.map((it) => convertSubCategory(category, it));
+function convertCategoryToMLDTSectionConfig(category: Category): MLDTSectionConfig<any> {
+  const mldtCategoryChildren: MLDTConfig<any> = category.subcategories.map((subcategory) =>
+      convertSubCategoryToMLDTSectionConfig(category, subcategory));
 
   return {
     type: "section",
@@ -35,11 +36,11 @@ function convertCategory(category: Category): MLDTSectionConfig<any> {
  * @param subcategory the subcategory to convert
  * @returns the converted subcategory
  */
-function convertSubCategory(category: Category, subcategory: Subcategory): MLDTSectionConfig<any> {
+function convertSubCategoryToMLDTSectionConfig(category: Category, subcategory: Subcategory): MLDTSectionConfig<any> {
   const mldtSubcategoryChildren: MLDTConfig<any> = [];
 
   for (const field of subcategory.fields) {
-    const cellConfig = getDataModelFieldDisplayConfiguration(
+    const cellConfig = getDataModelFieldCellConfig(
       category.name + "." + subcategory.name + "." + field.name,
       field,
     );
@@ -62,6 +63,6 @@ function convertSubCategory(category: Category, subcategory: Subcategory): MLDTS
  * @param dataModel the data model to convert
  * @returns the view configuration
  */
-export function convertDataModel(dataModel: Array<Category>): MLDTConfig<any> {
-  return dataModel.map((it) => convertCategory(it));
+export function convertDataModelToMLDTConfig(dataModel: Array<Category>): MLDTConfig<any> {
+  return dataModel.map((category) => convertCategoryToMLDTSectionConfig(category));
 }

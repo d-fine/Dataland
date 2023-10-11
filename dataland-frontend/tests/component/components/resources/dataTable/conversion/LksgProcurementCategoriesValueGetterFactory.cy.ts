@@ -1,5 +1,5 @@
 import {
-  EmptyDisplayValue,
+  MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type Field } from "@/utils/GenericFrameworkTypes";
@@ -24,7 +24,7 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
   it("An empty string should be displayed if the data point is undefined", () => {
     const dataset = { data: undefined };
     const value = lksgProcurementCategoriesValueGetterFactory("data", sampleField)(dataset);
-    expect(value).to.deep.equal(EmptyDisplayValue);
+    expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
   });
 
   it("Should display the name of the procurement category in a human-friendly name", () => {
@@ -38,7 +38,7 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
     const dataset = { data: procurementData };
     const value = lksgProcurementCategoriesValueGetterFactory("data", sampleField)(dataset);
 
-    expect(value).to.have.property("displayComponent", MLDTDisplayComponentName.ModalLinkDisplayComponent);
+    expect(value).to.have.property("displayComponentName", MLDTDisplayComponentName.ModalLinkDisplayComponent);
     expect(value).to.have.nested.property("displayValue.label", "Show Products/Services Categories purchased");
     expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
       {

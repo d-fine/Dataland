@@ -11,7 +11,7 @@
 import { defineComponent } from "vue";
 import {
   type MLDTDisplayComponentName,
-  type MLDTDisplayValue,
+  type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 
@@ -20,7 +20,7 @@ export default defineComponent({
   components: { DocumentLink },
   props: {
     content: {
-      type: Object as () => MLDTDisplayValue<MLDTDisplayComponentName.DocumentLinkDisplayComponent>,
+      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>,
       required: true,
     },
   },

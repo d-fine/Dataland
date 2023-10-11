@@ -6,14 +6,14 @@
 import { defineComponent } from "vue";
 import {
   type MLDTDisplayComponentName,
-  type MLDTDisplayValue,
+  type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
 export default defineComponent({
   name: "StringDisplayComponent",
   props: {
     content: {
-      type: Object as () => MLDTDisplayValue<MLDTDisplayComponentName.StringDisplayComponent>,
+      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>,
       required: true,
     },
   },
