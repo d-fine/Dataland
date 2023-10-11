@@ -1,20 +1,15 @@
-import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import {
-  type CompanyAssociatedDataPathwaysToParisData,
-  type DataAndMetaInformationPathwaysToParisData,
-  type DataMetaInformation,
-  DataTypeEnum,
-  P2pSector,
-  type PathwaysToParisData,
-  QaStatus,
-} from "@clients/backend";
-import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
+import { DataTypeEnum, type PathwaysToParisData } from "@clients/backend";
+
+import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
+import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
+import { mountMLDTFrameworkPanelFromFakeFixture } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
+import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
-  const companyId = "mock-company-id";
+  const p2pDisplayConfiguration = convertDataModelToMLDTConfig(p2pDataModel) as MLDTConfig<PathwaysToParisData>;
 
   before(function () {
     cy.fixture("CompanyInformationWithP2pPreparedFixtures").then(function (jsonContent) {
@@ -22,138 +17,69 @@ describe("Component test for P2pPanel", () => {
     });
   });
 
-  it("Should display the correct categories in the sector field", () => {
-    const pseudoP2pData = {
-      general: { general: { dataDate: "2023-01-01", sectors: [P2pSector.Ammonia] } },
-    } as PathwaysToParisData;
-
-    cy.intercept("/api/data/p2p/mock-data-id", {
-      companyId: companyId,
-      reportingPeriod: "2023",
-      data: pseudoP2pData,
-    } as CompanyAssociatedDataPathwaysToParisData);
-    cy.mountWithPlugins(P2pPanel, {
-      keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyId: companyId,
-          singleDataMetaInfoToDisplay: {
-            dataId: "mock-data-id",
-            reportingPeriod: "2023",
-          } as DataMetaInformation,
-        };
-      },
-    });
-    cy.get("td:contains('Ammonia')").should("exist");
-  });
-
   it("Check P2p view page for company with one P2p data set", () => {
     const preparedFixture = getPreparedFixture("one-p2p-data-set-with-three-sectors", preparedFixtures);
     const p2pData = preparedFixture.t;
-
-    cy.intercept("/api/data/p2p/mock-data-id", {
-      companyId: "mock-company-id",
-      reportingPeriod: preparedFixture.reportingPeriod,
-      data: p2pData,
-    } as CompanyAssociatedDataPathwaysToParisData);
-    cy.mountWithPlugins(P2pPanel, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        stubs: {
-          transition: false,
-        },
-      },
-      data() {
-        return {
-          companyId: "mock-company-id",
-          singleDataMetaInfoToDisplay: {
-            dataId: "mock-data-id",
-            reportingPeriod: preparedFixture.reportingPeriod,
-          } as DataMetaInformation,
-        };
-      },
-    });
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.P2p, p2pDisplayConfiguration, [preparedFixture]);
 
     cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
-    cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("exist");
+    MLDT.getCellContainer("Data Date").should("contain.text", p2pData.general.general.dataDate).should("be.visible");
 
-    toggleRowGroup("_general");
-    cy.get(`span[data-test=General]`).click();
-    cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("not.exist");
-    cy.get(`span[data-test=General]`).click();
+    MLDT.getSectionHead("General").eq(1).click();
+    MLDT.getCellContainer("Data Date")
+      .should("contain.text", p2pData.general.general.dataDate)
+      .should("not.be.visible");
 
-    cy.get("tbody").find(`span:contains(${p2pData.general.general.dataDate})`).should("not.exist");
+    MLDT.getSectionHead("General").eq(1).click();
+    MLDT.getCellContainer("Data Date").should("contain.text", p2pData.general.general.dataDate).should("be.visible");
 
-    toggleRowGroup("_general");
-    cy.get("table.p-datatable-table").find(`span:contains(${p2pData.general.general.dataDate})`).should("exist");
+    MLDT.getSectionHead("Ammonia").click();
+    MLDT.getCellContainer("CCS technology adoption").should("not.be.visible");
 
-    cy.get(`span[data-test=Ammonia]`).click();
+    MLDT.getSectionHead("Decarbonisation").click();
+    MLDT.getCellContainer("CCS technology adoption").should("be.visible");
 
-    cy.get("span[data-test=ccsTechnologyAdoptionInPercent]").should("not.exist");
-    toggleRowGroup("decarbonisation");
-    cy.get("span[data-test=ccsTechnologyAdoptionInPercent]").should("exist");
-
-    cy.get(`span[data-test="Livestock farming"]`).click();
-    toggleRowGroup("animalFeed");
+    MLDT.getSectionHead("Livestock farming").click();
+    MLDT.getSectionHead("Animal feed").click();
     cy.get("span[data-test=Report-Download-Policy]").find("i[data-test=download-icon]").should("be.visible");
 
-    cy.get(`span[data-test=Cement]`).click();
-    toggleRowGroup("material");
-    cy.get("span[data-test=preCalcinedClayUsageInPercent]").should("exist");
+    MLDT.getSectionHead("Cement").click();
+    MLDT.getSectionHead("Material").click();
+    MLDT.getCellContainer("Pre-calcined clay usage").should("be.visible");
 
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").should("contain.text", "Share of pre-calcined");
-    cy.get("em[title='Pre-calcined clay usage']").trigger("mouseleave");
   });
 
   /**
-   * This functions imitates an api response of the /data/p2p/companies/mock-company-id endpoint
-   * to include 6 active p2p datasets from different years to test the simultaneous display of multiple P2P
-   * datasets (constructed datasets range from 2023 to 2028)
-   * @param baseDataset the p2p dataset used as a basis for constructing the 6 mocked ones
-   * @returns a mocked api response
+   * This functions creates a list of six p2p-fixture-datasets from different reporting periods that range from
+   * 2023 to 2028.
+   * @param baseFixture the p2p fixture used as a basis for constructing the 6 mocked ones
+   * @returns a list of six p2p-fixture-datasets with ascending years as reporting periods
    */
-  function constructCompanyApiResponseForP2pForSixYears(
-    baseDataset: PathwaysToParisData,
-  ): DataAndMetaInformationPathwaysToParisData[] {
-    const p2pDatasets: DataAndMetaInformationPathwaysToParisData[] = [];
+  function createListOfP2pFixturesWithSixDifferentReportingPeriods(
+    baseFixture: FixtureData<PathwaysToParisData>,
+  ): FixtureData<PathwaysToParisData>[] {
+    const fixtureDatasets: FixtureData<PathwaysToParisData>[] = [];
     for (let i = 0; i < 6; i++) {
       const reportingYear = 2023 + i;
       const reportingDate = `${reportingYear}-01-01`;
-      const p2pData = structuredClone(baseDataset);
+      const p2pData = structuredClone(baseFixture.t);
       p2pData.general.general.dataDate = reportingDate;
-      const metaData: DataMetaInformation = {
-        dataId: `dataset-${i}`,
+      fixtureDatasets.push({
+        companyInformation: baseFixture.companyInformation,
+        t: p2pData,
         reportingPeriod: reportingYear.toString(),
-        qaStatus: QaStatus.Accepted,
-        currentlyActive: true,
-        dataType: DataTypeEnum.P2p,
-        companyId: "mock-company-id",
-        uploadTime: 0,
-        uploaderUserId: "mock-uploader-id",
-      };
-
-      p2pDatasets.push({
-        metaInfo: metaData,
-        data: p2pData,
       });
     }
-    return p2pDatasets;
+    return fixtureDatasets;
   }
 
   it("Check P2p view page for company with six P2p data sets reported in different years ", () => {
     const preparedFixture = getPreparedFixture("six-p2p-data-sets-in-different-years", preparedFixtures);
-    const mockedData = constructCompanyApiResponseForP2pForSixYears(preparedFixture.t);
-    cy.intercept("/api/data/p2p/companies/mock-company-id", mockedData);
+    const mockedData = createListOfP2pFixturesWithSixDifferentReportingPeriods(preparedFixture);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.P2p, p2pDisplayConfiguration, mockedData);
 
-    cy.mountWithPlugins(P2pPanel, {
-      keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyId: "mock-company-id",
-        };
-      },
-    });
     cy.get("table").find(`tr:contains("Data Date")`).find("span").eq(6).get("span").contains("2023");
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
