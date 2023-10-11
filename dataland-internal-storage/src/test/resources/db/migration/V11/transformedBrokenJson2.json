@@ -1,0 +1,339 @@
+{
+      "financialServicesTypes": [
+        "CreditInstitution"
+      ],
+      "eligibilityKpis": {
+        "AssetManagement": {
+          "taxonomyEligibleActivityInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "taxonomyNonEligibleActivityInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "derivativesInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "banksAndIssuersInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "investmentNonNfrdInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          }
+        },
+        "CreditInstitution": {
+          "taxonomyEligibleActivityInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "Sustainability Report",
+              "fileReference": "3a4257e2bd02ecadb526492701f50c1c259a2139b7513b22ddee303b9b9dfe61",
+              "page": 19,
+              "tagName": null
+            },
+            "comment": null,
+            "value": 11.79
+          },
+          "taxonomyNonEligibleActivityInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "Sustainability Report",
+              "fileReference": "3a4257e2bd02ecadb526492701f50c1c259a2139b7513b22ddee303b9b9dfe61",
+              "page": 19,
+              "tagName": null
+            },
+            "comment": null,
+            "value": 88.21
+          },
+          "derivativesInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "Sustainability Report",
+              "fileReference": "3a4257e2bd02ecadb526492701f50c1c259a2139b7513b22ddee303b9b9dfe61",
+              "page": 19,
+              "tagName": null
+            },
+            "comment": null,
+            "value": 22.72
+          },
+          "banksAndIssuersInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "Sustainability Report",
+              "fileReference": "3a4257e2bd02ecadb526492701f50c1c259a2139b7513b22ddee303b9b9dfe61",
+              "page": 19,
+              "tagName": null
+            },
+            "comment": null,
+            "value": 17.82
+          },
+          "investmentNonNfrdInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "Sustainability Report",
+              "fileReference": "3a4257e2bd02ecadb526492701f50c1c259a2139b7513b22ddee303b9b9dfe61",
+              "page": 19,
+              "tagName": null
+            },
+            "comment": null,
+            "value": 9.3
+          }
+        },
+        "InsuranceOrReinsurance": {
+          "taxonomyEligibleActivityInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "taxonomyNonEligibleActivityInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "derivativesInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "banksAndIssuersInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "investmentNonNfrdInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          }
+        },
+        "InvestmentFirm": {
+          "taxonomyEligibleActivityInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "taxonomyNonEligibleActivityInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "derivativesInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "banksAndIssuersInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          },
+          "investmentNonNfrdInPercent": {
+            "quality": "Reported",
+            "dataSource": {
+              "fileName": "0",
+              "fileReference" : "",
+              "page": null,
+              "tagName": null
+            },
+            "comment": null,
+            "value": null
+          }
+        }
+      },
+      "creditInstitutionKpis": {
+        "tradingPortfolioInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "fileName": "Sustainability Report",
+            "fileReference": "3a4257e2bd02ecadb526492701f50c1c259a2139b7513b22ddee303b9b9dfe61",
+            "page": 19,
+            "tagName": null
+          },
+          "comment": null,
+          "value": 16.18
+        },
+        "interbankLoansInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "fileName": "Sustainability Report",
+            "fileReference": "3a4257e2bd02ecadb526492701f50c1c259a2139b7513b22ddee303b9b9dfe61",
+            "page": 19,
+            "tagName": null
+          },
+          "comment": null,
+          "value": 0.48
+        },
+        "tradingPortfolioAndInterbankLoansInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "fileName": "0",
+            "fileReference" : "",
+            "page": null,
+            "tagName": null
+          },
+          "comment": null,
+          "value": null
+        },
+        "greenAssetRatioInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "fileName": "0",
+            "fileReference" : "",
+            "page": null,
+            "tagName": null
+          },
+          "comment": null,
+          "value": null
+        }
+      },
+      "investmentFirmKpis": {
+        "greenAssetRatioInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "fileName": "0",
+            "fileReference" : "",
+            "page": null,
+            "tagName": null
+          },
+          "comment": null,
+          "value": null
+        }
+      },
+      "insuranceKpis": {
+        "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "fileName": "0",
+            "fileReference" : "",
+            "page": null,
+            "tagName": null
+          },
+          "comment": null,
+          "value": null
+        }
+      },
+      "fiscalYearDeviation": "NoDeviation",
+      "fiscalYearEnd": "2021-12-31",
+      "scopeOfEntities": null,
+      "nfrdMandatory": "Yes",
+      "euTaxonomyActivityLevelReporting": "No",
+      "assurance": {
+        "value": "LimitedAssurance",
+        "provider": "EY",
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "3a4257e2bd02ecadb526492701f50c1c259a2139b7513b22ddee303b9b9dfe61",
+          "page": 119,
+          "tagName": null
+        }
+      },
+      "numberOfEmployees": 82969,
+      "referencedReports": {
+        "Annual Report": {
+          "fileReference": "1f69e16fb20a9b1be101f23299b2be4a32876e666b4a0c0538e7d1d8bcac949c",
+          "fileName" : "Annual Report",
+          "isGroupLevel": null,
+          "reportDate": null,
+          "currency": "EUR"
+        },
+        "Sustainability Report": {
+          "fileReference": "3a4257e2bd02ecadb526492701f50c1c259a2139b7513b22ddee303b9b9dfe61",
+          "fileName": "Sustainability Report",
+          "isGroupLevel": null,
+          "reportDate": null,
+          "currency": "EUR"
+        }
+      }
+    }

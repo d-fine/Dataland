@@ -1,0 +1,81 @@
+{
+    "financialServicesTypes": [
+      "AssetManagement"
+    ],
+    "eligibilityKpis": {
+      "AssetManagement": {
+        "taxonomyEligibleActivityInPercent": {
+          "quality": "Reported",
+          "dataSource": null,
+          "comment": null,
+          "value": 0
+        },
+        "taxonomyNonEligibleActivityInPercent": {
+          "quality": "Reported",
+          "dataSource": null,
+          "comment": null,
+          "value": null
+        },
+        "derivativesInPercent": {
+          "quality": "Reported",
+          "dataSource": null,
+          "comment": null,
+          "value": 0.3
+        },
+        "banksAndIssuersInPercent": {
+          "quality": "Reported",
+          "dataSource": null,
+          "comment": null,
+          "value": 14.1
+        },
+        "investmentNonNfrdInPercent": {
+          "quality": "Reported",
+          "dataSource": null,
+          "comment": null,
+          "value": 58.5
+        }
+      }
+    },
+    "creditInstitutionKpis": {
+      "tradingPortfolioInPercent": {
+        "quality": "Reported",
+        "dataSource": null,
+        "comment": null,
+        "value": null
+      },
+      "interbankLoansInPercent": {
+        "quality": "Reported",
+        "dataSource": null,
+        "comment": null,
+        "value": null
+      },
+      "tradingPortfolioAndInterbankLoansInPercent": {
+        "quality": "Reported",
+        "dataSource": null,
+        "comment": null,
+        "value": null
+      },
+      "greenAssetRatioInPercent": null
+    },
+    "investmentFirmKpis": null,
+    "insuranceKpis": null,
+    "fiscalYearDeviation": "NoDeviation",
+    "fiscalYearEnd": null,
+    "scopeOfEntities": null,
+    "nfrdMandatory": "Yes",
+    "euTaxonomyActivityLevelReporting": null,
+    "assurance": {
+      "assurance": "None",
+      "provider": null,
+      "dataSource": null
+    },
+    "numberOfEmployees": 3422,
+    "referencedReports": {
+      "DE000DWS1007_IntegratedReport": {
+        "reference": "1b72106ea80788a75935b0b316ed09e6ca44f775cab98c949c472dd06f7db677",
+        "isGroupLevel": null,
+        "reportDate": null,
+        "currency": null
+      }
+    }
+  }

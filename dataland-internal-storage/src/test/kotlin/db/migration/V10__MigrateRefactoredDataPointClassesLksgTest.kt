@@ -11,5 +11,10 @@ class V10__MigrateRefactoredDataPointClassesLksgTest {
             "V10/expectedTransformedDatabaseEntry.json",
             V10__MigrateRefactoredDataPointClassesLksg()::migrateRefactoredDataPointClasses,
         )
+        TestUtils().testMigrationOfSingleDataset(
+            "V10/oldOriginalDatabaseEntry2.json",
+            "V10/expectedTransformedDatabaseEntry2.json",
+            V10__MigrateRefactoredDataPointClassesLksg()::migrateRefactoredDataPointClasses,
+        )
     }
 }

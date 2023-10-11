@@ -2,19 +2,19 @@ package db.migration
 
 import db.migration.utils.DataTableEntity
 import db.migration.utils.getOrJavaNull
-import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
+import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
  * Performs the migration of the refactored data point classes for the lksg framework
  */
-class V10__MigrateRefactoredDataPointClassesLksg {
+class V10__MigrateRefactoredDataPointClassesLksg : BaseJavaMigration() {
     /**
      * Performs the migration of the refactored data point classes for lksg data
      */
-    fun migrate(context: Context?) {
+    override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context,
             "lksg",
@@ -88,10 +88,10 @@ class V10__MigrateRefactoredDataPointClassesLksg {
      * Migrates one single dataSource Object in the corresponding parent folder
      */
     private fun migrateSingleDataSourceObjectFormParentObject(dataSourceParentObject: JSONObject) {
-        val dataSourceObject = dataSourceParentObject.getOrJsonNull("dataSource")
+        val dataSourceObject = dataSourceParentObject.getOrJavaNull("dataSource") ?: return
         dataSourceObject as JSONObject
         oldToNewFieldNamesForDataSource.forEach {
-            dataSourceObject.put(it.value, dataSourceObject.get(it.key))
+            dataSourceObject.put(it.value, dataSourceObject[it.key])
             dataSourceObject.remove(it.key)
         }
     }
