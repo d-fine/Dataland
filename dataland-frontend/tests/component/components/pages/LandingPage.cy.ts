@@ -135,6 +135,10 @@ function validateHowItWorksSlides(): void {
   assertSlidesPosition(slidesSelector, 2);
   cy.get(leftButtonSelector).click();
   assertSlidesPosition(slidesSelector, 1);
+  dragCenterSlideLeft(".howitworks__slide", 2);
+  assertSlidesPosition(slidesSelector, 2);
+  dragCenterSlideRight(".howitworks__slide", 3);
+  assertSlidesPosition(slidesSelector, 1);
 }
 
 /**
@@ -147,4 +151,46 @@ function assertSlidesPosition(slidesSelector: string, position?: number, centerE
   const expectedTransformValue =
     position == undefined ? "none" : `matrix(1, 0, 0, 1, ${-440 * (position - centerElement)}, 0)`;
   cy.get(slidesSelector).should("have.css", "transform", expectedTransformValue);
+}
+
+/**
+ * Drags the selected center slide one position to the left
+ * @param genericSlideSelector a selector that applies for each of the slides in the slide show
+ * @param centerSlide the center slide
+ */
+function dragCenterSlideLeft(genericSlideSelector: string, centerSlide: number): void {
+  const viewportWidth = Cypress.config("viewportWidth");
+  const viewportHeight = Cypress.config("viewportHeight");
+  dragSlideTo(genericSlideSelector, centerSlide, viewportWidth / 2 - 440, viewportHeight / 2);
+}
+
+/**
+ * Drags the selected center slide one position to the right
+ * @param genericSlideSelector a selector that applies for each of the slides in the slide show
+ * @param centerSlide the center slide
+ */
+function dragCenterSlideRight(genericSlideSelector: string, centerSlide: number): void {
+  const viewportWidth = Cypress.config("viewportWidth");
+  const viewportHeight = Cypress.config("viewportHeight");
+  dragSlideTo(genericSlideSelector, centerSlide, viewportWidth / 2 + 440, viewportHeight / 2);
+}
+
+/**
+ * Drags the selected slide to the given position
+ * @param genericSlideSelector a selector that applies for each of the slides in the slide show
+ * @param slideIndex the slide to drag
+ * @param targetX the targets position x value in viewport coordinates
+ * @param targetY the targets position y value in viewport coordinates
+ */
+function dragSlideTo(genericSlideSelector: string, slideIndex: number, targetX: number, targetY: number): void {
+  cy.get(genericSlideSelector).eq(slideIndex).click();
+  cy.get(genericSlideSelector)
+    .eq(slideIndex)
+    .trigger("pointerdown", { button: 0 })
+    .trigger("pointermove", {
+      eventConstructor: "MouseEvent",
+      clientX: targetX,
+      clientY: targetY,
+    })
+    .trigger("pointerup", { button: 0 });
 }
