@@ -4,134 +4,39 @@
       <h2 id="howitworks-heading" class="howitworks__title">
         {{ sectionText }}
       </h2>
-      <div ref="slider" role="list" class="howitworks__slides" @pointerdown="dragStart" @touchstart="dragStart">
+      <SlideShow
+        slides-container-classes="howitworks__slides"
+        arrows-container-classes="howitworks__arrows"
+        left-arrow-classes="howitworks__arrow howitworks__arrow--left"
+        right-arrow-classes="howitworks__arrow howitworks__arrow--right"
+        :slide-count="slides.length"
+      >
         <div v-for="(slide, index) in slides" :key="index" role="listitem" class="howitworks__slide">
           <h3 class="howitworks__slide-title">{{ slide.title }}</h3>
           <p class="howitworks__slide-text">{{ slide.text }}</p>
           <p class="howitworks__slide-index">0{{ index + 1 }}</p>
         </div>
-      </div>
-      <div class="howitworks__arrows">
-        <button
-          @click="move(-1)"
-          aria-label="Previous slide"
-          class="howitworks__arrow howitworks__arrow--left"
-        ></button>
-        <button @click="move(1)" aria-label="Next slide" class="howitworks__arrow howitworks__arrow--right"></button>
-      </div>
+      </SlideShow>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted, watchEffect } from "vue";
+import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
+import SlideShow from "@/components/general/SlideShow.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 const howItWorksSection = computed(() => sections?.find((s) => s.title === "How it works"));
 const sectionText = computed(() => howItWorksSection.value?.text.join(" ") ?? "");
 const slides = computed(() => sections?.find((s) => s.title === "How it works")?.cards ?? []);
-const slider = ref<HTMLElement | null>(null);
-const currentSlide = ref(0);
-
-let isDragging = false;
-let startPos = 0;
-let currentTranslate = 0;
-let prevTranslate = 0;
-
-const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => {
-  if (animate) sliderElement.style.transition = "transform 0.3s ease-out";
-  sliderElement.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
-};
-
-const move = (direction: number): void => {
-  const slideCount = slides.value.length;
-  if (direction === 1 && currentSlide.value < slideCount - 1) currentSlide.value++;
-  if (direction === -1 && currentSlide.value > 0) currentSlide.value--;
-
-  currentTranslate = currentSlide.value * -440;
-  if (slider.value) setSliderPosition(slider.value);
-};
-
-watchEffect(() => {
-  const handleResize = (): void => {
-    if (window.innerWidth > 1800) {
-      currentSlide.value = 0;
-      currentTranslate = 0;
-      if (slider.value) setSliderPosition(slider.value);
-    }
-  };
-
-  window.addEventListener("resize", handleResize);
-
-  onUnmounted(() => {
-    window.removeEventListener("resize", handleResize);
-  });
-});
-
-const dragStart = (e: PointerEvent | TouchEvent): void => {
-  // Disable dragging for window width greater than 1800px, for example
-  if (window.innerWidth > 1800) return;
-  isDragging = true;
-  startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
-
-  prevTranslate = currentTranslate;
-
-  if (slider.value) {
-    slider.value.style.transition = "none";
-    slider.value.classList.add("isdragging");
-  }
-
-  document.addEventListener("pointermove", drag);
-  document.addEventListener("pointerup", dragEnd);
-  document.addEventListener("touchmove", drag);
-  document.addEventListener("touchend", dragEnd);
-};
-
-const drag = (e: PointerEvent | TouchEvent): void => {
-  if (!isDragging) return;
-  const currentPos = "touches" in e ? e.touches[0].pageX : e.pageX;
-
-  currentTranslate = prevTranslate + currentPos - startPos;
-
-  if (slider.value) {
-    setSliderPosition(slider.value, false);
-  }
-};
-
-const dragEnd = (): void => {
-  isDragging = false;
-
-  const movedBy = currentTranslate - prevTranslate;
-  if (movedBy < -100 && currentSlide.value < slides.value.length - 1) currentSlide.value++;
-  if (movedBy > 100 && currentSlide.value > 0) currentSlide.value--;
-
-  // Set currentTranslate based on the new slide index
-  currentTranslate = currentSlide.value * -440;
-
-  if (slider.value) {
-    setSliderPosition(slider.value);
-    slider.value.classList.remove("isdragging");
-  }
-
-  document.removeEventListener("pointermove", drag);
-  document.removeEventListener("pointerup", dragEnd);
-  document.removeEventListener("touchmove", drag);
-  document.removeEventListener("touchend", dragEnd);
-};
-
-onUnmounted(() => {
-  document.removeEventListener("pointermove", drag);
-  document.removeEventListener("pointerup", dragEnd);
-  document.removeEventListener("touchmove", drag);
-  document.removeEventListener("touchend", dragEnd);
-});
 </script>
 
 <style lang="scss">
 .howitworks {
   padding: 200px 0;
   background-color: var(--primary-orange);
+
   &__wrapper {
     position: relative;
     overflow: hidden;
@@ -140,6 +45,7 @@ onUnmounted(() => {
     align-items: center;
     gap: 56px;
   }
+
   &__title {
     font-size: 64px;
     font-style: normal;
@@ -156,6 +62,7 @@ onUnmounted(() => {
     transition: transform 0.3s ease-out;
     gap: 32px;
     justify-content: center;
+
     &.isdragging .howitworks__slide {
       cursor: grabbing;
     }
@@ -180,6 +87,7 @@ onUnmounted(() => {
       letter-spacing: 0.25px;
       margin: 0;
     }
+
     &-text {
       font-size: 20px;
       font-style: normal;
@@ -188,6 +96,7 @@ onUnmounted(() => {
       letter-spacing: 0.25px;
       color: #585858;
     }
+
     &-index {
       margin: auto 0 0;
       font-size: 48px;
@@ -198,11 +107,13 @@ onUnmounted(() => {
       color: #ff5c00;
     }
   }
+
   &__arrows {
     display: flex;
     gap: 18px;
     visibility: hidden;
   }
+
   &__arrow {
     width: 48px;
     height: 48px;
@@ -213,6 +124,7 @@ onUnmounted(() => {
     border: 2px solid rgba(203, 203, 203, 0.24);
     background-color: #fff;
     cursor: pointer;
+
     &:hover {
       border: 2px solid #585858;
     }
@@ -237,6 +149,7 @@ onUnmounted(() => {
     }
   }
 }
+
 @media (max-width: $extra-large) {
   .howitworks {
     &__slides {
@@ -244,6 +157,7 @@ onUnmounted(() => {
       padding-right: 789px;
       justify-content: flex-start;
     }
+
     &__arrows {
       visibility: visible;
       width: 100%;
@@ -252,6 +166,7 @@ onUnmounted(() => {
     }
   }
 }
+
 @media only screen and (max-width: $large) {
   .howitworks {
     &__wrapper {
@@ -262,6 +177,7 @@ onUnmounted(() => {
       width: 100%;
       padding: 0 32px;
     }
+
     &__title {
       grid-column: 4 / 9;
       font-size: 48px;
@@ -272,6 +188,7 @@ onUnmounted(() => {
       max-width: unset;
       padding-right: unset;
     }
+
     &__slides,
     &__arrows {
       grid-column: 4 / 16;
