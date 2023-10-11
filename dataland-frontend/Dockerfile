@@ -12,7 +12,7 @@ COPY ./.git/ ./.git
 
 RUN ./gradlew dataland-frontend:generateClients dataland-frontend:npm_run_build --no-daemon --stacktrace
 
-FROM nginx:1.25.1 as production-stage
+FROM nginx:1.25.2 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
 COPY ./dataland-frontend/default.conf /etc/nginx/conf.d/default.conf
 COPY ./dataland-inbound-proxy/config/utils/securityHeaderMap.conf /etc/nginx/utils/securityHeaderMap.conf
