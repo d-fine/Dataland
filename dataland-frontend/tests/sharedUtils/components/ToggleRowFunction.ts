@@ -3,5 +3,5 @@
  * @param groupKey the key of the row group to expand
  */
 export function toggleRowGroup(groupKey: string): void {
-  cy.get(`span[id=${groupKey}]`).click();
+  cy.get(`span[id=${groupKey}]`).eq(0).click();
 }

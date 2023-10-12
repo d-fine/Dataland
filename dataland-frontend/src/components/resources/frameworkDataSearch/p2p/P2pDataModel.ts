@@ -257,11 +257,11 @@ export const p2pDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "reductionOfAbsoluteEmissions",
+            name: "reductionOfAbsoluteEmissionsInTonnesCO2e",
             label: "Reduction of absolute emissions",
             description:
               "Use of a science-based, sector-specific Paris-compatible GHG emission reduction trajectory (Scopes 1-3) to meet climate targets and net-zero commitments represented in absolute emissions (t CO2e)",
-            unit: "",
+            unit: "tonnes CO2e",
             component: "NumberFormField",
             evidenceDesired: false,
             required: false,
@@ -492,7 +492,7 @@ export const p2pDataModel = [
           {
             name: "materialUseManagementInPercent",
             label: "Material use management",
-            description: "Share of CO2-free or low-carbon metals in total material use (%)",
+            description: "Share of CO2-free or low-carbon metals in total material use",
             unit: "%",
             component: "PercentageFormField",
             evidenceDesired: false,
@@ -885,11 +885,11 @@ export const p2pDataModel = [
         label: "Technology",
         fields: [
           {
-            name: "driveMixPerFleetSegmentInPercent",
+            name: "driveMixPerFleetSegment",
             label: "Drive mix per fleet segment",
             description: "Share of alternative drive types per fleet segment",
-            unit: "%",
-            component: "PercentageFormField",
+            unit: "",
+            component: "DriveMixFormField",
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
