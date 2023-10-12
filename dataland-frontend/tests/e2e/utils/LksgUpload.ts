@@ -207,9 +207,11 @@ function fillInProcurementCategories(): void {
  */
 function checkIfUploadFieldDependenciesAreRespected(): void {
   cy.get("input[name=capacity]").should("not.exist");
-  cy.get("input[id=manufacturingCompany-option-yes]").click();
+  cy.get('[data-test="manufacturingCompany"]')
+      .find('input.p-radiobutton').eq(0).click();
   cy.get("input[name=capacity]").should("be.visible").type("5000");
-  cy.get("input[id=manufacturingCompany-option-no]").click();
+  cy.get('[data-test="manufacturingCompany"]')
+      .find('input.p-radiobutton').eq(1).click();
   cy.get("input[name=capacity]").should("not.exist");
 }
 

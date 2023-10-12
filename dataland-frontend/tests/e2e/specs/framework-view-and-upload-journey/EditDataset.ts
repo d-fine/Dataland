@@ -89,7 +89,7 @@ describeIf(
         .invoke("attr", "data-test")
         .then((dataTest) => {
           cy.get(`div[data-test=${assertDefined(dataTest)}]`)
-            .find(`input[id=value-option-no]`)
+            .find('input.p-radiobutton').eq(1)
             .click();
           cy.get(`div[data-test=${assertDefined(dataTest)}]`)
             .find(`button[data-test=files-to-upload-remove]`)
