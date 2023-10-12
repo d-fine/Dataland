@@ -7,6 +7,7 @@
       right-arrow-classes="quotes__arrow quotes__arrow--right"
       :slide-count="slides.length"
       :initial-center-slide="1"
+      @update:currentSlide="(newSlide) => (currentSlide = newSlide)"
     >
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
@@ -17,17 +18,18 @@
             class="quotes__slide-video"
           ></iframe>
         </div>
-        <!-- <h3 class="quotes__slide-title">{{ card.title }}</h3>
-        <p class="quotes__slide-text">{{ card.text }}</p>
-        <p class="quotes__slide-index">0{{ index + 1 }}</p> -->
+        <h3 class="quotes__slide-title">
+          {{ card.title }} <span>{{ card.text }}</span>
+        </h3>
       </div>
     </SlideShow>
+    <p class="quotes__slide-text">{{ currentCardText }}</p>
     <register-button :buttonText="quotesSection.text[0]" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { Section } from "@/types/ContentTypes";
 import RegisterButton from "@/components/resources/newLandingPage/RegisterButton.vue";
 import SlideShow from "@/components/general/SlideShow.vue";
@@ -36,21 +38,16 @@ const { sections } = defineProps<{ sections?: Section[] }>();
 const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes"));
 const cards = computed(() => quotesSection.value?.cards ?? []);
 const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards ?? []);
-
-// const goToSlide = (index: number): void => {
-//   currentSlide.value = index - 1;
-//   currentTranslate = currentSlide.value * -440;
-//   if (slider.value) setSliderPosition(slider.value);
-// };
+const currentSlide = ref(0);
+const currentCardText = computed(() => cards.value[currentSlide.value]?.date);
 </script>
 
 <style lang="scss">
 .quotes {
-  margin: calc(64px + 120px) auto 120px;
+  margin: 20px auto 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 64px;
   overflow: hidden;
   &__slides {
     display: flex;
@@ -66,9 +63,7 @@ const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards
     flex: 0 0 440px;
     border-radius: 16px;
     display: flex;
-    padding: 64px 40px 32px 40px;
     flex-direction: column;
-    background: #f6f6f6;
     gap: 24px;
     cursor: grab;
 
@@ -82,24 +77,30 @@ const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards
       width: 100%;
       height: 100%;
       border-width: 0;
+      border-radius: 8px;
     }
 
-    // &-title {
-    //   font-size: 48px;
-    //   font-style: normal;
-    //   font-weight: 600;
-    //   line-height: 56px; /* 116.667% */
-    //   letter-spacing: 0.25px;
-    //   margin: 0;
-    // }
-    // &-text {
-    //   font-size: 20px;
-    //   font-style: normal;
-    //   font-weight: 400;
-    //   line-height: 28px; /* 140% */
-    //   letter-spacing: 0.25px;
-    //   color: #585858;
-    // }
+    &-title {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 24px; /* 150% */
+      letter-spacing: 0.25px;
+      margin: 0;
+      span {
+        color: var(--primary-orange);
+        display: block;
+      }
+    }
+    &-text {
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 40px; /* 125% */
+      letter-spacing: 0.25px;
+      margin-top: 36px;
+      max-width: 666px;
+    }
     // &-index {
     //   margin: auto 0 0;
     //   font-size: 48px;
@@ -161,7 +162,6 @@ const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards
     text-transform: uppercase;
     border: 2px solid var(--primary-orange);
     cursor: pointer;
-    margin-top: 64px; //spacing
     &:hover {
       background-color: var(--default-neutral-white);
       color: var(--basic-dark);
