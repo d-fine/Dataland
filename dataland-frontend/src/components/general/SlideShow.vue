@@ -1,15 +1,22 @@
 <template>
-  <div ref="slider" role="list" :class="slidesContainerClasses" @pointerdown="dragStart" @touchstart="dragStart">
+  <div
+    ref="slider"
+    role="list"
+    :class="slidesContainerClasses"
+    @pointerdown="dragStartCondition"
+    @touchstart="dragStartCondition"
+  >
     <slot />
   </div>
-  <div :class="arrowsContainerClasses">
+  <div v-if="slideCount > 1" :class="arrowsContainerClasses">
     <button @click="move(-1)" aria-label="Previous slide" :class="leftArrowClasses" />
     <button @click="move(1)" aria-label="Next slide" :class="rightArrowClasses" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, watchEffect } from "vue";
+import { onUnmounted } from "vue";
+import { ref, watchEffect, defineEmits } from "vue";
 
 const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = defineProps({
   slidesContainerClasses: { type: String, default: "" },
@@ -23,11 +30,17 @@ const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = defineProps({
 
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
+const emit = defineEmits(["update:currentSlide"]);
 
 let isDragging = false;
 let startPos = 0;
 let currentTranslate = 0;
 let prevTranslate = 0;
+
+const dragStartCondition = (e: PointerEvent | TouchEvent): void => {
+  if (slideCount <= 1) return;
+  dragStart(e);
+};
 
 const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => {
   if (animate) sliderElement.style.transition = "transform 0.3s ease-out";
@@ -37,6 +50,8 @@ const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => 
 const move = (direction: number): void => {
   if (direction === 1 && currentSlide.value < slideCount - 1 - initialCenterSlide) currentSlide.value++;
   if (direction === -1 && currentSlide.value > 0 - initialCenterSlide) currentSlide.value--;
+
+  emit("update:currentSlide", currentSlide.value);
 
   currentTranslate = currentSlide.value * -440;
   if (slider.value) setSliderPosition(slider.value);
@@ -96,6 +111,8 @@ const dragEnd = (): void => {
   const movedBy = currentTranslate - prevTranslate;
   if (movedBy < -100 && currentSlide.value < slideCount - 1 - initialCenterSlide) currentSlide.value++;
   if (movedBy > 100 && currentSlide.value > 0 - initialCenterSlide) currentSlide.value--;
+
+  emit("update:currentSlide", currentSlide.value);
 
   // Set currentTranslate based on the new slide index
   currentTranslate = currentSlide.value * -440;
