@@ -12,7 +12,7 @@ data class P2pGeneralEmissionsPlanning(
 
     val relativeEmissionsInPercent: BigDecimal? = null,
 
-    val reductionOfAbsoluteEmissions: BigDecimal? = null,
+    val reductionOfAbsoluteEmissionsInTonnesCO2e: BigDecimal? = null,
 
     val reductionOfRelativeEmissionsInPercent: BigDecimal? = null,
 
