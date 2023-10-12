@@ -6,7 +6,7 @@
     right-arrow-classes="test__arrow test__arrow--right"
     :slide-count="3"
   >
-    <div v-for="(index) in [0, 1, 2]" :key="index" role="listitem" class="test__slide">
+    <div v-for="index in [0, 1, 2]" :key="index" role="listitem" class="test__slide">
       <p>Content</p>
     </div>
   </SlideShow>

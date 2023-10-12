@@ -41,7 +41,7 @@ describe("Component test for the SlideShow component", () => {
 const slidesSelector = ".test__slides";
 const leftButtonSelector = "button[aria-label='Previous slide']";
 const rightButtonSelector = "button[aria-label='Next slide']";
-const genericSlideSelector = ".test__slide"
+const genericSlideSelector = ".test__slide";
 const leftOffset = 10;
 const topOffset = 10;
 
