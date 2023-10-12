@@ -2,19 +2,19 @@ package db.migration
 
 import db.migration.utils.DataTableEntity
 import db.migration.utils.getOrJavaNull
-import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
+import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
  * Performs the migration of the refactored data point classes for the lksg framework
  */
-class V10__MigrateRefactoredDataPointClassesLksg {
+class V10__MigrateRefactoredDataPointClassesLksg : BaseJavaMigration() {
     /**
      * Performs the migration of the refactored data point classes for lksg data
      */
-    fun migrate(context: Context?) {
+    override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context,
             "lksg",
@@ -32,66 +32,31 @@ class V10__MigrateRefactoredDataPointClassesLksg {
      */
     fun migrateRefactoredDataPointClasses(dataTableEntity: DataTableEntity) {
         val dataObject = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
-        migrateDataSourceObjectsInCategoryGovernance(dataObject)
-        migrateDataSourceObjectsInCategorySocial(dataObject)
+        if (dataObject != JSONObject.NULL) {
+            recurseThroughDataToDataSource(dataObject, "dataSource")
+        }
         dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
     }
 
-    /**
-     * Performs the migration the category "social"
-     */
-    private fun migrateDataSourceObjectsInCategoryGovernance(dataObject: JSONObject) {
-        val governanceCategoryObject = dataObject.getOrJavaNull("governance") ?: return
-        governanceCategoryObject as JSONObject
-        val certificationsPoliciesAndResponsibilitiesObject = governanceCategoryObject
-            .getOrJavaNull("certificationsPoliciesAndResponsibilities") ?: return
-        certificationsPoliciesAndResponsibilitiesObject as JSONObject
-        listOf(
-            "smetaSocialAuditConcept",
-            "riskManagementSystemCertification",
-            "fairLaborAssociationCertification",
-        ).forEach { certificateCategory ->
-            val certificateCategoryObject = certificationsPoliciesAndResponsibilitiesObject
-                .getOrJavaNull(certificateCategory) ?: return@forEach
-            migrateSingleDataSourceObjectFormParentObject(certificateCategoryObject as JSONObject)
+    private fun recurseThroughDataToDataSource(dataObject: JSONObject, targetKey: String) {
+        for (key in dataObject.keys()) {
+            if (dataObject.getOrJavaNull(key) !is JSONObject) {
+                continue
+            }
+            if (key == targetKey) {
+                migrateSingleDataSourceObject(dataObject.getJSONObject(targetKey))
+            } else {
+                recurseThroughDataToDataSource(dataObject.getJSONObject(key), targetKey)
+            }
         }
     }
 
     /**
-     * Performs the migration the category social
+     * Migrates one single dataSource Object to the new data point class structure
      */
-    private fun migrateDataSourceObjectsInCategorySocial(dataObject: JSONObject) {
-        val socialCategoryObject = dataObject.getOrJavaNull("social") ?: return
-        socialCategoryObject as JSONObject
-        enterSubSubcategoriesAndTriggerMigration(
-            socialCategoryObject,
-            "childLabor", "childLaborPreventionPolicy",
-        )
-        enterSubSubcategoriesAndTriggerMigration(
-            socialCategoryObject,
-            "unequalTreatmentOfEmployment", "fairAndEthicalRecruitmentPolicy",
-        )
-    }
-
-    private fun enterSubSubcategoriesAndTriggerMigration(
-        categoryObject: JSONObject,
-        subcategoryKey: String,
-        subSubcategoryKey: String,
-    ) {
-        val subcategoryObject = categoryObject.getOrJavaNull(subcategoryKey) ?: return
-        subcategoryObject as JSONObject
-        val subSubcategoryObject = subcategoryObject.getOrJavaNull(subSubcategoryKey) ?: return
-        migrateSingleDataSourceObjectFormParentObject(subSubcategoryObject as JSONObject)
-    }
-
-    /**
-     * Migrates one single dataSource Object in the corresponding parent folder
-     */
-    private fun migrateSingleDataSourceObjectFormParentObject(dataSourceParentObject: JSONObject) {
-        val dataSourceObject = dataSourceParentObject.getOrJsonNull("dataSource")
-        dataSourceObject as JSONObject
+    private fun migrateSingleDataSourceObject(dataSourceObject: JSONObject) {
         oldToNewFieldNamesForDataSource.forEach {
-            dataSourceObject.put(it.value, dataSourceObject.get(it.key))
+            dataSourceObject.put(it.value, dataSourceObject[it.key])
             dataSourceObject.remove(it.key)
         }
     }

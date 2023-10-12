@@ -4,20 +4,21 @@ import db.migration.utils.DataTableEntity
 import db.migration.utils.MigrationHelper
 import db.migration.utils.getOrJavaNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
+import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
  * Performs the migration of the refactored data point classes for the eu taxonomy non fiancials framework
  */
-class V11__MigrateRefactoredDataPointClassesEuTaxoFinancials {
+class V11__MigrateRefactoredDataPointClassesEuTaxoFinancials : BaseJavaMigration() {
     /**
      * Performs the migration of the refactored data point classes for eu taxonomy financials data
      */
-    fun migrate(context: Context?) {
+    override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context,
-            "lksg",
+            "eutaxonomy-financials",
             this::migrateRefactoredDataPointClasses,
         )
     }
