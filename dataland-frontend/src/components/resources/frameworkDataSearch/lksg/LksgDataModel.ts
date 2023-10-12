@@ -1701,6 +1701,7 @@ export const lksgDataModel = [
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForFreedomOfAssociation?.freedomOfAssociation === "Yes",
+            validation: "between:0,100",
           },
           {
             name: "discriminationForTradeUnionMembers",

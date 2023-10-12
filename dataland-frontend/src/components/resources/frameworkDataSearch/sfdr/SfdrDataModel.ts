@@ -831,6 +831,7 @@ export const sfdrDataModel = [
             evidenceDesired: true,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "workdaysLostInDays",

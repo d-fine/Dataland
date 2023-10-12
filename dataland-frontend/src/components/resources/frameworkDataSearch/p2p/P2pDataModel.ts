@@ -109,6 +109,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "parisCompatibilityInAverageRemunerationInPercent",
@@ -119,6 +120,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "shareOfEmployeesTrainedOnParisCompatibilityInPercent",
@@ -130,6 +132,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "qualificationRequirementsOnParisCompatibility",
@@ -255,6 +258,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "reductionOfAbsoluteEmissions",
@@ -277,6 +281,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "climateActionPlan",
@@ -328,6 +333,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "capexShareInGhgIntensivePlantsInPercent",
@@ -338,6 +344,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent",
@@ -348,6 +355,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -373,6 +381,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "ccsTechnologyAdoptionInPercent",
@@ -383,6 +392,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "electrificationInPercent",
@@ -393,6 +403,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -409,6 +420,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -444,6 +456,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -461,6 +474,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "icAndHybridEnginePhaseOutDate",
@@ -498,6 +512,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "useOfSecondaryMaterialsInPercent",
@@ -508,6 +523,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -533,6 +549,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "electrificationInPercent",
@@ -543,6 +560,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -559,6 +577,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "useOfBioplasticsInPercent",
@@ -569,6 +588,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent",
@@ -579,6 +599,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "carbonCaptureAndUseStorageTechnologies",
@@ -618,6 +639,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "chemicalRecyclingInPercent",
@@ -628,6 +650,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -654,6 +677,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "zeroEmissionBuildingShareInPercent",
@@ -664,6 +688,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "buildingEnergyEfficiencyInCorrespondingUnit",
@@ -690,6 +715,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -706,6 +732,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "heatPumpUsageInPercent",
@@ -716,6 +743,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -742,6 +770,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "zeroEmissionBuildingShareInPercent",
@@ -752,6 +781,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "buildingEnergyEfficiencyInCorrespondingUnit",
@@ -778,6 +808,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -794,6 +825,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "heatPumpUsageInPercent",
@@ -804,6 +836,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -858,6 +891,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "lowCarbonSteelScaleUpInPercent",
@@ -868,6 +902,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -893,6 +928,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "icePhaseOut",
@@ -919,6 +955,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -954,6 +991,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "naturalGasPhaseOut",
@@ -984,6 +1022,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -1010,6 +1049,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "emissionProofFertiliserStorageInPercent",
@@ -1021,6 +1061,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -1037,6 +1078,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -1053,6 +1095,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "externalFeedCertification",
@@ -1107,6 +1150,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "greenFodderInPercent",
@@ -1117,6 +1161,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -1133,6 +1178,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "renewableHeatingInPercent",
@@ -1143,6 +1189,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "electricGasPoweredMachineryVehicleInPercent",
@@ -1153,6 +1200,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -1178,6 +1226,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "fuelMixInPercent",
@@ -1188,6 +1237,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "thermalEnergyEfficiencyInPercent",
@@ -1198,6 +1248,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "compositionOfThermalInputInPercent",
@@ -1208,6 +1259,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -1235,6 +1287,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -1261,6 +1314,7 @@ export const p2pDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "circularEconomyContribution",
