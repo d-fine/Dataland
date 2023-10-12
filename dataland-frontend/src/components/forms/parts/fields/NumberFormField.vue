@@ -1,14 +1,20 @@
 <template>
-  <div class="form-field" :data-test="name">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <FormKit
-      type="text"
-      :name="name"
-      :validation-label="validationLabel ?? label"
-      :validation="`number|${validation}`"
-      :placeholder="placeholder"
-      :inner-class="innerClass"
-    />
+  <div class="mb-3">
+    <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
+    <div class="next-to-each-other">
+      <FormKit
+        type="text"
+        :name="name"
+        :unit="unit"
+        :validation-label="validationLabel ?? label"
+        :validation="`number|${validation}`"
+        :placeholder="unit ? `Value in ${unit}` : 'Value'"
+        outer-class="short"
+      />
+      <div class="form-field-label pb-3">
+        <span>{{ unit }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -21,6 +27,9 @@ import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/F
 export default defineComponent({
   name: "NumberFormField",
   components: { FormKit, UploadFormHeader },
-  props: FormFieldPropsWithPlaceholder,
+  props: {
+    ...FormFieldPropsWithPlaceholder,
+    unit: String,
+  },
 });
 </script>
