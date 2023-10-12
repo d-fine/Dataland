@@ -15,8 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted } from "vue";
-import { ref, watchEffect, defineEmits } from "vue";
+import { onUnmounted, ref, watchEffect, defineEmits } from "vue";
 
 const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = defineProps({
   slidesContainerClasses: { type: String, default: "" },
