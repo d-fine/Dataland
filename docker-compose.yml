@@ -38,6 +38,7 @@ services:
       - letsencrypt:/etc/letsencrypt
       - ./local/certs:/certs/custom
     environment:
+      <<: *document-upload-max-file-size-in-megabytes
       # The primary server URL all other URLS get redirected to
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       # This is the path to the letsencrypt directory (usually /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)

@@ -9,7 +9,7 @@ location /api/internal/ {
 }
 
 location /documents/ {
-  client_max_body_size 150M;
+  client_max_body_size ${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}M;
   proxy_pass http://document-manager:8080/documents/;
   include utils/proxy.conf;
   include utils/documentsErrors.conf;
