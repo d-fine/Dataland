@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 class ComplexExampleSupporter : OpenApiCustomizer {
     override fun customise(openApi: OpenAPI) {
         openApi.components.schemas.getValue("SfdrEnvironmentalEnergyPerformance").properties
-            .getValue("applicableHighImpactClimateSector").additionalProperties =
+            .getValue("applicableHighImpactClimateSectors").additionalProperties =
             Schema<Any>(openApi.specVersion).apply { this.`$ref` = "#/components/schemas/ExtendedDataPointBigDecimal" }
     }
 }

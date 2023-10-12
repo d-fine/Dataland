@@ -23,7 +23,7 @@ data class SfdrEnvironmentalEnergyPerformance(
         implementation = Map::class,
         example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE,
     )
-    val applicableHighImpactClimateSector: Map<HighImpactClimateSector, ExtendedDataPoint<BigDecimal>>? = null,
+    val applicableHighImpactClimateSectors: Map<HighImpactClimateSector, ExtendedDataPoint<BigDecimal>>? = null,
 
     val nonRenewableEnergyConsumptionFossilFuelsInGWh: ExtendedDataPoint<BigDecimal>? = null,
 

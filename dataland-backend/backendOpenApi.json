@@ -3337,7 +3337,7 @@
               }
             ]
           },
-          "applicableHighImpactClimateSector": {
+          "applicableHighImpactClimateSectors": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
