@@ -17,7 +17,8 @@ describe("Component test for the landing page", () => {
       validateTopBar();
       validateIntroSection();
       validateBrandsSection();
-
+      cy.get("button.joincampaign__button").click();
+      cy.get("button.getintouch__text-button").click();
       validateQuotesSlides();
       validateHowItWorksSlides();
       checkNewFooter();
