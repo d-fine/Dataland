@@ -16,7 +16,9 @@
       <div class="getintouch__text" grid-column="15 / 17">
         <p class="getintouch__text-title">{{ getInTouchSection.cards[1].title }}</p>
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
-        <button class="getintouch__text-button" @click="openEmailClient">{{ getInTouchSection.text[0] }}</button>
+        <button class="getintouch__text-button" @click="() => openEmailClient(getInTouchSection?.cards?.[3])">
+          {{ getInTouchSection.text[0] }}
+        </button>
       </div>
     </div>
   </section>
@@ -25,27 +27,13 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
+import { openEmailClient } from "@/utils/Email";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const getInTouchSection = computed(() => {
   return sections?.find((section) => section.title === "Get in touch") ?? null;
 });
-
-const openEmailClient = (): void => {
-  if (getInTouchSection.value?.cards) {
-    const cards = getInTouchSection.value.cards;
-
-    const email = cards[3]?.icon ?? "";
-    const subject = cards[3]?.title ?? "";
-    const body = cards[3]?.text ?? "";
-
-    if (email && subject && body) {
-      const mailtoString = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailtoString;
-    }
-  }
-};
 </script>
 
 <style scoped lang="scss">
