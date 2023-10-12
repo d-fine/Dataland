@@ -21,7 +21,7 @@
                         "The alternative to data monopolies."
                     ],
                     "image": [
-                        "/static/logos/gfx_logo_d_orange_S.svg"
+                        "/static/logos/Dataland_D_svg_Logo.svg"
                     ],
                     "cards": [
                         {
@@ -38,18 +38,9 @@
                     "cards": [
                         {
                             "icon": "GaUte84IN0g",
-                            "title": "Marie Jemm, CEO of Ampega",
-                            "text": "..."
-                        },
-                        {
-                            "icon": "",
-                            "title": "James Kann, CEO of Deka Asset Management",
-                            "text": "\"Dataland is the bridge that connects us to data independency and unlimited possibilities.\""
-                        },
-                        {
-                            "icon": "",
-                            "title": "John Jonnhy, CEO of Castell-Bank",
-                            "text": "..."
+                            "title": "XXX XXX,",
+                            "text": " CEO of Metzler",
+                            "date": "\"Dataland is the bridge that connects us to data independency and unlimited possibilities.\""
                         }
                     ]
                 },

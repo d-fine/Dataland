@@ -31,10 +31,10 @@ const introSection = computed(() => {
 <style scoped lang="scss">
 .intro {
   text-align: center;
-  margin: 120px auto;
+  margin: 140px auto;
   max-width: 1007px;
   &__img {
-    width: 81px;
+    width: 85px;
     height: auto;
     margin-bottom: 42px;
   }
@@ -58,11 +58,7 @@ const introSection = computed(() => {
       font-size: 48px;
       line-height: 56px; /* 116.667% */
       margin-top: 80px;
-    }
-    span {
-      transition:
-        font-size 0.4s ease,
-        line-height 0.4s ease;
+      color: var(--basic-dark);
     }
   }
 }
@@ -81,6 +77,7 @@ const introSection = computed(() => {
         font-weight: 600;
         line-height: 48px; /* 120% */
         letter-spacing: 0.25px;
+        margin-top: 31px;
       }
     }
   }
