@@ -16,6 +16,10 @@ describe("Component test for the landing page", () => {
       validateIntroSection();
       validateBrandsSection();
 
+      assertFrameworkPanelExists("Pathway to Paris");
+      assertFrameworkPanelExists("LksG");
+      assertFrameworkPanelExists("EU Taxonomy");
+      assertFrameworkPanelExists("SFDR");
       cy.get("button.joincampaign__button").should("exist");
       cy.get("button.getintouch__text-button").should("exist");
       checkNewFooter();
@@ -97,4 +101,12 @@ function getSingleImageNameInSection(sectionTitle: string): string {
   return assertDefined(getLandingPageSection(sectionTitle)?.image?.[0])
     .split("/")
     .slice(-1)[0];
+}
+
+/**
+ * Asserts that there is a join campaing panel for the given framework
+ * @param frameworkTitle the title of the framework to check for
+ */
+function assertFrameworkPanelExists(frameworkTitle: string): void {
+  cy.get(`.joincampaign__cell:contains("${frameworkTitle}")`).should("exist");
 }
