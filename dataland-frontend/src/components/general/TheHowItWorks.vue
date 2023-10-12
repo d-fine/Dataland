@@ -10,6 +10,8 @@
         left-arrow-classes="howitworks__arrow howitworks__arrow--left"
         right-arrow-classes="howitworks__arrow howitworks__arrow--right"
         :slide-count="slides.length"
+        :initial-center-slide="0"
+        :scroll-screen-width-limit="1800"
       >
         <div v-for="(slide, index) in slides" :key="index" role="listitem" class="howitworks__slide">
           <h3 class="howitworks__slide-title">{{ slide.title }}</h3>

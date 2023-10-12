@@ -2,7 +2,6 @@
   <div ref="slider" role="list" :class="slidesContainerClasses" @pointerdown="dragStart" @touchstart="dragStart">
     <slot />
   </div>
-  {{ currentSlide }}
   <div :class="arrowsContainerClasses">
     <button @click="move(-1)" aria-label="Previous slide" :class="leftArrowClasses" />
     <button @click="move(1)" aria-label="Next slide" :class="rightArrowClasses" />
@@ -13,12 +12,14 @@
 import { onUnmounted } from "vue";
 import { ref, watchEffect } from "vue";
 
-const { slideCount } = defineProps<{
+const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = defineProps<{
   slidesContainerClasses: string;
   arrowsContainerClasses: string;
   leftArrowClasses: string;
   rightArrowClasses: string;
   slideCount: number;
+  initialCenterSlide: number; // TODO default to 0
+  scrollScreenWidthLimit?: number;
 }>();
 
 const slider = ref<HTMLElement | null>(null);
@@ -35,34 +36,34 @@ const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => 
 };
 
 const move = (direction: number): void => {
-  if (direction === 1 && currentSlide.value < slideCount - 1) currentSlide.value++;
-  if (direction === -1 && currentSlide.value > 0) currentSlide.value--; // TODO diff
+  if (direction === 1 && currentSlide.value < slideCount - 1 - initialCenterSlide) currentSlide.value++;
+  if (direction === -1 && currentSlide.value > 0 - initialCenterSlide) currentSlide.value--;
 
   currentTranslate = currentSlide.value * -440;
   if (slider.value) setSliderPosition(slider.value);
 };
 
 watchEffect(() => {
-  // TODO diff
-  const handleResize = (): void => {
-    if (window.innerWidth > 1800) {
-      console.log("NO");
-      currentSlide.value = 0;
-      currentTranslate = 0;
-      if (slider.value) setSliderPosition(slider.value);
-    }
-  };
+  if(scrollScreenWidthLimit) {
+    const handleResize = (): void => {
+      if (window.innerWidth > 1800) {
+        currentSlide.value = 0;
+        currentTranslate = 0;
+        if (slider.value) setSliderPosition(slider.value);
+      }
+    };
 
-  window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
 
-  onUnmounted(() => {
-    window.removeEventListener("resize", handleResize);
-  });
+    onUnmounted(() => {
+      window.removeEventListener("resize", handleResize);
+    });
+  }
 });
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
   // Disable dragging for window width greater than 1800px, for example
-  if (window.innerWidth > 1800) return; // TODO diff
+  if (scrollScreenWidthLimit && window.innerWidth > scrollScreenWidthLimit) return;
   isDragging = true;
   startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
 
@@ -94,14 +95,8 @@ const dragEnd = (): void => {
   isDragging = false;
 
   const movedBy = currentTranslate - prevTranslate;
-  if (movedBy < -100 && currentSlide.value < slideCount - 1) {
-    currentSlide.value++;
-    console.log("+");
-  } // TODO diff
-  if (movedBy > 100 && currentSlide.value > 0) {
-    currentSlide.value--;
-    console.log("+");
-  } // TODO diff
+  if (movedBy < -100 && currentSlide.value < slideCount - 1 - initialCenterSlide) currentSlide.value++;
+  if (movedBy > 100 && currentSlide.value > 0 - initialCenterSlide) currentSlide.value--;
 
   // Set currentTranslate based on the new slide index
   currentTranslate = currentSlide.value * -440;
