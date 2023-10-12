@@ -54,9 +54,7 @@ const props = defineProps<{
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 
 const mldtDatasets = computed(() => {
-  const sortedDataAndMetaInformation = sortDatasetsByReportingPeriod(
-    dataAndMetaInformationForDisplay.value,
-  );
+  const sortedDataAndMetaInformation = sortDatasetsByReportingPeriod(dataAndMetaInformationForDisplay.value);
   return sortedDataAndMetaInformation.map((it) => ({
     headerLabel: it.metaInfo.reportingPeriod,
     dataset: it.data,

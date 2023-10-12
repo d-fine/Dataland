@@ -5,11 +5,7 @@ import {
   MLDTDisplayComponents,
 } from "@/components/resources/dataTable/MultiLayerDataTableCells";
 import type { BaseDocumentReference } from "@clients/backend";
-import {
-  type BaseDataPointYesNoNa,
-  type BaseDataPointYesNo,
-  YesNoNa,
-} from "@clients/backend";
+import { type BaseDataPointYesNoNa, type BaseDataPointYesNo, YesNoNa } from "@clients/backend";
 import {
   getFieldValueFromDataModel,
   getGloballyReferencableDocuments,
