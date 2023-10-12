@@ -12,7 +12,7 @@ import {
 } from "@clients/backend";
 import { toggleRowGroup } from "@sharedUtils/components/ToggleRowFunction";
 
-// TODO check of test cases that you have not covered in the MLDT P2P test!
+// TODO check of test cases that you have not covered in the MLDT P2P test!   After that delete this test
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
