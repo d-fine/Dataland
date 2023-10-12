@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
+import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -9,11 +10,11 @@ import java.math.BigDecimal
  * Fields of the subcategory "Human rights" belonging to the category "Social" of the sfdr framework.
  */
 data class SfdrSocialHumanRights(
-    val humanRightsPolicy: ExtendedDataPoint<YesNo>? = null,
+    val humanRightsPolicy: BaseDataPoint<YesNo>? = null,
 
     val humanRightsDueDiligence: ExtendedDataPoint<YesNo>? = null,
 
-    val traffickingInHumanBeingsPolicy: ExtendedDataPoint<YesNo>? = null,
+    val traffickingInHumanBeingsPolicy: BaseDataPoint<YesNo>? = null,
 
     val reportedChildLabourIncidents: ExtendedDataPoint<YesNo>? = null,
 

@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
+import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -15,15 +16,15 @@ data class SfdrEnvironmentalWaste(
 
     val landDegradationDesertificationSoilSealingExposure: ExtendedDataPoint<YesNo>? = null,
 
-    val sustainableAgriculturePolicy: ExtendedDataPoint<YesNo>? = null,
+    val sustainableAgriculturePolicy: BaseDataPoint<YesNo>? = null,
 
-    val sustainableOceansAndSeasPolicy: ExtendedDataPoint<YesNo>? = null,
+    val sustainableOceansAndSeasPolicy: BaseDataPoint<YesNo>? = null,
 
     val nonRecycledWasteInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
     val threatenedSpeciesExposure: ExtendedDataPoint<YesNo>? = null,
 
-    val biodiversityProtectionPolicy: ExtendedDataPoint<YesNo>? = null,
+    val biodiversityProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    val deforestationPolicy: ExtendedDataPoint<YesNo>? = null,
+    val deforestationPolicy: BaseDataPoint<YesNo>? = null,
 )

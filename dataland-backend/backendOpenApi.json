@@ -2933,6 +2933,40 @@
           "No"
         ]
       },
+      "BaseDataPointYesNo": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "BaseDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
+          }
+        }
+      },
       "CompanyAssociatedDataSfdrData": {
         "required": [
           "companyId",
@@ -3553,7 +3587,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3561,7 +3595,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3585,7 +3619,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3593,7 +3627,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           }
@@ -3777,7 +3811,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3793,7 +3827,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3846,7 +3880,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3862,7 +3896,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3870,7 +3904,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3878,7 +3912,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3886,7 +3920,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3894,7 +3928,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3902,7 +3936,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3910,7 +3944,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3950,7 +3984,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -4006,7 +4040,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -4030,7 +4064,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -4046,7 +4080,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -4083,40 +4117,6 @@
           "No",
           "NA"
         ]
-      },
-      "BaseDataPointYesNo": {
-        "required": [
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "BaseDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "type": "string"
-          }
-        }
       },
       "CompanyAssociatedDataPathwaysToParisData": {
         "required": [
