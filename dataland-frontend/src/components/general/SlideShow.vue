@@ -9,18 +9,17 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted } from "vue";
-import { ref, watchEffect } from "vue";
+import { onUnmounted, ref, watchEffect } from "vue";
 
-const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = defineProps<{
-  slidesContainerClasses: string;
-  arrowsContainerClasses: string;
-  leftArrowClasses: string;
-  rightArrowClasses: string;
-  slideCount: number;
-  initialCenterSlide: number; // TODO default to 0
-  scrollScreenWidthLimit?: number;
-}>();
+const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = defineProps({
+  slidesContainerClasses: { type: String, default: "" },
+  arrowsContainerClasses: { type: String, default: "" },
+  leftArrowClasses: { type: String, default: "" },
+  rightArrowClasses: { type: String, default: "" },
+  slideCount: { type: Number, required: true },
+  initialCenterSlide: { type: Number, default: 0 },
+  scrollScreenWidthLimit: Number,
+});
 
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
@@ -119,5 +118,3 @@ onUnmounted(() => {
   document.removeEventListener("touchend", dragEnd);
 });
 </script>
-
-<style scoped></style>
