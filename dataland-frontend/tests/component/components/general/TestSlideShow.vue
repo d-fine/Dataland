@@ -1,40 +1,23 @@
 <template>
-  <section v-if="howItWorksSection" class="howitworks" role="region" aria-labelledby="howitworks-heading">
-    <div class="howitworks__wrapper">
-      <h2 id="howitworks-heading" class="howitworks__title">
-        {{ sectionText }}
-      </h2>
-      <SlideShow
-        slides-container-classes="howitworks__slides"
-        arrows-container-classes="howitworks__arrows"
-        left-arrow-classes="howitworks__arrow howitworks__arrow--left"
-        right-arrow-classes="howitworks__arrow howitworks__arrow--right"
-        :slide-count="slides.length"
-        :scroll-screen-width-limit="1800"
-      >
-        <div v-for="(slide, index) in slides" :key="index" role="listitem" class="howitworks__slide">
-          <h3 class="howitworks__slide-title">{{ slide.title }}</h3>
-          <p class="howitworks__slide-text">{{ slide.text }}</p>
-          <p class="howitworks__slide-index">0{{ index + 1 }}</p>
-        </div>
-      </SlideShow>
+  <SlideShow
+    slides-container-classes="test__slides"
+    arrows-container-classes="test__arrows"
+    left-arrow-classes="test__arrow test__arrow--left"
+    right-arrow-classes="test__arrow test__arrow--right"
+    :slide-count="3"
+  >
+    <div v-for="(index) in [0, 1, 2]" :key="index" role="listitem" class="test__slide">
+      <p>Content</p>
     </div>
-  </section>
+  </SlideShow>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import type { Section } from "@/types/ContentTypes";
 import SlideShow from "@/components/general/SlideShow.vue";
-
-const { sections } = defineProps<{ sections?: Section[] }>();
-const howItWorksSection = computed(() => sections?.find((s) => s.title === "How it works"));
-const sectionText = computed(() => howItWorksSection.value?.text.join(" ") ?? "");
-const slides = computed(() => sections?.find((s) => s.title === "How it works")?.cards ?? []);
 </script>
 
 <style lang="scss">
-.howitworks {
+.test {
   padding: 200px 0;
   background-color: var(--primary-orange);
 
@@ -64,7 +47,7 @@ const slides = computed(() => sections?.find((s) => s.title === "How it works")?
     gap: 32px;
     justify-content: center;
 
-    &.isdragging .howitworks__slide {
+    &.isdragging .test__slide {
       cursor: grabbing;
     }
   }
@@ -152,7 +135,7 @@ const slides = computed(() => sections?.find((s) => s.title === "How it works")?
 }
 
 @media (max-width: $extra-large) {
-  .howitworks {
+  .test {
     &__slides {
       max-width: 1273px;
       padding-right: 789px;
@@ -169,7 +152,7 @@ const slides = computed(() => sections?.find((s) => s.title === "How it works")?
 }
 
 @media only screen and (max-width: $large) {
-  .howitworks {
+  .test {
     &__wrapper {
       display: grid;
       grid-template-columns: repeat(16, 1fr);
