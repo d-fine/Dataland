@@ -32,23 +32,24 @@ describe("Component test for P2pPanel", () => {
       reportingPeriod: "2023",
       data: pseudoP2pData,
     } as CompanyAssociatedDataPathwaysToParisData);
-    cy.mountWithPlugins(P2pPanel, {
-      keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyId: companyId,
-          singleDataMetaInfoToDisplay: {
-            dataId: "mock-data-id",
-            reportingPeriod: "2023",
-          } as DataMetaInformation,
-        };
+    cy.mountWithDialog(
+      P2pPanel,
+      {
+        keycloak: minimalKeycloakMock({}),
       },
-    });
-    cy.get("td:contains('Ammonia')").should("exist");
+      {
+        companyId: companyId,
+        singleDataMetaInfoToDisplay: {
+          dataId: "mock-data-id",
+          reportingPeriod: "2023",
+        } as DataMetaInformation,
+      },
+    );
+    cy.get("span[data-test='2023__general_sectors'] a").should("exist").click();
   });
 
   it("Check P2p view page for company with one P2p data set", () => {
-    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-three-sectors", preparedFixtures);
+    const preparedFixture = getPreparedFixture("one-p2p-data-set-with-four-sectors", preparedFixtures);
     const p2pData = preparedFixture.t;
 
     cy.intercept("/api/data/p2p/mock-data-id", {
@@ -96,6 +97,9 @@ describe("Component test for P2pPanel", () => {
     cy.get(`span[data-test="Livestock farming"]`).click();
     toggleRowGroup("animalFeed");
     cy.get("span[data-test=Report-Download-Policy]").find("i[data-test=download-icon]").should("be.visible");
+
+    cy.get(`span[data-test="Freight transport by road"]`).click();
+    toggleRowGroup("technology");
 
     cy.get(`span[data-test=Cement]`).click();
     toggleRowGroup("material");

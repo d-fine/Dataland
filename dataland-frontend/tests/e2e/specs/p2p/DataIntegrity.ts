@@ -13,7 +13,7 @@ let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
 before(function () {
   cy.fixture("CompanyInformationWithP2pPreparedFixtures").then(function (jsonContent) {
     const preparedFixturesP2p = jsonContent as Array<FixtureData<PathwaysToParisData>>;
-    p2pFixtureForTest = getPreparedFixture("one-p2p-data-set-with-three-sectors", preparedFixturesP2p);
+    p2pFixtureForTest = getPreparedFixture("one-p2p-data-set-with-four-sectors", preparedFixturesP2p);
   });
 });
 
@@ -47,6 +47,15 @@ describeIf(
       cy.contains("CEMENT").click();
       cy.contains("Material").click();
       cy.contains(assertDefined(p2pFixtureForTest.t.cement?.material?.preCalcinedClayUsageInPercent).toFixed(0));
+      cy.contains("FREIGHT TRANSPORT BY ROAD").click();
+      cy.contains("Technology").click();
+      cy.get("td > span > a").contains("Drive mix per fleet segment").click();
+      cy.get(".p-dialog").contains(
+        assertDefined(
+          p2pFixtureForTest.t.freightTransportByRoad?.technology?.driveMixPerFleetSegment?.SmallTrucks
+            ?.driveMixPerFleetSegmentInPercent,
+        ).toFixed(2),
+      );
     }
 
     it("Create a company via api and upload a P2P dataset via the api", () => {
