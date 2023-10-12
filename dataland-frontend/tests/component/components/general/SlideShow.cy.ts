@@ -36,6 +36,15 @@ describe("Component test for the SlideShow component", () => {
       assertSlidesPosition(slidesSelector, 0);
     });
   });
+
+  it("Check if dragging is working", () => {
+    cy.mountWithPlugins(TestSlideShow, {}).then(() => {
+      cy.viewport(1900, 800);
+      assertSlidesPosition(slidesSelector);
+      dragSlideTo(genericSlideSelector, 1, leftOffset);
+      assertSlidesPosition(slidesSelector, 0);
+    });
+  });
 });
 
 const slidesSelector = ".test__slides";

@@ -59,7 +59,7 @@ const move = (direction: number): void => {
 watchEffect(() => {
   if (scrollScreenWidthLimit) {
     const handleResize = (): void => {
-      if (window.innerWidth > 1800) {
+      if (window.innerWidth > scrollScreenWidthLimit) {
         currentSlide.value = 0;
         currentTranslate = 0;
         if (slider.value) setSliderPosition(slider.value);
@@ -75,7 +75,7 @@ watchEffect(() => {
 });
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
-  // Disable dragging for window width greater than 1800px, for example
+  // Disable dragging for window width greater than <scrollScreenWidthLimit> px, for example
   if (scrollScreenWidthLimit && window.innerWidth > scrollScreenWidthLimit) return;
   isDragging = true;
   startPos = "touches" in e ? e.touches[0].pageX : e.pageX;

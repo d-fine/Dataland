@@ -5,6 +5,7 @@
     left-arrow-classes="test__arrow test__arrow--left"
     right-arrow-classes="test__arrow test__arrow--right"
     :slide-count="3"
+    :scroll-screen-width-limit="1800"
   >
     <div v-for="index in [0, 1, 2]" :key="index" role="listitem" class="test__slide">
       <p>Content</p>
@@ -95,7 +96,6 @@ import SlideShow from "@/components/general/SlideShow.vue";
   &__arrows {
     display: flex;
     gap: 18px;
-    visibility: hidden;
   }
 
   &__arrow {
@@ -130,52 +130,6 @@ import SlideShow from "@/components/general/SlideShow.vue";
       &::before {
         transform: scaleX(-1);
       }
-    }
-  }
-}
-
-@media (max-width: $extra-large) {
-  .test {
-    &__slides {
-      max-width: 1273px;
-      padding-right: 789px;
-      justify-content: flex-start;
-    }
-
-    &__arrows {
-      visibility: visible;
-      width: 100%;
-      max-width: 1273px;
-      justify-content: flex-start;
-    }
-  }
-}
-
-@media only screen and (max-width: $large) {
-  .test {
-    &__wrapper {
-      display: grid;
-      grid-template-columns: repeat(16, 1fr);
-      gap: 32px;
-      max-width: 1440px;
-      width: 100%;
-      padding: 0 32px;
-    }
-
-    &__title {
-      grid-column: 4 / 9;
-      font-size: 48px;
-      font-weight: 600;
-      line-height: 56px; /* 116.667% */
-      letter-spacing: 0.25px;
-      color: var(--default-neutral-white);
-      max-width: unset;
-      padding-right: unset;
-    }
-
-    &__slides,
-    &__arrows {
-      grid-column: 4 / 16;
     }
   }
 }
