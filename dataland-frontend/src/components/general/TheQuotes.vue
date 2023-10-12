@@ -1,10 +1,17 @@
 <template>
   <section v-if="quotesSection" class="quotes" role="region" aria-label="The Quotes">
-    <div ref="slider" role="list" class="quotes__slides" @pointerdown="dragStart" @touchstart="dragStart">
+    <SlideShow
+      slides-container-classes="quotes__slides"
+      arrows-container-classes="quotes__arrows"
+      left-arrow-classes="quotes__arrow quotes__arrow--left"
+      right-arrow-classes="quotes__arrow quotes__arrow--right"
+      :slide-count="slides.length"
+      :initial-center-slide="1"
+    >
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
           <iframe
-            :src="'https://www.youtube-nocookie.com/embed/' + card.icon + '?rel=0'"
+            :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
             title="Youtube video player"
             allowfullscreen
             class="quotes__slide-video"
@@ -14,113 +21,30 @@
         <p class="quotes__slide-text">{{ card.text }}</p>
         <p class="quotes__slide-index">0{{ index + 1 }}</p> -->
       </div>
-    </div>
-    <div class="quotes__arrows">
-      <button @click="move(-1)" aria-label="Previous slide" class="quotes__arrow quotes__arrow--left"></button>
-      <button @click="move(1)" aria-label="Next slide" class="quotes__arrow quotes__arrow--right"></button>
-    </div>
+    </SlideShow>
     <register-button :buttonText="quotesSection.text[0]" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from "vue";
+import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
 import RegisterButton from "@/components/resources/newLandingPage/RegisterButton.vue";
+import SlideShow from "@/components/general/SlideShow.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes"));
 const cards = computed(() => quotesSection.value?.cards ?? []);
-
 const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards ?? []);
-const slider = ref<HTMLElement | null>(null);
-const currentSlide = ref(0);
 
-let isDragging = false;
-let startPos = 0;
-let currentTranslate = 0;
-let prevTranslate = 0;
-
-const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => {
-  if (animate) sliderElement.style.transition = "transform 0.3s ease-out";
-  sliderElement.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
-  console.log(`Slider is at translate3d(${currentTranslate}px, 0, 0)`);
-};
-
-const move = (direction: number): void => {
-  const slideCount = slides.value.length - 1;
-  console.log(`Current Slide: ${currentSlide.value}, Direction: ${direction}`);
-
-  if (direction === 1 && currentSlide.value < slideCount - 1) currentSlide.value++;
-  if (direction === -1 && currentSlide.value >= 0) currentSlide.value--;
-
-  currentTranslate = currentSlide.value * -440;
-  if (slider.value) setSliderPosition(slider.value);
-};
 // const goToSlide = (index: number): void => {
 //   currentSlide.value = index - 1;
 //   currentTranslate = currentSlide.value * -440;
 //   if (slider.value) setSliderPosition(slider.value);
 // };
-
-const dragStart = (e: PointerEvent | TouchEvent): void => {
-  isDragging = true;
-  startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
-
-  prevTranslate = currentTranslate;
-
-  if (slider.value) {
-    slider.value.style.transition = "none";
-    slider.value.classList.add("isdragging");
-  }
-
-  document.addEventListener("pointermove", drag);
-  document.addEventListener("pointerup", dragEnd);
-  document.addEventListener("touchmove", drag);
-  document.addEventListener("touchend", dragEnd);
-};
-
-const drag = (e: PointerEvent | TouchEvent): void => {
-  if (!isDragging) return;
-  const currentPos = "touches" in e ? e.touches[0].pageX : e.pageX;
-
-  currentTranslate = prevTranslate + currentPos - startPos;
-
-  if (slider.value) {
-    setSliderPosition(slider.value, false);
-  }
-};
-
-const dragEnd = (): void => {
-  isDragging = false;
-
-  const movedBy = currentTranslate - prevTranslate;
-  if (movedBy < -100 && currentSlide.value < slides.value.length - 2) currentSlide.value++;
-  if (movedBy > 100 && currentSlide.value >= 0) currentSlide.value--;
-
-  // Set currentTranslate based on the new slide index
-  currentTranslate = currentSlide.value * -440;
-
-  if (slider.value) {
-    setSliderPosition(slider.value);
-    slider.value.classList.remove("isdragging");
-  }
-
-  document.removeEventListener("pointermove", drag);
-  document.removeEventListener("pointerup", dragEnd);
-  document.removeEventListener("touchmove", drag);
-  document.removeEventListener("touchend", dragEnd);
-};
-
-onUnmounted(() => {
-  document.removeEventListener("pointermove", drag);
-  document.removeEventListener("pointerup", dragEnd);
-  document.removeEventListener("touchmove", drag);
-  document.removeEventListener("touchend", dragEnd);
-});
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .quotes {
   margin: calc(64px + 120px) auto 120px;
   display: flex;
