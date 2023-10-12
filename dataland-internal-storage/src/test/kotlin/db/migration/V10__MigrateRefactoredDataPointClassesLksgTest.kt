@@ -7,13 +7,13 @@ class V10__MigrateRefactoredDataPointClassesLksgTest {
     @Test
     fun `test migration of refactored data point classes in Lksg framework`() {
         TestUtils().testMigrationOfSingleDataset(
-            "V10/OriginalMockDatabaseEntry.json",
-            "V10/expectedTransformedMockDatabaseEntry.json",
+            "V10/V10_OriginalMockDatabaseEntry.json",
+            "V10/V10_expectedTransformedMockDatabaseEntry.json",
             V10__MigrateRefactoredDataPointClassesLksg()::migrateRefactoredDataPointClasses,
         )
         TestUtils().testMigrationOfSingleDataset(
-            "V10/OriginalResponseWithEdgeCases.json",
-            "V10/expectedTransformedResponseWithEdgeCases.json",
+            "V10/V10_OriginalResponseWithEdgeCases.json",
+            "V10/V10_expectedTransformedResponseWithEdgeCases.json",
             V10__MigrateRefactoredDataPointClassesLksg()::migrateRefactoredDataPointClasses,
         )
     }
