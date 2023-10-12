@@ -90,4 +90,18 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled");
     });
   });
+
+  it("In the freight transport by road sector, ensure that the driveMixPerFleetSegment field works as expected", () => {
+    cy.mountWithPlugins(CreateP2pDataset, {
+      keycloak: minimalKeycloakMock({}),
+    }).then(() => {
+      clickOnSectorInSectorsDropdown("Freight Transport by Road");
+      cy.get('div[data-test="driveMixPerFleetSegment"]').should("exist");
+      cy.get('div[data-test="dataPointToggleButton"]').eq(0).click();
+      cy.get('[name="driveMixPerFleetSegmentInPercent"]').type("22");
+      cy.get('[name="totalAmountOfVehicles"]').type("5000");
+      cy.get('div[data-test="dataPointToggleButton"]').eq(1).click();
+      cy.get('div[data-test="dataPointToggleButton"]').eq(1).click();
+    });
+  });
 });

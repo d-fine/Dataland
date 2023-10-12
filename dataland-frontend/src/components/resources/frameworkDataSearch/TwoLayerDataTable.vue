@@ -54,7 +54,7 @@
               <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
                 <a
                   v-if="
-                    slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
+                    slotProps.data.content[reportingPeriodWithDataId.dataId].length >= 1 ||
                     slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
                   "
                   @click="
@@ -70,7 +70,28 @@
                   <em class="material-icons" aria-hidden="true" title=""> dataset </em>
                 </a>
 
-                <span v-else> {{ slotProps.data.content[reportingPeriodWithDataId.dataId][0] }} </span>
+                <span v-else></span>
+              </template>
+              <template v-else-if="isModalComponentsName.includes(slotProps.data.kpiFormFieldComponent)">
+                <a
+                  v-if="
+                    slotProps.data.content[reportingPeriodWithDataId.dataId] !== null &&
+                    slotProps.data.content[reportingPeriodWithDataId.dataId] !== undefined &&
+                    slotProps.data.content[reportingPeriodWithDataId.dataId] !== '' &&
+                    Object.keys(slotProps.data.content[reportingPeriodWithDataId.dataId]).length !== 0
+                  "
+                  @click="
+                    openModalAndDisplayValuesInSubTable(
+                      slotProps.data.content[reportingPeriodWithDataId.dataId],
+                      slotProps.data.kpiLabel,
+                      slotProps.data.kpiKey,
+                      slotProps.data.kpiFormFieldComponent,
+                    )
+                  "
+                  class="link"
+                  >Show "{{ slotProps.data.kpiLabel }}"
+                  <em class="material-icons" aria-hidden="true" title=""> dataset </em>
+                </a>
               </template>
               <span
                 v-else-if="
@@ -95,7 +116,7 @@
                   <DocumentLink
                     :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
                     :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.fileName"
-                    :reference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.fileReference"
+                    :fileReference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.fileReference"
                     show-icon
                   />
                 </span>
@@ -153,6 +174,7 @@ import { defineComponent, type PropType } from "vue";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
+import { formatPercentageNumberAsString } from "@/utils/Formatter";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
@@ -174,6 +196,7 @@ export default defineComponent({
       YesNo,
       rowClickHandlersMap: new Map() as Map<Element, EventListener>,
       dataTableIdentifier: "" as string,
+      isModalComponentsName: ["DriveMixFormField"],
     };
   },
   props: {
@@ -250,13 +273,35 @@ export default defineComponent({
     },
     /**
      * Opens a modal to display a table with the provided list of production sites
-     * @param listOfValues An array consisting of the data to display
+     * @param dataToConvert Data to be converte to an array to display
+     * @param kpiFormFieldComponent Name of component
+     * @returns An array of data according to headers to be displayed in the modal
+     */
+    convertObjectToArrayToDisplayDataInModal(dataToConvert: object, kpiFormFieldComponent: string): object[] {
+      const outputArray = [];
+      if (kpiFormFieldComponent == "DriveMixFormField") {
+        for (const key in dataToConvert) {
+          const newObj = {
+            vehiclesType: key,
+            driveMixPerFleetSegmentInPercent: formatPercentageNumberAsString(
+              dataToConvert[key as keyof typeof dataToConvert].driveMixPerFleetSegmentInPercent as number,
+            ),
+            totalAmountOfVehicles: dataToConvert[key as keyof typeof dataToConvert].totalAmountOfVehicles as string,
+          };
+          outputArray.push(newObj);
+        }
+      }
+      return outputArray;
+    },
+    /**
+     * Opens a modal to display a table with the provided list of production sites
+     * @param listOfValues Data to display
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
      * @param kpiFormFieldComponent determine whether a specific component should be used to render data
      */
     openModalAndDisplayValuesInSubTable(
-      listOfValues: [],
+      listOfValues: object | [],
       modalTitle: string,
       kpiKey: string,
       kpiFormFieldComponent = "DetailsCompanyDataTable",
@@ -273,11 +318,20 @@ export default defineComponent({
         kpiDataComponent = DetailsCompanyDataTable;
       }
 
-      const dialogData = {
-        listOfRowContents: listOfValues,
-        kpiKeyOfTable: kpiKey,
-        columnHeaders: this.modalColumnHeaders,
-      };
+      let dialogData;
+      if (Array.isArray(listOfValues)) {
+        dialogData = {
+          listOfRowContents: listOfValues,
+          kpiKeyOfTable: kpiKey,
+          columnHeaders: this.modalColumnHeaders,
+        };
+      } else {
+        dialogData = {
+          listOfRowContents: this.convertObjectToArrayToDisplayDataInModal(listOfValues, kpiFormFieldComponent),
+          kpiKeyOfTable: kpiKey,
+          columnHeaders: this.modalColumnHeaders,
+        };
+      }
 
       this.$dialog.open(kpiDataComponent, {
         props: {
