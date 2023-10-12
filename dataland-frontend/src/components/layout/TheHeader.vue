@@ -29,7 +29,7 @@ const { landingPage } = defineProps<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 62px;
+  padding: 24px 46px;
   margin: 16px;
   position: fixed;
   width: calc(100% - 32px);
