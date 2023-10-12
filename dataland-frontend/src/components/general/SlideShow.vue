@@ -44,7 +44,7 @@ const move = (direction: number): void => {
 };
 
 watchEffect(() => {
-  if(scrollScreenWidthLimit) {
+  if (scrollScreenWidthLimit) {
     const handleResize = (): void => {
       if (window.innerWidth > 1800) {
         currentSlide.value = 0;

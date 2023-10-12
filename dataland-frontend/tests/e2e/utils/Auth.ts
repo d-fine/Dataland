@@ -31,7 +31,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
   cy.intercept("https://www.youtube.com/**", { forceNetworkError: false }).as("youtube");
   cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
   cy.visitAndCheckAppMount("/")
-    // .wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number }) TODO readd
+    .wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number }) // TODO do that for each video
     .get("a[aria-label='Login to preview account']")
     .click()
     .get("#username")
