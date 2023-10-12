@@ -1,6 +1,7 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
+  MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
@@ -21,6 +22,9 @@ export function numberValueGetterFactory(
     const formattedFieldValue = formatNumberToReadableFormat(
       getFieldValueFromFrameworkDataset(path, dataset) as number,
     );
+    if (formattedFieldValue === "") {
+      return MLDTDisplayObjectForEmptyString;
+    }
     const displayedUnit = field.unit ?? "";
     return {
       displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
