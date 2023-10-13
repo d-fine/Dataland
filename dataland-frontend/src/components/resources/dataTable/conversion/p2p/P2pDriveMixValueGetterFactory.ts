@@ -13,7 +13,7 @@ import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { type DriveMixType } from "@/api-models/DriveMixType";
 import { p2pModalColumnHeaders } from "@/components/resources/frameworkDataSearch/p2p/P2pModalColumnHeaders";
 
-export type P2pDriveMixPerFleetType = { [key in DriveMixType]?: P2pDriveMix }; // TODO export needed?
+export type P2pDriveMixPerFleetType = { [key in DriveMixType]?: P2pDriveMix };
 
 interface P2pDriveMixDisplayFormat {
   driveMixType: string;
