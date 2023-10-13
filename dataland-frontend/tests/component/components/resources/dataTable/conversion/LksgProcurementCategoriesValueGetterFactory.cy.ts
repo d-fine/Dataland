@@ -6,7 +6,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   lksgProcurementCategoriesValueGetterFactory,
   type LksgProcurementType,
-} from "@/components/resources/dataTable/conversion/LksgProcurementCategoriesValueGetterFactory";
+} from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 
 describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () => {
