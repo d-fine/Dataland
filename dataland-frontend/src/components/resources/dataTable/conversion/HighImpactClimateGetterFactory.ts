@@ -5,6 +5,26 @@ import {
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+
+/**
+ * Convert an object into a list that can be displayed using the standard
+ * modal DataTable
+ * @param datasetValue the value of the dataset
+ * @returns the converted list
+ */
+function convertHighImpactClimateToListForModal(datasetValue: object): object {
+  const listForModal = [];
+  for (const [naceCodeType, climateSectorValues] of Object.entries(datasetValue)) {
+    if (!climateSectorValues) continue;
+
+    listForModal.push({
+      sector: humanizeStringOrNumber(naceCodeType),
+      energyConsumption: climateSectorValues.value ?? "",
+    });
+  }
+  return listForModal;
+}
 
 /**
  * Returns a value factory that returns the value of the field as a string using the display mapping in the options field
@@ -25,12 +45,13 @@ export function highImpactClimateGetterFactory(path: string, field: Field): (dat
     highImpactClimateSectors.forEach((sector) => {
       accumulatedData = {
         ...accumulatedData,
-        [`highImpactClimateSectorEnergyConsumptionNace${sector}`]: getFieldValueFromDataModel(
-          `${pathWithoutField}.highImpactClimateSectorEnergyConsumptionNace${sector}`,
+        [`NaceCode${sector}InGWh`]: getFieldValueFromDataModel(
+          `${pathWithoutField}.applicableHighImpactClimateSector.NaceCode${sector}InGWh`,
           dataset,
-        ) as number,
+        ),
       };
     });
+
     return {
       displayComponent: MLDTDisplayComponents.ModalLinkDisplayComponent,
       displayValue: {
@@ -43,19 +64,12 @@ export function highImpactClimateGetterFactory(path: string, field: Field): (dat
             dismissableMask: true,
           },
           data: {
-            listOfRowContents: accumulatedData,
+            listOfRowContents: convertHighImpactClimateToListForModal(field),
             kpiKeyOfTable: "highImpactSectorEnergyConsumptions",
             columnHeaders: {
               highImpactSectorEnergyConsumptions: {
-                highImpactClimateSectorEnergyConsumptionNaceA: "Sector A",
-                highImpactClimateSectorEnergyConsumptionNaceB: "Sector B",
-                highImpactClimateSectorEnergyConsumptionNaceC: "Sector C",
-                highImpactClimateSectorEnergyConsumptionNaceD: "Sector D",
-                highImpactClimateSectorEnergyConsumptionNaceE: "Sector E",
-                highImpactClimateSectorEnergyConsumptionNaceF: "Sector F",
-                highImpactClimateSectorEnergyConsumptionNaceG: "Sector G",
-                highImpactClimateSectorEnergyConsumptionNaceH: "Sector H",
-                highImpactClimateSectorEnergyConsumptionNaceL: "Sector L",
+                sector: "Sectors",
+                energyConsumption: "Energy Consumption",
               },
             },
           },

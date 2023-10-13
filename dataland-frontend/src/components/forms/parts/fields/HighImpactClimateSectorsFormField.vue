@@ -13,25 +13,23 @@
         :class="innerClass"
       />
       <div class="grid2 mt-3">
-        <div v-for="selection of selections" :key="selection" class="bordered-box p-3 positionRelative">
-          <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
-          <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
-          <UploadFormHeader
-            :label="`Sector ${selection} Energy Consumption`"
-            :description="`Total energy consumption for high impact climate sector ${selection}`"
-            :is-required="true"
-          />
-          <div class="next-to-each-other">
-            <FormKit
-              type="text"
-              :name="`sector${selection}EnergyConsumption`"
+        <FormKit type="group" name="applicableHighImpactClimateSector">
+          <div v-for="selection of selections" :key="selection" class="bordered-box p-3 positionRelative">
+            <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
+            <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
+            <UploadFormHeader
+              :label="`Sector ${selection} Energy Consumption`"
+              :description="`Total energy consumption for high impact climate sector ${selection}`"
+              :is-required="true"
+            />
+            <DataPointFormField
+              unit="in GWh"
+              :name="`NaceCode${selection}InGWh`"
               :placeholder="`Sector ${selection} Energy Consumption`"
               validation-label="Energy Consumption"
-              validation="number|required"
             />
-            <span class="middle-next-to-field">in GWh</span>
           </div>
-        </div>
+        </FormKit>
       </div>
     </div>
   </div>
@@ -43,10 +41,11 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import MultiSelect from "primevue/multiselect";
 import { naceCodeTree } from "@/components/forms/parts/elements/derived/NaceCodeTree";
+import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 
 export default defineComponent({
   name: "HighImpactClimateSectorsFormField",
-  components: { MultiSelect, UploadFormHeader },
+  components: { DataPointFormField, MultiSelect, UploadFormHeader },
   props: BaseFormFieldProps,
   data() {
     return {

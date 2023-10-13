@@ -202,9 +202,9 @@ body {
 }
 
 //font-weight
-.fw-normal { font-weight: $normal-weight } // 400
-.fw-light-bold { font-weight: $fw-medium } // 400
-.fw-semi-bold { font-weight: $fw-semibold } // 400
+.fw-normal { font-weight: $normal-weight }
+.fw-light-bold { font-weight: $fw-medium }
+.fw-semi-bold { font-weight: $fw-semibold }
 
 
 // Typography //
@@ -291,11 +291,8 @@ ul.unstyled-ul-list {
 .grid2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1200px) {
     grid-template-columns: 1fr;
-  }
-  @media screen and (min-width: 1920px) {
-    grid-template-columns: 1fr 1fr 1fr;
   }
   grid-gap: 10px;
 }
