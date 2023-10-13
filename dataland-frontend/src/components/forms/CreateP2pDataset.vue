@@ -103,6 +103,8 @@ import Card from "primevue/card";
 import Calendar from "primevue/calendar";
 import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
+import { type DriveMixType } from "@/api-models/DriveMixType";
+import { type P2pDriveMix } from "@clients/backend";
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { AxiosError } from "axios";
 import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum } from "@clients/backend";
@@ -254,7 +256,10 @@ export default defineComponent({
   provide() {
     return {
       driveMixPerFleetSegment: computed(() => {
-        return this.companyAssociatedP2pData.data?.freightTransportByRoad?.technology?.driveMixPerFleetSegment;
+        return this.companyAssociatedP2pData.data?.freightTransportByRoad?.technology?.driveMixPerFleetSegment as Map<
+          DriveMixType,
+          P2pDriveMix
+        > | null;
       }),
     };
   },
