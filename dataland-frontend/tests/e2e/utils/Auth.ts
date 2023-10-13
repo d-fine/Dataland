@@ -121,5 +121,5 @@ export function getKeycloakToken(
     })
     .should("have.a.property", "body")
     .should("have.a.property", "access_token")
-    .then((token): string => JSON.stringify(token));
+    .then((token): string => token.toString());
 }

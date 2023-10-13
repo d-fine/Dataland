@@ -120,12 +120,10 @@ export function getFileReferenceByFileName(
   injectReportsNameAndReferences: ObjectType,
 ): string {
   if (currentReportValue in injectReportsNameAndReferences) {
-    const value = injectReportsNameAndReferences[currentReportValue];
-    if (typeof value === "string") {
-      return value;
-    }
+    return injectReportsNameAndReferences[currentReportValue].toString();
+  } else {
+    return "";
   }
-  return "";
 }
 
 /**

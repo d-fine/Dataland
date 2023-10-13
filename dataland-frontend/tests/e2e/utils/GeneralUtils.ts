@@ -104,9 +104,7 @@ function checkIfContentIsIdentical(
   newPath: string,
 ): void {
   const throwErrorBecauseOfFieldValue = (fieldPath: string, fieldValueA: object, fieldValueB: object): void => {
-    throw new Error(
-      `Field ${fieldPath} is not equal. A: ${JSON.stringify(fieldValueA)}, B: ${JSON.stringify(fieldValueB)}`,
-    );
+    throw new Error(`Field ${fieldPath} is not equal. A: ${fieldValueA.toString()}, B: ${fieldValueB.toString()}`);
   };
   if (typeof valueA === "object" && typeof valueB === "object") {
     if (valueA === null || valueB === null) {

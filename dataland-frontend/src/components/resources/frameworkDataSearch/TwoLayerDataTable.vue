@@ -306,7 +306,10 @@ export default defineComponent({
       kpiKey: string,
       kpiFormFieldComponent = "DetailsCompanyDataTable",
     ) {
-      let kpiDataComponent: typeof DetailsCompanyDataTable;
+      let kpiDataComponent:
+        | typeof DetailsCompanyDataTable
+        | typeof AlignedActivitiesDataTable
+        | typeof NonAlignedActivitiesDataTable;
       if (kpiFormFieldComponent === "AlignedActivitiesDataTable") {
         kpiDataComponent = AlignedActivitiesDataTable;
       } else if (kpiFormFieldComponent === "NonAlignedActivitiesDataTable") {
