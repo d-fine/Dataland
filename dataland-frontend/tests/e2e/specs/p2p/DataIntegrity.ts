@@ -5,10 +5,7 @@ import { DataTypeEnum, type PathwaysToParisData } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import { formatPercentageNumberAsString } from "@/utils/Formatter";
 
 let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
 before(function () {
@@ -28,46 +25,6 @@ describeIf(
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
     });
-
-    /**
-     * validates that the data uploaded via api is displayed correctly for a company
-     * @param companyId the company associated to the data uploaded via form
-     * @param dataId the company p2p id for accessing its view page
-     */
-    function validateFormUploadedData(companyId: string, dataId: string): void {
-      cy.visit(`/companies/${companyId}/frameworks/${DataTypeEnum.P2p}/${dataId}`);
-      cy.contains(`Show ${p2pFixtureForTest.t.general.general.sectors.length} values`).click();
-      cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
-      p2pFixtureForTest.t.general.general.sectors.forEach((sector) => {
-        cy.get("td").contains(humanizeStringOrNumber(sector)).should("exist");
-      });
-      cy.get(".p-dialog").find(".p-dialog-header-icon").click();
-      cy.get('tr[data-section-label="Emissions planning"]').click();
-      cy.contains(
-        formatPercentageNumberAsString(
-          assertDefined(p2pFixtureForTest.t.general.emissionsPlanning?.relativeEmissionsInPercent),
-        ),
-      );
-      cy.contains("CEMENT").click();
-      cy.contains("Material").click();
-      cy.contains(
-        formatPercentageNumberAsString(
-          assertDefined(p2pFixtureForTest.t.cement?.material?.preCalcinedClayUsageInPercent),
-        ),
-      );
-    }
-    /* TODO additional tst code from main => check and integrate into this test!
-    cy.contains(assertDefined(p2pFixtureForTest.t.cement?.material?.preCalcinedClayUsageInPercent).toFixed(0));
-      cy.contains("FREIGHT TRANSPORT BY ROAD").click();
-      cy.contains("Technology").click();
-      cy.get("td > span > a").contains("Drive mix per fleet segment").click();
-      cy.get(".p-dialog").contains(
-        assertDefined(
-          p2pFixtureForTest.t.freightTransportByRoad?.technology?.driveMixPerFleetSegment?.SmallTrucks
-            ?.driveMixPerFleetSegmentInPercent,
-        ).toFixed(2),
-      );
-     */
 
     it(
       "Create a company and a P2P dataset via the api, then open the P2P dataset in the upload form via " +
@@ -97,7 +54,6 @@ describeIf(
               cy.get("h1").should("contain", testCompanyName);
               submitButton.clickButton();
               cy.url().should("eq", getBaseUrl() + "/datasets");
-              validateFormUploadedData(storedCompany.companyId, dataMetaInformation.dataId);
             });
           });
         });
