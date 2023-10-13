@@ -17,6 +17,7 @@ export function generateP2pPreparedFixtures(
   preparedFixtures.push(
     manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0]),
   );
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, nullProbability)[0], "2023-04-18"));
   preparedFixtures.push(manipulateFixtureForNoNullFields(generateP2pFixtures(1, 0, false)[0]));
   preparedFixtures.push(
     manipulateFixtureForOneP2pDataSetWithFourSectors(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0]),
@@ -46,6 +47,23 @@ function manipulateFixtureForSixP2pDataSetsInDifferentYears(
  */
 function manipulateFixtureForNoNullFields(input: FixtureData<PathwaysToParisData>): FixtureData<PathwaysToParisData> {
   input.companyInformation.companyName = "P2p-dataset-with-no-null-fields";
+  return input;
+}
+
+/**
+ * Sets the company name, and, data date and reporting period in the fixture data to
+ * specific values needed for tests.
+ * @param input Fixture data to be manipulated
+ * @param date the date in the format "YYYY-MM-DD"
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForDate(
+  input: FixtureData<PathwaysToParisData>,
+  date: string,
+): FixtureData<PathwaysToParisData> {
+  input.companyInformation.companyName = "P2p-date-" + date;
+  input.t.general.general.dataDate = date;
+  input.reportingPeriod = date.split("-")[0];
   return input;
 }
 
