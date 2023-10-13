@@ -57,8 +57,8 @@ docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
                         --build-arg DATALAND_QA_SERVICE_BASE_VERSION="${DATALAND_QA_SERVICE_BASE_VERSION:-}" \
                         --build-arg DATALAND_INTERNAL_STORAGE_BASE_VERSION="${DATALAND_INTERNAL_STORAGE_BASE_VERSION:-}" \
                         --build-arg DATALAND_BATCH_MANAGER_BASE_VERSION="${DATALAND_BATCH_MANAGER_BASE_VERSION:-}" \
-                        --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}"
-                        --build-arg DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES=150
+                        --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}" \
+                        --build-arg DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES="${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}"
                   )
 
 if [[ ${GITHUB_ACTIONS:-} == "true" ]]; then
