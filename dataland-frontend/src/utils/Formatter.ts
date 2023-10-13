@@ -24,6 +24,9 @@ export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency)
   if (amountWithCurrency?.amount == undefined) {
     return "";
   }
+  if (amountWithCurrency?.amount === 0) {
+    return `0 ${(amountWithCurrency?.currency ?? "").trim()}`;
+  }
   return `${amountWithCurrency.amount.toLocaleString("en-GB", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

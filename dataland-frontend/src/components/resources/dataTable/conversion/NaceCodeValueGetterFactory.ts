@@ -1,12 +1,12 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
-  type AvailableDisplayValues,
-  EmptyDisplayValue,
-  MLDTDisplayComponents,
-  type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayObjectForEmptyString,
+  MLDTDisplayComponentName,
+  type MLDTDisplayObject,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
+import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 
 /**
@@ -16,15 +16,18 @@ import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
  * @param field the field
  * @returns the created getter
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function naceCodeValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableDisplayValues {
+export function naceCodeValueGetterFactory(
+  path: string,
+  field: Field,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const selectionValue = getFieldValueFromDataModel(path, dataset) as Array<string>;
+    const selectionValue = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;
     if (!selectionValue || selectionValue.length == 0) {
-      return EmptyDisplayValue;
+      return MLDTDisplayObjectForEmptyString;
     } else {
-      return <MLDTDisplayValue<MLDTDisplayComponents.ModalLinkDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.ModalLinkDisplayComponent,
+      return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
         displayValue: {
           label: `Show ${selectionValue.length} NACE code${selectionValue.length > 1 ? "s" : ""}`,
           modalComponent: MultiSelectModal,

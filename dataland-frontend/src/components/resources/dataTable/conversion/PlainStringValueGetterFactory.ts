@@ -1,8 +1,8 @@
 import {
-  type AvailableDisplayValues,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 
 /**
  * Returns a value factory that returns the value of the field as a string.
@@ -11,9 +11,9 @@ import { getFieldValueFromDataModel } from "@/components/resources/dataTable/con
  * @returns the created getter
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function plainStringValueGetterFactory(path: string): (dataset: any) => AvailableDisplayValues {
+export function plainStringValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => ({
-    displayComponent: MLDTDisplayComponents.StringDisplayComponent,
-    displayValue: (getFieldValueFromDataModel(path, dataset) || "") as string,
+    displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+    displayValue: (getFieldValueFromFrameworkDataset(path, dataset) || "") as string,
   });
 }

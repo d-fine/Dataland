@@ -1,9 +1,9 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
-  EmptyDisplayValue,
-  MLDTDisplayComponents,
-  type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  MLDTDisplayObjectForEmptyString,
+  MLDTDisplayComponentName,
+  type MLDTDisplayObject,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { YesNoNa } from "@clients/backend";
 import type { BaseDataPointYesNoNa } from "@clients/backend";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
@@ -25,14 +25,14 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     it("An empty string should be displayed if the data point is undefined", () => {
       const dataset = { data: undefined };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(EmptyDisplayValue);
+      expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
     });
 
     it("'Yes' should be displayed if the value is Yes", () => {
       const dataset = { data: YesNoNa.Yes };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: "Yes",
       });
     });
@@ -40,8 +40,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     it("'No' should be displayed if the value is No", () => {
       const dataset = { data: YesNoNa.No };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: "No",
       });
     });
@@ -49,8 +49,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     it("'N/A' should be displayed if the value is NA", () => {
       const dataset = { data: YesNoNa.Na };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: "N/A",
       });
     });
@@ -84,7 +84,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     it("An empty string should be displayed if the data point is undefined", () => {
       const dataset = { data: undefined };
       const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
-      expect(value).to.deep.equal(EmptyDisplayValue);
+      expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
     });
 
     it("'N/A' should be displayed if the value is N/A", () => {
@@ -93,8 +93,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: "N/A",
       });
     });
@@ -110,8 +110,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
         };
         const dataset = { data: datapoint };
         const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
-        expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.DocumentLinkDisplayComponent>>{
-          displayComponent: MLDTDisplayComponents.DocumentLinkDisplayComponent,
+        expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
+          displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
           displayValue: {
             label: "Certified",
             reference: {
@@ -127,8 +127,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
         };
         const dataset = { data: datapoint };
         const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
-        expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-          displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
           displayValue: "Uncertified",
         });
       });
@@ -141,8 +141,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
         };
         const dataset = { data: datapoint };
         const value = yesNoValueGetterFactory("data", baseFieldNoCertificate)(dataset);
-        expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-          displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
           displayValue: "Yes",
         });
       });
@@ -165,14 +165,14 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
     it("An empty string should be displayed if the data point is undefined", () => {
       const dataset = { data: undefined };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(EmptyDisplayValue);
+      expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
     });
 
     it("An empty string should be displayed if the data point's value is undefined", () => {
       const datapoint = undefined;
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(EmptyDisplayValue);
+      expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
     });
 
     it("'Yes' should be displayed if the value is Yes", () => {
@@ -185,8 +185,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: "Yes",
       });
     });
@@ -201,8 +201,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: "No",
       });
     });
@@ -217,8 +217,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayValue<MLDTDisplayComponents.StringDisplayComponent>>{
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: "N/A",
       });
     });
