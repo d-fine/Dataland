@@ -5,7 +5,7 @@ import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerData
 import {
   getCellContainer,
   getRowHeader,
-  getVisibleSectionHead,
+  getSectionHead,
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 describe("Tests for the MultiLayerDataTable component", () => {
   /**
@@ -123,46 +123,45 @@ describe("Tests for the MultiLayerDataTable component", () => {
   describe("Tests that nesting works as expected", () => {
     it("Tests that sections marked with 'expandOnPageLoad' are auto-expanded", () => {
       mountWithDatasets([nestingTestDemoDataset1]);
-      getVisibleSectionHead("Section 1").should("have.attr", "data-section-expanded", "true");
+      getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true");
       getCellContainer("Level 2 - String").should("be.visible");
     });
 
     it("Tests that sections can be expanded and contracted", () => {
       mountWithDatasets([nestingTestDemoDataset1]);
-
-      getVisibleSectionHead("Section 1").should("have.attr", "data-section-expanded", "true");
+      getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true");
       getCellContainer("Level 2 - String").should("be.visible");
-      getVisibleSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").should("be.visible");
+      getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").should("be.visible");
 
-      getVisibleSectionHead("Section 1").click();
+      getSectionHead("Section 1").click();
 
-      getVisibleSectionHead("Section 1").should("have.attr", "data-section-expanded", "false");
+      getSectionHead("Section 1").should("have.attr", "data-section-expanded", "false");
       getCellContainer("Level 2 - String").should("not.be.visible");
-      getVisibleSectionHead("Subsection 1").should("not.be.visible");
+      getSectionHead("Subsection 1", false).should("not.be.visible");
     });
 
     it("Tests that subsections can be expanded and contracted", () => {
       mountWithDatasets([nestingTestDemoDataset1]);
       getCellContainer("Level 3 - String").should("not.be.visible");
 
-      getVisibleSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
+      getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
       getCellContainer("Level 3 - String").should("be.visible");
 
-      getVisibleSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "true").click();
+      getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "true").click();
       getCellContainer("Level 3 - String").should("not.be.visible");
     });
 
     it("Tests that the state of subsection expansion is remembered when sections get expanded", () => {
       mountWithDatasets([nestingTestDemoDataset1]);
-      getVisibleSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
+      getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
       getCellContainer("Level 3 - String").should("be.visible");
 
-      getVisibleSectionHead("Section 1").should("have.attr", "data-section-expanded", "true").click();
-      getVisibleSectionHead("Subsection 1").should("not.be.visible");
+      getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true").click();
+      getSectionHead("Subsection 1", false).should("not.be.visible");
       getCellContainer("Level 3 - String").should("not.be.visible");
 
-      getVisibleSectionHead("Section 1").should("have.attr", "data-section-expanded", "false").click();
-      getVisibleSectionHead("Subsection 1").should("be.visible");
+      getSectionHead("Section 1").should("have.attr", "data-section-expanded", "false").click();
+      getSectionHead("Subsection 1").should("be.visible");
       getCellContainer("Level 3 - String").should("be.visible");
     });
   });
@@ -171,13 +170,13 @@ describe("Tests for the MultiLayerDataTable component", () => {
     it("Tests that fields and sections get hidden if shouldDisplay is false", () => {
       mountWithDatasets([nestingTestDemoDataset3]);
       getCellContainer("Level 1 - String").should("not.exist");
-      getVisibleSectionHead("Section 2").should("not.exist");
+      getSectionHead("Section 2").should("not.exist");
     });
 
     it("Tests that fields and sections should get displayed if at least one of the datasets has shouldDisplay = true", () => {
       mountWithDatasets([nestingTestDemoDataset1, nestingTestDemoDataset3]);
       getCellContainer("Level 1 - String").should("be.visible");
-      getVisibleSectionHead("Section 2").should("be.visible");
+      getSectionHead("Section 2").should("be.visible");
     });
   });
 
@@ -195,8 +194,8 @@ describe("Tests for the MultiLayerDataTable component", () => {
 
   it("Tests that header badge coloring works", () => {
     mountWithDatasets([nestingTestDemoDataset1]);
-    getVisibleSectionHead("Section 1").find("span.p-badge.badge-blue").should("exist");
-    getVisibleSectionHead("Section 2").find("span.p-badge").should("not.exist");
+    getSectionHead("Section 1").find("span.p-badge.badge-blue").should("exist");
+    getSectionHead("Section 2").find("span.p-badge").should("not.exist");
   });
 
   it("Tests that explanation texts are shown iff they are defined", () => {

@@ -29,31 +29,31 @@ describe("Component test for P2pPanel", () => {
     cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
     MLDT.getCellContainer("Data Date").should("contain.text", p2pData.general.general.dataDate).should("be.visible");
 
-    MLDT.getVisibleSectionHead("General").eq(1).click();
+    MLDT.getSectionHead("General").eq(1).click();
     MLDT.getCellContainer("Data Date").should("not.be.visible");
-    MLDT.getVisibleSectionHead("General").eq(1).click();
+    MLDT.getSectionHead("General").eq(1).click();
     MLDT.getCellContainer("Data Date").should("be.visible");
 
-    MLDT.getVisibleSectionHead("Ammonia").click();
+    MLDT.getSectionHead("Ammonia").click();
     MLDT.getCellContainer("CCS technology adoption").should("not.be.visible");
-    MLDT.getVisibleSectionHead("Decarbonisation").click();
+    MLDT.getSectionHead("Decarbonisation").click();
     MLDT.getCellContainer("CCS technology adoption")
       .should("contain.text", ccsTechnologyAdoptionInPercent)
       .should("be.visible");
 
-    MLDT.getVisibleSectionHead("Livestock farming").click();
-    MLDT.getVisibleSectionHead("Animal feed").click();
+    MLDT.getSectionHead("Livestock farming").click();
+    MLDT.getSectionHead("Animal feed").click();
     cy.get("span[data-test=Report-Download-Policy]").find("i[data-test=download-icon]").should("be.visible");
 
-    MLDT.getVisibleSectionHead("Cement").click();
-    MLDT.getVisibleSectionHead("Material").click();
+    MLDT.getSectionHead("Cement").click();
+    MLDT.getSectionHead("Material").click();
     MLDT.getCellContainer("Pre-calcined clay usage").should("be.visible");
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").should("contain.text", "Share of pre-calcined");
-    MLDT.getVisibleSectionHead("Cement").click();
+    MLDT.getSectionHead("Cement").click();
 
-    MLDT.getVisibleSectionHead("Freight transport by road").click();
-    MLDT.getVisibleSectionHead("Technology").click();
+    MLDT.getSectionHead("Freight transport by road").click();
+    MLDT.getSectionHead("Technology").click();
   });
 
   /**

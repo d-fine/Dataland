@@ -33,8 +33,8 @@ describeIf(
     function validateFormUploadedData(companyId: string): void {
       cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sfdr);
 
-      MLDT.getVisibleSectionHead("Environmental").should("have.attr", "data-section-expanded", "false").click();
-      MLDT.getVisibleSectionHead("Biodiversity").should("have.attr", "data-section-expanded", "false").click();
+      MLDT.getSectionHead("Environmental").should("have.attr", "data-section-expanded", "false").click();
+      MLDT.getSectionHead("Biodiversity").should("have.attr", "data-section-expanded", "false").click();
 
       MLDT.getCellContainer("Primary Forest And Wooded Land Of Native Species Exposure").should("contain.text", "Yes");
       MLDT.getCellContainer("Protected Areas Exposure").should("contain.text", "No");

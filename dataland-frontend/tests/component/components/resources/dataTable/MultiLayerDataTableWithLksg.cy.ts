@@ -44,9 +44,9 @@ describe("Component test for the LksgPanel", () => {
     MLDT.getCellContainer("Data Date")
       .should("contain.text", lksgData.general.masterData.dataDate)
       .should("be.visible");
-    MLDT.getVisibleSectionHead("Master Data").should("have.attr", "data-section-expanded", "true").click();
+    MLDT.getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true").click();
     MLDT.getCellContainer("Data Date").should("not.be.visible");
-    MLDT.getVisibleSectionHead("Master Data").should("have.attr", "data-section-expanded", "false").click();
+    MLDT.getSectionHead("Master Data").should("have.attr", "data-section-expanded", "false").click();
     MLDT.getCellContainer("Data Date")
       .should("contain.text", lksgData.general.masterData.dataDate)
       .should("be.visible");
@@ -56,8 +56,8 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    MLDT.getVisibleSectionHead("Governance").should("have.attr", "data-section-expanded", "false").click();
-    MLDT.getVisibleSectionHead("Certifications, policies and responsibilities")
+    MLDT.getSectionHead("Governance").should("have.attr", "data-section-expanded", "false").click();
+    MLDT.getSectionHead("Certifications, policies and responsibilities")
       .should("have.attr", "data-section-expanded", "false")
       .click();
 
@@ -70,7 +70,7 @@ describe("Component test for the LksgPanel", () => {
     const lksgData = preparedFixture.t;
 
     cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
-    MLDT.getVisibleSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
     MLDT.getCellContainer("List Of Production Sites").contains("a").should("be.visible");
   });
 
@@ -78,7 +78,7 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("lksg-with-procurement-categories", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    MLDT.getVisibleSectionHead("Production-specific - Own Operations")
+    MLDT.getSectionHead("Production-specific - Own Operations")
       .should("have.attr", "data-section-expanded", "false")
       .click();
     MLDT.getCellContainer("Products/Services Categories purchased").find("a").should("be.visible").click();
@@ -98,7 +98,7 @@ describe("Component test for the LksgPanel", () => {
     );
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    MLDT.getVisibleSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
 
     MLDT.getCellContainer("Manufacturing Company").should("have.text", "No");
     MLDT.getCellContainer("List Of Production Sites").should("not.exist");
@@ -117,7 +117,7 @@ describe("Component test for the LksgPanel", () => {
       true,
     );
 
-    MLDT.getVisibleSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
 
     MLDT.getCellContainer("Manufacturing Company").should("have.text", "No");
     MLDT.getCellContainer("List Of Production Sites").should("be.visible");
