@@ -11,6 +11,7 @@
 
 
 
+
     <div class="col-4 flex justify-content-end" v-if="showUserProfileDropdown">
       <UserProfileDropDown />
     </div>
