@@ -39,7 +39,7 @@ const struggleSection = computed(() => {
     gap: 32px;
     max-width: 1440px;
     width: 100%;
-    padding: 32px;
+    padding: 0 32px;
   }
   h2 {
     grid-column: 4 / 14;
@@ -103,17 +103,34 @@ const struggleSection = computed(() => {
 
 @media only screen and (max-width: $large) {
   .struggle {
+    &__wrapper {
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+      padding: 0 22px;
+    }
+    h2 {
+      grid-column: 2 / 10;
+    }
+    &__grid {
+      grid-column: 2 / 12;
+      gap: 80px 22px;
+    }
+    &__cell {
+      padding-right: calc((100% - 4 * 22px) / 2);
+      &__icon {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+}
+@media only screen and (max-width: $medium) {
+  .struggle {
     h2 {
       font-size: 48px;
       font-weight: 600;
       line-height: 56px; /* 116.667% */
       letter-spacing: 0.25px;
-    }
-    &__cell {
-      &__icon {
-        width: 40px;
-        height: 40px;
-      }
     }
   }
 }

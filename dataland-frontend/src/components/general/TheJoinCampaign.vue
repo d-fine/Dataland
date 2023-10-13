@@ -40,12 +40,12 @@ const joinCampaignSection = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 140px 0 200px;
+  padding: 140px 0;
 
   &__wrapper {
     display: grid;
     grid-template-columns: repeat(16, 1fr);
-    gap: 32px;
+    gap: 61px 32px;
     max-width: 1440px;
     width: 100%;
     padding: 0 32px;
@@ -74,8 +74,9 @@ const joinCampaignSection = computed(() => {
     font-weight: 600;
     line-height: 48px; /* 120% */
     letter-spacing: 0.25px;
-    grid-column: 4 / 15;
+    grid-column: 4 / 14;
     text-align: left;
+    margin: 0;
   }
   &__button {
     padding: 14px 32px;
@@ -103,7 +104,8 @@ const joinCampaignSection = computed(() => {
     grid-template-columns: repeat(4, 1fr);
     align-self: flex-end;
     gap: 32px;
-    grid-column: 4 / 16;
+    grid-column: 3 / 15;
+    margin-top: 79px;
   }
   &__row {
     border-radius: 16px;
@@ -143,6 +145,20 @@ const joinCampaignSection = computed(() => {
     line-height: 56px; /* 116.667% */
     letter-spacing: 0.25px;
     text-align: right;
+  }
+}
+
+@media only screen and (max-width: $large) {
+  .joincampaign {
+    &__grid {
+      grid-template-columns: repeat(2, 2fr);
+      gap: 61px 24px;
+      grid-column: 2 / 16;
+      &__row {
+        padding: 40px 46px;
+        min-height: 329px;
+      }
+    }
   }
 }
 </style>

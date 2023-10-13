@@ -39,7 +39,7 @@ const introSection = computed(() => {
     margin-bottom: 42px;
   }
   &__text {
-    color: var(--grey-tones-400);
+    color: var(--basic-dark);
     text-align: center;
     font-size: 100px;
     font-style: normal;
@@ -50,15 +50,11 @@ const introSection = computed(() => {
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
-    span:first-of-type {
-      color: var(--basic-dark);
-    }
     span:last-of-type {
       display: block;
       font-size: 48px;
       line-height: 56px; /* 116.667% */
       margin-top: 80px;
-      color: var(--basic-dark);
     }
   }
 }
@@ -77,6 +73,23 @@ const introSection = computed(() => {
         font-weight: 600;
         line-height: 48px; /* 120% */
         letter-spacing: 0.25px;
+        margin-top: 31px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $medium) {
+  .intro {
+    &__text {
+      font-size: 48px;
+      line-height: 56px;
+      max-width: 534px;
+      letter-spacing: unset;
+      margin: 0 auto;
+      span:last-of-type {
+        font-size: 32px;
+        line-height: 40px; /* 125% */
         margin-top: 31px;
       }
     }

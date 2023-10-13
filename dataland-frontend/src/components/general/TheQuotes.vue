@@ -168,6 +168,4 @@ const currentCardText = computed(() => cards.value[currentSlide.value]?.date);
     }
   }
 }
-@media only screen and (max-width: $large) {
-}
 </style>

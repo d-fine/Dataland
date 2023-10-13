@@ -30,7 +30,7 @@ const brandsSection = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 64px 0;
+  padding: 80px 0 140px;
   gap: 40px;
 
   &__wrap {
@@ -101,6 +101,15 @@ const brandsSection = computed(() => {
           width: 190px;
         }
       }
+    }
+  }
+}
+@media only screen and (max-width: $medium) {
+  .brands {
+    &__wrapper {
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+      padding: 0 22px;
     }
   }
 }
