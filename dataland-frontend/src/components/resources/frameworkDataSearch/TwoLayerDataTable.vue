@@ -153,7 +153,6 @@ import { defineComponent, type PropType } from "vue";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
-import { formatPercentageNumberAsString } from "@/utils/Formatter";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
