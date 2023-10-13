@@ -5,7 +5,6 @@
         <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland" class="pl-3" />
       </router-link>
     </div>
-
     <div class="col-4">
       <slot></slot>
     </div>
