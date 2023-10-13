@@ -8,7 +8,6 @@
     <div class="col-4">
       <slot></slot>
     </div>
-
     <div class="col-4 flex justify-content-end" v-if="showUserProfileDropdown">
       <UserProfileDropDown />
     </div>
