@@ -56,6 +56,9 @@ const slides = computed(() => sections?.find((s) => s.title === "How it works")?
     max-width: 1273px;
     padding-right: 789px;
     text-align: left;
+    transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
   }
 
   &__slides {
@@ -87,6 +90,9 @@ const slides = computed(() => sections?.find((s) => s.title === "How it works")?
       line-height: 56px; /* 116.667% */
       letter-spacing: 0.25px;
       margin: 0;
+      transition:
+        font-size 0.4s ease,
+        line-height 0.4s ease;
     }
 
     &-text {
@@ -170,29 +176,36 @@ const slides = computed(() => sections?.find((s) => s.title === "How it works")?
 
 @media only screen and (max-width: $large) {
   .howitworks {
+    padding: 120px 0 64px;
+
     &__wrapper {
       display: grid;
-      grid-template-columns: repeat(16, 1fr);
-      gap: 32px;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 56px 22px;
       max-width: 1440px;
       width: 100%;
-      padding: 0 32px;
+      padding: 0 22px;
     }
 
     &__title {
-      grid-column: 4 / 9;
+      grid-column: 2 / 8;
       font-size: 48px;
       font-weight: 600;
       line-height: 56px; /* 116.667% */
       letter-spacing: 0.25px;
-      color: var(--default-neutral-white);
-      max-width: unset;
+      max-width: 370px;
       padding-right: unset;
     }
 
     &__slides,
     &__arrows {
-      grid-column: 4 / 16;
+      grid-column: 2 / -1;
+    }
+    &__slide {
+      &-title {
+        font-size: 40px;
+        line-height: 48px;
+      }
     }
   }
 }

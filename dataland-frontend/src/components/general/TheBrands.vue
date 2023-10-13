@@ -81,13 +81,18 @@ const brandsSection = computed(() => {
 
 @media only screen and (max-width: $large) {
   .brands {
+    &__wrap {
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+      padding: 0 22px;
+    }
     &__text {
       font-size: 48px;
       min-width: 420px;
       font-weight: 600;
       line-height: 56px;
       letter-spacing: 0.25px;
-      grid-column: 3/13;
+      grid-column: 3/-1;
       max-width: 500px;
     }
     &__list {
@@ -104,13 +109,13 @@ const brandsSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: $medium) {
-  .brands {
-    &__wrapper {
-      grid-template-columns: repeat(12, 1fr);
-      gap: 22px;
-      padding: 0 22px;
-    }
-  }
-}
+// @media only screen and (max-width: $medium) {
+//   .brands {
+//     &__wrap {
+//       grid-template-columns: repeat(12, 1fr);
+//       gap: 22px;
+//       padding: 0 22px;
+//     }
+//   }
+// }
 </style>

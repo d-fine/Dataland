@@ -84,7 +84,7 @@ const struggleSection = computed(() => {
       font-weight: 600;
       line-height: 40px; /* 125% */
       letter-spacing: 0.25px;
-
+      text-align: left;
       margin: 0 0 8px;
     }
 

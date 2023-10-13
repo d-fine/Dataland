@@ -150,14 +150,29 @@ const joinCampaignSection = computed(() => {
 
 @media only screen and (max-width: $large) {
   .joincampaign {
+    &__wrapper {
+      grid-template-columns: repeat(12, 1fr);
+      gap: 61px 22px;
+      padding: 0 22px;
+    }
+    &__title {
+      grid-column: 2 / 12;
+    }
+    &__paragraph {
+      grid-column: 2 / 12;
+    }
+    &__button {
+      grid-column: 2 / -1;
+    }
     &__grid {
       grid-template-columns: repeat(2, 2fr);
-      gap: 61px 24px;
-      grid-column: 2 / 16;
-      &__row {
-        padding: 40px 46px;
-        min-height: 329px;
-      }
+      gap: 61px 22px;
+      grid-column: 2 / 12;
+      margin-top: 0;
+    }
+    &__row {
+      padding: 40px 46px;
+      min-height: 329px;
     }
   }
 }

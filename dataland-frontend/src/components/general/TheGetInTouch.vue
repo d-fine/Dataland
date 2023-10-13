@@ -65,7 +65,8 @@ const getInTouchSection = computed(() => {
   &__image {
     grid-column: 5 / 8;
     img {
-      height: 320px;
+      width: 100%;
+      max-height: 320px;
       border-radius: 16px;
     }
   }
@@ -107,6 +108,27 @@ const getInTouchSection = computed(() => {
         background-color: var(--default-neutral-white);
         color: var(--basic-dark);
       }
+    }
+  }
+}
+@media only screen and (max-width: $large) {
+  .getintouch {
+    padding: 140px 0;
+    &__wrapper {
+      grid-template-columns: repeat(12, 1fr);
+      gap: 48px 22px;
+      padding: 0 22px;
+    }
+    &__title {
+      grid-column: 3 /11;
+    }
+
+    &__image {
+      grid-column: 3 / 6;
+    }
+
+    &__text {
+      grid-column: 6 / 11;
     }
   }
 }
