@@ -8,6 +8,7 @@ import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { type DriveMixType } from "@/api-models/DriveMixType";
 
 let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
 before(function () {
@@ -50,12 +51,12 @@ describeIf(
       cy.contains("FREIGHT TRANSPORT BY ROAD").click();
       cy.contains("Technology").click();
       cy.get("td > span > a").contains("Drive mix per fleet segment").click();
-      cy.get(".p-dialog").contains(
-        assertDefined(
-          p2pFixtureForTest.t.freightTransportByRoad?.technology?.driveMixPerFleetSegment?.SmallTrucks
-            ?.driveMixPerFleetSegmentInPercent,
-        ).toFixed(2),
-      );
+      cy.get(".p-dialog").contains(() => {
+        const driveMixType = p2pFixtureForTest.t.freightTransportByRoad?.technology?.driveMixPerFleetSegment
+          ?.SmallTrucks as DriveMixType;
+        const driveMixPercent = driveMixType.driveMixPerFleetSegmentInPercent as number;
+        return driveMixPercent.toFixed(2);
+      });
     }
 
     it("Create a company via api and upload a P2P dataset via the api", () => {
