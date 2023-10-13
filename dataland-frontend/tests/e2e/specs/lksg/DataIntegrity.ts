@@ -42,7 +42,7 @@ describeIf(
       cy.visit("/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg);
       cy.wait("@fetchLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
       cy.get("h1").should("contain", storedCompany.companyInformation.companyName);
-      MLDT.getSectionHead("Production-specific - Own Operations")
+      MLDT.getVisibleSectionHead("Production-specific - Own Operations")
         .should("have.attr", "data-section-expanded", "false")
         .click();
 
@@ -93,7 +93,9 @@ describeIf(
             (metaInfos as DataMetaInformation[])[0],
           );
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
-          MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+          MLDT.getVisibleSectionHead("Production-specific")
+            .should("have.attr", "data-section-expanded", "false")
+            .click();
 
           cy.get(`a:contains(Show List Of Production Sites)`).click();
           lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {

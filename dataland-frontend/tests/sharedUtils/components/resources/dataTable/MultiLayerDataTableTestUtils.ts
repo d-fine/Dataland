@@ -1,10 +1,10 @@
 /**
- * Retrieves the header of the section with the given label
- * @param label the label of the section to retrieve
- * @returns the section header
+ * Retrieves a visible header of a section with the given label
+ * @param label the label of a section to retrieve
+ * @returns the table row element
  */
-export function getSectionHead(label: string): Cypress.Chainable {
-  return cy.get(`tr[data-section-label='${label}']`);
+export function getVisibleSectionHead(label: string): Cypress.Chainable {
+  return cy.get(`tr[data-section-label='${label}']:visible`);
 }
 
 /**
