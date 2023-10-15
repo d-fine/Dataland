@@ -1,8 +1,12 @@
 <template>
-  <a @click="$dialog.open(content.displayValue.modalComponent, content.displayValue.modalOptions)" class="link"
+  <a
+    v-if="content?.displayValue?.modalOptions?.data.listOfRowContents.length"
+    @click="$dialog.open(content.displayValue.modalComponent, content.displayValue.modalOptions)"
+    class="link"
     >{{ content.displayValue.label }}
     <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
   </a>
+  <span v-else></span>
 </template>
 
 <script lang="ts">

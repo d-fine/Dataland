@@ -127,13 +127,14 @@ import PercentageFormField from "@/components/forms/parts/fields/PercentageFormF
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, getFileName, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 import HighImpactClimateSectorsFormField from "@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import { HighImpactClimateSectorsNaceCodes } from "@/types/HighImpactClimateSectors";
 
 export default defineComponent({
   setup() {
@@ -191,6 +192,7 @@ export default defineComponent({
       checkCustomInputs,
       documents: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
+      climateSectorsForPrefill: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
     };
   },
@@ -208,6 +210,9 @@ export default defineComponent({
       set() {
         // IGNORED
       },
+    },
+    namesOfAllCompanyReportsForTheDataset(): string[] {
+      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(this.sfdrDataModel, this.companyAssociatedSfdrData.data);
@@ -242,6 +247,14 @@ export default defineComponent({
       const dataResponse = await sfdrDataControllerApi.getFrameworkData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
+      this.climateSectorsForPrefill = sfdrResponseData?.data?.environmental?.energyPerformance
+        ?.applicableHighImpactClimateSectors
+        ? Object.keys(sfdrResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors).map(
+            (it): string => {
+              return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
+            },
+          )
+        : [];
       this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
 
       this.waitingForData = false;
@@ -255,7 +268,7 @@ export default defineComponent({
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedSfdrData.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset as string[],
+            this.namesOfAllCompanyReportsForTheDataset,
           );
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
@@ -299,6 +312,9 @@ export default defineComponent({
       }),
       referencedReportsForPrefill: computed(() => {
         return this.referencedReportsForPrefill;
+      }),
+      climateSectorsForPrefill: computed(() => {
+        return this.climateSectorsForPrefill;
       }),
     };
   },

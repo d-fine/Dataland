@@ -6,6 +6,18 @@ import { getFieldValueFromDataModel } from "@/components/resources/dataTable/con
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { formatNumberToReadableFormat } from "@/utils/Formatter";
+import { type DataPointOneValueBigDecimal } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/data-point-one-value-big-decimal";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
+
+interface HighImpactClimateDisplayFormat {
+  sector: string;
+  energyConsumption: string;
+}
+
+interface ValueObject {
+  [key: string]: DataPointOneValueBigDecimal;
+}
 
 /**
  * Convert an object into a list that can be displayed using the standard
@@ -13,14 +25,17 @@ import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
  * @param datasetValue the value of the dataset
  * @returns the converted list
  */
-function convertHighImpactClimateToListForModal(datasetValue: object): object {
-  const listForModal = [];
+function convertHighImpactClimateToListForModal(datasetValue: ValueObject): HighImpactClimateDisplayFormat[] {
+  const listForModal: HighImpactClimateDisplayFormat[] = [];
   for (const [naceCodeType, climateSectorValues] of Object.entries(datasetValue)) {
     if (!climateSectorValues) continue;
 
     listForModal.push({
       sector: humanizeStringOrNumber(naceCodeType),
-      energyConsumption: climateSectorValues.value ?? "",
+      energyConsumption:
+        climateSectorValues.value !== null && climateSectorValues.value !== undefined
+          ? formatNumberToReadableFormat(climateSectorValues.value)
+          : "",
     });
   }
   return listForModal;
@@ -41,12 +56,12 @@ export function highImpactClimateGetterFactory(path: string, field: Field): (dat
       .filter((item, index, array) => index < array.length - 1)
       .join(".")}`;
     const highImpactClimateSectors = ["A", "B", "C", "D", "E", "F", "G", "H", "L"];
-    let accumulatedData = {};
-    highImpactClimateSectors.forEach((sector) => {
+    let accumulatedData: ObjectType = {};
+    highImpactClimateSectors.forEach((sector: string) => {
       accumulatedData = {
         ...accumulatedData,
         [`NaceCode${sector}InGWh`]: getFieldValueFromDataModel(
-          `${pathWithoutField}.applicableHighImpactClimateSector.NaceCode${sector}InGWh`,
+          `${pathWithoutField}.applicableHighImpactClimateSectors.NaceCode${sector}InGWh`,
           dataset,
         ),
       };
@@ -64,7 +79,7 @@ export function highImpactClimateGetterFactory(path: string, field: Field): (dat
             dismissableMask: true,
           },
           data: {
-            listOfRowContents: convertHighImpactClimateToListForModal(field),
+            listOfRowContents: convertHighImpactClimateToListForModal(accumulatedData),
             kpiKeyOfTable: "highImpactSectorEnergyConsumptions",
             columnHeaders: {
               highImpactSectorEnergyConsumptions: {

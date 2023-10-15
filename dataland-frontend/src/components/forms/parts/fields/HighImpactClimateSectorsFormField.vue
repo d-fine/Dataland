@@ -13,7 +13,7 @@
         :class="innerClass"
       />
       <div class="grid2 mt-3">
-        <FormKit type="group" name="applicableHighImpactClimateSector">
+        <FormKit type="group" name="applicableHighImpactClimateSectors">
           <div v-for="selection of selections" :key="selection" class="bordered-box p-3 positionRelative">
             <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
             <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
@@ -45,6 +45,12 @@ import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointF
 
 export default defineComponent({
   name: "HighImpactClimateSectorsFormField",
+  inject: {
+    injectClimateSectors: {
+      from: "climateSectorsForPrefill",
+      default: [] as string[],
+    },
+  },
   components: { DataPointFormField, MultiSelect, UploadFormHeader },
   props: BaseFormFieldProps,
   data() {
@@ -52,8 +58,11 @@ export default defineComponent({
       options: naceCodeTree
         .filter((sector) => ["A", "B", "C", "D", "E", "F", "G", "H", "L"].includes(sector.key))
         .map((sector) => ({ label: sector.label, value: sector.key })),
-      selections: [] as string[],
+      selections: [],
     };
+  },
+  mounted() {
+    this.selections = this.injectClimateSectors;
   },
   methods: {
     /**
