@@ -5,10 +5,9 @@ import {
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
 import { type DataPointOneValueBigDecimal } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/data-point-one-value-big-decimal";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { HighImpactClimateSectorsKeys } from "@/types/HighImpactClimateSectors";
 
 interface HighImpactClimateDisplayFormat {
   sector: string;
@@ -29,9 +28,8 @@ function convertHighImpactClimateToListForModal(datasetValue: ValueObject): High
   const listForModal: HighImpactClimateDisplayFormat[] = [];
   for (const [naceCodeType, climateSectorValues] of Object.entries(datasetValue)) {
     if (!climateSectorValues) continue;
-
     listForModal.push({
-      sector: humanizeStringOrNumber(naceCodeType),
+      sector: HighImpactClimateSectorsKeys[naceCodeType as keyof typeof HighImpactClimateSectorsKeys] as string,
       energyConsumption:
         climateSectorValues.value !== null && climateSectorValues.value !== undefined
           ? formatNumberToReadableFormat(climateSectorValues.value)
@@ -56,7 +54,7 @@ export function highImpactClimateGetterFactory(path: string, field: Field): (dat
       .filter((item, index, array) => index < array.length - 1)
       .join(".")}`;
     const highImpactClimateSectors = ["A", "B", "C", "D", "E", "F", "G", "H", "L"];
-    let accumulatedData: ObjectType = {};
+    let accumulatedData: ValueObject = {};
     highImpactClimateSectors.forEach((sector: string) => {
       accumulatedData = {
         ...accumulatedData,
