@@ -6,6 +6,7 @@
       </router-link>
     </div>
 
+
     <div class="col-4">
       <slot></slot>
     </div>
