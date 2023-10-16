@@ -78,7 +78,7 @@ export function compareObjectKeysAndValuesDeep(
     const newPath = path ? `${path}.${key}` : key;
 
     if (!keysB.includes(key)) {
-      throw new Error(`Field ${newPath} exists in A but not in B`);
+      throw new Error(`A field with the key ${newPath} exists in A but not in B`);
     }
 
     const valueA = objA[key] as Record<string, object>;
@@ -88,7 +88,7 @@ export function compareObjectKeysAndValuesDeep(
 
   for (const key of keysB) {
     if (!keysA.includes(key)) {
-      throw new Error(`Field ${path}.${key} exists in B but not in A`);
+      throw new Error(`A field with the key ${path}.${key} exists in B but not in A`);
     }
   }
 }
@@ -103,20 +103,18 @@ function checkIfContentIsIdentical(
   valueB: Record<string, object>,
   newPath: string,
 ): void {
-  const throwErrorBecauseOfFieldValue = (fieldPath: string, fieldValueA: object, fieldValueB: object): void => {
-    throw new Error(
-      `Field ${fieldPath} is not equal. A: ${JSON.stringify(fieldValueA)}, B: ${JSON.stringify(fieldValueB)}`,
-    );
+  const throwErrorBecauseOfFieldValue = (fieldPath: string): void => {
+    throw new Error(`Field ${fieldPath} is not equal.`);
   };
   if (typeof valueA === "object" && typeof valueB === "object") {
     if (valueA === null || valueB === null) {
       if (valueA !== valueB) {
-        throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
+        throwErrorBecauseOfFieldValue(newPath);
       }
     } else {
       compareObjectKeysAndValuesDeep(valueA, valueB, newPath);
     }
   } else if (valueA !== valueB) {
-    throwErrorBecauseOfFieldValue(newPath, valueA, valueB);
+    throwErrorBecauseOfFieldValue(newPath);
   }
 }

@@ -1,11 +1,11 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
-  type AvailableDisplayValues,
-  EmptyDisplayValue,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayObjectForEmptyString,
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type BaseDataPointYesNoNa, type BaseDataPointYesNo, YesNoNa } from "@clients/backend";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
+import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 
 const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
   Yes: "Yes",
@@ -28,9 +28,9 @@ const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
 function formatYesNoValueWhenCertificateRequiredIsYes(
   elementValue: BaseDataPointYesNoNa | BaseDataPointYesNo | undefined,
   field: Field,
-): AvailableDisplayValues {
+): AvailableMLDTDisplayObjectTypes {
   if (!elementValue) {
-    return EmptyDisplayValue;
+    return MLDTDisplayObjectForEmptyString;
   }
   const lowerFieldLabel = field.label.toLowerCase();
   const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
@@ -41,7 +41,7 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
 
   if (elementValue.value == YesNoNa.Yes && elementValue.dataSource) {
     return {
-      displayComponent: MLDTDisplayComponents.DocumentLinkDisplayComponent,
+      displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
       displayValue: {
         label: displayValue,
         reference: elementValue.dataSource,
@@ -49,7 +49,7 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
     };
   } else {
     return {
-      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: displayValue,
     };
   }
@@ -62,14 +62,14 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
  */
 function formatYesNoValueWhenEvidenceDesiredIsYes(
   elementValue: BaseDataPointYesNoNa | undefined,
-): AvailableDisplayValues {
+): AvailableMLDTDisplayObjectTypes {
   if (!elementValue?.value) {
-    return EmptyDisplayValue;
+    return MLDTDisplayObjectForEmptyString;
   }
 
   const yesNoValue = elementValue.value;
   return {
-    displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+    displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
     displayValue: humanReadableYesNoMap[yesNoValue],
   };
 }
@@ -82,22 +82,22 @@ function formatYesNoValueWhenEvidenceDesiredIsYes(
  * @returns the created getter
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function yesNoValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableDisplayValues {
+export function yesNoValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     if (field.certificateRequiredIfYes) {
       return formatYesNoValueWhenCertificateRequiredIsYes(
-        getFieldValueFromDataModel(path, dataset) as BaseDataPointYesNo | BaseDataPointYesNoNa | undefined,
+        getFieldValueFromFrameworkDataset(path, dataset) as BaseDataPointYesNo | BaseDataPointYesNoNa | undefined,
         field,
       );
     } else if (field.evidenceDesired) {
       return formatYesNoValueWhenEvidenceDesiredIsYes(
-        getFieldValueFromDataModel(path, dataset) as BaseDataPointYesNoNa | undefined,
+        getFieldValueFromFrameworkDataset(path, dataset) as BaseDataPointYesNoNa | undefined,
       );
     } else {
-      const value = getFieldValueFromDataModel(path, dataset) as YesNoNa | undefined;
+      const value = getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | undefined;
       const displayValue = value ? humanReadableYesNoMap[value] : "";
       return {
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: displayValue,
       };
     }
