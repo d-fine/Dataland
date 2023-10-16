@@ -39,8 +39,8 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.12.1",
-    "@faker-js/faker": "^8.0.2",
-    "@rushstack/eslint-patch": "^1.4.0",
+    "@faker-js/faker": "^8.1.0",
+    "@rushstack/eslint-patch": "^1.5.1",
     "@types/node": "20.6.2",
     "@vitejs/plugin-vue": "^4.4.0",
     "@vue/eslint-config-prettier": "^8.0.0",
