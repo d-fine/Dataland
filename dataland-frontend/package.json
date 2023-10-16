@@ -59,7 +59,7 @@
     "mocha": "^10.2.0",
     "npm-check-updates": "^16.14.6",
     "otplib": "^12.0.1",
-    "sass": "^1.67.0",
+    "sass": "^1.69.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.2.2",
