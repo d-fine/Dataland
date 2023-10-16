@@ -2,209 +2,229 @@
 	{
 		"companyInformation": {
 			"companyName": "two-sfdr-data-sets-in-different-years",
-			"headquarters": "Linwoodborough",
-			"headquartersPostalCode": "30513",
-			"sector": null,
+			"headquarters": "Bennieland",
+			"headquartersPostalCode": "64032",
+			"sector": "systems",
 			"identifiers": {
 				"Lei": [
-					"DDXXNJegdg1imoEfd5Hy"
+					"6PDqy5VIXP9IypebYQNt"
 				],
 				"Isin": [
-					"xVwT02rezEJr"
+					"aXBeR3f1Ti1F",
+					"n8AWBVC0GpTv"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"TSbqNXU2T"
+				],
 				"VatNumber": [
-					"DIjAmDQhv"
+					"55h9ZqG6a"
 				],
 				"CompanyRegistrationNumber": [
-					"zuwkWTUN5tYMtE6"
+					"NquNzfM6W9fBL6H"
 				]
 			},
-			"countryCode": "DZ",
-			"companyAlternativeNames": [
-				"Christiansen - Bruen",
-				"Goldner, Kozey and Hyatt",
-				"Predovic and Sons",
-				"Roberts - Legros"
-			],
-			"companyLegalForm": null,
-			"website": "https://deserted-pollutant.info/",
+			"countryCode": "IL",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://ornate-exposure.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-07-12",
+					"dataDate": "2024-07-06",
 					"fiscalYearDeviation": "NoDeviation",
 					"fiscalYearEnd": "2020-01-03",
 					"referencedReports": {
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"isGroupLevel": "NA",
-							"reportDate": "2023-08-12",
-							"currency": "CUP"
-						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"isGroupLevel": "Yes",
+							"reportDate": "2022-12-29",
+							"currency": "STN"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-01-20",
+							"currency": "BRL"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"isGroupLevel": "No",
-							"reportDate": "2022-11-05",
-							"currency": "GNF"
+							"reportDate": "2023-07-12",
+							"currency": "NGN"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-02-18",
-							"currency": "SAR"
+							"isGroupLevel": null,
+							"reportDate": "2023-08-19",
+							"currency": "MGA"
 						}
 					},
-					"scopeOfEntities": null
+					"scopeOfEntities": "NA"
 				}
 			},
 			"environmental": {
 				"greenhouseGasEmissions": {
-					"scope1GhgEmissionsInTonnes": {
-						"value": 53121.13,
-						"dataSource": {
-							"page": 1122,
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
-						},
-						"quality": "Audited",
-						"comment": "copy bluetooth firewall"
-					},
-					"scope2GhgEmissionsInTonnes": {
-						"value": null,
-						"dataSource": null,
-						"quality": "NA",
-						"comment": null
-					},
-					"scope3GhgEmissionsInTonnes": {
-						"value": 33181.8,
+					"scope1InTonnes": {
+						"value": 89887.12,
 						"dataSource": null,
 						"quality": "Incomplete",
 						"comment": null
 					},
-					"enterpriseValue": {
-						"value": 3409345631.95,
-						"dataSource": {
-							"page": 211,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
-						},
-						"quality": "Reported",
-						"comment": "back up back-end sensor",
-						"currency": "HKD"
-					},
+					"scope2InTonnes": null,
+					"scope3InTonnes": null,
+					"enterpriseValue": null,
 					"totalRevenue": {
+						"value": 7971084562.6,
+						"dataSource": null,
+						"quality": "Estimated",
+						"comment": null,
+						"currency": "KGS"
+					},
+					"fossilFuelSectorExposure": null
+				},
+				"energyPerformance": {
+					"renewableEnergyProductionInGWh": {
 						"value": null,
 						"dataSource": null,
 						"quality": "NA",
-						"comment": null,
-						"currency": "MAD"
+						"comment": null
 					},
-					"fossilFuelSectorExposure": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 536,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
-						},
-						"quality": "Audited",
-						"comment": "back up bluetooth sensor"
-					}
-				},
-				"energyPerformance": {
-					"renewableEnergyProductionInGWh": null,
 					"renewableEnergyConsumptionInGWh": {
-						"value": 89077.14,
+						"value": 42726.84,
 						"dataSource": {
-							"page": 1133,
+							"page": 786,
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
+							"tagName": "technologies"
 						},
-						"quality": "Audited",
-						"comment": "transmit redundant capacitor"
-					},
-					"nonRenewableEnergyProductionInGWh": {
-						"value": 41838.06,
-						"dataSource": {
-							"page": 48,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
-						},
-						"quality": "Audited",
-						"comment": "index open-source system"
+						"quality": "Estimated",
+						"comment": "reboot open-source protocol"
 					},
 					"nonRenewableEnergyConsumptionInGWh": {
-						"value": 72936.39,
+						"value": 39083.72,
 						"dataSource": {
-							"page": 916,
-							"fileName": "AnnualReport",
+							"page": 882,
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
+							"tagName": "models"
+						},
+						"quality": "Audited",
+						"comment": "override open-source circuit"
+					},
+					"nonRenewableEnergyProductionInGWh": {
+						"value": null,
+						"dataSource": null,
+						"quality": "NA",
+						"comment": null
+					},
+					"highImpactClimateSectorEnergyConsumptionNaceAInGWh": {
+						"value": 8726.4,
+						"dataSource": null,
+						"quality": "Incomplete",
+						"comment": null
+					},
+					"highImpactClimateSectorEnergyConsumptionNaceBInGWh": null,
+					"highImpactClimateSectorEnergyConsumptionNaceCInGWh": {
+						"value": 7252.78,
+						"dataSource": {
+							"page": 137,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "communities"
 						},
 						"quality": "Reported",
-						"comment": "bypass auxiliary circuit"
+						"comment": "quantify virtual protocol"
 					},
-					"applicableHighImpactClimateSectors": {
-						"NaceCodeCInGWh": {
-							"value": 7257.04,
-							"dataSource": {
-								"page": 353,
-								"fileName": "SustainabilityReport",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-								"tagName": "mindshare"
-							},
-							"quality": "Estimated",
-							"comment": "compress back-end interface"
-						}
-					},
-					"nonRenewableEnergyConsumptionFossilFuelsInGWh": {
-						"value": 80434,
+					"highImpactClimateSectorEnergyConsumptionNaceDInGWh": {
+						"value": 8672.59,
 						"dataSource": null,
 						"quality": "Estimated",
 						"comment": null
 					},
-					"nonRenewableEnergyConsumptionCrudeOilInGWh": null,
-					"nonRenewableEnergyConsumptionNaturalGasInGWh": {
-						"value": 94664.93,
+					"highImpactClimateSectorEnergyConsumptionNaceEInGWh": null,
+					"highImpactClimateSectorEnergyConsumptionNaceFInGWh": {
+						"value": 64308.54,
 						"dataSource": {
-							"page": 613,
+							"page": 415,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"quality": "Estimated",
+						"comment": "synthesize cross-platform firewall"
+					},
+					"highImpactClimateSectorEnergyConsumptionNaceGInGWh": {
+						"value": 78548.32,
+						"dataSource": {
+							"page": 497,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"quality": "Incomplete",
+						"comment": "calculate neural hard drive"
+					},
+					"highImpactClimateSectorEnergyConsumptionNaceHInGWh": {
+						"value": 81540.76,
+						"dataSource": {
+							"page": 255,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"quality": "Incomplete",
+						"comment": "quantify online bus"
+					},
+					"highImpactClimateSectorEnergyConsumptionNaceLInGWh": null,
+					"totalHighImpactClimateSectorEnergyConsumptionInGWh": {
+						"value": 69556.49,
+						"dataSource": {
+							"page": 774,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"quality": "Reported",
+						"comment": "index online firewall"
+					},
+					"nonRenewableEnergyConsumptionFossilFuelsInGWh": {
+						"value": 56242.75,
+						"dataSource": null,
+						"quality": "Estimated",
+						"comment": null
+					},
+					"nonRenewableEnergyConsumptionCrudeOilInGWh": {
+						"value": 14741.67,
+						"dataSource": {
+							"page": 976,
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "portals"
 						},
 						"quality": "Audited",
-						"comment": "transmit redundant hard drive"
+						"comment": "calculate optical panel"
 					},
+					"nonRenewableEnergyConsumptionNaturalGasInGWh": null,
 					"nonRenewableEnergyConsumptionLigniteInGWh": {
-						"value": 35131.66,
-						"dataSource": {
-							"page": 21,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
-						},
-						"quality": "Reported",
-						"comment": "reboot digital capacitor"
+						"value": 80063.64,
+						"dataSource": null,
+						"quality": "Incomplete",
+						"comment": null
 					},
 					"nonRenewableEnergyConsumptionCoalInGWh": {
-						"value": 24185.12,
+						"value": 79278.67,
 						"dataSource": {
-							"page": 536,
-							"fileName": "SustainabilityReport",
+							"page": 872,
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "bandwidth"
+							"tagName": "content"
 						},
-						"quality": "Audited",
-						"comment": "navigate digital array"
+						"quality": "Incomplete",
+						"comment": "back up back-end port"
 					},
 					"nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
 						"value": null,
@@ -212,448 +232,570 @@
 						"quality": "NA",
 						"comment": null
 					},
-					"nonRenewableEnergyConsumptionOtherInGWh": {
-						"value": 84886.3,
-						"dataSource": {
-							"page": 356,
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
-						},
-						"quality": "Audited",
-						"comment": "reboot primary transmitter"
-					}
+					"nonRenewableEnergyConsumptionOtherInGWh": null
 				},
 				"biodiversity": {
-					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+					"primaryForestAndWoodedLandOfNativeSpeciesExposure": null,
+					"protectedAreasExposure": {
+						"value": "No",
+						"dataSource": {
+							"page": 858,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"quality": "Reported",
+						"comment": "generate bluetooth bus"
+					},
+					"rareOrEndangeredEcosystemsExposure": {
 						"value": "Yes",
+						"dataSource": {
+							"page": 270,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"quality": "Audited",
+						"comment": "quantify digital alarm"
+					}
+				},
+				"water": {
+					"emissionsToWaterInTonnes": {
+						"value": 99383.2,
+						"dataSource": {
+							"page": 1069,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"quality": "Estimated",
+						"comment": "index primary capacitor"
+					},
+					"waterConsumptionInCubicMeters": null,
+					"waterReusedInCubicMeters": {
+						"value": 31938.58,
+						"dataSource": {
+							"page": 405,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"quality": "Estimated",
+						"comment": "parse digital capacitor"
+					},
+					"waterManagementPolicy": {
+						"value": "No",
 						"dataSource": null,
 						"quality": "Estimated",
 						"comment": null
 					},
-					"protectedAreasExposure": {
+					"waterStressAreaExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": 1164,
+							"page": 739,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"quality": "Incomplete",
+						"comment": "bypass bluetooth alarm"
+					}
+				},
+				"waste": {
+					"hazardousWasteInTonnes": {
+						"value": 98199.33,
+						"dataSource": {
+							"page": 1170,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"quality": "Incomplete",
+						"comment": "hack auxiliary hard drive"
+					},
+					"manufactureOfAgrochemicalPesticidesProducts": {
+						"value": "No",
+						"dataSource": {
+							"page": 67,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"quality": "Reported",
+						"comment": "compress wireless system"
+					},
+					"landDegradationDesertificationSoilSealingExposure": {
+						"value": "No",
+						"dataSource": {
+							"page": 800,
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "schemas"
 						},
 						"quality": "Audited",
-						"comment": "bypass digital driver"
+						"comment": "generate online panel"
 					},
-					"rareOrEndangeredEcosystemsExposure": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 1052,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"quality": "Incomplete",
-						"comment": "back up cross-platform pixel"
-					},
-					"highlyBiodiverseGrasslandExposure": {
-						"value": "Yes",
-						"dataSource": {
-							"page": 585,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
-						},
-						"quality": "Estimated",
-						"comment": "navigate redundant circuit"
-					}
-				},
-				"water": {
-					"emissionsToWaterInTonnes": {
-						"value": 75215.34,
-						"dataSource": null,
-						"quality": "Incomplete",
-						"comment": null
-					},
-					"waterConsumptionInCubicMeters": {
-						"value": 88668.82,
-						"dataSource": null,
-						"quality": "Incomplete",
-						"comment": null
-					},
-					"waterReusedInCubicMeters": {
-						"value": 60091.32,
-						"dataSource": null,
-						"quality": "Incomplete",
-						"comment": null
-					},
-					"waterManagementPolicy": {
-						"value": null,
-						"dataSource": null,
-						"quality": "NA",
-						"comment": null
-					},
-					"highWaterStressAreaExposure": {
-						"value": "No",
-						"dataSource": null,
-						"quality": "Incomplete",
-						"comment": null
-					}
-				},
-				"waste": {
-					"hazardousAndRadioactiveWasteInTonnes": {
-						"value": null,
-						"dataSource": null,
-						"quality": "NA",
-						"comment": null
-					},
-					"manufactureOfAgrochemicalPesticidesProducts": null,
-					"landDegradationDesertificationSoilSealingExposure": null,
-					"sustainableAgriculturePolicy": {
-						"value": "No",
-						"dataSource": {
-							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
+					"sustainableAgriculturePolicy": null,
 					"sustainableOceansAndSeasPolicy": {
 						"value": "No",
-						"dataSource": {
-							"fileName": "Policy",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"nonRecycledWasteInTonnes": {
-						"value": 58260.29,
 						"dataSource": null,
-						"quality": "Incomplete",
+						"quality": "Estimated",
 						"comment": null
 					},
-					"threatenedSpeciesExposure": null,
-					"biodiversityProtectionPolicy": {
+					"wasteNonRecycledInTonnes": {
+						"value": null,
+						"dataSource": null,
+						"quality": "NA",
+						"comment": null
+					},
+					"threatenedSpeciesExposure": {
 						"value": "No",
 						"dataSource": {
-							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
+							"page": 190,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"quality": "Audited",
+						"comment": "back up redundant bandwidth"
+					},
+					"biodiversityProtectionPolicy": {
+						"value": null,
+						"dataSource": null,
+						"quality": "NA",
+						"comment": null
 					},
 					"deforestationPolicy": {
 						"value": "Yes",
-						"dataSource": null
+						"dataSource": {
+							"page": 1137,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"quality": "Estimated",
+						"comment": "copy digital monitor"
 					}
 				},
 				"emissions": {
-					"emissionsOfInorganicPollutantsInTonnes": {
-						"value": 51662,
+					"inorganicPollutantsInTonnes": {
+						"value": 86696.84,
 						"dataSource": {
-							"page": 1042,
-							"fileName": "IntegratedReport",
+							"page": 1051,
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
+							"tagName": "architectures"
 						},
 						"quality": "Reported",
-						"comment": "generate virtual microchip"
+						"comment": "reboot haptic protocol"
 					},
-					"emissionsOfAirPollutantsInTonnes": {
-						"value": 90952.62,
-						"dataSource": {
-							"page": 353,
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
-						},
-						"quality": "Reported",
-						"comment": "override open-source circuit"
-					},
-					"emissionsOfOzoneDepletionSubstancesInTonnes": {
-						"value": 38013.38,
-						"dataSource": {
-							"page": 885,
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"quality": "Reported",
-						"comment": "navigate virtual hard drive"
-					},
-					"carbonReductionInitiatives": {
+					"airPollutantsInTonnes": {
 						"value": null,
 						"dataSource": null,
 						"quality": "NA",
+						"comment": null
+					},
+					"ozoneDepletionSubstancesInTonnes": {
+						"value": 85206.07,
+						"dataSource": {
+							"page": 416,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"quality": "Audited",
+						"comment": "reboot 1080p port"
+					},
+					"carbonReductionInitiatives": {
+						"value": "No",
+						"dataSource": null,
+						"quality": "Estimated",
 						"comment": null
 					}
 				}
 			},
 			"social": {
 				"socialAndEmployeeMatters": {
-					"humanRightsLegalProceedings": null,
+					"humanRightsLegalProceedings": {
+						"value": "No",
+						"dataSource": {
+							"page": 1047,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"quality": "Reported",
+						"comment": "synthesize primary driver"
+					},
 					"iloCoreLabourStandards": {
 						"value": "No",
-						"dataSource": null,
-						"quality": "Estimated",
-						"comment": null
-					},
-					"environmentalPolicy": {
-						"value": "Yes",
-						"dataSource": null
-					},
-					"corruptionLegalProceedings": {
-						"value": null,
-						"dataSource": null,
-						"quality": "NA",
-						"comment": null
-					},
-					"transparencyDisclosurePolicy": null,
-					"humanRightsDueDiligencePolicy": {
-						"value": "No",
 						"dataSource": {
-							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"policyAgainstChildLabour": {
-						"value": "No",
-						"dataSource": null
-					},
-					"policyAgainstForcedLabour": null,
-					"policyAgainstDiscriminationInTheWorkplace": {
-						"value": "Yes",
-						"dataSource": {
-							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"iso14001Certificate": null,
-					"policyAgainstBriberyAndCorruption": {
-						"value": "No",
-						"dataSource": {
-							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"fairBusinessMarketingAdvertisingPolicy": {
-						"value": "No",
-						"dataSource": {
-							"page": 1186,
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
-						},
-						"quality": "Audited",
-						"comment": "calculate online card"
-					},
-					"technologiesExpertiseTransferPolicy": {
-						"value": null,
-						"dataSource": null,
-						"quality": "NA",
-						"comment": null
-					},
-					"fairCompetitionPolicy": null,
-					"violationOfTaxRulesAndRegulation": {
-						"value": "No",
-						"dataSource": {
-							"page": 1192,
+							"page": 334,
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-business"
 						},
-						"quality": "Incomplete",
-						"comment": "override open-source port"
+						"quality": "Estimated",
+						"comment": "bypass haptic feed"
 					},
-					"unGlobalCompactPrinciplesCompliancePolicy": null,
-					"oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
-						"value": "No",
-						"dataSource": {
-							"page": 844,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
-						},
-						"quality": "Incomplete",
-						"comment": "transmit wireless pixel"
-					},
-					"averageGrossHourlyEarningsMaleEmployees": null,
-					"averageGrossHourlyEarningsFemaleEmployees": null,
-					"femaleBoardMembers": {
-						"value": 23708.44,
-						"dataSource": {
-							"page": 947,
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
-						},
-						"quality": "Reported",
-						"comment": "parse haptic system"
-					},
-					"maleBoardMembers": null,
-					"controversialWeaponsExposure": {
-						"value": null,
-						"dataSource": null,
-						"quality": "NA",
-						"comment": null
-					},
-					"workplaceAccidentPreventionPolicy": {
-						"value": "No",
-						"dataSource": {
-							"fileName": "Policy",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"rateOfAccidentsInPercent": {
-						"value": 23559.47,
-						"dataSource": {
-							"page": 689,
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
-						},
-						"quality": "Reported",
-						"comment": "compress bluetooth application"
-					},
-					"workdaysLostInDays": {
-						"value": null,
-						"dataSource": null,
-						"quality": "NA",
-						"comment": null
-					},
-					"supplierCodeOfConduct": {
+					"environmentalPolicy": {
 						"value": "Yes",
-						"dataSource": null
-					},
-					"grievanceHandlingMechanism": {
-						"value": null,
-						"dataSource": null,
-						"quality": "NA",
-						"comment": null
-					},
-					"whistleblowerProtectionPolicy": {
-						"value": "No",
 						"dataSource": {
-							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"reportedIncidentsOfDiscrimination": {
-						"value": 26553.56,
-						"dataSource": {
-							"page": 791,
+							"page": 841,
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
+							"tagName": "paradigms"
 						},
 						"quality": "Audited",
-						"comment": "input mobile interface"
+						"comment": "transmit redundant monitor"
 					},
-					"sanctionedIncidentsOfDiscrimination": {
-						"value": 16782.66,
+					"corruptionLegalProceedings": {
+						"value": "Yes",
 						"dataSource": null,
 						"quality": "Estimated",
 						"comment": null
 					},
-					"ceoToEmployeePayGapRatio": null
-				},
-				"greenSecurities": {
-					"securitiesNotCertifiedAsGreen": {
-						"value": "No",
+					"transparencyDisclosurePolicy": {
+						"value": "Yes",
 						"dataSource": {
-							"page": 1148,
-							"fileName": "IntegratedReport",
+							"page": 322,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"quality": "Reported",
+						"comment": "override bluetooth pixel"
+					},
+					"humanRightsDueDiligencePolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 935,
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
 						},
 						"quality": "Reported",
-						"comment": "bypass bluetooth monitor"
-					}
-				},
-				"humanRights": {
-					"humanRightsPolicy": null,
-					"humanRightsDueDiligence": {
+						"comment": "connect digital firewall"
+					},
+					"childForcedDiscriminationPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": 593,
-							"fileName": "IntegratedReport",
+							"page": 78,
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "mindshare"
 						},
-						"quality": "Incomplete",
-						"comment": "hack wireless protocol"
+						"quality": "Audited",
+						"comment": "bypass auxiliary bus"
 					},
-					"traffickingInHumanBeingsPolicy": null,
-					"reportedChildLabourIncidents": {
+					"iso14001Certificate": {
+						"value": "No",
+						"dataSource": {
+							"page": 423,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"quality": "Reported",
+						"comment": "parse multi-byte panel"
+					},
+					"briberyCorruptionPolicy": {
 						"value": null,
 						"dataSource": null,
 						"quality": "NA",
 						"comment": null
 					},
-					"reportedForcedOrCompulsoryLabourIncidents": {
+					"fairBusinessMarketingAdvertisingPolicy": null,
+					"technologiesExpertiseTransferPolicy": {
+						"value": "Yes",
+						"dataSource": null,
+						"quality": "Incomplete",
+						"comment": null
+					},
+					"fairCompetitionPolicy": null,
+					"violationOfTaxRulesAndRegulation": {
+						"value": "Yes",
+						"dataSource": null,
+						"quality": "Incomplete",
+						"comment": null
+					},
+					"unGlobalCompactPrinciplesCompliancePolicy": {
+						"value": "No",
+						"dataSource": null,
+						"quality": "Incomplete",
+						"comment": null
+					},
+					"oecdGuidelinesForMultinationalEnterprisesPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": 467,
+							"page": 654,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"quality": "Reported",
+						"comment": "override redundant card"
+					},
+					"averageGrossHourlyEarningsMaleEmployees": {
+						"value": 8500993782.66,
+						"dataSource": {
+							"page": 94,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"quality": "Incomplete",
+						"comment": "generate digital alarm",
+						"currency": "CRC"
+					},
+					"averageGrossHourlyEarningsFemaleEmployees": {
+						"value": 3697001996.91,
+						"dataSource": {
+							"page": 99,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"quality": "Incomplete",
+						"comment": "connect haptic sensor",
+						"currency": "NIO"
+					},
+					"femaleBoardMembers": {
+						"value": null,
+						"dataSource": null,
+						"quality": "NA",
+						"comment": null
+					},
+					"maleBoardMembers": null,
+					"controversialWeaponsExposure": {
+						"value": "No",
+						"dataSource": {
+							"page": 69,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"quality": "Audited",
+						"comment": "synthesize open-source matrix"
+					},
+					"workplaceAccidentPreventionPolicy": {
+						"value": "No",
+						"dataSource": {
+							"page": 580,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"quality": "Reported",
+						"comment": "compress cross-platform panel"
+					},
+					"rateOfAccidents": {
+						"value": 45025.28,
+						"dataSource": {
+							"page": 417,
 							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"quality": "Audited",
+						"comment": "transmit wireless circuit"
+					},
+					"workdaysLostInDays": {
+						"value": 61437.82,
+						"dataSource": {
+							"page": 1189,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"quality": "Estimated",
+						"comment": "hack auxiliary application"
+					},
+					"supplierCodeOfConduct": {
+						"value": "No",
+						"dataSource": null,
+						"quality": "Incomplete",
+						"comment": null
+					},
+					"grievanceHandlingMechanism": {
+						"value": "No",
+						"dataSource": {
+							"page": 284,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"quality": "Incomplete",
+						"comment": "navigate neural transmitter"
+					},
+					"whistleblowerProtectionPolicy": null,
+					"reportedIncidentsOfDiscrimination": {
+						"value": 23431.63,
+						"dataSource": {
+							"page": 286,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"quality": "Estimated",
+						"comment": "navigate haptic feed"
+					},
+					"sanctionsIncidentsOfDiscrimination": null,
+					"ceoToEmployeePayGap": {
+						"value": 17347.83,
+						"dataSource": null,
+						"quality": "Estimated",
+						"comment": null
+					}
+				},
+				"greenSecurities": {
+					"securitiesNotCertifiedAsGreen": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 313,
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "experiences"
 						},
 						"quality": "Reported",
-						"comment": "compress optical monitor"
+						"comment": "quantify cross-platform firewall"
+					}
+				},
+				"humanRights": {
+					"humanRightsPolicy": {
+						"value": "No",
+						"dataSource": {
+							"page": 200,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"quality": "Incomplete",
+						"comment": "bypass online circuit"
 					},
-					"numberOfReportedIncidentsOfHumanRightsViolations": null
+					"humanRightsDueDiligence": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 755,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"quality": "Estimated",
+						"comment": "reboot multi-byte protocol"
+					},
+					"traffickingInHumanBeingsPolicy": {
+						"value": "Yes",
+						"dataSource": {
+							"page": 89,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"quality": "Estimated",
+						"comment": "back up cross-platform feed"
+					},
+					"reportedChildLabourIncidents": {
+						"value": "No",
+						"dataSource": null,
+						"quality": "Incomplete",
+						"comment": null
+					},
+					"reportedForcedOrCompulsoryLabourIncidents": null,
+					"reportedIncidentsOfHumanRights": {
+						"value": 70121.96,
+						"dataSource": null,
+						"quality": "Incomplete",
+						"comment": null
+					}
 				},
 				"antiCorruptionAndAntiBribery": {
-					"casesOfInsufficientActionAgainstBriberyAndCorruption": null,
-					"reportedConvictionsOfBriberyAndCorruption": null,
-					"totalAmountOfReportedFinesOfBriberyAndCorruption": {
+					"reportedCasesOfBriberyCorruption": {
 						"value": null,
 						"dataSource": null,
 						"quality": "NA",
-						"comment": null,
-						"currency": "MNT"
+						"comment": null
+					},
+					"reportedConvictionsOfBriberyCorruption": {
+						"value": 44081.39,
+						"dataSource": {
+							"page": 354,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"quality": "Reported",
+						"comment": "navigate haptic port"
+					},
+					"reportedFinesOfBriberyCorruption": {
+						"value": 1337624189.91,
+						"dataSource": {
+							"page": 1046,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "communities"
+						},
+						"quality": "Reported",
+						"comment": "transmit solid state transmitter",
+						"currency": "CLP"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "companyWithOneFilledSfdrSubcategory",
-			"headquarters": "Lake Martin",
-			"headquartersPostalCode": "70187-5513",
-			"sector": "e-commerce",
+			"headquarters": "Morganland",
+			"headquartersPostalCode": "03035",
+			"sector": "mindshare",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"BbGdnqO6l4Wx"
+					"w9Tt9i4qaFqb"
 				],
 				"PermId": [
-					"nH0bOBNSwA"
+					"4fZstqJIDQ"
 				],
 				"Ticker": [],
-				"Duns": [
-					"U3zKMYr7D"
-				],
-				"VatNumber": [
-					"sBmy55CvQ"
-				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MF",
+			"countryCode": "AW",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://rowdy-bartender.net",
+			"companyLegalForm": null,
+			"website": "https://key-colonization.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-05-20",
-					"fiscalYearDeviation": "Deviation",
+					"dataDate": "2024-01-11",
+					"fiscalYearDeviation": "NoDeviation",
 					"fiscalYearEnd": "2020-01-03",
 					"referencedReports": {
-						"IntegratedReport": {
+						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"isGroupLevel": "NA",
-							"reportDate": "2023-07-30",
-							"currency": "BWP"
+							"reportDate": null,
+							"currency": "KZT"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"isGroupLevel": null,
+							"reportDate": "2022-11-09",
+							"currency": "KRW"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"isGroupLevel": "No",
+							"reportDate": "2022-11-27",
+							"currency": "JOD"
 						}
 					},
-					"scopeOfEntities": "No"
+					"scopeOfEntities": "NA"
 				}
 			},
 			"environmental": {
@@ -689,8 +831,7 @@
 						},
 						"comment": "string",
 						"value": "Yes"
-					},
-					"highlyBiodiverseGrasslandExposure": null
+					}
 				},
 				"water": null,
 				"waste": null,
@@ -698,40 +839,37 @@
 			},
 			"social": null
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "sfdr-a-lot-of-nulls",
-			"headquarters": "Kaceyworth",
-			"headquartersPostalCode": "62727-9648",
-			"sector": "communities",
+			"headquarters": "Barontown",
+			"headquartersPostalCode": "08672-3201",
+			"sector": "niches",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"PftY7gPAIG1A"
+					"1Wv5iKkJ6wNF"
 				],
 				"PermId": [
-					"SgfgIYeC4p"
+					"qyBP2WLCVh"
 				],
 				"Ticker": [
-					"ninlX3P"
+					"afJTfFE"
 				],
-				"Duns": [
-					"sNk1ZJjwB"
-				],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"3FQVxBjVte6xlRP"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BV",
+			"countryCode": "TJ",
 			"companyAlternativeNames": [
-				"Breitenberg, Hayes and Morar",
-				"Emmerich Inc"
+				"Monahan LLC",
+				"Ryan Inc",
+				"Shanahan Group"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://excitable-eaves.net",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://dear-horror.net/",
 			"isTeaserCompany": false
 		},
 		"t": {

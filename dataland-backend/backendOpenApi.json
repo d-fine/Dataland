@@ -4349,6 +4349,33 @@
           }
         }
       },
+      "P2pDriveMix": {
+        "type": "object",
+        "properties": {
+          "driveMixPerFleetSegmentInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalAmountOfVehicles": {
+            "type": "number",
+            "nullable": true
+          }
+        },
+        "example": {
+          "SmallTrucks": {
+            "driveMixPerFleetSegmentInPercent": 0,
+            "totalAmountOfVehicles": 0
+          },
+          "MediumTrucks": {
+            "driveMixPerFleetSegmentInPercent": 0,
+            "totalAmountOfVehicles": 0
+          },
+          "LargeTrucks": {
+            "driveMixPerFleetSegmentInPercent": 0,
+            "totalAmountOfVehicles": 0
+          }
+        }
+      },
       "P2pElectricityGeneration": {
         "type": "object",
         "properties": {
@@ -4422,9 +4449,26 @@
       "P2pFreightTransportByRoadTechnology": {
         "type": "object",
         "properties": {
-          "driveMixPerFleetSegmentInPercent": {
-            "type": "number",
-            "nullable": true
+          "driveMixPerFleetSegment": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/P2pDriveMix"
+            },
+            "nullable": true,
+            "example": {
+              "SmallTrucks": {
+                "driveMixPerFleetSegmentInPercent": 0,
+                "totalAmountOfVehicles": 0
+              },
+              "MediumTrucks": {
+                "driveMixPerFleetSegmentInPercent": 0,
+                "totalAmountOfVehicles": 0
+              },
+              "LargeTrucks": {
+                "driveMixPerFleetSegmentInPercent": 0,
+                "totalAmountOfVehicles": 0
+              }
+            }
           },
           "icePhaseOut": {
             "type": "string",
@@ -4508,7 +4552,7 @@
             "type": "number",
             "nullable": true
           },
-          "reductionOfAbsoluteEmissions": {
+          "reductionOfAbsoluteEmissionsInTonnesCO2e": {
             "type": "number",
             "nullable": true
           },

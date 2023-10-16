@@ -1,9 +1,12 @@
-import { EmptyDisplayValue, MLDTDisplayComponents } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import {
+  MLDTDisplayObjectForEmptyString,
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   lksgProcurementCategoriesValueGetterFactory,
   type LksgProcurementType,
-} from "@/components/resources/dataTable/conversion/LksgProcurementCategoriesValueGetterFactory";
+} from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 
 describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () => {
@@ -21,7 +24,7 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
   it("An empty string should be displayed if the data point is undefined", () => {
     const dataset = { data: undefined };
     const value = lksgProcurementCategoriesValueGetterFactory("data", sampleField)(dataset);
-    expect(value).to.deep.equal(EmptyDisplayValue);
+    expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
   });
 
   it("Should display the name of the procurement category in a human-friendly name", () => {
@@ -35,7 +38,7 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
     const dataset = { data: procurementData };
     const value = lksgProcurementCategoriesValueGetterFactory("data", sampleField)(dataset);
 
-    expect(value).to.have.property("displayComponent", MLDTDisplayComponents.ModalLinkDisplayComponent);
+    expect(value).to.have.property("displayComponentName", MLDTDisplayComponentName.ModalLinkDisplayComponentName);
     expect(value).to.have.nested.property("displayValue.label", "Show Products/Services Categories purchased");
     expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
       {

@@ -18,8 +18,9 @@ export function generateP2pPreparedFixtures(
     manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0]),
   );
   preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, nullProbability)[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForNoNullFields(generateP2pFixtures(1, 0, false)[0]));
   preparedFixtures.push(
-    manipulateFixtureForOneP2pDataSetWithThreeSectors(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0]),
+    manipulateFixtureForOneP2pDataSetWithFourSectors(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0]),
   );
   return preparedFixtures;
 }
@@ -36,6 +37,16 @@ function manipulateFixtureForSixP2pDataSetsInDifferentYears(
   if (input.t.general?.general?.dataDate) input.t.general.general.dataDate = "2023-01-01";
   else console.error("fakeFixture created improperly: dataDate missing");
   input.reportingPeriod = "2023";
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForNoNullFields(input: FixtureData<PathwaysToParisData>): FixtureData<PathwaysToParisData> {
+  input.companyInformation.companyName = "P2p-dataset-with-no-null-fields";
   return input;
 }
 
@@ -62,13 +73,13 @@ function manipulateFixtureForDate(
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForOneP2pDataSetWithThreeSectors(
+function manipulateFixtureForOneP2pDataSetWithFourSectors(
   input: FixtureData<PathwaysToParisData>,
 ): FixtureData<PathwaysToParisData> {
-  input.companyInformation.companyName = "one-p2p-data-set-with-three-sectors";
+  input.companyInformation.companyName = "one-p2p-data-set-with-four-sectors";
   input.t.general.general.dataDate = "2022-01-01";
   input.reportingPeriod = "2022";
-  input.t.general.general.sectors = ["Ammonia", "Cement", "LivestockFarming"];
+  input.t.general.general.sectors = ["Ammonia", "Cement", "FreightTransportByRoad", "LivestockFarming"];
   input.t.general.emissionsPlanning!.relativeEmissionsInPercent = 12;
   input.t.ammonia!.decarbonisation!.ccsTechnologyAdoptionInPercent = 54;
   input.t.cement!.material!.preCalcinedClayUsageInPercent = 23;
@@ -77,6 +88,12 @@ function manipulateFixtureForOneP2pDataSetWithThreeSectors(
     dataSource: {
       fileName: "Policy",
       fileReference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+    },
+  };
+  input.t.freightTransportByRoad!.technology!.driveMixPerFleetSegment = {
+    SmallTrucks: {
+      driveMixPerFleetSegmentInPercent: 77.5327,
+      totalAmountOfVehicles: 1234,
     },
   };
   return input;

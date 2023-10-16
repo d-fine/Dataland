@@ -1,6 +1,6 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type MLDTCellConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { type AvailableDisplayValues } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
@@ -11,13 +11,14 @@ import { percentageValueGetterFactory } from "@/components/resources/dataTable/c
 import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getModalGetterFactory } from "@/components/resources/dataTable/conversion/GenericModalValueGetterFactory";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
-import { lksgProcurementCategoriesValueGetterFactory } from "@/components/resources/dataTable/conversion/LksgProcurementCategoriesValueGetterFactory";
+import { lksgProcurementCategoriesValueGetterFactory } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
+import { p2pDriveMixValueGetterFactory } from "@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory";
 import { highImpactClimateGetterFactory } from "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
-type ValueGetterFactory = (path: string, field: Field) => (dataset: any) => AvailableDisplayValues;
+type ValueGetterFactory = (path: string, field: Field) => (dataset: any) => AvailableMLDTDisplayObjectTypes;
 
 const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   AddressFormField: plainStringValueGetterFactory,
@@ -35,6 +36,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   ProductionSitesFormField: getModalGetterFactory("listOfProductionSites", lksgModalColumnHeaders),
   MostImportantProductsFormField: getModalGetterFactory("mostImportantProducts", lksgModalColumnHeaders),
   ProcurementCategoriesFormField: lksgProcurementCategoriesValueGetterFactory,
+  DriveMixFormField: p2pDriveMixValueGetterFactory,
   HighImpactClimateSectorsFormField: highImpactClimateGetterFactory,
 };
 
@@ -45,7 +47,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
  * @param field the field
  * @returns the translated configuration
  */
-export function getDataModelFieldDisplayConfiguration(path: string, field: Field): MLDTCellConfig<any> | undefined {
+export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCellConfig<any> | undefined {
   if (field.component in formFieldValueGetterFactoryMap) {
     const valueGetterFactory = formFieldValueGetterFactoryMap[field.component];
     return {

@@ -3,8 +3,8 @@
   <DocumentLink
     label=""
     :suffix="formattedPageNumber"
-    :download-name="content.displayValue.reference.name"
-    :reference="content.displayValue.reference.reference"
+    :download-name="content.displayValue.fileName"
+    :reference="content.displayValue.fileReference"
     show-icon
   />
 </template>
@@ -12,9 +12,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import {
-  type MLDTDisplayComponents,
-  type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  type MLDTDisplayComponentName,
+  type MLDTDisplayObject,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 
 export default defineComponent({
@@ -22,7 +22,7 @@ export default defineComponent({
   components: { DocumentLink },
   props: {
     content: {
-      type: Object as () => MLDTDisplayValue<MLDTDisplayComponents.DataPointDisplayComponent>,
+      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponentName>,
       required: true,
     },
   },

@@ -95,7 +95,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         .find("td")
         .eq(1)
         .invoke("text")
-        .should("match", /^0.00 EUR$/);
+        .should("match", /^0 EUR$/);
 
       cy.get('[data-test="CapEx"]').click();
       cy.get('tr:has(td > span:contains("Aligned CapEx"))')

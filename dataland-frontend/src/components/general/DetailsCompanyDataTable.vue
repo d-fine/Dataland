@@ -72,7 +72,9 @@ export default defineComponent({
     generateColsNames(): void {
       const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
         for (const key of Object.keys(rowContent)) {
-          if (keyList.indexOf(key) === -1) keyList.push(key);
+          if (keyList.indexOf(key) === -1) {
+            keyList.push(key);
+          }
         }
         return keyList;
       }, []);

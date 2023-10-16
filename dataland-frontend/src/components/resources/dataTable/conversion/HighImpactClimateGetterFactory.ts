@@ -1,12 +1,12 @@
 import {
-  type AvailableDisplayValues,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
-import { type DataPointOneValueBigDecimal } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/data-point-one-value-big-decimal";
+import { type ExtendedDataPointBigDecimal } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/extended-data-point-big-decimal";
 import { HighImpactClimateSectorsKeys } from "@/types/HighImpactClimateSectors";
 
 interface HighImpactClimateDisplayFormat {
@@ -15,7 +15,7 @@ interface HighImpactClimateDisplayFormat {
 }
 
 interface ValueObject {
-  [key: string]: DataPointOneValueBigDecimal;
+  [key: string]: ExtendedDataPointBigDecimal;
 }
 
 /**
@@ -47,7 +47,10 @@ function convertHighImpactClimateToListForModal(datasetValue: ValueObject): High
  * @returns the created getter
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function highImpactClimateGetterFactory(path: string, field: Field): (dataset: any) => AvailableDisplayValues {
+export function highImpactClimateGetterFactory(
+  path: string,
+  field: Field,
+): (dataset: HighImpactClimateDisplayFormat) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const pathWithoutField = `${path
       .split(".")
@@ -61,12 +64,12 @@ export function highImpactClimateGetterFactory(path: string, field: Field): (dat
         [`NaceCode${sector}InGWh`]: getFieldValueFromDataModel(
           `${pathWithoutField}.applicableHighImpactClimateSectors.NaceCode${sector}InGWh`,
           dataset,
-        ),
+        ) as ExtendedDataPointBigDecimal,
       };
     });
 
     return {
-      displayComponent: MLDTDisplayComponents.ModalLinkDisplayComponent,
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponentName,
       displayValue: {
         label: field.label,
         modalComponent: DetailsCompanyDataTable,
