@@ -61,13 +61,13 @@ function editSectionConfigForHighlightingHiddenFields<T>(
 /**
  * Edits a single cell to the show-always directive
  * @param cellConfig the cell config to convert
- * @param parentDisplayStatusGetters a list of all the showDisplay-functions of the parents of the cell that this
+ * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the cell that this
  * function is currently looking at
  * @returns the modified cell config
  */
 function editCellConfigForHighlightingHiddenFields<T>(
   cellConfig: MLDTCellConfig<T>,
-  parentDisplayStatusGetters?: Array<(dataset: T) => boolean>,
+  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
 ): MLDTCellConfig<T> {
   return {
     ...cellConfig,
@@ -75,12 +75,12 @@ function editCellConfigForHighlightingHiddenFields<T>(
     valueGetter: (dataset: T): AvailableMLDTDisplayObjectTypes => {
       const originalDisplayValue = cellConfig.valueGetter(dataset);
 
-      const cellHasAtLeastOneParent = !!parentDisplayStatusGetters && parentDisplayStatusGetters.length > 0;
+      const cellHasAtLeastOneParent = !!displayStatusGettersOfAllParents && displayStatusGettersOfAllParents.length > 0;
       const areAllParentSectionsDisplayed = (): boolean => {
         if (!cellHasAtLeastOneParent) {
           return true;
         } else {
-          for (const showDisplay of parentDisplayStatusGetters) {
+          for (const showDisplay of displayStatusGettersOfAllParents) {
             if (!showDisplay(dataset)) {
               return false;
             }

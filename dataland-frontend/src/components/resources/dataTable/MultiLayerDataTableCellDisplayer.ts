@@ -5,7 +5,7 @@ export enum MLDTDisplayComponentName {
   StringDisplayComponent = "StringDisplayComponent",
   DocumentLinkDisplayComponent = "DocumentLinkDisplayComponent",
   ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
-  HighlightHiddenCellDisplayComponent = "HighlightHiddenCellDisplayComponent",
+  HighlightHiddenCellDisplayComponent = "HighlightHiddenCellDisplayComponent", // TODO misleading name since such a component doesnt exist!
 }
 
 export type MLDTDisplayComponentTypes = {
