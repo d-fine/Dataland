@@ -106,7 +106,7 @@ import PrimeButton from "primevue/button";
 import { type DriveMixType } from "@/api-models/DriveMixType";
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { AxiosError } from "axios";
-import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum , type P2pDriveMix } from "@clients/backend";
+import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum, type P2pDriveMix } from "@clients/backend";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
