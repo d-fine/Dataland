@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.12.1",
-    "@faker-js/faker": "^8.1.0",
+    "@faker-js/faker": "^8.2.0",
     "@rushstack/eslint-patch": "^1.5.1",
     "@types/node": "20.6.2",
     "@vitejs/plugin-vue": "^4.4.0",
@@ -57,7 +57,7 @@
     "git-commit-id": "^2.0.1",
     "lint-staged": "^15.0.1",
     "mocha": "^10.2.0",
-    "npm-check-updates": "^16.14.5",
+    "npm-check-updates": "^16.14.6",
     "otplib": "^12.0.1",
     "sass": "^1.67.0",
     "ts-node": "^10.9.1",
