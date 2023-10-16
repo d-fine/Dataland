@@ -50,6 +50,9 @@ build_directories () {
   set +o allexport
   envsubst < environments/.env.template >> "$target_dir"/.env
 
+  echo "Copying env variable files."
+  cp ./.env "$target_dir"
+
   echo "Copying docker compose file."
   cp ./docker-compose.yml "$target_dir"
 
