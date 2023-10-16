@@ -51,7 +51,7 @@ build_directories () {
   envsubst < environments/.env.template >> "$target_dir"/.env
 
   echo "Copying env variable files."
-  cp ./.env "$target_dir"
+  cat ./.env >> "$target_dir"/.env
 
   echo "Copying docker compose file."
   cp ./docker-compose.yml "$target_dir"
