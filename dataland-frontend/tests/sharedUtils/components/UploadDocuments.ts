@@ -112,7 +112,7 @@ export const uploadDocuments = {
     });
   },
   errorMessage(): Cypress.Chainable {
-    return cy.get(".p-fileupload .p-message-wrapper");
+    return cy.get(".p-fileupload .p-message-error");
   },
   dismissErrorMessage(): void {
     this.errorMessage().find(".p-message-close-icon").click();
