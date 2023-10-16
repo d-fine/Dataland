@@ -14,18 +14,19 @@ export type BadgeColors = "yellow" | "green" | "red" | "blue" | "purple" | "gray
 export interface MLDTCellConfig<FrameworkDataType> {
   type: "cell";
   label: string;
-  explanation?: string;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   valueGetter: (dataset: FrameworkDataType) => AvailableMLDTDisplayObjectTypes;
+  explanation?: string;
 }
 
 export interface MLDTSectionConfig<FrameworkDataType> {
   type: "section";
   label: string;
-  labelBadgeColor?: BadgeColors;
   expandOnPageLoad: boolean;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   children: MLDTConfig<FrameworkDataType>;
+  labelBadgeColor?: BadgeColors;
+  areThisSectionAndAllParentSectionsDisplayedForTheDataset?: (dataset: FrameworkDataType) => boolean; // TODO we can still talk about the name
 }
 
 /**

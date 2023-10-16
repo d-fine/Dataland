@@ -39,7 +39,13 @@
           <td :colspan="datasets.length + 1">
             <ChevronDownIcon v-if="expandedSections.has(idx)" class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <ChevronLeftIcon v-else class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
-
+            <i
+              v-if="shouldAddCrossedEyeSymbolToSectionLabel(element)"
+              i
+              class="pi pi-eye-slash pr-1 text-red-500"
+              aria-hidden="true"
+              data-test="hidden-icon"
+            />
             <span v-if="element.labelBadgeColor" :class="`p-badge badge-${element.labelBadgeColor}`"
               >{{ element.label.toUpperCase() }}
             </span>
@@ -62,6 +68,7 @@ import {
   isElementVisible,
   type MLDTConfig,
   type MLDTDataset,
+  type MLDTSectionConfig,
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import ChevronDownIcon from "primevue/icons/chevrondown";
 import ChevronLeftIcon from "primevue/icons/chevronleft";
@@ -97,9 +104,22 @@ function expandSectionsOnPageLoad(): void {
   }
 }
 
+/**
+ * Check if a crossed-eye-symbol shall be added to a section label to express to a reviewer that this section is
+ * hidden on the view-page for a normal user.
+ * @param element the config for the section that is being validated
+ * @returns a boolean stating if the crossed-eye-symbol shall be added to the section label
+ */
+function shouldAddCrossedEyeSymbolToSectionLabel(element: MLDTSectionConfig<T>): boolean {
+  const datasetThatIsBeingReviewed = props.datasets[0].dataset;
+  if (element.areThisSectionAndAllParentSectionsDisplayedForTheDataset) {
+    return !element.areThisSectionAndAllParentSectionsDisplayedForTheDataset(datasetThatIsBeingReviewed);
+  } else return false;
+}
+
 const props = defineProps<{
   config: MLDTConfig<T>;
-  datasets: Array<MLDTDataset<T>>;
+  datasets: Array<MLDTDataset<T>>; // TODO rename later since misleading
   isTopLevel: boolean;
   isVisible: boolean;
 }>();

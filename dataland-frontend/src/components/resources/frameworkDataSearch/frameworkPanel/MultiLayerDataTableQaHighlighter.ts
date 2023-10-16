@@ -7,7 +7,6 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-// TODO at the end you can think about adding the "eye" icon also to the hidden section rows!
 /**
  * For QA it is desirable that all fields are displayed to a reviewer even if they should normally not be visible.
  * This function edits a standard view-configuration in a way that it displays all cells but highlights cells that would
@@ -48,6 +47,22 @@ function editSectionConfigForHighlightingHiddenFields<T>(
       return displayStatusGettersOfAllParents;
     }
   })();
+
+  const sectionlHasAtLeastOneParent = !!displayStatusGettersOfAllParents && displayStatusGettersOfAllParents.length > 0;
+  const areThisSectionAndAllParentSectionsDisplayedForTheDataset = (dataset: T): boolean => {
+    if (!sectionConfig.shouldDisplay(dataset)) {
+      return false;
+    } else if (sectionlHasAtLeastOneParent) {
+      for (const showDisplay of displayStatusGettersOfAllParents) {
+        if (!showDisplay(dataset)) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return true;
+  };
+
   return {
     ...sectionConfig,
     shouldDisplay: () => true,
@@ -55,6 +70,7 @@ function editSectionConfigForHighlightingHiddenFields<T>(
       sectionConfig.children,
       displayStatusGettersToPassDownToChildren,
     ),
+    areThisSectionAndAllParentSectionsDisplayedForTheDataset: areThisSectionAndAllParentSectionsDisplayedForTheDataset, // TODO needs to be dynamically calculated
   };
 }
 
@@ -69,13 +85,12 @@ function editCellConfigForHighlightingHiddenFields<T>(
   cellConfig: MLDTCellConfig<T>,
   displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
 ): MLDTCellConfig<T> {
+  const cellHasAtLeastOneParent = !!displayStatusGettersOfAllParents && displayStatusGettersOfAllParents.length > 0;
   return {
     ...cellConfig,
     shouldDisplay: () => true,
     valueGetter: (dataset: T): AvailableMLDTDisplayObjectTypes => {
       const originalDisplayValue = cellConfig.valueGetter(dataset);
-
-      const cellHasAtLeastOneParent = !!displayStatusGettersOfAllParents && displayStatusGettersOfAllParents.length > 0;
       const areAllParentSectionsDisplayed = (): boolean => {
         if (!cellHasAtLeastOneParent) {
           return true;
@@ -88,7 +103,6 @@ function editCellConfigForHighlightingHiddenFields<T>(
           return true;
         }
       };
-
       if (areAllParentSectionsDisplayed() && cellConfig.shouldDisplay(dataset)) {
         return originalDisplayValue;
       } else {
