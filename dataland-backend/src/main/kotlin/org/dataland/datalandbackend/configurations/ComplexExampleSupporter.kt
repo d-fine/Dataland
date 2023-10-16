@@ -13,9 +13,19 @@ import org.springframework.stereotype.Component
 
 @Component
 class ComplexExampleSupporter : OpenApiCustomizer {
+
+    private fun addRefToField(openApi: OpenAPI, schema: String, field: String, refType: String) {
+        openApi.components.schemas.getValue(schema)
+            .properties.getValue(field).additionalProperties =
+            Schema<Any>(openApi.specVersion).apply { this.`$ref` = "#/components/schemas/$refType" }
+    }
+
     override fun customise(openApi: OpenAPI) {
-        openApi.components.schemas.getValue("SfdrEnvironmentalEnergyPerformance").properties
-            .getValue("applicableHighImpactClimateSectors").additionalProperties =
-            Schema<Any>(openApi.specVersion).apply { this.`$ref` = "#/components/schemas/ExtendedDataPointBigDecimal" }
+        addRefToField(
+            openApi,
+            "SfdrEnvironmentalEnergyPerformance",
+            "applicableHighImpactClimateSectors",
+            "ExtendedDataPointBigDecimal",
+        )
     }
 }

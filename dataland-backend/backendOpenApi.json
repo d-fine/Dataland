@@ -3016,6 +3016,15 @@
             "type": "string",
             "nullable": true
           }
+        },
+        "example": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "isGroupLevel": "Yes",
+            "reportDate": "2023-10-12",
+            "currency": "string"
+          }
         }
       },
       "CurrencyDataPoint": {
@@ -3713,7 +3722,16 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
             },
-            "nullable": true
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
           },
           "scopeOfEntities": {
             "nullable": true,
@@ -7524,7 +7542,16 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
             },
-            "nullable": true
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
           }
         }
       },
@@ -7651,8 +7678,10 @@
               "value": 0,
               "quality": "Audited",
               "dataSource": {
-                "report": "string",
-                "page": 0
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
               },
               "comment": "string"
             }
@@ -7662,8 +7691,10 @@
               "value": 0,
               "quality": "Audited",
               "dataSource": {
-                "report": "string",
-                "page": 0
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
               },
               "comment": "string"
             }
@@ -7673,8 +7704,10 @@
               "value": 0,
               "quality": "Audited",
               "dataSource": {
-                "report": "string",
-                "page": 0
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
               },
               "comment": "string"
             }
@@ -7684,8 +7717,10 @@
               "value": 0,
               "quality": "Audited",
               "dataSource": {
-                "report": "string",
-                "page": 0
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
               },
               "comment": "string"
             }
@@ -7720,8 +7755,10 @@
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
-                    "report": "string",
-                    "page": 0
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
                   },
                   "comment": "string"
                 }
@@ -7731,8 +7768,10 @@
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
-                    "report": "string",
-                    "page": 0
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
                   },
                   "comment": "string"
                 }
@@ -7742,8 +7781,10 @@
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
-                    "report": "string",
-                    "page": 0
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
                   },
                   "comment": "string"
                 }
@@ -7753,8 +7794,10 @@
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
-                    "report": "string",
-                    "page": 0
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
                   },
                   "comment": "string"
                 }
@@ -7839,7 +7882,16 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
             },
-            "nullable": true
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
           }
         }
       },
