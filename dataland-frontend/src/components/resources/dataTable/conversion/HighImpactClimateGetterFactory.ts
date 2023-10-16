@@ -14,9 +14,9 @@ interface HighImpactClimateDisplayFormat {
   energyConsumption: string;
 }
 
-interface ValueObject {
+export type HighImpactClimateValueObject = {
   [key: string]: ExtendedDataPointBigDecimal;
-}
+};
 
 /**
  * Convert an object into a list that can be displayed using the standard
@@ -24,7 +24,9 @@ interface ValueObject {
  * @param datasetValue the value of the dataset
  * @returns the converted list
  */
-function convertHighImpactClimateToListForModal(datasetValue: ValueObject): HighImpactClimateDisplayFormat[] {
+function convertHighImpactClimateToListForModal(
+  datasetValue: HighImpactClimateValueObject,
+): HighImpactClimateDisplayFormat[] {
   const listForModal: HighImpactClimateDisplayFormat[] = [];
   for (const [naceCodeType, climateSectorValues] of Object.entries(datasetValue)) {
     if (!climateSectorValues) continue;
@@ -50,24 +52,19 @@ function convertHighImpactClimateToListForModal(datasetValue: ValueObject): High
 export function highImpactClimateGetterFactory(
   path: string,
   field: Field,
-): (dataset: HighImpactClimateDisplayFormat) => AvailableMLDTDisplayObjectTypes {
+): (dataset: HighImpactClimateValueObject) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const pathWithoutField = `${path
-      .split(".")
-      .filter((item, index, array) => index < array.length - 1)
-      .join(".")}`;
     const highImpactClimateSectors = ["A", "B", "C", "D", "E", "F", "G", "H", "L"];
-    let accumulatedData: ValueObject = {};
+    let accumulatedData: HighImpactClimateValueObject = {};
     highImpactClimateSectors.forEach((sector: string) => {
       accumulatedData = {
         ...accumulatedData,
         [`NaceCode${sector}InGWh`]: getFieldValueFromDataModel(
-          `${pathWithoutField}.applicableHighImpactClimateSectors.NaceCode${sector}InGWh`,
+          `${path}.NaceCode${sector}InGWh`,
           dataset,
         ) as ExtendedDataPointBigDecimal,
       };
     });
-
     return {
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponentName,
       displayValue: {

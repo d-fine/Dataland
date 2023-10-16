@@ -15,7 +15,7 @@ import DocumentLinkDisplayComponent from "@/components/resources/dataTable/cells
 import StringDisplayComponent from "@/components/resources/dataTable/cells/StringDisplayComponent.vue";
 import DataPointDisplayComponent from "@/components/resources/dataTable/cells/DataPointDisplayComponent.vue";
 import { defineComponent } from "vue";
-import ModalLinkDisplayComponent from "@/components/resources/dataTable/cells/ModalLinkDisplayComponent.vue";
+import ModalLinkDisplayComponentName from "@/components/resources/dataTable/cells/ModalLinkDisplayComponent.vue";
 
 export default defineComponent({
   name: "MultiLayerDataTableCell",
@@ -28,7 +28,7 @@ export default defineComponent({
     StringDisplayComponent,
     DocumentLinkDisplayComponent,
     DataPointDisplayComponent,
-    ModalLinkDisplayComponent,
+    ModalLinkDisplayComponentName,
   },
   props: {
     content: {

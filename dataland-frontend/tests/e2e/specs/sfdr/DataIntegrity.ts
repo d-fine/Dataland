@@ -8,6 +8,7 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -35,12 +36,35 @@ describeIf(
 
       MLDT.getSectionHead("Environmental").should("have.attr", "data-section-expanded", "false").click();
       MLDT.getSectionHead("Biodiversity").should("have.attr", "data-section-expanded", "false").click();
+      MLDT.getSectionHead("Energy performance").should("have.attr", "data-section-expanded", "false").click();
 
       MLDT.getCellContainer("Primary Forest And Wooded Land Of Native Species Exposure").should("contain.text", "Yes");
       MLDT.getCellContainer("Protected Areas Exposure").should("contain.text", "No");
       MLDT.getCellContainer("Rare Or Endangered Ecosystems Exposure").should("contain.text", "Yes");
+      MLDT.getCellContainer("Applicable High Impact Climate Sectors")
+        .find("a.link")
+        .should("contain.text", "Applicable High Impact Climate Sectors")
+        .click();
+
+      cy.get("div.p-dialog-header").should("contain.text", "Applicable High Impact Climate Sectors");
     }
 
+    /**
+     * Set reference to all uploaded reports
+     * @param referencedReports all reports already uploaded
+     */
+    function setReferenceToAllUploadedReports(referencedReports: string[]): void {
+      console.log("referencedReports", referencedReports);
+      referencedReports.push(TEST_PDF_FILE_NAME);
+      referencedReports.forEach((it, index) => {
+        cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
+        cy.get("li.p-multiselect-item").eq(index).click();
+        cy.get('div[data-test="applicableHighImpactClimateSector"]')
+          .find('select[name="fileName"]')
+          .eq(index)
+          .select(it);
+      });
+    }
     /**
      * Set the quality for the sfdr test dataset
      */
@@ -51,6 +75,7 @@ describeIf(
       cy.get('[data-test="protectedAreasExposure"]').find('select[name="quality"]').select(3);
       cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('select[name="quality"]').select(3);
     }
+
     it("Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form", () => {
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
@@ -77,6 +102,7 @@ describeIf(
           cy.get("h1").should("contain", testCompanyName);
           selectsReportsForUploadInSfdrForm();
           setQualityInSfdrUploadForm();
+          setReferenceToAllUploadedReports(Object.keys(testSfdrCompany.t.general.general.referencedReports));
           submitButton.clickButton();
           cy.url().should("eq", getBaseUrl() + "/datasets");
           validateFormUploadedData(uploadIds.companyId);

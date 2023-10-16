@@ -14,7 +14,12 @@
       />
       <div class="grid2 mt-3">
         <FormKit type="group" name="applicableHighImpactClimateSectors">
-          <div v-for="selection of selections" :key="selection" class="bordered-box p-3 positionRelative">
+          <div
+            v-for="selection of selections"
+            data-test="applicableHighImpactClimateSector"
+            :key="selection"
+            class="bordered-box p-3 positionRelative"
+          >
             <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
             <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
             <UploadFormHeader

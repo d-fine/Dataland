@@ -16,10 +16,10 @@ import {
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 export default defineComponent({
-  name: "ModalLinkDisplayComponent",
+  name: "ModalLinkDisplayComponentName",
   props: {
     content: {
-      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>,
+      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponentName>,
       required: true,
     },
   },
