@@ -10,9 +10,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import {
-  type MLDTDisplayComponents,
-  type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  type MLDTDisplayComponentName,
+  type MLDTDisplayObject,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 
 export default defineComponent({
@@ -20,7 +20,7 @@ export default defineComponent({
   components: { DocumentLink },
   props: {
     content: {
-      type: Object as () => MLDTDisplayValue<MLDTDisplayComponents.DocumentLinkDisplayComponent>,
+      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>,
       required: true,
     },
   },

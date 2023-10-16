@@ -72,27 +72,6 @@
 
                 <span v-else></span>
               </template>
-              <template v-else-if="isModalComponentsName.includes(slotProps.data.kpiFormFieldComponent)">
-                <a
-                  v-if="
-                    slotProps.data.content[reportingPeriodWithDataId.dataId] !== null &&
-                    slotProps.data.content[reportingPeriodWithDataId.dataId] !== undefined &&
-                    slotProps.data.content[reportingPeriodWithDataId.dataId] !== '' &&
-                    Object.keys(slotProps.data.content[reportingPeriodWithDataId.dataId]).length !== 0
-                  "
-                  @click="
-                    openModalAndDisplayValuesInSubTable(
-                      slotProps.data.content[reportingPeriodWithDataId.dataId],
-                      slotProps.data.kpiLabel,
-                      slotProps.data.kpiKey,
-                      slotProps.data.kpiFormFieldComponent,
-                    )
-                  "
-                  class="link"
-                  >Show "{{ slotProps.data.kpiLabel }}"
-                  <em class="material-icons" aria-hidden="true" title=""> dataset </em>
-                </a>
-              </template>
               <span
                 v-else-if="
                   slotProps.data.kpiFormFieldComponent === 'PercentageFormField' &&
@@ -174,7 +153,6 @@ import { defineComponent, type PropType } from "vue";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
-import { formatPercentageNumberAsString } from "@/utils/Formatter";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
@@ -196,7 +174,6 @@ export default defineComponent({
       YesNo,
       rowClickHandlersMap: new Map() as Map<Element, EventListener>,
       dataTableIdentifier: "" as string,
-      isModalComponentsName: ["DriveMixFormField"],
     };
   },
   props: {
@@ -271,28 +248,7 @@ export default defineComponent({
     isYesNo(value: string) {
       return Object.values(YesNo).includes(value);
     },
-    /**
-     * Opens a modal to display a table with the provided list of production sites
-     * @param dataToConvert Data to be converte to an array to display
-     * @param kpiFormFieldComponent Name of component
-     * @returns An array of data according to headers to be displayed in the modal
-     */
-    convertObjectToArrayToDisplayDataInModal(dataToConvert: object, kpiFormFieldComponent: string): object[] {
-      const outputArray = [];
-      if (kpiFormFieldComponent == "DriveMixFormField") {
-        for (const key in dataToConvert) {
-          const newObj = {
-            vehiclesType: key,
-            driveMixPerFleetSegmentInPercent: formatPercentageNumberAsString(
-              dataToConvert[key as keyof typeof dataToConvert].driveMixPerFleetSegmentInPercent as number,
-            ),
-            totalAmountOfVehicles: dataToConvert[key as keyof typeof dataToConvert].totalAmountOfVehicles as string,
-          };
-          outputArray.push(newObj);
-        }
-      }
-      return outputArray;
-    },
+
     /**
      * Opens a modal to display a table with the provided list of production sites
      * @param listOfValues Data to display
@@ -325,14 +281,7 @@ export default defineComponent({
           kpiKeyOfTable: kpiKey,
           columnHeaders: this.modalColumnHeaders,
         };
-      } else {
-        dialogData = {
-          listOfRowContents: this.convertObjectToArrayToDisplayDataInModal(listOfValues, kpiFormFieldComponent),
-          kpiKeyOfTable: kpiKey,
-          columnHeaders: this.modalColumnHeaders,
-        };
       }
-
       this.$dialog.open(kpiDataComponent, {
         props: {
           header: modalTitle,

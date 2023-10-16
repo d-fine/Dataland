@@ -1,9 +1,9 @@
 import {
-  type AvailableDisplayValues,
-  EmptyDisplayValue,
-  MLDTDisplayComponents,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayObjectForEmptyString,
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
@@ -13,13 +13,16 @@ import { formatNumberToReadableFormat } from "@/utils/Formatter";
  * @param field the field from the data model
  * @returns the created getter
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function dataPointValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableDisplayValues {
+export function dataPointValueGetterFactory(
+  path: string,
+  field: Field,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const datapoint = getFieldValueFromDataModel(path, dataset) as ExtendedDataPointBigDecimal | undefined;
+    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | undefined;
 
     if (!datapoint?.value) {
-      return EmptyDisplayValue;
+      return MLDTDisplayObjectForEmptyString;
     }
 
     const datapointValue = formatNumberToReadableFormat(datapoint.value);
@@ -34,7 +37,7 @@ export function dataPointValueGetterFactory(path: string, field: Field): (datase
     }
 
     return {
-      displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: `${datapointValue} ${datapointUnitSuffix}`.trim(),
     };
   };

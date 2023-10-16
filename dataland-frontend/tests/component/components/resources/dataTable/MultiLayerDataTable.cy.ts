@@ -1,5 +1,5 @@
 import { type MLDTConfig, type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { MLDTDisplayComponents } from "@/components/resources/dataTable/MultiLayerDataTableCells";
+import { MLDTDisplayComponentName } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 import {
@@ -37,7 +37,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       explanation: "This is a test info",
       shouldDisplay: (dataset) => !!dataset.stringOnLevel1,
       valueGetter: (dataset) => ({
-        displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: dataset.stringOnLevel1,
       }),
     },
@@ -53,7 +53,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
           label: "Level 2 - String",
           shouldDisplay: () => true,
           valueGetter: (dataset) => ({
-            displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+            displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
             displayValue: dataset.stringOnLevel2,
           }),
         },
@@ -68,7 +68,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
               label: "Level 3 - String",
               shouldDisplay: () => true,
               valueGetter: (dataset) => ({
-                displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+                displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
                 displayValue: dataset.stringOnLevel3,
               }),
             },
@@ -87,7 +87,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
           label: "Static Value Cell",
           shouldDisplay: () => true,
           valueGetter: () => ({
-            displayComponent: MLDTDisplayComponents.StringDisplayComponent,
+            displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
             displayValue: "This is static",
           }),
         },
@@ -129,7 +129,6 @@ describe("Tests for the MultiLayerDataTable component", () => {
 
     it("Tests that sections can be expanded and contracted", () => {
       mountWithDatasets([nestingTestDemoDataset1]);
-
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true");
       getCellContainer("Level 2 - String").should("be.visible");
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").should("be.visible");
@@ -138,7 +137,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
 
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "false");
       getCellContainer("Level 2 - String").should("not.be.visible");
-      getSectionHead("Subsection 1").should("not.be.visible");
+      getSectionHead("Subsection 1", false).should("not.be.visible");
     });
 
     it("Tests that subsections can be expanded and contracted", () => {
@@ -158,7 +157,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       getCellContainer("Level 3 - String").should("be.visible");
 
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true").click();
-      getSectionHead("Subsection 1").should("not.be.visible");
+      getSectionHead("Subsection 1", false).should("not.be.visible");
       getCellContainer("Level 3 - String").should("not.be.visible");
 
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "false").click();

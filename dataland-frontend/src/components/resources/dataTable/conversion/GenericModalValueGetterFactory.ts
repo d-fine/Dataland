@@ -1,11 +1,11 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
-  type AvailableDisplayValues,
-  EmptyDisplayValue,
-  MLDTDisplayComponents,
-  type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayObjectForEmptyString,
+  MLDTDisplayComponentName,
+  type MLDTDisplayObject,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 
 type ColumnHeaderType = Record<string, Record<string, string>>;
@@ -20,14 +20,14 @@ export function getModalGetterFactory(
   kpiKeyOfTable: string,
   columnHeaders: ColumnHeaderType,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): (path: string, field: Field) => (dataset: any) => AvailableDisplayValues {
+): (path: string, field: Field) => (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (path, field) => {
     return (dataset) => {
       return getDisplayValueForModal(
         kpiKeyOfTable,
         columnHeaders,
         field,
-        getFieldValueFromDataModel(path, dataset) as Array<object>,
+        getFieldValueFromFrameworkDataset(path, dataset) as Array<object>,
       );
     };
   };
@@ -46,13 +46,13 @@ function getDisplayValueForModal(
   columnHeaders: ColumnHeaderType,
   field: Field,
   fieldValue?: Array<object>,
-): AvailableDisplayValues {
+): AvailableMLDTDisplayObjectTypes {
   if (!fieldValue || fieldValue.length == 0) {
-    return EmptyDisplayValue;
+    return MLDTDisplayObjectForEmptyString;
   }
 
-  return <MLDTDisplayValue<MLDTDisplayComponents.ModalLinkDisplayComponent>>{
-    displayComponent: MLDTDisplayComponents.ModalLinkDisplayComponent,
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${field.label}`,
       modalComponent: DetailsCompanyDataTable,
