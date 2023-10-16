@@ -8,5 +8,6 @@ COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./.git/ ./.git
+ENV DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES=${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
      ./gradlew dataland-document-manager:bootJar --no-daemon --stacktrace
