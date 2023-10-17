@@ -1,60 +1,62 @@
 <template>
-  <template v-for="(element, idx) in config" :key="idx">
-    <template v-if="isElementVisible(element, datasets)">
-      <tr v-if="element.type == 'cell'" v-show="isVisible" :data-cell-label="element.label">
-        <td class="headers-bg" :data-cell-label="element.label" data-row-header="true">
-          <span class="table-left-label">{{ element.label }}</span>
+  <template v-for="(cellOrSectionConfig, idx) in config" :key="idx">
+    <template v-if="isCellOrSectionVisible(cellOrSectionConfig, mldtDatasets)">
+      <tr v-if="cellOrSectionConfig.type == 'cell'" v-show="isVisible" :data-cell-label="cellOrSectionConfig.label">
+        <td class="headers-bg" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
+          <span class="table-left-label">{{ cellOrSectionConfig.label }}</span>
           <em
-            v-if="element.explanation"
+            v-if="cellOrSectionConfig.explanation"
             class="material-icons info-icon"
             aria-hidden="true"
-            :title="element.label"
+            :title="cellOrSectionConfig.label"
             v-tooltip.top="{
-              value: element.explanation,
+              value: cellOrSectionConfig.explanation,
             }"
             >info</em
           >
         </td>
         <td
-          v-for="(datasetEntry, idx) in datasets"
+          v-for="(mldtDataset, idx) in mldtDatasets"
           :key="idx"
-          :data-cell-label="element.label"
+          :data-cell-label="cellOrSectionConfig.label"
           :data-dataset-index="idx"
         >
-          <MultiLayerDataTableCell :content="element.valueGetter(datasetEntry.dataset)" />
+          <MultiLayerDataTableCell :content="cellOrSectionConfig.valueGetter(mldtDataset.dataset)" />
         </td>
       </tr>
-      <template v-else-if="element.type == 'section'">
+      <template v-else-if="cellOrSectionConfig.type == 'section'">
         <tr
           :class="
             isTopLevel
               ? ['p-rowgroup-header', 'p-topmost-header', 'border-bottom-table']
               : ['p-rowgroup-header', 'border-bottom-table']
           "
-          :data-section-label="element.label"
+          :data-section-label="cellOrSectionConfig.label"
           :data-section-expanded="expandedSections.has(idx)"
           @click="toggleSection(idx)"
           v-show="isVisible"
         >
-          <td :colspan="datasets.length + 1">
+          <td :colspan="mldtDatasets.length + 1">
             <ChevronDownIcon v-if="expandedSections.has(idx)" class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <ChevronLeftIcon v-else class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <i
-              v-if="shouldAddCrossedEyeSymbolToSectionLabel(element)"
+              v-if="shouldAddCrossedEyeSymbolToSectionLabel(cellOrSectionConfig)"
               i
               class="pi pi-eye-slash pr-1 text-red-500"
               aria-hidden="true"
               data-test="hidden-icon"
             />
-            <span v-if="element.labelBadgeColor" :class="`p-badge badge-${element.labelBadgeColor}`"
-              >{{ element.label.toUpperCase() }}
+            <span
+              v-if="cellOrSectionConfig.labelBadgeColor"
+              :class="`p-badge badge-${cellOrSectionConfig.labelBadgeColor}`"
+              >{{ cellOrSectionConfig.label.toUpperCase() }}
             </span>
-            <span v-else class="font-medium">{{ element.label }}</span>
+            <span v-else class="font-medium">{{ cellOrSectionConfig.label }}</span>
           </td>
         </tr>
         <MultiLayerDataTableBody
-          :config="element.children"
-          :datasets="datasets"
+          :config="cellOrSectionConfig.children"
+          :mldtDatasets="mldtDatasets"
           :isTopLevel="false"
           :isVisible="isVisible && expandedSections.has(idx)"
         />
@@ -65,7 +67,7 @@
 
 <script setup lang="ts" generic="T">
 import {
-  isElementVisible,
+  isCellOrSectionVisible,
   type MLDTConfig,
   type MLDTDataset,
   type MLDTSectionConfig,
@@ -111,7 +113,7 @@ function expandSectionsOnPageLoad(): void {
  * @returns a boolean stating if the crossed-eye-symbol shall be added to the section label
  */
 function shouldAddCrossedEyeSymbolToSectionLabel(element: MLDTSectionConfig<T>): boolean {
-  const datasetThatIsBeingReviewed = props.datasets[0].dataset;
+  const datasetThatIsBeingReviewed = props.mldtDatasets[0].dataset;
   if (element.areThisSectionAndAllParentSectionsDisplayedForTheDataset) {
     return !element.areThisSectionAndAllParentSectionsDisplayedForTheDataset(datasetThatIsBeingReviewed);
   } else return false;
@@ -119,7 +121,7 @@ function shouldAddCrossedEyeSymbolToSectionLabel(element: MLDTSectionConfig<T>):
 
 const props = defineProps<{
   config: MLDTConfig<T>;
-  datasets: Array<MLDTDataset<T>>; // TODO rename later since misleading
+  mldtDatasets: Array<MLDTDataset<T>>;
   isTopLevel: boolean;
   isVisible: boolean;
 }>();

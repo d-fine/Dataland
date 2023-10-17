@@ -11,7 +11,7 @@
     </p>
 
     <MultiLayerDataTable
-      :datasets="mldtDatasets"
+      :mldtDatasets="mldtDatasets"
       :config="
         inReviewMode
           ? editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
