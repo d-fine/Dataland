@@ -1,6 +1,5 @@
 <template>
   <div class="form-field">
-    <!-- TODO card around this -->
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <div>
       <MultiSelect

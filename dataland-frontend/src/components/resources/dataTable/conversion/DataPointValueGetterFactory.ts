@@ -3,9 +3,9 @@ import {
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 import {
+  getFieldValueFromFrameworkDataset,
   getGloballyReferencableDocuments,
   hasDataPointValidReference,
 } from "@/components/resources/dataTable/conversion/Utils";
