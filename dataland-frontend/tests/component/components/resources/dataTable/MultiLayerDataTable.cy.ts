@@ -12,27 +12,29 @@ import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/comp
 describe("Tests for the MultiLayerDataTable component", () => {
   /**
    * Mounts the MultiLayerDataTable with the given dataset
-   * @param datasets the datasets to mount
+   * @param mldtDatasets the datasets to mount
    * @returns the component mounting chainable
    */
-  function mountWithDatasets(datasets: Array<MLDTDataset<NestingTestDataset>>): Cypress.Chainable {
+  function mountMultiLayerDataTableWithDatasets(
+    mldtDatasets: Array<MLDTDataset<DummyFrameworkForTest>>,
+  ): Cypress.Chainable {
     return cy.mountWithPlugins(MultiLayerDataTable, {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
-        config: nestingTestDatasetViewConfiguration,
-        datasets: datasets,
+        config: dummyFrameworkMLDTConfig,
+        mldtDatasets: mldtDatasets,
       },
     });
   }
 
-  interface NestingTestDataset {
+  interface DummyFrameworkForTest {
     stringOnLevel1?: string;
     stringOnLevel2: string;
     stringOnLevel3: string;
   }
 
-  const nestingTestDatasetViewConfiguration: MLDTConfig<NestingTestDataset> = [
+  const dummyFrameworkMLDTConfig: MLDTConfig<DummyFrameworkForTest> = [
     {
       type: "cell",
       label: "Level 1 - String",
@@ -132,7 +134,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
     },
   ];
 
-  const nestingTestDemoDataset1: MLDTDataset<NestingTestDataset> = {
+  const dummyFrameworkTestMldtDataset1: MLDTDataset<DummyFrameworkForTest> = {
     headerLabel: "Testing 1",
     dataset: {
       stringOnLevel1: "Dataset 1 - String 1",
@@ -140,7 +142,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       stringOnLevel3: "Dataset 1 - String 3",
     },
   };
-  const nestingTestDemoDataset2: MLDTDataset<NestingTestDataset> = {
+  const dummyFrameworkTestMldtDataset2: MLDTDataset<DummyFrameworkForTest> = {
     headerLabel: "Testing 2",
     dataset: {
       stringOnLevel1: "Dataset 2 - String 1",
@@ -148,7 +150,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       stringOnLevel3: "Dataset 2 - String 3",
     },
   };
-  const nestingTestDemoDataset3: MLDTDataset<NestingTestDataset> = {
+  const dummyFrameworkTestMldtDataset3: MLDTDataset<DummyFrameworkForTest> = {
     headerLabel: "Testing 3",
     dataset: {
       stringOnLevel1: undefined,
@@ -159,13 +161,13 @@ describe("Tests for the MultiLayerDataTable component", () => {
 
   describe("Tests that nesting works as expected", () => {
     it("Tests that sections marked with 'expandOnPageLoad' are auto-expanded", () => {
-      mountWithDatasets([nestingTestDemoDataset1]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true");
       getCellValueContainer("Level 2 - String").should("be.visible");
     });
 
     it("Tests that sections can be expanded and contracted", () => {
-      mountWithDatasets([nestingTestDemoDataset1]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true");
       getCellValueContainer("Level 2 - String").should("be.visible");
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").should("be.visible");
@@ -178,7 +180,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
     });
 
     it("Tests that subsections can be expanded and contracted", () => {
-      mountWithDatasets([nestingTestDemoDataset1]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
       getCellValueContainer("Level 3 - String", 0, false).should("not.be.visible");
 
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
@@ -189,9 +191,9 @@ describe("Tests for the MultiLayerDataTable component", () => {
     });
 
     it("Tests that the state of subsection expansion is remembered when sections get expanded", () => {
-      mountWithDatasets([nestingTestDemoDataset1]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
-      getCellValueContainer("Level 3 - String").should("be.visible"); // TODO why not setting the visibility in  the get Cellcontainer itself?
+      getCellValueContainer("Level 3 - String").should("be.visible");
 
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true").click();
       getSectionHead("Subsection 1", false).should("not.be.visible");
@@ -205,38 +207,38 @@ describe("Tests for the MultiLayerDataTable component", () => {
 
   describe("Tests that the shouldDisplay directive works", () => {
     it("Tests that fields and sections get hidden if shouldDisplay is false", () => {
-      mountWithDatasets([nestingTestDemoDataset3]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset3]);
       getCellValueContainer("Level 1 - String", 0, false).should("not.exist");
       getSectionHead("Section 2").should("not.exist");
     });
 
     it("Tests that fields and sections should get displayed if at least one of the datasets has shouldDisplay = true", () => {
-      mountWithDatasets([nestingTestDemoDataset1, nestingTestDemoDataset3]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1, dummyFrameworkTestMldtDataset3]);
       getCellValueContainer("Level 1 - String").should("be.visible");
       getSectionHead("Section 2").should("be.visible");
     });
   });
 
   it("Tests that datasets can be displayed in parallel with correct values", () => {
-    mountWithDatasets([nestingTestDemoDataset1, nestingTestDemoDataset2]);
+    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1, dummyFrameworkTestMldtDataset2]);
     cy.get("th[data-dataset-index=0]").should("contain.text", "Testing 1");
     cy.get("th[data-dataset-index=1]").should("contain.text", "Testing 2");
     getCellValueContainer("Level 2 - String", 0).should("contain.text", "Dataset 1 - String 2");
     getCellValueContainer("Level 2 - String", 1).should("contain.text", "Dataset 2 - String 2");
 
-    mountWithDatasets([nestingTestDemoDataset2, nestingTestDemoDataset1]);
+    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset2, dummyFrameworkTestMldtDataset1]);
     getCellValueContainer("Level 2 - String", 1).should("contain.text", "Dataset 1 - String 2");
     getCellValueContainer("Level 2 - String", 0).should("contain.text", "Dataset 2 - String 2");
   });
 
   it("Tests that header badge coloring works", () => {
-    mountWithDatasets([nestingTestDemoDataset1]);
+    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
     getSectionHead("Section 1").find("span.p-badge.badge-blue").should("exist");
     getSectionHead("Section 2").find("span.p-badge").should("not.exist");
   });
 
   it("Tests that explanation texts are shown iff they are defined", () => {
-    mountWithDatasets([nestingTestDemoDataset1]);
+    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
     getCellRowHeaderContainer("Level 1 - String").find("em").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("This is a test info");
     getCellRowHeaderContainer("Level 1 - String").find("em").trigger("mouseleave");
@@ -249,8 +251,8 @@ describe("Tests for the MultiLayerDataTable component", () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
-        config: editMultiLayerDataTableConfigForHighlightingHiddenFields(nestingTestDatasetViewConfiguration),
-        datasets: [nestingTestDemoDataset3],
+        config: editMultiLayerDataTableConfigForHighlightingHiddenFields(dummyFrameworkMLDTConfig),
+        mldtDatasets: [dummyFrameworkTestMldtDataset3],
       },
     });
     getCellValueContainerAndCheckIconForHiddenDisplay("Level 1 - String", true);
