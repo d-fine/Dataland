@@ -15,9 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, watchEffect, defineEmits } from "vue";
+import { onUnmounted, ref, defineEmits, toRef } from "vue";
 
-const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = defineProps({
+const props = defineProps({
   slidesContainerClasses: { type: String, default: "" },
   arrowsContainerClasses: { type: String, default: "" },
   leftArrowClasses: { type: String, default: "" },
@@ -25,7 +25,11 @@ const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = defineProps({
   slideCount: { type: Number, required: true },
   initialCenterSlide: { type: Number, default: 0 },
   scrollScreenWidthLimit: Number,
+  slideWidth: { type: Number, default: 440 },
 });
+
+const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = props;
+const slideWidth = toRef(props, "slideWidth");
 
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
@@ -52,27 +56,9 @@ const move = (direction: number): void => {
 
   emit("update:currentSlide", currentSlide.value);
 
-  currentTranslate = currentSlide.value * -440;
+  currentTranslate = currentSlide.value * -slideWidth.value;
   if (slider.value) setSliderPosition(slider.value);
 };
-
-watchEffect(() => {
-  if (scrollScreenWidthLimit) {
-    const handleResize = (): void => {
-      if (window.innerWidth > scrollScreenWidthLimit) {
-        currentSlide.value = 0;
-        currentTranslate = 0;
-        if (slider.value) setSliderPosition(slider.value);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    onUnmounted(() => {
-      window.removeEventListener("resize", handleResize);
-    });
-  }
-});
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
   // Disable dragging for window width greater than <scrollScreenWidthLimit> px, for example
@@ -114,7 +100,7 @@ const dragEnd = (): void => {
   emit("update:currentSlide", currentSlide.value);
 
   // Set currentTranslate based on the new slide index
-  currentTranslate = currentSlide.value * -440;
+  currentTranslate = currentSlide.value * -slideWidth.value;
 
   if (slider.value) {
     setSliderPosition(slider.value);

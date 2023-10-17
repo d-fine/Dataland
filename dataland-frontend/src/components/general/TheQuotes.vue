@@ -168,4 +168,18 @@ const currentCardText = computed(() => cards.value[currentSlide.value]?.date);
     }
   }
 }
+@media only screen and (max-width: $small) {
+  .quotes {
+    margin: 20px auto 80px;
+    &__slide {
+      &-text {
+        font-size: 20px;
+        line-height: 28px; /* 140% */
+      }
+    }
+    &__button {
+      margin: 64px 16px 0;
+    }
+  }
+}
 </style>

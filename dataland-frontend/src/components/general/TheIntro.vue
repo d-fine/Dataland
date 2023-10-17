@@ -73,7 +73,7 @@ const introSection = computed(() => {
         font-weight: 600;
         line-height: 48px; /* 120% */
         letter-spacing: 0.25px;
-        margin-top: 31px;
+        margin-top: 32px;
       }
     }
   }
@@ -90,7 +90,25 @@ const introSection = computed(() => {
       span:last-of-type {
         font-size: 32px;
         line-height: 40px; /* 125% */
-        margin-top: 31px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $small) {
+  .intro {
+    margin: 64px auto 80px;
+    &__img {
+      width: 54px;
+      margin-bottom: 48px;
+    }
+    &__text {
+      font-size: 40px;
+      line-height: 48px;
+      max-width: 328px;
+      span:last-of-type {
+        font-size: 24px;
+        line-height: 32px;
       }
     }
   }

@@ -41,8 +41,8 @@ const footerText = computed(() => {
 .footer {
   display: flex;
   justify-content: space-between;
-  background-color: #1b1b1b;
-  color: #fff;
+  background-color: var(--basic-dark);
+  color: var(--default-neutral-white);
   padding: 80px 120px 140px;
 
   &__logo-img {
@@ -71,19 +71,51 @@ const footerText = computed(() => {
       font-size: 16px;
       font-style: normal;
       font-weight: 600;
-      line-height: 24px; /* 150% */
+      line-height: 32px;
       letter-spacing: 0.75px;
       text-transform: uppercase;
       text-decoration: none;
-      color: #fff;
+      color: var(--default-neutral-white);
       border-bottom: 2px solid transparent;
       width: -moz-fit-content;
       width: -webkit-fit-content;
       width: fit-content;
 
       &:hover {
-        border-bottom: 2px solid #fff;
+        border-bottom: 2px solid var(--default-neutral-white);
       }
+    }
+  }
+}
+@media only screen and (max-width: $large) {
+  .footer {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 48px 22px;
+    padding: 0 22px;
+    display: grid;
+    padding: 80px 0 140px;
+    &__left {
+      grid-column: 1 / 6;
+    }
+    &__right {
+      grid-column: 7 / -1;
+    }
+  }
+}
+@media only screen and (max-width: $small) {
+  .footer {
+    padding: 80px 16px;
+    gap: 64px 16px;
+    grid-template-columns: 1fr;
+
+    &__left {
+      grid-row: 2;
+      grid-column: 1;
+      text-align: left;
+    }
+    &__right {
+      grid-row: 1;
+      grid-column: 1;
     }
   }
 }
