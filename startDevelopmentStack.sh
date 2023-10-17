@@ -13,7 +13,7 @@ rm ./*github_env.log || true
 ./build-utils/base_rebuild_gradle_dockerfile.sh
 set -o allexport
 source ./*github_env.log
-source ./.env
+source ./environments/.env.uncritical
 set +o allexport
 
 find ./build-utils/ -name "rebuild*.sh" ! -name "*prod*" ! -name "*test*" ! -name "*backend*" -exec bash -c 'eval "$1" && echo "SUCCESS - execution of $1 was successful" || echo "ERROR - could not execute $1"' shell {} \;
