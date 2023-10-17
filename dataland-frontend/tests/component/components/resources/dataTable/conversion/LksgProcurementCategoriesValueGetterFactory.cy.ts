@@ -38,7 +38,7 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
     const dataset = { data: procurementData };
     const value = lksgProcurementCategoriesValueGetterFactory("data", sampleField)(dataset);
 
-    expect(value).to.have.property("displayComponentName", MLDTDisplayComponentName.ModalLinkDisplayComponentName);
+    expect(value).to.have.property("displayComponentName", MLDTDisplayComponentName.ModalLinkDisplayComponent);
     expect(value).to.have.nested.property("displayValue.label", "Show Products/Services Categories purchased");
     expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
       {

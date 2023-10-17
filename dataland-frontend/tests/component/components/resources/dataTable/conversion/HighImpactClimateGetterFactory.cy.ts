@@ -5,6 +5,7 @@ import {
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { MLDTDisplayComponentName } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
+import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 
 describe("Unit test for the HighImpactClimateGetterFactory", () => {
   const field: Field = {
@@ -21,13 +22,12 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
   it("Should display the name of sectors if they exist", () => {
     const highImpactClimateData: HighImpactClimateValueObject = {
       [HighImpactClimateSector.NaceCodeAInGWh]: {
-        value: "12345",
+        value: 12345,
         quality: "Estimated",
-      },
+      } as ExtendedDataPointBigDecimal,
     };
-    const dataset = { data: highImpactClimateData };
-    const value = highImpactClimateGetterFactory("data", field)(dataset);
-    expect(value).to.have.property("displayComponentName", MLDTDisplayComponentName.ModalLinkDisplayComponentName);
+    const value = highImpactClimateGetterFactory("data", field)(highImpactClimateData);
+    expect(value).to.have.property("displayComponentName", MLDTDisplayComponentName.ModalLinkDisplayComponent);
     expect(value).to.have.nested.property("displayValue.label", "Applicable High Impact Climate Sectors");
     expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
       {
