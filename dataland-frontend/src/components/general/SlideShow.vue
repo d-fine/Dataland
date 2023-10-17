@@ -15,21 +15,26 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, defineEmits, toRef } from "vue";
+import { onUnmounted, ref, defineEmits, toRefs } from "vue";
 
-const props = defineProps({
-  slidesContainerClasses: { type: String, default: "" },
-  arrowsContainerClasses: { type: String, default: "" },
-  leftArrowClasses: { type: String, default: "" },
-  rightArrowClasses: { type: String, default: "" },
-  slideCount: { type: Number, required: true },
-  initialCenterSlide: { type: Number, default: 0 },
-  scrollScreenWidthLimit: Number,
-  slideWidth: { type: Number, default: 440 },
-});
+const props = withDefaults(
+  defineProps<{
+    slidesContainerClasses: string;
+    arrowsContainerClasses: string;
+    leftArrowClasses: string;
+    rightArrowClasses: string;
+    slideCount: number;
+    initialCenterSlide?: number;
+    scrollScreenWidthLimit: number;
+    slideWidth: number;
+  }>(),
+  {
+    initialCenterSlide: 0,
+    slideWidth: 440,
+  },
+);
 
-const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = props;
-const slideWidth = toRef(props, "slideWidth");
+const { slideCount, initialCenterSlide, scrollScreenWidthLimit, slideWidth } = toRefs(props);
 
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
@@ -41,7 +46,7 @@ let currentTranslate = 0;
 let prevTranslate = 0;
 
 const dragStartCondition = (e: PointerEvent | TouchEvent): void => {
-  if (slideCount <= 1) return;
+  if (slideCount.value <= 1) return;
   dragStart(e);
 };
 
@@ -51,8 +56,8 @@ const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => 
 };
 
 const move = (direction: number): void => {
-  if (direction === 1 && currentSlide.value < slideCount - 1 - initialCenterSlide) currentSlide.value++;
-  if (direction === -1 && currentSlide.value > 0 - initialCenterSlide) currentSlide.value--;
+  if (direction === 1 && currentSlide.value < slideCount.value - 1 - initialCenterSlide.value) currentSlide.value++;
+  if (direction === -1 && currentSlide.value > 0 - initialCenterSlide.value) currentSlide.value--;
 
   emit("update:currentSlide", currentSlide.value);
 
@@ -62,7 +67,7 @@ const move = (direction: number): void => {
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
   // Disable dragging for window width greater than <scrollScreenWidthLimit> px, for example
-  if (scrollScreenWidthLimit && window.innerWidth > scrollScreenWidthLimit) return;
+  if (scrollScreenWidthLimit.value && window.innerWidth > scrollScreenWidthLimit.value) return;
   isDragging = true;
   startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
 
@@ -94,8 +99,8 @@ const dragEnd = (): void => {
   isDragging = false;
 
   const movedBy = currentTranslate - prevTranslate;
-  if (movedBy < -100 && currentSlide.value < slideCount - 1 - initialCenterSlide) currentSlide.value++;
-  if (movedBy > 100 && currentSlide.value > 0 - initialCenterSlide) currentSlide.value--;
+  if (movedBy < -100 && currentSlide.value < slideCount.value - 1 - initialCenterSlide.value) currentSlide.value++;
+  if (movedBy > 100 && currentSlide.value > 0 - initialCenterSlide.value) currentSlide.value--;
 
   emit("update:currentSlide", currentSlide.value);
 
