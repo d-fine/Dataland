@@ -52,7 +52,7 @@ function convertHighImpactClimateToListForModal(
 export function highImpactClimateGetterFactory(
   path: string,
   field: Field,
-): (dataset: HighImpactClimateValueObject) => AvailableMLDTDisplayObjectTypes {
+): (dataset: unknown) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const highImpactClimateSectors = ["A", "B", "C", "D", "E", "F", "G", "H", "L"];
     let accumulatedData: HighImpactClimateValueObject = {};
