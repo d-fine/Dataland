@@ -58,6 +58,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Matrix Job for ./build-utils/$BUILD_SCRIPT"  
+          set -o allexport
+          source ./environments/.env.uncritical
+          set +o allexport
           ./build-utils/base_rebuild_gradle_dockerfile.sh
           set -o allexport
           source ./*github_env.log
