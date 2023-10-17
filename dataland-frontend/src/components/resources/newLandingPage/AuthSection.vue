@@ -105,4 +105,28 @@ const register = (): void => {
     }
   }
 }
+@media only screen and (max-width: $small) {
+  .header {
+    &__authsection {
+      flex-direction: row-reverse;
+      &-login {
+        // Visually hide the text
+        font-size: 0;
+        color: transparent;
+
+        // Reset these if you use hover to modify them
+        &:hover {
+          font-size: 0;
+          color: transparent;
+        }
+      }
+      &-button {
+        padding: 10px 16px;
+        font-size: 14px;
+        letter-spacing: 0.25px;
+        text-transform: capitalize;
+      }
+    }
+  }
+}
 </style>

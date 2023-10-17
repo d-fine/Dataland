@@ -100,7 +100,7 @@ const brandsSection = computed(() => {
       width: calc((190px * 3) + (24px * 2));
       justify-content: flex-start;
       gap: 24px;
-      grid-column: 3 /15;
+      grid-column: 3 /13;
       .brands__item {
         &-image {
           width: 190px;
@@ -109,13 +109,55 @@ const brandsSection = computed(() => {
     }
   }
 }
-// @media only screen and (max-width: $medium) {
-//   .brands {
-//     &__wrap {
-//       grid-template-columns: repeat(12, 1fr);
-//       gap: 22px;
-//       padding: 0 22px;
-//     }
-//   }
-// }
+@media only screen and (max-width: $medium) {
+  .brands {
+    padding: 32px 0 80px;
+    gap: 24px;
+    &__wrap {
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+      padding: 0 22px;
+    }
+    &__text {
+      font-size: 32px;
+      line-height: 40px;
+      grid-column: 1 / -1;
+      max-width: 328px;
+      min-width: unset;
+    }
+    &__list {
+      grid-column: 1 / -1;
+      width: 100%;
+      max-width: 720px;
+      .brands__item {
+        height: 139px;
+        &-image {
+          width: 100%;
+          max-width: 224px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $small) {
+  .brands {
+    &__wrap {
+      gap: 24px 16px;
+      padding: 0 0 0 16px;
+    }
+    &__list {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 16px;
+      .brands__item {
+        flex: 0 0 calc(33.3333% - 16px);
+        height: unset;
+        &-image {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
 </style>

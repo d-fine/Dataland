@@ -124,18 +124,18 @@
                     "title": "Join a campaign",
                     "text": [
                         "Join a campaign to",
-                        " to get the missing ",
+                        " get the missing ",
                         "data.",
                         "The Proof of Concepts are a simple way for you to get better data coverage and improved data quality, while testing Dataland."
                     ],
                     "cards": [
                         {
-                            "title": "Pathway to Paris",
+                            "title": "Pathways to Paris",
                             "text": "Captures companies’ progress on Paris-compatible transformation paths that are necessary to achieve the goals of the Paris climate protection agreement.",
                             "date": "14th of August"
                         },
                         {
-                            "title": "LksG",
+                            "title": "LkSG",
                             "text": "The Lieferkettensorgfalts-pflichtengesetz is a German law requiring companies to monitor human rights and environmental risks in their supply chains."
                         },
                         {

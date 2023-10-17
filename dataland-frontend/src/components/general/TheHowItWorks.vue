@@ -11,6 +11,7 @@
         right-arrow-classes="howitworks__arrow howitworks__arrow--right"
         :slide-count="slides.length"
         :scroll-screen-width-limit="1800"
+        :slide-width="slideWidth"
       >
         <div v-for="(slide, index) in slides" :key="index" role="listitem" class="howitworks__slide">
           <h3 class="howitworks__slide-title">{{ slide.title }}</h3>
@@ -23,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
 import SlideShow from "@/components/general/SlideShow.vue";
 
@@ -31,6 +32,22 @@ const { sections } = defineProps<{ sections?: Section[] }>();
 const howItWorksSection = computed(() => sections?.find((s) => s.title === "How it works"));
 const sectionText = computed(() => howItWorksSection.value?.text.join(" ") ?? "");
 const slides = computed(() => sections?.find((s) => s.title === "How it works")?.cards ?? []);
+
+const slideWidth = ref(440); // initialize with default value
+
+const updateSlideWidth = (): void => {
+  slideWidth.value = window.innerWidth > 768 ? 440 : 308;
+};
+updateSlideWidth();
+
+onMounted(() => {
+  window.addEventListener("resize", updateSlideWidth);
+  updateSlideWidth();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateSlideWidth);
+});
 </script>
 
 <style lang="scss">
@@ -102,6 +119,7 @@ const slides = computed(() => sections?.find((s) => s.title === "How it works")?
       line-height: 28px; /* 140% */
       letter-spacing: 0.25px;
       color: #585858;
+      margin: 0;
     }
 
     &-index {
@@ -161,7 +179,6 @@ const slides = computed(() => sections?.find((s) => s.title === "How it works")?
   .howitworks {
     &__slides {
       max-width: 1273px;
-      padding-right: 789px;
       justify-content: flex-start;
     }
 
@@ -205,6 +222,40 @@ const slides = computed(() => sections?.find((s) => s.title === "How it works")?
       &-title {
         font-size: 40px;
         line-height: 48px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $medium) {
+  .howitworks {
+    &__title {
+      font-size: 40px;
+      line-height: 48px;
+    }
+  }
+}
+@media only screen and (max-width: $small) {
+  .howitworks {
+    padding: 80px 0;
+    &__wrapper {
+      gap: 40px 16px;
+      padding: 0 16px;
+    }
+    &__title {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    &__slides {
+      gap: 12px;
+    }
+    &__slide {
+      flex: 0 0 308px;
+      padding: 48px 32px 24px;
+      gap: 16px;
+      &-title {
+        font-size: 32px;
+        line-height: 40px;
       }
     }
   }

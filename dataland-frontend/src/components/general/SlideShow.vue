@@ -15,17 +15,26 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, watchEffect, defineEmits } from "vue";
+import { onUnmounted, ref, defineEmits, toRefs } from "vue";
 
-const { slideCount, initialCenterSlide, scrollScreenWidthLimit } = defineProps({
-  slidesContainerClasses: { type: String, default: "" },
-  arrowsContainerClasses: { type: String, default: "" },
-  leftArrowClasses: { type: String, default: "" },
-  rightArrowClasses: { type: String, default: "" },
-  slideCount: { type: Number, required: true },
-  initialCenterSlide: { type: Number, default: 0 },
-  scrollScreenWidthLimit: Number,
-});
+const props = withDefaults(
+  defineProps<{
+    slidesContainerClasses: string;
+    arrowsContainerClasses: string;
+    leftArrowClasses: string;
+    rightArrowClasses: string;
+    slideCount: number;
+    initialCenterSlide?: number;
+    scrollScreenWidthLimit: number;
+    slideWidth: number;
+  }>(),
+  {
+    initialCenterSlide: 0,
+    slideWidth: 440,
+  },
+);
+
+const { slideCount, initialCenterSlide, scrollScreenWidthLimit, slideWidth } = toRefs(props);
 
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
@@ -37,7 +46,7 @@ let currentTranslate = 0;
 let prevTranslate = 0;
 
 const dragStartCondition = (e: PointerEvent | TouchEvent): void => {
-  if (slideCount <= 1) return;
+  if (slideCount.value <= 1) return;
   dragStart(e);
 };
 
@@ -47,36 +56,18 @@ const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => 
 };
 
 const move = (direction: number): void => {
-  if (direction === 1 && currentSlide.value < slideCount - 1 - initialCenterSlide) currentSlide.value++;
-  if (direction === -1 && currentSlide.value > 0 - initialCenterSlide) currentSlide.value--;
+  if (direction === 1 && currentSlide.value < slideCount.value - 1 - initialCenterSlide.value) currentSlide.value++;
+  if (direction === -1 && currentSlide.value > 0 - initialCenterSlide.value) currentSlide.value--;
 
   emit("update:currentSlide", currentSlide.value);
 
-  currentTranslate = currentSlide.value * -440;
+  currentTranslate = currentSlide.value * -slideWidth.value;
   if (slider.value) setSliderPosition(slider.value);
 };
 
-watchEffect(() => {
-  if (scrollScreenWidthLimit) {
-    const handleResize = (): void => {
-      if (window.innerWidth > scrollScreenWidthLimit) {
-        currentSlide.value = 0;
-        currentTranslate = 0;
-        if (slider.value) setSliderPosition(slider.value);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    onUnmounted(() => {
-      window.removeEventListener("resize", handleResize);
-    });
-  }
-});
-
 const dragStart = (e: PointerEvent | TouchEvent): void => {
   // Disable dragging for window width greater than <scrollScreenWidthLimit> px, for example
-  if (scrollScreenWidthLimit && window.innerWidth > scrollScreenWidthLimit) return;
+  if (scrollScreenWidthLimit.value && window.innerWidth > scrollScreenWidthLimit.value) return;
   isDragging = true;
   startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
 
@@ -108,13 +99,13 @@ const dragEnd = (): void => {
   isDragging = false;
 
   const movedBy = currentTranslate - prevTranslate;
-  if (movedBy < -100 && currentSlide.value < slideCount - 1 - initialCenterSlide) currentSlide.value++;
-  if (movedBy > 100 && currentSlide.value > 0 - initialCenterSlide) currentSlide.value--;
+  if (movedBy < -100 && currentSlide.value < slideCount.value - 1 - initialCenterSlide.value) currentSlide.value++;
+  if (movedBy > 100 && currentSlide.value > 0 - initialCenterSlide.value) currentSlide.value--;
 
   emit("update:currentSlide", currentSlide.value);
 
   // Set currentTranslate based on the new slide index
-  currentTranslate = currentSlide.value * -440;
+  currentTranslate = currentSlide.value * -slideWidth.value;
 
   if (slider.value) {
     setSliderPosition(slider.value);

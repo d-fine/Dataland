@@ -47,4 +47,17 @@ const { landingPage } = defineProps<{
     }
   }
 }
+@media only screen and (max-width: $small) {
+  .header {
+    padding: 16px;
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
+    &__logo {
+      img {
+        width: 79px;
+      }
+    }
+  }
+}
 </style>

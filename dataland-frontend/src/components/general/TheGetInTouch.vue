@@ -72,7 +72,7 @@ const getInTouchSection = computed(() => {
   }
 
   &__text {
-    grid-column: 9 / 14;
+    grid-column: 8 / 14;
     text-align: left;
     font-size: 22.123px;
     font-style: normal;
@@ -113,11 +113,11 @@ const getInTouchSection = computed(() => {
 }
 @media only screen and (max-width: $large) {
   .getintouch {
-    padding: 140px 0;
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
       gap: 48px 22px;
       padding: 0 22px;
+      width: 100%;
     }
     &__title {
       grid-column: 3 /11;
@@ -129,6 +129,41 @@ const getInTouchSection = computed(() => {
 
     &__text {
       grid-column: 6 / 11;
+    }
+  }
+}
+@media only screen and (max-width: $medium) {
+  .getintouch {
+    padding: 80px 0;
+    &__image {
+      grid-column: 3 / 7;
+    }
+
+    &__text {
+      grid-column: 7 / 11;
+    }
+  }
+}
+@media only screen and (max-width: $small) {
+  .getintouch {
+    &__wrapper {
+      gap: 24px 16px;
+      padding: 0 16px;
+    }
+    &__title {
+      grid-column: 1 / -1;
+      font-size: 40px;
+    }
+    &__image {
+      grid-column: 1 / -1;
+      text-align: left;
+      img {
+        max-width: 320px;
+      }
+    }
+
+    &__text {
+      grid-column: 1 / -1;
     }
   }
 }
