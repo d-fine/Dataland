@@ -14,7 +14,7 @@ import {
   mountMLDTFrameworkPanelFromFakeFixture,
   mountMLDTFrameworkPanel,
 } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
-import { getCellContainer } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import { getCellValueContainer } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describe("Component tests for SfdrPanel", () => {
   let preparedFixtures: Array<FixtureData<SfdrData>>;
@@ -30,7 +30,7 @@ describe("Component tests for SfdrPanel", () => {
     const sfdrData = preparedFixture.t;
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
 
-    getCellContainer("Fiscal Year End").should("contain.text", sfdrData.general.general.fiscalYearEnd);
+    getCellValueContainer("Fiscal Year End").should("contain.text", sfdrData.general.general.fiscalYearEnd);
   });
 
   /**
@@ -70,7 +70,7 @@ describe("Component tests for SfdrPanel", () => {
     const preparedFixture = getPreparedFixture("companyWithOneFilledSfdrSubcategory", preparedFixtures);
     const mockedData = constructCompanyApiResponseForSfdrSixYears(preparedFixture.t);
     mountMLDTFrameworkPanel(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, mockedData);
-    getCellContainer("Fiscal Year End", 5).should("contain.text", "2023-01-01");
+    getCellValueContainer("Fiscal Year End", 5).should("contain.text", "2023-01-01");
 
     for (let indexOfColumn = 0; indexOfColumn < 6; indexOfColumn++) {
       cy.get(`th[data-dataset-index=${indexOfColumn}]`).should("contain.text", (2028 - indexOfColumn).toString());

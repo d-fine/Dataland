@@ -8,7 +8,7 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 import {
-  getCellContainer,
+  getCellValueContainer,
   getSectionHead,
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
@@ -39,9 +39,9 @@ describeIf(
       getSectionHead("Environmental").should("have.attr", "data-section-expanded", "false").click();
       getSectionHead("Biodiversity").should("have.attr", "data-section-expanded", "false").click();
 
-      getCellContainer("Primary Forest And Wooded Land Of Native Species Exposure").should("contain.text", "Yes");
-      getCellContainer("Protected Areas Exposure").should("contain.text", "No");
-      getCellContainer("Rare Or Endangered Ecosystems Exposure").should("contain.text", "Yes");
+      getCellValueContainer("Primary Forest And Wooded Land Of Native Species Exposure").should("contain.text", "Yes");
+      getCellValueContainer("Protected Areas Exposure").should("contain.text", "No");
+      getCellValueContainer("Rare Or Endangered Ecosystems Exposure").should("contain.text", "Yes");
     }
 
     /**

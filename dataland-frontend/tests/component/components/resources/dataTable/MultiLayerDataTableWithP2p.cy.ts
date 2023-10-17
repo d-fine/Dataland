@@ -8,7 +8,7 @@ import { mountMLDTFrameworkPanelFromFakeFixture } from "@ct/testUtils/MultiLayer
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import {
-  getCellContainer,
+  getCellValueContainer,
   getSectionHead,
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
@@ -36,7 +36,7 @@ describe("Component test for P2pPanel", () => {
 
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.P2p, p2pDisplayConfiguration, [preparedFixture]);
 
-    getCellContainer("Sectors").contains(`Show ${p2pData.general.general.sectors.length} values`).click();
+    getCellValueContainer("Sectors").contains(`Show ${p2pData.general.general.sectors.length} values`).click();
     cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
     cy.get("td").contains("Ammonia").should("exist");
     cy.get("td").contains("Cement").should("exist");
@@ -45,17 +45,17 @@ describe("Component test for P2pPanel", () => {
     cy.get(".p-dialog").find(".p-dialog-header-icon").click();
 
     cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
-    getCellContainer("Data Date").should("contain.text", p2pData.general.general.dataDate).should("be.visible");
+    getCellValueContainer("Data Date").should("contain.text", p2pData.general.general.dataDate).should("be.visible");
 
     getSectionHead("General").eq(1).click();
-    getCellContainer("Data Date", 0, false).should("not.be.visible");
+    getCellValueContainer("Data Date", 0, false).should("not.be.visible");
     getSectionHead("General").eq(1).click();
-    getCellContainer("Data Date").should("be.visible");
+    getCellValueContainer("Data Date").should("be.visible");
 
     getSectionHead("Ammonia").click();
-    getCellContainer("CCS technology adoption", 0, false).should("not.be.visible");
+    getCellValueContainer("CCS technology adoption", 0, false).should("not.be.visible");
     getSectionHead("Decarbonisation").click();
-    getCellContainer("CCS technology adoption")
+    getCellValueContainer("CCS technology adoption")
       .should("contain.text", formatPercentageNumberAsString(ccsTechnologyAdoptionInPercent))
       .should("be.visible");
 
@@ -65,7 +65,7 @@ describe("Component test for P2pPanel", () => {
 
     getSectionHead("Cement").click();
     getSectionHead("Material").click();
-    getCellContainer("Pre-calcined clay usage").should(
+    getCellValueContainer("Pre-calcined clay usage").should(
       "contain.text",
       formatPercentageNumberAsString(preCalcinedClayUsageInPercent),
     );
@@ -75,7 +75,7 @@ describe("Component test for P2pPanel", () => {
 
     getSectionHead("Freight transport by road").click();
     getSectionHead("Technology").click();
-    getCellContainer("Drive mix per fleet segment").contains(`Show Drive mix per fleet segment`).click();
+    getCellValueContainer("Drive mix per fleet segment").contains(`Show Drive mix per fleet segment`).click();
     cy.get(".p-dialog").contains(formatPercentageNumberAsString(driveMixPerFleetSegmentInPercentForSmallTrucks));
   });
 

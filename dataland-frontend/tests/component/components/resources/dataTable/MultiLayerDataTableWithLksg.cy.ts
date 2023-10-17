@@ -17,8 +17,8 @@ import {
 
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 import {
-  getCellContainerAndCheckIconForHiddenDisplay,
-  getCellContainer,
+  getCellValueContainerAndCheckIconForHiddenDisplay,
+  getCellValueContainer,
   getSectionHead,
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
@@ -36,8 +36,8 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    getCellContainer("Data Date").should("contain.text", "1999-12-24");
-    getCellContainer("Industry").should("exist");
+    getCellValueContainer("Data Date").should("contain.text", "1999-12-24");
+    getCellValueContainer("Industry").should("exist");
   });
 
   it("Check that the Master Data section is auto-expanded on page load and can be collapsed", () => {
@@ -45,11 +45,15 @@ describe("Component test for the LksgPanel", () => {
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
 
-    getCellContainer("Data Date").should("contain.text", lksgData.general.masterData.dataDate).should("be.visible");
+    getCellValueContainer("Data Date")
+      .should("contain.text", lksgData.general.masterData.dataDate)
+      .should("be.visible");
     getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true").click();
-    getCellContainer("Data Date", 0, false).should("not.be.visible");
+    getCellValueContainer("Data Date", 0, false).should("not.be.visible");
     getSectionHead("Master Data").should("have.attr", "data-section-expanded", "false").click();
-    getCellContainer("Data Date").should("contain.text", lksgData.general.masterData.dataDate).should("be.visible");
+    getCellValueContainer("Data Date")
+      .should("contain.text", lksgData.general.masterData.dataDate)
+      .should("be.visible");
   });
 
   it("Validate that certificate links are displayed correctly", () => {
@@ -61,7 +65,7 @@ describe("Component test for the LksgPanel", () => {
       .should("have.attr", "data-section-expanded", "false")
       .click();
 
-    getCellContainer("SA8000 Certification").find("i[data-test=download-icon]").should("be.visible");
+    getCellValueContainer("SA8000 Certification").find("i[data-test=download-icon]").should("be.visible");
   });
 
   it("Validate that the list of production sites is displayed", () => {
@@ -71,7 +75,7 @@ describe("Component test for the LksgPanel", () => {
 
     cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
     getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
-    getCellContainer("List Of Production Sites").contains("a").should("be.visible");
+    getCellValueContainer("List Of Production Sites").contains("a").should("be.visible");
   });
 
   it("Validate that the procurement category modal is displayed and contains the correct headers", () => {
@@ -81,7 +85,7 @@ describe("Component test for the LksgPanel", () => {
     getSectionHead("Production-specific - Own Operations")
       .should("have.attr", "data-section-expanded", "false")
       .click();
-    getCellContainer("Products/Services Categories purchased").find("a").should("be.visible").click();
+    getCellValueContainer("Products/Services Categories purchased").find("a").should("be.visible").click();
 
     cy.get("div.p-dialog").within(() => {
       cy.get("th").eq(0).should("have.text", "Procurement Category");
@@ -100,8 +104,8 @@ describe("Component test for the LksgPanel", () => {
 
     getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
 
-    getCellContainer("Manufacturing Company").should("have.text", "No");
-    getCellContainer("List Of Production Sites", 0, false).should("not.exist");
+    getCellValueContainer("Manufacturing Company").should("have.text", "No");
+    getCellValueContainer("List Of Production Sites", 0, false).should("not.exist");
   });
 
   it("Validate that show-if hidden fields are displayed and highlighted in review mode", () => {
@@ -119,9 +123,9 @@ describe("Component test for the LksgPanel", () => {
 
     getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
 
-    getCellContainer("Manufacturing Company").should("have.text", "No");
-    getCellContainer("List Of Production Sites").should("be.visible");
-    getCellContainerAndCheckIconForHiddenDisplay("List Of Production Sites", true);
+    getCellValueContainer("Manufacturing Company").should("have.text", "No");
+    getCellValueContainer("List Of Production Sites").should("be.visible");
+    getCellValueContainerAndCheckIconForHiddenDisplay("List Of Production Sites", true);
   });
 
   /**

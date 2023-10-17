@@ -70,7 +70,7 @@ function editSectionConfigForHighlightingHiddenFields<T>(
       sectionConfig.children,
       displayStatusGettersToPassDownToChildren,
     ),
-    areThisSectionAndAllParentSectionsDisplayedForTheDataset: areThisSectionAndAllParentSectionsDisplayedForTheDataset, // TODO needs to be dynamically calculated
+    areThisSectionAndAllParentSectionsDisplayedForTheDataset: areThisSectionAndAllParentSectionsDisplayedForTheDataset,
   };
 }
 
