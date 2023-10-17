@@ -43,6 +43,7 @@ build_directories () {
   mkdir -p "$target_dir"
 
   mkdir -p $target_dir/dataland-keycloak/users;
+  mkdir -p $target_dir/environments;
 
   echo "Copying env variable files."
   cat ./*github_env.log > "$target_dir"/.env
