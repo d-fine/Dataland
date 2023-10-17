@@ -26,8 +26,8 @@ export function naceCodeValueGetterFactory(
     if (!selectionValue || selectionValue.length == 0) {
       return MLDTDisplayObjectForEmptyString;
     } else {
-      return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponentName>>{
-        displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponentName,
+      return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
         displayValue: {
           label: `Show ${selectionValue.length} NACE code${selectionValue.length > 1 ? "s" : ""}`,
           modalComponent: MultiSelectModal,

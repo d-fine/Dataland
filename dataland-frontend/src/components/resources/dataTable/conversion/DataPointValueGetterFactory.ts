@@ -26,7 +26,7 @@ export function dataPointValueGetterFactory(
   return (dataset) => {
     const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal;
 
-    if (!datapoint?.value) {
+    if (datapoint?.value === null) {
       return MLDTDisplayObjectForEmptyString;
     }
 
@@ -41,25 +41,20 @@ export function dataPointValueGetterFactory(
       datapointUnitSuffix = field.unit ?? "";
     }
 
-    return {
-      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-      displayValue: `${datapointValue} ${datapointUnitSuffix}`.trim(),
-    };
-
     const formattedValue: string = `${datapointValue} ${datapointUnitSuffix}`.trim();
     if (hasDataPointValidReference(datapoint)) {
-      const documentReference = getGloballyReferencableDocuments(dataset).find(
-        (document) => document.fileName == datapoint?.dataSource?.fileReference,
+      const documentName = getGloballyReferencableDocuments(dataset).find(
+        (document) => document.fileName == datapoint?.dataSource?.fileName,
       );
-      if (documentReference == undefined) {
+      if (documentName == undefined) {
         throw Error(
           `There is no document with name ${
-            datapoint?.dataSource?.fileReference ?? "NOT PROVIDED"
+            datapoint?.dataSource?.fileName ?? "NOT PROVIDED"
           } referenced in this dataset`,
         );
       }
       return {
-        displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponentName,
+        displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
         displayValue: {
           label: formattedValue,
           fileReference: datapoint?.dataSource?.fileReference as string,

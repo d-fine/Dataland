@@ -53,7 +53,7 @@ function wrapMultiLayerDataTableCellForHighlightingHiddenFields<T>(cellConfig: M
         return originalDisplayValue;
       } else {
         return {
-          displayComponentName: MLDTDisplayComponentName.HighlightHiddenCellDisplayComponentName,
+          displayComponentName: MLDTDisplayComponentName.HighlightHiddenCellDisplayComponent,
           displayValue: {
             innerContents: originalDisplayValue,
           },

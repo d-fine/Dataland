@@ -41,7 +41,7 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
 
   if (elementValue.value == YesNoNa.Yes && elementValue.dataSource) {
     return {
-      displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponentName,
+      displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
       displayValue: {
         label: displayValue,
         dataSource: elementValue.dataSource,
