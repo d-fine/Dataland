@@ -24,5 +24,23 @@ export function getCellContainer(label: string, datasetIdx = 0): Cypress.Chainab
  * @returns the row header
  */
 export function getRowHeader(label: string): Cypress.Chainable {
-  return cy.get(`td[data-cell-label='${label}'][data-row-header="true"]`);
+  return cy.get(`td[data-cell-label='${label}'][data-row-header="true"]`); // TODO for what?  Re-use in other functions?
+}
+
+/**
+ * Retrieves the section header row which contains the passed data-section-label and asserts that it has a hidden-icon
+ * attached to it.
+ * @param label the data-section-label of a table row
+ */
+export function assertSectionHasIconForHiddenDisplay(label: string): void {
+  getCellContainer(label).find("i[data-test=hidden-icon]").should("be.visible");
+}
+
+/**
+ * Retrieves the cell with the given label and dataset index and asserts that it has a hidden-icon attached to it.
+ * @param label the label of the cell to retrieve
+ * @param datasetIdx the index of dataset to retrieve
+ */
+export function assertCellHasIconForHiddenDisplay(label: string, datasetIdx = 0): void {
+  getCellContainer(label, datasetIdx).find("i[data-test=hidden-icon]").should("be.visible");
 }
