@@ -1,6 +1,6 @@
 <template>
   <a
-    v-if="content?.displayValue?.modalOptions?.data.listOfRowContents.length"
+    v-if="content?.displayValue?.modalOptions?.data?.listOfRowContents?.length"
     @click="$dialog.open(content.displayValue.modalComponent, content.displayValue.modalOptions)"
     class="link"
     >{{ content.displayValue.label }}
@@ -16,10 +16,10 @@ import {
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 export default defineComponent({
-  name: "ModalLinkDisplayComponentName",
+  name: "ModalLinkDisplayComponent",
   props: {
     content: {
-      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponentName>,
+      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>,
       required: true,
     },
   },
