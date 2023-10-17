@@ -28,8 +28,8 @@ export function getFieldValueFromFrameworkDataset(identifier: string, frameworkD
  */
 export function hasDataPointValidReference(dataPoint: ExtendedDataPointBigDecimal): boolean {
   return (
-    (dataPoint.dataSource?.fileReference != null && dataPoint.dataSource.fileReference.trim().length > 0) ||
-    (dataPoint.dataSource?.fileName != null && dataPoint.dataSource.fileName.trim().length > 0)
+    (dataPoint?.dataSource?.fileReference != null && dataPoint.dataSource.fileReference.trim().length > 0) ||
+    (dataPoint?.dataSource?.fileName != null && dataPoint.dataSource.fileName.trim().length > 0)
   );
 }
 

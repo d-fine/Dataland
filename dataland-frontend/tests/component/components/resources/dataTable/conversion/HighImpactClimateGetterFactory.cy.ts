@@ -26,13 +26,13 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
         quality: "Estimated",
       } as ExtendedDataPointBigDecimal,
     };
-    const value = highImpactClimateGetterFactory("data", field)(highImpactClimateData);
+    const value = highImpactClimateGetterFactory("data", field)({ data: highImpactClimateData });
     expect(value).to.have.property("displayComponentName", MLDTDisplayComponentName.ModalLinkDisplayComponent);
     expect(value).to.have.nested.property("displayValue.label", "Applicable High Impact Climate Sectors");
     expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
       {
         sector: "NACE code A in GWh",
-        energyConsumption: "12345",
+        energyConsumption: "12,345",
       },
     ]);
   });

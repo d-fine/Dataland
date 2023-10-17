@@ -1,6 +1,9 @@
 <template>
   <a
-    v-if="content?.displayValue?.modalOptions?.data?.listOfRowContents?.length"
+    v-if="
+      content?.displayValue?.modalOptions?.data?.listOfRowContents?.length ||
+      content?.displayValue?.modalOptions?.data?.values?.length
+    "
     @click="$dialog.open(content.displayValue.modalComponent, content.displayValue.modalOptions)"
     class="link"
     >{{ content.displayValue.label }}
