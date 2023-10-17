@@ -13,7 +13,6 @@ COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-frontend/src/assets/images /var/www/images
 COPY ./gitinfo /var/www/html/gitinfo
 
-ENV DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES=${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}
 RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts
 RUN mkdir -p /certs /data/nginx/cache \
     && chown -R root:root /certs  \
