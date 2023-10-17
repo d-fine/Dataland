@@ -30,10 +30,10 @@ export function dataPointValueGetterFactory(
       return MLDTDisplayObjectForEmptyString;
     }
 
-    const datapointValue = formatNumberToReadableFormat(datapoint.value);
+    const datapointValue = formatNumberToReadableFormat(datapoint ? datapoint.value : undefined);
     let datapointUnitSuffix: string;
 
-    if (field.options) {
+    if (field.options?.length) {
       const datapointUnitRaw = field.unit ?? "";
       const matchingEntry = field.options.find((it) => it.value == datapointUnitRaw);
       datapointUnitSuffix = matchingEntry?.label ?? datapointUnitRaw;
@@ -41,7 +41,7 @@ export function dataPointValueGetterFactory(
       datapointUnitSuffix = field.unit ?? "";
     }
 
-    const formattedValue: string = `${datapointValue} ${datapointUnitSuffix}`.trim();
+    const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
     if (hasDataPointValidReference(datapoint)) {
       const documentName = getGloballyReferencableDocuments(dataset).find(
         (document) => document.fileName == datapoint?.dataSource?.fileName,
