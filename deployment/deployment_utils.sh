@@ -51,7 +51,7 @@ build_directories () {
   source "$target_dir"/.env
   set +o allexport
   envsubst < environments/.env.template >> "$target_dir"/.env
-  cat ./environments/.env.uncritical > "$target_dir"/environments/.env.uncritical
+  cp ./environments/.env.uncritical "$target_dir"/environments
 
   echo "Copying docker compose file."
   cp ./docker-compose.yml "$target_dir"

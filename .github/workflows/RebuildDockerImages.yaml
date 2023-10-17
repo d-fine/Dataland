@@ -56,13 +56,15 @@ jobs:
         env:
           GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: 150
         run: |
           echo "Matrix Job for ./build-utils/$BUILD_SCRIPT"  
-  
+          set -o allexport
+          source ./environments/.env.uncritical
+          set +o allexport
           ./build-utils/base_rebuild_gradle_dockerfile.sh
           set -o allexport
           source ./*github_env.log
+          source ./environments/.env.uncritical
           set +o allexport
           "./build-utils/$BUILD_SCRIPT"
       - name: Store docker image versions
