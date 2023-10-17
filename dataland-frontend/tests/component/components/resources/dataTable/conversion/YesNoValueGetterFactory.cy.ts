@@ -110,8 +110,8 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
         };
         const dataset = { data: datapoint };
         const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
-        expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponentName>>{
-          displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponentName,
+        expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
+          displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
           displayValue: {
             label: "Certified",
             dataSource: {
