@@ -49,7 +49,7 @@ build_directories () {
   set -o allexport
   source "$target_dir"/.env
   set +o allexport
-  envsubst < environments/.env.uncritical.template >> "$target_dir"/.env.uncritical
+  envsubst < environments/.env.template >> "$target_dir"/.env
   cat ./environments/.env.uncritical > "$target_dir"/environments/.env.uncritical
 
   echo "Copying docker compose file."
