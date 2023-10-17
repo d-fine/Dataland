@@ -17,7 +17,7 @@ import {
 
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 import {
-  assertCellHasIconForHiddenDisplay,
+  getCellContainerAndCheckIconForHiddenDisplay,
   getCellContainer,
   getSectionHead,
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
@@ -121,7 +121,7 @@ describe("Component test for the LksgPanel", () => {
 
     getCellContainer("Manufacturing Company").should("have.text", "No");
     getCellContainer("List Of Production Sites").should("be.visible");
-    assertCellHasIconForHiddenDisplay("List Of Production Sites");
+    getCellContainerAndCheckIconForHiddenDisplay("List Of Production Sites", true);
   });
 
   /**

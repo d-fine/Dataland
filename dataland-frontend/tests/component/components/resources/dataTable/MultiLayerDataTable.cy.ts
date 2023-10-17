@@ -3,10 +3,13 @@ import { MLDTDisplayComponentName } from "@/components/resources/dataTable/Multi
 
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 import {
+  getCellContainerAndCheckIconForHiddenDisplay,
   getCellContainer,
   getRowHeader,
+  getSectionHeadAndCheckIconForHiddenDisplay,
   getSectionHead,
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
 describe("Tests for the MultiLayerDataTable component", () => {
   /**
    * Mounts the MultiLayerDataTable with the given dataset
@@ -93,6 +96,41 @@ describe("Tests for the MultiLayerDataTable component", () => {
         },
       ],
     },
+    {
+      type: "section",
+      label: "Section 3",
+      expandOnPageLoad: false,
+      shouldDisplay: (dataset) => !!dataset.stringOnLevel1,
+      labelBadgeColor: "red",
+      children: [
+        {
+          type: "cell",
+          label: "Cell under section 3",
+          shouldDisplay: () => true,
+          valueGetter: () => ({
+            displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+            displayValue: "222",
+          }),
+        },
+        {
+          type: "section",
+          label: "Subsection Alpha under section 3",
+          expandOnPageLoad: false,
+          shouldDisplay: () => true,
+          children: [
+            {
+              type: "cell",
+              label: "Cell under subsection Alpha",
+              shouldDisplay: () => true,
+              valueGetter: (dataset) => ({
+                displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+                displayValue: dataset.stringOnLevel3,
+              }),
+            },
+          ],
+        },
+      ],
+    },
   ];
 
   const nestingTestDemoDataset1: MLDTDataset<NestingTestDataset> = {
@@ -154,7 +192,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
     it("Tests that the state of subsection expansion is remembered when sections get expanded", () => {
       mountWithDatasets([nestingTestDemoDataset1]);
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
-      getCellContainer("Level 3 - String").should("be.visible");
+      getCellContainer("Level 3 - String").should("be.visible"); // TODO why not setting the visibility in  the get Cellcontainer itself?
 
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true").click();
       getSectionHead("Subsection 1", false).should("not.be.visible");
@@ -205,5 +243,31 @@ describe("Tests for the MultiLayerDataTable component", () => {
     getRowHeader("Level 1 - String").find("em").trigger("mouseleave");
 
     getRowHeader("Level 2 - String").find("em").should("not.exist");
+  });
+
+  it("Validate that show-if hidden fields and sections are displayed and highlighted in review mode", () => {
+    cy.mountWithPlugins(MultiLayerDataTable, {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        config: editMultiLayerDataTableConfigForHighlightingHiddenFields(nestingTestDatasetViewConfiguration),
+        datasets: [nestingTestDemoDataset3],
+      },
+    });
+    getCellContainerAndCheckIconForHiddenDisplay("Level 1 - String", true);
+
+    getSectionHeadAndCheckIconForHiddenDisplay("Section 1", false);
+    getCellContainerAndCheckIconForHiddenDisplay("Level 2 - String", false);
+
+    getSectionHeadAndCheckIconForHiddenDisplay("Section 2", true).click();
+    getCellContainerAndCheckIconForHiddenDisplay("Static Value Cell", true)
+      .should("be.visible")
+      .should("contain.text", "This is static");
+
+    getSectionHead("Section 3", true).click();
+    getSectionHeadAndCheckIconForHiddenDisplay("Subsection Alpha under section 3", true).click();
+    getCellContainerAndCheckIconForHiddenDisplay("Cell under subsection Alpha", true)
+      .should("be.visible")
+      .should("contain.text", "Dataset 2 - String 3");
   });
 });

@@ -15,7 +15,7 @@ export function getSectionHead(label: string, isExpectedToBeVisible = true): Cyp
  * @returns the cell
  */
 export function getCellContainer(label: string, datasetIdx = 0): Cypress.Chainable {
-  return cy.get(`td[data-cell-label='${label}'][data-dataset-index='${datasetIdx}']`);
+  return cy.get(`td[data-cell-label='${label}'][data-dataset-index='${datasetIdx}']`); // TODO check for visibility!
 }
 
 /**
@@ -28,19 +28,43 @@ export function getRowHeader(label: string): Cypress.Chainable {
 }
 
 /**
- * Retrieves the section header row which contains the passed data-section-label and asserts that it has a hidden-icon
- * attached to it.
+ * Retrieves the section header row which contains the passed data-section-label and checks for the visibility of a
+ * hidden-icon attached to it.
  * @param label the data-section-label of a table row
+ * @param isIconExpectedToBeVisible describes whether the hidden-icon is expected to be visible or not
+ * @returns the section head itself in order to make it possible to chain other commands
  */
-export function assertSectionHasIconForHiddenDisplay(label: string): void {
-  getCellContainer(label).find("i[data-test=hidden-icon]").should("be.visible");
+export function getSectionHeadAndCheckIconForHiddenDisplay(
+  label: string,
+  isIconExpectedToBeVisible: boolean,
+): Cypress.Chainable {
+  const sectionHead = getSectionHead(label);
+  if (isIconExpectedToBeVisible) {
+    sectionHead.find("i[data-test=hidden-icon]").should("be.visible");
+  } else {
+    sectionHead.find("i[data-test=hidden-icon]").should("not.exist");
+  }
+  return getSectionHead(label);
 }
 
 /**
- * Retrieves the cell with the given label and dataset index and asserts that it has a hidden-icon attached to it.
+ * Retrieves the cell with the given label and dataset index and checks for the visibility of a hidden-icon
+ * attached to it.
  * @param label the label of the cell to retrieve
+ * @param isIconExpectedToBeVisible describes whether the hidden-icon is expected to be visible or not
  * @param datasetIdx the index of dataset to retrieve
+ * @returns the cell container itself in order to make it possible to chain other commands
  */
-export function assertCellHasIconForHiddenDisplay(label: string, datasetIdx = 0): void {
-  getCellContainer(label, datasetIdx).find("i[data-test=hidden-icon]").should("be.visible");
+export function getCellContainerAndCheckIconForHiddenDisplay(
+  label: string,
+  isIconExpectedToBeVisible: boolean,
+  datasetIdx = 0,
+): Cypress.Chainable {
+  const cellContainer = getCellContainer(label, datasetIdx);
+  if (isIconExpectedToBeVisible) {
+    cellContainer.find("i[data-test=hidden-icon]").should("be.visible");
+  } else {
+    cellContainer.find("i[data-test=hidden-icon]").should("not.exist");
+  }
+  return getCellContainer(label, datasetIdx);
 }
