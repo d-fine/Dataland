@@ -26,7 +26,10 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
         quality: "Estimated",
       } as ExtendedDataPointBigDecimal,
     };
-    const value = highImpactClimateGetterFactory("data", field)({ data: highImpactClimateData });
+
+    const dataset = { data: highImpactClimateData };
+    const value = highImpactClimateGetterFactory("data", field)(dataset);
+
     expect(value).to.have.property("displayComponentName", MLDTDisplayComponentName.ModalLinkDisplayComponent);
     expect(value).to.have.nested.property("displayValue.label", "Applicable High Impact Climate Sectors");
     expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
