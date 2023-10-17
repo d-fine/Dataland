@@ -5,7 +5,7 @@ export enum MLDTDisplayComponentName {
   StringDisplayComponent = "StringDisplayComponent",
   DocumentLinkDisplayComponent = "DocumentLinkDisplayComponent",
   ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
-  HighlightHiddenCellDisplayComponent = "HighlightHiddenCellDisplayComponent", // TODO misleading name since such a component doesnt exist!
+  HighlightHiddenCellDisplay = "HighlightHiddenCellDisplay",
 }
 
 export type MLDTDisplayComponentTypes = {
@@ -18,7 +18,7 @@ export type MLDTDisplayComponentTypes = {
     modalComponent: any;
     modalOptions?: DynamicDialogOptions;
   };
-  [MLDTDisplayComponentName.HighlightHiddenCellDisplayComponent]: {
+  [MLDTDisplayComponentName.HighlightHiddenCellDisplay]: {
     innerContents: AvailableMLDTDisplayObjectTypes;
   };
 };

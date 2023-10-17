@@ -107,7 +107,7 @@ function editCellConfigForHighlightingHiddenFields<T>(
         return originalDisplayValue;
       } else {
         return {
-          displayComponentName: MLDTDisplayComponentName.HighlightHiddenCellDisplayComponent,
+          displayComponentName: MLDTDisplayComponentName.HighlightHiddenCellDisplay,
           displayValue: {
             innerContents: originalDisplayValue,
           },

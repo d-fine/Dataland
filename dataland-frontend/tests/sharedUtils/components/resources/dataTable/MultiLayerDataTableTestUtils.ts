@@ -5,7 +5,6 @@
  * @returns the table row element
  */
 export function getSectionHead(label: string, isExpectedToBeVisible = true): Cypress.Chainable {
-  // TODO naming?
   return cy.get(`tr[data-section-label='${label}']${isExpectedToBeVisible ? ":visible" : ""}`);
 }
 
