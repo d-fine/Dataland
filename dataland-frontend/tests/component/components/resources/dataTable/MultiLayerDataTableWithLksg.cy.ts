@@ -8,7 +8,7 @@ import {
 } from "@clients/backend";
 import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { convertDataModel } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
+import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
   mountMLDTFrameworkPanelFromFakeFixture,
@@ -20,7 +20,7 @@ import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation
 
 describe("Component test for the LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
-  const lksgDisplayConfiguration = convertDataModel(lksgDataModel) as MLDTConfig<LksgData>;
+  const lksgDisplayConfiguration = convertDataModelToMLDTConfig(lksgDataModel) as MLDTConfig<LksgData>;
 
   before(function () {
     cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {

@@ -8,7 +8,7 @@ import {
 } from "@clients/backend";
 
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
-import { convertDataModel } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
+import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
@@ -18,7 +18,7 @@ import {
 
 describe("Component tests for SfdrPanel", () => {
   let preparedFixtures: Array<FixtureData<SfdrData>>;
-  const sfdrDisplayConfiguration = convertDataModel(sfdrDataModel) as MLDTConfig<SfdrData>;
+  const sfdrDisplayConfiguration = convertDataModelToMLDTConfig(sfdrDataModel) as MLDTConfig<SfdrData>;
   before(function () {
     cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
       preparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;

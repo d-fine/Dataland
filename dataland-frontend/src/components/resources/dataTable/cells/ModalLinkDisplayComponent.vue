@@ -8,14 +8,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import {
-  type MLDTDisplayComponents,
-  type MLDTDisplayValue,
-} from "@/components/resources/dataTable/MultiLayerDataTableCells";
+  type MLDTDisplayComponentName,
+  type MLDTDisplayObject,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 export default defineComponent({
   name: "ModalLinkDisplayComponent",
   props: {
     content: {
-      type: Object as () => MLDTDisplayValue<MLDTDisplayComponents.ModalLinkDisplayComponent>,
+      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>,
       required: true,
     },
   },
