@@ -9,6 +9,7 @@ import { submitButton } from "@sharedUtils/components/SubmitButton";
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -102,7 +103,9 @@ describeIf(
           cy.get("h1").should("contain", testCompanyName);
           selectsReportsForUploadInSfdrForm();
           setQualityInSfdrUploadForm();
-          setReferenceToAllUploadedReports(Object.keys(testSfdrCompany.t.general.general.referencedReports));
+          setReferenceToAllUploadedReports(
+            Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
+          );
           submitButton.clickButton();
           cy.url().should("eq", getBaseUrl() + "/datasets");
           validateFormUploadedData(uploadIds.companyId);
