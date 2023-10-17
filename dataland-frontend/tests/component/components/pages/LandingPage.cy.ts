@@ -16,8 +16,8 @@ describe("Component test for the landing page", () => {
       validateIntroSection();
       validateBrandsSection();
 
-      assertFrameworkPanelExists("Pathway to Paris");
-      assertFrameworkPanelExists("LksG");
+      assertFrameworkPanelExists("Pathways to Paris");
+      assertFrameworkPanelExists("LkSG");
       assertFrameworkPanelExists("EU Taxonomy");
       assertFrameworkPanelExists("SFDR");
       cy.get("button.joincampaign__button").should("exist");

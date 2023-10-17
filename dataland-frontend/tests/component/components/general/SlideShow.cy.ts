@@ -37,12 +37,12 @@ describe("Component test for the SlideShow component", () => {
     });
   });
 
-  it("Check if dragging is working", () => {
+  it("Check if dragging is disabled on large screens", () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
       cy.viewport(1900, 800);
       assertSlidesPosition(slidesSelector);
       dragSlideTo(genericSlideSelector, 1, leftOffset);
-      assertSlidesPosition(slidesSelector, 0);
+      assertSlidesPosition(slidesSelector);
     });
   });
 });
