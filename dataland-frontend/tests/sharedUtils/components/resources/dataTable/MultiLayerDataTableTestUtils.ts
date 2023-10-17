@@ -1,7 +1,7 @@
 /**
  * Retrieves the section header row which contains the passed data-section-label
  * @param label the data-section-label of a table row
- * @param isExpectedToBeVisible describes whether this row is expected to be visible
+ * @param isExpectedToBeVisible describes whether this section header is expected to be visible
  * @returns the table row element
  */
 export function getSectionHead(label: string, isExpectedToBeVisible = true): Cypress.Chainable {
@@ -9,13 +9,16 @@ export function getSectionHead(label: string, isExpectedToBeVisible = true): Cyp
 }
 
 /**
- * Retrieves the cell with the given label and dataset index
+ * Retrieves the cell container with the given label and dataset index
  * @param label the label of the cell to retrieve
  * @param datasetIdx the index of dataset to retrieve
+ * @param isExpectedToBeVisible describes whether the cell container is expected to be visible
  * @returns the cell
  */
-export function getCellContainer(label: string, datasetIdx = 0): Cypress.Chainable {
-  return cy.get(`td[data-cell-label='${label}'][data-dataset-index='${datasetIdx}']`); // TODO check for visibility!
+export function getCellContainer(label: string, datasetIdx = 0, isExpectedToBeVisible = true): Cypress.Chainable {
+  return cy.get(
+    `td[data-cell-label='${label}'][data-dataset-index='${datasetIdx}']${isExpectedToBeVisible ? ":visible" : ""}`,
+  );
 }
 
 /**

@@ -47,7 +47,7 @@ describe("Component test for the LksgPanel", () => {
 
     getCellContainer("Data Date").should("contain.text", lksgData.general.masterData.dataDate).should("be.visible");
     getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true").click();
-    getCellContainer("Data Date").should("not.be.visible");
+    getCellContainer("Data Date", 0, false).should("not.be.visible");
     getSectionHead("Master Data").should("have.attr", "data-section-expanded", "false").click();
     getCellContainer("Data Date").should("contain.text", lksgData.general.masterData.dataDate).should("be.visible");
   });
@@ -101,7 +101,7 @@ describe("Component test for the LksgPanel", () => {
     getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
 
     getCellContainer("Manufacturing Company").should("have.text", "No");
-    getCellContainer("List Of Production Sites").should("not.exist");
+    getCellContainer("List Of Production Sites", 0, false).should("not.exist");
   });
 
   it("Validate that show-if hidden fields are displayed and highlighted in review mode", () => {

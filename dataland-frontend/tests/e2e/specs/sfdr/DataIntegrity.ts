@@ -6,8 +6,11 @@ import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { selectsReportsForUploadInSfdrForm } from "@e2e/utils/SfdrUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
+import {
+  getCellContainer,
+  getSectionHead,
+} from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -33,12 +36,12 @@ describeIf(
     function validateFormUploadedData(companyId: string): void {
       cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sfdr);
 
-      MLDT.getSectionHead("Environmental").should("have.attr", "data-section-expanded", "false").click();
-      MLDT.getSectionHead("Biodiversity").should("have.attr", "data-section-expanded", "false").click();
+      getSectionHead("Environmental").should("have.attr", "data-section-expanded", "false").click();
+      getSectionHead("Biodiversity").should("have.attr", "data-section-expanded", "false").click();
 
-      MLDT.getCellContainer("Primary Forest And Wooded Land Of Native Species Exposure").should("contain.text", "Yes");
-      MLDT.getCellContainer("Protected Areas Exposure").should("contain.text", "No");
-      MLDT.getCellContainer("Rare Or Endangered Ecosystems Exposure").should("contain.text", "Yes");
+      getCellContainer("Primary Forest And Wooded Land Of Native Species Exposure").should("contain.text", "Yes");
+      getCellContainer("Protected Areas Exposure").should("contain.text", "No");
+      getCellContainer("Rare Or Endangered Ecosystems Exposure").should("contain.text", "Yes");
     }
 
     /**

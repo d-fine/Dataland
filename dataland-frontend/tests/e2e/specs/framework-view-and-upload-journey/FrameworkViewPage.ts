@@ -12,7 +12,7 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import { getCellContainer } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -246,7 +246,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function validateDataDatesOfDisplayedLksgDatasets(expectedDataDates: string[]): void {
         for (let i = 0; i < expectedDataDates.length; i++) {
-          MLDT.getCellContainer("Data Date", i).should("have.text", expectedDataDates[i]);
+          getCellContainer("Data Date", i).should("have.text", expectedDataDates[i]);
         }
       }
 

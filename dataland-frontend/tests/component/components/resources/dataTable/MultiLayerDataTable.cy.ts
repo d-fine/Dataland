@@ -1,6 +1,5 @@
 import { type MLDTConfig, type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { MLDTDisplayComponentName } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 import {
   getCellContainerAndCheckIconForHiddenDisplay,
@@ -174,19 +173,19 @@ describe("Tests for the MultiLayerDataTable component", () => {
       getSectionHead("Section 1").click();
 
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "false");
-      getCellContainer("Level 2 - String").should("not.be.visible");
+      getCellContainer("Level 2 - String", 0, false).should("not.be.visible");
       getSectionHead("Subsection 1", false).should("not.be.visible");
     });
 
     it("Tests that subsections can be expanded and contracted", () => {
       mountWithDatasets([nestingTestDemoDataset1]);
-      getCellContainer("Level 3 - String").should("not.be.visible");
+      getCellContainer("Level 3 - String", 0, false).should("not.be.visible");
 
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
       getCellContainer("Level 3 - String").should("be.visible");
 
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "true").click();
-      getCellContainer("Level 3 - String").should("not.be.visible");
+      getCellContainer("Level 3 - String", 0, false).should("not.be.visible");
     });
 
     it("Tests that the state of subsection expansion is remembered when sections get expanded", () => {
@@ -196,7 +195,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
 
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true").click();
       getSectionHead("Subsection 1", false).should("not.be.visible");
-      getCellContainer("Level 3 - String").should("not.be.visible");
+      getCellContainer("Level 3 - String", 0, false).should("not.be.visible");
 
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "false").click();
       getSectionHead("Subsection 1").should("be.visible");
@@ -207,7 +206,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
   describe("Tests that the shouldDisplay directive works", () => {
     it("Tests that fields and sections get hidden if shouldDisplay is false", () => {
       mountWithDatasets([nestingTestDemoDataset3]);
-      getCellContainer("Level 1 - String").should("not.exist");
+      getCellContainer("Level 1 - String", 0, false).should("not.exist");
       getSectionHead("Section 2").should("not.exist");
     });
 
@@ -264,7 +263,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       .should("be.visible")
       .should("contain.text", "This is static");
 
-    getSectionHead("Section 3", true).click();
+    getSectionHead("Section 3").click();
     getSectionHeadAndCheckIconForHiddenDisplay("Subsection Alpha under section 3", true).click();
     getCellContainerAndCheckIconForHiddenDisplay("Cell under subsection Alpha", true)
       .should("be.visible")

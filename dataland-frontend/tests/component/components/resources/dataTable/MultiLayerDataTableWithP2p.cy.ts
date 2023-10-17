@@ -48,12 +48,12 @@ describe("Component test for P2pPanel", () => {
     getCellContainer("Data Date").should("contain.text", p2pData.general.general.dataDate).should("be.visible");
 
     getSectionHead("General").eq(1).click();
-    getCellContainer("Data Date").should("not.be.visible");
+    getCellContainer("Data Date", 0, false).should("not.be.visible");
     getSectionHead("General").eq(1).click();
     getCellContainer("Data Date").should("be.visible");
 
     getSectionHead("Ammonia").click();
-    getCellContainer("CCS technology adoption").should("not.be.visible");
+    getCellContainer("CCS technology adoption", 0, false).should("not.be.visible");
     getSectionHead("Decarbonisation").click();
     getCellContainer("CCS technology adoption")
       .should("contain.text", formatPercentageNumberAsString(ccsTechnologyAdoptionInPercent))
