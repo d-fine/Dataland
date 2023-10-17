@@ -93,8 +93,8 @@ export function lksgProcurementCategoriesValueGetterFactory(
 
     const convertedValueForModal = convertLksgProcumentTypeToListForModal(datasetValue);
 
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponentName>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponentName,
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${field.label}`,
         modalComponent: DetailsCompanyDataTable,

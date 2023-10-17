@@ -1,4 +1,4 @@
-import { type BaseDocumentReference, type SfdrData } from "@clients/backend";
+import { type BaseDocumentReference, type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backend";
 
 /**
  * Retrieves a deeply nested value from an object by an identifier.
@@ -26,9 +26,7 @@ export function getFieldValueFromFrameworkDataset(identifier: string, frameworkD
  * @param dataPoint.dataSource the data source of the data point
  * @returns true if the reference is properly set
  */
-export function hasDataPointValidReference(dataPoint: {
-  dataSource?: { fileReference?: string | null; fileName?: string | null } | null;
-}): boolean {
+export function hasDataPointValidReference(dataPoint: ExtendedDataPointBigDecimal): boolean {
   return (
     (dataPoint.dataSource?.fileReference != null && dataPoint.dataSource.fileReference.trim().length > 0) ||
     (dataPoint.dataSource?.fileName != null && dataPoint.dataSource.fileName.trim().length > 0)

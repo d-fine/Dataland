@@ -65,8 +65,8 @@ export function p2pDriveMixValueGetterFactory(
 
     const convertedDriveMixPerFleetSegmentForModal = convertP2pDriveMixTypeToListForModal(driveMixPerFleetSegment);
 
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponentName>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponentName,
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${field.label}`,
         modalComponent: DetailsCompanyDataTable,

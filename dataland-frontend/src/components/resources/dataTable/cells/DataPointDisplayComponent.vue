@@ -4,7 +4,7 @@
     label=""
     :suffix="formattedPageNumber"
     :download-name="content.displayValue.fileName"
-    :reference="content.displayValue.fileReference"
+    :file-reference="content.displayValue.fileReference"
     show-icon
   />
 </template>
@@ -22,7 +22,7 @@ export default defineComponent({
   components: { DocumentLink },
   props: {
     content: {
-      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponentName>,
+      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>,
       required: true,
     },
   },

@@ -66,7 +66,7 @@ export function highImpactClimateGetterFactory(
       };
     });
     return {
-      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponentName,
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: field.label,
         modalComponent: DetailsCompanyDataTable,

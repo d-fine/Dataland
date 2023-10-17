@@ -32,8 +32,8 @@ export function multiSelectValueGetterFactory(
         displayValue: "",
       };
     } else {
-      return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponentName>>{
-        displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponentName,
+      return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
         displayValue: {
           label: `Show ${selectionValue.length} value${selectionValue.length > 1 ? "s" : ""}`,
           modalComponent: MultiSelectModal,
