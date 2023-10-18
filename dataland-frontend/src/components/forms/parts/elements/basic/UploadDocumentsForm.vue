@@ -22,7 +22,8 @@
           />
         </div>
       </template>
-      <template #content="{ files }">
+      <template #content="{ files, messages }">
+        <FileSelectMessage v-for="msg of messages" :key="msg" severity="error">{{ msg }} </FileSelectMessage>
         <div v-show="files.length > 0" data-test="files-to-upload">
           <div
             v-for="(selectedFile, index) of files"
@@ -61,10 +62,12 @@ import {
   removeFileTypeExtension,
 } from "@/utils/FileUploadUtils";
 import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/DatalandSettings";
+import FileSelectMessage from "primevue/message";
 
 export default defineComponent({
   name: "UploadDocumentsForm",
   components: {
+    FileSelectMessage,
     PrimeButton,
     FileUpload,
   },
