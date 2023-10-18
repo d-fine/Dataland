@@ -5,6 +5,7 @@
         {{ sectionText }}
       </h2>
       <SlideShow
+        slides-wrapper-classes="howitworks__sliderwrapper"
         slides-container-classes="howitworks__slides"
         arrows-container-classes="howitworks__arrows"
         left-arrow-classes="howitworks__arrow howitworks__arrow--left"
@@ -214,7 +215,7 @@ onUnmounted(() => {
       padding-right: unset;
     }
 
-    &__slides,
+    &__sliderwrapper,
     &__arrows {
       grid-column: 2 / -1;
     }

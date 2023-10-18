@@ -1,12 +1,8 @@
 <template>
-  <div
-    ref="slider"
-    role="list"
-    :class="slidesContainerClasses"
-    @pointerdown="dragStartCondition"
-    @touchstart="dragStartCondition"
-  >
-    <slot />
+  <div @pointerdown="dragStartCondition" @touchstart="dragStartCondition" :class="slidesWrapperClasses">
+    <div ref="slider" role="list" :class="slidesContainerClasses">
+      <slot />
+    </div>
   </div>
   <div v-if="slideCount > 1" :class="arrowsContainerClasses">
     <button @click="move(-1)" aria-label="Previous slide" :class="leftArrowClasses" />
@@ -15,10 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, defineEmits, toRefs, withDefaults } from "vue";
+import { onUnmounted, ref, defineEmits, toRefs } from "vue";
 
 const props = withDefaults(
   defineProps<{
+    slidesWrapperClasses: string;
     slidesContainerClasses: string;
     arrowsContainerClasses: string;
     leftArrowClasses: string;
@@ -66,6 +63,7 @@ const move = (direction: number): void => {
 };
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
+  // Disable dragging for window width greater than <scrollScreenWidthLimit> px, for example
   if (scrollScreenWidthLimit.value && window.innerWidth > scrollScreenWidthLimit.value) return;
   isDragging = true;
   startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
@@ -103,6 +101,7 @@ const dragEnd = (): void => {
 
   emit("update:currentSlide", currentSlide.value);
 
+  // Set currentTranslate based on the new slide index
   currentTranslate = currentSlide.value * -slideWidth.value;
 
   if (slider.value) {
