@@ -7,10 +7,10 @@ describe("Component test for the AuthSection component", () => {
     const keycloakMock = minimalKeycloakMock({
       authenticated: false,
     });
-    keycloakMock.createLoginUrl = (): void => {
+    keycloakMock.createLoginUrl = (): string => {
       throw Error("Login Error!");
     };
-    keycloakMock.createRegisterUrl = (): void => {
+    keycloakMock.createRegisterUrl = (): string => {
       throw Error("Register Error!");
     };
     cy.mountWithPlugins(AuthSection, { keycloak: keycloakMock }).then(() => {
