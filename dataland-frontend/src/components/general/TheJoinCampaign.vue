@@ -7,7 +7,7 @@
         >{{ joinCampaignSection.text[2] }}
       </h2>
       <p class="joincampaign__paragraph" v-if="joinCampaignSection.text[3]">{{ joinCampaignSection.text[3] }}</p>
-      <email-button :sections="sections" />
+      <EmailButton :sections="sections" />
 
       <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">
         <div v-for="(card, index) in joinCampaignSection.cards" :key="index" role="row" class="joincampaign__row">

@@ -37,10 +37,22 @@
                     ],
                     "cards": [
                         {
-                            "icon": "GaUte84IN0g",
-                            "title": "XXX XXX,",
-                            "text": " CEO of Metzler",
-                            "date": "\"Dataland is the bridge that connects us to data independency and unlimited possibilities.\""
+                            "icon": "wjiR2exsHCs",
+                            "title": "Christoph Benner,",
+                            "text": " CEO of Chom Capital",
+                            "date": "\"Join Dataland: it doesn't cost anything, it's open source and an entrusted structure.\""
+                        },
+                        {
+                            "icon": "BzUkAtdcKvg",
+                            "title": "Sven Schubert,",
+                            "text": " CEO of Envoria",
+                            "date": "\"Dataland is the only platform we know that is open to everyone and based on a non-profit business model.\""
+                        },
+                        {
+                            "icon": "9T9Bga8oojA",
+                            "title": "Christian Heller,",
+                            "text": " CEO of Value Balancing Alliance",
+                            "date": "\"We trust and believe in Dataland to provide better data to assess corporate impacts.\""
                         }
                     ]
                 },

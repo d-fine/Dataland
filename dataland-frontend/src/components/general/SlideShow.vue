@@ -24,7 +24,7 @@ const props = withDefaults(
     leftArrowClasses: string;
     rightArrowClasses: string;
     slideCount: number;
-    initialCenterSlide?: number;
+    initialCenterSlide: number;
     scrollScreenWidthLimit: number;
     slideWidth: number;
   }>(),
@@ -66,7 +66,6 @@ const move = (direction: number): void => {
 };
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
-  // Disable dragging for window width greater than <scrollScreenWidthLimit> px, for example
   if (scrollScreenWidthLimit.value && window.innerWidth > scrollScreenWidthLimit.value) return;
   isDragging = true;
   startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
@@ -104,7 +103,6 @@ const dragEnd = (): void => {
 
   emit("update:currentSlide", currentSlide.value);
 
-  // Set currentTranslate based on the new slide index
   currentTranslate = currentSlide.value * -slideWidth.value;
 
   if (slider.value) {

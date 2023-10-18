@@ -8,6 +8,7 @@
       :slide-count="slides.length"
       :initial-center-slide="1"
       @update:currentSlide="(newSlide) => (currentSlide = newSlide)"
+      :scroll-screen-width-limit="1800"
     >
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
@@ -24,7 +25,7 @@
       </div>
     </SlideShow>
     <p class="quotes__slide-text">{{ currentCardText }}</p>
-    <register-button :buttonText="quotesSection.text[0]" />
+    <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
 </template>
 
