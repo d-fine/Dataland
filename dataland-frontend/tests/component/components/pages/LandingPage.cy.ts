@@ -16,6 +16,7 @@ describe("Component test for the landing page", () => {
       validateIntroSection();
       validateBrandsSection();
       validateStruggleSection();
+      validateQuotesSection();
       validateHowItWorksSection();
 
       assertFrameworkPanelExists("Pathways to Paris");
@@ -107,9 +108,38 @@ function assertFrameworkPanelExists(frameworkTitle: string): void {
 }
 
 /**
- * Validates the existence and general structure of the "Quotes" section
+ * Validates the existence and general structure of the "Struggle" section
  */
 function validateStruggleSection(): void {
+  cy.get("section.struggle").should("exist");
+  const struggleCellContent: { imageFilename: string; title: string }[] = [
+    {
+      imageFilename: "Diagram.svg",
+      title: "Data Gaps",
+    },
+    {
+      imageFilename: "Badge.svg",
+      title: "Data Quality",
+    },
+    {
+      imageFilename: "3d-mpr-toggle.svg",
+      title: "Data Usage Rights",
+    },
+    {
+      imageFilename: "Airline--rapid-board.svg",
+      title: "Data Usage",
+    },
+  ];
+  cy.get(".struggle__cell").each((element, index) => {
+    checkImage(struggleCellContent[index].title, struggleCellContent[index].imageFilename);
+    cy.wrap(element).should("contain.text", struggleCellContent[index].title);
+  });
+}
+
+/**
+ * Validates the existence and general structure of the "Quotes" section
+ */
+function validateQuotesSection(): void {
   cy.get("section.quotes").should("exist");
   cy.get(".quotes__slide").should("have.length", 3);
 }
