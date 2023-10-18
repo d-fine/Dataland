@@ -24,6 +24,7 @@ appear.
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 - [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
 - [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloak Docker images
+- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. Should be retried in future tickets.
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
   If running `sudo apt-get update && sudo apt-get upgrade` on the servers causes connection issues
   this can be possibly fixed by reverting the docker-compose-plugin version
