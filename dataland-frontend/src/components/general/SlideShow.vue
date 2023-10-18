@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, defineEmits, toRefs } from "vue";
+import { onUnmounted, ref, toRefs } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -36,6 +36,9 @@ const { slideCount, initialCenterSlide, scrollScreenWidthLimit, slideWidth } = t
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
 const emit = defineEmits(["update:currentSlide"]);
+const preventVerticalScroll = (e: TouchEvent): void => {
+  e.preventDefault();
+};
 
 let isDragging = false;
 let startPos = 0;
@@ -63,7 +66,6 @@ const move = (direction: number): void => {
 };
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
-  // Disable dragging for window width greater than <scrollScreenWidthLimit> px, for example
   if (scrollScreenWidthLimit.value && window.innerWidth > scrollScreenWidthLimit.value) return;
   isDragging = true;
   startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
@@ -75,6 +77,7 @@ const dragStart = (e: PointerEvent | TouchEvent): void => {
     slider.value.classList.add("isdragging");
   }
 
+  document.addEventListener("touchmove", preventVerticalScroll, { passive: false });
   document.addEventListener("pointermove", drag);
   document.addEventListener("pointerup", dragEnd);
   document.addEventListener("touchmove", drag);
@@ -101,7 +104,6 @@ const dragEnd = (): void => {
 
   emit("update:currentSlide", currentSlide.value);
 
-  // Set currentTranslate based on the new slide index
   currentTranslate = currentSlide.value * -slideWidth.value;
 
   if (slider.value) {
@@ -109,6 +111,7 @@ const dragEnd = (): void => {
     slider.value.classList.remove("isdragging");
   }
 
+  document.removeEventListener("touchmove", preventVerticalScroll);
   document.removeEventListener("pointermove", drag);
   document.removeEventListener("pointerup", dragEnd);
   document.removeEventListener("touchmove", drag);
