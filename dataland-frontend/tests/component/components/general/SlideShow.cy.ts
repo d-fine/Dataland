@@ -26,13 +26,13 @@ describe("Component test for the SlideShow component", () => {
   it("Check if dragging is working", () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
       assertSlidesPosition(slidesSelector);
-      dragSlideTo(genericSlideSelector, 1, leftOffset);
+      dragSlideTo(1, leftOffset);
       assertSlidesPosition(slidesSelector, 1);
-      dragSlideTo(genericSlideSelector, 2, leftOffset);
+      dragSlideTo(2, leftOffset);
       assertSlidesPosition(slidesSelector, 2);
-      dragSlideTo(genericSlideSelector, 2, leftOffset + SLIDE_DELTA);
+      dragSlideTo(2, leftOffset + SLIDE_DELTA);
       assertSlidesPosition(slidesSelector, 1);
-      dragSlideTo(genericSlideSelector, 1, leftOffset + SLIDE_DELTA);
+      dragSlideTo(1, leftOffset + SLIDE_DELTA);
       assertSlidesPosition(slidesSelector, 0);
     });
   });
@@ -41,7 +41,7 @@ describe("Component test for the SlideShow component", () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
       cy.viewport(1900, 800);
       assertSlidesPosition(slidesSelector);
-      dragSlideTo(genericSlideSelector, 1, leftOffset);
+      dragSlideTo(1, leftOffset);
       assertSlidesPosition(slidesSelector);
     });
   });
@@ -50,7 +50,6 @@ describe("Component test for the SlideShow component", () => {
 const slidesSelector = ".test__slides";
 const leftButtonSelector = "button[aria-label='Previous slide']";
 const rightButtonSelector = "button[aria-label='Next slide']";
-const genericSlideSelector = ".test__slide";
 const leftOffset = 10;
 const topOffset = 10;
 
@@ -68,11 +67,11 @@ function assertSlidesPosition(slidesSelector: string, centerSlide?: number, init
 
 /**
  * Drags the selected slide to the given position
- * @param genericSlideSelector a selector that applies for each of the slides in the slide show
  * @param slideIndex the slide to drag
  * @param targetX the targets position x value in viewport coordinates
  */
-function dragSlideTo(genericSlideSelector: string, slideIndex: number, targetX: number): void {
+function dragSlideTo(slideIndex: number, targetX: number): void {
+  const genericSlideSelector = ".test__slide";
   cy.get(genericSlideSelector).eq(slideIndex).click();
   cy.get(genericSlideSelector)
     .eq(slideIndex)
