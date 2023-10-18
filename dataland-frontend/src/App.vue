@@ -89,7 +89,6 @@ function initKeycloak(): Promise<Keycloak> {
  * in the url which triggers a pop-up to open and inform the user that she/he was just logged out.
  */
 function handleAuthLogout(): void {
-  //explicitly state its return type
   logoutAndRedirectToUri(resolvedKeycloakPromise.value as Keycloak, "?externalLogout=true");
 }
 
