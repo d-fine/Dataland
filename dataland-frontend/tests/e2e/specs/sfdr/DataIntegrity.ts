@@ -132,7 +132,7 @@ describeIf(
           );
           testRemovingOfHighImpactClimateSector();
           submitButton.clickButton();
-          cy.get("div.p-message-success:not(.p-message-error)").should("exist");
+          cy.get("div.p-message-success:not(.p-message-error)").should("not.contain", "An unexpected error occurred.");
           cy.url().should("eq", getBaseUrl() + "/datasets");
           validateFormUploadedData(uploadIds.companyId);
         });
