@@ -3,6 +3,7 @@ const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/page
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
+const TermsAndConditions = (): Promise<RouteComponent> => import("@/components/pages/TermsAndConditions.vue");
 const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/TheImprint.vue");
 const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
@@ -96,6 +97,11 @@ const routes = [
     path: "/dataprivacy",
     name: "DataPrivacy",
     component: DataPrivacy,
+  },
+  {
+    path: "/terms",
+    name: "TermsAndConditions",
+    component: TermsAndConditions,
   },
   {
     path: "/imprint",
