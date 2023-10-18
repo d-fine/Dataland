@@ -5,49 +5,48 @@ const SLIDE_DELTA = 440;
 describe("Component test for the SlideShow component", () => {
   it("Check if the buttons are working", () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
-      assertSlidesPosition(slidesSelector);
+      assertSlidesPosition();
       cy.get(rightButtonSelector).click();
-      assertSlidesPosition(slidesSelector, 1);
+      assertSlidesPosition(1);
       cy.get(rightButtonSelector).click();
-      assertSlidesPosition(slidesSelector, 2);
+      assertSlidesPosition(2);
       cy.get(rightButtonSelector).click();
-      assertSlidesPosition(slidesSelector, 2);
+      assertSlidesPosition(2);
       cy.get(leftButtonSelector).click();
-      assertSlidesPosition(slidesSelector, 1);
+      assertSlidesPosition(1);
       cy.get(leftButtonSelector).click();
-      assertSlidesPosition(slidesSelector, 0);
+      assertSlidesPosition(0);
       cy.get(leftButtonSelector).click();
-      assertSlidesPosition(slidesSelector, 0);
+      assertSlidesPosition(0);
       cy.get(rightButtonSelector).click();
-      assertSlidesPosition(slidesSelector, 1);
+      assertSlidesPosition(1);
     });
   });
 
   it("Check if dragging is working", () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
-      assertSlidesPosition(slidesSelector);
+      assertSlidesPosition();
       dragSlideTo(1, leftOffset);
-      assertSlidesPosition(slidesSelector, 1);
+      assertSlidesPosition(1);
       dragSlideTo(2, leftOffset);
-      assertSlidesPosition(slidesSelector, 2);
+      assertSlidesPosition(2);
       dragSlideTo(2, leftOffset + SLIDE_DELTA);
-      assertSlidesPosition(slidesSelector, 1);
+      assertSlidesPosition(1);
       dragSlideTo(1, leftOffset + SLIDE_DELTA);
-      assertSlidesPosition(slidesSelector, 0);
+      assertSlidesPosition(0);
     });
   });
 
   it("Check if dragging is disabled on large screens", () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
       cy.viewport(1900, 800);
-      assertSlidesPosition(slidesSelector);
+      assertSlidesPosition();
       dragSlideTo(1, leftOffset);
-      assertSlidesPosition(slidesSelector);
+      assertSlidesPosition();
     });
   });
 });
 
-const slidesSelector = ".test__slides";
 const leftButtonSelector = "button[aria-label='Previous slide']";
 const rightButtonSelector = "button[aria-label='Next slide']";
 const leftOffset = 10;
@@ -55,13 +54,12 @@ const topOffset = 10;
 
 /**
  * Checks that a slide show is centered at a given slide
- * @param slidesSelector the selector for the slides wrapper
  * @param centerSlide the index of the slide that is expected to be in the center
- * @param initialCenterSlide the index of the slide that was centered initially
  */
-function assertSlidesPosition(slidesSelector: string, centerSlide?: number, initialCenterSlide = 0): void {
+function assertSlidesPosition(centerSlide?: number): void {
+  const slidesSelector = ".test__slides";
   const expectedTransformValue =
-    centerSlide == undefined ? "none" : `matrix(1, 0, 0, 1, ${-SLIDE_DELTA * (centerSlide - initialCenterSlide)}, 0)`;
+    centerSlide == undefined ? "none" : `matrix(1, 0, 0, 1, ${-SLIDE_DELTA * centerSlide}, 0)`;
   cy.get(slidesSelector).should("have.css", "transform", expectedTransformValue);
 }
 
