@@ -1,7 +1,10 @@
 <template>
   <LegalPage>
     <LanguageDependentContent>
-      <template #english> English content</template>
+      <template #english>
+        <!-- TODO insert something -->
+        English content
+      </template>
       <template #german>
         <div class="WordSection1">
           <p class="MsoNormal" align="center" style="text-align: center">
