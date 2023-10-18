@@ -110,14 +110,15 @@ const register = (): void => {
     &__authsection {
       flex-direction: row-reverse;
       &-login {
-        // Visually hide the text
         font-size: 0;
         color: transparent;
-
-        // Reset these if you use hover to modify them
         &:hover {
           font-size: 0;
           color: transparent;
+          border-bottom: 2px solid transparent;
+          &::before {
+            content: "";
+          }
         }
       }
       &-button {

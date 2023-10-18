@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, defineEmits, toRefs } from "vue";
+import { onUnmounted, ref, defineEmits, toRefs, withDefaults } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -24,7 +24,7 @@ const props = withDefaults(
     leftArrowClasses: string;
     rightArrowClasses: string;
     slideCount: number;
-    initialCenterSlide: number;
+    initialCenterSlide?: number;
     scrollScreenWidthLimit: number;
     slideWidth: number;
   }>(),

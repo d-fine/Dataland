@@ -9,6 +9,7 @@
       :initial-center-slide="1"
       @update:currentSlide="(newSlide) => (currentSlide = newSlide)"
       :scroll-screen-width-limit="1800"
+      :slide-width="440"
     >
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
