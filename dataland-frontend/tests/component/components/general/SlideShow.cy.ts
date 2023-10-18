@@ -69,9 +69,7 @@ function assertSlidesPosition(centerSlide?: number): void {
  * @param targetX the targets position x value in viewport coordinates
  */
 function dragSlideTo(slideIndex: number, targetX: number): void {
-  const genericSlideSelector = ".test__slide";
-  cy.get(genericSlideSelector).eq(slideIndex).click();
-  cy.get(genericSlideSelector)
+  cy.get(".test__slide")
     .eq(slideIndex)
     .trigger("pointerdown", leftOffset, topOffset, { button: 0 })
     .trigger("pointermove", {
