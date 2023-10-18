@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, defineEmits, toRefs } from "vue";
+import { onUnmounted, ref, toRefs } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -104,7 +104,6 @@ const dragEnd = (): void => {
 
   emit("update:currentSlide", currentSlide.value);
 
-  // Set currentTranslate based on the new slide index
   currentTranslate = currentSlide.value * -slideWidth.value;
 
   if (slider.value) {
