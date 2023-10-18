@@ -85,7 +85,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:16.0
+    image: postgres:15.3
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -117,7 +117,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:16.0
+    image: postgres:15.3
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -152,7 +152,7 @@ services:
     profiles: ["production", "testing", "development"]
     networks:
       - backend-db
-    image: postgres:16.0
+    image: postgres:15.3
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -242,7 +242,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:16.0
+    image: postgres:15.3
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -259,7 +259,7 @@ services:
     profiles: ["production", "testing", "development", "init"]
     networks:
       - keycloak-db
-    image: postgres:16.0
+    image: postgres:15.3
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -388,7 +388,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:16.0
+    image: postgres:15.3
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
