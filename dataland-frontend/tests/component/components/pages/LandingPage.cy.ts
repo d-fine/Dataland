@@ -12,9 +12,11 @@ describe("Component test for the landing page", () => {
         authenticated: false,
       }),
     }).then(() => {
-      validateTopBar();
+      validateTheHeader();
       validateIntroSection();
       validateBrandsSection();
+      validateStruggleSection();
+      validateHowItWorksSection();
 
       assertFrameworkPanelExists("Pathways to Paris");
       assertFrameworkPanelExists("LkSG");
@@ -30,7 +32,7 @@ describe("Component test for the landing page", () => {
 /**
  * Validates the elements of the top bar
  */
-function validateTopBar(): void {
+function validateTheHeader(): void {
   checkImage("Dataland banner logo", getSingleImageNameInSection("Welcome to Dataland"));
   checkButton("signup_dataland_button", "Sign Up");
   checkAnchorByContent("Login");
@@ -102,4 +104,24 @@ function getSingleImageNameInSection(sectionTitle: string): string {
  */
 function assertFrameworkPanelExists(frameworkTitle: string): void {
   cy.get(`.joincampaign__cell:contains("${frameworkTitle}")`).should("exist");
+}
+
+/**
+ * Validates the existence and general structure of the "Quotes" section
+ */
+function validateStruggleSection(): void {
+  cy.get("section.quotes").should("exist");
+  cy.get(".quotes__slide").should("have.length", 3);
+}
+
+/**
+ * Validates the existence and general structure of the "How it works" section
+ */
+function validateHowItWorksSection(): void {
+  cy.get("section.howitworks").should("exist");
+  cy.get(".howitworks__slide").should("have.length", 4);
+  cy.get(".howitworks__slide").eq(0).should("contain.text", "Search");
+  cy.get(".howitworks__slide").eq(1).should("contain.text", "Request company’s inclusion");
+  cy.get(".howitworks__slide").eq(2).should("contain.text", "Request framework data");
+  cy.get(".howitworks__slide").eq(3).should("contain.text", "Download");
 }
