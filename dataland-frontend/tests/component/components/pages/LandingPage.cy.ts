@@ -64,14 +64,7 @@ function validateBrandsSection(): void {
  * Check the new footer
  */
 function checkNewFooter(): void {
-  /**
-   * Gets the footer element
-   * @returns the footer element
-   */
-  function getFooter(): Cypress.Chainable {
-    return cy.get("footer");
-  }
-  getFooter().should("exist");
+  cy.get("footer").should("exist");
   checkImage("Copyright ©   Dataland", getSingleImageNameInSection("Footer"));
   cy.get(".footer__copyright").should("contain.text", `Copyright © ${new Date().getFullYear()} Dataland`);
 
