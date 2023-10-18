@@ -55,17 +55,41 @@ describeIf(
      * @param referencedReports all reports already uploaded
      */
     function setReferenceToAllUploadedReports(referencedReports: string[]): void {
-      console.log("referencedReports", referencedReports);
       referencedReports.push(TEST_PDF_FILE_NAME);
+      selectHighImpactClimateSectorAndReport(0, TEST_PDF_FILE_NAME);
       referencedReports.forEach((it, index) => {
-        cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
-        cy.get("li.p-multiselect-item").eq(index).click();
-        cy.get('div[data-test="applicableHighImpactClimateSector"]')
-          .find('select[name="fileName"]')
-          .eq(index)
-          .select(it);
+        selectHighImpactClimateSectorAndReport(index + 1, it);
       });
     }
+
+    /**
+     * Selects a high impact climate sector from the dropdown and assigns a reference to it
+     * @param sectorCardIndex The index of the sector card to which the reference should be assigned
+     * @param reportToReference The name of the report to reference
+     */
+    function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
+      cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
+      cy.get("li.p-multiselect-item").eq(sectorCardIndex).click();
+      cy.get('div[data-test="applicableHighImpactClimateSector"]')
+        .find('select[name="fileName"]')
+        .eq(sectorCardIndex)
+        .select(reportToReference);
+    }
+
+    /**
+     * Removes the first high impact climate sector and checks that it has actually disappeared
+     */
+    function testRemovingOfHighImpactClimateSector(): void {
+      cy.get('div[data-test="applicableHighImpactClimateSector"]')
+        .contains("A - AGRICULTURE, FORESTRY AND FISHING")
+        .get("em")
+        .contains("close")
+        .click();
+      cy.get('div[data-test="applicableHighImpactClimateSector"]')
+        .contains("A - AGRICULTURE, FORESTRY AND FISHING")
+        .should("not.exist");
+    }
+
     /**
      * Set the quality for the sfdr test dataset
      */
@@ -106,6 +130,7 @@ describeIf(
           setReferenceToAllUploadedReports(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
           );
+          testRemovingOfHighImpactClimateSector();
           submitButton.clickButton();
           cy.url().should("eq", getBaseUrl() + "/datasets");
           validateFormUploadedData(uploadIds.companyId);
