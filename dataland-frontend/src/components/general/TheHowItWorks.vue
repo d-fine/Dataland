@@ -60,6 +60,8 @@ onUnmounted(() => {
     position: relative;
     overflow: hidden;
     display: flex;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     flex-direction: column;
     align-items: center;
     gap: 56px;
@@ -77,11 +79,25 @@ onUnmounted(() => {
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
+    -webkit-transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
+    -moz-transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
+    -o-transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
   }
 
   &__slides {
     display: flex;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     transition: transform 0.3s ease-out;
+    -webkit-transition: transform 0.3s ease-out;
+    -moz-transition: transform 0.3s ease-out;
+    -o-transition: transform 0.3s ease-out;
     gap: 32px;
     justify-content: center;
 
@@ -91,9 +107,14 @@ onUnmounted(() => {
   }
 
   &__slide {
-    flex: 0 0 408px;
     border-radius: 16px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
     display: flex;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    flex: 0 0 408px;
+    -webkit-box-flex: 0;
     padding: 64px 40px 32px 40px;
     flex-direction: column;
     background: #f6f6f6;
@@ -109,6 +130,15 @@ onUnmounted(() => {
       letter-spacing: 0.25px;
       margin: 0;
       transition:
+        font-size 0.4s ease,
+        line-height 0.4s ease;
+      -webkit-transition:
+        font-size 0.4s ease,
+        line-height 0.4s ease;
+      -moz-transition:
+        font-size 0.4s ease,
+        line-height 0.4s ease;
+      -o-transition:
         font-size 0.4s ease,
         line-height 0.4s ease;
     }
@@ -136,8 +166,12 @@ onUnmounted(() => {
 
   &__arrows {
     display: flex;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     gap: 18px;
     visibility: hidden;
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
   }
 
   &__arrow {
@@ -171,6 +205,9 @@ onUnmounted(() => {
     &--left {
       &::before {
         transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
       }
     }
   }

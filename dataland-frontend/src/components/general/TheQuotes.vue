@@ -59,6 +59,7 @@ const currentCardInfo = computed(() => {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+  gap: 40px;
   &__slides {
     display: flex;
     transition: transform 0.3s ease-out;
@@ -88,6 +89,8 @@ const currentCardInfo = computed(() => {
       height: 100%;
       border-width: 0;
       border-radius: 8px;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
     }
 
     &-title {
@@ -115,6 +118,9 @@ const currentCardInfo = computed(() => {
   &__arrows {
     display: flex;
     gap: 18px;
+    touch-action: manipulation;
+    -webkit-touch-action: manipulation;
+    -ms-touch-action: manipulation;
   }
   &__arrow {
     width: 48px;
@@ -145,6 +151,10 @@ const currentCardInfo = computed(() => {
 
     &--left {
       &::before {
+        -webkit-transform: scaleX(-1);
+        -moz-transform: scaleX(-1);
+        -ms-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
         transform: scaleX(-1);
       }
     }

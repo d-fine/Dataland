@@ -62,9 +62,11 @@ const brandsSection = computed(() => {
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: center;
     max-width: 1440px;
     grid-column: 1 / -1;
+    flex-wrap: wrap;
+    gap: 40px 32px;
 
     .brands__item {
       height: 124px;
@@ -95,18 +97,6 @@ const brandsSection = computed(() => {
       grid-column: 3/-1;
       max-width: 500px;
     }
-    &__list {
-      flex-wrap: wrap;
-      width: calc((190px * 3) + (24px * 2));
-      justify-content: flex-start;
-      gap: 24px;
-      grid-column: 3 /13;
-      .brands__item {
-        &-image {
-          width: 190px;
-        }
-      }
-    }
   }
 }
 @media only screen and (max-width: $medium) {
@@ -121,14 +111,12 @@ const brandsSection = computed(() => {
     &__text {
       font-size: 32px;
       line-height: 40px;
-      grid-column: 1 / -1;
       max-width: 328px;
       min-width: unset;
     }
     &__list {
       grid-column: 1 / -1;
       width: 100%;
-      max-width: 720px;
       .brands__item {
         height: 139px;
         &-image {
