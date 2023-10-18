@@ -42,13 +42,16 @@ build_directories () {
   echo "Assembling deployment folder."
   mkdir -p "$target_dir"
 
-  mkdir -p $target_dir/dataland-keycloak/users;
+  mkdir -p $target_dir/dataland-keycloak/users
+  mkdir -p $target_dir/environments
 
+  echo "Copying env variable files."
   cat ./*github_env.log > "$target_dir"/.env
   set -o allexport
   source "$target_dir"/.env
   set +o allexport
   envsubst < environments/.env.template >> "$target_dir"/.env
+  cp ./environments/.env.uncritical "$target_dir"/environments
 
   echo "Copying docker compose file."
   cp ./docker-compose.yml "$target_dir"

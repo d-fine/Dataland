@@ -57,7 +57,7 @@
               mode="advanced"
               :auto="false"
               accept=".xlsx"
-              :maxFileSize="maxFileSize"
+              :maxFileSize="DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
               :fileLimit="1"
               @select="handleSelectFile"
               @remove="clearSelection"
@@ -165,7 +165,7 @@ export default defineComponent({
       inviteResultMessage: "No invite result message available.",
       submissionFinished: false,
       submissionInProgress: false,
-      maxFileSize: DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+      DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       selectedFile: null as null | File,
     };
   },
