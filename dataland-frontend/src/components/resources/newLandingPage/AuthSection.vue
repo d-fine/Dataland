@@ -56,7 +56,7 @@ const register = (): void => {
     &-login {
       position: relative;
       text-decoration: none;
-      color: #1b1b1b;
+      color: var(--basic-dark);
       font-size: 16px;
       font-style: normal;
       font-weight: 600;
@@ -79,9 +79,10 @@ const register = (): void => {
         background-size: cover;
       }
       &:hover {
-        border-bottom: 2px solid #1b1b1b;
+        border-bottom: 2px solid var(--primary-orange);
+        color: var(--primary-orange);
         &::before {
-          content: none;
+          background-image: url("/static/icons/User-hover.svg");
         }
       }
     }

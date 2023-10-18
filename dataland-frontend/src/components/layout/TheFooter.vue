@@ -91,9 +91,8 @@ const footerText = computed(() => {
   .footer {
     grid-template-columns: repeat(12, 1fr);
     gap: 48px 22px;
-    padding: 0 22px;
     display: grid;
-    padding: 80px 0 140px;
+    padding: 80px 22px 140px;
     &__left {
       grid-column: 1 / 6;
     }

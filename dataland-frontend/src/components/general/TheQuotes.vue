@@ -1,6 +1,7 @@
 <template>
   <section v-if="quotesSection" class="quotes" role="region" aria-label="The Quotes">
     <SlideShow
+      slides-wrapper-classes="quotes__sliderwrapper"
       slides-container-classes="quotes__slides"
       arrows-container-classes="quotes__arrows"
       left-arrow-classes="quotes__arrow quotes__arrow--left"
@@ -9,7 +10,7 @@
       :initial-center-slide="1"
       @update:currentSlide="(newSlide) => (currentSlide = newSlide)"
       :scroll-screen-width-limit="1800"
-      :slide-width="440"
+      :slide-width="323"
     >
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
@@ -20,12 +21,12 @@
             class="quotes__slide-video"
           ></iframe>
         </div>
-        <h3 class="quotes__slide-title">
-          {{ card.title }} <span>{{ card.text }}</span>
-        </h3>
       </div>
     </SlideShow>
-    <p class="quotes__slide-text">{{ currentCardText }}</p>
+    <p class="quotes__slide-text">{{ currentCardInfo.date }}</p>
+    <h3>
+      {{ currentCardInfo.title }} <span>{{ currentCardInfo.text }}</span>
+    </h3>
     <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
 </template>
@@ -41,7 +42,14 @@ const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes")
 const cards = computed(() => quotesSection.value?.cards ?? []);
 const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards ?? []);
 const currentSlide = ref(0);
-const currentCardText = computed(() => cards.value[currentSlide.value]?.date);
+const currentCardInfo = computed(() => {
+  const card = cards.value[currentSlide.value + 1];
+  return {
+    date: card?.date,
+    title: card?.title,
+    text: card?.text,
+  };
+});
 </script>
 
 <style lang="scss">
@@ -62,7 +70,7 @@ const currentCardText = computed(() => cards.value[currentSlide.value]?.date);
   }
 
   &__slide {
-    flex: 0 0 440px;
+    flex: 0 0 323px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -70,7 +78,7 @@ const currentCardText = computed(() => cards.value[currentSlide.value]?.date);
     cursor: grab;
 
     &-videoContainer {
-      aspect-ratio: 9 / 16;
+      aspect-ratio: 16 / 9;
       width: 100%;
       overflow: hidden;
     }
@@ -103,15 +111,6 @@ const currentCardText = computed(() => cards.value[currentSlide.value]?.date);
       margin-top: 36px;
       max-width: 666px;
     }
-    // &-index {
-    //   margin: auto 0 0;
-    //   font-size: 48px;
-    //   font-style: normal;
-    //   font-weight: 600;
-    //   line-height: 56px; /* 116.667% */
-    //   letter-spacing: 0.25px;
-    //   color: #ff5c00;
-    // }
   }
   &__arrows {
     display: flex;
