@@ -59,23 +59,26 @@
                 {
                     "title": "Brands",
                     "text": [
-                        "Already trusted ",
-                        "by top companies"
+                        "See who ",
+                        "is involved"
                     ],
                     "image": [
+                        "/static/logos/img_bvi.png",
                         "/static/logos/img_chom_capital.png",
                         "/static/logos/img_d-fine.png",
                         "/static/logos/img_dydon_ai.png",
                         "/static/logos/img_envoria.png",
                         "/static/logos/img_Experience_One.png",
                         "/static/logos/img_pwc.png",
-                        "/static/logos/img_value_balancing_alliance.png"
+                        "/static/logos/img_t_systems.png",
+                        "/static/logos/img_value_balancing_alliance.png",
+                        "/static/logos/img_voeb.png"
                     ]
                 },
                 {
                     "title": "Struggle",
                     "text": [
-                        "Dataland fixes",
+                        "Dataland aims to fix",
                         " four main data issues"
                     ],
                     "cards": [
@@ -86,17 +89,17 @@
                         },
                         {
                             "icon": "/static/icons/Badge.svg",
-                            "title": "Data Quality",
+                            "title": "Quality Issues",
                             "text": "Inaccurate, inconsistent, or outdated data jeopardizes the integrity of analytics and decision processes, leading to misguided strategies."
                         },
                         {
                             "icon": "/static/icons/3d-mpr-toggle.svg",
-                            "title": "Data Usage Rights",
-                            "text": "Companies must ensure they have the legal permissions to collect, store, process, and share data while adhering to regulations and privacy laws. "
+                            "title": "Usage Restrictions",
+                            "text": "Companies must ensure they have the legal permissions to collect, store, process, and share data while adhering to regulations and privacy laws."
                         },
                         {
                             "icon": "/static/icons/Airline--rapid-board.svg",
-                            "title": "Data Usage",
+                            "title": "High Price",
                             "text": "Many organizations struggle with underutilization. Data analysis tools might be intimidating or inaccessible to certain teams, limiting the ability to extract valuable insights. "
                         }
                     ]
@@ -139,7 +142,7 @@
                         "Join a campaign to",
                         " get the missing ",
                         "data.",
-                        "The Proof of Concepts are a simple way for you to get better data coverage and improved data quality, while testing Dataland."
+                        "The campaigns are a simple way for you to get better data coverage and improved data quality, while testing Dataland."
                     ],
                     "cards": [
                         {
@@ -181,12 +184,12 @@
                         {
                             "icon": "erik.breen@dataland.com",
                             "title": "Campaigns on Dataland",
-                            "text": "Hello Erik,\n \nI recently visited Dataland and I'm interested in the campaigns on Dataland.\nCould you please provide me with information regarding:\n1.      Each framework\n2.      How I can get the data for a certain company\n3.      Costs of data\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nFeel free to reply to this email or share the best way to get in touch.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
+                            "text": "Hello Erik,\n \nI recently visited Dataland and I'm interested in the campaigns on Dataland.\nCould you please provide me with information regarding:\n1.      Each framework\n2.      How I can get the data for a certain company\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
                         },
                         {
                             "icon": "erik.breen@dataland.com",
-                            "title": "Inquiry about Dataland: Shortest way to fill data gaps and reduce costs of data",
-                            "text": "Hello Erik,\n \nI recently visited Dataland and I'm interested in learning more about your platform, its features, and how I can get involved.\n\nCould you please provide me with information regarding:\n1.      The purpose and mission of your website.\n2.      Key functionalities and features.\n3.      The different frameworks\n4.      How can I get Data / provide Data\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nFeel free to reply to this email or share the best way to get in touch.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
+                            "title": "Inquiry about Dataland: Shortest way to fill data gaps and improve data quality",
+                            "text": "Hello Erik,\n \nI recently visited Dataland and I'm interested in learning more about your platform, its features, and how I can get involved.\n\nCould you please provide me with information regarding:\n1.      The purpose and mission of your website.\n2.      Key functionalities and features.\n3.      The different frameworks\n4.      How can I get data / provide data\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nFeel free to reply to this email or share the best way to get in touch.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
                         }
                     ]
                 },

@@ -97,7 +97,7 @@ const introSection = computed(() => {
 
 @media only screen and (max-width: $small) {
   .intro {
-    margin: 64px auto 80px;
+    margin: 64px auto;
     &__img {
       width: 54px;
       margin-bottom: 48px;

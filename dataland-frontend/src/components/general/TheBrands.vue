@@ -49,7 +49,7 @@ const brandsSection = computed(() => {
     font-weight: 700;
     line-height: 78px; /* 121.875% */
     text-align: left;
-    grid-column: 4 / 11;
+    grid-column: 4 / -1;
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
@@ -63,7 +63,7 @@ const brandsSection = computed(() => {
     flex-direction: row;
     width: 100%;
     justify-content: center;
-    max-width: 1440px;
+    max-width: 1340px;
     grid-column: 1 / -1;
     flex-wrap: wrap;
     gap: 40px 32px;
@@ -117,11 +117,11 @@ const brandsSection = computed(() => {
     &__list {
       grid-column: 1 / -1;
       width: 100%;
+      gap: 16px;
       .brands__item {
-        height: 139px;
         &-image {
           width: 100%;
-          max-width: 224px;
+          max-width: 190px;
         }
       }
     }
@@ -137,7 +137,6 @@ const brandsSection = computed(() => {
     &__list {
       flex-wrap: wrap;
       justify-content: flex-start;
-      gap: 16px;
       .brands__item {
         flex: 0 0 calc(33.3333% - 16px);
         height: unset;

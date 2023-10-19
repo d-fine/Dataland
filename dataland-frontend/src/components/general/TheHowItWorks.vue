@@ -34,7 +34,7 @@ const howItWorksSection = computed(() => sections?.find((s) => s.title === "How 
 const sectionText = computed(() => howItWorksSection.value?.text.join(" ") ?? "");
 const slides = computed(() => sections?.find((s) => s.title === "How it works")?.cards ?? []);
 
-const slideWidth = ref(440); // initialize with default value
+const slideWidth = ref(440);
 
 const updateSlideWidth = (): void => {
   slideWidth.value = window.innerWidth > 768 ? 440 : 320;

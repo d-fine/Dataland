@@ -36,9 +36,6 @@ const { slideCount, initialCenterSlide, scrollScreenWidthLimit, slideWidth } = t
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
 const emit = defineEmits(["update:currentSlide"]);
-const preventVerticalScroll = (e: TouchEvent): void => {
-  e.preventDefault();
-};
 
 let isDragging = false;
 let startPos = 0;
@@ -77,7 +74,6 @@ const dragStart = (e: PointerEvent | TouchEvent): void => {
     slider.value.classList.add("isdragging");
   }
 
-  document.addEventListener("touchmove", preventVerticalScroll, { passive: false });
   document.addEventListener("pointermove", drag);
   document.addEventListener("pointerup", dragEnd);
   document.addEventListener("touchmove", drag);
@@ -111,7 +107,6 @@ const dragEnd = (): void => {
     slider.value.classList.remove("isdragging");
   }
 
-  document.removeEventListener("touchmove", preventVerticalScroll);
   document.removeEventListener("pointermove", drag);
   document.removeEventListener("pointerup", dragEnd);
   document.removeEventListener("touchmove", drag);
