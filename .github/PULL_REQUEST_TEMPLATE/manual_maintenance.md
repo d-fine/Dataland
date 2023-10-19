@@ -12,8 +12,7 @@ creation URL (or simply copy this md file into the description)
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
-- [ ] Update keycloak to 22.0.3 is skipped due to failing all e2e tests
-- [ ] Update node.js to version 20.6.1 breaks the build
+- [ ] Update keycloak to >=22.0.3 is skipped due to failing all e2e tests
 - [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
@@ -25,6 +24,7 @@ appear.
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 - [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
 - [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloak Docker images
+- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. Should be retried in future tickets.
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
   If running `sudo apt-get update && sudo apt-get upgrade` on the servers causes connection issues
   this can be possibly fixed by reverting the docker-compose-plugin version
