@@ -114,7 +114,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
           displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
           displayValue: {
             label: "Certified",
-            reference: {
+            dataSource: {
               fileName: "Hello",
               fileReference: "TestReference",
             },

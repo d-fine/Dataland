@@ -63,6 +63,8 @@ export function dataPointValueGetterFactory(
           fileReference: datapoint?.dataSource?.fileReference as string,
           fileName: datapoint?.dataSource?.fileName as string,
           page: datapoint?.dataSource?.page ?? undefined,
+          quality: datapoint?.quality,
+          comment: datapoint?.comment,
         },
       };
     } else {
