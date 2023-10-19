@@ -37,11 +37,11 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
 
     it("Throw Error if there is no document referenced in this dataset but referenced in DataPoint", () => {
       const datapoint: ExtendedDataPointBigDecimal = {
-        value: undefined,
+        value: 321,
         quality: "NA",
         dataSource: {
-          fileReference: "1234ABCD",
-          fileName: "referencedFile",
+          fileReference: "referencedFile1234ABCD",
+          fileName: "1234ABCD",
         },
       };
       const dataset = { data: datapoint };

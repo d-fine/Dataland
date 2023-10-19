@@ -25,21 +25,17 @@ export function dataPointValueGetterFactory(
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal;
-
     if (datapoint?.value == null) {
       return MLDTDisplayObjectForEmptyString;
     }
-
     let datapointValue = formatNumberToReadableFormat(datapoint.value);
     let datapointUnitSuffix: string;
-
     if ((datapoint as CurrencyDataPoint)?.currency && (datapoint as CurrencyDataPoint)?.currency?.length) {
       datapointUnitSuffix = (datapoint as CurrencyDataPoint)?.currency ?? "";
       datapointValue = formatAmountWithCurrency({ amount: datapoint.value });
     } else {
       datapointUnitSuffix = field.unit ?? "";
     }
-
     const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
     if (hasDataPointValidReference(datapoint)) {
       const documentName = getGloballyReferencableDocuments(dataset).find(
