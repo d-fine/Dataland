@@ -1,5 +1,5 @@
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { generateFloat } from "@e2e/fixtures/common/NumberFixtures";
+import { generateFloat, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backend";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
@@ -105,7 +105,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         maleBoardMembers: dataGenerator.randomExtendedDataPoint(generateFloat()),
         controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         workplaceAccidentPreventionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
-        rateOfAccidentsInPercent: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        rateOfAccidentsInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
         workdaysLostInDays: dataGenerator.randomExtendedDataPoint(generateFloat()),
         supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
         grievanceHandlingMechanism: dataGenerator.randomExtendedDataPoint(generateYesNo()),
