@@ -5,7 +5,7 @@
     :class="fontStyle"
     :data-test="'Report-Download-' + downloadName"
   >
-    <span class="underline">
+    <span class="underline pl-1">
       {{ label ?? downloadName }}
     </span>
     <i
@@ -15,7 +15,7 @@
       aria-hidden="true"
       style="font-size: 12px"
     />
-    <span class="underline ml-1">{{ suffix }}</span>
+    <span class="underline ml-1 pl-1">{{ suffix }}</span>
   </span>
 </template>
 
