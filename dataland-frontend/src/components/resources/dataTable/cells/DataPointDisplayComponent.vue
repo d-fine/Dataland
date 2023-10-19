@@ -6,6 +6,7 @@
     :download-name="content.displayValue.fileName"
     :file-reference="content.displayValue.fileReference"
     show-icon
+    :title="content.displayValue.fileName"
   />
 </template>
 

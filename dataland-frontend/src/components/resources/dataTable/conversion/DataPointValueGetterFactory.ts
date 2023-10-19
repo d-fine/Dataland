@@ -3,7 +3,7 @@ import {
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type ExtendedDataPointBigDecimal } from "@clients/backend";
+import { CurrencyDataPoint, type ExtendedDataPointBigDecimal } from "@clients/backend";
 import {
   getFieldValueFromFrameworkDataset,
   getGloballyReferencableDocuments,
@@ -33,7 +33,9 @@ export function dataPointValueGetterFactory(
     const datapointValue = formatNumberToReadableFormat(datapoint ? datapoint.value : undefined);
     let datapointUnitSuffix: string;
 
-    if (field.options?.length) {
+    if((datapoint as CurrencyDataPoint)?.currency && (datapoint as CurrencyDataPoint)?.currency?.length > 0) {
+      datapointUnitSuffix = (datapoint as CurrencyDataPoint)?.currency!;
+    } else if (field.options?.length) {
       const datapointUnitRaw = field.unit ?? "";
       const matchingEntry = field.options.find((it) => it.value == datapointUnitRaw);
       datapointUnitSuffix = matchingEntry?.label ?? datapointUnitRaw;
