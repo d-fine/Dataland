@@ -3,7 +3,7 @@ import {
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { CurrencyDataPoint, type ExtendedDataPointBigDecimal } from "@clients/backend";
+import { type CurrencyDataPoint, type ExtendedDataPointBigDecimal } from "@clients/backend";
 import {
   getFieldValueFromFrameworkDataset,
   getGloballyReferencableDocuments,
@@ -26,15 +26,16 @@ export function dataPointValueGetterFactory(
   return (dataset) => {
     const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | undefined;
 
-    if (!datapoint?.value) { // TODO then QA sees nothing
+    if (!datapoint?.value) {
+      // TODO then QA sees nothing
       return MLDTDisplayObjectForEmptyString;
     }
 
     const datapointValue = formatNumberToReadableFormat(datapoint.value);
     let datapointUnitSuffix: string;
 
-    if((datapoint as CurrencyDataPoint)?.currency && (datapoint as CurrencyDataPoint)?.currency?.length > 0) {
-      datapointUnitSuffix = (datapoint as CurrencyDataPoint)?.currency!;
+    if ((datapoint as CurrencyDataPoint)?.currency && (datapoint as CurrencyDataPoint)!.currency!.length > 0) {
+      datapointUnitSuffix = (datapoint as CurrencyDataPoint)!.currency!;
     } else if (field.options?.length) {
       // TODO why does the following check for field unit as well as options? This should never happen, right?
       const datapointUnitRaw = field.unit ?? "";
@@ -59,10 +60,9 @@ export function dataPointValueGetterFactory(
       return {
         displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
         displayValue: {
-          label: formattedValue,
-          fileReference: datapoint?.dataSource?.fileReference as string,
-          fileName: datapoint?.dataSource?.fileName as string,
-          page: datapoint?.dataSource?.page ?? undefined,
+          fieldLabel: field.label,
+          value: formattedValue,
+          dataSource: datapoint?.dataSource,
           quality: datapoint?.quality,
           comment: datapoint?.comment,
         },

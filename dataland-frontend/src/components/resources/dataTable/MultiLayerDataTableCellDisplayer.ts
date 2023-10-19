@@ -1,4 +1,4 @@
-import { type BaseDocumentReference } from "@clients/backend";
+import { type BaseDocumentReference, type ExtendedDocumentReference } from "@clients/backend";
 import { type DynamicDialogOptions } from "primevue/dynamicdialogoptions";
 
 export enum MLDTDisplayComponentName {
@@ -13,10 +13,9 @@ export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponentName.StringDisplayComponent]: string | undefined | null;
   [MLDTDisplayComponentName.DocumentLinkDisplayComponent]: { label: string; dataSource: BaseDocumentReference };
   [MLDTDisplayComponentName.DataPointDisplayComponent]: {
-    label: string;
-    fileName: string;
-    fileReference: string;
-    page?: number;
+    fieldLabel: string;
+    value: string;
+    dataSource: ExtendedDocumentReference;
     quality?: string;
     comment?: string;
   };

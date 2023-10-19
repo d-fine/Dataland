@@ -15,7 +15,6 @@
       aria-hidden="true"
       style="font-size: 12px"
     />
-    <span class="underline ml-1">{{ suffix }}</span>
   </span>
 </template>
 
@@ -35,7 +34,6 @@ export default defineComponent({
   name: "DocumentLink",
   props: {
     label: String,
-    suffix: String,
     downloadName: { type: String, required: true },
     fileReference: { type: String, required: true },
     showIcon: Boolean,
