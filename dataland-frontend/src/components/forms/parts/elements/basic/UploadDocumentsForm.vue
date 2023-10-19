@@ -6,7 +6,9 @@
       ref="fileUpload"
       accept=".pdf"
       :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
-      invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
+      :invalidFileSizeMessage="`{0}: Invalid file size, file size should be smaller than ${
+        DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES / BYTE_TO_MEGABYTE_FACTOR
+      } MB.`"
       :auto="false"
       :multiple="moreThanOneDocumentAllowed"
       @select="handleFilesSelected"
@@ -61,7 +63,7 @@ import {
   isThereActuallyANewFileSelected,
   removeFileTypeExtension,
 } from "@/utils/FileUploadUtils";
-import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/DatalandSettings";
+import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES, BYTE_TO_MEGABYTE_FACTOR } from "@/DatalandSettings";
 import FileSelectMessage from "primevue/message";
 
 export default defineComponent({
@@ -76,6 +78,7 @@ export default defineComponent({
     return {
       formatBytesUserFriendly,
       DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+      BYTE_TO_MEGABYTE_FACTOR,
       documentsToUpload: [] as DocumentToUpload[],
     };
   },
