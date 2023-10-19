@@ -70,7 +70,6 @@ import {
   type FrameworkSelectableItem,
   type SelectableItem,
 } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
-// TODO Emanuel: Some commented out code in this component. Clarify this
 export default defineComponent({
   name: "FrameworkDataSearchFilters",
   components: { FrameworkDataSearchDropdownFilter },
@@ -179,9 +178,9 @@ export default defineComponent({
     async retrieveCountryAndSectorFilterOptions() {
       /*const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getCompanyDataControllerApi();*/
+      ).getCompanyDataControllerApi();*/ // TODO Emanuel: Remove if the new way works => Also use in other api calls
 
-      const companyDataControllerApi = assertDefined(this.apiClientProvider).backend.companyDataController;
+      const companyDataControllerApi = assertDefined(this.apiClientProvider).backendClients.companyDataController;
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
       this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])].map((countryCode) => {

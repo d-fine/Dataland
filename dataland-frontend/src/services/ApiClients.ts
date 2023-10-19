@@ -10,21 +10,21 @@ import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import * as backendApis from "@clients/backend/api";
 
-interface BackendClients {
+interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
+  inviteController: backendApis.InviteControllerApiInterface;
   companyDataController: backendApis.CompanyDataControllerApiInterface;
+  metaDataController: backendApis.MetaDataControllerApiInterface;
   euTaxonomyDataForFinancialsController: backendApis.EuTaxonomyDataForFinancialsControllerApiInterface;
   euTaxonomyDataForNonFinancialsController: backendApis.EuTaxonomyDataForNonFinancialsControllerApiInterface;
-  inviteController: backendApis.InviteControllerApiInterface;
   lksgDataController: backendApis.LksgDataControllerApiInterface;
-  metaDataController: backendApis.MetaDataControllerApiInterface;
   p2pDataController: backendApis.P2pDataControllerApiInterface;
   sfdrDataController: backendApis.SfdrDataControllerApiInterface;
   smeDataController: backendApis.SmeDataControllerApiInterface;
 }
 
 type ApiClientConstructor<T> = new (
-  configuration: Configuration | undefined,
+  configuration: Configuration | undefined, // TODO why not writing "configuration?: Configuration"
   basePath: string,
   axios: AxiosInstance,
 ) => T;
@@ -34,14 +34,14 @@ export class ApiClientProvider {
   private readonly keycloakPromise: Promise<Keycloak>;
   private readonly axiosInstance: AxiosInstance;
 
-  readonly backend: BackendClients;
+  readonly backendClients: ApiBackendClients;
 
   constructor(keycloakPromise: Promise<Keycloak>) {
     this.keycloakPromise = keycloakPromise;
     this.axiosInstance = axios.create({});
     this.registerAutoAuthenticatingAxiosInterceptor();
 
-    this.backend = this.constructBackendClients();
+    this.backendClients = this.constructBackendClients();
   }
 
   private registerAutoAuthenticatingAxiosInterceptor(): void {
@@ -57,24 +57,24 @@ export class ApiClientProvider {
     );
   }
 
-  private constructBackendClients(): BackendClients {
-    const factory = this.getClientFactory("/api");
+  private constructBackendClients(): ApiBackendClients {
+    const backendClientFactory = this.getClientFactory("/api");
     return {
-      actuator: factory(backendApis.ActuatorApi),
-      companyDataController: factory(backendApis.CompanyDataControllerApi),
-      euTaxonomyDataForFinancialsController: factory(backendApis.EuTaxonomyDataForFinancialsControllerApi),
-      euTaxonomyDataForNonFinancialsController: factory(backendApis.EuTaxonomyDataForNonFinancialsControllerApi),
-      inviteController: factory(backendApis.InviteControllerApi),
-      lksgDataController: factory(backendApis.LksgDataControllerApi),
-      metaDataController: factory(backendApis.MetaDataControllerApi),
-      p2pDataController: factory(backendApis.P2pDataControllerApi),
-      sfdrDataController: factory(backendApis.SfdrDataControllerApi),
-      smeDataController: factory(backendApis.SmeDataControllerApi),
+      actuator: backendClientFactory(backendApis.ActuatorApi),
+      companyDataController: backendClientFactory(backendApis.CompanyDataControllerApi),
+      euTaxonomyDataForFinancialsController: backendClientFactory(backendApis.EuTaxonomyDataForFinancialsControllerApi),
+      euTaxonomyDataForNonFinancialsController: backendClientFactory(backendApis.EuTaxonomyDataForNonFinancialsControllerApi),
+      inviteController: backendClientFactory(backendApis.InviteControllerApi),
+      lksgDataController: backendClientFactory(backendApis.LksgDataControllerApi),
+      metaDataController: backendClientFactory(backendApis.MetaDataControllerApi),
+      p2pDataController: backendClientFactory(backendApis.P2pDataControllerApi),
+      sfdrDataController: backendClientFactory(backendApis.SfdrDataControllerApi),
+      smeDataController: backendClientFactory(backendApis.SmeDataControllerApi),
     };
   }
 
   private async getBearerToken(): Promise<string | undefined> {
-    console.log("Obtaining Bearer Token");
+    console.log("Obtaining Bearer Token"); // TODO delete at the very end
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
       await updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
@@ -132,7 +132,7 @@ export class ApiClientProvider {
     return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
   }
 
-  async getMetaDataControllerApi(): Promise<backendApis.MetaDataControllerApiInterface> {
+  async getMetaDataControllerApi(): Promise<backendApis.MetaDataControllerApiInterface> { //TODO this is a backend controller, why needed?
     return this.getConstructedApi(backendApis.MetaDataControllerApi);
   }
 
@@ -141,10 +141,10 @@ export class ApiClientProvider {
   }
 
   async getDocumentControllerApi(): Promise<DocumentControllerApi> {
-    return this.getConstructedDocumentManager(DocumentControllerApi);
+    return this.getConstructedDocumentManager(DocumentControllerApi); // TODO why only one without the basePath and ApiKeyController?
   }
 
-  async getInviteControllerApi(): Promise<backendApis.InviteControllerApi> {
+  async getInviteControllerApi(): Promise<backendApis.InviteControllerApi> { //TODO this is a backend controller, why needed?
     return this.getConstructedApi(backendApis.InviteControllerApi);
   }
 
