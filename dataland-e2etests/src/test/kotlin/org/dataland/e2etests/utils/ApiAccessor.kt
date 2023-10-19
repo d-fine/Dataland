@@ -201,60 +201,46 @@ class ApiAccessor {
         reportingPeriod: String,
         ensureQaPassed: Boolean,
     ): List<UploadInfo> {
+        fun <T> uploadCompaniesAndDatasets(
+            testDataProvider: FrameworkTestDataProvider<T>,
+            frameworkDataUploadFunction: (
+                companyId: String,
+                frameworkData: T,
+                reportingPeriod: String,
+                bypassQa: Boolean,
+            ) -> DataMetaInformation,
+        ) = uploadCompanyAndFrameworkDataForOneFramework(
+            listOfCompanyInformation = listOfCompanyInformation,
+            listOfFrameworkData = testDataProvider.getTData(numberOfDataSetsPerCompany),
+            frameworkDataUploadFunction = frameworkDataUploadFunction,
+            uploadConfig = uploadConfig,
+            reportingPeriod = reportingPeriod,
+            ensureQaPassed = ensureQaPassed,
+        )
         return when (dataType) {
-            DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.lksg -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForLksgData,
                 frameworkDataUploadFunction = this::lksgUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.sfdr -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForSfdrData,
                 frameworkDataUploadFunction = this::sfdrUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.sme -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForSmeData,
                 frameworkDataUploadFunction = this::smeUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForEuTaxonomyDataForNonFinancials
-                    .getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForEuTaxonomyDataForNonFinancials,
                 frameworkDataUploadFunction = this::euTaxonomyNonFinancialsUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderEuTaxonomyForFinancials,
                 frameworkDataUploadFunction = this::euTaxonomyFinancialsUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
-
-            DataTypeEnum.p2p -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation = listOfCompanyInformation,
-                listOfFrameworkData = testDataProviderForP2pData.getTData(numberOfDataSetsPerCompany),
+            DataTypeEnum.p2p -> uploadCompaniesAndDatasets(
+                testDataProvider = testDataProviderForP2pData,
                 frameworkDataUploadFunction = this::p2pUploaderFunction,
-                uploadConfig = uploadConfig,
-                reportingPeriod = reportingPeriod,
-                ensureQaPassed = ensureQaPassed,
             )
         }
     }

@@ -57,7 +57,7 @@
               mode="advanced"
               :auto="false"
               accept=".xlsx"
-              :maxFileSize="maxFileSize"
+              :maxFileSize="DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
               :fileLimit="1"
               @select="handleSelectFile"
               @remove="clearSelection"
@@ -120,14 +120,14 @@
 </template>
 
 <script lang="ts">
-import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
+import FileUpload, { type FileUploadSelectEvent } from "primevue/fileupload";
 import Message from "primevue/message";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject, ref } from "vue";
-import { AxiosResponse } from "axios";
-import Keycloak from "keycloak-js";
+import { type AxiosResponse } from "axios";
+import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { InviteMetaInfoEntity } from "@clients/backend";
+import { type InviteMetaInfoEntity } from "@clients/backend";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -135,8 +135,9 @@ import InfoCard from "@/components/general/InfoCard.vue";
 import ProgressBar from "@/components/general/ProgressBar.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatBytesUserFriendly, roundNumber } from "@/utils/NumberConversionUtils";
-import { UPLOAD_FILE_SIZE_DISPLAY_DECIMALS, DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
+import { UPLOAD_FILE_SIZE_DISPLAY_DECIMALS } from "@/utils/Constants";
 import TheFooter from "@/components/general/TheFooter.vue";
+import { DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/DatalandSettings";
 
 export default defineComponent({
   name: "RequestData",
@@ -164,7 +165,7 @@ export default defineComponent({
       inviteResultMessage: "No invite result message available.",
       submissionFinished: false,
       submissionInProgress: false,
-      maxFileSize: DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+      DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       selectedFile: null as null | File,
     };
   },

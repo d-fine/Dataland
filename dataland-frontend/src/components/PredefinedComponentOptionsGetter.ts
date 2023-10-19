@@ -1,7 +1,7 @@
 import Card from "primevue/card";
 import Tooltip from "primevue/tooltip";
-import { ComponentOptionsWithObjectProps, PropType } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { type ComponentOptionsWithObjectProps, type PropType } from "vue";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 
 /**
  * Contains getter methods to provide pre-defined options to standardize multiple Vue-components that should behave in
@@ -30,7 +30,7 @@ export function getComponentOptionsForDatalandInfoCard(componentName: string): C
     },
     computed: {
       humanizedValue() {
-        const humanizedValue = humanizeString(this.value as string);
+        const humanizedValue = humanizeStringOrNumber(this.value as string);
         return humanizedValue !== "" ? humanizedValue : "No data has been reported";
       },
     },

@@ -5,8 +5,8 @@ import org.dataland.datalandbackend.model.p2p.categories.ammonia.subcategories.P
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding the ammonia sector
- */
+ * Fields of the category "Ammonia" of the p2p framework.
+*/
 data class P2pAmmonia(
     val decarbonisation: P2pAmmoniaDecarbonisation? = null,
 

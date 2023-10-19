@@ -1,15 +1,19 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import {
+  checkIfLinkedReportsAreDownloadable,
   fillAndValidateEuTaxonomyForFinancialsUploadForm,
   gotoEditForm,
   uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { EuTaxonomyDataForFinancials, CompanyAssociatedDataEuTaxonomyDataForFinancials } from "@clients/backend";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import {
+  type EuTaxonomyDataForFinancials,
+  type CompanyAssociatedDataEuTaxonomyDataForFinancials,
+} from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 
 describeIf(
   "As a user, I want to add and link documents to the EU Taxonomy form",
@@ -41,25 +45,29 @@ describeIf(
         fillAndValidateEuTaxonomyForFinancialsUploadForm,
         () => {
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
-          uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
-          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
-          uploadDocuments.removeReportToUpload(TEST_PDF_FILE_NAME);
-          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
-          uploadDocuments.checkNoReportIsListed();
+          uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
+          uploadDocuments.removeReportFromSelectionForUpload(TEST_PDF_FILE_NAME);
+
+          uploadDocuments.validateNoReportsAreAlreadyUploadedOrSelectedForUpload();
+
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
-          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
-          uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
+
           uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
-          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
-          uploadDocuments.validateReportToUploadIsListed(`${TEST_PDF_FILE_NAME}2`);
-          uploadDocuments.fillAllReportsToUploadForms(2);
+          uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}2`);
+          uploadDocuments.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
+
+          uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
           cy.get(`[data-test="assetManagementKpis"]`)
-            .find(`[data-test="banksAndIssuers"]`)
-            .find('select[name="report"]')
+            .find(`[data-test="banksAndIssuersInPercent"]`)
+            .find('select[name="fileName"]')
             .select(2);
+
           cy.get(`[data-test="assetManagementKpis"]`)
-            .find(`[data-test="investmentNonNfrd"]`)
-            .find('select[name="report"]')
+            .find(`[data-test="investmentNonNfrdInPercent"]`)
+            .find('select[name="fileName"]')
             .select(3);
         },
         (request) => {
@@ -68,8 +76,14 @@ describeIf(
           expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
         },
         (companyId) => {
+          checkIfLinkedReportsAreDownloadable(companyId);
           gotoEditForm(companyId, true);
-          uploadDocuments.removeUploadedReport(TEST_PDF_FILE_NAME).then(() => {
+
+          uploadDocuments.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
+          cy.get(".p-dialog.p-component").should("exist").get('[data-pc-section="closebutton"]').click();
+          cy.get(".p-dialog.p-component").should("not.exist");
+
+          uploadDocuments.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {
             areBothDocumentsStillUploaded = false;
           });
           const postRequestAlias = "postData";

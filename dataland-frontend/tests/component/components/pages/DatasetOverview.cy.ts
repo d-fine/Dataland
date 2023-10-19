@@ -1,7 +1,8 @@
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import DatasetOverview from "@/components/pages/DatasetOverview.vue";
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component tests for the DatasetOverview page", () => {
   it("Should not display the New Dataset button to non-uploader users", () => {
@@ -17,7 +18,7 @@ describe("Component tests for the DatasetOverview page", () => {
 
   it("Should display the New Dataset button to uploaders", () => {
     const keycloakMock = minimalKeycloakMock({
-      roles: ["ROLE_USER", "ROLE_UPLOADER"],
+      roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
     });
     cy.intercept("**/api/companies?**", []);
     cy.mountWithPlugins(DatasetOverview, {
@@ -45,7 +46,7 @@ describe("Component tests for the DatasetOverview page", () => {
   function validateTabBar(activeTabIndex: number, keycloak: Keycloak): void {
     cy.get(getTabSelector(0)).should("have.text", "AVAILABLE DATASETS");
     cy.get(getTabSelector(1)).should("have.text", "MY DATASETS");
-    if (keycloak.hasRealmRole("ROLE_REVIEWER")) {
+    if (keycloak.hasRealmRole(KEYCLOAK_ROLE_REVIEWER)) {
       cy.get(getTabSelector(2)).should("have.text", "QA");
     } else {
       cy.get(getTabSelector(2)).should("not.be.visible");
@@ -93,7 +94,7 @@ describe("Component tests for the DatasetOverview page", () => {
 
   it("Checks that the tab-bar and clicking on 'QA' works as expected for data reviewer", () => {
     const keycloakMock = minimalKeycloakMock({
-      roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
+      roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_REVIEWER],
     });
     cy.intercept("**/api/companies?**", []);
     const mockDistinctValues = {

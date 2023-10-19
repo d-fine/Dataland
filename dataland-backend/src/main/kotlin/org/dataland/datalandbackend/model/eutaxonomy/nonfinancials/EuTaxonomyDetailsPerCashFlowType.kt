@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
-import org.dataland.datalandbackend.model.DataPoint
-import org.dataland.datalandbackend.model.DataPointAbsoluteAndPercentage
+import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import java.math.BigDecimal
 
 /**
@@ -9,9 +8,19 @@ import java.math.BigDecimal
  * Fields for each cashflow type in the EuTaxonomyForNonFinancials framework
  */
 data class EuTaxonomyDetailsPerCashFlowType(
-    val totalAmount: DataPoint<BigDecimal>? = null,
-
-    val alignedData: DataPointAbsoluteAndPercentage<BigDecimal>? = null,
-
-    val eligibleData: DataPointAbsoluteAndPercentage<BigDecimal>? = null,
+    val totalAmount: CurrencyDataPoint?,
+    val nonEligibleShare: RelativeAndAbsoluteFinancialShare?,
+    val eligibleShare: RelativeAndAbsoluteFinancialShare?,
+    val nonAlignedShare: RelativeAndAbsoluteFinancialShare?,
+    val nonAlignedActivities: List<EuTaxonomyActivity>?,
+    val alignedShare: RelativeAndAbsoluteFinancialShare?,
+    val substantialContributionToClimateChangeMitigationInPercent: BigDecimal?,
+    val substantialContributionToClimateChangeAdaptionInPercent: BigDecimal?,
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: BigDecimal?,
+    val substantialContributionToTransitionToACircularEconomyInPercent: BigDecimal?,
+    val substantialContributionToPollutionPreventionAndControlInPercent: BigDecimal?,
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: BigDecimal?,
+    val alignedActivities: List<EuTaxonomyAlignedActivity>?,
+    val enablingShareInPercent: BigDecimal?,
+    val transitionalShareInPercent: BigDecimal?,
 )

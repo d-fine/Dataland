@@ -4,7 +4,7 @@
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <TheContent>
         <BackButton id="backButton" label="BACK" />
-        <CompanyInformation :companyID="companyID" />
+        <CompanyInformation :companyId="companyID" />
         <Card class="col-12 text-left page-wrapper-card">
           <template #title> New Dataset - Framework </template>
           <template #content>
@@ -77,7 +77,7 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -85,11 +85,11 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import Card from "primevue/card";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
@@ -125,7 +125,7 @@ export default defineComponent({
       ) as DataTypeEnum[],
       waitingForData: true,
       DataTypeEnum,
-      humanizeString: humanizeString,
+      humanizeString: humanizeStringOrNumber,
       mapOfDataTypeToListOfDataMetaInfo: new Map<DataTypeEnum, DataMetaInformation[]>(),
       KEYCLOAK_ROLE_UPLOADER,
     };

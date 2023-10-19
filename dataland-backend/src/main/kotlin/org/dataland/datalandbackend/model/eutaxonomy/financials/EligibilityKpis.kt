@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
-import org.dataland.datalandbackend.model.DataPoint
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal
 
 /**
@@ -8,13 +8,13 @@ import java.math.BigDecimal
  * KPIs for all companies for the EuTaxonomyForFinancials framework
  */
 data class EligibilityKpis(
-    val taxonomyEligibleActivity: DataPoint<BigDecimal>? = null,
+    val taxonomyEligibleActivityInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    val taxonomyNonEligibleActivity: DataPoint<BigDecimal>? = null,
+    val taxonomyNonEligibleActivityInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    val derivatives: DataPoint<BigDecimal>? = null,
+    val derivativesInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    val banksAndIssuers: DataPoint<BigDecimal>? = null,
+    val banksAndIssuersInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    val investmentNonNfrd: DataPoint<BigDecimal>? = null,
+    val investmentNonNfrdInPercent: ExtendedDataPoint<BigDecimal>? = null,
 )

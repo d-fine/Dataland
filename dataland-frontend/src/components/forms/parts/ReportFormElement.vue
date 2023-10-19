@@ -19,11 +19,10 @@
       <FormKit type="text" :modelValue="hyphenatedDate" name="reportDate" :outer-class="{ 'hidden-input': true }" />
     </div>
 
-    <FormKit type="text" :modelValue="reference" name="reference" :outer-class="{ 'hidden-input': true }" />
+    <FormKit type="text" :modelValue="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
 
     <!-- Currency used in the report -->
     <SingleSelectFormField
-      validation="length:2,3"
       validation-label="Currency used in the report"
       placeholder="Currency used in the report"
       :options="countryCodeOptions"
@@ -33,11 +32,7 @@
     />
     <!-- Integrated report is on a group level -->
     <div class="form-field">
-      <YesNoFormField
-        name="isGroupLevel"
-        description="Is the Integrated Report on a Group level?"
-        label="Group Level Integrated Report"
-      />
+      <YesNoFormField name="isGroupLevel" description="Is the report on a group level?" label="Group Level Report" />
     </div>
   </FormKit>
 </template>
@@ -69,7 +64,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    reference: {
+    fileReference: {
       type: String,
       required: true,
     },

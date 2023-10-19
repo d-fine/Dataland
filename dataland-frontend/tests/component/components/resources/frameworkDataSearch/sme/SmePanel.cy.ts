@@ -1,9 +1,9 @@
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
-  DataMetaInformation,
-  SmeData,
-  CompanyAssociatedDataSmeData,
-  DataAndMetaInformationSmeData,
+  type DataMetaInformation,
+  type SmeData,
+  type CompanyAssociatedDataSmeData,
+  type DataAndMetaInformationSmeData,
   DataTypeEnum,
   PercentRangeForInvestmentsInEnergyEfficiency,
   PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower,
@@ -34,18 +34,19 @@ describe("Component tests for SmePanel", () => {
       reportingPeriod: preparedFixture.reportingPeriod,
       data: smeData,
     } as CompanyAssociatedDataSmeData);
-    cy.mountWithPlugins(SmePanel, {
-      keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyId: companyId,
-          singleDataMetaInfoToDisplay: {
-            dataId: "mock-data-id",
-            reportingPeriod: preparedFixture.reportingPeriod,
-          } as DataMetaInformation,
-        };
+    cy.mountWithDialog(
+      SmePanel,
+      {
+        keycloak: minimalKeycloakMock({}),
       },
-    });
+      {
+        companyId: companyId,
+        singleDataMetaInfoToDisplay: {
+          dataId: "mock-data-id",
+          reportingPeriod: preparedFixture.reportingPeriod,
+        } as DataMetaInformation,
+      },
+    );
     cy.get(
       threeLayerTable.getFieldByContentSelector(smeData.general.basicInformation.numberOfEmployees.toString()),
     ).should("exist");
@@ -60,10 +61,13 @@ describe("Component tests for SmePanel", () => {
     threeLayerTable.toggleSubcategory("Consumption");
     cy.get(threeLayerTable.getFieldByContentSelector("< 25%")).should("exist");
 
+    threeLayerTable.getFieldByTestIdentifier("sector").find("a").eq(0).click();
+    cy.get(".p-dialog-header-close").trigger("click");
+
     threeLayerTable.toggleSubcategory("Company Financials");
-    threeLayerTable.getFieldByTestIdentifier("revenueInEur").should("contain.text", "0 MM");
-    threeLayerTable.getFieldByTestIdentifier("operatingCostInEur").should("contain.text", "1 MM");
-    threeLayerTable.getFieldByTestIdentifier("capitalAssetsInEur").should("contain.text", "2 MM");
+    threeLayerTable.getFieldByTestIdentifier("revenueInEUR").should("contain.text", "0 MM");
+    threeLayerTable.getFieldByTestIdentifier("operatingCostInEUR").should("contain.text", "1 MM");
+    threeLayerTable.getFieldByTestIdentifier("capitalAssetsInEUR").should("contain.text", "2 MM");
   });
 
   /**
@@ -148,13 +152,13 @@ describe("Component tests for SmePanel", () => {
       PercentRangeForInvestmentsInEnergyEfficiency,
       "power",
       "investments",
-      "percentageOfInvestmentsInEnhancingEnergyEfficiency",
+      "percentageRangeForInvestmentsInEnhancingEnergyEfficiency",
     );
     assertBackendModelEqualsGeneratedDataModel(
       PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower,
       "power",
       "consumption",
-      "energyConsumptionCoveredByOwnRenewablePowerGeneration",
+      "percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration",
     );
   });
 });

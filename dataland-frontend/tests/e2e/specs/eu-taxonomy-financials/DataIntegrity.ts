@@ -1,16 +1,16 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
-  CompanyInformation,
-  DataPointBigDecimal,
+  type CompanyInformation,
+  type ExtendedDataPointBigDecimal,
   DataTypeEnum,
-  EligibilityKpis,
-  EuTaxonomyDataForFinancials,
+  type EligibilityKpis,
+  type EuTaxonomyDataForFinancials,
 } from "@clients/backend";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -45,7 +45,8 @@ describeIf(
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany) => {
-            return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+            return uploadFrameworkData(
+              DataTypeEnum.EutaxonomyFinancials,
               token,
               storedCompany.companyId,
               reportingPeriod,
@@ -66,10 +67,10 @@ describeIf(
      * @param value the value of the datapoint to format as a percentage
      * @returns the formatted string
      */
-    function formatPercentNumber(value?: DataPointBigDecimal): string {
+    function formatPercentNumber(value?: ExtendedDataPointBigDecimal | null): string {
       if (value === undefined || value === null || value.value === undefined || value.value === null)
         return "No data has been reported";
-      return (Math.round(value.value * 100 * 100) / 100).toString();
+      return (Math.round(value.value * 100) / 100).toString();
     }
 
     /**
@@ -80,19 +81,19 @@ describeIf(
     function checkCommonFields(financialCompanyType: string, eligibilityKpis: EligibilityKpis): void {
       cy.get(`div[name="taxonomyEligibleActivity${financialCompanyType}"]`)
         .should("contain", "Taxonomy-eligible economic activity")
-        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyEligibleActivity));
+        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyEligibleActivityInPercent));
       cy.get(`div[name="taxonomyNonEligibleActivity${financialCompanyType}"]`)
         .should("contain", "Taxonomy-non-eligible economic activity")
-        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyNonEligibleActivity));
+        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyNonEligibleActivityInPercent));
       cy.get(`div[name="derivatives${financialCompanyType}"]`)
         .should("contain", "Derivatives")
-        .should("contain", formatPercentNumber(eligibilityKpis.derivatives));
+        .should("contain", formatPercentNumber(eligibilityKpis.derivativesInPercent));
       cy.get(`div[name="banksAndIssuers${financialCompanyType}"]`)
         .should("contain", "Banks and issuers")
-        .should("contain", formatPercentNumber(eligibilityKpis.banksAndIssuers));
+        .should("contain", formatPercentNumber(eligibilityKpis.banksAndIssuersInPercent));
       cy.get(`div[name="investmentNonNfrd${financialCompanyType}"]`)
         .should("contain", "Non-NFRD")
-        .should("contain", formatPercentNumber(eligibilityKpis.investmentNonNfrd));
+        .should("contain", formatPercentNumber(eligibilityKpis.investmentNonNfrdInPercent));
     }
 
     /**
@@ -103,7 +104,10 @@ describeIf(
       checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
       cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
         .should("contain", "Taxonomy-eligible non-life insurance economic activities")
-        .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivities));
+        .should(
+          "contain",
+          formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent),
+        );
     }
 
     /**
@@ -114,7 +118,7 @@ describeIf(
       checkCommonFields("InvestmentFirm", testData.eligibilityKpis!.InvestmentFirm);
       cy.get('div[name="greenAssetRatioInvestmentFirm"]')
         .should("contain", "Green asset ratio")
-        .should("contain", formatPercentNumber(testData.investmentFirmKpis!.greenAssetRatio));
+        .should("contain", formatPercentNumber(testData.investmentFirmKpis!.greenAssetRatioInPercent));
     }
 
     /**
@@ -132,10 +136,10 @@ describeIf(
       if (individualFieldSubmission) {
         cy.get('div[name="tradingPortfolio"]')
           .should("contain", "Trading portfolio")
-          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolio));
+          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioInPercent));
         cy.get('div[name="onDemandInterbankLoans"]')
           .should("contain", "On demand interbank loans")
-          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.interbankLoans));
+          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.interbankLoansInPercent));
         if (!dualFieldSubmission) {
           cy.get("body").should("not.contain", "Trading portfolio & on demand interbank loans");
         }
@@ -143,7 +147,10 @@ describeIf(
       if (dualFieldSubmission) {
         cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
           .should("contain", "Trading portfolio & on demand interbank loans")
-          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoans));
+          .should(
+            "contain",
+            formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoansInPercent),
+          );
         if (!individualFieldSubmission) {
           cy.get("body").should("not.contain", /^Trading portfolio$/);
           cy.get("body").should("not.contain", "On demand interbank loans");
@@ -151,7 +158,7 @@ describeIf(
       }
       cy.get('div[name="greenAssetRatioCreditInstitution"]')
         .should("contain", "Green asset ratio")
-        .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.greenAssetRatio));
+        .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.greenAssetRatioInPercent));
     }
 
     it("Create a CreditInstitution (combined field submission)", () => {

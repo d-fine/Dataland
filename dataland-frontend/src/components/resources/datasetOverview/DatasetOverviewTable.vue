@@ -68,8 +68,8 @@
 import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { humanizeString } from "@/utils/StringHumanizer";
-import { DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { type DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
@@ -89,7 +89,7 @@ export default defineComponent({
     return {
       searchBarInput: "",
       displayedDatasetTableInfos: [] as DatasetTableInfo[],
-      humanizeString: humanizeString,
+      humanizeString: humanizeStringOrNumber,
       convertDate: convertUnixTimeInMsToDateString,
       loading: false,
       latestSearchString: "" as string,

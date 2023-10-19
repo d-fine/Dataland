@@ -8,18 +8,15 @@
             <h2 class="mt-0">No preview account required.</h2>
           </div>
           <div class="col-10 text-left">
-            <p>View the EU Taxonomy Data of <strong>BMW</strong>, before creating a preview account.</p>
+            <p>View the Data of <strong>BMW</strong>, before creating a preview account.</p>
           </div>
           <div class="col-10 text-left p-fluid">
-            <router-link
-              :to="/samples/ + DataTypeEnum.EutaxonomyNonFinancials"
-              class="text-primary no-underline font-bold"
-            >
+            <router-link :to="`/preview`" class="text-primary no-underline font-bold">
               <PrimeButton
                 class="bg-white border-primary border-2 text-900 mt-2 mb-3 h-3rem p-0 justify-content-center"
-                name="eu_taxonomy_sample_button"
+                name="preview_button"
               >
-                <span class="uppercase text-primary d-letters font-semibold"> EU Taxonomy sample data </span>
+                <span class="uppercase text-primary d-letters font-semibold"> Preview data </span>
                 <i class="material-icons ml-2 text-primary" aria-hidden="true">chevron_right</i>
               </PrimeButton>
             </router-link>
@@ -35,16 +32,10 @@
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
-import { DataTypeEnum } from "@clients/backend";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "SampleSection",
   components: { PrimeButton },
-  data() {
-    return {
-      DataTypeEnum,
-    };
-  },
 });
 </script>

@@ -1,0 +1,86 @@
+{
+  "capex": {
+    "totalAmount": null,
+    "alignedData": {
+      "valueAsPercentage": 0.1965,
+      "quality": "Audited",
+      "dataSource": {
+        "report": "SustainabilityReport",
+        "page": 1017,
+        "tagName": "platforms"
+      },
+      "comment": "quantify 1080p driver",
+      "valueAsAbsolute": 396564.95871022346
+    },
+    "eligibleData": null
+  },
+  "opex": {
+    "totalAmount": {
+      "quality": "Estimated",
+      "dataSource": null,
+      "comment": null,
+      "value": 940716.00
+    },
+    "alignedData": null,
+    "eligibleData": null
+  },
+  "revenue": {
+    "totalAmount": {
+      "quality": null,
+      "dataSource": {
+        "report": null,
+        "page": null,
+        "tagName": null
+      },
+      "comment": null,
+      "value": 470269.4387175143
+    },
+    "alignedData": {
+      "valueAsPercentage": 0.4347,
+      "quality": "Reported",
+      "dataSource": {
+        "report": "SustainabilityReport",
+        "page": 246,
+        "tagName": "communities"
+      },
+      "comment": "transmit online pixel",
+      "valueAsAbsolute": 840897.8063846007
+    },
+    "eligibleData": {
+      "valueAsPercentage": null,
+      "quality": "Incomplete",
+      "dataSource": {},
+      "comment": null,
+      "valueAsAbsolute": 917185.3733132593
+    }
+  },
+  "fiscalYearDeviation": "Deviation",
+  "fiscalYearEnd": "2022-10-05",
+  "scopeOfEntities": "NA",
+  "nfrdMandatory": null,
+  "euTaxonomyActivityLevelReporting": "No",
+  "assurance": {
+    "assurance": "LimitedAssurance",
+    "provider": null,
+    "dataSource": {
+      "report": "SustainabilityReport",
+      "page": 91,
+      "tagName": "initiatives"
+    }
+  },
+  "numberOfEmployees": null,
+  "referencedReports": {
+    "ESEFReport": {
+      "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "isGroupLevel": null,
+      "reportDate": null,
+      "currency": "BSD"
+    },
+    "SustainabilityReport": {
+      "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "isGroupLevel": null,
+      "reportDate": null,
+      "currency": "THB"
+    }
+  }
+}

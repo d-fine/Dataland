@@ -3,12 +3,12 @@ package org.dataland.datalandbackend.model.p2p.categories.livestockFarming.subca
 import java.math.BigDecimal
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the emissions from manure, fertiliser, and livestock
-* of the livestock Farming sector
+ * --- API model ---
+ * Fields of the subcategory "Emissions from manure and fertiliser and livestock" belonging to the category "Livestock
+ * farming" of the p2p framework.
 */
 data class P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock(
-    val compostedFermentedManure: BigDecimal? = null,
+    val compostedFermentedManureInPercent: BigDecimal? = null,
 
-    val emissionProofFertiliserStorage: BigDecimal? = null,
+    val emissionProofFertiliserStorageInPercent: BigDecimal? = null,
 )

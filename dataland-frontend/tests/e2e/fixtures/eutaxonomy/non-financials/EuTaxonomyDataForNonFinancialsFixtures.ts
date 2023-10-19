@@ -1,46 +1,127 @@
-import { EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
-import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { generateDatapoint, generateDatapointAbsoluteAndPercentage } from "@e2e/fixtures/common/DataPointFixtures";
+import {
+  Activity,
+  type EuTaxonomyActivity,
+  type EuTaxonomyAlignedActivity,
+  type RelativeAndAbsoluteFinancialShare,
+  type AmountWithCurrency,
+  type EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyDetailsPerCashFlowType,
+} from "@clients/backend";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-
-/**
- * Generates fake data for a single cash-flow type for the eutaxonomy-non-financials framework
- * @param reports a list of reports that can be referenced
- * @returns the generated data
- */
-export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
-  return {
-    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
-    alignedData: valueOrUndefined(
-      generateDatapointAbsoluteAndPercentage(
-        valueOrUndefined(randomEuroValue()),
-        valueOrUndefined(randomPercentageValue()),
-        reports,
-      ),
-    ),
-    eligibleData: valueOrUndefined(
-      generateDatapointAbsoluteAndPercentage(
-        valueOrUndefined(randomEuroValue()),
-        valueOrUndefined(randomPercentageValue()),
-        reports,
-      ),
-    ),
-  };
-}
+import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns the generated fixture
  */
-export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
-  const returnBase: EuTaxonomyDataForNonFinancials = generateEuTaxonomyWithBaseFields();
+export function generateEuTaxonomyDataForNonFinancials(
+  nullProbability = DEFAULT_PROBABILITY,
+): EuTaxonomyDataForNonFinancials {
+  const dataGenerator = new EuNonFinancialsGenerator(nullProbability);
+  return {
+    general: generateEuTaxonomyWithBaseFields(dataGenerator.reports, nullProbability),
+    opex: dataGenerator.generateEuTaxonomyPerCashflowType(),
+    capex: dataGenerator.generateEuTaxonomyPerCashflowType(),
+    revenue: dataGenerator.generateEuTaxonomyPerCashflowType(),
+  };
+}
 
-  returnBase.opex = generateEuTaxonomyPerCashflowType(assertDefined(returnBase.referencedReports));
-  returnBase.capex = generateEuTaxonomyPerCashflowType(assertDefined(returnBase.referencedReports));
-  returnBase.revenue = generateEuTaxonomyPerCashflowType(assertDefined(returnBase.referencedReports));
+export class EuNonFinancialsGenerator extends Generator {
+  /**
+   * Generates a random amount of money
+   * @returns an amount of money
+   */
+  generateAmountWithCurrency(): AmountWithCurrency {
+    return {
+      amount: this.randomCurrencyValue(),
+      currency: this.valueOrNull(generateCurrencyCode()),
+    };
+  }
 
-  return returnBase;
+  /**
+   * Generates a random financial share
+   * @returns a financial share or "null"
+   */
+  randomFinancialShare(): RelativeAndAbsoluteFinancialShare | null {
+    return this.valueOrNull(this.generateFinancialShare());
+  }
+
+  /**
+   * Generates a random financial share
+   * @returns a financial share
+   */
+  generateFinancialShare(): RelativeAndAbsoluteFinancialShare {
+    return {
+      relativeShareInPercent: this.randomPercentageValue(),
+      absoluteShare: this.valueOrNull(this.generateAmountWithCurrency()),
+    };
+  }
+
+  /**
+   * Generates a random activity
+   * @returns a random activity
+   */
+  generateActivity(): EuTaxonomyActivity {
+    const randomActivityName: Activity = pickOneElement(Object.values(Activity));
+    return {
+      activityName: randomActivityName,
+      naceCodes: this.valueOrNull(getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName)),
+      share: this.randomFinancialShare(),
+    };
+  }
+
+  /**
+   * Generates a random aligned activity
+   * @returns a random aligned activity
+   */
+  generateAlignedActivity(): EuTaxonomyAlignedActivity {
+    return {
+      ...this.generateActivity(),
+      substantialContributionToClimateChangeMitigationInPercent: this.randomPercentageValue(),
+      substantialContributionToClimateChangeAdaptionInPercent: this.randomPercentageValue(),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+        this.randomPercentageValue(),
+      substantialContributionToTransitionToACircularEconomyInPercent: this.randomPercentageValue(),
+      substantialContributionToPollutionPreventionAndControlInPercent: this.randomPercentageValue(),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+        this.randomPercentageValue(),
+      dnshToClimateChangeMitigation: this.randomYesNo(),
+      dnshToClimateChangeAdaption: this.randomYesNo(),
+      dnshToSustainableUseAndProtectionOfWaterAndMarineResources: this.randomYesNo(),
+      dnshToTransitionToACircularEconomy: this.randomYesNo(),
+      dnshToPollutionPreventionAndControl: this.randomYesNo(),
+      dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: this.randomYesNo(),
+      minimumSafeguards: this.randomYesNo(),
+    };
+  }
+
+  /**
+   * Generates fake data for a single cash-flow type for the eutaxonomy-non-financials framework
+   * @returns the generated data
+   */
+  generateEuTaxonomyPerCashflowType(): EuTaxonomyDetailsPerCashFlowType {
+    return {
+      totalAmount: this.randomCurrencyDataPoint(),
+      nonEligibleShare: this.randomFinancialShare(),
+      eligibleShare: this.randomFinancialShare(),
+      nonAlignedShare: this.randomFinancialShare(),
+      nonAlignedActivities: this.randomArray(() => this.generateActivity(), 0, 2),
+      alignedShare: this.randomFinancialShare(),
+      substantialContributionToClimateChangeMitigationInPercent: this.randomPercentageValue(),
+      substantialContributionToClimateChangeAdaptionInPercent: this.randomPercentageValue(),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+        this.randomPercentageValue(),
+      substantialContributionToTransitionToACircularEconomyInPercent: this.randomPercentageValue(),
+      substantialContributionToPollutionPreventionAndControlInPercent: this.randomPercentageValue(),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+        this.randomPercentageValue(),
+      alignedActivities: this.randomArray(() => this.generateAlignedActivity(), 0, 2),
+      enablingShareInPercent: this.randomPercentageValue(),
+      transitionalShareInPercent: this.randomPercentageValue(),
+    };
+  }
 }

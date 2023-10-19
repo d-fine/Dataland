@@ -29,9 +29,9 @@ dependencies {
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.okhttp)
     implementation(libs.slf4j.api)
-    implementation("org.springframework.security:spring-security-crypto")
-    implementation("org.springframework.security:spring-security-web")
-    implementation("jakarta.servlet:jakarta.servlet-api")
+    implementation(libs.spring.security.crypto)
+    implementation(libs.spring.security.web)
+    implementation(libs.jakarta.servlet.api)
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
 }

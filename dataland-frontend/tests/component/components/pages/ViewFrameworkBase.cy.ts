@@ -1,10 +1,11 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import type Keycloak from "keycloak-js";
 import { shallowMount } from "@vue/test-utils";
 import { nextTick } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component test for ViewFrameworkBase", () => {
   it("Should proper set the component based on data", () => {
@@ -46,13 +47,16 @@ describe("Component test for ViewFrameworkBase", () => {
       cy.wait("@inter").then(() => {
         expect(wrapper.vm.dataTypesInDropdown).to.be.an("array").that.is.not.empty;
         expect(wrapper.vm.dataTypesInDropdown).to.deep.equal([
-          { label: humanizeString(DataTypeEnum.EutaxonomyFinancials), value: DataTypeEnum.EutaxonomyFinancials },
           {
-            label: humanizeString(DataTypeEnum.EutaxonomyNonFinancials),
+            label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
+            value: DataTypeEnum.EutaxonomyFinancials,
+          },
+          {
+            label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyNonFinancials),
             value: DataTypeEnum.EutaxonomyNonFinancials,
           },
-          { label: humanizeString(DataTypeEnum.Lksg), value: DataTypeEnum.Lksg },
-          { label: humanizeString(DataTypeEnum.Sfdr), value: DataTypeEnum.Sfdr },
+          { label: humanizeStringOrNumber(DataTypeEnum.Lksg), value: DataTypeEnum.Lksg },
+          { label: humanizeStringOrNumber(DataTypeEnum.Sfdr), value: DataTypeEnum.Sfdr },
         ]);
       });
 
@@ -97,7 +101,7 @@ describe("Component test for ViewFrameworkBase", () => {
       "upload permission and framework with edit page",
     () => {
       const keycloakMock = minimalKeycloakMock({
-        roles: ["ROLE_USER", "ROLE_UPLOADER"],
+        roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
       });
       cy.intercept("**/api/metadata**", []);
       cy.mountWithPlugins(ViewFrameworkBase, {
@@ -121,7 +125,7 @@ describe("Component test for ViewFrameworkBase", () => {
       "on framework-view-pages for which no edit functionality has been implemented",
     () => {
       const keycloakMock = minimalKeycloakMock({
-        roles: ["ROLE_USER", "ROLE_UPLOADER"],
+        roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
       });
       cy.intercept("**/api/metadata**", []);
       cy.mountWithPlugins(ViewFrameworkBase, {
@@ -131,7 +135,7 @@ describe("Component test for ViewFrameworkBase", () => {
         },
       }).then((mounted) => {
         void mounted.wrapper.setProps({
-          dataType: DataTypeEnum.Sfdr,
+          dataType: DataTypeEnum.Sme,
           companyID: "mock-company-id",
         });
         cy.get("a[data-test=gotoNewDatasetButton] > button").should("exist");

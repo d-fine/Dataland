@@ -6,7 +6,7 @@
   <div v-show="!waitingForData">
     <ThreeLayerTable
       :data-model="smeDataModel"
-      :data-and-meta-info="smeDataAndMetaInfo"
+      :data-and-meta-info="smeDataAndMetaInfo.map((it) => getViewModelWithIdentityApiModel(it))"
       @data-converted="handleFinishedDataConversion"
       :format-value-for-display="formatValueForDisplay"
       :modal-column-headers="smeModalColumnHeaders"
@@ -19,15 +19,23 @@ import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComp
 import { smeDataModel } from "@/components/resources/frameworkDataSearch/sme/SmeDataModel";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationSmeData, DataTypeEnum, SmeProduct, SmeProductionSite } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import {
+  type DataAndMetaInformationSmeData,
+  DataTypeEnum,
+  type SmeProduct,
+  type SmeProductionSite,
+} from "@clients/backend";
+import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
-import { KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { Field } from "@/utils/GenericFrameworkTypes";
+import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { type Field } from "@/utils/GenericFrameworkTypes";
 import { smeModalColumnHeaders } from "@/components/resources/frameworkDataSearch/sme/SmeModalColumnHeaders";
 import { convertToMillions } from "@/utils/NumberConversionUtils";
+import { convertNace } from "@/utils/NaceCodeConverter";
+import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
+import { formatPercentageNumberAsString } from "@/utils/Formatter";
 
 export default defineComponent({
   name: "SmePanel",
@@ -64,7 +72,8 @@ export default defineComponent({
   },
 
   methods: {
-    humanizeString,
+    getViewModelWithIdentityApiModel,
+    humanizeString: humanizeStringOrNumber,
     /**
      * Fetches all accepted SME datasets for the current company and converts them to the required frontend format.
      */
@@ -73,16 +82,13 @@ export default defineComponent({
         this.waitingForData = true;
         const smeDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getSmeDataControllerApi();
+        ).getUnifiedFrameworkDataController(DataTypeEnum.Sme);
         if (this.singleDataMetaInfoToDisplay) {
-          const singleSmeData = (
-            await smeDataControllerApi.getCompanyAssociatedSmeData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data;
+          const singleSmeData = (await smeDataControllerApi.getFrameworkData(this.singleDataMetaInfoToDisplay.dataId))
+            .data.data;
           this.smeDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSmeData }];
         } else {
-          this.smeDataAndMetaInfo = (
-            await smeDataControllerApi.getAllCompanySmeData(assertDefined(this.companyId))
-          ).data;
+          this.smeDataAndMetaInfo = (await smeDataControllerApi.getAllCompanyData(assertDefined(this.companyId))).data;
         }
       } catch (error) {
         console.error(error);
@@ -101,10 +107,15 @@ export default defineComponent({
      * @returns the formatted value
      */
     formatValueForDisplay(field: Field, value: KpiValue): KpiValue {
-      const fieldsToConvertToMillions = ["revenueInEur", "operatingCostInEur", "capitalAssetsInEur"];
+      const fieldsToConvertToMillions = [
+        "revenueInEUR",
+        "operatingCostInEUR",
+        "capitalAssetsInEUR",
+        "amountCoveredByInsuranceAgainstNaturalHazards",
+      ];
       const optionFields = [
-        "percentageOfInvestmentsInEnhancingEnergyEfficiency",
-        "energyConsumptionCoveredByOwnRenewablePowerGeneration",
+        "percentageRangeForInvestmentsInEnhancingEnergyEfficiency",
+        "percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration",
       ];
       if (value == null) {
         return value;
@@ -117,16 +128,18 @@ export default defineComponent({
         return listOfProductionSites.map((productionSite) => ({
           nameOfProductionSite: productionSite.nameOfProductionSite,
           addressOfProductionSite: productionSite.addressOfProductionSite,
-          percentageOfTotalRevenue: productionSite.percentageOfTotalRevenue
-            ? `${productionSite.percentageOfTotalRevenue}%`
+          shareOfTotalRevenueInPercent: productionSite.shareOfTotalRevenueInPercent
+            ? formatPercentageNumberAsString(productionSite.shareOfTotalRevenueInPercent)
             : undefined,
         }));
+      } else if (field.name == "sector") {
+        return convertNace(value);
       } else if (field.name == "listOfProducts") {
         const listOfProducts = value as SmeProduct[];
         return listOfProducts.map((product) => ({
           name: product.name,
-          percentageOfTotalRevenue: product.percentageOfTotalRevenue
-            ? `${product.percentageOfTotalRevenue}%`
+          shareOfTotalRevenueInPercent: product.shareOfTotalRevenueInPercent
+            ? formatPercentageNumberAsString(product.shareOfTotalRevenueInPercent)
             : undefined,
         }));
       } else if (fieldsToConvertToMillions.includes(field.name)) {

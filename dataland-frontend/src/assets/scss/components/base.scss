@@ -21,6 +21,28 @@ body {
   padding: 0
 }
 
+.w-10 { width: 10vw; }
+.w-20 { width: 20vw; }
+.w-25 { width: 25vw; }
+.w-30 { width: 30vw; }
+.w-33 { width: 33vw; }
+.w-40 { width: 40vw; }
+.w-50 { width: 50vw; }
+.w-60 { width: 60vw; }
+.w-66 { width: 66vw; }
+.w-70 { width: 70vw; }
+.w-75 { width: 75vw; }
+.w-80 { width: 80vw; }
+.w-90 { width: 90vw; }
+.w-100 { width: 100vw; }
+
+.flex-direction-column {
+  flex-direction: column;
+}
+.flex-direction-row {
+  flex-direction: row;
+}
+
 .p-component {
   &:disabled {
     opacity: .8
@@ -244,4 +266,25 @@ body {
 
 .d-cursor-pointer {
   cursor: pointer;
+}
+
+ul.unstyled-ul-list {
+  padding: 0;
+  margin: 0;
+  li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+}
+
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
+
+.grid4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
 }

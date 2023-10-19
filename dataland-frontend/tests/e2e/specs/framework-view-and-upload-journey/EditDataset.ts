@@ -1,13 +1,15 @@
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { checkStickynessOfSubmitSideBar, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
+import { Configuration, DataTypeEnum, type LksgData, LksgDataControllerApi } from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { checkStickynessOfSubmitSideBar } from "@e2e/utils/LksgUpload";
 import { describeIf } from "@e2e/support/TestUtility";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { UploadIds } from "@e2e/utils/GeneralApiUtils";
+import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
+import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -24,7 +26,8 @@ describeIf(
         preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
         getKeycloakToken(admin_name, admin_pw)
           .then(async (token: string) =>
-            uploadCompanyAndLksgDataViaApi(
+            uploadCompanyAndFrameworkData(
+              DataTypeEnum.Lksg,
               token,
               preparedFixture.companyInformation,
               preparedFixture.t,
@@ -40,7 +43,7 @@ describeIf(
     it("Editing Lksg data without changes should create a copy when uploaded", function () {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
+      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeStringOrNumber(DataTypeEnum.Lksg));
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
       cy.get("div").contains("New Dataset - LkSG").should("be.visible");
       const expectedCountry = preparedFixture.t.general?.productionSpecific?.listOfProductionSites?.[0]
@@ -58,11 +61,17 @@ describeIf(
         .should("exist")
         .then(() => {
           return getKeycloakToken(admin_name, admin_pw).then(async (token) => {
-            const data = await new LksgDataControllerApi(
+            const listOfLksgDatasetsForCompany = await new LksgDataControllerApi(
               new Configuration({ accessToken: token }),
             ).getAllCompanyLksgData(uploadIds.companyId, false);
-            expect(data.data).to.have.length(2);
-            expect(data.data[0].data).to.deep.equal(data.data[1].data);
+            expect(listOfLksgDatasetsForCompany.data).to.have.length(2);
+            const firstLksgDataset = objectDropNull(
+              listOfLksgDatasetsForCompany.data[0].data as unknown as ObjectType,
+            ) as unknown as LksgData;
+            const secondLksgDataset = objectDropNull(
+              listOfLksgDatasetsForCompany.data[1].data as unknown as ObjectType,
+            ) as unknown as LksgData;
+            expect(firstLksgDataset).to.deep.equal(secondLksgDataset);
           });
         });
     });
@@ -70,7 +79,7 @@ describeIf(
     it("Edit and subsequent upload should work properly when removing or changing referenced documents", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
+      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeStringOrNumber(DataTypeEnum.Lksg));
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
       submitButton.buttonAppearsEnabled();
 
@@ -80,7 +89,8 @@ describeIf(
         .invoke("attr", "data-test")
         .then((dataTest) => {
           cy.get(`div[data-test=${assertDefined(dataTest)}]`)
-            .find(`input[id=value-option-no]`)
+            .find("input.p-radiobutton")
+            .eq(1)
             .click();
           cy.get(`div[data-test=${assertDefined(dataTest)}]`)
             .find(`button[data-test=files-to-upload-remove]`)

@@ -18,7 +18,7 @@ describe("Component test for WelcomeDataland", () => {
     checkImage("pwc", "pwc.svg");
     checkImage("d-fine GmbH", "dfine.svg");
     checkButton("join_dataland_button", "Create a preview account");
-    checkButton("eu_taxonomy_sample_button", "EU Taxonomy sample data");
+    checkButton("preview_button", "Preview data");
     checkButton("login_dataland_button", "Login to preview account");
     checkFooter();
   });

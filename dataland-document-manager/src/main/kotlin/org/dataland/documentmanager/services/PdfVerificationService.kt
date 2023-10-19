@@ -1,7 +1,6 @@
 package org.dataland.documentmanager.services
 
-import org.apache.commons.lang3.StringUtils.lowerCase
-import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.Loader
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -9,80 +8,69 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 
 /**
- * A service for performing basic PDF sanity checks
+ * A service for performing basic sanity checks on files uploaded by users
  */
 @Component
 class PdfVerificationService {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    val pdfParsingErrorMessage = "The file you uploaded was not able to be parsed as PDF file."
+    val pdfHasZeroPagesErrorMessage = "The PDF you uploaded seems to have 0 pages."
+    val fileNameHasForbiddenCharactersMessage =
+        "Please ensure that your selected file name follows the naming convention for Windows: Avoid using " +
+            "special characters like < > : \" / \\ | ? * and ensure the name does not end or begin with a space, " +
+            "or end with a full stop character."
+
     /**
-     * A function that performs surface-level checks to ensure that an uploaded document is indeed a PDF.
+     * A function that performs surface-level checks to ensure that an uploaded file is indeed a PDF with at least one
+     * page and a file name that follows a specific naming convention.
      * This function does not enforce anything else.
      * In particular a file passing this function is in no way guaranteed to be safe to open.
      */
-    fun assertThatDocumentLooksLikeAPdf(document: MultipartFile, correlationId: String) {
+    fun assertThatFileLooksLikeAValidPdfWithAValidName(file: MultipartFile, correlationId: String) {
         try {
-            checkIfPdfDocumentIsEmpty(document.bytes, correlationId)
-            checkThatDocumentNameEndsOnPdf(document.originalFilename!!, correlationId)
-            checkThatDocumentNameIsValid(document.originalFilename!!, correlationId)
+            checkIfPotentialPdfFileIsEmpty(file.bytes, correlationId)
+            checkThatFileNameIsWithinNamingConvention(file.originalFilename!!, correlationId)
         } catch (ex: IOException) {
             logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(
-                "Could not parse PDF document",
-                "We were unable to load the PDF document you provided." +
-                    " Please ensure that the file you uploaded has not been corrupted",
+                "Could not parse file as PDF document",
+                pdfParsingErrorMessage,
                 ex,
             )
         }
     }
 
-    private fun checkIfPdfDocumentIsEmpty(blob: ByteArray, correlationId: String) {
-        PDDocument.load(blob).use {
+    private fun checkIfPotentialPdfFileIsEmpty(blob: ByteArray, correlationId: String) {
+        Loader.loadPDF(blob).use {
             if (it.numberOfPages <= 0) {
                 logger.info(
                     "PDF document uploaded with correlation ID: $correlationId seems to have 0 pages, aborting.",
                 )
                 throw InvalidInputApiException(
                     "You seem to have uploaded an empty PDF",
-                    "We have detected that the pdf you uploaded has 0 pages.",
+                    pdfHasZeroPagesErrorMessage,
                 )
             }
         }
     }
 
-    private fun checkThatDocumentNameEndsOnPdf(name: String, correlationId: String) {
-        if (lowerCase(name.takeLast(expectedFileNameIdentifierLength)) != ".pdf") {
-            logger.info(
-                "PDF document uploaded with correlation ID: $correlationId " +
-                    "does not have a name ending on '.pdf', aborting.",
-            )
-            throw InvalidInputApiException(
-                "You seem to have uploaded an file that is not a pdf file",
-                "We have detected that the file does not have a name ending on '.pdf'",
-            )
-        }
-    }
-
     /**
-     * We allow alphanumeric characters, hyphens, spaces, brackets, underscores and periods
-     * up to a maximum length of 254 characters in our filenames
+     * We allow file names that follow the naming convention of Windows systems.
      */
-    private val allowedFilenameRegex = Regex("^[\\w\\-. ()]{1,254}\$")
+    private val allowedFilenameRegex =
+        Regex("^[^<>:\"|?/*\\\\\\s][^<>:\"|?/*\\\\]{0,252}[^<>:\"|?/*\\\\.\\s]\$")
 
-    private fun checkThatDocumentNameIsValid(name: String, correlationId: String) {
+    private fun checkThatFileNameIsWithinNamingConvention(name: String, correlationId: String) {
         if (!allowedFilenameRegex.matches(name)) {
             logger.info(
-                "PDF document uploaded with correlation ID: $correlationId has invalid name, aborting.",
+                "PDF document uploaded with correlation ID: $correlationId violates the naming convention" +
+                    "of Dataland, aborting.",
             )
             throw InvalidInputApiException(
-                "You seem to have uploaded an file that has an invalid name",
-                "Please ensure that your filename only contains alphanumeric characters, hyphens, spaces," +
-                    "brackets, underscores and periods up to maximum length of 254 characters.",
+                "You seem to have uploaded a file that has an invalid name",
+                fileNameHasForbiddenCharactersMessage,
             )
         }
-    }
-
-    companion object {
-        const val expectedFileNameIdentifierLength: Int = 4
     }
 }

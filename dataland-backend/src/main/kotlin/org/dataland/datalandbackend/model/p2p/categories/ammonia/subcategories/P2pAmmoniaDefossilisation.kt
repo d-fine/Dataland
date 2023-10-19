@@ -4,8 +4,8 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding the defossilisation of ammonia production
- */
+ * Fields of the subcategory "Defossilisation" belonging to the category "Ammonia" of the p2p framework.
+*/
 data class P2pAmmoniaDefossilisation(
-    val useOfRenewableFeedstocks: BigDecimal? = null,
+    val useOfRenewableFeedstocksInPercent: BigDecimal? = null,
 )

@@ -1,21 +1,23 @@
 package org.dataland.datalandbackend.model.lksg.categories.environmental
 
 import org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
-    .LksgExportImportOfHazardousWasteBaselConvention
+    .LksgEnvironmentalExportImportOfHazardousWasteBaselConvention
 import org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
-    .LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention
+    .LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention
 import org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
-    .LksgUseOfMercuryMercuryWasteMinamataConvention
+    .LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention
 
 /**
  * --- API model ---
- * Impact topics of the LKSG questionnaire's impact area "Environmental"
- */
+ * Fields of the category "Environmental" of the lksg framework.
+*/
 data class LksgEnvironmental(
-    val useOfMercuryMercuryWasteMinamataConvention: LksgUseOfMercuryMercuryWasteMinamataConvention?,
+    val useOfMercuryMercuryWasteMinamataConvention:
+    LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention? = null,
 
     val productionAndUseOfPersistentOrganicPollutantsPopsConvention:
-    LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention?,
+    LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention? = null,
 
-    val exportImportOfHazardousWasteBaselConvention: LksgExportImportOfHazardousWasteBaselConvention?,
+    val exportImportOfHazardousWasteBaselConvention:
+    LksgEnvironmentalExportImportOfHazardousWasteBaselConvention? = null,
 )

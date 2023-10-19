@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euxo pipefail
 # This Script checks if a docker image for a given set of input files already exists in the registry.
 # If not, it will be rebuilt and pushed
@@ -19,21 +19,21 @@ shift
 dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
 
-input_sha1=$( \
-  find "$0" "$@" -type f -printf "\"%p\"\n" | \
+input_sha=$( \
+  find "$0" "$@" -type f | awk '{print "\042" $1 "\042"}' | \
   grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
   sort -u | \
-  xargs sha1sum | \
-  sha1sum | \
+  xargs shasum | \
+  shasum | \
   awk '{print $1}'
 )
 
-echo Input sha1 Hash: "$input_sha1"
+echo Input sha1 Hash: "$input_sha"
 
 # Only execute the "build" command if the manifests are different.
-full_image_reference="ghcr.io/d-fine/dataland/$docker_image_name:$input_sha1"
-echo "${docker_image_name^^}_VERSION=$input_sha1" >> ./${BUILD_SCRIPT:-default}_github_env.log
-echo "${docker_image_name^^}_VERSION=$input_sha1" >> ${GITHUB_OUTPUT:-/dev/null}
+full_image_reference="ghcr.io/d-fine/dataland/$docker_image_name:$input_sha"
+echo "${docker_image_name^^}_VERSION=$input_sha" >> ./${BUILD_SCRIPT:-default}_github_env.log
+echo "${docker_image_name^^}_VERSION=$input_sha" >> ${GITHUB_OUTPUT:-/dev/null}
 sha1_manifest=$(docker manifest inspect "$full_image_reference" || echo "no sha1 manifest")
 if [[ "$sha1_manifest" != "no sha1 manifest" ]] ; then
   echo "docker manifest found. No rebuild for $full_image_reference required"
@@ -57,7 +57,10 @@ docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
                         --build-arg DATALAND_QA_SERVICE_BASE_VERSION="${DATALAND_QA_SERVICE_BASE_VERSION:-}" \
                         --build-arg DATALAND_INTERNAL_STORAGE_BASE_VERSION="${DATALAND_INTERNAL_STORAGE_BASE_VERSION:-}" \
                         --build-arg DATALAND_BATCH_MANAGER_BASE_VERSION="${DATALAND_BATCH_MANAGER_BASE_VERSION:-}" \
-                        --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}"
+                        --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}" \
+                        --build-arg DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES="${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES:-}" \
+                        --build-arg DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES="${DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES:-}" \
+                        --build-arg MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY="${MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY:-}"
                   )
 
 if [[ ${GITHUB_ACTIONS:-} == "true" ]]; then

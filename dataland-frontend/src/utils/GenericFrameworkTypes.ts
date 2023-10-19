@@ -1,17 +1,11 @@
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import {
-  DataAndMetaInformationEuTaxonomyDataForFinancials,
-  DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-  DataAndMetaInformationLksgData,
-  DataAndMetaInformationPathwaysToParisData,
-  DataAndMetaInformationSfdrData,
-  DataAndMetaInformationSmeData,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForNonFinancials,
-  LksgData,
-  PathwaysToParisData,
-  SfdrData,
-  SmeData,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
+  type LksgData,
+  type PathwaysToParisData,
+  type SfdrData,
+  type SmeData,
 } from "@clients/backend";
 
 export interface Category {
@@ -33,13 +27,13 @@ export interface Field {
   name: string;
   label: string;
   description: string;
+  unit?: string;
   component: string;
   dependency?: string;
   certificateRequiredIfYes?: boolean;
   validation?: string;
   validationLabel?: string;
   required?: boolean;
-  unit?: string;
   evidenceDesired?: boolean;
 
   // input field specific values
@@ -58,11 +52,3 @@ export type FrameworkData =
   | SfdrData
   | SmeData
   | PathwaysToParisData;
-
-export type DataAndMetaInformation =
-  | DataAndMetaInformationEuTaxonomyDataForFinancials
-  | DataAndMetaInformationEuTaxonomyDataForNonFinancials
-  | DataAndMetaInformationLksgData
-  | DataAndMetaInformationSfdrData
-  | DataAndMetaInformationSmeData
-  | DataAndMetaInformationPathwaysToParisData;

@@ -4,8 +4,9 @@
     :dataType="dataType"
     :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
+    :viewInPreviewMode="viewInPreviewMode"
   >
-    <template v-slot:content>
+    <template v-slot:content="slotProps">
       <div v-if="isListOfDataIdsToDisplayFound">
         <DatasetDisplayStatusIndicator
           :displayed-dataset="singleDataMetaInfoToDisplay"
@@ -20,20 +21,34 @@
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizeString(dataType) }}</h2>
           </div>
           <div class="col-12">
-            <LksgPanel
+            <EuTaxonomyForNonFinancialsPanel
+              v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
+              :companyId="companyId"
+              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+            />
+            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.Lksg"
+              :frameworkIdentifier="DataTypeEnum.Lksg"
               :companyId="companyId"
+              :display-configuration="convertDataModelToMLDTConfig(lksgDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :inReviewMode="slotProps.inReviewMode"
             />
-            <SfdrPanel
+            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.Sfdr"
+              :frameworkIdentifier="DataTypeEnum.Sfdr"
               :companyId="companyId"
+              :display-configuration="convertDataModelToMLDTConfig(sfdrDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :inReviewMode="slotProps.inReviewMode"
             />
-            <P2pPanel
+            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.P2p"
-              :company-id="companyId"
-              :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
+              :frameworkIdentifier="DataTypeEnum.P2p"
+              :companyId="companyId"
+              :display-configuration="convertDataModelToMLDTConfig(p2pDataModel)"
+              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :inReviewMode="slotProps.inReviewMode"
             />
             <SmePanel
               v-if="dataType === DataTypeEnum.Sme"
@@ -72,24 +87,45 @@
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { defineComponent, inject } from "vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { humanizeString } from "@/utils/StringHumanizer";
-import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
-import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { AxiosError } from "axios";
-import Keycloak from "keycloak-js";
+import { type AxiosError } from "axios";
+import type Keycloak from "keycloak-js";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
-import P2pPanel from "@/components/resources/frameworkDataSearch/p2p/P2pPanel.vue";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
+import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
+import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
+import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
+import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { P2pPanel, DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase, SmePanel },
+  computed: {
+    lksgDataModel() {
+      return lksgDataModel;
+    },
+    sfdrDataModel() {
+      return sfdrDataModel;
+    },
+    p2pDataModel() {
+      return p2pDataModel;
+    },
+  },
+  components: {
+    MultiLayerDataTableFrameworkPanel,
+    EuTaxonomyForNonFinancialsPanel,
+    DatasetDisplayStatusIndicator,
+    ViewFrameworkBase,
+    SmePanel,
+  },
   props: {
     companyId: {
       type: String,
+      required: true,
     },
     dataType: {
       type: String,
@@ -100,6 +136,10 @@ export default defineComponent({
     reportingPeriod: {
       type: String,
     },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -107,10 +147,10 @@ export default defineComponent({
       isListOfDataIdsToDisplayFound: false,
       receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo: {} as Map<string, DataMetaInformation>,
       singleDataMetaInfoToDisplay: null as null | DataMetaInformation,
-      humanizeString: humanizeString,
+      humanizeString: humanizeStringOrNumber,
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
-      humanizedDataDescription: humanizeString(this.dataType),
+      humanizedDataDescription: humanizeStringOrNumber(this.dataType),
       DataTypeEnum,
     };
   },
@@ -124,10 +164,8 @@ export default defineComponent({
       if (newDataId) {
         this.setFlagsToDataNotFoundState();
         void this.getMetaDataForDataId(newDataId);
-      } else {
-        if (!this.reportingPeriod) {
-          this.setSingleDataMetaInfoToDisplay(null);
-        }
+      } else if (!this.reportingPeriod) {
+        this.setSingleDataMetaInfoToDisplay(null);
       }
     },
     reportingPeriod(newReportingPeriod: string) {
@@ -146,15 +184,14 @@ export default defineComponent({
         } else {
           this.isReportingPeriodInUrlInvalid = true;
         }
-      } else {
-        if (!this.dataId) {
-          this.setSingleDataMetaInfoToDisplay(null);
-        }
+      } else if (!this.dataId) {
+        this.setSingleDataMetaInfoToDisplay(null);
       }
     },
   },
 
   methods: {
+    convertDataModelToMLDTConfig,
     /**
      * Method to set flags that indicate found data
      */

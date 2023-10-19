@@ -1,4 +1,4 @@
-import { LocationQueryValue } from "vue-router";
+import { type LocationQueryValue } from "vue-router";
 
 /**
  * Query parameters can be either a string value or an array of strings if the parameter is specified multiple times.

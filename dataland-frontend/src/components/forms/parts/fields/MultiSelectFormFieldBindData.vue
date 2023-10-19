@@ -17,8 +17,8 @@
 
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { ComponentPropsOptions, defineComponent } from "vue";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { type ComponentPropsOptions, defineComponent } from "vue";
+import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import MultiSelectFormElementBindData from "@/components/forms/parts/elements/basic/MultiSelectFormElementBindData.vue";
 import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
 

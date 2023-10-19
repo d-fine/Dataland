@@ -7,12 +7,12 @@ import java.util.*
 
 /**
  * --- API model ---
- * Fields of the P2P questionnaire regarding top-level general information
- */
+ * Fields of the subcategory "General" belonging to the category "General" of the p2p framework.
+*/
 data class P2pGeneralGeneral(
     @field:JsonProperty(required = true)
     val dataDate: LocalDate,
 
     @field:JsonProperty(required = true)
-    val sector: EnumSet<P2pSector>,
+    val sectors: EnumSet<P2pSector>,
 )

@@ -5,8 +5,8 @@
       rowGroupMode="subheader"
       groupRowsBy="subcategoryKey"
       dataKey="subcategoryKey"
-      sortField="subcategoryKey"
-      :sortOrder="1"
+      :sortField="sortBySubcategoryKey ? 'subcategoryKey' : undefined"
+      :sortOrder="sortBySubcategoryKey ? 1 : undefined"
       sortMode="single"
       :expandableRowGroups="true"
       :headerInputStyle="headerInputStyle"
@@ -22,6 +22,7 @@
         <template #body="slotProps">
           <span class="table-left-label" :data-test="slotProps.data.kpiKey">{{ slotProps.data.kpiLabel }}</span>
           <em
+            v-if="slotProps.data.kpiDescription"
             class="material-icons info-icon"
             aria-hidden="true"
             :title="slotProps.data.kpiLabel ? slotProps.data.kpiLabel : ''"
@@ -47,77 +48,88 @@
               slotProps.data.content[reportingPeriodWithDataId.dataId] !== null
             "
           >
-            <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
-              <a
-                v-if="
-                  slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
-                  slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
-                "
-                @click="
-                  openModalAndDisplayValuesInSubTable(
-                    slotProps.data.content[reportingPeriodWithDataId.dataId],
-                    slotProps.data.kpiLabel,
-                    slotProps.data.kpiKey,
-                  )
-                "
-                class="link"
-                >Show "{{ slotProps.data.kpiLabel }}"
-                <em class="material-icons" aria-hidden="true" title=""> dataset </em>
-              </a>
+            <span
+              :data-test="`${reportingPeriodWithDataId.reportingPeriod}_${slotProps.data.categoryKey}_${slotProps.data.kpiKey}`"
+            >
+              <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
+                <a
+                  v-if="
+                    slotProps.data.content[reportingPeriodWithDataId.dataId].length >= 1 ||
+                    slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
+                  "
+                  @click="
+                    openModalAndDisplayValuesInSubTable(
+                      slotProps.data.content[reportingPeriodWithDataId.dataId],
+                      slotProps.data.kpiLabel,
+                      slotProps.data.kpiKey,
+                      slotProps.data.kpiFormFieldComponent,
+                    )
+                  "
+                  class="link"
+                  >Show "{{ slotProps.data.kpiLabel }}"
+                  <em class="material-icons" aria-hidden="true" title=""> dataset </em>
+                </a>
 
-              <span v-else> {{ slotProps.data.content[reportingPeriodWithDataId.dataId][0] }} </span>
-            </template>
-            <span
-              v-else-if="
-                slotProps.data.kpiFormFieldComponent === 'PercentageFormField' &&
-                slotProps.data.content[reportingPeriodWithDataId.dataId] !== ''
-              "
-            >
-              {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} %</span
-            >
-            <span
-              v-else-if="
-                typeof slotProps.data.content[reportingPeriodWithDataId.dataId] === 'object' &&
-                slotProps.data.content[reportingPeriodWithDataId.dataId]?.value !== undefined
-              "
-            >
-              <span
-                v-if="
-                  isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
-                  hasDocument(slotProps.data.content[reportingPeriodWithDataId.dataId])
-                "
-              >
-                <DocumentLink
-                  :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
-                  :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.name"
-                  :reference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.reference"
-                  show-icon
-                />
-              </span>
+                <span v-else></span>
+              </template>
               <span
                 v-else-if="
-                  isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
-                  isCertificate(slotProps.data.kpiLabel)
+                  slotProps.data.kpiFormFieldComponent === 'PercentageFormField' &&
+                  slotProps.data.content[reportingPeriodWithDataId.dataId] !== ''
                 "
               >
-                {{
-                  slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes
-                    ? yesLabelMap.get(true)
-                    : noLabelMap.get(true)
-                }}
+                {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }}</span
+              >
+              <span
+                v-else-if="
+                  typeof slotProps.data.content[reportingPeriodWithDataId.dataId] === 'object' &&
+                  slotProps.data.content[reportingPeriodWithDataId.dataId]?.value !== undefined
+                "
+              >
+                <span
+                  v-if="
+                    isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
+                    hasDocument(slotProps.data.content[reportingPeriodWithDataId.dataId])
+                  "
+                >
+                  <DocumentLink
+                    :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
+                    :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.fileName"
+                    :fileReference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.fileReference"
+                    show-icon
+                  />
+                </span>
+                <span
+                  v-else-if="
+                    isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
+                    isCertificate(slotProps.data.kpiLabel)
+                  "
+                >
+                  {{
+                    slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes
+                      ? yesLabelMap.get(true)
+                      : noLabelMap.get(true)
+                  }}
+                </span>
+                <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}</span>
               </span>
-              <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}</span>
+              <span v-else style="white-space: pre-wrap">{{
+                slotProps.data.content[reportingPeriodWithDataId.dataId]
+              }}</span>
             </span>
-            <span v-else style="white-space: pre-wrap">{{
-              slotProps.data.content[reportingPeriodWithDataId.dataId]
-            }}</span>
           </template>
         </template>
       </Column>
 
       <Column field="subcategoryKey"></Column>
       <template #groupheader="slotProps">
-        <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
+        <span
+          :data-test="slotProps.data.subcategoryKey"
+          :data-table-id="dataTableIdentifier"
+          :id="slotProps.data.subcategoryKey"
+          data-row-header-click
+          style="cursor: pointer"
+        >
           {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
         </span>
       </template>
@@ -126,15 +138,21 @@
 </template>
 
 <script lang="ts">
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
-import { BaseDataPointYesNo, YesNo } from "@clients/backend";
+import { type KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import {
+  type ReportingPeriodOfDataSetWithId,
+  mountRowHeaderClickEventListeners,
+  unmountRowHeaderClickEventListeners,
+} from "@/utils/DataTableDisplay";
+import { type BaseDataPointYesNo, YesNo } from "@clients/backend";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Tooltip from "primevue/tooltip";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, type PropType } from "vue";
+import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
+import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
+import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
 
 export default defineComponent({
   name: "TwoLayerDataTable",
@@ -154,6 +172,8 @@ export default defineComponent({
         [false, "No"],
       ]),
       YesNo,
+      rowClickHandlersMap: new Map() as Map<Element, EventListener>,
+      dataTableIdentifier: "" as string,
     };
   },
   props: {
@@ -172,9 +192,31 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    sortBySubcategoryKey: {
+      type: Boolean,
+      default: true,
+    },
+    unfoldSubcategories: {
+      type: Boolean,
+      default: false,
+    },
   },
-  mounted() {
-    document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
+  created() {
+    if (this.unfoldSubcategories) {
+      this.expandedRowGroups = this.arrayOfKpiDataObjects?.map((kpiDataObject) => kpiDataObject.subcategoryKey) ?? [];
+    }
+    this.dataTableIdentifier = (Math.random() + 1).toString(36).substring(2);
+    setTimeout(() => {
+      this.rowClickHandlersMap = mountRowHeaderClickEventListeners(
+        this.dataTableIdentifier,
+        () => this.expandedRowGroups,
+        (expandedRowGroups) => (this.expandedRowGroups = expandedRowGroups),
+      );
+    });
+  },
+  unmounted() {
+    unmountRowHeaderClickEventListeners(this.rowClickHandlersMap);
+    this.rowClickHandlersMap = new Map();
   },
   methods: {
     /**
@@ -185,8 +227,8 @@ export default defineComponent({
     hasDocument(dataPoint: BaseDataPointYesNo): boolean {
       return (
         dataPoint?.value === YesNo.Yes &&
-        dataPoint?.dataSource?.reference != undefined &&
-        dataPoint.dataSource.reference.length > 0
+        dataPoint?.dataSource?.fileReference != undefined &&
+        dataPoint.dataSource.fileReference.length > 0
       );
     },
     /**
@@ -206,42 +248,45 @@ export default defineComponent({
     isYesNo(value: string) {
       return Object.values(YesNo).includes(value);
     },
+
     /**
      * Opens a modal to display a table with the provided list of production sites
-     * @param listOfValues An array consisting of the data to display
+     * @param listOfValues Data to display
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
+     * @param kpiFormFieldComponent determine whether a specific component should be used to render data
      */
-    openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, kpiKey: string) {
-      this.$dialog.open(DetailsCompanyDataTable, {
+    openModalAndDisplayValuesInSubTable(
+      listOfValues: object | [],
+      modalTitle: string,
+      kpiKey: string,
+      kpiFormFieldComponent = "DetailsCompanyDataTable",
+    ) {
+      let kpiDataComponent: typeof DetailsCompanyDataTable;
+      if (kpiFormFieldComponent === "AlignedActivitiesDataTable") {
+        kpiDataComponent = AlignedActivitiesDataTable;
+      } else if (kpiFormFieldComponent === "NonAlignedActivitiesDataTable") {
+        kpiDataComponent = NonAlignedActivitiesDataTable;
+      } else {
+        kpiDataComponent = DetailsCompanyDataTable;
+      }
+
+      let dialogData;
+      if (Array.isArray(listOfValues)) {
+        dialogData = {
+          listOfRowContents: listOfValues,
+          kpiKeyOfTable: kpiKey,
+          columnHeaders: this.modalColumnHeaders,
+        };
+      }
+      this.$dialog.open(kpiDataComponent, {
         props: {
           header: modalTitle,
           modal: true,
           dismissableMask: true,
         },
-        data: {
-          listOfRowContents: listOfValues,
-          kpiKeyOfTable: kpiKey,
-          columnHeaders: this.modalColumnHeaders,
-        },
+        data: dialogData,
       });
-    },
-    /**
-     * Enables groupRowExpansion (and collapse) when clicking on the whole header row
-     * @param event a click event
-     */
-    expandRowGroupOnHeaderClick(event: Event) {
-      const id = (event.target as Element).id;
-
-      const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-        this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === child.id),
-      )[0];
-
-      if (matchingChild || this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === id)) {
-        const index = this.expandedRowGroups.indexOf(matchingChild?.id ?? id);
-        if (index === -1) this.expandedRowGroups.push(matchingChild?.id ?? id);
-        else this.expandedRowGroups.splice(index, 1);
-      }
     },
   },
 });

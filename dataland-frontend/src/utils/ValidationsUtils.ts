@@ -1,5 +1,5 @@
-import { FormKitNode } from "@formkit/core";
-import { findAllValuesForKey, ObjectType } from "@/utils/UpdateObjectUtils";
+import { type FormKitNode } from "@formkit/core";
+import { findAllValuesForKey, type ObjectType } from "@/utils/UpdateObjectUtils";
 
 /**
  * Checks which inputs are not filled correctly
@@ -32,7 +32,7 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
   dataModel: ObjectType,
   uploadedReports: string[],
 ): void {
-  const referencedReports = findAllValuesForKey(dataModel, "report");
+  const referencedReports = findAllValuesForKey(dataModel, "fileName");
   const unusedReports: string[] = [];
   uploadedReports.forEach((report) => {
     if (!referencedReports.some((refReport) => refReport === report)) {

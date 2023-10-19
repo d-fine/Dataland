@@ -1,125 +1,132 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import {
-  uploadEuTaxonomyDataForNonFinancialsViaForm,
-  uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
-} from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  Configuration,
+  type DataMetaInformation,
+  DataTypeEnum,
+  type EuTaxonomyDataForNonFinancials,
+  EuTaxonomyDataForNonFinancialsControllerApi,
+  type StoredCompany,
+} from "@clients/backend";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { roundNumber } from "@/utils/NumberConversionUtils";
+import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
+
+let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
+before(function () {
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
+    const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+    euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
+      "all-fields-defined-for-eu-taxo-non-financials",
+      preparedFixtures,
+    );
+  });
+});
 
 describeIf(
-  "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
+  "As a user, I expect to be able to upload EU taxonomy data for non-financials via the api, and that the uploaded data is displayed " +
+    "correctly in the frontend",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   function (): void {
-    beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-    });
-
-    let preparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
-
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-        preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
-      });
-    });
-
     /**
-     * Rounds a number to two decimal places.
-     * @param inputNumber The number which should be rounded
-     * @returns the rounded number
+     * validates that the data uploaded via api is displayed correctly for a company
+     * @param company the company associated to the data uploaded via form
+     * @param dataId the company data id for accessing its view page
      */
-    function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
-      return Math.round(inputNumber * 100) / 100;
+    function validateSomeValuesForTheReuploadedDataset(company: StoredCompany, dataId: string): void {
+      cy.visit(`/companies/${company.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/${dataId}`);
+      cy.get("h1").should("contain", company.companyInformation.companyName);
+      cy.get('span[data-test="_general"]').contains("General").should("exist");
+      ["Assurance", "CapEx", "OpEx"].forEach((category) => {
+        cy.get(`span[data-test="${category}"]`).contains(category.toUpperCase()).should("exist");
+      });
+      cy.get('td > [data-test="fiscalYearEnd"]')
+        .parent()
+        .next("td")
+        .contains(assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.general?.fiscalYearEnd))
+        .should("exist");
+      cy.get('div > [data-test="CapEx"]').click();
+      cy.get('td > [data-test="relativeShareInPercent"]')
+        .parent()
+        .next("td")
+        .contains(
+          roundNumber(
+            assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent),
+            2,
+          ),
+        )
+        .should("exist");
     }
-
-    /**
-     * This function uploads fixture data of one company and the associated data via API. Afterwards the result is
-     * checked using the provided verifier.
-     * @param fixtureData the company and its associated data
-     * @param euTaxonomyPageVerifier the verify method for the EU Taxonomy Page
-     */
-    function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(
-      fixtureData: FixtureData<EuTaxonomyDataForNonFinancials>,
-      euTaxonomyPageVerifier: () => void,
-    ): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(
-          token,
-          generateDummyCompanyInformation(fixtureData.companyInformation.companyName),
-        ).then((storedCompany) => {
-          return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
-            token,
-            storedCompany.companyId,
-            fixtureData.reportingPeriod,
-            fixtureData.t,
-          ).then(() => {
-            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
-            cy.visitAndCheckAppMount(
-              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
-            );
-            cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
-              euTaxonomyPageVerifier();
-            });
-          });
-        });
-      });
-    }
-
-    it("Create a EU Taxonomy Dataset via Api with total(€) and eligible(%) numbers", () => {
-      const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(preparedFixture, () => {
-        cy.get("body").should("contain", `With a total of`);
-        cy.get("body")
-          .should("contain", "Eligible Revenue")
-          .should(
-            "contain",
-            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligibleData!.valueAsPercentage!)}%`,
-          );
-        cy.get(".font-medium.text-3xl").should("contain", "€");
-      });
-    });
-
-    it("Create a EU Taxonomy Dataset via Api with only eligible(%) numbers", () => {
-      const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(preparedFixture, () => {
-        cy.get("body")
-          .should("contain", "Eligible OpEx")
-          .should(
-            "contain",
-            `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligibleData!.valueAsPercentage!)}%`,
-          );
-        cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `With a total of`);
-        cy.get(".font-medium.text-3xl").should("not.contain", "€");
-      });
-    });
-
-    it("Create a EU Taxonomy Dataset via Api without referenced reports and ensure that the reports banner is not displayed", () => {
-      const preparedFixture = getPreparedFixture("company_without_reports", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(preparedFixture, () => {
-        cy.get("div[data-test='reportsBanner']").should("not.exist");
-      });
-    });
 
     it(
-      "Upload EU Taxonomy Dataset via form with no values for revenue and assure that it can be viewed on the framework " +
-        "data view page with an appropriate message shown for the missing revenue data",
+      "Create a company and an EU taxonomy for non-financials dataset via api, then re-upload it with the " +
+        "upload form in Edit mode and assure that it worked by validating a couple of values",
       () => {
-        const companyName = "Missing field company";
-        const missingDataMessage = "No data has been reported";
-        getKeycloakToken(admin_name, admin_pw).then((token) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-            uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId, true);
-            cy.intercept(`/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
-            cy.visitAndCheckAppMount(
-              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
-            );
-            cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
-              cy.get("h1[class='mb-0']").contains(companyName);
-              cy.get("body").should("contain", "Eligible Revenue").should("contain", missingDataMessage);
+        const uniqueCompanyMarker = Date.now().toString();
+        const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
+        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+            return uploadFrameworkData(
+              DataTypeEnum.EutaxonomyNonFinancials,
+              token,
+              storedCompany.companyId,
+              "2021",
+              euTaxonomyForNonFinancialsFixtureForTest.t,
+            ).then((dataMetaInformation) => {
+              let dataSetFromPrefillRequest: EuTaxonomyDataForNonFinancials;
+              cy.ensureLoggedIn(admin_name, admin_pw);
+              cy.intercept({
+                url: `api/data/${dataMetaInformation.dataType}/${dataMetaInformation.dataId}`,
+                times: 1,
+              }).as("getDataToPrefillForm");
+              cy.visitAndCheckAppMount(
+                "/companies/" +
+                  storedCompany.companyId +
+                  "/frameworks/" +
+                  DataTypeEnum.EutaxonomyNonFinancials +
+                  "/upload?templateDataId=" +
+                  dataMetaInformation.dataId,
+              );
+              cy.wait("@getDataToPrefillForm", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
+                (interception) => {
+                  dataSetFromPrefillRequest = (
+                    interception.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+                  ).data;
+                },
+              );
+              cy.get("h1").should("contain", testCompanyName);
+              cy.intercept({
+                url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`,
+                times: 1,
+              }).as("postCompanyAssociatedData");
+              submitButton.clickButton();
+              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
+                (interception) => {
+                  cy.url().should("eq", getBaseUrl() + "/datasets");
+                  const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
+                  return new EuTaxonomyDataForNonFinancialsControllerApi(new Configuration({ accessToken: token }))
+                    .getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataMetaInformationOfReuploadedDataset.dataId)
+                    .then((axiosResponse) => {
+                      const reuploadedDatasetFromBackend = axiosResponse.data.data;
+                      compareObjectKeysAndValuesDeep(
+                        dataSetFromPrefillRequest as Record<string, object>,
+                        reuploadedDatasetFromBackend as Record<string, object>,
+                      );
+                      validateSomeValuesForTheReuploadedDataset(
+                        storedCompany,
+                        dataMetaInformationOfReuploadedDataset.dataId,
+                      );
+                    });
+                },
+              );
             });
           });
         });

@@ -5,7 +5,7 @@
   </div>
   <div v-if="dataSet && !waitingForData">
     <ShowReportsBanner
-      v-if="dataSet?.referencedReports && Object.keys(dataSet.referencedReports).length > 0"
+      v-if="dataSet?.referencedReports && Object.keys(dataSet.referencedReports).length > 0 && !viewInPreviewMode"
       :reports="dataSet.referencedReports"
     />
     <div v-else class="pb-3"></div>
@@ -13,14 +13,14 @@
       <div class="col-6">
         <TaxoInfoCard
           title="NFRD required"
-          :value="dataSet.reportingObligation"
+          :value="dataSet.nfrdMandatory"
           tooltipText="The NFRD (Non financial disclosure directive) applies to companies with more than 500 employees with a > €20M balance or > €40M net turnover."
         />
       </div>
       <div class="col-6">
         <TaxoInfoCard
           title="Level of Assurance"
-          :value="dataSet.assurance?.assurance"
+          :value="dataSet.assurance?.value"
           tooltipText="The Level of Assurance specifies the confidence level of the data reported.
                   Reasonable assurance:  relatively high degree of comfort that the subject matter is not materially misstated.
                   Limited assurance: moderate level of comfort that the subject matter is not materially misstated.
@@ -36,7 +36,7 @@
           <TaxoCard
             :name="`taxonomyEligibleActivity${fsType}`"
             title="Taxonomy-eligible economic activity"
-            :percent="dataSet.eligibilityKpis[fsType].taxonomyEligibleActivity?.value"
+            :percent="dataSet.eligibilityKpis[fsType].taxonomyEligibleActivityInPercent?.value"
           />
         </div>
         <div class="col-6">
@@ -44,28 +44,28 @@
             :name="`derivatives${fsType}`"
             title="Derivatives"
             taxonomy-kind=""
-            :percent="dataSet.eligibilityKpis[fsType].derivatives?.value"
+            :percent="dataSet.eligibilityKpis[fsType].derivativesInPercent?.value"
           />
         </div>
         <div class="col-6">
           <TaxoCard
             :name="`banksAndIssuers${fsType}`"
             title="Banks and issuers"
-            :percent="dataSet.eligibilityKpis[fsType].banksAndIssuers?.value"
+            :percent="dataSet.eligibilityKpis[fsType].banksAndIssuersInPercent?.value"
           />
         </div>
         <div class="col-6">
           <TaxoCard
             :name="`investmentNonNfrd${fsType}`"
             title="Non-NFRD"
-            :percent="dataSet.eligibilityKpis[fsType].investmentNonNfrd?.value"
+            :percent="dataSet.eligibilityKpis[fsType].investmentNonNfrdInPercent?.value"
           />
         </div>
         <div class="col-6">
           <TaxoCard
             :name="`taxonomyNonEligibleActivity${fsType}`"
             title="Taxonomy-non-eligible economic activity"
-            :percent="dataSet.eligibilityKpis[fsType].taxonomyNonEligibleActivity?.value"
+            :percent="dataSet.eligibilityKpis[fsType].taxonomyNonEligibleActivityInPercent?.value"
           />
         </div>
         <template v-if="fsType === 'CreditInstitution'">
@@ -76,48 +76,49 @@
           <div
             class="col-6"
             v-if="
-              dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans ||
-              (!dataSet.creditInstitutionKpis.tradingPortfolio && !dataSet.creditInstitutionKpis.interbankLoans)
+              dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoansInPercent ||
+              (!dataSet.creditInstitutionKpis.tradingPortfolioInPercent &&
+                !dataSet.creditInstitutionKpis.interbankLoansInPercent)
             "
           >
             <TaxoCard
               title="Trading portfolio & on demand interbank loans"
               name="tradingPortfolioAndOnDemandInterbankLoans"
               taxonomy-kind=""
-              :percent="dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans?.value"
+              :percent="dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoansInPercent?.value"
             />
           </div>
           <div
             class="col-6"
             v-if="
-              dataSet.creditInstitutionKpis.tradingPortfolio ||
-              !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
+              dataSet.creditInstitutionKpis.tradingPortfolioInPercent ||
+              !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoansInPercent
             "
           >
             <TaxoCard
               name="tradingPortfolio"
               title="Trading portfolio"
-              :percent="dataSet.creditInstitutionKpis.tradingPortfolio?.value"
+              :percent="dataSet.creditInstitutionKpis.tradingPortfolioInPercent?.value"
             />
           </div>
           <div
             class="col-6"
             v-if="
-              dataSet.creditInstitutionKpis.interbankLoans ||
-              !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoans
+              dataSet.creditInstitutionKpis.interbankLoansInPercent ||
+              !dataSet.creditInstitutionKpis.tradingPortfolioAndInterbankLoansInPercent
             "
           >
             <TaxoCard
               name="onDemandInterbankLoans"
               title="On demand interbank loans"
-              :percent="dataSet.creditInstitutionKpis.interbankLoans?.value"
+              :percent="dataSet.creditInstitutionKpis.interbankLoansInPercent?.value"
             />
           </div>
           <div class="col-6">
             <TaxoCard
               name="greenAssetRatioCreditInstitution"
               title="Green asset ratio"
-              :percent="dataSet.creditInstitutionKpis.greenAssetRatio?.value"
+              :percent="dataSet.creditInstitutionKpis.greenAssetRatioInPercent?.value"
             />
           </div>
         </template>
@@ -130,7 +131,7 @@
             <TaxoCard
               name="taxonomyEligibleNonLifeInsuranceActivities"
               title="Taxonomy-eligible non-life insurance economic activities"
-              :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivities?.value"
+              :percent="dataSet.insuranceKpis.taxonomyEligibleNonLifeInsuranceActivitiesInPercent?.value"
             />
           </div>
         </template>
@@ -143,7 +144,7 @@
             <TaxoCard
               name="greenAssetRatioInvestmentFirm"
               title="Green asset ratio"
-              :percent="dataSet.investmentFirmKpis.greenAssetRatio?.value"
+              :percent="dataSet.investmentFirmKpis.greenAssetRatioInPercent?.value"
             />
           </div>
         </template>
@@ -154,12 +155,12 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { EuTaxonomyDataForFinancials } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForFinancials } from "@clients/backend";
 import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
 import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
 import ShowReportsBanner from "@/components/resources/frameworkDataSearch/ShowReportsBanner.vue";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
@@ -174,6 +175,10 @@ export default defineComponent({
     dataID: {
       type: String,
       default: "loading",
+    },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
     },
   },
   mounted() {
@@ -201,11 +206,10 @@ export default defineComponent({
         if (this.dataID != "loading") {
           const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)(),
-          ).getEuTaxonomyDataForFinancialsControllerApi();
-          const companyAssociatedData =
-            await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-              assertDefined(this.dataID),
-            );
+          ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
+          const companyAssociatedData = await euTaxonomyDataForFinancialsControllerApi.getFrameworkData(
+            assertDefined(this.dataID),
+          );
           this.dataSet = companyAssociatedData.data.data;
           this.waitingForData = false;
         }

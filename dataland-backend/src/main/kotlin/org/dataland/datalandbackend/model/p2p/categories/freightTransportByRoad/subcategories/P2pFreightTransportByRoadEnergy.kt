@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.model.p2p.categories.freightTransportByRoad
 import java.math.BigDecimal
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the energy of the freight transport by road sector
+ * --- API model ---
+ * Fields of the subcategory "Energy" belonging to the category "Freight transport by road" of the p2p framework.
 */
 data class P2pFreightTransportByRoadEnergy(
-    val fuelMix: BigDecimal? = null,
+    val fuelMixInPercent: BigDecimal? = null,
 )

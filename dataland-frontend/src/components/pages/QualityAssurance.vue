@@ -1,10 +1,10 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="2">
-      <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
-        <TheContent class="paper-section flex">
-          <div class="col-12 text-left pb-0">
+    <TheContent class="paper-section flex">
+      <DatasetsTabMenu :initial-tab-index="2">
+        <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
+          <div class="col-12 text-left p-3">
             <h1>Quality Assurance</h1>
             <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
               <p class="font-medium text-xl">Loading data to be reviewed...</p>
@@ -17,7 +17,7 @@
                 id="qa-data-result"
                 :rowHover="true"
                 data-test="qa-review-section"
-                @row-click="loadDatasetAndOpenModal($event)"
+                @row-click="goToQaViewPage($event)"
                 paginator
                 paginator-position="top"
                 :rows="datasetsPerPage"
@@ -61,9 +61,9 @@
               </DataTable>
             </div>
           </div>
-        </TheContent>
-      </AuthorizationWrapper>
-    </DatasetsTabMenu>
+        </AuthorizationWrapper>
+      </DatasetsTabMenu>
+    </TheContent>
     <TheFooter />
   </AuthenticationWrapper>
 </template>
@@ -74,26 +74,24 @@ import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import {
-  CompanyDataControllerApiInterface,
-  CompanyInformation,
-  DataMetaInformation,
-  DataTypeEnum,
-  MetaDataControllerApiInterface,
+  type CompanyDataControllerApiInterface,
+  type CompanyInformation,
+  type DataMetaInformation,
+  type MetaDataControllerApiInterface,
 } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
-import DataTable, { DataTablePageEvent, DataTableRowClickEvent } from "primevue/datatable";
+import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from "primevue/datatable";
 import Column from "primevue/column";
-import { humanizeString } from "@/utils/StringHumanizer";
-import QADatasetModal from "@/components/general/QaDatasetModal.vue";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { AxiosError } from "axios";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import { QaControllerApi } from "@clients/qaservice";
+import { type QaControllerApi } from "@clients/qaservice";
 
 export default defineComponent({
   name: "QualityAssurance",
@@ -116,10 +114,8 @@ export default defineComponent({
   data() {
     return {
       dataIdList: [] as Array<string>,
-      dataId: "",
       displayDataOfPage: [] as QaDataObject[],
       waitingForData: true,
-      dataSet: null as unknown as object,
       KEYCLOAK_ROLE_REVIEWER,
       metaInformation: null as DataMetaInformation,
       companyInformation: null as CompanyInformation | null,
@@ -134,7 +130,7 @@ export default defineComponent({
   },
   methods: {
     convertUnixTimeInMsToDateString,
-    humanizeString,
+    humanizeString: humanizeStringOrNumber,
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
      */
@@ -201,93 +197,14 @@ export default defineComponent({
       }
     },
     /**
-     * Retrieves the dataset corresponding to the given dataId
-     * @param data is the quality assurance data object used to retrieve the actual dataset to be reviewed
+     * Navigates to the view framework data page on a click on the row of the company
+     * @param event the row click event
+     * @returns the promise of the router push action
      */
-    async getDataSet(data: QaDataObject) {
-      try {
-        const filteredData = data.metaInformation.dataType;
-        const dataId = data.dataId;
-        this.dataId = dataId;
-        if (filteredData === DataTypeEnum.EutaxonomyNonFinancials) {
-          const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-          ).getEuTaxonomyDataForNonFinancialsControllerApi();
-          const companyAssociatedDataResponse =
-            await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-              assertDefined(dataId),
-            );
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (filteredData === DataTypeEnum.EutaxonomyFinancials) {
-          const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-          ).getEuTaxonomyDataForFinancialsControllerApi();
-          const companyAssociatedDataResponse =
-            await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-              assertDefined(dataId),
-            );
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (filteredData === DataTypeEnum.Lksg) {
-          const lksgDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-          ).getLksgDataControllerApi();
-          const companyAssociatedDataResponse = await lksgDataControllerApi.getCompanyAssociatedLksgData(
-            assertDefined(dataId),
-          );
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (filteredData === DataTypeEnum.Sfdr) {
-          const sfdrDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-          ).getSfdrDataControllerApi();
-
-          const companyAssociatedDataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (filteredData === DataTypeEnum.P2p) {
-          const p2pDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-          ).getP2pDataControllerApi();
-          const companyAssociatedDataResponse = await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId);
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else if (filteredData === DataTypeEnum.Sme) {
-          const smeDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-          ).getSmeDataControllerApi();
-          const companyAssociatedDataResponse = await smeDataControllerApi.getCompanyAssociatedSmeData(dataId);
-          this.dataSet = assertDefined(companyAssociatedDataResponse.data.data);
-        } else {
-          throw new Error("The data type of the selected dataset is not supported by the QA frontend.");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * Opens a modal to display a table with the provided list of production sites
-     * @param event the event which triggers the method
-     */
-    async loadDatasetAndOpenModal(event: DataTableRowClickEvent) {
+    goToQaViewPage(event: DataTableRowClickEvent) {
       const qaDataObject = event.data as QaDataObject;
-      await this.getDataSet(qaDataObject);
-      this.$dialog.open(QADatasetModal, {
-        props: {
-          header:
-            "Reviewing " +
-            qaDataObject.metaInformation.dataType +
-            " data for " +
-            qaDataObject.companyInformation.companyName +
-            " for the reporting period " +
-            qaDataObject.metaInformation.reportingPeriod,
-          modal: true,
-          dismissableMask: true,
-        },
-        data: {
-          dataSetToReview: this.dataSet,
-          dataId: this.dataId,
-        },
-        onClose: () => {
-          this.getQaDataForCurrentPage().catch((error) => console.log(error));
-        },
-      });
+      const qaUri = `/companies/${qaDataObject.metaInformation.companyId}/frameworks/${qaDataObject.metaInformation.dataType}/${qaDataObject.dataId}`;
+      return this.$router.push(qaUri);
     },
     /**
      * Updates the data for the current page

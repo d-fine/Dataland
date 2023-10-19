@@ -1,31 +1,15 @@
 import { DataTypeEnum } from "@clients/backend";
 
-/**
- * Contains global constants
- */
-
-// ----------------------DATALAND SETTINGS----------------------
-export const DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES =
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  (parseInt(import.meta.env.VITE_DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES) || 2) * 1000000;
-
-export const DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES =
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  (parseInt(import.meta.env.VITE_DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES) || 100) * 1000000;
-
-export const MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY =
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  parseInt(import.meta.env.VITE_MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY) || 3650;
-
-// ----------------------FRONTEND SETTINGS ONLY----------------------
-
 // - Available frameworks settings
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = Object.values(DataTypeEnum) as Array<DataTypeEnum>;
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE: DataTypeEnum[] = Object.values(DataTypeEnum);
 
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = Object.values(DataTypeEnum).filter(
-  (frameworkName) =>
-    [DataTypeEnum.Sfdr as string, DataTypeEnum.Sme as string, DataTypeEnum.P2p as string].indexOf(frameworkName) === -1,
-) as Array<DataTypeEnum>;
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = [
+  DataTypeEnum.P2p,
+  DataTypeEnum.EutaxonomyFinancials,
+  DataTypeEnum.Sfdr,
+  DataTypeEnum.Lksg,
+  DataTypeEnum.EutaxonomyNonFinancials,
+];
 
 // - Keycloak and session management related settings
 
@@ -45,5 +29,9 @@ export const TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS =
 export const TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS = 2000;
 
 export const UPLOAD_FILE_SIZE_DISPLAY_DECIMALS = 2;
+
+// Same as standard for Windows machines. File name can't have one of the special characters <>:"|?/*\
+// and shouldn't start or end with a whitespace or end with the special character .
+export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|?/*\\.\s]$/;
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;

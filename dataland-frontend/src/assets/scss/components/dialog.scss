@@ -1,3 +1,14 @@
+.dataland-dialog {
+  padding: 0.1rem 1.5rem 1rem;
+  background-color: white;
+}
+
+.dataland-dialog-sm {
+  min-width: 360px;
+  max-width: 360px;
+  width: 360px;
+}
+
 .p-dialog {
   border-radius: 0;
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, .1);

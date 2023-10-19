@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script validates, whether the backend-container and other services are running.
 # It ensures that the e2e-test do not fail due to unreachable services.
 

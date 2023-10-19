@@ -1,14 +1,19 @@
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi, uploadCompanyViaForm } from "@e2e/utils/CompanyUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { IdentifierType, DataTypeEnum, EuTaxonomyDataForFinancials, LksgData, StoredCompany } from "@clients/backend";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
+import {
+  IdentifierType,
+  DataTypeEnum,
+  type EuTaxonomyDataForFinancials,
+  type LksgData,
+  type StoredCompany,
+} from "@clients/backend";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { describeIf } from "@e2e/support/TestUtility";
-import { getRandomReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { generateReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   describeIf(
@@ -51,12 +56,10 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));
             })
             .then((storedCompany) => {
-              const preparedFixture = getPreparedFixture(
-                "eligible-activity-Point-0.26",
-                euTaxoFinancialPreparedFixtures,
-              );
+              const preparedFixture = getPreparedFixture("eligible-activity-Point-26", euTaxoFinancialPreparedFixtures);
               storedCompanyForManyDatasetsCompany = storedCompany;
-              return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+              return uploadFrameworkData(
+                DataTypeEnum.EutaxonomyFinancials,
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
                 "2023",
@@ -70,10 +73,11 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
                 .then(() => {
                   const preparedFixture = getPreparedFixture(
-                    "eligible-activity-Point-0.26",
+                    "eligible-activity-Point-26",
                     euTaxoFinancialPreparedFixtures,
                   );
-                  return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                  return uploadFrameworkData(
+                    DataTypeEnum.EutaxonomyFinancials,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     "2022",
@@ -83,10 +87,11 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                 .then((dataMetaInformationOfSecondUpload) => {
                   dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
                   const preparedFixture = getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures);
-                  return uploadOneLksgDatasetViaApi(
+                  return uploadFrameworkData(
+                    DataTypeEnum.Lksg,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
-                    getRandomReportingPeriod(),
+                    generateReportingPeriod(),
                     preparedFixture.t,
                   );
                 })
@@ -147,11 +152,11 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .find("[data-test='createDatasetButton']")
           .should("have.length", 2);
 
-        cy.get("div[id=sfdrContainer]").contains("Be the first to create this dataset");
-        cy.get("div[id=sfdrContainer]").contains(
+        cy.get("div[id=smeContainer]").contains("Be the first to create this dataset");
+        cy.get("div[id=smeContainer]").contains(
           "Uploading data for this framework is currently not enabled on the Dataland frontend.",
         );
-        cy.get("div[id=sfdrContainer]").find('button.p-disabled[aria-label="Create Dataset"]').should("exist");
+        cy.get("div[id=smeContainer]").find('button.p-disabled[aria-label="Create Dataset"]').should("exist");
 
         cy.get("div[id=lksgContainer]").contains("Create another dataset for LkSG");
         cy.get("div[id=lksgContainer]").find('button.p-disabled[aria-label="Create Dataset"]').should("not.exist");

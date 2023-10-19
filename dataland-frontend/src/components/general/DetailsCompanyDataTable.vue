@@ -30,8 +30,8 @@
 import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -42,8 +42,8 @@ export default defineComponent({
       listOfRowContents: [] as Array<object | string>,
       kpiKeyOfTable: "" as string,
       keysOfValuesForColumnDisplay: [] as string[],
-      keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing"] as string[],
-      humanizeString,
+      keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing", "sectors"] as string[],
+      humanizeString: humanizeStringOrNumber,
       columnHeaders: {},
     };
   },
@@ -72,7 +72,9 @@ export default defineComponent({
     generateColsNames(): void {
       const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
         for (const key of Object.keys(rowContent)) {
-          if (keyList.indexOf(key) === -1) keyList.push(key);
+          if (keyList.indexOf(key) === -1) {
+            keyList.push(key);
+          }
         }
         return keyList;
       }, []);
@@ -88,7 +90,7 @@ export default defineComponent({
      */
     humanizeStringIfNecessary(key: string, value: string): string {
       if (this.keysWithValuesToBeHumanized.includes(key)) {
-        return humanizeString(value);
+        return humanizeStringOrNumber(value);
       }
       return value;
     },

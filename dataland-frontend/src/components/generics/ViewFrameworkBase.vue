@@ -1,101 +1,118 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <TheContent class="paper-section min-h-screen">
-      <MarginWrapper class="text-left surface-0" style="margin-right: 0">
-        <BackButton />
-        <FrameworkDataSearchBar
-          :companyIdIfOnViewPage="companyID"
-          class="mt-2"
-          ref="frameworkDataSearchBar"
-          @search-confirmed="handleSearchConfirm"
-        />
-      </MarginWrapper>
-      <MarginWrapper class="surface-0" style="margin-right: 0">
-        <div class="grid align-items-end">
-          <div class="col-9">
-            <CompanyInformation :companyID="companyID" />
+  <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
+  <TheContent class="paper-section min-h-screen">
+    <MarginWrapper class="text-left surface-0" style="margin-right: 0">
+      <BackButton />
+      <FrameworkDataSearchBar
+        v-if="!viewInPreviewMode && !isReviewableByCurrentUser"
+        :companyIdIfOnViewPage="companyID"
+        class="mt-2"
+        ref="frameworkDataSearchBar"
+        @search-confirmed="handleSearchConfirm"
+      />
+    </MarginWrapper>
+    <MarginWrapper class="surface-0" style="margin-right: 0">
+      <div class="grid align-items-end">
+        <div class="col-9">
+          <CompanyInformationBanner
+            :companyId="companyID"
+            @fetchedCompanyInformation="handleFetchedCompanyInformation"
+          />
+        </div>
+      </div>
+    </MarginWrapper>
+    <div v-if="isDataProcessedSuccesfully">
+      <MarginWrapper
+        class="text-left surface-0 dataland-toolbar"
+        style="margin-right: 0"
+        :class="[pageScrolled ? ['fixed w-100'] : '']"
+      >
+        <div class="flex justify-content-between align-items-center d-search-filters-panel">
+          <div class="flex">
+            <Dropdown
+              v-if="!isReviewableByCurrentUser"
+              id="chooseFrameworkDropdown"
+              v-model="chosenDataTypeInDropdown"
+              :options="dataTypesInDropdown"
+              optionLabel="label"
+              optionValue="value"
+              :placeholder="humanizeStringOrNumber(dataType)"
+              aria-label="Choose framework"
+              class="fill-dropdown always-fill"
+              dropdownIcon="pi pi-angle-down"
+              @change="handleChangeFrameworkEvent"
+            />
+            <slot name="reportingPeriodDropdown" />
           </div>
+          <div class="flex align-content-end align-items-center">
+            <QualityAssuranceButtons
+              v-if="isReviewableByCurrentUser"
+              :meta-info="singleDataMetaInfoToDisplay"
+              :company-name="fetchedCompanyInformation.companyName"
+            />
+            <PrimeButton
+              v-if="isEditableByCurrentUser"
+              class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
+              aria-label="EDIT DATA"
+              @click="editDataset"
+              data-test="editDatasetButton"
+            >
+              <span class="px-2">EDIT DATA</span>
+              <span
+                v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
+                class="material-icons-outlined"
+                >arrow_drop_down</span
+              >
+            </PrimeButton>
+            <router-link
+              v-if="hasUserUploaderRights"
+              :to="targetLinkForAddingNewDataset"
+              class="no-underline ml-3"
+              data-test="gotoNewDatasetButton"
+            >
+              <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
+                <span class="material-icons-outlined px-2">queue</span>
+                <span class="px-2">NEW DATASET</span>
+              </PrimeButton>
+            </router-link>
+          </div>
+          <OverlayPanel ref="reportingPeriodsOverlayPanel">
+            <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
+          </OverlayPanel>
         </div>
       </MarginWrapper>
-      <div v-if="isDataProcessedSuccesfully">
-        <MarginWrapper class="text-left surface-0" style="margin-right: 0">
-          <div class="flex justify-content-between align-items-center d-search-filters-panel">
-            <div class="flex">
-              <Dropdown
-                id="chooseFrameworkDropdown"
-                v-model="chosenDataTypeInDropdown"
-                :options="dataTypesInDropdown"
-                optionLabel="label"
-                optionValue="value"
-                :placeholder="humanizeString(dataType)"
-                aria-label="Choose framework"
-                class="fill-dropdown always-fill"
-                dropdownIcon="pi pi-angle-down"
-                @change="handleChangeFrameworkEvent"
-              />
-              <slot name="reportingPeriodDropdown"></slot>
-            </div>
-            <div v-if="hasUserUploaderRights" class="flex align-content-end align-items-center">
-              <PrimeButton
-                v-if="canEdit"
-                class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
-                aria-label="EDIT DATA"
-                @click="editDataset"
-                data-test="editDatasetButton"
-              >
-                <span class="px-2">EDIT DATA</span>
-                <span
-                  v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
-                  class="material-icons-outlined"
-                  >arrow_drop_down</span
-                >
-              </PrimeButton>
-              <router-link :to="addNewDatasetLinkTarget" class="no-underline" data-test="gotoNewDatasetButton">
-                <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
-                  <span class="material-icons-outlined px-2">queue</span>
-                  <span class="px-2">NEW DATASET</span>
-                </PrimeButton>
-              </router-link>
-            </div>
-            <OverlayPanel ref="reportingPeriodsOverlayPanel">
-              <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
-            </OverlayPanel>
-          </div>
-        </MarginWrapper>
-        <MarginWrapper style="margin-right: 0">
-          <slot name="content"></slot>
-        </MarginWrapper>
-      </div>
-      <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
-    </TheContent>
-    <TheFooter />
-  </AuthenticationWrapper>
+      <MarginWrapper style="margin-right: 0">
+        <slot name="content" :inReviewMode="isReviewableByCurrentUser"></slot>
+      </MarginWrapper>
+    </div>
+    <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
+  </TheContent>
+  <TheFooter />
 </template>
 
 <script lang="ts">
 import BackButton from "@/components/general/BackButton.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
-import CompanyInformation from "@/components/pages/CompanyInformation.vue";
+import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
-import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
+import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
 import { defineComponent, inject, ref } from "vue";
 
 import TheFooter from "@/components/general/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
-import { humanizeString } from "@/utils/StringHumanizer";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
+import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -106,24 +123,29 @@ export default defineComponent({
     MarginWrapper,
     FrameworkDataSearchBar,
     Dropdown,
-    AuthenticationWrapper,
-    CompanyInformation,
+    CompanyInformationBanner,
     TheFooter,
     PrimeButton,
     OverlayPanel,
     SelectReportingPeriodDialog,
+    QualityAssuranceButtons,
   },
   emits: ["updateActiveDataMetaInfoForChosenFramework"],
   props: {
     companyID: {
       type: String,
+      required: true,
     },
     dataType: {
       type: String,
+      required: true,
     },
     singleDataMetaInfoToDisplay: {
       type: Object as () => DataMetaInformation,
-      required: false,
+    },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {
@@ -134,41 +156,66 @@ export default defineComponent({
   },
   data() {
     return {
+      fetchedCompanyInformation: {} as CompanyInformation,
+
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
-      humanizeString: humanizeString,
+      humanizeStringOrNumber,
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
+      pageScrolled: false,
+      scrollEmittedByToolbar: false,
+      latestScrollPosition: 0,
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccesfully: true,
-      hasUserUploaderRights: undefined,
+      hasUserUploaderRights: false,
+      hasUserReviewerRights: false,
     };
   },
   computed: {
-    canEdit() {
+    isReviewableByCurrentUser() {
+      return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
+    },
+    isEditableByCurrentUser() {
       return (
+        this.hasUserUploaderRights &&
         ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum) &&
         (!this.singleDataMetaInfoToDisplay ||
           this.singleDataMetaInfoToDisplay.currentlyActive ||
           this.singleDataMetaInfoToDisplay.qaStatus === "Rejected")
       );
     },
-    addNewDatasetLinkTarget() {
+    targetLinkForAddingNewDataset() {
       return `/companies/${this.companyID ?? ""}/frameworks/upload`;
     },
   },
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
+
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })
       .catch((error) => console.log(error));
+    checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
+      .then((hasUserReviewerRights) => {
+        this.hasUserReviewerRights = hasUserReviewerRights;
+      })
+      .catch((error) => console.log(error));
+
     window.addEventListener("scroll", this.windowScrollHandler);
   },
   methods: {
+    /**
+     * Saves the company information emitted by the CompanyInformation vue components event.
+     * @param fetchedCompanyInformation the company information for the current company Id
+     */
+    handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
+      this.fetchedCompanyInformation = fetchedCompanyInformation;
+    },
+
     /**
      * Opens Overlay Panel for selecting a reporting period to edit data for
      * @param event event
@@ -210,6 +257,18 @@ export default defineComponent({
     handleScroll() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.frameworkDataSearchBar?.$refs.autocomplete.hide();
+      const windowScrollY = window.scrollY;
+      if (this.scrollEmittedByToolbar) {
+        this.scrollEmittedByToolbar = false;
+      } else if (this.latestScrollPosition > windowScrollY) {
+        //ScrollUP event
+        this.latestScrollPosition = windowScrollY;
+        this.pageScrolled = document.documentElement.scrollTop >= 195;
+      } else {
+        //ScrollDOWN event
+        this.latestScrollPosition = windowScrollY;
+        this.pageScrolled = document.documentElement.scrollTop > 195;
+      }
     },
     /**
      * Visits the framework view page for the framework which was chosen in the dropdown
@@ -217,7 +276,7 @@ export default defineComponent({
      */
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {
-        void this.$router.push(`/companies/${this.companyID as string}/frameworks/${this.chosenDataTypeInDropdown}`);
+        void this.$router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
     },
     /**
@@ -251,7 +310,7 @@ export default defineComponent({
       });
       listOfDistinctAvailableAndViewableFrameworksForCompany.sort((a, b) => a.localeCompare(b));
       listOfDistinctAvailableAndViewableFrameworksForCompany.forEach((dataType) => {
-        this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
+        this.dataTypesInDropdown.push({ label: humanizeStringOrNumber(dataType), value: dataType });
       });
     },
 

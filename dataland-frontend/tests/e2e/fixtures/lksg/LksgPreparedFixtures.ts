@@ -1,6 +1,8 @@
-import { FixtureData } from "@sharedUtils/Fixtures";
-import { LksgData } from "@clients/backend";
-import { generateLksgFixture, generateOneLksgFixtureWithManyNulls, generateProductionSite } from "./LksgDataFixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
+import { type LksgData, YesNo } from "@clients/backend";
+import { generateLksgFixture, generateProductionSite, LksgGenerator } from "./LksgDataFixtures";
+import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
@@ -16,7 +18,43 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-06-22"));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2022-07-30"));
   preparedFixtures.push(manipulateFixtureForLksgDatasetWithLotsOfNulls(generateOneLksgFixtureWithManyNulls()));
+  preparedFixtures.push(manipulateFixtureToContainProcurementCategories(generateLksgFixture(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureToNotBeAManufacturingCompany(generateLksgFixture(1, 0)[0]));
   return preparedFixtures;
+}
+
+/**
+ * Ensures that the fixture contains production sites but is not a manufacturing company (to test show-if)
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureToNotBeAManufacturingCompany(input: FixtureData<LksgData>): FixtureData<LksgData> {
+  input.companyInformation.companyName = "lksg-not-a-manufacturing-company-but-has-production-sites";
+  const twoProductionSites = [generateProductionSite(), generateProductionSite()];
+
+  input.t.general.productionSpecific!.manufacturingCompany = YesNo.No;
+  input.t.general.productionSpecific!.productionSites = YesNo.No;
+  input.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;
+
+  return input;
+}
+
+/**
+ * Ensures that the fixture contains procurement categories that are displayed (respecting show-if)
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureToContainProcurementCategories(input: FixtureData<LksgData>): FixtureData<LksgData> {
+  input.companyInformation.companyName = "lksg-with-procurement-categories";
+  input.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
+  if (
+    Object.keys(input.t.general.productionSpecificOwnOperations!.productsServicesCategoriesPurchased ?? {}).length < 1
+  ) {
+    throw Error(
+      "The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!",
+    );
+  }
+  return input;
 }
 
 /**
@@ -40,7 +78,15 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
  */
 function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
   const twoProductionSites = [generateProductionSite(), generateProductionSite()];
+  const lksgGeneratorNoUndefined = new LksgGenerator(0);
+
   input.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
+
+  input.t.governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification =
+    lksgGeneratorNoUndefined.randomBaseDataPoint(YesNo.Yes);
+
+  input.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
+  input.t.general.productionSpecific!.productionSites = YesNo.Yes;
   input.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;
   return input;
 }
@@ -80,4 +126,46 @@ function manipulateFixtureForAllFields(fixture: FixtureData<LksgData>): FixtureD
 function manipulateFixtureForLksgDatasetWithLotsOfNulls(fixture: FixtureData<LksgData>): FixtureData<LksgData> {
   fixture.companyInformation.companyName = "lksg-a-lot-of-nulls";
   return fixture;
+}
+
+/**
+ * Generates a Lksg fixture with a dataset with many null values for categories, subcategories and field values
+ * @returns the fixture
+ */
+function generateOneLksgFixtureWithManyNulls(): FixtureData<LksgData> {
+  return generateFixtureDataset<LksgData>(
+    () => generateOneLksgDatasetWithManyNulls(),
+    1,
+    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || generateReportingPeriod(),
+  )[0];
+}
+
+/**
+ * Generates an LKSG dataset with the value null for some categories, subcategories and field values.
+ * Datasets that were uploaded via the Dataland API can look like this in production.
+ * @returns the dataset
+ */
+function generateOneLksgDatasetWithManyNulls(): LksgData {
+  return {
+    general: {
+      masterData: {
+        dataDate: "1999-12-24",
+        headOfficeInGermany: null!,
+        groupOfCompanies: null!,
+        groupOfCompaniesName: null!,
+        industry: null!,
+        numberOfEmployees: null!,
+        seasonalOrMigrantWorkers: null!,
+        shareOfTemporaryWorkers: null!,
+        totalRevenueCurrency: null!,
+        annualTotalRevenue: null!,
+        fixedAndWorkingCapital: null!,
+      },
+      productionSpecific: null!,
+      productionSpecificOwnOperations: null!,
+    },
+    governance: null!,
+    social: null!,
+    environmental: null!,
+  };
 }

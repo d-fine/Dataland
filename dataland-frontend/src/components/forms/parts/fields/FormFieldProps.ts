@@ -1,6 +1,6 @@
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import { deepCopyObject, ObjectType } from "@/utils/UpdateObjectUtils";
-import { ComponentPropsOptions } from "vue";
+import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { deepCopyObject, type ObjectType } from "@/utils/UpdateObjectUtils";
+import { type ComponentPropsOptions } from "vue";
 
 export const BaseFormFieldProps = {
   name: {
@@ -36,6 +36,13 @@ export const YesNoFormFieldProps = Object.assign(deepCopyObject(BaseFormFieldPro
   certificateRequiredIfYes: {
     type: Boolean,
     default: false,
+  },
+  evidenceDesired: {
+    type: Boolean,
+    default: false,
+  },
+  unit: {
+    type: String,
   },
 }) as Readonly<ComponentPropsOptions>;
 

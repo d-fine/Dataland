@@ -1,8 +1,9 @@
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
-import { DatasetTableInfo, DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import { type DatasetTableInfo, DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { DataTypeEnum } from "@clients/backend";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component test for DatasetOverviewTable", () => {
   const nameOfCompanyAlpha = "Imaginary-Corporate";
@@ -38,7 +39,7 @@ describe("Component test for DatasetOverviewTable", () => {
   function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {
     const keycloakMock = minimalKeycloakMock({
       userId: "Mock-User-Id",
-      roles: ["ROLE_USER", "ROLE_UPLOADER"],
+      roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
     });
     cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
       keycloak: keycloakMock,
@@ -51,7 +52,12 @@ describe("Component test for DatasetOverviewTable", () => {
 
   it("Check if the table rows look as expected", () => {
     prepareSimpleDatasetOverviewTable([datasetTableInfoMockForAlpha]);
-    const expectedRowContents = [nameOfCompanyAlpha, humanizeString(dataTypeOfDatasetForAlpha), "2023", "APPROVED"];
+    const expectedRowContents = [
+      nameOfCompanyAlpha,
+      humanizeStringOrNumber(dataTypeOfDatasetForAlpha),
+      "2023",
+      "APPROVED",
+    ];
     cy.get("tbody td").should((elements) => {
       expect(elements.length).to.equal(6);
     });

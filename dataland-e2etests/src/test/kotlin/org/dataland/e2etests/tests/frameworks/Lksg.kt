@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationLksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.LksgProcurementCategory
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -15,11 +16,32 @@ class Lksg {
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForLksgData
         .getCompanyInformationWithoutIdentifiers(1)
 
+    private fun removeNullMapEntriesFromSupplierCountryCount(dataset: LksgData): LksgData {
+        val fixedDataSet = dataset.copy()
+        // The following block is a workaround to circumvent a bug in the generated clients
+        // which do not allow for null entries as map values but retain them at the same time.
+        // On upload, however, they are not being serialized.
+        fixedDataSet.general.productionSpecificOwnOperations?.productsServicesCategoriesPurchased?.forEach {
+            val keysOfEntriesToDelete = mutableListOf<String>()
+            it.value.numberOfSuppliersPerCountryCode?.forEach { numberOfSuppliersPerCountry ->
+                if (numberOfSuppliersPerCountry.value == null) {
+                    keysOfEntriesToDelete.add(numberOfSuppliersPerCountry.key)
+                }
+            }
+            keysOfEntriesToDelete.forEach { key ->
+                (it.value.numberOfSuppliersPerCountryCode as? MutableMap<String, LksgProcurementCategory>)?.remove(key)
+            }
+        }
+
+        return fixedDataSet
+    }
+
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
+        val fixedDataSet = removeNullMapEntriesFromSupplierCountryCount(listOfOneLksgDataSet[0])
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
-            listOfOneLksgDataSet,
+            listOf(fixedDataSet),
             apiAccessor::lksgUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -30,7 +52,7 @@ class Lksg {
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(listOfOneLksgDataSet[0], downloadedAssociatedData.data)
+        assertEquals(fixedDataSet, downloadedAssociatedData.data)
     }
 
     @Test
@@ -86,8 +108,13 @@ class Lksg {
     private fun uploadFourDatasetsForACompany(): Pair<String, List<LksgData>> {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val lksgData = apiAccessor.testDataProviderForLksgData.getTData(2)
+        val firstDataset = removeNullMapEntriesFromSupplierCountryCount(lksgData[0])
+        val secondDataset = removeNullMapEntriesFromSupplierCountryCount(lksgData[1])
         val uploadPairs = listOf(
-            Pair(lksgData[0], "2022"), Pair(lksgData[0], "2022"), Pair(lksgData[1], "2023"), Pair(lksgData[1], "2023"),
+            Pair(firstDataset, "2022"),
+            Pair(firstDataset, "2022"),
+            Pair(secondDataset, "2023"),
+            Pair(secondDataset, "2023"),
         )
         uploadPairs.forEach { pair ->
             apiAccessor.uploadWithWait(

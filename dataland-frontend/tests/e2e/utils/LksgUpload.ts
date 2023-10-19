@@ -1,68 +1,7 @@
-import {
-  CompanyInformation,
-  Configuration,
-  DataMetaInformation,
-  LksgData,
-  LksgDataControllerApi,
-} from "@clients/backend";
-import { UploadIds } from "./GeneralApiUtils";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
+import { type CompanyAssociatedDataLksgData } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
-
-/**
- * Uploads a single LKSG data entry for a company
- * @param token The API bearer token to use
- * @param companyId The Id of the company to upload the dataset for
- * @param reportingPeriod The reporting period to use for the upload
- * @param data The Dataset to upload
- * @param bypassQa (optional) should the entry be automatically Approved. Default: true
- * @returns a promise on the created data meta information
- */
-export async function uploadOneLksgDatasetViaApi(
-  token: string,
-  companyId: string,
-  reportingPeriod: string,
-  data: LksgData,
-  bypassQa = true,
-): Promise<DataMetaInformation> {
-  const response = await new LksgDataControllerApi(
-    new Configuration({ accessToken: token }),
-  ).postCompanyAssociatedLksgData(
-    {
-      companyId,
-      reportingPeriod,
-      data,
-    },
-    bypassQa,
-  );
-  return response.data;
-}
-
-/**
- * Uploads a company and single LkSG data entry for a company
- * @param token The API bearer token to use
- * @param companyInformation The company information to use for the company upload
- * @param testData The Dataset to upload
- * @param reportingPeriod The reporting period to use for the upload
- * @returns an object which contains the companyId from the company upload and the dataId from the data upload
- */
-export function uploadCompanyAndLksgDataViaApi(
-  token: string,
-  companyInformation: CompanyInformation,
-  testData: LksgData,
-  reportingPeriod: string,
-): Promise<UploadIds> {
-  return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
-    (storedCompany) => {
-      return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, reportingPeriod, testData).then(
-        (dataMetaInformation) => {
-          return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
-        },
-      );
-    },
-  );
-}
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
  * Fills in dummy data for a single production site. Use this in a cy.within context of a production site container div
@@ -127,6 +66,16 @@ function selectANaceCode(fieldName: string): void {
     .parents(".p-treenode-label")
     .last()
     .find("div.p-checkbox-box")
+    .should("not.exist");
+
+  cy.get("button.p-tree-toggler.p-link").eq(0).click();
+  cy.get("button.p-tree-toggler.p-link").eq(1).click();
+  cy.get("button.p-tree-toggler.p-link").eq(2).click();
+  cy.get(".p-treenode-label")
+    .contains("01.12 - Growing of rice")
+    .parents(".p-treenode-label")
+    .last()
+    .find("div.p-checkbox-box")
     .click();
 
   cy.get(`div[data-test='${fieldName}']`).click();
@@ -187,7 +136,7 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("input[name=humanRightsViolationActionMeasures]").type("Dummy answer");
   cy.get("input[name=humanRightsViolations]").type("Dummy answer");
   cy.get("input[name=numberOfEmployees]").type("7999");
-  cy.get("input[name=totalRevenue]").type("10043000");
+  cy.get("input[name=annualTotalRevenue]").type("10043000");
   cy.get("input[name=groupOfCompaniesName]").type("TestCompanyGroup");
   cy.get("input[name=capacity]").type("123");
 
@@ -227,7 +176,7 @@ function fillInMostImportantProducts(): void {
 /**
  * Fills out Procurement Categories
  */
-export function fillInProcurementCategories(): void {
+function fillInProcurementCategories(): void {
   cy.get('[data-test="dataPointToggleButton"]').first().click();
   cy.get('[data-test="suppliersPerCountryCode"] .p-multiselect').should("exist").click();
 
@@ -265,6 +214,22 @@ function checkIfUploadFieldDependenciesAreRespected(): void {
 }
 
 /**
+ *  Verify that selected documents are referenced in the actual dataset
+ */
+function checkIfUploadedFilesAreReferencedInTheDataset(): void {
+  cy.intercept("POST", "**/api/data/lksg").as("postLksgData");
+  submitButton.clickButton();
+  cy.wait("@postLksgData").then((interception) => {
+    const postedObject = interception.request.body as CompanyAssociatedDataLksgData;
+    const postedLksgDataset = postedObject.data;
+    const referencedReportHash =
+      assertDefined(postedLksgDataset).governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification!
+        .dataSource!.fileReference;
+    expect(referencedReportHash).to.be.not.empty;
+  });
+}
+
+/**
  * Uploads a single LKSG data entry for a company via form
  */
 export function uploadLksgDataViaForm(): void {
@@ -288,7 +253,7 @@ export function uploadLksgDataViaForm(): void {
   fillRequiredLksgFieldsWithDummyData();
 
   testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
-  submitButton.clickButton();
+  checkIfUploadedFilesAreReferencedInTheDataset();
 
   cy.get("div.p-message-success").should("be.visible");
 }

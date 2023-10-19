@@ -1,34 +1,43 @@
 <template>
-  <div>
-    <pre id="dataset-container">{{ datasetAsJson }}</pre>
-  </div>
-  <MiddleCenterDiv class="col-12">
-    <div v-if="reviewSubmitted">
-      <SuccessMessage v-if="reviewSuccessful" success-message="Review successfully submitted." />
-      <FailMessage v-else message="The resource you tried to access is not available. Please close the data pop-up." />
+  <MiddleCenterDiv class="w-30 flex-direction-column">
+    <div>{{ message }}</div>
+    <div v-if="!reviewSubmitted" class="text-center px-7 py-4">
+      <p class="font-medium text-xl">Submitting...</p>
+      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
-    <div autofocus="autofocus" v-else>
-      <PrimeButton @click="setQaStatusTo(QaStatus.Accepted)" label="Accept Dataset" id="accept-button" />
-      <PrimeButton @click="setQaStatusTo(QaStatus.Rejected)" label="Reject Dataset" id="reject-button" />
+    <div v-if="reviewSubmitted" class="col-12 text-center">
+      <SuccessMessage
+        v-if="reviewSuccessful"
+        data-test="qaReviewSubmittedMessage"
+        success-message="Review successfully submitted."
+        :closable="false"
+      />
+      <FailMessage
+        v-else
+        message="The resource you tried to access is not available. Please close the data pop-up."
+        :closable="false"
+      />
+      <PrimeButton class="uppercase p-button p-button-sm" @click="closeTheDialog()">
+        <span class="d-letters pl-2">CLOSE</span>
+      </PrimeButton>
     </div>
   </MiddleCenterDiv>
 </template>
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
+import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
-import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constants";
-import { QaStatus } from "@clients/qaservice";
+import { QaStatus } from "@clients/backend";
 
 export default defineComponent({
-  components: { FailMessage, SuccessMessage, MiddleCenterDiv, PrimeButton },
+  components: { PrimeButton, FailMessage, SuccessMessage, MiddleCenterDiv },
   inject: ["dialogRef"],
   name: "QADatasetModal",
   setup() {
@@ -38,44 +47,38 @@ export default defineComponent({
   },
   data() {
     return {
-      dataSetToReview: null as unknown as object,
       dataId: "",
+      qaStatus: QaStatus.Pending as QaStatus,
+      message: "",
       reviewSubmitted: false,
       reviewSuccessful: false,
-      QaStatus,
     };
   },
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
-      dataSetToReview: object;
       dataId: string;
+      qaStatus: QaStatus;
+      message: string;
     };
-    this.dataSetToReview = dialogRefData.dataSetToReview;
     this.dataId = dialogRefData.dataId;
-  },
-  computed: {
-    datasetAsJson(): string {
-      return JSON.stringify(this.dataSetToReview, null, 2);
-    },
-  },
+    this.qaStatus = dialogRefData.qaStatus;
+    this.message = dialogRefData.message;
 
+    void this.setQaStatus();
+  },
   methods: {
     /**
      * Sets dataset quality status to the given status
-     * @param qaStatus the QA status to be assigned
      */
-    async setQaStatusTo(qaStatus: QaStatus) {
+    async setQaStatus() {
       try {
-        this.reviewSubmitted = true;
         const qaServiceControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getQaControllerApi();
-        await qaServiceControllerApi.assignQaStatus(this.dataId, qaStatus);
+        await qaServiceControllerApi.assignQaStatus(this.dataId, this.qaStatus);
+        this.reviewSubmitted = true;
         this.reviewSuccessful = true;
-        setTimeout(() => {
-          this.closeTheDialogAndReloadPage();
-        }, TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS);
       } catch (error) {
         console.error(error);
       }
@@ -84,7 +87,7 @@ export default defineComponent({
     /**
      * Closes the dialog and refreshes the page afterwards.
      */
-    closeTheDialogAndReloadPage() {
+    closeTheDialog() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       dialogRefToDisplay.close();
     },

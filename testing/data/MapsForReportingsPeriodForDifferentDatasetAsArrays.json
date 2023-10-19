@@ -1,58 +1,58 @@
 {
-  "eutaxonomy-financials": [
-    [
-      "2019",
-      {
-        "dataId":"a9d75a0a-some-fake-dataId-549632b19782",
-        "companyId":"1e946cac-some-fake-ID-762f40e",
-        "dataType":"eutaxonomy-financials",
-        "uploaderUserId":"c5ef10b1-some-fake-uploaderUserId-e62ea226ee83",
-        "uploadTime":1678194542,
-        "reportingPeriod":"2019",
-        "currentlyActive":true,
-        "qaStatus":"Accepted"
-      }
-    ],
-    [
-      "2020",
-      {
-        "dataId":"97a6e41f-some-fake-dataId-4257b45d90f8",
-        "companyId":"1e946cac-some-fake-ID-762f40e",
-        "dataType":"eutaxonomy-financials",
-        "uploaderUserId":"c5ef10b1-some-fake-uploaderUserId-e62ea226ee83",
-        "uploadTime":1678194536,
-        "reportingPeriod":"2020",
-        "currentlyActive":true,
-        "qaStatus":"Accepted"
-      }
-    ]
-  ],
-  "lksg": [
-    [
-      "2020",
-      {
-        "dataId":"86226010-some-fake-dataId-52824875a3e7",
-        "companyId":"1e946cac-some-fake-ID-762f40e",
-        "dataType":"lksg",
-        "uploaderUserId":"c5ef10b1-some-fake-uploaderUserId-e62ea226ee83",
-        "uploadTime":1678194491,
-        "reportingPeriod":"2020",
-        "currentlyActive":true,
-        "qaStatus":"Accepted"
-      }
-    ],
-    [
-      "2021",
-      {
-        "dataId":"4bd8a69d-some-fake-dataId-cd411b0971d7",
-        "companyId":"1e946cac-some-fake-ID-762f40e",
-        "dataType":"lksg",
-        "uploaderUserId":"c5ef10b1-some-fake-uploaderUserId-e62ea226ee83",
-        "uploadTime":1678194481,
-        "reportingPeriod":"2021",
-        "currentlyActive":true,
-        "qaStatus":"Accepted"
-      }
-    ]
-  ]
+	"eutaxonomy-financials": [
+		[
+			"2015",
+			{
+				"dataId": "3f6b876e-7c99-4d0c-adac-1e7509b0cfcf",
+				"companyId": "79369148-8734-4bc2-96ec-ef0065502478",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2015",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 4221406051041280,
+				"uploaderUserId": null
+			}
+		],
+		[
+			"2016",
+			{
+				"dataId": "624ee421-5a36-4ca0-a3dd-cbe81ba56991",
+				"companyId": "79369148-8734-4bc2-96ec-ef0065502478",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2016",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 7112951020388352,
+				"uploaderUserId": null
+			}
+		]
+	],
+	"lksg": [
+		[
+			"2021",
+			{
+				"dataId": "7c154dd4-fe25-4a4f-8960-b34ccacd9f0e",
+				"companyId": "79369148-8734-4bc2-96ec-ef0065502478",
+				"dataType": "lksg",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 5510659420717056,
+				"uploaderUserId": null
+			}
+		],
+		[
+			"2022",
+			{
+				"dataId": "85cc8239-4410-4bb9-9cbf-28e2b597ac7a",
+				"companyId": "79369148-8734-4bc2-96ec-ef0065502478",
+				"dataType": "lksg",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 5839213324926976,
+				"uploaderUserId": null
+			}
+		]
+	]
 }

@@ -1,41 +1,21 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
-  CompanyAssociatedDataEuTaxonomyDataForFinancials,
-  CompanyInformation,
-  Configuration,
-  DataMetaInformation,
-  DataPointBigDecimal,
+  type CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  type CompanyInformation,
+  type ExtendedDataPointBigDecimal,
   DataTypeEnum,
-  EligibilityKpis,
-  EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsControllerApi,
+  type EligibilityKpis,
+  type EuTaxonomyDataForFinancials,
 } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@sharedUtils/ConstantsForPdfs";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
-import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { CyHttpMessages } from "cypress/types/net-stubbing";
-import { goToEditFormOfMostRecentDataset } from "./GeneralUtils";
+import { type CyHttpMessages } from "cypress/types/net-stubbing";
+import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from "./GeneralUtils";
 import Chainable = Cypress.Chainable;
-
-/**
- * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
- * @returns the resulting cypress chainable
- */
-export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
-  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
-  submitButton.clickButton();
-  cy.on("uncaught:exception", (err) => {
-    expect(err.message).to.include("unhandled promise rejection");
-    return false;
-  });
-  return cy.wait("@postCompanyAssociatedData").then((interception) => {
-    expect(interception.response?.statusCode).to.eq(200);
-  });
-}
 
 /**
  * Fills the eutaxonomy-financials upload form with the given dataset
@@ -77,8 +57,8 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     .eq(1)
     .find('[data-test="dataPointToggleTitle"]')
     .should("contain.text", "Data point is available");
-  if (data.reportingObligation !== undefined) {
-    cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
+  if (data.nfrdMandatory != undefined) {
+    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory.toString()}]`).check();
   }
   cy.get(
     `input[name="fiscalYearDeviation"][value=${
@@ -97,8 +77,8 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     expect(scrollPosition).to.be.greaterThan(0);
   });
   cy.get(
-    `input[name="activityLevelReporting"][value=${
-      data.activityLevelReporting ? data.activityLevelReporting.toString() : "No"
+    `input[name="euTaxonomyActivityLevelReporting"][value=${
+      data.euTaxonomyActivityLevelReporting ? data.euTaxonomyActivityLevelReporting.toString() : "No"
     }]`,
   ).check();
   cy.get('input[name="numberOfEmployees"]').type("-13");
@@ -109,9 +89,9 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
     .type(`${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`);
   cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
-  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
+  cy.get('[data-test="assuranceSection"] select[name="value"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  cy.get('[data-test="assuranceSection"] select[name="fileName"]').select(1);
   cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
   cy.get('em[title="Assurance"]').click();
   cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
@@ -123,18 +103,22 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
   fillEligibilityKpis("assetManagementKpis", data.eligibilityKpis?.AssetManagement);
   fillField(
     "insuranceKpis",
-    "taxonomyEligibleNonLifeInsuranceActivities",
-    data.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivities,
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent",
+    data.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
   );
-  fillField("investmentFirmKpis", "greenAssetRatio", data.investmentFirmKpis?.greenAssetRatio);
+  fillField("investmentFirmKpis", "greenAssetRatioInPercent", data.investmentFirmKpis?.greenAssetRatioInPercent);
   fillField(
     "creditInstitutionKpis",
-    "tradingPortfolioAndInterbankLoans",
-    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans,
+    "tradingPortfolioAndInterbankLoansInPercent",
+    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent,
   );
-  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
-  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
-  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
+  fillField(
+    "creditInstitutionKpis",
+    "tradingPortfolioInPercent",
+    data.creditInstitutionKpis?.tradingPortfolioInPercent,
+  );
+  fillField("creditInstitutionKpis", "interbankLoansInPercent", data.creditInstitutionKpis?.interbankLoansInPercent);
+  fillField("creditInstitutionKpis", "greenAssetRatioInPercent", data.creditInstitutionKpis?.greenAssetRatioInPercent);
 }
 
 /**
@@ -143,11 +127,11 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
  * @param data the kpi data to use to fill the form
  */
 export function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined): void {
-  fillField(divTag, "taxonomyEligibleActivity", data?.taxonomyEligibleActivity);
-  fillField(divTag, "taxonomyNonEligibleActivity", data?.taxonomyNonEligibleActivity);
-  fillField(divTag, "derivatives", data?.derivatives);
-  fillField(divTag, "banksAndIssuers", data?.banksAndIssuers);
-  fillField(divTag, "investmentNonNfrd", data?.investmentNonNfrd);
+  fillField(divTag, "taxonomyEligibleActivityInPercent", data?.taxonomyEligibleActivityInPercent);
+  fillField(divTag, "taxonomyNonEligibleActivityInPercent", data?.taxonomyNonEligibleActivityInPercent);
+  fillField(divTag, "derivativesInPercent", data?.derivativesInPercent);
+  fillField(divTag, "banksAndIssuersInPercent", data?.banksAndIssuersInPercent);
+  fillField(divTag, "investmentNonNfrdInPercent", data?.investmentNonNfrdInPercent);
 }
 
 /**
@@ -156,13 +140,13 @@ export function fillEligibilityKpis(divTag: string, data: EligibilityKpis | unde
  * @param inputsTag value of the parent div data-test attribute to fill in
  * @param value the value to fill in
  */
-export function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
+export function fillField(divTag: string, inputsTag: string, value?: ExtendedDataPointBigDecimal | null): void {
   if (value?.value) {
     const valueAsString = value.value.toString();
     if (divTag === "") {
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(valueAsString);
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type("13");
-      cy.get(`[data-test="${inputsTag}"]`).find('select[name="report"]').select(1);
+      cy.get(`[data-test="${inputsTag}"]`).find('select[name="fileName"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`).find('select[name="quality"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`)
         .find('textarea[name="comment"]')
@@ -176,7 +160,7 @@ export function fillField(divTag: string, inputsTag: string, value?: DataPointBi
         .find(`[data-test="${inputsTag}"]`)
         .find('input[name="page"]')
         .type(`${value.dataSource?.page ?? "13"}`);
-      cy.get(`[data-test="${divTag}"]`).find(`[data-test="${inputsTag}"]`).find('select[name="report"]').select(1);
+      cy.get(`[data-test="${divTag}"]`).find(`[data-test="${inputsTag}"]`).find('select[name="fileName"]').select(1);
       cy.get(`[data-test="${divTag}"]`).find(`[data-test="${inputsTag}"]`).find('select[name="quality"]').select(1);
       cy.get(`[data-test="${divTag}"]`)
         .find(`[data-test="${inputsTag}"]`)
@@ -200,47 +184,20 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable
 }
 
 /**
- * Uploads a single eutaxonomy-financials data entry for a company via the Dataland API
- * @param token The API bearer token to use
- * @param companyId The Id of the company to upload the dataset for
- * @param reportingPeriod The reporting period to use for the upload
- * @param data The Dataset to upload
- * @param bypassQa (optional) should the entry be automatically Approved. Default: true
- * @returns a promise on the created data meta information
- */
-export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
-  token: string,
-  companyId: string,
-  reportingPeriod: string,
-  data: EuTaxonomyDataForFinancials,
-  bypassQa = true,
-): Promise<DataMetaInformation> {
-  const response = await new EuTaxonomyDataForFinancialsControllerApi(
-    new Configuration({ accessToken: token }),
-  ).postCompanyAssociatedEuTaxonomyDataForFinancials(
-    {
-      companyId,
-      reportingPeriod,
-      data,
-    },
-    bypassQa,
-  );
-  return response.data;
-}
-
-/**
  * Visits the edit page for the eu taxonomy dataset for financial companies via navigation.
  * @param companyId the id of the company for which to edit a dataset
  * @param expectIncludedFile specifies if the test file is expected to be in the server response
  */
 export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
-  goToEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
-    const referencedReports = assertDefined(
-      (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports,
-    );
-    expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
-    expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
-  });
+  goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyFinancials).then(
+    (interception) => {
+      const referencedReports = assertDefined(
+        (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports,
+      );
+      expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
+      expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
+    },
+  );
 }
 
 /**
@@ -288,8 +245,8 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
   dateFormElement.validateDay("fiscalYearEnd", 12);
 
-  if (data.reportingObligation !== undefined) {
-    cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
+  if (data.nfrdMandatory !== undefined) {
+    cy.get(`input[name="nfrdMandatory"][value=${data.nfrdMandatory?.toString() ?? ""}]`).check();
   }
 
   cy.get(
@@ -302,9 +259,9 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
     `${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`,
   );
 
-  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
+  cy.get('[data-test="assuranceSection"] select[name="value"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  cy.get('[data-test="assuranceSection"] select[name="fileName"]').select(1);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
@@ -327,12 +284,42 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
   fillField(
     "creditInstitutionKpis",
-    "tradingPortfolioAndInterbankLoans",
-    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans,
+    "tradingPortfolioAndInterbankLoansInPercent",
+    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent,
   );
-  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
-  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
-  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
+  fillField(
+    "creditInstitutionKpis",
+    "tradingPortfolioInPercent",
+    data.creditInstitutionKpis?.tradingPortfolioInPercent,
+  );
+  fillField("creditInstitutionKpis", "interbankLoansInPercent", data.creditInstitutionKpis?.interbankLoansInPercent);
+  fillField("creditInstitutionKpis", "greenAssetRatioInPercent", data.creditInstitutionKpis?.greenAssetRatioInPercent);
+}
+
+/**
+ * This method verifies that uploaded reports are downloadable
+ * @param companyId the ID of the company whose data to view
+ */
+export function checkIfLinkedReportsAreDownloadable(companyId: string): void {
+  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
+  const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
+  const downloadLinkSelector = `span[data-test="Report-Download-${TEST_PDF_FILE_NAME}"]`;
+  cy.readFile(expectedPathToDownloadedReport).should("not.exist");
+  cy.intercept("**/documents/*").as("documentDownload");
+  cy.get(downloadLinkSelector).click();
+  cy.wait("@documentDownload");
+  cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
+    timeout: Cypress.env("medium_timeout_in_ms") as number,
+  }).then((expectedPdfBinary) => {
+    cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
+      cy.readFile(expectedPathToDownloadedReport, "binary", {
+        timeout: Cypress.env("medium_timeout_in_ms") as number,
+      }).then((receivedPdfHash) => {
+        cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
+      });
+      cy.task("deleteFolder", Cypress.config("downloadsFolder"));
+    });
+  });
 }
 
 /**

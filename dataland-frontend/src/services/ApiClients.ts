@@ -1,32 +1,14 @@
 import { Configuration } from "@clients/backend/configuration";
-import {
-  CompanyDataControllerApi,
-  CompanyDataControllerApiInterface,
-  EuTaxonomyDataForNonFinancialsControllerApi,
-  EuTaxonomyDataForNonFinancialsControllerApiInterface,
-  EuTaxonomyDataForFinancialsControllerApi,
-  EuTaxonomyDataForFinancialsControllerApiInterface,
-  MetaDataControllerApi,
-  MetaDataControllerApiInterface,
-  LksgDataControllerApi,
-  LksgDataControllerApiInterface,
-  SfdrDataControllerApi,
-  SfdrDataControllerApiInterface,
-  P2pDataControllerApiInterface,
-  P2pDataControllerApi,
-  SmeDataControllerApiInterface,
-  SmeDataControllerApi,
-  InviteControllerApi,
-} from "@clients/backend/api";
 import { DocumentControllerApi } from "@clients/documentmanager";
 import { QaControllerApi } from "@clients/qaservice";
-import Keycloak from "keycloak-js";
-import axios, { AxiosInstance } from "axios";
-import * as backendApis from "@clients/backend/api";
-import * as documentApis from "@clients/documentmanager";
-import * as qaApis from "@clients/qaservice";
-import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import type Keycloak from "keycloak-js";
+import { ApiKeyControllerApi, type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import axios, { type AxiosInstance } from "axios";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
+import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
+import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
+import * as backendApis from "@clients/backend/api";
 
 interface BackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -133,36 +115,25 @@ export class ApiClientProvider {
     return new constructor(configuration, "/documents");
   }
 
-  async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
-    return this.getConstructedApi(CompanyDataControllerApi);
+  async getCompanyDataControllerApi(): Promise<backendApis.CompanyDataControllerApiInterface> {
+    return this.getConstructedApi(backendApis.CompanyDataControllerApi);
   }
 
-  async getEuTaxonomyDataForNonFinancialsControllerApi(): Promise<EuTaxonomyDataForNonFinancialsControllerApiInterface> {
-    return this.getConstructedApi(EuTaxonomyDataForNonFinancialsControllerApi);
+  /**
+   * This function returns a promise to an api controller adaption that is unified across frameworks to allow
+   * for creation of generic components that work framework-independent.
+   * @param framework The identified of the framework
+   * @returns the unified API client
+   */
+  async getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
+    framework: K,
+  ): Promise<FrameworkDataApi<FrameworkDataTypes[K]["data"]>> {
+    const configuration = await this.getConfiguration();
+    return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
   }
 
-  async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
-    return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
-  }
-
-  async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {
-    return this.getConstructedApi(MetaDataControllerApi);
-  }
-
-  async getLksgDataControllerApi(): Promise<LksgDataControllerApiInterface> {
-    return this.getConstructedApi(LksgDataControllerApi);
-  }
-
-  async getSfdrDataControllerApi(): Promise<SfdrDataControllerApiInterface> {
-    return this.getConstructedApi(SfdrDataControllerApi);
-  }
-
-  async getP2pDataControllerApi(): Promise<P2pDataControllerApiInterface> {
-    return this.getConstructedApi(P2pDataControllerApi);
-  }
-
-  async getSmeDataControllerApi(): Promise<SmeDataControllerApiInterface> {
-    return this.getConstructedApi(SmeDataControllerApi);
+  async getMetaDataControllerApi(): Promise<backendApis.MetaDataControllerApiInterface> {
+    return this.getConstructedApi(backendApis.MetaDataControllerApi);
   }
 
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
@@ -173,8 +144,8 @@ export class ApiClientProvider {
     return this.getConstructedDocumentManager(DocumentControllerApi);
   }
 
-  async getInviteControllerApi(): Promise<InviteControllerApi> {
-    return this.getConstructedApi(InviteControllerApi);
+  async getInviteControllerApi(): Promise<backendApis.InviteControllerApi> {
+    return this.getConstructedApi(backendApis.InviteControllerApi);
   }
 
   async getQaControllerApi(): Promise<QaControllerApi> {
