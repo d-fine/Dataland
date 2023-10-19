@@ -1,5 +1,5 @@
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { generateFloat, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateFloat, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backend";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
@@ -111,7 +111,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         grievanceHandlingMechanism: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         whistleblowerProtectionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateInt(1000)),
         ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(generateFloat()),
       },
       greenSecurities: {
@@ -123,11 +123,11 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         traffickingInHumanBeingsPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         reportedChildLabourIncidents: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         reportedForcedOrCompulsoryLabourIncidents: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(generateInt(1000)),
       },
       antiCorruptionAndAntiBribery: {
-        casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateInt(1000)),
+        reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateInt(1000)),
         totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(),
       },
     },
