@@ -165,7 +165,7 @@ describe("As a user I expect a data request page where I can download an excel t
         [
           {
             filename: tooLargeFilename,
-            fileSize: parseInt(getStringCypressEnv("DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES")) * 1000000 + 1,
+            fileSize: parseInt(getStringCypressEnv("DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES")) * 1024 * 1024 + 1,
             errorMessage: "Invalid file size",
           },
           {
