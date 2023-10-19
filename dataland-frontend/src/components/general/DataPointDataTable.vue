@@ -1,29 +1,35 @@
 <template>
-  <table v-if="dataPointDisplay">
-    <tr>
-      <td>Value</td>
-      <td>{{ dataPointDisplay.value }}</td>
-    </tr>
-    <tr>
-      <td>Quality</td>
-      <td>{{ dataPointDisplay.quality }}</td>
-    </tr>
-    <tr>
-      <td>Data source</td>
-      <td>
-        <DocumentLink
-          :label="dataSourceLabel"
-          :download-name="dataPointDisplay.dataSource.fileName"
-          :file-reference="dataPointDisplay.dataSource.fileReference"
-          show-icon
-        />
-      </td>
-    </tr>
-    <tr v-if="dataPointDisplay.comment">
-      <td>Comment</td>
-      <td>{{ dataPointDisplay.comment }}</td>
-    </tr>
-  </table>
+  <div class="p-datatable p-component">
+    <div class="p-datatable-wrapper overflow-auto">
+      <table v-if="dataPointDisplay" class="p-datatable-table">
+        <tbody class="p-datatable-body">
+          <tr>
+            <td class="headers-bg width-auto"><span class="table-left-label">Value</span></td>
+            <td>{{ dataPointDisplay.value }}</td>
+          </tr>
+          <tr>
+            <td class="headers-bg width-auto"><span class="table-left-label">Quality</span></td>
+            <td>{{ dataPointDisplay.quality }}</td>
+          </tr>
+          <tr>
+            <td class="headers-bg width-auto"><span class="table-left-label">Data source</span></td>
+            <td>
+              <DocumentLink
+                :label="dataSourceLabel"
+                :download-name="dataPointDisplay.dataSource.fileName"
+                :file-reference="dataPointDisplay.dataSource.fileReference"
+                show-icon
+              />
+            </td>
+          </tr>
+          <tr v-if="dataPointDisplay.comment">
+            <td class="headers-bg width-auto"><span class="table-left-label">Comment</span></td>
+            <td>{{ dataPointDisplay.comment }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -65,3 +71,13 @@ interface DataPointDisplay {
   comment?: string;
 }
 </script>
+
+<style scoped lang="scss">
+.p-datatable-table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.width-auto {
+  width: auto;
+}
+</style>
