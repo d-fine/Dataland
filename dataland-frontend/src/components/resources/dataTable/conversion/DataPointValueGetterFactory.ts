@@ -26,7 +26,7 @@ export function dataPointValueGetterFactory(
   return (dataset) => {
     const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | undefined;
 
-    if (!datapoint?.value) {
+    if (!datapoint?.value) { // TODO then QA sees nothing
       return MLDTDisplayObjectForEmptyString;
     }
 
@@ -44,7 +44,7 @@ export function dataPointValueGetterFactory(
       datapointUnitSuffix = field.unit ?? "";
     }
 
-    const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
+    const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : ""; // TODO Data hidden from QA
     if (hasDataPointValidReference(datapoint)) {
       const documentName = getGloballyReferencableDocuments(dataset).find(
         (document) => document.fileName == datapoint?.dataSource?.fileName,

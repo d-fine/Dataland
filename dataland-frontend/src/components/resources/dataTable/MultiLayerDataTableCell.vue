@@ -15,6 +15,7 @@ import DocumentLinkDisplayComponent from "@/components/resources/dataTable/cells
 import StringDisplayComponent from "@/components/resources/dataTable/cells/StringDisplayComponent.vue";
 import { defineComponent } from "vue";
 import ModalLinkDisplayComponent from "@/components/resources/dataTable/cells/ModalLinkDisplayComponent.vue";
+import DataPointDisplayComponent from "@/components/resources/dataTable/cells/DataPointDisplayComponent.vue";
 
 export default defineComponent({
   name: "MultiLayerDataTableCell",
@@ -23,7 +24,12 @@ export default defineComponent({
       return MLDTDisplayComponentName;
     },
   },
-  components: { StringDisplayComponent, DocumentLinkDisplayComponent, ModalLinkDisplayComponent },
+  components: {
+    StringDisplayComponent,
+    DocumentLinkDisplayComponent,
+    ModalLinkDisplayComponent,
+    DataPointDisplayComponent,
+  },
   props: {
     content: {
       type: Object as () => AvailableMLDTDisplayObjectTypes,
