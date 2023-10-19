@@ -1,5 +1,5 @@
 <template>
-  <div class="flex" v-if="content.displayComponentName == MLDTDisplayComponents.HighlightHiddenCellDisplayComponent">
+  <div class="flex" v-if="content.displayComponentName == MLDTDisplayComponents.HighlightHiddenCellDisplay">
     <i class="pi pi-eye-slash pr-1 text-red-500" aria-hidden="true" data-test="hidden-icon" />
     <MultiLayerDataTableCell :content="content.displayValue.innerContents" />
   </div>

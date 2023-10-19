@@ -105,23 +105,26 @@ export function getKeycloakToken(
   password = reader_pw,
   client_id = "dataland-public",
 ): Chainable<string> {
-  return cy
-    .request({
-      url: "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body:
-        "username=" +
-        encodeURIComponent(username) +
-        "&password=" +
-        encodeURIComponent(password) +
-        "&grant_type=password&client_id=" +
-        encodeURIComponent(client_id) +
-        "",
-    })
-    .should("have.a.property", "body")
-    .should("have.a.property", "access_token")
-    .then((token): string => token.toString());
+  return (
+    cy
+      .request({
+        url: "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body:
+          "username=" +
+          encodeURIComponent(username) +
+          "&password=" +
+          encodeURIComponent(password) +
+          "&grant_type=password&client_id=" +
+          encodeURIComponent(client_id) +
+          "",
+      })
+      .should("have.a.property", "body")
+      .should("have.a.property", "access_token")
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
+      .then((token): string => token.toString())
+  );
 }

@@ -30,13 +30,15 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="text-info"]').find("em").click();
 
     if (Cypress.browser.displayName === "Chrome") {
-      cy.wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
-        cy.window().then((win) => {
-          win.navigator.clipboard.readText().then((text) => {
-            expect(text).to.eq((interception.response?.body as ApiKeyAndMetaInfo)?.apiKey);
-          }, null);
+      void cy
+        .wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") as number })
+        .then((interception) => {
+          void cy.window().then((win) => {
+            void win.navigator.clipboard.readText().then((text) => {
+              expect(text).to.eq((interception.response?.body as ApiKeyAndMetaInfo)?.apiKey);
+            }, null);
+          });
         });
-      });
     }
 
     cy.get('[data-test="text-info"]').find("textarea").should("have.focus");

@@ -2,7 +2,7 @@
  * Contains global constants that are sourced from envs to be accessible in the frontend code
  */
 
-const BYTE_TO_MEGABYTE_FACTOR = 1024 * 1024;
+export const BYTE_TO_MEGABYTE_FACTOR = 1024 * 1024;
 
 // ----------------------DATALAND SETTINGS----------------------
 export const DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES =
