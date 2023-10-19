@@ -15,6 +15,7 @@
       'formkit-input': false,
       'p-radiobutton': true,
     }"
+    :id="fieldName + name"
   />
 </template>
 
@@ -39,6 +40,10 @@ export default defineComponent({
       default: "",
     },
     validationLabel: {
+      type: String,
+      default: "",
+    },
+    fieldName: {
       type: String,
       default: "",
     },
