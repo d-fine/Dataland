@@ -31,8 +31,6 @@ import TheHowItWorks from "@/components/general/TheHowItWorks.vue";
 import TheJoinCampaign from "@/components/general/TheJoinCampaign.vue";
 import TheGetInTouch from "@/components/general/TheGetInTouch.vue";
 import TheFooter from "@/components/layout/TheFooter.vue";
-
-// Import the JSON content and types
 import contentData from "@/assets/content.json";
 import type { Content, Page } from "@/types/ContentTypes";
 
