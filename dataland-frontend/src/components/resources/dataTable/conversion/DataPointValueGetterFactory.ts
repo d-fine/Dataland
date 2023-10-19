@@ -36,10 +36,6 @@ export function dataPointValueGetterFactory(
     if ((datapoint as CurrencyDataPoint)?.currency && (datapoint as CurrencyDataPoint)?.currency?.length) {
       datapointUnitSuffix = (datapoint as CurrencyDataPoint)?.currency ?? "";
       datapointValue = formatAmountWithCurrency({ amount: datapoint.value });
-    } else if (field.options?.length) {
-      const datapointUnitRaw = field.unit ?? "";
-      const matchingEntry = field.options.find((it) => it.value == datapointUnitRaw);
-      datapointUnitSuffix = matchingEntry?.label ?? datapointUnitRaw;
     } else {
       datapointUnitSuffix = field.unit ?? "";
     }
