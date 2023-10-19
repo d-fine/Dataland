@@ -33,8 +33,10 @@ export function dataPointValueGetterFactory(
     const datapointValue = formatNumberToReadableFormat(datapoint ? datapoint.value : undefined);
     let datapointUnitSuffix: string;
 
-    if (field.options?.length) {
-      const datapointUnitRaw = (datapoint as CurrencyDataPoint)?.currency ?? field.unit ?? "";
+    if((datapoint as CurrencyDataPoint)?.currency && (datapoint as CurrencyDataPoint)?.currency?.length > 0) {
+      datapointUnitSuffix = (datapoint as CurrencyDataPoint)?.currency!;
+    } else if (field.options?.length) {
+      const datapointUnitRaw = field.unit ?? "";
       const matchingEntry = field.options.find((it) => it.value == datapointUnitRaw);
       datapointUnitSuffix = matchingEntry?.label ?? datapointUnitRaw;
     } else {
