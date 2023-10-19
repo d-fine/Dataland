@@ -10,7 +10,7 @@ import {
   hasDataPointValidReference,
 } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
-import { formatNumberToReadableFormat } from "@/utils/Formatter";
+import { formatAmountWithCurrency, formatNumberToReadableFormat } from "@/utils/Formatter";
 
 /**
  * Returns a value factory that returns the value of the DataPointFormField
@@ -26,15 +26,16 @@ export function dataPointValueGetterFactory(
   return (dataset) => {
     const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal;
 
-    if (datapoint?.value === null) {
+    if (datapoint?.value == null) {
       return MLDTDisplayObjectForEmptyString;
     }
 
-    const datapointValue = formatNumberToReadableFormat(datapoint ? datapoint.value : undefined);
+    let datapointValue = formatNumberToReadableFormat(datapoint.value);
     let datapointUnitSuffix: string;
 
     if ((datapoint as CurrencyDataPoint)?.currency && (datapoint as CurrencyDataPoint)?.currency?.length) {
       datapointUnitSuffix = (datapoint as CurrencyDataPoint)?.currency ?? "";
+      datapointValue = formatAmountWithCurrency({ amount: datapoint.value });
     } else if (field.options?.length) {
       const datapointUnitRaw = field.unit ?? "";
       const matchingEntry = field.options.find((it) => it.value == datapointUnitRaw);

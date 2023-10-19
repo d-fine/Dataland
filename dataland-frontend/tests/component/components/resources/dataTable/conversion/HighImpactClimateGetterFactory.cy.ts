@@ -35,7 +35,7 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
     expect(value).to.have.nested.property("displayValue.label", "Applicable High Impact Climate Sectors");
     expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
       {
-        sector: (HighImpactClimateSectorsKeys[HighImpactClimateSector.NaceCodeAInGWh] as string) ?? "",
+        sector: HighImpactClimateSectorsKeys[HighImpactClimateSector.NaceCodeAInGWh] ?? "",
         energyConsumption: "12,345 GWh",
       },
     ]);
