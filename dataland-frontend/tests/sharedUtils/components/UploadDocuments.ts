@@ -24,6 +24,17 @@ export const uploadDocuments = {
       { force: true },
     );
   },
+  selectDummyFileOfType(filename: string, fileType: string, contentSize: number, fieldName = "UploadReports"): void {
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
+    cy.get("input[type=file]").selectFile(
+      {
+        contents: new Cypress.Buffer(contentSize),
+        fileName: `${filename}.${fileType}`,
+        mimeType: "application/pdf",
+      },
+      { force: true },
+    );
+  },
 
   fillAllFormsOfReportsSelectedForUpload(expectedNumberOfReportsToUpload?: number): void {
     if (expectedNumberOfReportsToUpload) {
@@ -102,5 +113,11 @@ export const uploadDocuments = {
         cy.wrap(element).selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
       });
     });
+  },
+  errorMessage(): Cypress.Chainable {
+    return cy.get(".p-fileupload .p-message-error");
+  },
+  dismissErrorMessage(): void {
+    this.errorMessage().find(".p-message-close-icon").click();
   },
 };

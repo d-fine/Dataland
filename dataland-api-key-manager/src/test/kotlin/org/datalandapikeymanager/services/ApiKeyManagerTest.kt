@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
 
 @ComponentScan(basePackages = ["org.dataland"])
-@SpringBootTest(classes = [DatalandApiKeyManager::class])
+@SpringBootTest(classes = [DatalandApiKeyManager::class], properties = ["spring.profiles.active=nodb"])
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class ApiKeyManagerTest(
