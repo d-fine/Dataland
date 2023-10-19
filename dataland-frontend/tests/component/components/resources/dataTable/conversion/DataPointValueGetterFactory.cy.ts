@@ -1,5 +1,5 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
-import {type ExtendedDataPointBigDecimal, ExtendedDocumentReference} from "@clients/backend";
+import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 import {
   MLDTDisplayObjectForEmptyString,
@@ -109,13 +109,13 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
           page: 62,
           fileName: null,
           fileReference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          tagName: "relationships"
+          tagName: "relationships",
         },
       };
       const dataset = { data: datapoint };
       const value = dataPointValueGetterFactory("data", field)(dataset);
-        // TODO catch error + remove unnecessary lines
-      });
+      expect(value).to.throw(Error, "There is no document with name NOT PROVIDED referenced in this dataset");
+    });
 
     //can be integrated into other tests
     it("error message shown when selected document name doesn't exist", () => {
@@ -126,7 +126,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
           page: 62,
           fileName: "IntegratedReport",
           fileReference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          tagName: "relationships"
+          tagName: "relationships",
         },
       };
       const dataset = { data: datapoint };
@@ -139,7 +139,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
             page: 62,
             fileName: "IntegratedReport",
             fileReference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            tagName: "relationships"
+            tagName: "relationships",
           },
         },
       });
