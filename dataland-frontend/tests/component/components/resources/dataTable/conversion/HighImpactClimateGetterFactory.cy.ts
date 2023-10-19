@@ -22,7 +22,7 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
 
   it("Should display the name of sectors if they exist", () => {
     const highImpactClimateData: HighImpactClimateValueObject = {
-      [HighImpactClimateSector.NaceCodeAInGWh as string]: {
+      [HighImpactClimateSector.NaceCodeAInGWh]: {
         value: 12345,
         quality: "Estimated",
       } as ExtendedDataPointBigDecimal,
