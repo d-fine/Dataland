@@ -44,8 +44,8 @@ import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import MultiSelect from "primevue/multiselect";
-import { naceCodeTree } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
+import { optionsForHighImpactClimateSectors } from "@/types/HighImpactClimateSectors";
 
 export default defineComponent({
   name: "HighImpactClimateSectorsFormField",
@@ -59,9 +59,7 @@ export default defineComponent({
   props: BaseFormFieldProps,
   data() {
     return {
-      options: naceCodeTree
-        .filter((sector) => ["A", "B", "C", "D", "E", "F", "G", "H", "L"].includes(sector.key))
-        .map((sector) => ({ label: sector.label, value: sector.key })),
+      options: optionsForHighImpactClimateSectors,
       selections: [],
     };
   },

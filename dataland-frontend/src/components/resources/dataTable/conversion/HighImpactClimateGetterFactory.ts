@@ -31,10 +31,10 @@ function convertHighImpactClimateToListForModal(
   for (const [naceCodeType, climateSectorValues] of Object.entries(datasetValue)) {
     if (!climateSectorValues) continue;
     listForModal.push({
-      sector: HighImpactClimateSectorsKeys[naceCodeType as keyof typeof HighImpactClimateSectorsKeys] as string,
+      sector: HighImpactClimateSectorsKeys[naceCodeType as keyof typeof HighImpactClimateSectorsKeys],
       energyConsumption:
         climateSectorValues.value !== null && climateSectorValues.value !== undefined
-          ? formatNumberToReadableFormat(climateSectorValues.value)
+          ? `${formatNumberToReadableFormat(climateSectorValues.value)} GWh`
           : "",
     });
   }
@@ -81,7 +81,7 @@ export function highImpactClimateGetterFactory(
             kpiKeyOfTable: "highImpactSectorEnergyConsumptions",
             columnHeaders: {
               highImpactSectorEnergyConsumptions: {
-                sector: "Sectors",
+                sector: "Sector",
                 energyConsumption: "Energy Consumption",
               },
             },
