@@ -3,11 +3,15 @@ import {
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { CurrencyDataPoint, type ExtendedDataPointBigDecimal } from "@clients/backend";
+import { type ExtendedDataPointBigDecimal } from "@clients/backend";
+import {
+  getFieldValueFromFrameworkDataset,
+  getGloballyReferencableDocuments,
+  hasDataPointValidReference,
+} from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+
 /**
  * Returns a value factory that returns the value of the DataPointFormField
  * @param path the path to the field
@@ -27,9 +31,9 @@ export function dataPointValueGetterFactory(
     }
 
     const datapointValue = formatNumberToReadableFormat(datapoint.value);
-    let datapointUnitSuffix;
+    let datapointUnitSuffix: string;
 
-    if (field.options) {
+    if (field.options?.length) {
       if (field.options == getDataset(DropdownDatasetIdentifier.CurrencyCodes)) {
         datapointUnitSuffix = (datapoint as CurrencyDataPoint)?.currency ?? "";
       } else {
@@ -42,9 +46,32 @@ export function dataPointValueGetterFactory(
       datapointUnitSuffix = field.unit ?? "";
     }
 
-    return {
-      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-      displayValue: `${datapointValue} ${datapointUnitSuffix}`.trim(),
-    };
+    const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
+    if (hasDataPointValidReference(datapoint)) {
+      const documentName = getGloballyReferencableDocuments(dataset).find(
+        (document) => document.fileName == datapoint?.dataSource?.fileName,
+      );
+      if (documentName == undefined) {
+        throw Error(
+          `There is no document with name ${
+            datapoint?.dataSource?.fileName ?? "NOT PROVIDED"
+          } referenced in this dataset`,
+        );
+      }
+      return {
+        displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+        displayValue: {
+          label: formattedValue,
+          fileReference: datapoint?.dataSource?.fileReference as string,
+          fileName: datapoint?.dataSource?.fileName as string,
+          page: datapoint?.dataSource?.page ?? undefined,
+        },
+      };
+    } else {
+      return {
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+        displayValue: formattedValue,
+      };
+    }
   };
 }
