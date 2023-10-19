@@ -6,6 +6,8 @@ import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import {uploadDocuments} from "../../../../../sharedUtils/components/UploadDocuments";
+import {TEST_PDF_FILE_NAME} from "../../../../../sharedUtils/ConstantsForPdfs";
 describe("Unit test for the DataPointValueGetterFactory", () => {
   // TODO rewrite test based on the new DataPointValueGetterFactory
   describe("Tests when the unit is pre-determined in the data model", () => {
@@ -101,7 +103,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
       showIf: (): boolean => true,
     };
 
-    it("error message shown when selected document name doesn't exist", () => {
+    it.only("error message shown when selected document name doesn't exist", () => {
       const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,
         quality: "NA",
@@ -113,8 +115,12 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
         },
       };
       const dataset = { data: datapoint };
-      const value = dataPointValueGetterFactory("data", field)(dataset);
-      expect(value).to.throw(Error, "There is no document with name NOT PROVIDED referenced in this dataset");
+      try {
+        dataPointValueGetterFactory("data", field)(dataset);
+        expect.fail("Expected an error to be thrown.");
+      } catch (error) {
+        expect(error.message).to.equal("There is no document with name NOT PROVIDED referenced in this dataset");
+      }
     });
 
     //can be integrated into other tests
@@ -123,12 +129,14 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
         value: 123,
         quality: "NA",
         dataSource: {
-          page: 62,
-          fileName: "IntegratedReport",
+          page: 6,
+          fileName: TEST_PDF_FILE_NAME,
           fileReference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
           tagName: "relationships",
         },
       };
+      // TODO mount environment where documents can be uploaded
+      uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
       const dataset = { data: datapoint };
       const value = dataPointValueGetterFactory("data", field)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>>{
@@ -136,8 +144,8 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
         displayValue: {
           value: 123,
           dataSource: {
-            page: 62,
-            fileName: "IntegratedReport",
+            page: 6,
+            fileName: TEST_PDF_FILE_NAME,
             fileReference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
             tagName: "relationships",
           },
