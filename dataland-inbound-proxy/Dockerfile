@@ -14,8 +14,8 @@ COPY dataland-inbound-proxy/api_errors.json /var/www/html/json_errors.json
 ARG CURRENT_ENVIRONMENT
 ENV CURRENT_ENVIRONMENT=${CURRENT_ENVIRONMENT}
 RUN echo "environment: " $CURRENT_ENVIRONMENT
-
-RUN dataland-inbound-proxy/configure_robots_file.sh $CURRENT_ENVIRONMENT
+COPY dataland-inbound-proxy/configure_robots_file.sh /var/www/html/configure_robots_file.sh
+RUN /var/www/html/configure_robots_file.sh $CURRENT_ENVIRONMENT
 COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-frontend/src/assets/images /var/www/images
 COPY ./gitinfo /var/www/html/gitinfo
