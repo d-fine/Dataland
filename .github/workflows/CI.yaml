@@ -30,7 +30,7 @@ jobs:
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
     with:
-      ENVIRONMENT: ${{ toString(github.event.inputs.whichEnvironment) }}
+      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
   frontend-component-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'

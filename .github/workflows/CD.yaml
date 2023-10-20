@@ -37,7 +37,7 @@ jobs:
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
     with:
-      ENVIRONMENT: ${{ toString(github.event.inputs.whichEnvironment) }}
+      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
   upload-dataland-frontend-client:
     runs-on: ubuntu-latest
     needs:
