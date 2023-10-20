@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 import contentData from "@/assets/content.json";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import type { Content, Page } from "@/types/ContentTypes";

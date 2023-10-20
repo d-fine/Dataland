@@ -63,7 +63,7 @@ import CreateCompany from "@/components/forms/CreateCompany.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
 import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constants";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 export default defineComponent({

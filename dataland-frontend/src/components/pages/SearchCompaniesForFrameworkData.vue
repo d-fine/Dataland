@@ -97,7 +97,7 @@ import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSear
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 import { useFrameworkFiltersStore } from "@/stores/Stores";
 import type Keycloak from "keycloak-js";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";

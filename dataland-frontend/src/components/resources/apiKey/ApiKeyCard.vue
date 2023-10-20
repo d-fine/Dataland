@@ -49,7 +49,7 @@ import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import { defineComponent } from "vue";
-import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
+import UserRolesBadges from "@/components/resources/apiKey/UserRolesBadges.vue";
 
 export default defineComponent({
   name: "ApiKeyCard",

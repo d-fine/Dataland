@@ -81,7 +81,7 @@ import { defineComponent } from "vue";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import { calculateExpiryDateAsDateString, calculateDaysFromNow } from "@/utils/DataFormatUtils";
-import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
+import UserRolesBadges from "@/components/resources/apiKey/UserRolesBadges.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { MS_PER_DAY } from "@/utils/Constants";
 import { MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY } from "@/DatalandSettings";

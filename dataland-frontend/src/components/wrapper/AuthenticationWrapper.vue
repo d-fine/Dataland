@@ -1,5 +1,5 @@
 <template>
-  <MobileWarningPage v-if="isMobile" />
+  <MobileWarningPage v-if="isUserOnMobileDevice" />
   <template v-else>
     <slot v-if="authenticated || disableAuthenticationWrapper"></slot>
     <MiddleCenterDiv v-else>
@@ -28,11 +28,11 @@ export default defineComponent({
     },
   },
   computed: {
-    isMobile(): boolean {
-      return this.isUserOnMobileDevice();
+    isUserOnMobileDevice(): boolean {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(userAgent);
     },
   },
-
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -49,16 +49,6 @@ export default defineComponent({
         })
         .catch((error) => console.log(error));
     }
-  },
-  methods: {
-    /**
-     * Checks if the user is on a mobile device
-     * @returns a boolean stating the result of the check
-     */
-    isUserOnMobileDevice(): boolean {
-      const userAgent = window.navigator.userAgent.toLowerCase();
-      return /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(userAgent);
-    },
   },
 });
 </script>
