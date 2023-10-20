@@ -1,11 +1,14 @@
 <template>
-  <slot v-if="authenticated || disableAuthenticationWrapper"></slot>
-  <MiddleCenterDiv v-else>
-    <h1 class="text-justify text-base font-normal">
-      Checking Log-In status.
-      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-    </h1>
-  </MiddleCenterDiv>
+  <MobileWarningPage v-if="isMobile" />
+  <template v-else>
+    <slot v-if="authenticated || disableAuthenticationWrapper"></slot>
+    <MiddleCenterDiv v-else>
+      <h1 class="text-justify text-base font-normal">
+        Checking Log-In status.
+        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      </h1>
+    </MiddleCenterDiv>
+  </template>
 </template>
 
 <script lang="ts">
@@ -13,16 +16,23 @@ import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
+import MobileWarningPage from "@/components/pages/MobileWarningPage.vue";
 
 export default defineComponent({
   name: "AuthenticationWrapper",
-  components: { MiddleCenterDiv },
+  components: { MiddleCenterDiv, MobileWarningPage },
   props: {
     disableAuthenticationWrapper: {
       type: Boolean,
       default: false,
     },
   },
+  computed: {
+    isMobile(): boolean {
+      return this.isUserOnMobileDevice();
+    },
+  },
+
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -38,15 +48,17 @@ export default defineComponent({
           }
         })
         .catch((error) => console.log(error));
-    } else {
-      const userAgent = window.navigator.userAgent.toLowerCase(); // TODO
-      const isMobile = /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(userAgent);
-      if (isMobile) {
-        const baseUrl = window.location.origin;
-        const url = `${baseUrl}/mobile`;
-        location.assign(url); // TODO refactor
-      }
     }
+  },
+  methods: {
+    /**
+     * Checks if the user is on a mobile device
+     * @returns a boolean stating the result of the check
+     */
+    isUserOnMobileDevice(): boolean {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(userAgent);
+    },
   },
 });
 </script>
