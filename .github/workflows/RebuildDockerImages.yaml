@@ -10,7 +10,7 @@ on:
       ENVIRONMENT:
         description: "current envrionment"
         required: true
-        type: environment
+        type: string
 
 # The idea for dynamically creating the matrix jobs comes from https://thekevinwang.com/2021/09/19/github-actions-dynamic-matrix/
 jobs:
