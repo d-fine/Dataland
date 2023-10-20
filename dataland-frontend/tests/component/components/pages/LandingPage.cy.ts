@@ -56,7 +56,7 @@ function validateIntroSection(): void {
  */
 function validateBrandsSection(): void {
   const images = getLandingPageSection("Brands").image;
-  expect(images?.length).to.eq(11);
+  expect(images?.length).to.eq(10);
   images!.forEach((image, index) => {
     const filename = image.split("/").slice(-1)[0];
     checkImage(`Brand ${index + 1}`, filename);
@@ -119,15 +119,15 @@ function validateStruggleSection(): void {
     },
     {
       imageFilename: "Badge.svg",
-      title: "Data Quality",
+      title: "Quality Issues",
     },
     {
       imageFilename: "3d-mpr-toggle.svg",
-      title: "Data Usage Rights",
+      title: "Usage Restrictions",
     },
     {
       imageFilename: "Airline--rapid-board.svg",
-      title: "Data Usage",
+      title: "High Price",
     },
   ];
   cy.get(".struggle__cell").each((element, index) => {
