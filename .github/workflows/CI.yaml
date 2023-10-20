@@ -30,8 +30,6 @@ jobs:
           vars: ${{ toJSON(vars) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
-    with:
-      ENVIRONMENT: CI
   frontend-component-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
