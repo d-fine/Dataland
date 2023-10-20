@@ -1,9 +1,3 @@
-map $host $robots_file {
-  default dev-robots.txt;
-  dataland.com robots.txt;
-  www.dataland.com robots.txt;
-}
-
 server {
     listen                  443 ssl http2;
     listen                  [::]:443 ssl http2;
@@ -27,9 +21,6 @@ server {
     include                 utils/locations/frontend${FRONTEND_LOCATION_CONFIG}.conf;
     include                 utils/locations/backend${BACKEND_LOCATION_CONFIG}.conf;
     include                 conf.d/common;
-    location = /robots.txt {
-      try_files /$robots_file =404;
-    }
 
     # additional config
     include                 utils/keycloak.conf;
