@@ -5,7 +5,6 @@ on:
       dataland_e2tests_version:
         description: The Version for the E2Etest Image
         value: ${{ jobs.rebuild-docker-images.outputs.dataland_e2etests_version }}
-  workflow_dispatch:
     inputs:
       ENVIRONMENT:
         description: "current envrionment"
