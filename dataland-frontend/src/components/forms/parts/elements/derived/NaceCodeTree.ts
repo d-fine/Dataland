@@ -9,7 +9,8 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
  */
 function findObjectByLabel(data: TreeNode[], searchTerm: string): object | null {
   for (const it of data) {
-    if (it?.label?.includes(searchTerm)) {
+    const itLabelLowerCase = it?.label?.toLowerCase() ?? "";
+    if (itLabelLowerCase.includes(searchTerm)) {
       return it;
     }
 
@@ -31,10 +32,11 @@ function findObjectByLabel(data: TreeNode[], searchTerm: string): object | null 
  * @returns the filtered list of TreeNodes
  */
 export function filterNodes(nodes: Array<TreeNode>, searchTerm: string): Array<TreeNode> {
-  const lowerSearchTerm = searchTerm.toLowerCase();
+  const lowerSearchTerm = searchTerm.toLowerCase().trim();
   const filteredArray: object[] = [];
   for (const node of nodes) {
-    if (node?.label?.includes(lowerSearchTerm)) {
+    const nodeLabelLowerCase = node?.label?.toLowerCase() ?? "";
+    if (nodeLabelLowerCase.includes(lowerSearchTerm)) {
       filteredArray.push(node);
       continue;
     }
