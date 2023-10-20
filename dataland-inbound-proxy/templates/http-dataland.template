@@ -44,7 +44,3 @@ map $host $robots_file {
     default /var/www/html/robots.txt;
     dev2.dataland.com /var/www/html/dev-robots.txt;
 }
-
-location = /var/www/html/dev-robots.txt/robots.txt {
-    try_files /$robots_file =404;
-}
