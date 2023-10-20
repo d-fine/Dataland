@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
 const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
+const MobileWarningPage = (): Promise<RouteComponent> => import("@/components/pages/MobileWarningPage.vue");
 
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
@@ -24,6 +25,11 @@ const routes = [
     path: "/",
     name: "Welcome to Dataland",
     component: NewLandingPage,
+  },
+  {
+    path: "/mobile",
+    name: "Mobile Warning Page",
+    component: MobileWarningPage,
   },
   {
     path: "/preview",

@@ -38,6 +38,14 @@ export default defineComponent({
           }
         })
         .catch((error) => console.log(error));
+    } else {
+      const userAgent = window.navigator.userAgent.toLowerCase(); // TODO
+      const isMobile = /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(userAgent);
+      if (isMobile) {
+        const baseUrl = window.location.origin;
+        const url = `${baseUrl}/mobile`;
+        location.assign(url); // TODO refactor
+      }
     }
   },
 });
