@@ -31,7 +31,7 @@ function findObjectByLabel(data: TreeNode[], searchTerm: string): object | null 
  * @returns the filtered list of TreeNodes
  */
 export function filterNodes(nodes: Array<TreeNode>, searchTerm: string): Array<TreeNode> {
-  const lowerSearchTerm = searchTerm.toLowerCase().trim();
+  const lowerSearchTerm = searchTerm.toLowerCase();
   const filteredArray: object[] = [];
   for (const node of nodes) {
     if (node?.label?.includes(lowerSearchTerm)) {
