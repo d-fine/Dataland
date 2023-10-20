@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euxo pipefail
 
 currentEnv=$1
 echo $currentEnv
