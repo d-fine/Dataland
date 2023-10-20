@@ -15,7 +15,7 @@ ARG CURRENT_ENVIRONMENT
 ENV CURRENT_ENVIRONMENT=${CURRENT_ENVIRONMENT}
 RUN echo "environment: " $CURRENT_ENVIRONMENT
 COPY dataland-inbound-proxy/configure_robots_file.sh /var/www/html/configure_robots_file.sh
-RUN chmod /var/www/html/configure_robots_file.sh
+RUN chmod -R +x /var/www/html/configure_robots_file.sh
 RUN /var/www/html/configure_robots_file.sh $CURRENT_ENVIRONMENT
 COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-frontend/src/assets/images /var/www/images
