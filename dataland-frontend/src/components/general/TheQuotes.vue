@@ -6,7 +6,7 @@
       arrows-container-classes="quotes__arrows"
       left-arrow-classes="quotes__arrow quotes__arrow--left"
       right-arrow-classes="quotes__arrow quotes__arrow--right"
-      :slide-count="slides.length"
+      :slide-count="cards.length"
       :initial-center-slide="1"
       @update:currentSlide="(newSlide) => (currentSlide = newSlide)"
       :scroll-screen-width-limit="1800"
@@ -18,7 +18,7 @@
             :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
             title="Youtube video player"
             allowfullscreen
-            :class="[currentSlide === index - 1 ? '' : 'quotes__slide-video--zoom-out', 'quotes__slide-video']"
+            :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }"
           ></iframe>
         </div>
       </div>
@@ -40,7 +40,6 @@ import SlideShow from "@/components/general/SlideShow.vue";
 const { sections } = defineProps<{ sections?: Section[] }>();
 const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes"));
 const cards = computed(() => quotesSection.value?.cards ?? []);
-const slides = computed(() => sections?.find((s) => s.title === "Quotes")?.cards ?? []);
 const currentSlide = ref(0);
 const currentCardInfo = computed(() => {
   const card = cards.value[currentSlide.value + 1];
@@ -88,6 +87,8 @@ onUnmounted(() => {
 
   &__slide {
     flex: 0 0 760px;
+    -webkit-flex: 0 0 760px;
+    -ms-flex: 0 0 760px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -110,6 +111,7 @@ onUnmounted(() => {
       transition: transform 0.4s ease-in-out;
       &--zoom-out {
         -ms-transform: scale(0.765);
+        -webkit-transform: scale(0.765);
         transform: scale(0.765);
       }
     }

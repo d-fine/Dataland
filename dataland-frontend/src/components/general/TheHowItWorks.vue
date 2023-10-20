@@ -119,7 +119,6 @@ onUnmounted(() => {
     flex-direction: column;
     background: #f6f6f6;
     gap: 24px;
-    cursor: grab;
     text-align: left;
 
     &-title {
@@ -218,6 +217,9 @@ onUnmounted(() => {
     &__slides {
       max-width: 1273px;
       justify-content: flex-start;
+    }
+    &__slide {
+      cursor: grab;
     }
 
     &__arrows {
