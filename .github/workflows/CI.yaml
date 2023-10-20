@@ -2,7 +2,7 @@ name: CI
 env:
   GITHUB_USER: ${{ github.actor }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
+
 
 
 on:
@@ -31,7 +31,7 @@ jobs:
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
     with:
-      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
+      ENVIRONMENT: CI
   frontend-component-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
