@@ -12,13 +12,13 @@ fileName="robots.txt"
 blockingText="User-agent: *\n Disallow: /"
 defaultText="User-agent: *\n Allow: / \n Disallow: /keycloak/ \n testabc"
 
-rm fileName
+#rm fileName
 if [[ $currentEnv == $datalandServerName ]]; then
   echo "This should be preview"
-  printf defaultText > "$fileName"
+  #printf defaultText > "$fileName"
 else
   echo "This should not be preview"
-  printf blockingText > "$fileName"
+  #printf blockingText > "$fileName"
 fi
 
 
