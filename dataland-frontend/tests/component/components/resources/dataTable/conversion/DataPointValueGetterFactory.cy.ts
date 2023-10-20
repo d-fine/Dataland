@@ -6,8 +6,8 @@ import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import {uploadDocuments} from "../../../../../sharedUtils/components/UploadDocuments";
-import {TEST_PDF_FILE_NAME} from "../../../../../sharedUtils/ConstantsForPdfs";
+import { uploadDocuments } from "../../../../../sharedUtils/components/UploadDocuments";
+import { TEST_PDF_FILE_NAME } from "../../../../../sharedUtils/ConstantsForPdfs";
 describe("Unit test for the DataPointValueGetterFactory", () => {
   // TODO rewrite test based on the new DataPointValueGetterFactory
   describe("Tests when the unit is pre-determined in the data model", () => {
