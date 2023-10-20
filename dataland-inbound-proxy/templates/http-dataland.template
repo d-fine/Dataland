@@ -39,8 +39,3 @@ server {
        return 301 https://${PROXY_PRIMARY_URL}$request_uri;
    }
 }
-
-map $host $robots_file {
-    default /var/www/html/robots.txt;
-    dev2.dataland.com /var/www/html/dev-robots.txt;
-}
