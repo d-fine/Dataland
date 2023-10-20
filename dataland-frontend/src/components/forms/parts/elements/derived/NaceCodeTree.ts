@@ -2,7 +2,29 @@ import { type TreeNode } from "primevue/tree";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
- * Recursively filters the list of TreeNodes to only contain nodes whose label matches the searchTerm.
+ * Finds an object that has the searched phrase in the label
+ * @param data object to search
+ * @param searchTerm the searchTerm
+ * @returns the filtered list of TreeNodes
+ */
+function findObjectByLabel(data: TreeNode[], searchTerm: string): object | null {
+  for (const it of data) {
+    if (it?.label?.includes(searchTerm)) {
+      return it;
+    }
+
+    if (it?.children) {
+      const foundInChildren = findObjectByLabel(it.children, searchTerm);
+      if (foundInChildren) {
+        return foundInChildren;
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Filters the list of TreeNodes to only contain nodes whose label matches the searchTerm.
  * Nodes are included if their own label OR one of their child labels matches the searchTerm.
  * @param nodes the list of nodes to filter
  * @param searchTerm the searchTerm to filter for
@@ -10,11 +32,20 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
  */
 export function filterNodes(nodes: Array<TreeNode>, searchTerm: string): Array<TreeNode> {
   const lowerSearchTerm = searchTerm.toLowerCase().trim();
-  return nodes.filter((it) => {
-    const filterMatchesNode = assertDefined(it.label).toLowerCase().indexOf(lowerSearchTerm) > -1;
-    it.children = filterNodes(it.children ?? [], searchTerm);
-    return filterMatchesNode ?? it.children.length > 0;
-  });
+  const filteredArray: object[] = [];
+  for (const node of nodes) {
+    if (node?.label?.includes(lowerSearchTerm)) {
+      filteredArray.push(node);
+      continue;
+    }
+    if (node?.children?.length) {
+      const foundInChildren = findObjectByLabel(node.children, searchTerm);
+      if (foundInChildren) {
+        filteredArray.push(foundInChildren);
+      }
+    }
+  }
+  return filteredArray;
 }
 
 /**
