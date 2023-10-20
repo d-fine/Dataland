@@ -39,7 +39,7 @@ export function filterNodes(nodes: Array<TreeNode>, searchTerm: string): Array<T
       continue;
     }
     if (node?.children?.length) {
-      const foundInChildren = findObjectByLabel(node.children, searchTerm);
+      const foundInChildren = findObjectByLabel(node.children, lowerSearchTerm);
       if (foundInChildren) {
         filteredArray.push(foundInChildren);
       }
