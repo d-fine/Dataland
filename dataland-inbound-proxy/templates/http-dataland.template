@@ -28,15 +28,6 @@ server {
     include                 utils/error.conf;
 }
 
-map $host $robots_file {
-    default /var/www/html/robots.txt;
-    dev2.dataland.com /var/www/html/dev-robots.txt;
-}
-
-location = /var/www/html/dev-robots.txt/robots.txt {
-    try_files /$robots_file =404;
-}
-
 server {
    listen                  443 ssl http2 default_server;
    listen                  [::]:443 ssl http2 default_server;
@@ -47,4 +38,13 @@ server {
    location / {
        return 301 https://${PROXY_PRIMARY_URL}$request_uri;
    }
+}
+
+map $host $robots_file {
+    default /var/www/html/robots.txt;
+    dev2.dataland.com /var/www/html/dev-robots.txt;
+}
+
+location = /var/www/html/dev-robots.txt/robots.txt {
+    try_files /$robots_file =404;
 }
