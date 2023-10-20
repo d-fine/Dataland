@@ -34,7 +34,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
     },
     () => {
       checkCommonCspHeaders(
-        "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'unsafe-eval' " +
+        "default-src 'self' https://www.youtube.com; script-src 'self' 'unsafe-eval' " +
           "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o='; style-src 'self' 'unsafe-inline'; " +
           "frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; " +
           "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/",
@@ -49,7 +49,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
     },
     () => {
       checkCommonCspHeaders(
-        "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'unsafe-eval' " +
+        "default-src 'self' https://www.youtube.com; script-src 'self' 'unsafe-eval' " +
           "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o='; style-src 'self' 'unsafe-inline'; " +
           "frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; " +
           "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/",

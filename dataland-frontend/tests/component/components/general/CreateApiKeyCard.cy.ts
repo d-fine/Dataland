@@ -1,4 +1,4 @@
-import CreateApiKeyCard from "@/components/general/apiKey/CreateApiKeyCard.vue";
+import CreateApiKeyCard from "@/components/resources/apiKey/CreateApiKeyCard.vue";
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component test for CreateApiKeyCard", () => {
