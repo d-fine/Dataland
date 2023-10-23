@@ -13,10 +13,12 @@ set -u
 
 devText="User-agent: *\n Disallow: /"
 datalandText="User-agent: *\n Allow: / \n Disallow: /keycloak/ \n test"
-cd..
-ls
-rm "dataland-inbound-proxy/$fileName"
 
+scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$scriptDir"
+cd ..
+
+rm "dataland-inbound-proxy/$fileName"
 if [[ $serverName == $datalandServerName ]]; then
   echo "This should be dataland.com"
   printf datalandText > "$fileName"
