@@ -39,10 +39,13 @@ describeIf(
       MLDT.getSectionHead("Biodiversity").should("have.attr", "data-section-expanded", "false").click();
       MLDT.getSectionHead("Energy performance").should("have.attr", "data-section-expanded", "false").click();
 
-      MLDT.getCellContainer("Primary Forest And Wooded Land Of Native Species Exposure").should("contain.text", "Yes");
-      MLDT.getCellContainer("Protected Areas Exposure").should("contain.text", "No");
-      MLDT.getCellContainer("Rare Or Endangered Ecosystems Exposure").should("contain.text", "Yes");
-      MLDT.getCellContainer("Applicable High Impact Climate Sectors")
+      MLDT.getCellValueContainer("Primary Forest And Wooded Land Of Native Species Exposure").should(
+        "contain.text",
+        "Yes",
+      );
+      MLDT.getCellValueContainer("Protected Areas Exposure").should("contain.text", "No");
+      MLDT.getCellValueContainer("Rare Or Endangered Ecosystems Exposure").should("contain.text", "Yes");
+      MLDT.getCellValueContainer("Applicable High Impact Climate Sectors")
         .find("a.link")
         .should("contain.text", "Applicable High Impact Climate Sectors")
         .click();
