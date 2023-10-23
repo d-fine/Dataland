@@ -1,6 +1,6 @@
 #!/bin/bash
 datalandServerName="dataland.com"
-fileName="robots.txt"
+filePath="/var/www/html/robots.txt"
 delimiter="/"
 
 set -exo pipefail
@@ -19,12 +19,12 @@ cd "$scriptDir"
 cd ..
 ls
 
-rm "$fileName"
+rm "$filePath"
 if [[ $serverName == $datalandServerName ]]; then
   echo "This should be dataland.com"
-  printf datalandText > "$fileName"
+  printf datalandText > "$filePath"
 else
   echo "This should not be dataland.com"
-  printf devText > "$fileName"
+  printf devText > "$filePath"
 fi
 
