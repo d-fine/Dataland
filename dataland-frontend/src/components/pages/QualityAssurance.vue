@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";

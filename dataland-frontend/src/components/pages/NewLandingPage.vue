@@ -9,7 +9,7 @@
     <TheJoinCampaign :sections="landingPage?.sections" />
     <TheGetInTouch :sections="landingPage?.sections" />
   </main>
-  <TheFooter :sections="landingPage?.sections" />
+  <TheFooter />
 </template>
 
 <script setup lang="ts">
@@ -22,15 +22,15 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { useSharedSessionStateStore } from "@/stores/Stores";
 import { SessionDialogMode } from "@/utils/SessionTimeoutUtils";
 
-import TheHeader from "@/components/layout/TheHeader.vue";
-import TheIntro from "@/components/general/TheIntro.vue";
-import TheQuotes from "@/components/general/TheQuotes.vue";
-import TheBrands from "@/components/general/TheBrands.vue";
-import TheStruggle from "@/components/general/TheStruggle.vue";
-import TheHowItWorks from "@/components/general/TheHowItWorks.vue";
-import TheJoinCampaign from "@/components/general/TheJoinCampaign.vue";
-import TheGetInTouch from "@/components/general/TheGetInTouch.vue";
-import TheFooter from "@/components/layout/TheFooter.vue";
+import TheHeader from "@/components/generics/TheNewHeader.vue";
+import TheIntro from "@/components/resources/newLandingPage/TheIntro.vue";
+import TheQuotes from "@/components/resources/newLandingPage/TheQuotes.vue";
+import TheBrands from "@/components/resources/newLandingPage/TheBrands.vue";
+import TheStruggle from "@/components/resources/newLandingPage/TheStruggle.vue";
+import TheHowItWorks from "@/components/resources/newLandingPage/TheHowItWorks.vue";
+import TheJoinCampaign from "@/components/resources/newLandingPage/TheJoinCampaign.vue";
+import TheGetInTouch from "@/components/resources/newLandingPage/TheGetInTouch.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
 import contentData from "@/assets/content.json";
 import type { Content, Page } from "@/types/ContentTypes";
 
