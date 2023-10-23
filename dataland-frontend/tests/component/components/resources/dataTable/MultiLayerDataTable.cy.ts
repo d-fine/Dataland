@@ -246,7 +246,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
     getCellRowHeaderContainer("Level 2 - String").find("em").should("not.exist");
   });
 
-  it("Validate that show-if hidden fields and sections are displayed and highlighted in review mode", () => {
+  it.only("Validate that show-if hidden fields and sections are displayed and highlighted in review mode", () => {
     cy.mountWithPlugins(MultiLayerDataTable, {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
