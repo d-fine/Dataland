@@ -8,10 +8,12 @@ describe("As a user I want to be able to register for an account and be able to 
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
   it("Checks that the Dataland password-policy gets respected", () => {
-    cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
+    cy.intercept({ times: 3, url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
     cy.visitAndCheckAppMount("/")
       .wait("@youtube")
-      .get("button[name='join_dataland_button']")
+      .wait("@youtube")
+      .wait("@youtube")
+      .get("button[name='signup_dataland_button']")
       .click()
       .get("#email")
       .should("exist")
@@ -42,10 +44,12 @@ describe("As a user I want to be able to register for an account and be able to 
   it("Checks that registering works", () => {
     cy.task("setEmail", email);
     cy.task("setPassword", randomHexPassword);
-    cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
+    cy.intercept({ times: 3, url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
     cy.visitAndCheckAppMount("/")
       .wait("@youtube")
-      .get("button[name='join_dataland_button']")
+      .wait("@youtube")
+      .wait("@youtube")
+      .get("button[name='signup_dataland_button']")
       .click()
       .get("#email")
       .should("exist")

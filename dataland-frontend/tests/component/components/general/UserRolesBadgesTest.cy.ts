@@ -1,4 +1,4 @@
-import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
+import UserRolesBadges from "@/components/resources/apiKey/UserRolesBadges.vue";
 import { mount } from "cypress/vue";
 import {
   KEYCLOAK_ROLE_ADMIN,
