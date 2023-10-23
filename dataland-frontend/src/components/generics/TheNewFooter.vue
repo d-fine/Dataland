@@ -21,18 +21,20 @@
 </template>
 
 <script setup lang="ts">
-import contentData from "@/assets/content.json";
-import { type Content, type Page, type Section } from "@/types/ContentTypes";
+import { computed } from "vue";
+import type { Section } from "@/types/ContentTypes";
 
-const content: Content = contentData;
-const landingPage: Page | undefined = content.pages.find((page) => page.url === "/");
-const footerSection: Section | undefined = landingPage?.sections?.find((section) => section.title === "Footer") ?? null;
+const { sections } = defineProps<{ sections?: Section[] }>();
 
-const footerText = ((): string => {
-  if (!footerSection?.text) return "";
+const footerSection = computed(() => {
+  return sections?.find((section) => section.title === "Footer") ?? null;
+});
+
+const footerText = computed(() => {
+  if (!footerSection.value?.text) return "";
   const currentYear = new Date().getFullYear();
-  return `${footerSection.text[0]}${currentYear}${footerSection.text[1]}`;
-})();
+  return `${footerSection.value.text[0]}${currentYear}${footerSection.value.text[1]}`;
+});
 </script>
 
 <style scoped lang="scss">

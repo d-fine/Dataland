@@ -9,7 +9,7 @@
     <TheJoinCampaign :sections="landingPage?.sections" />
     <TheGetInTouch :sections="landingPage?.sections" />
   </main>
-  <TheFooter />
+  <TheFooter :sections="landingPage?.sections" />
 </template>
 
 <script setup lang="ts">
