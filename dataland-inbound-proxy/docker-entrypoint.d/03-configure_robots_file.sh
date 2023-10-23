@@ -18,7 +18,7 @@ scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$scriptDir"
 cd ..
 
-rm "dataland-inbound-proxy/$fileName"
+rm $fileName
 if [[ $serverName == $datalandServerName ]]; then
   echo "This should be dataland.com"
   printf datalandText > "$fileName"
