@@ -85,7 +85,7 @@
                         {
                             "icon": "/static/icons/Diagram.svg",
                             "title": "Data Gaps",
-                            "text": "Valuable insights remain hidden, preventing businesses from harnessing the full potential of their data."
+                            "text": "Smaller and unlisted companies are often left out of the existing data offering, shifting the burden of acquiring this data to the data consumers."
                         },
                         {
                             "icon": "/static/icons/Badge.svg",
@@ -95,12 +95,12 @@
                         {
                             "icon": "/static/icons/3d-mpr-toggle.svg",
                             "title": "Usage Restrictions",
-                            "text": "Companies must ensure they have the legal permissions to collect, store, process, and share data while adhering to regulations and privacy laws."
+                            "text": "Companies are quite limited in how they can use the data they acquired, hindering many valuable applications of this data."
                         },
                         {
                             "icon": "/static/icons/Airline--rapid-board.svg",
                             "title": "High Price",
-                            "text": "Many organizations struggle with underutilization. Data analysis tools might be intimidating or inaccessible to certain teams, limiting the ability to extract valuable insights. "
+                            "text": "Data is becoming more and more expensive, limiting access to essential information for many organizations."
                         }
                     ]
                 },
