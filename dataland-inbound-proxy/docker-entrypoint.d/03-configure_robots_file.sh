@@ -1,6 +1,8 @@
 #!/bin/bash
 set -exo pipefail
-currentEnv=$1
+PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
+echo $PROXY_LETSENCRYPT_PATH
+currentEnv=$PROXY_LETSENCRYPT_PATH
 set -u
 echo $currentEnv
 datalandServerDomain="dataland.com"
