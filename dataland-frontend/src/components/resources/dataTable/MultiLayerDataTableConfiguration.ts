@@ -14,65 +14,66 @@ export type BadgeColor = "yellow" | "green" | "red" | "blue" | "purple" | "gray"
 export interface MLDTCellConfig<FrameworkDataType> {
   type: "cell";
   label: string;
-  explanation?: string;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   valueGetter: (dataset: FrameworkDataType) => AvailableMLDTDisplayObjectTypes;
+  explanation?: string;
 }
 
 export interface MLDTSectionConfig<FrameworkDataType> {
   type: "section";
   label: string;
-  labelBadgeColor?: BadgeColor;
   expandOnPageLoad: boolean;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   children: MLDTConfig<FrameworkDataType>;
+  labelBadgeColor?: BadgeColor;
+  areThisSectionAndAllParentSectionsDisplayedForTheDataset?: (dataset: FrameworkDataType) => boolean;
 }
 
 /**
- * Check if the specified MLDT-Element should be displayed given the provided datasets.
- * @param element The element to check
- * @param datasets The datasets to use during the check
- * @returns true iff the element should be displayed
+ * Check if the cell or section should be displayed given the provided datasets.
+ * @param cellOrSectionConfig The cellOrSectionConfig to check
+ * @param mldtDatasets The datasets to use during the check
+ * @returns true if the cell or section should be displayed
  */
-export function isElementVisible<FrameworkDataType>(
-  element: MLDTSectionConfig<FrameworkDataType> | MLDTCellConfig<FrameworkDataType>,
-  datasets: Array<MLDTDataset<FrameworkDataType>>,
+export function isCellOrSectionVisible<FrameworkDataType>(
+  cellOrSectionConfig: MLDTSectionConfig<FrameworkDataType> | MLDTCellConfig<FrameworkDataType>,
+  mldtDatasets: Array<MLDTDataset<FrameworkDataType>>,
 ): boolean {
-  if (element.type == "cell") {
-    return isCellRowVisible(element, datasets);
+  if (cellOrSectionConfig.type == "cell") {
+    return isCellRowVisible(cellOrSectionConfig, mldtDatasets);
   } else {
-    return isCellSectionVisible(element, datasets);
+    return isCellSectionVisible(cellOrSectionConfig, mldtDatasets);
   }
 }
 
 /**
  * Check if the specified MLDT-Cell should be displayed given the provided datasets.
  * @param cellConfig The cell to check
- * @param datasets The datasets to use during the check
- * @returns true iff the cell should be displayed
+ * @param mldtDatasets The datasets to use during the check
+ * @returns true if the cell should be displayed
  */
 function isCellRowVisible<FrameworkDataType>(
   cellConfig: MLDTCellConfig<FrameworkDataType>,
-  datasets: Array<MLDTDataset<FrameworkDataType>>,
+  mldtDatasets: Array<MLDTDataset<FrameworkDataType>>,
 ): boolean {
-  return datasets.some((datasetEntry) => cellConfig.shouldDisplay(datasetEntry.dataset));
+  return mldtDatasets.some((mldtDataset) => cellConfig.shouldDisplay(mldtDataset.dataset));
 }
 
 /**
  * Check if the specified MLDT-Section should be displayed given the provided datasets.
  * @param sectionConfig The section to check
- * @param datasets The datasets to use during the check
+ * @param mldtDatasets The datasets to use during the check
  * @returns true iff the section should be displayed
  */
 function isCellSectionVisible<FrameworkDataType>(
   sectionConfig: MLDTSectionConfig<FrameworkDataType>,
-  datasets: Array<MLDTDataset<FrameworkDataType>>,
+  mldtDatasets: Array<MLDTDataset<FrameworkDataType>>,
 ): boolean {
-  const shouldShowSection = datasets.some((datasetEntry) => sectionConfig.shouldDisplay(datasetEntry.dataset));
+  const shouldShowSection = mldtDatasets.some((mldtDataset) => sectionConfig.shouldDisplay(mldtDataset.dataset));
 
   if (!shouldShowSection) return false;
 
-  const anyChildrenVisible = sectionConfig.children.some((child) => isElementVisible(child, datasets));
+  const anyChildrenVisible = sectionConfig.children.some((child) => isCellOrSectionVisible(child, mldtDatasets));
 
   return shouldShowSection && anyChildrenVisible;
 }

@@ -7,49 +7,103 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-
 /**
- * For QA it is desirable that all fields are displayed even if they should not normally be visible. This function
- * converts a standard view-configuration to one that displays all cells but highlights cells that would
- * not normally be displayed
+ * For QA it is desirable that all fields are displayed to a reviewer even if they should normally not be visible.
+ * This function edits a standard view-configuration in a way that it displays all cells but highlights cells that would
+ * not be displayed to a user on the view-page.
  * @param config the input view configuration
+ * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the section or
+ * cell that this function is currently looking at
  * @returns the modified hidden-highlighting view-config
  */
-export function convertMultiLayerDataTableConfigForHighlightingHiddenFields<T>(config: MLDTConfig<T>): MLDTConfig<T> {
-  return config.map((it) => {
-    if (it.type == "cell") return wrapMultiLayerDataTableCellForHighlightingHiddenFields(it);
-    else return wrapMultiLayerDataTableSectionForHighlightingHiddenFields(it);
+export function editMultiLayerDataTableConfigForHighlightingHiddenFields<T>(
+  config: MLDTConfig<T>,
+  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
+): MLDTConfig<T> {
+  return config.map((cellOrSectionConfig) => {
+    if (cellOrSectionConfig.type == "cell")
+      return editCellConfigForHighlightingHiddenFields(cellOrSectionConfig, displayStatusGettersOfAllParents);
+    else return editSectionConfigForHighlightingHiddenFields(cellOrSectionConfig, displayStatusGettersOfAllParents);
   });
 }
 
 /**
- * Converts a single section (and all it's children) to the show-always directive
+ * Edits a single section (and all it's children) to the show-always directive
  * @param sectionConfig the section config to convert
+ * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the section that
+ * this function is currently looking at
  * @returns the modified section config
  */
-function wrapMultiLayerDataTableSectionForHighlightingHiddenFields<T>(
+function editSectionConfigForHighlightingHiddenFields<T>(
   sectionConfig: MLDTSectionConfig<T>,
+  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
 ): MLDTSectionConfig<T> {
+  const displayStatusGetterOfThisSection = sectionConfig.shouldDisplay;
+  const displayStatusGettersToPassDownToChildren = ((): Array<(dataset: T) => boolean> => {
+    if (!displayStatusGettersOfAllParents) {
+      return [displayStatusGetterOfThisSection];
+    } else {
+      displayStatusGettersOfAllParents.push(displayStatusGetterOfThisSection);
+      return displayStatusGettersOfAllParents;
+    }
+  })();
+
+  const sectionlHasAtLeastOneParent = !!displayStatusGettersOfAllParents && displayStatusGettersOfAllParents.length > 0;
+  const areThisSectionAndAllParentSectionsDisplayedForTheDataset = (dataset: T): boolean => {
+    if (!sectionConfig.shouldDisplay(dataset)) {
+      return false;
+    } else if (sectionlHasAtLeastOneParent) {
+      for (const showDisplay of displayStatusGettersOfAllParents) {
+        if (!showDisplay(dataset)) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return true;
+  };
+
   return {
     ...sectionConfig,
     shouldDisplay: () => true,
-    children: convertMultiLayerDataTableConfigForHighlightingHiddenFields(sectionConfig.children),
+    children: editMultiLayerDataTableConfigForHighlightingHiddenFields(
+      sectionConfig.children,
+      displayStatusGettersToPassDownToChildren,
+    ),
+    areThisSectionAndAllParentSectionsDisplayedForTheDataset: areThisSectionAndAllParentSectionsDisplayedForTheDataset,
   };
 }
 
 /**
- * Converts a single cell to the show-always directive
- * @param cellConfig the section config to convert
+ * Edits a single cell to the show-always directive
+ * @param cellConfig the cell config to convert
+ * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the cell that this
+ * function is currently looking at
  * @returns the modified cell config
  */
-function wrapMultiLayerDataTableCellForHighlightingHiddenFields<T>(cellConfig: MLDTCellConfig<T>): MLDTCellConfig<T> {
+function editCellConfigForHighlightingHiddenFields<T>(
+  cellConfig: MLDTCellConfig<T>,
+  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
+): MLDTCellConfig<T> {
+  const cellHasAtLeastOneParent = !!displayStatusGettersOfAllParents && displayStatusGettersOfAllParents.length > 0;
   return {
     ...cellConfig,
     shouldDisplay: () => true,
     valueGetter: (dataset: T): AvailableMLDTDisplayObjectTypes => {
       const originalDisplayValue = cellConfig.valueGetter(dataset);
-
-      if (cellConfig.shouldDisplay(dataset)) {
+      const areAllParentSectionsDisplayed = (): boolean => {
+        if (!cellHasAtLeastOneParent) {
+          return true;
+        } else {
+          for (const showDisplay of displayStatusGettersOfAllParents) {
+            if (!showDisplay(dataset)) {
+              return false;
+            }
+          }
+          return true;
+        }
+      };
+      if (areAllParentSectionsDisplayed() && cellConfig.shouldDisplay(dataset)) {
         return originalDisplayValue;
       } else {
         return {
