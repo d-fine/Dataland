@@ -13,7 +13,7 @@ set -u
 
 devText="User-agent: *\n Disallow: /"
 datalandText="User-agent: *\n Allow: / \n Disallow: /keycloak/ \n test"
-
+cd..
 ls
 rm "dataland-inbound-proxy/$fileName"
 
