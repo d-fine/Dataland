@@ -12,8 +12,11 @@ export function filterNodes(nodes: Array<TreeNode>, searchTerm: string): Array<T
   const lowerSearchTerm = searchTerm.toLowerCase().trim();
   return nodes.filter((it) => {
     const filterMatchesNode = assertDefined(it.label).toLowerCase().includes(lowerSearchTerm);
-    it.children = filterNodes(it.children ?? [], searchTerm);
-    return filterMatchesNode || it.children.length > 0;
+    const findInChildren = filterNodes(it.children ?? [], searchTerm);
+    if (findInChildren.length !== 0) {
+      it.children = findInChildren;
+    }
+    return filterMatchesNode || findInChildren.length > 0;
   });
 }
 
