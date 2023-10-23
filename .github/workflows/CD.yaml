@@ -36,8 +36,6 @@ jobs:
           vars: ${{ toJSON(vars) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
-    with:
-      ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
   upload-dataland-frontend-client:
     runs-on: ubuntu-latest
     needs:
