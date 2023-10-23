@@ -12,7 +12,7 @@ fileName="robots.txt"
 blockingText="User-agent: *\n Disallow: /"
 defaultText="User-agent: *\n Allow: / \n Disallow: /keycloak/ \n test"
 cd ..
-rm fileName
+rm $fileName
 if [[ $currentEnv == $datalandServerDomain ]]; then
   echo "This should be dataland.com"
   printf defaultText > "$fileName"
