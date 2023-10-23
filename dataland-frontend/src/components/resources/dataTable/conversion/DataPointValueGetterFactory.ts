@@ -2,6 +2,7 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
+  type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type CurrencyDataPoint, type ExtendedDataPointBigDecimal } from "@clients/backend";
 import {
@@ -66,12 +67,12 @@ export function dataPointValueGetterFactory(
           quality: datapoint?.quality,
           comment: datapoint?.comment,
         },
-      };
+      } as MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>;
     } else {
       return {
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: formattedValue,
-      };
+      } as MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>;
     }
   };
 }

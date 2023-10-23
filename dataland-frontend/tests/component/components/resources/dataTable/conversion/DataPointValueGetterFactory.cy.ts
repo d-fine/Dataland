@@ -6,8 +6,8 @@ import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { uploadDocuments } from "../../../../../sharedUtils/components/UploadDocuments";
-import { TEST_PDF_FILE_NAME } from "../../../../../sharedUtils/ConstantsForPdfs";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 describe("Unit test for the DataPointValueGetterFactory", () => {
   // TODO rewrite test based on the new DataPointValueGetterFactory
   describe("Tests when the unit is pre-determined in the data model", () => {
@@ -119,7 +119,9 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
         dataPointValueGetterFactory("data", field)(dataset);
         expect.fail("Expected an error to be thrown.");
       } catch (error) {
-        expect(error.message).to.equal("There is no document with name NOT PROVIDED referenced in this dataset");
+        expect((error as Error)?.message).to.equal(
+          "There is no document with name NOT PROVIDED referenced in this dataset",
+        );
       }
     });
 
@@ -142,7 +144,8 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
         displayValue: {
-          value: 123,
+          fieldLabel: "Some label for some field",
+          value: "123",
           dataSource: {
             page: 6,
             fileName: TEST_PDF_FILE_NAME,

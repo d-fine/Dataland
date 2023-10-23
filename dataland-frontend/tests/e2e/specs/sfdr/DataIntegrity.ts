@@ -78,6 +78,7 @@ describeIf(
           selectsReportsForUploadInSfdrForm();
           setQualityInSfdrUploadForm();
           submitButton.clickButton();
+          // TODO intercept request and check if objects are equal => that way we assure that we have a blanket test here
           cy.url().should("eq", getBaseUrl() + "/datasets");
           validateFormUploadedData(uploadIds.companyId);
         });
