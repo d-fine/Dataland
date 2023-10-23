@@ -11,8 +11,8 @@ serverName="${fullServerPath##*"$delimiter"}"
 echo serverName
 set -u
 
-devText="User-agent: *\n Disallow: /"
-datalandText="User-agent: *\n Allow: / \n Disallow: /keycloak/"
+devText="User-agent: *\nDisallow: /"
+datalandText="User-agent: *\nAllow: / \nDisallow: /keycloak/"
 
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$scriptDir"
@@ -20,10 +20,10 @@ cd ..
 
 rm "$filePath"
 if [[ $serverName == $datalandServerName ]]; then
-  echo "This should be dataland.com"
+  echo "This should be the server dataland.com"
   printf "$datalandText" > "$filePath"
 else
-  echo "This should not be dataland.com"
+  echo "This should not be the server dataland.com"
   printf "$devText" > "$filePath"
 fi
 
