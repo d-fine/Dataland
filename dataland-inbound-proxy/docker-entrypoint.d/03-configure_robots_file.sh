@@ -17,6 +17,7 @@ datalandText="User-agent: *\n Allow: / \n Disallow: /keycloak/ \n test"
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$scriptDir"
 cd ..
+ls
 
 rm "$fileName"
 if [[ $serverName == $datalandServerName ]]; then
