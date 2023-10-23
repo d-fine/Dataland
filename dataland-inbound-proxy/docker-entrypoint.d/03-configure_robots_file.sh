@@ -1,6 +1,6 @@
 #!/bin/bash
 set -exo pipefail
-echo $PROXY_LETSENCRYPT_PATH
+echo "Letsencrypt path:"$PROXY_LETSENCRYPT_PATH
 currentEnv=$PROXY_LETSENCRYPT_PATH
 set -u
 echo $currentEnv
