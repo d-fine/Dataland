@@ -9,7 +9,6 @@ COPY dataland-inbound-proxy/docker-entrypoint.d/* /docker-entrypoint.d/
 COPY dataland-inbound-proxy/scripts /scripts
 COPY dataland-inbound-proxy/custom_errors.html /var/www/html/custom_errors.html
 COPY dataland-inbound-proxy/api_errors.json /var/www/html/json_errors.json
-COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-frontend/src/assets/images /var/www/images
 COPY ./gitinfo /var/www/html/gitinfo
 
