@@ -18,12 +18,13 @@ scriptDir="$( dirname "${BASH_SOURCE[0]}" )"
 cd "$scriptDir"
 cd ..
 
-rm "$filePath"
 if [[ $serverName == $datalandServerName ]]; then
   echo "This should be the server dataland.com"
+  touch "$filePath"
   printf "$datalandText" > "$filePath"
 else
   echo "This should not be the server dataland.com"
+  touch "$filePath"
   printf "$devText" > "$filePath"
 fi
 
