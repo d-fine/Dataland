@@ -1,19 +1,21 @@
 #!/bin/bash
+datalandServerName="dataland.com"
+fileName="robots.txt"
+delimiter="/"
+
 set -exo pipefail
 echo "Letsencrypt path:"$PROXY_LETSENCRYPT_PATH
-currentEnv=$PROXY_LETSENCRYPT_PATH
+fullServerPath=$PROXY_LETSENCRYPT_PATH
+
+serverName="${fullServerPath##*"$delimiter"}"
+echo serverName
 set -u
-echo $currentEnv
-datalandServerDomain="dataland.com"
 
-echo "Deploying to server: $currentEnv"
-fileName="robots.txt"
-
-blockingText="User-agent: *\n Disallow: /"
-defaultText="User-agent: *\n Allow: / \n Disallow: /keycloak/ \n test"
+devText="User-agent: *\n Disallow: /"
+datalandText="User-agent: *\n Allow: / \n Disallow: /keycloak/ \n test"
 cd ..
-rm $fileName
-if [[ $currentEnv == $datalandServerDomain ]]; then
+rm fileName
+if [[ $serverName == $datalandServerName ]]; then
   echo "This should be dataland.com"
   printf defaultText > "$fileName"
 else
