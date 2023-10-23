@@ -11,8 +11,8 @@ serverName="${fullServerPath##*"$delimiter"}"
 echo serverName
 set -u
 
-devText="User-agent: *\n Disallow: /"
-datalandText="User-agent: *\n Allow: / \n Disallow: /keycloak/ \n test"
+devText="User-agent: *\n Disallow: /test"
+datalandText="User-agent: *\n Allow: / \n Disallow: /keycloak/"
 
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$scriptDir"
