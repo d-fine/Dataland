@@ -1,0 +1,21 @@
+#!/bin/bash
+set -exo pipefail
+currentEnv=$1
+set -u
+echo $currentEnv
+datalandServerDomain="dataland.com"
+
+echo "Deploying to server: $currentEnv"
+fileName="robots.txt"
+
+blockingText="User-agent: *\n Disallow: /"
+defaultText="User-agent: *\n Allow: / \n Disallow: /keycloak/ \n"
+
+#rm fileName
+if [[ $currentEnv == $datalandServerDomain ]]; then
+  echo "This should be dataland.com"
+  #printf defaultText > "$fileName"
+else
+  echo "This should not be dataland.com"
+  #printf blockingText > "$fileName"
+fi
