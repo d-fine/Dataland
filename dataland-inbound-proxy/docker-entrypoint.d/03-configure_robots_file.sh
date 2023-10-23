@@ -14,7 +14,7 @@ set -u
 devText="User-agent: *\nDisallow: /"
 datalandText="User-agent: *\nAllow: / \nDisallow: /keycloak/"
 
-scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+scriptDir="$( dirname "${BASH_SOURCE[0]}" )"
 cd "$scriptDir"
 cd ..
 
