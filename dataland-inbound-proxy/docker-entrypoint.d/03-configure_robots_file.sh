@@ -21,9 +21,9 @@ cd ..
 rm "$filePath"
 if [[ $serverName == $datalandServerName ]]; then
   echo "This should be dataland.com"
-  printf datalandText > "$filePath"
+  printf "$datalandText" > "$filePath"
 else
   echo "This should not be dataland.com"
-  printf devText > "$filePath"
+  printf "$devText" > "$filePath"
 fi
 
