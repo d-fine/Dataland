@@ -8,7 +8,7 @@ echo "Letsencrypt path:"$PROXY_LETSENCRYPT_PATH
 fullServerPath=$PROXY_LETSENCRYPT_PATH
 
 serverName="${fullServerPath##*"$delimiter"}"
-echo serverName
+echo $serverName
 set -u
 
 devText="User-agent: *\nDisallow: /"
