@@ -4,10 +4,8 @@ filePath="/var/www/html/robots.txt"
 delimiter="/"
 
 set -exo pipefail
-echo "Letsencrypt path:"$PROXY_LETSENCRYPT_PATH
-fullServerPath=$PROXY_LETSENCRYPT_PATH
 
-serverName="${fullServerPath##*"$delimiter"}"
+serverName="$PROXY_PRIMARY_URL"
 echo $serverName
 set -u
 
