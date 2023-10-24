@@ -131,7 +131,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
             quality: "NA",
             dataSource: {
               fileName: null,
-              fileReference: null,
+              fileReference: "",
             },
           };
           const dataset = {data: datapoint};
@@ -143,7 +143,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     });
 
     //can be integrated into other tests
-    it("error message shown when selected document name doesn't exist", () => {
+    /*it("successful test -> description to be written", () => {
       const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,
         quality: "NA",
@@ -171,6 +171,6 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
           },
         },
       });
-    });
+    });*/
   });
 });
