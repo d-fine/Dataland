@@ -109,6 +109,7 @@ const register = (): void => {
 @media only screen and (max-width: $small) {
   .header {
     &__authsection {
+      display: none;
       flex-direction: row-reverse;
       &-login {
         font-size: 0;
