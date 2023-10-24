@@ -6,7 +6,7 @@
         type="text"
         :name="name"
         :validation-label="validationLabel ?? label"
-        :validation="`number|between:0,100|${validation}`"
+        :validation="`number|${validation}`"
         placeholder="Value in %"
         v-model="percentageFieldValue"
         :outerClass="innerClass"

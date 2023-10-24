@@ -14,6 +14,9 @@ import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 data class LksgGeneralProductionSpecificOwnOperations(
     val mostImportantProducts: List<LksgProduct>? = null,
 
-    @field:Schema(example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE)
+    @field:Schema(
+        example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE,
+        additionalItems = LksgProcurementCategory::class,
+    )
     val productsServicesCategoriesPurchased: Map<ProcurementCategoryType, LksgProcurementCategory>? = null,
 )

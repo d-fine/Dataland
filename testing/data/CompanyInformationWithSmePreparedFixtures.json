@@ -2,52 +2,58 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Oceanside",
-			"headquartersPostalCode": "28432",
-			"sector": "initiatives",
+			"headquarters": "Lake Danielle",
+			"headquartersPostalCode": "79108",
+			"sector": null,
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"KmPZ0Vl204Vb"
+				"Lei": [
+					"uHRI9K5uIjoPrVFrmLYF"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"Isin": [
+					"09CmpSlLAt0W"
+				],
+				"PermId": [
+					"KEKtBsxfiy"
+				],
+				"Ticker": [
+					"4WQvejv"
+				],
+				"Duns": [
+					"9kk4VHmmx"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"hJVHka8FXIK0935"
+					"BgRhIfSl8OU4qJJ"
 				]
 			},
-			"countryCode": "VC",
+			"countryCode": "KE",
 			"companyAlternativeNames": [
-				"Bradtke LLC",
-				"Lakin, Williamson and Koss",
-				"Rice - Hickle",
-				"Shanahan - Sipes"
+				"Hackett LLC",
+				"Lueilwitz, Heathcote and O'Reilly"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://crowded-septicaemia.com/",
+			"companyLegalForm": "Sole Trader",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"25.11",
-						"25.40",
-						"33.2",
-						"66.1",
-						"71.11"
+						"05.1",
+						"23.62",
+						"25.93",
+						"30.1",
+						"69.10"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Leannon Cape 6583",
-						"postalCode": "24848-9953",
-						"city": "North Heber",
-						"state": "South Dakota",
-						"country": "AE"
+						"streetAndHouseNumber": "Trantow Land 50834",
+						"postalCode": "38890-0409",
+						"city": "Beierchester",
+						"state": null,
+						"country": "LY"
 					},
-					"numberOfEmployees": 8602,
-					"fiscalYearStart": "2024-03-09"
+					"numberOfEmployees": 4803,
+					"fiscalYearStart": "2024-04-29"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -57,29 +63,17 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Recycled Cotton Mouse",
+							"name": "Handcrafted Frozen Shirt",
 							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Bespoke Cotton Car",
-							"shareOfTotalRevenueInPercent": 67.4169
-						},
-						{
-							"name": "Modern Soft Towels",
-							"shareOfTotalRevenueInPercent": 91.9835
-						},
-						{
-							"name": "Licensed Steel Tuna",
-							"shareOfTotalRevenueInPercent": 59.6799
-						},
-						{
-							"name": "Refined Steel Chair",
-							"shareOfTotalRevenueInPercent": 12.3815
+							"name": "Electronic Concrete Keyboard",
+							"shareOfTotalRevenueInPercent": 9.9931
 						}
 					]
 				}
@@ -89,20 +83,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1530,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMWh": 69,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 44,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
-					"naturalHazardsCovered": [
-						"Hail"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 39443916,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -111,47 +103,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "North Arvel",
-			"headquartersPostalCode": "87170-2936",
-			"sector": null,
+			"headquarters": "Fort Gabe",
+			"headquartersPostalCode": "55642",
+			"sector": "relationships",
 			"identifiers": {
 				"Lei": [
-					"eTh3WztQJU7Kc7g1swCn"
+					"6zWR93nY1oXOR7oO7EOc"
 				],
 				"Isin": [
-					"Uvutupr1Tcg4",
-					"lgfiYG0dr5WL"
+					"7MMHvTv4WZM7",
+					"WlpXlnV57Dqh"
 				],
 				"PermId": [],
 				"Ticker": [
-					"Cf4p2VA"
+					"kRKjbCo"
 				],
 				"Duns": [
-					"I97eFdJdw"
+					"EQAt5mzDZ"
 				],
-				"VatNumber": [
-					"B6Fspfmtq"
-				],
-				"CompanyRegistrationNumber": [
-					"9BqfO2Yw33klEu3"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CN",
+			"countryCode": "IE",
 			"companyAlternativeNames": [
-				"Abernathy, Cassin and Zieme",
-				"Flatley - McLaughlin",
-				"Schiller Group",
-				"Willms, Hessel and Torphy"
+				"Heaney - Simonis",
+				"Hoeger and Sons",
+				"Stiedemann - Considine"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://offbeat-encirclement.biz/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://imperturbable-oyster.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"23.49"
+						"86.21"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -160,101 +147,44 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 314,
-					"fiscalYearStart": "2024-01-26"
+					"numberOfEmployees": 9313,
+					"fiscalYearStart": "2024-04-29"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 4260567,
+					"revenueInEUR": 82028874,
 					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 11304127
+					"capitalAssetsInEUR": 57483359
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Cummings - Mosciski",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "King Rue 971",
-								"postalCode": "02875",
-								"city": "New Coleman",
-								"state": "Alaska",
-								"country": "FR"
-							},
-							"shareOfTotalRevenueInPercent": 92.8093
-						},
-						{
-							"nameOfProductionSite": "Beahan, Hamill and Ritchie",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "88455",
-								"city": "West Verlie",
-								"state": "Hawaii",
-								"country": "IE"
-							},
-							"shareOfTotalRevenueInPercent": 95.6677
-						},
-						{
-							"nameOfProductionSite": "Swaniawski - Ritchie",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Hellen Forges 1686",
-								"postalCode": "90561",
-								"city": "Leuschkefield",
-								"state": "Iowa",
-								"country": "LK"
-							},
-							"shareOfTotalRevenueInPercent": 43.0939
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Modern Granite Bacon",
-							"shareOfTotalRevenueInPercent": 67.706
-						},
-						{
-							"name": "Rustic Granite Towels",
-							"shareOfTotalRevenueInPercent": 23.838
-						},
-						{
-							"name": "Unbranded Plastic Bike",
-							"shareOfTotalRevenueInPercent": 35.3058
-						},
-						{
-							"name": "Gorgeous Bronze Chips",
-							"shareOfTotalRevenueInPercent": 3.0783
-						},
-						{
-							"name": "Bespoke Plastic Chips",
-							"shareOfTotalRevenueInPercent": 64.9563
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 692,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 137,
+					"powerConsumptionInMWh": 448,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 47,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 15555391,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Snow",
 						"Avalanche",
 						"Hail",
 						"EarthQuake",
-						"Wind"
+						"Snow"
 					]
 				}
 			}
@@ -264,40 +194,36 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Middletown",
-			"headquartersPostalCode": "92662-4708",
-			"sector": "initiatives",
+			"headquarters": "Kamrynbury",
+			"headquartersPostalCode": "06169-7324",
+			"sector": null,
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"Fv7WSeuOVQwa"
+					"pLz6YmjRCy4U",
+					"E9iPyTzmEUdL"
 				],
 				"PermId": [
-					"AS9vDkfaQB"
+					"KRoLTsv1v8"
 				],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"y4YJXCtk1"
+					"ACvFbys0U"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "EH",
-			"companyAlternativeNames": [
-				"Cassin - Luettgen",
-				"King - Pfeffer",
-				"Koelpin LLC",
-				"Rodriguez, Quigley and Upton"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://tart-provision.info",
+			"countryCode": "BI",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://extra-small-ray.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"17.11"
+						"71"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -306,94 +232,54 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6116,
-					"fiscalYearStart": "2023-12-12"
+					"numberOfEmployees": 8684,
+					"fiscalYearStart": "2024-03-21"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 76504812,
-					"operatingCostInEUR": 11793049,
-					"capitalAssetsInEUR": 68935325
+					"revenueInEUR": null,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 51253567
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Macejkovic, Franecki and Schuppe",
+							"nameOfProductionSite": "Blick - Goldner",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Hammes Rapids 7547",
-								"postalCode": "12427",
-								"city": "West Myron",
-								"state": "South Carolina",
-								"country": "BL"
+								"streetAndHouseNumber": null,
+								"postalCode": null,
+								"city": "Funkville",
+								"state": null,
+								"country": "SZ"
 							},
-							"shareOfTotalRevenueInPercent": 94.522
-						},
-						{
-							"nameOfProductionSite": "Spencer and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Valentina Ranch 9692",
-								"postalCode": "46759",
-								"city": "Klockoside",
-								"state": "Arizona",
-								"country": "DZ"
-							},
-							"shareOfTotalRevenueInPercent": 3.6651
-						},
-						{
-							"nameOfProductionSite": "Larson and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Walter Wells 70076",
-								"postalCode": "58753",
-								"city": "Port Johannamouth",
-								"state": "Ohio",
-								"country": "MH"
-							},
-							"shareOfTotalRevenueInPercent": 33.9217
+							"shareOfTotalRevenueInPercent": 97.4859
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Luxurious Frozen Table",
-							"shareOfTotalRevenueInPercent": 86.4261
-						},
-						{
-							"name": "Rustic Metal Pants",
-							"shareOfTotalRevenueInPercent": 16.9758
-						},
-						{
-							"name": "Intelligent Fresh Bike",
-							"shareOfTotalRevenueInPercent": 44.6523
-						},
-						{
-							"name": "Tasty Bronze Chips",
-							"shareOfTotalRevenueInPercent": 97.3177
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1512,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 573,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 4855350,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Hail",
-						"Flooding",
-						"Avalanche"
+						"Wind",
+						"Flooding"
 					]
 				}
 			}

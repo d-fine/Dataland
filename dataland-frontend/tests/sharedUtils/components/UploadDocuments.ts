@@ -3,7 +3,10 @@ import { TEST_PDF_FILE_BASEPATH } from "@sharedUtils/ConstantsForPdfs";
 export const uploadDocuments = {
   selectFile(filename: string, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
-    cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_BASEPATH}/${filename}.pdf`, { force: true });
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`)
+      .parents(".p-fileupload")
+      .find("input[type=file]")
+      .selectFile(`../${TEST_PDF_FILE_BASEPATH}/${filename}.pdf`, { force: true });
   },
   selectMultipleFilesAtOnce(filenames: string[], fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
