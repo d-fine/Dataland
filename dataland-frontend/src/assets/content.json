@@ -37,16 +37,16 @@
                     ],
                     "cards": [
                         {
-                            "icon": "wjiR2exsHCs",
-                            "title": "Christoph Benner,",
-                            "text": " CEO of Chom Capital",
-                            "date": "\"Join Dataland: it doesn't cost anything, it's open source and an entrusted structure.\""
-                        },
-                        {
                             "icon": "BzUkAtdcKvg",
                             "title": "Sven Schubert,",
                             "text": " CEO of Envoria",
                             "date": "\"Dataland is the only platform we know that is open to everyone and based on a non-profit business model.\""
+                        },
+                        {
+                            "icon": "wjiR2exsHCs",
+                            "title": "Christoph Benner,",
+                            "text": " CEO of Chom Capital",
+                            "date": "\"Join Dataland: it doesn't cost anything, it's open source and an entrusted structure.\""
                         },
                         {
                             "icon": "9T9Bga8oojA",
