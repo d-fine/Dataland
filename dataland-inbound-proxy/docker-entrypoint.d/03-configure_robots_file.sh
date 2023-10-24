@@ -1,5 +1,5 @@
 #!/bin/bash
-datalandServerName="dev2.dataland.com"
+datalandServerName="dataland.com"
 prodFilePath="/var/www/html/robots-prod.txt"
 targetFilePath="/var/www/html/robots.txt"
 
