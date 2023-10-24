@@ -16,16 +16,14 @@ export function sortReportingPeriodsToDisplayAsColumns(
 }
 
 /**
- * Sorts dates to ensure that Sfdr and LkSG datasets are displayed chronologically in the table in terms of reporting
- * periods (strings starting with numbers should at least be listed before those that do not)
- * @param  dataList list of objects to sort
- * Shortens the test-function and avoids code duplications.
- * @returns list of sorted objects
+ * Sorts a list of datasets - associated by their respective meta info - by comparing their reporting periods.
+ * @param listOfDatasets list of datasets associated by their respective meta info
+ * @returns the sorted list
  */
-export function sortCompanyAssociatedDataByReportingPeriod<T>(
-  dataList: DataAndMetaInformation<T>[],
+export function sortDatasetsByReportingPeriod<T>(
+  listOfDatasets: DataAndMetaInformation<T>[],
 ): DataAndMetaInformation<T>[] {
-  return dataList.sort((dataSetA, dataSetB) =>
+  return listOfDatasets.sort((dataSetA, dataSetB) =>
     compareReportingPeriods(dataSetA.metaInfo.reportingPeriod, dataSetB.metaInfo.reportingPeriod),
   );
 }

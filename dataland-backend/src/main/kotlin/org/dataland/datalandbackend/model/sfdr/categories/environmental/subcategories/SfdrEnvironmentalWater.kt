@@ -17,5 +17,5 @@ data class SfdrEnvironmentalWater(
 
     val waterManagementPolicy: ExtendedDataPoint<YesNo>? = null,
 
-    val waterStressAreaExposure: ExtendedDataPoint<YesNo>? = null,
+    val highWaterStressAreaExposure: ExtendedDataPoint<YesNo>? = null,
 )

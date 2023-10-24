@@ -13,7 +13,7 @@ import org.dataland.datalandbackend.model.sfdr.categories.social.SfdrSocial
 
 @DataType("sfdr")
 data class SfdrData(
-    @JsonProperty(value = "general", required = true)
+    @field:JsonProperty(required = true)
     val general: SfdrGeneral,
 
     val environmental: SfdrEnvironmental? = null,
