@@ -218,6 +218,7 @@ onUnmounted(() => {
       order: 1;
     }
     &__button {
+      display: none;
       margin: 32px 16px 0;
       order: 2;
     }

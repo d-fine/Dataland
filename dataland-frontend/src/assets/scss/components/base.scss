@@ -201,6 +201,11 @@ body {
   font-size: $fs-xxl
 }
 
+//font-weight
+.fw-normal { font-weight: $normal-weight }
+.fw-light-bold { font-weight: $fw-medium }
+.fw-semi-bold { font-weight: $fw-semibold }
+
 
 // Typography //
 .gray-text {
@@ -283,7 +288,15 @@ ul.unstyled-ul-list {
   gap: 1rem;
 }
 
-.grid4 {
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: 1fr;
+  }
+  grid-gap: 10px;
+}
+.grid3 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 10px;

@@ -1,9 +1,11 @@
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { generateFloat } from "@e2e/fixtures/common/NumberFixtures";
-import { type SfdrData } from "@clients/backend";
+import { generateFloat, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backend";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { faker } from "@faker-js/faker";
+import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
 
 /**
  * Generates a random SFDR dataset
@@ -11,7 +13,7 @@ import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
  * @returns SFDR object with populated properties
  */
 export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrData {
-  const dataGenerator = new Generator(nullProbability);
+  const dataGenerator = new SfdrGenerator(nullProbability);
   return {
     general: {
       general: {
@@ -24,9 +26,9 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
     },
     environmental: {
       greenhouseGasEmissions: {
-        scope1InTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        scope2InTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        scope3InTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        scope2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
         totalRevenue: dataGenerator.randomCurrencyDataPoint(),
         fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
@@ -34,18 +36,9 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
       energyPerformance: {
         renewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         renewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        nonRenewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceAInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceBInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceCInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceDInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceEInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceFInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceGInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceHInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        highImpactClimateSectorEnergyConsumptionNaceLInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        totalHighImpactClimateSectorEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        nonRenewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        applicableHighImpactClimateSectors: dataGenerator.generateHighImpactClimateSectors(),
         nonRenewableEnergyConsumptionFossilFuelsInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionCrudeOilInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionNaturalGasInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
@@ -58,29 +51,30 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         primaryForestAndWoodedLandOfNativeSpeciesExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         protectedAreasExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         rareOrEndangeredEcosystemsExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        highlyBiodiverseGrasslandExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
       },
       water: {
         emissionsToWaterInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         waterConsumptionInCubicMeters: dataGenerator.randomExtendedDataPoint(generateFloat()),
         waterReusedInCubicMeters: dataGenerator.randomExtendedDataPoint(generateFloat()),
         waterManagementPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        waterStressAreaExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        highWaterStressAreaExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
       },
       waste: {
-        hazardousWasteInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        hazardousAndRadioactiveWasteInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         manufactureOfAgrochemicalPesticidesProducts: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         landDegradationDesertificationSoilSealingExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        sustainableAgriculturePolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        sustainableOceansAndSeasPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        wasteNonRecycledInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        sustainableAgriculturePolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        sustainableOceansAndSeasPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        nonRecycledWasteInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         threatenedSpeciesExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        biodiversityProtectionPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        deforestationPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        biodiversityProtectionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        deforestationPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
       },
       emissions: {
-        inorganicPollutantsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        airPollutantsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        ozoneDepletionSubstancesInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        emissionsOfInorganicPollutantsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        emissionsOfAirPollutantsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        emissionsOfOzoneDepletionSubstancesInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         carbonReductionInitiatives: dataGenerator.randomExtendedDataPoint(generateYesNo()),
       },
     },
@@ -88,50 +82,86 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
       socialAndEmployeeMatters: {
         humanRightsLegalProceedings: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         iloCoreLabourStandards: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        environmentalPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        environmentalPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         corruptionLegalProceedings: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        transparencyDisclosurePolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        humanRightsDueDiligencePolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        childForcedDiscriminationPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        iso14001Certificate: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        briberyCorruptionPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        transparencyDisclosurePolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        humanRightsDueDiligencePolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        policyAgainstChildLabour: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        policyAgainstForcedLabour: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        policyAgainstDiscriminationInTheWorkplace: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        iso14001Certificate: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        policyAgainstBriberyAndCorruption: dataGenerator.randomBaseDataPoint(generateYesNo()),
         fairBusinessMarketingAdvertisingPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         technologiesExpertiseTransferPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         fairCompetitionPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         violationOfTaxRulesAndRegulation: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        oecdGuidelinesForMultinationalEnterprisesPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: dataGenerator.randomExtendedDataPoint(
+          generateYesNo(),
+        ),
         averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
         averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
-        femaleBoardMembers: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        maleBoardMembers: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        femaleBoardMembers: dataGenerator.randomExtendedDataPoint(generateInt(Number.MAX_SAFE_INTEGER)),
+        maleBoardMembers: dataGenerator.randomExtendedDataPoint(generateInt(Number.MAX_SAFE_INTEGER)),
         controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        workplaceAccidentPreventionPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        rateOfAccidents: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        workplaceAccidentPreventionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
+        rateOfAccidentsInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
         workdaysLostInDays: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        supplierCodeOfConduct: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
         grievanceHandlingMechanism: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        whistleblowerProtectionPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        whistleblowerProtectionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        sanctionsIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        ceoToEmployeePayGap: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(
+          generateInt(Number.MAX_SAFE_INTEGER),
+        ),
+        ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(generateFloat()),
       },
       greenSecurities: {
         securitiesNotCertifiedAsGreen: dataGenerator.randomExtendedDataPoint(generateYesNo()),
       },
       humanRights: {
-        humanRightsPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        humanRightsPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         humanRightsDueDiligence: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        traffickingInHumanBeingsPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
+        traffickingInHumanBeingsPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         reportedChildLabourIncidents: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         reportedForcedOrCompulsoryLabourIncidents: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        reportedIncidentsOfHumanRights: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(
+          generateInt(Number.MAX_SAFE_INTEGER),
+        ),
       },
       antiCorruptionAndAntiBribery: {
-        reportedCasesOfBriberyCorruption: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        reportedConvictionsOfBriberyCorruption: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        reportedFinesOfBriberyCorruption: dataGenerator.randomCurrencyDataPoint(),
+        casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(
+          generateInt(Number.MAX_SAFE_INTEGER),
+        ),
+        reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(
+          generateInt(Number.MAX_SAFE_INTEGER),
+        ),
+        totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(),
       },
     },
   };
+}
+
+class SfdrGenerator extends Generator {
+  /**
+   * Generates a random map of procurement categories
+   * @returns random map of procurement categories
+   */
+  generateHighImpactClimateSectors(): { [key: string]: ExtendedDataPointBigDecimal } {
+    const highImpactClimateSectors = Object.values(HighImpactClimateSector);
+    const keys = [] as HighImpactClimateSector[];
+    highImpactClimateSectors.forEach((naceCode) => {
+      if (faker.datatype.boolean()) {
+        keys.push(naceCode);
+      }
+    });
+    return Object.fromEntries(
+      new Map<string, ExtendedDataPointBigDecimal>(
+        keys.map((naceCode) => [
+          naceCode as string,
+          this.randomExtendedDataPoint(generateFloat()) as ExtendedDataPointBigDecimal,
+        ]),
+      ),
+    );
+  }
 }
