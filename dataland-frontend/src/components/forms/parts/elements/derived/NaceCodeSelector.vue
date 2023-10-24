@@ -5,6 +5,7 @@
       placeholder="Search for NACE Rev 2 Codes"
       @focus="inputFocused"
       class="p-multiselect short d-nace-focus"
+      data-test="NaceCodeSelectorInput"
     ></InputText>
     <div class="pl-1 d-nace-chipview">
       <span
@@ -22,7 +23,12 @@
   <OverlayPanel ref="overlayPanel">
     <div class="d-nace-treeview-container">
       <h2 v-if="filteredTreeValues.length <= 0">No results</h2>
-      <Tree v-model:expanded-keys="expandedTreeKeys" :value="filteredTreeValues" placeholder="Select Item">
+      <Tree
+        v-model:expanded-keys="expandedTreeKeys"
+        :value="filteredTreeValues"
+        placeholder="Select Item"
+        data-test="NaceCodeSelectorTree"
+      >
         <template #default="slotProps">
           <div class="flex align-items-center">
             <Checkbox
@@ -30,6 +36,7 @@
               :modelValue="selectedTreeNodes.has(slotProps.node.key)"
               @update:modelValue="(isChecked: boolean) => handleNodeCheckboxClick(slotProps.node.key, isChecked)"
               :binary="true"
+              data-test="NaceCodeSelectorCheckbox"
             ></Checkbox>
             <div :class="{ invisible: !selectedChildrenCounter.get(slotProps.node.key) }">
               <span class="p-badge p-badge-no-gutter">{{ selectedChildrenCounter.get(slotProps.node.key) || 0 }}</span>
@@ -157,7 +164,7 @@ export default defineComponent({
     searchFilter(searchFilter: string) {
       if (searchFilter) {
         const copy = structuredClone(naceCodeTree);
-        this.filteredTreeValues = filterNodes(copy, searchFilter);
+        this.filteredTreeValues = filterNodes(copy, searchFilter) ?? [];
         const expandedKeysDict = {};
         for (const node of this.filteredTreeValues) {
           this.expandNode(node, expandedKeysDict);
