@@ -103,7 +103,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
       showIf: (): boolean => true,
     };
 
-    it.only("error message shown when selected document name doesn't exist", () => {
+    it("error message shown when selected document name doesn't exist", () => {
       const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,
         quality: "NA",
@@ -123,6 +123,23 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
           "There is no document with name NOT PROVIDED referenced in this dataset",
         );
       }
+    });
+
+    it("neither name nor reference for document with empty value", () => {
+          const datapoint: ExtendedDataPointBigDecimal = {
+            value: undefined,
+            quality: "NA",
+            dataSource: {
+              fileName: null,
+              fileReference: null,
+            },
+          };
+          const dataset = {data: datapoint};
+          const value = dataPointValueGetterFactory("data", field)(dataset);
+          expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+            displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+            displayValue: "",
+          });
     });
 
     //can be integrated into other tests
