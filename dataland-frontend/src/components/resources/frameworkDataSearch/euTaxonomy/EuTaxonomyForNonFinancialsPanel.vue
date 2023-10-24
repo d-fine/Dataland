@@ -148,6 +148,7 @@ export default defineComponent({
      */
     isKpiObjectAmountWithCurrency(kpiValue: KpiValue): boolean {
       return (
+        kpiValue !== null &&
         typeof kpiValue === "object" &&
         "amount" in kpiValue &&
         (typeof kpiValue.amount === "number" || kpiValue.amount === null) &&
@@ -224,9 +225,10 @@ export default defineComponent({
           reportingPeriods.push(tempReportingPeriod);
         }
       }
-      const allReports = dataAndMetaInfoSets.map(
-        (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports,
-      );
+      const allReports = dataAndMetaInfoSets
+        .map((dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports)
+        .reverse();
+      reportingPeriods.reverse();
       this.waitingForReports = false;
       return [allReports, reportingPeriods];
     },
