@@ -106,10 +106,9 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
-import { AxiosError } from "axios";
 import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
@@ -128,11 +127,14 @@ import PercentageFormField from "@/components/forms/parts/fields/PercentageFormF
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, getFileName, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
+import HighImpactClimateSectorsFormField from "@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue";
+import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import { HighImpactClimateSectorsNaceCodes } from "@/types/HighImpactClimateSectors";
 
 export default defineComponent({
   setup() {
@@ -168,6 +170,7 @@ export default defineComponent({
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
     UploadReports,
+    HighImpactClimateSectorsFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -189,6 +192,7 @@ export default defineComponent({
       checkCustomInputs,
       documents: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
+      climateSectorsForPrefill: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
     };
   },
@@ -206,6 +210,9 @@ export default defineComponent({
       set() {
         // IGNORED
       },
+    },
+    namesOfAllCompanyReportsForTheDataset(): string[] {
+      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(this.sfdrDataModel, this.companyAssociatedSfdrData.data);
@@ -240,6 +247,14 @@ export default defineComponent({
       const dataResponse = await sfdrDataControllerApi.getFrameworkData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
+      this.climateSectorsForPrefill = sfdrResponseData?.data?.environmental?.energyPerformance
+        ?.applicableHighImpactClimateSectors
+        ? Object.keys(sfdrResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors).map(
+            (it): string => {
+              return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
+            },
+          )
+        : [];
       this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
 
       this.waitingForData = false;
@@ -251,6 +266,10 @@ export default defineComponent({
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
+          checkIfAllUploadedReportsAreReferencedInDataModel(
+            this.companyAssociatedSfdrData.data as ObjectType,
+            this.namesOfAllCompanyReportsForTheDataset,
+          );
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
@@ -264,8 +283,8 @@ export default defineComponent({
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
+        if (error.message) {
+          this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
             "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
@@ -293,6 +312,9 @@ export default defineComponent({
       }),
       referencedReportsForPrefill: computed(() => {
         return this.referencedReportsForPrefill;
+      }),
+      climateSectorsForPrefill: computed(() => {
+        return this.climateSectorsForPrefill;
       }),
     };
   },
