@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# This script migrates all company with data and the data associated to them from the source to the target environment.
+# This script migrates all companies with data and the data associated to them from the source to the target environment.
 # It is intended to be used by developers testing data migration scripts. It requires python to be installed.
+# The API key for the source only needs reader rights, for the target it requires write and QA rights.
 # Current issues with this script:
 # 1. Documents are not migrated
 # 2. Special characters like "ü" are not correctly transferred
