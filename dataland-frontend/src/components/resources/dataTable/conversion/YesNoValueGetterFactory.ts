@@ -44,7 +44,7 @@ function formatYesNoValueWhenCertificateRequiredIsYes(
       displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
       displayValue: {
         label: displayValue,
-        reference: elementValue.dataSource,
+        dataSource: elementValue.dataSource,
       },
     };
   } else {

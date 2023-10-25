@@ -577,6 +577,11 @@ input[type="radio"] {
       width: 0.25rem;
     }
   }
+  .middle-next-to-field {
+    display: flex;
+    align-self: center;
+    padding-bottom: 1rem;
+  }
   p {
     margin: 0.25rem;
   }

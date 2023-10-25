@@ -166,6 +166,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToClimateChangeAdaptionInPercent",
@@ -176,6 +177,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
@@ -186,6 +188,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToTransitionToACircularEconomyInPercent",
@@ -196,6 +199,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToPollutionPreventionAndControlInPercent",
@@ -206,6 +210,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
@@ -216,6 +221,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "alignedActivities",
@@ -271,6 +277,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "transitionalShareInPercent",
@@ -282,6 +289,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -340,6 +348,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToClimateChangeAdaptionInPercent",
@@ -350,6 +359,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
@@ -360,6 +370,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToTransitionToACircularEconomyInPercent",
@@ -370,6 +381,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToPollutionPreventionAndControlInPercent",
@@ -380,6 +392,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
@@ -390,6 +403,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "alignedActivities",
@@ -444,6 +458,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "transitionalShareInPercent",
@@ -455,6 +470,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
@@ -513,6 +529,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToClimateChangeAdaptionInPercent",
@@ -523,6 +540,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
@@ -533,6 +551,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToTransitionToACircularEconomyInPercent",
@@ -543,6 +562,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToPollutionPreventionAndControlInPercent",
@@ -553,6 +573,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
@@ -563,6 +584,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "alignedActivities",
@@ -617,6 +639,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "transitionalShareInPercent",
@@ -628,6 +651,7 @@ export const euTaxonomyForNonFinancialsDataModel = [
             evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
         ],
       },
