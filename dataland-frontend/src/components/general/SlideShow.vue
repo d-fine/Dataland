@@ -37,19 +37,32 @@ const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
 const emit = defineEmits(["update:currentSlide"]);
 
-let isDragging = false;
-let startPos = 0;
-let currentTranslate = 0;
-let prevTranslate = 0;
+const state = {
+  isDragging: false,
+  startPos: 0,
+  currentTranslate: 0,
+  prevTranslate: 0,
+  disableScroll: false,
+  thresholdReached: false,
+  startX: 0,
+  startY: 0,
+};
+
+const toggleScrollLock = (lock: boolean): void => {
+  document.body.style.overflowY = lock ? "hidden" : "auto";
+  state.disableScroll = lock;
+};
 
 const dragStartCondition = (e: PointerEvent | TouchEvent): void => {
   if (slideCount.value <= 1) return;
+  state.startX = "touches" in e ? e.touches[0].pageX : e.pageX;
+  state.startY = "touches" in e ? e.touches[0].pageY : e.pageY;
   dragStart(e);
 };
 
 const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => {
   if (animate) sliderElement.style.transition = "transform 0.3s ease-out";
-  sliderElement.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
+  sliderElement.style.transform = `translate3d(${state.currentTranslate}px, 0, 0)`;
 };
 
 const move = (direction: number): void => {
@@ -58,16 +71,15 @@ const move = (direction: number): void => {
 
   emit("update:currentSlide", currentSlide.value);
 
-  currentTranslate = currentSlide.value * -slideWidth.value;
+  state.currentTranslate = currentSlide.value * -slideWidth.value;
   if (slider.value) setSliderPosition(slider.value);
 };
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
   if (scrollScreenWidthLimit.value && window.innerWidth > scrollScreenWidthLimit.value) return;
-  isDragging = true;
-  startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
-
-  prevTranslate = currentTranslate;
+  state.isDragging = true;
+  state.startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
+  state.prevTranslate = state.currentTranslate;
 
   if (slider.value) {
     slider.value.style.transition = "none";
@@ -81,26 +93,33 @@ const dragStart = (e: PointerEvent | TouchEvent): void => {
 };
 
 const drag = (e: PointerEvent | TouchEvent): void => {
-  if (!isDragging) return;
-  const currentPos = "touches" in e ? e.touches[0].pageX : e.pageX;
+  if (!state.isDragging) return;
 
-  currentTranslate = prevTranslate + currentPos - startPos;
-
-  if (slider.value) {
-    setSliderPosition(slider.value, false);
+  const { pageX } = "touches" in e ? e.touches[0] : e;
+  const dx = Math.abs(pageX - state.startX);
+  state.thresholdReached = dx > 20;
+  if (state.thresholdReached && !state.disableScroll) {
+    toggleScrollLock(true);
+  } else if (!state.thresholdReached && state.disableScroll) {
+    toggleScrollLock(false);
   }
+
+  state.currentTranslate = state.prevTranslate + pageX - state.startPos;
+
+  if (slider.value) setSliderPosition(slider.value, false);
 };
 
 const dragEnd = (): void => {
-  isDragging = false;
+  state.isDragging = false;
+  if (state.disableScroll) toggleScrollLock(false);
 
-  const movedBy = currentTranslate - prevTranslate;
+  const movedBy = state.currentTranslate - state.prevTranslate;
   if (movedBy < -100 && currentSlide.value < slideCount.value - 1 - initialCenterSlide.value) currentSlide.value++;
   if (movedBy > 100 && currentSlide.value > 0 - initialCenterSlide.value) currentSlide.value--;
 
   emit("update:currentSlide", currentSlide.value);
 
-  currentTranslate = currentSlide.value * -slideWidth.value;
+  state.currentTranslate = currentSlide.value * -slideWidth.value;
 
   if (slider.value) {
     setSliderPosition(slider.value);
