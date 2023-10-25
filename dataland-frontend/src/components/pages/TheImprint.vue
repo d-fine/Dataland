@@ -1,6 +1,6 @@
 <template>
   <LegalPage>
-    <h2>Imprint</h2>
+    <h2>Impressum</h2>
     <p>
       Dataland GmbH
       <br />
@@ -10,12 +10,17 @@
     </p>
     <p>Vertretungsberechtige Geschäftsführer: Frederik Christiaan Breen, Dr. Moritz Benjamin Kiese</p>
     <p>
-      Telefon: …
+      Telefon: +31 650 660 350
       <br />
-      E-Mail: …
+      E-Mail: erik.breen@dataland.com
     </p>
-    <p>Registergericht: Amtsgericht Frankfurt am Main Registernummer: …</p>
-    <p>Umsatzsteuer-Identifikationsnummer: …</p>
+    <p>
+      Registergericht: Amtsgericht Frankfurt am Main
+      <br />
+      Registernummer: HRB 132445
+    </p>
+    <p>Umsatzsteuer-Identifikationsnummer: <!-- TODO --></p>
+    <p>Inhaltlich verantwortlich: Frederik Christiaan Breen</p>
   </LegalPage>
 </template>
 
