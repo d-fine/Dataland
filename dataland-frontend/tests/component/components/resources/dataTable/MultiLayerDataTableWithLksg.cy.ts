@@ -15,8 +15,12 @@ import {
   mountMLDTFrameworkPanel,
 } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
 
-import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+import {
+  getCellValueContainerAndCheckIconForHiddenDisplay,
+  getCellValueContainer,
+  getSectionHead,
+} from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describe("Component test for the LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -32,8 +36,8 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    MLDT.getCellContainer("Data Date").should("contain.text", "1999-12-24");
-    MLDT.getCellContainer("Industry").should("exist");
+    getCellValueContainer("Data Date").should("contain.text", "1999-12-24");
+    getCellValueContainer("Industry").should("exist");
   });
 
   it("Check that the Master Data section is auto-expanded on page load and can be collapsed", () => {
@@ -41,13 +45,13 @@ describe("Component test for the LksgPanel", () => {
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
 
-    MLDT.getCellContainer("Data Date")
+    getCellValueContainer("Data Date")
       .should("contain.text", lksgData.general.masterData.dataDate)
       .should("be.visible");
-    MLDT.getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true").click();
-    MLDT.getCellContainer("Data Date").should("not.be.visible");
-    MLDT.getSectionHead("Master Data").should("have.attr", "data-section-expanded", "false").click();
-    MLDT.getCellContainer("Data Date")
+    getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true").click();
+    getCellValueContainer("Data Date", 0, false).should("not.be.visible");
+    getSectionHead("Master Data").should("have.attr", "data-section-expanded", "false").click();
+    getCellValueContainer("Data Date")
       .should("contain.text", lksgData.general.masterData.dataDate)
       .should("be.visible");
   });
@@ -56,12 +60,12 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    MLDT.getSectionHead("Governance").should("have.attr", "data-section-expanded", "false").click();
-    MLDT.getSectionHead("Certifications, policies and responsibilities")
+    getSectionHead("Governance").should("have.attr", "data-section-expanded", "false").click();
+    getSectionHead("Certifications, policies and responsibilities")
       .should("have.attr", "data-section-expanded", "false")
       .click();
 
-    MLDT.getCellContainer("SA8000 Certification").find("i[data-test=download-icon]").should("be.visible");
+    getCellValueContainer("SA8000 Certification").find("i[data-test=download-icon]").should("be.visible");
   });
 
   it("Validate that the list of production sites is displayed", () => {
@@ -70,18 +74,18 @@ describe("Component test for the LksgPanel", () => {
     const lksgData = preparedFixture.t;
 
     cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
-    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
-    MLDT.getCellContainer("List Of Production Sites").contains("a").should("be.visible");
+    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    getCellValueContainer("List Of Production Sites").contains("a").should("be.visible");
   });
 
   it("Validate that the procurement category modal is displayed and contains the correct headers", () => {
     const preparedFixture = getPreparedFixture("lksg-with-procurement-categories", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    MLDT.getSectionHead("Production-specific - Own Operations")
+    getSectionHead("Production-specific - Own Operations")
       .should("have.attr", "data-section-expanded", "false")
       .click();
-    MLDT.getCellContainer("Products/Services Categories purchased").find("a").should("be.visible").click();
+    getCellValueContainer("Products/Services Categories purchased").find("a").should("be.visible").click();
 
     cy.get("div.p-dialog").within(() => {
       cy.get("th").eq(0).should("have.text", "Procurement Category");
@@ -98,10 +102,10 @@ describe("Component test for the LksgPanel", () => {
     );
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
 
-    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
 
-    MLDT.getCellContainer("Manufacturing Company").should("have.text", "No");
-    MLDT.getCellContainer("List Of Production Sites").should("not.exist");
+    getCellValueContainer("Manufacturing Company").should("have.text", "No");
+    getCellValueContainer("List Of Production Sites", 0, false).should("not.exist");
   });
 
   it("Validate that show-if hidden fields are displayed and highlighted in review mode", () => {
@@ -117,11 +121,11 @@ describe("Component test for the LksgPanel", () => {
       true,
     );
 
-    MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
 
-    MLDT.getCellContainer("Manufacturing Company").should("have.text", "No");
-    MLDT.getCellContainer("List Of Production Sites").should("be.visible");
-    MLDT.getCellContainer("List Of Production Sites").find("i[data-test=hidden-icon]").should("be.visible");
+    getCellValueContainer("Manufacturing Company").should("have.text", "No");
+    getCellValueContainer("List Of Production Sites").should("be.visible");
+    getCellValueContainerAndCheckIconForHiddenDisplay("List Of Production Sites", true);
   });
 
   /**

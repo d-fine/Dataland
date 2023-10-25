@@ -38,6 +38,21 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
       expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
     });
 
+    it("Throw Error if there is no document referenced in this dataset but referenced in DataPoint", () => {
+      const datapoint: ExtendedDataPointBigDecimal = {
+        value: 321,
+        quality: "NA",
+        dataSource: {
+          fileReference: "referencedFile1234ABCD",
+          fileName: "1234ABCD",
+        },
+      };
+      const dataset = { data: datapoint };
+      cy.wrap(() => {
+        dataPointValueGetterFactory("data", field)(dataset);
+      }).should("throw");
+    });
+
     it("The value should be displayed with a static unit suffix if set", () => {
       const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,

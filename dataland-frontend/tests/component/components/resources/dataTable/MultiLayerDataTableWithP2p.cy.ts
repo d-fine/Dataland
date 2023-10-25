@@ -5,9 +5,12 @@ import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/c
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { mountMLDTFrameworkPanelFromFakeFixture } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
-import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
+import {
+  getCellValueContainer,
+  getSectionHead,
+} from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describe("Component test for P2pPanel", () => {
   let preparedFixtures: Array<FixtureData<PathwaysToParisData>>;
@@ -33,7 +36,7 @@ describe("Component test for P2pPanel", () => {
 
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.P2p, p2pDisplayConfiguration, [preparedFixture]);
 
-    MLDT.getCellContainer("Sectors").contains(`Show ${p2pData.general.general.sectors.length} values`).click();
+    getCellValueContainer("Sectors").contains(`Show ${p2pData.general.general.sectors.length} values`).click();
     cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
     cy.get("td").contains("Ammonia").should("exist");
     cy.get("td").contains("Cement").should("exist");
@@ -42,37 +45,37 @@ describe("Component test for P2pPanel", () => {
     cy.get(".p-dialog").find(".p-dialog-header-icon").click();
 
     cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
-    MLDT.getCellContainer("Data Date").should("contain.text", p2pData.general.general.dataDate).should("be.visible");
+    getCellValueContainer("Data Date").should("contain.text", p2pData.general.general.dataDate).should("be.visible");
 
-    MLDT.getSectionHead("General").eq(1).click();
-    MLDT.getCellContainer("Data Date").should("not.be.visible");
-    MLDT.getSectionHead("General").eq(1).click();
-    MLDT.getCellContainer("Data Date").should("be.visible");
+    getSectionHead("General").eq(1).click();
+    getCellValueContainer("Data Date", 0, false).should("not.be.visible");
+    getSectionHead("General").eq(1).click();
+    getCellValueContainer("Data Date").should("be.visible");
 
-    MLDT.getSectionHead("Ammonia").click();
-    MLDT.getCellContainer("CCS technology adoption").should("not.be.visible");
-    MLDT.getSectionHead("Decarbonisation").click();
-    MLDT.getCellContainer("CCS technology adoption")
+    getSectionHead("Ammonia").click();
+    getCellValueContainer("CCS technology adoption", 0, false).should("not.be.visible");
+    getSectionHead("Decarbonisation").click();
+    getCellValueContainer("CCS technology adoption")
       .should("contain.text", formatPercentageNumberAsString(ccsTechnologyAdoptionInPercent))
       .should("be.visible");
 
-    MLDT.getSectionHead("Livestock farming").click();
-    MLDT.getSectionHead("Animal feed").click();
+    getSectionHead("Livestock farming").click();
+    getSectionHead("Animal feed").click();
     cy.get("span[data-test=Report-Download-Policy]").find("i[data-test=download-icon]").should("be.visible");
 
-    MLDT.getSectionHead("Cement").click();
-    MLDT.getSectionHead("Material").click();
-    MLDT.getCellContainer("Pre-calcined clay usage").should(
+    getSectionHead("Cement").click();
+    getSectionHead("Material").click();
+    getCellValueContainer("Pre-calcined clay usage").should(
       "contain.text",
       formatPercentageNumberAsString(preCalcinedClayUsageInPercent),
     );
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").should("contain.text", "Share of pre-calcined");
-    MLDT.getSectionHead("Cement").click();
+    getSectionHead("Cement").click();
 
-    MLDT.getSectionHead("Freight transport by road").click();
-    MLDT.getSectionHead("Technology").click();
-    MLDT.getCellContainer("Drive mix per fleet segment").contains(`Show Drive mix per fleet segment`).click();
+    getSectionHead("Freight transport by road").click();
+    getSectionHead("Technology").click();
+    getCellValueContainer("Drive mix per fleet segment").contains(`Show Drive mix per fleet segment`).click();
     cy.get(".p-dialog").contains(formatPercentageNumberAsString(driveMixPerFleetSegmentInPercentForSmallTrucks));
   });
 
