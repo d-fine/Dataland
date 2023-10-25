@@ -27,14 +27,23 @@
     <h3 class="quotes__slide-title">
       {{ currentCardInfo.title }} <span>{{ currentCardInfo.text }}</span>
     </h3>
+    <ButtonComponent
+      :label="quotesSection.text[0]"
+      buttonType="quotes__button"
+      ariaLabel="Start your Dataland Journey"
+      @click="register"
+    />
     <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from "vue";
+import { computed, ref, onMounted, onUnmounted, inject } from "vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import type Keycloak from "keycloak-js";
 import type { Section } from "@/types/ContentTypes";
-import RegisterButton from "@/components/resources/newLandingPage/RegisterButton.vue";
+import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 import SlideShow from "@/components/general/SlideShow.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
@@ -65,6 +74,20 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("resize", updateSlideWidth);
 });
+
+const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+/**
+ * Sends the user to the keycloak register page (if not authenticated already)
+ */
+const register = (): void => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      if (!keycloak.authenticated) {
+        registerAndRedirectToSearchPage(keycloak);
+      }
+    })
+    .catch((error) => console.log(error));
+};
 </script>
 
 <style lang="scss">
@@ -180,25 +203,6 @@ onUnmounted(() => {
         -o-transform: scaleX(-1);
         transform: scaleX(-1);
       }
-    }
-  }
-
-  &__button {
-    padding: 14px 32px;
-    border-radius: 32px;
-    background-color: var(--primary-orange);
-    color: var(--default-neutral-white);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: 0.75px;
-    text-transform: uppercase;
-    border: 2px solid var(--primary-orange);
-    cursor: pointer;
-    &:hover {
-      background-color: var(--default-neutral-white);
-      color: var(--basic-dark);
     }
   }
 }

@@ -1,14 +1,7 @@
 <template>
   <div class="header__authsection">
     <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
-    <button
-      aria-label="Sign up to preview account"
-      class="header__authsection-button"
-      name="signup_dataland_button"
-      @click="register"
-    >
-      Sign Up
-    </button>
+    <ButtonComponent label="Sign Up" buttonType="primary" ariaLabel="Sign up to preview account" @click="register" />
   </div>
 </template>
 
@@ -17,6 +10,7 @@ import { inject } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 import type Keycloak from "keycloak-js";
+import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 
@@ -86,24 +80,6 @@ const register = (): void => {
         }
       }
     }
-    &-button {
-      padding: 14px 32px;
-      border-radius: 32px;
-      background-color: #ff6813;
-      color: #fff;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 20px;
-      letter-spacing: 0.75px;
-      text-transform: uppercase;
-      border: 2px solid #ff6813;
-      cursor: pointer;
-      &:hover {
-        background-color: #fff;
-        color: #1b1b1b;
-      }
-    }
   }
 }
 @media only screen and (max-width: $small) {
@@ -122,12 +98,6 @@ const register = (): void => {
             content: "";
           }
         }
-      }
-      &-button {
-        padding: 10px 16px;
-        font-size: 14px;
-        letter-spacing: 0.25px;
-        text-transform: capitalize;
       }
     }
   }
