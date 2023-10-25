@@ -3,18 +3,18 @@
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit v-model="baseDataPointYesNoNa" type="group" :name="name">
       <RadioButtonsFormElement
-          name="value"
-          :validation="validation"
-          :validation-label="validationLabel ?? label"
-          :options="yesNoNaOptions"
+        name="value"
+        :validation="validation"
+        :validation-label="validationLabel ?? label"
+        :options="yesNoNaOptions"
       />
       <UploadDocumentsForm
-          v-show="baseDataPointYesNoNa.value === 'Yes'"
-          @documentsChanged="handleDocumentUpdatedEvent"
-          ref="uploadDocumentsForm"
-          :name="name"
-          :more-than-one-document-allowed="false"
-          :file-names-for-prefill="fileNamesForPrefill"
+        v-show="baseDataPointYesNoNa.value === 'Yes'"
+        @documentsChanged="handleDocumentUpdatedEvent"
+        ref="uploadDocumentsForm"
+        :name="name"
+        :more-than-one-document-allowed="false"
+        :file-names-for-prefill="fileNamesForPrefill"
       />
       <FormKit v-if="baseDataPointYesNoNa.value === 'Yes'" type="group" name="dataSource">
         <FormKit type="hidden" name="fileName" v-model="documentName" />
