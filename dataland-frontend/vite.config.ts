@@ -23,7 +23,6 @@ export default defineConfig({
       "primevue/tooltip",
       "primevue/autocomplete",
       "primevue/menu",
-      "primevue/progressbar",
       "primevue/tabview",
       "primevue/tabpanel",
       "primevue/inputtext",
