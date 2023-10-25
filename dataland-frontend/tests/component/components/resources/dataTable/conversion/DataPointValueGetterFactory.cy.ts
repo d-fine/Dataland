@@ -52,7 +52,7 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     });
   });
 
-  describe("Tests when the unit is (not?) pre-determined in the data model", () => {
+  describe("Tests when the unit is not pre-determined in the data model", () => {
     const field: Field = {
       name: "emissionsToWater",
       label: "Emissions To Water",
@@ -126,23 +126,23 @@ describe("Unit test for the DataPointValueGetterFactory", () => {
     });
 
     it("neither name nor reference for document with empty value", () => {
-          const datapoint: ExtendedDataPointBigDecimal = {
-            value: undefined,
-            quality: "NA",
-            dataSource: {
-              fileName: null,
-              fileReference: "",
-            },
-          };
-          const dataset = {data: datapoint};
-          const value = dataPointValueGetterFactory("data", field)(dataset);
-          expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
-            displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-            displayValue: "",
-          });
+      const datapoint: ExtendedDataPointBigDecimal = {
+        value: undefined,
+        quality: "NA",
+        dataSource: {
+          fileName: null,
+          fileReference: "",
+        },
+      };
+      const dataset = { data: datapoint };
+      const value = dataPointValueGetterFactory("data", field)(dataset);
+      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+        displayValue: "",
+      });
     });
 
-    //can be integrated into other tests
+    //can be integrated into other tests or as e2e test
     /*it("successful test -> description to be written", () => {
       const datapoint: ExtendedDataPointBigDecimal = {
         value: 123,
