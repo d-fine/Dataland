@@ -122,7 +122,7 @@ export default defineComponent({
   },
   computed: {
     isDataQualityRequired(): boolean {
-      return this.currentValue ?? false;
+      return !!this.currentValue;
     },
     computeQualityOption(): object {
       if (this.currentValue == "") {
