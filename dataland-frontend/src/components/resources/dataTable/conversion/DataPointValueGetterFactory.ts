@@ -13,6 +13,8 @@ import {
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
 
+import { formatAmountWithCurrency, formatNumberToReadableFormat } from "@/utils/Formatter";
+
 /**
  * Returns a value factory that returns the value of the DataPointFormField
  * @param path the path to the field
@@ -25,28 +27,20 @@ export function dataPointValueGetterFactory(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | undefined;
-
-    if (!datapoint?.value) {
-      // TODO then QA sees nothing
+    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal;
+    if (datapoint?.value == null) {
       return MLDTDisplayObjectForEmptyString;
     }
 
-    const datapointValue = formatNumberToReadableFormat(datapoint.value);
+    let datapointValue = formatNumberToReadableFormat(datapoint.value);
     let datapointUnitSuffix: string;
-
-    if ((datapoint as CurrencyDataPoint)?.currency && (datapoint as CurrencyDataPoint)!.currency!.length > 0) {
-      datapointUnitSuffix = (datapoint as CurrencyDataPoint)!.currency!;
-    } else if (field.options?.length) {
-      // TODO why does the following check for field unit as well as options? This should never happen, right?
-      const datapointUnitRaw = field.unit ?? "";
-      const matchingEntry = field.options.find((it) => it.value == datapointUnitRaw);
-      datapointUnitSuffix = matchingEntry?.label ?? datapointUnitRaw;
+    if ((datapoint as CurrencyDataPoint)?.currency && (datapoint as CurrencyDataPoint)?.currency?.length) {
+      datapointUnitSuffix = (datapoint as CurrencyDataPoint)?.currency ?? "";
+      datapointValue = formatAmountWithCurrency({ amount: datapoint.value });
     } else {
       datapointUnitSuffix = field.unit ?? "";
     }
-
-    const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : ""; // TODO Data hidden from QA
+    const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
     if (hasDataPointValidReference(datapoint)) {
       const documentName = getGloballyReferencableDocuments(dataset).find(
         (document) => document.fileName == datapoint?.dataSource?.fileName,

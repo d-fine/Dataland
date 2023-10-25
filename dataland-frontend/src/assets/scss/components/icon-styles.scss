@@ -1,3 +1,6 @@
+.positionRelative {
+  position: relative;
+}
 .p-input-icon-left>em, .p-input-icon-right>em {
   position: absolute;
   top: 50%;
@@ -45,4 +48,11 @@
 }
 .info-icon {
   cursor: help;
+}
+.gray-closeIcon {
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: $gray;
 }

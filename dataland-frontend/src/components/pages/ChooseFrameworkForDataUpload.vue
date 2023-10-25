@@ -88,7 +88,7 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 

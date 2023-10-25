@@ -11,10 +11,10 @@
     </p>
 
     <MultiLayerDataTable
-      :datasets="mldtDatasets"
+      :mldtDatasets="mldtDatasets"
       :config="
         inReviewMode
-          ? convertMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
+          ? editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
           : displayConfiguration
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
@@ -32,12 +32,12 @@ import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { computed, inject, ref, shallowRef, watch } from "vue";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
-import { sortCompanyAssociatedDataByReportingPeriod } from "@/utils/DataTableDisplay";
+import { sortDatasetsByReportingPeriod } from "@/utils/DataTableDisplay";
 import { type DataMetaInformation } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { convertMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
+import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -54,9 +54,7 @@ const props = defineProps<{
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 
 const mldtDatasets = computed(() => {
-  const sortedDataAndMetaInformation = sortCompanyAssociatedDataByReportingPeriod(
-    dataAndMetaInformationForDisplay.value,
-  );
+  const sortedDataAndMetaInformation = sortDatasetsByReportingPeriod(dataAndMetaInformationForDisplay.value);
   return sortedDataAndMetaInformation.map((it) => ({
     headerLabel: it.metaInfo.reportingPeriod,
     dataset: it.data,

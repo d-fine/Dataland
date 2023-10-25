@@ -1,0 +1,18 @@
+/* newVariables.scss */
+:root {
+  /* Color Palette */
+  --primary-orange: #FF6813;
+  --basic-dark: #1b1b1b;
+  --default-neutral-white: #FFF;
+  --grey-tones-100: #F6F6F6;
+  --grey-tones-400: #A5A5A5;
+  --grey-tones-700: #5B5B5B;
+  --grey-tones-900: #2F2F2F;
+
+
+}
+  /* Breakpoints */
+  $small: 768px;
+  $medium: 1024px;
+  $large: 1440px;
+  $extra-large: 1800px;

@@ -25,7 +25,7 @@
 <script lang="ts">
 import BackButton from "@/components/general/BackButton.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 
 export default {
   name: "DataPrivacy",
