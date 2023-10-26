@@ -49,7 +49,9 @@ const state = {
 };
 
 const preventDefault: EventListener = (e: Event) => {
-  e.preventDefault();
+  if (e.cancelable) {
+    e.preventDefault();
+  }
 };
 
 const toggleScrollLock = (lock: boolean): void => {
