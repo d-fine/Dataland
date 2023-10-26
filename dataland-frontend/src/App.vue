@@ -17,7 +17,6 @@ import {
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/Stores";
-
 const sharedStore = useSharedSessionStateStore();
 const keycloakPromise = ref<Promise<Keycloak> | undefined>();
 const resolvedKeycloakPromise = ref<Keycloak | undefined>();
