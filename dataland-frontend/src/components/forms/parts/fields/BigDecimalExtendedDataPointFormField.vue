@@ -12,14 +12,14 @@
       <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       <div class="next-to-each-other">
         <FormKit
-            type="text"
-            name="value"
-            v-model="currentValue"
-            :validation-label="validationLabel ?? label"
-            :validation="`number|${validation}`"
-            :placeholder="unit ? `Value in ${unit}` : 'Value'"
-            outer-class="short"
-            @blur="handleBlurValue"
+          type="text"
+          name="value"
+          v-model="currentValue"
+          :validation-label="validationLabel ?? label"
+          :validation="`number|${validation}`"
+          :placeholder="unit ? `Value in ${unit}` : 'Value'"
+          outer-class="short"
+          @blur="handleBlurValue"
         />
         <div v-if="unit" class="form-field-label pb-3">
           <span>{{ unit }}</span>
@@ -50,20 +50,17 @@ export default defineComponent({
     unit: {
       type: String,
     },
-    options: {
-      type: Array,
-    },
   },
   methods: {
     /**
      * Handle blur event on value input.
      */
     handleBlurValue() {
-      const extendedDataPointFormField = this.$refs.extendedDataPointFormField
+      const extendedDataPointFormField = this.$refs.extendedDataPointFormField;
       if (this.currentValue === "") {
-        extendedDataPointFormField.setQuality(QualityOptions.Na)
+        extendedDataPointFormField.setQuality(QualityOptions.Na);
       } else if (this.currentValue !== "" && extendedDataPointFormField.isQualityNa()) {
-        extendedDataPointFormField.setQuality(undefined)
+        extendedDataPointFormField.setQuality(undefined);
       }
     },
   },

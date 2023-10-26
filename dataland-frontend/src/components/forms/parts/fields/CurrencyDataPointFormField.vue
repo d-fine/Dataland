@@ -13,22 +13,22 @@
       <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       <div class="next-to-each-other">
         <FormKit
-            type="text"
-            name="value"
-            v-model="currentValue"
-            :validation-label="validationLabel ?? label"
-            :validation="`number|${validation}`"
-            placeholder="Value"
-            outer-class="short"
-            @blur="handleBlurValue"
+          type="text"
+          name="value"
+          v-model="currentValue"
+          :validation-label="validationLabel ?? label"
+          :validation="`number|${validation}`"
+          placeholder="Value"
+          outer-class="short"
+          @blur="handleBlurValue"
         />
         <FormKit
-            type="select"
-            name="currency"
-            placeholder="Currency"
-            :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
-            outer-class="short"
-            data-test="datapoint-currency"
+          type="select"
+          name="currency"
+          placeholder="Currency"
+          :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
+          outer-class="short"
+          data-test="datapoint-currency"
         />
       </div>
     </div>
@@ -48,8 +48,8 @@ export default defineComponent({
   name: "BigDecimalExtendedDataPointFormField",
   computed: {
     DropdownDatasetIdentifier() {
-      return DropdownDatasetIdentifier
-    }
+      return DropdownDatasetIdentifier;
+    },
   },
   components: { ExtendedDataPointFormField, UploadFormHeader, FormKit },
   data() {
@@ -69,11 +69,11 @@ export default defineComponent({
      * Handle blur event on value input.
      */
     handleBlurValue() {
-      const extendedDataPointFormField = this.$refs.extendedDataPointFormField
+      const extendedDataPointFormField = this.$refs.extendedDataPointFormField;
       if (this.currentValue === "") {
-        extendedDataPointFormField.setQuality(QualityOptions.Na)
+        extendedDataPointFormField.setQuality(QualityOptions.Na);
       } else if (this.currentValue !== "" && extendedDataPointFormField.isQualityNa()) {
-        extendedDataPointFormField.setQuality(undefined)
+        extendedDataPointFormField.setQuality(undefined);
       }
     },
   },
