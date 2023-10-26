@@ -48,8 +48,16 @@ const state = {
   startY: 0,
 };
 
+const preventDefault: EventListener = (e: Event) => {
+  e.preventDefault();
+};
+
 const toggleScrollLock = (lock: boolean): void => {
-  document.body.style.overflowY = lock ? "hidden" : "auto";
+  if (lock) {
+    document.addEventListener("touchmove", preventDefault, { passive: false } as EventListenerOptions);
+  } else {
+    document.removeEventListener("touchmove", preventDefault, { passive: false } as EventListenerOptions);
+  }
   state.disableScroll = lock;
 };
 
