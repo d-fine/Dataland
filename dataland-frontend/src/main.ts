@@ -20,6 +20,13 @@ import { PiniaSharedState } from "pinia-shared-state";
  */
 function instantiateVueApp(): void {
   const app = createApp(App);
+  const script = document.createElement("script");
+  script.id = "Cookiebot";
+  script.src = "https://consent.cookiebot.com/uc.js";
+  script.setAttribute("data-cbid", "cba5002e-6f0e-4848-aadc-ccc8d5c96c86");
+  script.setAttribute("data-blockingmode", "auto");
+  script.type = "text/javascript";
+  document.head.appendChild(script);
   const pinia = createPinia();
   pinia.use(
     PiniaSharedState({
