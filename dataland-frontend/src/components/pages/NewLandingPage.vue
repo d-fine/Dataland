@@ -51,6 +51,7 @@ onMounted(() => {
     openLogoutModal();
   }
   void checkAuthenticatedAndRedirectIfLoggedIn();
+  /*
   const script = document.createElement("script");
   script.id = "Cookiebot";
   script.src = "https://consent.cookiebot.com/uc.js";
@@ -58,6 +59,7 @@ onMounted(() => {
   script.setAttribute("data-blockingmode", "auto");
   script.type = "text/javascript";
   document.head.appendChild(script);
+  */
 });
 
 watch(authenticated, () => {
