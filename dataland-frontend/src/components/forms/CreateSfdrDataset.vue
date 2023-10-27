@@ -138,6 +138,9 @@ import { HighImpactClimateSectorsNaceCodes } from "@/types/HighImpactClimateSect
 import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
 import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
 import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
+import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
+import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
+import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -156,7 +159,6 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    YesNoFormField,
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
@@ -167,7 +169,6 @@ export default defineComponent({
     NaceCodeFormField,
     AddressFormField,
     RadioButtonsFormField,
-    YesNoNaFormField,
     PercentageFormField,
     ProductionSitesFormField,
     MostImportantProductsFormField,
@@ -177,6 +178,11 @@ export default defineComponent({
     IntegerExtendedDataPointFormField,
     BigDecimalExtendedDataPointFormField,
     CurrencyDataPointFormField,
+    YesNoFormField,
+    YesNoNaFormField,
+    YesNoBaseDataPointFormField,
+    YesNoNaBaseDataPointFormField,
+    YesNoExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,

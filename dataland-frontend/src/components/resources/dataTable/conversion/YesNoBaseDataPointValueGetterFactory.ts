@@ -20,42 +20,6 @@ const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
 };
 
 /**
- * Formats the value of a YesNoFormField if the field serves as a certificate
- * @param elementValue the value of the field
- * @param field the YesNoFormField
- * @returns the formatted display value
- */
-function formatYesNoValueWhenCertificateRequiredIsYes(
-  elementValue: BaseDataPointYesNoNa | BaseDataPointYesNo | undefined,
-  field: Field,
-): AvailableMLDTDisplayObjectTypes {
-  if (!elementValue) {
-    return MLDTDisplayObjectForEmptyString;
-  }
-  const lowerFieldLabel = field.label.toLowerCase();
-  const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
-
-  const displayValue = isCertificationField
-    ? certificateHumanReadableYesNoMap[elementValue.value]
-    : humanReadableYesNoMap[elementValue.value];
-
-  if (elementValue.value == YesNoNa.Yes && elementValue.dataSource) {
-    return {
-      displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
-      displayValue: {
-        label: displayValue,
-        dataSource: elementValue.dataSource,
-      },
-    };
-  } else {
-    return {
-      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-      displayValue: displayValue,
-    };
-  }
-}
-
-/**
  * Returns a value factory that returns the value of the Base Data Point Yes / No form field
  * @param path the path to the field
  * @param field the field
@@ -67,9 +31,31 @@ export function yesNoBaseDataPointValueGetterFactory(
   field: Field,
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    return formatYesNoValueWhenCertificateRequiredIsYes(
-      getFieldValueFromFrameworkDataset(path, dataset) as BaseDataPointYesNo | BaseDataPointYesNoNa | undefined,
-      field,
-    );
+    const elementValue = getFieldValueFromFrameworkDataset(path, dataset) as BaseDataPointYesNo | BaseDataPointYesNoNa | undefined;
+    if (!elementValue) { // TODO what to do if there is no value provided? still show meta info?
+      return MLDTDisplayObjectForEmptyString;
+    }
+    const lowerFieldLabel = field.label.toLowerCase();
+    const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
+
+    // TODO handle element.value undefined!!!
+    const displayValue = isCertificationField
+      ? certificateHumanReadableYesNoMap[elementValue.value]
+      : humanReadableYesNoMap[elementValue.value];
+
+    if (elementValue.value == YesNoNa.Yes && elementValue.dataSource) {
+      return {
+        displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
+        displayValue: {
+          label: displayValue,
+          dataSource: elementValue.dataSource,
+        },
+      };
+    } else {
+      return {
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+        displayValue: displayValue,
+      };
+    }
   };
 }
