@@ -55,7 +55,7 @@ export default defineComponent({
       default: [] as string[],
     },
   },
-  components: {BigDecimalExtendedDataPointFormField, MultiSelect, UploadFormHeader },
+  components: { BigDecimalExtendedDataPointFormField, MultiSelect, UploadFormHeader },
   props: BaseFormFieldProps,
   data() {
     return {
