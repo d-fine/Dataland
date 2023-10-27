@@ -1,4 +1,3 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
@@ -15,11 +14,10 @@ const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
 /**
  * Returns a value factory that returns the value of the Yes / No form field
  * @param path the path to the field
- * @param field the field
  * @returns the created getter
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function yesNoValueGetterFactory(path: string, field: Field): (dataset: any) => AvailableMLDTDisplayObjectTypes {
+export function yesNoValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const value = getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | undefined;
     const displayValue = value ? humanReadableYesNoMap[value] : "";

@@ -10,12 +10,13 @@ import { type GenericDataPoint } from "@/utils/DataPoint";
  * @param field the field
  * @returns the created getter
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function numberDataPointValueGetterFactory(
   path: string,
   field: Field,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  return getDataPointGetterFactory(path, field, (dataPoint: GenericDataPoint<any>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return getDataPointGetterFactory(path, field, (dataPoint: GenericDataPoint<number>) => {
     const datapointValue = formatNumberToReadableFormat(dataPoint.value);
     const datapointUnitSuffix = field.unit ?? "";
     return datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";

@@ -34,6 +34,7 @@ export function getFieldValueFromFrameworkDataset(identifier: string, frameworkD
  * @param dataPoint.dataSource the data source of the data point
  * @returns true if the reference is properly set
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function hasDataPointValidReference(dataPoint: GenericDataPoint<any> | GenericBaseDataPoint<any>): boolean {
   return !!dataPoint?.dataSource?.fileReference?.trim().length;
 }
@@ -57,11 +58,11 @@ export function getGloballyReferencableDocuments(dataset: any): BaseDocumentRefe
  * @param formatter a function to transform the datapoint value ot a display value
  * @returns the data point getter factory
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getDataPointGetterFactory<T>(
   path: string,
   field: Field,
   formatter: (dataPoint?: unknown) => string | undefined,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const dataPoint = getFieldValueFromFrameworkDataset(path, dataset) as

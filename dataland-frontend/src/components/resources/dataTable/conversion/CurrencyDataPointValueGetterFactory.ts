@@ -10,10 +10,10 @@ import { formatAmountWithCurrency } from "@/utils/Formatter";
  * @param field the field
  * @returns the created getter
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function currencyDataPointValueGetterFactory(
   path: string,
   field: Field,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return getDataPointGetterFactory(path, field, (dataPoint: CurrencyDataPoint) => {
     const datapointValue = formatAmountWithCurrency({ amount: dataPoint.value });

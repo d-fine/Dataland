@@ -26,6 +26,7 @@ const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
 export function yesNoDataPointValueGetterFactory(
   path: string,
   field: Field,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return getDataPointGetterFactory(path, field, (dataPoint: GenericBaseDataPoint<YesNoNa>) => {
     const lowerFieldLabel = field.label.toLowerCase();
