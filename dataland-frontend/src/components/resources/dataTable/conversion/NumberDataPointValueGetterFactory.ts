@@ -5,10 +5,9 @@ import {
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type ExtendedDataPointBigDecimal } from "@clients/backend";
+import {type ExtendedDataPointBigDecimal, ExtendedDataPointLong} from "@clients/backend";
 import {
   getFieldValueFromFrameworkDataset,
-  getGloballyReferencableDocuments,
   hasDataPointValidReference,
 } from "@/components/resources/dataTable/conversion/Utils";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
@@ -25,34 +24,32 @@ export function numberDataPointValueGetterFactory(
   field: Field,
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | undefined;
-    if (datapoint?.value == null) {
+    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | ExtendedDataPointLong | undefined;
+    if (!datapoint) {
       return MLDTDisplayObjectForEmptyString;
     }
     const datapointValue = formatNumberToReadableFormat(datapoint.value);
     const datapointUnitSuffix = field.unit ?? "";
     const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
-    if (hasDataPointValidReference(datapoint)) {
-      const documentName = getGloballyReferencableDocuments(dataset).find(
-        (document) => document.fileName == datapoint?.dataSource?.fileName,
-      );
-      if (documentName == undefined) {
-        throw Error(
-          `There is no document with name ${
-            datapoint?.dataSource?.fileName ?? "NOT PROVIDED"
-          } referenced in this dataset`,
-        );
-      }
+    if (datapoint.quality || datapoint.comment?.length || datapoint.dataSource?.page != null) {
       return {
         displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
         displayValue: {
           fieldLabel: field.label,
           value: formattedValue,
-          dataSource: datapoint?.dataSource,
-          quality: datapoint?.quality,
-          comment: datapoint?.comment,
+          dataSource: datapoint.dataSource,
+          quality: datapoint.quality,
+          comment: datapoint.comment,
         },
-      } as MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>;
+      };
+    } else if (hasDataPointValidReference(datapoint)) {
+      return {
+        displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
+        displayValue: {
+          label: formattedValue,
+          dataSource: datapoint.dataSource,
+        },
+      } as MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>;
     } else {
       return {
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,

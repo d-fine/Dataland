@@ -8,7 +8,6 @@ import {
 import { type CurrencyDataPoint } from "@clients/backend";
 import {
   getFieldValueFromFrameworkDataset,
-  getGloballyReferencableDocuments,
   hasDataPointValidReference,
 } from "@/components/resources/dataTable/conversion/Utils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
@@ -26,39 +25,30 @@ export function currencyDataPointValueGetterFactory(
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as CurrencyDataPoint | undefined;
-    if (datapoint?.value == null) {
+    if (!datapoint) {
       return MLDTDisplayObjectForEmptyString;
     }
     const datapointValue = formatAmountWithCurrency({ amount: datapoint.value });
-    let datapointUnitSuffix: string;
-    if (datapoint.currency && datapoint.currency?.length) {
-      datapointUnitSuffix = datapoint?.currency ?? "";
-    } else {
-      datapointUnitSuffix = field.unit ?? "";
-    }
-    const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
-
-    if (hasDataPointValidReference(datapoint)) {
-      const documentName = getGloballyReferencableDocuments(dataset).find(
-        (document) => document.fileName == datapoint?.dataSource?.fileName,
-      );
-      if (documentName == undefined) {
-        throw Error(
-          `There is no document with name ${
-            datapoint?.dataSource?.fileName ?? "NOT PROVIDED"
-          } referenced in this dataset`,
-        );
-      }
+    const formattedValue: string = datapointValue ? `${datapointValue} ${datapoint.currency}`.trim() : "";
+    if (datapoint.quality || datapoint.comment?.length || datapoint.dataSource?.page != null) {
       return {
         displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
         displayValue: {
           fieldLabel: field.label,
           value: formattedValue,
-          dataSource: datapoint?.dataSource,
-          quality: datapoint?.quality,
-          comment: datapoint?.comment,
+          dataSource: datapoint.dataSource,
+          quality: datapoint.quality,
+          comment: datapoint.comment,
         },
-      } as MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>;
+      };
+    } else if (hasDataPointValidReference(datapoint)) {
+      return {
+        displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
+        displayValue: {
+          label: formattedValue,
+          dataSource: datapoint.dataSource,
+        },
+      } as MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>;
     } else {
       return {
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
