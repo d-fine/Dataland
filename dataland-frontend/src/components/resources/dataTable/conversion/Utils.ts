@@ -1,4 +1,12 @@
-import { type BaseDocumentReference, type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backend";
+import { type BaseDocumentReference, type SfdrData } from "@clients/backend";
+import {
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayComponentName,
+  type MLDTDisplayObject,
+  MLDTDisplayObjectForEmptyString,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type GenericBaseDataPoint, type GenericDataPoint } from "@/utils/DataPoint";
 
 /**
  * Retrieves a deeply nested value from an object by an identifier.
@@ -26,7 +34,7 @@ export function getFieldValueFromFrameworkDataset(identifier: string, frameworkD
  * @param dataPoint.dataSource the data source of the data point
  * @returns true if the reference is properly set
  */
-export function hasDataPointValidReference(dataPoint: ExtendedDataPointBigDecimal): boolean {
+export function hasDataPointValidReference(dataPoint: GenericDataPoint<any> | GenericBaseDataPoint<any>): boolean {
   return !!dataPoint?.dataSource?.fileReference?.trim().length;
 }
 
@@ -40,6 +48,61 @@ export function getGloballyReferencableDocuments(dataset: any): BaseDocumentRefe
   return Object.entries((dataset as SfdrData)?.general?.general?.referencedReports ?? {}).map(
     (document): BaseDocumentReference => ({ fileName: document[0], fileReference: document[1].fileReference }),
   );
+}
+
+/**
+ * Returns the document references globally available in a dataset
+ * @param path the path to the field value
+ * @param field the field
+ * @param formatter a function to transform the datapoint value ot a display value
+ * @returns the data point getter factory
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getDataPointGetterFactory<T>(
+  path: string,
+  field: Field,
+  formatter: (dataPoint?: unknown) => string | undefined,
+): (dataset: any) => AvailableMLDTDisplayObjectTypes {
+  return (dataset) => {
+    const dataPoint = getFieldValueFromFrameworkDataset(path, dataset) as
+      | GenericDataPoint<T>
+      | GenericBaseDataPoint<T>
+      | undefined;
+    if (!dataPoint) {
+      return MLDTDisplayObjectForEmptyString;
+    }
+    const formattedValue: string = formatter(dataPoint) ?? "No data provided";
+    const dataPointAsExtendedDataPoint = dataPoint as GenericDataPoint<T>;
+    if (
+      dataPointAsExtendedDataPoint.quality ||
+      dataPointAsExtendedDataPoint.comment?.length ||
+      dataPointAsExtendedDataPoint.dataSource?.page != null
+    ) {
+      return {
+        displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+        displayValue: {
+          fieldLabel: field.label,
+          value: formattedValue,
+          dataSource: dataPointAsExtendedDataPoint.dataSource,
+          quality: dataPointAsExtendedDataPoint.quality,
+          comment: dataPointAsExtendedDataPoint.comment,
+        },
+      };
+    } else if (hasDataPointValidReference(dataPoint)) {
+      return {
+        displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
+        displayValue: {
+          label: formattedValue,
+          dataSource: dataPoint.dataSource,
+        },
+      } as MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>;
+    } else {
+      return {
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+        displayValue: formattedValue,
+      } as MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>;
+    }
+  };
 }
 
 /**

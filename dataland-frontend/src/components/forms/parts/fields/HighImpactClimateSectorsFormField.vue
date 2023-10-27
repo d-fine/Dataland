@@ -26,7 +26,7 @@
               :description="`Total energy consumption for high impact climate sector ${selection}`"
               :is-required="true"
             />
-            <DataPointFormField
+            <BigDecimalExtendedDataPointFormField
               unit="in GWh"
               :name="`NaceCode${selection}InGWh`"
               :placeholder="`Sector ${selection} Energy Consumption`"
@@ -44,8 +44,8 @@ import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import MultiSelect from "primevue/multiselect";
-import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import { optionsForHighImpactClimateSectors } from "@/types/HighImpactClimateSectors";
+import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
 
 export default defineComponent({
   name: "HighImpactClimateSectorsFormField",
@@ -55,7 +55,7 @@ export default defineComponent({
       default: [] as string[],
     },
   },
-  components: { DataPointFormField, MultiSelect, UploadFormHeader },
+  components: {BigDecimalExtendedDataPointFormField, MultiSelect, UploadFormHeader },
   props: BaseFormFieldProps,
   data() {
     return {

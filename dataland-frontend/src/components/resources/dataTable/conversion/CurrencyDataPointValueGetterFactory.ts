@@ -1,15 +1,7 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
-import {
-  type AvailableMLDTDisplayObjectTypes,
-  MLDTDisplayComponentName,
-  type MLDTDisplayObject,
-  MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type CurrencyDataPoint } from "@clients/backend";
-import {
-  getFieldValueFromFrameworkDataset,
-  hasDataPointValidReference,
-} from "@/components/resources/dataTable/conversion/Utils";
+import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
 
 /**
@@ -23,37 +15,8 @@ export function currencyDataPointValueGetterFactory(
   path: string,
   field: Field,
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  return (dataset) => {
-    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as CurrencyDataPoint | undefined;
-    if (!datapoint) {
-      return MLDTDisplayObjectForEmptyString;
-    }
-    const datapointValue = formatAmountWithCurrency({ amount: datapoint.value });
-    const formattedValue: string = datapointValue ? `${datapointValue} ${datapoint.currency}`.trim() : "";
-    if (datapoint.quality || datapoint.comment?.length || datapoint.dataSource?.page != null) {
-      return {
-        displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-        displayValue: {
-          fieldLabel: field.label,
-          value: formattedValue,
-          dataSource: datapoint.dataSource,
-          quality: datapoint.quality,
-          comment: datapoint.comment,
-        },
-      };
-    } else if (hasDataPointValidReference(datapoint)) {
-      return {
-        displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
-        displayValue: {
-          label: formattedValue,
-          dataSource: datapoint.dataSource,
-        },
-      } as MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>;
-    } else {
-      return {
-        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: formattedValue,
-      } as MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>;
-    }
-  };
+  return getDataPointGetterFactory(path, field, (dataPoint: CurrencyDataPoint) => {
+    const datapointValue = formatAmountWithCurrency({ amount: dataPoint.value });
+    return datapointValue ? `${datapointValue} ${dataPoint.currency}`.trim() : "";
+  });
 }

@@ -1,16 +1,8 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
-import {
-  type AvailableMLDTDisplayObjectTypes,
-  MLDTDisplayComponentName,
-  type MLDTDisplayObject,
-  MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type ExtendedDataPointBigDecimal, type ExtendedDataPointLong } from "@clients/backend";
-import {
-  getFieldValueFromFrameworkDataset,
-  hasDataPointValidReference,
-} from "@/components/resources/dataTable/conversion/Utils";
+import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
+import { type GenericDataPoint } from "@/utils/DataPoint";
 
 /**
  * Returns a value factory that returns the value of the number data point form field
@@ -23,41 +15,9 @@ export function numberDataPointValueGetterFactory(
   path: string,
   field: Field,
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  return (dataset) => {
-    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as
-      | ExtendedDataPointBigDecimal
-      | ExtendedDataPointLong
-      | undefined;
-    if (!datapoint) {
-      return MLDTDisplayObjectForEmptyString;
-    }
-    const datapointValue = formatNumberToReadableFormat(datapoint.value);
+  return getDataPointGetterFactory(path, field, (dataPoint: GenericDataPoint<any>) => {
+    const datapointValue = formatNumberToReadableFormat(dataPoint.value);
     const datapointUnitSuffix = field.unit ?? "";
-    const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
-    if (datapoint.quality || datapoint.comment?.length || datapoint.dataSource?.page != null) {
-      return {
-        displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-        displayValue: {
-          fieldLabel: field.label,
-          value: formattedValue,
-          dataSource: datapoint.dataSource,
-          quality: datapoint.quality,
-          comment: datapoint.comment,
-        },
-      };
-    } else if (hasDataPointValidReference(datapoint)) {
-      return {
-        displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
-        displayValue: {
-          label: formattedValue,
-          dataSource: datapoint.dataSource,
-        },
-      } as MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>;
-    } else {
-      return {
-        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: formattedValue,
-      } as MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>;
-    }
-  };
+    return datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
+  });
 }

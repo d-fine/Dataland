@@ -16,7 +16,7 @@ export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponentName.DataPointDisplayComponent]: {
     fieldLabel: string;
     value: string;
-    dataSource: ExtendedDocumentReference;
+    dataSource: ExtendedDocumentReference | BaseDocumentReference;
     quality?: string;
     comment?: string;
   };

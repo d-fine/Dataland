@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { type ExtendedDocumentReference, type BaseDocumentReference, QualityOptions } from "@clients/backend";
+import { type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { pickSubsetOfElements, pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNoNa } from "./YesNoFixtures";
@@ -7,6 +7,7 @@ import { DEFAULT_PROBABILITY, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { type GenericDataPoint } from "@/utils/DataPoint";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
 
@@ -65,19 +66,6 @@ export function generateDataPoint<T>(
     comment: comment,
     currency: currency,
   } as GenericDataPoint<T>;
-}
-
-export interface GenericDataPoint<T> {
-  value: T | null;
-  dataSource: ExtendedDocumentReference | null;
-  quality: QualityOptions;
-  comment: string | null;
-  currency?: string | null;
-}
-
-export interface GenericBaseDataPoint<T> {
-  value: T;
-  dataSource: BaseDocumentReference | null;
 }
 
 /**
