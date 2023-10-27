@@ -16,3 +16,5 @@ export const DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES =
 export const MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY =
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   parseInt(import.meta.env.VITE_MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY) || 3650;
+
+export const COOKIEBOT_ID = import.meta.env.VITE_COOKIEBOT_ID as string;

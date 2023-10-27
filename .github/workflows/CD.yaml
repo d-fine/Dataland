@@ -132,6 +132,7 @@ jobs:
           LOAD_GLEIF_GOLDEN_COPY: ${{ github.event.inputs.loadGleifGoldenCopy }}
           BACKEND_MIGRATION_BASELINE_VERSION: ${{ vars.BACKEND_MIGRATION_BASELINE_VERSION }}
           INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION: ${{ vars.INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION }}
+          COOKIEBOT_ID: ${{ secrets.COOKIEBOT_ID }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -206,6 +207,7 @@ jobs:
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
+          COOKIEBOT_ID: $ {{ secrets.COOKIEBOT_ID }}
       - name: Move Cypress Results
         if: always()
         run: |

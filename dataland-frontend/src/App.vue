@@ -17,6 +17,8 @@ import {
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/Stores";
+import { onBeforeMount } from "vue";
+import { COOKIEBOT_ID } from "@/DatalandSettings";
 
 const sharedStore = useSharedSessionStateStore();
 const keycloakPromise = ref<Promise<Keycloak> | undefined>();
@@ -26,6 +28,16 @@ const functionIdOfSessionSetInterval = ref<number | undefined>();
 const dialog = useDialog();
 
 const currentRefreshTokenInSharedStore = computed(() => sharedStore.refreshToken);
+
+onBeforeMount(() => {
+  const script = document.createElement("script");
+  script.id = "Cookiebot";
+  script.src = "https://consent.cookiebot.com/uc.js";
+  script.setAttribute("data-cbid", COOKIEBOT_ID);
+  script.setAttribute("data-blockingmode", "auto");
+  script.type = "text/javascript";
+  document.head.appendChild(script);
+});
 
 watch(currentRefreshTokenInSharedStore, (newRefreshToken) => {
   if (typeof newRefreshToken === "string") {
