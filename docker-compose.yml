@@ -43,7 +43,6 @@ services:
       PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
       FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
-      COOKIEBOT_ID: ${COOKIEBOT_ID}
     extra_hosts:
       - "host.docker.internal:host-gateway"
   admin-proxy:
@@ -213,7 +212,6 @@ services:
     <<: *uncritical-constants-env
     environment:
       POLLING: "false"
-      COOKIEBOT_ID: ${COOKIEBOT_ID}
   frontend:
     restart: always
     profiles: ["production", "testing"]
@@ -221,8 +219,6 @@ services:
     networks:
       - internal
     <<: *uncritical-constants-env
-    environment:
-      COOKIEBOT_ID: ${COOKIEBOT_ID}
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
