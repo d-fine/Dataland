@@ -5,7 +5,7 @@ import {
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import {type ExtendedDataPointBigDecimal, ExtendedDataPointLong} from "@clients/backend";
+import { type ExtendedDataPointBigDecimal, type ExtendedDataPointLong } from "@clients/backend";
 import {
   getFieldValueFromFrameworkDataset,
   hasDataPointValidReference,
@@ -24,7 +24,10 @@ export function numberDataPointValueGetterFactory(
   field: Field,
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | ExtendedDataPointLong | undefined;
+    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as
+      | ExtendedDataPointBigDecimal
+      | ExtendedDataPointLong
+      | undefined;
     if (!datapoint) {
       return MLDTDisplayObjectForEmptyString;
     }
