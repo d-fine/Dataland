@@ -8,18 +8,23 @@
       right-arrow-classes="quotes__arrow quotes__arrow--right"
       :slide-count="cards.length"
       :initial-center-slide="1"
-      @update:currentSlide="(newSlide) => (currentSlide = newSlide)"
+      @update:currentSlide="updateCurrentSlide"
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
-        <div class="quotes__slide-videoContainer">
-          <iframe
-            :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
-            title="Youtube video player"
-            allowfullscreen
-            :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }"
-          ></iframe>
+        <div :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }">
+          <div :id="'video-' + card.icon"></div>
+          <div
+            class="quotes__slide-thumbnail-overlay"
+            :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
+            v-show="currentSlide === index - 1 ? showThumbnail : true"
+            @click="toggleThumbnailAndPlayVideo(index - 1, card.icon)"
+          >
+            <div class="quotes__play-icon">
+              <div class="quotes__play-arrow"></div>
+            </div>
+          </div>
         </div>
       </div>
     </SlideShow>
@@ -32,15 +37,52 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from "vue";
+//resize 640 iframe youtube video on mobile
+
+import { computed, ref, onMounted, onUnmounted, watch } from "vue";
 import type { Section } from "@/types/ContentTypes";
 import RegisterButton from "@/components/resources/newLandingPage/RegisterButton.vue";
 import SlideShow from "@/components/general/SlideShow.vue";
 
+interface YouTubeEvent {
+  target?: {
+    playVideo: () => void;
+    pauseVideo: () => void;
+  };
+}
+declare global {
+  interface Window {
+    YT: {
+      Player: new (
+        elementId: string,
+        opts: {
+          videoId: string;
+          playerVars?: {
+            rel: number;
+          };
+          events: {
+            onReady: (event: YouTubeEvent) => void;
+          };
+        },
+      ) => {
+        playVideo: () => void;
+        pauseVideo: () => void;
+        destroy: () => void;
+      };
+    };
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
+
+const ytPlayers = ref<Map<string, { playVideo: () => void; pauseVideo: () => void; destroy: () => void }>>(new Map());
+
 const { sections } = defineProps<{ sections?: Section[] }>();
-const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes"));
+const quotesSection = computed(() => sections?.find((section) => section.title === "Quotes"));
 const cards = computed(() => quotesSection.value?.cards ?? []);
 const currentSlide = ref(0);
+const slideWidth = ref(640);
+const showThumbnail = ref(true);
+
 const currentCardInfo = computed(() => {
   const card = cards.value[currentSlide.value + 1];
   return {
@@ -49,21 +91,71 @@ const currentCardInfo = computed(() => {
     text: card?.text,
   };
 });
+const pauseAllVideos = (): void => {
+  ytPlayers.value.forEach((player) => {
+    player.pauseVideo();
+  });
+};
 
-const slideWidth = ref(760);
+const toggleThumbnailAndPlayVideo = (slideIndex: number, videoId?: string): void => {
+  if (videoId && currentSlide.value === slideIndex) {
+    showThumbnail.value = !showThumbnail.value;
+    const player = ytPlayers.value.get(videoId);
+    if (player && !showThumbnail.value) {
+      player.playVideo();
+    }
+  }
+};
+
+const updateCurrentSlide = (newSlide: number): void => {
+  currentSlide.value = newSlide;
+  pauseAllVideos();
+};
+watch(
+  () => currentSlide.value,
+  () => {
+    pauseAllVideos();
+    showThumbnail.value = true;
+  },
+);
 
 const updateSlideWidth = (): void => {
-  slideWidth.value = window.innerWidth > 768 ? 760 : 323;
+  slideWidth.value = window.innerWidth > 768 ? 640 : 323;
 };
-updateSlideWidth();
 
 onMounted(() => {
   window.addEventListener("resize", updateSlideWidth);
-  updateSlideWidth();
+  const firstScriptTag = document.querySelector("script");
+  if (firstScriptTag?.parentNode) {
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
+  window.onYouTubeIframeAPIReady = (): void => {
+    cards.value.forEach((card) => {
+      if (!card.icon) return;
+
+      const player = new window.YT.Player(`video-${card.icon}`, {
+        videoId: card.icon,
+        playerVars: {
+          rel: 0,
+        },
+        events: {
+          onReady: (event): void => {
+            event.target?.pauseVideo();
+          },
+        },
+      });
+      ytPlayers.value.set(card.icon, player);
+    });
+  };
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateSlideWidth);
+  ytPlayers.value.forEach((player) => {
+    player.destroy();
+  });
 });
 </script>
 
@@ -86,14 +178,15 @@ onUnmounted(() => {
   }
 
   &__slide {
-    flex: 0 0 760px;
-    -webkit-flex: 0 0 760px;
-    -ms-flex: 0 0 760px;
+    flex: 0 0 640px;
+    -webkit-flex: 0 0 640px;
+    -ms-flex: 0 0 640px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
     gap: 24px;
     cursor: grab;
+    position: relative;
 
     &-videoContainer {
       aspect-ratio: 16 / 9;
@@ -115,7 +208,15 @@ onUnmounted(() => {
         transform: scale(0.765);
       }
     }
-
+    &-thumbnail-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-size: cover;
+      cursor: grab;
+    }
     &-title {
       font-size: 14px;
       font-style: normal;
@@ -132,11 +233,33 @@ onUnmounted(() => {
       font-size: 24px;
       font-style: normal;
       font-weight: 600;
-      line-height: 32px; /* 133.333% */
+      line-height: 32px;
       letter-spacing: 0.25px;
       max-width: 470px;
       margin: 0 16px;
     }
+  }
+  &__play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__play-arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 15px solid white;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    transform: translate(-40%, -50%);
   }
   &__arrows {
     display: flex;
