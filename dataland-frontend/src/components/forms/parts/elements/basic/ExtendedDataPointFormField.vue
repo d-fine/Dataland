@@ -6,29 +6,29 @@
         <div class="next-to-each-other">
           <div class="flex-1">
             <UploadFormHeader
-                :label="`${label} Report`"
-                :description="'Select a report as a reference for this data point.'"
+              :label="`${label} Report`"
+              :description="'Select a report as a reference for this data point.'"
             />
             <FormKit
-                type="select"
-                name="fileName"
-                v-model="currentReportValue"
-                placeholder="Select a report"
-                :options="['None...', ...reportsName]"
+              type="select"
+              name="fileName"
+              v-model="currentReportValue"
+              placeholder="Select a report"
+              :options="['None...', ...reportsName]"
             />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
           <div>
             <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
             <FormKit
-                outer-class="w-100"
-                type="number"
-                name="page"
-                placeholder="Page"
-                validation-label="Page"
-                step="1"
-                min="0"
-                validation="min:0"
+              outer-class="w-100"
+              type="number"
+              name="page"
+              placeholder="Page"
+              validation-label="Page"
+              step="1"
+              min="0"
+              validation="min:0"
             />
           </div>
         </div>
@@ -38,27 +38,27 @@
     <!-- Data quality -->
     <div class="mb-4" data-test="dataQuality">
       <UploadFormHeader
-          :label="`${label} Quality`"
-          description="The level of confidence associated to the value."
-          :is-required="isDataQualityRequired"
+        :label="`${label} Quality`"
+        description="The level of confidence associated to the value."
+        :is-required="isDataQualityRequired"
       />
       <div class="md:col-6 col-12 p-0">
         <FormKit
-            type="select"
-            v-model="qualityValue"
-            name="quality"
-            :validation="isDataQualityRequired ? 'required' : ''"
-            validation-label="Data quality"
-            placeholder="Data quality"
-            :options="computeQualityOption"
+          type="select"
+          v-model="qualityValue"
+          name="quality"
+          :validation="isDataQualityRequired ? 'required' : ''"
+          validation-label="Data quality"
+          placeholder="Data quality"
+          :options="computeQualityOption"
         />
       </div>
     </div>
     <div class="form-field">
       <FormKit
-          type="textarea"
-          name="comment"
-          placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
+        type="textarea"
+        name="comment"
+        placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
       />
     </div>
   </FormKit>
@@ -69,7 +69,7 @@ import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
-import {BaseFormFieldProps, YesNoFormFieldProps} from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 
@@ -115,7 +115,7 @@ export default defineComponent({
     isDataValueProvided: {
       type: Boolean,
       required: true,
-    }
+    },
   },
   methods: {
     setQuality(qualityOption: QualityOptions | undefined) {

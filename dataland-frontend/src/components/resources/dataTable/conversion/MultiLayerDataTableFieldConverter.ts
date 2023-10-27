@@ -26,14 +26,8 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   AddressFormField: plainStringValueGetterFactory,
   DateFormField: plainStringValueGetterFactory,
   InputTextFormField: plainStringValueGetterFactory,
-  YesNoFormField: yesNoValueGetterFactory,
-  YesNoBaseDataPointFormField: yesNoBaseDataPointValueGetterFactory,
-  YesNoExtendedDataPointFormField: yesNoExtendedDataPointValueGetterFactory,
-  YesNoNaFormField: yesNoValueGetterFactory,
-  YesNoNaBaseDataPointFormField: yesNoBaseDataPointValueGetterFactory,
   RadioButtonsFormField: singleSelectValueGetterFactory,
   SingleSelectFormField: singleSelectValueGetterFactory,
-  DataPointFormField: dataPointValueGetterFactory,
   NaceCodeFormField: naceCodeValueGetterFactory,
   NumberFormField: numberValueGetterFactory,
   PercentageFormField: percentageValueGetterFactory,
@@ -43,6 +37,15 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   ProcurementCategoriesFormField: lksgProcurementCategoriesValueGetterFactory,
   DriveMixFormField: p2pDriveMixValueGetterFactory,
   HighImpactClimateSectorsFormField: highImpactClimateGetterFactory,
+  YesNoFormField: yesNoValueGetterFactory,
+  YesNoBaseDataPointFormField: yesNoBaseDataPointValueGetterFactory,
+  YesNoExtendedDataPointFormField: yesNoExtendedDataPointValueGetterFactory,
+  YesNoNaFormField: yesNoValueGetterFactory,
+  YesNoNaBaseDataPointFormField: yesNoBaseDataPointValueGetterFactory,
+  DataPointFormField: dataPointValueGetterFactory, // TODO remove
+  BigDecimalExtendedDataPointFormField: dataPointValueGetterFactory,
+  IntegerExtendedDataPointFormField: dataPointValueGetterFactory,
+  CurrencyDataPointFormField: dataPointValueGetterFactory,
 };
 
 /**
