@@ -1,17 +1,24 @@
 import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
 
-describe("...", () => {
-    it("...", () => {
+describe("test IntegerExtendedDataPointFormField for entries", () => {
+    it("Form field should exist and entries to form field should be integer and nothing else", () => {
         cy.mountWithPlugins(IntegerExtendedDataPointFormField, {}).then((mounted) => {
             void mounted.wrapper.setProps({
                 name: "foo",
                 unit: "",
             });
-            cy.get('select[name="currency"]').should("exist");
-            cy.get('select[name="currency"]').should("contain", "3");
-            cy.get('input[name="currency"][type="hidden"]').should("not.exist");
-            cy.get('div[data-test="dataQuality"] select[name="quality"]').should("have.value", "NA");
-            cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should("not.exist");
+            //check existence
+            cy.get('input[name="value"]').should("exist");
+            //error on float
+            cy.get('input[name="value"]').type("5.6").blur();
+            cy.get('.formkit-message').should("contain.text","must be an integer");
+            //error on letter
+            cy.get('input[name="value"]').clear().type("x").blur();
+            cy.get('.formkit-message').should("contain.text","must be a number");
+            //error on empty
+            cy.get('input[name="value"]').clear().blur();
+            cy.get('.formkit-message').should("not.exist");
+            //error on overflow
         });
     });
 })
