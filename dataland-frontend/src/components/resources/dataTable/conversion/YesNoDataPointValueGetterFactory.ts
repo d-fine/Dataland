@@ -25,7 +25,7 @@ const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
 };
 
 /**
- * Returns a value factory that returns the value of the Base Data Point Yes / No form field
+ * Returns a value factory that returns the value of the Yes / No Data Point form field
  * @param path the path to the field
  * @param field the field
  * @returns the created getter

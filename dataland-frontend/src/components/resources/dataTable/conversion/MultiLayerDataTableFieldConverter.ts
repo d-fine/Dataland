@@ -5,6 +5,7 @@ import { plainStringValueGetterFactory } from "@/components/resources/dataTable/
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
 import { currencyDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
+import { numberDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberDataPointValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
 import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
@@ -43,8 +44,8 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   YesNoNaFormField: yesNoValueGetterFactory,
   YesNoNaBaseDataPointFormField: yesNoDataPointValueGetterFactory,
   DataPointFormField: dataPointValueGetterFactory, // TODO remove
-  IntegerExtendedDataPointFormField: dataPointValueGetterFactory, // TODO should be the same as for big decimals
-  BigDecimalExtendedDataPointFormField: dataPointValueGetterFactory, // TODO should be the same as for integers
+  IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
+  BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
   CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
 };
 
