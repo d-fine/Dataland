@@ -48,9 +48,11 @@ export function yesNoDataPointValueGetterFactory(
     const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
 
     // TODO handle element.value undefined!!! ASK IN DAILY
-    const displayValue = isCertificationField
-      ? certificateHumanReadableYesNoMap[elementValue.value]
-      : humanReadableYesNoMap[elementValue.value];
+    const displayValue = elementValue.value
+      ? isCertificationField
+        ? certificateHumanReadableYesNoMap[elementValue.value]
+        : humanReadableYesNoMap[elementValue.value]
+      : "";
 
     const extendedDataPoint = elementValue as ExtendedDataPointYesNo;
     if (elementValue.dataSource || extendedDataPoint.quality || extendedDataPoint.comment?.length) {

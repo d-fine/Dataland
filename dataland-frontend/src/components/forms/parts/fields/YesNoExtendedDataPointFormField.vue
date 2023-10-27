@@ -79,14 +79,13 @@ import { defineComponent } from "vue";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { type BaseDataPointYesNo, QualityOptions } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "YesNoFormField",
-  components: { RadioButtonsFormElement, UploadFormHeader, UploadDocumentsForm },
+  components: { RadioButtonsFormElement, UploadFormHeader },
   inheritAttrs: false,
   inject: {
     injectReportsNameAndReferences: {
@@ -156,17 +155,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Emits event that selected document changed
-     * @param updatedDocuments the updated documents that are currently selected (only one in this case)
-     */
-    handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
-      this.referencedDocument = updatedDocuments[0];
-      this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
-      this.documentReference = this.referencedDocument?.fileReference ?? "";
-      this.$emit("reportsUpdated", this.documentName, this.referencedDocument);
-    },
-
     /**
      * updates the files in the fileUpload file list to represent that a file was already uploaded in a previous upload
      * of the given dataset (in the case of editing a dataset)

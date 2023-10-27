@@ -1,7 +1,7 @@
 <template>
   <span>{{ content.displayValue.value }}</span>
   <a @click="$dialog.open(DataPointDataTable, modalOptions)" class="link"
-    >Show meta information
+    >{{ content.displayValue.value ?? "No data provided" }}
     <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
   </a>
 </template>

@@ -31,20 +31,13 @@ import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldPr
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { type DocumentToUpload, getFileName } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPointYesNo } from "@clients/backend";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "YesNoBaseDataPointFormField",
   components: { RadioButtonsFormElement, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
-  inject: {
-    injectReportsNameAndReferences: {
-      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
-      default: {} as ObjectType,
-    },
-  },
   props: {
     ...YesNoFormFieldProps,
     dataTest: String,
@@ -63,11 +56,6 @@ export default defineComponent({
       },
       isMounted: false,
     };
-  },
-  computed: {
-    reportsName(): string[] {
-      return getFileName(this.injectReportsNameAndReferences);
-    },
   },
   emits: ["reportsUpdated"],
   mounted() {
