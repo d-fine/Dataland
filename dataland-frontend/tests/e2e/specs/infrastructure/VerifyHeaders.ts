@@ -34,10 +34,10 @@ describe("As a developer, I want to ensure that security relevant headers are se
     },
     () => {
       checkCommonCspHeaders(
-        "default-src 'self' https://www.youtube.com; script-src 'self' 'unsafe-eval' " +
-          "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o='; style-src 'self' 'unsafe-inline'; " +
+        "frame-src 'self' data: https://www.youtube.com https://consentcdn.cookiebot.com; script-src-elem 'self' 'unsafe-eval' " +
+          "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o=' https://consent.cookiebot.com https://consentcdn.cookiebot.com; style-src 'self' 'unsafe-inline'; " +
           "frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; " +
-          "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/",
+          "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/ https://consent.cookiebot.com",
       );
     },
   );
@@ -49,10 +49,10 @@ describe("As a developer, I want to ensure that security relevant headers are se
     },
     () => {
       checkCommonCspHeaders(
-        "default-src 'self' https://www.youtube.com; script-src 'self' 'unsafe-eval' " +
-          "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o='; style-src 'self' 'unsafe-inline'; " +
+        "frame-src 'self' data: https://www.youtube.com https://consentcdn.cookiebot.com; script-src 'self' 'unsafe-eval' " +
+          "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o=' https://consent.cookiebot.com https://consentcdn.cookiebot.com; style-src 'self' 'unsafe-inline'; " +
           "frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; " +
-          "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/",
+          "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/ https://consent.cookiebot.com",
       );
     },
   );
