@@ -53,7 +53,6 @@ watch(currentRefreshTokenInSharedStore, (newRefreshToken) => {
   }
 });
 
-// abc
 keycloakPromise.value = initKeycloak();
 keycloakPromise.value
   .then((keycloak) => {
