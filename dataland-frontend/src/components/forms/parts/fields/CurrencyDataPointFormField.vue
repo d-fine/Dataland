@@ -67,8 +67,8 @@ export default defineComponent({
      */
     handleBlurValue() {
       const extendedDataPointFormField = this.$refs.extendedDataPointFormField;
-      const setQuality = (extendedDataPointFormField!.setQuality as (quality?: QualityOptions) => void);
-      const isQualityNa = (extendedDataPointFormField!.isQualityNa as () => boolean);
+      const setQuality = extendedDataPointFormField.setQuality as (quality?: QualityOptions) => void;
+      const isQualityNa = extendedDataPointFormField.isQualityNa as () => boolean;
       if (this.currentValue === "") {
         setQuality(QualityOptions.Na);
       } else if (this.currentValue !== "" && isQualityNa()) {

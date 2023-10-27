@@ -28,7 +28,6 @@ export default defineComponent({
         No: "No",
         NA: "N/A",
       },
-      isMounted: false,
     };
   },
 });
