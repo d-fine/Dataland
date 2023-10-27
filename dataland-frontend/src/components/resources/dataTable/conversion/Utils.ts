@@ -2,7 +2,6 @@ import { type BaseDocumentReference, type SfdrData } from "@clients/backend";
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type Field } from "@/utils/GenericFrameworkTypes";
@@ -96,12 +95,12 @@ export function getDataPointGetterFactory<T>(
           label: formattedValue,
           dataSource: dataPoint.dataSource,
         },
-      } as MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>;
+      };
     } else {
       return {
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: formattedValue,
-      } as MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>;
+      };
     }
   };
 }
