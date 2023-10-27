@@ -15,7 +15,7 @@ import {
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
 
 export default defineComponent({
-  name: "DocumentLinkDisplayComponent",
+  name: "DataPointDisplayComponent",
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>,

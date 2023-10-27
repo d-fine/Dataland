@@ -7,17 +7,16 @@
             <td class="headers-bg width-auto"><span class="table-left-label">Value</span></td>
             <td>{{ dataPointDisplay.value ?? "" }}</td>
           </tr>
-          <tr>
+          <tr v-if="dataPointDisplay.quality">
             <td class="headers-bg width-auto"><span class="table-left-label">Quality</span></td>
-            <td>{{ dataPointDisplay.quality ?? "" }}</td>
+            <td>{{ dataPointDisplay.quality }}</td>
           </tr>
-          <tr>
+          <tr v-if="dataPointDisplay.dataSource">
             <td class="headers-bg width-auto"><span class="table-left-label">Data source</span></td>
             <td>
               <DocumentLink
-                v-if="dataPointDisplay.dataSource"
                 :label="dataSourceLabel"
-                :download-name="dataPointDisplay.dataSource.fileName"
+                :download-name="dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference"
                 :file-reference="dataPointDisplay.dataSource.fileReference"
                 show-icon
               />
@@ -25,7 +24,7 @@
           </tr>
           <tr v-if="dataPointDisplay.comment">
             <td class="headers-bg width-auto"><span class="table-left-label">Comment</span></td>
-            <td>{{ dataPointDisplay.comment ?? "" }}</td>
+            <td>{{ dataPointDisplay.comment }}</td>
           </tr>
         </tbody>
       </table>
