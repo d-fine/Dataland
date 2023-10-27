@@ -5,39 +5,33 @@ import {
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type CurrencyDataPoint } from "@clients/backend";
+import { type ExtendedDataPointBigDecimal } from "@clients/backend";
 import {
   getFieldValueFromFrameworkDataset,
   getGloballyReferencableDocuments,
   hasDataPointValidReference,
 } from "@/components/resources/dataTable/conversion/Utils";
-import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { formatNumberToReadableFormat } from "@/utils/Formatter";
 
 /**
- * Returns a value factory that returns the value of the currency data point form field
+ * Returns a value factory that returns the value of the number data point form field
  * @param path the path to the field
  * @param field the field
  * @returns the created getter
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function currencyDataPointValueGetterFactory(
+export function numberDataPointValueGetterFactory(
   path: string,
   field: Field,
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as CurrencyDataPoint | undefined;
+    const datapoint = getFieldValueFromFrameworkDataset(path, dataset) as ExtendedDataPointBigDecimal | undefined;
     if (datapoint?.value == null) {
       return MLDTDisplayObjectForEmptyString;
     }
-    const datapointValue = formatAmountWithCurrency({ amount: datapoint.value });
-    let datapointUnitSuffix: string;
-    if (datapoint.currency && datapoint.currency?.length) {
-      datapointUnitSuffix = datapoint?.currency ?? "";
-    } else {
-      datapointUnitSuffix = field.unit ?? "";
-    }
+    const datapointValue = formatNumberToReadableFormat(datapoint.value);
+    const datapointUnitSuffix = field.unit ?? "";
     const formattedValue: string = datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
-
     if (hasDataPointValidReference(datapoint)) {
       const documentName = getGloballyReferencableDocuments(dataset).find(
         (document) => document.fileName == datapoint?.dataSource?.fileName,
