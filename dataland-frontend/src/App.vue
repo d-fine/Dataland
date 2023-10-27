@@ -17,7 +17,6 @@ import {
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/Stores";
-import { onBeforeMount } from "vue";
 
 const sharedStore = useSharedSessionStateStore();
 const keycloakPromise = ref<Promise<Keycloak> | undefined>();
@@ -28,6 +27,7 @@ const dialog = useDialog();
 
 const currentRefreshTokenInSharedStore = computed(() => sharedStore.refreshToken);
 
+/*
 onBeforeMount(() => {
   const script = document.createElement("script");
   script.id = "Cookiebot";
@@ -36,8 +36,8 @@ onBeforeMount(() => {
   script.setAttribute("data-blockingmode", "auto");
   script.type = "text/javascript";
   document.head.appendChild(script);
-});
-//blank
+}); */
+
 watch(currentRefreshTokenInSharedStore, (newRefreshToken) => {
   if (typeof newRefreshToken === "string") {
     //try is to explicitly declare the type for newRefreshToken inside the callback
