@@ -1,7 +1,7 @@
 <template>
   <div class="form-field" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <FormKit v-model="baseDataPointYesNo" type="group" :name="name">
+    <FormKit v-model="extendedDataPointYesNo" type="group" :name="name">
       <div class="mb-3">
         <RadioButtonsFormElement
           name="value"
@@ -80,7 +80,7 @@ import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldPr
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
-import { type BaseDataPointYesNo, QualityOptions } from "@clients/backend";
+import { type ExtendedDataPointYesNo, QualityOptions } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
@@ -100,7 +100,7 @@ export default defineComponent({
 
   data() {
     return {
-      baseDataPointYesNo: {} as BaseDataPointYesNo,
+      extendedDataPointYesNo: {} as ExtendedDataPointYesNo,
       yesNoOptions: {
         Yes: "Yes",
         No: "No",
