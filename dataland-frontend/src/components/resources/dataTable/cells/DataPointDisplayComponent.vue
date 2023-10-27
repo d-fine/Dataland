@@ -22,10 +22,12 @@ export default defineComponent({
       required: true,
     },
   },
+  data() {
+    return {
+      DataPointDataTable,
+    };
+  },
   computed: {
-    DataPointDataTable() {
-      return DataPointDataTable;
-    },
     modalOptions() {
       return {
         props: {

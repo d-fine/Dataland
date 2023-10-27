@@ -19,7 +19,6 @@ export const lksgDataModel = [
             description: "The date until when the information collected is valid",
             unit: "",
             component: "DateFormField",
-            evidenceDesired: false,
             required: true,
             showIf: (): boolean => true,
             validation: "required",
@@ -31,10 +30,8 @@ export const lksgDataModel = [
               "Is your head office, administrative headquarters, registered office, or subsidiary located in Germany?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "groupOfCompanies",
@@ -42,10 +39,8 @@ export const lksgDataModel = [
             description: "Do you belong to a group of companies?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "groupOfCompaniesName",
@@ -53,7 +48,6 @@ export const lksgDataModel = [
             description: "If yes, name of company group",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean => dataModel?.general?.masterData?.groupOfCompanies === "Yes",
           },
@@ -63,7 +57,6 @@ export const lksgDataModel = [
             description: "In which industry is your company primarily active (select all that apply)?",
             unit: "",
             component: "NaceCodeFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -73,7 +66,6 @@ export const lksgDataModel = [
             description: "Total number of employees (including temporary workers with assignment duration >6 months)",
             unit: "",
             component: "NumberFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
             validation: "min:0",
@@ -84,10 +76,8 @@ export const lksgDataModel = [
             description: "Do your company employ seasonal or migrant workers?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "shareOfTemporaryWorkers",
@@ -95,7 +85,6 @@ export const lksgDataModel = [
             description: "What share of the total number of employees in your company is made up by temporary workers?",
             unit: "",
             component: "RadioButtonsFormField",
-            evidenceDesired: false,
             options: [
               {
                 label: "<10%",
@@ -121,9 +110,8 @@ export const lksgDataModel = [
             name: "annualTotalRevenue",
             label: "Annual Total Revenue",
             description: "Total revenue per annum",
-            unit: "",
+            unit: "Currency", // TODO check if this is a currency field
             component: "NumberFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -133,7 +121,6 @@ export const lksgDataModel = [
             description: "The 3-letter alpha code that represents the currency used for the total revenue",
             unit: "",
             component: "SingleSelectFormField",
-            evidenceDesired: false,
             options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
             required: false,
             showIf: (): boolean => true,
@@ -144,9 +131,8 @@ export const lksgDataModel = [
             label: "Fixed and Working Capital",
             description:
               "Combined fixed and working capital (only for own operations) in same currency than total revenue",
-            unit: "",
+            unit: "Currency", // TODO check if this is a currency field
             component: "NumberFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -162,10 +148,8 @@ export const lksgDataModel = [
             description: "Is your company a manufacturing company?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "capacity",
@@ -173,7 +157,6 @@ export const lksgDataModel = [
             description: "Production capacity per year, e.g. quantity with units.",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
@@ -184,11 +167,9 @@ export const lksgDataModel = [
             description: "Is the production done via subcontracting?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "subcontractingCompaniesCountries",
@@ -196,7 +177,6 @@ export const lksgDataModel = [
             description: "In which countries do the subcontracting companies operate?",
             unit: "",
             component: "MultiSelectFormField",
-            evidenceDesired: false,
             options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
@@ -209,7 +189,6 @@ export const lksgDataModel = [
             description: "In which industries do the subcontracting companies operate?",
             unit: "",
             component: "NaceCodeFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.productionViaSubcontracting === "Yes",
@@ -220,11 +199,9 @@ export const lksgDataModel = [
             description: "Do you have production sites in your company?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "listOfProductionSites",
@@ -232,7 +209,6 @@ export const lksgDataModel = [
             description: "Please list the production sites in your company.",
             unit: "",
             component: "ProductionSitesFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean => dataModel?.general?.productionSpecific?.productionSites === "Yes",
           },
@@ -242,7 +218,6 @@ export const lksgDataModel = [
             description: "Does your business focus predominantly on national or international markets?",
             unit: "",
             component: "RadioButtonsFormField",
-            evidenceDesired: false,
             options: [
               {
                 label: "National",
@@ -268,11 +243,9 @@ export const lksgDataModel = [
               "Does your company have specific procurement models such as: short-lived and changing business relationships, or high price pressure or tightly timed or short-term adjusted delivery deadlines and conditions with suppliers",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
-            certificateRequiredIfYes: false,
           },
         ],
       },
@@ -287,7 +260,6 @@ export const lksgDataModel = [
               "Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)",
             unit: "",
             component: "MostImportantProductsFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
@@ -298,7 +270,6 @@ export const lksgDataModel = [
             description: "Name their procurement categories (products, raw materials, services) (own operations)",
             unit: "",
             component: "ProcurementCategoriesFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
@@ -323,10 +294,8 @@ export const lksgDataModel = [
             description: "Does your company have an adequate and effective Risk Management system?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "riskAnalysisInFiscalYear",
@@ -334,11 +303,9 @@ export const lksgDataModel = [
             description: "Did you perform a risk analysis as part of risk management this fiscal year?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.riskManagementOwnOperations?.riskManagementSystem === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "risksIdentified",
@@ -346,11 +313,9 @@ export const lksgDataModel = [
             description: "Were risks identified during this period?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "identifiedRisks",
@@ -358,7 +323,6 @@ export const lksgDataModel = [
             description: "Which risks were specifically identified in the risk analysis?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.riskManagementOwnOperations?.risksIdentified === "Yes",
@@ -369,11 +333,9 @@ export const lksgDataModel = [
             description: "Have measures been defined to counteract the risks?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.riskManagementOwnOperations?.risksIdentified === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "whichCounteractingMeasures",
@@ -381,7 +343,6 @@ export const lksgDataModel = [
             description: "What measures have been applied to counteract the risks?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.riskManagementOwnOperations?.counteractingMeasures === "Yes",
@@ -393,11 +354,9 @@ export const lksgDataModel = [
               "Is the responsibility for Risk Management in your company regulated, for example by appointing a human rights officer?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.riskManagementOwnOperations?.riskManagementSystem === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "environmentalManagementSystem",
@@ -405,34 +364,28 @@ export const lksgDataModel = [
             description: "Has an environmental management system been implemented in your company?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "environmentalManagementSystemInternationalCertification",
             label: "Environmental Management System International Certification",
             description: "Is the environmental management system internationally recognized and certified?",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.riskManagementOwnOperations?.environmentalManagementSystem === "Yes",
-            certificateRequiredIfYes: true,
           },
           {
             name: "environmentalManagementSystemNationalCertification",
             label: "Environmental Management System National Certification",
             description: "Is the environmental management system nationally recognized and certified?",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.riskManagementOwnOperations?.environmentalManagementSystem === "Yes",
-            certificateRequiredIfYes: true,
           },
         ],
       },
@@ -447,10 +400,8 @@ export const lksgDataModel = [
               "Has your company implemented a grievance handling mechanism (e.g. anonymous whistleblowing system) to protect human and environmental rights in your business?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "grievanceHandlingReportingAccessible",
@@ -459,11 +410,9 @@ export const lksgDataModel = [
               "Can all affected stakeholders and rights holders, i.e. both internal (e.g. employees) and external stakeholders (e.g. suppliers and their employees, NGOs) access the grievance reporting/whistleblowing system?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "appropriateGrievanceHandlingInformation",
@@ -472,11 +421,9 @@ export const lksgDataModel = [
               "Is information about the grievance reporting process adapted to the correct context for all target groups/stakeholders?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "appropriateGrievanceHandlingSupport",
@@ -485,11 +432,9 @@ export const lksgDataModel = [
               "Is the necessary support provided in a way that the target groups can actually use the procedure?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "accessToExpertiseForGrievanceHandling",
@@ -498,11 +443,9 @@ export const lksgDataModel = [
               "Do the target groups have access to the expertise, advice and information that they need to participate in the grievance procedure in a fair, informed and respectful manner?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "grievanceComplaints",
@@ -510,11 +453,9 @@ export const lksgDataModel = [
             description: "Have there been any complaints being entered into the system?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "complaintsNumber",
@@ -522,7 +463,6 @@ export const lksgDataModel = [
             description: "How many complaints have been received (for the reported Fiscal Year)?",
             unit: "",
             component: "NumberFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceComplaints === "Yes",
@@ -534,7 +474,6 @@ export const lksgDataModel = [
             description: "What kind of complaints have been received?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceComplaints === "Yes",
@@ -545,11 +484,9 @@ export const lksgDataModel = [
             description: "Have actions been taken to address the complaints?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceComplaints === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "whichActionsForComplaintsUndertaken",
@@ -557,7 +494,6 @@ export const lksgDataModel = [
             description: "What actions have been taken?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken === "Yes",
@@ -569,11 +505,9 @@ export const lksgDataModel = [
               "Does your company have publicly accessible rules that clearly describe the process for dealing with complaints?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "whistleblowerProtection",
@@ -581,11 +515,9 @@ export const lksgDataModel = [
             description: "Does the process effectively protect whistleblowers from disadvantage or punishment?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "dueDiligenceProcessForGrievanceHandling",
@@ -594,11 +526,9 @@ export const lksgDataModel = [
               "Do the findings from the processing of clues flow into the adjustment of your own due diligence processes?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism === "Yes",
-            certificateRequiredIfYes: false,
           },
         ],
       },
@@ -612,11 +542,9 @@ export const lksgDataModel = [
             description:
               "Is your company SA8000 certified (Corporate Social Responsibility)? If yes, please share the certificate with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "smetaSocialAuditConcept",
@@ -624,11 +552,9 @@ export const lksgDataModel = [
             description:
               "Does your company apply a social audit concept as defined by SMETA (Sedex Members Ethical Trade Audit)?  If yes, please share the relevant document with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "betterWorkProgramCertificate",
@@ -636,11 +562,9 @@ export const lksgDataModel = [
             description:
               "Do the production sites where the goods are produced participate in the BetterWork program? If yes, please share the certificate with us. (private label only)",
             unit: "",
-            component: "YesNoNaFormField",
-            evidenceDesired: false,
+            component: "YesNoNaBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "iso45001Certification",
@@ -648,11 +572,9 @@ export const lksgDataModel = [
             description:
               "Is your company ISO 45001 certified  (Management Systems of Occupational Health and Safety)? If yes, please share the certificate with us. ",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "iso14001Certification",
@@ -660,11 +582,9 @@ export const lksgDataModel = [
             description:
               "Is your company ISO 14001 certified (Environmental Management)? If yes, please share the certificate with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "emasCertification",
@@ -672,11 +592,9 @@ export const lksgDataModel = [
             description:
               "Is your company EMAS certified (voluntary environmental management)? If yes, please share the certificate with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "iso37001Certification",
@@ -684,11 +602,9 @@ export const lksgDataModel = [
             description:
               "Is your company ISO 37001 certified (anti-bribery management systems)? If yes, please share the certificate with us. ",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "iso37301Certification",
@@ -696,22 +612,18 @@ export const lksgDataModel = [
             description:
               "Is your company ISO 37301 certified (compliance management system)? If yes, please share the certificate with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "riskManagementSystemCertification",
             label: "Risk Management System Certification",
             description: "Is your risk management system internationally recognized and certified? (e.g.: ISO 31000)",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "amforiBsciAuditReport",
@@ -719,11 +631,9 @@ export const lksgDataModel = [
             description:
               "Does your company have a current amfori BSCI audit report? If yes, please share the certificate with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "responsibleBusinessAssociationCertification",
@@ -731,11 +641,9 @@ export const lksgDataModel = [
             description:
               "Is your company Responsible Business Association (RBA) certified  (social responsibility)? If yes, please share the certificate with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "fairLaborAssociationCertification",
@@ -743,11 +651,9 @@ export const lksgDataModel = [
             description:
               "Is your company Fair Labor Association (FLA) certified (adherence to international and national labor laws)? If yes, please share the certificate with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "additionalAudits",
@@ -756,7 +662,6 @@ export const lksgDataModel = [
               "Please list other (sector-specific) audits (if available) to which your company is certified.",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -766,11 +671,9 @@ export const lksgDataModel = [
             description:
               "Has your company implemented and enforced internal behavioral guidelines that address the issues of human rights protection and respect for the environment  (e.g. within the code of conduct)?  If yes, please share the relevant document with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "codeOfConductTraining",
@@ -779,11 +682,9 @@ export const lksgDataModel = [
               "Are your employees regularly made aware of your internal rules of conduct and trained on them?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct?.value === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "supplierCodeOfConduct",
@@ -791,11 +692,9 @@ export const lksgDataModel = [
             description:
               "Does your company have a supplier code of conduct? If yes, please share the supplier code of conduct with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "policyStatement",
@@ -803,11 +702,9 @@ export const lksgDataModel = [
             description:
               "Does your company have a policy statement on its human rights strategy? If yes, please share the policy with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "humanRightsStrategy",
@@ -816,7 +713,6 @@ export const lksgDataModel = [
               "In which relevant departments/business processes has the anchoring of the human rights strategy been ensured?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.certificationsPoliciesAndResponsibilities?.policyStatement?.value === "Yes",
@@ -827,11 +723,9 @@ export const lksgDataModel = [
             description:
               "Does your company have an environmental impact policy? If yes, please share the policy with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "fairWorkingConditionsPolicy",
@@ -839,11 +733,9 @@ export const lksgDataModel = [
             description:
               "Does your company have a fair working conditions policy? If yes, please share the policy with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
         ],
       },
@@ -858,10 +750,8 @@ export const lksgDataModel = [
               "Has your company established official responsibilities for the topic of fair working conditions, according to the nature and extent of the enterprise’s business activities?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "responsibilitiesForTheEnvironment",
@@ -870,10 +760,8 @@ export const lksgDataModel = [
               "Has your company established official responsibilities for the topic of the environment, according to the nature and extent of the enterprise’s business activities?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "responsibilitiesForOccupationalSafety",
@@ -882,10 +770,8 @@ export const lksgDataModel = [
               "Has your company established official responsibilities for the topic of occupational safety, according to the nature and extent of the enterprise’s business activities?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "legalProceedings",
@@ -894,10 +780,8 @@ export const lksgDataModel = [
               "Has your company been involved in legal disputes in the last 5 years (including currently ongoing disputes) with third parties regarding human rights and environmental violations?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "humanRightsViolationS",
@@ -906,10 +790,8 @@ export const lksgDataModel = [
               "Have there been any human rights or environmental violations on your company’s part in the last 5 years?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "humanRightsViolations",
@@ -917,7 +799,6 @@ export const lksgDataModel = [
             description: "What were the violations?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.humanRightsViolationS === "Yes",
@@ -928,11 +809,9 @@ export const lksgDataModel = [
             description: "Has action been taken to address the violations?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.humanRightsViolationS === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "humanRightsViolationActionMeasures",
@@ -940,7 +819,6 @@ export const lksgDataModel = [
             description: "What measures have been taken?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.humanRightsViolationAction === "Yes",
@@ -951,10 +829,8 @@ export const lksgDataModel = [
             description: "Do you source materials from countries associated with high-risk or conflict?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "highRiskCountriesRawMaterialsLocation",
@@ -962,7 +838,6 @@ export const lksgDataModel = [
             description: "From which conflict/high-risk regions do you source your raw materials?",
             unit: "",
             component: "MultiSelectFormField",
-            evidenceDesired: false,
             options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
@@ -976,10 +851,8 @@ export const lksgDataModel = [
               "Does your company operate in countries where there are high risks for human rights and/or the environment?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "highRiskCountries",
@@ -987,7 +860,6 @@ export const lksgDataModel = [
             description: "Which ones?",
             unit: "",
             component: "MultiSelectFormField",
-            evidenceDesired: false,
             options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
@@ -1001,10 +873,8 @@ export const lksgDataModel = [
               "Does your company procure from countries with high risks for human rights and/or the environment?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "highRiskCountriesProcurementName",
@@ -1012,7 +882,6 @@ export const lksgDataModel = [
             description: "Which ones?",
             unit: "",
             component: "MultiSelectFormField",
-            evidenceDesired: false,
             options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
@@ -1039,11 +908,9 @@ export const lksgDataModel = [
             description:
               "Does your company have a policy to prevent child labor? If yes, please share the policy with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "employeeSUnder18",
@@ -1051,10 +918,8 @@ export const lksgDataModel = [
             description: "Does your company have employees under the age of 18?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "employeeSUnder15",
@@ -1063,10 +928,8 @@ export const lksgDataModel = [
               "With regard to the place of employment and the applicable laws: do you employ school-age children or children under the age of 15 on a full-time basis?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean => dataModel?.social?.childLabor?.employeeSUnder18 === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "employeeSUnder18InApprenticeship",
@@ -1075,10 +938,8 @@ export const lksgDataModel = [
               "Are your employees under the age of 18 exclusively apprentices within the meaning of the locally applicable laws?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean => dataModel?.social?.childLabor?.employeeSUnder18 === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "worstFormsOfChildLaborProhibition",
@@ -1087,10 +948,8 @@ export const lksgDataModel = [
               "Is the prohibition of the worst forms of child labor ensured in your company? This includes: all forms of slavery or practices similar to slavery, the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances, the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs, work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean => dataModel?.social?.childLabor?.employeeSUnder18 === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "worstFormsOfChildLabor",
@@ -1098,10 +957,8 @@ export const lksgDataModel = [
             description: "Have there been any worst forms of child labor in your company in the last 5 years?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean => dataModel?.social?.childLabor?.employeeSUnder18 === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "worstFormsOfChildLaborForms",
@@ -1109,7 +966,6 @@ export const lksgDataModel = [
             description: "Which worst forms of child labor have been identified?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean => dataModel?.social?.childLabor?.worstFormsOfChildLabor === "Yes",
           },
@@ -1120,10 +976,8 @@ export const lksgDataModel = [
               "Does your company take measures to prevent the employment of children under the local minimum age?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "employmentUnderLocalMinimumAgePreventionEmploymentContracts",
@@ -1132,11 +986,9 @@ export const lksgDataModel = [
               "Is a formal recruitment process including the conclusion of employment contracts one of these measures?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "employmentUnderLocalMinimumAgePreventionJobDescription",
@@ -1145,11 +997,9 @@ export const lksgDataModel = [
               "Is a clear job description for employees under the local minimum age in the hiring process and employment contracts one of these measures (group of people between 15 and 18 years)?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "employmentUnderLocalMinimumAgePreventionIdentityDocuments",
@@ -1158,11 +1008,9 @@ export const lksgDataModel = [
               "Is the control of official documents (e.g. identity documents and certificates) one of these measures?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "employmentUnderLocalMinimumAgePreventionTraining",
@@ -1171,11 +1019,9 @@ export const lksgDataModel = [
               "Is raising the awareness of staff involved in the recruitment process through training such a measure?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge",
@@ -1183,11 +1029,9 @@ export const lksgDataModel = [
             description: "Is the regular checking of the legal minimum age one of these measures?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "additionalChildLaborMeasures",
@@ -1196,7 +1040,6 @@ export const lksgDataModel = [
               "Please list any other measures (if available) you take to prevent the employment of children under the locally applicable minimum age?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge === "Yes",
@@ -1214,10 +1057,8 @@ export const lksgDataModel = [
               "Does your company have practices that lead or may lead to forced labor and/or slavery?\n\n The following are included:\n O Creating unacceptable working and living conditions by working in hazardous conditions or within unacceptable accommodations provided by the employer\n O Excessive levels of overtime\n O Use of intimidation, threats, and/or punishment\n O Other types of forced labor (e.g. debt bondage, human trafficking)",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "forcedLaborAndSlaveryPreventionPractices",
@@ -1225,7 +1066,6 @@ export const lksgDataModel = [
             description: "Please specify which of these practices do exist.",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPrevention === "Yes",
@@ -1236,11 +1076,9 @@ export const lksgDataModel = [
             description:
               "Does your company have a policy to prevent forced labor? If yes, please share the policy with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "forcedLaborAndSlaveryPreventionMeasures",
@@ -1248,10 +1086,8 @@ export const lksgDataModel = [
             description: "Does your company take measures to prevent forced labor and slavery?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "forcedLaborAndSlaveryPreventionEmploymentContracts",
@@ -1260,11 +1096,9 @@ export const lksgDataModel = [
               "Is a formal hiring process including employment contracts in the employee's local language, with appropriate wage and termination clauses one of these measures?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "forcedLaborAndSlaveryPreventionIdentityDocuments",
@@ -1272,11 +1106,9 @@ export const lksgDataModel = [
             description: "Is a ban on the retention of identity documents one of these measures?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "forcedLaborAndSlaveryPreventionFreeMovement",
@@ -1285,11 +1117,9 @@ export const lksgDataModel = [
               "Is the free movement of employees through doors and windows that can be opened to leave the building/premises of your company at any time  one of these measures?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets",
@@ -1298,11 +1128,9 @@ export const lksgDataModel = [
               "Is the ensuring of social rooms and toilets that can be visited at any time one of these measures?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "forcedLaborAndSlaveryPreventionTraining",
@@ -1311,11 +1139,9 @@ export const lksgDataModel = [
               "Is raising the awareness of staff around forced labor and slavery involved in the recruitment process through training one of these measures?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "forcedLaborAndSlaveryPreventionMeasuresOther",
@@ -1323,7 +1149,6 @@ export const lksgDataModel = [
             description: "Please list any other measures (if available) you take to prevent forced labor and slavery?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures === "Yes",
@@ -1340,10 +1165,8 @@ export const lksgDataModel = [
             description: "Is your company currently withholding adequate wages (adequate in the sense of local laws)?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "adequateWagesMeasures",
@@ -1351,10 +1174,8 @@ export const lksgDataModel = [
             description: "Are any measures taken in your company to prevent adequate wages being withheld?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "documentedWorkingHoursAndWages",
@@ -1362,11 +1183,9 @@ export const lksgDataModel = [
             description: "Does your company document the working hours and wages of its employees?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.withholdingAdequateWages?.adequateWagesMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "adequateLivingWage",
@@ -1375,11 +1194,9 @@ export const lksgDataModel = [
               "Does your company pay employees adequate living wages? (the appropriate wage is at least the minimum wage set by the applicable law and is otherwise measured according to the law of the place of employment).",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.withholdingAdequateWages?.adequateWagesMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "regularWagesProcessFlow",
@@ -1388,11 +1205,9 @@ export const lksgDataModel = [
               "Has your company implemented the payment of wages through standardized and regular process flows?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.withholdingAdequateWages?.adequateWagesMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "fixedHourlyWages",
@@ -1400,11 +1215,9 @@ export const lksgDataModel = [
             description: "Do fixed hourly wages exist in your company?",
             unit: "",
             component: "YesNoNaFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.withholdingAdequateWages?.adequateWagesMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "fixedPieceworkWages",
@@ -1412,11 +1225,9 @@ export const lksgDataModel = [
             description: "Does your company have fixed piecework wages (pay per unit)?",
             unit: "",
             component: "YesNoNaFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.withholdingAdequateWages?.adequateWagesMeasures === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "adequateWageMeasures",
@@ -1424,7 +1235,6 @@ export const lksgDataModel = [
             description: "Please list other measures (if available) you take to prevent withholding adequate wages?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.withholdingAdequateWages?.adequateWagesMeasures === "Yes",
@@ -1441,10 +1251,8 @@ export const lksgDataModel = [
             description: "Do your employees perform low-skill or repetitive manual labor?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "hazardousMachines",
@@ -1452,10 +1260,8 @@ export const lksgDataModel = [
             description: "Are hazardous machines used in the manufacturing of (preliminary) products?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicy",
@@ -1464,10 +1270,8 @@ export const lksgDataModel = [
               "Has your company implemented and enforced a formal occupational health and safety (OSH) policy that complies with local laws, industry requirements, and international standards?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyPersonalProtectiveEquipment",
@@ -1475,11 +1279,9 @@ export const lksgDataModel = [
             description: "Is the topic of personal protective equipment addressed by this OSH Directive?",
             unit: "",
             component: "YesNoNaFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyMachineSafety",
@@ -1487,11 +1289,9 @@ export const lksgDataModel = [
             description: "Is the topic of machine safety addressed by this OSH Directive?",
             unit: "",
             component: "YesNoNaFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyDisasterBehavioralResponse",
@@ -1499,11 +1299,9 @@ export const lksgDataModel = [
             description: "Is the topic of disaster response addressed by this OSH Directive?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyAccidentsBehavioralResponse",
@@ -1512,11 +1310,9 @@ export const lksgDataModel = [
               "Is the topic of behavioral response in the event of an accident addressed by this OSH Directive?\n\n",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyWorkplaceErgonomics",
@@ -1524,11 +1320,9 @@ export const lksgDataModel = [
             description: "Is the topic of workplace ergonomics addressed by this OSH Directive?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyAccessToWork",
@@ -1536,11 +1330,9 @@ export const lksgDataModel = [
             description: "Is access to the workplace secluded (is the workplace difficult to access)?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyHandlingChemicalsAndOtherHazardousSubstances",
@@ -1549,11 +1341,9 @@ export const lksgDataModel = [
               "Is the topic of handling chemical, physical, or biological substances addressed by this OSH Directive?",
             unit: "",
             component: "YesNoNaFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyFireProtection",
@@ -1561,11 +1351,9 @@ export const lksgDataModel = [
             description: "Is the topic of fire protection addressed by this OSH Directive?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyWorkingHours",
@@ -1574,11 +1362,9 @@ export const lksgDataModel = [
               "Is the topic of the regulation of working hours, overtime, and rest breaks addressed by this OSH Directive?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyTrainingAddressed",
@@ -1587,11 +1373,9 @@ export const lksgDataModel = [
               "Is the topic of the training and instruction of employees with regard to occupational health and safety addressed by this OSH Directive?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshPolicyTraining",
@@ -1599,11 +1383,9 @@ export const lksgDataModel = [
             description: "Are your employees regularly made aware of the OSH Directive and trained on them?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshPolicy === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshManagementSystem",
@@ -1611,34 +1393,28 @@ export const lksgDataModel = [
             description: "Is an occupational health and safety management system implemented in your company?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshManagementSystemInternationalCertification",
             label: "OSH Management System - International Certification",
             description: "Is the OSH management system internationally recognized and certified?",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshManagementSystem === "Yes",
-            certificateRequiredIfYes: true,
           },
           {
             name: "oshManagementSystemNationalCertification",
             label: "OSH Management System - National Certification",
             description: "Is the OSH management system nationally recognized and certified?",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForOccupationalHealthSafety?.oshManagementSystem === "Yes",
-            certificateRequiredIfYes: true,
           },
           {
             name: "under10WorkplaceAccidents",
@@ -1647,10 +1423,8 @@ export const lksgDataModel = [
               "Have there been less than 10 incidents in which employees suffered work-related injuries with serious consequences in the past fiscal year?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "oshTraining",
@@ -1658,21 +1432,17 @@ export const lksgDataModel = [
             description: "Has your company introduced mandatory training for employees to improve occupational safety?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "healthAndSafetyPolicy",
             label: "Health and Safety Policy",
             description: "Does your company have a Health and Safety Policy? If yes, please share the policy with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
         ],
       },
@@ -1686,10 +1456,8 @@ export const lksgDataModel = [
             description: "Does your company ensure that employees are free to form or join trade unions?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "employeeRepresentationInPercent",
@@ -1697,7 +1465,6 @@ export const lksgDataModel = [
             description: "What is your percentage of employees who are represented by trade unions?",
             unit: "%",
             component: "PercentageFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForFreedomOfAssociation?.freedomOfAssociation === "Yes",
@@ -1710,11 +1477,9 @@ export const lksgDataModel = [
               "Does your company ensure that no consequences are taken against employees in the event of the formation, joining, and membership of a trade union?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForFreedomOfAssociation?.freedomOfAssociation === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "freedomOfOperationForTradeUnion",
@@ -1723,11 +1488,9 @@ export const lksgDataModel = [
               "Does your company ensure that trade unions are free to operate in accordance with the law in the place of employment?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.disregardForFreedomOfAssociation?.freedomOfAssociation === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "freedomOfAssociationTraining",
@@ -1736,10 +1499,8 @@ export const lksgDataModel = [
               "Do employees receive information about their rights as a part of training, notices, or company brochures?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "worksCouncil",
@@ -1748,10 +1509,8 @@ export const lksgDataModel = [
               "Does your company have a works council or employee representative committee (if these are legal according to local law)?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
         ],
       },
@@ -1766,10 +1525,8 @@ export const lksgDataModel = [
               "Does your company treat employees unequally because of national/ethnic origin, social origin, health status, disability, sexual orientation, age, gender, political opinion, religion or belief?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "diversityAndInclusionRole",
@@ -1778,10 +1535,8 @@ export const lksgDataModel = [
               "Is a member of your company's management responsible for promoting diversity in the workforce and among business partners?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "preventionOfMistreatments",
@@ -1790,10 +1545,8 @@ export const lksgDataModel = [
               "Does your company's management promote a work environment free from physical, sexual, mental abuse, threats or other forms of mistreatment? (e.g. diversity program)",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "equalOpportunitiesOfficer",
@@ -1801,10 +1554,8 @@ export const lksgDataModel = [
             description: "Is an equal opportunities officer (or similar function) present in your company?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "fairAndEthicalRecruitmentPolicy",
@@ -1812,11 +1563,9 @@ export const lksgDataModel = [
             description:
               "Does your company have a Fair and Ethical Recruitment Policy? If yes, please share the policy with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
           {
             name: "equalOpportunitiesAndNonDiscriminationPolicy",
@@ -1824,11 +1573,9 @@ export const lksgDataModel = [
             description:
               "Does your company have an Equal Opportunities and Non-discrimination Policy? If yes, please share the policy with us.",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: true,
           },
         ],
       },
@@ -1842,10 +1589,8 @@ export const lksgDataModel = [
             description: "Is there a risk of your company causing a harmful soil impact?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "soilDegradation",
@@ -1854,12 +1599,10 @@ export const lksgDataModel = [
               "Does your company have measures in place to prevent the degradation of the local soil structure caused by the use of heavy machinery?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.harmfulSoilImpact === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "soilErosion",
@@ -1868,12 +1611,10 @@ export const lksgDataModel = [
               "Does your company have measures in place to prevent soil erosion caused by deforestation or overgrazing?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.harmfulSoilImpact === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "soilBorneDiseases",
@@ -1882,12 +1623,10 @@ export const lksgDataModel = [
               "Does your company have measures in place to prevent the development of soil-borne diseases and pests to maintain soil fertility?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.harmfulSoilImpact === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "soilContamination",
@@ -1896,12 +1635,10 @@ export const lksgDataModel = [
               "Does your company have measures in place to prevent soil contamination caused by antibiotics and toxins?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.harmfulSoilImpact === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "soilSalinization",
@@ -1909,12 +1646,10 @@ export const lksgDataModel = [
             description: "Does your company have measures in place to prevent soil salinization?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.harmfulSoilImpact === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "harmfulWaterPollution",
@@ -1922,10 +1657,8 @@ export const lksgDataModel = [
             description: "Is there a risk of your company causing harmful water pollution?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "fertilizersOrPollutants",
@@ -1933,12 +1666,10 @@ export const lksgDataModel = [
             description: "Does your company use fertilizers or pollutants such as chemicals or heavy metals?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.harmfulWaterPollution === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "wasteWaterFiltration",
@@ -1946,12 +1677,10 @@ export const lksgDataModel = [
             description: "Does your company have waste water filtration systems?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.harmfulWaterPollution === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "harmfulAirPollution",
@@ -1959,10 +1688,8 @@ export const lksgDataModel = [
             description: "Is there a risk of harmful air pollution caused by your company?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "airFiltration",
@@ -1970,12 +1697,10 @@ export const lksgDataModel = [
             description: "Does your company have air filtration systems?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.harmfulAirPollution === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "harmfulNoiseEmission",
@@ -1983,10 +1708,8 @@ export const lksgDataModel = [
             description: "Is there a risk of harmful noise emission caused by your company?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "reduceNoiseEmissions",
@@ -1994,12 +1717,10 @@ export const lksgDataModel = [
             description: "Has your company implemented structural measures to reduce noise emissions?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.harmfulNoiseEmission === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "excessiveWaterConsumption",
@@ -2007,10 +1728,8 @@ export const lksgDataModel = [
             description: "Is there a risk of excessive water consumption in your company?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "waterSavingMeasures",
@@ -2018,12 +1737,10 @@ export const lksgDataModel = [
             description: "Do you have water-saving measures in your companies?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.excessiveWaterConsumption === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "waterSavingMeasuresName",
@@ -2031,7 +1748,6 @@ export const lksgDataModel = [
             description: "If yes, which ones?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
@@ -2043,12 +1759,10 @@ export const lksgDataModel = [
             description: "Are water pipes regularly checked and maintained?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.excessiveWaterConsumption === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "waterSources",
@@ -2057,12 +1771,10 @@ export const lksgDataModel = [
               "Does your company use water sources that are important for the local population or agriculture?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.excessiveWaterConsumption === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "contaminationMeasures",
@@ -2071,7 +1783,6 @@ export const lksgDataModel = [
               "Please list any other measures (if available) you are taking to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that:\n O Significantly affects the natural basis for food production\n O Denies a person access to safe drinking water\n O Impedes or destroys a person's access to sanitary facilities\n O Harms the health of any person",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
           },
@@ -2085,13 +1796,11 @@ export const lksgDataModel = [
             name: "unlawfulEvictionAndTakingOfLand",
             label: "Unlawful Eviction and Taking of Land",
             description:
-              "Is your company, as a result of the acquisition, development, or other use of land, forests, or bodies of water, which secures a person's livelihood, at risk of: \n O An unlawful eviction\n O Carrying out an unlawful taking of land, forests, or water.",
+              "Is your company, as a result of the acquisition, development, or other use of land, forests, or bodies of water, which secures a person's livelihood, at risk of:\n O An unlawful eviction\n O Carrying out an unlawful taking of land, forests, or water.",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "unlawfulEvictionAndTakingOfLandRisk",
@@ -2099,7 +1808,6 @@ export const lksgDataModel = [
             description: "If so, what exactly is the risk?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLand ===
@@ -2112,10 +1820,8 @@ export const lksgDataModel = [
               "Has your company developed and implemented strategies that avoid, reduce, mitigate, or remedy direct and indirect negative impacts on the land, and natural resources of indigenous peoples and local communities?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "unlawfulEvictionAndTakingOfLandStrategiesName",
@@ -2123,7 +1829,6 @@ export const lksgDataModel = [
             description: "If yes, which ones?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.unlawfulEvictionDeprivationOfLandForestAndWater
@@ -2136,10 +1841,8 @@ export const lksgDataModel = [
               "Have you implemented the voluntary guidelines on the responsible governance of tenure in your company?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
         ],
       },
@@ -2153,10 +1856,8 @@ export const lksgDataModel = [
             description: "Does your company use private or public security forces to protect company projects?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights",
@@ -2165,12 +1866,10 @@ export const lksgDataModel = [
               "Does your company have measures in place to prevent your security forces from:\n O Violating the prohibition of torture or cruel, inhuman, or degrading treatment\n O Damaging life or limbs\n O Impairing the right to exercise the freedom of association?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                 ?.useOfPrivatePublicSecurityForces === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "instructionOfSecurityForces",
@@ -2178,12 +1877,10 @@ export const lksgDataModel = [
             description: "Is the adequate instruction and training of your security forces a current measure?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                 ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "humanRightsTraining",
@@ -2191,12 +1888,10 @@ export const lksgDataModel = [
             description: "Is the training of your security forces on human rights a current measure?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                 ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "stateSecurityForces",
@@ -2205,12 +1900,10 @@ export const lksgDataModel = [
               "Before the state security forces were commissioned, was it reviewed whether serious human rights violations had already been documented by these units?",
             unit: "",
             component: "YesNoNaFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                 ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "privateSecurityForces",
@@ -2219,12 +1912,10 @@ export const lksgDataModel = [
               "Have the contractual relationships with your private security guards been designed in such a way that complies with the applicable legal framework?",
             unit: "",
             component: "YesNoNaFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                 ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "useOfPrivatePublicSecurityForcesMeasures",
@@ -2233,7 +1924,6 @@ export const lksgDataModel = [
               "Please list any other measures you are taking to prevent the use of private or public security forces that violate human rights?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
@@ -2259,10 +1949,8 @@ export const lksgDataModel = [
             description: "Does your company deal with mercury or mercury waste as part of its business model?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "mercuryAndMercuryWasteHandlingPolicy",
@@ -2270,13 +1958,11 @@ export const lksgDataModel = [
             description:
               "Does your company have a policy for safely handling mercury or mercury waste? If yes, please share the policy with us.\n\n",
             unit: "",
-            component: "YesNoFormField",
-            evidenceDesired: false,
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling ===
               "Yes",
-            certificateRequiredIfYes: true,
           },
           {
             name: "mercuryAddedProductsHandling",
@@ -2285,10 +1971,8 @@ export const lksgDataModel = [
               "Are you involved in the manufacturing, use, treatment, import, or export of products containing mercury?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "mercuryAddedProductsHandlingRiskOfExposure",
@@ -2297,12 +1981,10 @@ export const lksgDataModel = [
               "Is there a risk of manufacturing, importing or exporting products containing mercury that are not subject to the Annex A Part 1 exemption of the Minamata Convention (BGBI. 2017 II p.610, 611)?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandling ===
               "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "mercuryAddedProductsHandlingRiskOfDisposal",
@@ -2311,12 +1993,10 @@ export const lksgDataModel = [
               "If there are products that are contaminated with mercury, is there a risk within your company that mercury waste will be disposed of not in accordance with the provisions of Article 11 of the Minamata Agreement (BGBI. 2017 II p. 610, 611)?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandling ===
               "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "mercuryAndMercuryCompoundsProductionAndUse",
@@ -2324,12 +2004,10 @@ export const lksgDataModel = [
             description: "Are there manufacturing processes in your company that use mercury or mercury compounds?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandling ===
               "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure",
@@ -2338,12 +2016,10 @@ export const lksgDataModel = [
               "Is there a risk in your company that mercury or mercury compounds used in the manufacturing process have already exceeded the specified phase-out date and are therefore prohibited according to Article 5(2), Annex B of the Minamata Agreement (BGBI. 2017 II p. 616, 617)?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandling ===
               "Yes",
-            certificateRequiredIfYes: false,
           },
         ],
       },
@@ -2358,10 +2034,8 @@ export const lksgDataModel = [
               "Do you use and/or produce persistent organic pollutants (POPs)? I.e. chemical compounds that break down or transform very slowly in the environment.",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "persistentOrganicPollutantsUsed",
@@ -2369,7 +2043,6 @@ export const lksgDataModel = [
             description: "If yes, which organic pollutants are used?",
             unit: "",
             component: "InputTextFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
@@ -2382,12 +2055,10 @@ export const lksgDataModel = [
               "IIs there a risk in your company that these organic pollutants fall under Article 3(1)(a), Annex A of the Stockholm Convention of May 23rd 2001 on persistent organic pollutants (BGBl. 2002 II p. 803-804) and therefore banned?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                 ?.persistentOrganicPollutantsProductionAndUse === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "persistentOrganicPollutantsProductionAndUseRiskOfDisposal",
@@ -2396,12 +2067,10 @@ export const lksgDataModel = [
               "Regarding the waste of these pollutants, is there a risk that they are subject to the rules and provisions of Article 6(1)(d)(i) and (ii) of the POP Convention (BGBI. 2002 II p. 803, 804) and will:\nO Not be handled, collected, stored, or transported in an environmentally sound manner\nO Not be disposed of in an environmentally friendly manner. I.e. disposed of in such a way that the persistent organic pollutants contained therein are destroyed or irreversibly altered?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                 ?.persistentOrganicPollutantsProductionAndUse === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "legalRestrictedWasteProcesses",
@@ -2409,12 +2078,10 @@ export const lksgDataModel = [
             description: "Does your company have measures in place to ensure the lawful handling of (hazardous) waste?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                 ?.persistentOrganicPollutantsProductionAndUse === "Yes",
-            certificateRequiredIfYes: false,
           },
         ],
       },
@@ -2426,13 +2093,11 @@ export const lksgDataModel = [
             name: "persistentOrganicPollutantsProductionAndUseTransboundaryMovements",
             label: "Persistent Organic Pollutants Production And Use - Transboundary Movements",
             description:
-              "Is there a risk in your company that\n O Hazardous waste within the meaning of the Basel Convention  (Article 1(1), BGBI. 1994 II p. 2703, 2704) or\n O Other waste that requires special consideration (household waste or its byproducts) is transported across borders?",
+              "Is there a risk in your company of:\n O Hazardous waste within the meaning of the Basel Convention  (Article 1(1), BGBI. 1994 II p. 2703, 2704) or\n O Other waste that requires special consideration (household waste or its byproducts) is transported across borders?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "persistentOrganicPollutantsProductionAndUseRiskForImportingState",
@@ -2441,12 +2106,10 @@ export const lksgDataModel = [
               'Is this waste transported to an importing State that is subject to the Basel Convention and:\nO Has not given its written consent for the specific import (if that importing State has not prohibited the importation of that hazardous waste) (Article 4(1)(c))\nO Is not a contracting party (Article 4(5))\nO Does not treat waste in an environmentally friendly manner because it does not have the appropriate capacity for environmentally friendly disposal, and cannot guarantee this elsewhere either (Article 4(8))\nO Transported by a party that has banned the import of such hazardous wastes (Article 4(1)(b) Basel Convention)?\n\n(The term "importing state" includes: a contracting party to which a transboundary shipment of hazardous waste is planned for the disposal or purpose of unloading, prior to disposal in an area not under the sovereignty of a state (Article 2(11)).',
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.exportImportOfHazardousWasteBaselConvention
                 ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein",
@@ -2454,12 +2117,10 @@ export const lksgDataModel = [
             description: "Is your company based in a country that is within the OECD, EU, or Liechtenstein?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.exportImportOfHazardousWasteBaselConvention
                 ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein",
@@ -2468,12 +2129,10 @@ export const lksgDataModel = [
               "Is there a risk in your company that hazardous waste is transported to a country that is outside the OECD, EU / Liechtenstein?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.exportImportOfHazardousWasteBaselConvention
                 ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "hazardousWasteDisposal",
@@ -2482,10 +2141,8 @@ export const lksgDataModel = [
               "Do you dispose of hazardous waste in accordance with the Basel Convention (Article 1(1), BGBI. 1994 II p. 2703, 2704)?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (): boolean => true,
-            certificateRequiredIfYes: false,
           },
           {
             name: "hazardousWasteDisposalRiskOfImport",
@@ -2494,11 +2151,9 @@ export const lksgDataModel = [
               "Are you at risk of having these hazardous wastes imported from a country that is not a member of the Basel Convention?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal === "Yes",
-            certificateRequiredIfYes: false,
           },
           {
             name: "hazardousWasteDisposalOtherWasteImport",
@@ -2507,11 +2162,9 @@ export const lksgDataModel = [
               "Do you import other wastes that require special consideration (household waste or its byproducts)?",
             unit: "",
             component: "YesNoFormField",
-            evidenceDesired: false,
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal === "Yes",
-            certificateRequiredIfYes: false,
           },
         ],
       },

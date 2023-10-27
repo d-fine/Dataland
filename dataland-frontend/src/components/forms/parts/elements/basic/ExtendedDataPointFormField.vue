@@ -118,9 +118,17 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Sets the value of the quality field
+     * @param qualityOption the new value for the quality field
+     */
     setQuality(qualityOption: QualityOptions | undefined) {
       this.qualityValue = qualityOption ?? "";
     },
+    /**
+     * Returns true iff the current value of the quality field is NA
+     * @returns true iff the current value of the quality field is NA
+     */
     isQualityNa(): boolean {
       return this.qualityValue === QualityOptions.Na;
     },

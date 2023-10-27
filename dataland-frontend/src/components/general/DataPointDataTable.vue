@@ -5,16 +5,17 @@
         <tbody class="p-datatable-body">
           <tr>
             <td class="headers-bg width-auto"><span class="table-left-label">Value</span></td>
-            <td>{{ dataPointDisplay.value }}</td>
+            <td>{{ dataPointDisplay.value ?? "" }}</td>
           </tr>
           <tr>
             <td class="headers-bg width-auto"><span class="table-left-label">Quality</span></td>
-            <td>{{ dataPointDisplay.quality }}</td>
+            <td>{{ dataPointDisplay.quality ?? "" }}</td>
           </tr>
           <tr>
             <td class="headers-bg width-auto"><span class="table-left-label">Data source</span></td>
             <td>
               <DocumentLink
+                v-if="dataPointDisplay.dataSource"
                 :label="dataSourceLabel"
                 :download-name="dataPointDisplay.dataSource.fileName"
                 :file-reference="dataPointDisplay.dataSource.fileReference"
@@ -24,7 +25,7 @@
           </tr>
           <tr v-if="dataPointDisplay.comment">
             <td class="headers-bg width-auto"><span class="table-left-label">Comment</span></td>
-            <td>{{ dataPointDisplay.comment }}</td>
+            <td>{{ dataPointDisplay.comment ?? "" }}</td>
           </tr>
         </tbody>
       </table>

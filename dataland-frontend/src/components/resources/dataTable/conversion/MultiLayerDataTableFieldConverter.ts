@@ -3,8 +3,7 @@ import { type MLDTCellConfig } from "@/components/resources/dataTable/MultiLayer
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { yesNoBaseDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoBaseDataPointValueGetterFactory";
-import { yesNoExtendedDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoExtendedDataPointValueGetterFactory";
+import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
 import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
@@ -38,14 +37,14 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   DriveMixFormField: p2pDriveMixValueGetterFactory,
   HighImpactClimateSectorsFormField: highImpactClimateGetterFactory,
   YesNoFormField: yesNoValueGetterFactory,
-  YesNoBaseDataPointFormField: yesNoBaseDataPointValueGetterFactory,
-  YesNoExtendedDataPointFormField: yesNoExtendedDataPointValueGetterFactory,
+  YesNoBaseDataPointFormField: yesNoDataPointValueGetterFactory,
+  YesNoExtendedDataPointFormField: yesNoDataPointValueGetterFactory,
   YesNoNaFormField: yesNoValueGetterFactory,
-  YesNoNaBaseDataPointFormField: yesNoBaseDataPointValueGetterFactory,
+  YesNoNaBaseDataPointFormField: yesNoDataPointValueGetterFactory,
   DataPointFormField: dataPointValueGetterFactory, // TODO remove
-  BigDecimalExtendedDataPointFormField: dataPointValueGetterFactory,
-  IntegerExtendedDataPointFormField: dataPointValueGetterFactory,
-  CurrencyDataPointFormField: dataPointValueGetterFactory,
+  IntegerExtendedDataPointFormField: dataPointValueGetterFactory, // TODO should be the same as for big decimals
+  BigDecimalExtendedDataPointFormField: dataPointValueGetterFactory, // TODO should be the same as for integers
+  CurrencyDataPointFormField: dataPointValueGetterFactory, // TODO own factory
 };
 
 /**
