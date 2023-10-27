@@ -122,6 +122,7 @@ export default defineComponent({
      * Sets the value of the quality field
      * @param qualityOption the new value for the quality field
      */
+    // eslint-disable-next-line vue/no-unused-properties
     setQuality(qualityOption: QualityOptions | undefined) {
       this.qualityValue = qualityOption ?? "";
     },
@@ -129,6 +130,7 @@ export default defineComponent({
      * Returns true iff the current value of the quality field is NA
      * @returns true iff the current value of the quality field is NA
      */
+    // eslint-disable-next-line vue/no-unused-properties
     isQualityNa(): boolean {
       return this.qualityValue === QualityOptions.Na;
     },
