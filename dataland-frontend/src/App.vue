@@ -18,7 +18,6 @@ import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/Stores";
 import { onBeforeMount } from "vue";
-import { COOKIEBOT_ID } from "@/DatalandSettings";
 
 const sharedStore = useSharedSessionStateStore();
 const keycloakPromise = ref<Promise<Keycloak> | undefined>();
@@ -33,7 +32,7 @@ onBeforeMount(() => {
   const script = document.createElement("script");
   script.id = "Cookiebot";
   script.src = "https://consent.cookiebot.com/uc.js";
-  script.setAttribute("data-cbid", COOKIEBOT_ID);
+  script.setAttribute("data-cbid", "cba5002e-6f0e-4848-aadc-ccc8d5c96c86");
   script.setAttribute("data-blockingmode", "auto");
   script.type = "text/javascript";
   document.head.appendChild(script);
