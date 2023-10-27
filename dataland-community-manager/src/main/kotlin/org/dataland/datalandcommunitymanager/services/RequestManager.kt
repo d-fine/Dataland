@@ -6,6 +6,7 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
@@ -15,6 +16,7 @@ import java.util.*
  */
 @Service("RequestManager")
 class RequestManager(
+    @Autowired private val companyGetter: CompanyGetter,
     // @Autowired private val communityRepository: CommunityRepository,
 ) {
     var inMemoryDataRequestStore: MutableMap<String, DataRequestEntity> = mutableMapOf()
@@ -40,7 +42,7 @@ class RequestManager(
                 acceptedCompanyIdentifiers.add(identifierValue)
                 for (framework in bulkDataRequest.listOfFrameworkNames) {
                     if (!isDataRequestAlreadyExisting(identifierValue, framework, currentUserId)) {
-                        // TODO try to find a possibly already existing companyId on Dataland that matches the provided company identifier and add it
+                        // val companyId = companyGetter.getCompanyIdByIdentifier(identifierValue) TODO commented out because backend cannot do this currently
                         listOfDataRequestEntitiesToStore.add(
                             buildDataRequestEntity(currentUserId, framework, identifierType, identifierValue, null),
                         )
