@@ -165,6 +165,13 @@ import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
+import BigDecimalExtendedDataPointFormField
+  from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
+import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
+import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
+import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
+import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 export default defineComponent({
   setup() {
     return {
@@ -183,7 +190,6 @@ export default defineComponent({
     PrimeButton,
     Calendar,
     InputSwitch,
-    YesNoFormField,
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
@@ -194,13 +200,20 @@ export default defineComponent({
     NaceCodeFormField,
     AddressFormField,
     RadioButtonsFormField,
-    YesNoNaFormField,
     PercentageFormField,
     UploadReports,
     FinancialShareFormField,
     AlignedActivitiesFormField,
     AssuranceFormField,
     NonAlignedActivitiesFormField,
+    IntegerExtendedDataPointFormField,
+    BigDecimalExtendedDataPointFormField,
+    CurrencyDataPointFormField,
+    YesNoFormField,
+    YesNoNaFormField,
+    YesNoBaseDataPointFormField,
+    YesNoNaBaseDataPointFormField,
+    YesNoExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,

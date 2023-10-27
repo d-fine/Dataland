@@ -42,7 +42,6 @@ export function yesNoDataPointValueGetterFactory(
       | ExtendedDataPointYesNo
       | undefined;
     if (!elementValue) {
-      // TODO what to do if there is no value provided? still show meta info? ASK IN DAILY
       return MLDTDisplayObjectForEmptyString;
     }
     const lowerFieldLabel = field.label.toLowerCase();

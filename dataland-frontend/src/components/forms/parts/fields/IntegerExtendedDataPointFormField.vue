@@ -55,6 +55,11 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Checks if a node has an integer velue
+     * @param node Node whose value to check for being an integer
+     * @returns true iff the provided node value is an integer
+     */
     integer(node: FormKitNode): boolean {
       const fieldValue = node.value as string;
       return !isNaN(parseInt(fieldValue)) && parseInt(fieldValue) == parseFloat(fieldValue);
@@ -64,10 +69,12 @@ export default defineComponent({
      */
     handleBlurValue() {
       const extendedDataPointFormField = this.$refs.extendedDataPointFormField;
+      const setQuality = (extendedDataPointFormField.setQuality as (quality?: QualityOptions) => void);
+      const isQualityNa = (extendedDataPointFormField.isQualityNa as () => boolean);
       if (this.currentValue === "") {
-        extendedDataPointFormField.setQuality(QualityOptions.Na);
-      } else if (this.currentValue !== "" && extendedDataPointFormField.isQualityNa()) {
-        extendedDataPointFormField.setQuality(undefined);
+        setQuality(QualityOptions.Na);
+      } else if (this.currentValue !== "" && isQualityNa()) {
+        setQuality(undefined);
       }
     },
   },
