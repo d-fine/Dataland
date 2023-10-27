@@ -38,7 +38,7 @@ onBeforeMount(() => {
   script.type = "text/javascript";
   document.head.appendChild(script);
 });
-
+//blank
 watch(currentRefreshTokenInSharedStore, (newRefreshToken) => {
   if (typeof newRefreshToken === "string") {
     //try is to explicitly declare the type for newRefreshToken inside the callback
