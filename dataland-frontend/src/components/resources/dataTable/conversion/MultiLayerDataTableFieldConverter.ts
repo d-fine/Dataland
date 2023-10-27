@@ -4,6 +4,7 @@ import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dat
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
+import { currencyDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
 import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
@@ -44,7 +45,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   DataPointFormField: dataPointValueGetterFactory, // TODO remove
   IntegerExtendedDataPointFormField: dataPointValueGetterFactory, // TODO should be the same as for big decimals
   BigDecimalExtendedDataPointFormField: dataPointValueGetterFactory, // TODO should be the same as for integers
-  CurrencyDataPointFormField: dataPointValueGetterFactory, // TODO own factory
+  CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
 };
 
 /**
