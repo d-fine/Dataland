@@ -7,7 +7,6 @@ import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTab
 import { currencyDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import { numberDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberDataPointValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
-import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { percentageValueGetterFactory } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
@@ -43,7 +42,6 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   YesNoExtendedDataPointFormField: yesNoDataPointValueGetterFactory,
   YesNoNaFormField: yesNoValueGetterFactory,
   YesNoNaBaseDataPointFormField: yesNoDataPointValueGetterFactory,
-  DataPointFormField: dataPointValueGetterFactory, // TODO remove
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
   CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
