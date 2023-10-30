@@ -1,7 +1,7 @@
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import DataPointDisplayComponent from "@/components/resources/dataTable/cells/DataPointDisplayComponent.vue";
 
-it("tests if link into position in text file works", () => {
+it("tests if modal with link into position in text file works", () => {
   cy.mountWithDialog(
     DataPointDisplayComponent,
     {
@@ -27,7 +27,34 @@ it("tests if link into position in text file works", () => {
   //test if required fields are present and filled with content
   cy.get(":nth-child(1)").should("contain.text", "Value");
   cy.get(".p-datatable-body > :nth-child(1)").should("not.be.empty");
-  cy.get(":nth-child(3)").should("contain.text", "Data source"); //todo change to child 2 or 3, depending on presence
+  cy.get(":nth-child(2)").should("contain.text", "Data source");
   cy.get(".p-dialog-content").should("contain", "a");
-  //test if optional fields are displayed only when content is present
+  //test if optional/empty field is not displayed
+  cy.get(".p-datatable-body > tr").should("have.length", 2);
+
+
+  cy.mountWithDialog(
+      DataPointDisplayComponent,
+      {
+        keycloak: minimalKeycloakMock({}),
+      },
+      {
+        content: {
+          displayValue: {
+            fieldLabel: "testingFieldLabel",
+            value: "testingValue",
+            dataSource: {
+              page: 5,
+              fileName: "testFileName",
+              fileReference: "fileReference",
+            },
+            quality: "GoodQuality"
+          },
+        },
+      },
+  ).then(() => {});
+  //test if optional field is displayed when content is present
+  cy.get("a").click();
+  cy.get(".p-datatable-body > tr").should("have.length", 3);
 });
+
