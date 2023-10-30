@@ -1,5 +1,4 @@
 <template>
-  <span>{{ content.displayValue.value }}</span>
   <a @click="$dialog.open(DataPointDataTable, modalOptions)" class="link"
     >{{ content.displayValue.value ?? "No data provided" }}
     <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
@@ -46,7 +45,6 @@ export default defineComponent({
         value: content.value,
         quality: content.quality,
         dataSource: content.dataSource,
-        // dataSource: content.page ? `${content.fileName}, page ${content.page}` : content.fileName,
         comment: content.comment,
       };
     },

@@ -71,7 +71,7 @@ export function getDataPointGetterFactory<T>(
     if (!dataPoint) {
       return MLDTDisplayObjectForEmptyString;
     }
-    const formattedValue: string = formatter(dataPoint) ?? "No data provided";
+    const formattedValue: string = formatter(dataPoint) || "No data provided";
     const dataPointAsExtendedDataPoint = dataPoint as GenericDataPoint<T>;
     if (
       dataPointAsExtendedDataPoint.quality ||
