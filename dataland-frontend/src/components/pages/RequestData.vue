@@ -13,26 +13,15 @@
             </h4>
           </div>
 
-          <div id="framework-section" class="mb-6">
-            <h4>Please select the framework(s) for which you want to request data:</h4>
-            <FrameworkDataSearchDropdownFilter
-              v-model="selectedFrameworksInt"
-              ref="frameworkFilter"
-              :available-items="availableFrameworks"
-              filter-name="Framework"
-              filter-id="framework-filter"
-              filter-placeholder="Search frameworks"
-              class="ml-3"
-            />
-          </div>
-
           <div id="framework-section-two" class="mb-6">
-            <h4>Please select the framework(s) for which you want to request data two:</h4>
-            <MultiSelect
-              v-model="selectedFrameworksInt"
-              placeholder="Select Frameworks"
-              :options="availableFrameworks"
-              class="ml-3"
+            <h4>Please select the framework(s) for which you want to request data:</h4>
+            <NaceCodeFormField
+              label="Frameworks"
+              description="Select the frameworks you would like data for."
+              name="procuredProductTypesAndServicesNaceCodes"
+              v-model:selectedNaceCodesBind="test"
+              :shouldDisableCheckboxes="true"
+              :valueTree="frameworks"
             />
           </div>
 
@@ -75,10 +64,13 @@ import TheFooter from "@/components/generics/TheFooter.vue";
 import { type FrameworkSelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import MultiSelect from "primevue/multiselect";
+import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
+import { type TreeNode } from "primevue/tree";
 
 export default defineComponent({
   name: "RequestData",
   components: {
+    NaceCodeFormField,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
@@ -110,6 +102,19 @@ export default defineComponent({
       identifiers: [] as Array<string>,
       input: "" as string,
       selectedFrameworks: [] as Array<DataTypeEnum>,
+      test: [] as Array<string>,
+      frameworks: [
+        {
+          key: "Test 1",
+          label: "This is just a test",
+          children: [],
+        },
+        {
+          key: "Another Test",
+          label: "One mor test",
+          children: [],
+        },
+      ] as Array<TreeNode>,
 
       // submissionFinished: false, TODO
       // submissionInProgress: false, TODO

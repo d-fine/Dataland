@@ -1,7 +1,11 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <NaceCodeSelector v-model="selectedNaceCodes" :shouldDisableCheckboxes="shouldDisableCheckboxes" />
+    <NaceCodeSelector
+      v-model="selectedNaceCodes"
+      :shouldDisableCheckboxes="shouldDisableCheckboxes"
+      :valueTree="valueTree"
+    />
     <!--
     Note: It is required to set the id of this div to the FormKit node Id to allow the checkCustomInputs methods
     in the validationUtils.ts file to scroll to this component when an error is detected. This is because the FormKit
@@ -29,6 +33,7 @@ import { defineComponent, ref } from "vue";
 import { FormKit, FormKitMessages } from "@formkit/vue";
 import NaceCodeSelector from "@/components/forms/parts/elements/derived/NaceCodeSelector.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { type TreeNode } from "primevue/tree";
 
 export default defineComponent({
   name: "NaceCodeFormField",
@@ -64,6 +69,10 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false,
+    },
+    valueTree: {
+      type: Array<TreeNode>,
+      required: false,
     },
   },
 });
