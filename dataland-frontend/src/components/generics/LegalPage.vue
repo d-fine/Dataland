@@ -1,35 +1,44 @@
 <template>
-  <div class="pb-8">
-    <div class="grid align-items-center m-0">
-      <div class="col-6 text-left">
-        <router-link to="/">
-          <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pl-3 pt-2" />
-        </router-link>
-      </div>
-    </div>
-    <MarginWrapper class="text-left pl-2 pt-2">
-      <BackButton />
-    </MarginWrapper>
+  <TheHeader :landingPage="landingPage" />
+  <main role="main">
     <div class="w-12 flex justify-content-center">
-      <div class="lg:w-6 md:w-10 sm:w-12 text-left">
+      <div class="lg:w-6 md:w-10 sm:w-10 text-left">
         <slot />
       </div>
     </div>
-  </div>
-  <TheFooter />
+  </main>
+  <TheFooter :sections="landingPage?.sections" />
 </template>
 
 <script lang="ts">
-import BackButton from "@/components/general/BackButton.vue";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import TheHeader from "@/components/generics/TheNewHeader.vue";
+import contentData from "@/assets/content.json";
+import type { Content } from "@/types/ContentTypes";
+import { defineComponent } from "vue";
 
-export default {
+const content: Content = contentData;
+
+export default defineComponent({
   name: "LegalPage",
   components: {
-    BackButton,
-    MarginWrapper,
+    TheHeader,
     TheFooter,
   },
-};
+  data() {
+    return {
+      landingPage: content.pages.find((page) => page.url === "/"),
+    };
+  },
+});
 </script>
+
+<style lang="scss" scoped>
+main {
+  margin-top: 132px;
+  margin-bottom: 52px;
+  @media only screen and (max-width: $small) {
+    margin-top: 52px;
+  }
+}
+</style>
