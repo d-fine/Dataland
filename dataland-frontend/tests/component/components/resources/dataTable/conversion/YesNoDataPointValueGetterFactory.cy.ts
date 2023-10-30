@@ -6,10 +6,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { YesNoNa } from "@clients/backend";
 import type { BaseDataPointYesNoNa } from "@clients/backend";
-import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import {
-  yesNoDataPointValueGetterFactory
-} from "../../../../../../src/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
+import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
 
 describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
   describe("Tests when the data provides a simple data source", () => {
@@ -154,7 +151,7 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = yesNoDataPointValueGetterFactory("data", field)(dataset);
-      console.log(value)
+      console.log(value);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
         displayValue: {

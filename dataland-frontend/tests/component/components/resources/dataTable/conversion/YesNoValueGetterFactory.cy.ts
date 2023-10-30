@@ -1,4 +1,3 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
 import {
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
@@ -9,16 +8,6 @@ import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conver
 
 describe("Unit test for the YesNoValueGetterFactory", () => {
   describe("Tests for the simple field", () => {
-    const field: Field = {
-      name: "environmentalManagementSystemNationalCertification",
-      label: "Environmental Management System National Certification",
-      description: "Is the environmental management system nationally recognized and certified?",
-      unit: "",
-      component: "YesNoNaFormField",
-      required: false,
-      showIf: (): boolean => true,
-    };
-
     it("An empty string should be displayed if the data point is undefined", () => {
       const dataset = { data: undefined };
       const value = yesNoValueGetterFactory("data")(dataset);
