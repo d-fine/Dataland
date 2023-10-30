@@ -34,11 +34,10 @@ export function yesNoDataPointValueGetterFactory(
     (dataPoint?: GenericDataPoint<YesNoNa>): string | undefined => {
       const lowerFieldLabel = field.label.toLowerCase();
       const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
-      return dataPoint?.value
-        ? isCertificationField
-          ? certificateHumanReadableYesNoMap[dataPoint.value]
-          : humanReadableYesNoMap[dataPoint.value]
-        : "";
+      const humanReadableValue = isCertificationField
+        ? certificateHumanReadableYesNoMap[dataPoint?.value ?? "NA"]
+        : humanReadableYesNoMap[dataPoint?.value ?? "NA"];
+      return dataPoint?.value ? humanReadableValue : "";
     },
   );
 }
