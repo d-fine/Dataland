@@ -2,16 +2,9 @@ import CurrencyDataPointFormField from "@/components/forms/parts/fields/Currency
 
 describe("Component test for BigDecimalExtendedDataPointFormField", () => {
   it("Unit field should be visible when options are defined and Quality field should be NA if the value field has no value", () => {
-    cy.mountWithPlugins(CurrencyDataPointFormField, {}).then((mounted) => {
-      void mounted.wrapper.setProps({
-        evidenceDesired: true,
-        options: [
-          { label: "1", value: "2" },
-          { label: "3", value: "4" },
-        ],
-      });
+    cy.mountWithPlugins(CurrencyDataPointFormField, {}).then(() => {
       cy.get('select[name="currency"]').should("exist");
-      cy.get('select[name="currency"]').should("contain", "3");
+      cy.get('select[name="currency"]').should("contain", "EUR");
       cy.get('input[name="currency"][type="hidden"]').should("not.exist");
       cy.get('div[data-test="dataQuality"] select[name="quality"]').should("have.value", "NA");
       cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should("not.exist");
