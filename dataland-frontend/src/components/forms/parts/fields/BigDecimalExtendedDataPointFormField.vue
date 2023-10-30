@@ -10,21 +10,14 @@
   >
     <div class="mb-3">
       <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
-      <div class="next-to-each-other">
-        <FormKit
-          type="text"
-          name="value"
-          v-model="currentValue"
-          :validation-label="validationLabel ?? label"
-          :validation="`number|${validation}`"
-          :placeholder="unit ? `Value in ${unit}` : 'Value'"
-          outer-class="short"
+        <NumberFormField
+          :name="'value'"
+          :validation-label="validationLabel"
+          :validation="validation"
+          :unit="unit"
           @blur="handleBlurValue"
         />
-        <div v-if="unit" class="form-field-label pb-3">
-          <span>{{ unit }}</span>
-        </div>
-      </div>
+
     </div>
   </ExtendedDataPointFormField>
 </template>
@@ -36,10 +29,11 @@ import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
+import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 
 export default defineComponent({
   name: "BigDecimalExtendedDataPointFormField",
-  components: { ExtendedDataPointFormField, UploadFormHeader, FormKit },
+  components: {NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
   data() {
     return {
       currentValue: "",

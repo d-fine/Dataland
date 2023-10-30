@@ -11,14 +11,11 @@
     <div class="mb-3">
       <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       <div class="next-to-each-other">
-        <FormKit
-          type="text"
-          name="value"
-          v-model="currentValue"
-          :validation-label="validationLabel ?? label"
-          :validation="`number|${validation}`"
-          placeholder="Value"
-          outer-class="short"
+        <NumberFormField
+                :name="'value'"
+                :validation-label="validationLabel"
+                :validation="validation"
+                :unit="unit"
           @blur="handleBlurValue"
         />
         <FormKit
@@ -42,6 +39,7 @@ import { QualityOptions } from "@clients/backend";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 
 export default defineComponent({
   name: "BigDecimalExtendedDataPointFormField",
@@ -50,7 +48,7 @@ export default defineComponent({
       return DropdownDatasetIdentifier;
     },
   },
-  components: { ExtendedDataPointFormField, UploadFormHeader, FormKit },
+  components: {NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
   data() {
     return {
       currentValue: "",

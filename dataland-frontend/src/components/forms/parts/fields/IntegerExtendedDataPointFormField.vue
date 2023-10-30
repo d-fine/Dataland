@@ -11,16 +11,12 @@
     <div class="mb-3">
       <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       <div class="next-to-each-other">
-        <FormKit
-          type="text"
-          name="value"
+        <NumberFormField
+          :name="'value'"
           v-model="currentValue"
           :validation-label="validationLabel ?? label"
           :validation="`number|integer|${validation}`"
-          :validationMessages="{ integer: `${validationLabel ?? label} must be an integer.` }"
-          :validationRules="{ integer }"
           :placeholder="unit ? `Value in ${unit}` : 'Value'"
-          outer-class="short"
           @blur="handleBlurValue"
         />
         <div v-if="unit" class="form-field-label pb-3">
@@ -38,11 +34,11 @@ import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
-import { type FormKitNode } from "@formkit/core";
+import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 
 export default defineComponent({
   name: "IntegerExtendedDataPointFormField",
-  components: { ExtendedDataPointFormField, UploadFormHeader, FormKit },
+  components: {NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
   data() {
     return {
       currentValue: "",
@@ -55,15 +51,7 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Checks if a node has an integer velue
-     * @param node Node whose value to check for being an integer
-     * @returns true iff the provided node value is an integer
-     */
-    integer(node: FormKitNode): boolean {
-      const fieldValue = node.value as string;
-      return !isNaN(parseInt(fieldValue)) && parseInt(fieldValue) == parseFloat(fieldValue);
-    },
+
     /**
      * Handle blur event on value input.
      */
