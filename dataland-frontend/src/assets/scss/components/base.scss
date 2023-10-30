@@ -220,6 +220,11 @@ body {
   color: $red
 }
 
+// Radius //
+.radius-1 {
+  border-radius: $radius-xxxs
+}
+
 
 // Home Page
 .video-container {
@@ -291,6 +296,10 @@ ul.unstyled-ul-list {
 .next-to-each-other {
   display: flex;
   gap: 1rem;
+}
+
+.place-self-center {
+  place-self: center;
 }
 
 .grid2 {

@@ -1,50 +1,64 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="min-h-screen paper-section">
-      <FormKit :actions="false" type="form" id="" name="">
-        <div class="pl-4 col-5 text-left">
-          <h2 class="py-4">Request Data</h2>
-
-          <div id="disclaimer-section" class="mb-6">
-            <h4>
-              Insert the company identifiers into the text field below. Recognised identifiers are: LEI, ISIN and
-              PermID.
-            </h4>
+    <TheContent class="paper-section">
+      <FormKit :actions="false" type="form"
+               @submit="submitRequest"
+               @submit-invalid="handleInvalidInput" id="" name="">
+        <div class="grid p-8 uploadFormWrapper">
+          <div class="col-12 next-to-each-other">
+            <h2>Request Data</h2>
+            <PrimeButton
+              type="submit"
+              label="Submit"
+              class="p-button p-button-sm d-letters place-self-center ml-auto"
+              name="submit_request_button"
+            >
+              Submit Data Request
+            </PrimeButton>
           </div>
-
-          <div id="framework-section-two" class="mb-6">
-            <h4>Please select the framework(s) for which you want to request data:</h4>
-            <NaceCodeFormField
-              label="Frameworks"
-              description="Select the frameworks you would like data for."
-              name="procuredProductTypesAndServicesNaceCodes"
-              v-model:selectedNaceCodesBind="test"
-              :shouldDisableCheckboxes="true"
-              :valueTree="frameworks"
-            />
+          <div class="col-6">
+            <div class="bg-white radius-1 p-4">
+              <h4 class="p-0">Please select the framework(s) for which you want to request data:</h4>
+              <MultiSelectFormFieldBindData
+                label="Frameworks"
+                placeholder="Select framework"
+                description="Select the frameworks you would like data for"
+                name="listOfFrameworkNames"
+                :options="availableFrameworks"
+                optionValue="frameworkDataType"
+                optionLabel="displayName"
+                v-model:selectedItemsBindInternal="selectedFrameworks"
+                innerClass="long"
+              />
+              <h4 class="p-0">Added Frameworks:</h4>
+              <div class="paper-section radius-1 p-2 w-full selected-frameworks">
+                <span v-if="!selectedFrameworks.length" class="gray-text no-framework">No Frameworks added yet</span>
+                <span class="form-list-item" :key="it" v-for="it in selectedFrameworks">
+                  {{ it }}
+                  <em @click="removeItem(it)" class="material-icons">close</em>
+                </span>
+              </div>
+            </div>
           </div>
-
-          <div id="company-section" class="mb-6">
-            <div class="form-field">
+          <div class="col-6">
+            <div class="bg-white radius-1 p-4">
+              <h4 class="p-0">Provide Company Identifiers</h4>
               <FormKit
-                v-model="input"
+                v-model="identifiersInString"
                 type="textarea"
-                name="input"
+                name="listOfCompanyIdentifiers"
+                validation="required"
                 placeholder="Insert identifiers here. Separated by either comma, space, semicolon or linebreak."
               />
+              <span class="gray-text font-italic"
+                >Accepted identifier types are: DUNS Number, LEI, ISIN & permID. Expected in comma separted
+                format.</span
+              >
             </div>
           </div>
         </div>
       </FormKit>
-      <PrimeButton
-        @click="submitRequest"
-        label="Submit"
-        class="uppercase p-button p-button-sm d-letters justify-content-center w-6rem mr-3"
-        name="submit_request_button"
-      >
-        Submit Data Request
-      </PrimeButton>
     </TheContent>
     <TheFooter />
   </AuthenticationWrapper>
@@ -53,68 +67,45 @@
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
 import PrimeButton from "primevue/button";
-import { defineComponent } from "vue";
-import { type DataTypeEnum } from "@clients/backend";
+import { defineComponent, inject } from "vue";
+import type Keycloak from "keycloak-js";
+import {CompanyAssociatedDataEuTaxonomyDataForFinancials, type DataTypeEnum} from "@clients/backend";
+import { type FrameworkSelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheFooter from "@/components/generics/TheFooter.vue";
-import { type FrameworkSelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import MultiSelect from "primevue/multiselect";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import { type TreeNode } from "primevue/tree";
+import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
+import {ObjectType} from "@/utils/UpdateObjectUtils";
+import {checkIfAllUploadedReportsAreReferencedInDataModel} from "@/utils/ValidationsUtils";
+import {DocumentToUpload, uploadFiles} from "@/utils/FileUploadUtils";
+import {assertDefined} from "@/utils/TypeScriptUtils";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {formatAxiosErrorMessage} from "@/utils/AxiosErrorMessageFormatter";
 
 export default defineComponent({
   name: "RequestData",
   components: {
-    NaceCodeFormField,
+    MultiSelectFormFieldBindData,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
     TheFooter,
-    FrameworkDataSearchDropdownFilter,
     PrimeButton,
     FormKit,
-    MultiSelect,
   },
-  /*
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
-  },*/ // TODO commented out for now, but required later when a POST request is sent
-  /*props: {
-    selectedFrameworks: {
-      type: Array as () => Array<DataTypeEnum>,
-      default: () => [],
-    },
-  },*/
+  },
+
   data() {
     return {
-      displayNames: [] as Array<string>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
-      existingElements: [] as unknown[],
-      listOfElementIds: [0],
-      idCounter: 0,
-      identifiers: [] as Array<string>,
-      input: "" as string,
       selectedFrameworks: [] as Array<DataTypeEnum>,
-      test: [] as Array<string>,
-      frameworks: [
-        {
-          key: "Test 1",
-          label: "This is just a test",
-          children: [],
-        },
-        {
-          key: "Another Test",
-          label: "One mor test",
-          children: [],
-        },
-      ] as Array<TreeNode>,
+      identifiersInString: "",
+      identifiers: [] as Array<string>,
 
       // submissionFinished: false, TODO
       // submissionInProgress: false, TODO
@@ -149,6 +140,14 @@ export default defineComponent({
 
   methods: {
     /**
+     * Remove framework from selected frameworks from array
+     * @param it - framework to remove
+     */
+    removeItem(it: string) {
+      this.selectedFrameworks = this.selectedFrameworks.filter((el) => el !== it);
+    },
+
+    /**
      * Converts the string inside the input field into a list of identifiers
      */
     processInput() {
@@ -160,39 +159,58 @@ export default defineComponent({
     },
 
     /**
+     * Creates a new EuTaxonomy-Financials framework entry for the current company
+     * with the data entered in the form by using the Dataland API
+     */
+    async postEuTaxonomyDataForFinancials(): Promise<void> {
+      try {
+        this.postEuTaxonomyDataForFinancialsProcessed = false;
+        this.messageCount++;
+
+        // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
+        const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
+        const kpiSections = (clonedFormInputsModel.data as ObjectType).kpiSections;
+        delete (clonedFormInputsModel.data as ObjectType).kpiSections;
+        clonedFormInputsModel.data = {
+          ...(clonedFormInputsModel.data as ObjectType),
+          ...this.convertKpis(kpiSections as ObjectType),
+        };
+
+        checkIfAllUploadedReportsAreReferencedInDataModel(
+            this.formInputsModel.data as ObjectType,
+            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
+        );
+
+        await uploadFiles(
+            (this.$refs.UploadReports.$data as { documentsToUpload: DocumentToUpload[] }).documentsToUpload,
+            assertDefined(this.getKeycloakPromise),
+        );
+
+        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)(),
+        ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
+        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
+            clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
+        );
+        this.$emit("datasetCreated");
+      } catch (error) {
+        this.messageCount++;
+        console.error(error);
+        this.message = formatAxiosErrorMessage(error as Error);
+      } finally {
+        this.postEuTaxonomyDataForFinancialsProcessed = true;
+      }
+    },
+
+    handleInvalidInput() {
+      alert('IVALID')
+    },
+
+    /**
      * Submits the data request to the request service
      */
-    submitRequest() {
+    submitRequest(): Promise<void> {
       this.processInput();
-    },
-
-    /**
-     * Populates the availableFrameworks property in the format expected by the dropdown filter
-     */
-    retrieveAvailableFrameworks() {
-      this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
-        return {
-          frameworkDataType: dataTypeEnum,
-          displayName: humanizeStringOrNumber(dataTypeEnum),
-          disabled: false,
-        };
-      });
-    },
-
-    /**
-     * Remove Object from array
-     * @param id - the id of the object in the array
-     */
-    removeItem(id: number) {
-      this.listOfElementIds = this.listOfElementIds.filter((el) => el !== id);
-    },
-
-    /**
-     * Adds a new Object to the array
-     */
-    addItem() {
-      this.idCounter++;
-      this.listOfElementIds.push(this.idCounter);
     },
 
     /**
@@ -228,18 +246,17 @@ export default defineComponent({
       this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server.";
     },*/
   },
-  mounted() {
-    void this.retrieveAvailableFrameworks();
-    for (let i = 1; i < this.existingElements.length; i++) {
-      this.addItem();
-    }
-  },
 });
 </script>
 
 <style scoped>
-a,
-img:hover {
-  cursor: pointer;
+.selected-frameworks {
+  min-height: 100px;
+}
+.no-framework {
+  display: flex;
+  justify-content: center;
+  height: 100px;
+  align-items: center;
 }
 </style>
