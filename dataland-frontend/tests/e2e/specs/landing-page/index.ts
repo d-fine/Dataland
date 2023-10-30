@@ -5,4 +5,5 @@ describe("Landing Page Tests", () => {
   require("./FooterSection");
   require("./SamplePage");
   require("./LandingPage");
+  require("./CookieBanner");
 });
