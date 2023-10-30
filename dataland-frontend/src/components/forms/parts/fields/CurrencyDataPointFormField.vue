@@ -4,7 +4,6 @@
     :name="name"
     :description="description"
     :label="label"
-    :validation="validation"
     :required="required"
     :inner-class="innerClass"
     :is-data-value-provided="currentValue != '' && currentValue != undefined"
