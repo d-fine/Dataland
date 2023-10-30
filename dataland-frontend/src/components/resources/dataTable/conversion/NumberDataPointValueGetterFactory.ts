@@ -16,9 +16,13 @@ export function numberDataPointValueGetterFactory(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return getDataPointGetterFactory(path, field, (dataPoint: GenericDataPoint<number>) => {
-    const datapointValue = formatNumberToReadableFormat(dataPoint.value);
-    const datapointUnitSuffix = field.unit ?? "";
-    return datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
-  });
+  return getDataPointGetterFactory<number, GenericDataPoint<number>>(
+    path,
+    field,
+    (dataPoint?: GenericDataPoint<number>): string => {
+      const datapointValue = formatNumberToReadableFormat(dataPoint?.value);
+      const datapointUnitSuffix = field.unit ?? "";
+      return datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";
+    },
+  );
 }

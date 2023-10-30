@@ -1,4 +1,3 @@
-import { type BaseDocumentReference, type SfdrData } from "@clients/backend";
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
@@ -40,39 +39,27 @@ export function hasDataPointValidReference(dataPoint: GenericDataPoint<any> | Ge
 
 /**
  * Returns the document references globally available in a dataset
- * @param dataset the dataset containing the document references
- * @returns the document references
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getGloballyReferencableDocuments(dataset: any): BaseDocumentReference[] {
-  return Object.entries((dataset as SfdrData)?.general?.general?.referencedReports ?? {}).map(
-    (document): BaseDocumentReference => ({ fileName: document[0], fileReference: document[1].fileReference }),
-  );
-}
-
-/**
- * Returns the document references globally available in a dataset
  * @param path the path to the field value
  * @param field the field
  * @param formatter a function to transform the datapoint value ot a display value
  * @returns the data point getter factory
  */
-export function getDataPointGetterFactory<T>(
+export function getDataPointGetterFactory<
+  V,
+  D extends GenericBaseDataPoint<V | null | undefined> | GenericDataPoint<V> = GenericDataPoint<V>,
+>(
   path: string,
   field: Field,
-  formatter: (dataPoint?: unknown) => string | undefined,
+  formatter: (dataPoint?: D) => string | undefined,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const dataPoint = getFieldValueFromFrameworkDataset(path, dataset) as
-      | GenericDataPoint<T>
-      | GenericBaseDataPoint<T>
-      | undefined;
+    const dataPoint = getFieldValueFromFrameworkDataset(path, dataset) as D | undefined;
     if (!dataPoint) {
       return MLDTDisplayObjectForEmptyString;
     }
     const formattedValue: string = formatter(dataPoint) || "No data provided";
-    const dataPointAsExtendedDataPoint = dataPoint as GenericDataPoint<T>;
+    const dataPointAsExtendedDataPoint = dataPoint as unknown as GenericDataPoint<V>;
     if (
       dataPointAsExtendedDataPoint.quality ||
       dataPointAsExtendedDataPoint.comment?.length ||
@@ -87,7 +74,7 @@ export function getDataPointGetterFactory<T>(
           quality: dataPointAsExtendedDataPoint.quality,
           comment: dataPointAsExtendedDataPoint.comment,
         },
-      };
+      } as AvailableMLDTDisplayObjectTypes;
     } else if (hasDataPointValidReference(dataPoint)) {
       return {
         displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
@@ -95,12 +82,12 @@ export function getDataPointGetterFactory<T>(
           label: formattedValue,
           dataSource: dataPoint.dataSource,
         },
-      };
+      } as AvailableMLDTDisplayObjectTypes;
     } else {
       return {
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: formattedValue,
-      };
+      } as AvailableMLDTDisplayObjectTypes;
     }
   };
 }

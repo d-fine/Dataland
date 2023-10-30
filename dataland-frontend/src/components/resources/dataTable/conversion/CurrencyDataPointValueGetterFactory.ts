@@ -15,8 +15,12 @@ export function currencyDataPointValueGetterFactory(
   field: Field,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  return getDataPointGetterFactory(path, field, (dataPoint: CurrencyDataPoint) => {
-    const datapointValue = formatAmountWithCurrency({ amount: dataPoint.value });
-    return datapointValue ? `${datapointValue} ${dataPoint.currency}`.trim() : "";
-  });
+  return getDataPointGetterFactory<number, CurrencyDataPoint>(
+    path,
+    field,
+    (dataPoint?: CurrencyDataPoint): string | undefined => {
+      const datapointValue = formatAmountWithCurrency({ amount: dataPoint?.value });
+      return datapointValue ? `${datapointValue} ${dataPoint?.currency ?? ""}`.trim() : "";
+    },
+  );
 }

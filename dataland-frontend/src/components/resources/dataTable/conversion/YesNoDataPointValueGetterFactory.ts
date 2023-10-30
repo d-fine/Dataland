@@ -2,7 +2,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type YesNoNa } from "@clients/backend";
 import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
-import { type GenericBaseDataPoint } from "@/utils/DataPoint";
+import { type GenericDataPoint } from "@/utils/DataPoint";
 
 const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
   Yes: "Yes",
@@ -28,13 +28,16 @@ export function yesNoDataPointValueGetterFactory(
   field: Field,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  return getDataPointGetterFactory(path, field, (dataPoint: GenericBaseDataPoint<YesNoNa>) => {
-    const lowerFieldLabel = field.label.toLowerCase();
-    const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
-    return dataPoint.value
-      ? isCertificationField
-        ? certificateHumanReadableYesNoMap[dataPoint.value]
-        : humanReadableYesNoMap[dataPoint.value]
-      : "";
-  });
+  return getDataPointGetterFactory<YesNoNa>(
+    path,
+    field,
+    (dataPoint?: GenericDataPoint<YesNoNa>): string | undefined => {
+      const lowerFieldLabel = field.label.toLowerCase();
+      const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
+      const humanReadableValue = isCertificationField
+        ? certificateHumanReadableYesNoMap[dataPoint?.value ?? "NA"]
+        : humanReadableYesNoMap[dataPoint?.value ?? "NA"];
+      return dataPoint?.value ? humanReadableValue : "";
+    },
+  );
 }
