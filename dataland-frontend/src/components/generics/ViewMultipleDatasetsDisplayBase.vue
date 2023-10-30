@@ -30,7 +30,7 @@
               v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
               :frameworkIdentifier="DataTypeEnum.EutaxonomyFinancials"
               :companyId="companyId"
-              :display-configuration="configForEutaxonomyFinancialsMLDT"
+              :display-configuration="convertDataModelToMLDTConfig(euTaxonomyDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
             />
@@ -110,9 +110,13 @@ import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/S
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { configForEutaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/ConfigForEutaxonomyFinancialsMLDT";
+import {euTaxonomyDataModel} from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyDataModel";
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
   computed: {
+    euTaxonomyDataModel(){
+      return euTaxonomyDataModel;
+    },
     lksgDataModel() {
       return lksgDataModel;
     },
