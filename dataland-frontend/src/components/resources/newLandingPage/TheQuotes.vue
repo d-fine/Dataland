@@ -14,8 +14,15 @@
     >
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
+          <div class="cookieconsent-optout-marketing">
+            Please
+            <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a>
+            to watch this video.
+          </div>
           <iframe
-            :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
+            data-add-placeholder
+            :data-src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
+            data-cookieconsent="marketing"
             title="Youtube video player"
             allowfullscreen
             :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }"
