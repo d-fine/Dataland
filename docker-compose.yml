@@ -58,6 +58,7 @@ services:
       - internal-storage-db
       - document-manager-db
       - qa-service-db
+      - community-manager-db
     ports:
       - "127.0.0.1:6789:6789"
       - "127.0.0.1:5433-5438:5433-5438"
@@ -331,6 +332,7 @@ services:
       - internal-storage-db
       - document-manager-db
       - qa-service-db
+      - community-manager-db
     profiles: ["production", "testing", "development"]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
@@ -343,6 +345,7 @@ services:
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
+      COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
   rabbitmq:
@@ -411,6 +414,38 @@ services:
       - ./dataland-batch-manager/config:/config
     extra_hosts:
       - "host.docker.internal:host-gateway"
+  community-manager:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${COMMUNITY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_community_manager_test:${DATALAND_COMMUNITY_MANAGER_TEST_VERSION}}
+    networks:
+      - internal
+      - community-manager-db
+    expose:
+      - "8080"
+    environment:
+      <<: *mailjet-api-id-and-secret
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
+    depends_on:
+      - community-manager-db
+  community-manager-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - community-manager-db
+    image: postgres:15.3
+    volumes:
+      - community_manager_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: community_manager
+      POSTGRES_USER: community_manager
+      POSTGRES_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
+      PGUSER: community_manager
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
 networks:
   internal:
   external:
@@ -420,6 +455,7 @@ networks:
   internal-storage-db:
   document-manager-db:
   qa-service-db:
+  community-manager-db:
 volumes:
   keycloak_data:
     driver: local
@@ -440,4 +476,6 @@ volumes:
   document_manager_data:
     driver: local
   qa_service_data:
+    driver: local
+  community_manager_data:
     driver: local

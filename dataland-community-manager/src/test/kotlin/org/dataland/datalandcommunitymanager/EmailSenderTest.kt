@@ -18,6 +18,6 @@ class EmailSenderTest {
         val emailContact = EmailContact("dev.null@dataland.com")
         val email = Email(emailContact, listOf(emailContact), listOf(), EmailContent("", "", "", listOf()))
         val emailSender = EmailSender("https://notmailjet.dataland.com")
-        assertFalse(emailSender.sendEmail(email))
+        assertFalse(emailSender.sendEmail(email)) // TODO   fix test
     }
 }

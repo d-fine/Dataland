@@ -1,13 +1,11 @@
-#ARG DATALAND_GRADLE_BASE_VERSION TODO
-#FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
+ARG DATALAND_GRADLE_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
 
-#WORKDIR /app
-#COPY ./dataland-backend/ ./dataland-backend/
-#COPY ./dataland-backend-utils/ ./dataland-backend-utils/
-#COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
-#COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
-#COPY ./dataland-internal-storage/internalStorageOpenApi.json ./dataland-internal-storage/internalStorageOpenApi.json
-#COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
-#COPY ./.git/ ./.git
-#RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
-#     ./gradlew dataland-backend:bootJar --no-daemon --stacktrace
+WORKDIR /app
+COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
+COPY ./dataland-community-manager/ ./dataland-community-manager/
+COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
+COPY ./dataland-backend-utils/ ./dataland-backend-utils/
+COPY ./.git/ ./.git
+RUN ./gradlew dataland-community-manager:bootJar --no-daemon --stacktrace
