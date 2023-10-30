@@ -33,15 +33,18 @@ export const BaseFormFieldProps = {
 };
 
 export const YesNoFormFieldProps = Object.assign(deepCopyObject(BaseFormFieldProps), {
-  certificateRequiredIfYes: { // TODO should be removed
+  certificateRequiredIfYes: {
+    // TODO should be removed
     type: Boolean,
     default: false,
   },
-  evidenceDesired: { // TODO should be removed
+  evidenceDesired: {
+    // TODO should be removed
     type: Boolean,
     default: false,
   },
-  unit: { // TODO wtf?
+  unit: {
+    // TODO wtf?
     type: String,
   },
 }) as Readonly<ComponentPropsOptions>;

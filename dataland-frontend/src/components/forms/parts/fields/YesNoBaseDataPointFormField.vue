@@ -1,10 +1,10 @@
 <template>
   <BaseDataPointFormField
-      :name="name"
-      :description="description"
-      :label="label"
-      :required="required"
-      @reports-updated="reportsUpdated"
+    :name="name"
+    :description="description"
+    :label="label"
+    :required="required"
+    @reports-updated="reportsUpdated"
   >
     <RadioButtonsFormElement
       name="value"
