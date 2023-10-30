@@ -1,7 +1,7 @@
 <template>
   <div class="form-field" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <FormKit v-model="baseDataPointYesNo" type="group" :name="name">
+    <FormKit v-model="extendedDataPointYesNo" type="group" :name="name">
       <div class="mb-3">
         <RadioButtonsFormElement
           name="value"
@@ -79,8 +79,8 @@ import { defineComponent } from "vue";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
-import { type BaseDataPointYesNo, QualityOptions } from "@clients/backend";
+import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
+import { type ExtendedDataPointYesNo, QualityOptions } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
@@ -100,16 +100,11 @@ export default defineComponent({
 
   data() {
     return {
-      baseDataPointYesNo: {} as BaseDataPointYesNo,
-      referencedDocument: undefined as DocumentToUpload | undefined,
-      documentName: "",
-      documentReference: "",
-      fileNamesForPrefill: [] as string[],
+      extendedDataPointYesNo: {} as ExtendedDataPointYesNo,
       yesNoOptions: {
         Yes: "Yes",
         No: "No",
       },
-      isMounted: false,
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
         label: qualityOption,
         value: qualityOption,
@@ -138,32 +133,7 @@ export default defineComponent({
     },
   },
   emits: ["reportsUpdated"],
-  mounted() {
-    this.updateFileUploadFiles();
-    this.isMounted = true;
-  },
-  watch: {
-    baseDataPointYesNo(newValue: BaseDataPointYesNo, oldValue: BaseDataPointYesNo) {
-      if (newValue.value === "No" && oldValue.value === "Yes" && this.certificateRequiredIfYes) {
-        (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
-      }
-    },
-    documentName() {
-      if (this.isMounted) {
-        this.updateFileUploadFiles();
-      }
-    },
-  },
   methods: {
-    /**
-     * updates the files in the fileUpload file list to represent that a file was already uploaded in a previous upload
-     * of the given dataset (in the case of editing a dataset)
-     */
-    updateFileUploadFiles() {
-      if (this.documentName !== "" && this.referencedDocument === undefined) {
-        this.fileNamesForPrefill = [this.documentName];
-      }
-    },
     /**
      * Handle blur event on value input.
      */

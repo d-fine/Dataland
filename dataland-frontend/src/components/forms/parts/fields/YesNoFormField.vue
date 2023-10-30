@@ -21,7 +21,6 @@ export default defineComponent({
   components: { RadioButtonsFormElement, UploadFormHeader },
   props: {
     ...YesNoFormFieldProps,
-    dataTest: String,
   },
 
   data() {
