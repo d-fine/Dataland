@@ -62,8 +62,9 @@ export default defineComponent({
   },
   data() {
     return {
-      singleViewFrameworks: [DataTypeEnum.EutaxonomyFinancials] as string[],
+      singleViewFrameworks: [] as string[],
       multiViewFrameworks: [
+        DataTypeEnum.EutaxonomyFinancials,
         DataTypeEnum.EutaxonomyNonFinancials,
         DataTypeEnum.Lksg,
         DataTypeEnum.Sfdr,
