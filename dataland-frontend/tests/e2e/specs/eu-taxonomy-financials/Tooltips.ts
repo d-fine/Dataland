@@ -37,10 +37,10 @@ describeIf(
       cy.ensureLoggedIn();
       getKeycloakToken(reader_name, reader_pw).then((token) => {
         cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (storedCompanies) => {
+          (storedCompaniesWithEuTaxoNonFinancialsData) => {
             const testCompany = getCompanyWithNfrdMandatoryAndAssurance();
             const companyId = assertDefined(
-              storedCompanies.find((storedCompany) => {
+              storedCompaniesWithEuTaxoNonFinancialsData.find((storedCompany) => {
                 return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
               })?.companyId,
             );

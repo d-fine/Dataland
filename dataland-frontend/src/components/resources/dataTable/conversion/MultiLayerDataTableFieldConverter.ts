@@ -13,6 +13,7 @@ import { getModalGetterFactory } from "@/components/resources/dataTable/conversi
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import { lksgProcurementCategoriesValueGetterFactory } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
 import { p2pDriveMixValueGetterFactory } from "@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory";
+import { highImpactClimateGetterFactory } from "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -36,6 +37,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   MostImportantProductsFormField: getModalGetterFactory("mostImportantProducts", lksgModalColumnHeaders),
   ProcurementCategoriesFormField: lksgProcurementCategoriesValueGetterFactory,
   DriveMixFormField: p2pDriveMixValueGetterFactory,
+  HighImpactClimateSectorsFormField: highImpactClimateGetterFactory,
 };
 
 /**

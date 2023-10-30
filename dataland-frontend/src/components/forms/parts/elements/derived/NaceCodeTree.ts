@@ -11,9 +11,12 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 export function filterNodes(nodes: Array<TreeNode>, searchTerm: string): Array<TreeNode> {
   const lowerSearchTerm = searchTerm.toLowerCase().trim();
   return nodes.filter((it) => {
-    const filterMatchesNode = assertDefined(it.label).toLowerCase().indexOf(lowerSearchTerm) > -1;
-    it.children = filterNodes(it.children ?? [], searchTerm);
-    return filterMatchesNode ?? it.children.length > 0;
+    const filterMatchesNode = assertDefined(it.label).toLowerCase().includes(lowerSearchTerm);
+    const findInChildren = filterNodes(it.children ?? [], searchTerm);
+    if (findInChildren.length !== 0) {
+      it.children = findInChildren;
+    }
+    return filterMatchesNode || findInChildren.length > 0;
   });
 }
 

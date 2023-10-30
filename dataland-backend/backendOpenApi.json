@@ -2933,6 +2933,40 @@
           "No"
         ]
       },
+      "BaseDataPointYesNo": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "BaseDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
+          }
+        }
+      },
       "CompanyAssociatedDataSfdrData": {
         "required": [
           "companyId",
@@ -2981,6 +3015,15 @@
           "currency": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "example": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "isGroupLevel": "Yes",
+            "reportDate": "2023-10-12",
+            "currency": "string"
           }
         }
       },
@@ -3220,13 +3263,21 @@
                 "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
+          },
+          "highlyBiodiverseGrasslandExposure": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
           }
         }
       },
       "SfdrEnvironmentalEmissions": {
         "type": "object",
         "properties": {
-          "inorganicPollutantsInTonnes": {
+          "emissionsOfInorganicPollutantsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3234,7 +3285,7 @@
               }
             ]
           },
-          "airPollutantsInTonnes": {
+          "emissionsOfAirPollutantsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3242,7 +3293,7 @@
               }
             ]
           },
-          "ozoneDepletionSubstancesInTonnes": {
+          "emissionsOfOzoneDepletionSubstancesInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3279,14 +3330,6 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumptionInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
           "nonRenewableEnergyProductionInGWh": {
             "nullable": true,
             "allOf": [
@@ -3295,7 +3338,7 @@
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceAInGWh": {
+          "nonRenewableEnergyConsumptionInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3303,77 +3346,113 @@
               }
             ]
           },
-          "highImpactClimateSectorEnergyConsumptionNaceBInGWh": {
+          "applicableHighImpactClimateSectors": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+            },
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+            "example": {
+              "NaceCodeAInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeBInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeCInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeDInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeEInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeFInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeGInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeHInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
+              },
+              "NaceCodeLInGWh": {
+                "quality": "Audited",
+                "dataSource": {
+                  "page": 0,
+                  "tagName": "string",
+                  "fileName": "string",
+                  "fileReference": "string"
+                },
+                "comment": "string",
+                "value": 0
               }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceCInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceDInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceEInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceFInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceGInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceHInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "highImpactClimateSectorEnergyConsumptionNaceLInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
+            }
           },
           "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
             "nullable": true,
@@ -3436,7 +3515,7 @@
       "SfdrEnvironmentalGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
-          "scope1InTonnes": {
+          "scope1GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3444,7 +3523,7 @@
               }
             ]
           },
-          "scope2InTonnes": {
+          "scope2GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3452,7 +3531,7 @@
               }
             ]
           },
-          "scope3InTonnes": {
+          "scope3GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3489,7 +3568,7 @@
       "SfdrEnvironmentalWaste": {
         "type": "object",
         "properties": {
-          "hazardousWasteInTonnes": {
+          "hazardousAndRadioactiveWasteInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3517,7 +3596,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3525,11 +3604,11 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
-          "wasteNonRecycledInTonnes": {
+          "nonRecycledWasteInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3549,7 +3628,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3557,7 +3636,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           }
@@ -3598,7 +3677,7 @@
               }
             ]
           },
-          "waterStressAreaExposure": {
+          "highWaterStressAreaExposure": {
             "nullable": true,
             "allOf": [
               {
@@ -3643,7 +3722,16 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
             },
-            "nullable": true
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
           },
           "scopeOfEntities": {
             "nullable": true,
@@ -3695,7 +3783,7 @@
       "SfdrSocialAntiCorruptionAndAntiBribery": {
         "type": "object",
         "properties": {
-          "reportedCasesOfBriberyCorruption": {
+          "casesOfInsufficientActionAgainstBriberyAndCorruption": {
             "nullable": true,
             "allOf": [
               {
@@ -3703,7 +3791,7 @@
               }
             ]
           },
-          "reportedConvictionsOfBriberyCorruption": {
+          "reportedConvictionsOfBriberyAndCorruption": {
             "nullable": true,
             "allOf": [
               {
@@ -3711,7 +3799,7 @@
               }
             ]
           },
-          "reportedFinesOfBriberyCorruption": {
+          "totalAmountOfReportedFinesOfBriberyAndCorruption": {
             "nullable": true,
             "allOf": [
               {
@@ -3741,7 +3829,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3757,7 +3845,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3777,7 +3865,7 @@
               }
             ]
           },
-          "reportedIncidentsOfHumanRights": {
+          "numberOfReportedIncidentsOfHumanRightsViolations": {
             "nullable": true,
             "allOf": [
               {
@@ -3810,7 +3898,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3826,7 +3914,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3834,15 +3922,31 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
-          "childForcedDiscriminationPolicy": {
+          "policyAgainstChildLabour": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "policyAgainstForcedLabour": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "policyAgainstDiscriminationInTheWorkplace": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3850,15 +3954,15 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
-          "briberyCorruptionPolicy": {
+          "policyAgainstBriberyAndCorruption": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3898,11 +4002,11 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
-          "oecdGuidelinesForMultinationalEnterprisesPolicy": {
+          "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
             "nullable": true,
             "allOf": [
               {
@@ -3954,11 +4058,11 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
-          "rateOfAccidents": {
+          "rateOfAccidentsInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -3978,7 +4082,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -3994,7 +4098,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -4006,7 +4110,7 @@
               }
             ]
           },
-          "sanctionsIncidentsOfDiscrimination": {
+          "sanctionedIncidentsOfDiscrimination": {
             "nullable": true,
             "allOf": [
               {
@@ -4014,7 +4118,7 @@
               }
             ]
           },
-          "ceoToEmployeePayGap": {
+          "ceoToEmployeePayGapRatio": {
             "nullable": true,
             "allOf": [
               {
@@ -4031,40 +4135,6 @@
           "No",
           "NA"
         ]
-      },
-      "BaseDataPointYesNo": {
-        "required": [
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "BaseDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "type": "string"
-          }
-        }
       },
       "CompanyAssociatedDataPathwaysToParisData": {
         "required": [
@@ -7472,7 +7542,16 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
             },
-            "nullable": true
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
           }
         }
       },
@@ -7599,8 +7678,10 @@
               "value": 0,
               "quality": "Audited",
               "dataSource": {
-                "report": "string",
-                "page": 0
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
               },
               "comment": "string"
             }
@@ -7610,8 +7691,10 @@
               "value": 0,
               "quality": "Audited",
               "dataSource": {
-                "report": "string",
-                "page": 0
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
               },
               "comment": "string"
             }
@@ -7621,8 +7704,10 @@
               "value": 0,
               "quality": "Audited",
               "dataSource": {
-                "report": "string",
-                "page": 0
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
               },
               "comment": "string"
             }
@@ -7632,8 +7717,10 @@
               "value": 0,
               "quality": "Audited",
               "dataSource": {
-                "report": "string",
-                "page": 0
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
               },
               "comment": "string"
             }
@@ -7668,8 +7755,10 @@
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
-                    "report": "string",
-                    "page": 0
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
                   },
                   "comment": "string"
                 }
@@ -7679,8 +7768,10 @@
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
-                    "report": "string",
-                    "page": 0
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
                   },
                   "comment": "string"
                 }
@@ -7690,8 +7781,10 @@
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
-                    "report": "string",
-                    "page": 0
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
                   },
                   "comment": "string"
                 }
@@ -7701,8 +7794,10 @@
                   "value": 0,
                   "quality": "Audited",
                   "dataSource": {
-                    "report": "string",
-                    "page": 0
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
                   },
                   "comment": "string"
                 }
@@ -7787,7 +7882,16 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
             },
-            "nullable": true
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
           }
         }
       },

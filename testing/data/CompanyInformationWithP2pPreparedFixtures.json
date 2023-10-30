@@ -2,39 +2,32 @@
 	{
 		"companyInformation": {
 			"companyName": "six-p2p-data-sets-in-different-years",
-			"headquarters": "O'Fallon",
-			"headquartersPostalCode": "32775-9955",
-			"sector": "portals",
+			"headquarters": "West Verliecester",
+			"headquartersPostalCode": "05581-8434",
+			"sector": "e-business",
 			"identifiers": {
-				"Lei": [
-					"MjolUg6MF0hBznoA1P4G"
-				],
+				"Lei": [],
 				"Isin": [
-					"XCdhs3qqST29"
+					"R97EHzjL0ti1"
 				],
 				"PermId": [
-					"dQGCoujel6"
+					"AQ6cnUO1Ab"
 				],
-				"Ticker": [
-					"Ky7pXSE"
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"iiavMCjto"
 				],
-				"Duns": [
-					"eLRpsZq56"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"JEvcIgABBXKdGLa"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ET",
+			"countryCode": "AX",
 			"companyAlternativeNames": [
-				"Lind - Schmidt",
-				"McClure, Homenick and Wehner",
-				"Monahan and Sons",
-				"Stiedemann LLC"
+				"Glover, Goodwin and Nitzsche",
+				"Terry, Auer and Rohan",
+				"Willms and Sons"
 			],
-			"companyLegalForm": null,
-			"website": "https://profuse-veranda.com/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://burly-fedelini.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -56,82 +49,82 @@
 					]
 				},
 				"governance": {
-					"organisationalResponsibilityForParisCompatibility": null,
+					"organisationalResponsibilityForParisCompatibility": "Yes",
 					"parisCompatibilityInAverageRemunerationInPercent": null,
 					"parisCompatibilityInExecutiveRemunerationInPercent": null,
-					"shareOfEmployeesTrainedOnParisCompatibilityInPercent": null,
+					"shareOfEmployeesTrainedOnParisCompatibilityInPercent": 45.9542,
 					"qualificationRequirementsOnParisCompatibility": null,
-					"mobilityAndTravelPolicy": "No",
-					"upstreamSupplierEngagementStrategy": "Yes",
+					"mobilityAndTravelPolicy": "Yes",
+					"upstreamSupplierEngagementStrategy": "No",
 					"upstreamSupplierProcurementPolicy": null,
-					"downstreamCustomerEngagement": "Yes",
-					"policymakerEngagement": null
+					"downstreamCustomerEngagement": null,
+					"policymakerEngagement": "No"
 				},
 				"climateTargets": {
-					"shortTermScienceBasedClimateTarget": null,
-					"longTermScienceBasedClimateTarget": "No"
+					"shortTermScienceBasedClimateTarget": "Yes",
+					"longTermScienceBasedClimateTarget": null
 				},
 				"emissionsPlanning": {
-					"reductionOfAbsoluteEmissionsInTonnesCO2e": 892,
-					"reductionOfRelativeEmissionsInPercent": null,
-					"relativeEmissionsInPercent": 79.466,
-					"absoluteEmissionsInTonnesCO2e": 4005,
+					"reductionOfAbsoluteEmissionsInTonnesCO2e": null,
+					"reductionOfRelativeEmissionsInPercent": 47.1031,
+					"relativeEmissionsInPercent": null,
+					"absoluteEmissionsInTonnesCO2e": 8022,
 					"climateActionPlan": null,
-					"useOfInternalCarbonPrice": "Yes"
+					"useOfInternalCarbonPrice": "No"
 				},
 				"investmentPlanning": {
 					"investmentPlanForClimateTargets": "Yes",
-					"capexShareInGhgIntensivePlantsInPercent": null,
-					"capexShareInNetZeroSolutionsInPercent": 33.7615,
+					"capexShareInGhgIntensivePlantsInPercent": 14.7514,
+					"capexShareInNetZeroSolutionsInPercent": 13.304,
 					"researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": null
 				}
 			},
 			"ammonia": {
 				"decarbonisation": {
-					"energyMixInPercent": null,
-					"ccsTechnologyAdoptionInPercent": null,
-					"electrificationInPercent": null
+					"energyMixInPercent": 3.74,
+					"ccsTechnologyAdoptionInPercent": 11.5072,
+					"electrificationInPercent": 10.7016
 				},
 				"defossilisation": {
-					"useOfRenewableFeedstocksInPercent": null
+					"useOfRenewableFeedstocksInPercent": 60.8413
 				}
 			},
 			"automotive": {
 				"energy": {
-					"productionSiteEnergyConsumptionInMWh": null,
-					"energyMixInPercent": 15.9305
+					"productionSiteEnergyConsumptionInMWh": 6528,
+					"energyMixInPercent": 96.1432
 				},
 				"technologyValueCreation": {
-					"driveMixInPercent": 50.6591,
-					"icAndHybridEnginePhaseOutDate": null,
+					"driveMixInPercent": null,
+					"icAndHybridEnginePhaseOutDate": "2023-12-24",
 					"futureValueCreationStrategy": "No"
 				},
 				"materials": {
-					"materialUseManagementInPercent": 83.6813,
-					"useOfSecondaryMaterialsInPercent": 5.3033
+					"materialUseManagementInPercent": null,
+					"useOfSecondaryMaterialsInPercent": 24.1481
 				}
 			},
 			"hvcPlastics": {
 				"decarbonisation": {
-					"energyMixInPercent": null,
-					"electrificationInPercent": 38.7352
+					"energyMixInPercent": 81.4226,
+					"electrificationInPercent": null
 				},
 				"defossilisation": {
-					"useOfRenewableFeedstocksInPercent": 15.7481,
-					"useOfBioplasticsInPercent": 20.9782,
+					"useOfRenewableFeedstocksInPercent": 81.7616,
+					"useOfBioplasticsInPercent": 69.319,
 					"useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent": null,
 					"carbonCaptureAndUseStorageTechnologies": "Yes"
 				},
 				"recycling": {
 					"contributionToCircularEconomy": null,
-					"materialRecyclingInPercent": 79.0652,
+					"materialRecyclingInPercent": null,
 					"chemicalRecyclingInPercent": null
 				}
 			},
 			"commercialRealEstate": {
 				"buildingEfficiency": {
-					"buildingSpecificRefurbishmentRoadmapInPercent": 64.3685,
-					"zeroEmissionBuildingShareInPercent": 47.2726,
+					"buildingSpecificRefurbishmentRoadmapInPercent": null,
+					"zeroEmissionBuildingShareInPercent": 22.9278,
 					"buildingEnergyEfficiencyInCorrespondingUnit": null
 				},
 				"energySource": {
@@ -139,38 +132,42 @@
 				},
 				"technology": {
 					"useOfDistrictHeatingNetworksInPercent": null,
-					"heatPumpUsageInPercent": 25.0013
+					"heatPumpUsageInPercent": null
 				}
 			},
 			"residentialRealEstate": {
 				"buildingEfficiency": {
-					"buildingSpecificRefurbishmentRoadmapInPercent": null,
+					"buildingSpecificRefurbishmentRoadmapInPercent": 42.6077,
 					"zeroEmissionBuildingShareInPercent": null,
 					"buildingEnergyEfficiencyInCorrespondingUnit": null
 				},
 				"energySource": {
-					"renewableHeatingInPercent": 44.4775
+					"renewableHeatingInPercent": 53.2658
 				},
 				"technology": {
 					"useOfDistrictHeatingNetworksInPercent": null,
-					"heatPumpUsageInPercent": 5.6889
+					"heatPumpUsageInPercent": null
 				}
 			},
 			"steel": {
 				"energy": {
-					"emissionIntensityOfElectricityInCorrespondingUnit": null,
-					"greenHydrogenUsage": null
+					"emissionIntensityOfElectricityInCorrespondingUnit": 4927,
+					"greenHydrogenUsage": "No"
 				},
 				"technology": {
-					"blastFurnacePhaseOutInPercent": 13.7604,
+					"blastFurnacePhaseOutInPercent": null,
 					"lowCarbonSteelScaleUpInPercent": null
 				}
 			},
 			"freightTransportByRoad": {
 				"technology": {
 					"driveMixPerFleetSegment": {
+						"MediumTrucks": {
+							"driveMixPerFleetSegmentInPercent": 10.928,
+							"totalAmountOfVehicles": 6516
+						},
 						"LargeTrucks": {
-							"driveMixPerFleetSegmentInPercent": null,
+							"driveMixPerFleetSegmentInPercent": 18.3948,
 							"totalAmountOfVehicles": null
 						}
 					},
@@ -183,53 +180,53 @@
 			"electricityGeneration": {
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": null,
-					"shareOfRenewableElectricityInPercent": 50.2317,
-					"naturalGasPhaseOut": "2023-10-27",
-					"coalPhaseOut": "2024-01-11",
-					"storageCapacityExpansionInPercent": 88.385
+					"shareOfRenewableElectricityInPercent": 47.9859,
+					"naturalGasPhaseOut": null,
+					"coalPhaseOut": "2024-01-20",
+					"storageCapacityExpansionInPercent": 90.1378
 				}
 			},
 			"livestockFarming": {
 				"emissionsFromManureAndFertiliserAndLivestock": {
-					"compostedFermentedManureInPercent": 80.4412,
+					"compostedFermentedManureInPercent": null,
 					"emissionProofFertiliserStorageInPercent": null
 				},
 				"animalWelfare": {
-					"mortalityRateInPercent": null
+					"mortalityRateInPercent": 76.17
 				},
 				"animalFeed": {
-					"ownFeedInPercent": 99.628,
+					"ownFeedInPercent": 5.957,
 					"externalFeedCertification": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": null
 					},
-					"originOfExternalFeed": "synthesize out-of-the-box supply-chains",
-					"excessNitrogenInKilogramsPerHectare": null,
-					"cropRotation": 9011,
-					"climateFriendlyProteinProductionInPercent": null,
-					"greenFodderInPercent": null
+					"originOfExternalFeed": "synergize enterprise communities",
+					"excessNitrogenInKilogramsPerHectare": 2820,
+					"cropRotation": 9625,
+					"climateFriendlyProteinProductionInPercent": 38.5176,
+					"greenFodderInPercent": 8.5468
 				},
 				"energy": {
 					"renewableElectricityInPercent": null,
-					"renewableHeatingInPercent": 37.8056,
-					"electricGasPoweredMachineryVehicleInPercent": 16.0839
+					"renewableHeatingInPercent": null,
+					"electricGasPoweredMachineryVehicleInPercent": null
 				}
 			},
 			"cement": {
 				"energy": {
 					"energyMixInPercent": null,
 					"fuelMixInPercent": null,
-					"thermalEnergyEfficiencyInPercent": 29.5363,
-					"compositionOfThermalInputInPercent": 71.7387
+					"thermalEnergyEfficiencyInPercent": null,
+					"compositionOfThermalInputInPercent": null
 				},
 				"technology": {
-					"carbonCaptureAndUseTechnologyUsage": "No",
-					"electrificationOfProcessHeatInPercent": 40.923
+					"carbonCaptureAndUseTechnologyUsage": "Yes",
+					"electrificationOfProcessHeatInPercent": null
 				},
 				"material": {
-					"clinkerFactorReduction": null,
-					"preCalcinedClayUsageInPercent": 1.945,
-					"circularEconomyContribution": "Yes"
+					"clinkerFactorReduction": 8993,
+					"preCalcinedClayUsageInPercent": null,
+					"circularEconomyContribution": null
 				}
 			}
 		},
@@ -238,39 +235,28 @@
 	{
 		"companyInformation": {
 			"companyName": "P2p-date-2023-04-18",
-			"headquarters": "New Tamiaberg",
-			"headquartersPostalCode": "26390-3011",
-			"sector": null,
+			"headquarters": "Abdulberg",
+			"headquartersPostalCode": "33721-3527",
+			"sector": "blockchains",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"3fZv2O0g1pnr"
+					"ycMFkpWKxNgs"
 				],
-				"PermId": [
-					"WPJogFXKTy"
-				],
-				"Ticker": [
-					"e8AzPor"
-				],
-				"Duns": [
-					"E7J2iIzfQ"
-				],
-				"VatNumber": [
-					"W9UWUnfSj"
-				],
-				"CompanyRegistrationNumber": [
-					"3tubxHxlbsuk7eY"
-				]
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ET",
+			"countryCode": "TN",
 			"companyAlternativeNames": [
-				"Kertzmann - Flatley",
-				"Kunde - Tromp",
-				"Nitzsche and Sons",
-				"Ward, Witting and Little"
+				"Cole - Kemmer",
+				"McDermott and Sons",
+				"Robel - Gottlieb"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://tremendous-sting.name",
+			"companyLegalForm": "AG",
+			"website": "https://violet-tentacle.org",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -278,171 +264,164 @@
 				"general": {
 					"dataDate": "2023-04-18",
 					"sectors": [
-						"CommercialRealEstate",
+						"ResidentialRealEstate",
+						"FreightTransportByRoad",
+						"Automotive",
+						"Steel",
 						"Other",
 						"Ammonia",
-						"FreightTransportByRoad",
-						"Cement",
-						"ElectricityGeneration",
-						"HVCPlastics"
+						"CommercialRealEstate"
 					]
 				},
 				"governance": {
 					"organisationalResponsibilityForParisCompatibility": null,
-					"parisCompatibilityInAverageRemunerationInPercent": 31.0109,
-					"parisCompatibilityInExecutiveRemunerationInPercent": 37.2951,
-					"shareOfEmployeesTrainedOnParisCompatibilityInPercent": null,
-					"qualificationRequirementsOnParisCompatibility": "Yes",
+					"parisCompatibilityInAverageRemunerationInPercent": 25.058,
+					"parisCompatibilityInExecutiveRemunerationInPercent": null,
+					"shareOfEmployeesTrainedOnParisCompatibilityInPercent": 88.207,
+					"qualificationRequirementsOnParisCompatibility": null,
 					"mobilityAndTravelPolicy": "No",
 					"upstreamSupplierEngagementStrategy": "Yes",
 					"upstreamSupplierProcurementPolicy": null,
 					"downstreamCustomerEngagement": null,
-					"policymakerEngagement": "No"
+					"policymakerEngagement": null
 				},
 				"climateTargets": {
-					"shortTermScienceBasedClimateTarget": null,
-					"longTermScienceBasedClimateTarget": "No"
+					"shortTermScienceBasedClimateTarget": "Yes",
+					"longTermScienceBasedClimateTarget": "Yes"
 				},
 				"emissionsPlanning": {
 					"reductionOfAbsoluteEmissionsInTonnesCO2e": null,
-					"reductionOfRelativeEmissionsInPercent": 70.3612,
-					"relativeEmissionsInPercent": 30.5591,
-					"absoluteEmissionsInTonnesCO2e": null,
+					"reductionOfRelativeEmissionsInPercent": 39.972,
+					"relativeEmissionsInPercent": 23.0755,
+					"absoluteEmissionsInTonnesCO2e": 9735,
 					"climateActionPlan": null,
-					"useOfInternalCarbonPrice": "No"
+					"useOfInternalCarbonPrice": null
 				},
 				"investmentPlanning": {
-					"investmentPlanForClimateTargets": "Yes",
-					"capexShareInGhgIntensivePlantsInPercent": 87.756,
-					"capexShareInNetZeroSolutionsInPercent": 25.628,
-					"researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": 97.0364
+					"investmentPlanForClimateTargets": "No",
+					"capexShareInGhgIntensivePlantsInPercent": null,
+					"capexShareInNetZeroSolutionsInPercent": 96.4728,
+					"researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": null
 				}
 			},
 			"ammonia": {
 				"decarbonisation": {
-					"energyMixInPercent": null,
-					"ccsTechnologyAdoptionInPercent": 42.6658,
-					"electrificationInPercent": 94.8127
+					"energyMixInPercent": 95.8268,
+					"ccsTechnologyAdoptionInPercent": null,
+					"electrificationInPercent": 49.4748
 				},
 				"defossilisation": {
-					"useOfRenewableFeedstocksInPercent": 70.658
+					"useOfRenewableFeedstocksInPercent": 25.3047
 				}
 			},
-			"automotive": null,
-			"hvcPlastics": {
-				"decarbonisation": {
-					"energyMixInPercent": 97.1362,
-					"electrificationInPercent": 98.662
+			"automotive": {
+				"energy": {
+					"productionSiteEnergyConsumptionInMWh": 4816,
+					"energyMixInPercent": 19.236
 				},
-				"defossilisation": {
-					"useOfRenewableFeedstocksInPercent": null,
-					"useOfBioplasticsInPercent": null,
-					"useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent": 43.0452,
-					"carbonCaptureAndUseStorageTechnologies": null
+				"technologyValueCreation": {
+					"driveMixInPercent": 36.0948,
+					"icAndHybridEnginePhaseOutDate": "2024-09-15",
+					"futureValueCreationStrategy": "Yes"
 				},
-				"recycling": {
-					"contributionToCircularEconomy": "No",
-					"materialRecyclingInPercent": null,
-					"chemicalRecyclingInPercent": 83.2685
+				"materials": {
+					"materialUseManagementInPercent": 78.5417,
+					"useOfSecondaryMaterialsInPercent": 74.4599
 				}
 			},
+			"hvcPlastics": null,
 			"commercialRealEstate": {
 				"buildingEfficiency": {
-					"buildingSpecificRefurbishmentRoadmapInPercent": 52.9843,
-					"zeroEmissionBuildingShareInPercent": 96.2048,
-					"buildingEnergyEfficiencyInCorrespondingUnit": null
+					"buildingSpecificRefurbishmentRoadmapInPercent": null,
+					"zeroEmissionBuildingShareInPercent": 64.2899,
+					"buildingEnergyEfficiencyInCorrespondingUnit": 7874
 				},
 				"energySource": {
-					"renewableHeatingInPercent": 12.953
+					"renewableHeatingInPercent": 53.8201
 				},
 				"technology": {
 					"useOfDistrictHeatingNetworksInPercent": null,
-					"heatPumpUsageInPercent": 15.6201
+					"heatPumpUsageInPercent": null
 				}
 			},
-			"residentialRealEstate": null,
-			"steel": null,
+			"residentialRealEstate": {
+				"buildingEfficiency": {
+					"buildingSpecificRefurbishmentRoadmapInPercent": null,
+					"zeroEmissionBuildingShareInPercent": null,
+					"buildingEnergyEfficiencyInCorrespondingUnit": 2130
+				},
+				"energySource": {
+					"renewableHeatingInPercent": 55.9819
+				},
+				"technology": {
+					"useOfDistrictHeatingNetworksInPercent": null,
+					"heatPumpUsageInPercent": 95.9434
+				}
+			},
+			"steel": {
+				"energy": {
+					"emissionIntensityOfElectricityInCorrespondingUnit": 5102,
+					"greenHydrogenUsage": "Yes"
+				},
+				"technology": {
+					"blastFurnacePhaseOutInPercent": 51.5045,
+					"lowCarbonSteelScaleUpInPercent": null
+				}
+			},
 			"freightTransportByRoad": {
 				"technology": {
-					"driveMixPerFleetSegment": {
-						"SmallTrucks": {
-							"driveMixPerFleetSegmentInPercent": null,
-							"totalAmountOfVehicles": 9685
-						},
-						"LargeTrucks": {
-							"driveMixPerFleetSegmentInPercent": null,
-							"totalAmountOfVehicles": 1690
-						}
-					},
-					"icePhaseOut": "2024-01-04"
+					"driveMixPerFleetSegment": null,
+					"icePhaseOut": "2024-10-15"
 				},
 				"energy": {
 					"fuelMixInPercent": null
 				}
 			},
-			"electricityGeneration": {
-				"technology": {
-					"electricityMixEmissionsInCorrespondingUnit": null,
-					"shareOfRenewableElectricityInPercent": 55.9237,
-					"naturalGasPhaseOut": null,
-					"coalPhaseOut": null,
-					"storageCapacityExpansionInPercent": null
-				}
-			},
+			"electricityGeneration": null,
 			"livestockFarming": null,
-			"cement": {
-				"energy": {
-					"energyMixInPercent": 16.7916,
-					"fuelMixInPercent": null,
-					"thermalEnergyEfficiencyInPercent": null,
-					"compositionOfThermalInputInPercent": 78.7701
-				},
-				"technology": {
-					"carbonCaptureAndUseTechnologyUsage": null,
-					"electrificationOfProcessHeatInPercent": null
-				},
-				"material": {
-					"clinkerFactorReduction": null,
-					"preCalcinedClayUsageInPercent": null,
-					"circularEconomyContribution": "Yes"
-				}
-			}
+			"cement": null
 		},
 		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
 			"companyName": "P2p-dataset-with-no-null-fields",
-			"headquarters": "New Frances",
-			"headquartersPostalCode": "75133-2263",
-			"sector": "lifetime value",
+			"headquarters": "Pompano Beach",
+			"headquartersPostalCode": "53150",
+			"sector": "e-business",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"Or62phrBxqci"
+					"zxMYHAUMGAFE"
 				],
 				"PermId": [
-					"LnYAXwNJpa"
+					"CsoOPaYXcJ"
 				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"dFQmxBKZX"
+				"Ticker": [
+					"1yMlM6M"
 				],
+				"Duns": [
+					"uViunuVxk"
+				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"17HTRxtkUOS3QqN"
+					"X07T6dDmQRcvDaU"
 				]
 			},
-			"countryCode": "AZ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://quick-angora.info",
+			"countryCode": "TK",
+			"companyAlternativeNames": [
+				"Bednar Inc",
+				"Schneider - Corkery",
+				"Senger Group"
+			],
+			"companyLegalForm": "GmbH",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-01-12",
+					"dataDate": "2024-07-13",
 					"sectors": [
 						"Ammonia",
 						"Automotive",
@@ -458,163 +437,150 @@
 					]
 				},
 				"governance": {
-					"organisationalResponsibilityForParisCompatibility": "No",
-					"parisCompatibilityInAverageRemunerationInPercent": 37.7722,
-					"parisCompatibilityInExecutiveRemunerationInPercent": 33.643,
-					"shareOfEmployeesTrainedOnParisCompatibilityInPercent": 7.2145,
-					"qualificationRequirementsOnParisCompatibility": "No",
-					"mobilityAndTravelPolicy": "Yes",
+					"organisationalResponsibilityForParisCompatibility": "Yes",
+					"parisCompatibilityInAverageRemunerationInPercent": 12.7998,
+					"parisCompatibilityInExecutiveRemunerationInPercent": 99.241,
+					"shareOfEmployeesTrainedOnParisCompatibilityInPercent": 52.7584,
+					"qualificationRequirementsOnParisCompatibility": "Yes",
+					"mobilityAndTravelPolicy": "No",
 					"upstreamSupplierEngagementStrategy": "No",
 					"upstreamSupplierProcurementPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"downstreamCustomerEngagement": "No",
-					"policymakerEngagement": "No"
+					"policymakerEngagement": "Yes"
 				},
 				"climateTargets": {
 					"shortTermScienceBasedClimateTarget": "No",
-					"longTermScienceBasedClimateTarget": "No"
+					"longTermScienceBasedClimateTarget": "Yes"
 				},
 				"emissionsPlanning": {
-					"reductionOfAbsoluteEmissionsInTonnesCO2e": 628,
-					"reductionOfRelativeEmissionsInPercent": 66.4182,
-					"relativeEmissionsInPercent": 59.2018,
-					"absoluteEmissionsInTonnesCO2e": 9659,
-					"climateActionPlan": "No",
+					"reductionOfAbsoluteEmissionsInTonnesCO2e": 1564,
+					"reductionOfRelativeEmissionsInPercent": 53.7743,
+					"relativeEmissionsInPercent": 59.7474,
+					"absoluteEmissionsInTonnesCO2e": 3511,
+					"climateActionPlan": "Yes",
 					"useOfInternalCarbonPrice": "No"
 				},
 				"investmentPlanning": {
-					"investmentPlanForClimateTargets": "Yes",
-					"capexShareInGhgIntensivePlantsInPercent": 87.0064,
-					"capexShareInNetZeroSolutionsInPercent": 47.7778,
-					"researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": 33.7054
+					"investmentPlanForClimateTargets": "No",
+					"capexShareInGhgIntensivePlantsInPercent": 37.1511,
+					"capexShareInNetZeroSolutionsInPercent": 95.0287,
+					"researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": 73.0295
 				}
 			},
 			"ammonia": {
 				"decarbonisation": {
-					"energyMixInPercent": 82.0822,
-					"ccsTechnologyAdoptionInPercent": 22.6158,
-					"electrificationInPercent": 39.89
+					"energyMixInPercent": 12.42,
+					"ccsTechnologyAdoptionInPercent": 35.8992,
+					"electrificationInPercent": 12.0133
 				},
 				"defossilisation": {
-					"useOfRenewableFeedstocksInPercent": 90.0558
+					"useOfRenewableFeedstocksInPercent": 55.3156
 				}
 			},
 			"automotive": {
 				"energy": {
-					"productionSiteEnergyConsumptionInMWh": 4998,
-					"energyMixInPercent": 4.5616
+					"productionSiteEnergyConsumptionInMWh": 4250,
+					"energyMixInPercent": 30.9484
 				},
 				"technologyValueCreation": {
-					"driveMixInPercent": 76.9701,
-					"icAndHybridEnginePhaseOutDate": "2024-01-16",
-					"futureValueCreationStrategy": "Yes"
+					"driveMixInPercent": 51.8729,
+					"icAndHybridEnginePhaseOutDate": "2024-02-24",
+					"futureValueCreationStrategy": "No"
 				},
 				"materials": {
-					"materialUseManagementInPercent": 25.6056,
-					"useOfSecondaryMaterialsInPercent": 69.1476
+					"materialUseManagementInPercent": 52.5144,
+					"useOfSecondaryMaterialsInPercent": 77.2899
 				}
 			},
 			"hvcPlastics": {
 				"decarbonisation": {
-					"energyMixInPercent": 41.3476,
-					"electrificationInPercent": 63.8149
+					"energyMixInPercent": 40.642,
+					"electrificationInPercent": 18.9036
 				},
 				"defossilisation": {
-					"useOfRenewableFeedstocksInPercent": 87.4693,
-					"useOfBioplasticsInPercent": 35.6713,
-					"useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent": 87.2685,
-					"carbonCaptureAndUseStorageTechnologies": "Yes"
+					"useOfRenewableFeedstocksInPercent": 77.9923,
+					"useOfBioplasticsInPercent": 69.4109,
+					"useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent": 77.6591,
+					"carbonCaptureAndUseStorageTechnologies": "No"
 				},
 				"recycling": {
-					"contributionToCircularEconomy": "No",
-					"materialRecyclingInPercent": 6.3684,
-					"chemicalRecyclingInPercent": 23.2598
+					"contributionToCircularEconomy": "Yes",
+					"materialRecyclingInPercent": 73.1911,
+					"chemicalRecyclingInPercent": 41.5544
 				}
 			},
 			"commercialRealEstate": {
 				"buildingEfficiency": {
-					"buildingSpecificRefurbishmentRoadmapInPercent": 75.3208,
-					"zeroEmissionBuildingShareInPercent": 11.0214,
-					"buildingEnergyEfficiencyInCorrespondingUnit": 6432
+					"buildingSpecificRefurbishmentRoadmapInPercent": 86.909,
+					"zeroEmissionBuildingShareInPercent": 54.415,
+					"buildingEnergyEfficiencyInCorrespondingUnit": 7503
 				},
 				"energySource": {
-					"renewableHeatingInPercent": 96.3398
+					"renewableHeatingInPercent": 54.6208
 				},
 				"technology": {
-					"useOfDistrictHeatingNetworksInPercent": 14.1502,
-					"heatPumpUsageInPercent": 45.7207
+					"useOfDistrictHeatingNetworksInPercent": 1.1431,
+					"heatPumpUsageInPercent": 49.7223
 				}
 			},
 			"residentialRealEstate": {
 				"buildingEfficiency": {
-					"buildingSpecificRefurbishmentRoadmapInPercent": 86.0868,
-					"zeroEmissionBuildingShareInPercent": 63.6715,
-					"buildingEnergyEfficiencyInCorrespondingUnit": 5940
+					"buildingSpecificRefurbishmentRoadmapInPercent": 83.9784,
+					"zeroEmissionBuildingShareInPercent": 18.6097,
+					"buildingEnergyEfficiencyInCorrespondingUnit": 2223
 				},
 				"energySource": {
-					"renewableHeatingInPercent": 72.9715
+					"renewableHeatingInPercent": 23.1804
 				},
 				"technology": {
-					"useOfDistrictHeatingNetworksInPercent": 82.2298,
-					"heatPumpUsageInPercent": 78.9986
+					"useOfDistrictHeatingNetworksInPercent": 68.0263,
+					"heatPumpUsageInPercent": 48.394
 				}
 			},
 			"steel": {
 				"energy": {
-					"emissionIntensityOfElectricityInCorrespondingUnit": 9325,
-					"greenHydrogenUsage": "Yes"
+					"emissionIntensityOfElectricityInCorrespondingUnit": 9679,
+					"greenHydrogenUsage": "No"
 				},
 				"technology": {
-					"blastFurnacePhaseOutInPercent": 51.0102,
-					"lowCarbonSteelScaleUpInPercent": 51.6255
+					"blastFurnacePhaseOutInPercent": 58.878,
+					"lowCarbonSteelScaleUpInPercent": 59.665
 				}
 			},
 			"freightTransportByRoad": {
 				"technology": {
-					"driveMixPerFleetSegment": {
-						"SmallTrucks": {
-							"driveMixPerFleetSegmentInPercent": 3.8013,
-							"totalAmountOfVehicles": 1309
-						},
-						"MediumTrucks": {
-							"driveMixPerFleetSegmentInPercent": 52.0628,
-							"totalAmountOfVehicles": 8464
-						},
-						"LargeTrucks": {
-							"driveMixPerFleetSegmentInPercent": 72.7067,
-							"totalAmountOfVehicles": 5229
-						}
-					},
-					"icePhaseOut": "2024-08-13"
+					"driveMixPerFleetSegment": {},
+					"icePhaseOut": "2024-01-04"
 				},
 				"energy": {
-					"fuelMixInPercent": 46.746
+					"fuelMixInPercent": 60.0551
 				}
 			},
 			"electricityGeneration": {
 				"technology": {
-					"electricityMixEmissionsInCorrespondingUnit": 3922,
-					"shareOfRenewableElectricityInPercent": 90.6884,
-					"naturalGasPhaseOut": "2024-09-11",
-					"coalPhaseOut": "2024-01-26",
-					"storageCapacityExpansionInPercent": 5.7182
+					"electricityMixEmissionsInCorrespondingUnit": 1910,
+					"shareOfRenewableElectricityInPercent": 54.4166,
+					"naturalGasPhaseOut": "2023-12-08",
+					"coalPhaseOut": "2024-04-23",
+					"storageCapacityExpansionInPercent": 36.0649
 				}
 			},
 			"livestockFarming": {
 				"emissionsFromManureAndFertiliserAndLivestock": {
-					"compostedFermentedManureInPercent": 90.0937,
-					"emissionProofFertiliserStorageInPercent": 84.9101
+					"compostedFermentedManureInPercent": 38.7211,
+					"emissionProofFertiliserStorageInPercent": 15.986
 				},
 				"animalWelfare": {
-					"mortalityRateInPercent": 10.1959
+					"mortalityRateInPercent": 29.4515
 				},
 				"animalFeed": {
-					"ownFeedInPercent": 65.175,
+					"ownFeedInPercent": 13.8147,
 					"externalFeedCertification": {
 						"value": "No",
 						"dataSource": {
@@ -622,33 +588,33 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"originOfExternalFeed": "maximize frictionless content",
-					"excessNitrogenInKilogramsPerHectare": 3834,
-					"cropRotation": 2809,
-					"climateFriendlyProteinProductionInPercent": 78.7577,
-					"greenFodderInPercent": 0.001
+					"originOfExternalFeed": "integrate holistic technologies",
+					"excessNitrogenInKilogramsPerHectare": 9583,
+					"cropRotation": 9302,
+					"climateFriendlyProteinProductionInPercent": 98.0431,
+					"greenFodderInPercent": 23.3181
 				},
 				"energy": {
-					"renewableElectricityInPercent": 98.6993,
-					"renewableHeatingInPercent": 31.1649,
-					"electricGasPoweredMachineryVehicleInPercent": 81.8349
+					"renewableElectricityInPercent": 97.9547,
+					"renewableHeatingInPercent": 63.4146,
+					"electricGasPoweredMachineryVehicleInPercent": 64.9447
 				}
 			},
 			"cement": {
 				"energy": {
-					"energyMixInPercent": 68.5255,
-					"fuelMixInPercent": 20.789,
-					"thermalEnergyEfficiencyInPercent": 82.9342,
-					"compositionOfThermalInputInPercent": 73.8026
+					"energyMixInPercent": 65.369,
+					"fuelMixInPercent": 83.6463,
+					"thermalEnergyEfficiencyInPercent": 84.235,
+					"compositionOfThermalInputInPercent": 88.3325
 				},
 				"technology": {
 					"carbonCaptureAndUseTechnologyUsage": "Yes",
-					"electrificationOfProcessHeatInPercent": 23.0237
+					"electrificationOfProcessHeatInPercent": 16.6145
 				},
 				"material": {
-					"clinkerFactorReduction": 9262,
-					"preCalcinedClayUsageInPercent": 69.7178,
-					"circularEconomyContribution": "No"
+					"clinkerFactorReduction": 6420,
+					"preCalcinedClayUsageInPercent": 56.9275,
+					"circularEconomyContribution": "Yes"
 				}
 			}
 		},
@@ -657,32 +623,31 @@
 	{
 		"companyInformation": {
 			"companyName": "one-p2p-data-set-with-four-sectors",
-			"headquarters": "Farrellcester",
-			"headquartersPostalCode": null,
-			"sector": "e-business",
+			"headquarters": "Pollichberg",
+			"headquartersPostalCode": "94720-8890",
+			"sector": "niches",
 			"identifiers": {
-				"Lei": [
-					"HcS8qA9JSRXwaXhehvcC"
-				],
+				"Lei": [],
 				"Isin": [
-					"FORkOMhSavd6"
+					"78hOEhhMIC0I",
+					"Sql6zBAJkyvk"
 				],
-				"PermId": [],
-				"Ticker": [
-					"OFNaqeX"
+				"PermId": [
+					"UfndZrVICn"
 				],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"uDeA1POz9qo4Y4f"
+				]
 			},
-			"countryCode": "SM",
+			"countryCode": "HT",
 			"companyAlternativeNames": [
-				"Cronin - Wiegand",
-				"Runolfsson - Murray",
-				"Windler, Wisozk and Kreiger"
+				"Stokes, Tremblay and Turcotte"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://gripping-volume.info/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://slow-parchment.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -697,116 +662,113 @@
 					]
 				},
 				"governance": {
-					"organisationalResponsibilityForParisCompatibility": null,
-					"parisCompatibilityInAverageRemunerationInPercent": 48.7118,
-					"parisCompatibilityInExecutiveRemunerationInPercent": 6.0246,
-					"shareOfEmployeesTrainedOnParisCompatibilityInPercent": null,
-					"qualificationRequirementsOnParisCompatibility": null,
-					"mobilityAndTravelPolicy": "Yes",
-					"upstreamSupplierEngagementStrategy": "No",
-					"upstreamSupplierProcurementPolicy": {
-						"value": "Yes",
-						"dataSource": null
-					},
-					"downstreamCustomerEngagement": "Yes",
+					"organisationalResponsibilityForParisCompatibility": "Yes",
+					"parisCompatibilityInAverageRemunerationInPercent": null,
+					"parisCompatibilityInExecutiveRemunerationInPercent": null,
+					"shareOfEmployeesTrainedOnParisCompatibilityInPercent": 40.7057,
+					"qualificationRequirementsOnParisCompatibility": "No",
+					"mobilityAndTravelPolicy": null,
+					"upstreamSupplierEngagementStrategy": null,
+					"upstreamSupplierProcurementPolicy": null,
+					"downstreamCustomerEngagement": null,
 					"policymakerEngagement": "No"
 				},
 				"climateTargets": {
-					"shortTermScienceBasedClimateTarget": null,
-					"longTermScienceBasedClimateTarget": null
+					"shortTermScienceBasedClimateTarget": "Yes",
+					"longTermScienceBasedClimateTarget": "Yes"
 				},
 				"emissionsPlanning": {
 					"reductionOfAbsoluteEmissionsInTonnesCO2e": null,
 					"reductionOfRelativeEmissionsInPercent": null,
 					"relativeEmissionsInPercent": 12,
-					"absoluteEmissionsInTonnesCO2e": 4532,
-					"climateActionPlan": "Yes",
-					"useOfInternalCarbonPrice": "Yes"
+					"absoluteEmissionsInTonnesCO2e": null,
+					"climateActionPlan": "No",
+					"useOfInternalCarbonPrice": null
 				},
 				"investmentPlanning": {
-					"investmentPlanForClimateTargets": "Yes",
-					"capexShareInGhgIntensivePlantsInPercent": 70.1965,
-					"capexShareInNetZeroSolutionsInPercent": 74.8798,
-					"researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": null
+					"investmentPlanForClimateTargets": null,
+					"capexShareInGhgIntensivePlantsInPercent": null,
+					"capexShareInNetZeroSolutionsInPercent": 20.105,
+					"researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent": 92.4608
 				}
 			},
 			"ammonia": {
 				"decarbonisation": {
-					"energyMixInPercent": 25.3087,
+					"energyMixInPercent": 36.2956,
 					"ccsTechnologyAdoptionInPercent": 54,
 					"electrificationInPercent": null
 				},
 				"defossilisation": {
-					"useOfRenewableFeedstocksInPercent": null
+					"useOfRenewableFeedstocksInPercent": 14.7439
 				}
 			},
 			"automotive": {
 				"energy": {
-					"productionSiteEnergyConsumptionInMWh": 2436,
-					"energyMixInPercent": 77.9873
+					"productionSiteEnergyConsumptionInMWh": 7630,
+					"energyMixInPercent": 60.3261
 				},
 				"technologyValueCreation": {
-					"driveMixInPercent": null,
-					"icAndHybridEnginePhaseOutDate": "2024-03-04",
-					"futureValueCreationStrategy": null
+					"driveMixInPercent": 38.1717,
+					"icAndHybridEnginePhaseOutDate": null,
+					"futureValueCreationStrategy": "No"
 				},
 				"materials": {
-					"materialUseManagementInPercent": 64.0021,
-					"useOfSecondaryMaterialsInPercent": null
+					"materialUseManagementInPercent": 51.0973,
+					"useOfSecondaryMaterialsInPercent": 50.3148
 				}
 			},
 			"hvcPlastics": {
 				"decarbonisation": {
-					"energyMixInPercent": null,
+					"energyMixInPercent": 74.9456,
 					"electrificationInPercent": null
 				},
 				"defossilisation": {
-					"useOfRenewableFeedstocksInPercent": 44.9509,
-					"useOfBioplasticsInPercent": null,
+					"useOfRenewableFeedstocksInPercent": 40.274,
+					"useOfBioplasticsInPercent": 66.3883,
 					"useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent": null,
-					"carbonCaptureAndUseStorageTechnologies": "Yes"
+					"carbonCaptureAndUseStorageTechnologies": "No"
 				},
 				"recycling": {
-					"contributionToCircularEconomy": "Yes",
+					"contributionToCircularEconomy": "No",
 					"materialRecyclingInPercent": null,
-					"chemicalRecyclingInPercent": 21.6921
+					"chemicalRecyclingInPercent": 55.9252
 				}
 			},
 			"commercialRealEstate": {
 				"buildingEfficiency": {
-					"buildingSpecificRefurbishmentRoadmapInPercent": null,
+					"buildingSpecificRefurbishmentRoadmapInPercent": 79.7861,
 					"zeroEmissionBuildingShareInPercent": null,
-					"buildingEnergyEfficiencyInCorrespondingUnit": 8224
+					"buildingEnergyEfficiencyInCorrespondingUnit": 3453
 				},
 				"energySource": {
-					"renewableHeatingInPercent": null
-				},
-				"technology": {
-					"useOfDistrictHeatingNetworksInPercent": 82.3796,
-					"heatPumpUsageInPercent": 80.2239
-				}
-			},
-			"residentialRealEstate": {
-				"buildingEfficiency": {
-					"buildingSpecificRefurbishmentRoadmapInPercent": 47.7401,
-					"zeroEmissionBuildingShareInPercent": null,
-					"buildingEnergyEfficiencyInCorrespondingUnit": null
-				},
-				"energySource": {
-					"renewableHeatingInPercent": 58.8714
+					"renewableHeatingInPercent": 63.0261
 				},
 				"technology": {
 					"useOfDistrictHeatingNetworksInPercent": null,
 					"heatPumpUsageInPercent": null
 				}
 			},
-			"steel": {
-				"energy": {
-					"emissionIntensityOfElectricityInCorrespondingUnit": 884,
-					"greenHydrogenUsage": null
+			"residentialRealEstate": {
+				"buildingEfficiency": {
+					"buildingSpecificRefurbishmentRoadmapInPercent": 12.7036,
+					"zeroEmissionBuildingShareInPercent": 93.0266,
+					"buildingEnergyEfficiencyInCorrespondingUnit": 7471
+				},
+				"energySource": {
+					"renewableHeatingInPercent": null
 				},
 				"technology": {
-					"blastFurnacePhaseOutInPercent": 65.485,
+					"useOfDistrictHeatingNetworksInPercent": 35.1638,
+					"heatPumpUsageInPercent": null
+				}
+			},
+			"steel": {
+				"energy": {
+					"emissionIntensityOfElectricityInCorrespondingUnit": null,
+					"greenHydrogenUsage": "No"
+				},
+				"technology": {
+					"blastFurnacePhaseOutInPercent": 26.9968,
 					"lowCarbonSteelScaleUpInPercent": null
 				}
 			},
@@ -818,18 +780,18 @@
 							"totalAmountOfVehicles": 1234
 						}
 					},
-					"icePhaseOut": "2024-05-08"
+					"icePhaseOut": "2024-09-30"
 				},
 				"energy": {
-					"fuelMixInPercent": 5.6725
+					"fuelMixInPercent": 24.3381
 				}
 			},
 			"electricityGeneration": {
 				"technology": {
-					"electricityMixEmissionsInCorrespondingUnit": null,
-					"shareOfRenewableElectricityInPercent": 91.8715,
-					"naturalGasPhaseOut": "2024-02-19",
-					"coalPhaseOut": "2024-08-18",
+					"electricityMixEmissionsInCorrespondingUnit": 9857,
+					"shareOfRenewableElectricityInPercent": null,
+					"naturalGasPhaseOut": null,
+					"coalPhaseOut": "2024-01-08",
 					"storageCapacityExpansionInPercent": null
 				}
 			},
@@ -842,7 +804,7 @@
 					"mortalityRateInPercent": null
 				},
 				"animalFeed": {
-					"ownFeedInPercent": 35.0844,
+					"ownFeedInPercent": null,
 					"externalFeedCertification": {
 						"value": "Yes",
 						"dataSource": {
@@ -850,33 +812,33 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"originOfExternalFeed": "facilitate frictionless e-business",
-					"excessNitrogenInKilogramsPerHectare": null,
-					"cropRotation": 6766,
+					"originOfExternalFeed": "harness world-class schemas",
+					"excessNitrogenInKilogramsPerHectare": 3338,
+					"cropRotation": null,
 					"climateFriendlyProteinProductionInPercent": null,
-					"greenFodderInPercent": 2.1175
+					"greenFodderInPercent": 65.6244
 				},
 				"energy": {
 					"renewableElectricityInPercent": null,
-					"renewableHeatingInPercent": null,
+					"renewableHeatingInPercent": 11.1817,
 					"electricGasPoweredMachineryVehicleInPercent": null
 				}
 			},
 			"cement": {
 				"energy": {
-					"energyMixInPercent": 21.6298,
+					"energyMixInPercent": 32.1027,
 					"fuelMixInPercent": null,
 					"thermalEnergyEfficiencyInPercent": null,
-					"compositionOfThermalInputInPercent": 68.4079
+					"compositionOfThermalInputInPercent": 55.641
 				},
 				"technology": {
 					"carbonCaptureAndUseTechnologyUsage": null,
-					"electrificationOfProcessHeatInPercent": 88.2759
+					"electrificationOfProcessHeatInPercent": null
 				},
 				"material": {
 					"clinkerFactorReduction": null,
 					"preCalcinedClayUsageInPercent": 23,
-					"circularEconomyContribution": "No"
+					"circularEconomyContribution": null
 				}
 			}
 		},

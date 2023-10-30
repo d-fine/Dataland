@@ -136,7 +136,7 @@ import ProgressBar from "@/components/general/ProgressBar.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatBytesUserFriendly, roundNumber } from "@/utils/NumberConversionUtils";
 import { UPLOAD_FILE_SIZE_DISPLAY_DECIMALS } from "@/utils/Constants";
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 import { DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/DatalandSettings";
 
 export default defineComponent({

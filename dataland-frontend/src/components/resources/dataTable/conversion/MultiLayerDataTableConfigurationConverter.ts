@@ -1,6 +1,6 @@
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import {
-  type BadgeColors,
+  type BadgeColor,
   type MLDTConfig,
   type MLDTSectionConfig,
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
@@ -27,7 +27,7 @@ function convertCategoryToMLDTSectionConfig(category: Category): MLDTSectionConf
     expandOnPageLoad: autoExpandingCategoryNames.has(category.name),
     children: mldtCategoryChildren,
     shouldDisplay: category.showIf,
-    labelBadgeColor: category.color as BadgeColors,
+    labelBadgeColor: category.color as BadgeColor,
   };
 }
 

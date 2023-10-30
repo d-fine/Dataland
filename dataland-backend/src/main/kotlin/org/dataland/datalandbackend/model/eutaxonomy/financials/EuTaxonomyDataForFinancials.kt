@@ -46,5 +46,6 @@ data class EuTaxonomyDataForFinancials(
 
     override val numberOfEmployees: BigDecimal? = null,
 
+    @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     override val referencedReports: Map<String, CompanyReport>? = null,
 ) : EuTaxonomyCommonFields, FrameworkBase

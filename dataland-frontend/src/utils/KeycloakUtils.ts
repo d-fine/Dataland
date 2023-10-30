@@ -72,3 +72,13 @@ export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
   const url = keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
   location.assign(url);
 }
+
+/**
+ * Registers and logs the user in and redirects her/him to the Dataland companies search page.
+ * @param keycloak is the keycloak adaptor used to do the login
+ */
+export function registerAndRedirectToSearchPage(keycloak: Keycloak): void {
+  const baseUrl = window.location.origin;
+  const url = keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
+  location.assign(url);
+}

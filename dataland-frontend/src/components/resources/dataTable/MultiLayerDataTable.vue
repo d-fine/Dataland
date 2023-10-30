@@ -9,15 +9,20 @@
                 <span class="p-column-title">KPIs</span>
               </div>
             </th>
-            <th v-for="(dataset, idx) in datasets" :key="idx" class="horizontal-headers-size" :data-dataset-index="idx">
+            <th
+              v-for="(mldtDataset, idx) in mldtDatasets"
+              :key="idx"
+              class="horizontal-headers-size"
+              :data-dataset-index="idx"
+            >
               <div class="p-column-header-content">
-                <span class="p-column-title">{{ dataset.headerLabel }}</span>
+                <span class="p-column-title">{{ mldtDataset.headerLabel }}</span>
               </div>
             </th>
           </tr>
         </thead>
         <tbody class="p-datatable-tbody">
-          <MultiLayerDataTableBody :datasets="datasets" :config="config" :isTopLevel="true" :isVisible="true" />
+          <MultiLayerDataTableBody :mldtDatasets="mldtDatasets" :config="config" :isTopLevel="true" :isVisible="true" />
         </tbody>
       </table>
     </div>
@@ -37,7 +42,7 @@ import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayer
 
 defineProps<{
   config: MLDTConfig<T>;
-  datasets: Array<MLDTDataset<T>>;
+  mldtDatasets: Array<MLDTDataset<T>>;
   ariaLabel?: string;
 }>();
 </script>

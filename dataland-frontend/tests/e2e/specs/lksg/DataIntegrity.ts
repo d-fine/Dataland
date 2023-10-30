@@ -13,7 +13,7 @@ import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { generateProductionSite } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import { getSectionHead } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describeIf(
   "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
@@ -42,7 +42,7 @@ describeIf(
       cy.visit("/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg);
       cy.wait("@fetchLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
       cy.get("h1").should("contain", storedCompany.companyInformation.companyName);
-      MLDT.getSectionHead("Production-specific - Own Operations")
+      getSectionHead("Production-specific - Own Operations")
         .should("have.attr", "data-section-expanded", "false")
         .click();
 
@@ -93,7 +93,7 @@ describeIf(
             (metaInfos as DataMetaInformation[])[0],
           );
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
-          MLDT.getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+          getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
 
           cy.get(`a:contains(Show List Of Production Sites)`).click();
           lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {

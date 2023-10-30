@@ -5,12 +5,19 @@ export enum MLDTDisplayComponentName {
   StringDisplayComponent = "StringDisplayComponent",
   DocumentLinkDisplayComponent = "DocumentLinkDisplayComponent",
   ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
-  HighlightHiddenCellDisplayComponent = "HighlightHiddenCellDisplayComponent",
+  HighlightHiddenCellDisplay = "HighlightHiddenCellDisplay",
+  DataPointDisplayComponent = "DataPointDisplayComponent",
 }
 
 export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponentName.StringDisplayComponent]: string | undefined | null;
-  [MLDTDisplayComponentName.DocumentLinkDisplayComponent]: { label: string; reference: BaseDocumentReference };
+  [MLDTDisplayComponentName.DocumentLinkDisplayComponent]: { label: string; dataSource: BaseDocumentReference };
+  [MLDTDisplayComponentName.DataPointDisplayComponent]: {
+    label: string;
+    fileName: string;
+    fileReference: string;
+    page?: number;
+  };
   [MLDTDisplayComponentName.ModalLinkDisplayComponent]: {
     label: string;
     // Ignored as "any" type comes from DynamicDialog
@@ -18,7 +25,7 @@ export type MLDTDisplayComponentTypes = {
     modalComponent: any;
     modalOptions?: DynamicDialogOptions;
   };
-  [MLDTDisplayComponentName.HighlightHiddenCellDisplayComponent]: {
+  [MLDTDisplayComponentName.HighlightHiddenCellDisplay]: {
     innerContents: AvailableMLDTDisplayObjectTypes;
   };
 };

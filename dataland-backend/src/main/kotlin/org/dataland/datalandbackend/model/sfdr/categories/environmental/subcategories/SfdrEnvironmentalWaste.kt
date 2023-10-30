@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
+import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -9,21 +10,21 @@ import java.math.BigDecimal
  * Fields of the subcategory "Waste" belonging to the category "Environmental" of the sfdr framework.
  */
 data class SfdrEnvironmentalWaste(
-    val hazardousWasteInTonnes: ExtendedDataPoint<BigDecimal>? = null,
+    val hazardousAndRadioactiveWasteInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
     val manufactureOfAgrochemicalPesticidesProducts: ExtendedDataPoint<YesNo>? = null,
 
     val landDegradationDesertificationSoilSealingExposure: ExtendedDataPoint<YesNo>? = null,
 
-    val sustainableAgriculturePolicy: ExtendedDataPoint<YesNo>? = null,
+    val sustainableAgriculturePolicy: BaseDataPoint<YesNo>? = null,
 
-    val sustainableOceansAndSeasPolicy: ExtendedDataPoint<YesNo>? = null,
+    val sustainableOceansAndSeasPolicy: BaseDataPoint<YesNo>? = null,
 
-    val wasteNonRecycledInTonnes: ExtendedDataPoint<BigDecimal>? = null,
+    val nonRecycledWasteInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
     val threatenedSpeciesExposure: ExtendedDataPoint<YesNo>? = null,
 
-    val biodiversityProtectionPolicy: ExtendedDataPoint<YesNo>? = null,
+    val biodiversityProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    val deforestationPolicy: ExtendedDataPoint<YesNo>? = null,
+    val deforestationPolicy: BaseDataPoint<YesNo>? = null,
 )

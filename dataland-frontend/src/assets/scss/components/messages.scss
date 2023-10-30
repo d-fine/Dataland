@@ -1,13 +1,16 @@
 .p-message {
   .p-message-wrapper {
-    padding: 1rem 1.5rem
+    padding: 1rem 1.5rem;
   }
   .p-message-close {
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
     background: transparent;
-    transition: background-color .2s, color .2s, box-shadow .2s
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      box-shadow 0.2s;
   }
   margin: 1rem 0;
   border-radius: 4px;
@@ -20,35 +23,37 @@
   &.p-message-info {
     background: $message-info-bg;
     border: solid $message-info-border;
-    color: $message-info-text
+    color: $message-info-text;
   }
   &.p-message-bordered-success {
     background: $message-bordered-success-bg;
     border: solid $message-bordered-success-border;
-    color: $message-bordered-success-text
+    color: $message-bordered-success-text;
   }
   &.p-message-success {
     background: $message-success-bg;
     border: solid $message-success-border;
-    color: $message-success-text
+    color: $message-success-text;
   }
   &.p-message-warn {
     background: $message-warn-bg;
     border: solid $message-warn-border;
-    color: $message-warn-text
+    color: $message-warn-text;
   }
   &.p-message-error {
     background: $message-error-bg;
     border: solid $message-error-border;
-    color: $message-error-text
+    color: $message-error-text;
   }
   .p-message-text {
-     font-size: $fs-base;
-     font-weight: $fw-medium
-   }
+    font-size: $fs-base;
+    font-weight: $fw-medium;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
   .p-message-icon {
     font-size: $fs-xl;
-    margin-right: .5rem
+    margin-right: 0.5rem;
   }
 }
 
@@ -61,7 +66,7 @@
   text-transform: uppercase;
   color: $main-color;
   font-weight: bold;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
   align-items: center;
   button {
     margin: 0;

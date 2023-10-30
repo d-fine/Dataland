@@ -28,7 +28,7 @@ import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonom
 import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";

@@ -14,7 +14,7 @@
 <script lang="ts">
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 export default {
   name: "NoContentFound",
   components: { TheHeader, TheContent, TheFooter },

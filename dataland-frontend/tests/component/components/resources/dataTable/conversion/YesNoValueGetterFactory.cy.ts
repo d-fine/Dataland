@@ -114,9 +114,9 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
           displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
           displayValue: {
             label: "Certified",
-            reference: {
-              fileName: "Hello",
+            dataSource: {
               fileReference: "TestReference",
+              fileName: "Hello",
             },
           },
         });
@@ -128,7 +128,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
         const dataset = { data: datapoint };
         const value = yesNoValueGetterFactory("data", baseFieldCertificate)(dataset);
         expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent as string,
           displayValue: "Uncertified",
         });
       });
@@ -142,7 +142,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
         const dataset = { data: datapoint };
         const value = yesNoValueGetterFactory("data", baseFieldNoCertificate)(dataset);
         expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent as string,
           displayValue: "Yes",
         });
       });
@@ -186,7 +186,7 @@ describe("Unit test for the YesNoValueGetterFactory", () => {
       const dataset = { data: datapoint };
       const value = yesNoValueGetterFactory("data", field)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
-        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent as string,
         displayValue: "Yes",
       });
     });
