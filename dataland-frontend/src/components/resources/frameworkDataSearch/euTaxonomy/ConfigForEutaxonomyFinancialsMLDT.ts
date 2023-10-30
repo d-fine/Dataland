@@ -17,7 +17,7 @@ export const configForEutaxonomyFinancialsMLDT = [
           {
             type: "cell",
             label: "Fiscal Year Deviation",
-            explanation: "Does the fiscal year deviate from the calender year?",
+            explanation: "Does the fiscal year deviate from the calendar year?",
           },
           {
             type: "cell",

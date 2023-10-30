@@ -21,7 +21,7 @@ export const euTaxonomyForNonFinancialsDisplayDataModel = [
           {
             name: "fiscalYearDeviation",
             label: "Fiscal Year Deviation",
-            description: "Does the fiscal year deviate from the calender year?",
+            description: "Does the fiscal year deviate from the calendar year?",
             unit: "",
             component: "RadioButtonsFormField",
             evidenceDesired: false,
