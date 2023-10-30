@@ -140,11 +140,9 @@ services:
       - backend-db
     <<: *uncritical-constants-env
     environment:
-      <<: [*rabbit-mq-user-and-pass, *mailjet-api-id-and-secret]
+      <<: *rabbit-mq-user-and-pass
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      INVITATION_REQUEST_RECEIVERS: ${INVITATION_REQUEST_RECEIVERS}
-      INVITATION_REQUEST_CC: ${INVITATION_REQUEST_CC}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
   backend-db:
     restart: always

@@ -105,8 +105,8 @@ jobs:
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
-          INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
-          INVITATION_REQUEST_CC: "dev.null@dataland.com"
+          NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST: "dev.null@dataland.com"
+          NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST: "dev.null@dataland.com"
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
         if: always()
@@ -219,8 +219,8 @@ jobs:
           DOCKER_BUILDKIT: 1
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
-          INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
-          INVITATION_REQUEST_CC: "dev.null@dataland.com"
+          NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST: "dev.null@dataland.com"
+          NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST: "dev.null@dataland.com"
           RABBITMQ_USER: "admin"
           RABBITMQ_PASS: "dataland"
           RABBITMQ_PASS_HASH: "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F"

@@ -120,8 +120,8 @@ class EmailGenerator {
         )
         // TODO rename the envs later and to this stuff somewhere else
         val sender = EmailContact("info@dataland.com", "Dataland") // TODO app props?
-        val receivers = getEmailAddressesFromEnv("INVITATION_REQUEST_RECEIVERS") // TODO app props?
-        val cc = getEmailAddressesFromEnv("INVITATION_REQUEST_CC") // TODO app props?
+        val receivers = getEmailAddressesFromEnv("NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST") // TODO app props?
+        val cc = getEmailAddressesFromEnv("NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST") // TODO app props?
         // TODO later you could add info about matched Dataland-company-IDs!
         return Email(sender, receivers, cc, content)
     }
