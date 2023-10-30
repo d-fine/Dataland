@@ -28,11 +28,19 @@ class EmailGenerator {
     }
 
     private fun getEmailAddressesFromEnv(envContainingSemicolonDelimitedEmailAddresses: String): List<EmailContact> {
-        return System.getenv(envContainingSemicolonDelimitedEmailAddresses)!!.split(";").map {
-                emailAddress ->
-            isEmailAddressFormatValid(emailAddress)
-            EmailContact(emailAddress)
+        val listOfEmailContacts: MutableList<EmailContact> = mutableListOf()
+        val envWithSemicolonSeperatedEmailAddresses = System.getenv(envContainingSemicolonDelimitedEmailAddresses)
+        if (envWithSemicolonSeperatedEmailAddresses == null) {
+            listOfEmailContacts.add(EmailContact("dev.null@dataland.com")) // TODO later => fallback in app prop!
         }
+        else {
+            listOfEmailContacts.addAll(
+                envWithSemicolonSeperatedEmailAddresses.split(";").map {
+                        emailAddress ->
+                    isEmailAddressFormatValid(emailAddress)
+                    EmailContact(emailAddress)
+        })}
+        return listOfEmailContacts
     }
 
     private fun buildUserInfo(): String {
