@@ -4,15 +4,15 @@
       <table v-if="dataPointDisplay" class="p-datatable-table" aria-description="Data point content">
         <tbody class="p-datatable-body">
           <tr>
-            <td class="headers-bg width-auto"><span class="table-left-label">Value</span></td>
+            <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
             <td>{{ dataPointDisplay.value ?? "" }}</td>
           </tr>
           <tr v-if="dataPointDisplay.quality">
-            <td class="headers-bg width-auto"><span class="table-left-label">Quality</span></td>
+            <th class="headers-bg width-auto"><span class="table-left-label">Quality</span></th>
             <td>{{ dataPointDisplay.quality }}</td>
           </tr>
           <tr v-if="dataPointDisplay.dataSource">
-            <td class="headers-bg width-auto"><span class="table-left-label">Data source</span></td>
+            <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
               <DocumentLink
                 :label="dataSourceLabel"
@@ -23,7 +23,7 @@
             </td>
           </tr>
           <tr v-if="dataPointDisplay.comment">
-            <td class="headers-bg width-auto"><span class="table-left-label">Comment</span></td>
+            <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
             <td>{{ dataPointDisplay.comment }}</td>
           </tr>
         </tbody>
