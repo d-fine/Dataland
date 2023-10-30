@@ -6,7 +6,7 @@ import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
 import org.dataland.datalandcommunitymanager.model.email.Email
-import org.dataland.datalandcommunitymanager.model.email.email
+import org.dataland.datalandcommunitymanager.model.email.integrateEmailIntoTransactionalEmailBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class EmailSender(
-    mailServerUrl: String = "https://api.eu.mailjet.com",
+    mailServerUrl: String = "https://api.eu.mailjet.com", // TODO should be passed in app properties
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -30,19 +30,17 @@ class EmailSender(
      * @param email the email to send
      * @return a sending success indicator which is true if the sending was successful
      */
-    fun sendEmail(email: Email): Boolean {
+    fun sendEmail(email: Email) { // TODO return value really needed?
         try {
             email.receivers.forEach { logger.info("Sending an email to $it.") }
             email.cc.forEach { logger.info("Sending an email with $it in cc.") }
-            val mailjetEmail = TransactionalEmail.builder().email(email).build()
+            val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
             val request = SendEmailsRequest.builder().message(mailjetEmail).build()
             val response = request.sendWith(mailjetClient)
             response.messages.forEach { logger.info(it.toString()) }
             logger.info("Email successfully sent.")
         } catch (e: MailjetException) {
-            logger.error("Error sending email, with error: $e")
-            return false
+            logger.error("Error sending email, with error: $e") // TODO should we give the user an info if the email wasnt sent?
         }
-        return true
     }
 }

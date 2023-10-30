@@ -17,6 +17,8 @@ import java.util.*
 @Service("RequestManager")
 class RequestManager(
     @Autowired private val companyGetter: CompanyGetter,
+    @Autowired private val emailGenerator: EmailGenerator,
+    @Autowired private val emailSender: EmailSender,
     // @Autowired private val communityRepository: CommunityRepository,
 ) {
     var inMemoryDataRequestStore: MutableMap<String, DataRequestEntity> = mutableMapOf()
@@ -55,8 +57,9 @@ class RequestManager(
         for (dataRequestEntity in listOfDataRequestEntitiesToStore) { // TODO: store in DB
             inMemoryDataRequestStore[dataRequestEntity.dataRequestId] = dataRequestEntity
         }
-        // TODO send a notification mail
-        // TODO build a message that the user should receive inside of the response to the POST-request
+        if (acceptedCompanyIdentifiers.isNotEmpty()){
+            sendBulkDataRequestNotificationMail(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers) // TODO
+        }
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
     }
 
@@ -129,5 +132,12 @@ class RequestManager(
             rejectedCompanyIdentifiers = rejectedCompanyIdentifiers,
             acceptedCompanyIdentifiers = acceptedCompanyIdentifiers,
         )
+    }
+
+    private fun sendBulkDataRequestNotificationMail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>){
+        // TODO use the info to build proper mail
+        val emailToSend = emailGenerator.generateBulkDataRequestEmail(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
+        emailSender.sendEmail(emailToSend)
+        // TODO should be function
     }
 }

@@ -1,0 +1,128 @@
+package org.dataland.datalandcommunitymanager.services
+
+
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
+import org.dataland.datalandcommunitymanager.model.email.Email
+import org.dataland.datalandcommunitymanager.model.email.EmailContact
+import org.dataland.datalandcommunitymanager.model.email.EmailContent
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.springframework.stereotype.Component
+
+/**
+ * A class that manages generating emails
+ */
+@Component
+class EmailGenerator {
+    private val currentEnvironment = System.getenv("PROXY_PRIMARY_URL") ?: "local environment"
+    // TODO from app props?
+
+    private fun isEmailAddressFormatValid(emailAddress: String) {
+        val regexForValidEmail = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$")
+        if (!regexForValidEmail.matches(emailAddress)) {
+            throw InternalServerErrorApiException(
+                "The email addresses provided by the environment have a wrong format.",
+            )
+        }
+    }
+
+    private fun getEmailAddressesFromEnv(envContainingSemicolonDelimitedEmailAddresses: String): List<EmailContact> {
+        return System.getenv(envContainingSemicolonDelimitedEmailAddresses)!!.split(";").map {
+                emailAddress ->
+            isEmailAddressFormatValid(emailAddress)
+            EmailContact(emailAddress)
+        }
+    }
+
+    private fun buildUserInfo(): String {
+        val user = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
+        return "User ${user.username} (Keycloak id: ${user.userId})"
+        }
+
+    private fun buildBulkDataRequestEmailText(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>): String {
+        return "A bulk data request has been submitted: " +
+                "Environment: $currentEnvironment " +
+                "User: ${buildUserInfo()} " +
+                "Requested company identifiers: ${bulkDataRequest.listOfCompanyIdentifiers.joinToString(", ")}. "+
+                "Requested frameworks: ${bulkDataRequest.listOfFrameworkNames.joinToString (", ")}. "+
+                "Rejected company identifiers: ${rejectedCompanyIdentifiers.joinToString (", ")}. "+
+                "Accepted company identifiers: ${acceptedCompanyIdentifiers.joinToString (", ")}."
+    }
+
+    private fun buildBulkDataRequestEmailHtml(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>): String {
+        return """
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    color: #333;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    border-radius: 10px;
+                }
+                .header {
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+                .section {
+                    margin-bottom: 10px;
+                }
+                .bold {
+                    font-weight: bold;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">Bulk Data Request</div>
+                <div class="section">
+                    <span class="bold">Environment:</span> $currentEnvironment
+                </div>
+                <div class="section">
+                    <span class="bold">User:</span> ${buildUserInfo()}
+                </div>
+                <div class="section">
+                    <span class="bold">Requested Company Identifiers:</span> ${bulkDataRequest.listOfCompanyIdentifiers.joinToString(", ")}
+                </div>
+                <div class="section">
+                    <span class="bold">Requested Frameworks:</span> ${bulkDataRequest.listOfFrameworkNames.joinToString(", ")}
+                </div>
+                <div class="section">
+                    <span class="bold">Rejected Company Identifiers:</span> ${rejectedCompanyIdentifiers.joinToString(", ")}
+                </div>
+                <div class="section">
+                    <span class="bold">Accepted Company Identifiers:</span> ${acceptedCompanyIdentifiers.joinToString(", ")}
+                </div>
+            </div>
+        </body>
+        </html>
+    """.trimIndent()
+    } // TODO we could also provide info on how Dataland parsed the identifiers (which types)
+
+
+    /**
+     * Function that generates the email to be sent
+     */
+    fun generateBulkDataRequestEmail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>)
+    : Email {
+        val emailContentAsText = buildBulkDataRequestEmailText(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
+        val emailContentAsHtml = buildBulkDataRequestEmailHtml(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
+        val content = EmailContent(
+            "Dataland Bulk Data Request",
+            emailContentAsText,
+            emailContentAsHtml,
+        )
+        // TODO rename the envs later and to this stuff somewhere else
+        val sender = EmailContact("info@dataland.com", "Dataland") // TODO app props?
+        val receivers = getEmailAddressesFromEnv("INVITATION_REQUEST_RECEIVERS") // TODO app props?
+        val cc = getEmailAddressesFromEnv("INVITATION_REQUEST_CC") // TODO app props?
+        // TODO later you could add info about matched Dataland-company-IDs!
+        return Email(sender, receivers, cc, content)
+    }
+}
