@@ -59,6 +59,16 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
+    },
+    "6": {
+      "Name": "CommunityManagerDb",
+      "Group": "CommunityManagerDb",
+      "Port": 5432,
+      "Username": "community_manager",
+      "Host": "community-manager-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
     }
   }
 }
