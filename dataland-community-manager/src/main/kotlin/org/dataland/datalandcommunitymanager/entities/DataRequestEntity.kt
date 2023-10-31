@@ -23,7 +23,7 @@ data class DataRequestEntity(
 
     val companyIdentifierType: IdentifierType,
 
-    val companyIdentifierValue: String, //TODO should contain list???
+    val companyIdentifierValue: String, // TODO should contain list???
 
     val companyIdOnDataland: String?,
 )

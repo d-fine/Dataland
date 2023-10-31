@@ -43,7 +43,7 @@ class RequestManager(
             if (identifierType != null) {
                 acceptedCompanyIdentifiers.add(identifierValue)
                 for (framework in bulkDataRequest.listOfFrameworkNames) {
-                    if (!isDataRequestAlreadyExisting(currentUserId, identifierValue, framework )) {
+                    if (!isDataRequestAlreadyExisting(currentUserId, identifierValue, framework)) {
                         // val companyId = companyGetter.getCompanyIdByIdentifier(identifierValue) TODO commented out because backend cannot do this currently
                         listOfDataRequestEntitiesToStore.add(
                             buildDataRequestEntity(currentUserId, framework, identifierType, identifierValue, null),
@@ -57,7 +57,7 @@ class RequestManager(
         for (dataRequestEntity in listOfDataRequestEntitiesToStore) {
             dataRequestRepository.save(dataRequestEntity)
         }
-        if (acceptedCompanyIdentifiers.isNotEmpty()){
+        if (acceptedCompanyIdentifiers.isNotEmpty()) {
             sendBulkDataRequestNotificationMail(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers) // TODO
         }
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
@@ -69,9 +69,9 @@ class RequestManager(
         return dataRequestRepository.findByUserId(currentUserId)
     }
 
-    private fun isDataRequestAlreadyExisting(requestingUser: String, identifierValue: String, framework: DataTypeEnum, ): Boolean {
+    private fun isDataRequestAlreadyExisting(requestingUser: String, identifierValue: String, framework: DataTypeEnum): Boolean {
         return dataRequestRepository.existsByUserIdAndCompanyIdentifierValueAndDataType(
-            requestingUser, identifierValue, framework
+            requestingUser, identifierValue, framework,
         )
     }
 
@@ -129,18 +129,7 @@ class RequestManager(
         )
     }
 
-
-
-
-
-
-
-
-
-
-
     // TODO move to generator?
-
 
     private fun buildLogMessageForBulkDataRequestNotificationMail(receiversString: String, ccReceiversString: String?, causeOfSendingMail: String): String {
         return if (ccReceiversString != null) {
@@ -152,15 +141,16 @@ class RequestManager(
 
     private fun convertListOfEmailContactsToJoinedString(listOfEmailContacts: List<EmailContact>): String {
         return listOfEmailContacts.joinToString(", ") {
-                emailContact -> emailContact.emailAddress
+                emailContact ->
+            emailContact.emailAddress
         }
     }
 
-    private fun sendBulkDataRequestNotificationMail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>){
+    private fun sendBulkDataRequestNotificationMail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>) {
         val emailToSend = emailGenerator.generateBulkDataRequestEmail(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
         val receiversString = convertListOfEmailContactsToJoinedString(emailToSend.receivers)
         val ccReceiversString = emailToSend.cc?.let { convertListOfEmailContactsToJoinedString(it) }
-        val messageToLog = buildLogMessageForBulkDataRequestNotificationMail(receiversString, ccReceiversString, "bulk data request")  // TODO define notification types as enum
+        val messageToLog = buildLogMessageForBulkDataRequestNotificationMail(receiversString, ccReceiversString, "bulk data request") // TODO define notification types as enum
         emailSender.sendEmail(emailToSend, messageToLog)
     }
 }

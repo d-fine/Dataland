@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service("CompanyGetter")
 class CompanyGetter(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
-){
+) {
     // TODO Memo an mich: Das handling der internal base url vom Backend ist inkonsistent und seltsam in der code base
 
     fun getCompanyIdByIdentifier(searchString: String): String {
