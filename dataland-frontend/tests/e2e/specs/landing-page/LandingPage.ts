@@ -1,7 +1,12 @@
+import { clickAllowAllOnCookieBanner } from "@e2e/utils/GeneralUtils";
+
 describe("Check that the Landing Page to work properly", () => {
   it("Check the links and buttons", () => {
     cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
-    cy.visitAndCheckAppMount("/").wait("@youtube");
+    cy.visitAndCheckAppMount("/");
+    clickAllowAllOnCookieBanner();
+
+    cy.wait("@youtube", { times: 2, timeout: Cypress.env("short_timeout_in_ms") as number });
 
     cy.get("a:contains('Login')").click();
     cy.url().should("include", "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth");
