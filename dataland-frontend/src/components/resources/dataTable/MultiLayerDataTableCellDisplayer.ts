@@ -10,7 +10,6 @@ export enum MLDTDisplayComponentName {
 }
 
 export type MLDTDisplayComponentTypes = {
-  // TODO Emanuel: Let's rename to "MLDTDisplayValueTypes" because it types the displayValue of a MLDTDisplayObject
   [MLDTDisplayComponentName.StringDisplayComponent]: string | undefined | null;
   [MLDTDisplayComponentName.DocumentLinkDisplayComponent]: { label: string; dataSource: BaseDocumentReference };
   [MLDTDisplayComponentName.DataPointDisplayComponent]: {
