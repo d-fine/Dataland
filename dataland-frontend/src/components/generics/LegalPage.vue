@@ -1,13 +1,15 @@
 <template>
   <TheHeader :landingPage="landingPage" />
-  <main role="main">
-    <div class="w-12 flex justify-content-center">
-      <div class="lg:w-6 md:w-10 sm:w-10 text-left">
-        <slot />
+  <div class="static-content">
+    <main role="main">
+      <div class="w-12 flex justify-content-center">
+        <div class="lg:w-6 md:w-10 sm:w-10 text-left">
+          <slot />
+        </div>
       </div>
-    </div>
-  </main>
-  <TheFooter :sections="landingPage?.sections" />
+    </main>
+    <TheFooter :sections="landingPage?.sections" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -34,6 +36,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.static-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
 main {
   margin-top: 132px;
   margin-bottom: 52px;
