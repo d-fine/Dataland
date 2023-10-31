@@ -27,20 +27,21 @@ class EmailSender(
     private val mailjetClient = MailjetClient(clientOptions)
 
     /** This method sends an email
-     * @param email the email to send
+     * @param email the email to send TODO
      * @return a sending success indicator which is true if the sending was successful
      */
-    fun sendEmail(email: Email) { // TODO return value really needed?
+    fun sendEmail(email: Email, logMessage: String): Boolean {
         try {
-            email.receivers.forEach { logger.info("Sending an email to $it.") }
-            email.cc.forEach { logger.info("Sending an email with $it in cc.") }
+            logger.info(logMessage)
             val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
             val request = SendEmailsRequest.builder().message(mailjetEmail).build()
             val response = request.sendWith(mailjetClient)
             response.messages.forEach { logger.info(it.toString()) }
             logger.info("Email successfully sent.")
+            return true
         } catch (e: MailjetException) {
-            logger.error("Error sending email, with error: $e") // TODO should we give the user an info if the email wasnt sent?
+            logger.error("Error sending email, with error: $e")
+            return false
         }
     }
 }

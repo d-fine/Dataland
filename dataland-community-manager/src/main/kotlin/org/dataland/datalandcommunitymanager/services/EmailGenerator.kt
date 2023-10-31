@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.email.Email
@@ -31,31 +30,31 @@ class EmailGenerator {
         val listOfEmailContacts: MutableList<EmailContact> = mutableListOf()
         val envWithSemicolonSeperatedEmailAddresses = System.getenv(envContainingSemicolonDelimitedEmailAddresses)
         if (envWithSemicolonSeperatedEmailAddresses == null) {
-            listOfEmailContacts.add(EmailContact("dev.null@dataland.com")) // TODO later => fallback in app prop!
-        }
-        else {
+            listOfEmailContacts.add(EmailContact("dev.null@dataland.com")) // TODO later => fallback in app prop! For cc also null ok?
+        } else {
             listOfEmailContacts.addAll(
                 envWithSemicolonSeperatedEmailAddresses.split(";").map {
                         emailAddress ->
                     isEmailAddressFormatValid(emailAddress)
                     EmailContact(emailAddress)
-        })}
+                },
+            ) }
         return listOfEmailContacts
     }
 
     private fun buildUserInfo(): String {
         val user = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
         return "User ${user.username} (Keycloak id: ${user.userId})"
-        }
+    }
 
     private fun buildBulkDataRequestEmailText(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>): String {
         return "A bulk data request has been submitted: " +
-                "Environment: $currentEnvironment " +
-                "User: ${buildUserInfo()} " +
-                "Requested company identifiers: ${bulkDataRequest.listOfCompanyIdentifiers.joinToString(", ")}. "+
-                "Requested frameworks: ${bulkDataRequest.listOfFrameworkNames.joinToString (", ")}. "+
-                "Rejected company identifiers: ${rejectedCompanyIdentifiers.joinToString (", ")}. "+
-                "Accepted company identifiers: ${acceptedCompanyIdentifiers.joinToString (", ")}."
+            "Environment: $currentEnvironment " +
+            "User: ${buildUserInfo()} " +
+            "Requested company identifiers: ${bulkDataRequest.listOfCompanyIdentifiers.joinToString(", ")}. " +
+            "Requested frameworks: ${bulkDataRequest.listOfFrameworkNames.joinToString(", ")}. " +
+            "Rejected company identifiers: ${rejectedCompanyIdentifiers.joinToString(", ")}. " +
+            "Accepted company identifiers: ${acceptedCompanyIdentifiers.joinToString(", ")}."
     }
 
     private fun buildBulkDataRequestEmailHtml(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>): String {
@@ -110,15 +109,13 @@ class EmailGenerator {
             </div>
         </body>
         </html>
-    """.trimIndent()
+        """.trimIndent()
     } // TODO we could also provide info on how Dataland parsed the identifiers (which types)
-
 
     /**
      * Function that generates the email to be sent
      */
-    fun generateBulkDataRequestEmail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>)
-    : Email {
+    fun generateBulkDataRequestEmail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>): Email {
         val emailContentAsText = buildBulkDataRequestEmailText(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
         val emailContentAsHtml = buildBulkDataRequestEmailHtml(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
         val content = EmailContent(

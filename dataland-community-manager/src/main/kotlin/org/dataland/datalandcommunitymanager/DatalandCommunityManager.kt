@@ -10,13 +10,13 @@ import org.springframework.context.annotation.ComponentScan
  */
 @SpringBootApplication
 @ComponentScan(basePackages = ["org.dataland"])
-class DatalandUserDataManager : OpenAPIConfiguration
+class DatalandCommunityManager : OpenAPIConfiguration
 
 /**
  * Main function to be executed for running the spring boot dataland backend process
  */
 fun main(args: Array<String>) {
-    runApplication<DatalandUserDataManager>(args = args)
+    runApplication<DatalandCommunityManager>(args = args)
 }
 
 // TODO With Florian maybe:

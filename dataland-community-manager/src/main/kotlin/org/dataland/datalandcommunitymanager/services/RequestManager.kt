@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.email.EmailContact
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,7 +43,7 @@ class RequestManager(
             if (identifierType != null) {
                 acceptedCompanyIdentifiers.add(identifierValue)
                 for (framework in bulkDataRequest.listOfFrameworkNames) {
-                    if (!isDataRequestAlreadyExisting(currentUserId, identifierValue, framework )) {
+                    if (!isDataRequestAlreadyExisting(currentUserId, identifierValue, framework)) {
                         // val companyId = companyGetter.getCompanyIdByIdentifier(identifierValue) TODO commented out because backend cannot do this currently
                         listOfDataRequestEntitiesToStore.add(
                             buildDataRequestEntity(currentUserId, framework, identifierType, identifierValue, null),
@@ -53,10 +54,10 @@ class RequestManager(
                 rejectedCompanyIdentifiers.add(identifierValue)
             }
         }
-        for (dataRequestEntity in listOfDataRequestEntitiesToStore) { // TODO: store in DB
+        for (dataRequestEntity in listOfDataRequestEntitiesToStore) {
             dataRequestRepository.save(dataRequestEntity)
         }
-        if (acceptedCompanyIdentifiers.isNotEmpty()){
+        if (acceptedCompanyIdentifiers.isNotEmpty()) {
             sendBulkDataRequestNotificationMail(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers) // TODO
         }
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
@@ -68,6 +69,12 @@ class RequestManager(
         return dataRequestRepository.findByUserId(currentUserId)
     }
 
+    private fun isDataRequestAlreadyExisting(requestingUser: String, identifierValue: String, framework: DataTypeEnum): Boolean {
+        return dataRequestRepository.existsByUserIdAndCompanyIdentifierValueAndDataType(
+            requestingUser, identifierValue, framework,
+        )
+    }
+
     private fun determineIdentifierTypeViaRegexMatching(identifierValue: String): IdentifierType? {
         return when {
             isinRegex.matches(identifierValue) -> IdentifierType.isin
@@ -76,12 +83,6 @@ class RequestManager(
             else -> null
         }
     }
-
-    private fun isDataRequestAlreadyExisting(requestingUser: String, identifierValue: String, framework: DataTypeEnum, ): Boolean {
-        return dataRequestRepository.existsByUserIdAndCompanyIdentifierValueAndDataType(
-            requestingUser, identifierValue, framework
-        )
-        }
 
     private fun buildDataRequestEntity(
         currentUserId: String,
@@ -128,10 +129,28 @@ class RequestManager(
         )
     }
 
-    private fun sendBulkDataRequestNotificationMail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>){
-        // TODO use the info to build proper mail
+    // TODO move to generator?
+
+    private fun buildLogMessageForBulkDataRequestNotificationMail(receiversString: String, ccReceiversString: String?, causeOfSendingMail: String): String {
+        return if (ccReceiversString != null) {
+            "Sending email after $causeOfSendingMail to receivers $receiversString, and cc $ccReceiversString."
+        } else {
+            "Sending email after $causeOfSendingMail to receivers $receiversString."
+        }
+    }
+
+    private fun convertListOfEmailContactsToJoinedString(listOfEmailContacts: List<EmailContact>): String {
+        return listOfEmailContacts.joinToString(", ") {
+                emailContact ->
+            emailContact.emailAddress
+        }
+    }
+
+    private fun sendBulkDataRequestNotificationMail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>) {
         val emailToSend = emailGenerator.generateBulkDataRequestEmail(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
-        emailSender.sendEmail(emailToSend)
-        // TODO should be function
+        val receiversString = convertListOfEmailContactsToJoinedString(emailToSend.receivers)
+        val ccReceiversString = emailToSend.cc?.let { convertListOfEmailContactsToJoinedString(it) }
+        val messageToLog = buildLogMessageForBulkDataRequestNotificationMail(receiversString, ccReceiversString, "bulk data request") // TODO define notification types as enum
+        emailSender.sendEmail(emailToSend, messageToLog)
     }
 }

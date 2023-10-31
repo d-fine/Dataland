@@ -9,12 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository
  */
 
 interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
-    fun findByUserId(userId:String): List<DataRequestEntity>
+    fun findByUserId(userId: String): List<DataRequestEntity>
 
     fun existsByUserIdAndCompanyIdentifierValueAndDataType(
         userId: String,
         companyIdentifierValue: String,
-        dataType: DataTypeEnum
+        dataType: DataTypeEnum,
     ): Boolean
-   }
-
+}
