@@ -9,7 +9,7 @@
     :is-data-value-provided="currentValue != '' && currentValue != undefined"
   >
     <div class="mb-3">
-      <UploadFormHeader :label="label" :description="description" :is-required="required" />
+      <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       <div class="next-to-each-other">
         <NumberFormField
           :name="'value'"
@@ -18,14 +18,16 @@
           :validation="validation"
           :unit="unit"
         />
-        <FormKit
-          type="select"
-          name="currency"
-          placeholder="Currency"
-          :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
-          outer-class="short"
-          data-test="datapoint-currency"
-        />
+        <div class="mt-3">
+          <FormKit
+            type="select"
+            name="currency"
+            placeholder="Currency"
+            :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
+            outer-class="short"
+            data-test="datapoint-currency"
+          />
+        </div>
       </div>
     </div>
   </ExtendedDataPointFormField>

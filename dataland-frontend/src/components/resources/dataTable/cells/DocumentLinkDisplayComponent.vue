@@ -5,7 +5,6 @@
     :file-reference="content.displayValue.dataSource.fileReference"
     show-icon
   />
-  <!-- TODO why is .dataSource.fileName optional??? -->
 </template>
 
 <script lang="ts">

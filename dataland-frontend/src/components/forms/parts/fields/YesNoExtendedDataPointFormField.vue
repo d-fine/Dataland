@@ -21,8 +21,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
-import {YesNoFormFieldProps} from "@/components/forms/parts/fields/FormFieldProps";
+import { defineComponent } from "vue";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
@@ -32,7 +32,7 @@ export default defineComponent({
   components: {ExtendedDataPointFormField, RadioButtonsFormElement, UploadFormHeader},
   inheritAttrs: false,
   props: {
-    ...YesNoFormFieldProps,
+    ...BaseFormFieldProps,
     dataTest: String,
   },
 

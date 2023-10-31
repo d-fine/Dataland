@@ -10,15 +10,14 @@
   >
     <div class="mb-3">
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
-        <NumberFormField
-          :name="'value'"
-          v-model:currentValue="currentValue"
-          :validation-label="validationLabel ?? label"
-          :validation="`integer|${validation}`"
-          :unit="unit"
-          :placeholder="unit ? `Value in ${unit}` : 'Value'"
-        />
-
+      <NumberFormField
+        :name="'value'"
+        v-model:currentValue="currentValue"
+        :validation-label="validationLabel ?? label"
+        :validation="`integer|${validation}`"
+        :unit="unit"
+        :placeholder="unit ? `Value in ${unit}` : 'Value'"
+      />
     </div>
   </ExtendedDataPointFormField>
 </template>

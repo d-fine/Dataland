@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
@@ -28,7 +28,7 @@ export default defineComponent({
   components: { BaseDataPointFormField, RadioButtonsFormElement },
   inheritAttrs: false,
   props: {
-    ...YesNoFormFieldProps,
+    ...BaseFormFieldProps,
     dataTest: String,
   },
 
