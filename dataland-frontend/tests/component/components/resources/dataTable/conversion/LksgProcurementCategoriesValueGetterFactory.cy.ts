@@ -16,7 +16,6 @@ describe("Unit test for the LKSG ProcurementCategoriesValueGetterFactory", () =>
     description: "Name their procurement categories (products, raw materials, services) (own operations)",
     unit: "",
     component: "ProcurementCategoriesFormField",
-    evidenceDesired: false,
     required: false,
     showIf: () => true,
   };

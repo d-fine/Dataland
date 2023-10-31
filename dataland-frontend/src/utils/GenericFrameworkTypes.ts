@@ -34,7 +34,6 @@ export interface Field {
   validation?: string;
   validationLabel?: string;
   required?: boolean;
-  evidenceDesired?: boolean;
 
   // input field specific values
   placeholder?: string;

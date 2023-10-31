@@ -77,7 +77,6 @@
                           :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
-                          :evidenceDesired="field.evidenceDesired"
                           :data-test="field.name"
                           :unit="field.unit"
                           @reportsUpdated="updateDocumentsList"
