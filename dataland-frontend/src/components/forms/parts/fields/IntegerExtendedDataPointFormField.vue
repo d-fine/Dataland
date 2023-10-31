@@ -30,7 +30,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
@@ -38,7 +37,7 @@ import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue
 
 export default defineComponent({
   name: "IntegerExtendedDataPointFormField",
-  components: {NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
+  components: { NumberFormField, ExtendedDataPointFormField, UploadFormHeader },
   data() {
     return {
       currentValue: "",
@@ -51,7 +50,6 @@ export default defineComponent({
     },
   },
   methods: {
-
     /**
      * Handle blur event on value input.
      */

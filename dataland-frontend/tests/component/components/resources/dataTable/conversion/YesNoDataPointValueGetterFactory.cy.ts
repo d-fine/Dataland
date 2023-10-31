@@ -37,7 +37,7 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
     });
 
     it.only("An empty string should be displayed if the data point's value is undefined", () => {
-      const datapoint = { };
+      const datapoint = {};
       const dataset = { data: datapoint };
       const value = yesNoDataPointValueGetterFactory("data", baseFieldCertificate)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{

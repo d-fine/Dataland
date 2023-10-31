@@ -12,10 +12,10 @@
       <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       <div class="next-to-each-other">
         <NumberFormField
-                :name="'value'"
-                :validation-label="validationLabel"
-                :validation="validation"
-                :unit="unit"
+          :name="'value'"
+          :validation-label="validationLabel"
+          :validation="validation"
+          :unit="unit"
           @blur="handleBlurValue"
         />
         <FormKit
@@ -48,7 +48,7 @@ export default defineComponent({
       return DropdownDatasetIdentifier;
     },
   },
-  components: {NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
+  components: { NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
   data() {
     return {
       currentValue: "",
