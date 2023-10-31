@@ -6,7 +6,7 @@ describe("Check that the Landing Page to work properly", () => {
     cy.visitAndCheckAppMount("/");
     clickAllowAllOnCookieBanner();
 
-    cy.wait("@youtube", { timeout: Cypress.env("short_timeout_in_ms") as number });
+    cy.wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number });
 
     cy.get("a:contains('Login')").click();
     cy.url().should("include", "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth");
