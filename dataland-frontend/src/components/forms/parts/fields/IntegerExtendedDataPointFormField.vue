@@ -10,18 +10,15 @@
   >
     <div class="mb-3">
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
-      <div class="next-to-each-other">
         <NumberFormField
           :name="'value'"
           v-model:currentValue="currentValue"
           :validation-label="validationLabel ?? label"
           :validation="`integer|${validation}`"
+          :unit="unit"
           :placeholder="unit ? `Value in ${unit}` : 'Value'"
         />
-        <div v-if="unit" class="form-field-label pb-3">
-          <span>{{ unit }}</span>
-        </div>
-      </div>
+
     </div>
   </ExtendedDataPointFormField>
 </template>
