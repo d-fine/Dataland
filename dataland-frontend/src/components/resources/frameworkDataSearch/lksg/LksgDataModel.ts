@@ -110,7 +110,7 @@ export const lksgDataModel = [
             name: "annualTotalRevenue",
             label: "Annual Total Revenue",
             description: "Total revenue per annum",
-            unit: "Currency", // TODO check if this is a currency field
+            unit: "",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
@@ -131,7 +131,7 @@ export const lksgDataModel = [
             label: "Fixed and Working Capital",
             description:
               "Combined fixed and working capital (only for own operations) in same currency than total revenue",
-            unit: "Currency", // TODO check if this is a currency field
+            unit: "",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
