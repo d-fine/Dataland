@@ -16,12 +16,12 @@ import org.springframework.stereotype.Component
  */
 @Component
 class EmailSender(
-    @Value("\${mailjet.api.url}") private val mailServerUrl: String
+    @Value("\${mailjet.api.url}") private val mailjetApiUrl: String // TODO check if it works on deployed instance
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val clientOptions = ClientOptions.builder()
-        .baseUrl(mailServerUrl)
+        .baseUrl(mailjetApiUrl)
         .apiKey(System.getenv("MAILJET_API_ID"))
         .apiSecretKey(System.getenv("MAILJET_API_SECRET"))
         .build()
