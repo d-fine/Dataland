@@ -10,7 +10,6 @@ describe("Component test for DataPointFormField", () => {
       },
     }).then((mounted) => {
       void mounted.wrapper.setProps({
-        evidenceDesired: true,
         unit: "Days",
       });
       cy.get('select[name="currency"]').should("not.exist");
