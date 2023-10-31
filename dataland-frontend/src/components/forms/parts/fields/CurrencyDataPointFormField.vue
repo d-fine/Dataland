@@ -16,7 +16,6 @@
           v-model:currentValue="currentValue"
           :validation-label="validationLabel"
           :validation="validation"
-          outer-class="long"
           :unit="unit"
         />
         <div class="mt-3">

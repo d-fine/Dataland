@@ -12,9 +12,10 @@
         :placeholder="unit ? `Value in ${unit}` : 'Value'"
         :validationMessages="{ integer: `${validationLabel ?? label} must be an integer.` }"
         :validationRules="{ integer }"
+        outer-class="short"
         @input="$emit('update:currentValue', $event)"
       />
-      <div class="form-field-label pb-3">
+      <div v-if="unit" class="form-field-label pb-3">
         <span>{{ unit }}</span>
       </div>
     </div>
