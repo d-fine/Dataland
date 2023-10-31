@@ -1,6 +1,7 @@
 import { login, logout } from "@e2e/utils/Auth";
 import { authenticator } from "otplib";
 import { getStringCypressEnv } from "@e2e/utils/Cypress";
+import { clickAllowAllOnCookieBanner } from "@e2e/utils/GeneralUtils";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
@@ -8,9 +9,10 @@ describe("As a user I want to be able to register for an account and be able to 
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
   it("Checks that the Dataland password-policy gets respected", () => {
+    cy.visitAndCheckAppMount("/");
+    clickAllowAllOnCookieBanner();
     cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
-    cy.visitAndCheckAppMount("/")
-      .wait("@youtube")
+    cy.wait("@youtube")
       .get("button[name='signup_dataland_button']")
       .click()
       .get("#email")
@@ -42,12 +44,11 @@ describe("As a user I want to be able to register for an account and be able to 
   it("Checks that registering works", () => {
     cy.task("setEmail", email);
     cy.task("setPassword", randomHexPassword);
+    cy.visitAndCheckAppMount("/");
+    clickAllowAllOnCookieBanner();
     cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
-    cy.visitAndCheckAppMount("/")
-      .wait("@youtube")
-      .get("button[name='signup_dataland_button']")
-      .click()
-      .get("#email")
+    cy.wait("@youtube").get("button[name='signup_dataland_button']").click();
+    cy.get("#email")
       .should("exist")
       .type(email, { force: true })
 
@@ -101,6 +102,7 @@ describe("As a user I want to be able to register for an account and be able to 
     });
   });
   it("Checks that one can login to the newly registered account", () => {
+    clickAllowAllOnCookieBanner();
     cy.visit("/");
     cy.task("getEmail").then((returnEmail) => {
       cy.task("getPassword").then((returnPassword) => {

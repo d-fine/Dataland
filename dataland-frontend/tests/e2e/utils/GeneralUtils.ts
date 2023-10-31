@@ -7,6 +7,14 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyU
 import { submitFilledInEuTaxonomyForm } from "./EuTaxonomyFinancialsUpload";
 
 /**
+ * This function clicks "Allow all" on the Cookie Banner by Cookiebot.com to accept all optional cookies
+ * Otherwise, dataland.com lacks functionality.
+ */
+export function clickAllowAllOnCookieBanner(): void {
+  cy.get("button[id='CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll']").click();
+}
+
+/**
  * Visits the edit page for a framework via UI navigation.
  * @param companyId the id of the company for which to edit a dataset
  * @param dataType the framework
