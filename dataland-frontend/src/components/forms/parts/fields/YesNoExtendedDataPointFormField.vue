@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
@@ -94,7 +94,7 @@ export default defineComponent({
     },
   },
   props: {
-    ...YesNoFormFieldProps,
+    ...BaseFormFieldProps,
     dataTest: String,
   },
 

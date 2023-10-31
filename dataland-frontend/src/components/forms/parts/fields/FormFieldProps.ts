@@ -32,13 +32,6 @@ export const BaseFormFieldProps = {
   },
 };
 
-export const YesNoFormFieldProps = Object.assign(deepCopyObject(BaseFormFieldProps), {
-  unit: {
-    // TODO wtf?
-    type: String,
-  },
-}) as Readonly<ComponentPropsOptions>;
-
 export const FormFieldPropsWithPlaceholder = Object.assign(deepCopyObject(BaseFormFieldProps), {
   placeholder: {
     type: String,
