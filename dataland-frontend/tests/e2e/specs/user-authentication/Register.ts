@@ -12,7 +12,7 @@ describe("As a user I want to be able to register for an account and be able to 
     cy.visitAndCheckAppMount("/");
     clickAllowAllOnCookieBanner();
     cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
-    cy.wait("@youtube", { timeout: Cypress.env("short_timeout_in_ms") as number })
+    cy.wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
       .get("button[name='signup_dataland_button']")
       .click()
       .get("#email")
@@ -47,7 +47,7 @@ describe("As a user I want to be able to register for an account and be able to 
     cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
     cy.visitAndCheckAppMount("/");
     clickAllowAllOnCookieBanner();
-    cy.wait("@youtube", { timeout: Cypress.env("short_timeout_in_ms") as number })
+    cy.wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
       .get("button[name='signup_dataland_button']")
       .click();
     cy.get("#email")
