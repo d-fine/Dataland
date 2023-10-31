@@ -110,6 +110,7 @@ export default defineComponent({
       currentReportValue: "",
     };
   },
+
   props: {
     ...BaseFormFieldProps,
     isDataValueProvided: {
@@ -117,7 +118,13 @@ export default defineComponent({
       required: true,
     },
   },
+  watch: {
+    isDataValueProvided(isDataValueProvided) {
+      this.handleBlurValue(isDataValueProvided);
+    },
+  },
   methods: {
+    //TODO function into handleBlur
     /**
      * Sets the value of the quality field
      * @param qualityOption the new value for the quality field
@@ -127,12 +134,23 @@ export default defineComponent({
       this.qualityValue = qualityOption ?? "";
     },
     /**
-     * Returns true iff the current value of the quality field is NA
-     * @returns true iff the current value of the quality field is NA
+     * Returns true if the current value of the quality field is NA
+     * @returns true if the current value of the quality field is NA
      */
     // eslint-disable-next-line vue/no-unused-properties
     isQualityNa(): boolean {
       return this.qualityValue === QualityOptions.Na;
+    },
+    /**
+     * Handle blur event on value input.
+     * @param isDataValueProvided boolean which gives information whether data is provided or not
+     */
+    handleBlurValue(isDataValueProvided) {
+      if (isDataValueProvided === false) {
+        this.setQuality(QualityOptions.Na);
+      } else if (this.isQualityNa()) {
+        this.setQuality(undefined);
+      }
     },
   },
 });

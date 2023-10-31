@@ -12,11 +12,11 @@
       <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       <div class="next-to-each-other">
         <NumberFormField
-                :name="'value'"
-                :validation-label="validationLabel"
-                :validation="validation"
-                :unit="unit"
-          @blur="handleBlurValue"
+          :name="'value'"
+          v-model:currentValue="currentValue"
+          :validation-label="validationLabel"
+          :validation="validation"
+          :unit="unit"
         />
         <FormKit
           type="select"
@@ -35,7 +35,6 @@
 import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
-import { QualityOptions } from "@clients/backend";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
@@ -48,7 +47,7 @@ export default defineComponent({
       return DropdownDatasetIdentifier;
     },
   },
-  components: {NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
+  components: { NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
   data() {
     return {
       currentValue: "",
@@ -59,19 +58,6 @@ export default defineComponent({
   },
   methods: {
     getDataset,
-    /**
-     * Handle blur event on value input.
-     */
-    handleBlurValue() {
-      const extendedDataPointFormField = this.$refs.extendedDataPointFormField;
-      const setQuality = extendedDataPointFormField.setQuality as (quality?: QualityOptions) => void;
-      const isQualityNa = extendedDataPointFormField.isQualityNa as () => boolean;
-      if (this.currentValue === "") {
-        setQuality(QualityOptions.Na);
-      } else if (this.currentValue !== "" && isQualityNa()) {
-        setQuality(undefined);
-      }
-    },
   },
 });
 </script>
