@@ -9,7 +9,7 @@
     :is-data-value-provided="currentValue != '' && currentValue != undefined"
   >
     <div class="mb-3">
-      <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
+      <UploadFormHeader :label="label" :description="description" :is-required="required" />
       <NumberFormField
         :name="'value'"
         v-model:currentValue="currentValue"
