@@ -44,9 +44,9 @@ describe("As a user I want to be able to register for an account and be able to 
   it("Checks that registering works", () => {
     cy.task("setEmail", email);
     cy.task("setPassword", randomHexPassword);
-    cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
     cy.visitAndCheckAppMount("/");
     clickAllowAllOnCookieBanner();
+    cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
     cy.wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
       .get("button[name='signup_dataland_button']")
       .click();
@@ -121,8 +121,9 @@ describe("As a user I want to be able to register for an account and be able to 
           const username = returnEmail as string;
           const password = returnPassword as string;
           login(username, password);
-          cy.visitAndCheckAppMount("/companies")
-            .get("div[id='profile-picture-dropdown-toggle']")
+          cy.visitAndCheckAppMount("/companies");
+          clickAllowAllOnCookieBanner();
+          cy.get("div[id='profile-picture-dropdown-toggle']")
             .click()
             .get("a[id='profile-picture-dropdown-settings-button']")
             .click()
