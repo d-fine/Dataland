@@ -2,9 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section">
-      <FormKit :actions="false" type="form"
-               @submit="submitRequest"
-               @submit-invalid="handleInvalidInput" id="" name="">
+      <FormKit :actions="false" type="form" @submit="submitRequest" @submit-invalid="handleInvalidInput" id="" name="">
         <div class="grid p-8 uploadFormWrapper">
           <div class="col-12 next-to-each-other">
             <h2>Request Data</h2>
@@ -26,10 +24,20 @@
                 description="Select the frameworks you would like data for"
                 name="listOfFrameworkNames"
                 :options="availableFrameworks"
-                optionValue="frameworkDataType"
-                optionLabel="displayName"
+                optionValue="value"
+                optionLabel="label"
                 v-model:selectedItemsBindInternal="selectedFrameworks"
                 innerClass="long"
+              />
+              <FormKit
+                :modelValue="selectedFrameworks"
+                type="text"
+                validation="required"
+                validation-label="List of framework names"
+                :validation-messages="{
+                  required: 'Select at least one framework',
+                }"
+                :outer-class="{ 'hidden-input': true }"
               />
               <h4 class="p-0">Added Frameworks:</h4>
               <div class="paper-section radius-1 p-2 w-full selected-frameworks">
@@ -49,6 +57,10 @@
                 type="textarea"
                 name="listOfCompanyIdentifiers"
                 validation="required"
+                validation-label="List of company identifiers"
+                :validation-messages="{
+                  required: 'Provide at least one identifier',
+                }"
                 placeholder="Insert identifiers here. Separated by either comma, space, semicolon or linebreak."
               />
               <span class="gray-text font-italic"
@@ -69,19 +81,19 @@ import { FormKit } from "@formkit/vue";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
-import {CompanyAssociatedDataEuTaxonomyDataForFinancials, type DataTypeEnum} from "@clients/backend";
+import { CompanyAssociatedDataEuTaxonomyDataForFinancials, type DataTypeEnum } from "@clients/backend";
 import { type FrameworkSelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheFooter from "@/components/generics/TheFooter.vue";
 import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
-import {ObjectType} from "@/utils/UpdateObjectUtils";
-import {checkIfAllUploadedReportsAreReferencedInDataModel} from "@/utils/ValidationsUtils";
-import {DocumentToUpload, uploadFiles} from "@/utils/FileUploadUtils";
-import {assertDefined} from "@/utils/TypeScriptUtils";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {formatAxiosErrorMessage} from "@/utils/AxiosErrorMessageFormatter";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { BulkDataRequest } from "@clients/communitymanager";
 
 export default defineComponent({
   name: "RequestData",
@@ -102,13 +114,14 @@ export default defineComponent({
 
   data() {
     return {
-      availableFrameworks: [] as Array<FrameworkSelectableItem>,
+      availableFrameworks: [] as { value: DataTypeEnum; label: string }[],
       selectedFrameworks: [] as Array<DataTypeEnum>,
       identifiersInString: "",
       identifiers: [] as Array<string>,
 
-      // submissionFinished: false, TODO
-      // submissionInProgress: false, TODO
+      submittingFinished: false,
+      submittingInProgress: false,
+      message: "",
       //isFormFilledCorrect: false, TODO will adjust based on if the form is filled correctly (similar to upload page)
     };
   },
@@ -146,71 +159,71 @@ export default defineComponent({
     removeItem(it: string) {
       this.selectedFrameworks = this.selectedFrameworks.filter((el) => el !== it);
     },
+    /**
+     * Builds a DataRequest object using the currently entered inputs and returns it
+     * @returns the DataRequest object
+     */
+    collectDataToSend(): BulkDataRequest {
+      return {
+        listOfCompanyIdentifiers: this.identifiers,
+        listOfFrameworkNames: this.selectedFrameworks,
+      };
+    },
 
     /**
      * Converts the string inside the input field into a list of identifiers
      */
     processInput() {
-      console.log(this.input);
-      const uniqueIdentifiers = new Set(this.input.replace(/(\r\n|\n|\r|;| )/gm, ",").split(","));
+      const uniqueIdentifiers = new Set(this.identifiersInString.replace(/(\r\n|\n|\r|;| )/gm, ",").split(","));
       uniqueIdentifiers.delete("");
       this.identifiers = [...uniqueIdentifiers];
       console.log(this.identifiers);
     },
 
-    /**
-     * Creates a new EuTaxonomy-Financials framework entry for the current company
-     * with the data entered in the form by using the Dataland API
-     */
-    async postEuTaxonomyDataForFinancials(): Promise<void> {
-      try {
-        this.postEuTaxonomyDataForFinancialsProcessed = false;
-        this.messageCount++;
-
-        // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
-        const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
-        const kpiSections = (clonedFormInputsModel.data as ObjectType).kpiSections;
-        delete (clonedFormInputsModel.data as ObjectType).kpiSections;
-        clonedFormInputsModel.data = {
-          ...(clonedFormInputsModel.data as ObjectType),
-          ...this.convertKpis(kpiSections as ObjectType),
-        };
-
-        checkIfAllUploadedReportsAreReferencedInDataModel(
-            this.formInputsModel.data as ObjectType,
-            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
-        );
-
-        await uploadFiles(
-            (this.$refs.UploadReports.$data as { documentsToUpload: DocumentToUpload[] }).documentsToUpload,
-            assertDefined(this.getKeycloakPromise),
-        );
-
-        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-        ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
-        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
-            clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-        );
-        this.$emit("datasetCreated");
-      } catch (error) {
-        this.messageCount++;
-        console.error(error);
-        this.message = formatAxiosErrorMessage(error as Error);
-      } finally {
-        this.postEuTaxonomyDataForFinancialsProcessed = true;
-      }
-    },
-
     handleInvalidInput() {
-      alert('IVALID')
+      alert("IVALID");
     },
 
     /**
      * Submits the data request to the request service
      */
-    submitRequest(): Promise<void> {
+    async submitRequest(): Promise<void> {
       this.processInput();
+      try {
+        this.submittingInProgress = true;
+        const bulkDataRequestObject = this.collectDataToSend();
+        const requestDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)(),
+        ).getRequestDataControllerApi();
+        const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
+        console.log("response", response);
+      } catch (error) {
+        // this.messageCount++;
+        console.error(error);
+        this.message = formatAxiosErrorMessage(error as Error);
+      } finally {
+        this.submittingInProgress = false;
+      }
+    },
+
+    /**
+     * Populates the availableFrameworks property in the format expected by the dropdown filter
+     */
+    retrieveAvailableFrameworks() {
+      this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+        return {
+          value: dataTypeEnum,
+          label: humanizeStringOrNumber(dataTypeEnum),
+        };
+      });
+    },
+
+    /**
+     * Adds a new Object to the array
+     */
+    addItem() {
+      this.idCounter++;
+      this.listOfElementIds.push(this.idCounter);
     },
 
     /**
@@ -245,6 +258,9 @@ export default defineComponent({
       this.isInviteSuccessful = response.data.wasInviteSuccessful ?? false;
       this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server.";
     },*/
+  },
+  mounted() {
+    void this.retrieveAvailableFrameworks();
   },
 });
 </script>
