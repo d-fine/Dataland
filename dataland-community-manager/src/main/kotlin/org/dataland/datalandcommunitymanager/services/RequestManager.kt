@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -16,13 +17,11 @@ import java.util.*
  */
 @Service("RequestManager")
 class RequestManager(
+    @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val emailGenerator: EmailGenerator,
     @Autowired private val emailSender: EmailSender,
-    // @Autowired private val communityRepository: CommunityRepository,
 ) {
-    var inMemoryDataRequestStore: MutableMap<String, DataRequestEntity> = mutableMapOf()
-
     val isinRegex = Regex("^([A-Z]{2})([0-9A-Z]{9})([0-9])$") // TODO at the end, validate correctness
     val leiRegex = Regex("^[0-9A-Z]{18}$") // TODO at the end, validate correctness
     val permIdRegex = Regex("^\\d{8}-\\d{4}$") // TODO at the end, validate correctness
@@ -43,7 +42,7 @@ class RequestManager(
             if (identifierType != null) {
                 acceptedCompanyIdentifiers.add(identifierValue)
                 for (framework in bulkDataRequest.listOfFrameworkNames) {
-                    if (!isDataRequestAlreadyExisting(identifierValue, framework, currentUserId)) {
+                    if (!isDataRequestAlreadyExisting(currentUserId, identifierValue, framework )) {
                         // val companyId = companyGetter.getCompanyIdByIdentifier(identifierValue) TODO commented out because backend cannot do this currently
                         listOfDataRequestEntitiesToStore.add(
                             buildDataRequestEntity(currentUserId, framework, identifierType, identifierValue, null),
@@ -55,7 +54,7 @@ class RequestManager(
             }
         }
         for (dataRequestEntity in listOfDataRequestEntitiesToStore) { // TODO: store in DB
-            inMemoryDataRequestStore[dataRequestEntity.dataRequestId] = dataRequestEntity
+            dataRequestRepository.save(dataRequestEntity)
         }
         if (acceptedCompanyIdentifiers.isNotEmpty()){
             sendBulkDataRequestNotificationMail(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers) // TODO
@@ -66,10 +65,7 @@ class RequestManager(
     fun getDataRequestsForUser(): List<DataRequestEntity> {
         val currentUserId = DatalandAuthentication.fromContext().userId // TODO =>
         // TODO I noticed that we use smth else in the api key manager for this.  why?
-        return inMemoryDataRequestStore
-            .filterValues { it.userId == currentUserId }
-            .values
-            .toList()
+        return dataRequestRepository.findByUserId(currentUserId)
     }
 
     private fun determineIdentifierTypeViaRegexMatching(identifierValue: String): IdentifierType? {
@@ -81,13 +77,11 @@ class RequestManager(
         }
     }
 
-    private fun isDataRequestAlreadyExisting(identifierValue: String, framework: DataTypeEnum, requestingUser: String): Boolean {
-        return inMemoryDataRequestStore.values.any { dataRequest ->
-            dataRequest.companyIdentifierValue == identifierValue &&
-                dataRequest.dataType == framework &&
-                dataRequest.userId == requestingUser
+    private fun isDataRequestAlreadyExisting(requestingUser: String, identifierValue: String, framework: DataTypeEnum, ): Boolean {
+        return dataRequestRepository.existsByUserIdAndCompanyIdentifierValueAndDataType(
+            requestingUser, identifierValue, framework
+        )
         }
-    }
 
     private fun buildDataRequestEntity(
         currentUserId: String,
