@@ -1,14 +1,15 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.email.Email
 import org.dataland.datalandcommunitymanager.model.email.EmailContact
 import org.dataland.datalandcommunitymanager.model.email.EmailContent
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import kotlin.system.exitProcess
 
 /**
  * This enum contains possible causes to generate an email. This cause can then be included in the log message.
@@ -25,35 +26,45 @@ enum class CauseOfMail(val description: String) {
 /**
  * A class that manages generating emails
  */
-@Component ("EmailGenerator")
-class EmailGenerator(
-    @Value("\${dataland.proxy.primary.url}") private val currentEnvironment: String) // TODO test if it works on deployed
+@Component ("EmailBuilder")
+class EmailBuilder(
+    // TODO test all values correct on CD
+    @Value("\${dataland.proxy.primary.url}") private val propProxyPrimaryUrl: String,
+    @Value("\${dataland.notification.sender.address}") private val propNotificationSenderAddress: String,
+    @Value("\${dataland.notification.sender.name}") private val propNotificationSenderName: String,
+    @Value("\${dataland.notification.receivers.bulk.data.request}")
+    private val propNotificationReceiversBulkDataRequest: String,
+    @Value("\${dataland.notification.receivers.cc.bulk.data.request}")
+    private val propNotificationReceiversCcBulkDataRequest: String
+)
 {
-    private fun isEmailAddressFormatValid(emailAddress: String) {
+    private val datalandNotificatorEmailContact =
+        EmailContact(assertEmailAddressFormatAndReturnIt(propNotificationSenderAddress), propNotificationSenderName)
+
+    private val notificationReceiversBulkDataRequest =
+        getEmailContactsFromProp(propNotificationReceiversBulkDataRequest)
+    private val notificationReceiversCcBulkDataRequest =
+        getEmailContactsFromProp(propNotificationReceiversCcBulkDataRequest)
+
+    private fun assertEmailAddressFormatAndReturnIt(emailAddress: String): String {
         val regexForValidEmail = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$")
         if (!regexForValidEmail.matches(emailAddress)) {
-            throw InternalServerErrorApiException(
-                "The email addresses provided by the environment have a wrong format.",
-            )
+            val logger = LoggerFactory.getLogger(javaClass)
+            logger.error("The email addresses provided by the Spring properties have a wrong format. " +
+                    "The following email address was parsed from that prop and caused this error: $emailAddress" +
+                    "The Spring application is shutting down because sending notifications might not work as expected.")
+            exitProcess(1) // TODO Discussion: The CI will fail in this case.
+        // TODO: But how can we assure that this makes a CD fail?
         }
+        return emailAddress
     }
 
-    private fun getEmailAddressesFromEnv(envContainingSemicolonDelimitedEmailAddresses: String): List<EmailContact> {
-        val listOfEmailContacts: MutableList<EmailContact> = mutableListOf()
-        val envWithSemicolonSeperatedEmailAddresses = System.getenv(envContainingSemicolonDelimitedEmailAddresses)
-        if (envWithSemicolonSeperatedEmailAddresses == null) {
-            listOfEmailContacts.add(EmailContact("dev.null@dataland.com"))
-            // TODO later => fallback in app prop! For cc also null ok?
-        } else {
-            listOfEmailContacts.addAll(
-                envWithSemicolonSeperatedEmailAddresses.split(";").map {
-                        emailAddress ->
-                    isEmailAddressFormatValid(emailAddress)
-                    EmailContact(emailAddress)
-                },
-            ) }
-        return listOfEmailContacts
-    }
+    private fun getEmailContactsFromProp(propWithSemicolonSeperatedEmailAddresses: String): List<EmailContact> {
+            return propWithSemicolonSeperatedEmailAddresses.split(";").map {
+                        emailAddressString ->
+                    EmailContact(assertEmailAddressFormatAndReturnIt(emailAddressString))
+                }
+             }
 
     private fun buildUserInfo(): String {
         // TODO the "as" in the next line breaks the whole thing if you use api key auth!
@@ -67,7 +78,7 @@ class EmailGenerator(
         acceptedCompanyIdentifiers: List<String>,
     ): String {
         return "A bulk data request has been submitted: " +
-            "Environment: $currentEnvironment " +
+            "Environment: $propProxyPrimaryUrl " +
             "User: ${buildUserInfo()} " +
             "Requested company identifiers: ${bulkDataRequest.listOfCompanyIdentifiers.joinToString(", ")}. " +
             "Requested frameworks: ${bulkDataRequest.listOfFrameworkNames.joinToString(", ")}. " +
@@ -111,7 +122,7 @@ class EmailGenerator(
             <div class="container">
                 <div class="header">Bulk Data Request</div>
                 <div class="section">
-                    <span class="bold">Environment:</span> $currentEnvironment
+                    <span class="bold">Environment:</span> $propProxyPrimaryUrl
                 </div>
                 <div class="section">
                     <span class="bold">User:</span> ${buildUserInfo()}
@@ -134,39 +145,13 @@ class EmailGenerator(
         """.trimIndent()
     } // TODO we could also provide info on how Dataland parsed the identifiers (which types)
 
-    /**
-     * Builds a log message for the case that a bulk data request notification mail shall be sent.
-     * @returns the log message
-     */
-    fun buildLogMessageForBulkDataRequestNotificationMail(
-        receiversString: String,
-        ccReceiversString: String?,
-        bulkDataRequestId: String,
-    ): String {
-        var logMessage =
-            "Sending email after ${CauseOfMail.BulkDataRequest} with bulkDataRequestId $bulkDataRequestId has been " +
-                "processed -> receivers are $receiversString"
-        if (ccReceiversString != null) {
-            logMessage += ", and cc receivers are $ccReceiversString"
-        }
-        return logMessage
-    }
 
-    /**
-     * Converts a list of EmailContact objects to a joined string with all email addresses seperated by commas.
-     * @returns the joined string
-     */
-    fun convertListOfEmailContactsToJoinedString(listOfEmailContacts: List<EmailContact>): String {
-        return listOfEmailContacts.joinToString(", ") {
-                emailContact ->
-            emailContact.emailAddress
-        }
-    }
+
 
     /**
      * Function that generates the email to be sent
      */
-    fun generateBulkDataRequestEmail(
+    fun buildBulkDataRequestEmail(
         bulkDataRequest: BulkDataRequest,
         rejectedCompanyIdentifiers: List<String>,
         acceptedCompanyIdentifiers: List<String>,
@@ -176,11 +161,11 @@ class EmailGenerator(
             buildBulkDataRequestEmailText(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers),
             buildBulkDataRequestEmailHtml(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers),
         )
-        // TODO rename the envs later and to this stuff somewhere else
-        val sender = EmailContact("info@dataland.com", "Dataland") // TODO app props?
-        val receivers = getEmailAddressesFromEnv("NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST") // TODO app props?
-        val cc = getEmailAddressesFromEnv("NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST") // TODO app props?
         // TODO later you could add info about matched Dataland-company-IDs!
-        return Email(sender, receivers, cc, content)
+        return Email(
+            datalandNotificatorEmailContact,
+            notificationReceiversBulkDataRequest,
+            notificationReceiversCcBulkDataRequest,
+            content)
     }
 }

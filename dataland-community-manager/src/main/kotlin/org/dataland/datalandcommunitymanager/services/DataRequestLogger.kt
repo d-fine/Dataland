@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.model.email.Email
+import org.dataland.datalandcommunitymanager.model.email.EmailContact
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*
@@ -63,5 +65,34 @@ class DataRequestLogger {
             logMessage += "while processing a bulk data request with bulkDataRequestId: $bulkDataRequestId"
         }
         logger.info(wrapServiceName(logMessage))
+    }
+
+    /**
+     * Logs an appropriate message when a bulk data request notification mail shall be sent.
+     */
+    fun logMessageForBulkDataRequestNotificationMail(
+        emailToSend: Email,
+        bulkDataRequestId: String,
+    ) {
+        val receiversString = convertListOfEmailContactsToJoinedString(emailToSend.receivers)
+        val ccReceiversString = emailToSend.cc?.let { convertListOfEmailContactsToJoinedString(it) }
+        var logMessage =
+            "Sending email after ${CauseOfMail.BulkDataRequest} with bulkDataRequestId $bulkDataRequestId has been " +
+                "processed -> receivers are $receiversString"
+        if (ccReceiversString != null) {
+            logMessage += ", and cc receivers are $ccReceiversString"
+        }
+        logger.info(wrapServiceName(logMessage))
+    }
+
+    /**
+     * Converts a list of EmailContact objects to a joined string with all email addresses seperated by commas.
+     * @returns the joined string
+     */
+    private fun convertListOfEmailContactsToJoinedString(listOfEmailContacts: List<EmailContact>): String {
+        return listOfEmailContacts.joinToString(", ") {
+                emailContact ->
+            emailContact.emailAddress
+        }
     }
 }

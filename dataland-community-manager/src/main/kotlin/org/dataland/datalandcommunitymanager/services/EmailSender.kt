@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class EmailSender(
-    @Value("\${mailjet.api.url}") private val mailjetApiUrl: String // TODO check if it works on deployed instance
+    @Value("\${mailjet.api.url}") private val mailjetApiUrl: String, // TODO check if it works on deployed instance
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -32,9 +32,9 @@ class EmailSender(
      * @param logMessage a message that will be logged and shall contain information about the contents
      * @return a sending success indicator which is true if the sending was successful
      */
-    fun sendEmail(email: Email, logMessage: String): Boolean {
+    fun sendEmail(email: Email, loggerFunction: () -> Unit): Boolean {
         return try {
-            logger.info(logMessage)
+            loggerFunction()
             val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
             val request = SendEmailsRequest.builder().message(mailjetEmail).build()
             val response = request.sendWith(mailjetClient)

@@ -7,7 +7,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -21,7 +20,7 @@ class DataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
-    @Autowired private val emailGenerator: EmailGenerator,
+    @Autowired private val emailBuilder: EmailBuilder,
     @Autowired private val emailSender: EmailSender,
 ) {
     val isinRegex = Regex("^([A-Z]{2})([0-9A-Z]{9})([0-9])$") // TODO at the end, validate correctness
@@ -65,7 +64,7 @@ class DataRequestManager(
         }
         if (acceptedCompanyIdentifiers.isNotEmpty()) {
             sendBulkDataRequestNotificationMail(
-                bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers, bulkDataRequestId
+                bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers, bulkDataRequestId,
             )
         }
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
@@ -82,10 +81,13 @@ class DataRequestManager(
         return retrievedDataRequestsForUser
     }
 
-    private fun isDataRequestAlreadyExisting(requestingUserId: String, identifierValue: String, framework: DataTypeEnum)
-    : Boolean {
+    private fun isDataRequestAlreadyExisting(
+        requestingUserId: String,
+        identifierValue: String,
+        framework: DataTypeEnum,
+    ): Boolean {
         val isAlreadyExisting = dataRequestRepository.existsByUserIdAndCompanyIdentifierValueAndDataType(
-            requestingUserId, identifierValue, framework
+            requestingUserId, identifierValue, framework,
         )
         if (isAlreadyExisting) {
             dataRequestLogger
@@ -93,7 +95,6 @@ class DataRequestManager(
         }
         return isAlreadyExisting
     }
-
 
     private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity, bulkDataRequestId: String? = null) {
         dataRequestRepository.save(dataRequestEntity)
@@ -133,7 +134,8 @@ class DataRequestManager(
     ): String {
         return when (numberOfRejectedCompanyIdentifiers) {
             0 -> "$totalNumberOfRequestedCompanyIdentifiers data requests were created."
-            else -> "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
+            else ->
+                "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
                     "company identifiers were rejected because of a format that is not matching a valid " +
                     "LEI, ISIN or PermID."
         }
@@ -158,17 +160,17 @@ class DataRequestManager(
         bulkDataRequest: BulkDataRequest,
         rejectedCompanyIdentifiers: List<String>,
         acceptedCompanyIdentifiers: List<String>,
-        bulkDataRequestId: String
+        bulkDataRequestId: String,
     ) {
-        val emailToSend = emailGenerator.generateBulkDataRequestEmail(
+        val emailToSend = emailBuilder.buildBulkDataRequestEmail(
             bulkDataRequest,
             rejectedCompanyIdentifiers,
-            acceptedCompanyIdentifiers
+            acceptedCompanyIdentifiers,
         )
-        val receiversString = emailGenerator.convertListOfEmailContactsToJoinedString(emailToSend.receivers)
-        val ccReceiversString = emailToSend.cc?.let { emailGenerator.convertListOfEmailContactsToJoinedString(it) }
-        val messageToLog = emailGenerator
-            .buildLogMessageForBulkDataRequestNotificationMail(receiversString, ccReceiversString, bulkDataRequestId)
-        emailSender.sendEmail(emailToSend, messageToLog)
+        val bulkDataRequestNotificationMailLoggerFunction = {
+            dataRequestLogger
+                .logMessageForBulkDataRequestNotificationMail(emailToSend, bulkDataRequestId)
+        }
+        emailSender.sendEmail(emailToSend, bulkDataRequestNotificationMailLoggerFunction)
     }
 }
