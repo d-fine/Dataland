@@ -119,7 +119,7 @@ export default defineComponent({
       return !!this.currentValue;
     },
     computeQualityOption(): object {
-      if (this.currentValue == "") {
+      if (this.currentValue === undefined) {
         return this.qualityOptions;
       } else {
         return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
@@ -140,7 +140,7 @@ export default defineComponent({
     handleBlurValue() {
       if (this.currentValue === undefined) {
         this.qualityValue = "NA";
-      } else if (this.currentValue !== "" && this.qualityValue == "NA") {
+      } else if (this.qualityValue == "NA") {
         this.qualityValue = "";
       }
     },
