@@ -3,7 +3,7 @@
     <div class="WordSection1">
       <p class="MsoNormal" style="margin-bottom: 0cm; line-height: 115%; border: none">&nbsp;</p>
 
-      <br clear="ALL" />
+      <br />
 
       <p class="MsoTitle">Datenschutzhinweise</p>
 
@@ -1104,8 +1104,7 @@
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
-        <a name="_heading=h.gjdgxs"></a
-        ><span style="font-size: 10pt; line-height: 133%"
+        <span style="font-size: 10pt; line-height: 133%"
           >Diese Datenschutzerklärung ist aktuell gültig und wurde das letzte Mal im Oktober 2023 aktualisiert.</span
         >
       </p>

@@ -16,6 +16,9 @@
     <nav class="footer__right" role="navigation" aria-label="Footer Navigation">
       <router-link to="/imprint" class="footer__right-link" aria-label="Imprint">Imprint</router-link>
       <router-link to="/dataprivacy" class="footer__right-link" aria-label="Data Privacy">Data Privacy</router-link>
+      <router-link to="/terms" class="footer__right-link" aria-label="Terms and Conditions">
+        Terms and Conditions
+      </router-link>
     </nav>
   </footer>
 </template>

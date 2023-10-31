@@ -16,11 +16,15 @@ describe("Check that the Landing Page to work properly", () => {
     cy.get("span:contains('HOME')").click();
 
     cy.get("a[href='/imprint']").click();
-    cy.get("h2:contains('Imprint')");
-    cy.get("span:contains('BACK')").click();
+    cy.get("h2:contains('Impressum')");
+    cy.get("a[href='/']").click();
 
     cy.get("a[href='/dataprivacy']").click();
-    cy.get("h2:contains('Data Privacy')");
-    cy.get("span:contains('BACK')").click();
+    cy.get("p:contains('Datenschutzhinweise')");
+    cy.get("a[href='/']").click();
+
+    cy.get("a[href='/terms']").click();
+    cy.get("div:contains('In Zukunft sind hier die Allgemeinen Geschäftsbedingungen zu finden.')");
+    cy.get("a[href='/']").click();
   });
 });
