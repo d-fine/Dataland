@@ -124,32 +124,15 @@ export default defineComponent({
     },
   },
   methods: {
-    //TODO function into handleBlur
-    /**
-     * Sets the value of the quality field
-     * @param qualityOption the new value for the quality field
-     */
-    // eslint-disable-next-line vue/no-unused-properties
-    setQuality(qualityOption: QualityOptions | undefined) {
-      this.qualityValue = qualityOption ?? "";
-    },
-    /**
-     * Returns true if the current value of the quality field is NA
-     * @returns true if the current value of the quality field is NA
-     */
-    // eslint-disable-next-line vue/no-unused-properties
-    isQualityNa(): boolean {
-      return this.qualityValue === QualityOptions.Na;
-    },
     /**
      * Handle blur event on value input.
      * @param isDataValueProvided boolean which gives information whether data is provided or not
      */
     handleBlurValue(isDataValueProvided) {
       if (isDataValueProvided === false) {
-        this.setQuality(QualityOptions.Na);
-      } else if (this.isQualityNa()) {
-        this.setQuality(undefined);
+        this.qualityValue = QualityOptions.Na;
+      } else if (this.qualityValue === QualityOptions.Na) {
+        this.qualityValue = "";
       }
     },
   },
