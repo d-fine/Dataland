@@ -7,6 +7,7 @@ import org.dataland.datalandcommunitymanager.model.email.EmailContact
 import org.dataland.datalandcommunitymanager.model.email.EmailContent
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
@@ -24,11 +25,10 @@ enum class CauseOfMail(val description: String) {
 /**
  * A class that manages generating emails
  */
-@Component
-class EmailGenerator {
-    private val currentEnvironment = System.getenv("PROXY_PRIMARY_URL") ?: "local environment"
-    // TODO from app props?
-
+@Component ("EmailGenerator")
+class EmailGenerator(
+    @Value("\${dataland.proxy.primary.url}") private val currentEnvironment: String) // TODO test if it works on deployed
+{
     private fun isEmailAddressFormatValid(emailAddress: String) {
         val regexForValidEmail = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$")
         if (!regexForValidEmail.matches(emailAddress)) {
