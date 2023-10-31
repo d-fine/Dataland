@@ -30,7 +30,6 @@ export interface Field {
   unit?: string;
   component: string;
   dependency?: string;
-  certificateRequiredIfYes?: boolean;
   validation?: string;
   validationLabel?: string;
   required?: boolean;

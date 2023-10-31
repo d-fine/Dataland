@@ -74,7 +74,6 @@
                           :name="field.name"
                           :options="field.options"
                           :required="field.required"
-                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
