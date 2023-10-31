@@ -31,7 +31,7 @@ class EmailGenerator {
         val listOfEmailContacts: MutableList<EmailContact> = mutableListOf()
         val envWithSemicolonSeperatedEmailAddresses = System.getenv(envContainingSemicolonDelimitedEmailAddresses)
         if (envWithSemicolonSeperatedEmailAddresses == null) {
-            listOfEmailContacts.add(EmailContact("dev.null@dataland.com")) // TODO later => fallback in app prop!
+            listOfEmailContacts.add(EmailContact("dev.null@dataland.com")) // TODO later => fallback in app prop! For cc also null ok?
         }
         else {
             listOfEmailContacts.addAll(

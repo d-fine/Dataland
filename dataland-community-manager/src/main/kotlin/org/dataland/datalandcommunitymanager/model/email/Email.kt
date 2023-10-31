@@ -9,7 +9,7 @@ import com.mailjet.client.transactional.TransactionalEmail
 data class Email(
     val sender: EmailContact,
     val receivers: List<EmailContact>,
-    val cc: List<EmailContact>,
+    val cc: List<EmailContact>?,
     val content: EmailContent,
 )
 
@@ -19,6 +19,10 @@ data class Email(
 fun TransactionalEmail.TransactionalEmailBuilder.integrateEmailIntoTransactionalEmailBuilder(email: Email): TransactionalEmail.TransactionalEmailBuilder {
     return this.integrateSenderIntoTransactionalEmailBuilder(email.sender)
         .integrateReceiversIntoTransactionalEmailBuilder(email.receivers)
-        .integrateCcIntoTransactionalEmailBuilder(email.cc)
+        .apply {
+            email.cc?.let { ccReceivers ->
+                this.integrateCcIntoTransactionalEmailBuilder(ccReceivers)
+            }
+        }
         .integrateContentIntoTransactionalEmailBuilder(email.content)
 }
