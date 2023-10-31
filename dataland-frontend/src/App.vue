@@ -27,17 +27,6 @@ const dialog = useDialog();
 
 const currentRefreshTokenInSharedStore = computed(() => sharedStore.refreshToken);
 
-/*
-onBeforeMount(() => {
-  const script = document.createElement("script");
-  script.id = "Cookiebot";
-  script.src = "https://consent.cookiebot.com/uc.js";
-  script.setAttribute("data-cbid", "cba5002e-6f0e-4848-aadc-ccc8d5c96c86");
-  script.setAttribute("data-blockingmode", "auto");
-  script.type = "text/javascript";
-  document.head.appendChild(script);
-}); */
-
 watch(currentRefreshTokenInSharedStore, (newRefreshToken) => {
   if (typeof newRefreshToken === "string") {
     //try is to explicitly declare the type for newRefreshToken inside the callback
