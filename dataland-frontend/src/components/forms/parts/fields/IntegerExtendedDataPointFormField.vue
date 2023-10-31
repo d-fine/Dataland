@@ -15,7 +15,7 @@
           :name="'value'"
           v-model="currentValue"
           :validation-label="validationLabel ?? label"
-          :validation="`number|integer|${validation}`"
+          :validation="`integer|${validation}`"
           :placeholder="unit ? `Value in ${unit}` : 'Value'"
           @blur="handleBlurValue"
         />
