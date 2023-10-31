@@ -12,8 +12,15 @@ class CompanyGetter(
 ) {
     // TODO Memo an mich: Das handling der internal base url vom Backend ist inkonsistent und seltsam in der code base
 
-    fun getCompanyIdByIdentifier(searchString: String): String {
-        // TODO: This endpoint does not exist currently! We need to introduce it in the backend.
-        return "TODO" // TODO
+    /** This method checks if a Dataland companyId is associated with a specific company identifier value.
+     * @param identifierValue to check for
+     * @returns a company Id if it could find one, otherwise null
+     */
+
+    // TODO: The company endpoint that is required for this does not exist currently!
+    //  We need to introduce it in the backend.
+    //  Other questions: Shall we also pass the expected type here?
+    fun getCompanyIdByIdentifier(identifierValue: String): String? {
+        return "TODO"
     }
 }

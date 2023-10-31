@@ -29,7 +29,8 @@ fun TransactionalEmail.TransactionalEmailBuilder.integrateSenderIntoTransactiona
 /**
  * Uses a list of EmailContact objects for the build of a TransactionalEmail
  */
-fun TransactionalEmail.TransactionalEmailBuilder.integrateReceiversIntoTransactionalEmailBuilder(receivers: List<EmailContact>):
+fun TransactionalEmail.TransactionalEmailBuilder
+    .integrateReceiversIntoTransactionalEmailBuilder(receivers: List<EmailContact>):
     TransactionalEmail.TransactionalEmailBuilder {
     return this.to(receivers.map { it.toMailjetSendContact() })
 }
@@ -37,7 +38,8 @@ fun TransactionalEmail.TransactionalEmailBuilder.integrateReceiversIntoTransacti
 /**
  * Uses a list of EmailContact objects for the build of a TransactionalEmail
  */
-fun TransactionalEmail.TransactionalEmailBuilder.integrateCcIntoTransactionalEmailBuilder(receivers: List<EmailContact>):
+fun TransactionalEmail.TransactionalEmailBuilder
+    .integrateCcIntoTransactionalEmailBuilder(receivers: List<EmailContact>):
     TransactionalEmail.TransactionalEmailBuilder {
     return this.cc(receivers.map { it.toMailjetSendContact() })
 }

@@ -5,9 +5,9 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
-import org.dataland.datalandcommunitymanager.model.email.EmailContact
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -16,9 +16,10 @@ import java.util.*
 /**
  * Implementation of a request manager service for all operations concerning the processing of data requests
  */
-@Service("RequestManager")
-class RequestManager(
+@Service("DataRequestManager")
+class DataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
+    @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val emailGenerator: EmailGenerator,
     @Autowired private val emailSender: EmailSender,
@@ -34,7 +35,9 @@ class RequestManager(
      */
     // @Transactional        // TODO find out if this annotation is required and makes sense
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
+        val bulkDataRequestId = UUID.randomUUID().toString()
         val currentUserId = DatalandAuthentication.fromContext().userId
+        dataRequestLogger.logMessageForBulkDataRequest(currentUserId, bulkDataRequestId)
         val acceptedCompanyIdentifiers = mutableListOf<String>()
         val rejectedCompanyIdentifiers = mutableListOf<String>()
         val listOfDataRequestEntitiesToStore = mutableListOf<DataRequestEntity>()
@@ -44,7 +47,10 @@ class RequestManager(
                 acceptedCompanyIdentifiers.add(identifierValue)
                 for (framework in bulkDataRequest.listOfFrameworkNames) {
                     if (!isDataRequestAlreadyExisting(currentUserId, identifierValue, framework)) {
-                        // val companyId = companyGetter.getCompanyIdByIdentifier(identifierValue) TODO commented out because backend cannot do this currently
+                        /*
+                        TODO commented out because backend cannot do this currently
+                        val companyId = companyGetter.getCompanyIdByIdentifier(identifierValue)
+                        */
                         listOfDataRequestEntitiesToStore.add(
                             buildDataRequestEntity(currentUserId, framework, identifierType, identifierValue, null),
                         )
@@ -55,33 +61,43 @@ class RequestManager(
             }
         }
         for (dataRequestEntity in listOfDataRequestEntitiesToStore) {
-            dataRequestRepository.save(dataRequestEntity)
+            storeDataRequestEntity(dataRequestEntity, bulkDataRequestId)
         }
         if (acceptedCompanyIdentifiers.isNotEmpty()) {
-            sendBulkDataRequestNotificationMail(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers) // TODO
+            sendBulkDataRequestNotificationMail(
+                bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers, bulkDataRequestId
+            )
         }
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
     }
 
+    /** This method retrieves all the data requests for the current user from the database and logs a message.
+     * @returns all data requests for the current user
+     */
     fun getDataRequestsForUser(): List<DataRequestEntity> {
-        val currentUserId = DatalandAuthentication.fromContext().userId // TODO =>
-        // TODO I noticed that we use smth else in the api key manager for this.  why?
-        return dataRequestRepository.findByUserId(currentUserId)
+        // TODO I noticed that we use smth else in the api key manager for getting currentUserId.  Why?
+        val currentUserId = DatalandAuthentication.fromContext().userId
+        val retrievedDataRequestsForUser = dataRequestRepository.findByUserId(currentUserId)
+        dataRequestLogger.logMessageForRetrievingDataRequestsForUser(currentUserId)
+        return retrievedDataRequestsForUser
     }
 
-    private fun isDataRequestAlreadyExisting(requestingUser: String, identifierValue: String, framework: DataTypeEnum): Boolean {
-        return dataRequestRepository.existsByUserIdAndCompanyIdentifierValueAndDataType(
-            requestingUser, identifierValue, framework,
+    private fun isDataRequestAlreadyExisting(requestingUserId: String, identifierValue: String, framework: DataTypeEnum)
+    : Boolean {
+        val isAlreadyExisting = dataRequestRepository.existsByUserIdAndCompanyIdentifierValueAndDataType(
+            requestingUserId, identifierValue, framework
         )
+        if (isAlreadyExisting) {
+            dataRequestLogger
+                .logMessageForCheckingIfDataRequestAlreadyExists(requestingUserId, identifierValue, framework)
+        }
+        return isAlreadyExisting
     }
 
-    private fun determineIdentifierTypeViaRegexMatching(identifierValue: String): IdentifierType? {
-        return when {
-            isinRegex.matches(identifierValue) -> IdentifierType.isin
-            leiRegex.matches(identifierValue) -> IdentifierType.lei
-            permIdRegex.matches(identifierValue) -> IdentifierType.permId
-            else -> null
-        }
+
+    private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity, bulkDataRequestId: String? = null) {
+        dataRequestRepository.save(dataRequestEntity)
+        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
     }
 
     private fun buildDataRequestEntity(
@@ -94,12 +110,21 @@ class RequestManager(
         return DataRequestEntity(
             dataRequestId = UUID.randomUUID().toString(),
             userId = currentUserId,
-            timestamp = Instant.now().toEpochMilli(),
+            creationTimestamp = Instant.now().toEpochMilli(),
             dataType = framework,
             companyIdentifierType = identifierType,
             companyIdentifierValue = identifierValue,
             companyIdOnDataland = companyId,
         )
+    }
+
+    private fun determineIdentifierTypeViaRegexMatching(identifierValue: String): IdentifierType? {
+        return when {
+            isinRegex.matches(identifierValue) -> IdentifierType.isin
+            leiRegex.matches(identifierValue) -> IdentifierType.lei
+            permIdRegex.matches(identifierValue) -> IdentifierType.permId
+            else -> null
+        }
     }
 
     private fun buildResponseMessageForBulkDataRequest(
@@ -108,9 +133,9 @@ class RequestManager(
     ): String {
         return when (numberOfRejectedCompanyIdentifiers) {
             0 -> "$totalNumberOfRequestedCompanyIdentifiers data requests were created."
-            else ->
-                "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers company identifiers were " +
-                    "rejected because of a format that is not matching a valid LEI, ISIN or PermID."
+            else -> "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
+                    "company identifiers were rejected because of a format that is not matching a valid " +
+                    "LEI, ISIN or PermID."
         }
     }
 
@@ -129,28 +154,21 @@ class RequestManager(
         )
     }
 
-    // TODO move to generator?
-
-    private fun buildLogMessageForBulkDataRequestNotificationMail(receiversString: String, ccReceiversString: String?, causeOfSendingMail: String): String {
-        return if (ccReceiversString != null) {
-            "Sending email after $causeOfSendingMail to receivers $receiversString, and cc $ccReceiversString."
-        } else {
-            "Sending email after $causeOfSendingMail to receivers $receiversString."
-        }
-    }
-
-    private fun convertListOfEmailContactsToJoinedString(listOfEmailContacts: List<EmailContact>): String {
-        return listOfEmailContacts.joinToString(", ") {
-                emailContact ->
-            emailContact.emailAddress
-        }
-    }
-
-    private fun sendBulkDataRequestNotificationMail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>) {
-        val emailToSend = emailGenerator.generateBulkDataRequestEmail(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
-        val receiversString = convertListOfEmailContactsToJoinedString(emailToSend.receivers)
-        val ccReceiversString = emailToSend.cc?.let { convertListOfEmailContactsToJoinedString(it) }
-        val messageToLog = buildLogMessageForBulkDataRequestNotificationMail(receiversString, ccReceiversString, "bulk data request") // TODO define notification types as enum
+    private fun sendBulkDataRequestNotificationMail(
+        bulkDataRequest: BulkDataRequest,
+        rejectedCompanyIdentifiers: List<String>,
+        acceptedCompanyIdentifiers: List<String>,
+        bulkDataRequestId: String
+    ) {
+        val emailToSend = emailGenerator.generateBulkDataRequestEmail(
+            bulkDataRequest,
+            rejectedCompanyIdentifiers,
+            acceptedCompanyIdentifiers
+        )
+        val receiversString = emailGenerator.convertListOfEmailContactsToJoinedString(emailToSend.receivers)
+        val ccReceiversString = emailToSend.cc?.let { emailGenerator.convertListOfEmailContactsToJoinedString(it) }
+        val messageToLog = emailGenerator
+            .buildLogMessageForBulkDataRequestNotificationMail(receiversString, ccReceiversString, bulkDataRequestId)
         emailSender.sendEmail(emailToSend, messageToLog)
     }
 }

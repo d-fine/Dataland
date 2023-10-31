@@ -8,8 +8,8 @@ import org.flywaydb.core.api.migration.Context
  */
 class V1_1__CreateUserDataTables : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        context.toString() // TODO dummy
-        /* TODO required?
+        context.toString() // TODO dummy. Is migration script even needed? Discuss with Florian and compare to backend
+        /*
         createCompanyTables(context!!)
         context.connection.createStatement().execute(
             "CREATE TABLE data_meta_information (" +
@@ -67,5 +67,5 @@ class V1_1__CreateUserDataTables : BaseJavaMigration() {
                 ")",
         )
    */
-    } // TODO
+    }
 }

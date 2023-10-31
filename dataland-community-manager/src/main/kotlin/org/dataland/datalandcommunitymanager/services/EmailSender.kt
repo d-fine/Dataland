@@ -27,7 +27,8 @@ class EmailSender(
     private val mailjetClient = MailjetClient(clientOptions)
 
     /** This method sends an email
-     * @param email the email to send TODO
+     * @param email the email to send
+     * @param logMessage a message that will be logged and shall contain information about the contents
      * @return a sending success indicator which is true if the sending was successful
      */
     fun sendEmail(email: Email, logMessage: String): Boolean {

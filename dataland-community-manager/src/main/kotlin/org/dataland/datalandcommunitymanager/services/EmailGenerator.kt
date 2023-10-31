@@ -10,6 +10,18 @@ import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.stereotype.Component
 
 /**
+ * This enum contains possible causes to generate an email. This cause can then be included in the log message.
+ */
+enum class CauseOfMail(val description: String) {
+    BulkDataRequest("bulk data request"),
+    ;
+
+    override fun toString(): String {
+        return description
+    }
+}
+
+/**
  * A class that manages generating emails
  */
 @Component
@@ -30,7 +42,8 @@ class EmailGenerator {
         val listOfEmailContacts: MutableList<EmailContact> = mutableListOf()
         val envWithSemicolonSeperatedEmailAddresses = System.getenv(envContainingSemicolonDelimitedEmailAddresses)
         if (envWithSemicolonSeperatedEmailAddresses == null) {
-            listOfEmailContacts.add(EmailContact("dev.null@dataland.com")) // TODO later => fallback in app prop! For cc also null ok?
+            listOfEmailContacts.add(EmailContact("dev.null@dataland.com"))
+            // TODO later => fallback in app prop! For cc also null ok?
         } else {
             listOfEmailContacts.addAll(
                 envWithSemicolonSeperatedEmailAddresses.split(";").map {
@@ -43,11 +56,16 @@ class EmailGenerator {
     }
 
     private fun buildUserInfo(): String {
+        // TODO the "as" in the next line breaks the whole thing if you use api key auth!
         val user = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
         return "User ${user.username} (Keycloak id: ${user.userId})"
     }
 
-    private fun buildBulkDataRequestEmailText(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>): String {
+    private fun buildBulkDataRequestEmailText(
+        bulkDataRequest: BulkDataRequest,
+        rejectedCompanyIdentifiers: List<String>,
+        acceptedCompanyIdentifiers: List<String>,
+    ): String {
         return "A bulk data request has been submitted: " +
             "Environment: $currentEnvironment " +
             "User: ${buildUserInfo()} " +
@@ -57,7 +75,11 @@ class EmailGenerator {
             "Accepted company identifiers: ${acceptedCompanyIdentifiers.joinToString(", ")}."
     }
 
-    private fun buildBulkDataRequestEmailHtml(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>): String {
+    private fun buildBulkDataRequestEmailHtml(
+        bulkDataRequest: BulkDataRequest,
+        rejectedCompanyIdentifiers: List<String>,
+        acceptedCompanyIdentifiers: List<String>,
+    ): String {
         return """
         <html>
         <head>
@@ -113,15 +135,46 @@ class EmailGenerator {
     } // TODO we could also provide info on how Dataland parsed the identifiers (which types)
 
     /**
+     * Builds a log message for the case that a bulk data request notification mail shall be sent.
+     * @returns the log message
+     */
+    fun buildLogMessageForBulkDataRequestNotificationMail(
+        receiversString: String,
+        ccReceiversString: String?,
+        bulkDataRequestId: String,
+    ): String {
+        var logMessage =
+            "Sending email after ${CauseOfMail.BulkDataRequest} with bulkDataRequestId $bulkDataRequestId has been " +
+                "processed -> receivers are $receiversString"
+        if (ccReceiversString != null) {
+            logMessage += ", and cc receivers are $ccReceiversString"
+        }
+        return logMessage
+    }
+
+    /**
+     * Converts a list of EmailContact objects to a joined string with all email addresses seperated by commas.
+     * @returns the joined string
+     */
+    fun convertListOfEmailContactsToJoinedString(listOfEmailContacts: List<EmailContact>): String {
+        return listOfEmailContacts.joinToString(", ") {
+                emailContact ->
+            emailContact.emailAddress
+        }
+    }
+
+    /**
      * Function that generates the email to be sent
      */
-    fun generateBulkDataRequestEmail(bulkDataRequest: BulkDataRequest, rejectedCompanyIdentifiers: List<String>, acceptedCompanyIdentifiers: List<String>): Email {
-        val emailContentAsText = buildBulkDataRequestEmailText(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
-        val emailContentAsHtml = buildBulkDataRequestEmailHtml(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
+    fun generateBulkDataRequestEmail(
+        bulkDataRequest: BulkDataRequest,
+        rejectedCompanyIdentifiers: List<String>,
+        acceptedCompanyIdentifiers: List<String>,
+    ): Email {
         val content = EmailContent(
             "Dataland Bulk Data Request",
-            emailContentAsText,
-            emailContentAsHtml,
+            buildBulkDataRequestEmailText(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers),
+            buildBulkDataRequestEmailHtml(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers),
         )
         // TODO rename the envs later and to this stuff somewhere else
         val sender = EmailContact("info@dataland.com", "Dataland") // TODO app props?

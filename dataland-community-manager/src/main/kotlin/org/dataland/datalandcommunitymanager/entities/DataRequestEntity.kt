@@ -17,13 +17,13 @@ data class DataRequestEntity(
 
     val userId: String,
 
-    val timestamp: Long, // TODO compare with other timestamps in other services + think about the name
+    val creationTimestamp: Long,
 
     val dataType: DataTypeEnum,
 
     val companyIdentifierType: IdentifierType,
-
-    val companyIdentifierValue: String, // TODO should contain list???
+    // TODO Discussion: You could also handle this as list if you want to merge requests.
+    val companyIdentifierValue: String,
 
     val companyIdOnDataland: String?,
 )

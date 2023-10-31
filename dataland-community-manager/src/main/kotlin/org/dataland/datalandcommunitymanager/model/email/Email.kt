@@ -16,7 +16,8 @@ data class Email(
 /**
  * Uses an Email object for the build of a TransactionalEmail
  */
-fun TransactionalEmail.TransactionalEmailBuilder.integrateEmailIntoTransactionalEmailBuilder(email: Email): TransactionalEmail.TransactionalEmailBuilder {
+fun TransactionalEmail.TransactionalEmailBuilder.integrateEmailIntoTransactionalEmailBuilder(email: Email):
+    TransactionalEmail.TransactionalEmailBuilder {
     return this.integrateSenderIntoTransactionalEmailBuilder(email.sender)
         .integrateReceiversIntoTransactionalEmailBuilder(email.receivers)
         .apply {

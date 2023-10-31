@@ -67,5 +67,3 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataRequestsForUser(): ResponseEntity<List<DataRequestEntity>>
 }
-
-// TODO at the very end: check if it works with api keys

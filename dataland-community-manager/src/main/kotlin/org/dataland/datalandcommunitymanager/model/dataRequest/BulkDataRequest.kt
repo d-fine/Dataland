@@ -13,6 +13,7 @@ data class BulkDataRequest(
     @field:JsonProperty(required = true)
     val listOfCompanyIdentifiers: List<String>,
 
+    // TODO Problem: The Deserializer somehow expects "eutaxonomyminusfinancials" instead of "eutaxonomy-financials"
     @field:JsonProperty(required = true)
-    val listOfFrameworkNames: List<DataTypeEnum>, // TODO Problem: The Deserializer somehow expects "eutaxonomyminusfinancials" instead of "eutaxonomy-financials"
+    val listOfFrameworkNames: List<DataTypeEnum>,
 )
