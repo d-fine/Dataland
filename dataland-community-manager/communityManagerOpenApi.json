@@ -419,7 +419,7 @@
           "userId": {
             "type": "string"
           },
-          "timestamp": {
+          "creationTimestamp": {
             "type": "integer",
             "format": "int64"
           },
