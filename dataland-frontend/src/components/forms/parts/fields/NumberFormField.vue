@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3">
-    <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <div class="next-to-each-other">
       <FormKit
         type="text"
