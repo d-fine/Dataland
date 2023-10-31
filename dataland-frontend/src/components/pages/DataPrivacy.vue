@@ -27,9 +27,8 @@
           line-height: 133%;
         "
       >
-        1.<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >VERANTWORTLICHE STELLE UND KONTAKTDATEN DES DATENSCHUTZBEAUFTRAGTEN
+        1.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>VERANTWORTLICHE STELLE UND KONTAKTDATEN DES
+        DATENSCHUTZBEAUFTRAGTEN
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -92,15 +91,12 @@
           line-height: 133%;
         "
       >
-        2.<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >Verarbeitung personenbezogener Daten im Zusammenhang mit Ihrer Nutzung unserer Webseite
+        2.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>Verarbeitung personenbezogener Daten im
+        Zusammenhang mit Ihrer Nutzung unserer Webseite
       </h1>
 
       <h2 style="margin-left: 1cm; text-align: justify; text-indent: -1cm; line-height: 133%; page-break-after: avoid">
-        a)<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >Informatorische Nutzung unserer Webseite
+        a)<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>Informatorische Nutzung unserer Webseite
       </h2>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -127,9 +123,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">IP-Adresse,</span>
       </p>
 
@@ -147,9 +141,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Datum und Uhrzeit der Anfrage,</span>
       </p>
 
@@ -167,9 +159,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black"
           >Zeitzonendifferenz zur Greenwich Mean Time (GMT),</span
         >
@@ -189,9 +179,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Inhalt zur Anforderung (konkrete Seite),</span>
       </p>
 
@@ -209,9 +197,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Zugriffsstatus/http-Statuscode,</span>
       </p>
 
@@ -229,9 +215,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Jeweils übertragene Datenmenge,</span>
       </p>
 
@@ -249,9 +233,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black"
           >Webseite, von der die Anforderung kommt (Referrer-URL),</span
         >
@@ -271,9 +253,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Browser,</span>
       </p>
 
@@ -291,9 +271,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Betriebssystem und dessen Oberfläche,</span>
       </p>
 
@@ -311,9 +289,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Sprache und Version der Browsersoftware.</span>
       </p>
 
@@ -340,8 +316,7 @@
       </p>
 
       <h2 style="margin-left: 1cm; text-align: justify; text-indent: -1cm; line-height: 133%; page-break-after: avoid">
-        b)<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span
-        >Dataland-Account
+        b)<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>Dataland-Account
       </h2>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -365,9 +340,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Name (bei Anmeldung über LinkedIn)</span>
       </p>
 
@@ -385,9 +358,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">E-Mailadresse</span>
       </p>
 
@@ -405,9 +376,7 @@
       </p>
 
       <h2 style="margin-left: 1cm; text-align: justify; text-indent: -1cm; line-height: 133%; page-break-after: avoid">
-        c)<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >Newsletter
+        c)<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>Newsletter
       </h2>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -431,9 +400,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;; color: black"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Anrede</span>
       </p>
 
@@ -451,9 +418,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;; color: black"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Vor- und Nachname</span>
       </p>
 
@@ -471,9 +436,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;; color: black"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">E-Mailadresse</span>
       </p>
 
@@ -491,9 +454,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;; color: black"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Firma</span>
       </p>
 
@@ -550,9 +511,7 @@
       </p>
 
       <h2 style="margin-left: 1cm; text-align: justify; text-indent: -1cm; line-height: 133%; page-break-after: avoid">
-        e)<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >Webanalyse mit Matomo
+        e)<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>Webanalyse mit Matomo
       </h2>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -581,9 +540,7 @@
       </p>
 
       <h2 style="margin-left: 1cm; text-align: justify; text-indent: -1cm; line-height: 133%; page-break-after: avoid">
-        f)<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >YouTube
+        f)<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>YouTube
       </h2>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -647,8 +604,7 @@
       </p>
 
       <h2 style="margin-left: 1cm; text-align: justify; text-indent: -1cm; line-height: 133%; page-break-after: avoid">
-        g)<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span
-        >Social Media - LinkedIn
+        g)<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>Social Media - LinkedIn
       </h2>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -714,9 +670,7 @@
           line-height: 133%;
         "
       >
-        3.<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >EMPFÄNGER UND EMPFÄNGERKATEGORIEN
+        3.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>EMPFÄNGER UND EMPFÄNGERKATEGORIEN
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -753,9 +707,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black"
           >öffentliche Stellen und Institutionen (etwa Strafverfolgungsbehörden) bei Vorliegen einer gesetzlichen oder
           behördlichen Verpflichtung,</span
@@ -776,9 +728,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black"
           >andere konzernverbundene Unternehmen zur Risikosteuerung aufgrund gesetzlicher oder behördlicher
           Verpflichtungen sowie</span
@@ -799,9 +749,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black"
           >Dienstleister, die wir im Rahmen von Auftragsverarbeitungsverhältnissen heranziehen.</span
         >
@@ -824,9 +772,7 @@
           line-height: 133%;
         "
       >
-        4.<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >ÜBERMITTLUNG IN DRITTSTAATEN
+        4.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>ÜBERMITTLUNG IN DRITTSTAATEN
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -850,9 +796,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black"
           >es gesetzlich vorgeschrieben ist (z.B. steuerrechtliche Meldepflichten) oder</span
         >
@@ -872,9 +816,7 @@
         "
       >
         <span style="font-size: 10pt; line-height: 133%; font-family: &quot;Noto Sans Symbols&quot;"
-          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;"
-            >&nbsp;
-          </span></span
+          >&#9679;<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span></span
         ><span style="font-size: 10pt; line-height: 133%; color: black">Sie uns Ihre Einwilligung erteilt haben.</span>
       </p>
 
@@ -912,9 +854,7 @@
           line-height: 133%;
         "
       >
-        5.<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >SPEICHERDAUER
+        5.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>SPEICHERDAUER
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -950,9 +890,7 @@
           line-height: 133%;
         "
       >
-        6.<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >DATENSICHERHEIT
+        6.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>DATENSICHERHEIT
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -986,9 +924,7 @@
           line-height: 133%;
         "
       >
-        7.<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >BETROFFENENRECHTE
+        7.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>BETROFFENENRECHTE
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -1050,9 +986,7 @@
           line-height: 133%;
         "
       >
-        8.<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >PFLICHT ZUR BEREITSTELLUNG VON DATEN
+        8.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>PFLICHT ZUR BEREITSTELLUNG VON DATEN
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -1076,9 +1010,7 @@
           line-height: 133%;
         "
       >
-        9.<span style="font: 7pt &quot;Times New Roman&quot;"
-          >&nbsp; </span
-        >PROFILING
+        9.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>PROFILING
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
@@ -1099,8 +1031,8 @@
           line-height: 133%;
         "
       >
-        10.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>AKTUALITÄT
-        UND ÄNDERUNG DIESER DATENSCHUTZERKLÄRUNG
+        10.<span style="font: 7pt &quot;Times New Roman&quot;">&nbsp; </span>AKTUALITÄT UND ÄNDERUNG DIESER
+        DATENSCHUTZERKLÄRUNG
       </h1>
 
       <p class="MsoNormal" style="margin-bottom: 12pt; line-height: 133%">
