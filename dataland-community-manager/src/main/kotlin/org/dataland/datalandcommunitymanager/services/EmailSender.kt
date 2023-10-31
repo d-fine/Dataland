@@ -8,6 +8,7 @@ import com.mailjet.client.transactional.TransactionalEmail
 import org.dataland.datalandcommunitymanager.model.email.Email
 import org.dataland.datalandcommunitymanager.model.email.integrateEmailIntoTransactionalEmailBuilder
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class EmailSender(
-    mailServerUrl: String = "https://api.eu.mailjet.com", // TODO should be passed in app properties
+    @Value("\${mailjet.api.url}") private val mailServerUrl: String
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -32,17 +33,17 @@ class EmailSender(
      * @return a sending success indicator which is true if the sending was successful
      */
     fun sendEmail(email: Email, logMessage: String): Boolean {
-        try {
+        return try {
             logger.info(logMessage)
             val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
             val request = SendEmailsRequest.builder().message(mailjetEmail).build()
             val response = request.sendWith(mailjetClient)
             response.messages.forEach { logger.info(it.toString()) }
             logger.info("Email successfully sent.")
-            return true
+            true
         } catch (e: MailjetException) {
             logger.error("Error sending email, with error: $e")
-            return false
+            false
         }
     }
 }
