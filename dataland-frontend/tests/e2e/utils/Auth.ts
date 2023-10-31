@@ -33,7 +33,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
   cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
   cy.visitAndCheckAppMount("/");
   clickAllowAllOnCookieBanner();
-  cy.wait("@youtube", { times: 2, timeout: Cypress.env("medium_timeout_in_ms") as number })
+  cy.wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
     .get("a[aria-label='Login to preview account']")
     .click()
     .get("#username")
