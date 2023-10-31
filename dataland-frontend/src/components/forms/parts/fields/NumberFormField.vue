@@ -10,7 +10,6 @@
         :validation-label="validationLabel ?? label"
         :validation="`number|${validation}`"
         :placeholder="unit ? `Value in ${unit}` : 'Value'"
-        outer-class="short"
         :validationMessages="{ integer: `${validationLabel ?? label} must be an integer.` }"
         :validationRules="{ integer }"
         @input="$emit('update:currentValue', $event)"
