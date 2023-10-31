@@ -48,7 +48,6 @@
                           :name="field.name"
                           :options="field.options"
                           :required="field.required"
-                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :unit="field.unit"
                           :validation-label="field.validationLabel"

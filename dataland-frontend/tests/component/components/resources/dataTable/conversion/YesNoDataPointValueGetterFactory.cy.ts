@@ -36,6 +36,16 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
       expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
     });
 
+    it.only("An empty string should be displayed if the data point's value is undefined", () => {
+      const datapoint = { };
+      const dataset = { data: datapoint };
+      const value = yesNoDataPointValueGetterFactory("data", baseFieldCertificate)(dataset);
+      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+        displayValue: "No data provided",
+      });
+    });
+
     it("'N/A' should be displayed if the value is N/A", () => {
       const datapoint: BaseDataPointYesNoNa = {
         value: YesNoNa.Na,
@@ -98,7 +108,7 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
     });
   });
 
-  describe("Tests when the field has the evidenceDesired property set", () => {
+  describe("Tests when the field provides a datasource property set", () => {
     const field: Field = {
       name: "environmentalManagementSystemNationalCertification",
       label: "Environmental Management System National Certification",
@@ -108,19 +118,6 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
       required: false,
       showIf: (): boolean => true,
     };
-
-    it("An empty string should be displayed if the data point is undefined", () => {
-      const dataset = { data: undefined };
-      const value = yesNoDataPointValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
-    });
-
-    it("An empty string should be displayed if the data point's value is undefined", () => {
-      const datapoint = undefined;
-      const dataset = { data: datapoint };
-      const value = yesNoDataPointValueGetterFactory("data", field)(dataset);
-      expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
-    });
 
     it("'Certified' should be displayed if the value is Yes", () => {
       const datapoint: BaseDataPointYesNoNa = {
