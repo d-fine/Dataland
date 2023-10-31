@@ -19,10 +19,9 @@
       <br />
       Registernummer: HRB 132445
     </p>
-    <p>
-      Umsatzsteuer-Identifikationsnummer:
-      <!-- TODO -->
-    </p>
+    <!--    <p>-->
+    <!-- TODO add if provided in time: Umsatzsteuer-Identifikationsnummer:-->
+    <!--    </p>-->
     <p>Inhaltlich verantwortlich: Frederik Christiaan Breen</p>
   </LegalPage>
 </template>
