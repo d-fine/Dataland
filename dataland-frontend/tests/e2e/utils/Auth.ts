@@ -30,6 +30,10 @@ let globalJwt = "";
  */
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
   cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
+  cy.intercept("GET", "https://www.youtube-nocookie.com/**", (req) => {
+    req.url = req.url.replace("www.youtube-nocookie.com/**", "www.youtube.com/**");
+  }).as("youtube");
+
   cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
   cy.visitAndCheckAppMount("/");
   clickAllowAllOnCookieBanner();
