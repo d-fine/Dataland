@@ -102,8 +102,8 @@ describe("As a user I want to be able to register for an account and be able to 
     });
   });
   it("Checks that one can login to the newly registered account", () => {
-    clickAllowAllOnCookieBanner();
     cy.visit("/");
+    clickAllowAllOnCookieBanner();
     cy.task("getEmail").then((returnEmail) => {
       cy.task("getPassword").then((returnPassword) => {
         login(returnEmail as string, returnPassword as string);
