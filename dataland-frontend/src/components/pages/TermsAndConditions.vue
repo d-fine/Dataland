@@ -1,7 +1,5 @@
 <template>
-  <LegalPage>
-    In Zukunft sind hier die Allgemeinen Geschäftsbedingungen zu finden.
-  </LegalPage>
+  <LegalPage> In Zukunft sind hier die Allgemeinen Geschäftsbedingungen zu finden. </LegalPage>
 </template>
 
 <script lang="ts">
