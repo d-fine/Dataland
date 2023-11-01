@@ -23,9 +23,9 @@ class DataRequestManager(
     @Autowired private val emailBuilder: EmailBuilder,
     @Autowired private val emailSender: EmailSender,
 ) {
-    val isinRegex = Regex("^([A-Z]{2})([0-9A-Z]{9})([0-9])$") // TODO at the end, validate correctness
-    val leiRegex = Regex("^[0-9A-Z]{18}$") // TODO at the end, validate correctness
-    val permIdRegex = Regex("^\\d{8}-\\d{4}$") // TODO at the end, validate correctness
+    val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
+    val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
+    val permIdRegex = Regex("^\\d+$")
 
     /**
      * Processes a bulk data request from a user
@@ -33,7 +33,7 @@ class DataRequestManager(
      * @return relevant info to the user as a response after posting a bulk data request
      */
     // @Transactional        // TODO find out if this annotation is required and makes sense
-    fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
+    fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse { // TODO nested block fail
         val bulkDataRequestId = UUID.randomUUID().toString()
         val currentUserId = DatalandAuthentication.fromContext().userId
         dataRequestLogger.logMessageForBulkDataRequest(currentUserId, bulkDataRequestId)

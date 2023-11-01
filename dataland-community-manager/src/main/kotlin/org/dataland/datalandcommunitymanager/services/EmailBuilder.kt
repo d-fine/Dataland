@@ -26,7 +26,7 @@ enum class CauseOfMail(val description: String) {
 /**
  * A class that manages generating emails
  */
-@Component ("EmailBuilder")
+@Component("EmailBuilder")
 class EmailBuilder(
     @Value("\${dataland.proxy.primary.url}") private val propProxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") private val propNotificationSenderAddress: String,
@@ -34,9 +34,8 @@ class EmailBuilder(
     @Value("\${dataland.notification.receivers.bulk.data.request}")
     private val propNotificationReceiversBulkDataRequest: String,
     @Value("\${dataland.notification.receivers.cc.bulk.data.request}")
-    private val propNotificationReceiversCcBulkDataRequest: String
-)
-{
+    private val propNotificationReceiversCcBulkDataRequest: String,
+) {
     private val datalandNotificatorEmailContact =
         EmailContact(assertEmailAddressFormatAndReturnIt(propNotificationSenderAddress), propNotificationSenderName)
 
@@ -49,20 +48,22 @@ class EmailBuilder(
         val regexForValidEmail = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$")
         if (!regexForValidEmail.matches(emailAddress)) {
             val logger = LoggerFactory.getLogger(javaClass)
-            logger.error("The email addresses provided by the Spring properties have a wrong format. " +
+            logger.error(
+                "The email addresses provided by the Spring properties have a wrong format. " +
                     "The following email address was parsed from that prop and caused this error: $emailAddress" +
-                    "The Spring application is shutting down because sending notifications might not work as expected.")
+                    "The Spring application is shutting down because sending notifications might not work as expected.",
+            )
             exitProcess(1)
         }
         return emailAddress
     }
 
     private fun getEmailContactsFromProp(propWithSemicolonSeperatedEmailAddresses: String): List<EmailContact> {
-            return propWithSemicolonSeperatedEmailAddresses.split(";").map {
-                        emailAddressString ->
-                    EmailContact(assertEmailAddressFormatAndReturnIt(emailAddressString))
-                }
-             }
+        return propWithSemicolonSeperatedEmailAddresses.split(";").map {
+                emailAddressString ->
+            EmailContact(assertEmailAddressFormatAndReturnIt(emailAddressString))
+        }
+    }
 
     private fun buildUserInfo(): String {
         // TODO the "as" in the next line breaks the whole thing if you use api key auth!
@@ -72,21 +73,17 @@ class EmailBuilder(
 
     private fun buildBulkDataRequestEmailText(
         bulkDataRequest: BulkDataRequest,
-        rejectedCompanyIdentifiers: List<String>,
         acceptedCompanyIdentifiers: List<String>,
     ): String {
         return "A bulk data request has been submitted: " +
             "Environment: $propProxyPrimaryUrl " +
             "User: ${buildUserInfo()} " +
-            "Requested company identifiers: ${bulkDataRequest.listOfCompanyIdentifiers.joinToString(", ")}. " +
             "Requested frameworks: ${bulkDataRequest.listOfFrameworkNames.joinToString(", ")}. " +
-            "Rejected company identifiers: ${rejectedCompanyIdentifiers.joinToString(", ")}. " +
             "Accepted company identifiers: ${acceptedCompanyIdentifiers.joinToString(", ")}."
     }
 
     private fun buildBulkDataRequestEmailHtml(
         bulkDataRequest: BulkDataRequest,
-        rejectedCompanyIdentifiers: List<String>,
         acceptedCompanyIdentifiers: List<String>,
     ): String {
         return """
@@ -126,13 +123,7 @@ class EmailBuilder(
                     <span class="bold">User:</span> ${buildUserInfo()}
                 </div>
                 <div class="section">
-                    <span class="bold">Requested Company Identifiers:</span> ${bulkDataRequest.listOfCompanyIdentifiers.joinToString(", ")}
-                </div>
-                <div class="section">
                     <span class="bold">Requested Frameworks:</span> ${bulkDataRequest.listOfFrameworkNames.joinToString(", ")}
-                </div>
-                <div class="section">
-                    <span class="bold">Rejected Company Identifiers:</span> ${rejectedCompanyIdentifiers.joinToString(", ")}
                 </div>
                 <div class="section">
                     <span class="bold">Accepted Company Identifiers:</span> ${acceptedCompanyIdentifiers.joinToString(", ")}
@@ -142,29 +133,25 @@ class EmailBuilder(
         </html>
         """.trimIndent()
     }
-    // TODO IF time at the end:  Make email have table (and it can also contain the regex-matched types);  Requested and Rejected rauswerfen
-
-
-
+    // TODO IF time at the end:  Make email have table (and it can also contain the regex-matched types);
 
     /**
      * Function that generates the email to be sent
      */
     fun buildBulkDataRequestEmail(
         bulkDataRequest: BulkDataRequest,
-        rejectedCompanyIdentifiers: List<String>,
         acceptedCompanyIdentifiers: List<String>,
     ): Email {
         val content = EmailContent(
             "Dataland Bulk Data Request",
-            buildBulkDataRequestEmailText(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers),
-            buildBulkDataRequestEmailHtml(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers),
+            buildBulkDataRequestEmailText(bulkDataRequest, acceptedCompanyIdentifiers),
+            buildBulkDataRequestEmailHtml(bulkDataRequest, acceptedCompanyIdentifiers),
         )
-        // TODO later you could add info about matched Dataland-company-IDs!
         return Email(
             datalandNotificatorEmailContact,
             notificationReceiversBulkDataRequest,
             notificationReceiversCcBulkDataRequest,
-            content)
+            content,
+        )
     }
 }
