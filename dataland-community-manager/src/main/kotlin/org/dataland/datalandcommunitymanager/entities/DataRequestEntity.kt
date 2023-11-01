@@ -19,8 +19,9 @@ data class DataRequestEntity(
 
     val creationTimestamp: Long,
 
-    val dataType: DataTypeEnum,
+    val dataType: DataTypeEnum, // TODO this is being stored via indexes into the DB!
 
+    // TODO this is being stored via indexes into the DB!
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
     val dataRequestCompanyIdentifierValue: String,
