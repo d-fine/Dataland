@@ -4,7 +4,6 @@ import {
   type CompanyDataControllerApiInterface,
   MetaDataControllerApi,
   type MetaDataControllerApiInterface,
-  InviteControllerApi,
 } from "@clients/backend/api";
 import { DocumentControllerApi } from "@clients/documentmanager";
 import { QaControllerApi } from "@clients/qaservice";
@@ -78,10 +77,6 @@ export class ApiClientProvider {
 
   async getDocumentControllerApi(): Promise<DocumentControllerApi> {
     return this.getConstructedDocumentManager(DocumentControllerApi);
-  }
-
-  async getInviteControllerApi(): Promise<InviteControllerApi> {
-    return this.getConstructedApi(InviteControllerApi);
   }
 
   async getQaControllerApi(): Promise<QaControllerApi> {
