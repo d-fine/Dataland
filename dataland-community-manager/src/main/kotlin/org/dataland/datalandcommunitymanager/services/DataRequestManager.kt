@@ -64,7 +64,7 @@ class DataRequestManager(
         }
         if (acceptedCompanyIdentifiers.isNotEmpty()) {
             sendBulkDataRequestNotificationMail(
-                bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers, bulkDataRequestId,
+                bulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId,
             )
         }
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
@@ -158,13 +158,11 @@ class DataRequestManager(
 
     private fun sendBulkDataRequestNotificationMail(
         bulkDataRequest: BulkDataRequest,
-        rejectedCompanyIdentifiers: List<String>,
         acceptedCompanyIdentifiers: List<String>,
         bulkDataRequestId: String,
     ) {
         val emailToSend = emailBuilder.buildBulkDataRequestEmail(
             bulkDataRequest,
-            rejectedCompanyIdentifiers,
             acceptedCompanyIdentifiers,
         )
         val bulkDataRequestNotificationMailLoggerFunction = {
