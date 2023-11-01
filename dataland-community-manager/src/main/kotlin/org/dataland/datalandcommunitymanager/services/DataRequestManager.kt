@@ -41,7 +41,6 @@ class DataRequestManager(
 
         val acceptedCompanyIdentifiers = mutableListOf<String>()
         val rejectedCompanyIdentifiers = mutableListOf<String>()
-        val listOfDataRequestEntitiesToStore = mutableListOf<DataRequestEntity>()
 
         for (userProvidedIdentifierValue in bulkDataRequest.listOfCompanyIdentifiers) {
             val matchedIdentifierType = determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
@@ -60,15 +59,14 @@ class DataRequestManager(
             for (framework in bulkDataRequest.listOfFrameworkNames) {
                 if (isDataRequestAlreadyExisting(userId, identifierValueToStore, framework)) {
                     continue
-                }
-                listOfDataRequestEntitiesToStore.add(
+                } // TODO manually check once that duplicate identifiers are not stored because of this check here
+                storeDataRequestEntity(
                     buildDataRequestEntity(userId, framework, identifierTypeToStore, identifierValueToStore),
+                    bulkDataRequestId,
                 )
             }
         }
-        for (dataRequestEntity in listOfDataRequestEntitiesToStore) {
-            storeDataRequestEntity(dataRequestEntity, bulkDataRequestId)
-        }
+
         if (acceptedCompanyIdentifiers.isNotEmpty()) {
             sendBulkDataRequestNotificationMail(bulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId)
         }
