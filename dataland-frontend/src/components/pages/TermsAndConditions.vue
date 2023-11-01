@@ -668,10 +668,21 @@ h3 {
   counter-reset: subsubsection;
 }
 
+p ~ div > h3, p {
+  font-size: 1rem;
+  font-weight: normal;
+  ::before {
+    font-weight: bold;
+  }
+}
+
+p ~ div > h3::before, p::before {
+  font-weight: bold;
+}
+
 h3 ~ p:not(:only-of-type)::before {
   counter-increment: subsubsection;
   content: counter(section) "." counter(subsection) "." counter(subsubsection) ". ";
-  font-weight: bold;
 }
 
 </style>
