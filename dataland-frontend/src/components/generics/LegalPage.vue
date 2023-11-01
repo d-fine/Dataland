@@ -1,15 +1,15 @@
 <template>
   <TheHeader :landingPage="landingPage" />
-  <div class="static-content">
+<!--  <div class="static-content">-->
     <main role="main">
       <div class="w-12 flex justify-content-center">
-        <div class="lg:w-6 md:w-10 sm:w-10 text-left">
+        <div class="lg:w-6 md:w-10 sm:w-10 text-justify">
           <slot />
         </div>
       </div>
     </main>
     <TheFooter :sections="landingPage?.sections" />
-  </div>
+<!--  </div>-->
 </template>
 
 <script lang="ts">
