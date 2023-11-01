@@ -276,8 +276,8 @@
           ergänzen oder durch jüngere Unternehmens-Daten aktualisieren.
         </p>
         <p>
-          Dataland hat das Recht, die von dem Daten-Sammler eingegebenen Unternehmens-Daten nach eigenen und im
-          ausschließlich eigenen Ermessen von Dataland liegenden Maßgaben zu überprüfen. Auf Grundlage dieser Prüfung
+          Dataland hat das Recht, die von dem Daten-Sammler eingegebenen Unternehmens-Daten nach eigenem und im
+          ausschließlich eigenem Ermessen von Dataland liegenden Maßgaben zu überprüfen. Auf Grundlage dieser Prüfung
           entscheidet Dataland, ob die vom Daten-Sammler gelieferten Unternehmens-Daten als Unternehmens-Daten der
           Plattform-Dataland für den Zugriff von Daten-User zugelassen werden.
         </p>
@@ -293,7 +293,7 @@
         </p>
         <p>
           Auch nach Zulassung der Unternehmens-Daten auf die Plattform-Dataland hat Dataland jederzeit und
-          uneingeschränkt das Recht, die Unternehmens-Daten nach eigenen und im ausschließlich eigenen Ermessen von
+          uneingeschränkt das Recht, die Unternehmens-Daten nach eigenem und im ausschließlich eigenem Ermessen von
           Dataland liegenden Maßgaben zu prüfen und über deren Verbleib auf der Plattform-Dataland zu entscheiden.
           Insofern kann Dataland jederzeit und frei entscheiden, ob diese vom Daten-Sammler gelieferten
           Unternehmens-Daten als Unternehmens-Daten auf der Plattform-Dataland für den Zugriff von Daten-Usern belassen
@@ -378,7 +378,7 @@
               Dataland bestimmt durch die Geschäftsführung jeweils nach Abschluss eines Kalenderjahrs einen Anteil der
               gem. § 3.2 erzielten (netto) Einnahmen (ohne Berücksichtigung der Vergütungen, die mittels Dataland-Token
               geleistet wurden), der als Gesamtbetrag zur Vergütung der Daten-Sammler zur Verfügung steht. Für diesen Anteil
-              besteht eine untere Grenze welche in der <a href="/pricing">Preisliste</a> einsehbar ist.
+              besteht eine untere Grenze welche in der <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> einsehbar ist.
             </Li>
             <li>
               Weiterhin bestimmt Dataland basierend auf den tatsächlich generierten Einnahmen für jeden Kalendertag
@@ -393,7 +393,7 @@
             </li>
             <li>
               Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
-              technische Mindestsumme wird <a href="/pricing">hier</a> angegeben.
+              technische Mindestsumme wird in der <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> angegeben.
             </li>
           </ul>
         </p>
@@ -483,7 +483,7 @@
             </li>
             <li>
               Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
-              technische Mindestsumme wird <a href="/pricing">hier</a> angegeben.
+              technische Mindestsumme wird in der <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> angegeben.
             </li>
           </ul>
         </p>
