@@ -182,7 +182,7 @@
       <div>
         <h3>Die Vergütungspflichten des Daten-Users </h3>
         <p>
-          Für Privatpersonen, NGOs und nicht gewinnorientiert tätige Forschungs- oder Lehreintrichtungen (insg. Im
+          Für Privatpersonen, NGOs und nicht gewinnorientiert tätige Forschungs- oder Lehreinrichtungen (insg. Im
           Rahmen dieser AGB-Dataland auch als „Privatnutzung“ bezeichnet) ist die Nutzung von Dataland kostenlos.
         </p>
         <p>
