@@ -28,7 +28,6 @@ enum class CauseOfMail(val description: String) {
  */
 @Component ("EmailBuilder")
 class EmailBuilder(
-    // TODO test all values correct on CD
     @Value("\${dataland.proxy.primary.url}") private val propProxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") private val propNotificationSenderAddress: String,
     @Value("\${dataland.notification.sender.name}") private val propNotificationSenderName: String,

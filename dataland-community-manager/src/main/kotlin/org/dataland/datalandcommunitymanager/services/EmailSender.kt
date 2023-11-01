@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class EmailSender(
-    @Value("\${mailjet.api.url}") private val mailjetApiUrl: String, // TODO check if it works on deployed instance
+    @Value("\${mailjet.api.url}") private val mailjetApiUrl: String,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
