@@ -20,7 +20,7 @@ describe("Check that the Landing Page to work properly", () => {
     cy.get("a[href='/']").click();
 
     cy.get("a[href='/dataprivacy']").click();
-    cy.get("p:contains('Datenschutzhinweise')");
+    cy.get("h1:contains('Datenschutzhinweise')");
     cy.get("a[href='/']").click();
 
     cy.get("a[href='/terms']").click();
