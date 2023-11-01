@@ -51,8 +51,8 @@ export default defineComponent({
     },
     currentValue: {
       type: String,
-    }
+    },
   },
-  emits: ["update:currentValue"]
+  emits: ["update:currentValue"],
 });
 </script>

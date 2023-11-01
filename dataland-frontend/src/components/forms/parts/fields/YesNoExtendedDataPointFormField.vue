@@ -1,23 +1,24 @@
 <template>
-  <ExtendedDataPointFormField
+  <div class="mb-3" :data-test="name">
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <ExtendedDataPointFormField
       :name="name"
       :description="description"
       :label="label"
       :required="required"
       :inner-class="innerClass"
       :is-data-value-provided="currentValue != '' && currentValue != undefined"
-  >
-    <div class="mb-3">
+    >
       <RadioButtonsFormElement
-          name="value"
-          v-model:currentValue="currentValue"
-          :validation="validation"
-          :validation-label="validationLabel ?? label"
-          :options="yesNoOptions"
-          :data-test="dataTest"
+        name="value"
+        v-model:currentValue="currentValue"
+        :validation="validation"
+        :validation-label="validationLabel ?? label"
+        :options="yesNoOptions"
+        :data-test="dataTest"
       />
-    </div>
-  </ExtendedDataPointFormField>
+    </ExtendedDataPointFormField>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,7 +30,7 @@ import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/
 
 export default defineComponent({
   name: "YesNoFormField",
-  components: {ExtendedDataPointFormField, RadioButtonsFormElement, UploadFormHeader},
+  components: { ExtendedDataPointFormField, RadioButtonsFormElement, UploadFormHeader },
   inheritAttrs: false,
   props: {
     ...BaseFormFieldProps,
