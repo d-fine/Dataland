@@ -34,54 +34,43 @@ class DataRequestManager(
      * @return relevant info to the user as a response after posting a bulk data request
      */
     @Transactional
-    fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse { // TODO detekt complains
+    fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
         val bulkDataRequestId = UUID.randomUUID().toString()
-        val currentUserId = DatalandAuthentication.fromContext().userId
-        dataRequestLogger.logMessageForBulkDataRequest(currentUserId, bulkDataRequestId)
+        val userId = DatalandAuthentication.fromContext().userId
+        dataRequestLogger.logMessageForBulkDataRequest(userId, bulkDataRequestId)
+
         val acceptedCompanyIdentifiers = mutableListOf<String>()
         val rejectedCompanyIdentifiers = mutableListOf<String>()
         val listOfDataRequestEntitiesToStore = mutableListOf<DataRequestEntity>()
 
         for (userProvidedIdentifierValue in bulkDataRequest.listOfCompanyIdentifiers) {
             val matchedIdentifierType = determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
-            if (matchedIdentifierType != null) {
-                acceptedCompanyIdentifiers.add(userProvidedIdentifierValue)
-
-                val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
-                var identifierTypeToStore: DataRequestCompanyIdentifierType
-                var identifierValueToStore: String
-
-                if (datalandCompanyId == null) {
-                    identifierTypeToStore = matchedIdentifierType
-                    identifierValueToStore = userProvidedIdentifierValue
-                } else {
-                    identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
-                    identifierValueToStore = datalandCompanyId
-                }
-
-                for (framework in bulkDataRequest.listOfFrameworkNames) {
-                    if (!isDataRequestAlreadyExisting(currentUserId, identifierValueToStore, framework)) {
-                        listOfDataRequestEntitiesToStore.add(
-                            buildDataRequestEntity(
-                                currentUserId,
-                                framework,
-                                identifierTypeToStore,
-                                identifierValueToStore,
-                            ),
-                        )
-                    }
-                }
-            } else {
+            if (matchedIdentifierType == null) {
                 rejectedCompanyIdentifiers.add(userProvidedIdentifierValue)
+                continue
+            }
+            acceptedCompanyIdentifiers.add(userProvidedIdentifierValue)
+
+            val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
+            val identifierTypeToStore = datalandCompanyId?.let {
+                DataRequestCompanyIdentifierType.DatalandCompanyId
+            } ?: matchedIdentifierType
+            val identifierValueToStore = datalandCompanyId ?: userProvidedIdentifierValue
+
+            for (framework in bulkDataRequest.listOfFrameworkNames) {
+                if (isDataRequestAlreadyExisting(userId, identifierValueToStore, framework)) {
+                    continue
+                }
+                listOfDataRequestEntitiesToStore.add(
+                    buildDataRequestEntity(userId, framework, identifierTypeToStore, identifierValueToStore),
+                )
             }
         }
         for (dataRequestEntity in listOfDataRequestEntitiesToStore) {
             storeDataRequestEntity(dataRequestEntity, bulkDataRequestId)
         }
         if (acceptedCompanyIdentifiers.isNotEmpty()) {
-            sendBulkDataRequestNotificationMail(
-                bulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId,
-            )
+            sendBulkDataRequestNotificationMail(bulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId)
         }
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
     }
