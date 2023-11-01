@@ -54,15 +54,13 @@ class DataRequestManager(
                 if (datalandCompanyId == null) {
                     identifierTypeToStore = matchedIdentifierType
                     identifierValueToStore = userProvidedIdentifierValue
-                }
-                else {
+                } else {
                     identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
                     identifierValueToStore = datalandCompanyId
                 }
 
                 for (framework in bulkDataRequest.listOfFrameworkNames) {
                     if (!isDataRequestAlreadyExisting(currentUserId, identifierValueToStore, framework)) {
-
                         listOfDataRequestEntitiesToStore.add(
                             buildDataRequestEntity(
                                 currentUserId,
@@ -150,6 +148,7 @@ class DataRequestManager(
     private fun determineIdentifierTypeViaRegex(identifierValue: String): DataRequestCompanyIdentifierType? {
         val matchingRegexes = listOf(leiRegex, isinRegex, permIdRegex).filter { it.matches(identifierValue) }
         return when (matchingRegexes.size) {
+            0 -> null
             1 -> {
                 when {
                     matchingRegexes[0] == leiRegex -> DataRequestCompanyIdentifierType.Lei
@@ -158,8 +157,7 @@ class DataRequestManager(
                     else -> null
                 }
             }
-            in 2..3 -> DataRequestCompanyIdentifierType.MultipleRegexMatches
-            else -> null
+            else -> DataRequestCompanyIdentifierType.MultipleRegexMatches
         }
     }
 

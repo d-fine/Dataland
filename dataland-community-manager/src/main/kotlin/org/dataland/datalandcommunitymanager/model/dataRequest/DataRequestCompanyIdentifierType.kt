@@ -9,10 +9,9 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true, // TODO needed?
 )
 enum class DataRequestCompanyIdentifierType { // TODO add values so it won't be written with 1,2,3... to database
-     Lei,
+    Lei,
     Isin,
     PermId,
     MultipleRegexMatches,
-    DatalandCompanyId
+    DatalandCompanyId,
 }
-

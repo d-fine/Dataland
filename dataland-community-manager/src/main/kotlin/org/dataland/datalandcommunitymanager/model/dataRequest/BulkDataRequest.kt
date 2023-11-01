@@ -18,5 +18,4 @@ data class BulkDataRequest(
     val listOfFrameworkNames: List<DataTypeEnum>,
 )
 
-
-//TODO   InvalidInputException when no framework provided or no company identifiers
+// TODO   InvalidInputException when no framework provided or no company identifiers

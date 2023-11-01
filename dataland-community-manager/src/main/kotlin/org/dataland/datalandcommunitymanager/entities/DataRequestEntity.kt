@@ -24,4 +24,4 @@ data class DataRequestEntity(
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
     val dataRequestCompanyIdentifierValue: String,
-    )
+)
