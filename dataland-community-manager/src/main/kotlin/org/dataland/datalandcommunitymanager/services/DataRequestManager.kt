@@ -46,12 +46,14 @@ class DataRequestManager(
                 acceptedCompanyIdentifiers.add(identifierValue)
                 for (framework in bulkDataRequest.listOfFrameworkNames) {
                     if (!isDataRequestAlreadyExisting(currentUserId, identifierValue, framework)) {
-                        /*
-                        TODO commented out because backend cannot do this currently
-                        val companyId = companyGetter.getCompanyIdByIdentifier(identifierValue)
-                        */
                         listOfDataRequestEntitiesToStore.add(
-                            buildDataRequestEntity(currentUserId, framework, identifierType, identifierValue, null),
+                            buildDataRequestEntity(
+                                currentUserId,
+                                framework,
+                                identifierType,
+                                identifierValue,
+                                getDatalandCompanyIdForIdentifierValue(identifierValue),
+                            ),
                         )
                     }
                 }
@@ -94,6 +96,19 @@ class DataRequestManager(
                 .logMessageForCheckingIfDataRequestAlreadyExists(requestingUserId, identifierValue, framework)
         }
         return isAlreadyExisting
+    }
+
+    private fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String? {
+        var datalandCompanyId: String? = null
+        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
+        val matchingCompanyIdsAndNamesOnDataland =
+            companyGetter.getCompanyIdsAndNamesForSearchString(identifierValue, bearerTokenOfRequestingUser)
+        if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
+            datalandCompanyId = matchingCompanyIdsAndNamesOnDataland.first().companyId
+        }
+        dataRequestLogger
+            .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(identifierValue, datalandCompanyId)
+        return datalandCompanyId
     }
 
     private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity, bulkDataRequestId: String? = null) {
