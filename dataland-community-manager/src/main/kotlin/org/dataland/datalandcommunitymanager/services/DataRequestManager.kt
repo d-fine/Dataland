@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -9,6 +9,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.*
 
@@ -32,33 +33,48 @@ class DataRequestManager(
      * @param bulkDataRequest info provided by a user in order to request a bulk of datasets on Dataland.
      * @return relevant info to the user as a response after posting a bulk data request
      */
-    // @Transactional        // TODO find out if this annotation is required and makes sense
-    fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse { // TODO nested block fail
+    @Transactional
+    fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse { // TODO detekt complains
         val bulkDataRequestId = UUID.randomUUID().toString()
         val currentUserId = DatalandAuthentication.fromContext().userId
         dataRequestLogger.logMessageForBulkDataRequest(currentUserId, bulkDataRequestId)
         val acceptedCompanyIdentifiers = mutableListOf<String>()
         val rejectedCompanyIdentifiers = mutableListOf<String>()
         val listOfDataRequestEntitiesToStore = mutableListOf<DataRequestEntity>()
-        for (identifierValue in bulkDataRequest.listOfCompanyIdentifiers) {
-            val identifierType = determineIdentifierTypeViaRegexMatching(identifierValue)
-            if (identifierType != null) {
-                acceptedCompanyIdentifiers.add(identifierValue)
+
+        for (userProvidedIdentifierValue in bulkDataRequest.listOfCompanyIdentifiers) {
+            val matchedIdentifierType = determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
+            if (matchedIdentifierType != null) {
+                acceptedCompanyIdentifiers.add(userProvidedIdentifierValue)
+
+                val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
+                var identifierTypeToStore: DataRequestCompanyIdentifierType
+                var identifierValueToStore: String
+
+                if (datalandCompanyId == null) {
+                    identifierTypeToStore = matchedIdentifierType
+                    identifierValueToStore = userProvidedIdentifierValue
+                }
+                else {
+                    identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
+                    identifierValueToStore = datalandCompanyId
+                }
+
                 for (framework in bulkDataRequest.listOfFrameworkNames) {
-                    if (!isDataRequestAlreadyExisting(currentUserId, identifierValue, framework)) {
+                    if (!isDataRequestAlreadyExisting(currentUserId, identifierValueToStore, framework)) {
+
                         listOfDataRequestEntitiesToStore.add(
                             buildDataRequestEntity(
                                 currentUserId,
                                 framework,
-                                identifierType,
-                                identifierValue,
-                                getDatalandCompanyIdForIdentifierValue(identifierValue),
+                                identifierTypeToStore,
+                                identifierValueToStore,
                             ),
                         )
                     }
                 }
             } else {
-                rejectedCompanyIdentifiers.add(identifierValue)
+                rejectedCompanyIdentifiers.add(userProvidedIdentifierValue)
             }
         }
         for (dataRequestEntity in listOfDataRequestEntitiesToStore) {
@@ -76,7 +92,6 @@ class DataRequestManager(
      * @returns all data requests for the current user
      */
     fun getDataRequestsForUser(): List<DataRequestEntity> {
-        // TODO I noticed that we use smth else in the api key manager for getting currentUserId.  Why?
         val currentUserId = DatalandAuthentication.fromContext().userId
         val retrievedDataRequestsForUser = dataRequestRepository.findByUserId(currentUserId)
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser(currentUserId)
@@ -88,7 +103,7 @@ class DataRequestManager(
         identifierValue: String,
         framework: DataTypeEnum,
     ): Boolean {
-        val isAlreadyExisting = dataRequestRepository.existsByUserIdAndCompanyIdentifierValueAndDataType(
+        val isAlreadyExisting = dataRequestRepository.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataType(
             requestingUserId, identifierValue, framework,
         )
         if (isAlreadyExisting) {
@@ -119,28 +134,33 @@ class DataRequestManager(
     private fun buildDataRequestEntity(
         currentUserId: String,
         framework: DataTypeEnum,
-        identifierType: IdentifierType,
+        identifierType: DataRequestCompanyIdentifierType,
         identifierValue: String,
-        companyId: String?,
     ): DataRequestEntity {
         return DataRequestEntity(
             dataRequestId = UUID.randomUUID().toString(),
             userId = currentUserId,
             creationTimestamp = Instant.now().toEpochMilli(),
             dataType = framework,
-            companyIdentifierType = identifierType,
-            companyIdentifierValue = identifierValue,
-            companyIdOnDataland = companyId,
+            dataRequestCompanyIdentifierType = identifierType,
+            dataRequestCompanyIdentifierValue = identifierValue,
         )
     }
 
-    private fun determineIdentifierTypeViaRegexMatching(identifierValue: String): IdentifierType? {
-        return when {
-            leiRegex.matches(identifierValue) -> IdentifierType.lei
-            isinRegex.matches(identifierValue) -> IdentifierType.isin
-            permIdRegex.matches(identifierValue) -> IdentifierType.permId
+    private fun determineIdentifierTypeViaRegex(identifierValue: String): DataRequestCompanyIdentifierType? {
+        val matchingRegexes = listOf(leiRegex, isinRegex, permIdRegex).filter { it.matches(identifierValue) }
+        return when (matchingRegexes.size) {
+            1 -> {
+                when {
+                    matchingRegexes[0] == leiRegex -> DataRequestCompanyIdentifierType.Lei
+                    matchingRegexes[0] == isinRegex -> DataRequestCompanyIdentifierType.Isin
+                    matchingRegexes[0] == permIdRegex -> DataRequestCompanyIdentifierType.PermId
+                    else -> null
+                }
+            }
+            in 2..3 -> DataRequestCompanyIdentifierType.MultipleRegexMatches
             else -> null
-        } // TODO   mehrere matches => IdentifierType is null    oder Anzahl der matches
+        }
     }
 
     private fun buildResponseMessageForBulkDataRequest(

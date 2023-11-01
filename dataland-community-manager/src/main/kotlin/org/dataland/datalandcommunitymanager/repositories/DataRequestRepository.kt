@@ -17,13 +17,13 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
 
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
-     * @param companyIdentifierValue to check for
+     * @param dataRequestCompanyIdentifierValue to check for
      * @param dataType to check for
      * @returns a Boolean stating the result of the check
      */
-    fun existsByUserIdAndCompanyIdentifierValueAndDataType(
+    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataType(
         userId: String,
-        companyIdentifierValue: String,
+        dataRequestCompanyIdentifierValue: String,
         dataType: DataTypeEnum,
     ): Boolean
 }
