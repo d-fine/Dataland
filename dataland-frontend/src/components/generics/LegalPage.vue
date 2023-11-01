@@ -2,7 +2,7 @@
   <TheHeader :landingPage="landingPage" />
   <div class="static-content">
     <main role="main" class="w-12 flex justify-content-center">
-      <div class="lg:w-6 md:w-10 sm:w-10 w-12 text-justify">
+      <div class="lg:w-6 md:w-10 sm:w-10 w-12 text-left">
         <slot/>
       </div>
     </main>
