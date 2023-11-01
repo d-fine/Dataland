@@ -187,7 +187,7 @@
         </p>
         <p>
           Für die Nutzung durch alle anderen Daten-User ist eine monatliche Pauschale zu entrichten, die sich aus der
-          jeweils aktuellen Preisstaffel von Dataland ergibt (siehe [Link] ).
+          jeweils aktuellen Preisstaffel von Dataland ergibt (siehe <a href="/pricing">Pricing</a> ).
         </p>
         <p>
           Sämtliche Vergütungen verstehen sich zuzüglich der anwendbaren Umsatzsteuer.
@@ -393,7 +393,7 @@
             </li>
             <li>
               Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
-              technische Mindestsumme wird hier _[LINK]% angegeben.
+              technische Mindestsumme wird <a href="/pricing">hier</a> angegeben.
             </li>
           </ul>
         </p>
@@ -483,7 +483,7 @@
             </li>
             <li>
               Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
-              technische Mindestsumme wird hier _[LINK]% angegeben.
+              technische Mindestsumme wird <a href="/pricing">hier</a> angegeben.
             </li>
           </ul>
         </p>
@@ -528,7 +528,7 @@
       </p>
       <p>
         Voraussetzung für den Besitz und die Nutzung von Dataland-Token durch Dataland-Teilnehmer ist der Abschluss
-        eines Token-Verwahrvertrags [Link] zwischen dem Dataland-Teilnehmer und dem Verwahrer.
+        eines <a href="/token">Token-Verwahrvertrags</a> zwischen dem Dataland-Teilnehmer und dem Verwahrer.
       </p>
       <p>
         Dataland verpflichtet sich, Dataland-Token nach den Maßgaben in diesen AGB-Dataland als Zahlungsmittel zu
@@ -624,7 +624,7 @@
         (Deutschland).
       </p>
     </div>
-    <div class="w-12 text-center font-bold">
+    <div class="w-12 text-center font-bold mt-6">
       - Ende der AGB-Dataland -
     </div>
   </LegalPage>
