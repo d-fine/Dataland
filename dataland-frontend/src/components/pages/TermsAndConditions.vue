@@ -187,7 +187,7 @@
         </p>
         <p>
           Für die Nutzung durch alle anderen Daten-User ist eine monatliche Pauschale zu entrichten, die sich aus der
-          jeweils aktuellen Preisstaffel von Dataland ergibt (siehe <a href="/pricing">Pricing</a> ).
+          jeweils <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> von Dataland ergibt.
         </p>
         <p>
           Sämtliche Vergütungen verstehen sich zuzüglich der anwendbaren Umsatzsteuer.
@@ -377,8 +377,8 @@
             <Li>
               Dataland bestimmt durch die Geschäftsführung jeweils nach Abschluss eines Kalenderjahrs einen Anteil der
               gem. § 3.2 erzielten (netto) Einnahmen (ohne Berücksichtigung der Vergütungen, die mittels Dataland-Token
-              geleistet wurden), der als Gesamtbetrag zur Vergütung der Daten-Sammler zur Verfügung steht, wobei dieser
-              Anteil mindestens _[LINK]% der generierten Einnahmen betragen muss.
+              geleistet wurden), der als Gesamtbetrag zur Vergütung der Daten-Sammler zur Verfügung steht. Für diesen Anteil
+              besteht eine untere Grenze welche in der <a href="/pricing">Preisliste</a> einsehbar ist.
             </Li>
             <li>
               Weiterhin bestimmt Dataland basierend auf den tatsächlich generierten Einnahmen für jeden Kalendertag
@@ -387,7 +387,7 @@
             </li>
             <li>
               Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag insgesamt
-              bestanden haben und wie viele Datenpunkte jedem einzelnen Daten-Sammler zuzuordnen sind. Bei Datenpunkten,
+              Daten-Sammlern zuzuordnen sind und wie viele Datenpunkte jedem einzelnen Daten-Sammler zuzuordnen sind. Bei Datenpunkten,
               bei denen es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des Datenpunkts
               in Ansatz gebracht. Dem Daten-Sammler steht der auf ihn entfallende prozentual ermittelte Anteil zu.
             </li>
