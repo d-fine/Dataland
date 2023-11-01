@@ -22,7 +22,7 @@ data class DataRequestEntity(
     val dataType: DataTypeEnum,
 
     val companyIdentifierType: IdentifierType,
-    // TODO Discussion: You could also handle this as list if you want to merge requests.
+
     val companyIdentifierValue: String,
 
     val companyIdOnDataland: String?,

@@ -67,3 +67,19 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataRequestsForUser(): ResponseEntity<List<DataRequestEntity>>
 }
+
+/* TODO
+ *getAll(): List<AggregatedRequestINfo>
+ *
+ * dataRequestIdentifierType?:   permid, isin, lei, datalandCompanyId
+ * identifierValue:  UUID oder permid oder isini oder lei
+ * framework :   p2p
+ * count :   80
+*
+*
+* Filter: framework, identifierValue
+*
+*
+* */
+
+

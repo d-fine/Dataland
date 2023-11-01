@@ -121,11 +121,11 @@ class DataRequestManager(
 
     private fun determineIdentifierTypeViaRegexMatching(identifierValue: String): IdentifierType? {
         return when {
-            isinRegex.matches(identifierValue) -> IdentifierType.isin
             leiRegex.matches(identifierValue) -> IdentifierType.lei
+            isinRegex.matches(identifierValue) -> IdentifierType.isin
             permIdRegex.matches(identifierValue) -> IdentifierType.permId
             else -> null
-        }
+        } // TODO   mehrere matches => IdentifierType is null    oder Anzahl der matches
     }
 
     private fun buildResponseMessageForBulkDataRequest(

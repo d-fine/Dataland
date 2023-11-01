@@ -53,8 +53,7 @@ class EmailBuilder(
             logger.error("The email addresses provided by the Spring properties have a wrong format. " +
                     "The following email address was parsed from that prop and caused this error: $emailAddress" +
                     "The Spring application is shutting down because sending notifications might not work as expected.")
-            exitProcess(1) // TODO Discussion: The CI will fail in this case.
-        // TODO: But how can we assure that this makes a CD fail?
+            exitProcess(1)
         }
         return emailAddress
     }
@@ -143,7 +142,8 @@ class EmailBuilder(
         </body>
         </html>
         """.trimIndent()
-    } // TODO we could also provide info on how Dataland parsed the identifiers (which types)
+    }
+    // TODO IF time at the end:  Make email have table (and it can also contain the regex-matched types);  Requested and Rejected rauswerfen
 
 
 
