@@ -578,7 +578,7 @@
       <p>
         Dataland erhebt, verarbeitet und nutzt personenbezogene Daten der Dataland-Teilnehmer unter strenger Einhaltung
         der geltenden Gesetze, insbesondere der DS-GVO und des Bundesdatenschutzgesetztes. Nähere Informationen enthält
-        unsere Datenschutzerklärung [Link ].
+        unsere <a href="/dataprivacy">Datenschutzerklärung</a>.
       </p>
     </div>
     <div>
