@@ -2,7 +2,7 @@ describe("As a user, I expect the cookie banner to render and to be functional",
   it("Check that the cookie banner renders", () => {
     cy.visitAndCheckAppMount("/");
 
-    cy.get("#CybotCookiebotDialog").should("exist");
+    cy.get("#CybotCookiebotDialog", { timeout: Cypress.env("short_time_in_ms") as number }).should("exist");
     cy.get("#CybotCookiebotDialogPoweredbyImage").invoke("attr", "src").should("contain", "data:image/png;base64,");
     cy.get("#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll").should("exist");
     cy.get("#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection").should("exist");
