@@ -37,6 +37,7 @@ class DataRequestManager(
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
         validateBulkDataRequest(bulkDataRequest)
+        val cleanedBulkDataRequest = removeDuplicatesInLists(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
         dataRequestLogger.logMessageForBulkDataRequest(userId, bulkDataRequestId)
@@ -44,7 +45,7 @@ class DataRequestManager(
         val acceptedCompanyIdentifiers = mutableListOf<String>()
         val rejectedCompanyIdentifiers = mutableListOf<String>()
 
-        for (userProvidedIdentifierValue in bulkDataRequest.listOfCompanyIdentifiers) {
+        for (userProvidedIdentifierValue in cleanedBulkDataRequest.listOfCompanyIdentifiers) {
             val matchedIdentifierType = determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
             if (matchedIdentifierType == null) {
                 rejectedCompanyIdentifiers.add(userProvidedIdentifierValue)
@@ -58,10 +59,10 @@ class DataRequestManager(
             } ?: matchedIdentifierType
             val identifierValueToStore = datalandCompanyId ?: userProvidedIdentifierValue
 
-            for (framework in bulkDataRequest.listOfFrameworkNames) {
+            for (framework in cleanedBulkDataRequest.listOfFrameworkNames) {
                 if (isDataRequestAlreadyExisting(userId, identifierValueToStore, framework)) {
                     continue
-                } // TODO manually check once that duplicate identifiers are not stored because of this check here
+                }
                 storeDataRequestEntity(
                     buildDataRequestEntity(userId, framework, identifierTypeToStore, identifierValueToStore),
                     bulkDataRequestId,
@@ -70,9 +71,11 @@ class DataRequestManager(
         }
 
         if (acceptedCompanyIdentifiers.isNotEmpty()) {
-            sendBulkDataRequestNotificationMail(bulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId)
+            sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId)
         }
-        return buildResponseForBulkDataRequest(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
+        return buildResponseForBulkDataRequest(
+            cleanedBulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers,
+        )
     }
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
@@ -83,6 +86,17 @@ class DataRequestManager(
         val retrievedDataRequestsForUser = dataRequestRepository.findByUserId(currentUserId)
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser(currentUserId)
         return retrievedDataRequestsForUser
+    }
+
+// TODO remove flyway from project
+    private fun removeDuplicatesInLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {
+        val distinctCompanyIdentifiers = bulkDataRequest.listOfCompanyIdentifiers.distinct()
+        val distinctFrameworkNames = bulkDataRequest.listOfFrameworkNames.distinct()
+
+        return bulkDataRequest.copy(
+            listOfCompanyIdentifiers = distinctCompanyIdentifiers,
+            listOfFrameworkNames = distinctFrameworkNames,
+        )
     }
 
     private fun validateBulkDataRequest(bulkDataRequest: BulkDataRequest) {
