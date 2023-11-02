@@ -25,18 +25,48 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get data requests of a specific user.",
-        "description": "Gets all the stored data request created by the user in the past.",
-        "operationId": "getDataRequestsForUser",
+        "summary": "Get aggregated data requests.",
+        "description": "Gets all data requests that match the given filters, while aggregating userIDs.",
+        "operationId": "getAggregatedDataRequests",
+        "parameters": [
+          {
+            "name": "identifierValue",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "sme"
+                ]
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data requests for the user.",
+            "description": "Successfully retrieved aggregated data requests.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataRequestEntity"
+                    "$ref": "#/components/schemas/AggregatedDataRequest"
                   }
                 }
               }
@@ -96,6 +126,59 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BulkDataRequestResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/user": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get data requests of a specific user.",
+        "description": "Gets all the stored data request created by the user in the past.",
+        "operationId": "getDataRequestsForUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data requests for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataRequestEntity"
+                  }
                 }
               }
             }
@@ -407,6 +490,32 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "AggregatedDataRequest": {
+        "type": "object",
+        "properties": {
+          "dataType": {
+            "type": "string",
+            "enum": [
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "lksg",
+              "p2p",
+              "sfdr",
+              "sme"
+            ]
+          },
+          "dataRequestCompanyIdentifierType": {
+            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
+          },
+          "dataRequestCompanyIdentifierValue": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

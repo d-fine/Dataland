@@ -1,11 +1,25 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
+import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
+import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
+import org.dataland.communitymanager.openApiClient.model.DataRequestEntity
+import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
+import org.dataland.e2etests.auth.TechnicalUser
+import org.dataland.e2etests.utils.ApiAccessor
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.time.Instant
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CommunityManagerTest {
 
-    /*private val apiAccessor = ApiAccessor()
+    private val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     private fun generateRandomLei(): String {
@@ -65,15 +79,15 @@ class CommunityManagerTest {
         val errorMessage = "The message sent as part of the response to the bulk data request is not as expected."
         if (expectedNumberOfRejectedIdentifiers == 0) {
             assertEquals(
-                "$expectedNumberOfAcceptedIdentifiers data requests were accepted.",
+                "$expectedNumberOfAcceptedIdentifiers distinct company identifiers were accepted.",
                 requestResponse.message,
                 errorMessage,
             )
         } else {
             assertEquals(
                 "$expectedNumberOfRejectedIdentifiers of your " +
-                    "${expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers} company " +
-                    "identifiers were rejected because of a format that is not matching a valid LEI, ISIN or PermID.",
+                    "${expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers} distinct company " +
+                    "identifiers were rejected because of a format that is not matching a valid LEI, ISIN or PermId.",
                 requestResponse.message,
                 errorMessage,
             )
@@ -139,7 +153,7 @@ class CommunityManagerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
     }
 
-    @Test // TODO remove commenting out
+    @Test
     fun `post bulk data request for all frameworks and different valid identifiers and check stored requests`() {
         val uniqueIdentifiersMap = mapOf(
             DataRequestCompanyIdentifierType.lei to generateRandomLei(),
@@ -151,7 +165,7 @@ class CommunityManagerTest {
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val response =  requestControllerApi.postBulkDataRequest(
+        val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks),
         )
         val amountOfIndividualRequests = identifiers.size * frameworks.size
@@ -165,57 +179,59 @@ class CommunityManagerTest {
             newlyStoredRequests,
             randomDataType,
             randomUniqueDataRequestCompanyIdentifierType,
-            uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]!!
+            uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]!!,
         )
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequests,
             randomDataType,
             DataRequestCompanyIdentifierType.multipleRegexMatches,
-            multipleRegexMatchingIdentifier
+            multipleRegexMatchingIdentifier,
         )
     }
 
-    @Test // TODO remove commenting out
+    @Test
     fun `post a bulk data request with at least one invalid identifier and check that this gives no stored request`() {
         val validIdentifiers = listOf(
-            generateRandomLei(), generateRandomIsin(), generateRandomPermId()
+            generateRandomLei(), generateRandomIsin(), generateRandomPermId(),
         )
         val invalidIdentifiers = listOf(
-            generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F"
+            generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
         )
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(
                 validIdentifiers + invalidIdentifiers,
-                listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
-            )
+                listOf(BulkDataRequest.ListOfFrameworkNames.lksg),
+            ),
         )
         checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, validIdentifiers.size)
         checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, invalidIdentifiers.size)
         checkThatMessageIsAsExpected(response, validIdentifiers.size, invalidIdentifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, validIdentifiers.size)
-        assertFalse(newlyStoredRequests.any { dataRequestEntity ->
-            invalidIdentifiers.contains(dataRequestEntity.dataRequestCompanyIdentifierValue)
-        })
+        assertFalse(
+            newlyStoredRequests.any { dataRequestEntity ->
+                invalidIdentifiers.contains(dataRequestEntity.dataRequestCompanyIdentifierValue)
+            },
+        )
     }
 
-    @Test // TODO remove commenting out
+    @Test
     fun `post bulk data request with at least one company duplicate and check that only one request is stored`() {
         val leiForCompany = generateRandomLei()
         val isinForCompany = generateRandomIsin()
         val companyId = apiAccessor.uploadOneCompanyWithIdentifiers(
-            leiForCompany, listOf(isinForCompany)
+            leiForCompany, listOf(isinForCompany),
         )!!.actualStoredCompany.companyId
         val identifierTypeForUnknownCompany = DataRequestCompanyIdentifierType.lei
         val identifierValueForUnknownCompany = generateRandomLei()
         val identifiersForBulkRequest = listOf(
-            leiForCompany, isinForCompany, identifierValueForUnknownCompany
+            leiForCompany, isinForCompany, identifierValueForUnknownCompany,
         )
         val frameworksForBulkRequest = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest)
+            BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest),
         )
         val expectedNumberOfIndividualRequests = (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size
         checkThatAllIdentifiersWereAccepted(response, expectedNumberOfIndividualRequests)
@@ -226,22 +242,22 @@ class CommunityManagerTest {
             newlyStoredRequests,
             dataType,
             DataRequestCompanyIdentifierType.datalandCompanyId,
-            companyId
+            companyId,
         )
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequests,
             dataType,
             identifierTypeForUnknownCompany,
-            identifierValueForUnknownCompany
+            identifierValueForUnknownCompany,
         )
     }
 
-    @Test // TODO remove commenting out
+    @Test
     fun `post a bulk data request with at least one already existing request and check that this one is ignored`() {
         val leiForCompany = generateRandomLei()
         val isinForCompany = generateRandomIsin()
         val companyId = apiAccessor.uploadOneCompanyWithIdentifiers(
-            leiForCompany, listOf(isinForCompany)
+            leiForCompany, listOf(isinForCompany),
         )!!.actualStoredCompany.companyId
         val identifierTypeForUnknownCompany = DataRequestCompanyIdentifierType.lei
         val identifierValueForUnknownCompany = generateRandomLei()
@@ -249,55 +265,58 @@ class CommunityManagerTest {
         val identifiersForFirstBulkRequest = listOf(leiForCompany, identifierValueForUnknownCompany)
         val timeBeforeFirstBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val firstResponse = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiersForFirstBulkRequest, frameworksForBulkRequest)
+            BulkDataRequest(identifiersForFirstBulkRequest, frameworksForBulkRequest),
         )
         checkThatAllIdentifiersWereAccepted(
             firstResponse,
-            frameworksForBulkRequest.size * identifiersForFirstBulkRequest.size
+            frameworksForBulkRequest.size * identifiersForFirstBulkRequest.size,
         )
         val newlyStoredRequestsAfterFirstBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
         val dataType = findDataTypeForFramework(frameworksForBulkRequest[0])
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-            newlyStoredRequestsAfterFirstBulkRequest, identifiersForFirstBulkRequest.size
+            newlyStoredRequestsAfterFirstBulkRequest, identifiersForFirstBulkRequest.size,
         )
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequestsAfterFirstBulkRequest,
             dataType,
             DataRequestCompanyIdentifierType.datalandCompanyId,
-            companyId
+            companyId,
         )
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequestsAfterFirstBulkRequest,
             dataType,
             identifierTypeForUnknownCompany,
-            identifierValueForUnknownCompany
+            identifierValueForUnknownCompany,
         )
         val identifiersForSecondBulkRequest = listOf(isinForCompany, identifierValueForUnknownCompany)
         val timestampBeforeSecondBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val secondResponse = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiersForSecondBulkRequest, frameworksForBulkRequest)
+            BulkDataRequest(identifiersForSecondBulkRequest, frameworksForBulkRequest),
         )
         checkThatAllIdentifiersWereAccepted(
             secondResponse,
-            frameworksForBulkRequest.size * identifiersForSecondBulkRequest.size)
+            frameworksForBulkRequest.size * identifiersForSecondBulkRequest.size,
+        )
         val newlyStoredRequestsAfterSecondBulkRequest = getNewlyStoredRequestsAfterTimestamp(
-            timestampBeforeSecondBulkRequest
+            timestampBeforeSecondBulkRequest,
         )
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequestsAfterSecondBulkRequest, 0)
         val newlyStoredRequestsAfterFirstAndSecondBulkRequest = getNewlyStoredRequestsAfterTimestamp(
-            timeBeforeFirstBulkRequest
+            timeBeforeFirstBulkRequest,
         )
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequestsAfterFirstAndSecondBulkRequest,
             dataType,
             DataRequestCompanyIdentifierType.datalandCompanyId,
-            companyId
+            companyId,
         )
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequestsAfterFirstAndSecondBulkRequest,
             dataType,
             identifierTypeForUnknownCompany,
-            identifierValueForUnknownCompany
+            identifierValueForUnknownCompany,
         )
-    }*/
+    }
+
+    // TODO tests for aggregated GET endpoint
 }
