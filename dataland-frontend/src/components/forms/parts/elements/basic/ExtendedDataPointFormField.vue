@@ -85,7 +85,7 @@ export default defineComponent({
   },
   computed: {
     isDataValueProvided(): boolean {
-      return (assertDefined(this.valueValidityCheck) as (dataPoint: unknown) => boolean)(this.dataPoint);
+      return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
     },
     isDataQualityRequired(): boolean {
       return this.isDataValueProvided;
@@ -118,7 +118,7 @@ export default defineComponent({
 
   props: {
     ...BaseFormFieldProps,
-    valueValidityCheck: {
+    checkValueValidity: {
       type: Function as unknown as () => (dataPoint: unknown) => boolean,
       default: (): boolean => false,
     },

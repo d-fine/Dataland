@@ -6,7 +6,7 @@
     :label="label"
     :required="required"
     :inner-class="innerClass"
-    :value-validity-check="hasDataPointProperValue"
+    :check-value-validity="hasDataPointProperValue"
   >
     <div class="mb-3">
       <UploadFormHeader :label="label" :description="description" :is-required="required" />

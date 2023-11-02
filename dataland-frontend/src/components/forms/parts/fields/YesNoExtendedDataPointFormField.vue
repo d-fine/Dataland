@@ -8,7 +8,7 @@
       :label="label"
       :required="required"
       :inner-class="innerClass"
-      :value-validity-check="hasDataPointProperValue"
+      :check-value-validity="hasDataPointProperValue"
     >
       <RadioButtonsFormElement
         name="value"
