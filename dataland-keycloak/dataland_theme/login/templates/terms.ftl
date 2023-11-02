@@ -11,7 +11,7 @@
 
         <div class="text-left mt-4 flex align-items-center">
             <input id="accept_terms" name="accept_terms" type="checkbox" required>
-            <label for="accept_terms" class="tex-sm ml-2">I agree with the <a class="text-primary" href="">Terms and Conditions</a></label>
+            <label for="accept_terms" class="tex-sm ml-2">I agree with the <a class="text-primary" href="/terms">Terms and Conditions</a></label>
         </div>
         <div id="accept_terms_error" class="text-left align-items-center checkbox-error mt-2" style="display: none;">
             <span class="material-icons-outlined ">error</span>
@@ -22,7 +22,7 @@
 
         <div class="text-left mt-4 flex align-items-center">
             <input id="accept_privacy" name="accept_privacy" type="checkbox" required>
-            <label for="accept_privacy" class="tex-sm ml-2">I accept the <a class="text-primary" href="">Privacy Policy</a></label>
+            <label for="accept_privacy" class="tex-sm ml-2">I accept the <a class="text-primary" href="/dataprivacy">Privacy Policy</a></label>
         </div>
 
         <div id="accept_privacy_error" class="text-left  align-items-center checkbox-error mt-2" style="display: none;">
