@@ -7,7 +7,7 @@
       :description="description"
       :label="label"
       :required="required"
-      :inner-class="innerClass"
+      :input-class="inputClass"
       :check-value-validity="hasDataPointProperValue"
     >
       <RadioButtonsFormElement

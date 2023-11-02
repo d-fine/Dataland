@@ -5,7 +5,7 @@
     :description="description"
     :label="label"
     :required="required"
-    :inner-class="innerClass"
+    :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
   >
     <div class="mb-3">
@@ -16,7 +16,7 @@
         :validation-label="validationLabel"
         :validation="validation"
         :unit="unit"
-        :inner-class="innerClass"
+        :inner-class="inputClass"
       />
     </div>
   </ExtendedDataPointFormField>
