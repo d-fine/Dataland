@@ -410,6 +410,16 @@
           }
         }
       },
+      "DataRequestCompanyIdentifierType": {
+        "type": "string",
+        "enum": [
+          "Lei",
+          "Isin",
+          "PermId",
+          "MultipleRegexMatches",
+          "DatalandCompanyId"
+        ]
+      },
       "DataRequestEntity": {
         "type": "object",
         "properties": {
@@ -434,22 +444,10 @@
               "sme"
             ]
           },
-          "companyIdentifierType": {
-            "type": "string",
-            "enum": [
-              "Lei",
-              "Isin",
-              "PermId",
-              "Ticker",
-              "Duns",
-              "CompanyRegistrationNumber",
-              "VatNumber"
-            ]
+          "dataRequestCompanyIdentifierType": {
+            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
           },
-          "companyIdentifierValue": {
-            "type": "string"
-          },
-          "companyIdOnDataland": {
+          "dataRequestCompanyIdentifierValue": {
             "type": "string"
           }
         }

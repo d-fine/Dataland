@@ -9,7 +9,7 @@
           class="row mb-2"
           data-test="previousReportsList"
         >
-          <DocumentLink :download-name="nameInner" :reference="report.reference" show-icon />
+          <DocumentLink :download-name="nameInner" :fileReference="report.fileReference" show-icon />
         </div>
       </div>
     </div>
@@ -42,10 +42,7 @@ export default defineComponent({
     };
     this.reportingPeriods = dialogRefData.reportingPeriodsForTable;
     this.referencedReportsList = dialogRefData.referencedReportsForModal;
-    this.indexOfNewestReportingPeriod =
-      this.reportingPeriods.length - dialogRefData.indexOfNewestReportingPeriodForModal - 1;
-    this.reportingPeriods.reverse();
-    this.referencedReportsList.reverse();
+    this.indexOfNewestReportingPeriod = dialogRefData.indexOfNewestReportingPeriodForModal;
   },
 });
 </script>

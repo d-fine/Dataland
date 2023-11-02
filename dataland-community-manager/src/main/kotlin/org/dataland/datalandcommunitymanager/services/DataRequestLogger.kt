@@ -57,6 +57,22 @@ class DataRequestLogger {
     }
 
     /**
+     * Logs an appropriate message when it has been checked if an identifier value can be cross-referenced with a
+     * companyId that already exists on Dataland.
+     */
+    fun logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(
+        identifierValue: String,
+        companyId: String?,
+    ) {
+        var logMessage = "The identifier value $identifierValue "
+        if (companyId == null) {
+            logMessage += "is currently not associated with a company that exists on Dataland." } else {
+            logMessage += "can be associated with the companyId $companyId on Dataland."
+        }
+        logger.info(wrapServiceName(logMessage))
+    }
+
+    /**
      * Logs an appropriate message when a data request has been stored in the database.
      */
     fun logMessageForStoringDataRequest(dataRequestId: String, bulkDataRequestId: String? = null) {

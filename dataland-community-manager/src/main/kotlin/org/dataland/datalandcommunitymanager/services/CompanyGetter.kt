@@ -1,26 +1,28 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 /**
- * Class for handling the upload of the company information retrieved from GLEIF to the Dataland backend
+ * Class for getting companies that exist on Dataland
  */
 @Service("CompanyGetter")
 class CompanyGetter(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
 ) {
-    // TODO Memo an mich: Das handling der internal base url vom Backend ist inkonsistent und seltsam in der code base
+    private val companyDataControllerApi = CompanyDataControllerApi(backendBaseUrl)
 
-    /** This method checks if a Dataland companyId is associated with a specific company identifier value.
-     * @param identifierValue to check for
-     * @returns a company Id if it could find one, otherwise null
+    /** This method gets the companyId and name of all companies on Dataland that match the search string by their
+     * name, one alternative name or one identifier
+     * @param searchString the search string to use for this
+     * @param bearerToken a bearer token required to perform the api call
+     * @returns a list of companyIds and names
      */
-
-    // TODO: The company endpoint that is required for this does not exist currently!
-    //  We need to introduce it in the backend.
-    //  Other questions: Shall we also pass the expected type here?
-    fun getCompanyIdByIdentifier(identifierValue: String): String? {
-        return "TODO"
+    fun getCompanyIdsAndNamesForSearchString(searchString: String, bearerToken: String): List<CompanyIdAndName> {
+        ApiClient.accessToken = bearerToken
+        return companyDataControllerApi.getCompaniesBySearchString(searchString)
     }
 }

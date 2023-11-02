@@ -3,8 +3,8 @@ package org.dataland.datalandcommunitymanager.entities
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 
 /**
  * The entity storing the information considering one single data request
@@ -19,11 +19,10 @@ data class DataRequestEntity(
 
     val creationTimestamp: Long,
 
-    val dataType: DataTypeEnum,
+    val dataType: DataTypeEnum, // TODO this is being stored via indexes into the DB!
 
-    val companyIdentifierType: IdentifierType,
+    // TODO this is being stored via indexes into the DB!
+    val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
-    val companyIdentifierValue: String,
-
-    val companyIdOnDataland: String?,
+    val dataRequestCompanyIdentifierValue: String,
 )
