@@ -129,7 +129,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
         grievanceHandlingMechanism: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         whistleblowerProtectionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
-        reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateInt()),
         sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(
           generateInt(),
         ),
