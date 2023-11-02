@@ -24,7 +24,7 @@ describe("Check that the Landing Page to work properly", () => {
     cy.get("a[href='/']").click();
 
     cy.get("a[href='/terms']").click();
-    cy.get("div:contains('In Zukunft sind hier die Allgemeinen Geschäftsbedingungen zu finden.')");
+    cy.get("h1:contains('Allgemeine Bedingungen für die Teilnahme an Dataland')");
     cy.get("a[href='/']").click();
   });
 });
