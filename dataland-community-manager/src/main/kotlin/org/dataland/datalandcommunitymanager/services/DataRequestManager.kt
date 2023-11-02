@@ -184,7 +184,7 @@ class DataRequestManager(
         numberOfRejectedCompanyIdentifiers: Int,
     ): String {
         return when (numberOfRejectedCompanyIdentifiers) {
-            0 -> "$totalNumberOfRequestedCompanyIdentifiers data requests were created."
+            0 -> "$totalNumberOfRequestedCompanyIdentifiers data requests were accepted."
             else ->
                 "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
                     "company identifiers were rejected because of a format that is not matching a valid " +
