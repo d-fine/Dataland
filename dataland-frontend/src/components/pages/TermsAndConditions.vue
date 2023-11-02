@@ -253,7 +253,7 @@
         </p>
         <p>
           Dataland hat das Recht, die von dem Daten-Sammler eingegebenen Unternehmens-Daten nach eigenem und im
-          ausschließlich eigenem Ermessen von Dataland liegenden Maßgaben zu überprüfen. Auf Grundlage dieser Prüfung
+          ausschließlich eigenen Ermessen von Dataland liegenden Maßgaben zu überprüfen. Auf Grundlage dieser Prüfung
           entscheidet Dataland, ob die vom Daten-Sammler gelieferten Unternehmens-Daten als Unternehmens-Daten der
           Plattform-Dataland für den Zugriff von Daten-User zugelassen werden.
         </p>
@@ -269,7 +269,7 @@
         </p>
         <p>
           Auch nach Zulassung der Unternehmens-Daten auf die Plattform-Dataland hat Dataland jederzeit und
-          uneingeschränkt das Recht, die Unternehmens-Daten nach eigenem und im ausschließlich eigenem Ermessen von
+          uneingeschränkt das Recht, die Unternehmens-Daten nach eigenem und im ausschließlich eigenen Ermessen von
           Dataland liegenden Maßgaben zu prüfen und über deren Verbleib auf der Plattform-Dataland zu entscheiden.
           Insofern kann Dataland jederzeit und frei entscheiden, ob diese vom Daten-Sammler gelieferten
           Unternehmens-Daten als Unternehmens-Daten auf der Plattform-Dataland für den Zugriff von Daten-Usern belassen
