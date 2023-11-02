@@ -1,7 +1,6 @@
 import { login, logout } from "@e2e/utils/Auth";
 import { authenticator } from "otplib";
 import { getStringCypressEnv } from "@e2e/utils/Cypress";
-import { clickAllowAllOnCookieBanner } from "@e2e/utils/GeneralUtils";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
@@ -9,13 +8,7 @@ describe("As a user I want to be able to register for an account and be able to 
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
   it("Checks that the Dataland password-policy gets respected", () => {
-    cy.visitAndCheckAppMount("/");
-    clickAllowAllOnCookieBanner();
-    cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
-    cy.intercept("GET", "https://www.youtube-nocookie.com/**", (req) => {
-      req.url = req.url.replace("www.youtube-nocookie.com/**", "www.youtube.com/**");
-    }).as("youtube");
-    cy.wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+    cy.visitAndCheckAppMount("/")
       .get("button[name='signup_dataland_button']")
       .click()
       .get("#email")
@@ -47,13 +40,10 @@ describe("As a user I want to be able to register for an account and be able to 
   it("Checks that registering works", () => {
     cy.task("setEmail", email);
     cy.task("setPassword", randomHexPassword);
-    cy.visitAndCheckAppMount("/");
-    clickAllowAllOnCookieBanner();
-    cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
-    cy.wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+    cy.visitAndCheckAppMount("/")
       .get("button[name='signup_dataland_button']")
-      .click();
-    cy.get("#email")
+      .click()
+      .get("#email")
       .should("exist")
       .type(email, { force: true })
 
@@ -123,8 +113,8 @@ describe("As a user I want to be able to register for an account and be able to 
           const username = returnEmail as string;
           const password = returnPassword as string;
           login(username, password);
-          cy.visitAndCheckAppMount("/companies");
-          cy.get("div[id='profile-picture-dropdown-toggle']")
+          cy.visitAndCheckAppMount("/companies")
+            .get("div[id='profile-picture-dropdown-toggle']")
             .click()
             .get("a[id='profile-picture-dropdown-settings-button']")
             .click()

@@ -1,7 +1,5 @@
 import Chainable = Cypress.Chainable;
 import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
-import { clickAllowAllOnCookieBanner } from "@e2e/utils/GeneralUtils";
-
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
  */
@@ -30,14 +28,8 @@ let globalJwt = "";
  */
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
   cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
-  cy.intercept("GET", "https://www.youtube-nocookie.com/**", (req) => {
-    req.url = req.url.replace("www.youtube-nocookie.com/**", "www.youtube.com/**");
-  }).as("youtube");
-
   cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
-  cy.visitAndCheckAppMount("/");
-  clickAllowAllOnCookieBanner();
-  cy.wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+  cy.visitAndCheckAppMount("/")
     .get("a[aria-label='Login to preview account']")
     .click()
     .get("#username")
