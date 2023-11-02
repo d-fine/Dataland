@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.entities
 
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
@@ -19,9 +21,10 @@ data class DataRequestEntity(
 
     val creationTimestamp: Long,
 
-    val dataType: DataTypeEnum, // TODO this is being stored via indexes into the DB!
+    @Enumerated(EnumType.STRING)
+    val dataType: DataTypeEnum,
 
-    // TODO this is being stored via indexes into the DB!
+    @Enumerated(EnumType.STRING)
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
     val dataRequestCompanyIdentifierValue: String,

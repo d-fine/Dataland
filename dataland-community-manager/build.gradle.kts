@@ -51,7 +51,6 @@ dependencies {
     testImplementation(Spring.security.spring_security_test)
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.mailjet.client)
-    implementation(libs.flyway)
 }
 
 openApi {

@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -35,6 +36,8 @@ class DataRequestManager(
      */
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
+        validateBulkDataRequest(bulkDataRequest)
+        val cleanedBulkDataRequest = removeDuplicatesInLists(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
         dataRequestLogger.logMessageForBulkDataRequest(userId, bulkDataRequestId)
@@ -42,7 +45,7 @@ class DataRequestManager(
         val acceptedCompanyIdentifiers = mutableListOf<String>()
         val rejectedCompanyIdentifiers = mutableListOf<String>()
 
-        for (userProvidedIdentifierValue in bulkDataRequest.listOfCompanyIdentifiers) {
+        for (userProvidedIdentifierValue in cleanedBulkDataRequest.listOfCompanyIdentifiers) {
             val matchedIdentifierType = determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
             if (matchedIdentifierType == null) {
                 rejectedCompanyIdentifiers.add(userProvidedIdentifierValue)
@@ -56,10 +59,10 @@ class DataRequestManager(
             } ?: matchedIdentifierType
             val identifierValueToStore = datalandCompanyId ?: userProvidedIdentifierValue
 
-            for (framework in bulkDataRequest.listOfFrameworkNames) {
+            for (framework in cleanedBulkDataRequest.listOfFrameworkNames) {
                 if (isDataRequestAlreadyExisting(userId, identifierValueToStore, framework)) {
                     continue
-                } // TODO manually check once that duplicate identifiers are not stored because of this check here
+                }
                 storeDataRequestEntity(
                     buildDataRequestEntity(userId, framework, identifierTypeToStore, identifierValueToStore),
                     bulkDataRequestId,
@@ -68,9 +71,11 @@ class DataRequestManager(
         }
 
         if (acceptedCompanyIdentifiers.isNotEmpty()) {
-            sendBulkDataRequestNotificationMail(bulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId)
+            sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId)
         }
-        return buildResponseForBulkDataRequest(bulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers)
+        return buildResponseForBulkDataRequest(
+            cleanedBulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers,
+        )
     }
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
@@ -81,6 +86,32 @@ class DataRequestManager(
         val retrievedDataRequestsForUser = dataRequestRepository.findByUserId(currentUserId)
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser(currentUserId)
         return retrievedDataRequestsForUser
+    }
+
+    private fun removeDuplicatesInLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {
+        val distinctCompanyIdentifiers = bulkDataRequest.listOfCompanyIdentifiers.distinct()
+        val distinctFrameworkNames = bulkDataRequest.listOfFrameworkNames.distinct()
+
+        return bulkDataRequest.copy(
+            listOfCompanyIdentifiers = distinctCompanyIdentifiers,
+            listOfFrameworkNames = distinctFrameworkNames,
+        )
+    }
+
+    private fun validateBulkDataRequest(bulkDataRequest: BulkDataRequest) {
+        val listOfIdentifiers = bulkDataRequest.listOfCompanyIdentifiers
+        val listOfFrameworks = bulkDataRequest.listOfFrameworkNames
+        if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty()) {
+            val errorMessage = when {
+                listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "All provided lists are empty"
+                listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
+                else -> "The list of frameworks is empty."
+            }
+            throw InvalidInputApiException(
+                "No empty lists are allowed as input for bulk data request.",
+                errorMessage,
+            )
+        }
     }
 
     private fun isDataRequestAlreadyExisting(
@@ -153,7 +184,7 @@ class DataRequestManager(
         numberOfRejectedCompanyIdentifiers: Int,
     ): String {
         return when (numberOfRejectedCompanyIdentifiers) {
-            0 -> "$totalNumberOfRequestedCompanyIdentifiers data requests were created."
+            0 -> "$totalNumberOfRequestedCompanyIdentifiers data requests were accepted."
             else ->
                 "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
                     "company identifiers were rejected because of a format that is not matching a valid " +

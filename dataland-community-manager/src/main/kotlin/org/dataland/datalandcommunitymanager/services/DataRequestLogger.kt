@@ -13,7 +13,7 @@ import java.util.*
 @Service("DataRequestLogger")
 class DataRequestLogger {
 
-    private val nameOfTargetService = "DATALANAD-DATA-REQUEST-MANAGER"
+    private val nameOfTargetService = "DATALAND-DATA-REQUEST-MANAGER" // TODO Logger
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private fun wrapServiceName(logMessageToWrap: String): String {
@@ -29,7 +29,7 @@ class DataRequestLogger {
                 "Received a bulk data request by userId $requestingUserId " +
                     "-> Processing it with bulkDataRequestId $bulkDataRequestId",
             ),
-        ) // TODO Discuss: Is this ok from data privacy perspective? We also do this in api key manager.
+        ) // TODO Discuss: Is this ok from data privacy perspective? We also do this in api key manager. Andreas?
     }
 
     /**
