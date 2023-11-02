@@ -6,7 +6,7 @@
     :label="label"
     :required="required"
     :inner-class="innerClass"
-    :is-data-value-provided="currentValue != '' && currentValue != undefined"
+    :check-value-validity="hasDataPointProperValue"
   >
     <div class="mb-3">
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
@@ -27,20 +27,17 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import { hasDataPointProperValue } from "@/utils/DataPoint";
 
 export default defineComponent({
   name: "BigDecimalExtendedDataPointFormField",
   components: { NumberFormField, ExtendedDataPointFormField, UploadFormHeader },
-  data() {
-    return {
-      currentValue: "",
-    };
-  },
   props: {
     ...BaseFormFieldProps,
     unit: {
       type: String,
     },
   },
+  methods: { hasDataPointProperValue },
 });
 </script>

@@ -1,6 +1,5 @@
 <template>
   <div class="form-field" :data-test="name">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit v-model="baseDataPoint" type="group" :name="name">
       <slot />
       <!-- TODO change this condition -->

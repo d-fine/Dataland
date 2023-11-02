@@ -73,7 +73,7 @@ describeIf(
      */
     function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
       cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
-      cy.get("li.p-multiselect-item").eq(sectorCardIndex).should('have.attr', 'aria-selected', 'false').click();
+      cy.get("li.p-multiselect-item").eq(sectorCardIndex).should("have.attr", "aria-selected", "false").click();
       cy.get('div[data-test="applicableHighImpactClimateSector"]')
         .find('select[name="fileName"]')
         .eq(sectorCardIndex)
