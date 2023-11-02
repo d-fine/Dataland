@@ -11,11 +11,10 @@ import { submitFilledInEuTaxonomyForm } from "./EuTaxonomyFinancialsUpload";
  * Otherwise, dataland.com lacks functionality.
  */
 export function clickAllowAllOnCookieBanner(): void {
-  cy.get("button[id='CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll']", {
-    timeout: Cypress.env("short_timeout_in_ms") as number,
-  }).should((element$) => {
-    if (element$.length) {
-      element$.trigger("click");
+  cy.get("body").then((body$) => {
+    const button = body$.find("button[id='CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll']");
+    if (button.length) {
+      button.trigger("click");
     }
   });
 }
