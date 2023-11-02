@@ -11,7 +11,7 @@
             <@inputField.dala
                 fieldName="email"
                 fieldErrorHandlers=["email"]
-                fieldHeading="Enter your email address"
+                fieldHeading="* Enter your email address"
                 tabindex="1"
                 autofocus=true
                 autocomplete="email"
@@ -22,7 +22,7 @@
             <@inputField.dala
                 fieldName="password"
                 fieldErrorHandlers=["password", "password-confirm"]
-                fieldHeading="Password"
+                fieldHeading="* Password"
                 wrappingDivAttributes="data-role=\"password-primary\""
                 tabindex="2"
                 autofocus=false
@@ -38,7 +38,7 @@
             <@inputField.dala
                 fieldName="password-confirm"
                 fieldErrorHandlers=["password", "password-confirm"]
-                fieldHeading="Repeat password"
+                fieldHeading="* Repeat password"
                 wrappingDivAttributes="data-role=\"password-confirm\""
                 tabindex="3"
                 autofocus=false
