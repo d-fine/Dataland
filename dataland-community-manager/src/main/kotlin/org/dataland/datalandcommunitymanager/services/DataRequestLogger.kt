@@ -65,9 +65,10 @@ class DataRequestLogger {
         companyId: String?,
     ) {
         var logMessage = "The identifier value $identifierValue "
-        if (companyId == null) {
-            logMessage += "is currently not associated with a company that exists on Dataland." } else {
-            logMessage += "can be associated with the companyId $companyId on Dataland."
+        logMessage += if (companyId == null) {
+            "is currently not associated with a company that exists on Dataland."
+        } else {
+            "can be associated with the companyId $companyId on Dataland."
         }
         logger.info(wrapServiceName(logMessage))
     }
