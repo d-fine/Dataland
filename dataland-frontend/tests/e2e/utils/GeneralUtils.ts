@@ -13,7 +13,7 @@ import { submitFilledInEuTaxonomyForm } from "./EuTaxonomyFinancialsUpload";
 export function clickAllowAllOnCookieBanner(): void {
   cy.get("button[id='CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll']", {
     timeout: Cypress.env("short_timeout_in_ms") as number,
-  }).then((element$) => {
+  }).should((element$) => {
     if (element$.length) {
       element$.trigger("click");
     }
