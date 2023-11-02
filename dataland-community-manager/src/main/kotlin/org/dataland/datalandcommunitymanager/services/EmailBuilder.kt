@@ -134,7 +134,6 @@ class EmailBuilder(
         </html>
         """.trimIndent()
     }
-    // TODO IF time at the end:  Make email have table (and it can also contain the regex-matched types);
 
     /**
      * Function that generates the email to be sent

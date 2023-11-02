@@ -40,7 +40,7 @@ class DataRequestManager(
         val cleanedBulkDataRequest = removeDuplicatesInLists(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
-        dataRequestLogger.logMessageForBulkDataRequest(userId, bulkDataRequestId)
+        dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
 
         val acceptedCompanyIdentifiers = mutableListOf<String>()
         val rejectedCompanyIdentifiers = mutableListOf<String>()
@@ -84,7 +84,7 @@ class DataRequestManager(
     fun getDataRequestsForUser(): List<DataRequestEntity> {
         val currentUserId = DatalandAuthentication.fromContext().userId
         val retrievedDataRequestsForUser = dataRequestRepository.findByUserId(currentUserId)
-        dataRequestLogger.logMessageForRetrievingDataRequestsForUser(currentUserId)
+        dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return retrievedDataRequestsForUser
     }
 
@@ -124,7 +124,7 @@ class DataRequestManager(
         )
         if (isAlreadyExisting) {
             dataRequestLogger
-                .logMessageForCheckingIfDataRequestAlreadyExists(requestingUserId, identifierValue, framework)
+                .logMessageForCheckingIfDataRequestAlreadyExists(identifierValue, framework)
         }
         return isAlreadyExisting
     }

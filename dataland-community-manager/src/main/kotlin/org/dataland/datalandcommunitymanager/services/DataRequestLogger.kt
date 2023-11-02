@@ -13,30 +13,24 @@ import java.util.*
 @Service("DataRequestLogger")
 class DataRequestLogger {
 
-    private val nameOfTargetService = "DATALAND-DATA-REQUEST-MANAGER" // TODO Logger
-    private val logger = LoggerFactory.getLogger(javaClass)
-
-    private fun wrapServiceName(logMessageToWrap: String): String {
-        return "$nameOfTargetService: $logMessageToWrap"
-    }
+    private val logger = LoggerFactory.getLogger(DataRequestManager::class.java)
 
     /**
      * Logs an appropriate message when a bulk data request has happened.
      */
-    fun logMessageForBulkDataRequest(requestingUserId: String, bulkDataRequestId: String) {
+    fun logMessageForBulkDataRequest(bulkDataRequestId: String) {
         logger.info(
-            wrapServiceName(
-                "Received a bulk data request by userId $requestingUserId " +
-                    "-> Processing it with bulkDataRequestId $bulkDataRequestId",
-            ),
-        ) // TODO Discuss: Is this ok from data privacy perspective? We also do this in api key manager. Andreas?
+            "Received a bulk data request by a user. " +
+                "-> Processing it with bulkDataRequestId $bulkDataRequestId",
+
+        )
     }
 
     /**
      * Logs an appropriate message when a user has retrieved all their data requests.
      */
-    fun logMessageForRetrievingDataRequestsForUser(requestingUserId: String) {
-        logger.info(wrapServiceName("Retrieved data requests for user $requestingUserId"))
+    fun logMessageForRetrievingDataRequestsForUser() {
+        logger.info("A user has retrieved all their data requests.")
     }
 
     /**
@@ -44,15 +38,12 @@ class DataRequestLogger {
      * returned "true".
      */
     fun logMessageForCheckingIfDataRequestAlreadyExists(
-        requestingUserId: String,
         identifierValue: String,
         framework: DataTypeEnum,
     ) {
         logger.info(
-            wrapServiceName(
-                "The following data request already exists and therefore is not being recreated: " +
-                    "(requestingUser: $requestingUserId, identifierValue: $identifierValue, framework: $framework)",
-            ),
+            "The following data request already exists for the requesting user and therefore " +
+                "is not being recreated: (identifierValue: $identifierValue, framework: $framework)",
         )
     }
 
@@ -70,7 +61,7 @@ class DataRequestLogger {
         } else {
             "can be associated with the companyId $companyId on Dataland."
         }
-        logger.info(wrapServiceName(logMessage))
+        logger.info(logMessage)
     }
 
     /**
@@ -81,7 +72,7 @@ class DataRequestLogger {
         if (bulkDataRequestId != null) {
             logMessage += "while processing a bulk data request with bulkDataRequestId: $bulkDataRequestId"
         }
-        logger.info(wrapServiceName(logMessage))
+        logger.info(logMessage)
     }
 
     /**
@@ -99,7 +90,7 @@ class DataRequestLogger {
         if (ccReceiversString != null) {
             logMessage += ", and cc receivers are $ccReceiversString"
         }
-        logger.info(wrapServiceName(logMessage))
+        logger.info(logMessage)
     }
 
     /**

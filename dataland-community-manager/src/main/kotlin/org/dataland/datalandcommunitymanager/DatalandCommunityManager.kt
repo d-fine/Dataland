@@ -18,5 +18,3 @@ class DatalandCommunityManager : OpenAPIConfiguration
 fun main(args: Array<String>) {
     runApplication<DatalandCommunityManager>(args = args)
 }
-
-//  TODO Ask Florian: Why is the logging level of flyway set to debug mode in the internal storage (but not in backend)?
