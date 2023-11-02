@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -35,6 +36,7 @@ class DataRequestManager(
      */
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
+        validateBulkDataRequest(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
         dataRequestLogger.logMessageForBulkDataRequest(userId, bulkDataRequestId)
@@ -81,6 +83,22 @@ class DataRequestManager(
         val retrievedDataRequestsForUser = dataRequestRepository.findByUserId(currentUserId)
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser(currentUserId)
         return retrievedDataRequestsForUser
+    }
+
+    private fun validateBulkDataRequest(bulkDataRequest: BulkDataRequest) {
+        val listOfIdentifiers = bulkDataRequest.listOfCompanyIdentifiers
+        val listOfFrameworks = bulkDataRequest.listOfFrameworkNames
+        if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty()) {
+            val errorMessage = when {
+                listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "All provided lists are empty"
+                listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
+                else -> "The list of frameworks is empty."
+            }
+            throw InvalidInputApiException(
+                "No empty lists are allowed as input for bulk data request.",
+                errorMessage,
+            )
+        }
     }
 
     private fun isDataRequestAlreadyExisting(
