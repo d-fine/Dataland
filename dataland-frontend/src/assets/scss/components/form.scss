@@ -686,6 +686,11 @@ input[type="radio"] {
     }
   }
 }
+.no-ui-message {
+  [data-message-type="ui"] {
+    display: none;
+  }
+}
 .next-to-each-other {
   display: flex;
   gap: 1rem;
