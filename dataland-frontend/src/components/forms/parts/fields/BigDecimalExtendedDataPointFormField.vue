@@ -16,6 +16,7 @@
         :validation-label="validationLabel"
         :validation="validation"
         :unit="unit"
+        :inner-class="innerClass"
       />
     </div>
   </ExtendedDataPointFormField>

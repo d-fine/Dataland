@@ -16,6 +16,7 @@
         :validation="`integer|${validation}`"
         :unit="unit"
         :placeholder="unit ? `Value in ${unit}` : 'Value'"
+        :inner-class="innerClass"
       />
     </div>
   </ExtendedDataPointFormField>
