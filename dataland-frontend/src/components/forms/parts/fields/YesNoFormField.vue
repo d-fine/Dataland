@@ -1,11 +1,12 @@
 <template>
-  <div class="form-field" :data-test="name">
+  <div :class="classes" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <RadioButtonsFormElement
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :options="yesNoOptions"
+      :data-test="radioButtonsDataTest"
     />
   </div>
 </template>
@@ -21,6 +22,11 @@ export default defineComponent({
   components: { RadioButtonsFormElement, UploadFormHeader },
   props: {
     ...BaseFormFieldProps,
+    radioButtonsDataTest: String,
+    classes: {
+      type: String,
+      default: "form-field",
+    },
   },
 
   data() {

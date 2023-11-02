@@ -23,14 +23,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type GenericBaseDataPoint } from "@/utils/DataPoint";
 
 export default defineComponent({
   name: "BaseDataPointFormField",
-  components: { UploadFormHeader, UploadDocumentsForm },
+  components: { UploadDocumentsForm },
   inheritAttrs: false,
   props: { ...BaseFormFieldProps },
   data() {
