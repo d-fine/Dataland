@@ -88,7 +88,6 @@ class DataRequestManager(
         return retrievedDataRequestsForUser
     }
 
-// TODO remove flyway from project
     private fun removeDuplicatesInLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {
         val distinctCompanyIdentifiers = bulkDataRequest.listOfCompanyIdentifiers.distinct()
         val distinctFrameworkNames = bulkDataRequest.listOfFrameworkNames.distinct()
