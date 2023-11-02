@@ -72,6 +72,8 @@ class DataRequestManager(
 
         if (acceptedCompanyIdentifiers.isNotEmpty()) {
             sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId)
+        } else {
+            throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
         return buildResponseForBulkDataRequest(
             cleanedBulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers,
@@ -184,11 +186,11 @@ class DataRequestManager(
         numberOfRejectedCompanyIdentifiers: Int,
     ): String {
         return when (numberOfRejectedCompanyIdentifiers) {
-            0 -> "$totalNumberOfRequestedCompanyIdentifiers data requests were accepted."
+            0 -> "$totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
             else ->
                 "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
-                    "company identifiers were rejected because of a format that is not matching a valid " +
-                    "LEI, ISIN or PermID."
+                    "distinct company identifiers were rejected because of a format that is not matching a valid " +
+                    "LEI, ISIN or PermId."
         }
     }
 
@@ -221,5 +223,14 @@ class DataRequestManager(
                 .logMessageForBulkDataRequestNotificationMail(emailToSend, bulkDataRequestId)
         }
         emailSender.sendEmail(emailToSend, bulkDataRequestNotificationMailLoggerFunction)
+    }
+
+    private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
+        val summary = "All provided company identifiers have an invalid format."
+        val message = "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId"
+        throw InvalidInputApiException(
+            summary,
+            message,
+        )
     }
 }
