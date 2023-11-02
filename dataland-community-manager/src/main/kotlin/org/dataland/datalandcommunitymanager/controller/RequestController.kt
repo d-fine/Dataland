@@ -1,7 +1,9 @@
 package org.dataland.datalandcommunitymanager.controller
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.services.DataRequestManager
@@ -29,5 +31,12 @@ class RequestController(
         return ResponseEntity.ok(
             dataRequestManager.getDataRequestsForUser(),
         )
+    }
+
+    override fun getAggregatedDataRequests(
+        identifierValue: String?,
+        dataTypes: Set<DataTypeEnum>?,
+    ): List<AggregatedDataRequest> {
+        return dataRequestManager.getAggregatedDataRequests(identifierValue, dataTypes)
     }
 }

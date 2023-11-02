@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -36,6 +37,7 @@ class DataRequestManager(
      */
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
+        // TODO  => return Exception when api key used on this endpoint
         validateBulkDataRequest(bulkDataRequest)
         val cleanedBulkDataRequest = removeDuplicatesInLists(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
@@ -88,6 +90,18 @@ class DataRequestManager(
         val retrievedDataRequestsForUser = dataRequestRepository.findByUserId(currentUserId)
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return retrievedDataRequestsForUser
+    }
+
+    /** This method triggers a query to get aggregated data requests.
+     * @param identifierValue can be used to filter via substring matching
+     * @param dataTypes can be used to filter on frameworks
+     * @returns aggregated data requests
+     */
+    fun getAggregatedDataRequests(
+        identifierValue: String?,
+        dataTypes: Set<DataTypeEnum>?,
+    ): List<AggregatedDataRequest> {
+        return dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypes)
     }
 
     private fun removeDuplicatesInLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {

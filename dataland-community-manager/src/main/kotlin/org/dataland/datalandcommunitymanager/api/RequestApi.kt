@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.springframework.http.ResponseEntity
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Defines the restful dataland-community-manager API regarding.
@@ -62,22 +65,31 @@ interface RequestApi {
         ],
     )
     @GetMapping(
+        value = ["/user"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataRequestsForUser(): ResponseEntity<List<DataRequestEntity>>
-}
 
-/* TODO
- *getAll(): List<AggregatedRequestINfo>
- *
- * dataRequestIdentifierType?:   permid, isin, lei, datalandCompanyId
- * identifierValue:  UUID oder permid oder isini oder lei
- * framework :   p2p
- * count :   80
-*
-*
-* Filter: framework, identifierValue
-*
-*
-* */
+    /** Retrieves aggregated data requests by aggregating all userIds
+     * @return aggregated data requests that match the given filters
+     */
+
+    @Operation(
+        summary = "Get aggregated data requests.",
+        description = "Gets all data requests that match the given filters, while aggregating userIDs.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved aggregated data requests."),
+        ],
+    )
+    @GetMapping(
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getAggregatedDataRequests(
+        @RequestParam identifierValue: String? = null,
+        @RequestParam dataTypes: Set<DataTypeEnum>? = null,
+    ): List<AggregatedDataRequest>
+}

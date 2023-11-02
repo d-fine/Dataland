@@ -66,8 +66,6 @@ class EmailBuilder(
     }
 
     private fun buildUserInfo(): String {
-        // TODO the "as" in the next line breaks the whole thing if you use api key auth!
-        //  => return Exception when api key used on this endpoint
         val user = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
         return "User ${user.username} (Keycloak id: ${user.userId})"
     }
