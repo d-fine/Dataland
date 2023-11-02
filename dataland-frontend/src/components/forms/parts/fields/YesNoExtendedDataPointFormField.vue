@@ -1,17 +1,17 @@
 <template>
   <div class="mb-3" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <!-- TODO move down? -->
     <ExtendedDataPointFormField
       :name="name"
       :description="description"
       :label="label"
       :required="required"
       :inner-class="innerClass"
-      :is-data-value-provided="currentValue != '' && currentValue != undefined"
+      :value-validity-check="hasDataPointProperValue"
     >
       <RadioButtonsFormElement
         name="value"
-        v-model:currentValue="currentValue"
         :validation="validation"
         :validation-label="validationLabel ?? label"
         :options="yesNoOptions"
@@ -27,9 +27,10 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
+import { hasDataPointProperValue } from "@/utils/DataPoint";
 
 export default defineComponent({
-  name: "YesNoFormField",
+  name: "YesNoExtendedDataPointFormField",
   components: { ExtendedDataPointFormField, RadioButtonsFormElement, UploadFormHeader },
   inheritAttrs: false,
   props: {
@@ -43,9 +44,11 @@ export default defineComponent({
         Yes: "Yes",
         No: "No",
       },
-      currentValue: undefined,
     };
   },
   emits: ["reportsUpdated"],
+  methods: {
+    hasDataPointProperValue,
+  },
 });
 </script>

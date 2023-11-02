@@ -1,5 +1,5 @@
 <template>
-  <FormKit type="group" :name="name">
+  <FormKit type="group" :name="name" v-model="dataPoint">
     <slot />
     <div>
       <FormKit type="group" name="dataSource">
@@ -72,6 +72,7 @@ import { QualityOptions } from "@clients/backend";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
@@ -83,6 +84,9 @@ export default defineComponent({
     },
   },
   computed: {
+    isDataValueProvided(): boolean {
+      return (assertDefined(this.valueValidityCheck) as (dataPoint: unknown) => boolean)(this.dataPoint);
+    },
     isDataQualityRequired(): boolean {
       return this.isDataValueProvided;
     },
@@ -108,14 +112,15 @@ export default defineComponent({
       })),
       qualityValue: "NA",
       currentReportValue: "",
+      dataPoint: {} as unknown,
     };
   },
 
   props: {
     ...BaseFormFieldProps,
-    isDataValueProvided: {
-      type: Boolean,
-      required: true,
+    valueValidityCheck: {
+      type: Function as unknown as () => (dataPoint: unknown) => boolean,
+      default: (): boolean => false,
     },
   },
   watch: {
