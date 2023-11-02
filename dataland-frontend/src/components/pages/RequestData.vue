@@ -1,21 +1,58 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section">
-      <FormKit :actions="false" type="form" @submit="submitRequest" @submit-invalid="handleInvalidInput" id="" name="">
+    <TheContent class="paper-section no-ui-message">
+      <FormKit
+        :actions="false"
+        type="form"
+        @submit="submitRequest"
+        @submit-invalid="handleInvalidInput"
+        id="requestDataFormId"
+        name="requestDataFormName"
+      >
         <div class="grid p-8 uploadFormWrapper">
-          <div v-if="postBulkDataRequestObjectProcessed" class="col-12">
-            <SuccessMessage :message="message" :messageId="messageCounter" />
-            <FailMessage :message="message" :messageId="messageCounter" />
-            <MessageComponent data-test="" severity="light-error">
-              <template #text-info>Message:{{ message }}</template>
-            </MessageComponent>
-            <MessageComponent data-test="" severity="light-success">
-              <template #text-info>Message:{{ message }}</template>
-            </MessageComponent>
+          <div class="col-12" v-if="postBulkDataRequestObjectProcessed">
+                        <SuccessMessage :message="message" :messageId="messageCounter" />
+                        <FailMessage :message="message" :messageId="messageCounter" />
+            <div >
+              <MessageComponent data-test="" severity="light-success">
+                <template #text-info
+                  >🎉 <span class="fw-semi-bold">All identifiers have been submitted successfully.</span></template
+                >
+              </MessageComponent>
+            </div>
+
+            <div >
+              <MessageComponent data-test="" severity="light-success">
+                <template #text-info
+                  >🎉
+                  <span class="fw-semi-bold"
+                    >{{ acceptedCompanyIdentifiers.length }} out of {{ identifiers.length }} identifiers have been
+                    submitted successfully.</span
+                  ></template
+                >
+              </MessageComponent>
+              <MessageComponent data-test="" severity="light-error">
+                <template #text-info
+                  >😢
+                  <span class="fw-semi-bold"
+                    >{{ rejectedCompanyIdentifiers.length }} identifiers failed to be recognised:</span
+                  >
+                  <p class="m-4">
+                    <span v-for="it in rejectedCompanyIdentifiers" :key="it"> {{ it }}, </span>
+                  </p>
+                </template>
+              </MessageComponent>
+            </div>
+
+            <div >
+              <MessageComponent data-test="" severity="light-error">
+                <template #text-info>😢 None of the identifiers have been recognised.</template>
+              </MessageComponent>
+            </div>
           </div>
 
-          <div class="col-12">
+          <div class="col-12" v-if="submittingSucceded">
             <div class="bg-white radius-1 p-4">
               <div class="grid">
                 <div class="col-12">
@@ -23,33 +60,28 @@
                   <hr />
                 </div>
                 <div class="col-6">
-                  <h4>3 Frameworks</h4>
+                  <h4>{{ selectedFrameworks.length ?? 0 }} Frameworks</h4>
                   <div class="paper-section radius-1 p-2 w-full selected-frameworks">
                     <span v-if="!selectedFrameworks.length" class="gray-text no-framework"
                       >No frameworks have been submitted.</span
                     >
-                    <span class="form-list-item" :key="it" v-for="it in selectedFrameworks">
+                    <p class="m-1" v-else v-for="it in humanizedSelectedFrameworks" :key="it">
                       {{ it }}
-                      <em @click="removeItem(it)" class="material-icons">close</em>
-                    </span>
+                    </p>
                   </div>
                 </div>
                 <div class="col-6">
-                  <h4>11 Identifiers</h4>
+                  <h4>{{ acceptedCompanyIdentifiers.length ?? 0 }} Identifiers</h4>
                   <div class="paper-section radius-1 p-2 w-full selected-frameworks">
                     <span v-if="!selectedFrameworks.length" class="gray-text no-framework"
                       >No identifiers have been submitted.</span
                     >
-                    <span class="form-list-item" :key="it" v-for="it in selectedFrameworks">
-                      {{ it }}
-                      <em @click="removeItem(it)" class="material-icons">close</em>
-                    </span>
+                    <span v-for="it in acceptedCompanyIdentifiers" :key="it"> {{ it }}, </span>
                   </div>
                 </div>
                 <div class="col-12 text-center">
                   <PrimeButton
-                    type="submit"
-                    label="Submit"
+                    @click="resetForm"
                     class="p-button p-button-outlined p-button-sm d-letters place-self-center ml-auto"
                     name="restart_data_button"
                   >
@@ -69,7 +101,7 @@
             </div>
           </div>
 
-          <div class="col-12">
+          <div class="col-12" v-else>
             <div class="grid">
               <div class="col-12 next-to-each-other">
                 <h2>Request Data</h2>
@@ -197,6 +229,9 @@ export default defineComponent({
       identifiers: [] as Array<string>,
       messageCounter: 0,
 
+      acceptedCompanyIdentifiers: [] as Array<string>,
+      rejectedCompanyIdentifiers: [] as Array<string>,
+
       submittingSucceded: false,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: true,
@@ -206,16 +241,20 @@ export default defineComponent({
   },
 
   computed: {
-    selectedFrameworksInt: {
-      get(): Array<FrameworkSelectableItem> {
-        return this.availableFrameworks.filter((frameworkSelectableItem) =>
-          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType),
-        );
-      },
-      set() {
-        console.log("TODO");
-      },
+    humanizedSelectedFrameworks(): string[] {
+      return this.selectedFrameworks.map((it) => humanizeStringOrNumber(it));
     },
+
+    // selectedFrameworksInt: {
+    //   get(): Array<FrameworkSelectableItem> {
+    //     return this.availableFrameworks.filter((frameworkSelectableItem) =>
+    //       this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType),
+    //     );
+    //   },
+    //   set() {
+    //     console.log("TODO");
+    //   },
+    // },
 
     /*submissionProgressTitle() {
       if (this.submissionFinished) {
@@ -248,9 +287,8 @@ export default defineComponent({
         listOfFrameworkNames: this.selectedFrameworks,
       };
     },
-
     /**
-     * Converts the string inside the input field into a list of identifiers
+     * Converts the string inside the identifiers field into a list of identifiers
      */
     processInput() {
       const uniqueIdentifiers = new Set(this.identifiersInString.replace(/(\r\n|\n|\r|;| )/gm, ",").split(","));
@@ -275,10 +313,19 @@ export default defineComponent({
         const requestDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getRequestDataControllerApi();
-        const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
+        // const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
+        const response = {
+          message: "Message from response",
+          rejectedCompanyIdentifiers: ["reject-1", "reject-2", "reject-3"],
+          acceptedCompanyIdentifiers: ["accepted-1", "accepted-2", "accepted-55"],
+        };
         console.log("response----------->", response);
+
         this.messageCounter++;
         this.message = response.message;
+        this.rejectedCompanyIdentifiers = response.rejectedCompanyIdentifiers;
+        this.acceptedCompanyIdentifiers = response.acceptedCompanyIdentifiers;
+        this.submittingSucceded = true;
       } catch (error) {
         this.messageCounter++;
         console.error(error);
@@ -302,19 +349,16 @@ export default defineComponent({
     },
 
     /**
-     * Adds a new Object to the array
+     * Resets form to allow the user to make a new data request
      */
-    addItem() {
-      this.idCounter++;
-      this.listOfElementIds.push(this.idCounter);
+    resetForm() {
+      this.acceptedCompanyIdentifiers = [];
+          this.rejectedCompanyIdentifiers = [];
+      this.selectedFrameworks = [];
+      this.identifiersInString = "";
+      this.identifiers = [];
+      this.submittingSucceded = false;
     },
-
-    /**
-     * Resets all the filters to their default values (i.e. select all frameworks but no countries / sectors)
-     */
-    /*resetFrameworkFilter() {
-      this.selectedFrameworksInt = this.availableFrameworks.filter((it) => !it.disabled);
-    },*/
 
     /**
      * Refreshes the page to allow the user to make a new data request
@@ -331,15 +375,6 @@ export default defineComponent({
     // TODO: some POST request is sent
       this.submissionFinished = true;
       this.submissionInProgress = false;
-    },*/
-
-    /**
-     * Updates the UI to reflect the result of the file upload
-     * @param response the result of the file upload request
-     */
-    /*readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>) {
-      this.isInviteSuccessful = response.data.wasInviteSuccessful ?? false;
-      this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server.";
     },*/
   },
   mounted() {
