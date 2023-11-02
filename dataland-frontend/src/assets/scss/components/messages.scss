@@ -15,6 +15,16 @@
   margin: 1rem 0;
   border-radius: 4px;
   border-width: 0 0 0 4px;
+  &.p-message-light-error {
+    background: $white;
+    border-left: 3px solid $message-error-border;
+    color: $main-text-color;
+  }
+  &.p-message-light-success {
+    background: $white;
+    border-left: 3px solid $message-success-border;
+    color: $main-text-color;
+  }
   &.p-message-block {
     background: $message-block-bg;
     border: solid $message-block-border;
