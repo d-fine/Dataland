@@ -4,55 +4,45 @@
     <p>
       Mit den folgenden Informationen möchten wir Ihnen als Besucher unseres Online-Angebots einen Überblick über die
       Verarbeitung Ihrer personenbezogenen Daten durch uns und über Ihre Rechte aus dem Datenschutzrecht geben. Welche
-      Daten im Einzelnen verarbeitet werden, richtet sich maßgeblich nach Ihrem konkreten Nutzungsverhalten.
-      Daher werden unter Umständen nicht alle Teile dieser Informationen auf Sie zutreffen.
+      Daten im Einzelnen verarbeitet werden, richtet sich maßgeblich nach Ihrem konkreten Nutzungsverhalten. Daher
+      werden unter Umständen nicht alle Teile dieser Informationen auf Sie zutreffen.
     </p>
     <div>
       <h2>1. VERANTWORTLICHE STELLE UND KONTAKTDATEN DES DATENSCHUTZBEAUFTRAGTEN</h2>
-      <p>
-        Verantwortlich für die Datenverarbeitung auf diesem Online-Angebot ist die
-      </p>
+      <p>Verantwortlich für die Datenverarbeitung auf diesem Online-Angebot ist die</p>
       <p class="indent">
         Dataland GmbH
-        <br/>
+        <br />
         Paul-Ehrlich-Straße 51
-        <br/>
+        <br />
         60596 Frankfurt am Main
-        <br/>
-        <br/>
+        <br />
+        <br />
         (nachfolgend auch
         <em class="bold">„Unternehmen“ oder „wir“</em>
         genannt)
       </p>
-      <p>
-        Sie erreichen unseren Datenschutzbeauftragten unter
-      </p>
+      <p>Sie erreichen unseren Datenschutzbeauftragten unter</p>
       <p class="indent">
         Wodianka privacy legal GmbH
-        <br/>
+        <br />
         Dockenhudener Straße 12a
-        <br/>
+        <br />
         22587 Hamburg
-        <br/>
+        <br />
         contact@privacy-legal.de
       </p>
     </div>
     <div>
-      <h2>
-        2. Verarbeitung personenbezogener Daten im Zusammenhang mit Ihrer Nutzung unserer Webseite
-      </h2>
+      <h2>2. Verarbeitung personenbezogener Daten im Zusammenhang mit Ihrer Nutzung unserer Webseite</h2>
       <div>
-        <h3>
-          a) Informatorische Nutzung unserer Webseite
-        </h3>
+        <h3>a) Informatorische Nutzung unserer Webseite</h3>
         <p>
           Bei der rein informatorischen Nutzung der Webseite erheben wir die folgenden Daten zum Zwecke der
-          Bereitstellung
-          der von Ihnen aufgerufenen Inhalte der Webseite und zur Gewährleistung der Sicherheit der eingesetzten
-          IT-Infrastruktur. Dies hilft auch bei der Fehlerbehebung und ermöglicht eine effizientere und
+          Bereitstellung der von Ihnen aufgerufenen Inhalte der Webseite und zur Gewährleistung der Sicherheit der
+          eingesetzten IT-Infrastruktur. Dies hilft auch bei der Fehlerbehebung und ermöglicht eine effizientere und
           benutzerfreundlichere Suche auf der Webseite. Die folgenden personenbezogenen Daten werden von Ihrem Browser
-          an
-          unseren Server übermittelt:
+          an unseren Server übermittelt:
         </p>
         <ul>
           <li>IP-Adresse,</li>
@@ -77,14 +67,11 @@
         </p>
         <p>
           IP-Adressen werden spätestens nach 24 Stunden anonymisiert. Pseudonyme Nutzungsdaten werden jeweils nach
-          Ablauf
-          von sechs Monaten gelöscht.
+          Ablauf von sechs Monaten gelöscht.
         </p>
       </div>
       <div>
-        <h3>
-          b) Dataland-Account
-        </h3>
+        <h3>b) Dataland-Account</h3>
         <p>
           Wenn Sie auf unserer Webseite ein Account anlegen, verarbeiten wir die folgenden Daten zum Zwecke der
           Aufrechterhaltung des Accounts:
@@ -93,16 +80,16 @@
           <li>Name (bei Anmeldung über LinkedIn)</li>
           <li>E-Mailadresse</li>
         </ul>
-        <p>Rechtsgrundlage für die Verarbeitung ist die Durchführung eines Vertrags, welchen Sie mit uns beim Anlegen
-          des Accounts schließen, Art. 6 Abs. 1 lit. b DS-GVO. Sofern Sie den Single Sign On über LinkedIn oder Google
+        <p>
+          Rechtsgrundlage für die Verarbeitung ist die Durchführung eines Vertrags, welchen Sie mit uns beim Anlegen des
+          Accounts schließen, Art. 6 Abs. 1 lit. b DS-GVO. Sofern Sie den Single Sign On über LinkedIn oder Google
           nutzen, verarbeiten wir ihre darüber generierten Daten aufgrund ihrer Einwilligung (Art. 6 Abs. 1 lit. a
-          DS-GVO), welche Sie jederzeit mit Wirkung für die Zukunft widerrufen können.</p>
+          DS-GVO), welche Sie jederzeit mit Wirkung für die Zukunft widerrufen können.
+        </p>
         <p>Die Daten werden bei Kündigung des Accounts gelöscht.</p>
       </div>
       <div>
-        <h3>
-          c) Newsletter
-        </h3>
+        <h3>c) Newsletter</h3>
         <p>
           Wir bieten Ihnen die Möglichkeit, sich für unseren Newsletter anzumelden. Über diesen informieren wir Sie über
           aktuelle Neuigkeiten. Im Rahmen des Newsletterversands verarbeiten wir die folgenden Daten:
@@ -134,9 +121,7 @@
         </p>
       </div>
       <div>
-        <h3>
-          d) Google Fonts
-        </h3>
+        <h3>d) Google Fonts</h3>
         <p>
           Unser Onlineangebot nutzt zur einheitlichen Darstellung bestimmter Schriftarten sogenannte Schriften von
           Google Fonts der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Diese Schriften sind
@@ -149,9 +134,7 @@
         </p>
       </div>
       <div>
-        <h3>
-          e) Webanalyse mit Matomo
-        </h3>
+        <h3>e) Webanalyse mit Matomo</h3>
         <p>
           Wir verwenden zudem die Open-Source-Software Matomo zur Analyse und statistischen Auswertung der Nutzung der
           Website. Hierzu werden Cookies eingesetzt. Die dadurch erhaltenen Informationen über die Websitenutzung werden
@@ -204,9 +187,7 @@
         </p>
       </div>
       <div>
-        <h3>
-          g) Social Media - LinkedIn
-        </h3>
+        <h3>g) Social Media - LinkedIn</h3>
         <p>
           Wir verfügen über ein Profil auf LinkedIn. Auf dieser Webseite nutzen wir Social-Plug-Ins von LinkedIn. Dabei
           kann es sich um Feeds, das Teilen von Inhalten oder um die Verlinkung zu unserer LinkedIn-Seite handeln. Die
@@ -216,16 +197,17 @@
           Wir und LinkedIn (für Nutzerinnen und Nutzer in der EU/EWR: LinkedIn Ireland Unlimited Company, Wilton Plaza,
           Wilton Place, Dublin 2, Irland) sind gemeinsam für die Verarbeitung personenbezogener Daten über unser
           LinkedIn Profil verantwortlich. Die Vereinbarung über die gemeinsame Verantwortlichkeit ist abrufbar unter:
-          <a href="https://legal.linkedin.com/pages-joint-controller-addendum">https://legal.linkedin.com/pages-joint-controller-addendum</a>.
-          Gemäß dieser Vereinbarung ist LinkedIn dafür
-          verantwortlich, die betroffenen Personen über die Verarbeitungstätigkeiten zu informieren. Die
-          Datenschutzrichtlinie von LinkedIn ist abrufbar unter:
+          <a href="https://legal.linkedin.com/pages-joint-controller-addendum"
+            >https://legal.linkedin.com/pages-joint-controller-addendum</a
+          >. Gemäß dieser Vereinbarung ist LinkedIn dafür verantwortlich, die betroffenen Personen über die
+          Verarbeitungstätigkeiten zu informieren. Die Datenschutzrichtlinie von LinkedIn ist abrufbar unter:
           <a href="https://www.linkedin.com/legal/privacy-policy">https://www.linkedin.com/legal/privacy-policy</a>.
           Betroffene Personen können ihre Rechte gegenüber jedem der für die Verarbeitung Verantwortlichen, Dataland
           GmbH und/oder LinkedIn, geltend machen. Weitere Informationen über die Daten, die LinkedIn mit uns teilt,
           finden Sie unter
           <a href="https://www.linkedin.com/help/linkedin/answer/a547077/viewing-company-page-analytics?lang=de">
-            https://www.linkedin.com/help/linkedin/answer/a547077/viewing-company-page-analytics?lang=de</a>.
+            https://www.linkedin.com/help/linkedin/answer/a547077/viewing-company-page-analytics?lang=de</a
+          >.
         </p>
         <p>
           Der Zweck der Datenverarbeitung besteht darin, interessante Inhalte bereitzustellen und mit den Besucherinnen
@@ -241,9 +223,7 @@
       </div>
     </div>
     <div>
-      <h2>
-        3. EMPFÄNGER UND EMPFÄNGERKATEGORIEN
-      </h2>
+      <h2>3. EMPFÄNGER UND EMPFÄNGERKATEGORIEN</h2>
       <p>
         Innerhalb unseres Unternehmens erhalten diejenigen Stellen Zugriff auf Ihre Daten, die diese zur Erfüllung der
         vertraglichen und gesetzlichen Pflichten brauchen. Auch von uns eingesetzte Dienstleister und Erfüllungsgehilfen
@@ -258,22 +238,20 @@
         können Empfänger personenbezogener Daten sein:
       </p>
       <ul>
-        <li>öffentliche Stellen und Institutionen (etwa Strafverfolgungsbehörden) bei Vorliegen einer gesetzlichen oder
+        <li>
+          öffentliche Stellen und Institutionen (etwa Strafverfolgungsbehörden) bei Vorliegen einer gesetzlichen oder
           behördlichen Verpflichtung,
         </li>
-        <li>andere konzernverbundene Unternehmen zur Risikosteuerung aufgrund gesetzlicher oder behördlicher
+        <li>
+          andere konzernverbundene Unternehmen zur Risikosteuerung aufgrund gesetzlicher oder behördlicher
           Verpflichtungen sowie
         </li>
         <li>Dienstleister, die wir im Rahmen von Auftragsverarbeitungsverhältnissen heranziehen.</li>
       </ul>
-      <p>
-        Im Übrigen gelten die in den übrigen Abschnitten aufgeführten Datenweitergaben.
-      </p>
+      <p>Im Übrigen gelten die in den übrigen Abschnitten aufgeführten Datenweitergaben.</p>
     </div>
     <div>
-      <h2>
-        4. ÜBERMITTLUNG IN DRITTSTAATEN
-      </h2>
+      <h2>4. ÜBERMITTLUNG IN DRITTSTAATEN</h2>
       <p>
         Eine Datenübermittlung an Stellen in Staaten außerhalb der Europäischen Union (sogenannte Drittstaaten) findet
         statt, soweit
@@ -332,13 +310,11 @@
     <div>
       <h2>7. BETROFFENENRECHTE</h2>
       <p>
-        Jede betroffene Person hat das <em class="underline">Recht auf Auskunft</em> nach Art. 15 DS-GVO, das <em
-          class="underline">Recht auf Berichtigung</em>
-        nach Art. 16
-        DS-GVO, das <em class="underline">Recht auf Löschung</em> nach Art. 17 DS-GVO, das <em class="underline">Recht
-        auf Einschränkung der Verarbeitung</em>
-        nach Art. 18
-        DS-GVO sowie das <em class="underline">Recht auf Datenübertragbarkeit</em> aus Art. 20 DS-GVO.
+        Jede betroffene Person hat das <em class="underline">Recht auf Auskunft</em> nach Art. 15 DS-GVO, das
+        <em class="underline">Recht auf Berichtigung</em> nach Art. 16 DS-GVO, das
+        <em class="underline">Recht auf Löschung</em> nach Art. 17 DS-GVO, das
+        <em class="underline">Recht auf Einschränkung der Verarbeitung</em> nach Art. 18 DS-GVO sowie das
+        <em class="underline">Recht auf Datenübertragbarkeit</em> aus Art. 20 DS-GVO.
       </p>
       <p>
         Beim Auskunftsrecht und beim Löschungsrecht gelten die Einschränkungen nach §§ 34 und 35 BDSG. Darüber hinaus
@@ -367,9 +343,7 @@
       </p>
     </div>
     <div>
-      <h2>
-        8. PFLICHT ZUR BEREITSTELLUNG VON DATEN
-      </h2>
+      <h2>8. PFLICHT ZUR BEREITSTELLUNG VON DATEN</h2>
       <p>
         Im Rahmen unseres Onlineangebots sind wir auf die Verarbeitung solcher Nutzungsdaten angewiesen, die für die
         Durchführung und Beendigung des Dienstes und zur Erfüllung der damit verbundenen Pflichten erforderlich sind.
@@ -379,21 +353,15 @@
       </p>
     </div>
     <div>
-      <h2>
-        9. PROFILING
-      </h2>
+      <h2>9. PROFILING</h2>
       <p>
         Wir verarbeiten Ihre personenbezogenen Daten nicht automatisiert in einer Weise, dass sie Ihnen gegenüber
         rechtliche Wirkung entfaltet oder sie in ähnlicher Weise erheblich beeinträchtigt.
       </p>
     </div>
     <div>
-      <h2>
-        10. AKTUALITÄT UND ÄNDERUNG DIESER DATENSCHUTZERKLÄRUNG
-      </h2>
-      <p>
-        Diese Datenschutzerklärung ist aktuell gültig und wurde das letzte Mal im Oktober 2023 aktualisiert.
-      </p>
+      <h2>10. AKTUALITÄT UND ÄNDERUNG DIESER DATENSCHUTZERKLÄRUNG</h2>
+      <p>Diese Datenschutzerklärung ist aktuell gültig und wurde das letzte Mal im Oktober 2023 aktualisiert.</p>
     </div>
   </LegalPage>
 </template>
@@ -403,7 +371,7 @@ import LegalPage from "@/components/generics/LegalPage.vue";
 
 export default {
   name: "DataPrivacy",
-  components: {LegalPage},
+  components: { LegalPage },
 };
 </script>
 
@@ -417,6 +385,6 @@ export default {
 }
 
 .indent {
-  margin-left: 50px
+  margin-left: 50px;
 }
 </style>

@@ -5,8 +5,8 @@ const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pag
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
 const TermsAndConditions = (): Promise<RouteComponent> => import("@/components/pages/TermsAndConditions.vue");
-const TokenTerms = (): Promise<RouteComponent> =>  import("@/components/pages/TokenTerms.vue")
-const Pricing = (): Promise<RouteComponent> =>  import("@/components/pages/Pricing.vue")
+const TokenTerms = (): Promise<RouteComponent> => import("@/components/pages/TokenTerms.vue");
+const Pricing = (): Promise<RouteComponent> => import("@/components/pages/Pricing.vue");
 const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/TheImprint.vue");
 const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");

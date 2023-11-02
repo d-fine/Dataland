@@ -29,9 +29,7 @@
       </p>
     </div>
     <div>
-      <h2>
-        Die Registrierung auf der Plattform-Dataland
-      </h2>
+      <h2>Die Registrierung auf der Plattform-Dataland</h2>
       <p>
         Für die Teilnahme an Dataland ist es zunächst erforderlich, dass eine Registrierung als Dataland-Teilnehmer
         erfolgt.
@@ -67,9 +65,7 @@
         Registrierung als Dataland-Teilnehmer bzw. bei entsprechenden Anträgen als Daten-Sammler, Daten-Owner oder
         Daten-User bestätigt.
       </p>
-      <p>
-        Seitens Dataland besteht keine Pflicht, eine Registrierung zu akzeptieren und diese zu bestätigen.
-      </p>
+      <p>Seitens Dataland besteht keine Pflicht, eine Registrierung zu akzeptieren und diese zu bestätigen.</p>
       <p>
         Soweit sich nach einer Registrierung Umstände ändern, die die dort gemachten Angaben unrichtig werden lassen,
         ist der Dataland-Teilnehmer verpflichtet, Dataland hierüber unverzüglich zu unterrichten, und zwar – soweit
@@ -83,13 +79,9 @@
       </p>
     </div>
     <div>
-      <h2>
-        Für Dataland-Teilnehmer geltende Bedingungen:
-      </h2>
+      <h2>Für Dataland-Teilnehmer geltende Bedingungen:</h2>
       <div>
-        <h3>
-          Die Nutzungsrechte des Dataland-Teilnehmers
-        </h3>
+        <h3>Die Nutzungsrechte des Dataland-Teilnehmers</h3>
         <p>
           Der Dataland-Teilnehmer erhält mit seiner Registrierung das Zugriffsrecht auf die Plattform-Dataland. Dies
           umfasst insbesondere die reine Ansicht der Unternehmens-Daten auf der Website (reines Leserecht). Die
@@ -102,9 +94,7 @@
         </p>
       </div>
       <div>
-        <h3>
-          Die Vergütungspflichten des Dataland-Teilnehmers
-        </h3>
+        <h3>Die Vergütungspflichten des Dataland-Teilnehmers</h3>
         <p>
           Die Registrierung als Dataland-Teilnehmer und die damit verbundene Nutzung der Plattform-Dataland als
           Dataland-Teilnehmer sind kostenlos, unabhängig davon, ob es sich um eine Privatnutzung oder um eine
@@ -112,19 +102,13 @@
         </p>
       </div>
       <div>
-        <h3>
-          Laufzeit der Registrierung als Dataland-Teilnehmer
-        </h3>
-        <p>
-          Die Registrierung als Dataland-Teilnehmer erfolgt für eine unbestimmte Laufzeit.
-        </p>
+        <h3>Laufzeit der Registrierung als Dataland-Teilnehmer</h3>
+        <p>Die Registrierung als Dataland-Teilnehmer erfolgt für eine unbestimmte Laufzeit.</p>
         <p>
           Die Registrierung kann von jeder Partei mit einer Frist von einem Monat zum Ende eines Kalendermonats
           gekündigt werden.
         </p>
-        <p>
-          Das Recht zur Kündigung aus wichtigem Grund bleibt in jedem Fall unberührt.
-        </p>
+        <p>Das Recht zur Kündigung aus wichtigem Grund bleibt in jedem Fall unberührt.</p>
         <p>
           Mit dem Ende der Registrierung als Dataland-Teilnehmer enden automatisch auch alle weiteren Registrierungen
           des jeweiligen Dataland-Teilnehmers.
@@ -134,7 +118,7 @@
     <div>
       <h2>Für Daten-User gelten die folgenden zusätzlichen Bedingungen:</h2>
       <div>
-        <h3>Die Nutzungsrechte des Daten-Users </h3>
+        <h3>Die Nutzungsrechte des Daten-Users</h3>
         <p>
           Der Daten-User darf die aus Dataland bezogenen Unternehmens-Daten für seine geschäftlichen oder privaten
           Zwecke nach nachfolgenden Maßgaben nutzen. Der Daten-User erhält daher an diesen ein nicht-ausschließliches,
@@ -180,18 +164,16 @@
         </p>
       </div>
       <div>
-        <h3>Die Vergütungspflichten des Daten-Users </h3>
+        <h3>Die Vergütungspflichten des Daten-Users</h3>
         <p>
-          Für Privatpersonen, NGOs und nicht gewinnorientiert tätige Forschungs- oder Lehreinrichtungen (insg. Im
-          Rahmen dieser AGB-Dataland auch als „Privatnutzung“ bezeichnet) ist die Nutzung von Dataland kostenlos.
+          Für Privatpersonen, NGOs und nicht gewinnorientiert tätige Forschungs- oder Lehreinrichtungen (insg. Im Rahmen
+          dieser AGB-Dataland auch als „Privatnutzung“ bezeichnet) ist die Nutzung von Dataland kostenlos.
         </p>
         <p>
           Für die Nutzung durch alle anderen Daten-User ist eine monatliche Pauschale zu entrichten, die sich aus der
           jeweils <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> von Dataland ergibt.
         </p>
-        <p>
-          Sämtliche Vergütungen verstehen sich zuzüglich der anwendbaren Umsatzsteuer.
-        </p>
+        <p>Sämtliche Vergütungen verstehen sich zuzüglich der anwendbaren Umsatzsteuer.</p>
         <p>
           Die Vergütung ist jeweils monatlich im Voraus bis spätestens zum dritten Werktag eines Monats zu entrichten.
         </p>
@@ -201,7 +183,7 @@
         </p>
       </div>
       <div>
-        <h3> Laufzeit der Registrierung als Daten-User </h3>
+        <h3>Laufzeit der Registrierung als Daten-User</h3>
         <p>
           Nach seiner Wahl kann sich der Daten-User im Zuge der Registrierung für eine bestimmte Laufzeit oder für eine
           unbestimmte Laufzeit der Registrierung als Daten-User entscheiden.
@@ -247,19 +229,13 @@
           vorsätzlich oder grob fahrlässig verursachte Schäden sowie für Schäden aus der Verletzung des Lebens, des
           Körpers oder der Gesundheit durch Dataland, seine gesetzlichen Vertreter oder Erfüllungsgehilfen.
         </p>
-        <p>
-          Dataland haftet für Produkthaftungsschäden entsprechend der Regelungen des Produkthaftungsgesetzes.
-        </p>
+        <p>Dataland haftet für Produkthaftungsschäden entsprechend der Regelungen des Produkthaftungsgesetzes.</p>
       </div>
     </div>
     <div>
-      <h2>
-        Für Daten-Sammler gelten die folgenden zusätzlichen Bedingungen:
-      </h2>
+      <h2>Für Daten-Sammler gelten die folgenden zusätzlichen Bedingungen:</h2>
       <div>
-        <h3>
-          Übertragung der Daten an Dataland durch den Daten-Sammler
-        </h3>
+        <h3>Übertragung der Daten an Dataland durch den Daten-Sammler</h3>
         <p>
           Der Daten-Sammler trägt Unternehmens-Daten über ein Datenobjekt zusammen. Er fügt die Unternehmens-Daten in
           Bezug auf ein Datenobjekt in die Datenmatrix ein, die Dataland auf der Plattform-Dataland zu diesem Zwecke
@@ -314,9 +290,7 @@
         </p>
       </div>
       <div>
-        <h3>
-          Einräumung der Nutzungsrechte an Dataland seitens des Daten-Sammlers
-        </h3>
+        <h3>Einräumung der Nutzungsrechte an Dataland seitens des Daten-Sammlers</h3>
         <p>
           Mit Absenden der Unternehmens-Daten auf der Plattform-Dataland überträgt der Daten-Sammler an Dataland ein
           Nutzungsrecht in der Form, dass Dataland an sämtlichen Daten sowie auch an der Gesamtheit der Daten, und zwar
@@ -341,9 +315,7 @@
         </p>
       </div>
       <div>
-        <h3>
-          Pflichten des Daten-Sammlers
-        </h3>
+        <h3>Pflichten des Daten-Sammlers</h3>
         <p>
           Der Daten-Sammler ist verpflichtet, ausschließlich solche Unternehmens-Daten Dataland zu übertragen, von denen
           der Daten-Sammler nach bestem Wissen und Gewissen und unter Anwendung der im Geschäftsverkehr erforderlichen
@@ -360,9 +332,7 @@
         </p>
       </div>
       <div>
-        <h3>
-          Die Vergütungsansprüche des Daten-Sammlers
-        </h3>
+        <h3>Die Vergütungsansprüche des Daten-Sammlers</h3>
         <p>
           Ausgangspunkt der Vergütung des Daten-Sammlers sind die Unternehmens-Daten, die der Daten-Sammler in Bezug auf
           die einzelnen Unternehmens-Thematiken Dataland zur Verfügung gestellt hat und die infolgedessen von Dataland
@@ -373,30 +343,32 @@
         <p>
           Basierend auf diesem Grundsatz errechnet sich die Vergütung des Daten-Sammlers für das jeweils abgelaufene
           Kalenderjahr wie folgt:
-          <ul>
-            <Li>
-              Dataland bestimmt durch die Geschäftsführung jeweils nach Abschluss eines Kalenderjahrs einen Anteil der
-              gem. § 3.2 erzielten (netto) Einnahmen (ohne Berücksichtigung der Vergütungen, die mittels Dataland-Token
-              geleistet wurden), der als Gesamtbetrag zur Vergütung der Daten-Sammler zur Verfügung steht. Für diesen Anteil
-              besteht eine untere Grenze welche in der <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> einsehbar ist.
-            </Li>
-            <li>
-              Weiterhin bestimmt Dataland basierend auf den tatsächlich generierten Einnahmen für jeden Kalendertag
-              dieses abgelaufenen Kalenderjahres („Claimstage“) den für den jeweiligen Tag zur Verfügung stehenden
-              Ausschüttungsbetrag.
-            </li>
-            <li>
-              Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag insgesamt
-              Daten-Sammlern zuzuordnen sind und wie viele Datenpunkte jedem einzelnen Daten-Sammler zuzuordnen sind. Bei Datenpunkten,
-              bei denen es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des Datenpunkts
-              in Ansatz gebracht. Dem Daten-Sammler steht der auf ihn entfallende prozentual ermittelte Anteil zu.
-            </li>
-            <li>
-              Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
-              technische Mindestsumme wird in der <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> angegeben.
-            </li>
-          </ul>
         </p>
+        <ul>
+          <li>
+            Dataland bestimmt durch die Geschäftsführung jeweils nach Abschluss eines Kalenderjahrs einen Anteil der
+            gem. § 3.2 erzielten (netto) Einnahmen (ohne Berücksichtigung der Vergütungen, die mittels Dataland-Token
+            geleistet wurden), der als Gesamtbetrag zur Vergütung der Daten-Sammler zur Verfügung steht. Für diesen
+            Anteil besteht eine untere Grenze welche in der
+            <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> einsehbar ist.
+          </li>
+          <li>
+            Weiterhin bestimmt Dataland basierend auf den tatsächlich generierten Einnahmen für jeden Kalendertag dieses
+            abgelaufenen Kalenderjahres („Claimstage“) den für den jeweiligen Tag zur Verfügung stehenden
+            Ausschüttungsbetrag.
+          </li>
+          <li>
+            Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag insgesamt
+            Daten-Sammlern zuzuordnen sind und wie viele Datenpunkte jedem einzelnen Daten-Sammler zuzuordnen sind. Bei
+            Datenpunkten, bei denen es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des
+            Datenpunkts in Ansatz gebracht. Dem Daten-Sammler steht der auf ihn entfallende prozentual ermittelte Anteil
+            zu.
+          </li>
+          <li>
+            Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
+            technische Mindestsumme wird in der <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> angegeben.
+          </li>
+        </ul>
         <p>
           Auch nach Ende der Registrierung als Daten-Sammler hat der Daten-Sammler für die Unternehmens-Daten, die
           weiterhin auf der Plattform-Dataland verfügbar sind, einen Anspruch auf Vergütung gemäß den vorstehenden
@@ -413,25 +385,17 @@
         </p>
       </div>
       <div>
-        <h3>
-          Laufzeit der Registrierung als Daten-Sammler
-        </h3>
-        <p>
-          Die Registrierung als Daten-Sammler erfolgt für eine unbestimmte Laufzeit.
-        </p>
+        <h3>Laufzeit der Registrierung als Daten-Sammler</h3>
+        <p>Die Registrierung als Daten-Sammler erfolgt für eine unbestimmte Laufzeit.</p>
         <p>
           Die Registrierung kann von jeder Partei mit einer Frist von einem Monat zum Ende eines Kalendermonats
           gekündigt werden.
         </p>
-        <p>
-          Das Recht zur Kündigung aus wichtigem Grund bleibt in jedem Fall unberührt.
-        </p>
+        <p>Das Recht zur Kündigung aus wichtigem Grund bleibt in jedem Fall unberührt.</p>
       </div>
     </div>
     <div>
-      <h2>
-        Für Daten-Owner gelten die folgenden zusätzlichen Bedingungen:
-      </h2>
+      <h2>Für Daten-Owner gelten die folgenden zusätzlichen Bedingungen:</h2>
       <p>
         Daten-Owner können sich ebenfalls als solche auf Dataland registrieren. Als Daten-Owner haben diese das Recht,
         die Plattform-Dataland gleich einem Daten-Sammler oder einem Daten-User zu nutzen.
@@ -445,9 +409,7 @@
         dortiger Vergütungsregeln.
       </p>
       <div>
-        <h3>
-          Vergütungen und Zahlungen
-        </h3>
+        <h3>Vergütungen und Zahlungen</h3>
         <p>
           Die Registrierung als Daten-Owner und die damit verbundene Nutzung der Plattform-Dataland als Daten-Owner sind
           kostenlos, unabhängig davon ob es sich um eine Privatnutzung oder um eine gewerbliche Nutzung handelt.
@@ -463,30 +425,29 @@
         <p>
           Basierend auf diesem Grundsatz leitet sich eine mögliche zusätzliche Vergütung des Daten-Owners nach Ablauf
           des Kalenderjahres für dieses Kalenderjahr wie folgt her:
-          <ul>
-            <li>
-              Dataland kann durch die Geschäftsführung jeweils nach Abschluss eines Kalenderjahrs einen Anteil der gem.
-              § 3.2 erzielten (netto) Einnahmen (ohne Berücksichtigung der Vergütungen, die mittels Dataland-Token
-              geleistet wurden) bestimmen, der als Gesamtbetrag zur gesonderten Vergütung der Daten-Owner zur Verfügung
-              stehen soll.
-            </li>
-            <li>
-              Weiterhin bestimmt Dataland basierend auf den tatsächlich generierten Einnahmen für jeden Kalendertag
-              dieses abgelaufenen Kalenderjahres („Claimstage“) den für den jeweiligen Tag zur Verfügung stehenden
-              Ausschüttungsbetrag.
-            </li>
-            <li>
-              Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag einem Daten-Owner
-              zugeordnet sind und wie viele Datenpunkte jedem einzelnen Daten-Owner zuzuordnen sind. Bei Datenpunkten,
-              bei denen es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des Datenpunkts
-              in Ansatz gebracht. Einem Data-Owner steht der auf ihn entfallende prozentual ermittelte Anteil zu
-            </li>
-            <li>
-              Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
-              technische Mindestsumme wird in der <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> angegeben.
-            </li>
-          </ul>
         </p>
+        <ul>
+          <li>
+            Dataland kann durch die Geschäftsführung jeweils nach Abschluss eines Kalenderjahrs einen Anteil der gem. §
+            3.2 erzielten (netto) Einnahmen (ohne Berücksichtigung der Vergütungen, die mittels Dataland-Token geleistet
+            wurden) bestimmen, der als Gesamtbetrag zur gesonderten Vergütung der Daten-Owner zur Verfügung stehen soll.
+          </li>
+          <li>
+            Weiterhin bestimmt Dataland basierend auf den tatsächlich generierten Einnahmen für jeden Kalendertag dieses
+            abgelaufenen Kalenderjahres („Claimstage“) den für den jeweiligen Tag zur Verfügung stehenden
+            Ausschüttungsbetrag.
+          </li>
+          <li>
+            Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag einem Daten-Owner
+            zugeordnet sind und wie viele Datenpunkte jedem einzelnen Daten-Owner zuzuordnen sind. Bei Datenpunkten, bei
+            denen es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des Datenpunkts in
+            Ansatz gebracht. Einem Data-Owner steht der auf ihn entfallende prozentual ermittelte Anteil zu
+          </li>
+          <li>
+            Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
+            technische Mindestsumme wird in der <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> angegeben.
+          </li>
+        </ul>
         <p>
           Sämtliche Berechnungsgrundlagen, die nach vorstehendem Absatz der Errechnung des Vergütungsanspruchs des
           Data-Owner zugrunde liegen, werden dem Data-Owner zugänglich gemacht, so dass dieser die Berechnung seines
@@ -498,34 +459,24 @@
         </p>
       </div>
       <div>
-        <h3>
-          Laufzeit der Registrierung als Daten-Owner
-        </h3>
-        <p>
-          Die Registrierung als Daten-Owner erfolgt für eine unbestimmte Laufzeit.
-        </p>
+        <h3>Laufzeit der Registrierung als Daten-Owner</h3>
+        <p>Die Registrierung als Daten-Owner erfolgt für eine unbestimmte Laufzeit.</p>
         <p>
           Die Registrierung kann von jeder Partei mit einer Frist von einem Monat zum Ende eines Kalendermonats
           gekündigt werden.
         </p>
-        <p>
-          Eine Kündigung aus wichtigem Grund bleibt in jedem Fall unberührt.
-        </p>
+        <p>Eine Kündigung aus wichtigem Grund bleibt in jedem Fall unberührt.</p>
       </div>
     </div>
     <div>
-      <h2>
-        Dataland-Token
-      </h2>
+      <h2>Dataland-Token</h2>
       <p>
         Neben der uneingeschränkt bestehenden Möglichkeit, sämtliche Zahlungsverpflichtungen im Zusammenhang mit der
         Plattform-Dataland durch Zahlungen auf Eurobasis zu erfüllen, besteht mittels der von Dataland geschaffenen und
         herausgegebenen Dataland-Token die Möglichkeit, Zahlungspflichten auch unter Einsatz dieser Dataland-Token zu
         erfüllen. Die Herausgabe und der Einsatz der Dataland-Token erfolgt nach folgenden Grundsätzen:
       </p>
-      <p>
-        Dataland wird Dataland-Token schaffen. Jeder Dataland-Token hat einen Nennwert von einem Euro.
-      </p>
+      <p>Dataland wird Dataland-Token schaffen. Jeder Dataland-Token hat einen Nennwert von einem Euro.</p>
       <p>
         Voraussetzung für den Besitz und die Nutzung von Dataland-Token durch Dataland-Teilnehmer ist der Abschluss
         eines <a href="/token">Token-Verwahrvertrags</a> zwischen dem Dataland-Teilnehmer und dem Verwahrer.
@@ -582,9 +533,7 @@
       </p>
     </div>
     <div>
-      <h2>
-        Inhalt und Änderungen der AGB-Dataland
-      </h2>
+      <h2>Inhalt und Änderungen der AGB-Dataland</h2>
       <p>
         Änderungen oder Ergänzungen dieser AGB sowie sonstige Vereinbarungen zwischen Dataland und dem Nutzer, die den
         Regelungen der AGB unterstellt sind, bedürfen der Schriftform.
@@ -606,9 +555,7 @@
       </p>
     </div>
     <div>
-      <h2>
-        Schlussbestimmungen
-      </h2>
+      <h2>Schlussbestimmungen</h2>
       <p>
         Der registrierte Nutzer kann Rechte, Ansprüche und Rechtspositionen aus diesem Vertrag nur mit schriftlicher
         Zustimmung von Dataland an Dritte übertragen bzw. an diese abgetreten.
@@ -624,9 +571,7 @@
         (Deutschland).
       </p>
     </div>
-    <div class="w-12 text-center font-bold mt-6">
-      - Ende der AGB-Dataland -
-    </div>
+    <div class="w-12 text-center font-bold mt-6">- Ende der AGB-Dataland -</div>
   </LegalPage>
 </template>
 
@@ -635,7 +580,7 @@ import LegalPage from "@/components/generics/LegalPage.vue";
 
 export default {
   name: "TermsAndConditions",
-  components: {LegalPage},
+  components: { LegalPage },
 };
 </script>
 
@@ -668,7 +613,8 @@ h3 {
   counter-reset: subsubsection;
 }
 
-p ~ div > h3, p {
+p ~ div > h3,
+p {
   font-size: 1rem;
   font-weight: normal;
   ::before {
@@ -676,7 +622,8 @@ p ~ div > h3, p {
   }
 }
 
-p ~ div > h3::before, p::before {
+p ~ div > h3::before,
+p::before {
   font-weight: bold;
 }
 
@@ -684,5 +631,4 @@ h3 ~ p:not(:only-of-type)::before {
   counter-increment: subsubsection;
   content: counter(section) "." counter(subsection) "." counter(subsubsection) ". ";
 }
-
 </style>
