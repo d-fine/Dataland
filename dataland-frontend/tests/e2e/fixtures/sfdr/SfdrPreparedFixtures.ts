@@ -1,6 +1,6 @@
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type SfdrData } from "@clients/backend";
-import { generateSfdrData } from "./SfdrDataFixtures";
+import { generateSfdrData, generateSfdrFixtures } from "./SfdrDataFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 
 type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>;
@@ -29,15 +29,20 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
       generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0],
     ),
   );
+  preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrFixtures(1, 0)[0]));
 
   return preparedFixtures;
 }
 
 /**
- * Sets the company name in the fixture data to a specific string
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
+function manipulateFixtureForNoNullFields(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-no-null-fields";
+  return input;
+}
 
 /**
  * Sets the company name and the date in the fixture data to a specific string

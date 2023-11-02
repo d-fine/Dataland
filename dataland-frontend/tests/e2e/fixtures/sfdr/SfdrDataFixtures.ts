@@ -4,8 +4,27 @@ import { type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backen
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { faker } from "@faker-js/faker";
 import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
+
+/**
+ * Generates a set number of SFDR fixtures
+ * @param numFixtures the number of SFDR fixtures to generate
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
+ * @returns a set number of SFDR fixtures
+ */
+export function generateSfdrFixtures(
+  numFixtures: number,
+  nullProbability = DEFAULT_PROBABILITY,
+): FixtureData<SfdrData>[] {
+  return generateFixtureDataset<SfdrData>(
+    () => generateSfdrData(nullProbability),
+    numFixtures,
+    (dataSet: SfdrData) => dataSet.general.general.dataDate.substring(0, 4),
+  );
+}
 
 /**
  * Generates a random SFDR dataset

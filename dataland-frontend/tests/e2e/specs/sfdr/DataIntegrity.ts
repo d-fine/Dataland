@@ -10,12 +10,13 @@ import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDat
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
   cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
     const sfdrPreparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
-    testSfdrCompany = getPreparedFixture("companyWithOneFilledSfdrSubcategory", sfdrPreparedFixtures);
+    testSfdrCompany = getPreparedFixture("Sfdr-dataset-with-no-null-fields", sfdrPreparedFixtures);
   });
 });
 describeIf(
@@ -72,7 +73,7 @@ describeIf(
      */
     function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
       cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
-      cy.get("li.p-multiselect-item").eq(sectorCardIndex).click();
+      cy.get("li.p-multiselect-item").eq(sectorCardIndex).should('have.attr', 'aria-selected', 'false').click();
       cy.get('div[data-test="applicableHighImpactClimateSector"]')
         .find('select[name="fileName"]')
         .eq(sectorCardIndex)
@@ -134,8 +135,13 @@ describeIf(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
           );
           testRemovingOfHighImpactClimateSector();
+          cy.intercept("POST", "**/api/data/sfdr").as("updateCompany");
           submitButton.clickButton();
-          // TODO intercept request and check if objects are equal => that way we assure that we have a blanket test here
+          cy.wait("@updateCompany").then((interception) => {
+            const frontendSubmittedSfdrDataset = interception.request.body as unknown as Record<string, object>;
+            const originallyUploadedSfdrDataset = testSfdrCompany.t as unknown as Record<string, object>;
+            compareObjectKeysAndValuesDeep(frontendSubmittedSfdrDataset, originallyUploadedSfdrDataset);
+          });
           cy.get("div.p-message-success:not(.p-message-error)").should("not.contain", "An unexpected error occurred.");
           cy.url().should("eq", getBaseUrl() + "/datasets");
           validateFormUploadedData(uploadIds.companyId);
