@@ -181,9 +181,21 @@
         </p>
         <p>
           Weitere Informationen zum Datenschutz bei YouTube finden Sie in der Datenschutzerklärung des Anbieters unter:
-          <a href="https://www.google.de/intl/de/policies/privacy/">https://www.google.de/intl/de/policies/privacy/</a>
+          <a href="https://www.google.de/intl/de/policies/privacy/"
+            >https://www.google.de
+            <wbr />
+            /intl/de
+            <wbr />
+            /policies
+            <wbr />
+            /privacy/</a
+          >
           und
-          <a href="https://www.youtube.com/t/terms">https://www.youtube.com/t/terms</a>
+          <a href="https://www.youtube.com/t/terms"
+            >https://www.youtube.com
+            <wbr />
+            /t/terms</a
+          >
         </p>
       </div>
       <div>
@@ -198,15 +210,28 @@
           Wilton Place, Dublin 2, Irland) sind gemeinsam für die Verarbeitung personenbezogener Daten über unser
           LinkedIn Profil verantwortlich. Die Vereinbarung über die gemeinsame Verantwortlichkeit ist abrufbar unter:
           <a href="https://legal.linkedin.com/pages-joint-controller-addendum"
-            >https://legal.linkedin.com/pages-joint-controller-addendum</a
+            >https://legal.linkedin.com
+            <wbr />
+            /pages-joint-controller-addendum</a
           >. Gemäß dieser Vereinbarung ist LinkedIn dafür verantwortlich, die betroffenen Personen über die
           Verarbeitungstätigkeiten zu informieren. Die Datenschutzrichtlinie von LinkedIn ist abrufbar unter:
-          <a href="https://www.linkedin.com/legal/privacy-policy">https://www.linkedin.com/legal/privacy-policy</a>.
-          Betroffene Personen können ihre Rechte gegenüber jedem der für die Verarbeitung Verantwortlichen, Dataland
+          <a href="https://www.linkedin.com/legal/privacy-policy"
+            >https://www.linkedin.com
+            <wbr />
+            /legal
+            <wbr />
+            /privacy-policy</a
+          >. Betroffene Personen können ihre Rechte gegenüber jedem der für die Verarbeitung Verantwortlichen, Dataland
           GmbH und/oder LinkedIn, geltend machen. Weitere Informationen über die Daten, die LinkedIn mit uns teilt,
           finden Sie unter
           <a href="https://www.linkedin.com/help/linkedin/answer/a547077/viewing-company-page-analytics?lang=de">
-            https://www.linkedin.com/help/linkedin/answer/a547077/viewing-company-page-analytics?lang=de</a
+            https://www.linkedin.com
+            <wbr />
+            /help/linkedin
+            <wbr />
+            /answer/a547077
+            <wbr />
+            /viewing-company-page-analytics?lang=de</a
           >.
         </p>
         <p>
