@@ -16,7 +16,7 @@
           :validation-label="validationLabel"
           :validation="validation"
           :unit="unit"
-          inner-class=""
+          input-class=""
         />
         <div class="mt-3">
           <FormKit
