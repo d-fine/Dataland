@@ -25,7 +25,10 @@
     </SlideShow>
     <p class="quotes__slide-text">{{ currentCardInfo.date }}</p>
     <h3 class="quotes__slide-title">
-      {{ currentCardInfo.title }} <span>{{ currentCardInfo.text }}</span>
+      {{ currentCardInfo.title }}
+      <span v-for="titleSegment in currentCardInfo.text.split('\n')">
+        {{ titleSegment }}
+      </span>
     </h3>
     <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
