@@ -3,6 +3,9 @@ import { clickAllowAllOnCookieBanner } from "@e2e/utils/GeneralUtils";
 describe("Check that the Landing Page to work properly", () => {
   it("Check the links and buttons", () => {
     cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
+    cy.intercept("GET", "https://www.youtube-nocookie.com/**", (req) => {
+      req.url = req.url.replace("www.youtube-nocookie.com/**", "www.youtube.com/**");
+    });
     cy.visitAndCheckAppMount("/");
     clickAllowAllOnCookieBanner();
 
