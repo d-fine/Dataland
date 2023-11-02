@@ -12,7 +12,7 @@
         :placeholder="unit ? `Value in ${unit}` : 'Value'"
         :validationMessages="{ integer: `${validationLabel ?? label} must be an integer.` }"
         :validationRules="{ integer }"
-        outer-class="short"
+        :outer-class="innerClass"
         @input="$emit('update:currentValue', $event)"
       />
       <div v-if="unit" class="form-field-label pb-3">
@@ -44,6 +44,7 @@ export default defineComponent({
     },
   },
   emits: ["update:currentValue"],
+
   methods: {
     /**
      * Checks if a node has an integer value

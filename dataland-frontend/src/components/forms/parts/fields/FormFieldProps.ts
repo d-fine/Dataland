@@ -26,7 +26,7 @@ export const BaseFormFieldProps = {
     type: Boolean,
     default: false,
   },
-  innerClass: {
+  inputClass: {
     type: String,
     default: "short",
   },

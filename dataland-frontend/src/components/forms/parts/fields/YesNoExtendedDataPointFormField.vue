@@ -5,6 +5,7 @@
       :description="description"
       :label="label"
       :required="required"
+      :input-class="inputClass"
       :check-value-validity="hasDataPointProperValue"
     >
       <YesNoFormField

@@ -1,7 +1,7 @@
 <template>
   <div class="p-datatable p-component">
     <div class="p-datatable-wrapper overflow-auto">
-      <table v-if="dataPointDisplay" class="p-datatable-table" aria-description="Data point content">
+      <table v-if="dataPointDisplay" class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
           <tr>
             <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
