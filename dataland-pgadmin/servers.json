@@ -60,7 +60,7 @@
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
     },
-    "6": {
+    "7": {
       "Name": "CommunityManagerDb",
       "Group": "CommunityManagerDb",
       "Port": 5432,
