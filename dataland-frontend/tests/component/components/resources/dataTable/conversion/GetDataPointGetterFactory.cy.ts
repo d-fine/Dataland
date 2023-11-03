@@ -71,46 +71,40 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
   });
   describe("Tests when the data is an extended data point", () => {
     it("A placeholder string should be displayed if no data point value is provided", () => {
-      const dataset = {
-        data: <ExtendedDataPoint<string>>{
-          value: undefined,
-          dataSource: dummyExtendedDocumentReference,
-          quality: QualityOptions.Audited,
-        },
-      };
-      const value = getDataPointGetterFactory<string>("data", dummyField, defaultFormatter)(dataset);
-      console.log(value);
-      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>>{
-        displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-        displayValue: {
-          fieldLabel: dummyField.label,
-          value: "No data provided",
-          dataSource: dummyExtendedDocumentReference,
-          quality: dataset.data.quality,
-          comment: undefined,
-        },
-      });
+      assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject(undefined, "No data provided");
     });
-    it("Data point display information should contain the datapoinst meta information", () => {
-      const dataset = {
-        data: <ExtendedDataPoint<string>>{
-          value: "Data",
-          dataSource: dummyExtendedDocumentReference,
-          quality: QualityOptions.Audited,
-        },
-      };
-      const value = getDataPointGetterFactory<string>("data", dummyField, defaultFormatter)(dataset);
-      console.log(value);
-      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>>{
-        displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-        displayValue: {
-          fieldLabel: dummyField.label,
-          value: "Data Formatted",
-          dataSource: dummyExtendedDocumentReference,
-          quality: dataset.data.quality,
-          comment: undefined,
-        },
-      });
+    it("Data point display information should contain the datapoints meta information", () => {
+      assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject("Data", "Data Formatted");
     });
   });
 });
+
+/**
+ * Asserts that a data point with a data source and quality specified gets a getter
+ * that returns a display object with display component DataPointDisplayComponent and correctly formatted value
+ * @param dataPointValue the value the data point should have
+ * @param expectedformattedValue the expected formatted value
+ */
+function assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject(
+  dataPointValue: string | undefined,
+  expectedformattedValue: string,
+): void {
+  const dataset = {
+    data: <ExtendedDataPoint<string>>{
+      value: dataPointValue,
+      dataSource: dummyExtendedDocumentReference,
+      quality: QualityOptions.Audited,
+    },
+  };
+  const value = getDataPointGetterFactory<string>("data", dummyField, defaultFormatter)(dataset);
+  expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+    displayValue: {
+      fieldLabel: dummyField.label,
+      value: expectedformattedValue,
+      dataSource: dummyExtendedDocumentReference,
+      quality: dataset.data.quality,
+      comment: undefined,
+    },
+  });
+}
