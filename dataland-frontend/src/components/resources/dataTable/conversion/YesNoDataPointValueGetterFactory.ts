@@ -2,7 +2,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type YesNoNa } from "@clients/backend";
 import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
-import { type GenericDataPoint } from "@/utils/DataPoint";
+import { type GenericExtendedDataPoint } from "@/utils/DataPoint";
 import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 
 const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
@@ -25,7 +25,7 @@ export function yesNoDataPointValueGetterFactory(
   return getDataPointGetterFactory<YesNoNa>(
     path,
     field,
-    (dataPoint?: GenericDataPoint<YesNoNa>): string | undefined => {
+    (dataPoint?: GenericExtendedDataPoint<YesNoNa>): string | undefined => {
       const lowerFieldLabel = field.label.toLowerCase();
       const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
       const humanReadableValue = isCertificationField

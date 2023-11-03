@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+import {CurrencyDataPoint, type ExtendedDocumentReference, QualityOptions} from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { pickSubsetOfElements, pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNoNa } from "./YesNoFixtures";
@@ -7,7 +7,7 @@ import { DEFAULT_PROBABILITY, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { type GenericDataPoint } from "@/utils/DataPoint";
+import { type GenericExtendedDataPoint } from "@/utils/DataPoint";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
 
@@ -51,7 +51,11 @@ export function generateDataPoint<T>(
   value: T | null,
   reports: ReferencedDocuments,
   currency?: string | null,
-): GenericDataPoint<T> {
+): GenericExtendedDataPoint<T> | CurrencyDataPoint {
+  if(currency != undefined && value != null && typeof value != "number") {
+    throw TypeError("Parameter `currency` is defined but parameter `value` is not of type number")
+  }
+
   const qualityBucket =
     value === null
       ? QualityOptions.Na
@@ -65,7 +69,7 @@ export function generateDataPoint<T>(
     quality: qualityBucket,
     comment: comment,
     currency: currency,
-  } as GenericDataPoint<T>;
+  };
 }
 
 /**

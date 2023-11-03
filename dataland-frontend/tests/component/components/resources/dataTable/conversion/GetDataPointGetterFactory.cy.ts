@@ -5,14 +5,14 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
 import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
-import { type GenericBaseDataPoint, type GenericDataPoint } from "@/utils/DataPoint";
+import { type GenericBaseDataPoint, type GenericExtendedDataPoint } from "@/utils/DataPoint";
 
 /**
  * Some formatting function for testing
  * @param dataPoint the data point whose value to format
  * @returns the formatted string
  */
-function defaultFormatter(dataPoint?: GenericDataPoint<string>): string | undefined {
+function defaultFormatter(dataPoint?: GenericExtendedDataPoint<string>): string | undefined {
   if (dataPoint?.value == null) {
     return undefined;
   }
@@ -72,7 +72,7 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
   describe("Tests when the data is an extended data point", () => {
     it("A placeholder string should be displayed if no data point value is provided", () => {
       const dataset = {
-        data: <GenericDataPoint<string>>{
+        data: <GenericExtendedDataPoint<string>>{
           value: undefined,
           dataSource: dummyExtendedDocumentReference,
           quality: QualityOptions.Audited,
@@ -93,7 +93,7 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
     });
     it("Data point display information should contain the datapoinst meta information", () => {
       const dataset = {
-        data: <GenericDataPoint<string>>{
+        data: <GenericExtendedDataPoint<string>>{
           value: "Data",
           dataSource: dummyExtendedDocumentReference,
           quality: QualityOptions.Audited,

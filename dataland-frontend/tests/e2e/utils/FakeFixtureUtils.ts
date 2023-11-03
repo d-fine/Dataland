@@ -5,7 +5,7 @@ import { type CurrencyDataPoint, type YesNo, type YesNoNa } from "@clients/backe
 import { generateCurrencyValue, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { type GenericBaseDataPoint, type GenericDataPoint } from "@/utils/DataPoint";
+import { type GenericBaseDataPoint, type GenericExtendedDataPoint } from "@/utils/DataPoint";
 
 export const DEFAULT_PROBABILITY = 0.2;
 
@@ -59,7 +59,7 @@ export class Generator {
     return this.valueOrNull({ value: input, dataSource: document } as GenericBaseDataPoint<T>);
   }
 
-  randomExtendedDataPoint<T>(input: T): GenericDataPoint<T> | null {
+  randomExtendedDataPoint<T>(input: T): GenericExtendedDataPoint<T> | CurrencyDataPoint | null {
     return this.valueOrNull(generateDataPoint(this.valueOrNull(input), this.reports));
   }
 
