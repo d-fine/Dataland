@@ -4,7 +4,7 @@ describe("As a user, I expect the cookie banner to render and to be functional",
   describeIf(
     "Do not execute these tests in the CI pipeline, because the github actions server is not registered on the cookiebot.com website",
     {
-      executionEnvironments: ["developmentLocal", "developmentCd"],
+      executionEnvironments: ["developmentLocal"],
     },
     () => {
       it("Check that the cookie banner renders", () => {
