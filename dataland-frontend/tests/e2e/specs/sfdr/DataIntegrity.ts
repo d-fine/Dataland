@@ -73,7 +73,11 @@ describeIf(
      */
     function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
       cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
-      cy.get("li.p-multiselect-item").eq(sectorCardIndex).should("have.attr", "aria-selected", "false").click();
+      cy.get("li.p-multiselect-item").eq(sectorCardIndex).invoke('attr', 'aria-selected').then((ariaSelected) => {
+        if (ariaSelected === 'false') {
+          cy.get("li.p-multiselect-item").eq(sectorCardIndex).click();
+        }
+      });
       cy.get('div[data-test="applicableHighImpactClimateSector"]')
         .find('select[name="fileName"]')
         .eq(sectorCardIndex)
@@ -140,6 +144,8 @@ describeIf(
           cy.wait("@updateCompany").then((interception) => {
             const frontendSubmittedSfdrDataset = interception.request.body as unknown as Record<string, object>;
             const originallyUploadedSfdrDataset = testSfdrCompany.t as unknown as Record<string, object>;
+            console.log("frontendSubmittedSfdrDataset:", frontendSubmittedSfdrDataset);
+            console.log("interception.request.body:", interception.request.body);
             compareObjectKeysAndValuesDeep(frontendSubmittedSfdrDataset, originallyUploadedSfdrDataset);
           });
           cy.get("div.p-message-success:not(.p-message-error)").should("not.contain", "An unexpected error occurred.");

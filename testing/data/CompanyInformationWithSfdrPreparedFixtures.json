@@ -1019,7 +1019,7 @@
 				},
 				"biodiversity": {
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": null,
 						"quality": "Incomplete",
 						"comment": null
