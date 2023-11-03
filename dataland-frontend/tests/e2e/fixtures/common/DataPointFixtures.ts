@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import {CurrencyDataPoint, type ExtendedDocumentReference, QualityOptions} from "@clients/backend";
+import { type CurrencyDataPoint, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
 import { generateDataSource } from "./DataSourceFixtures";
 import { pickSubsetOfElements, pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNoNa } from "./YesNoFixtures";
@@ -52,8 +52,8 @@ export function generateDataPoint<T>(
   reports: ReferencedDocuments,
   currency?: string | null,
 ): ExtendedDataPoint<T> | CurrencyDataPoint {
-  if(currency != undefined && value != null && typeof value != "number") {
-    throw TypeError("Parameter `currency` is defined but parameter `value` is not of type number")
+  if (currency != undefined && value != null && typeof value != "number") {
+    throw TypeError("Parameter `currency` is defined but parameter `value` is not of type number");
   }
 
   const qualityBucket =
