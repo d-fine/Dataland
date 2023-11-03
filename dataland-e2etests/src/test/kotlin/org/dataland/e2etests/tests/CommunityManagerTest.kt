@@ -10,7 +10,6 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -120,12 +119,13 @@ class CommunityManagerTest {
         dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
         dataRequestCompanyIdentifierValue: String,
     ) {
-        assertTrue(
+        assertEquals(
+            1,
             recentlyStoredRequestsForUser.filter { dataRequestEntity ->
                 dataRequestEntity.dataType == dataType &&
                     dataRequestEntity.dataRequestCompanyIdentifierType == dataRequestCompanyIdentifierType &&
                     dataRequestEntity.dataRequestCompanyIdentifierValue == dataRequestCompanyIdentifierValue
-            }.size == 1,
+            }.size,
             "For the ${dataRequestCompanyIdentifierType.value} $dataRequestCompanyIdentifierValue " +
                 "and the framework ${dataType.value} there is not exactly one newly stored request as expected.",
         )
@@ -138,7 +138,6 @@ class CommunityManagerTest {
     }
 
     private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<DataRequestEntity> {
-        authenticate()
         return requestControllerApi.getDataRequestsForUser().filter { dataRequestEntity ->
             dataRequestEntity.creationTimestamp!! > timestamp
         }
@@ -171,10 +170,9 @@ class CommunityManagerTest {
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks),
         )
-        val amountOfIndividualRequests = identifiers.size * frameworks.size
         checkThatAllIdentifiersWereAccepted(response, identifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
-        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, amountOfIndividualRequests)
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, identifiers.size * frameworks.size)
         val randomDataType = findDataTypeForFramework(frameworks.random())
         // TODO Try to remove different types of DataTypeEnum (referenced in BulkDataRequest and in DataRequestEntity)
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
@@ -295,14 +293,12 @@ class CommunityManagerTest {
         val firstResponse = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiersForFirstBulkRequest, frameworksForBulkRequest),
         )
-        checkThatAllIdentifiersWereAccepted(
-            firstResponse,
-            frameworksForBulkRequest.size * identifiersForFirstBulkRequest.size,
-        )
+        checkThatAllIdentifiersWereAccepted(firstResponse, identifiersForFirstBulkRequest.size)
         val newlyStoredRequestsAfterFirstBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
         val dataType = findDataTypeForFramework(frameworksForBulkRequest[0])
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-            newlyStoredRequestsAfterFirstBulkRequest, identifiersForFirstBulkRequest.size,
+            newlyStoredRequestsAfterFirstBulkRequest,
+            identifiersForFirstBulkRequest.size * frameworksForBulkRequest.size,
         )
         checkThatBothRequestExistExactlyOnceAfterBulkRequest(
             newlyStoredRequestsAfterFirstBulkRequest,
@@ -316,10 +312,7 @@ class CommunityManagerTest {
         val secondResponse = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiersForSecondBulkRequest, frameworksForBulkRequest),
         )
-        checkThatAllIdentifiersWereAccepted(
-            secondResponse,
-            frameworksForBulkRequest.size * identifiersForSecondBulkRequest.size,
-        )
+        checkThatAllIdentifiersWereAccepted(secondResponse, identifiersForSecondBulkRequest.size)
         val newlyStoredRequestsAfterSecondBulkRequest = getNewlyStoredRequestsAfterTimestamp(
             timestampBeforeSecondBulkRequest,
         )
