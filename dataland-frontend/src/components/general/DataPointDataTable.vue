@@ -35,8 +35,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { type ExtendedDocumentReference } from "@clients/backend";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import { type DataPointDisplay } from "@/utils/DataPoint";
 
 export default defineComponent({
   components: { DocumentLink },
@@ -63,13 +63,6 @@ export default defineComponent({
     },
   },
 });
-
-interface DataPointDisplay {
-  value: string;
-  quality: string;
-  dataSource: ExtendedDocumentReference;
-  comment?: string;
-}
 </script>
 
 <style scoped lang="scss">

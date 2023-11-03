@@ -13,6 +13,13 @@ export interface GenericBaseDataPoint<T> {
   dataSource?: BaseDocumentReference | null;
 }
 
+export type DataPointDisplay = {
+  value: string;
+  quality?: string;
+  dataSource?: ExtendedDocumentReference | BaseDocumentReference;
+  comment?: string;
+};
+
 /**
  * Checks if a potential data point has a value that is neither undefined nor
  * @param dataPoint the potential data point
