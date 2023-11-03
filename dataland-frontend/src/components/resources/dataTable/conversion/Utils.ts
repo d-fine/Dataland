@@ -58,7 +58,13 @@ export function getDataPointGetterFactory<
     if (!dataPoint) {
       return MLDTDisplayObjectForEmptyString;
     }
-    const formattedValue: string = formatter(dataPoint) || "No data provided";
+    const formattedValue = formatter(dataPoint)
+    let displayValue: string;
+    if(formattedValue == undefined || formattedValue == "") {
+      displayValue = "No data provided";
+    } else {
+      displayValue = formattedValue;
+    }
     const dataPointAsExtendedDataPoint = dataPoint as unknown as GenericDataPoint<V>;
     if (
       dataPointAsExtendedDataPoint.quality ||
@@ -69,7 +75,7 @@ export function getDataPointGetterFactory<
         displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
         displayValue: {
           fieldLabel: field.label,
-          value: formattedValue,
+          value: displayValue,
           dataSource: dataPointAsExtendedDataPoint.dataSource,
           quality: dataPointAsExtendedDataPoint.quality,
           comment: dataPointAsExtendedDataPoint.comment,
@@ -79,14 +85,14 @@ export function getDataPointGetterFactory<
       return {
         displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
         displayValue: {
-          label: formattedValue,
+          label: displayValue,
           dataSource: dataPoint.dataSource,
         },
       } as AvailableMLDTDisplayObjectTypes;
     } else {
       return {
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: formattedValue,
+        displayValue: displayValue,
       } as AvailableMLDTDisplayObjectTypes;
     }
   };
