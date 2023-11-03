@@ -129,10 +129,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
         grievanceHandlingMechanism: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         whistleblowerProtectionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
-        reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(
-          generateInt(),
-        ),
+        reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateInt()),
+        sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateInt()),
         ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(generateFloat()),
       },
       greenSecurities: {
@@ -144,17 +142,11 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         traffickingInHumanBeingsPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         reportedChildLabourIncidents: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         reportedForcedOrCompulsoryLabourIncidents: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(
-          generateInt(),
-        ),
+        numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(generateInt()),
       },
       antiCorruptionAndAntiBribery: {
-        casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(
-          generateInt(),
-        ),
-        reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(
-          generateInt(),
-        ),
+        casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateInt()),
+        reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateInt()),
         totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(),
       },
     },
