@@ -130,7 +130,7 @@ describeIf(
     });
 
     it("Check if clicking on edit dataset and re-uploading without any changes works as expected", () => {
-      uploadCompanyAndDataAndVisitUploadPage(() => {
+      uploadCompanyAndDataAndVisitUploadPage((): void => {
         cy.intercept("POST", "**/api/data/sfdr").as("updateCompany");
         submitButton.clickButton();
         cy.wait("@updateCompany").then((interception) => {
@@ -148,7 +148,7 @@ describeIf(
  * Uploads a company and an SFDR dataset and visit the upload page
  * @param doAfter is executed after the upload page is visited
  */
-function uploadCompanyAndDataAndVisitUploadPage(doAfter: (uploadIds: UploadIds) => void): void {
+function uploadCompanyAndDataAndVisitUploadPage(doAfter: (uploadIds: UploadIds, companyName: string) => void): void {
   const uniqueCompanyMarker = Date.now().toString();
   const companyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
   getKeycloakToken(admin_name, admin_pw).then((token: string) => {

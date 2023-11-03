@@ -59,8 +59,8 @@ export class Generator {
     return this.valueOrNull({ value: input, dataSource: document } as BaseDataPoint<T>);
   }
 
-  randomExtendedDataPoint<T>(input: T): ExtendedDataPoint<T> | CurrencyDataPoint | null {
-    return this.valueOrNull(generateDataPoint(this.valueOrNull(input), this.reports));
+  randomExtendedDataPoint<T>(input: T): ExtendedDataPoint<T> | null {
+    return this.valueOrNull(generateDataPoint(this.valueOrNull(input), this.reports) as ExtendedDataPoint<T>);
   }
 
   randomCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint | null {
