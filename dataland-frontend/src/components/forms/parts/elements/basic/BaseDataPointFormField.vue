@@ -2,7 +2,6 @@
   <div class="form-field" :data-test="name">
     <FormKit v-model="baseDataPoint" type="group" :name="name">
       <slot />
-      <!-- TODO change this condition -->
       <UploadDocumentsForm
         v-show="baseDataPoint.value === 'Yes'"
         @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
@@ -11,7 +10,6 @@
         :more-than-one-document-allowed="false"
         :file-names-for-prefill="fileNamesForPrefill"
       />
-      <!-- TODO change this condition -->
       <FormKit v-if="baseDataPoint.value === 'Yes'" type="group" name="dataSource">
         <FormKit type="hidden" name="fileName" v-model="documentName" />
         <FormKit type="hidden" name="fileReference" v-model="documentReference" />
@@ -48,7 +46,6 @@ export default defineComponent({
     this.isMounted = true;
   },
   watch: {
-    // TODO change parameter types
     baseDataPoint(newValue: GenericBaseDataPoint<unknown>, oldValue: GenericBaseDataPoint<unknown>) {
       if (newValue.value === "No" && oldValue.value === "Yes") {
         (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
