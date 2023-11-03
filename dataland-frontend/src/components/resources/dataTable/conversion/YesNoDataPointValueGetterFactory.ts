@@ -17,7 +17,6 @@ const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
  * @param field the field
  * @returns the created getter
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function yesNoDataPointValueGetterFactory(
   path: string,
   field: Field,

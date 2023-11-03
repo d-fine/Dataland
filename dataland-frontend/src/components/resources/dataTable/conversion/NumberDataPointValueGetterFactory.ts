@@ -15,7 +15,6 @@ export function numberDataPointValueGetterFactory(
   field: Field,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return getDataPointGetterFactory<number, GenericDataPoint<number>>(
     path,
     field,
