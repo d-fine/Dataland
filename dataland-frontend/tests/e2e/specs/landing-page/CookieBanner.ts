@@ -2,6 +2,7 @@ describe("As a user, I expect the cookie banner to render and to be functional",
   it("Check that the cookie banner renders", () => {
     cy.visitAndCheckAppMount("/");
 
+    //blank comment
     cy.get("div[id='CybotCookiebotDialog']").should("exist");
     cy.get("#CybotCookiebotDialogPoweredbyImage").invoke("attr", "src").should("contain", "data:image/png;base64,");
     cy.get("button[id='CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll']").should("exist");
