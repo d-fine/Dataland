@@ -28,7 +28,6 @@ data class BulkDataRequest(
             implementation = DataTypeEnum::class,
             example = "[\"p2p\", \"sme\"]",
         ),
-        schema = Schema(type = "string"),
     )
     val listOfFrameworkNames: List<DataTypeEnum>,
 )

@@ -463,7 +463,15 @@
               "sme"
             ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "sme"
+              ]
             }
           }
         }
