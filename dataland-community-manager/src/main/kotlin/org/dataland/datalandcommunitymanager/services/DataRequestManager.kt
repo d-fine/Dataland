@@ -39,49 +39,36 @@ class DataRequestManager(
      */
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
-        throwExceptionIfNotJwtAuth()
-        validateBulkDataRequest(bulkDataRequest)
-        val cleanedBulkDataRequest = removeDuplicatesInLists(bulkDataRequest)
+        val cleanedBulkDataRequest = runAllValidationsAndRemoveDuplicates(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
         dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
-
-        val acceptedCompanyIdentifiers = mutableListOf<String>()
-        val rejectedCompanyIdentifiers = mutableListOf<String>()
-
+        val acceptedIdentifiers = mutableListOf<String>()
+        val rejectedIdentifiers = mutableListOf<String>()
         for (userProvidedIdentifierValue in cleanedBulkDataRequest.listOfCompanyIdentifiers) {
             val matchedIdentifierType = determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
-            if (matchedIdentifierType == null) {
-                rejectedCompanyIdentifiers.add(userProvidedIdentifierValue)
-                continue
-            }
-            acceptedCompanyIdentifiers.add(userProvidedIdentifierValue)
+            if (matchedIdentifierType == null) { rejectedIdentifiers.add(userProvidedIdentifierValue); continue }
 
+            acceptedIdentifiers.add(userProvidedIdentifierValue)
             val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
             val identifierTypeToStore = datalandCompanyId?.let {
                 DataRequestCompanyIdentifierType.DatalandCompanyId
             } ?: matchedIdentifierType
             val identifierValueToStore = datalandCompanyId ?: userProvidedIdentifierValue
-
             for (framework in cleanedBulkDataRequest.listOfFrameworkNames) {
-                if (isDataRequestAlreadyExisting(userId, identifierValueToStore, framework)) {
-                    continue
-                }
+                if (isDataRequestAlreadyExisting(userId, identifierValueToStore, framework)) { continue }
                 storeDataRequestEntity(
                     buildDataRequestEntity(userId, framework, identifierTypeToStore, identifierValueToStore),
                     bulkDataRequestId,
                 )
             }
         }
-
-        if (acceptedCompanyIdentifiers.isNotEmpty()) {
-            sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedCompanyIdentifiers, bulkDataRequestId)
+        if (acceptedIdentifiers.isNotEmpty()) {
+            sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
         } else {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
-        return buildResponseForBulkDataRequest(
-            cleanedBulkDataRequest, rejectedCompanyIdentifiers, acceptedCompanyIdentifiers,
-        )
+        return buildResponseForBulkDataRequest(cleanedBulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
     }
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
@@ -259,5 +246,11 @@ class DataRequestManager(
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException()
         }
+    }
+
+    private fun runAllValidationsAndRemoveDuplicates(bulkDataRequest: BulkDataRequest): BulkDataRequest {
+        throwExceptionIfNotJwtAuth()
+        validateBulkDataRequest(bulkDataRequest)
+        return removeDuplicatesInLists(bulkDataRequest)
     }
 }
