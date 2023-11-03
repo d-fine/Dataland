@@ -11,7 +11,7 @@ data class EmailContact(
     val name: String? = null,
 ) {
     /**
-     * Defines whether to hide the requester's name in the email or to show it
+     * Converts a Dataland EmailContact object into a SendContact object of the mailjet client library
      */
     fun toMailjetSendContact(): SendContact {
         return if (name == null) SendContact(emailAddress) else SendContact(emailAddress, name)
@@ -19,7 +19,7 @@ data class EmailContact(
 }
 
 /**
- * Uses a list of EmailContact objects for the build of a TransactionalEmail
+ * Integrates the provided EmailContact object as sender into the build of a TransactionalEmail
  */
 fun TransactionalEmail.TransactionalEmailBuilder.integrateSenderIntoTransactionalEmailBuilder(sender: EmailContact):
     TransactionalEmail.TransactionalEmailBuilder {
@@ -27,7 +27,7 @@ fun TransactionalEmail.TransactionalEmailBuilder.integrateSenderIntoTransactiona
 }
 
 /**
- * Uses a list of EmailContact objects for the build of a TransactionalEmail
+ * Integrates the provided list of EmailContact objects as receivers into the build of a TransactionalEmail
  */
 fun TransactionalEmail.TransactionalEmailBuilder
     .integrateReceiversIntoTransactionalEmailBuilder(receivers: List<EmailContact>):
@@ -36,10 +36,10 @@ fun TransactionalEmail.TransactionalEmailBuilder
 }
 
 /**
- * Uses a list of EmailContact objects for the build of a TransactionalEmail
+ * Integrates the provided list of EmailContact objects as cc receivers into the build of a TransactionalEmail
  */
 fun TransactionalEmail.TransactionalEmailBuilder
-    .integrateCcIntoTransactionalEmailBuilder(receivers: List<EmailContact>):
+    .integrateCcIntoTransactionalEmailBuilder(ccReceivers: List<EmailContact>):
     TransactionalEmail.TransactionalEmailBuilder {
-    return this.cc(receivers.map { it.toMailjetSendContact() })
+    return this.cc(ccReceivers.map { it.toMailjetSendContact() })
 }
