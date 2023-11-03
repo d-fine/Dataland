@@ -126,7 +126,7 @@ class DataRequestManager(
         val listOfFrameworks = bulkDataRequest.listOfFrameworkNames
         if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty()) {
             val errorMessage = when {
-                listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "All provided lists are empty"
+                listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "All provided lists are empty."
                 listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
                 else -> "The list of frameworks is empty."
             }
@@ -248,7 +248,7 @@ class DataRequestManager(
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
         val summary = "All provided company identifiers have an invalid format."
-        val message = "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId"
+        val message = "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId."
         throw InvalidInputApiException(
             summary,
             message,
