@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
@@ -144,8 +145,16 @@ class CommunityManagerTest {
         }
     }
 
-    private fun findDataTypeForFramework(framework: BulkDataRequest.ListOfFrameworkNames): DataRequestEntity.DataType {
+    private fun findDataRequestEntityDataTypeForFramework(
+        framework: BulkDataRequest.ListOfFrameworkNames,
+    ): DataRequestEntity.DataType {
         return DataRequestEntity.DataType.values().find { dataType -> dataType.value == framework.value }!!
+    }
+
+    private fun findAggregatedDataRequestDataTypeForFramework(
+        framework: BulkDataRequest.ListOfFrameworkNames,
+    ): AggregatedDataRequest.DataType {
+        return AggregatedDataRequest.DataType.values().find { dataType -> dataType.value == framework.value }!!
     }
 
     private fun authenticateAsTechnicalUser(technicalUser: TechnicalUser) {
@@ -174,7 +183,7 @@ class CommunityManagerTest {
         checkThatAllIdentifiersWereAccepted(response, identifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, identifiers.size * frameworks.size)
-        val randomDataType = findDataTypeForFramework(frameworks.random())
+        val randomDataType = findDataRequestEntityDataTypeForFramework(frameworks.random())
         // TODO Try to remove different types of DataTypeEnum (referenced in BulkDataRequest and in DataRequestEntity)
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
@@ -249,7 +258,7 @@ class CommunityManagerTest {
             newlyStoredRequests,
             (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size,
         )
-        val dataType = findDataTypeForFramework(frameworksForBulkRequest[0])
+        val dataType = findDataRequestEntityDataTypeForFramework(frameworksForBulkRequest[0])
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequests,
             dataType,
@@ -301,7 +310,7 @@ class CommunityManagerTest {
         )
         checkThatAllIdentifiersWereAccepted(firstResponse, identifiersForFirstBulkRequest.size)
         val newlyStoredRequestsAfterFirstBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
-        val dataType = findDataTypeForFramework(frameworksForBulkRequest[0])
+        val dataType = findDataRequestEntityDataTypeForFramework(frameworksForBulkRequest[0])
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequestsAfterFirstBulkRequest,
             identifiersForFirstBulkRequest.size * frameworksForBulkRequest.size,
@@ -395,6 +404,28 @@ class CommunityManagerTest {
             authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
                 technicalUser, identifierMap.values.toList(), frameworks,
             )
+        }
+        val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
+        frameworks.forEach { framework ->
+            identifierMap.forEach { (identifierType, identifierValue) ->
+                val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
+                    aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
+                        aggregatedDataRequest.dataRequestCompanyIdentifierType == identifierType &&
+                        aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue
+                }
+                assertEquals(
+                    1,
+                    matchingAggregatedRequests.size,
+                    "For the ${identifierType.value} $identifierValue and the framework ${framework.value} " +
+                        "there is not exactly one aggregated request as expected.",
+                )
+                assertEquals(
+                    TechnicalUser.values().size.toLong(),
+                    matchingAggregatedRequests[0].count,
+                    "For the aggregated data request with ${identifierType.value} $identifierValue and the " +
+                        "framework ${framework.value} the count is not as expected.",
+                )
+            }
         }
     }
 }
