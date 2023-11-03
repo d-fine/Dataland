@@ -8,7 +8,7 @@
       werden unter Umständen nicht alle Teile dieser Informationen auf Sie zutreffen.
     </p>
     <div>
-      <h2>1. VERANTWORTLICHE STELLE UND KONTAKTDATEN DES DATENSCHUTZBEAUFTRAGTEN</h2>
+      <h2>1. Verantwortliche Stelle und Kontaktdaten des Datenschutzbeauftragten</h2>
       <p>Verantwortlich für die Datenverarbeitung auf diesem Online-Angebot ist die</p>
       <p class="indent">
         Dataland GmbH
@@ -248,7 +248,7 @@
       </div>
     </div>
     <div>
-      <h2>3. EMPFÄNGER UND EMPFÄNGERKATEGORIEN</h2>
+      <h2>3. Empfänger und Empfängerkategorien</h2>
       <p>
         Innerhalb unseres Unternehmens erhalten diejenigen Stellen Zugriff auf Ihre Daten, die diese zur Erfüllung der
         vertraglichen und gesetzlichen Pflichten brauchen. Auch von uns eingesetzte Dienstleister und Erfüllungsgehilfen
@@ -276,7 +276,7 @@
       <p>Im Übrigen gelten die in den übrigen Abschnitten aufgeführten Datenweitergaben.</p>
     </div>
     <div>
-      <h2>4. ÜBERMITTLUNG IN DRITTSTAATEN</h2>
+      <h2>4. Übermittlung in Drittstaaten</h2>
       <p>
         Eine Datenübermittlung an Stellen in Staaten außerhalb der Europäischen Union (sogenannte Drittstaaten) findet
         statt, soweit
@@ -301,7 +301,7 @@
       </p>
     </div>
     <div>
-      <h2>5. SPEICHERDAUER</h2>
+      <h2>5. Speicherdauer</h2>
       <p>
         Wir verarbeiten und speichern Ihre personenbezogenen Daten, solange es für die Erfüllung unserer vertraglichen
         Pflichten und Wahrnehmung unserer Rechte erforderlich ist.
@@ -317,7 +317,7 @@
       </p>
     </div>
     <div>
-      <h2>6. DATENSICHERHEIT</h2>
+      <h2>6. Datensicherheit</h2>
       <p>
         Auf unserem Onlineangebot ist aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte, wie
         zum Beispiel Bestellungen oder Anfragen, die Sie an uns als Seitenbetreiber senden, eine SSL-bzw.
@@ -333,7 +333,7 @@
       </p>
     </div>
     <div>
-      <h2>7. BETROFFENENRECHTE</h2>
+      <h2>7. Betroffenenrechte</h2>
       <p>
         Jede betroffene Person hat das <em class="underline">Recht auf Auskunft</em> nach Art. 15 DS-GVO, das
         <em class="underline">Recht auf Berichtigung</em> nach Art. 16 DS-GVO, das
@@ -368,7 +368,7 @@
       </p>
     </div>
     <div>
-      <h2>8. PFLICHT ZUR BEREITSTELLUNG VON DATEN</h2>
+      <h2>8. Pflicht zur Bereitstellung von Daten</h2>
       <p>
         Im Rahmen unseres Onlineangebots sind wir auf die Verarbeitung solcher Nutzungsdaten angewiesen, die für die
         Durchführung und Beendigung des Dienstes und zur Erfüllung der damit verbundenen Pflichten erforderlich sind.
@@ -378,14 +378,14 @@
       </p>
     </div>
     <div>
-      <h2>9. PROFILING</h2>
+      <h2>9. Profiling</h2>
       <p>
         Wir verarbeiten Ihre personenbezogenen Daten nicht automatisiert in einer Weise, dass sie Ihnen gegenüber
         rechtliche Wirkung entfaltet oder sie in ähnlicher Weise erheblich beeinträchtigt.
       </p>
     </div>
     <div>
-      <h2>10. AKTUALITÄT UND ÄNDERUNG DIESER DATENSCHUTZERKLÄRUNG</h2>
+      <h2>10. Aktualität und Änderung dieser Datenschutzerklärung</h2>
       <p>Diese Datenschutzerklärung ist aktuell gültig und wurde das letzte Mal im Oktober 2023 aktualisiert.</p>
     </div>
   </LegalPage>
