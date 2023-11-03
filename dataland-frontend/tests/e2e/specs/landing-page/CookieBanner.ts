@@ -3,9 +3,7 @@ describe("As a user, I expect the cookie banner to render and to be functional",
     cy.visitAndCheckAppMount("/");
 
     cy.get("div[id='CybotCookiebotDialog']").should("exist");
-    cy.get("img[id='CybotCookiebotDialogPoweredbyImage']")
-      .invoke("attr", "src")
-      .should("contain", "data:image/png;base64,");
+    cy.get("#CybotCookiebotDialogPoweredbyImage").invoke("attr", "src").should("contain", "data:image/png;base64,");
     cy.get("button[id='CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll']").should("exist");
     cy.get("button[id='CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection']").should("exist");
     cy.get("button[id='CybotCookiebotDialogBodyButtonDecline']").should("exist");
