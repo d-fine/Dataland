@@ -1,6 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
-import {CompanyAssociatedDataSfdrData, DataTypeEnum, type SfdrData} from "@clients/backend";
+import { type CompanyAssociatedDataSfdrData, DataTypeEnum, type SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { selectsReportsForUploadInSfdrForm } from "@e2e/utils/SfdrUpload";
@@ -73,11 +73,14 @@ describeIf(
      */
     function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
       cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
-      cy.get("li.p-multiselect-item").eq(sectorCardIndex).invoke('attr', 'aria-selected').then((ariaSelected) => {
-        if (ariaSelected === 'false') {
-          cy.get("li.p-multiselect-item").eq(sectorCardIndex).click();
-        }
-      });
+      cy.get("li.p-multiselect-item")
+        .eq(sectorCardIndex)
+        .invoke("attr", "aria-selected")
+        .then((ariaSelected) => {
+          if (ariaSelected === "false") {
+            cy.get("li.p-multiselect-item").eq(sectorCardIndex).click();
+          }
+        });
       cy.get('div[data-test="applicableHighImpactClimateSector"]')
         .find('select[name="fileName"]')
         .eq(sectorCardIndex)
@@ -152,15 +155,15 @@ describeIf(
       const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyAndFrameworkData(
-            DataTypeEnum.Sfdr,
-            token,
-            generateDummyCompanyInformation(testCompanyName),
-            testSfdrCompany.t,
-            "2021",
+          DataTypeEnum.Sfdr,
+          token,
+          generateDummyCompanyInformation(testCompanyName),
+          testSfdrCompany.t,
+          "2021",
         ).then((uploadIds) => {
           cy.intercept("**/api/companies/" + uploadIds.companyId).as("getCompanyInformation");
           cy.visitAndCheckAppMount(
-              "/companies/" +
+            "/companies/" +
               uploadIds.companyId +
               "/frameworks/" +
               DataTypeEnum.Sfdr +
@@ -172,7 +175,8 @@ describeIf(
           cy.intercept("POST", "**/api/data/sfdr").as("updateCompany");
           submitButton.clickButton();
           cy.wait("@updateCompany").then((interception) => {
-            const frontendSubmittedSfdrDataset = (interception.request.body as CompanyAssociatedDataSfdrData).data as unknown as Record<string, object>;
+            const frontendSubmittedSfdrDataset = (interception.request.body as CompanyAssociatedDataSfdrData)
+              .data as unknown as Record<string, object>;
             const originallyUploadedSfdrDataset = testSfdrCompany.t as unknown as Record<string, object>;
             compareObjectKeysAndValuesDeep(frontendSubmittedSfdrDataset, originallyUploadedSfdrDataset);
           });

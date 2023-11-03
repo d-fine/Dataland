@@ -58,9 +58,9 @@ export function getDataPointGetterFactory<
     if (!dataPoint) {
       return MLDTDisplayObjectForEmptyString;
     }
-    const formattedValue = formatter(dataPoint)
+    const formattedValue = formatter(dataPoint);
     let displayValue: string;
-    if(formattedValue == undefined || formattedValue == "") {
+    if (formattedValue == undefined || formattedValue == "") {
       displayValue = "No data provided";
     } else {
       displayValue = formattedValue;

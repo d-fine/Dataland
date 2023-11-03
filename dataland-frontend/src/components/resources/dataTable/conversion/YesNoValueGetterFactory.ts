@@ -4,12 +4,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type YesNoNa } from "@clients/backend";
 import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-
-const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
-  Yes: "Yes",
-  No: "No",
-  NA: "N/A",
-};
+import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 
 /**
  * Returns a value factory that returns the value of the Yes / No form field
@@ -20,7 +15,7 @@ const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
 export function yesNoValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const value = getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | undefined;
-    const displayValue = value ? humanReadableYesNoMap[value] : "";
+    const displayValue = value ? HumanizedYesNoNa[value] : "";
     return {
       displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: displayValue,

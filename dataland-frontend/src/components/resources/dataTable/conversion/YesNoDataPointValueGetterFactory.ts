@@ -3,17 +3,12 @@ import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dat
 import { type YesNoNa } from "@clients/backend";
 import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { type GenericDataPoint } from "@/utils/DataPoint";
-
-const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
-  Yes: "Yes",
-  No: "No",
-  NA: "N/A",
-};
+import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 
 const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
   Yes: "Certified",
   No: "Uncertified",
-  NA: "N/A",
+  NA: HumanizedYesNoNa.NA,
 };
 
 /**
@@ -36,7 +31,7 @@ export function yesNoDataPointValueGetterFactory(
       const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
       const humanReadableValue = isCertificationField
         ? certificateHumanReadableYesNoMap[dataPoint?.value ?? "NA"]
-        : humanReadableYesNoMap[dataPoint?.value ?? "NA"];
+        : HumanizedYesNoNa[dataPoint?.value ?? "NA"];
       return dataPoint?.value ? humanReadableValue : "";
     },
   );

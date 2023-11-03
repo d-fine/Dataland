@@ -5,7 +5,7 @@
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
-      :options="yesNoNaOptions"
+      :options="HumanizedYesNoNa"
     />
   </div>
 </template>
@@ -15,9 +15,15 @@ import { defineComponent } from "vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 
 export default defineComponent({
   name: "YesNoNaFormField",
+  computed: {
+    HumanizedYesNoNa() {
+      return HumanizedYesNoNa;
+    },
+  },
   components: { RadioButtonsFormElement, UploadFormHeader },
   inheritAttrs: false,
   props: {
@@ -26,15 +32,6 @@ export default defineComponent({
       type: String,
       default: "form-field",
     },
-  },
-  data() {
-    return {
-      yesNoNaOptions: {
-        Yes: "Yes",
-        No: "No",
-        NA: "N/A",
-      },
-    };
   },
 });
 </script>

@@ -2,6 +2,8 @@
  * Module to convert string to a human-readable text
  */
 
+import { HumanizedYesNoNa } from "@/utils/YesNoNa";
+
 /**
  * convert camel case string to sentence case string using regex
  * @param rawText is the string to be converted to a human-readable string
@@ -35,9 +37,9 @@ function humanizeViaMapping(rawText: string): string {
     sustainabilityreport: "Sustainability Report",
     integratedreport: "Integrated Report",
     esefreport: "ESEF Report",
-    yes: "Yes",
-    no: "No",
-    na: "N/A",
+    yes: HumanizedYesNoNa.Yes,
+    no: HumanizedYesNoNa.No,
+    na: HumanizedYesNoNa.NA,
     "eutaxonomy-financials": "EU Taxonomy for financial companies",
     "eutaxonomy-non-financials": "EU Taxonomy for non-financial companies",
     lksg: "LkSG",
