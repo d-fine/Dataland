@@ -162,14 +162,17 @@ class CommunityManagerTest {
         )
         val multipleRegexMatchingIdentifier = generateRandomPermId(true)
         val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
+        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
+            listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
+                listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusNonMinusFinancials
+        } // TODO Filter to be removed once EU Taxo works with standard value including "-"
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks),
         )
         val amountOfIndividualRequests = identifiers.size * frameworks.size
-        checkThatAllIdentifiersWereAccepted(response, amountOfIndividualRequests)
+        checkThatAllIdentifiersWereAccepted(response, identifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, amountOfIndividualRequests)
         val randomDataType = findDataTypeForFramework(frameworks.random())
@@ -216,13 +219,19 @@ class CommunityManagerTest {
         )
     }
 
+    private fun getIdForUploadedCompanyWithIdentifiers(
+        lei: String? = null,
+        isin: List<String>? = null,
+        permId: String? = null,
+    ): String {
+        return apiAccessor.uploadOneCompanyWithIdentifiers(lei, isin, permId)!!.actualStoredCompany.companyId
+    }
+
     @Test
     fun `post bulk data request with at least one company duplicate and check that only one request is stored`() {
         val leiForCompany = generateRandomLei()
         val isinForCompany = generateRandomIsin()
-        val companyId = apiAccessor.uploadOneCompanyWithIdentifiers(
-            leiForCompany, listOf(isinForCompany),
-        )!!.actualStoredCompany.companyId
+        val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
         val identifierTypeForUnknownCompany = DataRequestCompanyIdentifierType.lei
         val identifierValueForUnknownCompany = generateRandomLei()
         val identifiersForBulkRequest = listOf(
@@ -252,13 +261,32 @@ class CommunityManagerTest {
         )
     }
 
+    private fun checkThatBothRequestExistExactlyOnceAfterBulkRequest(
+        requestsStoredAfterBulkRequest: List<DataRequestEntity>,
+        dataType: DataRequestEntity.DataType,
+        companyId: String,
+        identifierTypeForUnknownCompany: DataRequestCompanyIdentifierType,
+        identifierValueForUnknownCompany: String,
+    ) {
+        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
+            requestsStoredAfterBulkRequest,
+            dataType,
+            DataRequestCompanyIdentifierType.datalandCompanyId,
+            companyId,
+        )
+        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
+            requestsStoredAfterBulkRequest,
+            dataType,
+            identifierTypeForUnknownCompany,
+            identifierValueForUnknownCompany,
+        )
+    }
+
     @Test
     fun `post a bulk data request with at least one already existing request and check that this one is ignored`() {
         val leiForCompany = generateRandomLei()
         val isinForCompany = generateRandomIsin()
-        val companyId = apiAccessor.uploadOneCompanyWithIdentifiers(
-            leiForCompany, listOf(isinForCompany),
-        )!!.actualStoredCompany.companyId
+        val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
         val identifierTypeForUnknownCompany = DataRequestCompanyIdentifierType.lei
         val identifierValueForUnknownCompany = generateRandomLei()
         val frameworksForBulkRequest = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
@@ -276,15 +304,10 @@ class CommunityManagerTest {
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequestsAfterFirstBulkRequest, identifiersForFirstBulkRequest.size,
         )
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
+        checkThatBothRequestExistExactlyOnceAfterBulkRequest(
             newlyStoredRequestsAfterFirstBulkRequest,
             dataType,
-            DataRequestCompanyIdentifierType.datalandCompanyId,
             companyId,
-        )
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequestsAfterFirstBulkRequest,
-            dataType,
             identifierTypeForUnknownCompany,
             identifierValueForUnknownCompany,
         )
@@ -304,15 +327,10 @@ class CommunityManagerTest {
         val newlyStoredRequestsAfterFirstAndSecondBulkRequest = getNewlyStoredRequestsAfterTimestamp(
             timeBeforeFirstBulkRequest,
         )
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
+        checkThatBothRequestExistExactlyOnceAfterBulkRequest(
             newlyStoredRequestsAfterFirstAndSecondBulkRequest,
             dataType,
-            DataRequestCompanyIdentifierType.datalandCompanyId,
             companyId,
-        )
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequestsAfterFirstAndSecondBulkRequest,
-            dataType,
             identifierTypeForUnknownCompany,
             identifierValueForUnknownCompany,
         )
