@@ -391,10 +391,14 @@ class CommunityManagerTest {
 
     @Test
     fun `post bulk data requests for different users and check that aggregation works properly`() {
-        val identifierMap = mapOf(
+        val leiForCompany = generateRandomLei()
+        val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany)
+        val identifierMap = mutableMapOf(
             DataRequestCompanyIdentifierType.lei to generateRandomLei(),
             DataRequestCompanyIdentifierType.isin to generateRandomIsin(),
             DataRequestCompanyIdentifierType.permId to generateRandomPermId(),
+            DataRequestCompanyIdentifierType.multipleRegexMatches to generateRandomPermId(true),
+            DataRequestCompanyIdentifierType.datalandCompanyId to leiForCompany,
         )
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
             listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
@@ -405,6 +409,7 @@ class CommunityManagerTest {
                 technicalUser, identifierMap.values.toList(), frameworks,
             )
         }
+        identifierMap[DataRequestCompanyIdentifierType.datalandCompanyId] = companyId
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
         frameworks.forEach { framework ->
             identifierMap.forEach { (identifierType, identifierValue) ->
