@@ -13,16 +13,15 @@
       :slide-width="slideWidth"
     >
       <div role="listitem" class="quotes__slide">
-        <div class="quotes__slide-videoContainer">
-        </div>
+        <div class="quotes__slide-videoContainer"></div>
       </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
           <iframe
-              :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
-              title="Youtube video player"
-              allowfullscreen
-              :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }"
+            :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
+            title="Youtube video player"
+            allowfullscreen
+            :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }"
           ></iframe>
         </div>
       </div>
@@ -30,7 +29,7 @@
     <p class="quotes__slide-text">{{ currentCardInfo.date }}</p>
     <h3 class="quotes__slide-title">
       {{ currentCardInfo.title }}
-      <span v-for="titleSegment in currentCardInfo.text.split('\n')">
+      <span v-for="(titleSegment, index) of currentCardInfo.text.split('\n')" :key="index">
         {{ titleSegment }}
       </span>
     </h3>
