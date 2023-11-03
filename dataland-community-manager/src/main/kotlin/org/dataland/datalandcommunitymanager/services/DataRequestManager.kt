@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
@@ -9,6 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -37,7 +39,7 @@ class DataRequestManager(
      */
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
-        // TODO  => return Exception when api key used on this endpoint
+        throwExceptionIfNotJwtAuth()
         validateBulkDataRequest(bulkDataRequest)
         val cleanedBulkDataRequest = removeDuplicatesInLists(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
@@ -101,7 +103,12 @@ class DataRequestManager(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
     ): List<AggregatedDataRequest> {
-        return dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypes)
+        val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
+            null
+        } else {
+            dataTypes
+        }
+        return dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery)
     }
 
     private fun removeDuplicatesInLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {
@@ -246,5 +253,11 @@ class DataRequestManager(
             summary,
             message,
         )
+    }
+
+    private fun throwExceptionIfNotJwtAuth() {
+        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
+            throw AuthenticationMethodNotSupportedException()
+        }
     }
 }
