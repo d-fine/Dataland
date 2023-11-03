@@ -11,6 +11,7 @@ import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
+import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -113,75 +114,63 @@ describeIf(
     }
 
     it("Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form", () => {
-      const uniqueCompanyMarker = Date.now().toString();
-      const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyAndFrameworkData(
-          DataTypeEnum.Sfdr,
-          token,
-          generateDummyCompanyInformation(testCompanyName),
-          testSfdrCompany.t,
-          "2021",
-        ).then((uploadIds) => {
-          cy.intercept("**/api/companies/" + uploadIds.companyId).as("getCompanyInformation");
-          cy.visitAndCheckAppMount(
-            "/companies/" +
-              uploadIds.companyId +
-              "/frameworks/" +
-              DataTypeEnum.Sfdr +
-              "/upload" +
-              "?templateDataId=" +
-              uploadIds.dataId,
-          );
-          cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-
-          cy.get("h1").should("contain", testCompanyName);
-          selectsReportsForUploadInSfdrForm();
-          setQualityInSfdrUploadForm();
-          setReferenceToAllUploadedReports(
-            Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
-          );
-          testRemovingOfHighImpactClimateSector();
-          submitButton.clickButton();
-          cy.get("div.p-message-success:not(.p-message-error)").should("not.contain", "An unexpected error occurred.");
-          cy.url().should("eq", getBaseUrl() + "/datasets");
-          validateFormUploadedData(uploadIds.companyId);
-        });
+      uploadCompanyAndDataAndVisitUploadPage((uploadIds: UploadIds, companyName: string): void => {
+        cy.get("h1").should("contain", companyName);
+        selectsReportsForUploadInSfdrForm();
+        setQualityInSfdrUploadForm();
+        setReferenceToAllUploadedReports(
+          Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
+        );
+        testRemovingOfHighImpactClimateSector();
+        submitButton.clickButton();
+        cy.get("div.p-message-success:not(.p-message-error)").should("not.contain", "An unexpected error occurred.");
+        cy.url().should("eq", getBaseUrl() + "/datasets");
+        validateFormUploadedData(uploadIds.companyId);
       });
     });
 
     it("Check if clicking on edit dataset and re-uploading without any changes works as expected", () => {
-      const uniqueCompanyMarker = Date.now().toString();
-      const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyAndFrameworkData(
-          DataTypeEnum.Sfdr,
-          token,
-          generateDummyCompanyInformation(testCompanyName),
-          testSfdrCompany.t,
-          "2021",
-        ).then((uploadIds) => {
-          cy.intercept("**/api/companies/" + uploadIds.companyId).as("getCompanyInformation");
-          cy.visitAndCheckAppMount(
-            "/companies/" +
-              uploadIds.companyId +
-              "/frameworks/" +
-              DataTypeEnum.Sfdr +
-              "/upload" +
-              "?templateDataId=" +
-              uploadIds.dataId,
-          );
-          cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-          cy.intercept("POST", "**/api/data/sfdr").as("updateCompany");
-          submitButton.clickButton();
-          cy.wait("@updateCompany").then((interception) => {
-            const frontendSubmittedSfdrDataset = (interception.request.body as CompanyAssociatedDataSfdrData)
-              .data as unknown as Record<string, object>;
-            const originallyUploadedSfdrDataset = testSfdrCompany.t as unknown as Record<string, object>;
-            compareObjectKeysAndValuesDeep(frontendSubmittedSfdrDataset, originallyUploadedSfdrDataset);
-          });
+      uploadCompanyAndDataAndVisitUploadPage(() => {
+        cy.intercept("POST", "**/api/data/sfdr").as("updateCompany");
+        submitButton.clickButton();
+        cy.wait("@updateCompany").then((interception) => {
+          const frontendSubmittedSfdrDataset = (interception.request.body as CompanyAssociatedDataSfdrData)
+            .data as unknown as Record<string, object>;
+          const originallyUploadedSfdrDataset = testSfdrCompany.t as unknown as Record<string, object>;
+          compareObjectKeysAndValuesDeep(frontendSubmittedSfdrDataset, originallyUploadedSfdrDataset);
         });
       });
     });
   },
 );
+
+/**
+ * Uploads a company and an SFDR dataset and visit the upload page
+ * @param doAfter is executed after the upload page is visited
+ */
+function uploadCompanyAndDataAndVisitUploadPage(doAfter: (uploadIds: UploadIds) => void): void {
+  const uniqueCompanyMarker = Date.now().toString();
+  const companyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
+  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+    return uploadCompanyAndFrameworkData(
+      DataTypeEnum.Sfdr,
+      token,
+      generateDummyCompanyInformation(companyName),
+      testSfdrCompany.t,
+      "2021",
+    ).then((uploadIds) => {
+      cy.intercept("**/api/companies/" + uploadIds.companyId).as("getCompanyInformation");
+      cy.visitAndCheckAppMount(
+        "/companies/" +
+          uploadIds.companyId +
+          "/frameworks/" +
+          DataTypeEnum.Sfdr +
+          "/upload" +
+          "?templateDataId=" +
+          uploadIds.dataId,
+      );
+      cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+      doAfter(uploadIds, companyName);
+    });
+  });
+}
