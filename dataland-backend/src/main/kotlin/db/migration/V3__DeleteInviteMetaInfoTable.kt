@@ -4,7 +4,8 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
 /**
- * This migration script creates an index for a faster search for company names and identifiers
+ * This migration script deletes the invitation meta info table after the corresponding feature that stores data into
+ * that table has been removed.
  */
 class V3__DeleteInviteMetaInfoTable : BaseJavaMigration() {
     override fun migrate(context: Context?) {
