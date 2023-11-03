@@ -240,10 +240,12 @@ class CommunityManagerTest {
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest),
         )
-        val expectedNumberOfIndividualRequests = (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size
-        checkThatAllIdentifiersWereAccepted(response, expectedNumberOfIndividualRequests)
+        checkThatAllIdentifiersWereAccepted(response, identifiersForBulkRequest.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
-        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, expectedNumberOfIndividualRequests)
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
+            newlyStoredRequests,
+            (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size,
+        )
         val dataType = findDataTypeForFramework(frameworksForBulkRequest[0])
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequests,
