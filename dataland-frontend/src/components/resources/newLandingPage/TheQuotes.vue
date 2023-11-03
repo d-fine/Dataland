@@ -46,7 +46,6 @@ import type { Section } from "@/types/ContentTypes";
 import RegisterButton from "@/components/resources/newLandingPage/RegisterButton.vue";
 import SlideShow from "@/components/general/SlideShow.vue";
 
-//blank
 const { sections } = defineProps<{ sections?: Section[] }>();
 const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes"));
 const cards = computed(() => quotesSection.value?.cards ?? []);
