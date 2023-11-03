@@ -2,7 +2,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
-import { type GenericExtendedDataPoint } from "@/utils/DataPoint";
+import { type ExtendedDataPoint } from "@/utils/DataPoint";
 
 /**
  * Returns a value factory that returns the value of the number data point form field
@@ -15,10 +15,10 @@ export function numberDataPointValueGetterFactory(
   field: Field,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  return getDataPointGetterFactory<number, GenericExtendedDataPoint<number>>(
+  return getDataPointGetterFactory<number, ExtendedDataPoint<number>>(
     path,
     field,
-    (dataPoint?: GenericExtendedDataPoint<number>): string => {
+    (dataPoint?: ExtendedDataPoint<number>): string => {
       const datapointValue = formatNumberToReadableFormat(dataPoint?.value);
       const datapointUnitSuffix = field.unit ?? "";
       return datapointValue ? `${datapointValue} ${datapointUnitSuffix}`.trim() : "";

@@ -23,7 +23,7 @@ import { defineComponent } from "vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
-import { type GenericBaseDataPoint } from "@/utils/DataPoint";
+import { type BaseDataPoint } from "@/utils/DataPoint";
 
 export default defineComponent({
   name: "BaseDataPointFormField",
@@ -32,7 +32,7 @@ export default defineComponent({
   props: { ...BaseFormFieldProps },
   data() {
     return {
-      baseDataPoint: {} as GenericBaseDataPoint<unknown>,
+      baseDataPoint: {} as BaseDataPoint<unknown>,
       referencedDocument: undefined as DocumentToUpload | undefined,
       documentName: "",
       documentReference: "",
@@ -46,7 +46,7 @@ export default defineComponent({
     this.isMounted = true;
   },
   watch: {
-    baseDataPoint(newValue: GenericBaseDataPoint<unknown>, oldValue: GenericBaseDataPoint<unknown>) {
+    baseDataPoint(newValue: BaseDataPoint<unknown>, oldValue: BaseDataPoint<unknown>) {
       if (newValue.value === "No" && oldValue.value === "Yes") {
         (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
       }

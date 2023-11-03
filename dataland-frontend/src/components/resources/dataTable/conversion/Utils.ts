@@ -4,7 +4,7 @@ import {
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type Field } from "@/utils/GenericFrameworkTypes";
-import { type GenericBaseDataPoint, type GenericExtendedDataPoint } from "@/utils/DataPoint";
+import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
 
 /**
  * Retrieves a deeply nested value from an object by an identifier.
@@ -33,7 +33,7 @@ export function getFieldValueFromFrameworkDataset(identifier: string, frameworkD
  * @returns true if the reference is properly set
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function hasDataPointValidReference(dataPoint: GenericExtendedDataPoint<any> | GenericBaseDataPoint<any>): boolean {
+export function hasDataPointValidReference(dataPoint: ExtendedDataPoint<any> | BaseDataPoint<any>): boolean {
   return !!dataPoint?.dataSource?.fileReference?.trim().length;
 }
 
@@ -46,7 +46,7 @@ export function hasDataPointValidReference(dataPoint: GenericExtendedDataPoint<a
  */
 export function getDataPointGetterFactory<
   V,
-  D extends GenericBaseDataPoint<V | null | undefined> | GenericExtendedDataPoint<V> = GenericExtendedDataPoint<V>,
+  D extends BaseDataPoint<V | null | undefined> | ExtendedDataPoint<V> = ExtendedDataPoint<V>,
 >(
   path: string,
   field: Field,
@@ -65,7 +65,7 @@ export function getDataPointGetterFactory<
     } else {
       displayValue = formattedValue;
     }
-    const dataPointAsExtendedDataPoint = dataPoint as unknown as GenericExtendedDataPoint<V>;
+    const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
     if (
       dataPointAsExtendedDataPoint.quality ||
       dataPointAsExtendedDataPoint.comment?.length ||

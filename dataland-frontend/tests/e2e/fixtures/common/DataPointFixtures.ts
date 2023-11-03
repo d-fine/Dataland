@@ -7,7 +7,7 @@ import { DEFAULT_PROBABILITY, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { type GenericExtendedDataPoint } from "@/utils/DataPoint";
+import { type ExtendedDataPoint } from "@/utils/DataPoint";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
 
@@ -51,7 +51,7 @@ export function generateDataPoint<T>(
   value: T | null,
   reports: ReferencedDocuments,
   currency?: string | null,
-): GenericExtendedDataPoint<T> | CurrencyDataPoint {
+): ExtendedDataPoint<T> | CurrencyDataPoint {
   if(currency != undefined && value != null && typeof value != "number") {
     throw TypeError("Parameter `currency` is defined but parameter `value` is not of type number")
   }

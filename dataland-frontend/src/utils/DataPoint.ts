@@ -1,13 +1,13 @@
 import { type BaseDocumentReference, type ExtendedDocumentReference, type QualityOptions } from "@clients/backend";
 
-export interface GenericExtendedDataPoint<T> {
+export interface ExtendedDataPoint<T> {
   value?: T | null;
   dataSource?: ExtendedDocumentReference | null;
   quality: QualityOptions;
   comment?: string | null;
 }
 
-export interface GenericBaseDataPoint<T> {
+export interface BaseDataPoint<T> {
   value: T;
   dataSource?: BaseDocumentReference | null;
 }
