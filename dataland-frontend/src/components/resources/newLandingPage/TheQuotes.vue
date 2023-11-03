@@ -12,6 +12,9 @@
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
+      <div role="listitem" class="quotes__slide">
+        <div class="quotes__slide-videoContainer"></div>
+      </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
           <iframe
@@ -25,7 +28,10 @@
     </SlideShow>
     <p class="quotes__slide-text">{{ currentCardInfo.date }}</p>
     <h3 class="quotes__slide-title">
-      {{ currentCardInfo.title }} <span>{{ currentCardInfo.text }}</span>
+      {{ currentCardInfo.title }}
+      <span v-for="(titleSegment, index) of currentCardInfo.text.split('\n')" :key="index">
+        {{ titleSegment }}
+      </span>
     </h3>
     <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
