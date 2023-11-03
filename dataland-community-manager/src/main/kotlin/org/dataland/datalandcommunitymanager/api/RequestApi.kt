@@ -52,12 +52,12 @@ interface RequestApi {
     ):
         ResponseEntity<BulkDataRequestResponse>
 
-    /** A method to get all data requests of a specific user.
+    /** A method for users to get all their existing data requests.
      * @return all data requests of the user in a list
      */
     @Operation(
-        summary = "Get data requests of a specific user.",
-        description = "Gets all the stored data request created by the user in the past.",
+        summary = "Get all data requests of the user making the request.",
+        description = "Gets all the stored data request created by the user who is making the request.",
     )
     @ApiResponses(
         value = [
