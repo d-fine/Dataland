@@ -1,6 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
-import { DataTypeEnum, type SfdrData } from "@clients/backend";
+import {CompanyAssociatedDataSfdrData, DataTypeEnum, type SfdrData} from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { selectsReportsForUploadInSfdrForm } from "@e2e/utils/SfdrUpload";
@@ -55,7 +55,7 @@ describeIf(
     }
 
     /**
-     * Set reference to all uploaded reports
+     * Set reference to all uploaded reports while pushing a new one as well
      * @param referencedReports all reports already uploaded
      */
     function setReferenceToAllUploadedReports(referencedReports: string[]): void {
@@ -139,18 +139,43 @@ describeIf(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
           );
           testRemovingOfHighImpactClimateSector();
-          cy.intercept("POST", "**/api/data/sfdr").as("updateCompany");
           submitButton.clickButton();
-          cy.wait("@updateCompany").then((interception) => {
-            const frontendSubmittedSfdrDataset = interception.request.body as unknown as Record<string, object>;
-            const originallyUploadedSfdrDataset = testSfdrCompany.t as unknown as Record<string, object>;
-            console.log("frontendSubmittedSfdrDataset:", frontendSubmittedSfdrDataset);
-            console.log("interception.request.body:", interception.request.body);
-            compareObjectKeysAndValuesDeep(frontendSubmittedSfdrDataset, originallyUploadedSfdrDataset);
-          });
           cy.get("div.p-message-success:not(.p-message-error)").should("not.contain", "An unexpected error occurred.");
           cy.url().should("eq", getBaseUrl() + "/datasets");
           validateFormUploadedData(uploadIds.companyId);
+        });
+      });
+    });
+
+    it("Check if clicking on edit dataset and re-uploading without any changes works as expected", () => {
+      const uniqueCompanyMarker = Date.now().toString();
+      const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return uploadCompanyAndFrameworkData(
+            DataTypeEnum.Sfdr,
+            token,
+            generateDummyCompanyInformation(testCompanyName),
+            testSfdrCompany.t,
+            "2021",
+        ).then((uploadIds) => {
+          cy.intercept("**/api/companies/" + uploadIds.companyId).as("getCompanyInformation");
+          cy.visitAndCheckAppMount(
+              "/companies/" +
+              uploadIds.companyId +
+              "/frameworks/" +
+              DataTypeEnum.Sfdr +
+              "/upload" +
+              "?templateDataId=" +
+              uploadIds.dataId,
+          );
+          cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+          cy.intercept("POST", "**/api/data/sfdr").as("updateCompany");
+          submitButton.clickButton();
+          cy.wait("@updateCompany").then((interception) => {
+            const frontendSubmittedSfdrDataset = (interception.request.body as CompanyAssociatedDataSfdrData).data as unknown as Record<string, object>;
+            const originallyUploadedSfdrDataset = testSfdrCompany.t as unknown as Record<string, object>;
+            compareObjectKeysAndValuesDeep(frontendSubmittedSfdrDataset, originallyUploadedSfdrDataset);
+          });
         });
       });
     });
