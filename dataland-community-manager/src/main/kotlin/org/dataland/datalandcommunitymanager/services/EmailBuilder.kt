@@ -44,6 +44,33 @@ class EmailBuilder(
     private val notificationReceiversCcBulkDataRequest =
         getEmailContactsFromProp(propNotificationReceiversCcBulkDataRequest)
 
+    private val bulkDataRequestNotificationMailStyle =
+        """
+    <style>
+    body {
+                    font-family: Arial, sans-serif;
+                    color: #333;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    border-radius: 10px;
+                }
+                .header {
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+                .section {
+                    margin-bottom: 10px;
+                }
+                .bold {
+                    font-weight: bold;
+                }
+    </style>
+    """
+
     private fun assertEmailAddressFormatAndReturnIt(emailAddress: String): String {
         val regexForValidEmail = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$")
         if (!regexForValidEmail.matches(emailAddress)) {
@@ -88,45 +115,17 @@ class EmailBuilder(
         return """
         <html>
         <head>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    color: #333;
-                }
-                .container {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    padding: 20px;
-                    border-radius: 10px;
-                }
-                .header {
-                    font-size: 24px;
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                }
-                .section {
-                    margin-bottom: 10px;
-                }
-                .bold {
-                    font-weight: bold;
-                }
-            </style>
+                $bulkDataRequestNotificationMailStyle
         </head>
         <body>
             <div class="container">
                 <div class="header">Bulk Data Request</div>
-                <div class="section">
-                    <span class="bold">Environment:</span> $propProxyPrimaryUrl
-                </div>
-                <div class="section">
-                    <span class="bold">User:</span> ${buildUserInfo()}
-                </div>
-                <div class="section">
-                    <span class="bold">Requested Frameworks:</span> ${bulkDataRequest.listOfFrameworkNames.joinToString(", ")}
-                </div>
-                <div class="section">
-                    <span class="bold">Accepted Company Identifiers:</span> ${acceptedCompanyIdentifiers.joinToString(", ")}
-                </div>
+                <div class="section"> <span class="bold">Environment: </span> $propProxyPrimaryUrl </div>
+                <div class="section"> <span class="bold">User: </span> ${buildUserInfo()} </div>
+                <div class="section"> <span class="bold">Requested Frameworks: </span> 
+                    ${bulkDataRequest.listOfFrameworkNames.joinToString(", ")} </div>
+                <div class="section"> <span class="bold">Accepted Company Identifiers: </span> 
+                    ${acceptedCompanyIdentifiers.joinToString(", ")} </div>
             </div>
         </body>
         </html>

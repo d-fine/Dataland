@@ -39,14 +39,14 @@ class CommunityManagerTest {
         return patternSection1 + patternSection2
     }
 
-    private fun generateRandomPermId(multipleRegexMatchingDesired: Boolean = false): String {
+    private fun generateRandomPermId(numberOfDigits: Int? = null): String {
         fun generateRandomIntegerDifferentFrom20(): Int {
             val randomInt = (1..100).random()
             return if (randomInt != 20) randomInt else generateRandomIntegerDifferentFrom20()
         }
 
         val digits = ('0'..'9')
-        val numberOfCharacters = if (multipleRegexMatchingDesired) 20 else generateRandomIntegerDifferentFrom20()
+        val numberOfCharacters = numberOfDigits ?: generateRandomIntegerDifferentFrom20()
         return (1..numberOfCharacters).map { digits.random() }.joinToString("")
     }
 
@@ -169,7 +169,7 @@ class CommunityManagerTest {
             DataRequestCompanyIdentifierType.isin to generateRandomIsin(),
             DataRequestCompanyIdentifierType.permId to generateRandomPermId(),
         )
-        val multipleRegexMatchingIdentifier = generateRandomPermId(true)
+        val multipleRegexMatchingIdentifier = generateRandomPermId(20)
         val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
             listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
@@ -389,6 +389,32 @@ class CommunityManagerTest {
         checkThatAllIdentifiersWereAccepted(responseForReader, identifiers.size)
     }
 
+    private fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
+        aggregatedDataRequests: List<AggregatedDataRequest>,
+        framework: BulkDataRequest.ListOfFrameworkNames,
+        identifierType: DataRequestCompanyIdentifierType,
+        identifierValue: String,
+        count: Long,
+    ) {
+        val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
+            aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
+                aggregatedDataRequest.dataRequestCompanyIdentifierType == identifierType &&
+                aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue
+        }
+        assertEquals(
+            1,
+            matchingAggregatedRequests.size,
+            "For the ${identifierType.value} $identifierValue and the framework ${framework.value} " +
+                "there is not exactly one aggregated request as expected.",
+        )
+        assertEquals(
+            count,
+            matchingAggregatedRequests[0].count,
+            "For the aggregated data request with ${identifierType.value} $identifierValue and the " +
+                "framework ${framework.value} the count is not as expected.",
+        )
+    }
+
     @Test
     fun `post bulk data requests for different users and check that aggregation works properly`() {
         val leiForCompany = generateRandomLei()
@@ -397,7 +423,7 @@ class CommunityManagerTest {
             DataRequestCompanyIdentifierType.lei to generateRandomLei(),
             DataRequestCompanyIdentifierType.isin to generateRandomIsin(),
             DataRequestCompanyIdentifierType.permId to generateRandomPermId(),
-            DataRequestCompanyIdentifierType.multipleRegexMatches to generateRandomPermId(true),
+            DataRequestCompanyIdentifierType.multipleRegexMatches to generateRandomPermId(20),
             DataRequestCompanyIdentifierType.datalandCompanyId to leiForCompany,
         )
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
@@ -413,24 +439,37 @@ class CommunityManagerTest {
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
         frameworks.forEach { framework ->
             identifierMap.forEach { (identifierType, identifierValue) ->
-                val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
-                    aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
-                        aggregatedDataRequest.dataRequestCompanyIdentifierType == identifierType &&
-                        aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue
-                }
-                assertEquals(
-                    1,
-                    matchingAggregatedRequests.size,
-                    "For the ${identifierType.value} $identifierValue and the framework ${framework.value} " +
-                        "there is not exactly one aggregated request as expected.",
-                )
-                assertEquals(
+                checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
+                    aggregatedDataRequests,
+                    framework,
+                    identifierType,
+                    identifierValue,
                     TechnicalUser.values().size.toLong(),
-                    matchingAggregatedRequests[0].count,
-                    "For the aggregated data request with ${identifierType.value} $identifierValue and the " +
-                        "framework ${framework.value} the count is not as expected.",
                 )
             }
         }
+    }
+
+    @Test
+    fun `post bulk data requests for different users and filter for the identifier value`() {
+        authenticateAsTechnicalUser(TechnicalUser.Reader)
+        val permId = generateRandomPermId(10)
+        val identifiersToRecognizeMap = mapOf(
+            DataRequestCompanyIdentifierType.permId to permId,
+            DataRequestCompanyIdentifierType.lei to permId + generateRandomLei().substring(10),
+            DataRequestCompanyIdentifierType.isin to generateRandomIsin().substring(0, 2) + permId,
+        )
+        val differentLei = generateRandomLei()
+        val identifiers = identifiersToRecognizeMap.values.toList() + listOf(differentLei)
+        val framework = BulkDataRequest.ListOfFrameworkNames.lksg
+        val response = requestControllerApi.postBulkDataRequest(BulkDataRequest(identifiers, listOf(framework)))
+        checkThatAllIdentifiersWereAccepted(response, identifiers.size)
+        val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(identifierValue = permId)
+        identifiersToRecognizeMap.forEach { (identifierType, identifierValue) ->
+            checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
+                aggregatedDataRequests, framework, identifierType, identifierValue, 1,
+            )
+        }
+        assertFalse(aggregatedDataRequests.any { it.dataRequestCompanyIdentifierValue == differentLei })
     }
 }

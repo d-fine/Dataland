@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 
 /**
@@ -11,8 +13,21 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  */
 data class BulkDataRequest(
     @field:JsonProperty(required = true)
+    @field:ArraySchema(
+        arraySchema = Schema(
+            type = "string",
+            example = "[\"DE0005190003\", \"exampleForAnInvalidIdentifier\"]",
+        ),
+        schema = Schema(type = "string"),
+    )
     val listOfCompanyIdentifiers: List<String>,
 
     @field:JsonProperty(required = true)
+    @field:ArraySchema(
+        arraySchema = Schema(
+            implementation = DataTypeEnum::class,
+            example = "[\"p2p\", \"sme\"]",
+        ),
+    )
     val listOfFrameworkNames: List<DataTypeEnum>,
 )

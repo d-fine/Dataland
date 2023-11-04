@@ -166,8 +166,8 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get data requests of a specific user.",
-        "description": "Gets all the stored data request created by the user in the past.",
+        "summary": "Get all data requests of the user making the request.",
+        "description": "Gets all the stored data request created by the user who is making the request.",
         "operationId": "getDataRequestsForUser",
         "responses": {
           "200": {
@@ -448,12 +448,20 @@
         "properties": {
           "listOfCompanyIdentifiers": {
             "type": "array",
+            "example": [
+              "DE0005190003",
+              "exampleForAnInvalidIdentifier"
+            ],
             "items": {
               "type": "string"
             }
           },
           "listOfFrameworkNames": {
             "type": "array",
+            "example": [
+              "p2p",
+              "sme"
+            ],
             "items": {
               "type": "string",
               "enum": [
