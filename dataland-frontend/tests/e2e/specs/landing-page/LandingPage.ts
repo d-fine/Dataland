@@ -23,4 +23,29 @@ describe("Check that the Landing Page to work properly", () => {
     cy.get("h2:contains('Data Privacy')");
     cy.get("span:contains('BACK')").click();
   });
+
+  it.only("Check if vertical scroll is locked when dragging horizontally", () => {
+    cy.viewport(400, 800);
+    cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
+    cy.visitAndCheckAppMount("/").wait("@youtube");
+
+    cy.get('[data-test="howitworks"]')
+      .scrollIntoView()
+      // cy.get(".howitworks__slide") // As soon as it clicks here, the scrolling stops working
+      //   .first()
+      .trigger("pointerdown", { button: 0, clientX: 100, clientY: 400 })
+      .wait(1000)
+      .trigger("pointermove", { button: 0, clientX: 125, clientY: 0 })
+      .wait(1000)
+      .trigger("pointermove", { button: 0, clientX: -125, clientY: 0 })
+      .wait(1000)
+      .trigger("pointermove", { button: 0, clientX: 0, clientY: 100 })
+      .wait(1000)
+      .trigger("pointermove", { button: 0, clientX: 0, clientY: -200 })
+      .wait(1000)
+      .trigger("pointermove", { button: 0, clientX: 0, clientY: 100 })
+      // .trigger("pointermove", { button: 0, clientX: 75, clientY: 600 })
+      // .wait(2000)
+      .trigger("pointerup", { button: 0 });
+  });
 });
