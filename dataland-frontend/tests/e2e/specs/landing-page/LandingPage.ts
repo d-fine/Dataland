@@ -35,8 +35,6 @@ describe("Check that the Landing Page to work properly", () => {
 
     cy.get('[data-test="howitworks"]')
       .scrollIntoView()
-      // cy.get(".howitworks__slide") // As soon as it clicks here, the scrolling stops working
-      //   .first()
       .trigger("pointerdown", { button: 0, clientX: 100, clientY: 400 })
       .wait(1000)
       .trigger("pointermove", { button: 0, clientX: 125, clientY: 0 })
@@ -48,8 +46,6 @@ describe("Check that the Landing Page to work properly", () => {
       .trigger("pointermove", { button: 0, clientX: 0, clientY: -200 })
       .wait(1000)
       .trigger("pointermove", { button: 0, clientX: 0, clientY: 100 })
-      // .trigger("pointermove", { button: 0, clientX: 75, clientY: 600 })
-      // .wait(2000)
       .trigger("pointerup", { button: 0 });
   });
 });
