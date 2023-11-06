@@ -28,6 +28,11 @@
               <router-link to="/dataprivacy" class="no-underline" data-test="data privacy">
                 <p class="font-semibold underline text-primary cursor-pointer" title="data privacy">Data Privacy</p>
               </router-link>
+              <router-link to="/terms" class="no-underline" data-test="data privacy">
+                <p class="font-semibold underline text-primary cursor-pointer" title="terms and conditions">
+                  Terms and Conditions
+                </p>
+              </router-link>
             </div>
           </div>
         </div>

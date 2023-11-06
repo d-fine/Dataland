@@ -12,11 +12,14 @@
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
+      <div role="listitem" class="quotes__slide">
+        <div class="quotes__slide-videoContainer"></div>
+      </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }">
-          <div :id="'video-' + card.icon"></div>
+          <div :id="'video-' + card.icon" class="cookieconsent-optin-marketing"></div>
           <div
-            class="quotes__slide-thumbnail-overlay"
+            class="quotes__slide-thumbnail-overlay cookieconsent-optin-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
             v-show="currentSlide === index - 1 ? showThumbnail : true"
             @click="toggleThumbnailAndPlayVideo(index - 1, card.icon)"
@@ -25,12 +28,20 @@
               <div class="quotes__play-arrow"></div>
             </div>
           </div>
+          <div
+            class="quotes__slide-thumbnail-overlay cookieconsent-optout-marketing"
+            :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
+            v-show="currentSlide === index - 1 ? showThumbnail : true"
+          ></div>
         </div>
       </div>
     </SlideShow>
     <p class="quotes__slide-text">{{ currentCardInfo.date }}</p>
     <h3 class="quotes__slide-title">
-      {{ currentCardInfo.title }} <span>{{ currentCardInfo.text }}</span>
+      {{ currentCardInfo.title }}
+      <span v-for="(titleSegment, index) of currentCardInfo.text.split('\n')" :key="index">
+        {{ titleSegment }}
+      </span>
     </h3>
     <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
