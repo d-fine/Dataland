@@ -283,16 +283,14 @@ class CommunityManagerTest {
             identifiersToRecognizeMap, frameworks, aggregatedDataRequests,
         )
         assertFalse(aggregatedDataRequests.any { it.dataRequestCompanyIdentifierValue == differentLei })
-        val aggregatedDataRequestsForEmptyStringFilter = requestControllerApi.getAggregatedDataRequests(
-            identifierValue = "",
-        )
+        val aggregatedDataRequestsForEmptyString = requestControllerApi.getAggregatedDataRequests(identifierValue = "")
         iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
-            identifiersToRecognizeMap, frameworks, aggregatedDataRequestsForEmptyStringFilter,
+            identifiersToRecognizeMap, frameworks, aggregatedDataRequestsForEmptyString,
         )
         iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
             mapOf(DataRequestCompanyIdentifierType.lei to differentLei),
             frameworks,
-            aggregatedDataRequestsForEmptyStringFilter,
+            aggregatedDataRequestsForEmptyString,
         )
     }
 
