@@ -17,7 +17,7 @@ describe("As a user, I expect the cookie banner to render and to be functional",
         cy.get("div[id='CybotCookiebotDialogBodyFieldsetInnerContainer']").should("exist");
         cy.get("h2[id='CybotCookiebotDialogBodyContentTitle']")
           .should("exist")
-          .should("contain", "This website uses cookies");
+          .should("contain", "Diese Webseite verwendet Cookies");
 
         cy.get("#CybotCookiebotDialogBodyEdgeMoreDetailsLink")
           .should("exist")
@@ -28,7 +28,7 @@ describe("As a user, I expect the cookie banner to render and to be functional",
           .should("have.length", 5)
           .first()
           .get("label")
-          .should("contain", "Necessary");
+          .should("contain", "Notwendig");
 
         cy.get("#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll").click();
         cy.get("#CybotCookiebotDialog").should("not.be.visible");

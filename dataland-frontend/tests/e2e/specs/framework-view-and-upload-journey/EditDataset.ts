@@ -24,7 +24,6 @@ describeIf(
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
         preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
-        cy.pause();
         getKeycloakToken(admin_name, admin_pw)
           .then(async (token: string) =>
             uploadCompanyAndFrameworkData(
