@@ -1,4 +1,6 @@
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import { type Interception } from "cypress/types/net-stubbing";
+import { type BulkDataRequestResponse } from "@clients/communitymanager";
 
 describe("As a user I want to be able to request data", () => {
   beforeEach(() => {
@@ -120,19 +122,19 @@ describe("As a user I want to be able to request data", () => {
    * Checks whether identifiers are displayed correctly on boxes
    * @param interception request
    */
-  function checkIfIdentifiersProperlyDisplayed(interception): void {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-    const rejectedIdentifiers: string[] = interception.response.body.rejectedCompanyIdentifiers;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-    const acceptedIdentifiers: string[] = interception.response.body.acceptedCompanyIdentifiers;
-    cy.get('[data-test="rejectedCompanyIdentifiers"] span[data-test="identifier"]').should(
-      "have.length",
-      rejectedIdentifiers.length,
-    );
-    cy.get('[data-test="acceptedCompanyIdentifiers"] span[data-test="identifier"]').should(
-      "have.length",
-      acceptedIdentifiers.length,
-    );
+  function checkIfIdentifiersProperlyDisplayed(interception: Interception): void {
+    if (interception.response !== undefined) {
+      const rejectedIdentifiers = (interception.response.body as BulkDataRequestResponse).rejectedCompanyIdentifiers;
+      const acceptedIdentifiers = (interception.response.body as BulkDataRequestResponse).acceptedCompanyIdentifiers;
+      cy.get('[data-test="rejectedCompanyIdentifiers"] span[data-test="identifier"]').should(
+        "have.length",
+        rejectedIdentifiers.length,
+      );
+      cy.get('[data-test="acceptedCompanyIdentifiers"] span[data-test="identifier"]').should(
+        "have.length",
+        acceptedIdentifiers.length,
+      );
+    }
   }
 
   /**
