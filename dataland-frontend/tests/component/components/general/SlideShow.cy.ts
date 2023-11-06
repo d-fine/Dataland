@@ -37,6 +37,25 @@ describe("Component test for the SlideShow component", () => {
     });
   });
 
+  it.only("Check if vertical movement occurs when dragging slide show horizontally", () => {
+    cy.mountWithPlugins(TestSlideShow, {}).then( () => {
+      cy.window().then((win) => {
+        const posYBefore = win.scrollY;
+        assertSlidesPosition();
+        dragSlideTo(1, leftOffset);
+        assertSlidesPosition(1);
+        dragSlideTo(2, leftOffset);
+        assertSlidesPosition(2);
+        dragSlideTo(2, leftOffset  + SLIDE_DELTA);
+        assertSlidesPosition(1);
+        dragSlideTo(1, leftOffset  + SLIDE_DELTA);
+        assertSlidesPosition(0);
+        const posYAfter = win.scrollY;
+        expect(posYBefore).equals(posYAfter);
+      });
+    });
+  });
+
   it("Check if dragging is disabled on large screens", () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
       cy.viewport(1900, 800);
