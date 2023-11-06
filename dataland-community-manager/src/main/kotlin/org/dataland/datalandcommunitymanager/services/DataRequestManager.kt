@@ -82,7 +82,7 @@ class DataRequestManager(
                 dataRequestEntity.creationTimestamp,
                 getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
                 dataRequestEntity.dataRequestCompanyIdentifierType,
-                dataRequestEntity.dataRequestCompanyIdentifierValue
+                dataRequestEntity.dataRequestCompanyIdentifierValue,
             )
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
