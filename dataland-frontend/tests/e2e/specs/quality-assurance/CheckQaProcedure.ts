@@ -183,9 +183,9 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
  * Logs the user out without testing the url
  */
 function safeLogout(): void {
-  cy.intercept("**/api/companies?searchString=&*", { body: [] }).as("searchRequest");
-  cy.visitAndCheckAppMount("/")
-    .wait("@searchRequest")
+  cy.intercept("**/api-keys/getApiKeyMetaInfoForUser", { body: [] }).as("getApiKeyMetaInfoForUser");
+  cy.visitAndCheckAppMount("/api-key")
+    .wait("@getApiKeyMetaInfoForUser")
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-logout-anchor']")

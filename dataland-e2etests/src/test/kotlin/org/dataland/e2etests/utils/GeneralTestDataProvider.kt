@@ -28,6 +28,23 @@ class GeneralTestDataProvider {
         )
     }
 
+    fun generateCompanyInformationWithNameAndIdentifiers(
+        lei: String?,
+        isins: List<String>?,
+        permId: String?,
+    ): CompanyInformation {
+        var identifiers = emptyMap<String, List<String>>()
+        if (!lei.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.lei.value to listOf(lei))
+        if (!isins.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.isin.value to isins)
+        if (!permId.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.permId.value to listOf(permId))
+        return CompanyInformation(
+            "DummyCompany",
+            "DummyCity",
+            identifiers,
+            "DE",
+        )
+    }
+
     private fun getListOfBackendOnlyFrameworks(): List<DataTypeEnum> {
         return DataTypeEnum.values().toMutableList().filter { !FRONTEND_DISPLAYED_FRAMEWORKS.contains(it) }
     }

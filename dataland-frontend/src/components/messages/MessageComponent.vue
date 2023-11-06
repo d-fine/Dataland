@@ -2,6 +2,9 @@
   <transition name="p-message" appear>
     <div v-show="visible" :class="containerClass" class="p-message p-component border-round-sm">
       <div class="p-message-wrapper">
+        <div data-test="left-icon" class="text-left left-icon">
+          <slot name="left-icon"></slot>
+        </div>
         <div data-test="text-info" class="text-left">
           <slot name="text-info"></slot>
         </div>
@@ -37,7 +40,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .action-button button {
   white-space: nowrap;
   margin-left: 15px;
@@ -45,5 +48,10 @@ export default defineComponent({
 .p-message-wrapper {
   display: flex;
   align-items: center;
+}
+
+.left-icon {
+  place-self: flex-start;
+  margin: 0.5rem 0;
 }
 </style>

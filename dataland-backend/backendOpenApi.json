@@ -216,74 +216,6 @@
         ]
       }
     },
-    "/invite": {
-      "post": {
-        "tags": [
-          "invite-controller"
-        ],
-        "summary": "Create a Dataland invite.",
-        "description": "Create a Dataland invite by uploading an Excel file containing the invite info.",
-        "operationId": "submitInvite",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "excelFile"
-                ],
-                "type": "object",
-                "properties": {
-                  "excelFile": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully created an invite.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InviteMetaInfoEntity"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/sme": {
       "post": {
         "tags": [
@@ -2519,36 +2451,6 @@
             "items": {
               "$ref": "#/components/schemas/DataMetaInformation"
             }
-          }
-        }
-      },
-      "InviteMetaInfoEntity": {
-        "type": "object",
-        "properties": {
-          "inviteId": {
-            "type": "string",
-            "nullable": true
-          },
-          "userId": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileId": {
-            "type": "string",
-            "nullable": true
-          },
-          "timeStamp": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          },
-          "wasInviteSuccessful": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "inviteResultMessage": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
