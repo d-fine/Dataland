@@ -16,12 +16,16 @@ describe("Check that the Landing Page to work properly", () => {
     cy.get("span:contains('HOME')").click();
 
     cy.get("a[href='/imprint']").click();
-    cy.get("h2:contains('Imprint')");
-    cy.get("span:contains('BACK')").click();
+    cy.get("h2:contains('Impressum')");
+    cy.get("a[href='/']").click();
 
     cy.get("a[href='/dataprivacy']").click();
-    cy.get("h2:contains('Data Privacy')");
-    cy.get("span:contains('BACK')").click();
+    cy.get("h1:contains('Datenschutzhinweise')");
+    cy.get("a[href='/']").click();
+
+    cy.get("a[href='/terms']").click();
+    cy.get("h1:contains('Allgemeine Bedingungen für die Teilnahme an Dataland')");
+    cy.get("a[href='/']").click();
   });
 
   it.only("Check if vertical scroll is locked when dragging horizontally", () => {
