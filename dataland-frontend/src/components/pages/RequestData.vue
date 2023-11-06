@@ -314,7 +314,8 @@ export default defineComponent({
         this.messageCounter++;
         console.error(error);
         if (error instanceof AxiosError) {
-          this.message = ((error.response?.data as ErrorResponse)?.errors as ErrorDetails[])[0].message as string;
+          const responseMessages = (error.response?.data as ErrorResponse)?.errors as ErrorDetails[];
+          this.message = (responseMessages ? responseMessages[0].message : error.message) as string;
           this.summary = ((error.response?.data as ErrorResponse)?.errors as ErrorDetails[])[0].summary as string;
         } else {
           this.message =
