@@ -35,12 +35,6 @@ class CommunityManagerTest {
     private val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
-    private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<DataRequestEntity> {
-        return requestControllerApi.getDataRequestsForUser().filter { dataRequestEntity ->
-            dataRequestEntity.creationTimestamp > timestamp
-        }
-    }
-
     private fun authenticateAsTechnicalUser(technicalUser: TechnicalUser) {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
     }
@@ -53,6 +47,12 @@ class CommunityManagerTest {
         return apiAccessor.uploadOneCompanyWithIdentifiers(lei, isin, permId)!!.actualStoredCompany.companyId
     }
 
+    private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<DataRequestEntity> {
+        return requestControllerApi.getDataRequestsForUser().filter { dataRequestEntity ->
+            dataRequestEntity.creationTimestamp > timestamp
+        }
+    }
+
     @Test
     fun `post bulk data request for all frameworks and different valid identifiers and check stored requests`() {
         authenticateAsTechnicalUser(TechnicalUser.Reader)
@@ -63,10 +63,7 @@ class CommunityManagerTest {
         )
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
         val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
-            listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
-                listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusNonMinusFinancials
-        } // TODO Filter to be removed once EU Taxo works with standard value including "-"
+        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks),
@@ -230,10 +227,7 @@ class CommunityManagerTest {
     fun `check the expected exception is thrown when frameworks are empty or identifiers are empty or invalid only`() {
         authenticateAsTechnicalUser(TechnicalUser.Reader)
         val validIdentifiers = listOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
-            listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
-                listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusNonMinusFinancials
-        } // TODO Filter to be removed once EU Taxo works with standard value including "-"
+        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
         val exceptionForEmptyFrameworkList = assertThrows<ClientException> {
             requestControllerApi.postBulkDataRequest(BulkDataRequest(validIdentifiers, emptyList()))
         }
@@ -278,10 +272,7 @@ class CommunityManagerTest {
             DataRequestCompanyIdentifierType.multipleRegexMatches to generateRandomPermId(20),
             DataRequestCompanyIdentifierType.datalandCompanyId to leiForCompany,
         )
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
-            listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
-                listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusNonMinusFinancials
-        } // TODO Filter to be removed once EU Taxo works with standard value including "-"
+        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
         TechnicalUser.values().forEach { technicalUser ->
             authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
                 technicalUser, identifierMap.values.toList(), frameworks,
@@ -337,10 +328,7 @@ class CommunityManagerTest {
     @Test
     fun `post bulk requests and check that the filter for frameworks on aggregated level works properly`() {
         authenticateAsTechnicalUser(TechnicalUser.Reader)
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
-            listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
-                listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusNonMinusFinancials
-        } // TODO Filter to be removed once EU Taxo works with standard value including "-"
+        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
         val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifierMap.values.toList(), frameworks),
