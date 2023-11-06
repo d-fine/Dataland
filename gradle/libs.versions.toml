@@ -135,6 +135,7 @@ jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.15
 commons-io = "commons-io:commons-io:2.14.0"
 
 commons-codec = "commons-codec:commons-codec:_"
+commons-text = "org.apache.commons:commons-text:_"
 
 pdfbox = "org.apache.pdfbox:pdfbox:_"
 

@@ -15,7 +15,7 @@ include(
     "dataland-message-queue-utils",
     "dataland-document-manager",
     "dataland-batch-manager",
-    "dataland-framework-toolbox"
+    "dataland-framework-toolbox",
 )
 
 plugins {

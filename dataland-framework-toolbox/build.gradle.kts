@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.jackson.module.kotlin)
     implementation(libs.commons.io)
     implementation(libs.commons.codec)
+    implementation(libs.commons.text)
     implementation(libs.slf4j.api)
     implementation("org.gradle:gradle-tooling-api:7.1.1")
     implementation(libs.freemarker)

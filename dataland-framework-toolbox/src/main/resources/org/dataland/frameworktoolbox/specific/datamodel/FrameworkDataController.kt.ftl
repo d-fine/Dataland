@@ -1,0 +1,54 @@
+package org.dataland.datalandbackend.frameworks.${frameworkIdentifier}
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.swagger.v3.oas.annotations.Operation
+import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+<#list frameworkDataType.imports as import>import ${import}
+</#list>
+
+/**
+ * Controller for the ${frameworkCapitalizedName} framework endpoints
+ * @param myDataManager data manager to be used
+ * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ */
+@RequestMapping("/data/${frameworkIdentifier}")
+@RestController
+class ${frameworkDataType.shortenedQualifier}Controller(
+    @Autowired var myDataManager: DataManager,
+    @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myObjectMapper: ObjectMapper,
+) : DataController<${frameworkDataType.shortenedQualifier}>(
+    myDataManager,
+    myMetaDataManager,
+    myObjectMapper,
+    ${frameworkDataType.shortenedQualifier}::class.java,
+) {
+    @Operation(operationId = "getCompanyAssociated${frameworkDataType.shortenedQualifier}")
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>> {
+        return super.getCompanyAssociatedData(dataId)
+    }
+
+    @Operation(operationId = "postCompanyAssociated${frameworkDataType.shortenedQualifier}")
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>, bypassQa: Boolean):
+        ResponseEntity<DataMetaInformation> {
+        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+    }
+
+    @Operation(operationId = "getAllCompany${frameworkDataType.shortenedQualifier}")
+    override fun getFrameworkDatasetsForCompany(
+        companyId: String,
+        showOnlyActive: Boolean,
+        reportingPeriod: String?,
+    ): ResponseEntity<List<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>> {
+        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+    }
+}

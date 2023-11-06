@@ -1,0 +1,35 @@
+package org.dataland.frameworktoolbox.template
+
+import org.dataland.frameworktoolbox.template.model.TemplateRow
+import org.dataland.frameworktoolbox.utils.diagnostic.Diagnostic
+import org.dataland.frameworktoolbox.utils.shortSha
+
+/**
+ * A diagnostic utility to log common warning encountered during Excel-Conversion
+ */
+object TemplateDiagnostic {
+    /**
+     * Attests that this generator does not use the "options" column of the CSV
+     */
+    fun optionsNotUsed(row: TemplateRow) = unusedColumn("options", "", row, row.options)
+
+    /**
+     * Attests that this generator does not use the "unit" column of the CSV
+     */
+    fun unitNotUsed(row: TemplateRow) = unusedColumn("unit", "", row, row.unit)
+
+    /**
+     * Attests that this generator does not use the "documentSupport" column of the CSV
+     */
+    fun documentSupportNotUsed(row: TemplateRow) =
+        unusedColumn("documentSupport", "None", row, row.documentSupport.value)
+
+    private fun unusedColumn(columnName: String, expectedColumnValue: String, row: TemplateRow, columnValue: String) {
+        Diagnostic.warnIf(
+            columnValue.trim() != expectedColumnValue,
+            "TemplateConversion-UnusedColumn-$columnName-Row-${row.fieldIdentifier}-${columnValue.shortSha()}",
+            "The row ${row.fieldIdentifier} defined a non-standard value for the column " +
+                "'$columnName' ($columnValue), which was not considered during conversion",
+        )
+    }
+}
