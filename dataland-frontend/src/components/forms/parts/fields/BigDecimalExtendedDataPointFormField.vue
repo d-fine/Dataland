@@ -12,7 +12,6 @@
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
       <NumberFormField
         :name="'value'"
-        v-model:currentValue="currentValue"
         :validation-label="validationLabel"
         :validation="validation"
         :unit="unit"
