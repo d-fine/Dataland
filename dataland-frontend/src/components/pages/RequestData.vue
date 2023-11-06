@@ -5,8 +5,8 @@
       <FormKit :actions="false" type="form" @submit="submitRequest" id="requestDataFormId" name="requestDataFormName">
         <div class="grid p-8 uploadFormWrapper">
           <div class="col-12" v-if="postBulkDataRequestObjectProcessed">
-            <div v-if="submittingSucceded">
-              <MessageComponent v-if="acceptedCompanyIdentifiers.length" data-test="" severity="light-success">
+            <div data-test="submittingSuccededMessage" v-if="submittingSucceded">
+              <MessageComponent v-if="acceptedCompanyIdentifiers.length" data-test="someIdentifiersPassed" severity="light-success">
                 <template #left-icon>
                   <em class="material-icons info-icon p-message-icon green-text">check_circle</em>
                 </template>
@@ -20,7 +20,7 @@
                   </p>
                 </template>
               </MessageComponent>
-              <MessageComponent v-else data-test="" severity="light-error">
+              <MessageComponent v-else data-test="nonIdentifiersPassed" severity="light-error">
                 <template #left-icon>
                   <em class="material-icons info-icon p-message-icon red-text">error</em>
                 </template>
@@ -37,7 +37,7 @@
           </div>
 
           <div class="col-12" v-if="submittingSucceded">
-            <div class="bg-white radius-1 p-4">
+            <div data-test="nonIdentifiersPassed" class="bg-white radius-1 p-4">
               <div class="grid">
                 <div class="col-12">
                   <h4 class="p-0">Data Request Summary</h4>
@@ -62,11 +62,14 @@
                     <em class="material-icons info-icon green-text">check_circle</em>
                     <h4>{{ acceptedCompanyIdentifiers.length ?? 0 }} Accepted Company Identifiers</h4>
                   </div>
-                  <div class="paper-section radius-1 p-2 w-full selected-frameworks">
+                  <div
+                    class="paper-section radius-1 p-2 w-full selected-frameworks"
+                    data-test="acceptedCompanyIdentifiers"
+                  >
                     <span v-if="!acceptedCompanyIdentifiers.length" class="gray-text no-framework"
                       >No accepted identifiers have been submitted.</span
                     >
-                    <span v-for="it in acceptedCompanyIdentifiers" :key="it"> {{ it }}, </span>
+                    <span data-test="identifier" v-for="it in acceptedCompanyIdentifiers" :key="it"> {{ it }}, </span>
                   </div>
                 </div>
                 <div class="col-4">
@@ -79,11 +82,12 @@
                   <div
                     class="paper-section radius-1 p-2 w-full selected-frameworks"
                     :class="rejectedCompanyIdentifiers.length ? 'red-border' : null"
+                    data-test="rejectedCompanyIdentifiers"
                   >
                     <span v-if="!rejectedCompanyIdentifiers.length" class="gray-text no-framework"
                       >No rejected identifiers.</span
                     >
-                    <span v-for="it in rejectedCompanyIdentifiers" :key="it"> {{ it }}, </span>
+                    <span data-test="identifier" v-for="it in rejectedCompanyIdentifiers" :key="it"> {{ it }}, </span>
                   </div>
                 </div>
                 <div class="col-12 text-center">
@@ -122,9 +126,10 @@
                 </PrimeButton>
               </div>
               <div class="col-6">
-                <div class="bg-white radius-1 p-4">
+                <div data-test="selectFrameworkDiv" class="bg-white radius-1 p-4">
                   <h4 class="p-0">Select at least one framework</h4>
                   <MultiSelectFormFieldBindData
+                    data-test="selectFrameworkSelect"
                     label="Frameworks"
                     placeholder="Select framework"
                     description="Select the frameworks you would like data for"
@@ -146,7 +151,7 @@
                     :outer-class="{ 'hidden-input': true }"
                   />
                   <h4 class="p-0">Added Frameworks:</h4>
-                  <div class="paper-section radius-1 p-2 w-full selected-frameworks">
+                  <div data-test="addedFrameworks" class="paper-section radius-1 p-2 w-full selected-frameworks">
                     <span v-if="!selectedFrameworks.length" class="gray-text no-framework"
                       >No Frameworks added yet</span
                     >
@@ -158,7 +163,7 @@
                 </div>
               </div>
               <div class="col-6">
-                <div class="bg-white radius-1 p-4">
+                <div data-test="provideIdentifiers" class="bg-white radius-1 p-4">
                   <h4 class="p-0">Provide Company Identifiers</h4>
                   <FormKit
                     v-model="identifiersInString"
