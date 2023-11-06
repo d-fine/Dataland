@@ -93,8 +93,9 @@ describeIf(
       cy.get('div[data-test="applicableHighImpactClimateSector"]:contains("A - AGRICULTURE, FORESTRY AND FISHING")')
         .find("em:contains('close')")
         .click();
-      cy.get('div[data-test="applicableHighImpactClimateSector"]:contains("A - AGRICULTURE, FORESTRY AND FISHING")')
-        .should("not.exist");
+      cy.get(
+        'div[data-test="applicableHighImpactClimateSector"]:contains("A - AGRICULTURE, FORESTRY AND FISHING")',
+      ).should("not.exist");
     }
 
     /**

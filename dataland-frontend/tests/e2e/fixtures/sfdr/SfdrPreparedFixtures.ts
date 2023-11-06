@@ -1,5 +1,5 @@
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import {type SfdrData, YesNo} from "@clients/backend";
+import { type SfdrData, YesNo } from "@clients/backend";
 import { generateSfdrData, generateSfdrFixtures } from "./SfdrDataFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 
