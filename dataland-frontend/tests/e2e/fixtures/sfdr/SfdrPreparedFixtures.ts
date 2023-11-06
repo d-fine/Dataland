@@ -1,5 +1,5 @@
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { type SfdrData } from "@clients/backend";
+import {type SfdrData, YesNo} from "@clients/backend";
 import { generateSfdrData, generateSfdrFixtures } from "./SfdrDataFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 
@@ -41,6 +41,9 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  */
 function manipulateFixtureForNoNullFields(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "Sfdr-dataset-with-no-null-fields";
+  input.t.environmental!.biodiversity!.protectedAreasExposure!.value = YesNo.No;
+  input.t.environmental!.biodiversity!.rareOrEndangeredEcosystemsExposure!.value = YesNo.Yes;
+  input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure!.value = YesNo.Yes;
   return input;
 }
 
