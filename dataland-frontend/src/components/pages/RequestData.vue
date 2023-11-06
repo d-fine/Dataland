@@ -360,7 +360,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    void this.retrieveAvailableFrameworks();
+    this.retrieveAvailableFrameworks();
   },
 });
 </script>
