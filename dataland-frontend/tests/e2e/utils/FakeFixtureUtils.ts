@@ -2,7 +2,12 @@ import { generateDataPoint, generateReferencedReports } from "@e2e/fixtures/comm
 import { type ReferencedDocuments, generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { type CurrencyDataPoint, type YesNo, type YesNoNa } from "@clients/backend";
-import { generateCurrencyValue, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import {
+  generateCurrencyValue,
+  generateFloat,
+  generateInt,
+  generatePercentageValue,
+} from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
@@ -48,6 +53,10 @@ export class Generator {
 
   randomInt(max = 10000): number | null {
     return this.valueOrNull(generateInt(max));
+  }
+
+  randomFloat(min: number = 0, max: number = 1e5): number | null {
+    return this.valueOrNull(generateFloat(min, max));
   }
 
   randomCurrencyValue(): number | null {

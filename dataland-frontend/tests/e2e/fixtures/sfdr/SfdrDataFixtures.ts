@@ -5,9 +5,9 @@ import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDevi
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { faker } from "@faker-js/faker";
+import { generateFixtureDataset, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
+import { generateDataPoint } from "@e2e/fixtures/common/DataPointFixtures";
 
 /**
  * Generates a set number of SFDR fixtures
@@ -159,18 +159,12 @@ class SfdrGenerator extends Generator {
    * @returns random map of procurement categories
    */
   generateHighImpactClimateSectors(): { [key: string]: ExtendedDataPointBigDecimal } {
-    const highImpactClimateSectors = Object.values(HighImpactClimateSector);
-    const keys = [] as HighImpactClimateSector[];
-    highImpactClimateSectors.forEach((naceCode) => {
-      if (faker.datatype.boolean()) {
-        keys.push(naceCode);
-      }
-    });
+    const keys: HighImpactClimateSector[] = pickSubsetOfElements(Object.values(HighImpactClimateSector), 0);
     return Object.fromEntries(
       new Map<string, ExtendedDataPointBigDecimal>(
         keys.map((naceCode) => [
           naceCode as string,
-          this.randomExtendedDataPoint(generateFloat()) as ExtendedDataPointBigDecimal,
+          generateDataPoint(this.randomFloat(), this.reports) as ExtendedDataPointBigDecimal,
         ]),
       ),
     );
