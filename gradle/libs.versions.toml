@@ -60,6 +60,8 @@ springdoc-openapi-starter-webmvc-ui = "org.springdoc:springdoc-openapi-starter-w
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
 
 log4j = "org.apache.logging.log4j:log4j:2.20.0"
+log4j-core = "org.apache.logging.log4j:log4j-core:2.20.0"
+log4j-slf4j2-impl = "org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0"
 
 log4j-api = "org.apache.logging.log4j:log4j-api:2.20.0"
 
@@ -132,6 +134,8 @@ jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.15
 
 commons-io = "commons-io:commons-io:2.14.0"
 
+commons-codec = "commons-codec:commons-codec:_"
+
 pdfbox = "org.apache.pdfbox:pdfbox:_"
 
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
@@ -167,3 +171,4 @@ spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:_"
 jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:_"
 flyway = "org.flywaydb:flyway-core:_"
+freemarker = "org.freemarker:freemarker:_"
