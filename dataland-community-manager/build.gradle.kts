@@ -51,6 +51,7 @@ dependencies {
     testImplementation(Spring.security.spring_security_test)
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.mailjet.client)
+    implementation(libs.jackson.kotlin)
 }
 
 openApi {
@@ -86,6 +87,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
     configOptions.set(
         mapOf(
+            "serializationLibrary" to "jackson",
             "dateLibrary" to "java17",
             "useTags" to "true",
         ),
