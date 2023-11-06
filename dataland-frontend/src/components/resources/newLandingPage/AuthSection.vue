@@ -1,7 +1,13 @@
 <template>
   <div class="header__authsection">
     <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
-    <ButtonComponent label="Sign Up" buttonType="primary" ariaLabel="Sign up to preview account" @click="register" />
+    <ButtonComponent
+      label="Sign Up"
+      buttonType="primary"
+      ariaLabel="Sign up to preview account"
+      name="signup_dataland_button"
+      @click="register"
+    />
   </div>
 </template>
 
