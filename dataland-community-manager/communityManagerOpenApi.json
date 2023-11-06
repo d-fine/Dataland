@@ -502,6 +502,12 @@
         }
       },
       "AggregatedDataRequest": {
+        "required": [
+          "count",
+          "dataRequestCompanyIdentifierType",
+          "dataRequestCompanyIdentifierValue",
+          "dataType"
+        ],
         "type": "object",
         "properties": {
           "dataType": {
@@ -538,6 +544,14 @@
         ]
       },
       "DataRequestEntity": {
+        "required": [
+          "creationTimestamp",
+          "dataRequestCompanyIdentifierType",
+          "dataRequestCompanyIdentifierValue",
+          "dataRequestId",
+          "dataType",
+          "userId"
+        ],
         "type": "object",
         "properties": {
           "dataRequestId": {
@@ -581,14 +595,14 @@
         }
       },
       "ErrorDetails": {
+        "required": [
+          "errorType",
+          "httpStatus",
+          "message",
+          "summary"
+        ],
         "type": "object",
         "properties": {
-          "httpStatus": {
-            "type": "number"
-          },
-          "metaInformation": {
-            "type": "object"
-          },
           "errorType": {
             "type": "string"
           },
@@ -597,10 +611,19 @@
           },
           "message": {
             "type": "string"
+          },
+          "httpStatus": {
+            "type": "number"
+          },
+          "metaInformation": {
+            "type": "object"
           }
         }
       },
       "ErrorResponse": {
+        "required": [
+          "errors"
+        ],
         "type": "object",
         "properties": {
           "errors": {
