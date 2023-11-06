@@ -90,9 +90,19 @@ class DataRequestManager(
         val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
             null
         } else {
-            dataTypes
+            dataTypes?.map { it.name }
         }
-        return dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery)
+        val aggregatedDataRequestEntities =
+            dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery)
+        val aggregatedDataRequests = aggregatedDataRequestEntities.map { it ->
+            AggregatedDataRequest(
+                DataTypeEnum.decode(it.dataTypeName),
+                it.dataRequestCompanyIdentifierType,
+                it.dataRequestCompanyIdentifierValue,
+                it.count,
+            )
+        }
+        return aggregatedDataRequests
     }
 
     private fun throwExceptionIfNotJwtAuth() {
@@ -137,8 +147,8 @@ class DataRequestManager(
         identifierValue: String,
         framework: DataTypeEnum,
     ): Boolean {
-        val isAlreadyExisting = dataRequestRepository.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataType(
-            requestingUserId, identifierValue, framework,
+        val isAlreadyExisting = dataRequestRepository.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeName(
+            requestingUserId, identifierValue, framework.name,
         )
         if (isAlreadyExisting) {
             dataRequestLogger
@@ -156,7 +166,12 @@ class DataRequestManager(
     ) {
         if (!isDataRequestAlreadyExisting(userId, identifierValue, dataType)) {
             storeDataRequestEntity(
-                buildDataRequestEntity(userId, dataType, identifierType, identifierValue),
+                buildDataRequestEntity(
+                    userId,
+                    dataType,
+                    identifierType,
+                    identifierValue,
+                ),
                 bulkDataRequestId,
             )
         }
@@ -213,7 +228,7 @@ class DataRequestManager(
             dataRequestId = UUID.randomUUID().toString(),
             userId = currentUserId,
             creationTimestamp = Instant.now().toEpochMilli(),
-            dataType = framework,
+            dataTypeName = framework.value,
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
         )

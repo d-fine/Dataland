@@ -6,7 +6,6 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 
 /**
  * The entity storing the information considering one single data request
@@ -21,8 +20,7 @@ data class DataRequestEntity(
 
     val creationTimestamp: Long,
 
-    @Enumerated(EnumType.STRING)
-    val dataType: DataTypeEnum,
+    val dataTypeName: String,
 
     @Enumerated(EnumType.STRING)
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
