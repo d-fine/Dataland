@@ -4,6 +4,9 @@ const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
+const TermsAndConditions = (): Promise<RouteComponent> => import("@/components/pages/TermsAndConditions.vue");
+const TokenTerms = (): Promise<RouteComponent> => import("@/components/pages/TokenTerms.vue");
+const PricingAndRemuneration = (): Promise<RouteComponent> => import("@/components/pages/PricingAndRemuneration.vue");
 const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/TheImprint.vue");
 const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
@@ -94,6 +97,21 @@ const routes = [
     path: "/dataprivacy",
     name: "DataPrivacy",
     component: DataPrivacy,
+  },
+  {
+    path: "/terms",
+    name: "TermsAndConditions",
+    component: TermsAndConditions,
+  },
+  {
+    path: "/pricing",
+    name: "Pricing",
+    component: PricingAndRemuneration,
+  },
+  {
+    path: "/token",
+    name: "TokenTerms",
+    component: TokenTerms,
   },
   {
     path: "/imprint",
