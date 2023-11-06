@@ -17,12 +17,7 @@ fun retrieveTimeAndWaitOneMillisecond(): Long {
 }
 
 // TODO Try to remove the following three different DataType variations coming from using the backend enum in ...
-// TODO ... three different cases
-fun findDataRequestEntityDataTypeForFramework(
-    framework: BulkDataRequest.ListOfFrameworkNames,
-): DataRequestEntity.DataType {
-    return DataRequestEntity.DataType.values().find { dataType -> dataType.value == framework.value }!!
-}
+// TODO ... three (now two) different cases
 fun findAggregatedDataRequestDataTypeForFramework(
     framework: BulkDataRequest.ListOfFrameworkNames,
 ): AggregatedDataRequest.DataType {
@@ -138,19 +133,19 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
 
 fun checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
     recentlyStoredRequestsForUser: List<DataRequestEntity>,
-    dataType: DataRequestEntity.DataType,
+    dataTypeName: String,
     dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
     dataRequestCompanyIdentifierValue: String,
 ) {
     assertEquals(
         1,
         recentlyStoredRequestsForUser.filter { dataRequestEntity ->
-            dataRequestEntity.dataType == dataType &&
+            dataRequestEntity.dataTypeName == dataTypeName &&
                 dataRequestEntity.dataRequestCompanyIdentifierType == dataRequestCompanyIdentifierType &&
                 dataRequestEntity.dataRequestCompanyIdentifierValue == dataRequestCompanyIdentifierValue
         }.size,
         "For the ${dataRequestCompanyIdentifierType.value} $dataRequestCompanyIdentifierValue " +
-            "and the framework ${dataType.value} there is not exactly one newly stored request as expected.",
+            "and the framework $dataTypeName there is not exactly one newly stored request as expected.",
     )
 }
 
