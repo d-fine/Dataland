@@ -132,16 +132,10 @@ class CommunityManagerTest {
         )
         val dataType = findDataRequestEntityDataTypeForFramework(frameworksForBulkRequest[0])
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests,
-            dataType,
-            DataRequestCompanyIdentifierType.datalandCompanyId,
-            companyId,
+            newlyStoredRequests, dataType, DataRequestCompanyIdentifierType.datalandCompanyId, companyId,
         )
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests,
-            dataType,
-            identifierTypeForUnknownCompany,
-            identifierValueForUnknownCompany,
+            newlyStoredRequests, dataType, identifierTypeForUnknownCompany, identifierValueForUnknownCompany,
         )
     }
 
