@@ -315,15 +315,15 @@ class ApiAccessor {
 
     fun uploadOneCompanyWithIdentifiers(
         lei: String? = null,
-        isin: List<String>? = null,
+        isins: List<String>? = null,
         permId: String? = null,
     ): UploadInfo? {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        if (lei.isNullOrEmpty() && isin.isNullOrEmpty() && permId.isNullOrEmpty()) {
+        if (lei.isNullOrEmpty() && isins.isNullOrEmpty() && permId.isNullOrEmpty()) {
             return null
         }
         val testCompanyInformation = generalTestDataProvider
-            .generateCompanyInformationWithNameAndIdentifiers(lei, isin, permId)
+            .generateCompanyInformationWithNameAndIdentifiers(lei, isins, permId)
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
