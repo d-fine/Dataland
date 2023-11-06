@@ -75,10 +75,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    valueTree: {
-      type: Array<TreeNode>,
-      default: naceCodeTree,
-    },
   },
   components: { Tree, OverlayPanel, InputText, Checkbox },
   setup() {
@@ -133,7 +129,7 @@ export default defineComponent({
         });
         newSelectedChildrenCounter.set(assertDefined(node.key), localSum);
       };
-      this.valueTree.forEach((treeNode) => {
+      naceCodeTree.forEach((treeNode) => {
         childrenCounterPopulator(treeNode);
       });
       this.selectedChildrenCounter = newSelectedChildrenCounter;
@@ -157,7 +153,7 @@ export default defineComponent({
   },
   data() {
     return {
-      filteredTreeValues: this.valueTree,
+      filteredTreeValues: naceCodeTree,
       searchFilter: "",
       expandedTreeKeys: {},
       selectedTreeNodes: new Set<string>(),
@@ -167,7 +163,7 @@ export default defineComponent({
   watch: {
     searchFilter(searchFilter: string) {
       if (searchFilter) {
-        const copy = structuredClone(this.valueTree);
+        const copy = structuredClone(naceCodeTree);
         this.filteredTreeValues = filterNodes(copy, searchFilter) ?? [];
         const expandedKeysDict = {};
         for (const node of this.filteredTreeValues) {
@@ -176,7 +172,7 @@ export default defineComponent({
         this.expandedTreeKeys = expandedKeysDict;
       } else {
         this.expandedTreeKeys = {};
-        this.filteredTreeValues = this.valueTree;
+        this.filteredTreeValues = naceCodeTree;
       }
     },
     selectedTreeNodes: {
