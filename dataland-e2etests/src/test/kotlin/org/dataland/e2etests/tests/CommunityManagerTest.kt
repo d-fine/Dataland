@@ -145,16 +145,25 @@ class CommunityManagerTest {
         }
     }
 
+    // TODO Try to remove the following three different DataType variations coming from using the backend enum in ...
+    // TODO ... three different cases
     private fun findDataRequestEntityDataTypeForFramework(
         framework: BulkDataRequest.ListOfFrameworkNames,
     ): DataRequestEntity.DataType {
         return DataRequestEntity.DataType.values().find { dataType -> dataType.value == framework.value }!!
     }
-
     private fun findAggregatedDataRequestDataTypeForFramework(
         framework: BulkDataRequest.ListOfFrameworkNames,
     ): AggregatedDataRequest.DataType {
         return AggregatedDataRequest.DataType.values().find { dataType -> dataType.value == framework.value }!!
+    }
+    private fun findRequestControllerApiDataTypeForFramework(
+        framework: BulkDataRequest.ListOfFrameworkNames,
+    ): RequestControllerApi.DataTypesGetAggregatedDataRequests {
+        return RequestControllerApi.DataTypesGetAggregatedDataRequests.values().find {
+                dataType ->
+            dataType.value == framework.value
+        }!!
     }
 
     private fun authenticateAsTechnicalUser(technicalUser: TechnicalUser) {
@@ -184,7 +193,6 @@ class CommunityManagerTest {
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, identifiers.size * frameworks.size)
         val randomDataType = findDataRequestEntityDataTypeForFramework(frameworks.random())
-        // TODO Try to remove different types of DataTypeEnum (referenced in BulkDataRequest and in DataRequestEntity)
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequests,
@@ -349,7 +357,7 @@ class CommunityManagerTest {
     }
 
     @Test
-    fun `check the expected exception thrown when frameworks are empty or identifiers are empty or invalid only`() {
+    fun `check the expected exception is thrown when frameworks are empty or identifiers are empty or invalid only`() {
         authenticateAsTechnicalUser(TechnicalUser.Reader)
         val validIdentifiers = listOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
@@ -451,7 +459,7 @@ class CommunityManagerTest {
     }
 
     @Test
-    fun `post bulk data requests for different users and filter for the identifier value`() {
+    fun `post bulk data request and check that filter for the identifier value on aggregated level works properly`() {
         authenticateAsTechnicalUser(TechnicalUser.Reader)
         val permId = generateRandomPermId(10)
         val identifiersToRecognizeMap = mapOf(
@@ -471,5 +479,40 @@ class CommunityManagerTest {
             )
         }
         assertFalse(aggregatedDataRequests.any { it.dataRequestCompanyIdentifierValue == differentLei })
+    }
+
+    @Test
+    fun `post bulk requests and check that the filter for frameworks on aggregated level works properly`() {
+        authenticateAsTechnicalUser(TechnicalUser.Reader)
+        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter { listOfFrameworkNames ->
+            listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
+                listOfFrameworkNames != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusNonMinusFinancials
+        } // TODO Filter to be removed once EU Taxo works with standard value including "-"
+        val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
+        val response = requestControllerApi.postBulkDataRequest(
+            BulkDataRequest(identifierMap.values.toList(), frameworks),
+        )
+        checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
+        listOf(1, (2 until frameworks.size).random(), frameworks.size).forEach { numberOfRandomFrameworks ->
+            val randomFrameworks = frameworks.shuffled().take(numberOfRandomFrameworks)
+            val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(
+                dataTypes = randomFrameworks.map { findRequestControllerApiDataTypeForFramework(it) },
+            )
+            identifierMap.forEach { (identifierType, identifierValue) ->
+                randomFrameworks.forEach { framework ->
+                    checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
+                        aggregatedDataRequests, framework, identifierType, identifierValue, 1,
+                    )
+                }
+            }
+            val frameworksNotToBeFound = frameworks.filter { !randomFrameworks.contains(it) }
+            frameworksNotToBeFound.forEach { framework ->
+                assertFalse(
+                    aggregatedDataRequests.any {
+                        it.dataType == findAggregatedDataRequestDataTypeForFramework(framework)
+                    },
+                )
+            }
+        }
     }
 }
