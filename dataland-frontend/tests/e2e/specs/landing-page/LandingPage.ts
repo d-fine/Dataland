@@ -28,7 +28,7 @@ describe("Check that the Landing Page to work properly", () => {
     cy.get("a[href='/']").click();
   });
 
-  it.only("Check if vertical scroll is locked when dragging horizontally", () => {
+  it("Check if vertical scroll is locked when dragging horizontally", () => {
     cy.viewport(400, 800);
     cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
     cy.visitAndCheckAppMount("/").wait("@youtube");
