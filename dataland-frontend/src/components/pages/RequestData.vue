@@ -6,7 +6,11 @@
         <div class="grid p-8 uploadFormWrapper">
           <div class="col-12" v-if="postBulkDataRequestObjectProcessed">
             <div data-test="submittingSuccededMessage" v-if="submittingSucceded">
-              <MessageComponent v-if="acceptedCompanyIdentifiers.length" data-test="someIdentifiersPassed" severity="light-success">
+              <MessageComponent
+                v-if="acceptedCompanyIdentifiers.length"
+                data-test="someIdentifiersPassed"
+                severity="light-success"
+              >
                 <template #left-icon>
                   <em class="material-icons info-icon p-message-icon green-text">check_circle</em>
                 </template>
