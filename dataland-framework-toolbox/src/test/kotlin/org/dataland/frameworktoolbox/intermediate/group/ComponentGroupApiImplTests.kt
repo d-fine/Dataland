@@ -13,14 +13,14 @@ import kotlin.test.assertFails
 class ComponentGroupApiImplTests {
 
     @Test
-    fun `It should be possible to create new components dynamically`() {
+    fun `it should be possible to create new components dynamically`() {
         val componentGroup = DemoComponentGroupApiImpl()
         val dateComponent = componentGroup.create<DateComponent>("testDateComponent") {}
         assertContains(componentGroup.children, dateComponent)
     }
 
     @Test
-    fun `Component creation should fail if the identifier is in use`() {
+    fun `component creation should fail if the identifier is in use`() {
         val componentGroup = DemoComponentGroupApiImpl()
         componentGroup.create<DateComponent>("testDateComponent") {}
         val exception = assertFails {
@@ -30,7 +30,7 @@ class ComponentGroupApiImplTests {
     }
 
     @Test
-    fun `Component creation should fail if no suitable constructor is available`() {
+    fun `component creation should fail if no suitable constructor is available`() {
         @Suppress("UnusedPrivateProperty")
         class ComponentBaseWithInvalidConstructor(
             identifier: String,
@@ -46,7 +46,7 @@ class ComponentGroupApiImplTests {
     }
 
     @Test
-    fun `It should be possible to edit components dynamically`() {
+    fun `it should be possible to edit components dynamically`() {
         val componentGroup = DemoComponentGroupApiImpl()
         val component = componentGroup.create<DecimalComponent>("testNumber") {
             minimumValue = BigDecimal.ZERO
@@ -58,7 +58,7 @@ class ComponentGroupApiImplTests {
     }
 
     @Test
-    fun `Component editing should fail if the component does not exist`() {
+    fun `component editing should fail if the component does not exist`() {
         val componentGroup = DemoComponentGroupApiImpl()
         val exception = assertFails {
             componentGroup.edit<DecimalComponent>("testNumber") {}
@@ -67,7 +67,7 @@ class ComponentGroupApiImplTests {
     }
 
     @Test
-    fun `Component editing should fail if the component is of a different type`() {
+    fun `component editing should fail if the component is of a different type`() {
         val componentGroup = DemoComponentGroupApiImpl()
         componentGroup.create<DecimalComponent>("testNumber") {}
         val exception = assertFails {
@@ -82,7 +82,7 @@ class ComponentGroupApiImplTests {
     }
 
     @Test
-    fun `It should be possible to delete components dynamically`() {
+    fun `it should be possible to delete components dynamically`() {
         val componentGroup = DemoComponentGroupApiImpl()
         componentGroup.create<DecimalComponent>("testNumber") {}
         componentGroup.delete<DecimalComponent>("testNumber")
@@ -90,7 +90,7 @@ class ComponentGroupApiImplTests {
     }
 
     @Test
-    fun `Deleting components should fail if the component does not exist`() {
+    fun `deleting components should fail if the component does not exist`() {
         val componentGroup = DemoComponentGroupApiImpl()
         val exception = assertFails {
             componentGroup.delete<DecimalComponent>("testNumber")
@@ -99,7 +99,7 @@ class ComponentGroupApiImplTests {
     }
 
     @Test
-    fun `Deleting components should fail if the component has a different type`() {
+    fun `deleting components should fail if the component has a different type`() {
         val componentGroup = DemoComponentGroupApiImpl()
         componentGroup.create<DecimalComponent>("testNumber") {}
         val exception = assertFails {

@@ -22,17 +22,17 @@ class TemplateComponentBuilder(
 ) {
 
     private fun getSubsectionForRow(base: ComponentGroupApi, row: TemplateRow): ComponentGroupApi {
-        if (row.category.isBlank()) {
+        return if (row.category.isBlank()) {
             require(row.subCategory.isBlank()) {
                 "Row ${row.fieldIdentifier} defines a subcategory but no category"
             }
-            return base
+            base
         } else {
             val sectionName = Naming.getNameFromLabel(row.category)
             val section = base.getOrNull<ComponentGroup>(sectionName)
                 ?: base.create(sectionName)
 
-            return if (row.subCategory.isBlank()) {
+            if (row.subCategory.isBlank()) {
                 section
             } else {
                 val subsectionName = Naming.getNameFromLabel(row.subCategory)

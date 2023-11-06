@@ -5,6 +5,8 @@ val ktlintVersion: String by project
 val githubUser: String by project
 val githubToken: String by project
 
+val jvmVersion = JavaVersion.VERSION_17
+
 allprojects {
     repositories {
         mavenCentral()
@@ -23,7 +25,7 @@ subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
-            jvmTarget = "17"
+            jvmTarget = jvmVersion.majorVersion
         }
     }
     sonar {
@@ -33,11 +35,11 @@ subprojects {
         version.set(ktlintVersion)
     }
     kotlin {
-        jvmToolchain(17)
+        jvmToolchain(jvmVersion.majorVersion.toInt())
     }
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
+            languageVersion = JavaLanguageVersion.of(jvmVersion.majorVersion.toInt())
         }
     }
 }
@@ -51,7 +53,7 @@ dependencies {
     detekt(libs.kotlin.compiler.embeddable)
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = jvmVersion
 
 plugins {
     id("com.github.jk1.dependency-license-report")

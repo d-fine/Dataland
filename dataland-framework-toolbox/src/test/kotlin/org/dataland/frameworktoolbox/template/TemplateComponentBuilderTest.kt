@@ -43,7 +43,7 @@ class TemplateComponentBuilderTest {
     }
 
     @Test
-    fun `Ensure that fields can be created with a category and a subcategory`() {
+    fun `ensure that fields can be created with a category and a subcategory`() {
         val rowWithoutCategory = dummyTemplateRow.copy()
         val templateComponentBuilder = getComponentBuilderForRow(rowWithoutCategory)
         val targetGroup = DemoComponentGroupApiImpl()
@@ -59,7 +59,7 @@ class TemplateComponentBuilderTest {
     }
 
     @Test
-    fun `Ensure that the category can be left empty to generate top-level components`() {
+    fun `ensure that the category can be left empty to generate top-level components`() {
         val rowWithoutCategory = dummyTemplateRow.copy(category = "", subCategory = "")
         val templateComponentBuilder = getComponentBuilderForRow(rowWithoutCategory)
         val targetGroup = DemoComponentGroupApiImpl()
@@ -70,7 +70,7 @@ class TemplateComponentBuilderTest {
     }
 
     @Test
-    fun `Ensure that the subcategory can be left empty`() {
+    fun `ensure that the subcategory can be left empty`() {
         val rowWithoutCategory = dummyTemplateRow.copy(subCategory = "")
         val templateComponentBuilder = getComponentBuilderForRow(rowWithoutCategory)
         val targetGroup = DemoComponentGroupApiImpl()
@@ -84,7 +84,7 @@ class TemplateComponentBuilderTest {
     }
 
     @Test
-    fun `Ensure that an error is thrown if the category is left empty but the subcategory isnt`() {
+    fun `ensure that an error is thrown if the category is left empty but the subcategory isnt`() {
         val rowWithoutCategory = dummyTemplateRow.copy(category = "", subCategory = "Hi")
         val templateComponentBuilder = getComponentBuilderForRow(rowWithoutCategory)
         val targetGroup = DemoComponentGroupApiImpl()
@@ -95,7 +95,7 @@ class TemplateComponentBuilderTest {
     }
 
     @Test
-    fun `Ensure that an error is thrown if a row is specified that cannot be processed`() {
+    fun `ensure that an error is thrown if a row is specified that cannot be processed`() {
         val rowWithoutCategory = dummyTemplateRow.copy(component = "Unknown component")
         val templateComponentBuilder = getComponentBuilderForRow(rowWithoutCategory)
         val targetGroup = DemoComponentGroupApiImpl()

@@ -86,9 +86,7 @@ class DiagnosticManager {
 
         messageLog.add(message)
 
-        if (message.type.errorImmediatelyAfter) {
-            throw IllegalStateException("Critical Diagnostic Error: $message")
-        }
+        check(!message.type.errorImmediatelyAfter) { "Critical Diagnostic Error: $message" }
     }
 
     private fun reset() {

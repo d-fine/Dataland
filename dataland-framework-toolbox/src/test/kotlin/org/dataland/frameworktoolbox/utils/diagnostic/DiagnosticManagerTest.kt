@@ -4,27 +4,31 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFails
 
 class DiagnosticManagerTest {
+
+    private val testMessageId = "test-message"
+    private val testMessageSummary = "Test Message Summary"
+
     @Test
-    fun `Registering two messages with the same id should fail`() {
+    fun `registering two messages with the same id should fail`() {
         val manager = DiagnosticManager()
-        manager.info("test-message", "This is a test")
+        manager.info(testMessageId, testMessageSummary)
         assertFails {
-            manager.info("test-message", "This is a test 2")
+            manager.info(testMessageId, testMessageSummary)
         }
     }
 
     @Test
-    fun `Registering two messages with the same id should fail even if they are suppressed`() {
+    fun `registering two messages with the same id should fail even if they are suppressed`() {
         val manager = DiagnosticManager()
-        manager.suppress("test-message")
-        manager.info("test-message", "This is a test")
+        manager.suppress(testMessageId)
+        manager.info(testMessageId, testMessageSummary)
         assertFails {
-            manager.info("test-message", "This is a test 2")
+            manager.info(testMessageId, testMessageSummary)
         }
     }
 
     @Test
-    fun `Messages that are uselessly suppressed should cause an error`() {
+    fun `messages that are uselessly suppressed should cause an error`() {
         val manager = DiagnosticManager()
         manager.suppress("not-happening")
         assertFails {
@@ -33,27 +37,27 @@ class DiagnosticManagerTest {
     }
 
     @Test
-    fun `Registering a critical message should throw an error`() {
+    fun `registering a critical message should throw an error`() {
         val manager = DiagnosticManager()
         assertFails {
-            manager.critical("critical-message", "This is bad")
+            manager.critical(testMessageId, testMessageSummary)
         }
     }
 
     @Test
-    fun `Registering a warning message should throw an error at the end`() {
+    fun `registering a warning message should throw an error at the end`() {
         val manager = DiagnosticManager()
-        manager.warning("warning-message", "This is (potentially) undesired!")
+        manager.warning(testMessageId, testMessageSummary)
         assertFails {
             manager.finalizeDiagnosticStream()
         }
     }
 
     @Test
-    fun `Registering a warning message should not throw an error if it was suppressed`() {
+    fun `registering a warning message should not throw an error if it was suppressed`() {
         val manager = DiagnosticManager()
-        manager.suppress("warning-message")
-        manager.warning("warning-message", "This is (potentially) undesired!")
+        manager.suppress(testMessageId)
+        manager.warning(testMessageId, testMessageSummary)
         manager.finalizeDiagnosticStream()
     }
 }
