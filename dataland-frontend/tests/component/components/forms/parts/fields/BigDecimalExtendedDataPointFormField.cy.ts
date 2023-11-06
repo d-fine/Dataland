@@ -6,7 +6,7 @@ describe("Component test for DataPointFormField", () => {
       void mounted.wrapper.setProps({
         unit: "Days",
       });
-      cy.get("input[name='value']").type(1234);
+      cy.get("input[name='value']").type("1234");
       cy.get('select[name="currency"]').should("not.exist");
       cy.get('div[data-test="dataQuality"] select[name="quality"]').should("have.not.value", "NA");
       cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should("exist");
