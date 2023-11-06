@@ -481,6 +481,20 @@ class CommunityManagerTest {
         assertFalse(aggregatedDataRequests.any { it.dataRequestCompanyIdentifierValue == differentLei })
     }
 
+    private fun iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
+        identifierMap: Map<DataRequestCompanyIdentifierType, String>,
+        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+        aggregatedDataRequests: List<AggregatedDataRequest>,
+    ) {
+        identifierMap.forEach { (identifierType, identifierValue) ->
+            frameworks.forEach { framework ->
+                checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
+                    aggregatedDataRequests, framework, identifierType, identifierValue, 1,
+                )
+            }
+        }
+    }
+
     @Test
     fun `post bulk requests and check that the filter for frameworks on aggregated level works properly`() {
         authenticateAsTechnicalUser(TechnicalUser.Reader)
@@ -498,13 +512,9 @@ class CommunityManagerTest {
             val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(
                 dataTypes = randomFrameworks.map { findRequestControllerApiDataTypeForFramework(it) },
             )
-            identifierMap.forEach { (identifierType, identifierValue) ->
-                randomFrameworks.forEach { framework ->
-                    checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                        aggregatedDataRequests, framework, identifierType, identifierValue, 1,
-                    )
-                }
-            }
+            iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
+                identifierMap, randomFrameworks, aggregatedDataRequests,
+            )
             val frameworksNotToBeFound = frameworks.filter { !randomFrameworks.contains(it) }
             frameworksNotToBeFound.forEach { framework ->
                 assertFalse(
@@ -514,5 +524,11 @@ class CommunityManagerTest {
                 )
             }
         }
+        val aggregatedDataRequestsForEmptyListFilter = requestControllerApi.getAggregatedDataRequests(
+            dataTypes = emptyList(),
+        )
+        iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
+            identifierMap, frameworks, aggregatedDataRequestsForEmptyListFilter,
+        )
     }
 }
