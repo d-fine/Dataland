@@ -505,8 +505,7 @@
         "required": [
           "count",
           "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue",
-          "dataType"
+          "dataRequestCompanyIdentifierValue"
         ],
         "type": "object",
         "properties": {
@@ -549,7 +548,7 @@
           "dataRequestCompanyIdentifierType",
           "dataRequestCompanyIdentifierValue",
           "dataRequestId",
-          "dataType",
+          "dataTypeName",
           "userId"
         ],
         "type": "object",
@@ -564,16 +563,8 @@
             "type": "integer",
             "format": "int64"
           },
-          "dataType": {
-            "type": "string",
-            "enum": [
-              "eutaxonomy-financials",
-              "eutaxonomy-non-financials",
-              "lksg",
-              "p2p",
-              "sfdr",
-              "sme"
-            ]
+          "dataTypeName": {
+            "type": "string"
           },
           "dataRequestCompanyIdentifierType": {
             "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"

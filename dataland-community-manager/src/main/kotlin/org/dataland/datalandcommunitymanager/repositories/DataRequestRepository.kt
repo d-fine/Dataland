@@ -1,8 +1,7 @@
 package org.dataland.datalandcommunitymanager.repositories
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -21,13 +20,13 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
      * @param dataRequestCompanyIdentifierValue to check for
-     * @param dataType to check for
+     * @param dataTypeName to check for
      * @returns a Boolean stating the result of the check
      */
-    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataType(
+    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeName(
         userId: String,
         dataRequestCompanyIdentifierValue: String,
-        dataType: DataTypeEnum,
+        dataTypeName: String,
     ): Boolean
 
     /** This method queries data requests and aggregates all the userIds, so that the result contains the count of
@@ -38,18 +37,18 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the aggregated data requests
      */
     @Query(
-        "SELECT new org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest(" +
-            "d.dataType, " +
+        "SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(" +
+            "d.dataTypeName, " +
             "d.dataRequestCompanyIdentifierType, " +
             "d.dataRequestCompanyIdentifierValue, " +
             "COUNT(d.userId))" +
             "FROM DataRequestEntity d " +
-            "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
+            "WHERE (:dataTypes IS NULL OR d.dataTypeName IN :dataTypes) " +
             "  AND (:identifierValue IS NULL OR d.dataRequestCompanyIdentifierValue LIKE %:identifierValue%) " +
-            "GROUP BY d.dataType, d.dataRequestCompanyIdentifierType, d.dataRequestCompanyIdentifierValue",
+            "GROUP BY d.dataTypeName, d.dataRequestCompanyIdentifierType, d.dataRequestCompanyIdentifierValue",
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
-        @Param("dataTypes") dataTypes: Set<DataTypeEnum>?,
-    ): List<AggregatedDataRequest>
+        @Param("dataTypes") dataTypeNames: List<String>?,
+    ): List<AggregatedDataRequestEntity>
 }
