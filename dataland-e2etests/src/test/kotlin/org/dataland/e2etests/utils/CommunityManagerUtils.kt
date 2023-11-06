@@ -6,7 +6,7 @@ import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
-import org.dataland.communitymanager.openApiClient.model.DataRequestEntity
+import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.time.Instant
 
@@ -16,8 +16,11 @@ fun retrieveTimeAndWaitOneMillisecond(): Long {
     return timestamp
 }
 
-// TODO Try to remove the following three different DataType variations coming from using the backend enum in ...
-// TODO ... three (now two) different cases
+fun findStoredDataRequestDataTypeForFramework(
+    framework: BulkDataRequest.ListOfFrameworkNames,
+): StoredDataRequest.DataType {
+    return StoredDataRequest.DataType.values().find { dataType -> dataType.value == framework.value }!!
+}
 fun findAggregatedDataRequestDataTypeForFramework(
     framework: BulkDataRequest.ListOfFrameworkNames,
 ): AggregatedDataRequest.DataType {
@@ -121,7 +124,7 @@ fun checkThatAllIdentifiersWereAccepted(
 }
 
 fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-    recentlyStoredRequestsForUser: List<DataRequestEntity>,
+    recentlyStoredRequestsForUser: List<StoredDataRequest>,
     expectedNumberOfNewlyStoredRequests: Int,
 ) {
     assertEquals(
@@ -131,21 +134,21 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
     )
 }
 
-fun checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-    recentlyStoredRequestsForUser: List<DataRequestEntity>,
-    dataTypeName: String,
+fun checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
+    recentlyStoredRequestsForUser: List<StoredDataRequest>,
+    framework: BulkDataRequest.ListOfFrameworkNames,
     dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
     dataRequestCompanyIdentifierValue: String,
 ) {
     assertEquals(
         1,
-        recentlyStoredRequestsForUser.filter { dataRequestEntity ->
-            dataRequestEntity.dataTypeName == dataTypeName &&
-                dataRequestEntity.dataRequestCompanyIdentifierType == dataRequestCompanyIdentifierType &&
-                dataRequestEntity.dataRequestCompanyIdentifierValue == dataRequestCompanyIdentifierValue
+        recentlyStoredRequestsForUser.filter { storedDataRequest ->
+            storedDataRequest.dataType == findStoredDataRequestDataTypeForFramework(framework) &&
+                storedDataRequest.dataRequestCompanyIdentifierType == dataRequestCompanyIdentifierType &&
+                storedDataRequest.dataRequestCompanyIdentifierValue == dataRequestCompanyIdentifierValue
         }.size,
         "For the ${dataRequestCompanyIdentifierType.value} $dataRequestCompanyIdentifierValue " +
-            "and the framework $dataTypeName there is not exactly one newly stored request as expected.",
+            "and the framework ${framework.value} there is not exactly one newly stored request as expected.",
     )
 }
 

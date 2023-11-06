@@ -4,7 +4,7 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
-import org.dataland.communitymanager.openApiClient.model.DataRequestEntity
+import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -12,7 +12,7 @@ import org.dataland.e2etests.utils.checkErrorMessageForClientException
 import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.checkThatMessageIsAsExpected
 import org.dataland.e2etests.utils.checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount
-import org.dataland.e2etests.utils.checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce
+import org.dataland.e2etests.utils.checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce
 import org.dataland.e2etests.utils.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.checkThatTheNumberOfAcceptedIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.checkThatTheNumberOfRejectedIdentifiersIsAsExpected
@@ -48,9 +48,9 @@ class CommunityManagerTest {
         return apiAccessor.uploadOneCompanyWithIdentifiers(lei, isins, permId)!!.actualStoredCompany.companyId
     }
 
-    private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<DataRequestEntity> {
-        return requestControllerApi.getDataRequestsForUser().filter { dataRequestEntity ->
-            dataRequestEntity.creationTimestamp > timestamp
+    private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<StoredDataRequest> {
+        return requestControllerApi.getDataRequestsForUser().filter { storedDataRequest ->
+            storedDataRequest.creationTimestamp > timestamp
         }
     }
 
@@ -72,15 +72,14 @@ class CommunityManagerTest {
         checkThatAllIdentifiersWereAccepted(response, identifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, identifiers.size * frameworks.size)
-        val randomDataType = frameworks.random().value
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
         uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]?.let {
-            checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-                newlyStoredRequests, randomDataType, randomUniqueDataRequestCompanyIdentifierType, it,
+            checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
+                newlyStoredRequests, frameworks.random(), randomUniqueDataRequestCompanyIdentifierType, it,
             )
         }
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, randomDataType, DataRequestCompanyIdentifierType.multipleRegexMatches,
+        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
+            newlyStoredRequests, frameworks.random(), DataRequestCompanyIdentifierType.multipleRegexMatches,
             multipleRegexMatchingIdentifier,
         )
     }
@@ -106,8 +105,8 @@ class CommunityManagerTest {
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, validIdentifiers.size)
         assertFalse(
-            newlyStoredRequests.any { dataRequestEntity ->
-                invalidIdentifiers.contains(dataRequestEntity.dataRequestCompanyIdentifierValue)
+            newlyStoredRequests.any { storedDataRequest ->
+                invalidIdentifiers.contains(storedDataRequest.dataRequestCompanyIdentifierValue)
             },
         )
     }
@@ -133,32 +132,32 @@ class CommunityManagerTest {
             newlyStoredRequests,
             (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size,
         )
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0].value,
+        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
+            newlyStoredRequests, frameworksForBulkRequest[0],
             DataRequestCompanyIdentifierType.datalandCompanyId, companyId,
         )
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0].value,
+        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
+            newlyStoredRequests, frameworksForBulkRequest[0],
             identifierTypeForUnknownCompany, identifierValueForUnknownCompany,
         )
     }
 
     private fun checkThatBothRequestExistExactlyOnceAfterBulkRequest(
-        requestsStoredAfterBulkRequest: List<DataRequestEntity>,
-        dataTypeName: String,
+        requestsStoredAfterBulkRequest: List<StoredDataRequest>,
+        framework: BulkDataRequest.ListOfFrameworkNames,
         companyId: String,
         identifierTypeForUnknownCompany: DataRequestCompanyIdentifierType,
         identifierValueForUnknownCompany: String,
     ) {
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
+        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
             requestsStoredAfterBulkRequest,
-            dataTypeName,
+            framework,
             DataRequestCompanyIdentifierType.datalandCompanyId,
             companyId,
         )
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
+        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
             requestsStoredAfterBulkRequest,
-            dataTypeName,
+            framework,
             identifierTypeForUnknownCompany,
             identifierValueForUnknownCompany,
         )
@@ -180,7 +179,7 @@ class CommunityManagerTest {
             newRequestsAfter1stBulkRequest, firstIdentifiers.size * frameworks.size,
         )
         checkThatBothRequestExistExactlyOnceAfterBulkRequest(
-            newRequestsAfter1stBulkRequest, frameworks[0].value, companyId,
+            newRequestsAfter1stBulkRequest, frameworks[0], companyId,
             identifierMapForUnknownCompany.keys.toList()[0], identifierMapForUnknownCompany.values.toList()[0],
         )
         val secondIdentifiers = listOf(isinForCompany, identifierMapForUnknownCompany.values.toList()[0])
@@ -191,7 +190,7 @@ class CommunityManagerTest {
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newRequestsAfter2ndBulkRequest, 0)
         val newRequestsAfter1stAnd2ndBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
         checkThatBothRequestExistExactlyOnceAfterBulkRequest(
-            newRequestsAfter1stAnd2ndBulkRequest, frameworks[0].value, companyId,
+            newRequestsAfter1stAnd2ndBulkRequest, frameworks[0], companyId,
             identifierMapForUnknownCompany.keys.toList()[0], identifierMapForUnknownCompany.values.toList()[0],
         )
     }
@@ -295,11 +294,7 @@ class CommunityManagerTest {
 
     @Test
     fun `post bulk requests and check that the filter for frameworks on aggregated level works properly`() {
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList().filter {
-            it != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
-                it != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusNonMinusFinancials
-        } // TODO Remove framework filter after fixing filtering issue for eutaxonomy-(non)financials
-        // TODO -> Also removes code smell for too long function
+        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
         val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifierMap.values.toList(), frameworks),
