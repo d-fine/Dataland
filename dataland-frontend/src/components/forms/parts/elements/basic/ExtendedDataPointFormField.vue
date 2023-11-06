@@ -1,40 +1,13 @@
 <template>
-  <FormKit type="group" :name="name">
-    <div class="mb-3">
-      <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
-      <div class="next-to-each-other">
-        <FormKit
-          type="text"
-          name="value"
-          v-model="currentValue"
-          :validation-label="validationLabel ?? label"
-          :validation="`number|${validation}`"
-          :placeholder="unit ? `Value in ${unit}` : 'Value'"
-          outer-class="short"
-          @blur="handleBlurValue"
-        />
-        <div v-if="unit" class="form-field-label pb-3">
-          <FormKit type="hidden" name="currency" />
-          <span>{{ unit }}</span>
-        </div>
-        <FormKit
-          v-else-if="options"
-          type="select"
-          name="currency"
-          placeholder="Currency"
-          :options="options"
-          outer-class="short"
-          data-test="datapoint-currency"
-        />
-      </div>
-    </div>
+  <FormKit type="group" :name="name" v-model="dataPoint">
+    <slot />
     <div>
       <FormKit type="group" name="dataSource">
         <div class="next-to-each-other">
           <div class="flex-1">
             <UploadFormHeader
               :label="`${label} Report`"
-              :description="'Select a report as a reference for this data point.'"
+              description="Select a report as a reference for this data point."
             />
             <FormKit
               type="select"
@@ -96,12 +69,13 @@ import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
-import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
-  name: "DataPointFormField",
+  name: "ExtendedDataPointFormField",
   components: { UploadFormHeader, FormKit },
   inject: {
     injectReportsNameAndReferences: {
@@ -110,11 +84,14 @@ export default defineComponent({
     },
   },
   computed: {
+    isDataValueProvided(): boolean {
+      return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
+    },
     isDataQualityRequired(): boolean {
-      return this.currentValue !== "";
+      return this.isDataValueProvided;
     },
     computeQualityOption(): object {
-      if (this.currentValue == "") {
+      if (!this.isDataValueProvided) {
         return this.qualityOptions;
       } else {
         return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
@@ -134,24 +111,32 @@ export default defineComponent({
         value: qualityOption,
       })),
       qualityValue: "NA",
-      currentValue: "",
       currentReportValue: "",
+      dataPoint: {} as unknown,
     };
   },
+
   props: {
-    ...YesNoFormFieldProps,
-    options: {
-      type: Array,
+    ...BaseFormFieldProps,
+    checkValueValidity: {
+      type: Function as unknown as () => (dataPoint: unknown) => boolean,
+      default: (): boolean => false,
+    },
+  },
+  watch: {
+    isDataValueProvided(isDataValueProvided) {
+      this.handleBlurValue(isDataValueProvided);
     },
   },
   methods: {
     /**
      * Handle blur event on value input.
+     * @param isDataValueProvided boolean which gives information whether data is provided or not
      */
-    handleBlurValue() {
-      if (this.currentValue === "") {
-        this.qualityValue = "NA";
-      } else if (this.currentValue !== "" && this.qualityValue == "NA") {
+    handleBlurValue(isDataValueProvided) {
+      if (isDataValueProvided === false) {
+        this.qualityValue = QualityOptions.Na;
+      } else if (this.qualityValue === QualityOptions.Na) {
         this.qualityValue = "";
       }
     },

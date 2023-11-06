@@ -48,7 +48,6 @@
                           :name="field.name"
                           :options="field.options"
                           :required="field.required"
-                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :unit="field.unit"
                           :validation-label="field.validationLabel"
@@ -121,6 +120,13 @@ import FailMessage from "@/components/messages/FailMessage.vue";
 import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import DriveMixFormField from "@/components/forms/parts/fields/DriveMixFormField.vue";
+import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
+import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
+import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
+import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
+import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
+import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
+import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -136,7 +142,6 @@ export default defineComponent({
     InputTextFormField,
     MultiSelectFormField,
     NumberFormField,
-    YesNoFormField,
     PercentageFormField,
     Card,
     PrimeButton,
@@ -147,6 +152,14 @@ export default defineComponent({
     SubmitSideBar,
     DateFormField,
     SingleSelectFormField,
+    IntegerExtendedDataPointFormField,
+    BigDecimalExtendedDataPointFormField,
+    CurrencyDataPointFormField,
+    YesNoFormField,
+    YesNoNaFormField,
+    YesNoBaseDataPointFormField,
+    YesNoNaBaseDataPointFormField,
+    YesNoExtendedDataPointFormField,
   },
   emits: ["datasetCreated"],
   data() {

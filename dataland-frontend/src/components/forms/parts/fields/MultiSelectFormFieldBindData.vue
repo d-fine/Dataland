@@ -8,7 +8,7 @@
       :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
       :options="options"
-      :inner-class="innerClass"
+      :inner-class="inputClass"
       :optionLabel="optionLabel"
       :optionValue="optionValue"
     />

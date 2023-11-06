@@ -52,7 +52,7 @@
         selectedActivityValue ? 'Chose NACE codes for Activity' : 'Please select an activity before selecting NACE code'
       "
       :options="naceCodesForActivities"
-      innerClass="long"
+      inputClass="long"
     />
   </div>
 </template>

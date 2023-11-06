@@ -4,7 +4,7 @@
     :options="options"
     :placeholder="placeholder"
     :show-toggle-all="false"
-    :class="innerClass"
+    :class="inputClass"
     :optionValue="optionValue"
     :optionLabel="optionLabel"
     :maxSelectedLabels="3"
