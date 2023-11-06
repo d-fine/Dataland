@@ -37,7 +37,7 @@ describe("Component test for the SlideShow component", () => {
     });
   });
 
-  it.only("Check if vertical movement occurs when dragging slide show horizontally", () => {
+  it("Check if vertical movement occurs when dragging slide show horizontally", () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
       cy.window().then((win) => {
         const posYBefore = win.scrollY;
