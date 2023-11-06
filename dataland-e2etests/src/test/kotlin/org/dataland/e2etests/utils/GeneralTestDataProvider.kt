@@ -30,12 +30,12 @@ class GeneralTestDataProvider {
 
     fun generateCompanyInformationWithNameAndIdentifiers(
         lei: String?,
-        isin: List<String>?,
+        isins: List<String>?,
         permId: String?,
     ): CompanyInformation {
         var identifiers = emptyMap<String, List<String>>()
         if (!lei.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.lei.value to listOf(lei))
-        if (!isin.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.isin.value to isin)
+        if (!isins.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.isin.value to isins)
         if (!permId.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.permId.value to listOf(permId))
         return CompanyInformation(
             "DummyCompany",

@@ -42,10 +42,10 @@ class CommunityManagerTest {
 
     private fun getIdForUploadedCompanyWithIdentifiers(
         lei: String? = null,
-        isin: List<String>? = null,
+        isins: List<String>? = null,
         permId: String? = null,
     ): String {
-        return apiAccessor.uploadOneCompanyWithIdentifiers(lei, isin, permId)!!.actualStoredCompany.companyId
+        return apiAccessor.uploadOneCompanyWithIdentifiers(lei, isins, permId)!!.actualStoredCompany.companyId
     }
 
     private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<DataRequestEntity> {
@@ -74,10 +74,11 @@ class CommunityManagerTest {
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, identifiers.size * frameworks.size)
         val randomDataType = frameworks.random().value
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
-        checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, randomDataType, randomUniqueDataRequestCompanyIdentifierType,
-            uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]!!,
-        )
+        uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]?.let {
+            checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
+                newlyStoredRequests, randomDataType, randomUniqueDataRequestCompanyIdentifierType, it,
+            )
+        }
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
             newlyStoredRequests, randomDataType, DataRequestCompanyIdentifierType.multipleRegexMatches,
             multipleRegexMatchingIdentifier,
@@ -298,6 +299,7 @@ class CommunityManagerTest {
             it != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusFinancials &&
                 it != BulkDataRequest.ListOfFrameworkNames.eutaxonomyMinusNonMinusFinancials
         } // TODO Remove framework filter after fixing filtering issue for eutaxonomy-(non)financials
+        // TODO -> Also removes code smell for too long function
         val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifierMap.values.toList(), frameworks),
@@ -320,11 +322,9 @@ class CommunityManagerTest {
                 )
             }
         }
-        val aggregatedDataRequestsForEmptyListFilter = requestControllerApi.getAggregatedDataRequests(
-            dataTypes = emptyList(),
-        )
+        val aggregatedDataRequestsForEmptyList = requestControllerApi.getAggregatedDataRequests(dataTypes = emptyList())
         iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
-            identifierMap, frameworks, aggregatedDataRequestsForEmptyListFilter,
+            identifierMap, frameworks, aggregatedDataRequestsForEmptyList,
         )
     }
 }
