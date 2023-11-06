@@ -38,7 +38,7 @@ describe("Component test for the SlideShow component", () => {
   });
 
   it.only("Check if vertical movement occurs when dragging slide show horizontally", () => {
-    cy.mountWithPlugins(TestSlideShow, {}).then( () => {
+    cy.mountWithPlugins(TestSlideShow, {}).then(() => {
       cy.window().then((win) => {
         const posYBefore = win.scrollY;
         assertSlidesPosition();
@@ -46,9 +46,9 @@ describe("Component test for the SlideShow component", () => {
         assertSlidesPosition(1);
         dragSlideTo(2, leftOffset);
         assertSlidesPosition(2);
-        dragSlideTo(2, leftOffset  + SLIDE_DELTA);
+        dragSlideTo(2, leftOffset + SLIDE_DELTA);
         assertSlidesPosition(1);
-        dragSlideTo(1, leftOffset  + SLIDE_DELTA);
+        dragSlideTo(1, leftOffset + SLIDE_DELTA);
         assertSlidesPosition(0);
         const posYAfter = win.scrollY;
         expect(posYBefore).equals(posYAfter);
