@@ -13,8 +13,8 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
  */
 @ComponentMarker
 open class ComponentBase(
-    val identifier: String,
-    override val parent: FieldNodeParent,
+    var identifier: String,
+    override var parent: FieldNodeParent,
 ) : TreeNode<FieldNodeParent> {
 
     /**
