@@ -13,9 +13,7 @@ const { label, buttonType, ariaLabel } = defineProps<{
   ariaLabel: string;
 }>();
 
-const emit = defineEmits<{
-  (event: "click"): void;
-}>();
+const emit = defineEmits<(event: "click") => void>();
 
 const handleClick = (): void => {
   emit("click");
