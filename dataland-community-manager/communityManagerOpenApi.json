@@ -166,7 +166,7 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get all data requests of the user making the request.",
+        "summary": "Get all stored data requests of the user making the request.",
         "description": "Gets all the stored data request created by the user who is making the request.",
         "operationId": "getDataRequestsForUser",
         "responses": {
@@ -177,7 +177,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataRequestEntity"
+                    "$ref": "#/components/schemas/StoredDataRequest"
                   }
                 }
               }
@@ -542,13 +542,12 @@
           "DatalandCompanyId"
         ]
       },
-      "DataRequestEntity": {
+      "StoredDataRequest": {
         "required": [
           "creationTimestamp",
           "dataRequestCompanyIdentifierType",
           "dataRequestCompanyIdentifierValue",
           "dataRequestId",
-          "dataTypeName",
           "userId"
         ],
         "type": "object",
@@ -563,8 +562,16 @@
             "type": "integer",
             "format": "int64"
           },
-          "dataTypeName": {
-            "type": "string"
+          "dataType": {
+            "type": "string",
+            "enum": [
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "lksg",
+              "p2p",
+              "sfdr",
+              "sme"
+            ]
           },
           "dataRequestCompanyIdentifierType": {
             "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"

@@ -2,10 +2,10 @@ package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.DataRequestManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -27,7 +27,7 @@ class RequestController(
         )
     }
 
-    override fun getDataRequestsForUser(): ResponseEntity<List<DataRequestEntity>> {
+    override fun getDataRequestsForUser(): ResponseEntity<List<StoredDataRequest>> {
         return ResponseEntity.ok(
             dataRequestManager.getDataRequestsForUser(),
         )

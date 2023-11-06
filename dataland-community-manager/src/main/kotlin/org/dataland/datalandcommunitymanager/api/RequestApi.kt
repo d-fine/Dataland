@@ -6,10 +6,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -56,7 +56,7 @@ interface RequestApi {
      * @return all data requests of the user in a list
      */
     @Operation(
-        summary = "Get all data requests of the user making the request.",
+        summary = "Get all stored data requests of the user making the request.",
         description = "Gets all the stored data request created by the user who is making the request.",
     )
     @ApiResponses(
@@ -69,7 +69,7 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getDataRequestsForUser(): ResponseEntity<List<DataRequestEntity>>
+    fun getDataRequestsForUser(): ResponseEntity<List<StoredDataRequest>>
 
     /** Retrieves aggregated data requests by aggregating all userIds
      * @return aggregated data requests that match the given filters

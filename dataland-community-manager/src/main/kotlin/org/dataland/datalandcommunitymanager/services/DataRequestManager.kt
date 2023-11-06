@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -71,11 +72,21 @@ class DataRequestManager(
     /** This method retrieves all the data requests for the current user from the database and logs a message.
      * @returns all data requests for the current user
      */
-    fun getDataRequestsForUser(): List<DataRequestEntity> {
+    fun getDataRequestsForUser(): List<StoredDataRequest> {
         val currentUserId = DatalandAuthentication.fromContext().userId
-        val retrievedDataRequestsForUser = dataRequestRepository.findByUserId(currentUserId)
+        val retrievedStoredDataRequestEntitiesForUser = dataRequestRepository.findByUserId(currentUserId)
+        val retrievedStoredDataRequestsForUser = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
+            StoredDataRequest(
+                dataRequestEntity.dataRequestId,
+                dataRequestEntity.userId,
+                dataRequestEntity.creationTimestamp,
+                getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
+                dataRequestEntity.dataRequestCompanyIdentifierType,
+                dataRequestEntity.dataRequestCompanyIdentifierValue
+            )
+        }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
-        return retrievedDataRequestsForUser
+        return retrievedStoredDataRequestsForUser
     }
 
     /** This method triggers a query to get aggregated data requests.
@@ -90,16 +101,16 @@ class DataRequestManager(
         val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
             null
         } else {
-            dataTypes?.map { it.name }
+            dataTypes?.map { it.value }
         }
         val aggregatedDataRequestEntities =
             dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery)
-        val aggregatedDataRequests = aggregatedDataRequestEntities.map { it ->
+        val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
-                DataTypeEnum.decode(it.dataTypeName),
-                it.dataRequestCompanyIdentifierType,
-                it.dataRequestCompanyIdentifierValue,
-                it.count,
+                getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
+                aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
+                aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
+                aggregatedDataRequestEntity.count,
             )
         }
         return aggregatedDataRequests
@@ -301,5 +312,9 @@ class DataRequestManager(
             summary,
             message,
         )
+    }
+
+    private fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
+        return DataTypeEnum.values().find { it.value == frameworkName }
     }
 }
