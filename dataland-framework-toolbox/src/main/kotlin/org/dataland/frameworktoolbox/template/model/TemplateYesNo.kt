@@ -23,7 +23,9 @@ enum class TemplateYesNo {
             } else if (input.isBlank() || input == "No") {
                 No
             } else {
-                throw IllegalArgumentException("Cannot convert '$input' to a YesNo value. Please Specify one of 'Yes' or 'No'")
+                throw IllegalArgumentException(
+                    "Cannot convert '$input' to a YesNo value. Please Specify one of 'Yes' or 'No'",
+                )
             }
         }
     }
