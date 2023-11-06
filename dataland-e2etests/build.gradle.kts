@@ -19,8 +19,6 @@ plugins {
     id("org.springframework.boot")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.junit.jupiter)

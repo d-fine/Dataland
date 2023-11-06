@@ -39,6 +39,7 @@ data class GleifCompanyInformation(
             headquartersPostalCode = headquartersPostalCode,
             sector = null,
             website = null,
+            isTeaserCompany = false,
             identifiers = mapOf(
                 "Lei" to listOf(lei),
             ),

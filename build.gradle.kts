@@ -16,6 +16,7 @@ subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     apply(plugin = "com.github.ben-manes.versions")
     apply(plugin = "com.github.jk1.dependency-license-report")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
 
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
@@ -30,6 +31,14 @@ subprojects {
     }
     ktlint {
         version.set(ktlintVersion)
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
 }
 
@@ -144,10 +153,6 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         txt.required.set(true)
         sarif.required.set(true)
     }
-    jvmTarget = java.sourceCompatibility.toString()
-}
-tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
-    jvmTarget = java.sourceCompatibility.toString()
 }
 
 ktlint {

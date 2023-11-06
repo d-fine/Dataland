@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.log4j.core)
     implementation(libs.log4j.slf4j2.impl)
     implementation(libs.spring.context)
+    implementation(libs.spring.test)
     implementation(libs.jackson.dataformat.csv)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.commons.io)
