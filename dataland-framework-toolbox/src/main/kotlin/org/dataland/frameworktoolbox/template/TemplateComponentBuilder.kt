@@ -22,15 +22,26 @@ class TemplateComponentBuilder(
 ) {
 
     private fun getSubsectionForRow(base: ComponentGroupApi, row: TemplateRow): ComponentGroupApi {
-        val sectionName = Naming.getNameFromLabel(row.category)
-        val section = base.getOrNull<ComponentGroup>(sectionName)
-            ?: base.create(sectionName)
+        if (row.category.isBlank()) {
+            require(row.subCategory.isBlank()) {
+                "Row ${row.fieldIdentifier} defines a subcategory but no category"
+            }
+            return base
+        } else {
+            val sectionName = Naming.getNameFromLabel(row.category)
+            val section = base.getOrNull<ComponentGroup>(sectionName)
+                ?: base.create(sectionName)
 
-        val subsectionName = Naming.getNameFromLabel(row.subCategory)
-        val subsection = section.getOrNull<ComponentGroup>(subsectionName)
-            ?: section.create(subsectionName)
+            return if (row.subCategory.isBlank()) {
+                section
+            } else {
+                val subsectionName = Naming.getNameFromLabel(row.subCategory)
+                val subsection = section.getOrNull<ComponentGroup>(subsectionName)
+                    ?: section.create(subsectionName)
 
-        return subsection
+                subsection
+            }
+        }
     }
 
     private fun getFactoryForRow(row: TemplateRow): TemplateComponentFactory {

@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.utils.diagnostic
 
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
+import org.springframework.stereotype.Component
 import java.lang.StringBuilder
 
 /**
@@ -8,7 +9,8 @@ import java.lang.StringBuilder
  * to the developer and may contain code-smells. It is designed to be used for suppressible error messages that
  * developers should take into account, but can also ignore if they deem appropriate.
  */
-open class DiagnosticManager {
+@Component
+class DiagnosticManager {
     private val logger by LoggerDelegate()
     private val messageLog = mutableListOf<DiagnosticMessage>()
 

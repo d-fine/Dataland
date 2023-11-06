@@ -6,13 +6,14 @@ import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.template.model.TemplateYesNo
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
  * Generates YesNoComponents from rows with the component "Yes/No"
  */
 @Component
-class YesNoComponentFactory : TemplateComponentFactory {
+class YesNoComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component.trim() == "Yes/No"
 
     override fun generateComponent(
@@ -20,9 +21,9 @@ class YesNoComponentFactory : TemplateComponentFactory {
         utils: ComponentGenerationUtils,
         componentGroup: ComponentGroupApi,
     ) {
-        TemplateDiagnostic.optionsNotUsed(row)
-        TemplateDiagnostic.unitNotUsed(row)
-        TemplateDiagnostic.documentSupportNotUsed(row)
+        templateDiagnostic.optionsNotUsed(row)
+        templateDiagnostic.unitNotUsed(row)
+        templateDiagnostic.documentSupportNotUsed(row)
 
         componentGroup.create<YesNoComponent>(
             utils.generateFieldIdentifierFromRow(row),

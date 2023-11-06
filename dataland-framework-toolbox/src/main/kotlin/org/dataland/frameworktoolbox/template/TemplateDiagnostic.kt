@@ -1,13 +1,16 @@
 package org.dataland.frameworktoolbox.template
 
 import org.dataland.frameworktoolbox.template.model.TemplateRow
-import org.dataland.frameworktoolbox.utils.diagnostic.Diagnostic
+import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.dataland.frameworktoolbox.utils.shortSha
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 /**
  * A diagnostic utility to log common warning encountered during Excel-Conversion
  */
-object TemplateDiagnostic {
+@Component
+class TemplateDiagnostic(@Autowired val diagnostic: DiagnosticManager) {
     /**
      * Attests that this generator does not use the "options" column of the CSV
      */
@@ -25,7 +28,7 @@ object TemplateDiagnostic {
         unusedColumn("documentSupport", "None", row, row.documentSupport.value)
 
     private fun unusedColumn(columnName: String, expectedColumnValue: String, row: TemplateRow, columnValue: String) {
-        Diagnostic.warnIf(
+        diagnostic.warnIf(
             columnValue.trim() != expectedColumnValue,
             "TemplateConversion-UnusedColumn-$columnName-Row-${row.fieldIdentifier}-${columnValue.shortSha()}",
             "The row ${row.fieldIdentifier} defined a non-standard value for the column " +

@@ -12,17 +12,6 @@ import kotlin.test.assertFails
 
 class ComponentGroupApiImplTests {
 
-    class DemoComponentGroupApiImpl(
-        private val componentGroupApi: ComponentGroupApiImpl = ComponentGroupApiImpl(),
-    ) : ComponentGroupApi by componentGroupApi, FieldNodeParent {
-        override val children: Sequence<ComponentBase>
-            get() = componentGroupApi.children
-
-        init {
-            componentGroupApi.parent = this
-        }
-    }
-
     @Test
     fun `It should be possible to create new components dynamically`() {
         val componentGroup = DemoComponentGroupApiImpl()
