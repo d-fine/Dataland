@@ -63,6 +63,14 @@ fun generateRandomPermId(numberOfDigits: Int? = null): String {
     return (1..numberOfCharacters).map { digits.random() }.joinToString("")
 }
 
+fun generateMapWithOneRandomValueForEachIdentifierType(): Map<DataRequestCompanyIdentifierType, String> {
+    return mapOf(
+        DataRequestCompanyIdentifierType.lei to generateRandomLei(),
+        DataRequestCompanyIdentifierType.isin to generateRandomIsin(),
+        DataRequestCompanyIdentifierType.permId to generateRandomPermId(),
+    )
+}
+
 fun checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(
     requestResponse: BulkDataRequestResponse,
     expectedNumberOfAcceptedIdentifiers: Int,

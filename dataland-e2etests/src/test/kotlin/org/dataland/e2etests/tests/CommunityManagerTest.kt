@@ -19,6 +19,7 @@ import org.dataland.e2etests.utils.checkThatTheNumberOfRejectedIdentifiersIsAsEx
 import org.dataland.e2etests.utils.findAggregatedDataRequestDataTypeForFramework
 import org.dataland.e2etests.utils.findDataRequestEntityDataTypeForFramework
 import org.dataland.e2etests.utils.findRequestControllerApiDataTypeForFramework
+import org.dataland.e2etests.utils.generateMapWithOneRandomValueForEachIdentifierType
 import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
@@ -56,11 +57,7 @@ class CommunityManagerTest {
     @Test
     fun `post bulk data request for all frameworks and different valid identifiers and check stored requests`() {
         authenticateAsTechnicalUser(TechnicalUser.Reader)
-        val uniqueIdentifiersMap = mapOf(
-            DataRequestCompanyIdentifierType.lei to generateRandomLei(),
-            DataRequestCompanyIdentifierType.isin to generateRandomIsin(),
-            DataRequestCompanyIdentifierType.permId to generateRandomPermId(),
-        )
+        val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
         val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
@@ -74,15 +71,11 @@ class CommunityManagerTest {
         val randomDataType = findDataRequestEntityDataTypeForFramework(frameworks.random())
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests,
-            randomDataType,
-            randomUniqueDataRequestCompanyIdentifierType,
+            newlyStoredRequests, randomDataType, randomUniqueDataRequestCompanyIdentifierType,
             uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]!!,
         )
         checkThatRequestForDataTypeAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests,
-            randomDataType,
-            DataRequestCompanyIdentifierType.multipleRegexMatches,
+            newlyStoredRequests, randomDataType, DataRequestCompanyIdentifierType.multipleRegexMatches,
             multipleRegexMatchingIdentifier,
         )
     }
@@ -265,13 +258,12 @@ class CommunityManagerTest {
     fun `post bulk data requests for different users and check that aggregation works properly`() {
         val leiForCompany = generateRandomLei()
         val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany)
-        val identifierMap = mutableMapOf(
-            DataRequestCompanyIdentifierType.lei to generateRandomLei(),
-            DataRequestCompanyIdentifierType.isin to generateRandomIsin(),
-            DataRequestCompanyIdentifierType.permId to generateRandomPermId(),
-            DataRequestCompanyIdentifierType.multipleRegexMatches to generateRandomPermId(20),
-            DataRequestCompanyIdentifierType.datalandCompanyId to leiForCompany,
-        )
+        val identifierMap = (
+            generateMapWithOneRandomValueForEachIdentifierType() + mapOf(
+                DataRequestCompanyIdentifierType.multipleRegexMatches to generateRandomPermId(20),
+                DataRequestCompanyIdentifierType.datalandCompanyId to leiForCompany,
+            )
+            ).toMutableMap()
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
         TechnicalUser.values().forEach { technicalUser ->
             authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
