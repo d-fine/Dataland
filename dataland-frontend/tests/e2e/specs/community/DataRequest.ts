@@ -9,16 +9,7 @@ describe("As a user I want to be able to request data", () => {
   });
 
   it("When identifiers are accepted and rejected", () => {
-    cy.intercept("POST", "**/community/requests", (req) => {
-      req.reply({
-        statusCode: 200,
-        body: {
-          message: "",
-          rejectedCompanyIdentifiers: ["12345incorrectNumber"],
-          acceptedCompanyIdentifiers: ["549300VJTTKH8P0QWG18"],
-        },
-      });
-    }).as("postRequestData");
+    cy.intercept("POST", "**/community/requests").as("postRequestData");
 
     checksBasicValidation();
     choseFramewors();
@@ -37,19 +28,15 @@ describe("As a user I want to be able to request data", () => {
       .should("exist")
       .get("p.red-text")
       .contains("However, some identifiers couldn’t be recognised.");
+
+    cy.get('[data-test="resetFormButton"]')
+      .click()
+      .get('[data-test="addedFrameworks"]')
+      .contains("No Frameworks added yet");
   });
 
   it("When identifiers are accepted", () => {
-    cy.intercept("POST", "**/community/requests", (req) => {
-      req.reply({
-        statusCode: 200,
-        body: {
-          message: "",
-          rejectedCompanyIdentifiers: [],
-          acceptedCompanyIdentifiers: ["549300VJTTKH8P0QWG18"],
-        },
-      });
-    }).as("postRequestData");
+    cy.intercept("POST", "**/community/requests").as("postRequestData");
 
     checksBasicValidation();
     choseFramewors();
@@ -71,16 +58,7 @@ describe("As a user I want to be able to request data", () => {
   });
 
   it("When identifiers are rejected", () => {
-    cy.intercept("POST", "**/community/requests", (req) => {
-      req.reply({
-        statusCode: 200,
-        body: {
-          message: "",
-          rejectedCompanyIdentifiers: ["12345incorrectNumber"],
-          acceptedCompanyIdentifiers: [],
-        },
-      });
-    }).as("postRequestData");
+    cy.intercept("POST", "**/community/requests").as("postRequestData");
 
     checksBasicValidation();
     choseFramewors();
@@ -91,16 +69,9 @@ describe("As a user I want to be able to request data", () => {
       .should("exist")
       .click();
 
-    cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
-      checkIfIdentifiersProperlyDisplayed(interception);
-    });
-
-    cy.get('[data-test="submittingSuccededMessage"] [data-test="nonIdentifiersPassed"]')
+    cy.get('[data-test="failMessage"]')
       .should("exist")
-      .get("p")
-      .contains(
-        "Check the format of the identifiers and try again. Accepted identifiers are: LEI, ISIN & permID. Expected in comma, semicolon, linebreaks and spaces separted format.",
-      );
+      .contains("All provided company identifiers have an invalid format.");
   });
 
   /**

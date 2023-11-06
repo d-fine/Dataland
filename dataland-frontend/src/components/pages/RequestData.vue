@@ -37,7 +37,13 @@
                 </template>
               </MessageComponent>
             </div>
-            <FailMessage v-else :message="message" :messageId="messageCounter" />
+            <FailMessage
+              data-test="failMessage"
+              v-else
+              :message="message"
+              :summary="summary"
+              :messageId="messageCounter"
+            />
           </div>
 
           <div class="col-12" v-if="submittingSucceded">
@@ -99,6 +105,7 @@
                     @click="resetForm"
                     class="p-button p-button-outlined p-button-sm d-letters place-self-center ml-auto"
                     name="restart_data_button"
+                    data-test="resetFormButton"
                   >
                     Restart Data Request
                   </PrimeButton>
@@ -200,7 +207,7 @@ import { FormKit } from "@formkit/vue";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
-import { type DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum, type ErrorDetails, type ErrorResponse } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
@@ -247,6 +254,7 @@ export default defineComponent({
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
       message: "",
+      summary: "",
     };
   },
 
@@ -306,7 +314,8 @@ export default defineComponent({
         this.messageCounter++;
         console.error(error);
         if (error instanceof AxiosError) {
-          this.message = error.message;
+          this.message = ((error.response?.data as ErrorResponse)?.errors as ErrorDetails[])[0].message as string;
+          this.summary = ((error.response?.data as ErrorResponse)?.errors as ErrorDetails[])[0].summary as string;
         } else {
           this.message =
             "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
