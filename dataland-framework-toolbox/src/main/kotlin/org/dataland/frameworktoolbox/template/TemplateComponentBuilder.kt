@@ -30,14 +30,18 @@ class TemplateComponentBuilder(
         } else {
             val sectionName = Naming.getNameFromLabel(row.category)
             val section = base.getOrNull<ComponentGroup>(sectionName)
-                ?: base.create(sectionName)
+                ?: base.create(sectionName) {
+                    label = row.category
+                }
 
             if (row.subCategory.isBlank()) {
                 section
             } else {
                 val subsectionName = Naming.getNameFromLabel(row.subCategory)
                 val subsection = section.getOrNull<ComponentGroup>(subsectionName)
-                    ?: section.create(subsectionName)
+                    ?: section.create(subsectionName) {
+                        label = row.subCategory
+                    }
 
                 subsection
             }

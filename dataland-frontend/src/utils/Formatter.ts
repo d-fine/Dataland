@@ -8,7 +8,7 @@ import { roundNumber } from "@/utils/NumberConversionUtils";
  * @param precision is the precision for the rounding of the percentage number
  * @returns the resulting string
  */
-export function formatPercentageNumberAsString(percentageNumber?: number, precision = 2): string {
+export function formatPercentageNumberAsString(percentageNumber?: number | null, precision = 2): string {
   if (percentageNumber == undefined) {
     return "";
   }
@@ -38,7 +38,7 @@ export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency)
  * @param value number to format
  * @returns formatted number (e.g. 1500600.0123 --> 1,500,600.01)
  */
-export function formatNumberToReadableFormat(value: number | undefined): string {
+export function formatNumberToReadableFormat(value: number | null | undefined): string {
   if (value == undefined) {
     return "";
   }

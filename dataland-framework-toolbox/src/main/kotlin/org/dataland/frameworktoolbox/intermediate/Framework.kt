@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate
 
 import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 
 /**
  * A High-Level intermediate representation of a Dataland Framework
@@ -21,5 +22,16 @@ class Framework(val identifier: String) {
         }
 
         return frameworkDataModelBuilder
+    }
+
+    /**
+     * Generate a TypeScript ViewModel for this framework In-Memory.
+     */
+    fun generateViewModel(): FrameworkViewConfigBuilder {
+        val frameworkViewConfigBuilder = FrameworkViewConfigBuilder(this)
+        root.children.forEach {
+            it.generateViewConfig(frameworkViewConfigBuilder.rootSectionConfigBuilder)
+        }
+        return frameworkViewConfigBuilder
     }
 }

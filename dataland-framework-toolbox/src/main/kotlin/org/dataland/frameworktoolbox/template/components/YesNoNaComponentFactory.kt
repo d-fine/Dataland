@@ -5,7 +5,6 @@ import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
 import org.dataland.frameworktoolbox.template.model.TemplateRow
-import org.dataland.frameworktoolbox.template.model.TemplateYesNo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -28,7 +27,7 @@ class YesNoNaComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnos
         componentGroup.create<YesNoNaComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
-            isNullable = row.mandatoryField == TemplateYesNo.No
+            utils.setCommonProperties(row, this)
         }
     }
 }

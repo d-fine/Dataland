@@ -11,5 +11,8 @@ class DatalandRepository(val path: Path) {
     val backendKotlinSrc: Path
         get() = path / "dataland-backend" / "src" / "main" / "kotlin"
 
+    val frontendSrc: Path
+        get() = path / "dataland-frontend" / "src"
+
     val gradleInterface = DatalandRepositoryGradleInterface(this)
 }

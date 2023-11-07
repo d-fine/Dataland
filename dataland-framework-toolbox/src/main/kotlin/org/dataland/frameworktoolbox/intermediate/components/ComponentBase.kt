@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
 /**
  * A component is a higher-level abstraction for framework elements. Components are arranged in a hierarchy
@@ -18,9 +19,24 @@ open class ComponentBase(
 ) : TreeNode<FieldNodeParent> {
 
     /**
-     * The dataModelGenerator allows users to operate the DataClass generation of this specific component instance
+     * The label of a component is a human-readable short title describing the component
+     */
+    var label: String? = null
+
+    /**
+     * The explanation of a component is a longer description of the component
+     */
+    var explanation: String? = null
+
+    /**
+     * The dataModelGenerator allows users to overwrite the DataClass generation of this specific component instance
      */
     var dataModelGenerator: ((dataClassBuilder: DataClassBuilder) -> Unit)? = null
+
+    /**
+     * The viewConfigGenerator allows users to overwrite the ViewConfig generation of this specific component instance
+     */
+    val viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
 
     /**
      * True iff this component is optional / accepts null values
@@ -56,5 +72,20 @@ open class ComponentBase(
      */
     fun generateDataModel(dataClassBuilder: DataClassBuilder) {
         return dataModelGenerator?.let { it(dataClassBuilder) } ?: generateDefaultDataModel(dataClassBuilder)
+    }
+
+    /**
+     * Build this component instance into the provided view-section configuration
+     * using the default generator for this component
+     */
+    open fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+        // throw NotImplementedError("This component did not implement view config conversion.")
+    }
+
+    /**
+     * Build this component instance into the provided view-section configuration
+     */
+    fun generateViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+        return viewConfigGenerator?.let { it(sectionConfigBuilder) } ?: generateDefaultViewConfig(sectionConfigBuilder)
     }
 }

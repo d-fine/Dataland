@@ -4,9 +4,9 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
 import org.dataland.frameworktoolbox.utils.DatalandRepository
-import org.dataland.frameworktoolbox.utils.FreeMarker
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.capitalizeEn
+import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import java.io.FileWriter
 import kotlin.io.path.div
 

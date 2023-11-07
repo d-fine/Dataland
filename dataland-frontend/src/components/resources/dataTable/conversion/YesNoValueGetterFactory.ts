@@ -6,6 +6,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type BaseDataPointYesNoNa, type BaseDataPointYesNo, YesNoNa } from "@clients/backend";
 import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
+import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 
 const humanReadableYesNoMap: { [key in YesNoNa]: string } = {
   Yes: "Yes",
@@ -75,6 +76,19 @@ function formatYesNoValueWhenEvidenceDesiredIsYes(
 }
 
 /**
+ * Formats the provided Yes/No/Na value for the data-table
+ * @param value the value to display
+ * @returns the value formatted for display
+ */
+export function formatYesNoValueForDatatable(value: YesNoNa | undefined | null): AvailableMLDTDisplayObjectTypes {
+  const displayValue = value ? humanReadableYesNoMap[value] : "";
+  return {
+    displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+    displayValue: displayValue,
+  };
+}
+
+/**
  * Returns a value factory that returns the value of the Yes / No form field
  * If the form field requires certification, a link to the certificate is returned if available.
  * @param path the path to the field
@@ -94,12 +108,7 @@ export function yesNoValueGetterFactory(path: string, field: Field): (dataset: a
         getFieldValueFromFrameworkDataset(path, dataset) as BaseDataPointYesNoNa | undefined,
       );
     } else {
-      const value = getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | undefined;
-      const displayValue = value ? humanReadableYesNoMap[value] : "";
-      return {
-        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: displayValue,
-      };
+      return formatYesNoValueForDatatable(getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | undefined);
     }
   };
 }

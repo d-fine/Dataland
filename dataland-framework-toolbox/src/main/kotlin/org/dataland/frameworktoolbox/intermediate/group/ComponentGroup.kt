@@ -3,6 +3,9 @@ package org.dataland.frameworktoolbox.intermediate.group
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
@@ -13,6 +16,8 @@ class ComponentGroup(
     parent: FieldNodeParent,
     private val componentGroupApi: ComponentGroupApiImpl = ComponentGroupApiImpl(),
 ) : ComponentBase(identifier, parent), FieldNodeParent, ComponentGroupApi by componentGroupApi {
+
+    var viewPageLabelBadgeColor: LabelBadgeColor? = null
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
 
@@ -45,6 +50,23 @@ class ComponentGroup(
             identifier,
             groupClass.getTypeReference(nullable = isNullable),
         )
+    }
+
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+        val localLabel = label
+        require(!localLabel.isNullOrBlank()) {
+            "You must specify a label for the group $identifier to generate a view configuration"
+        }
+        val containerSection = sectionConfigBuilder.addSection(
+            label = localLabel,
+            labelBadgeColor = viewPageLabelBadgeColor,
+            expandOnPageLoad = false,
+            shouldDisplay = FrameworkBooleanLambda.TRUE,
+        )
+
+        children.forEach {
+            it.generateViewConfig(containerSection)
+        }
     }
 
     init {

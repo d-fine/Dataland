@@ -3,6 +3,10 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
  * A YesNoComponent is either Yes or No or N/A.
@@ -16,6 +20,20 @@ class YesNoNaComponent(
         dataClassBuilder.addProperty(
             this.identifier,
             TypeReference("org.dataland.datalandbackend.model.enums.commons.YesNoNa", isNullable),
+        )
+    }
+
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+        sectionConfigBuilder.addCell(
+            label = label ?: throw IllegalStateException(
+                "You must specify a label for $identifier to generate a view configuration",
+            ),
+            explanation = explanation,
+            shouldDisplay = FrameworkBooleanLambda.TRUE,
+            valueGetter = FrameworkDisplayValueLambda(
+                "formatYesNoValueForDatatable(${getTypescriptFieldAccessor()})",
+                setOf("import { formatYesNoValueForDatatable } from \"@/components/resources/dataTable/conversion/YesNoValueGetterFactory\";"),
+            ),
         )
     }
 }
