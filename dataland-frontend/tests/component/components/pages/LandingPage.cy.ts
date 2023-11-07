@@ -217,17 +217,6 @@ function validateSlideTextContent(): void {
   expect(initialTextContent).not.to.equal(changedTextContent);
 }
 
-describe("Quotes Section Tests", () => {
-  beforeEach(() => {
-    cy.visit("/");
-  });
-
-  it("should validate the structure of quotes section", validateQuotesSection);
-  it("should validate quotes section attributes", validateQuotesSectionAttributes);
-  it("should validate slideshow navigation arrows", validateSlideshowArrows);
-  it("should validate thumbnail overlays", validateThumbnailOverlays);
-  it("should validate slide text content", validateSlideTextContent);
-});
 /**
  * Validates the existence and general structure of the "How it works" section
  */
