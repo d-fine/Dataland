@@ -48,7 +48,6 @@
                           :name="field.name"
                           :options="field.options"
                           :required="field.required"
-                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
@@ -129,6 +128,12 @@ import MostImportantProductsFormField from "@/components/forms/parts/fields/Most
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
+import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
+import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
+import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
+import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
+import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
+import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -147,7 +152,6 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    YesNoFormField,
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
@@ -157,11 +161,18 @@ export default defineComponent({
     NaceCodeFormField,
     AddressFormField,
     RadioButtonsFormField,
-    YesNoNaFormField,
     PercentageFormField,
     ProductionSitesFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
+    IntegerExtendedDataPointFormField,
+    BigDecimalExtendedDataPointFormField,
+    CurrencyDataPointFormField,
+    YesNoFormField,
+    YesNoNaFormField,
+    YesNoBaseDataPointFormField,
+    YesNoNaBaseDataPointFormField,
+    YesNoExtendedDataPointFormField,
   },
   emits: ["datasetCreated"],
   data() {

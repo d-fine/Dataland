@@ -4,8 +4,27 @@ import { type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backen
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
-import { faker } from "@faker-js/faker";
+import { type FixtureData } from "@sharedUtils/Fixtures";
+import { generateFixtureDataset, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
+import { generateDataPoint } from "@e2e/fixtures/common/DataPointFixtures";
+
+/**
+ * Generates a set number of SFDR fixtures
+ * @param numFixtures the number of SFDR fixtures to generate
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
+ * @returns a set number of SFDR fixtures
+ */
+export function generateSfdrFixtures(
+  numFixtures: number,
+  nullProbability = DEFAULT_PROBABILITY,
+): FixtureData<SfdrData>[] {
+  return generateFixtureDataset<SfdrData>(
+    () => generateSfdrData(nullProbability),
+    numFixtures,
+    (dataSet: SfdrData) => dataSet.general.general.dataDate.substring(0, 4),
+  );
+}
 
 /**
  * Generates a random SFDR dataset
@@ -101,8 +120,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         ),
         averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
         averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
-        femaleBoardMembers: dataGenerator.randomExtendedDataPoint(generateInt(Number.MAX_SAFE_INTEGER)),
-        maleBoardMembers: dataGenerator.randomExtendedDataPoint(generateInt(Number.MAX_SAFE_INTEGER)),
+        femaleBoardMembers: dataGenerator.randomExtendedDataPoint(generateInt()),
+        maleBoardMembers: dataGenerator.randomExtendedDataPoint(generateInt()),
         controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         workplaceAccidentPreventionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         rateOfAccidentsInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
@@ -110,10 +129,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(generateYesNo()),
         grievanceHandlingMechanism: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         whistleblowerProtectionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
-        reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(
-          generateInt(Number.MAX_SAFE_INTEGER),
-        ),
+        reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateInt()),
+        sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateInt()),
         ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(generateFloat()),
       },
       greenSecurities: {
@@ -125,17 +142,11 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         traffickingInHumanBeingsPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         reportedChildLabourIncidents: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         reportedForcedOrCompulsoryLabourIncidents: dataGenerator.randomExtendedDataPoint(generateYesNo()),
-        numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(
-          generateInt(Number.MAX_SAFE_INTEGER),
-        ),
+        numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(generateInt()),
       },
       antiCorruptionAndAntiBribery: {
-        casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(
-          generateInt(Number.MAX_SAFE_INTEGER),
-        ),
-        reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(
-          generateInt(Number.MAX_SAFE_INTEGER),
-        ),
+        casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateInt()),
+        reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(generateInt()),
         totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(),
       },
     },
@@ -148,18 +159,12 @@ class SfdrGenerator extends Generator {
    * @returns random map of procurement categories
    */
   generateHighImpactClimateSectors(): { [key: string]: ExtendedDataPointBigDecimal } {
-    const highImpactClimateSectors = Object.values(HighImpactClimateSector);
-    const keys = [] as HighImpactClimateSector[];
-    highImpactClimateSectors.forEach((naceCode) => {
-      if (faker.datatype.boolean()) {
-        keys.push(naceCode);
-      }
-    });
+    const keys: HighImpactClimateSector[] = pickSubsetOfElements(Object.values(HighImpactClimateSector), 0);
     return Object.fromEntries(
       new Map<string, ExtendedDataPointBigDecimal>(
         keys.map((naceCode) => [
           naceCode as string,
-          this.randomExtendedDataPoint(generateFloat()) as ExtendedDataPointBigDecimal,
+          generateDataPoint(this.randomFloat(), this.reports) as ExtendedDataPointBigDecimal,
         ]),
       ),
     );

@@ -1,0 +1,11 @@
+ARG DATALAND_GRADLE_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
+
+WORKDIR /app
+COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
+COPY ./dataland-community-manager/ ./dataland-community-manager/
+COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
+COPY ./dataland-backend-utils/ ./dataland-backend-utils/
+COPY ./.git/ ./.git
+RUN ./gradlew dataland-community-manager:bootJar --no-daemon --stacktrace

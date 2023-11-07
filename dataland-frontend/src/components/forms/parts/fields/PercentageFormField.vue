@@ -9,7 +9,7 @@
         :validation="`number|${validation}`"
         placeholder="Value in %"
         v-model="percentageFieldValue"
-        :outerClass="innerClass"
+        :outerClass="inputClass"
       >
       </FormKit>
       <div class="form-field-label pb-3">

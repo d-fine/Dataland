@@ -36,7 +36,7 @@ export function generatePercentageValue(precision = 1e-4): number {
  * @param max the maximum allowed value (inclusive)
  * @returns a random number in [0, max]
  */
-export function generateInt(max: number): number {
+export function generateInt(max: number = 10000): number {
   return faker.number.int(max);
 }
 
