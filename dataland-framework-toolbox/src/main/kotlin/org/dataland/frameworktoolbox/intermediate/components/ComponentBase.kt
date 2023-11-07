@@ -79,7 +79,7 @@ open class ComponentBase(
      * using the default generator for this component
      */
     open fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        // throw NotImplementedError("This component did not implement view config conversion.")
+        throw NotImplementedError("This component did not implement view config conversion.")
     }
 
     /**

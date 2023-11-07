@@ -5,7 +5,6 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
@@ -24,15 +23,14 @@ class YesNoNaComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addCell(
-            label = label ?: throw IllegalStateException(
-                "You must specify a label for $identifier to generate a view configuration",
-            ),
-            explanation = explanation,
-            shouldDisplay = FrameworkBooleanLambda.TRUE,
-            valueGetter = FrameworkDisplayValueLambda(
+        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+            this,
+            FrameworkDisplayValueLambda(
                 "formatYesNoValueForDatatable(${getTypescriptFieldAccessor()})",
-                setOf("import { formatYesNoValueForDatatable } from \"@/components/resources/dataTable/conversion/YesNoValueGetterFactory\";"),
+                setOf(
+                    "import { formatYesNoValueForDatatable } from " +
+                        "\"@/components/resources/dataTable/conversion/YesNoValueGetterFactory\";",
+                ),
             ),
         )
     }
