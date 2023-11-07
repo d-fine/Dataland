@@ -138,10 +138,19 @@ class CompanyDataController(
     }
 
     override fun getAggregatedFrameworkMetaInfo(
-        companyId: String
+        companyId: String,
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> {
-        return ResponseEntity.ok(DataType.values.associateWith {
-            AggregatedFrameworkDataSummary(companyQueryManager.countActiveDatasets(companyId, it))
-        })
+        return ResponseEntity.ok(
+            DataType.values.associateWith {
+                AggregatedFrameworkDataSummary(companyQueryManager.countActiveDatasets(companyId, it))
+            },
+        )
+    }
+
+    override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> {
+        return ResponseEntity.ok(
+            companyQueryManager
+                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()).companyInformation,
+        )
     }
 }

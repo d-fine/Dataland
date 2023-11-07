@@ -281,6 +281,26 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getAggregatedFrameworkMetaInfo(
-        @PathVariable("companyId") companyId: String
+        @PathVariable("companyId") companyId: String,
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>>
+
+    /**
+     * A method to retrieve company information for one specific company identified by its company ID
+     * @param companyId identifier of the company in dataland
+     * @return information about the company without framework information
+     */
+    @Operation(
+        summary = "Retrieve company information.",
+        description = "Company information behind the given company ID is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company information."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{companyId}/info"],
+        produces = ["application/json"],
+    )
+    fun getCompanyInfo(@PathVariable("companyId") companyId: String): ResponseEntity<CompanyInformation>
 }
