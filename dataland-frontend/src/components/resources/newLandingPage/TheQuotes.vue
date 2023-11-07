@@ -346,8 +346,8 @@ onUnmounted(() => {
   }
 }
 .disabled {
-  opacity: 0.5; /* Grey out the button */
-  pointer-events: none; /* Disable click events */
+  opacity: 0.5;
+  pointer-events: none;
 }
 @media only screen and (max-width: $small) {
   .quotes {
