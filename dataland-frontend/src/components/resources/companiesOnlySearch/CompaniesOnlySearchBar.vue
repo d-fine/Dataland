@@ -1,5 +1,5 @@
 <template>
-  <span class="p-fluid">
+  <div :class="`p-fluid ${classes}`">
     <span class="p-input-icon-left p-input-icon-right">
       <i class="pi pi-search d-framework-searchbar-input-icon" aria-hidden="true" style="z-index: 20; color: #958d7c" />
       <AutoComplete
@@ -23,11 +23,11 @@
         </template>
       </AutoComplete>
     </span>
-  </span>
+  </div>
 </template>
 
 <script lang="ts">
-import AutoComplete, { type AutoCompleteCompleteEvent, type AutoCompleteItemSelectEvent } from "primevue/autocomplete";
+import AutoComplete, { type AutoCompleteCompleteEvent } from "primevue/autocomplete";
 import { CompanyIdAndName } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
@@ -57,6 +57,12 @@ export default defineComponent({
       latestValidSearchString: "",
       autocompleteArray: [] as Array<CompanyIdAndName>,
     };
+  },
+  props: {
+    classes: {
+      type: String,
+      default: "",
+    }
   },
 
   watch: {

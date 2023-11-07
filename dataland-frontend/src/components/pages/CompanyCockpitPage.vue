@@ -5,6 +5,7 @@
       <BackButton />
       <CompaniesOnlySearchBar
         @select-company="pushToCompanyCockpit"
+        classes="w-8"
       />
     </MarginWrapper>
     <MarginWrapper class="surface-0" style="margin-right: 0">
@@ -23,7 +24,7 @@
 
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import {type ComponentPublicInstance, defineComponent, inject, ref} from "vue";
+import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
@@ -82,8 +83,7 @@ export default defineComponent({
 
     /**
      * Executes a router push to upload overview page of the given company
-     * @param event object containing the stored company
-     * @param event.value the stored company object
+     * @param selectedCompany the company selected through the search bar
      */
     async pushToCompanyCockpit(selectedCompany: CompanyIdAndName) {
       await this.$router.push(`/companies/${selectedCompany.companyId}`);
