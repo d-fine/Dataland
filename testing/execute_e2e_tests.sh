@@ -31,6 +31,7 @@ docker exec -i dala-e2e-test-api-key-manager-db-1 /bin/bash -c "PGPASSWORD=${API
 docker exec -i dala-e2e-test-internal-storage-db-1 /bin/bash -c "PGPASSWORD=${INTERNAL_STORAGE_DB_PASSWORD} pg_dump --username internal_storage internal_storage" > ./dbdumps/${CYPRESS_TEST_GROUP}/internal-storage-db.sql || true
 docker exec -i dala-e2e-test-document-manager-db-1 /bin/bash -c "PGPASSWORD=${DOCUMENT_MANAGER_DB_PASSWORD} pg_dump --username document_manager document_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/document-manager-db.sql || true
 docker exec -i dala-e2e-test-qa-service-db-1 /bin/bash -c "PGPASSWORD=${QA_SERVICE_DB_PASSWORD} pg_dump --username qa_service qa_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/qa-service-db.sql || true
+docker exec -i dala-e2e-test-community-manager-db-1 /bin/bash -c "PGPASSWORD=${COMMUNITY_MANAGER_DB_PASSWORD} pg_dump --username community_manager community_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/community-manager-db.sql || true
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
 docker exec dala-e2e-test-backend-1 pkill -f java
@@ -53,6 +54,10 @@ docker exec dala-e2e-test-qa-service-1 pkill -f java
 timeout 90 sh -c "docker logs dala-e2e-test-qa-service-1 --follow" > /dev/null
 docker cp dala-e2e-test-qa-service-1:/jacoco.exec ./qa-service-bootRun-${CYPRESS_TEST_GROUP}.exec
 
+docker exec dala-e2e-test-community-manager-1 pkill -f java
+timeout 90 sh -c "docker logs dala-e2e-test-community-manager-1 --follow" > /dev/null
+docker cp dala-e2e-test-community-manager-1:/jacoco.exec ./community-manager-bootRun-${CYPRESS_TEST_GROUP}.exec
+
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.
 docker logs dala-e2e-test-backend-1 | grep "Searching for known Datatypes"
@@ -65,6 +70,7 @@ pg_isready -d api_key_manager -h "localhost" -p 5435
 pg_isready -d internal_storage -h "localhost" -p 5436
 pg_isready -d document_manager -h "localhost" -p 5437
 pg_isready -d qa_service -h "localhost" -p 5438
+pg_isready -d community_manager -h "localhost" -p 5439
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`

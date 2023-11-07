@@ -26,25 +26,11 @@ export const BaseFormFieldProps = {
     type: Boolean,
     default: false,
   },
-  innerClass: {
+  inputClass: {
     type: String,
     default: "short",
   },
 };
-
-export const YesNoFormFieldProps = Object.assign(deepCopyObject(BaseFormFieldProps), {
-  certificateRequiredIfYes: {
-    type: Boolean,
-    default: false,
-  },
-  evidenceDesired: {
-    type: Boolean,
-    default: false,
-  },
-  unit: {
-    type: String,
-  },
-}) as Readonly<ComponentPropsOptions>;
 
 export const FormFieldPropsWithPlaceholder = Object.assign(deepCopyObject(BaseFormFieldProps), {
   placeholder: {

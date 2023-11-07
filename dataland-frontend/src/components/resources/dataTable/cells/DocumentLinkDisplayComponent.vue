@@ -1,7 +1,7 @@
 <template>
   <DocumentLink
     :label="content.displayValue.label"
-    :download-name="content.displayValue.dataSource.fileName"
+    :download-name="content.displayValue.dataSource.fileName ?? content.displayValue.dataSource.fileReference"
     :file-reference="content.displayValue.dataSource.fileReference"
     show-icon
   />

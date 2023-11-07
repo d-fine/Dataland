@@ -36,7 +36,7 @@
             :options="allCountries"
             optionLabel="label"
             v-model:selectedItemsBindInternal="selectedCountries"
-            innerClass="long"
+            inputClass="long"
           />
         </div>
         <div class="form-field border-none">

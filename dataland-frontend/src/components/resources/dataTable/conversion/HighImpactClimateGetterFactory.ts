@@ -48,7 +48,6 @@ function convertHighImpactClimateToListForModal(
  * @param field the single select field
  * @returns the created getter
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function highImpactClimateGetterFactory(
   path: string,
   field: Field,

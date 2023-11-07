@@ -48,10 +48,8 @@
                           :name="field.name"
                           :options="field.options"
                           :required="field.required"
-                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
-                          :evidenceDesired="field.evidenceDesired"
                           :data-test="field.name"
                           :unit="field.unit"
                           @reportsUpdated="updateDocumentsList"
@@ -122,7 +120,6 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
-import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
@@ -135,6 +132,12 @@ import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 import HighImpactClimateSectorsFormField from "@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { HighImpactClimateSectorsNaceCodes } from "@/types/HighImpactClimateSectors";
+import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
+import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
+import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
+import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
+import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
+import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -153,24 +156,29 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    YesNoFormField,
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
-    DataPointFormField,
     DateFormField,
     SingleSelectFormField,
     MultiSelectFormField,
     NaceCodeFormField,
     AddressFormField,
     RadioButtonsFormField,
-    YesNoNaFormField,
     PercentageFormField,
     ProductionSitesFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
     UploadReports,
     HighImpactClimateSectorsFormField,
+    IntegerExtendedDataPointFormField,
+    BigDecimalExtendedDataPointFormField,
+    CurrencyDataPointFormField,
+    YesNoFormField,
+    YesNoNaFormField,
+    YesNoBaseDataPointFormField,
+    YesNoNaBaseDataPointFormField,
+    YesNoExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,

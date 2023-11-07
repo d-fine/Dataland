@@ -434,6 +434,26 @@ input[type="radio"] {
   border-color: $input-text-border;
   box-shadow: none;
 }
+.formListSection {
+  border: 1px solid $input-text-border;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+  position: relative;
+  .close-section {
+    position: absolute;
+    right: -15px;
+    left: auto;
+    top: -15px;
+    background: white;
+    border: 1px solid;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    padding: 3px;
+    cursor: pointer;
+  }
+}
 .uploadFormWrapper {
   input[type="checkbox"],
   input[type="radio"] {
@@ -591,26 +611,6 @@ input[type="radio"] {
       margin: 0;
     }
   }
-  .formListSection {
-    border: 1px solid $input-text-border;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin: 2rem 0;
-    position: relative;
-    .close-section {
-      position: absolute;
-      right: -15px;
-      left: auto;
-      top: -15px;
-      background: white;
-      border: 1px solid;
-      border-radius: 50%;
-      text-align: center;
-      display: flex;
-      padding: 3px;
-      cursor: pointer;
-    }
-  }
   .formFields {
     background: $upload-form-bg;
     border-radius: $upload-form-radius;
@@ -684,6 +684,11 @@ input[type="radio"] {
         }
       }
     }
+  }
+}
+.no-ui-message {
+  [data-message-type="ui"] {
+    display: none;
   }
 }
 .next-to-each-other {
@@ -794,4 +799,7 @@ input[type="radio"] {
   margin: 0.5rem 0;
   padding: 0.5rem 0;
   border-top: 1px solid #E0DFDE;
+}
+.red-border {
+  border: 1px solid $input-error;
 }
