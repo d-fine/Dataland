@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
@@ -190,7 +191,7 @@ interface CompanyApi {
     /**
      * A method to update company informtion for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
-     * @param companyInformation includes the company information
+     * @param companyInformationPatch includes the company information
      * @return updated information about the company
      */
     @Operation(
@@ -260,4 +261,26 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getTeaserCompanies(): List<String>
+
+    /**
+     * A method used to retrieve the aggregated meta information for all frameworks
+     * @param companyId the identifier of the company to collect the information for
+     * @returns the collected aggregated meta information per framework
+     */
+    @Operation(
+        summary = "Retrieve aggregated meta information for all frameworks",
+        description = "For each framework retrieves the amount of availabe reporting periods",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved values."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{companyId}/aggregated-framework-meta-info"],
+        produces = ["application/json"],
+    )
+    fun getAggregatedFrameworkMetaInfo(
+        @PathVariable("companyId") companyId: String
+    ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>>
 }

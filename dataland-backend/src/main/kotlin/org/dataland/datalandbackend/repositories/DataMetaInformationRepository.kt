@@ -51,4 +51,10 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
         @Param("dataType") dataType: String,
         @Param("reportingPeriod") reportingPeriod: String,
     ): DataMetaInformationEntity?
+
+    fun countByCompany_CompanyIdAndDataTypeAndCurrentlyActive(
+        company_companyId: String,
+        dataType: String,
+        currentlyActive: Boolean
+    ): Long
 }

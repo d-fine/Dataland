@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the company data endpoints
- * @param companyManager the company manager service to handle company information
+ * @param companyAlterationManager the company manager service to handle company alteration
+ * @param companyQueryManager the company manager service to handle company database queries
+ * @param companyIdentifierRepositoryInterface the company identifier repository
  */
 
 @RestController
@@ -132,5 +135,13 @@ class CompanyDataController(
 
     override fun getTeaserCompanies(): List<String> {
         return companyQueryManager.getTeaserCompanyIds()
+    }
+
+    override fun getAggregatedFrameworkMetaInfo(
+        companyId: String
+    ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> {
+        return ResponseEntity.ok(DataType.values.associateWith {
+            AggregatedFrameworkDataSummary(companyQueryManager.countActiveDatasets(companyId, it))
+        })
     }
 }
