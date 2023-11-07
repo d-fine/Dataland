@@ -5,8 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
-
 const { label, buttonType, ariaLabel } = defineProps<{
   label: string;
   buttonType: string;
