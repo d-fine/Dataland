@@ -18,6 +18,17 @@
         </div>
       </div>
     </MarginWrapper>
+    <div class="w-12 flex justify-content-center mt-2 mb-2">
+      <div class="grid gap-2 w-8 justify-content-center">
+        <!-- TODO use cards here -->
+        <div
+            v-for="framework of Object.values(DataTypeEnum)"
+            style="width: 300px; height: 300px; background: red"
+        >
+          <h3>{{ framework }}</h3>
+        </div>
+      </div>
+    </div>
   </TheContent>
   <TheFooter/>
 </template>
@@ -40,10 +51,15 @@ import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue"
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import {CompanyIdAndName} from "@clients/backend";
+import {CompanyIdAndName, DataTypeEnum} from "@clients/backend";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
+  computed: {
+    DataTypeEnum() {
+      return DataTypeEnum
+    }
+  },
   components: {
     MarginWrapper, FrameworkDataSearchBar, CompanyInformationBanner,
     AuthenticationWrapper,
