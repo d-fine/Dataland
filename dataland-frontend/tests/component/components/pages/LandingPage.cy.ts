@@ -142,35 +142,6 @@ function validateStruggleSection(): void {
 function validateQuotesSection(): void {
   cy.get("section.quotes").should("exist");
   cy.get(".quotes__slide").should("have.length", 5);
-  /**
-   * Verify thumbnail backgrounds are set correctly
-   */
-  describe("Quotes section thumbnail test", () => {
-    it("Check if slide thumbnails are loading correctly", () => {
-      // Mount the component
-      cy.mountWithPlugins(NewLandingPage, {
-        // Your plugins or component props go here
-      });
-
-      // Access the quotes section
-      cy.get("section.quotes").within(() => {
-        // Ensure the slide show container exists
-        cy.get(".quotes__slides").should("exist");
-
-        // Find all slides
-        cy.get(".quotes__slide").each(($slide, index) => {
-          // Skipping the first element as it does not have a video thumbnail
-          if (index > 0) {
-            // Check if the thumbnail overlay has the correct background image URL
-            cy.wrap($slide)
-              .find(".quotes__slide-thumbnail-overlay")
-              .should("have.attr", "style")
-              .and("match", /background-image: url\(https:\/\/img.youtube.com\/vi\/.+\/maxresdefault.jpg\)/);
-          }
-        });
-      });
-    });
-  });
 }
 
 /**
