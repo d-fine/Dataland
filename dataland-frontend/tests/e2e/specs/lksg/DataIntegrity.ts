@@ -16,7 +16,7 @@ import { generateProductionSite } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import { getSectionHead } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describeIf(
-  "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
+  "As a user, I expect to be able to  upload LkSG data via an upload form, and that the uploaded data is displayed " +
     "correctly in the frontend",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
