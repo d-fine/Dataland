@@ -102,7 +102,7 @@ sonar {
         property(
             "sonar.exclusions",
             "dataland-backend/src/main/kotlin/" +
-                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt" +
+                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
                 "dataland-frontend/src/components/general/SlideShow.vue",
         )
     }
