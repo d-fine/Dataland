@@ -7,7 +7,6 @@
         :name="name"
         :validation-label="validationLabel ?? label"
         :validation="`number|${validation}`"
-        :validationMessages="{ validation: `${validationLabel ?? label} must be between 0 and 100.` }"
         placeholder="Value in %"
         v-model="percentageFieldValue"
         :outerClass="inputClass"
