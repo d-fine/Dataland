@@ -36,20 +36,22 @@
         </div>
       </div>
     </SlideShow>
-    <p class="quotes__slide-text">{{ currentCardInfo.date }}</p>
-    <h3 class="quotes__slide-title">
-      {{ currentCardInfo.title }}
-      <span v-for="(titleSegment, index) of currentCardInfo.text.split('\n')" :key="index">
-        {{ titleSegment }}
-      </span>
-    </h3>
+    <transition name="fade" mode="out-in">
+      <p class="quotes__slide-text" :key="currentCardInfo.date">{{ currentCardInfo.date }}</p>
+    </transition>
+    <transition name="fade" mode="out-in">
+      <h3 class="quotes__slide-title" :key="currentCardInfo.title">
+        {{ currentCardInfo.title }}
+        <span v-for="(titleSegment, index) of currentCardInfo.text.split('\n')" :key="index">
+          {{ titleSegment }}
+        </span>
+      </h3>
+    </transition>
     <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
 </template>
 
 <script setup lang="ts">
-//resize 640 iframe youtube video on mobile
-
 import { computed, ref, onMounted, onUnmounted, watch } from "vue";
 import type { Section } from "@/types/ContentTypes";
 import RegisterButton from "@/components/resources/newLandingPage/RegisterButton.vue";
@@ -183,7 +185,7 @@ onUnmounted(() => {
     transition: transform 0.4s ease-out;
     gap: 0;
     justify-content: center;
-    &.isdragging .howitworks__slide {
+    &.isdragging .quotes__slide {
       cursor: grabbing;
     }
   }
@@ -226,7 +228,6 @@ onUnmounted(() => {
       right: 0;
       bottom: 0;
       background-size: cover;
-      cursor: grab;
     }
     &-title {
       font-size: 14px;
@@ -249,6 +250,14 @@ onUnmounted(() => {
       max-width: 470px;
       margin: 0 16px;
     }
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
   }
   &__play-icon {
     position: absolute;
@@ -336,16 +345,23 @@ onUnmounted(() => {
     }
   }
 }
+.disabled {
+  opacity: 0.5; /* Grey out the button */
+  pointer-events: none; /* Disable click events */
+}
 @media only screen and (max-width: $small) {
   .quotes {
     margin: 32px auto 64px;
     gap: 32px;
     &__slide {
       flex: 0 0 323px;
-
+      iframe {
+        width: 323px;
+        height: 181px;
+      }
       &-text {
         font-size: 20px;
-        line-height: 28px; /* 140% */
+        line-height: 28px;
       }
     }
     &__arrows {
