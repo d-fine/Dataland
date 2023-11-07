@@ -55,7 +55,11 @@ describeIf(
   },
 );
 
-function performScrollingTest(clickBanner: boolean) {
+/**
+ * Performs the actual scrolling test with or without the cookie banner
+ * @param clickBanner tells the function if the cookie banner is present or not and thus needs to be clicked away
+ */
+function performScrollingTest(clickBanner: boolean) : void {
   cy.viewport(400, 800);
   cy.visitAndCheckAppMount("/");
   if (clickBanner) {
