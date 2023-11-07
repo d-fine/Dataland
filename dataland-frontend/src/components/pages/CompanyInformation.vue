@@ -72,8 +72,7 @@ export default defineComponent({
           const companyDataControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)(),
           ).getCompanyDataControllerApi();
-          const response = await companyDataControllerApi.getCompanyById(this.companyId);
-          this.companyInformation = response.data.companyInformation;
+          this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
         }
