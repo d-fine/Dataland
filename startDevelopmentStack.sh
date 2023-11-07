@@ -26,6 +26,7 @@ set +o allexport
 docker compose --profile development down
 docker volume rm $(docker volume ls -q | grep _pgadmin_config) || true
 docker volume rm $(docker volume ls -q | grep _qa_service_data) || true
+docker volume rm $(docker volume ls -q | grep _community_manager_data) || true
 docker compose --profile development pull --ignore-pull-failures --include-deps
 docker compose --profile development up -d --build
 

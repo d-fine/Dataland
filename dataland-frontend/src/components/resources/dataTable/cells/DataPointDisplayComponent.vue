@@ -1,13 +1,8 @@
 <template>
-  <span>{{ content.displayValue.label }}</span>
-  <DocumentLink
-    label=""
-    :suffix="formattedPageNumber"
-    :download-name="content.displayValue.fileName"
-    :file-reference="content.displayValue.fileReference"
-    show-icon
-    :title="content.displayValue.fileName"
-  />
+  <a @click="$dialog.open(DataPointDataTable, modalOptions)" class="link"
+    >{{ content.displayValue.value ?? "No data provided" }}
+    <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
+  </a>
 </template>
 
 <script lang="ts">
@@ -16,24 +11,42 @@ import {
   type MLDTDisplayComponentName,
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
 
 export default defineComponent({
-  name: "DocumentLinkDisplayComponent",
-  components: { DocumentLink },
+  name: "DataPointDisplayComponent",
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>,
       required: true,
     },
   },
+  data() {
+    return {
+      DataPointDataTable,
+    };
+  },
   computed: {
-    formattedPageNumber() {
-      if (this.content.displayValue.page || this.content.displayValue.page === 0) {
-        return `page ${this.content.displayValue.page}`;
-      } else {
-        return "";
-      }
+    modalOptions() {
+      return {
+        props: {
+          header: this.content.displayValue.fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          dataPointDisplay: this.convertedValueForModal,
+        },
+      };
+    },
+    convertedValueForModal() {
+      const content = this.content.displayValue;
+      return {
+        value: content.value,
+        quality: content.quality,
+        dataSource: content.dataSource,
+        comment: content.comment,
+      };
     },
   },
 });

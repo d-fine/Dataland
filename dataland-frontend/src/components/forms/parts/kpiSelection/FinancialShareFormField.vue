@@ -1,7 +1,7 @@
 <template>
   <FormKit type="group" :name="name">
     <div class="mb-3 form-field">
-      <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
+      <UploadFormHeader :label="label" :description="description" :is-required="required" />
       <div class="next-to-each-other">
         <FormKit
           type="text"

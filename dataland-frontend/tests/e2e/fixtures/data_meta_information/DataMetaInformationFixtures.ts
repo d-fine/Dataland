@@ -36,7 +36,7 @@ export class DataMetaInformationGenerator extends Generator {
       reportingPeriod: this.generateReportingPeriodRecentYear(),
       currentlyActive: currentlyActive,
       qaStatus: currentlyActive ? QaStatus.Accepted : pickOneElement(Object.values(QaStatus)),
-      uploadTime: generateInt(Number.MAX_SAFE_INTEGER),
+      uploadTime: generateInt(),
       uploaderUserId: canSeeUploader ? this.generateId() : null,
     };
   }

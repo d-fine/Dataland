@@ -313,6 +313,20 @@ class ApiAccessor {
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
+    fun uploadOneCompanyWithIdentifiers(
+        lei: String? = null,
+        isins: List<String>? = null,
+        permId: String? = null,
+    ): UploadInfo? {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        if (lei.isNullOrEmpty() && isins.isNullOrEmpty() && permId.isNullOrEmpty()) {
+            return null
+        }
+        val testCompanyInformation = generalTestDataProvider
+            .generateCompanyInformationWithNameAndIdentifiers(lei, isins, permId)
+        return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
+    }
+
     fun getCompaniesOnlyByName(searchString: String): List<StoredCompany> {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         return companyDataControllerApi.getCompanies(

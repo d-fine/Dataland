@@ -4,12 +4,12 @@ import {
   type CompanyDataControllerApiInterface,
   MetaDataControllerApi,
   type MetaDataControllerApiInterface,
-  InviteControllerApi,
 } from "@clients/backend/api";
 import { DocumentControllerApi } from "@clients/documentmanager";
 import { QaControllerApi } from "@clients/qaservice";
 import type Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import { RequestControllerApi, type RequestControllerApiInterface } from "@clients/communitymanager";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
@@ -71,12 +71,12 @@ export class ApiClientProvider {
     return this.getConstructedApi(ApiKeyControllerApi, "/api-keys");
   }
 
-  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
-    return this.getConstructedDocumentManager(DocumentControllerApi);
+  async getRequestDataControllerApi(): Promise<RequestControllerApiInterface> {
+    return this.getConstructedApi(RequestControllerApi, "/community");
   }
 
-  async getInviteControllerApi(): Promise<InviteControllerApi> {
-    return this.getConstructedApi(InviteControllerApi);
+  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
+    return this.getConstructedDocumentManager(DocumentControllerApi);
   }
 
   async getQaControllerApi(): Promise<QaControllerApi> {

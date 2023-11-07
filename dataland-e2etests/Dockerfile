@@ -3,6 +3,7 @@ FROM ghcr.io/d-fine/dataland/dataland_e2etests_base:${DATALAND_E2ETESTS_BASE_VER
 
 WORKDIR /app
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json
 COPY ./dataland-qa-service/qaServiceOpenApi.json ./dataland-qa-service/qaServiceOpenApi.json

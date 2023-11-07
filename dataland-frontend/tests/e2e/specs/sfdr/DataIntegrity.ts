@@ -15,7 +15,7 @@ let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
   cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
     const sfdrPreparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
-    testSfdrCompany = getPreparedFixture("companyWithOneFilledSfdrSubcategory", sfdrPreparedFixtures);
+    testSfdrCompany = getPreparedFixture("Sfdr-dataset-with-no-null-fields", sfdrPreparedFixtures);
   });
 });
 describeIf(
@@ -54,7 +54,7 @@ describeIf(
     }
 
     /**
-     * Set reference to all uploaded reports
+     * Set reference to all uploaded reports while pushing a new one as well
      * @param referencedReports all reports already uploaded
      */
     function setReferenceToAllUploadedReports(referencedReports: string[]): void {
@@ -72,7 +72,14 @@ describeIf(
      */
     function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
       cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
-      cy.get("li.p-multiselect-item").eq(sectorCardIndex).click();
+      cy.get("li.p-multiselect-item")
+        .eq(sectorCardIndex)
+        .invoke("attr", "aria-selected")
+        .then((ariaSelected) => {
+          if (ariaSelected === "false") {
+            cy.get("li.p-multiselect-item").eq(sectorCardIndex).click();
+          }
+        });
       cy.get('div[data-test="applicableHighImpactClimateSector"]')
         .find('select[name="fileName"]')
         .eq(sectorCardIndex)
@@ -83,14 +90,12 @@ describeIf(
      * Removes the first high impact climate sector and checks that it has actually disappeared
      */
     function testRemovingOfHighImpactClimateSector(): void {
-      cy.get('div[data-test="applicableHighImpactClimateSector"]')
-        .contains("A - AGRICULTURE, FORESTRY AND FISHING")
-        .get("em")
-        .contains("close")
+      cy.get('div[data-test="applicableHighImpactClimateSector"]:contains("A - AGRICULTURE, FORESTRY AND FISHING")')
+        .find("em:contains('close')")
         .click();
-      cy.get('div[data-test="applicableHighImpactClimateSector"]')
-        .contains("A - AGRICULTURE, FORESTRY AND FISHING")
-        .should("not.exist");
+      cy.get(
+        'div[data-test="applicableHighImpactClimateSector"]:contains("A - AGRICULTURE, FORESTRY AND FISHING")',
+      ).should("not.exist");
     }
 
     /**
@@ -106,12 +111,12 @@ describeIf(
 
     it("Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form", () => {
       const uniqueCompanyMarker = Date.now().toString();
-      const testCompanyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
+      const companyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyAndFrameworkData(
           DataTypeEnum.Sfdr,
           token,
-          generateDummyCompanyInformation(testCompanyName),
+          generateDummyCompanyInformation(companyName),
           testSfdrCompany.t,
           "2021",
         ).then((uploadIds) => {
@@ -126,8 +131,7 @@ describeIf(
               uploadIds.dataId,
           );
           cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-
-          cy.get("h1").should("contain", testCompanyName);
+          cy.get("h1").should("contain", companyName);
           selectsReportsForUploadInSfdrForm();
           setQualityInSfdrUploadForm();
           setReferenceToAllUploadedReports(
