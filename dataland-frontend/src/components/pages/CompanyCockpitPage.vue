@@ -3,11 +3,8 @@
   <TheContent class="paper-section flex">
     <MarginWrapper class="text-left surface-0" style="margin-right: 0">
       <BackButton />
-      <FrameworkDataSearchBar
-          :companyIdIfOnViewPage="companyId"
-          class="mt-2"
-          ref="frameworkDataSearchBar"
-          @search-confirmed="handleSearchConfirm"
+      <CompaniesOnlySearchBar
+        @select-company="pushToCompanyCockpit"
       />
     </MarginWrapper>
     <MarginWrapper class="surface-0" style="margin-right: 0">
@@ -37,14 +34,12 @@ import CreateApiKeyCard from "@/components/resources/apiKey/CreateApiKeyCard.vue
 import MessageComponent from "@/components/messages/MessageComponent.vue";
 import PrimeDialog from "primevue/dialog";
 import PrimeTextarea from "primevue/textarea";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {assertDefined} from "@/utils/TypeScriptUtils";
-import type Keycloak from "keycloak-js";
-import {type ApiKeyControllerApiInterface} from "@clients/apikeymanager";
 import TheFooter from "@/components/generics/TheFooter.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
+import {CompanyIdAndName} from "@clients/backend";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -62,6 +57,7 @@ export default defineComponent({
     MessageComponent,
     PrimeTextarea,
     TheFooter,
+    CompaniesOnlySearchBar,
   },
   props: {
     companyId: {
@@ -82,6 +78,15 @@ export default defineComponent({
         name: "Search Companies for Framework Data",
         query: { input: searchTerm },
       });
+    },
+
+    /**
+     * Executes a router push to upload overview page of the given company
+     * @param event object containing the stored company
+     * @param event.value the stored company object
+     */
+    async pushToCompanyCockpit(selectedCompany: CompanyIdAndName) {
+      await this.$router.push(`/companies/${selectedCompany.companyId}`);
     },
 
     handleFetchedCompanyInformation() {

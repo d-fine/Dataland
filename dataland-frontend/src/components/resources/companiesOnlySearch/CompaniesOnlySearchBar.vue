@@ -15,7 +15,7 @@
         panelClass="d-framework-searchbar-panel"
         style="z-index: 10"
         @complete="searchCompanyName($event)"
-        @item-select="pushToChooseFrameworkForDataUploadPageForItem($event)"
+        @item-select="$emit('selectCompany', $event.value)"
       >
         <template #option="slotProps">
           <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import AutoComplete, { type AutoCompleteCompleteEvent, type AutoCompleteItemSelectEvent } from "primevue/autocomplete";
-import { type CompanyIdAndName } from "@clients/backend";
+import { CompanyIdAndName } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
@@ -64,7 +64,7 @@ export default defineComponent({
       this.saveCurrentSearchStringIfValid(newValue);
     },
   },
-
+  emits: ["selectCompany"],
   methods: {
     /**
      * The input string is stored in the variable latestValidSearchString if it is a string and not empty
@@ -74,14 +74,6 @@ export default defineComponent({
       if (currentSearchString && typeof currentSearchString === "string") {
         this.latestValidSearchString = currentSearchString;
       }
-    },
-    /**
-     * Executes a router push to upload overview page of the given company
-     * @param event object containing the stored company
-     * @param event.value the stored company object
-     */
-    async pushToChooseFrameworkForDataUploadPageForItem(event: AutoCompleteItemSelectEvent) {
-      await this.$router.push(`/companies/${(event.value as CompanyIdAndName).companyId}/frameworks/upload`);
     },
     /**
      * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray
