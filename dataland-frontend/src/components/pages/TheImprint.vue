@@ -19,7 +19,7 @@
       <br />
       Registernummer: HRB 132445
     </p>
-    <p>Umsatzsteuer-Identifikationsnummer: 045 231 08277</p>
+    <p>Umsatzsteuer-Identifikationsnummer: DE363713774</p>
     <p>Inhaltlich verantwortlich: Frederik Christiaan Breen</p>
   </LegalPage>
 </template>
