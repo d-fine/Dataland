@@ -5,19 +5,27 @@ const SLIDE_DELTA = 440;
 describe("Component test for the SlideShow component", () => {
   it("Check if the buttons are working", () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
-      assertSlidesPosition();
+      // Check if the left button is disabled initially
+      cy.get(leftButtonSelector).should("have.class", "disabled");
+      // Click right button and check position
       cy.get(rightButtonSelector).click();
       assertSlidesPosition(1);
+      // Click right button again and check position
       cy.get(rightButtonSelector).click();
       assertSlidesPosition(2);
-      cy.get(rightButtonSelector).click();
+      // Try clicking the right button when it should be disabled and check position
+      cy.get(rightButtonSelector).should("have.class", "disabled");
       assertSlidesPosition(2);
+      // Click left button and check position
       cy.get(leftButtonSelector).click();
       assertSlidesPosition(1);
+      // Click left button again and check position
       cy.get(leftButtonSelector).click();
       assertSlidesPosition(0);
-      cy.get(leftButtonSelector).click();
+      // Try clicking the left button when it should be disabled and check position
+      cy.get(leftButtonSelector).should("have.class", "disabled");
       assertSlidesPosition(0);
+      // Click right button and check position
       cy.get(rightButtonSelector).click();
       assertSlidesPosition(1);
     });
