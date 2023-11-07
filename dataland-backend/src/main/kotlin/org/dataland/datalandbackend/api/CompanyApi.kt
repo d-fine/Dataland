@@ -116,7 +116,6 @@ interface CompanyApi {
         value = ["/names"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompaniesBySearchString(
         @RequestParam searchString: String,
     ):
