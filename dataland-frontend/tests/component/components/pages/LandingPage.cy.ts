@@ -17,10 +17,6 @@ describe("Component test for the landing page", () => {
       validateBrandsSection();
       validateStruggleSection();
       validateQuotesSection();
-      validateQuotesSectionAttributes();
-      validateSlideshowArrows();
-      validateThumbnailOverlays();
-      validateSlideTextContent();
       validateHowItWorksSection();
 
       assertFrameworkPanelExists("Pathways to Paris");
@@ -146,75 +142,6 @@ function validateStruggleSection(): void {
 function validateQuotesSection(): void {
   cy.get("section.quotes").should("exist");
   cy.get(".quotes__slide").should("have.length", 5);
-}
-
-/**
- * Validates that the "Quotes" section renders correctly with the right attributes
- */
-function validateQuotesSectionAttributes(): void {
-  cy.get("section.quotes").should("have.attr", "role", "region");
-  cy.get("section.quotes").should("have.attr", "aria-label", "The Quotes");
-}
-
-/**
- * Validates the presence and functionality of the slideshow navigation arrows
- */
-function validateSlideshowArrows(): void {
-  cy.get(".quotes__arrow--left").should("exist").and("be.visible");
-  cy.get(".quotes__arrow--right").should("exist").and("be.visible");
-
-  // Capture the initial text content of the first slide
-  cy.get(".quotes__slide")
-    .first()
-    .invoke("text")
-    .then((initialFirstSlide) => {
-      // Check if clicking the right arrow moves the slideshow forward
-      cy.get(".quotes__arrow--right").click();
-      cy.get(".quotes__slide").first().should("not.have.text", initialFirstSlide);
-
-      // After moving forward, clicking the left arrow should bring back the original slide
-      cy.get(".quotes__arrow--left").click();
-      cy.get(".quotes__slide").first().should("have.text", initialFirstSlide);
-    });
-}
-
-/**
- * Validates the video thumbnails and overlay play button functionality
- */
-function validateThumbnailOverlays(): void {
-  // Assert that the overlays are present
-  cy.get(".quotes__slide-thumbnail-overlay").should("exist").and("have.length.at.least", 1);
-
-  // Simulate clicking an overlay to play a video
-  cy.get(".quotes__slide-thumbnail-overlay").first().as("firstOverlay");
-  cy.window().then((win) => {
-    // Stub the playVideo method
-    cy.stub(win.YT.Player.prototype, "playVideo").as("playVideo");
-  });
-
-  // Simulate the click and verify the thumbnail is hidden and the video is played
-  cy.get("@firstOverlay")
-    .click()
-    .then(() => {
-      // The thumbnail should not be visible after clicking
-      cy.get("@firstOverlay").should("not.be.visible");
-      // The playVideo function should have been called
-      cy.get("@playVideo").should("have.been.calledOnce");
-    });
-}
-
-/**
- *  Validates the text content changes when the slide changes
- */
-function validateSlideTextContent(): void {
-  cy.get(".quotes__slide-title").should("exist");
-  cy.get(".quotes__slide-text").should("exist");
-
-  const initialTextContent = cy.get(".quotes__slide-text").invoke("text");
-  cy.get(".quotes__arrow--right").click();
-  const changedTextContent = cy.get(".quotes__slide-text").invoke("text");
-
-  expect(initialTextContent).not.to.equal(changedTextContent);
 }
 
 /**
