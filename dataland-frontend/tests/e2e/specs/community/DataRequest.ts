@@ -1,8 +1,13 @@
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type BulkDataRequestResponse } from "@clients/communitymanager";
+import {describeIf} from "@e2e/support/TestUtility";
 
-describe("As a user I want to be able to request data", () => {
+describeIf(
+    "As a user I want to be able to request data",
+    {
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    },  () => {
   beforeEach(() => {
     cy.ensureLoggedIn(admin_name, admin_pw);
     cy.visitAndCheckAppMount("/requests");
