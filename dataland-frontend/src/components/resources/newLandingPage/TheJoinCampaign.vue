@@ -7,7 +7,12 @@
         >{{ joinCampaignSection.text[2] }}
       </h2>
       <p class="joincampaign__paragraph" v-if="joinCampaignSection.text[3]">{{ joinCampaignSection.text[3] }}</p>
-      <EmailButton :sections="sections" />
+      <ButtonComponent
+        label="I am interested"
+        buttonType="joincampaign__button"
+        ariaLabel="Indicate interest by opening email client"
+        @click="() => openEmailClient(getInTouchSection?.cards?.[2])"
+      />
 
       <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">
         <div v-for="(card, index) in joinCampaignSection.cards" :key="index" role="row" class="joincampaign__row">
@@ -24,15 +29,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, type ComputedRef } from "vue";
 import type { Section } from "@/types/ContentTypes";
-import EmailButton from "@/components/resources/newLandingPage/EmailButton.vue";
+import { openEmailClient } from "@/utils/Email";
+import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
-
-const joinCampaignSection = computed(() => {
-  return sections?.find((section) => section.title === "Join a campaign") ?? null;
-});
+const findSection = (title: string): ComputedRef<Section | null> => {
+  return computed(() => sections?.find((section) => section.title === title) ?? null);
+};
+const joinCampaignSection = findSection("Join a campaign");
+const getInTouchSection = findSection("Get in touch");
 </script>
 
 <style scoped lang="scss">
