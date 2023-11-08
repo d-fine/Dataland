@@ -44,7 +44,7 @@ describeIf(
               token,
               storedCompany.companyId,
               "2021",
-              lksgFixtureWithNoNullFields.t, // TODO dataset
+              lksgFixtureWithNoNullFields.t,
             ).then((dataMetaInformation) => {
               cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
               cy.visitAndCheckAppMount(
