@@ -106,10 +106,12 @@ import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
 import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
+import SearchbarAndBackButton from "@/components/general/SearchbarAndBackButton.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
   components: {
+      SearchbarAndBackButton,
     TheContent,
     TheHeader,
     BackButton,
