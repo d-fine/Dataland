@@ -8146,12 +8146,14 @@
         }
       },
       "AggregatedFrameworkDataSummary": {
+        "required": [
+          "numberOfProvidedReportingPeriods"
+        ],
         "type": "object",
         "properties": {
           "numberOfProvidedReportingPeriods": {
             "type": "integer",
-            "format": "int64",
-            "nullable": true
+            "format": "int64"
           }
         }
       },
@@ -8162,10 +8164,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
