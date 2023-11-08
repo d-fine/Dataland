@@ -18,7 +18,7 @@
         </div>
       </div>
     </MarginWrapper>
-    <div class="card-holder">
+    <div class="card-wrapper">
       <div class="card-grid">
         <!-- TODO use cards here -->
         <div
@@ -113,12 +113,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.card-holder {
+.card-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
   padding-top: 40px;
   padding-bottom: 40px;
+  @media only screen and (max-width: $small) {
+    padding: 24px 17px;
+  }
 }
 
 .card-grid {
@@ -127,5 +130,8 @@ export default defineComponent({
   flex-wrap: wrap;
   gap: 40px;
   justify-content: center;
+  @media only screen and (max-width: $small) {
+    width: 100%;
+  }
 }
 </style>
