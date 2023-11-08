@@ -34,16 +34,15 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.9.1
 
 [versions]
 
-kotlin = "1.9.0"
-##  ⬆ = "1.9.10"
+kotlin = "1.9.20"
 
-okhttp3 = "4.11.0"
+okhttp3 = "4.12.0"
 
 moshi = "1.15.0"
 
 mockito = "5.2.0"
 
-junit-jupiter = "5.10.0"
+junit-jupiter = "5.10.1"
 
 [libraries]
 
@@ -59,11 +58,11 @@ springdoc-openapi-starter-webmvc-ui = "org.springdoc:springdoc-openapi-starter-w
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
 
-log4j = "org.apache.logging.log4j:log4j:2.20.0"
+log4j = "org.apache.logging.log4j:log4j:2.21.1"
 
-log4j-api = "org.apache.logging.log4j:log4j-api:2.20.0"
+log4j-api = "org.apache.logging.log4j:log4j-api:2.21.1"
 
-log4j-to-slf4j = "org.apache.logging.log4j:log4j-to-slf4j:2.20.0"
+log4j-to-slf4j = "org.apache.logging.log4j:log4j-to-slf4j:2.21.1"
 
 logback-classic = "ch.qos.logback:logback-classic:1.4.11"
 
@@ -84,7 +83,6 @@ spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-
 postgresql = "org.postgresql:postgresql:42.6.0"
 
 h2 = "com.h2database:h2:2.2.224"
-##                  ⬆ :2.2.224"
 
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
 
@@ -106,7 +104,7 @@ spring-boot-starter-oauth2-resource-server = { module = "org.springframework.boo
 
 spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
 
-mailjet-client = "com.mailjet:mailjet-client:5.2.4"
+mailjet-client = "com.mailjet:mailjet-client:5.2.5"
 
 flyway-core = "org.flywaydb:flyway-core:9.22.1"
 
@@ -116,9 +114,9 @@ mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mo
 
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
 
-spring-security-crypto = "org.springframework.security:spring-security-crypto:6.1.4"
+spring-security-crypto = "org.springframework.security:spring-security-crypto:6.1.5"
 
-spring-security-web = "org.springframework.security:spring-security-web:6.1.4"
+spring-security-web = "org.springframework.security:spring-security-web:6.1.5"
 
 jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.0.0"
 
@@ -126,11 +124,11 @@ bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
 bcprov-jdk15on = "org.bouncycastle:bcprov-jdk15on:1.70"
 
-jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.15.2"
+jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.15.3"
 
 jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2"
 
-commons-io = "commons-io:commons-io:2.14.0"
+commons-io = "commons-io:commons-io:2.15.0"
 
 pdfbox = "org.apache.pdfbox:pdfbox:_"
 
@@ -144,13 +142,13 @@ awaitility = "org.awaitility:awaitility:4.2.0"
 
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 
-json = "org.json:json:20230618"
+json = "org.json:json:20231013"
 
-spring-context = "org.springframework:spring-context:6.0.12"
+spring-context = "org.springframework:spring-context:6.0.13"
 
-spring-boot = "org.springframework.boot:spring-boot:3.1.4"
+spring-boot = "org.springframework.boot:spring-boot:3.1.5"
 
-spring-rabbit = "org.springframework.amqp:spring-rabbit:3.0.9"
+spring-rabbit = "org.springframework.amqp:spring-rabbit:3.0.10"
 
 cloudevents-api = "io.cloudevents:cloudevents-api:2.5.0"
 
@@ -160,7 +158,7 @@ cloudevents-core = "io.cloudevents:cloudevents-core:2.5.0"
 
 spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.0.5"
 
-spring-amqp = "org.springframework.amqp:spring-amqp:3.0.9"
+spring-amqp = "org.springframework.amqp:spring-amqp:3.0.10"
 
 spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
