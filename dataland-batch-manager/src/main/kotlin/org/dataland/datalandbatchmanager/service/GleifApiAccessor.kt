@@ -16,6 +16,8 @@ import java.net.URL
 @Component
 class GleifApiAccessor(
     @Value("\${gleif.download.baseurl}") private val gleifBaseUrl: String,
+    @Value("\${gleif.mapping.download.baseurl}") private val gleifMappingBaseUrl: String,
+    //TODO: find the full api url
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -32,12 +34,20 @@ class GleifApiAccessor(
      * @param targetFile the local target file to be written
      */
     fun getFullGoldenCopy(targetFile: File) {
-        downloadFileFromGleif("latest.csv", targetFile, "full Golden Copy File")
+        downloadFileFromGleif("$gleifBaseUrl","latest.csv", targetFile, "full Golden Copy File")
     }
 
-    private fun downloadFileFromGleif(urlSuffx: String, targetFile: File, fileDescription: String) {
+    /**
+     * Downloads the latest complete Lei-ISIN mapping file
+     * @param targetFile the local target file to be written
+     */
+    fun getMappingFile(targetFile: File) {
+        downloadFileFromGleif("$gleifMappingBaseUrl","???.csv", targetFile, "full Mapping File")
+    }
+
+    private fun downloadFileFromGleif(baseUrl: String, urlSuffx: String, targetFile: File, fileDescription: String) {
         logger.info("Starting download of $fileDescription.")
-        val downloadUrl = URL("$gleifBaseUrl/$urlSuffx")
+        val downloadUrl = URL("$baseUrl/$urlSuffx")
         downloadFile(downloadUrl, targetFile)
         logger.info("Download of $fileDescription completed.")
     }
