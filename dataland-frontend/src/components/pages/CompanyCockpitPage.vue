@@ -20,13 +20,11 @@
     </MarginWrapper>
     <div class="card-wrapper">
       <div class="card-grid">
-        <!-- TODO use cards here -->
-        <div
+        <FrameworkSummaryPanel
             v-for="framework of Object.values(DataTypeEnum)"
-            style="width: 339px; height: 282px; background: grey"
-        >
-          <h3>{{ framework }}</h3>
-        </div>
+            :framework="framework"
+            :number-of-provided-reporting-periods="(aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods)"
+        />
       </div>
     </div>
   </TheContent>
@@ -55,6 +53,7 @@ import {AggregatedFrameworkDataSummary, CompanyIdAndName, DataTypeEnum} from "@c
 import {ApiClientProvider} from "@/services/ApiClients";
 import {assertDefined} from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
+import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -64,6 +63,7 @@ export default defineComponent({
     }
   },
   components: {
+    FrameworkSummaryPanel,
     MarginWrapper, FrameworkDataSearchBar, CompanyInformationBanner,
     AuthenticationWrapper,
     TheContent,
@@ -92,7 +92,7 @@ export default defineComponent({
   },
   data() {
     return {
-      aggregatedFrameworkDataSummary: {} as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary },
+      aggregatedFrameworkDataSummary: undefined as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined,
     };
   },
   async mounted() {
@@ -102,6 +102,7 @@ export default defineComponent({
     this.aggregatedFrameworkDataSummary = (await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)).data;
   },
   methods: {
+    assertDefined,
     /**
      * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to
      * the search term provided by the event.
