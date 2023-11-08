@@ -1,5 +1,5 @@
 <template>
-  <div :class="`summary-panel${hasAccessibleViewPage ? '--interactive' : ''}`" @click="onClickPanel">
+  <div :class="`summary-panel${hasAccessibleViewPage && !isMobileView ? '--interactive' : ''}`" @click="onClickPanel">
     <div>
       <div class="summary-panel__title">
         {{ title }}
@@ -20,7 +20,7 @@
       </div>
     </div>
     <a
-      v-if="showProvideDataButton"
+      v-if="showProvideDataButton && !isMobileView"
       class="summary-panel__provide-button"
       :href="`/companies/${props.companyId}/frameworks/${props.framework}/upload`"
       @pointerenter="onCursorEnterProvideButton"
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onBeforeMount, ref } from "vue";
+import { computed, inject, onBeforeMount, onMounted, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
@@ -68,6 +68,15 @@ const subtitle = computed(() => {
     return "for non-financial companies";
   }
 });
+const windowWidth = ref<number>();
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    windowWidth.value = window.innerWidth
+  });
+});
+const isMobileView = computed<boolean>(() => {
+  return windowWidth.value <= 768; // TODO don't hardcode this number $small here, shift this as a provider to App.vue
+})
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const isUserUploader = ref<boolean>();
@@ -129,26 +138,32 @@ function onCursorLeaveProvideButton() {
   flex-direction: column;
   justify-content: space-between;
 
-  &--interactive {
-    width: 339px;
-    height: 282px;
-    background-color: var(--surface-card);
-    padding: 24px;
-    border-radius: 8px;
-    text-align: left;
-    box-shadow: 0 0 12px #9494943d;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    justify-content: space-between;
+  @media only screen and (max-width: $small) {
+    width: 100%;
+  }
 
-    &:hover {
-      box-shadow: 0 0 32px 8px #1e1e1e14;
-    }
+  @media only screen and (min-width: $small) {
+    &--interactive {
+      width: 339px;
+      height: 282px;
+      background-color: var(--surface-card);
+      padding: 24px;
+      border-radius: 8px;
+      text-align: left;
+      box-shadow: 0 0 12px #9494943d;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      justify-content: space-between;
 
-    &:hover {
-      .summary-panel__separator {
-        border-bottom-color: var(--primary-color);
+      &:hover {
+        box-shadow: 0 0 32px 8px #1e1e1e14;
+      }
+
+      &:hover {
+        .summary-panel__separator {
+          border-bottom-color: var(--primary-color);
+        }
       }
     }
   }
