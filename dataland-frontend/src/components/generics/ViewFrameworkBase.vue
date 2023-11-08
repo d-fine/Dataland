@@ -1,7 +1,7 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
-    <SearchbarAndBackButton :companyID="companyID" />
+    <SearchbarAndBackButton :companyID="companyID" :isReviewableByCurrentUser="isReviewableByCurrentUser" />
     <MarginWrapper class="surface-0" style="margin-right: 0">
       <div class="grid align-items-end">
         <div class="col-9">
@@ -85,7 +85,6 @@
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -112,7 +111,6 @@ export default defineComponent({
     TheContent,
     TheHeader,
     MarginWrapper,
-    FrameworkDataSearchBar,
     Dropdown,
     CompanyInformationBanner,
     TheFooter,
@@ -269,17 +267,6 @@ export default defineComponent({
       if (this.dataType != dropDownChangeEvent.value) {
         void this.$router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
-    },
-    /**
-     * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to
-     * the search term provided by the event.
-     * @param searchTerm The search term provided by the "search-confirmed" event of the search bar
-     */
-    async handleSearchConfirm(searchTerm: string) {
-      await this.$router.push({
-        name: "Search Companies for Framework Data",
-        query: { input: searchTerm },
-      });
     },
 
     /**

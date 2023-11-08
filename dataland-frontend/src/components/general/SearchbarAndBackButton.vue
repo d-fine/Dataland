@@ -2,7 +2,7 @@
   <MarginWrapper class="text-left surface-0" style="margin-right: 0">
     <BackButton />
     <FrameworkDataSearchBar
-      v-if="!viewInPreviewMode && !isReviewableByCurrentUser"
+      v-if="!isReviewableByCurrentUser"
       :companyIdIfOnViewPage="companyID"
       class="mt-2"
       ref="frameworkDataSearchBar"
@@ -24,6 +24,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    isReviewableByCurrentUser: { type: Boolean },
   },
   methods: {
     /**
