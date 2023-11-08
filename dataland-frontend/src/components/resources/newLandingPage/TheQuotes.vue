@@ -47,14 +47,23 @@
         </span>
       </h3>
     </transition>
+    <ButtonComponent
+      :label="quotesSection.text[0]"
+      buttonType="quotes__button"
+      ariaLabel="Start your Dataland Journey"
+      @click="register"
+    />
     <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted, watch } from "vue";
+import { computed, ref, onMounted, onUnmounted, watch, inject } from "vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import type Keycloak from "keycloak-js";
 import type { Section } from "@/types/ContentTypes";
-import RegisterButton from "@/components/resources/newLandingPage/RegisterButton.vue";
+import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 import SlideShow from "@/components/general/SlideShow.vue";
 
 interface YouTubeEvent {
@@ -170,6 +179,20 @@ onUnmounted(() => {
     player.destroy();
   });
 });
+
+const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+/**
+ * Sends the user to the keycloak register page (if not authenticated already)
+ */
+const register = (): void => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      if (!keycloak.authenticated) {
+        registerAndRedirectToSearchPage(keycloak);
+      }
+    })
+    .catch((error) => console.log(error));
+};
 </script>
 
 <style lang="scss">
@@ -325,7 +348,6 @@ onUnmounted(() => {
       }
     }
   }
-
   &__button {
     padding: 14px 32px;
     border-radius: 32px;
