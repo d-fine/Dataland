@@ -2,6 +2,7 @@ import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type CompanyAssociatedDataPathwaysToParisData } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 describe("Component tests for the CreateP2pDataset that test dependent fields", () => {
   /**
    * Picks the 13th day of the next month in the datepicker
@@ -22,11 +23,22 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
     cy.get('div[data-test="sectors"] div.p-multiselect').should("exist").click();
   }
 
+  /**
+   * Assures that when scrolling down on the upload page the side bar sticks at the top of the viewport.
+   */
+  function checkStickinessOfSideBar(): void {
+    cy.scrollTo("bottom");
+    cy.get("[data-test='submitSideBar']").should("have.css", "position", "fixed").and("have.css", "top", "60px");
+    cy.scrollTo("top");
+    cy.get("[data-test='submitSideBar']").should("have.css", "position", "relative").and("have.css", "top", "0px");
+  }
+
   it("On the upload page, ensure that sectors can be selected and deselected and the submit looks as expected", () => {
     cy.mountWithPlugins(CreateP2pDataset, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
-      cy.get('button[data-test="submitButton"]').should("have.class", "button-disabled").click();
+      submitButton.buttonAppearsDisabled();
+      checkStickinessOfSideBar();
 
       pickDate();
 
@@ -48,7 +60,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
 
       clickOnSectorInSectorsDropdown("Steel");
 
-      cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled");
+      submitButton.buttonAppearsEnabled();
       cy.contains("span", "STEEL").should("exist");
 
       cy.get('div[data-test="emissionIntensityOfElectricityInCorrespondingUnit"] input').type("222");
@@ -56,7 +68,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       cy.intercept("POST", "**/api/data/p2p", (request) => {
         request.reply(200, {});
       }).as("postP2pData");
-      cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled").click();
+      submitButton.clickButton();
       cy.wait("@postP2pData").then((interception) => {
         const postedObject = interception.request.body as CompanyAssociatedDataPathwaysToParisData;
         const postedP2pDataset = postedObject.data;
@@ -87,7 +99,7 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       cy.contains("span", "STEEL").should("exist");
       cy.get('div[data-test="emissionIntensityOfElectricityInCorrespondingUnit"]').should("exist");
 
-      cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled");
+      submitButton.buttonAppearsEnabled();
     });
   });
 
