@@ -1,16 +1,9 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
-    <MarginWrapper class="text-left surface-0" style="margin-right: 0">
-      <BackButton />
-      <FrameworkDataSearchBar
-        v-if="!viewInPreviewMode && !isReviewableByCurrentUser"
-        :companyIdIfOnViewPage="companyID"
-        class="mt-2"
-        ref="frameworkDataSearchBar"
-        @search-confirmed="handleSearchConfirm"
-      />
-    </MarginWrapper>
+    <SearchbarAndBackButton
+            :companyID = companyID
+    />
     <MarginWrapper class="surface-0" style="margin-right: 0">
       <div class="grid align-items-end">
         <div class="col-9">
@@ -113,10 +106,12 @@ import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
 import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
+import SearchbarAndBackButton from "@/components/general/SearchbarAndBackButton.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
   components: {
+      SearchbarAndBackButton,
     TheContent,
     TheHeader,
     BackButton,
