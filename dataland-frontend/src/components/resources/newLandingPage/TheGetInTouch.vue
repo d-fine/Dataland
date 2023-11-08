@@ -16,9 +16,12 @@
       <div class="getintouch__text" grid-column="15 / 17">
         <p class="getintouch__text-title">{{ getInTouchSection.cards[1].title }}</p>
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
-        <button class="getintouch__text-button" @click="() => openEmailClient(getInTouchSection?.cards?.[3])">
-          {{ getInTouchSection.text[0] }}
-        </button>
+        <ButtonComponent
+          label="Get In Touch"
+          buttonType="getintouch__text-button"
+          ariaLabel="Get In Touch"
+          @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
+        />
       </div>
     </div>
   </section>
@@ -28,6 +31,7 @@
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
 import { openEmailClient } from "@/utils/Email";
+import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
@@ -90,24 +94,8 @@ const getInTouchSection = computed(() => {
       color: var(--primary-orange);
     }
     &-button {
-      padding: 14px 32px;
-      border-radius: 32px;
-      background-color: var(--primary-orange);
-      color: var(--default-neutral-white);
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 20px;
-      letter-spacing: 0.75px;
-      text-transform: uppercase;
-      border: 2px solid var(--primary-orange);
-      cursor: pointer;
       margin-top: 32px;
       width: fit-content;
-      &:hover {
-        background-color: var(--default-neutral-white);
-        color: var(--basic-dark);
-      }
     }
   }
 }
