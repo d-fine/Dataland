@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
@@ -51,7 +51,10 @@ import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue"
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import {CompanyIdAndName, DataTypeEnum} from "@clients/backend";
+import {AggregatedFrameworkDataSummary, CompanyIdAndName, DataTypeEnum} from "@clients/backend";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {assertDefined} from "@/utils/TypeScriptUtils";
+import Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -76,13 +79,27 @@ export default defineComponent({
     TheFooter,
     CompaniesOnlySearchBar,
   },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   props: {
     companyId: {
       type: String,
       required: true,
     }
   },
-  mounted() {
+  data() {
+    return {
+      aggregatedFrameworkDataSummary: {} as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary },
+    };
+  },
+  async mounted() {
+    const companyDataControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)(),
+    ).getCompanyDataControllerApi();
+    this.aggregatedFrameworkDataSummary = (await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)).data;
   },
   methods: {
     /**
