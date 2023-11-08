@@ -18,12 +18,12 @@
         </div>
       </div>
     </MarginWrapper>
-    <div class="w-12 flex justify-content-center mt-2 mb-2">
-      <div class="grid gap-2 w-8 justify-content-center">
+    <div class="card-holder">
+      <div class="card-grid">
         <!-- TODO use cards here -->
         <div
             v-for="framework of Object.values(DataTypeEnum)"
-            style="width: 300px; height: 300px; background: red"
+            style="width: 339px; height: 282px; background: grey"
         >
           <h3>{{ framework }}</h3>
         </div>
@@ -113,17 +113,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.copy-button {
-  cursor: pointer;
+.card-holder {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
-.p-inputText:enabled:focus {
-  box-shadow: none;
-}
-
-.apiKeyInfo .p-message-success {
-  background-color: var(--green-600);
-  border-color: var(--green-600);
-  color: white;
+.card-grid {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
 }
 </style>
