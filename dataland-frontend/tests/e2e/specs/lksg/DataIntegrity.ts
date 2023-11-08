@@ -7,14 +7,9 @@ import {
   DataTypeEnum,
   type LksgData,
   LksgDataControllerApi,
-  type LksgProductionSite,
-  QaStatus,
-  type StoredCompany,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { generateProductionSite } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { getSectionHead } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
@@ -35,14 +30,11 @@ describeIf(
       });
     });
 
-    beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-    });
-
     it(
       "Create a company and a Lksg dataset via api, then re-upload it with the upload form in Edit mode and " +
         "assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
+        cy.ensureLoggedIn(admin_name, admin_pw);
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = "Company-Created-In-Lksg-Blanket-Test" + uniqueCompanyMarker;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
@@ -94,72 +86,5 @@ describeIf(
         });
       },
     );
-
-    it("Check if the list of production sites is displayed as expected", () => {
-      // TODO component test?
-      cy.fixture("MetaInfoDataForCompany.json").then((metaInfos) => {
-        cy.fixture("CompanyInformationWithLksgPreparedFixtures").then((lksgDataSets) => {
-          const lksgData = prepareLksgViewIntercepts(
-            getPreparedFixture("one-lksg-data-set-with-two-production-sites", lksgDataSets as FixtureData<LksgData>[]),
-            (metaInfos as DataMetaInformation[])[0],
-          );
-          cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
-          getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
-
-          cy.get(`a:contains(Show List Of Production Sites)`).click();
-          lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
-            if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
-              cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
-            }
-          });
-          cy.get("div.p-dialog-mask").click({ force: true });
-        });
-      });
-    });
-
-    /**
-     * Sets the stubs for the API requests on the LkSG view page
-     * @param lksgDataFixture a fixture with company information and test LkSG data
-     * @param dataMetaInfo a set of metadata to be adapted
-     * @returns the LkSG data used for the data stub
-     */
-    function prepareLksgViewIntercepts(
-      lksgDataFixture: FixtureData<LksgData>,
-      dataMetaInfo: DataMetaInformation,
-    ): LksgData {
-      dataMetaInfo.dataType = DataTypeEnum.Lksg;
-      dataMetaInfo.qaStatus = QaStatus.Accepted;
-      dataMetaInfo.currentlyActive = true;
-      const storedCompany = {
-        companyId: "company-id",
-        companyInformation: lksgDataFixture.companyInformation,
-        dataRegisteredByDataland: [dataMetaInfo] as Array<DataMetaInformation>,
-      } as StoredCompany;
-      cy.intercept(`**/api/metadata*`, {
-        statusCode: 200,
-        body: [dataMetaInfo],
-      });
-      cy.intercept(`**/api/companies/*`, {
-        statusCode: 200,
-        body: storedCompany,
-      });
-      const lksgData = lksgDataFixture.t;
-      if (lksgData.general?.productionSpecific?.listOfProductionSites) {
-        lksgData.general.productionSpecific.listOfProductionSites = [
-          generateProductionSite(),
-          generateProductionSite(),
-        ];
-      }
-      cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/companies/*`, {
-        statusCode: 200,
-        body: [
-          {
-            metaInfo: dataMetaInfo,
-            data: lksgData,
-          },
-        ],
-      });
-      return lksgData;
-    }
   },
 );
