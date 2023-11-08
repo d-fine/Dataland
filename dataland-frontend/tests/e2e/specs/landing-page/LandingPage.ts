@@ -1,11 +1,13 @@
 describe("Check that the Landing Page to work properly", () => {
   it("Check the links and buttons", () => {
+    cy.intercept({ url: "https://www.youtube-nocookie.com/**" }, { forceNetworkError: false }).as("youtube");
     cy.visitAndCheckAppMount("/");
-
+    cy.wait("@youtube");
+    //are in register test
     cy.get("a:contains('Login')").click();
     cy.url().should("include", "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth");
     cy.get("span:contains('HOME')").click();
-
+    //are in register test
     cy.get(`button[name="signup_dataland_button"]`).click();
     cy.url().should("include", "/keycloak/realms/datalandsecurity/protocol/openid-connect/registrations");
     cy.get("span:contains('HOME')").click();
