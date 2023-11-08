@@ -24,7 +24,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    isReviewableByCurrentUser: {},
+    isReviewableByCurrentUser: { type: Boolean },
   },
   methods: {
     /**
