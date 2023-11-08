@@ -120,7 +120,7 @@ describeIf(
           testSfdrCompany.t,
           "2021",
         ).then((uploadIds) => {
-          cy.intercept("**/api/companies/" + uploadIds.companyId +"/info").as("getCompanyInformation");
+          cy.intercept("**/api/companies/" + uploadIds.companyId + "/info").as("getCompanyInformation");
           cy.visitAndCheckAppMount(
             "/companies/" +
               uploadIds.companyId +

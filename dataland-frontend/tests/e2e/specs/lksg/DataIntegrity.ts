@@ -70,7 +70,7 @@ describeIf(
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
         })
         .then((storedCompany) => {
-          cy.intercept("**/api/companies/" + storedCompany.companyId +"/info").as("getCompanyInformation");
+          cy.intercept("**/api/companies/" + storedCompany.companyId + "/info").as("getCompanyInformation");
           cy.visitAndCheckAppMount(
             "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload",
           );
