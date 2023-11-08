@@ -17,38 +17,34 @@ class IsinDeltaBuilder {
      */
     fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File): Map<String, String> {
     //Parse the old and new mapping csv files to get two maps of Lei -> ISIN
-        val newMap = parseCsvToMap(newMappingFile)
-        val oldMap = parseCsvToMap(oldMappingFile)
+        val newMapping = parseCsvToMap(newMappingFile)
+        val oldMapping = parseCsvToMap(oldMappingFile)
         replaceOldMappingFile(newMappingFile)
-        return findLeisWithUpdatedIsin(newMap,oldMap)
+        return findLeisWithUpdatedIsin(newMapping,oldMapping)
     }
 
     /**
      * Compares the two LEI-ISIN maps and identifies LEIs that have new ISINs
-     * @param newMapping the new LEI-ISIN map
-     * @param oldMapping the old LEI-ISIN map
+     * @param newMap the new LEI-ISIN map
+     * @param oldMap the old LEI-ISIN map
      * @return map of changed LEI-ISINs
      */
-    fun findLeisWithUpdatedIsin(newMapping: Map<String, String>, oldMapping: Map<String, String>): Map<String, String> {
-    //We group the based on LEIs and turn ISINs into a comma-seperated string.
+    fun findLeisWithUpdatedIsin(newMap: Map<String, String>, oldMap: Map<String, String>): Map<String, String> {
+    //We group based on LEIs and turn ISINs into a comma-seperated string.
     //If a LEI exists in the new map but not in the old one, we add the LEI and its ISINs to delta.
     //If matching LEIs with different ISIN are found, we add the LEI with the new ISINs to delta.
+       // Kann es sein dass nur die reienfolge sich ändert?
 
         val deltaMap = mutableMapOf<String, String>()
 
-        for ((lei, newIsin) in newMapping) {
-            val oldIsin = oldMapping[lei]
+        for ((lei,newIsins) in newMap) {
+            val oldIsins = oldMap[lei]
 
-            if (oldIsin == null || oldIsin != newIsin) {
-                // If LEI is not present in the old mapping or the ISIN is different, add the new ISIN to the delta map
-                val updatedIsins = deltaMap.getOrDefault(lei, mutableListOf())
-                updatedIsins.add(newIsin)
-                deltaMap[lei] = updatedIsins
-            } else {
-                // LEI is present in both old and new mappings, keep the common ISIN
-                deltaMap[lei] = listOf(oldIsin)
+            if (oldIsins == null || oldIsins != newIsins) {
+                deltaMap[lei]= newIsins
             }
         }
+
 
         return deltaMap
     }
@@ -82,10 +78,9 @@ class IsinDeltaBuilder {
                 }
             }
         } catch (e: Exception) {
-            // Handle any exceptions that may occur during parsing
-            logger.error("Error while parsing CSV: ${e.message}")
+            // TODO: Handle exceptions
         }
-
+            // TODO: maybe group mappings based on LEI here?
         return mappings
     }
 
