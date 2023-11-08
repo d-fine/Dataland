@@ -20,7 +20,6 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   preparedFixtures.push(manipulateFixtureForLksgDatasetWithLotsOfNulls(generateOneLksgFixtureWithManyNulls()));
   preparedFixtures.push(manipulateFixtureToContainProcurementCategories(generateLksgFixtures(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureToNotBeAManufacturingCompany(generateLksgFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForNoNullFields(generateLksgFixtures(1, 0)[0]));
   return preparedFixtures;
 }
 
@@ -127,16 +126,6 @@ function manipulateFixtureForAllFields(fixture: FixtureData<LksgData>): FixtureD
 function manipulateFixtureForLksgDatasetWithLotsOfNulls(fixture: FixtureData<LksgData>): FixtureData<LksgData> {
   fixture.companyInformation.companyName = "lksg-a-lot-of-nulls";
   return fixture;
-}
-
-/**
- * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
- * @param input Fixture data to be manipulated
- * @returns the manipulated fixture data
- */
-function manipulateFixtureForNoNullFields(input: FixtureData<LksgData>): FixtureData<LksgData> {
-  input.companyInformation.companyName = "Lksg-dataset-with-no-null-fields";
-  return input;
 }
 
 /**
