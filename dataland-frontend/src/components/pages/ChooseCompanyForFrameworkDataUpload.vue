@@ -19,9 +19,7 @@
                     <div class="mb-3">
                       <span>Type at least 3 characters to search for companies on Dataland:</span>
                     </div>
-                    <CompaniesOnlySearchBar
-                      @select-company="pushToChooseFrameworkForDataUploadPageForItem"
-                    />
+                    <CompaniesOnlySearchBar @select-company="pushToChooseFrameworkForDataUploadPageForItem" />
                     <div class="mt-6">
                       <span>Can't find the company? </span>
                       <a @click="autoScrollToCreateACompanyForm" class="cursor-pointer text-primary font-semibold"
@@ -67,7 +65,7 @@ import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constan
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import {CompanyIdAndName} from "@clients/backend";
+import { type CompanyIdAndName } from "@clients/backend";
 
 export default defineComponent({
   name: "ChooseCompany",
@@ -116,6 +114,7 @@ export default defineComponent({
      * Executes a router push to upload overview page of the given company
      * @param event object containing the stored company
      * @param event.value the stored company object
+     * @param selectedCompany
      */
     async pushToChooseFrameworkForDataUploadPageForItem(selectedCompany: CompanyIdAndName) {
       await this.$router.push(`/companies/${selectedCompany.companyId}/frameworks/upload`);
