@@ -62,9 +62,9 @@ const brandsSection = computed(() => {
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: center;
-    max-width: 1340px;
-    grid-column: 1 / -1;
+    justify-content: flex-start;
+    max-width: 1130px;
+    grid-column: 2 / -2;
     flex-wrap: wrap;
     gap: 40px 32px;
 
