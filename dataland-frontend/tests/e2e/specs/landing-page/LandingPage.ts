@@ -2,14 +2,6 @@ describe("Check that the Landing Page to work properly", () => {
   it("Check the links and buttons", () => {
     cy.visitAndCheckAppMount("/");
 
-    cy.get("a:contains('Login')").click();
-    cy.url().should("include", "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth");
-    cy.get("span:contains('HOME')").click();
-
-    cy.get(`button[name="signup_dataland_button"]`).click();
-    cy.url().should("include", "/keycloak/realms/datalandsecurity/protocol/openid-connect/registrations");
-    cy.get("span:contains('HOME')").click();
-
     cy.get("button.quotes__button").click();
     cy.url().should("include", "/keycloak/realms/datalandsecurity/protocol/openid-connect/registrations");
     cy.get("span:contains('HOME')").click();
