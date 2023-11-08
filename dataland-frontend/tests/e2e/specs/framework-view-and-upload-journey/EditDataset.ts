@@ -48,6 +48,10 @@ describeIf(
           "/upload?templateDataId=" +
           uploadIds.dataId,
       );
+      cy.get("h1", { timeout: Cypress.env("medium_timeout_in_ms") as number }).should(
+        "contain.text",
+        lksgFixture.companyInformation.companyName,
+      );
       submitButton.buttonAppearsEnabled();
       cy.get("button[data-test=files-to-upload-remove]")
         .first()
