@@ -36,7 +36,7 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      authenticated: inject<boolean>("authenticated"),
+      authenticated: inject<boolean>("authenticated"), // TODO is this broken (its type is actually computed<boolean>)
     };
   },
   mounted: function () {

@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import AutoComplete, { type AutoCompleteCompleteEvent } from "primevue/autocomplete";
-import { CompanyIdAndName } from "@clients/backend";
+import { type CompanyIdAndName } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
@@ -62,7 +62,7 @@ export default defineComponent({
     classes: {
       type: String,
       default: "",
-    }
+    },
   },
 
   watch: {

@@ -1,9 +1,7 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
-    <SearchbarAndBackButton
-            :companyID = companyID
-    />
+    <SearchbarAndBackButton :companyID="companyID" />
     <MarginWrapper class="surface-0" style="margin-right: 0">
       <div class="grid align-items-end">
         <div class="col-9">
@@ -84,7 +82,6 @@
 </template>
 
 <script lang="ts">
-import BackButton from "@/components/general/BackButton.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
@@ -111,10 +108,9 @@ import SearchbarAndBackButton from "@/components/general/SearchbarAndBackButton.
 export default defineComponent({
   name: "ViewFrameworkBase",
   components: {
-      SearchbarAndBackButton,
+    SearchbarAndBackButton,
     TheContent,
     TheHeader,
-    BackButton,
     MarginWrapper,
     FrameworkDataSearchBar,
     Dropdown,
@@ -251,7 +247,7 @@ export default defineComponent({
      */
     handleScroll() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.frameworkDataSearchBar?.$refs.autocomplete.hide();
+      this.frameworkDataSearchBar?.$refs.autocomplete.hide(); // TODO must be added to new component
       const windowScrollY = window.scrollY;
       if (this.scrollEmittedByToolbar) {
         this.scrollEmittedByToolbar = false;

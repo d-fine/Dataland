@@ -38,7 +38,7 @@ const content: Content = contentData;
 const landingPage: Page | undefined = content.pages.find((page) => page.url === "/");
 
 const dialog = useDialog();
-const injectedAuthenticated = inject<boolean>("authenticated");
+const injectedAuthenticated = inject<boolean>("authenticated"); // TODO is this broken (its type is actually computed<boolean>)
 const authenticated = ref(injectedAuthenticated);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const route = useRoute();

@@ -1,19 +1,16 @@
 <template>
-  <TheHeader/>
+  <TheHeader />
   <TheContent class="paper-section flex">
     <MarginWrapper class="text-left surface-0" style="margin-right: 0">
       <BackButton />
-      <CompaniesOnlySearchBar
-        @select-company="pushToCompanyCockpit"
-        classes="w-8"
-      />
+      <CompaniesOnlySearchBar @select-company="pushToCompanyCockpit" classes="w-8" />
     </MarginWrapper>
     <MarginWrapper class="surface-0" style="margin-right: 0">
       <div class="grid align-items-end">
         <div class="col-9">
           <CompanyInformationBanner
-              :companyId="companyId"
-              @fetchedCompanyInformation="handleFetchedCompanyInformation"
+            :companyId="companyId"
+            @fetchedCompanyInformation="handleFetchedCompanyInformation"
           />
         </div>
       </div>
@@ -21,14 +18,17 @@
     <div class="card-wrapper">
       <div class="card-grid">
         <FrameworkSummaryPanel
-            v-for="framework of Object.values(DataTypeEnum)"
-            :framework="framework"
-            :number-of-provided-reporting-periods="(aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods)"
+          v-for="framework of Object.values(DataTypeEnum)"
+          :company-id="companyId"
+          :framework="framework"
+          :number-of-provided-reporting-periods="
+            aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
+          "
         />
       </div>
     </div>
   </TheContent>
-  <TheFooter/>
+  <TheFooter />
 </template>
 
 <script lang="ts">
@@ -49,22 +49,24 @@ import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue"
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import {AggregatedFrameworkDataSummary, CompanyIdAndName, DataTypeEnum} from "@clients/backend";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {assertDefined} from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
+import { type AggregatedFrameworkDataSummary, type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import type Keycloak from "keycloak-js";
 import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
   computed: {
     DataTypeEnum() {
-      return DataTypeEnum
-    }
+      return DataTypeEnum;
+    },
   },
   components: {
     FrameworkSummaryPanel,
-    MarginWrapper, FrameworkDataSearchBar, CompanyInformationBanner,
+    MarginWrapper,
+    FrameworkDataSearchBar,
+    CompanyInformationBanner,
     AuthenticationWrapper,
     TheContent,
     TheHeader,
@@ -88,18 +90,22 @@ export default defineComponent({
     companyId: {
       type: String,
       required: true,
-    }
+    },
   },
   data() {
     return {
-      aggregatedFrameworkDataSummary: undefined as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined,
+      aggregatedFrameworkDataSummary: undefined as
+        | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
+        | undefined,
     };
   },
   async mounted() {
     const companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
+      assertDefined(this.getKeycloakPromise)(),
     ).getCompanyDataControllerApi();
-    this.aggregatedFrameworkDataSummary = (await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)).data;
+    this.aggregatedFrameworkDataSummary = (
+      await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
+    ).data;
   },
   methods: {
     assertDefined,
@@ -123,9 +129,7 @@ export default defineComponent({
       await this.$router.push(`/companies/${selectedCompany.companyId}`);
     },
 
-    handleFetchedCompanyInformation() {
-
-    }
+    handleFetchedCompanyInformation() {},
   },
 });
 </script>
