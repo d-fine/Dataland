@@ -279,7 +279,7 @@ interface CompanyApi {
         value = ["/{companyId}/aggregated-framework-meta-info"],
         produces = ["application/json"],
     )
-    fun getAggregatedFrameworkMetaInfo(
+    fun getAggregatedFrameworkDataSummary(
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>>
 

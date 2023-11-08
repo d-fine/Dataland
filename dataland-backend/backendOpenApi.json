@@ -1993,7 +1993,7 @@
         ],
         "summary": "Retrieve aggregated meta information for all frameworks",
         "description": "For each framework retrieves the amount of availabe reporting periods",
-        "operationId": "getAggregatedFrameworkMetaInfo",
+        "operationId": "getAggregatedFrameworkDataSummary",
         "parameters": [
           {
             "name": "companyId",
@@ -8162,10 +8162,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

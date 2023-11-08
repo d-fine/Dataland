@@ -137,7 +137,7 @@ class CompanyDataController(
         return companyQueryManager.getTeaserCompanyIds()
     }
 
-    override fun getAggregatedFrameworkMetaInfo(
+    override fun getAggregatedFrameworkDataSummary(
         companyId: String,
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> {
         return ResponseEntity.ok(
