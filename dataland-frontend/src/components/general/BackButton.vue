@@ -1,5 +1,6 @@
 <template>
-  <div class=""> <!-- TODO Check the effect of this on all pages -->
+  <div class="">
+    <!-- TODO Check the effect of this on all pages -->
     <div @click="goBack" class="cursor-pointer flex align-items-center" data-test="backButton">
       <span class="material-icons text-primary">arrow_back_ios</span>
       <span class="text-primary font-semibold d-letters" title="back_button">{{ label }}</span>

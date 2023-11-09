@@ -35,7 +35,7 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject } from "vue";
-import {type CompanyInformation, IdentifierType} from "@clients/backend";
+import { type CompanyInformation, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -56,14 +56,14 @@ export default defineComponent({
   },
   computed: {
     displaySector() {
-      if(this.companyInformation?.sector) {
+      if (this.companyInformation?.sector) {
         return this.companyInformation?.sector;
       } else {
         return "—";
       }
     },
     displayIsin() {
-      return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—"
+      return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
     },
   },
   props: {
@@ -119,7 +119,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-
 .inline-loading {
   width: 450px;
 }
@@ -132,7 +131,7 @@ export default defineComponent({
   &__separator {
     @media only screen and (max-width: $small) {
       width: 100%;
-      border-bottom: #E0DFDE 1px solid;
+      border-bottom: #e0dfde 1px solid;
     }
   }
 
@@ -151,5 +150,4 @@ export default defineComponent({
     }
   }
 }
-
 </style>

@@ -1,10 +1,7 @@
 <template>
   <TheHeader v-if="!useMobileView" />
   <TheContent class="paper-section flex">
-    <CompanyInfoSheet
-      :company-id="companyId"
-      @select-company="pushToCompanyCockpit"
-    />
+    <CompanyInfoSheet :company-id="companyId" @select-company="pushToCompanyCockpit" />
     <div class="card-wrapper">
       <div class="card-grid">
         <FrameworkSummaryPanel
@@ -46,7 +43,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import {ObjectType} from "@/utils/UpdateObjectUtils";
+import { ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -58,7 +55,7 @@ export default defineComponent({
   },
   computed: {
     useMobileView() {
-      return this.injectedUseMobileView
+      return this.injectedUseMobileView;
     },
     DataTypeEnum() {
       return DataTypeEnum;
