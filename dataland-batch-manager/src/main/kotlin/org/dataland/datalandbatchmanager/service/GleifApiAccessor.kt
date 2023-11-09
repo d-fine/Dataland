@@ -17,7 +17,6 @@ import java.net.URL
 class GleifApiAccessor(
     @Value("\${gleif.download.baseurl}") private val gleifBaseUrl: String,
     @Value("\${gleif.mapping.download.baseurl}") private val gleifMappingBaseUrl: String,
-    //TODO: find the full api url
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 

@@ -3,12 +3,15 @@ package org.dataland.datalandbatchmanager.service
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.kotlinModule
+import org.slf4j.LoggerFactory
 import java.io.File
 
 /**
  * The class to create csv file containing updated LEI-ISIN mapping
  */
 class IsinDeltaBuilder {
+
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Creates the delta file of the updated LEI-ISIN mapping file
@@ -17,10 +20,11 @@ class IsinDeltaBuilder {
      */
     fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File): Map<String, String> {
     //Parse the old and new mapping csv files to get two maps of Lei -> ISIN
-        val newMapping = parseCsvToMap(newMappingFile)
-        val oldMapping = parseCsvToMap(oldMappingFile)
+        val newMapping = parseCsvToGroupedMap(newMappingFile)
+        val oldMapping = parseCsvToGroupedMap(oldMappingFile)
+        val deltaMapping = findLeisWithUpdatedIsin(newMapping,oldMapping)
         replaceOldMappingFile(newMappingFile)
-        return findLeisWithUpdatedIsin(newMapping,oldMapping)
+        return deltaMapping
     }
 
     /**
@@ -33,7 +37,7 @@ class IsinDeltaBuilder {
     //We group based on LEIs and turn ISINs into a comma-seperated string.
     //If a LEI exists in the new map but not in the old one, we add the LEI and its ISINs to delta.
     //If matching LEIs with different ISIN are found, we add the LEI with the new ISINs to delta.
-       // Kann es sein dass nur die reienfolge sich ändert?
+    //Is it possible that only the order of LEIs change in the new file? The file is probably alphabetically ordered anyway so its unlikely
 
         val deltaMap = mutableMapOf<String, String>()
 
@@ -49,8 +53,12 @@ class IsinDeltaBuilder {
         return deltaMap
     }
 
-    //TODO: look if GleifCsvParser can be reused to some extent instead of this
-    private fun parseCsvToMap(csvFile: File): Map<String, String> {
+    /**
+     * Coverts CSV file to a LEI-ISIN map, while also aggregating all ISINs of a specific LEI into one comma-separated string
+     * @param csvFile the file to be parsed
+     * @return map of LEI-ISINs
+     */
+    private fun parseCsvToGroupedMap(csvFile: File): Map<String, String> {
         val csvMapper = CsvMapper()
         csvMapper.registerModule(kotlinModule())
 
@@ -60,7 +68,7 @@ class IsinDeltaBuilder {
             .setUseHeader(true)
             .build()
 
-        val mappings = mutableMapOf<String, String>()
+        val mappings = mutableMapOf<String, StringBuilder>()
 
         try {
             val csvParser = csvMapper
@@ -72,23 +80,29 @@ class IsinDeltaBuilder {
                 val lei = entry["LEI"]
                 val isin = entry["ISIN"]
 
-
                 if (lei != null && isin != null) {
-                    mappings[lei] = isin
+                    // Check if LEI already exists in mappings
+                    if (mappings.containsKey(lei)) {
+                        mappings[lei]?.append(",")
+                        mappings[lei]?.append(isin)
+                    } else {
+                        mappings[lei] = StringBuilder(isin)
+                    }
                 }
             }
         } catch (e: Exception) {
-            // TODO: Handle exceptions
+            logger.error("Error while parsing CSV: ${e.message}")
         }
-            // TODO: maybe group mappings based on LEI here?
-        return mappings
+
+        // Convert StringBuilder to String
+        return mappings.mapValues { it.value.toString() }
     }
 
     /**
      * Replaces the locally saved old mapping file with the recently downloaded one after creating delta is done
      * @param newMappingFile latest version of the LEI-ISIN mapping file
      */
-    fun replaceOldMappingFile(newFile: File) {
+    fun replaceOldMappingFile(newMappingFile: File) {
         //TODO: Delete old mapping file and replace it with the new mapping file to be used next week
     }
 }
