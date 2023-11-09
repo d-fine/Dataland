@@ -1,184 +1,205 @@
 import {
-  AvailableMLDTDisplayObjectTypes,
-  MLDTDisplayComponentName
+    AvailableMLDTDisplayObjectTypes,
+    MLDTDisplayComponentName
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
 import {
-  euTaxonomyKpiInfoMappings,
-  euTaxonomyKpiNameMappings,
+    euTaxonomyKpiInfoMappings,
+    euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {formatNumberToReadableFormat} from "@/utils/Formatter";
+import {getDataPointGetterFactory} from "@/components/resources/dataTable/conversion/Utils";
+import {
+    singleSelectValueGetterFactory
+} from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
+import {plainStringValueGetterFactory} from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import {yesNoValueGetterFactory} from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import {numberValueGetterFactory} from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import {DropdownOption} from "@/utils/PremadeDropdownDatasets";
+import {LksgData} from "@clients/backend";
+import {Field, FrameworkData} from "@/utils/GenericFrameworkTypes";
+import {multiSelectValueGetterFactory} from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+
+
+const sampleField: Field = {
+    showIf: () => true,
+    name: "",
+    label: "",
+    description: "",
+    unit: "",
+    component: "",
+}
+
+const sampleFormatter = function (dataPoint: any) {
+    return dataPoint?.value;
+}
+
+const generateEligibilityKpis = function (name, color="yellow") {
+    function sampleCell(field) {
+        const label = `${name} ${field}`;
+        return {
+            type: "cell",
+            label,
+            shouldDisplay: () => true,
+            valueGetter: getDataPointGetterFactory(`eligibilityKpis.${name}.${field}`,
+                {...sampleField, label}, sampleFormatter)
+        }
+    }
+
+    return {
+        type: "section",
+        label: name,
+        labelBadgeColor: color,
+        expandOnPageLoad: false,
+        shouldDisplay: (dataset) => (dataset.financialServicesTypes.includes(name)),
+        children: [
+            sampleCell("taxonomyEligibleActivityInPercent"),
+            sampleCell("taxonomyNonEligibleActivityInPercent"),
+            sampleCell("derivativesInPercent"),
+            sampleCell("banksAndIssuersInPercent"),
+            sampleCell("investmentNonNfrdInPercent")
+        ]
+    }
+}
 
 export const configForEutaxonomyFinancialsMLDT = [
-  {
-    type: "cell",
-    label: euTaxonomyKpiNameMappings.financialServicesTypes,
-    explanation: euTaxonomyKpiInfoMappings.financialServicesTypes,
-    shouldDisplay: (): boolean => true,
-    valueGetter: (dataset) => ({
-      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
-      displayValue: {
-        label: `Show ${dataset.financialServicesTypes.length} value${dataset.financialServicesTypes.length > 1 ? "s" : ""}`,
-        modalComponent: MultiSelectModal,
-        modalOptions: {
-          props: {
-            header: euTaxonomyKpiNameMappings.financialServicesTypes,
-            modal: true,
-            dismissableMask: true,
-          },
-          data: {
-            label: euTaxonomyKpiNameMappings.financialServicesTypes,
-            values: dataset.financialServicesTypes,
-          },
-        },
-  },
-    }),
-  },
-  {
-    type: "section",
-    label: "Eligibility Kpis",
-    labelBadgeColor: "orange",
-    expandOnPageLoad: true,
-    shouldDisplay: () => true,
-    children: [
-      {
+    {
         type: "cell",
-        label: "Credit Institution",
-        shouldDisplay: (dataset) => (dataset.financialServicesTypes.includes("CreditInstitution")),
-        valueGetter: (dataset) => ({
-          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.eligibilityKpis.CreditInstitution.taxonomyEligibleActivityInPercent,
-        }),
-      },
-      {
-        type: "cell",
-        label: "Investment Firm",
-        shouldDisplay: (dataset) => (dataset.financialServicesTypes.includes("InvestmentFirm")),
-        valueGetter: (dataset) => {
-
-          if (dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent?.quality ||
-              dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent?.comment?.length ||
-              dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent?.dataSource?.page != null
-          ) {
-            return {
-              displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-              displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
-                value: dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent.value,
-                dataSource: dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent.dataSource,
-                quality: dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent.quality,
-                comment: dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent.comment,
-              },
-            }
-          } else if (!!dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent?.dataSource?.fileReference?.trim().length) {
-            return {
-              displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
-              displayValue: {
-                label: dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent.value,
-                dataSource: dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent.dataSource,
-              },
-            }
-          } else {
-            return {
-              displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-              displayValue: dataset.eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent?.value,
-            }
-          }
-        }},
-
-
-      {
-        type: "cell",
-        label: "Investment Firm",
-        shouldDisplay: (dataset) => (dataset.financialServicesTypes.includes("InvestmentFirm")),
-        valueGetter: (dataset) => {
-
-          if (dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent?.quality ||
-              dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent?.comment?.length ||
-              dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent?.dataSource?.page != null
-          ) {
-            return {
-              displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-              displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
-                value: dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent.value,
-                dataSource: dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent.dataSource,
-                quality: dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent.quality,
-                comment: dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent.comment,
-              },
-            }
-          } else if (!!dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent?.dataSource?.fileReference?.trim().length) {
-            return {
-              displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
-              displayValue: {
-                label: dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent.value,
-                dataSource: dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent.dataSource,
-              },
-            }
-          } else {
-            return {
-              displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-              displayValue: dataset.eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent?.value,
-            }
-          }
-        }},
-
-
-      {
-        type: "cell",
-        label: "Investment Firm",
-        shouldDisplay: (dataset) => (dataset.financialServicesTypes.includes("InvestmentFirm")),
-        valueGetter: (dataset) => {
-
-          if (dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent?.quality ||
-              dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent?.comment?.length ||
-              dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent?.dataSource?.page != null
-          ) {
-            return {
-              displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-              displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
-                value: dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent.value,
-                dataSource: dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent.dataSource,
-                quality: dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent.quality,
-                comment: dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent.comment,
-              },
-            }
-          } else if (!!dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent?.dataSource?.fileReference?.trim().length) {
-            return {
-              displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
-              displayValue: {
-                label: dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent.value,
-                dataSource: dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent.dataSource,
-              },
-            }
-          } else {
-            return {
-              displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-              displayValue: dataset.eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent?.value,
-            }
-          }
-        }},
-
-
-
-      {
+        label: euTaxonomyKpiNameMappings.financialServicesTypes,
+        explanation: euTaxonomyKpiInfoMappings.financialServicesTypes,
+        shouldDisplay: (): boolean => true,
+        valueGetter: multiSelectValueGetterFactory("financialServicesTypes",
+            {
+                ...sampleField, label: euTaxonomyKpiNameMappings.financialServicesTypes, options: [
+                    {
+                        value: "CreditInstitution",
+                        label: "CreditInstitution"
+                    },
+                    {
+                        value: "InsuranceOrReinsurance",
+                        label: "InsuranceOrReinsurance"
+                    },
+                    {
+                        value: "AssetManagement",
+                        label: "AssetManagement"
+                    },
+                    {
+                        value: "InvestmentFirm",
+                        label: "InvestmentFirm"
+                    },
+                ]
+            })
+    },
+    {
         type: "section",
-        label: "Subsection 1",
-        expandOnPageLoad: false,
+        label: "Eligibility Kpis",
+        labelBadgeColor: "orange",
+        expandOnPageLoad: true,
         shouldDisplay: () => true,
         children: [
-          {
-            type: "cell",
-            label: "Level 3 - String",
-            shouldDisplay: () => true,
-            valueGetter: (dataset) => ({
-              displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-              displayValue: dataset.financialServicesTypes,
-            }),
-          },
+            generateEligibilityKpis("CreditInstitution","green"),
+            generateEligibilityKpis("InsuranceOrReinsurance", "red"),
+            generateEligibilityKpis("AssetManagement", "blue"),
+            generateEligibilityKpis("InvestmentFirm", "purple")
         ],
-      },
-    ],
-  },
+    },
+    {
+        label: "insuranceKpis taxonomyEligibleNonLifeInsuranceActivitiesInPercent",
+        explanation: "",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: getDataPointGetterFactory("insuranceKpis.TaxonomyEligibleNonLifeInsuranceActivitiesInPercent",
+            {...sampleField, label: "insuranceKpis taxonomyEligibleNonLifeInsuranceActivitiesInPercent"}, sampleFormatter)
+    },
+    {
+        label: "investmentFirmKpis greenAssetRatioInPercent",
+        explanation: "",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: getDataPointGetterFactory("investmentFirm.KpisGreenAssetRatioInPercent",
+            {...sampleField, label: "investmentFirmKpis greenAssetRatioInPercent"}, sampleFormatter)
+    },
+    {
+        label: "creditInstitutionKpis greenAssetRatioInPercent",
+        explanation: "",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: getDataPointGetterFactory("creditInstitutionKpis.GreenAssetRatioInPercent",
+            {...sampleField, label: "creditInstitutionKpis greenAssetRatioInPercent"}, sampleFormatter)
+    },
+    {
+        label: "creditInstitutionKpis tradingPortfolioAndInterbankLoansInPercent",
+        explanation: "",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: getDataPointGetterFactory("creditInstitutionKpis.TradingPortfolioAndInterbankLoansInPercent",
+            {...sampleField, label: "creditInstitutionKpis tradingPortfolioAndInterbankLoansInPercent"}, sampleFormatter)
+    },
+    {
+        label: "creditInstitutionKpis tradingPortfolioInPercent",
+        explanation: "",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: getDataPointGetterFactory("creditInstitutionKpis.TradingPortfolioInPercent",
+            {...sampleField, label: "creditInstitutionKpis tradingPortfolioInPercent"}, sampleFormatter)
+    },
+    {
+        label: "creditInstitutionKpis interbankLoansInPercent",
+        explanation: "",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: getDataPointGetterFactory("creditInstitutionKpis.InterbankLoansInPercent",
+            {...sampleField, label: "creditInstitutionKpis interbankLoansInPercent"}, sampleFormatter)
+    },
+    {
+        label: "Fiscal Year Deviation",
+        explanation: "Fiscal Year (Deviation/ No Deviation)",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: singleSelectValueGetterFactory("fiscalYearDeviation", {
+            ...sampleField,
+            options: [{label: 'Deviation', value: 'Deviation'}, {label: 'No Deviation', value: 'NoDeviation'}]
+        })
+    },
+    {
+        label: "Fiscal Year End",
+        explanation: "The date the fiscal year ends",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: plainStringValueGetterFactory("fiscalYearEnd")
+    },
+    {
+        label: "Scope Of Entities",
+        explanation: "Does a list of legal entities covered by Sust./Annual/Integrated/ESEF report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: yesNoValueGetterFactory("scopeOfEntities")
+    },
+    {
+        label: "EU Taxonomy Activity Level Reporting",
+        explanation: "Activity Level disclosure",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: yesNoValueGetterFactory("euTaxonomyActivityLevelReporting")
+    },
+    {
+        label: "Number Of Employees",
+        explanation: "Total number of employees (including temporary workers)",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: numberValueGetterFactory("numberOfEmployees", sampleField)
+    },
+    {
+        label: "NFRD Mandatory",
+        explanation: "The reporting obligation for companies whose number of employees is greater or equal to 500",
+        type: "cell",
+        shouldDisplay: (): boolean => true,
+        valueGetter: yesNoValueGetterFactory("nfrdMandatory")
+    }
+
 ];
+
+// @ts-nocheck
+// ***  missing are assurance, referencedReports
+// as I don't know how to add em
+
