@@ -26,7 +26,7 @@ import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
  * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a set number of LKSG fixtures
  */
-export function generateLksgFixture(
+export function generateLksgFixtures(
   numFixtures: number,
   nullProbability = DEFAULT_PROBABILITY,
 ): FixtureData<LksgData>[] {

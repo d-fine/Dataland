@@ -1,6 +1,6 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type LksgData, YesNo } from "@clients/backend";
-import { generateLksgFixture, generateProductionSite, LksgGenerator } from "./LksgDataFixtures";
+import { generateLksgFixtures, generateProductionSite, LksgGenerator } from "./LksgDataFixtures";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 
@@ -11,15 +11,15 @@ import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
  */
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForSixLksgDataSetsInDifferentYears(generateLksgFixture(1)[0]));
-  preparedFixtures.push(manipulateFixtureForOneLksgDataSetWithProductionSites(generateLksgFixture(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForAllFields(generateLksgFixture(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-04-18"));
-  preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-06-22"));
-  preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2022-07-30"));
+  preparedFixtures.push(manipulateFixtureForSixLksgDataSetsInDifferentYears(generateLksgFixtures(1)[0]));
+  preparedFixtures.push(manipulateFixtureForOneLksgDataSetWithProductionSites(generateLksgFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForAllFields(generateLksgFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForDate(generateLksgFixtures(1)[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForDate(generateLksgFixtures(1)[0], "2023-06-22"));
+  preparedFixtures.push(manipulateFixtureForDate(generateLksgFixtures(1)[0], "2022-07-30"));
   preparedFixtures.push(manipulateFixtureForLksgDatasetWithLotsOfNulls(generateOneLksgFixtureWithManyNulls()));
-  preparedFixtures.push(manipulateFixtureToContainProcurementCategories(generateLksgFixture(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureToNotBeAManufacturingCompany(generateLksgFixture(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureToContainProcurementCategories(generateLksgFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureToNotBeAManufacturingCompany(generateLksgFixtures(1, 0)[0]));
   return preparedFixtures;
 }
 
