@@ -34,7 +34,7 @@ class GleifApiAccessor(
      * @param targetFile the local target file to be written
      */
     fun getFullGoldenCopy(targetFile: File) {
-        downloadFileFromGleif("$gleifBaseUrl","latest.csv", targetFile, "full Golden Copy File")
+        downloadFileFromGleif("latest.csv", targetFile, "full Golden Copy File")
     }
 
     /**
@@ -42,12 +42,21 @@ class GleifApiAccessor(
      * @param targetFile the local target file to be written
      */
     fun getMappingFile(targetFile: File) {
-        downloadFileFromGleif("$gleifMappingBaseUrl","???.csv", targetFile, "full Mapping File")
+
+            // Fetch the JSON response from the API URL
+            val apiText = URL(gleifMappingBaseUrl).readText()
+
+            // Parse the JSON to extract the latest download link
+            val downloadLink = apiText.split("\"downloadLink\":\"")[1].split("\"")[0]
+
+            // Download the file from the latest download link
+            downloadFile(URL(downloadLink), targetFile)
+
     }
 
-    private fun downloadFileFromGleif(baseUrl: String, urlSuffx: String, targetFile: File, fileDescription: String) {
+    private fun downloadFileFromGleif(urlSuffx: String, targetFile: File, fileDescription: String) {
         logger.info("Starting download of $fileDescription.")
-        val downloadUrl = URL("$baseUrl/$urlSuffx")
+        val downloadUrl = URL("$gleifBaseUrl/$urlSuffx")
         downloadFile(downloadUrl, targetFile)
         logger.info("Download of $fileDescription completed.")
     }
