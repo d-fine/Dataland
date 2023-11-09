@@ -11,7 +11,7 @@
       <div class="summary-panel__separator" />
       <div>
         <span class="summary-panel__data" v-if="props.numberOfProvidedReportingPeriods != undefined">
-          <span class="summary-panel__value">
+          <span class="summary-panel__value" :data-test="`${framework}-panel-value`">
             {{ props.numberOfProvidedReportingPeriods }}
           </span>
           <template v-if="props.numberOfProvidedReportingPeriods == 1"> Reporting Period</template>
@@ -25,6 +25,7 @@
       :href="`/companies/${props.companyId}/frameworks/${props.framework}/upload`"
       @pointerenter="onCursorEnterProvideButton"
       @pointerleave="onCursorLeaveProvideButton"
+      :data-test="`${framework}-provide-data-button`"
     >
       PROVIDE DATA
     </a>
@@ -70,20 +71,22 @@ const subtitle = computed(() => {
 });
 const windowWidth = ref<number>();
 onMounted(() => {
-  window.addEventListener('resize', () => {
-    windowWidth.value = window.innerWidth
+  window.addEventListener("resize", () => {
+    windowWidth.value = window.innerWidth;
   });
 });
 const isMobileView = computed<boolean>(() => {
   return windowWidth.value <= 768; // TODO don't hardcode this number $small here, shift this as a provider to App.vue
-})
+});
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const isUserUploader = ref<boolean>();
 onBeforeMount(() => {
-  checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise).then((result) => {
-    isUserUploader.value = result;
-  }).catch((error) => console.log(error));
+  checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
+    .then((result) => {
+      isUserUploader.value = result;
+    })
+    .catch((error) => console.log(error));
 });
 const showProvideDataButton = computed(() => {
   return isUserUploader.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);

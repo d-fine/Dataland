@@ -24,6 +24,7 @@
           :number-of-provided-reporting-periods="
             aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
           "
+          :data-test="`${framework}-summary-panel`"
         />
       </div>
     </div>
