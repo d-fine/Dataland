@@ -1,20 +1,10 @@
 <template>
-  <TheHeader />
+  <TheHeader v-if="!useMobileView" />
   <TheContent class="paper-section flex">
-    <MarginWrapper class="text-left surface-0" style="margin-right: 0">
-      <BackButton />
-      <CompaniesOnlySearchBar @select-company="pushToCompanyCockpit" classes="w-8" />
-    </MarginWrapper>
-    <MarginWrapper class="surface-0" style="margin-right: 0">
-      <div class="grid align-items-end">
-        <div class="col-9">
-          <CompanyInformationBanner
-            :companyId="companyId"
-            @fetchedCompanyInformation="handleFetchedCompanyInformation"
-          />
-        </div>
-      </div>
-    </MarginWrapper>
+    <CompanyInfoSheet
+      :company-id="companyId"
+      @select-company="pushToCompanyCockpit"
+    />
     <div class="card-wrapper">
       <div class="card-grid">
         <FrameworkSummaryPanel
@@ -55,15 +45,27 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
+import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
+import {ObjectType} from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
+  inject: {
+    injectedUseMobileView: {
+      from: "useMobileView",
+      default: false,
+    },
+  },
   computed: {
+    useMobileView() {
+      return this.injectedUseMobileView
+    },
     DataTypeEnum() {
       return DataTypeEnum;
     },
   },
   components: {
+    CompanyInfoSheet,
     FrameworkSummaryPanel,
     MarginWrapper,
     FrameworkDataSearchBar,
@@ -148,7 +150,7 @@ export default defineComponent({
 }
 
 .card-grid {
-  width: 50%;
+  width: 70%;
   display: flex;
   flex-wrap: wrap;
   gap: 40px;

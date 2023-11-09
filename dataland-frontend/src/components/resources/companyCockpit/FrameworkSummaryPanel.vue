@@ -1,5 +1,5 @@
 <template>
-  <div :class="`summary-panel${hasAccessibleViewPage && !isMobileView ? '--interactive' : ''}`" @click="onClickPanel">
+  <div :class="`summary-panel${hasAccessibleViewPage && !useMobileView ? '--interactive' : ''}`" @click="onClickPanel">
     <div>
       <div class="summary-panel__title">
         {{ title }}
@@ -20,7 +20,7 @@
       </div>
     </div>
     <a
-      v-if="showProvideDataButton && !isMobileView"
+      v-if="showProvideDataButton && !useMobileView"
       class="summary-panel__provide-button"
       :href="`/companies/${props.companyId}/frameworks/${props.framework}/upload`"
       @pointerenter="onCursorEnterProvideButton"
@@ -69,15 +69,8 @@ const subtitle = computed(() => {
     return "for non-financial companies";
   }
 });
-const windowWidth = ref<number>();
-onMounted(() => {
-  window.addEventListener("resize", () => {
-    windowWidth.value = window.innerWidth;
-  });
-});
-const isMobileView = computed<boolean>(() => {
-  return windowWidth.value <= 768; // TODO don't hardcode this number $small here, shift this as a provider to App.vue
-});
+
+const useMobileView = inject<boolean>("useMobileView")
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const isUserUploader = ref<boolean>();
@@ -95,7 +88,7 @@ const showProvideDataButton = computed(() => {
 const authenticated = inject<{ value: boolean }>("authenticated");
 const hasAccessibleViewPage = computed(() => {
   return (
-    authenticated.value &&
+    authenticated?.value &&
     ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) &&
     props.numberOfProvidedReportingPeriods
   );
@@ -130,7 +123,8 @@ function onCursorLeaveProvideButton() {
 
 <style scoped lang="scss">
 .summary-panel {
-  width: 339px;
+  width: 100%;
+  max-width: 339px;
   height: 282px;
   background-color: var(--surface-card);
   padding: 24px;
@@ -140,10 +134,6 @@ function onCursorLeaveProvideButton() {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  @media only screen and (max-width: $small) {
-    width: 100%;
-  }
 
   @media only screen and (min-width: $small) {
     &--interactive {

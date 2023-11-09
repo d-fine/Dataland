@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, provide } from "vue";
+import {ref, watch, computed, provide, onUnmounted, onMounted} from "vue";
 import DynamicDialog from "primevue/dynamicdialog";
 import { useDialog } from "primevue/usedialog";
 import Keycloak from "keycloak-js";
@@ -58,6 +58,22 @@ provide("getKeycloakPromise", () => {
 provide(
   "authenticated",
   computed(() => keycloakAuthenticated.value),
+);
+
+const windowWidth = ref<number>();
+const storeWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+}
+onMounted(() => {
+  window.addEventListener('resize', storeWindowWidth);
+});
+onUnmounted(() => {
+  window.removeEventListener("resize", storeWindowWidth);
+});
+const smallScreenBreakpoint = 768;
+provide(
+    "useMobileView",
+    computed(() => (windowWidth?.value ?? window.innerWidth) <= smallScreenBreakpoint),
 );
 
 /**
