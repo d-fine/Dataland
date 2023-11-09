@@ -23,6 +23,7 @@ import { highImpactClimateGetterFactory } from "@/components/resources/dataTable
 type ValueGetterFactory = (path: string, field: Field) => (dataset: any) => AvailableMLDTDisplayObjectTypes;
 
 const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
+  //todo add assurancevaluegetterfactory
   AddressFormField: plainStringValueGetterFactory,
   DateFormField: plainStringValueGetterFactory,
   InputTextFormField: plainStringValueGetterFactory,
