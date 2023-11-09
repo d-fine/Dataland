@@ -39,9 +39,12 @@ export default defineComponent({
     },
   },
   mounted() {
-    if (!this.dataType) return this.gotoNotFound();
-    if (!this.multiViewFrameworks.includes(this.dataType))
+    if (!this.dataType) {
       return this.gotoNotFound();
+    }
+    if (!this.multiViewFrameworks.includes(this.dataType)) {
+      return this.gotoNotFound();
+    }
   },
   methods: {
     /**
