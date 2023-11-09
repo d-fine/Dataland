@@ -4,18 +4,26 @@
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
-    <div v-else-if="companyInformation && !waitingForData" class="grid align-items-end text-left">
+    <div v-else-if="companyInformation && !waitingForData" class="text-left company-details">
       <div class="col-12">
         <h1 class="mb-0" data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
       </div>
 
-      <div class="col-4">
-        <span>Headquarter: </span>
-        <span class="font-semibold">{{ companyInformation.headquarters }}</span>
-      </div>
-      <div class="col-4">
-        <span>Sector: </span>
-        <span class="font-semibold">{{ companyInformation.sector ?? "&mdash;" }}</span>
+      <div class="company-details__separator" />
+
+      <div class="company-details__info-holder">
+        <div class="company-details__info">
+          <span>Sector: </span>
+          <span class="font-semibold">{{ displaySector }}</span>
+        </div>
+        <div class="company-details__info">
+          <span>Headquarter: </span>
+          <span class="font-semibold">{{ companyInformation.headquarters }}</span>
+        </div>
+        <div class="company-details__info">
+          <span>ISIN: </span>
+          <span class="font-semibold">{{ displayIsin }}</span>
+        </div>
       </div>
     </div>
     <div v-else-if="companyIdDoesNotExist" class="col-12">
@@ -27,7 +35,7 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject } from "vue";
-import { type CompanyInformation } from "@clients/backend";
+import { type CompanyInformation, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -45,6 +53,18 @@ export default defineComponent({
       waitingForData: true,
       companyIdDoesNotExist: false,
     };
+  },
+  computed: {
+    displaySector() {
+      if (this.companyInformation?.sector) {
+        return this.companyInformation?.sector;
+      } else {
+        return "—";
+      }
+    },
+    displayIsin() {
+      return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
+    },
   },
   props: {
     companyId: {
@@ -98,8 +118,36 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .inline-loading {
   width: 450px;
+}
+
+.company-details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__separator {
+    @media only screen and (max-width: $small) {
+      width: 100%;
+      border-bottom: #e0dfde 1px solid;
+    }
+  }
+
+  &__info-holder {
+    display: flex;
+    flex-direction: row;
+    @media only screen and (max-width: $small) {
+      flex-direction: column;
+    }
+  }
+
+  &__info {
+    padding-top: 0.3rem;
+    @media only screen and (min-width: $small) {
+      padding-right: 40px;
+    }
+  }
 }
 </style>

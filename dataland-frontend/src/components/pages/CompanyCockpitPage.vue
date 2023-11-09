@@ -11,6 +11,7 @@
           :number-of-provided-reporting-periods="
             aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
           "
+          :data-test="`${framework}-summary-panel`"
         />
       </div>
     </div>
@@ -146,7 +147,7 @@ export default defineComponent({
 }
 
 .card-grid {
-  width: 50%;
+  width: 70%;
   display: flex;
   flex-wrap: wrap;
   gap: 40px;

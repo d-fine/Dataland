@@ -11,7 +11,7 @@
       <div class="summary-panel__separator" />
       <div>
         <span class="summary-panel__data" v-if="props.numberOfProvidedReportingPeriods != undefined">
-          <span class="summary-panel__value">
+          <span class="summary-panel__value" :data-test="`${framework}-panel-value`">
             {{ props.numberOfProvidedReportingPeriods }}
           </span>
           <template v-if="props.numberOfProvidedReportingPeriods == 1"> Reporting Period</template>
@@ -25,6 +25,7 @@
       :href="`/companies/${props.companyId}/frameworks/${props.framework}/upload`"
       @pointerenter="onCursorEnterProvideButton"
       @pointerleave="onCursorLeaveProvideButton"
+      :data-test="`${framework}-provide-data-button`"
     >
       PROVIDE DATA
     </a>
@@ -122,7 +123,8 @@ function onCursorLeaveProvideButton() {
 
 <style scoped lang="scss">
 .summary-panel {
-  width: 339px;
+  width: 100%;
+  max-width: 339px;
   height: 282px;
   background-color: var(--surface-card);
   padding: 24px;
@@ -132,10 +134,6 @@ function onCursorLeaveProvideButton() {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  @media only screen and (max-width: $small) {
-    width: 100%;
-  }
 
   @media only screen and (min-width: $small) {
     &--interactive {
