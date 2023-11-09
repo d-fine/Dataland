@@ -122,7 +122,8 @@ function onCursorLeaveProvideButton() {
 
 <style scoped lang="scss">
 .summary-panel {
-  width: 339px;
+  width: 100%;
+  max-width: 339px;
   height: 282px;
   background-color: var(--surface-card);
   padding: 24px;
@@ -132,10 +133,6 @@ function onCursorLeaveProvideButton() {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  @media only screen and (max-width: $small) {
-    width: 100%;
-  }
 
   @media only screen and (min-width: $small) {
     &--interactive {

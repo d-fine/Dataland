@@ -149,7 +149,7 @@ export default defineComponent({
 }
 
 .card-grid {
-  width: 50%;
+  width: 70%;
   display: flex;
   flex-wrap: wrap;
   gap: 40px;
