@@ -10,8 +10,11 @@
       <slot />
     </div>
 
-    <div class="col-4 flex justify-content-end" v-if="showUserProfileDropdown">
+    <div class="col-4 flex justify-content-end" v-if="showUserProfileDropdown && authenticated">
       <UserProfileDropDown />
+    </div>
+    <div class="col-4 flex justify-content-end" v-if="!authenticated">
+      <AuthSection />
     </div>
   </div>
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->
@@ -20,14 +23,21 @@
 
 <script lang="ts">
 import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
+import { inject } from "vue";
+import AuthSection from "@/components/resources/newLandingPage/AuthSection.vue";
 export default {
   name: "TheHeader",
-  components: { UserProfileDropDown },
+  components: { AuthSection, UserProfileDropDown },
   props: {
     showUserProfileDropdown: {
       type: Boolean,
       default: true,
     },
+  },
+  setup() {
+    return {
+      authenticated: inject<boolean>("authenticated"), // TODO is this broken (its type is actually computed<boolean>)
+    };
   },
 };
 </script>

@@ -13,8 +13,8 @@
     <div class="grid align-items-end">
       <div class="col-9">
         <CompanyInformationBanner
-            :companyId="props.companyId"
-            @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
+          :companyId="props.companyId"
+          @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
         />
       </div>
     </div>
@@ -26,31 +26,31 @@ import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import {CompanyIdAndName, CompanyInformation} from "@clients/backend";
-import {computed, inject, ref} from "vue";
+import { type CompanyIdAndName, type CompanyInformation } from "@clients/backend";
+import { computed, inject, ref } from "vue";
 
-const useMobileView = inject<boolean>("useMobileView")
+const useMobileView = inject<boolean>("useMobileView");
 
 const props = defineProps<{
   companyId: string;
-  isReviewableByCurrentUser?: boolean
+  isReviewableByCurrentUser?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (e: "selectCompany", selectedCompany: CompanyIdAndName): void
-  (e: "fetchedCompanyInformation", companyInformation: CompanyInformation): void
+  (e: "selectCompany", selectedCompany: CompanyIdAndName): void;
+  (e: "fetchedCompanyInformation", companyInformation: CompanyInformation): void;
 }>();
 
 function onFetchedCompanyInformation(companyInfo: CompanyInformation): void {
   companyName.value = companyInfo.companyName;
-  emit("fetchedCompanyInformation", companyInfo)
+  emit("fetchedCompanyInformation", companyInfo);
 }
 
-const companyName = ref<string>()
+const companyName = ref<string>();
 const mobileTitle = computed<string>(() => {
-  const isCollapsed = true;// TODO shift computation out
+  const isCollapsed = true; // TODO shift computation out
   const genericTitle = "Company Overview";
-  if(isCollapsed) {
+  if (isCollapsed) {
     return companyName.value ?? genericTitle;
   } else {
     return genericTitle;
@@ -59,7 +59,6 @@ const mobileTitle = computed<string>(() => {
 </script>
 
 <style scoped lang="scss">
-
 .mobile-header {
   display: flex;
   flex-direction: row;
@@ -73,5 +72,4 @@ const mobileTitle = computed<string>(() => {
     font-weight: bold;
   }
 }
-
 </style>
