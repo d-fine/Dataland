@@ -4,6 +4,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type LksgData,
+  type LksgProductionSite,
   QaStatus,
 } from "@clients/backend";
 import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -68,14 +69,20 @@ describe("Component test for the LksgPanel", () => {
     getCellValueContainer("SA8000 Certification").find("i[data-test=download-icon]").should("be.visible");
   });
 
-  it("Validate that the list of production sites is displayed", () => {
+  it("Validate that the list of production sites is displayed modal is displayed correctly", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
 
     cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
     getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
-    getCellValueContainer("List Of Production Sites").contains("a").should("be.visible");
+    getCellValueContainer("List Of Production Sites").contains("a").should("be.visible").click();
+    lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
+      if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
+        cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
+      }
+    });
+    cy.get("div.p-dialog-mask").click({ force: true });
   });
 
   it("Validate that the procurement category modal is displayed and contains the correct headers", () => {
