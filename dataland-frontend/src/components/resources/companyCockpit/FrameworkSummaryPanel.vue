@@ -70,20 +70,22 @@ const subtitle = computed(() => {
 });
 const windowWidth = ref<number>();
 onMounted(() => {
-  window.addEventListener('resize', () => {
-    windowWidth.value = window.innerWidth
+  window.addEventListener("resize", () => {
+    windowWidth.value = window.innerWidth;
   });
 });
 const isMobileView = computed<boolean>(() => {
   return windowWidth.value <= 768; // TODO don't hardcode this number $small here, shift this as a provider to App.vue
-})
+});
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const isUserUploader = ref<boolean>();
 onBeforeMount(() => {
-  checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise).then((result) => {
-    isUserUploader.value = result;
-  }).catch((error) => console.log(error));
+  checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
+    .then((result) => {
+      isUserUploader.value = result;
+    })
+    .catch((error) => console.log(error));
 });
 const showProvideDataButton = computed(() => {
   return isUserUploader.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
