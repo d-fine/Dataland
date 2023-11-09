@@ -1,8 +1,13 @@
-
+// @ts-nocheck
 // ***  missing are financialServicesTypes, eligibilityKpis, assurance, referencedReports
 // as I don't know how to add em
+import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
+import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
+import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 
-[
+export const euTaxonomyForFinancialsConfig = [
     {
         label: "insuranceKpis taxonomyEligibleNonLifeInsuranceActivitiesInPercent",
         explanation: "",
