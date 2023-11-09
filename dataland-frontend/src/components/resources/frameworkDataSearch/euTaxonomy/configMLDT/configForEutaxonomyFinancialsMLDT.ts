@@ -244,7 +244,7 @@ export const configForEutaxonomyFinancialsMLDT = [
 
       {
         label: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
-        explanation: "",
+        explanation: euTaxonomyKpiInfoMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
         type: "cell",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
