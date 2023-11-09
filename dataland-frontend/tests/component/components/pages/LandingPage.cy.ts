@@ -68,6 +68,7 @@ function validateBrandsSection(): void {
  */
 function checkNewFooter(): void {
   cy.get("footer").should("exist");
+
   checkImage("Copyright ©   Dataland", getSingleImageNameInSection("Footer"));
   cy.get(".footer__copyright").should("contain.text", `Copyright © ${new Date().getFullYear()} Dataland`);
 

@@ -74,9 +74,11 @@ const useMobileView = inject<boolean>("useMobileView")
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const isUserUploader = ref<boolean>();
 onBeforeMount(() => {
-  checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise).then((result) => {
-    isUserUploader.value = result;
-  }).catch((error) => console.log(error));
+  checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
+    .then((result) => {
+      isUserUploader.value = result;
+    })
+    .catch((error) => console.log(error));
 });
 const showProvideDataButton = computed(() => {
   return isUserUploader.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
