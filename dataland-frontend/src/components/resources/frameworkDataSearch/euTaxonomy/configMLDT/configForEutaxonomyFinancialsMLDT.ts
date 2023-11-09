@@ -192,7 +192,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         type: "cell",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
-          "creditInstitutionKpis.GreenAssetRatioInPercent",
+          "creditInstitutionKpis.greenAssetRatioInPercent",
           { ...sampleField, label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent },
           sampleFormatter,
         ),
@@ -203,7 +203,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         type: "cell",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
-          "creditInstitutionKpis.TradingPortfolioAndInterbankLoansInPercent",
+          "creditInstitutionKpis.tradingPortfolioAndInterbankLoansInPercent",
           { ...sampleField, label: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent },
           sampleFormatter,
         ),
@@ -214,7 +214,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         type: "cell",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
-          "creditInstitutionKpis.TradingPortfolioInPercent",
+          "creditInstitutionKpis.tradingPortfolioInPercent",
           { ...sampleField, label: euTaxonomyKpiNameMappings.tradingPortfolioInPercent },
           sampleFormatter,
         ),
@@ -225,7 +225,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         type: "cell",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
-          "creditInstitutionKpis.InterbankLoansInPercent",
+          "creditInstitutionKpis.interbankLoansInPercent",
           { ...sampleField, label: euTaxonomyKpiNameMappings.interbankLoansInPercent },
           sampleFormatter,
         ),
@@ -248,7 +248,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         type: "cell",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
-          "insuranceKpis.TaxonomyEligibleNonLifeInsuranceActivitiesInPercent",
+          "insuranceKpis.taxonomyEligibleNonLifeInsuranceActivitiesInPercent",
           { ...sampleField, label: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent },
           sampleFormatter,
         ),
@@ -271,7 +271,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         type: "cell",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
-          "InvestmentFirm.GreenAssetRatioInPercent",
+          "InvestmentFirm.greenAssetRatioInPercent",
           { ...sampleField, label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent },
           sampleFormatter,
         ),
