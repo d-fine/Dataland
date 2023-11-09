@@ -127,6 +127,11 @@ export const euTaxonomyKpiNameMappings = {
   alignedOpExPercentage: "Aligned OpEx (%)",
   alignedOpEx: "Aligned OpEx",
   totalOpEx: "Total OpEx",
+
+  CreditInstitution: "Credit Institution",
+  AssetManagement: "Asset Management",
+  InsuranceOrReinsurance: "Insurance and Reinsurance",
+  InvestmentFirm: "Investment Firm",
 };
 export const euTaxonomyKpiInfoMappings = {
   investmentNonNfrdInPercent:

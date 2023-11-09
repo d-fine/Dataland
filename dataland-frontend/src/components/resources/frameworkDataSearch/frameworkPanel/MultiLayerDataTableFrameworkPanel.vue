@@ -1,6 +1,4 @@
 <template>
-  <p>!!!!{{ displayConfiguration }}</p>
-  <hr />
   <div v-if="status == 'LoadingDatasets'" class="d-center-div text-center px-7 py-4">
     <p class="font-medium text-xl">Loading {{ frameworkDisplayName }} Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
