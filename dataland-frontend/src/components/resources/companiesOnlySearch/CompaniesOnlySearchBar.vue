@@ -44,7 +44,15 @@ export default defineComponent({
   },
   name: "CompaniesOnlySearchBar",
   components: { AutoComplete, SearchResultHighlighter },
-
+  created() {
+    new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)(),
+    ).getCompanyDataControllerApi().then((companyDataControllerApi) => {
+      return companyDataControllerApi.getCompanyIdsWithActiveData();
+    }).then((companyIdsResponse) => {
+      this.companyIdsWithActiveData = companyIdsResponse.data;
+    });
+  },
   mounted() {
     const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
     const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
@@ -56,6 +64,7 @@ export default defineComponent({
       searchBarInput: "",
       latestValidSearchString: "",
       autocompleteArray: [] as Array<CompanyIdAndName>,
+      companyIdsWithActiveData: [] as string[],
     };
   },
   props: {
@@ -91,11 +100,17 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)(),
         ).getCompanyDataControllerApi();
         const response = await companyDataControllerApi.getCompaniesBySearchString(autoCompleteCompleteEvent.query);
-        this.autocompleteArray = response.data;
+        this.autocompleteArray = this.sortCompaniesResponseByPriority(response.data);
       } catch (error) {
         console.error(error);
       }
     },
+
+    sortCompaniesResponseByPriority(companyIdsAndNames: CompanyIdAndName[]): CompanyIdAndName[] { // todo actually filter data for being active in the backend lol
+      const companyIdsAndNamesWithActiveData = companyIdsAndNames.filter((companyIdAndName) => this.companyIdsWithActiveData.includes(companyIdAndName.companyId))
+      const companyIdsAndNamesWithoutActiveData = companyIdsAndNames.filter((companyIdAndName) => !this.companyIdsWithActiveData.includes(companyIdAndName.companyId))
+      return [...companyIdsAndNamesWithActiveData, ...companyIdsAndNamesWithoutActiveData];
+    }
   },
 });
 </script>
