@@ -184,7 +184,7 @@ export default defineComponent({
      */
     handleItemSelect(event: { value: DataSearchStoredCompany }) {
       const companyIdOfSelectedItem = event.value.companyId;
-      this.$router.push(`/companies/${companyIdOfSelectedItem}`);
+      void this.$router.push(`/companies/${companyIdOfSelectedItem}`);
     },
 
     /**

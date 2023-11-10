@@ -26,5 +26,4 @@ describe("Component tests for 'Request Data' button on the level of company sear
       cy.wrap(mounted.component).its("$route.path").should("eq", "/requests");
     });
   });
-
 });
