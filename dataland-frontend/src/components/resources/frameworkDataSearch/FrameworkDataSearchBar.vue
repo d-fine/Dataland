@@ -181,7 +181,6 @@ export default defineComponent({
      * Called when an item is selected from the dropdown. Navigates to the company cockpit page for the selected company
      * @param event the click event
      * @param event.value the company that was clicked on
-     * @returns page to which the user is redirected
      */
     handleItemSelect(event: { value: DataSearchStoredCompany }) {
       const companyIdOfSelectedItem = event.value.companyId;

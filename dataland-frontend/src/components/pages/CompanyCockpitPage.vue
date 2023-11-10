@@ -43,7 +43,6 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -99,13 +98,8 @@ export default defineComponent({
         | undefined,
     };
   },
-  async mounted() {
-    const companyDataControllerApi = await new ApiClientProvider(
-      assertDefined(this.getKeycloakPromise)(),
-    ).getCompanyDataControllerApi();
-    this.aggregatedFrameworkDataSummary = (
-      await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
-    ).data;
+  mounted() {
+    this.getAggregatedFrameworkDataSummary();
   },
   methods: {
     assertDefined,
@@ -119,6 +113,17 @@ export default defineComponent({
         name: "Search Companies for Framework Data",
         query: { input: searchTerm },
       });
+    },
+    /**
+     * Retrieves the aggregated framework data summary
+     */
+    async getAggregatedFrameworkDataSummary() {
+      const companyDataControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)(),
+      ).getCompanyDataControllerApi();
+      this.aggregatedFrameworkDataSummary = (
+        await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
+      ).data;
     },
 
     /**
