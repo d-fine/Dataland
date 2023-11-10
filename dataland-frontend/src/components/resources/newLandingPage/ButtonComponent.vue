@@ -41,14 +41,13 @@ const handleClick = (): void => {
   }
 
   &-login {
-    padding: 14px 32px;
+    padding: 10px 38px;
     font-size: 16px;
     font-weight: 600;
     line-height: 20px;
     letter-spacing: 0.75px;
-    border-radius: 0px;
+    border-radius: 0;
     color: var(--primary-orange);
-    font-size: 16px;
     background-color: var(--basic-dark);
     border: 2px solid var(--primary-orange);
     text-transform: uppercase;
@@ -60,12 +59,12 @@ const handleClick = (): void => {
   }
 
   &-registration {
-    padding: 14px 32px;
+    padding: 10px 38px;
     font-size: 16px;
     font-weight: 600;
     line-height: 20px;
     letter-spacing: 0.75px;
-    border-radius: 0px;
+    border-radius: 0;
     background-color: var(--primary-orange);
     color: var(--default-neutral-white);
     border: 2px solid var(--primary-orange);
