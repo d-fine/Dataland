@@ -18,6 +18,9 @@ describe("Component tests for the CreateLksgDataset that test dependent fields",
       cy.get('[data-test="dataPointToggleButton"]').click();
       cy.get('[data-test="ProcurementCategoryFormElementContent"]').should("not.exist");
       cy.get('[data-test="dataPointToggleButton"]').click();
+      cy.get('[name="shareOfTotalProcurementInPercent"]').type("133").blur();
+      cy.get(".formkit-message").should("contain.text", "must be between 0 and 100");
+      cy.get('[name="shareOfTotalProcurementInPercent"]').clear().type("22");
 
       cy.get('[data-test="suppliersPerCountryCode"] .p-multiselect').click();
 
