@@ -2,7 +2,7 @@
   <div ref="sheet">
     <MarginWrapper v-if="!useMobileView" class="text-left surface-0" style="margin-right: 0">
       <BackButton />
-      <CompaniesOnlySearchBar @select-company="$emit('selectCompany', $event)" classes="w-8" />
+      <CompaniesOnlySearchBar @select-company="$emit('selectCompany', $event)" classes="w-8 mt-2" />
     </MarginWrapper>
     <template v-else>
       <div :class="`mobile-header${isCollapsed ? '--attached' : ''} surface-0`" ref="mobileHeader">
