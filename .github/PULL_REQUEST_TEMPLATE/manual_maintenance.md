@@ -7,6 +7,13 @@ creation URL (or simply copy this md file into the description)
 
 ## Dataland
 
+### Notes from Nov 2023
+- kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
+- kept gradle wrapper at 8.4 instead of updating to 8.4.RC1
+- updated flyway to only 9.22.3
+- eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
+- some sec fixes or updates to `package.json` in /frontend and /keycloak break the build
+
 ### Skipped updates
 
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
