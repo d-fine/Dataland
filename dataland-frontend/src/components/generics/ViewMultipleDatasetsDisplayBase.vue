@@ -109,9 +109,7 @@ import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/c
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
-import {
-  configForEutaxonomyFinancialsMLDT
-} from "@/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/configForEutaxonomyFinancialsMLDT";
+import { configForEutaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/configForEutaxonomyFinancialsMLDT";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
@@ -126,7 +124,7 @@ export default defineComponent({
       return p2pDataModel;
     },
     configForEutaxonomyFinancialsMLDT() {
-      return configForEutaxonomyFinancialsMLDT
+      return configForEutaxonomyFinancialsMLDT;
     },
   },
   components: {

@@ -81,7 +81,7 @@ const sortedReportingPeriods = computed(() => {
 
 const sortedReports = computed(() => {
   if (props.frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials) {
-    return mldtDatasets.value.map((it) => (it.dataset as EuTaxonomyDataForNonFinancials).general.referencedReports);
+    return mldtDatasets.value.map((it) => (it as EuTaxonomyDataForNonFinancials).general?.referencedReports);
   } else {
     if (props.frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials) {
       return mldtDatasets.value.map((it) => (it.dataset as EuTaxonomyDataForFinancials).referencedReports);
