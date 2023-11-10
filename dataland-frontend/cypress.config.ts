@@ -13,6 +13,8 @@ export default defineConfig({
         short_timeout_in_ms: 10000,
         medium_timeout_in_ms: 30000,
         long_timeout_in_ms: 120000,
+        mobile_device_viewport_height: 667,
+        mobile_device_viewport_width: 300,
         AWAIT_PREPOPULATION_RETRIES: 250,
         EXECUTION_ENVIRONMENT: "developmentLocal",
         KEYCLOAK_DATALAND_ADMIN_PASSWORD: process.env.KEYCLOAK_DATALAND_ADMIN_PASSWORD,

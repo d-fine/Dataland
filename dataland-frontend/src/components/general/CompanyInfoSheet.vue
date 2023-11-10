@@ -2,10 +2,14 @@
   <div ref="sheet">
     <MarginWrapper v-if="!useMobileView" class="text-left surface-0" style="margin-right: 0">
       <BackButton />
-      <CompaniesOnlySearchBar @select-company="$emit('selectCompany', $event)" classes="w-8" />
+      <CompaniesOnlySearchBar @select-company="$emit('selectCompany', $event)" classes="w-8 mt-2" />
     </MarginWrapper>
     <template v-else>
-      <div :class="`mobile-header${isCollapsed ? '--attached' : ''} surface-0`" ref="mobileHeader">
+      <div
+        :class="`mobile-header${isCollapsed ? '--attached' : ''} surface-0`"
+        ref="mobileHeader"
+        data-test="company-info-sheet-mobile-header"
+      >
         <BackButton label="" />
         <div class="mobile-header__title">
           {{ mobileTitle }}
@@ -65,7 +69,7 @@ const mobileTitle = computed<string>(() => {
 const sheetRect = ref<DOMRect>();
 const mobileHeaderHeight = ref<number>();
 function onScroll() {
-  sheetRect.value = sheet.value!.getBoundingClientRect();
+  sheetRect.value = sheet.value!.getBoundingClientRect(); // TODO Emanuel: this throws lots of console errors for me
   mobileHeaderHeight.value = mobileHeader.value!.getBoundingClientRect().height;
 }
 onMounted(() => {
@@ -87,7 +91,6 @@ const isCollapsed = computed<boolean>(() => {
 </script>
 
 <style scoped lang="scss">
-
 .mobile-header {
   display: flex;
   flex-direction: row;
@@ -108,7 +111,7 @@ const isCollapsed = computed<boolean>(() => {
     text-align: center;
     padding: 20px;
     position: fixed;
-    top: 0;
+    top: 0; // Emanuel: TODO this is shadowed in the DOM. Remove?
   }
 }
 </style>
