@@ -9,7 +9,15 @@
       going to be visible in the final view page. Normally hidden fields are highlighted (start with a
       <i class="pi pi-eye-slash pl-1 text-red-500" aria-hidden="true" />) and should be empty.
     </p>
-
+    <ShowMultipleReportsBanner
+      data-test="multipleReportsBanner"
+      v-if="
+        frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials ||
+        frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials
+      "
+      :reporting-periods="sortedReportingPeriods"
+      :reports="sortedReports"
+    />
     <MultiLayerDataTable
       :mldtDatasets="mldtDatasets"
       :config="
@@ -28,12 +36,18 @@
 <script setup generic="Framework extends keyof FrameworkDataTypes" lang="ts">
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
+import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { computed, inject, ref, shallowRef, watch } from "vue";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 import { sortDatasetsByReportingPeriod } from "@/utils/DataTableDisplay";
-import { type DataMetaInformation } from "@clients/backend";
+import {
+  type DataMetaInformation,
+  DataTypeEnum,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
+} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -59,6 +73,22 @@ const mldtDatasets = computed(() => {
     headerLabel: it.metaInfo.reportingPeriod,
     dataset: it.data,
   }));
+});
+
+const sortedReportingPeriods = computed(() => {
+  return mldtDatasets.value.map((it) => it.headerLabel);
+});
+
+const sortedReports = computed(() => {
+  if (props.frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials) {
+    return mldtDatasets.value.map((it) => (it.dataset as EuTaxonomyDataForNonFinancials).general.referencedReports);
+  } else {
+    if (props.frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials) {
+      return mldtDatasets.value.map((it) => (it.dataset as EuTaxonomyDataForFinancials).referencedReports);
+    } else {
+      return null;
+    }
+  }
 });
 
 const updateCounter = ref(0);
