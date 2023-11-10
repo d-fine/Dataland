@@ -65,7 +65,7 @@ const mobileTitle = computed<string>(() => {
 const sheetRect = ref<DOMRect>();
 const mobileHeaderHeight = ref<number>();
 function onScroll() {
-  sheetRect.value = sheet.value!.getBoundingClientRect();
+  sheetRect.value = sheet.value!.getBoundingClientRect(); // TODO Emanuel: this throws lots of console errors for me
   mobileHeaderHeight.value = mobileHeader.value!.getBoundingClientRect().height;
 }
 onMounted(() => {

@@ -55,7 +55,6 @@ import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/
 import {
   type DataSearchStoredCompany,
   getCompanyDataForFrameworkDataSearchPage,
-  getRouterLinkTargetFramework,
   type FrameworkDataSearchFilterInterface,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent, inject, ref } from "vue";
@@ -77,9 +76,6 @@ export default defineComponent({
   emits: ["companies-received", "search-confirmed"],
 
   props: {
-    companyIdIfOnViewPage: {
-      type: String,
-    },
     searchBarId: {
       type: String,
       default: "framework_data_search_bar_standard",
@@ -182,16 +178,13 @@ export default defineComponent({
     },
 
     /**
-     * Called when an item is selected from the dropdown. Navigates to the view framework page for the selected company
+     * Called when an item is selected from the dropdown. Navigates to the company cockpit page for the selected company
      * @param event the click event
      * @param event.value the company that was clicked on
      */
     handleItemSelect(event: { value: DataSearchStoredCompany }) {
-      if (this.companyIdIfOnViewPage != event.value.companyId) {
-        void this.$router.push(getRouterLinkTargetFramework(event.value));
-      } else {
-        this.searchBarInput = event.value.companyName;
-      }
+      const companyIdOfSelectedItem = event.value.companyId;
+      return this.$router.push(`/companies/${companyIdOfSelectedItem}`);
     },
 
     /**
@@ -244,3 +237,6 @@ export default defineComponent({
   },
 });
 </script>
+
+// TODO Emanuel: Reminder for the very end: I have seen some debug console.log statements all over the code. // Let's
+search and delete those.
