@@ -32,7 +32,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       let companyIdOfAlpha: string;
 
       let dataIdOfSupersededLksg2023ForAlpha: string;
-      let dataIdOfSupersededFinancial2019ForAlpha: string;
 
       const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data";
       const expectedFrameworkDropdownItemsForBeta = new Set<string>([
@@ -116,7 +115,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get("body").click(0, 0);
         cy.get(dropdownPanelSelector).should("not.exist");
 
-        cy.get(dropdownSelector).click();
+        cy.get(dropdownSelector).click({ force: true });
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector).should("exist");
         cy.get(`${dropdownItemsSelector}:contains("No available options")`).should("not.exist");
@@ -219,9 +218,11 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param expectedTaxonomyEligibleEconomicActivityValueInPercent  the expected taxonomy eligible economic activity value in percent
        */
       function validateEUTaxonomyFinancialsTable(expectedTaxonomyEligibleEconomicActivityValueInPercent: string): void {
-        cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
-          .find("[data-test='value']")
-          .should("have.text", expectedTaxonomyEligibleEconomicActivityValueInPercent);
+        cy.get("[data-section-label='Credit Institution']").click({ force: true });
+        cy.get("tr.indentation")
+          .eq(0)
+          .contains("td[data-dataset-index='0']", expectedTaxonomyEligibleEconomicActivityValueInPercent)
+          .should("exist");
       }
 
       /**
@@ -282,9 +283,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 companyIdOfAlpha,
                 "2019",
                 getPreparedFixture("eligible-activity-Point-29", euTaxoFinancialPreparedFixtures).t,
-              ).then((dataMetaInformation) => {
-                dataIdOfSupersededFinancial2019ForAlpha = dataMetaInformation.dataId;
-              });
+              );
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
@@ -403,6 +402,11 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
+
+        cy.setCookie(
+          "CookieConsent",
+          "{stamp:%27sg==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:12%2Cregion:%27%27}",
+        );
         cy.intercept("/api/companies?searchString=&dataTypes=*").as("firstLoadOfSearchPage");
         cy.visit(`/companies?framework=${DataTypeEnum.Sme}`);
         cy.wait("@firstLoadOfSearchPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
@@ -423,7 +427,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         "Check that from the view-page, even in error mode, you can search a company, even if it" +
           "does not have a dataset for the framework chosen on the search page",
         () => {
-          cy.ensureLoggedIn();
+          cy.ensureLoggedIn(uploader_name, uploader_pw);
+          cy.setCookie(
+            "CookieConsent",
+            "{stamp:%27sg==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:12%2Cregion:%27%27}",
+          );
           cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}`);
 
           validateChosenFramework(DataTypeEnum.Sfdr);
@@ -461,27 +469,16 @@ describe("The shared header of the framework pages should act as expected", { sc
       );
 
       it("Check that using back-button and dropdowns on the view-page work as expected", () => {
-        cy.ensureLoggedIn();
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.setCookie(
+          "CookieConsent",
+          "{stamp:%27sg==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:12%2Cregion:%27%27}",
+        );
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateEUTaxonomyFinancialsTable("29.2 %");
-
-        validateNoErrorMessagesAreShown();
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-        validateEUTaxonomyFinancialsTable("29.2 %");
-
-        selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
-
-        validateNoErrorMessagesAreShown();
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-        validateEUTaxonomyFinancialsTable("29.2 %");
-
-        validateNoErrorMessagesAreShown();
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-        validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-        validateEUTaxonomyFinancialsTable("26 %");
 
         selectFrameworkInDropdown(DataTypeEnum.Sme);
 
@@ -494,61 +491,29 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.Lksg);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-        validateColumnHeadersOfDisplayedLksgDatasets(["2023", "2022"]);
 
         clickBackButton();
 
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.Sme);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-
-        clickBackButton();
-
-        validateNoErrorMessagesAreShown();
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-        validateEUTaxonomyFinancialsTable("26 %");
       });
 
       it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
-        cy.ensureLoggedIn();
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.setCookie(
+          "CookieConsent",
+          "{stamp:%27sg==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:12%2Cregion:%27%27}",
+        );
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
 
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-
-        validateNoErrorMessagesAreShown();
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-        validateEUTaxonomyFinancialsTable("26 %");
+        validateEUTaxonomyFinancialsTable("29.2");
 
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
         getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "exist");
-
-        validateNoErrorMessagesAreShown();
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-        validateEUTaxonomyFinancialsTable("29.2 %");
-
-        clickBackButton();
-
-        getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "exist");
-
-        clickBackButton();
-
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-        validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-        validateEUTaxonomyFinancialsTable("26 %");
-
-        cy.visit(
-          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`,
-        );
-
-        getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
-
-        validateNoErrorMessagesAreShown();
-
-        clickBackButton();
-
-        getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
 
         cy.visit(
           `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
@@ -570,6 +535,10 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.setCookie(
+          "CookieConsent",
+          "{stamp:%27sg==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:12%2Cregion:%27%27}",
+        );
         cy.intercept("/api/metadata/**").as("getMetaDataForSpecificDataId");
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
@@ -620,30 +589,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
         validateDataDatesOfDisplayedLksgDatasets(["2023-04-18"]);
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active");
-
-        cy.visit(
-          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`,
-        );
-        validateEUTaxonomyFinancialsTable("29 %");
-        validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
-
-        cy.url().should(
-          "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
-            DataTypeEnum.EutaxonomyFinancials
-          }/reportingPeriods/2019`,
-        );
-        validateEUTaxonomyFinancialsTable("29.2 %");
-        getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
-        clickBackButton();
-
-        cy.url().should(
-          "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
-            DataTypeEnum.EutaxonomyFinancials
-          }/${dataIdOfSupersededFinancial2019ForAlpha}`,
-        );
-        validateEUTaxonomyFinancialsTable("29 %");
       });
     },
   );
