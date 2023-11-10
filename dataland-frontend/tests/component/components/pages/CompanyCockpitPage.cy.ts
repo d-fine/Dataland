@@ -5,6 +5,7 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { AggregatedDataRequestDataTypeEnum } from "@clients/communitymanager";
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 import type * as Cypress from "cypress";
+import { setMobileDeviceViewport } from "@sharedUtils/TestSetupUtils";
 
 describe("Component test for the company cockpit", () => {
   let companyInformationForTest: CompanyInformation;
@@ -42,17 +43,35 @@ describe("Component test for the company cockpit", () => {
   }
 
   /**
+   * Waits for the two requests that happen when the company cockpit page is being mounted
+   */
+  function waitForRequestsOnMounted(): void {
+    cy.wait("@fetchCompanyInfo");
+    cy.wait("@fetchAggregatedFrameworkMetaInfo");
+  }
+
+  /**
    * Mounts the company cockpit page with a specific authentication
-   * @param isLoggedIn is a boolean that determines if the mount shall happen from a logged-in users perspective or not
+   * @param isLoggedIn determines if the mount shall happen from a logged-in users perspective
+   * @param isMobile determines if the mount shall happen from a mobie-users perspective
    * @param roles defines the roles of the user if the mount happens from a logged-in users perspective
    * @returns the mounted component
    */
-  function mountCompanyCockpitWithAuthentication(isLoggedIn: boolean, roles?: string[]): Cypress.Chainable {
+  function mountCompanyCockpitWithAuthentication(
+    isLoggedIn: boolean,
+    isMobile: boolean,
+    roles?: string[],
+  ): Cypress.Chainable {
     return cy.mountWithPlugins(CompanyCockpitPage, {
       keycloak: minimalKeycloakMock({
         authenticated: isLoggedIn,
         roles: roles,
       }),
+      global: {
+        provide: {
+          useMobileView: isMobile,
+        },
+      },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
@@ -65,14 +84,17 @@ describe("Component test for the company cockpit", () => {
    * Validates the existence of the back-button
    */
   function validateBackButtonExistence(): void {
-    cy.contains("span", "BACK");
+    const backButtonSelector = `div[data-test="backButton"]`;
+    cy.get(backButtonSelector).should("exist");
   }
 
   /**
    * Validates the existence of the company search bar
+   * @param isSearchBarExpected determines if the existence of the search bar is expected
    */
-  function validateSearchBarExistence(): void {
-    cy.get('input[type="text"]#company_search_bar_standard').should("exist");
+  function validateSearchBarExistence(isSearchBarExpected: boolean): void {
+    const searchBarSelector = 'input[type="text"]#company_search_bar_standard';
+    cy.get(searchBarSelector).should(isSearchBarExpected ? "exist" : "not.exist");
   }
 
   /**
@@ -111,11 +133,24 @@ describe("Component test for the company cockpit", () => {
     );
   }
 
+  /**
+   * Validates if the mobile header of the company info sheet is currently fixed or not
+   * @param isPositionExpectedToBeFixed determines if the header is expected to be fixed or not
+   */
+  function validateMobileHeader(isPositionExpectedToBeFixed: boolean): void {
+    // TODO naming
+    const companyInfoSheetMobileHeaderSelector = "[data-test=company-info-sheet-mobile-header]";
+    cy.get(companyInfoSheetMobileHeaderSelector)
+      .should("be.visible")
+      .should(isPositionExpectedToBeFixed ? "have.css" : "not.have.css", "position", "fixed");
+  }
+
   it("Check for all expected elements from a non-logged-in users perspective", () => {
     mockRequestsOnMounted();
-    mountCompanyCockpitWithAuthentication(false).then(() => {
+    mountCompanyCockpitWithAuthentication(false, false).then(() => {
+      waitForRequestsOnMounted();
       validateBackButtonExistence();
-      validateSearchBarExistence();
+      validateSearchBarExistence(true);
       validateCompanyInformationBanner();
       validateFrameworkSummaryPanels(false);
     });
@@ -123,9 +158,10 @@ describe("Component test for the company cockpit", () => {
 
   it("Check for all expected elements from a logged-in users perspective with read-only rights", () => {
     mockRequestsOnMounted();
-    mountCompanyCockpitWithAuthentication(true, [KEYCLOAK_ROLE_USER]).then(() => {
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER]).then(() => {
+      waitForRequestsOnMounted();
       validateBackButtonExistence();
-      validateSearchBarExistence();
+      validateSearchBarExistence(true);
       validateCompanyInformationBanner();
       validateFrameworkSummaryPanels(false);
     });
@@ -133,17 +169,32 @@ describe("Component test for the company cockpit", () => {
 
   it("Check for all expected elements from a logged-in users perspective with uploader-rights", () => {
     mockRequestsOnMounted();
-    mountCompanyCockpitWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
+      waitForRequestsOnMounted();
       validateBackButtonExistence();
-      validateSearchBarExistence();
+      validateSearchBarExistence(true);
       validateCompanyInformationBanner();
       validateFrameworkSummaryPanels(true);
     });
   });
-  /* TODO Emanuel: Jenachdem wie wir letztendlich checken wollen ob der user auf einem mobile device ist, müsste noch
-        ein Test hier ergänzt werden.  Wenn wir das über die Breite machen, sollte in diesem Test mit verkleinertem
-        Viewport gecheckt werden, ob die Buttons versteckt werden.
-        Wenn wir das über den Client machen, müsste cypress hier als mobile-client die Seite mounten.
-        Besprechen wir am Ende des Tickets.
-   */
+
+  it("Check for all expected elements from a mobile users perspective with uploader-rights", () => {
+    const scrollDurationInMs = 300;
+    setMobileDeviceViewport();
+    mockRequestsOnMounted();
+    mountCompanyCockpitWithAuthentication(true, true, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
+      waitForRequestsOnMounted();
+
+      validateMobileHeader(false);
+      cy.scrollTo("bottom", { duration: scrollDurationInMs });
+      validateMobileHeader(true);
+      cy.scrollTo("top", { duration: scrollDurationInMs });
+      validateMobileHeader(false);
+
+      validateBackButtonExistence();
+      validateSearchBarExistence(false);
+      validateCompanyInformationBanner();
+      validateFrameworkSummaryPanels(false);
+    });
+  });
 });

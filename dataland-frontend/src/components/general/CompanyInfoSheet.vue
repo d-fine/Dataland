@@ -5,7 +5,11 @@
       <CompaniesOnlySearchBar @select-company="$emit('selectCompany', $event)" classes="w-8" />
     </MarginWrapper>
     <template v-else>
-      <div :class="`mobile-header${isCollapsed ? '--attached' : ''} surface-0`" ref="mobileHeader">
+      <div
+        :class="`mobile-header${isCollapsed ? '--attached' : ''} surface-0`"
+        ref="mobileHeader"
+        data-test="company-info-sheet-mobile-header"
+      >
         <BackButton label="" />
         <div class="mobile-header__title">
           {{ mobileTitle }}
@@ -87,7 +91,6 @@ const isCollapsed = computed<boolean>(() => {
 </script>
 
 <style scoped lang="scss">
-
 .mobile-header {
   display: flex;
   flex-direction: row;
@@ -108,7 +111,7 @@ const isCollapsed = computed<boolean>(() => {
     text-align: center;
     padding: 20px;
     position: fixed;
-    top: 0;
+    top: 0; // Emanuel: TODO this is shadowed in the DOM. Remove?
   }
 }
 </style>
