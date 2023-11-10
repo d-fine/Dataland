@@ -87,7 +87,6 @@ const isCollapsed = computed<boolean>(() => {
 </script>
 
 <style scoped lang="scss">
-
 .mobile-header {
   display: flex;
   flex-direction: row;

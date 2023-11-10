@@ -30,11 +30,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-
 .back-button {
   @media only screen and (min-width: $small) {
     padding: 0.5rem;
   }
 }
-
 </style>
