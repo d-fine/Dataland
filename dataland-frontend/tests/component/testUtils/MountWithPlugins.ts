@@ -66,45 +66,45 @@ declare global {
  * A slightly modified version of the vue mount function that automatically initiates plugins used in dataland
  * like PrimeVue, Pinia or the Router and also allows for simple authentication injection
  * @param component the component you want to mount
- * @param options the options for mounting said component
+ * @param mountingOptions the mountingOptions for mounting said component
  * @returns a cypress chainable for the mounted wrapper and the Vue component
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   component: T,
-  options: ComponentMountingOptions<T>,
+  mountingOptions: ComponentMountingOptions<T>,
 ): Cypress.Chainable<{
   wrapper: VueWrapper<InstanceType<T>>;
   component: VueWrapper<InstanceType<T>>["vm"];
 }> {
-  options.global = options.global ?? {};
-  options.global.plugins = options.global.plugins ?? [];
-  options.global.plugins.push(createPinia());
-  options.global.plugins.push(PrimeVue);
-  options.global.plugins.push(DialogService);
-  options.global.provide = options.global.provide ?? {};
+  mountingOptions.global = mountingOptions.global ?? {};
+  mountingOptions.global.plugins = mountingOptions.global.plugins ?? [];
+  mountingOptions.global.plugins.push(createPinia());
+  mountingOptions.global.plugins.push(PrimeVue);
+  mountingOptions.global.plugins.push(DialogService);
+  mountingOptions.global.provide = mountingOptions.global.provide ?? {};
 
-  if (!options.router) {
-    options.router = createRouter({
+  if (!mountingOptions.router) {
+    mountingOptions.router = createRouter({
       routes: routes,
       history: createMemoryHistory(),
     });
   }
 
-  if (options.keycloak) {
-    options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
-      return Promise.resolve(options.keycloak as Keycloak);
+  if (mountingOptions.keycloak) {
+    mountingOptions.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
+      return Promise.resolve(mountingOptions.keycloak as Keycloak);
     };
-    options.global.provide.authenticated = true;
+    mountingOptions.global.provide.authenticated = true;
   }
 
-  options.global.plugins.push({
+  mountingOptions.global.plugins.push({
     install(app) {
-      app.use(assertDefined(options.router));
+      app.use(assertDefined(mountingOptions.router));
     },
   });
 
-  options.global.plugins.push({
+  mountingOptions.global.plugins.push({
     install(app) {
       app.use(plugin, defaultConfig);
     },
@@ -118,7 +118,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
    */
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return mount(component, options);
+  return mount(component, mountingOptions);
 }
 
 /**
