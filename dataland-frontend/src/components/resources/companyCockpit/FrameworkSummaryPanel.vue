@@ -11,7 +11,7 @@
       <div class="summary-panel__separator" />
       <div>
         <span class="summary-panel__data" v-if="props.numberOfProvidedReportingPeriods != undefined">
-          <span class="summary-panel__value">
+          <span class="summary-panel__value" :data-test="`${framework}-panel-value`">
             {{ props.numberOfProvidedReportingPeriods }}
           </span>
           <template v-if="props.numberOfProvidedReportingPeriods == 1"> Reporting Period</template>
@@ -25,6 +25,7 @@
       :href="`/companies/${props.companyId}/frameworks/${props.framework}/upload`"
       @pointerenter="onCursorEnterProvideButton"
       @pointerleave="onCursorLeaveProvideButton"
+      :data-test="`${framework}-provide-data-button`"
     >
       PROVIDE DATA
     </a>
@@ -69,7 +70,7 @@ const subtitle = computed(() => {
   }
 });
 
-const useMobileView = inject<boolean>("useMobileView")
+const useMobileView = inject<boolean>("useMobileView");
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const isUserUploader = ref<boolean>();

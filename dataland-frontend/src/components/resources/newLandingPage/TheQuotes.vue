@@ -7,14 +7,11 @@
       left-arrow-classes="quotes__arrow quotes__arrow--left"
       right-arrow-classes="quotes__arrow quotes__arrow--right"
       :slide-count="cards.length"
-      :initial-center-slide="1"
+      :initial-center-slide="initialCenterSlide"
       @update:currentSlide="(newSlide) => (currentSlide = newSlide)"
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
-      <div role="listitem" class="quotes__slide">
-        <div class="quotes__slide-videoContainer"></div>
-      </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
           <iframe
@@ -22,7 +19,10 @@
             :src="'https://www.youtube-nocookie.com/embed/' + card.icon + '?rel=0'"
             title="Youtube video player"
             allowfullscreen
-            :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }"
+            :class="{
+              'quotes__slide-video--zoom-out': currentSlide !== index - initialCenterSlide,
+              'quotes__slide-video': true,
+            }"
           ></iframe>
           <iframe
             class="cookieconsent-optin-marketing"
@@ -30,7 +30,10 @@
             data-cookieconsent="marketing"
             title="Youtube video player"
             allowfullscreen
-            :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }"
+            :class="{
+              'quotes__slide-video--zoom-out': currentSlide !== index - initialCenterSlide,
+              'quotes__slide-video': true,
+            }"
           ></iframe>
         </div>
       </div>
@@ -48,7 +51,6 @@
       ariaLabel="Start your Dataland Journey"
       @click="register"
     />
-    <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
 </template>
 
@@ -66,7 +68,7 @@ const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes")
 const cards = computed(() => quotesSection.value?.cards ?? []);
 const currentSlide = ref(0);
 const currentCardInfo = computed(() => {
-  const card = cards.value[currentSlide.value + 1];
+  const card = cards.value[currentSlide.value + initialCenterSlide.value];
   return {
     date: card?.date,
     title: card?.title,
@@ -75,6 +77,7 @@ const currentCardInfo = computed(() => {
 });
 
 const slideWidth = ref(760);
+const initialCenterSlide = ref(2);
 
 const updateSlideWidth = (): void => {
   slideWidth.value = window.innerWidth > 768 ? 760 : 323;

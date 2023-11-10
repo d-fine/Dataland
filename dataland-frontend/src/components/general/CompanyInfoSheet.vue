@@ -11,14 +11,14 @@
           {{ mobileTitle }}
         </div>
       </div>
-      <div v-if="isCollapsed" :style="`height: ${mobileHeaderHeight ?? 0}px`"/>
+      <div v-if="isCollapsed" :style="`height: ${mobileHeaderHeight ?? 0}px`" />
     </template>
     <MarginWrapper class="surface-0" style="margin-right: 0">
       <div class="grid align-items-end">
-          <CompanyInformationBanner
-              :companyId="props.companyId"
-              @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
-          />
+        <CompanyInformationBanner
+          :companyId="props.companyId"
+          @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
+        />
       </div>
     </MarginWrapper>
   </div>
@@ -29,33 +29,33 @@ import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import {CompanyIdAndName, CompanyInformation} from "@clients/backend";
-import {computed, inject, onMounted, onUnmounted, ref} from "vue";
+import { type CompanyIdAndName, type CompanyInformation } from "@clients/backend";
+import { computed, inject, onMounted, onUnmounted, ref } from "vue";
 
-const useMobileView = inject<boolean>("useMobileView")
+const useMobileView = inject<boolean>("useMobileView");
 
 const sheet = ref<HTMLDivElement>();
 const mobileHeader = ref<HTMLDivElement>();
 
 const props = defineProps<{
   companyId: string;
-  isReviewableByCurrentUser?: boolean
+  isReviewableByCurrentUser?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (e: "selectCompany", selectedCompany: CompanyIdAndName): void
-  (e: "fetchedCompanyInformation", companyInformation: CompanyInformation): void
+  (e: "selectCompany", selectedCompany: CompanyIdAndName): void;
+  (e: "fetchedCompanyInformation", companyInformation: CompanyInformation): void;
 }>();
 
 function onFetchedCompanyInformation(companyInfo: CompanyInformation): void {
   companyName.value = companyInfo.companyName;
-  emit("fetchedCompanyInformation", companyInfo)
+  emit("fetchedCompanyInformation", companyInfo);
 }
 
-const companyName = ref<string>()
+const companyName = ref<string>();
 const mobileTitle = computed<string>(() => {
   const genericTitle = "Company Overview";
-  if(isCollapsed) {
+  if (isCollapsed.value) {
     return companyName.value ?? genericTitle;
   } else {
     return genericTitle;
@@ -75,16 +75,15 @@ onUnmounted(() => {
   window.removeEventListener("scroll", onScroll);
 });
 const isCollapsed = computed<boolean>(() => {
-  console.log("enter")
-  if(useMobileView && sheetRect.value && mobileHeaderHeight.value) {
-    console.log("if")
-    if(sheetRect.value.bottom <= mobileHeaderHeight.value) {
+  console.log("enter");
+  if (useMobileView && sheetRect.value && mobileHeaderHeight.value) {
+    console.log("if");
+    if (sheetRect.value.bottom <= mobileHeaderHeight.value) {
       return true;
     }
   }
-  return false
-})
-
+  return false;
+});
 </script>
 
 <style scoped lang="scss">
@@ -112,5 +111,4 @@ const isCollapsed = computed<boolean>(() => {
     top: 0;
   }
 }
-
 </style>

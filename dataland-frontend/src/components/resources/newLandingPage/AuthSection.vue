@@ -1,13 +1,33 @@
 <template>
-  <div class="header__authsection">
-    <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
-    <ButtonComponent
-      label="Sign Up"
-      buttonType="primary"
-      ariaLabel="Sign up to preview account"
-      name="signup_dataland_button"
-      @click="register"
-    />
+  <div v-if="isLandingPage">
+    <div class="header__authsection">
+      <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
+      <ButtonComponent
+        label="Sign Up"
+        buttonType="primary button-component-landing"
+        ariaLabel="Sign up to preview account"
+        name="signup_dataland_button"
+        @click="register"
+      />
+    </div>
+  </div>
+  <div v-else>
+    <div class="header__authsection">
+      <ButtonComponent
+        label="Log in"
+        buttonType="primary button-component-login"
+        ariaLabel="Login to preview account"
+        name="login_dataland_button"
+        @click="login"
+      />
+      <ButtonComponent
+        label="Sign Up"
+        buttonType="primary button-component-registration"
+        ariaLabel="Sign up to preview account"
+        name="signup_dataland_button"
+        @click="register"
+      />
+    </div>
   </div>
 </template>
 
@@ -19,7 +39,9 @@ import type Keycloak from "keycloak-js";
 import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
-
+const { isLandingPage } = defineProps<{
+  isLandingPage: string;
+}>();
 /**
  * Sends the user to the keycloak login page (if not authenticated already)
  */
