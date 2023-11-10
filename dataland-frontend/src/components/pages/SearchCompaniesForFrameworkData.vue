@@ -98,7 +98,6 @@ import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheFooter from "@/components/generics/TheFooter.vue";
-import { useFrameworkFiltersStore } from "@/stores/Stores";
 import type Keycloak from "keycloak-js";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
@@ -140,7 +139,6 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworkFilters: useFrameworkFiltersStore(),
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
@@ -307,7 +305,6 @@ export default defineComponent({
      * An update of the combined filter object automatically triggers a new search.
      */
     updateCombinedFilterIfRequired() {
-      this.frameworkFilters.setSelectedFiltersForFrameworks(this.currentFilteredFrameworks);
       if (
         !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
         !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||

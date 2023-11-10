@@ -1,19 +1,5 @@
 import { defineStore } from "pinia";
-import { type DataTypeEnum } from "@clients/backend";
 import { TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS } from "@/utils/Constants";
-
-export const useFrameworkFiltersStore = defineStore("frameworkFilters", {
-  state: () => {
-    return {
-      selectedFiltersForFrameworks: [] as DataTypeEnum[],
-    };
-  },
-  actions: {
-    setSelectedFiltersForFrameworks(setFilters: DataTypeEnum[]) {
-      this.selectedFiltersForFrameworks = setFilters;
-    },
-  },
-});
 
 export const useSharedSessionStateStore = defineStore("sharedSessionStateStore", {
   state: () => {
