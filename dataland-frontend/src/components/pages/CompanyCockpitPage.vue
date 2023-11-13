@@ -6,6 +6,7 @@
       <div class="card-grid">
         <FrameworkSummaryPanel
           v-for="framework of Object.values(DataTypeEnum)"
+          :key="framework"
           :company-id="companyId"
           :framework="framework"
           :number-of-provided-reporting-periods="

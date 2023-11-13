@@ -52,7 +52,8 @@ export default defineComponent({
       })
       .then((companyIdsResponse): void => {
         this.companyIdsWithActiveData = companyIdsResponse.data;
-      });
+      })
+      .catch((error) => console.log(error));
   },
   mounted() {
     const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
