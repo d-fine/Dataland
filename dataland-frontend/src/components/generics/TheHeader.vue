@@ -23,9 +23,9 @@
 
 <script lang="ts">
 import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
-import { inject } from "vue";
+import {inject, defineComponent} from "vue";
 import AuthSection from "@/components/resources/newLandingPage/AuthSection.vue";
-export default {
+export default defineComponent({
   name: "TheHeader",
   components: { AuthSection, UserProfileDropDown },
   props: {
@@ -39,5 +39,5 @@ export default {
       authenticated: inject<boolean>("authenticated"), // TODO is this broken (its type is actually computed<boolean>)
     };
   },
-};
+});
 </script>
