@@ -50,6 +50,14 @@
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
             />
+            <MultiLayerDataTableFrameworkPanel
+              v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
+              :frameworkIdentifier="dataType"
+              :companyId="companyId"
+              :displayConfiguration="frameworkViewConfiguration!!.configuration"
+              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :inReviewMode="slotProps.inReviewMode"
+            />
             <SmePanel
               v-if="dataType === DataTypeEnum.Sme"
               :company-id="companyId"
@@ -101,6 +109,8 @@ import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/c
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
+import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
+import { type FrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
@@ -113,6 +123,12 @@ export default defineComponent({
     },
     p2pDataModel() {
       return p2pDataModel;
+    },
+    frameworkConfiguration(): FrameworkDefinition<unknown> | undefined {
+      return this.dataType ? getFrameworkDefinition(this.dataType) : undefined;
+    },
+    frameworkViewConfiguration(): FrameworkViewConfiguration<unknown> | undefined {
+      return this.frameworkConfiguration?.getFrameworkViewConfiguration();
     },
   },
   components: {

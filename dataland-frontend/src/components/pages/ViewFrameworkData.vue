@@ -25,6 +25,7 @@ import { DataTypeEnum } from "@clients/backend";
 import ViewSingleDatasetDisplayBase from "@/components/generics/ViewSingleDatasetDisplayBase.vue";
 import ViewMultipleDatasetsDisplayBase from "@/components/generics/ViewMultipleDatasetsDisplayBase.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import { getAllFrameworkIdentifiers } from "@/frameworks/FrameworkRegistry";
 
 export default defineComponent({
   name: "ViewFrameworkData",
@@ -60,16 +61,25 @@ export default defineComponent({
       void this.$router.push("/nocontent");
     },
   },
-  data() {
-    return {
-      singleViewFrameworks: [DataTypeEnum.EutaxonomyFinancials] as string[],
-      multiViewFrameworks: [
+  computed: {
+    multiViewFrameworks(): string[] {
+      const standardMultiViewFrameworks = [
         DataTypeEnum.EutaxonomyNonFinancials,
         DataTypeEnum.Lksg,
         DataTypeEnum.Sfdr,
         DataTypeEnum.P2p,
         DataTypeEnum.Sme,
-      ] as string[],
+      ];
+
+      for (const frameworkId of getAllFrameworkIdentifiers()) {
+        standardMultiViewFrameworks.push(frameworkId);
+      }
+      return standardMultiViewFrameworks;
+    },
+  },
+  data() {
+    return {
+      singleViewFrameworks: [DataTypeEnum.EutaxonomyFinancials] as string[],
     };
   },
 });

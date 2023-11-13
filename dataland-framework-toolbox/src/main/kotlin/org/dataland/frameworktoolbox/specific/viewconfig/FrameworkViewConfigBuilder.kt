@@ -44,6 +44,34 @@ class FrameworkViewConfigBuilder(
         writer.close()
     }
 
+    private fun buildApiClient(apiClientTsPath: Path) {
+        val freeMarkerContext = mapOf(
+            "frameworkIdentifier" to framework.identifier,
+        )
+
+        val freemarkerTemplate = FreeMarker.configuration
+            .getTemplate("/specific/viewconfig/ApiClient.ts.ftl")
+
+        val writer = FileWriter(apiClientTsPath.toFile())
+        freemarkerTemplate.process(freeMarkerContext, writer)
+        writer.close()
+    }
+
+    private fun buildIndexTs(indexTsPath: Path) {
+        val freeMarkerContext = mapOf(
+            "frameworkIdentifier" to framework.identifier,
+            "frameworkLabel" to framework.label,
+            "frameworkExplanation" to framework.explanation,
+        )
+
+        val freemarkerTemplate = FreeMarker.configuration
+            .getTemplate("/specific/viewconfig/index.ts.ftl")
+
+        val writer = FileWriter(indexTsPath.toFile())
+        freemarkerTemplate.process(freeMarkerContext, writer)
+        writer.close()
+    }
+
     /**
      * Generate the code for the ViewConfig and integrates it into the Dataland Repository
      */
@@ -57,5 +85,7 @@ class FrameworkViewConfigBuilder(
         }
 
         buildViewConfig(frameworkConfigDir / "ViewConfig.ts")
+        buildApiClient(frameworkConfigDir / "ApiClient.ts")
+        buildIndexTs(frameworkConfigDir / "index.ts")
     }
 }

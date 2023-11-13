@@ -8,7 +8,11 @@ import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuil
  * A High-Level intermediate representation of a Dataland Framework
  * @param identifier the short identifier of the framework (e.g., lksg)
  */
-class Framework(val identifier: String) {
+class Framework(
+    val identifier: String,
+    val label: String,
+    val explanation: String,
+) {
     val root: TopLevelComponentGroup = TopLevelComponentGroup(this)
 
     /**
