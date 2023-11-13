@@ -79,21 +79,27 @@ describeIf(
      * @param eligibilityKpis the dataset used as the source of truth
      */
     function checkCommonFields(financialCompanyType: string, eligibilityKpis: EligibilityKpis): void {
-      cy.get(`div[name="taxonomyEligibleActivity${financialCompanyType}"]`)
-        .should("contain", "Taxonomy-eligible economic activity")
-        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyEligibleActivityInPercent));
-      cy.get(`div[name="taxonomyNonEligibleActivity${financialCompanyType}"]`)
-        .should("contain", "Taxonomy-non-eligible economic activity")
-        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyNonEligibleActivityInPercent));
-      cy.get(`div[name="derivatives${financialCompanyType}"]`)
-        .should("contain", "Derivatives")
-        .should("contain", formatPercentNumber(eligibilityKpis.derivativesInPercent));
-      cy.get(`div[name="banksAndIssuers${financialCompanyType}"]`)
-        .should("contain", "Banks and issuers")
-        .should("contain", formatPercentNumber(eligibilityKpis.banksAndIssuersInPercent));
-      cy.get(`div[name="investmentNonNfrd${financialCompanyType}"]`)
-        .should("contain", "Non-NFRD")
-        .should("contain", formatPercentNumber(eligibilityKpis.investmentNonNfrdInPercent));
+      cy.get(`tr[data-test="${financialCompanyType}"]`).click();
+      cy.get('td[data-test="taxonomyEligibleActivityInPercent"]').should(
+        "contain",
+        formatPercentNumber(eligibilityKpis.taxonomyEligibleActivityInPercent),
+      );
+      cy.get('td[data-test="taxonomyNonEligibleActivityInPercent"]').should(
+        "contain",
+        formatPercentNumber(eligibilityKpis.taxonomyNonEligibleActivityInPercent),
+      );
+      cy.get('td[data-test="derivativesInPercent"]').should(
+        "contain",
+        formatPercentNumber(eligibilityKpis.derivativesInPercent),
+      );
+      cy.get('td[data-test="banksAndIssuersInPercent"]').should(
+        "contain",
+        formatPercentNumber(eligibilityKpis.banksAndIssuersInPercent),
+      );
+      cy.get('td[data-test="investmentNonNfrdInPercent"]').should(
+        "contain",
+        formatPercentNumber(eligibilityKpis.investmentNonNfrdInPercent),
+      );
     }
 
     /**
@@ -102,12 +108,10 @@ describeIf(
      */
     function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
       checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
-      cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
-        .should("contain", "Taxonomy-eligible non-life insurance economic activities")
-        .should(
-          "contain",
-          formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent),
-        );
+      cy.get('td[data-test="taxonomyEligibleNonLifeInsuranceActivities"]').should(
+        "contain",
+        formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent),
+      );
     }
 
     /**
@@ -116,9 +120,10 @@ describeIf(
      */
     function checkInvestmentFirmValues(testData: EuTaxonomyDataForFinancials): void {
       checkCommonFields("InvestmentFirm", testData.eligibilityKpis!.InvestmentFirm);
-      cy.get('div[name="greenAssetRatioInvestmentFirm"]')
-        .should("contain", "Green asset ratio")
-        .should("contain", formatPercentNumber(testData.investmentFirmKpis!.greenAssetRatioInPercent));
+      cy.get('td[data-test="greenAssetRatioInvestmentFirm"]').should(
+        "contain",
+        formatPercentNumber(testData.investmentFirmKpis!.greenAssetRatioInPercent),
+      );
     }
 
     /**
@@ -134,31 +139,32 @@ describeIf(
     ): void {
       checkCommonFields("CreditInstitution", testData.eligibilityKpis!.CreditInstitution);
       if (individualFieldSubmission) {
-        cy.get('div[name="tradingPortfolio"]')
-          .should("contain", "Trading portfolio")
-          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioInPercent));
-        cy.get('div[name="onDemandInterbankLoans"]')
-          .should("contain", "On demand interbank loans")
-          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.interbankLoansInPercent));
+        cy.get('td[data-test="tradingPortfolio"]').should(
+          "contain",
+          formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioInPercent),
+        );
+        cy.get('td[data-test="onDemandInterbankLoans"]').should(
+          "contain",
+          formatPercentNumber(testData.creditInstitutionKpis!.interbankLoansInPercent),
+        );
         if (!dualFieldSubmission) {
           cy.get("body").should("not.contain", "Trading portfolio & on demand interbank loans");
         }
       }
       if (dualFieldSubmission) {
-        cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
-          .should("contain", "Trading portfolio & on demand interbank loans")
-          .should(
-            "contain",
-            formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoansInPercent),
-          );
+        cy.get('td[data-test="tradingPortfolioAndInterbankLoansInPercent"]').should(
+          "contain",
+          formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoansInPercent),
+        );
         if (!individualFieldSubmission) {
-          cy.get("body").should("not.contain", /^Trading portfolio$/);
+          cy.get("body").should("not.contain", "Trading portfolio");
           cy.get("body").should("not.contain", "On demand interbank loans");
         }
       }
-      cy.get('div[name="greenAssetRatioCreditInstitution"]')
-        .should("contain", "Green asset ratio")
-        .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.greenAssetRatioInPercent));
+      cy.get('td[data-test="greenAssetRatioCreditInstitution"]').should(
+        "contain",
+        formatPercentNumber(testData.creditInstitutionKpis!.greenAssetRatioInPercent),
+      );
     }
 
     it("Create a CreditInstitution (combined field submission)", () => {

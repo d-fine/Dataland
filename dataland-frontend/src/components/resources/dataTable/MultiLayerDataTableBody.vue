@@ -23,6 +23,7 @@
         <td
           v-for="(mldtDataset, idx) in mldtDatasets"
           :key="idx"
+          :data-test="cellOrSectionConfig.name ?? null"
           :data-cell-label="cellOrSectionConfig.label"
           :data-dataset-index="idx"
         >
@@ -36,6 +37,7 @@
               ? ['p-rowgroup-header', 'p-topmost-header', 'border-bottom-table']
               : ['p-rowgroup-header', 'border-bottom-table']
           "
+          :data-test="cellOrSectionConfig.name ?? null"
           :data-section-label="cellOrSectionConfig.label"
           :data-section-expanded="expandedSections.has(idx)"
           @click="toggleSection(idx)"

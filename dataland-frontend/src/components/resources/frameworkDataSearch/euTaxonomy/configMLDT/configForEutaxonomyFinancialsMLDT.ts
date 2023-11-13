@@ -31,6 +31,7 @@ const generateEligibilityKpis = function (name, color = "yellow") {
       type: "cell",
       explanation: euTaxonomyKpiInfoMappings[field],
       class: "indentation",
+      name: `${field}`,
       label,
       shouldDisplay: () => true,
       valueGetter: getDataPointGetterFactory(
@@ -157,7 +158,7 @@ export const configForEutaxonomyFinancialsMLDT = [
     label: euTaxonomyKpiNameMappings.assurance,
     labelBadgeColor: "orange",
     expandOnPageLoad: false,
-    shouldDisplay: () => true,
+    shouldDisplay: (): boolean => true,
     children: [
       {
         label: "Level of Assurance",
@@ -175,11 +176,10 @@ export const configForEutaxonomyFinancialsMLDT = [
       },
     ],
   },
-
-  // (dataset) => dataset.financialServicesTypes.includes(name),
   {
     type: "section",
     label: euTaxonomyKpiNameMappings.CreditInstitution,
+    name: "CreditInstitution",
     labelBadgeColor: "green",
     expandOnPageLoad: false,
     shouldDisplay: (dataset) => dataset.financialServicesTypes.includes("CreditInstitution"),
@@ -190,6 +190,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
         explanation: euTaxonomyKpiInfoMappings.greenAssetRatioInPercent,
         type: "cell",
+        name: "greenAssetRatioCreditInstitution",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
           "creditInstitutionKpis.greenAssetRatioInPercent",
@@ -201,6 +202,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
         explanation: euTaxonomyKpiInfoMappings.tradingPortfolioAndInterbankLoansInPercent,
         type: "cell",
+        name: "tradingPortfolioAndInterbankLoansInPercent",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
           "creditInstitutionKpis.tradingPortfolioAndInterbankLoansInPercent",
@@ -212,6 +214,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.tradingPortfolioInPercent,
         explanation: euTaxonomyKpiInfoMappings.tradingPortfolioInPercent,
         type: "cell",
+        name: "tradingPortfolioCreditInstitution",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
           "creditInstitutionKpis.tradingPortfolioInPercent",
@@ -223,6 +226,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.interbankLoansInPercent,
         explanation: euTaxonomyKpiInfoMappings.interbankLoansInPercent,
         type: "cell",
+        name: "interbankLoansCreditInstitution",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
           "creditInstitutionKpis.interbankLoansInPercent",
@@ -236,6 +240,7 @@ export const configForEutaxonomyFinancialsMLDT = [
   {
     type: "section",
     label: euTaxonomyKpiNameMappings.InsuranceOrReinsurance,
+    name: "InsuranceOrReinsurance",
     labelBadgeColor: "red",
     expandOnPageLoad: false,
     shouldDisplay: (dataset) => dataset.financialServicesTypes.includes("InsuranceOrReinsurance"),
@@ -246,6 +251,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
         explanation: euTaxonomyKpiInfoMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
         type: "cell",
+        name: "taxonomyEligibleNonLifeInsuranceActivities",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
           "insuranceKpis.taxonomyEligibleNonLifeInsuranceActivitiesInPercent",
@@ -259,6 +265,7 @@ export const configForEutaxonomyFinancialsMLDT = [
   {
     type: "section",
     label: euTaxonomyKpiNameMappings.InvestmentFirm,
+    name: "InvestmentFirm",
     labelBadgeColor: "purple",
     expandOnPageLoad: false,
     shouldDisplay: (dataset) => dataset.financialServicesTypes.includes("InvestmentFirm"),
@@ -269,6 +276,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
         explanation: euTaxonomyKpiInfoMappings.greenAssetRatioInPercent,
         type: "cell",
+        name: "greenAssetRatioInvestmentFirm",
         shouldDisplay: (): boolean => true,
         valueGetter: getDataPointGetterFactory(
           "InvestmentFirm.greenAssetRatioInPercent",
@@ -282,6 +290,7 @@ export const configForEutaxonomyFinancialsMLDT = [
   {
     type: "section",
     label: euTaxonomyKpiNameMappings.AssetManagement,
+    name: "AssetManagement",
     labelBadgeColor: "blue",
     expandOnPageLoad: false,
     shouldDisplay: (dataset) => dataset.financialServicesTypes.includes("AssetManagement"),
