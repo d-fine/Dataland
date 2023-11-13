@@ -76,18 +76,6 @@ export default defineComponent({
     this.getAggregatedFrameworkDataSummary();
   },
   methods: {
-    assertDefined,
-    /**
-     * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to
-     * the search term provided by the event.
-     * @param searchTerm The search term provided by the "search-confirmed" event of the search bar
-     */
-    async handleSearchConfirm(searchTerm: string) {
-      await this.$router.push({
-        name: "Search Companies for Framework Data",
-        query: { input: searchTerm },
-      });
-    },
     /**
      * Retrieves the aggregated framework data summary
      */
@@ -107,8 +95,6 @@ export default defineComponent({
     async pushToCompanyCockpit(selectedCompany: CompanyIdAndName) {
       await this.$router.push(`/companies/${selectedCompany.companyId}`);
     },
-
-    handleFetchedCompanyInformation() {},
   },
 });
 </script>

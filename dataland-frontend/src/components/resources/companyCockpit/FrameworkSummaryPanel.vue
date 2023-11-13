@@ -100,7 +100,7 @@ let provideDataButtonHovered: boolean = false;
  * If no other clickable component on the panel is hovered and the user can access the viewpage of the provided framework
  * the view page is visted
  */
-function onClickPanel() {
+function onClickPanel(): void {
   if (!provideDataButtonHovered && hasAccessibleViewPage.value) {
     void router.push(`/companies/${props.companyId}/frameworks/${props.framework}`);
   }
@@ -109,14 +109,14 @@ function onClickPanel() {
 /**
  * Sets flag for tracking the cursor hovered state of the provide data button to true
  */
-function onCursorEnterProvideButton() {
+function onCursorEnterProvideButton(): void {
   provideDataButtonHovered = true;
 }
 
 /**
  * Sets flag for tracking the cursor hovered state of the provide data button to false
  */
-function onCursorLeaveProvideButton() {
+function onCursorLeaveProvideButton(): void {
   provideDataButtonHovered = false;
 }
 </script>
