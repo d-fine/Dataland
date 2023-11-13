@@ -5,7 +5,7 @@ import { DataTypeEnum, type EuTaxonomyDataForFinancials, type SmeData } from "@c
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -39,13 +39,13 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.ensureLoggedIn();
     cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
     cy.visit("/companies").wait("@companies-meta-information");
-    verifySearchResultTable();
+    verifySearchResultTableExists();
     cy.get("#framework-filter")
       .click()
       .get("div.p-multiselect-panel")
       .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
       .click();
-    verifySearchResultTable();
+    verifySearchResultTableExists();
     cy.url()
       .should(
         "eq",
@@ -60,13 +60,13 @@ describe("As a user, I expect the search functionality on the /companies page to
       .get("div.p-multiselect-panel")
       .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
       .click();
-    verifySearchResultTable();
+    verifySearchResultTableExists();
     cy.url()
       .should("eq", getBaseUrl() + "/companies")
       .get("div.p-multiselect-panel")
       .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.Sfdr)})`)
       .click();
-    verifySearchResultTable();
+    verifySearchResultTableExists();
     cy.url().should(
       "eq",
       getBaseUrl() +
@@ -178,7 +178,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
       cy.visit("/companies").wait("@companies-meta-information");
-      verifySearchResultTable();
+      verifySearchResultTableExists();
       cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
 
       cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
@@ -194,7 +194,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .find("li.p-multiselect-item")
         .first()
         .click();
-      verifySearchResultTable();
+      verifySearchResultTableExists();
       cy.get("div.p-multiselect-panel").should("not.exist");
     },
   );
@@ -221,9 +221,9 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
-          verifySearchResultTable();
+          verifySearchResultTableExists();
           cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-            verifySearchResultTable();
+            verifySearchResultTableExists();
             cy.get("#sector-filter")
               .click({ scrollBehavior: false })
               .get('input[placeholder="Search sectors"]')
@@ -298,7 +298,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
         cy.visit(`/companies?framework=${frameworkToFilterFor}`);
         cy.intercept("**/api/companies*").as("searchCompany");
-        verifySearchResultTable();
+        verifySearchResultTableExists();
         cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
