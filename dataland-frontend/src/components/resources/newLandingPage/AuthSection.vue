@@ -40,7 +40,7 @@ import ButtonComponent from "@/components/resources/newLandingPage/ButtonCompone
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const { isLandingPage } = defineProps<{
-  isLandingPage: string;
+  isLandingPage: boolean;
 }>();
 /**
  * Sends the user to the keycloak login page (if not authenticated already)

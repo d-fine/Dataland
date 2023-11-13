@@ -26,6 +26,6 @@ export function exportCustomMocks(): void {
   );
   fs.writeFileSync(
     "../testing/data/MapOfDataTypeToAggregatedFrameworkDataSummary.json",
-    JSON.stringify(generateMapOfFrameworkNameToAggregatedFrameworkDataSummary(), null, "\t"), // TODO
+    JSON.stringify(generateMapOfFrameworkNameToAggregatedFrameworkDataSummary(), null, "\t"), // TODO whats the todo here?
   );
 }
