@@ -61,7 +61,7 @@ provide(
 );
 
 const windowWidth = ref<number>();
-const storeWindowWidth = () => {
+const storeWindowWidth = (): void => {
   windowWidth.value = window.innerWidth;
 };
 onMounted(() => {
