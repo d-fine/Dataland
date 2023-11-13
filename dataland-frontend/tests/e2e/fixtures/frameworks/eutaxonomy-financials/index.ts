@@ -8,7 +8,7 @@ import { FAKE_FIXTURES_PER_FRAMEWORK } from "@e2e/fixtures/GenerateFakeFixtures"
 /**
  * Generates and exports fake fixtures for the eutaxonomy-financials framework
  */
-export function exportFixturesEuTaxonomyFinancial(): void {
+function exportFixturesEuTaxonomyFinancial(): void {
   const companyInformationWithEuTaxonomyDataForFinancials = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
     FAKE_FIXTURES_PER_FRAMEWORK,
@@ -23,3 +23,5 @@ export function exportFixturesEuTaxonomyFinancial(): void {
     JSON.stringify(preparedFixtureEuTaxonomyDataForFinancials, null, "\t"),
   );
 }
+
+export default exportFixturesEuTaxonomyFinancial;

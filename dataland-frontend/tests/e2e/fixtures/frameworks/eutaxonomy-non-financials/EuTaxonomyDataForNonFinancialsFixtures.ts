@@ -7,7 +7,7 @@ import {
   type EuTaxonomyDataForNonFinancials,
   type EuTaxonomyDetailsPerCashFlowType,
 } from "@clients/backend";
-import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
+import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy-shared/EuTaxonomySharedValuesFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";

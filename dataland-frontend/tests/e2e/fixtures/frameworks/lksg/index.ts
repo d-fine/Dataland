@@ -1,4 +1,4 @@
-import { generateLksgFixtures } from "@e2e/fixtures/lksg/LksgDataFixtures";
+import { generateLksgFixtures } from "@e2e/fixtures/frameworks/lksg/LksgDataFixtures";
 import fs from "fs";
 import { generateLksgPreparedFixtures } from "./LksgPreparedFixtures";
 import { FAKE_FIXTURES_PER_FRAMEWORK } from "@e2e/fixtures/GenerateFakeFixtures";
@@ -6,7 +6,7 @@ import { FAKE_FIXTURES_PER_FRAMEWORK } from "@e2e/fixtures/GenerateFakeFixtures"
 /**
  * Generates and exports fake fixtures for the LKSG framework
  */
-export function exportFixturesLksg(): void {
+function exportFixturesLksg(): void {
   const companyInformationWithLksgData = generateLksgFixtures(FAKE_FIXTURES_PER_FRAMEWORK);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithLksgData.json",
@@ -18,3 +18,5 @@ export function exportFixturesLksg(): void {
     JSON.stringify(preparedFixtureLksgDataForFinancials, null, "\t"),
   );
 }
+
+export default exportFixturesLksg;

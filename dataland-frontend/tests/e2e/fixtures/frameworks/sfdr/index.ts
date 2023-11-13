@@ -8,7 +8,7 @@ import { FAKE_FIXTURES_PER_FRAMEWORK } from "@e2e/fixtures/GenerateFakeFixtures"
 /**
  * Generates and exports fake fixtures for the SFDR framework
  */
-export function exportFixturesSfdrData(): void {
+function exportFixturesSfdrData(): void {
   const companyInformationWithSfdrData = generateFixtureDataset<SfdrData>(
     generateSfdrData,
     FAKE_FIXTURES_PER_FRAMEWORK,
@@ -23,3 +23,5 @@ export function exportFixturesSfdrData(): void {
     JSON.stringify(preparedFixtureSfdrData, null, "\t"),
   );
 }
+
+export default exportFixturesSfdrData;

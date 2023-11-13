@@ -1,6 +1,6 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type SmeData } from "@clients/backend";
-import { generateSmeFixtures } from "@e2e/fixtures/sme/SmeDataFixtures";
+import { generateSmeFixtures } from "@e2e/fixtures/frameworks/sme/SmeDataFixtures";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 
 /**

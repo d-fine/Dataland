@@ -7,7 +7,7 @@ import {
   type InsuranceKpis,
   type InvestmentFirmKpis,
 } from "@clients/backend";
-import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
+import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy-shared/EuTaxonomySharedValuesFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
