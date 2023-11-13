@@ -12,17 +12,32 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class ComponentGenerationUtils {
+
+    /**
+     * Generate a camelCase identifier for a section from a template row
+     */
+    open fun generateSectionIdentifierFromRow(row: TemplateRow): String {
+        return Naming.getNameFromLabel(row.category)
+    }
+
+    /**
+     * Generate a camelCase identifier for a subSection from a template row
+     */
+    open fun generateSubSectionIdentifierFromRow(row: TemplateRow): String {
+        return Naming.getNameFromLabel(row.subCategory)
+    }
+
     /**
      * Generate a camelCase identifier for a component from a template row
      */
-    fun generateFieldIdentifierFromRow(row: TemplateRow): String {
+    open fun generateFieldIdentifierFromRow(row: TemplateRow): String {
         return Naming.getNameFromLabel(row.fieldName)
     }
 
     /**
      * Loads properties shared across components from the row into the component
      */
-    fun setCommonProperties(row: TemplateRow, component: ComponentBase) {
+    open fun setCommonProperties(row: TemplateRow, component: ComponentBase) {
         component.label = row.fieldName
         component.explanation = if (row.tooltip.isNotBlank()) row.tooltip else null
         component.isNullable = row.mandatoryField == TemplateYesNo.No

@@ -7,7 +7,6 @@ import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.template.model.TemplateRow
-import org.dataland.frameworktoolbox.utils.Naming
 
 /**
  * Builds a High-Level Intermediate Representation of a Framework using an ExcelTemplate.
@@ -28,7 +27,7 @@ class TemplateComponentBuilder(
             }
             base
         } else {
-            val sectionName = Naming.getNameFromLabel(row.category)
+            val sectionName = generationUtils.generateSectionIdentifierFromRow(row)
             val section = base.getOrNull<ComponentGroup>(sectionName)
                 ?: base.create(sectionName) {
                     label = row.category
@@ -37,7 +36,7 @@ class TemplateComponentBuilder(
             if (row.subCategory.isBlank()) {
                 section
             } else {
-                val subsectionName = Naming.getNameFromLabel(row.subCategory)
+                val subsectionName = generationUtils.generateSubSectionIdentifierFromRow(row)
                 val subsection = section.getOrNull<ComponentGroup>(subsectionName)
                     ?: section.create(subsectionName) {
                         label = row.subCategory
