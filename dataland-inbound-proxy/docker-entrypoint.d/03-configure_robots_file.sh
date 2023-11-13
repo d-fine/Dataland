@@ -10,5 +10,5 @@ echo "Configuring robots.txt on $serverName"
 
 if [[ $serverName == "dataland.com" ]]; then
   echo "Replacing robots.txt for production on dataland.com"
-  mv "$prodFilePath" "$targetFilePath"
+  cp "$prodFilePath" "$targetFilePath"
 fi
