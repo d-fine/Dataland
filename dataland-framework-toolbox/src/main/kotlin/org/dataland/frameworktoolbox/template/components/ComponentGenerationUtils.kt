@@ -1,6 +1,8 @@
 package org.dataland.frameworktoolbox.template.components
 
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
+import org.dataland.frameworktoolbox.template.TemplateDiagnostic
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.template.model.TemplateYesNo
 import org.dataland.frameworktoolbox.utils.Naming
@@ -41,5 +43,26 @@ open class ComponentGenerationUtils {
         component.label = row.fieldName
         component.explanation = if (row.tooltip.isNotBlank()) row.tooltip else null
         component.isNullable = row.mandatoryField == TemplateYesNo.No
+    }
+
+    open fun defaultDependencyConfiguration(
+        row: TemplateRow,
+        identifierMap: Map<String, ComponentBase>,
+        diagnostic: TemplateDiagnostic,
+    ) {
+        if (row.dependency.isBlank()) {
+            diagnostic.showWhenValueIsNotUsed(row)
+            return
+        }
+
+        val dependencyField = identifierMap[row.dependency.trim()]
+        requireNotNull(dependencyField) {
+            "Field ${row.fieldIdentifier} depends on non-existent field ${row.dependency}"
+        }
+
+        val myField = identifierMap[row.fieldIdentifier]
+        requireNotNull(myField)
+
+        myField.availableIf = DependsOnComponentValue(dependencyField, row.showWhenValueIs)
     }
 }

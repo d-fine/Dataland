@@ -27,6 +27,12 @@ class TemplateDiagnostic(@Autowired val diagnostic: DiagnosticManager) {
     fun documentSupportNotUsed(row: TemplateRow) =
         unusedColumn("documentSupport", "None", row, row.documentSupport.toString())
 
+    /**
+     * Attests that this generator does not use the "Show when value is" column of the CSV
+     */
+    fun showWhenValueIsNotUsed(row: TemplateRow) =
+        unusedColumn("showWhenValueIs", "", row, row.showWhenValueIs)
+
     private fun unusedColumn(columnName: String, expectedColumnValue: String, row: TemplateRow, columnValue: String) {
         diagnostic.warnIf(
             columnValue.trim() != expectedColumnValue,

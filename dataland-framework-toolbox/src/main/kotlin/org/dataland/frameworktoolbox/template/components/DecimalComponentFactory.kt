@@ -31,4 +31,12 @@ class DecimalComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnos
             utils.setCommonProperties(row, this)
         }
     }
+
+    override fun updateDependency(
+        row: TemplateRow,
+        utils: ComponentGenerationUtils,
+        componentIdentifierMap: Map<String, ComponentBase>,
+    ) {
+        utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+    }
 }

@@ -1,7 +1,6 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**

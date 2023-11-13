@@ -13,7 +13,7 @@ abstract class FrameworkConditional {
         }
     }
 
-    object AlwaysFalse: FrameworkConditional() {
+    object AlwaysFalse : FrameworkConditional() {
         override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda {
             return FrameworkBooleanLambda.FALSE
         }

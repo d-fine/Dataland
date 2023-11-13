@@ -9,9 +9,11 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBoo
  * A DependsOnComponentValue is a FrameworkConditional that is true
  * iff the specified component has the value given by the value property
  */
-class DependsOnComponentValue(var component: ComponentBase, var value: String): FrameworkConditional() {
+class DependsOnComponentValue(var component: ComponentBase, var value: String) : FrameworkConditional() {
     override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda {
-        return FrameworkBooleanLambda("${component.getTypescriptFieldAccessor()} " +
-                "== \"${StringEscapeUtils.escapeEcmaScript(value)}\"")
+        return FrameworkBooleanLambda(
+            "${component.getTypescriptFieldAccessor()} " +
+                "== \"${StringEscapeUtils.escapeEcmaScript(value)}\"",
+        )
     }
 }

@@ -55,7 +55,6 @@ class TemplateComponentBuilder(
             )
     }
 
-
     private fun initialBuildPassForCreatingComponents(into: ComponentGroupApi): Map<String, ComponentBase> {
         val componentMapForDependencies = mutableMapOf<String, ComponentBase>()
         for (row in template.rows) {
@@ -65,15 +64,15 @@ class TemplateComponentBuilder(
                 "Duplicate component identifier ${row.fieldIdentifier}"
             }
             val generatedComponent = factory.generateComponent(row, generationUtils, group)
-            generatedComponent?.let {  componentMapForDependencies[row.fieldIdentifier] = it}
+            generatedComponent?.let { componentMapForDependencies[row.fieldIdentifier] = it }
         }
         return componentMapForDependencies
     }
 
-    private fun secondBuildPassForDefiningDependencies(into: ComponentGroupApi, componentIdentifierMap: Map<String, ComponentBase>) {
+    private fun secondBuildPassForDefiningDependencies(componentIdentifierMap: Map<String, ComponentBase>) {
         for (row in template.rows) {
             val factory = getFactoryForRow(row)
-            factory.updateDependency(row, componentIdentifierMap)
+            factory.updateDependency(row, generationUtils, componentIdentifierMap)
         }
     }
 
@@ -82,7 +81,7 @@ class TemplateComponentBuilder(
      * into the provided ComponentGroup
      */
     fun build(into: ComponentGroupApi) {
-       val componentIdentifierMap = initialBuildPassForCreatingComponents(into)
-        secondBuildPassForDefiningDependencies(into, componentIdentifierMap)
+        val componentIdentifierMap = initialBuildPassForCreatingComponents(into)
+        secondBuildPassForDefiningDependencies(componentIdentifierMap)
     }
 }
